@@ -7,17 +7,17 @@ import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.state.properties.AttachFace;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Direction.Axis;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion.Mode;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
@@ -25,12 +25,12 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 public class BlockUtils{
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
 
-	public static boolean isSideSolid(IWorldReader world, BlockPos pos, Direction side)
+	public static boolean isSideSolid(LevelReader world, BlockPos pos, Direction side)
 	{
 		return world.getBlockState(pos).isFaceSturdy(world, pos, side);
 	}
 
-	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate){
+	public static void updateAndNotify(Level world, BlockPos pos, Block block, int delay, boolean shouldUpdate){
 		if(shouldUpdate)
 			world.getBlockTicks().scheduleTick(pos, block, delay);
 
@@ -41,17 +41,17 @@ public class BlockUtils{
 		return new int[]{pos.getX(), pos.getY(), pos.getZ()};
 	}
 
-	public static Mode getExplosionMode()
+	public static BlockInteraction getExplosionMode()
 	{
-		return ConfigHandler.SERVER.mineExplosionsBreakBlocks.get() ? Mode.BREAK : Mode.NONE;
+		return ConfigHandler.SERVER.mineExplosionsBreakBlocks.get() ? BlockInteraction.BREAK : BlockInteraction.NONE;
 	}
 
-	public static boolean hasActiveSCBlockNextTo(World world, BlockPos pos)
+	public static boolean hasActiveSCBlockNextTo(Level world, BlockPos pos)
 	{
 		return SecurityCraftAPI.getRegisteredDoorActivators().stream().anyMatch(activator -> hasActiveSCBlockNextTo(world, pos, world.getBlockEntity(pos), activator));
 	}
 
-	private static boolean hasActiveSCBlockNextTo(World world, BlockPos pos, TileEntity te, IDoorActivator activator)
+	private static boolean hasActiveSCBlockNextTo(Level world, BlockPos pos, BlockEntity te, IDoorActivator activator)
 	{
 		for(Direction dir : Direction.values())
 		{
@@ -60,7 +60,7 @@ public class BlockUtils{
 
 			if(activator.getBlocks().contains(offsetState.getBlock()))
 			{
-				TileEntity offsetTe = world.getBlockEntity(offsetPos);
+				BlockEntity offsetTe = world.getBlockEntity(offsetPos);
 
 				return activator.isPowering(world, offsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
 			}
@@ -98,7 +98,7 @@ public class BlockUtils{
 							}
 						}
 
-						TileEntity offsetTe = world.getBlockEntity(newOffsetPos);
+						BlockEntity offsetTe = world.getBlockEntity(newOffsetPos);
 
 						return activator.isPowering(world, newOffsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
 					}
@@ -109,7 +109,7 @@ public class BlockUtils{
 		return false;
 	}
 
-	public static LazyOptional<?> getProtectedCapability(Direction side, TileEntity te, Supplier<LazyOptional<?>> extractionPermittedHandler, Supplier<LazyOptional<?>> insertOnlyHandler)
+	public static LazyOptional<?> getProtectedCapability(Direction side, BlockEntity te, Supplier<LazyOptional<?>> extractionPermittedHandler, Supplier<LazyOptional<?>> insertOnlyHandler)
 	{
 		if(side == null)
 			return EMPTY_INVENTORY;

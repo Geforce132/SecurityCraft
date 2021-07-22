@@ -7,24 +7,24 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable {
@@ -38,13 +38,13 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
 		return SHAPE;
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
 		if (world.getBlockState(pos.below()).getMaterial() != Material.AIR)
 			return;
 		else if (world.getBlockState(pos).getValue(DEACTIVATED))
@@ -57,24 +57,24 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
 	 */
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos){
+	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos){
 		return BlockUtils.isSideSolid(world, pos.below(), Direction.UP);
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+	public void onEntityIntersected(Level world, BlockPos pos, Entity entity) {
 		if(!EntityUtils.doesEntityOwn(entity, world, pos))
 			if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity))
 				explode(world, pos);
 	}
 	@Override
-	public void attack(BlockState state, World world, BlockPos pos, PlayerEntity player){
+	public void attack(BlockState state, Level world, BlockPos pos, Player player){
 		if(!player.isCreative() && !EntityUtils.doesPlayerOwn(player, world, pos))
 			explode(world, pos);
 	}
 
 	@Override
-	public boolean activateMine(World world, BlockPos pos) {
+	public boolean activateMine(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
 		if(state.getValue(DEACTIVATED))
@@ -87,7 +87,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	}
 
 	@Override
-	public boolean defuseMine(World world, BlockPos pos) {
+	public boolean defuseMine(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
 		if(!state.getValue(DEACTIVATED))
@@ -100,7 +100,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos){
+	public void explode(Level world, BlockPos pos){
 		if(world.isClientSide)
 			return;
 		if(world.getBlockState(pos).getValue(DEACTIVATED))
@@ -118,7 +118,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state){
+	public ItemStack getCloneItemStack(BlockGetter worldIn, BlockPos pos, BlockState state){
 		return new ItemStack(asItem());
 	}
 
@@ -129,7 +129,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	}
 
 	@Override
-	public boolean isActive(World world, BlockPos pos) {
+	public boolean isActive(Level world, BlockPos pos) {
 		return !world.getBlockState(pos).getValue(DEACTIVATED);
 	}
 
@@ -139,7 +139,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new SecurityCraftTileEntity().intersectsEntities();
 	}
 

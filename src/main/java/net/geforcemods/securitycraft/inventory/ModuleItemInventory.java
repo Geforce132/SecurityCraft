@@ -1,15 +1,15 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.common.util.Constants;
 
-public class ModuleItemInventory implements IInventory {
+public class ModuleItemInventory implements Container {
 
 	public int SIZE = 0;
 	private final ItemStack module;
@@ -29,7 +29,7 @@ public class ModuleItemInventory implements IInventory {
 		moduleInventory = NonNullList.withSize(SIZE, ItemStack.EMPTY);
 
 		if (!module.hasTag())
-			module.setTag(new CompoundNBT());
+			module.setTag(new CompoundTag());
 
 		readFromNBT(module.getTag());
 	}
@@ -44,11 +44,11 @@ public class ModuleItemInventory implements IInventory {
 		return moduleInventory.get(index);
 	}
 
-	public void readFromNBT(CompoundNBT tag) {
-		ListNBT items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+	public void readFromNBT(CompoundTag tag) {
+		ListTag items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
 		for(int i = 0; i < items.size(); i++) {
-			CompoundNBT item = items.getCompound(i);
+			CompoundTag item = items.getCompound(i);
 			int slot = item.getInt("Slot");
 
 			if(slot < getContainerSize())
@@ -56,12 +56,12 @@ public class ModuleItemInventory implements IInventory {
 		}
 	}
 
-	public void writeToNBT(CompoundNBT tag) {
-		ListNBT items = new ListNBT();
+	public void writeToNBT(CompoundTag tag) {
+		ListTag items = new ListTag();
 
 		for(int i = 0; i < getContainerSize(); i++)
 			if(!getItem(i).isEmpty()) {
-				CompoundNBT item = new CompoundNBT();
+				CompoundTag item = new CompoundTag();
 				item.putInt("Slot", i);
 				getItem(i).save(item);
 
@@ -118,15 +118,15 @@ public class ModuleItemInventory implements IInventory {
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return true;
 	}
 
 	@Override
-	public void startOpen(PlayerEntity player) {}
+	public void startOpen(Player player) {}
 
 	@Override
-	public void stopOpen(PlayerEntity player) {}
+	public void stopOpen(Player player) {}
 
 	@Override
 	public boolean canPlaceItem(int index, ItemStack stack) {

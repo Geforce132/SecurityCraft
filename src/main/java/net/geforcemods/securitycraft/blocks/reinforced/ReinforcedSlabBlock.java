@@ -7,33 +7,33 @@ import javax.annotation.Nullable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.SlabType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 
-public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLoggable
+public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWaterloggedBlock
 {
 	public static final EnumProperty<SlabType> TYPE = BlockStateProperties.SLAB_TYPE;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -58,20 +58,20 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
 		builder.add(TYPE, WATERLOGGED);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
+	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context)
 	{
 		SlabType type = state.getValue(TYPE);
 
 		switch(type)
 		{
 			case DOUBLE:
-				return VoxelShapes.block();
+				return Shapes.block();
 			case TOP:
 				return TOP_SHAPE;
 			default:
@@ -81,18 +81,18 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 
 	@Override
 	@Nullable
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{
-		World world = ctx.getLevel();
+		Level world = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		BlockState state = world.getBlockState(pos);
-		TileEntity te = world.getBlockEntity(pos);
+		BlockEntity te = world.getBlockEntity(pos);
 
 		if(state.getBlock() == this)
 		{
 			if(te instanceof IOwnable && !((IOwnable)te).getOwner().isOwner(ctx.getPlayer()))
 			{
-				PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), ChatFormatting.RED);
 
 				return state;
 			}
@@ -110,7 +110,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 	}
 
 	@Override
-	public boolean canBeReplaced(BlockState state, BlockItemUseContext ctx)
+	public boolean canBeReplaced(BlockState state, BlockPlaceContext ctx)
 	{
 		ItemStack stack = ctx.getItemInHand();
 		SlabType type = state.getValue(TYPE);
@@ -141,19 +141,19 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 	}
 
 	@Override
-	public boolean placeLiquid(IWorld world, BlockPos pos, BlockState state, FluidState fluidState)
+	public boolean placeLiquid(LevelAccessor world, BlockPos pos, BlockState state, FluidState fluidState)
 	{
-		return state.getValue(TYPE) != SlabType.DOUBLE ? IWaterLoggable.super.placeLiquid(world, pos, state, fluidState) : false;
+		return state.getValue(TYPE) != SlabType.DOUBLE ? SimpleWaterloggedBlock.super.placeLiquid(world, pos, state, fluidState) : false;
 	}
 
 	@Override
-	public boolean canPlaceLiquid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid)
+	public boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid)
 	{
-		return state.getValue(TYPE) != SlabType.DOUBLE ? IWaterLoggable.super.canPlaceLiquid(world, pos, state, fluid) : false;
+		return state.getValue(TYPE) != SlabType.DOUBLE ? SimpleWaterloggedBlock.super.canPlaceLiquid(world, pos, state, fluid) : false;
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos)
 	{
 		if(state.getValue(WATERLOGGED))
 			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
@@ -162,7 +162,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type)
+	public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type)
 	{
 		switch(type)
 		{

@@ -2,10 +2,12 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.BlockGetter;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class ScannerDoorBlock extends SpecialDoorBlock
 {
@@ -15,7 +17,7 @@ public class ScannerDoorBlock extends SpecialDoorBlock
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
 	{
 		return new ScannerDoorTileEntity().linkable().activatedByView();
 	}

@@ -7,20 +7,20 @@ import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DoorBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPasswordProtected
@@ -33,7 +33,7 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		super.save(tag);
 
@@ -44,7 +44,7 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 
@@ -52,28 +52,28 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 	}
 
 	@Override
-	public void activate(PlayerEntity player) {
+	public void activate(Player player) {
 		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadDoorBlock)
 			KeypadDoorBlock.activate(level, worldPosition, getBlockState(), getSignalLength());
 	}
 
 	@Override
-	public void openPasswordGUI(PlayerEntity player) {
+	public void openPasswordGUI(Player player) {
 		if(getPassword() != null)
 		{
-			if(player instanceof ServerPlayerEntity)
+			if(player instanceof ServerPlayer)
 			{
-				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+				NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 					{
 						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
-					public ITextComponent getDisplayName()
+					public Component getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEYPAD_DOOR.get().getDescriptionId());
+						return new TranslatableComponent(SCContent.KEYPAD_DOOR.get().getDescriptionId());
 					}
 				}, worldPosition);
 			}
@@ -82,30 +82,30 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 		{
 			if(getOwner().isOwner(player))
 			{
-				if(player instanceof ServerPlayerEntity)
+				if(player instanceof ServerPlayer)
 				{
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+					NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
 							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override
-						public ITextComponent getDisplayName()
+						public Component getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEYPAD_DOOR.get().getDescriptionId());
+							return new TranslatableComponent(SCContent.KEYPAD_DOOR.get().getDescriptionId());
 						}
 					}, worldPosition);
 				}
 			}
 			else
-				PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
 		}
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
+	public boolean onCodebreakerUsed(BlockState blockState, Player player) {
 		if(!blockState.getValue(DoorBlock.OPEN)) {
 			activate(player);
 			return true;
@@ -121,7 +121,7 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 
 	@Override
 	public void setPassword(String password) {
-		TileEntity te = null;
+		BlockEntity te = null;
 
 		passcode = password;
 

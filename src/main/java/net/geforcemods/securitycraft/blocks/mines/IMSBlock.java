@@ -7,28 +7,28 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -37,10 +37,10 @@ public class IMSBlock extends OwnableBlock {
 
 	public static final IntegerProperty MINES = IntegerProperty.create("mines", 0, 4);
 	private static final VoxelShape SHAPE = Block.box(4, 0, 5, 12, 7, 11);
-	private static final VoxelShape SHAPE_1_MINE = VoxelShapes.or(SHAPE, Block.box(0, 0, 0, 5, 5, 5));
-	private static final VoxelShape SHAPE_2_MINES = VoxelShapes.or(SHAPE_1_MINE, Block.box(0, 0, 11, 5, 5, 16));
-	private static final VoxelShape SHAPE_3_MINES = VoxelShapes.or(SHAPE_2_MINES, Block.box(11, 0, 0, 16, 5, 5));
-	private static final VoxelShape SHAPE_4_MINES = VoxelShapes.or(SHAPE_3_MINES, Block.box(11, 0, 11, 16, 5, 16));
+	private static final VoxelShape SHAPE_1_MINE = Shapes.or(SHAPE, Block.box(0, 0, 0, 5, 5, 5));
+	private static final VoxelShape SHAPE_2_MINES = Shapes.or(SHAPE_1_MINE, Block.box(0, 0, 11, 5, 5, 16));
+	private static final VoxelShape SHAPE_3_MINES = Shapes.or(SHAPE_2_MINES, Block.box(11, 0, 0, 16, 5, 5));
+	private static final VoxelShape SHAPE_4_MINES = Shapes.or(SHAPE_3_MINES, Block.box(11, 0, 11, 16, 5, 16));
 
 	public IMSBlock(Block.Properties properties) {
 		super(properties);
@@ -48,13 +48,13 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos)
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter world, BlockPos pos)
 	{
 		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getDestroyProgress(state, player, world, pos);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
 		switch(state.getValue(MINES))
 		{
@@ -67,7 +67,7 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
 		if (world.getBlockState(pos.below()).getMaterial() != Material.AIR)
 			return;
 		else
@@ -75,7 +75,7 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		if(!world.isClientSide)
 		{
@@ -92,17 +92,17 @@ public class IMSBlock extends OwnableBlock {
 					world.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
 					((IMSTileEntity)world.getBlockEntity(pos)).setBombsRemaining(mines + 1);
 				}
-				else if(player instanceof ServerPlayerEntity)
+				else if(player instanceof ServerPlayer)
 				{
-					TileEntity te = world.getBlockEntity(pos);
+					BlockEntity te = world.getBlockEntity(pos);
 
-					if(te instanceof INamedContainerProvider)
-						NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
+					if(te instanceof MenuProvider)
+						NetworkHooks.openGui((ServerPlayer)player, (MenuProvider)te, pos);
 				}
 			}
 		}
 
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class IMSBlock extends OwnableBlock {
 	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World world, BlockPos pos, Random random){
+	public void animateTick(BlockState state, Level world, BlockPos pos, Random random){
 		if(state.getValue(MINES) == 0){
 			double x = pos.getX() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.4F + (random.nextFloat() - 0.5F) * 0.2D;
@@ -130,12 +130,12 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
+	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
 		return defaultBlockState().setValue(MINES, 4);
 	}
@@ -147,7 +147,7 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new IMSTileEntity();
 	}
 

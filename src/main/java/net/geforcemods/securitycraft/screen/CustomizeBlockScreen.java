@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -20,24 +20,24 @@ import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.Rectangle2d;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
 @OnlyIn(Dist.CLIENT)
-public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContainer>{
+public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockContainer>{
 	private static final ResourceLocation[] TEXTURES = {
 			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
@@ -46,14 +46,14 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			new ResourceLocation("securitycraft:textures/gui/container/customize4.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize5.png")
 	};
-	private final List<Rectangle2d> extraAreas = new ArrayList<>();
+	private final List<Rect2i> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private Button[] optionButtons = new Button[5];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private final String blockName;
 
-	public CustomizeBlockScreen(CustomizeBlockContainer container, PlayerInventory inv, ITextComponent name)
+	public CustomizeBlockScreen(CustomizeBlockContainer container, Inventory inv, Component name)
 	{
 		super(container, inv, name);
 		moduleInv = container.moduleInv;
@@ -73,7 +73,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 
-		TileEntity te = moduleInv.getTileEntity();
+		BlockEntity te = moduleInv.getTileEntity();
 
 		if(te instanceof ICustomizable && ((ICustomizable)te).customOptions() != null)
 		{
@@ -84,12 +84,12 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 				if(option instanceof ISlider && option.isSlider())
 				{
-					TranslationTextComponent translatedBlockName = Utils.localize(blockName);
+					TranslatableComponent translatedBlockName = Utils.localize(blockName);
 
 					if(option instanceof DoubleOption)
-						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, i, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).get(), true, false, (ISlider)option, null);
+						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, i, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).get(), true, false, (ISlider)option, null);
 					else if(option instanceof IntOption)
-						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, i, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((IntOption)option).getMin(), ((IntOption)option).getMax(), ((IntOption)option).get(), true, false, (ISlider)option, null);
+						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, i, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((IntOption)option).getMin(), ((IntOption)option).getMax(), ((IntOption)option).get(), true, false, (ISlider)option, null);
 
 					optionButtons[i].setFGColor(14737632);
 				}
@@ -109,7 +109,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			if(button == null)
 				continue;
 
-			extraAreas.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getHeight()));
+			extraAreas.add(new Rect2i(button.x, button.y, button.getWidth(), button.getHeight()));
 		}
 	}
 
@@ -126,7 +126,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks){
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
@@ -144,15 +144,15 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY)
+	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY)
 	{
-		TranslationTextComponent s = Utils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getDescriptionId());
+		TranslatableComponent s = Utils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getDescriptionId());
 		font.draw(matrix, s, imageWidth / 2 - font.width(s) / 2, 6, 4210752);
 		font.draw(matrix, Utils.localize("container.inventory"), 8, imageHeight - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
+	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -170,36 +170,36 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getTileEntity().getBlockPos().getX(), moduleInv.getTileEntity().getBlockPos().getY(), moduleInv.getTileEntity().getBlockPos().getZ(), button.id));
 	}
 
-	private ITextComponent getModuleDescription(int buttonID) {
+	private Component getModuleDescription(int buttonID) {
 		String moduleDescription = "module" + blockName + "." + descriptionButtons[buttonID].getItemStack().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description";
 
 		return Utils.localize(descriptionButtons[buttonID].getItemStack().getDescriptionId())
-				.append(new StringTextComponent(":"))
-				.withStyle(TextFormatting.RESET)
-				.append(new StringTextComponent("\n\n"))
+				.append(new TextComponent(":"))
+				.withStyle(ChatFormatting.RESET)
+				.append(new TextComponent("\n\n"))
 				.append(Utils.localize(moduleDescription));
 	}
 
-	private TranslationTextComponent getOptionDescription(int buttonID) {
+	private TranslatableComponent getOptionDescription(int buttonID) {
 		Option<?> option = ((ICustomizable)moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getSlots()];
 		String optionDescription = "option" + blockName + "." +  option.getName() + ".description";
 
-		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslationTextComponent(optionDescription), new TranslationTextComponent("gui.securitycraft:customize.currentSetting", getValueText(option)));
+		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslatableComponent(optionDescription), new TranslatableComponent("gui.securitycraft:customize.currentSetting", getValueText(option)));
 	}
 
-	private ITextComponent getOptionButtonTitle(Option<?> option) {
+	private Component getOptionButtonTitle(Option<?> option) {
 		return Utils.localize("option" + blockName + "." + option.getName(), getValueText(option));
 	}
 
-	private ITextComponent getValueText(Option<?> option)
+	private Component getValueText(Option<?> option)
 	{
 		if(option instanceof BooleanOption)
-			return new TranslationTextComponent(((BooleanOption)option).get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
+			return new TranslatableComponent(((BooleanOption)option).get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
 		else
-			return new StringTextComponent(option.toString());
+			return new TextComponent(option.toString());
 	}
 
-	public List<Rectangle2d> getGuiExtraAreas()
+	public List<Rect2i> getGuiExtraAreas()
 	{
 		return extraAreas;
 	}

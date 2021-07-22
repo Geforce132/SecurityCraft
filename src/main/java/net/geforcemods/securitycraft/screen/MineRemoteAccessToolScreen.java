@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -15,15 +15,15 @@ import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -32,7 +32,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
-	private final TranslationTextComponent mratName = Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId());
+	private final TranslatableComponent mratName = Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId());
 	private ItemStack mrat;
 	private IdButton[][] guiButtons = new IdButton[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
@@ -40,7 +40,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 
 	public MineRemoteAccessToolScreen(ItemStack item) {
-		super(new TranslationTextComponent(item.getDescriptionId()));
+		super(new TranslatableComponent(item.getDescriptionId()));
 
 		mrat = item;
 	}
@@ -132,7 +132,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -146,7 +146,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 		for(int i = 0; i < 6; i++)
 		{
 			int[] coords = getMineCoordinates(i);
-			TranslationTextComponent line;
+			TranslatableComponent line;
 
 			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 				line = Utils.localize("gui.securitycraft:mrat.notBound");
@@ -247,7 +247,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 
 	@Override
 	public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
-		if (minecraft.options.keyInventory.isActiveAndMatches(InputMappings.getKey(p_keyPressed_1_, p_keyPressed_2_))) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(p_keyPressed_1_, p_keyPressed_2_))) {
 			this.removed();
 			return true;
 		}

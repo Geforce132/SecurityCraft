@@ -2,20 +2,20 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.FlowingFluid;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
-public class FakeLavaBlock extends FlowingFluidBlock
+public class FakeLavaBlock extends LiquidBlock
 {
-	private static final EffectInstance SHORT_FIRE_RESISTANCE = new EffectInstance(Effects.FIRE_RESISTANCE, 1);
+	private static final MobEffectInstance SHORT_FIRE_RESISTANCE = new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 1);
 
 	public FakeLavaBlock(Block.Properties properties, Supplier<? extends FlowingFluid> fluid)
 	{
@@ -23,7 +23,7 @@ public class FakeLavaBlock extends FlowingFluidBlock
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity)
+	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity)
 	{
 		super.entityInside(state, world, pos, entity);
 
@@ -37,8 +37,8 @@ public class FakeLavaBlock extends FlowingFluidBlock
 			{
 				lEntity.addEffect(SHORT_FIRE_RESISTANCE);
 
-				if(!lEntity.hasEffect(Effects.REGENERATION))
-					lEntity.addEffect(new EffectInstance(Effects.REGENERATION, 20, 2));
+				if(!lEntity.hasEffect(MobEffects.REGENERATION))
+					lEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20, 2));
 			}
 		}
 	}

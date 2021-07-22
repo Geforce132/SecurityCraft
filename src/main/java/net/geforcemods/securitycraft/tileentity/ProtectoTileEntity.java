@@ -9,9 +9,9 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class ProtectoTileEntity extends CustomizableTileEntity {
 
@@ -23,9 +23,9 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	@Override
 	public boolean attackEntity(Entity entity){
 		if (entity instanceof LivingEntity && !(entity instanceof SentryEntity) && !EntityUtils.isInvisible(((LivingEntity)entity))) {
-			if (entity instanceof PlayerEntity)
+			if (entity instanceof Player)
 			{
-				PlayerEntity player = (PlayerEntity)entity;
+				Player player = (Player)entity;
 
 				if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
 					return false;

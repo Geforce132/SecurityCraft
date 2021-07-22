@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateNBTTagOnClient{
@@ -22,12 +22,12 @@ public class UpdateNBTTagOnClient{
 		}
 	}
 
-	public static void encode(UpdateNBTTagOnClient message, PacketBuffer buf)
+	public static void encode(UpdateNBTTagOnClient message, FriendlyByteBuf buf)
 	{
 		buf.writeItem(message.stack);
 	}
 
-	public static UpdateNBTTagOnClient decode(PacketBuffer buf)
+	public static UpdateNBTTagOnClient decode(FriendlyByteBuf buf)
 	{
 		UpdateNBTTagOnClient message = new UpdateNBTTagOnClient();
 

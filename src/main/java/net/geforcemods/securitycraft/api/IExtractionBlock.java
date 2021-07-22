@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.api;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Defines a block that can extract from a Password-protected Chest, Password-protected Furnace, and Block Pocket Manager.
@@ -23,7 +23,7 @@ public interface IExtractionBlock
 	 * @param state The state of the block that is trying to extract items
 	 * @return true if extraction is possible, false otherwise
 	 */
-	public boolean canExtract(IOwnable te, World world, BlockPos pos, BlockState state);
+	public boolean canExtract(IOwnable te, Level world, BlockPos pos, BlockState state);
 
 	/**
 	 * @return The block that is trying to extract from a password-protected chest/furnace

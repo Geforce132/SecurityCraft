@@ -1,16 +1,16 @@
 package net.geforcemods.securitycraft.misc;
 
-import net.minecraft.item.Item;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class SCManualPage {
 
 	private Item item;
-	private TranslationTextComponent helpInfo;
+	private TranslatableComponent helpInfo;
 	private String designedBy = "";
 	private boolean hasRecipeDescription;
 
-	public SCManualPage(Item item, TranslationTextComponent helpInfo){
+	public SCManualPage(Item item, TranslatableComponent helpInfo){
 		this.item = item;
 		this.helpInfo = helpInfo;
 	}
@@ -19,7 +19,7 @@ public class SCManualPage {
 		return item;
 	}
 
-	public TranslationTextComponent getHelpInfo() {
+	public TranslatableComponent getHelpInfo() {
 		return helpInfo;
 	}
 

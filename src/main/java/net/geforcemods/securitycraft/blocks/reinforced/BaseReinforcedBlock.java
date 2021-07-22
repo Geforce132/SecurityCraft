@@ -5,19 +5,19 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.BreakableBlock;
-import net.minecraft.block.BushBlock;
-import net.minecraft.block.FungusBlock;
-import net.minecraft.block.NetherRootsBlock;
-import net.minecraft.block.NetherSproutsBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HalfTransparentBlock;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.FungusBlock;
+import net.minecraft.world.level.block.RootsBlock;
+import net.minecraft.world.level.block.NetherSproutsBlock;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
@@ -38,7 +38,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable)
+	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable)
 	{
 		BlockState plant = plantable.getPlant(world, pos.relative(facing));
 		PlantType type = plantable.getPlantType(world, pos.relative(facing));
@@ -50,7 +50,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		{
 			boolean bushCondition = state.is(SCContent.REINFORCED_GRASS_BLOCK.get()) || state.is(SCContent.REINFORCED_DIRT.get()) || state.is(SCContent.REINFORCED_COARSE_DIRT.get()) || state.is(SCContent.REINFORCED_PODZOL.get());
 
-			if (plantable instanceof NetherSproutsBlock || plantable instanceof NetherRootsBlock || plantable instanceof FungusBlock)
+			if (plantable instanceof NetherSproutsBlock || plantable instanceof RootsBlock || plantable instanceof FungusBlock)
 				return state.is(SCTags.Blocks.REINFORCED_NYLIUM) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
 		}
 
@@ -73,14 +73,14 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public boolean isConduitFrame(BlockState state, IWorldReader world, BlockPos pos, BlockPos conduit)
+	public boolean isConduitFrame(BlockState state, LevelReader world, BlockPos pos, BlockPos conduit)
 	{
 		return this == SCContent.REINFORCED_PRISMARINE.get() || this == SCContent.REINFORCED_PRISMARINE_BRICKS.get() || this == SCContent.REINFORCED_SEA_LANTERN.get() || this == SCContent.REINFORCED_DARK_PRISMARINE.get();
 	}
 
 	@Override
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
-		if (this.getVanillaBlock() instanceof BreakableBlock)
+		if (this.getVanillaBlock() instanceof HalfTransparentBlock)
 			return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 		return false;
 	}

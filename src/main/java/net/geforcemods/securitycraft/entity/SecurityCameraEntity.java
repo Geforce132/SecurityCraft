@@ -12,21 +12,21 @@ import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetCameraRotation;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class SecurityCameraEntity extends Entity{
@@ -46,12 +46,12 @@ public class SecurityCameraEntity extends Entity{
 	private float zoomAmount = 1F;
 	private boolean zooming = false;
 
-	public SecurityCameraEntity(EntityType<SecurityCameraEntity> type, World world){
+	public SecurityCameraEntity(EntityType<SecurityCameraEntity> type, Level world){
 		super(SCContent.eTypeSecurityCamera, world);
 		noPhysics = true;
 	}
 
-	public SecurityCameraEntity(World world, double x, double y, double z, int id, PlayerEntity player){
+	public SecurityCameraEntity(Level world, double x, double y, double z, int id, Player player){
 		this(SCContent.eTypeSecurityCamera, world);
 		cameraUseX = player.getX();
 		cameraUseY = player.getY();
@@ -61,13 +61,13 @@ public class SecurityCameraEntity extends Entity{
 		this.id = id;
 		setPos(x + 0.5D, y, z + 0.5D);
 
-		TileEntity te = world.getBlockEntity(blockPosition());
+		BlockEntity te = world.getBlockEntity(blockPosition());
 
 		if(te instanceof SecurityCameraTileEntity)
 			setInitialPitchYaw((SecurityCameraTileEntity)te);
 	}
 
-	public SecurityCameraEntity(World world, double x, double y, double z, int id, SecurityCameraEntity camera){
+	public SecurityCameraEntity(Level world, double x, double y, double z, int id, SecurityCameraEntity camera){
 		this(SCContent.eTypeSecurityCamera, world);
 		cameraUseX = camera.cameraUseX;
 		cameraUseY = camera.cameraUseY;
@@ -77,7 +77,7 @@ public class SecurityCameraEntity extends Entity{
 		this.id = id;
 		setPos(x + 0.5D, y, z + 0.5D);
 
-		TileEntity te = world.getBlockEntity(blockPosition());
+		BlockEntity te = world.getBlockEntity(blockPosition());
 
 		if(te instanceof SecurityCameraTileEntity)
 			setInitialPitchYaw((SecurityCameraTileEntity)te);
@@ -127,7 +127,7 @@ public class SecurityCameraEntity extends Entity{
 	@Override
 	public void tick(){
 		if(level.isClientSide && isVehicle()){
-			PlayerEntity lowestEntity = (PlayerEntity)getPassengers().get(0);
+			Player lowestEntity = (Player)getPassengers().get(0);
 
 			if(lowestEntity != Minecraft.getInstance().player)
 				return;
@@ -296,7 +296,7 @@ public class SecurityCameraEntity extends Entity{
 		zoomAmount = Math.max(zoomAmount - 0.1F, 0.1F);
 
 		if(!zooming)
-			Minecraft.getInstance().level.playLocalSound(blockPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+			Minecraft.getInstance().level.playLocalSound(blockPosition(), SCSounds.CAMERAZOOMIN.event, SoundSource.BLOCKS, 1.0F, 1.0F, true);
 	}
 
 	public void zoomOut()
@@ -304,7 +304,7 @@ public class SecurityCameraEntity extends Entity{
 		zoomAmount = Math.min(zoomAmount + 0.1F, 1.5F);
 
 		if(!zooming)
-			Minecraft.getInstance().level.playLocalSound(blockPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+			Minecraft.getInstance().level.playLocalSound(blockPosition(), SCSounds.CAMERAZOOMIN.event, SoundSource.BLOCKS, 1.0F, 1.0F, true);
 	}
 
 	public void setRedstonePower() {
@@ -333,25 +333,25 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	@Override
-	public Vector3d getDismountLocationForPassenger(LivingEntity livingEntity)
+	public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity)
 	{
 		livingEntity.yRot = cameraUseYaw % 360.0F;
-		livingEntity.xRot = MathHelper.clamp(cameraUsePitch, -90.0F, 90.0F) % 360.0F;
+		livingEntity.xRot = Mth.clamp(cameraUsePitch, -90.0F, 90.0F) % 360.0F;
 		livingEntity.yRotO = livingEntity.yRot;
 		livingEntity.xRotO = livingEntity.xRot;
 		return getPreviousPlayerPos();
 	}
 
-	public Vector3d getPreviousPlayerPos()
+	public Vec3 getPreviousPlayerPos()
 	{
-		return new Vector3d(cameraUseX, cameraUseY, cameraUseZ);
+		return new Vec3(cameraUseX, cameraUseY, cameraUseZ);
 	}
 
 	@Override
 	protected void defineSynchedData(){}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT tag){
+	public void addAdditionalSaveData(CompoundTag tag){
 		tag.putInt("CameraID", id);
 		tag.putDouble("cameraUseX", cameraUseX);
 		tag.putDouble("cameraUseY", cameraUseY);
@@ -361,7 +361,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundNBT tag){
+	public void readAdditionalSaveData(CompoundTag tag){
 		id = tag.getInt("CameraID");
 		cameraUseX = tag.getDouble("cameraUseX");
 		cameraUseY = tag.getDouble("cameraUseY");
@@ -371,7 +371,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	@Override
-	public IPacket<?> getAddEntityPacket()
+	public Packet<?> getAddEntityPacket()
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}

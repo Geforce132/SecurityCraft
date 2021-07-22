@@ -19,20 +19,22 @@ import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class UniversalBlockRemoverItem extends Item
 {
@@ -42,23 +44,23 @@ public class UniversalBlockRemoverItem extends Item
 	}
 
 	@Override
-	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
+	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx)
 	{
-		World world = ctx.getLevel();
+		Level world = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		TileEntity tileEntity = world.getBlockEntity(pos);
-		PlayerEntity player = ctx.getPlayer();
+		BlockEntity tileEntity = world.getBlockEntity(pos);
+		Player player = ctx.getPlayer();
 
 		if(tileEntity != null && isOwnableBlock(block, tileEntity))
 		{
 			if(!((IOwnable) tileEntity).getOwner().isOwner(player))
 			{
 				if(!(block instanceof IBlockMine) && (!(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)))
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), ChatFormatting.RED);
 
-				return ActionResultType.FAIL;
+				return InteractionResult.FAIL;
 			}
 
 			if(tileEntity instanceof IModuleInventory)
@@ -96,8 +98,8 @@ public class UniversalBlockRemoverItem extends Item
 				BlockPos middlePos = originalPos.above(4);
 
 				if (!world.isClientSide) {
-					new CageTrapBlock.BlockModifier(world, new BlockPos.Mutable().set(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
-						TileEntity te = w.getBlockEntity(p);
+					new CageTrapBlock.BlockModifier(world, new BlockPos.MutableBlockPos().set(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
+						BlockEntity te = w.getBlockEntity(p);
 
 						if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))
 						{
@@ -132,13 +134,13 @@ public class UniversalBlockRemoverItem extends Item
 				}
 			}
 
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
-	private static boolean isOwnableBlock(Block block, TileEntity te)
+	private static boolean isOwnableBlock(Block block, BlockEntity te)
 	{
 		return (te instanceof OwnableTileEntity || te instanceof IOwnable || block instanceof OwnableBlock);
 	}

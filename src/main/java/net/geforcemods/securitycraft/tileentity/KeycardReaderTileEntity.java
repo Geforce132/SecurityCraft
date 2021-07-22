@@ -6,17 +6,17 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class KeycardReaderTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
+public class KeycardReaderTileEntity extends DisguisableTileEntity implements MenuProvider {
 
 	private boolean[] acceptedLevels = {true, false, false, false, false};
 	private int signature = 0;
@@ -29,10 +29,10 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IN
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag){
+	public CompoundTag save(CompoundTag tag){
 		super.save(tag);
 
-		CompoundNBT acceptedLevelsTag = new CompoundNBT();
+		CompoundTag acceptedLevelsTag = new CompoundTag();
 
 		for(int i = 1; i <= 5; i++)
 		{
@@ -45,7 +45,7 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IN
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag){
+	public void load(BlockState state, CompoundTag tag){
 		super.load(state, tag);
 
 		//carry over old data
@@ -66,7 +66,7 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IN
 		//don't try to load this data if it doesn't exist, otherwise everything will be "false"
 		if(tag.contains("acceptedLevels", NBT.TAG_COMPOUND))
 		{
-			CompoundNBT acceptedLevelsTag = tag.getCompound("acceptedLevels");
+			CompoundTag acceptedLevelsTag = tag.getCompound("acceptedLevels");
 
 			for(int i = 1; i <= 5; i++)
 			{
@@ -118,14 +118,14 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IN
 	}
 
 	@Override
-	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
 		return new KeycardReaderContainer(windowId, inv, level, worldPosition);
 	}
 
 	@Override
-	public ITextComponent getDisplayName()
+	public Component getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.KEYCARD_READER.get().getDescriptionId());
+		return new TranslatableComponent(SCContent.KEYCARD_READER.get().getDescriptionId());
 	}
 }

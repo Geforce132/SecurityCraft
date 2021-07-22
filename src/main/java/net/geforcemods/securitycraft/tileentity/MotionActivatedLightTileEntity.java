@@ -8,9 +8,9 @@ import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 
@@ -23,7 +23,7 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public boolean attackEntity(Entity entity) {
-		if(entity instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera((PlayerEntity)entity))
+		if(entity instanceof Player && PlayerUtils.isPlayerMountedOnCamera((Player)entity))
 			MotionActivatedLightBlock.toggleLight(level, worldPosition, getBlockState(), getOwner(), false);
 		else if(entity instanceof LivingEntity && getBlockState().getBlock() == SCContent.MOTION_ACTIVATED_LIGHT.get())
 			MotionActivatedLightBlock.toggleLight(level, worldPosition, getBlockState(), getOwner(), !EntityUtils.isInvisible((LivingEntity)entity)); //also automatically switches on/off based on if the entity turns (in-)visible

@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.screen.components;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class IngredientDisplay
 {

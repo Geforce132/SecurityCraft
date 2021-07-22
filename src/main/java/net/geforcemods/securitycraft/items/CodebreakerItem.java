@@ -8,21 +8,21 @@ import net.geforcemods.securitycraft.containers.BriefcaseContainer;
 import net.geforcemods.securitycraft.inventory.BriefcaseInventory;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -34,13 +34,13 @@ public class CodebreakerItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		ItemStack codebreaker = player.getItemInHand(hand);
 
-		if (hand == Hand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
+		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
 			if(!ConfigHandler.SERVER.allowCodebreakerItem.get()) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.BRIEFCASE.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-				return ActionResult.success(codebreaker);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.BRIEFCASE.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
+				return InteractionResultHolder.success(codebreaker);
 			}
 			else {
 				codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
@@ -48,28 +48,28 @@ public class CodebreakerItem extends Item {
 				if (!world.isClientSide && new Random().nextInt(3) == 1) {
 					ItemStack briefcase = player.getOffhandItem();
 
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+					NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
 							return new BriefcaseContainer(windowId, inv, new BriefcaseInventory(briefcase));
 						}
 
 						@Override
-						public ITextComponent getDisplayName()
+						public Component getDisplayName()
 						{
 							return briefcase.getHoverName();
 						}
 					}, player.blockPosition());
 				}
 				else
-					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
 			}
 
-			return ActionResult.success(codebreaker);
+			return InteractionResultHolder.success(codebreaker);
 		}
 
-		return ActionResult.pass(codebreaker);
+		return InteractionResultHolder.pass(codebreaker);
 	}
 
 	@Override

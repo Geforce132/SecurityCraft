@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -18,26 +18,26 @@ import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.AbstractWidget;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class SentryRemoteAccessToolScreen extends Screen {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
 	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
-	private final TranslationTextComponent modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll");
+	private final TranslatableComponent modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll");
 	private ItemStack srat;
 	private IdButton[][] guiButtons = new IdButton[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)
-	private ITextComponent[] names = new ITextComponent[12];
+	private Component[] names = new Component[12];
 	private IdButton[] guiButtonsGlobal = new IdButton[3];
 	private static final int MODE = 0, TARGETS = 1, UNBIND = 2;
 	private int xSize = 440, ySize = 215;
@@ -46,7 +46,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 
 	public SentryRemoteAccessToolScreen(ItemStack item, int viewDistance) {
-		super(new TranslationTextComponent(item.getDescriptionId()));
+		super(new TranslatableComponent(item.getDescriptionId()));
 
 		srat = item;
 		this.viewDistance = viewDistance;
@@ -102,7 +102,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				guiButtons[i][UNBIND].active = true;
 
 				if (Minecraft.getInstance().player.level.isLoaded(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
-					List<SentryEntity> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(sentryPos));
+					List<SentryEntity> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(SentryEntity.class, new AABB(sentryPos));
 
 					if (!sentries.isEmpty()) {
 						SentryEntity sentry = sentries.get(0);
@@ -110,7 +110,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 						if(sentry.hasCustomName())
 						{
-							TranslationTextComponent line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
+							TranslatableComponent line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 							int nameWidth = font.width(sentry.getCustomName());
 							int nameX = startX + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
 							int nameY = startY + (i % 6) * 30 + 7;
@@ -164,7 +164,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
@@ -178,12 +178,12 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 		for (int i = 0; i < 12; i++) {
 			int[] coords = getSentryCoordinates(i);
-			ITextComponent line;
+			Component line;
 
 			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 				line = Utils.localize("gui.securitycraft:srat.notBound");
 			else if(names[i] != null)
-				line = new StringTextComponent(names[i].getString());
+				line = new TextComponent(names[i].getString());
 			else
 				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 
@@ -204,7 +204,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	 */
 	protected void performSingleAction(int sentry, int mode, int targets){
 		int[] coords = getSentryCoordinates(sentry);
-		List<SentryEntity> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(new BlockPos(coords[0], coords[1], coords[2])));
+		List<SentryEntity> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(SentryEntity.class, new AABB(new BlockPos(coords[0], coords[1], coords[2])));
 
 		if(!sentries.isEmpty()) {
 			int resultingMode = Math.max(0, Math.min(targets + mode * 3, 6)); //bind between 0 and 6
@@ -268,7 +268,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 	protected void actionPerformedGlobal(IdButton button) {
 		for (int i = 0; i < buttons.size() / 3; i++) {
-			Widget widget = buttons.get(i * 3);
+			AbstractWidget widget = buttons.get(i * 3);
 
 			if(widget instanceof IdButton && getSentryCoordinates(i)[1] != 0)
 			{
@@ -314,7 +314,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 	// Based on ChunkManager$EntityTrackerEntry#updateTrackingState
 	private boolean isSentryVisibleToPlayer(BlockPos sentryPos){
-		PlayerEntity player = Minecraft.getInstance().player;
+		Player player = Minecraft.getInstance().player;
 		double d0 = player.getX() - sentryPos.getX();
 		double d1 = player.getZ() - sentryPos.getZ();
 		int i = Math.min(SENTRY_TRACKING_RANGE, viewDistance) - 1;
@@ -328,7 +328,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 	@Override
 	public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
-		if (minecraft.options.keyInventory.isActiveAndMatches(InputMappings.getKey(p_keyPressed_1_, p_keyPressed_2_))) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(p_keyPressed_1_, p_keyPressed_2_))) {
 			this.removed();
 			return true;
 		}

@@ -10,26 +10,26 @@ import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 
 public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 
@@ -44,13 +44,13 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader world, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getCollisionShape(BlockState blockState, BlockGetter world, BlockPos pos, CollisionContext ctx)
 	{
-		return VoxelShapes.empty();
+		return Shapes.empty();
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
+	public void onEntityIntersected(Level world, BlockPos pos, Entity entity)
 	{
 		if(!world.isClientSide && entity instanceof LivingEntity && !EntityUtils.isInvisible((LivingEntity)entity))
 		{
@@ -64,7 +64,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 
 					if(offsetBlock == SCContent.LASER_BLOCK.get() && !offsetState.getValue(LaserBlock.POWERED))
 					{
-						TileEntity te = world.getBlockEntity(offsetPos);
+						BlockEntity te = world.getBlockEntity(offsetPos);
 
 						if(te instanceof IModuleInventory && ModuleUtils.isAllowed((IModuleInventory)te, entity))
 							return;
@@ -75,7 +75,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 
 						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(ModuleType.HARMING))
 						{
-							if(!(entity instanceof PlayerEntity && ((IOwnable)te).getOwner().isOwner((PlayerEntity)entity)))
+							if(!(entity instanceof Player && ((IOwnable)te).getOwner().isOwner((Player)entity)))
 								((LivingEntity) entity).hurt(CustomDamageSources.LASER, 10F);
 						}
 					}
@@ -88,7 +88,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 	 * Called right before the block is destroyed by a player.  Args: world, pos, state
 	 */
 	@Override
-	public void destroy(IWorld world, BlockPos pos, BlockState state)
+	public void destroy(LevelAccessor world, BlockPos pos, BlockState state)
 	{
 		if(!world.isClientSide())
 		{
@@ -113,7 +113,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
 		if(source.getBlockState(pos).getBlock() instanceof LaserFieldBlock)
 		{
@@ -127,16 +127,16 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 				return SHAPE_X;
 		}
 
-		return VoxelShapes.empty();
+		return Shapes.empty();
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
+	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
 		return defaultBlockState().setValue(BOUNDTYPE, 1);
 	}
@@ -148,13 +148,13 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
 	{
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new SecurityCraftTileEntity().intersectsEntities();
 	}
 

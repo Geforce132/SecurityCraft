@@ -8,10 +8,10 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.network.client.UpdateTEOwnable;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class RequestTEOwnableUpdate
@@ -38,12 +38,12 @@ public class RequestTEOwnableUpdate
 		pos = p;
 	}
 
-	public static void encode(RequestTEOwnableUpdate message, PacketBuffer buf)
+	public static void encode(RequestTEOwnableUpdate message, FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(message.pos);
 	}
 
-	public static RequestTEOwnableUpdate decode(PacketBuffer buf)
+	public static RequestTEOwnableUpdate decode(FriendlyByteBuf buf)
 	{
 		RequestTEOwnableUpdate message = new RequestTEOwnableUpdate();
 
@@ -54,9 +54,9 @@ public class RequestTEOwnableUpdate
 	public static void onMessage(RequestTEOwnableUpdate message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			TileEntity te = ctx.get().getSender().level.getBlockEntity(message.pos);
+			BlockEntity te = ctx.get().getSender().level.getBlockEntity(message.pos);
 			boolean syncTag = te instanceof CustomizableTileEntity || te instanceof IPasswordProtected;
-			CompoundNBT tag = syncTag ? te.save(new CompoundNBT()) : null;
+			CompoundTag tag = syncTag ? te.save(new CompoundTag()) : null;
 
 			if(te instanceof IOwnable)
 				SecurityCraft.channel.reply(new UpdateTEOwnable(te.getBlockPos(), ((IOwnable)te).getOwner().getName(), ((IOwnable)te).getOwner().getUUID(), syncTag, tag), ctx.get());

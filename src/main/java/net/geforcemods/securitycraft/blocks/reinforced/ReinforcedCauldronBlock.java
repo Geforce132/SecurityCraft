@@ -2,25 +2,27 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.ReinforcedCauldronTileEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CauldronBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CauldronBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforcedBlock {
 
@@ -29,31 +31,31 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx) {
 		Entity entity = ctx.getEntity();
 
-		if (entity instanceof PlayerEntity) {
-			PlayerEntity player = ((PlayerEntity)entity);
-			TileEntity te = world.getBlockEntity(pos);
+		if (entity instanceof Player) {
+			Player player = ((Player)entity);
+			BlockEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof ReinforcedCauldronTileEntity && ((ReinforcedCauldronTileEntity)te).isAllowedToInteract(player))
 				return SHAPE;
 			else
-				return VoxelShapes.block();
+				return Shapes.block();
 		}
 
 		return SHAPE;
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		TileEntity te = world.getBlockEntity(pos);
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		BlockEntity te = world.getBlockEntity(pos);
 
 		if (te instanceof ReinforcedCauldronTileEntity && ((ReinforcedCauldronTileEntity)te).isAllowedToInteract(player)) {
 			return super.use(state, world, pos, player, hand, hit);
 		}
 
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
 	@Override
@@ -67,9 +69,9 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if(placer instanceof Player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)placer));
 	}
 
 	@Override
@@ -78,7 +80,7 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new ReinforcedCauldronTileEntity();
 	}
 }

@@ -6,12 +6,12 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class MountCamera
@@ -27,13 +27,13 @@ public class MountCamera
 		this.id = id;
 	}
 
-	public static void encode(MountCamera message, PacketBuffer buf)
+	public static void encode(MountCamera message, FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(message.pos);
 		buf.writeInt(message.id);
 	}
 
-	public static MountCamera decode(PacketBuffer buf)
+	public static MountCamera decode(FriendlyByteBuf buf)
 	{
 		MountCamera message = new MountCamera();
 
@@ -47,13 +47,13 @@ public class MountCamera
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			int id = message.id;
-			ServerPlayerEntity player = ctx.get().getSender();
-			World world = player.level;
+			ServerPlayer player = ctx.get().getSender();
+			Level world = player.level;
 			BlockState state = world.getBlockState(pos);
 
 			if(state.getBlock() == SCContent.SECURITY_CAMERA.get())
 			{
-				TileEntity te = world.getBlockEntity(pos);
+				BlockEntity te = world.getBlockEntity(pos);
 
 				if(te instanceof SecurityCameraTileEntity && (((SecurityCameraTileEntity)te).getOwner().isOwner(player) || ((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART)))
 					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), id, player);

@@ -1,18 +1,18 @@
 package net.geforcemods.securitycraft.containers;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 
-public class GenericContainer extends Container {
+public class GenericContainer extends AbstractContainerMenu {
 
-	public GenericContainer(ContainerType<GenericContainer> type, int windowId)
+	public GenericContainer(MenuType<GenericContainer> type, int windowId)
 	{
 		super(type, windowId);
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return true;
 	}
 }

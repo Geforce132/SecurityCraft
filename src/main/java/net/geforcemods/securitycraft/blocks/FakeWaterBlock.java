@@ -3,18 +3,18 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.BoatEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FlowingFluid;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
-public class FakeWaterBlock extends FlowingFluidBlock
+public class FakeWaterBlock extends LiquidBlock
 {
 	public FakeWaterBlock(Block.Properties properties, Supplier<? extends FlowingFluid> fluid)
 	{
@@ -22,11 +22,11 @@ public class FakeWaterBlock extends FlowingFluidBlock
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity)
+	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity)
 	{
-		if(!world.isClientSide && !(entity instanceof ItemEntity) && !(entity instanceof BoatEntity))
+		if(!world.isClientSide && !(entity instanceof ItemEntity) && !(entity instanceof Boat))
 		{
-			if(!(entity instanceof PlayerEntity) || (!((PlayerEntity) entity).isCreative() && !(((PlayerEntity)entity).getVehicle() instanceof BoatEntity)))
+			if(!(entity instanceof Player) || (!((Player) entity).isCreative() && !(((Player)entity).getVehicle() instanceof Boat)))
 				entity.hurt(CustomDamageSources.FAKE_WATER, 1.5F);
 		}
 	}

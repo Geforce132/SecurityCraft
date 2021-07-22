@@ -5,28 +5,28 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.AlarmTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Direction.Axis;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 public class AlarmBlock extends OwnableBlock {
 
@@ -49,26 +49,26 @@ public class AlarmBlock extends OwnableBlock {
 	 * Check whether this Block can be placed on the given side
 	 */
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos){
+	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos){
 		Direction facing = state.getValue(FACING);
 
 		return facing == Direction.UP && BlockUtils.isSideSolid(world, pos.below(), Direction.UP) ? true : BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
 	{
 		if (!canSurvive(state, world, pos))
 			world.destroyBlock(pos, true);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
+	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
 		return BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing) : null;
 	}
@@ -77,7 +77,7 @@ public class AlarmBlock extends OwnableBlock {
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
 	@Override
-	public void onPlace(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag) {
+	public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean flag) {
 		if(world.isClientSide)
 			return;
 		else
@@ -88,7 +88,7 @@ public class AlarmBlock extends OwnableBlock {
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random)
 	{
 		if(!world.isClientSide){
 			playSoundAndUpdate(world, pos);
@@ -98,11 +98,11 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onNeighborChange(BlockState state, IWorldReader w, BlockPos pos, BlockPos neighbor){
-		if(w.isClientSide() || !(w instanceof World))
+	public void onNeighborChange(BlockState state, LevelReader w, BlockPos pos, BlockPos neighbor){
+		if(w.isClientSide() || !(w instanceof Level))
 			return;
 
-		World world = (World)w;
+		Level world = (Level)w;
 
 		playSoundAndUpdate((world), pos);
 
@@ -113,7 +113,7 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
 		Direction facing = state.getValue(FACING);
 
@@ -132,16 +132,16 @@ public class AlarmBlock extends OwnableBlock {
 				return SHAPE_DOWN;
 		}
 
-		return VoxelShapes.block();
+		return Shapes.block();
 	}
 
-	private void playSoundAndUpdate(World world, BlockPos pos){
+	private void playSoundAndUpdate(Level world, BlockPos pos){
 		BlockState state = world.getBlockState(pos);
 
 		if(state.getBlock() != SCContent.ALARM.get())
 			return;
 
-		TileEntity tile = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
 		if(tile instanceof AlarmTileEntity)
 		{
@@ -167,7 +167,7 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader world, BlockPos pos, BlockState state)
+	public ItemStack getCloneItemStack(BlockGetter world, BlockPos pos, BlockState state)
 	{
 		return new ItemStack(SCContent.ALARM.get().asItem());
 	}
@@ -179,7 +179,7 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader reader){
+	public BlockEntity createTileEntity(BlockState state, BlockGetter reader){
 		return new AlarmTileEntity();
 	}
 

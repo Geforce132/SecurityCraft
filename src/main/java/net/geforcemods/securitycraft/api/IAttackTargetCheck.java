@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 /**
  * Defines a callback that the Sentry checks before trying to attack an entity.

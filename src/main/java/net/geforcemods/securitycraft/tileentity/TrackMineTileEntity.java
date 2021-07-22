@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
 
 public class TrackMineTileEntity extends OwnableTileEntity
 {
@@ -38,14 +38,14 @@ public class TrackMineTileEntity extends OwnableTileEntity
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		tag.putBoolean("TrackMineEnabled", active);
 		return super.save(tag);
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 		active = tag.getBoolean("TrackMineEnabled");

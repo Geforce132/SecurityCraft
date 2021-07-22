@@ -8,22 +8,22 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.RedstoneParticleData;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -40,14 +40,14 @@ public class LaserBlock extends DisguisableBlock {
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack){
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack){
 		super.setPlacedBy(world, pos, state, entity, stack);
 
 		if(!world.isClientSide)
 			setLaser(world, pos);
 	}
 
-	public void setLaser(World world, BlockPos pos)
+	public void setLaser(Level world, BlockPos pos)
 	{
 		LaserBlockTileEntity thisTe = (LaserBlockTileEntity)world.getBlockEntity(pos);
 
@@ -86,7 +86,7 @@ public class LaserBlock extends DisguisableBlock {
 								{
 									world.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
 
-									TileEntity te = world.getBlockEntity(offsetPos);
+									BlockEntity te = world.getBlockEntity(offsetPos);
 
 									if(te instanceof IOwnable)
 										((IOwnable)te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
@@ -105,12 +105,12 @@ public class LaserBlock extends DisguisableBlock {
 	 * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
 	 */
 	@Override
-	public void destroy(IWorld world, BlockPos pos, BlockState state) {
+	public void destroy(LevelAccessor world, BlockPos pos, BlockState state) {
 		if(!world.isClientSide())
 			destroyAdjacentLasers(world, pos);
 	}
 
-	public static void destroyAdjacentLasers(IWorld world, BlockPos pos)
+	public static void destroyAdjacentLasers(LevelAccessor world, BlockPos pos)
 	{
 		for(Direction facing : Direction.values())
 		{
@@ -130,7 +130,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
 	{
 		setLaser(world, pos);
 	}
@@ -141,7 +141,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean shouldCheckWeakPower(BlockState state, IWorldReader world, BlockPos pos, Direction side)
+	public boolean shouldCheckWeakPower(BlockState state, LevelReader world, BlockPos pos, Direction side)
 	{
 		return false;
 	}
@@ -152,7 +152,7 @@ public class LaserBlock extends DisguisableBlock {
 	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
+	public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side){
 		if(blockState.getValue(POWERED))
 			return 15;
 		else
@@ -164,7 +164,7 @@ public class LaserBlock extends DisguisableBlock {
 	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int getDirectSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
+	public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side){
 		if(blockState.getValue(POWERED))
 			return 15;
 		else
@@ -175,7 +175,7 @@ public class LaserBlock extends DisguisableBlock {
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random)
 	{
 		if (!world.isClientSide && state.getValue(POWERED))
 			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
@@ -183,7 +183,7 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World world, BlockPos pos, Random rand){
+	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand){
 		if((state.getValue(POWERED))){
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
@@ -194,11 +194,11 @@ public class LaserBlock extends DisguisableBlock {
 			float f2 = Math.max(0.0F, 0.7F - 0.5F);
 			float f3 = Math.max(0.0F, 0.6F - 0.7F);
 
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new DustParticleOptions(f1, f2, f3, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new DustParticleOptions(f1, f2, f3, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new DustParticleOptions(f1, f2, f3, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new DustParticleOptions(f1, f2, f3, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new DustParticleOptions(f1, f2, f3, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 
 	}
@@ -210,7 +210,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new LaserBlockTileEntity().linkable();
 	}
 }

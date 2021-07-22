@@ -3,12 +3,14 @@ package net.geforcemods.securitycraft.datagen;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.minecraft.block.Block;
-import net.minecraft.data.BlockTagsProvider;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
+
+import net.minecraft.data.tags.TagsProvider.TagAppender;
 
 public class BlockTagGenerator extends BlockTagsProvider
 {
@@ -263,8 +265,8 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_POLISHED_GRANITE.get());
 
 		//minecraft tags
-		Builder<Block> dragonImmune = tag(BlockTags.DRAGON_IMMUNE);
-		Builder<Block> witherImmune = tag(BlockTags.WITHER_IMMUNE);
+		TagAppender<Block> dragonImmune = tag(BlockTags.DRAGON_IMMUNE);
+		TagAppender<Block> witherImmune = tag(BlockTags.WITHER_IMMUNE);
 
 		tag(BlockTags.BAMBOO_PLANTABLE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).add(SCContent.REINFORCED_GRAVEL.get(),
 				SCContent.REINFORCED_DIRT.get(),

@@ -3,21 +3,21 @@ package net.geforcemods.securitycraft.misc;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.KeycardItem;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.SpecialRecipe;
-import net.minecraft.item.crafting.SpecialRecipeSerializer;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ObjectHolder;
 
-public class LimitedUseKeycardRecipe extends SpecialRecipe
+public class LimitedUseKeycardRecipe extends CustomRecipe
 {
 	@ObjectHolder(SecurityCraft.MODID + ":limited_use_keycard_recipe")
-	public static SpecialRecipeSerializer<LimitedUseKeycardRecipe> serializer = null;
+	public static SimpleRecipeSerializer<LimitedUseKeycardRecipe> serializer = null;
 
 	public LimitedUseKeycardRecipe(ResourceLocation id)
 	{
@@ -25,7 +25,7 @@ public class LimitedUseKeycardRecipe extends SpecialRecipe
 	}
 
 	@Override
-	public boolean matches(CraftingInventory inv, World world)
+	public boolean matches(CraftingContainer inv, Level world)
 	{
 		boolean hasNormalKeycard = false;
 		boolean hasLimitedUseKeycard = false;
@@ -62,7 +62,7 @@ public class LimitedUseKeycardRecipe extends SpecialRecipe
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInventory inv)
+	public ItemStack assemble(CraftingContainer inv)
 	{
 		ItemStack keycard = ItemStack.EMPTY;
 
@@ -81,7 +81,7 @@ public class LimitedUseKeycardRecipe extends SpecialRecipe
 		if(keycard.isEmpty())
 			return ItemStack.EMPTY;
 
-		CompoundNBT tag = keycard.getOrCreateTag();
+		CompoundTag tag = keycard.getOrCreateTag();
 
 		tag.putBoolean("limited", true);
 		tag.putInt("uses", 0);
@@ -96,7 +96,7 @@ public class LimitedUseKeycardRecipe extends SpecialRecipe
 	}
 
 	@Override
-	public IRecipeSerializer<?> getSerializer()
+	public RecipeSerializer<?> getSerializer()
 	{
 		return serializer;
 	}

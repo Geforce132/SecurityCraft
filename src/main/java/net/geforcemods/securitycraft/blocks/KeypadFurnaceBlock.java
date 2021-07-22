@@ -9,40 +9,40 @@ import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.FurnaceTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Direction.Axis;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class KeypadFurnaceBlock extends OwnableBlock {
@@ -50,14 +50,14 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
-	private static final VoxelShape NORTH_OPEN = VoxelShapes.joinUnoptimized(VoxelShapes.or(VoxelShapes.or(Block.box(0, 0, 3, 16, 16, 16), Block.box(1, 1, 2, 15, 2, 3)), VoxelShapes.joinUnoptimized(Block.box(4, 1, 0, 12, 2, 2), Block.box(5, 1, 1, 11, 2, 2), IBooleanFunction.ONLY_FIRST)), Block.box(1, 2, 3, 15, 15, 4), IBooleanFunction.ONLY_FIRST);
-	private static final VoxelShape NORTH_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.box(0, 0, 3, 16, 16, 16), Block.box(1, 1, 2, 15, 15, 3)), VoxelShapes.joinUnoptimized(Block.box(4, 14, 0, 12, 15, 2), Block.box(5, 14, 1, 11, 15, 2), IBooleanFunction.ONLY_FIRST));
-	private static final VoxelShape EAST_OPEN = VoxelShapes.joinUnoptimized(VoxelShapes.or(VoxelShapes.or(Block.box(0, 0, 0, 13, 16, 16), Block.box(13, 1, 1, 14, 2, 15)), VoxelShapes.joinUnoptimized(Block.box(14, 1, 4, 16, 2, 12), Block.box(14, 1, 5, 15, 2, 11), IBooleanFunction.ONLY_FIRST)), Block.box(12, 2, 1, 13, 15, 15), IBooleanFunction.ONLY_FIRST);
-	private static final VoxelShape EAST_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.box(0, 0, 0, 13, 16, 16), Block.box(13, 1, 1, 14, 15, 15)), VoxelShapes.joinUnoptimized(Block.box(14, 14, 4, 16, 15, 12), Block.box(14, 14, 5, 15, 15, 11), IBooleanFunction.ONLY_FIRST));
-	private static final VoxelShape SOUTH_OPEN = VoxelShapes.joinUnoptimized(VoxelShapes.or(VoxelShapes.or(Block.box(0, 0, 0, 16, 16, 13), Block.box(1, 1, 13, 15, 2, 14)), VoxelShapes.joinUnoptimized(Block.box(4, 1, 14, 12, 2, 16), Block.box(5, 1, 14, 11, 2, 15), IBooleanFunction.ONLY_FIRST)), Block.box(1, 2, 12, 15, 15, 13), IBooleanFunction.ONLY_FIRST);
-	private static final VoxelShape SOUTH_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.box(0, 0, 0, 16, 16, 13), Block.box(1, 1, 13, 15, 15, 14)), VoxelShapes.joinUnoptimized(Block.box(4, 14, 14, 12, 15, 16), Block.box(5, 14, 14, 11, 15, 15), IBooleanFunction.ONLY_FIRST));
-	private static final VoxelShape WEST_OPEN = VoxelShapes.joinUnoptimized(VoxelShapes.or(VoxelShapes.or(Block.box(3, 0, 0, 16, 16, 16), Block.box(2, 1, 1, 3, 2, 15)), VoxelShapes.joinUnoptimized(Block.box(0, 1, 4, 2, 2, 12), Block.box(1, 1, 5, 2, 2, 11), IBooleanFunction.ONLY_FIRST)), Block.box(3, 2, 1, 4, 15, 15), IBooleanFunction.ONLY_FIRST);
-	private static final VoxelShape WEST_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.box(3, 0, 0, 16, 16, 16), Block.box(2, 1, 1, 3, 15, 15)), VoxelShapes.joinUnoptimized(Block.box(0, 14, 4, 2, 15, 12), Block.box(1, 14, 5, 2, 15, 11), IBooleanFunction.ONLY_FIRST));
+	private static final VoxelShape NORTH_OPEN = Shapes.joinUnoptimized(Shapes.or(Shapes.or(Block.box(0, 0, 3, 16, 16, 16), Block.box(1, 1, 2, 15, 2, 3)), Shapes.joinUnoptimized(Block.box(4, 1, 0, 12, 2, 2), Block.box(5, 1, 1, 11, 2, 2), BooleanOp.ONLY_FIRST)), Block.box(1, 2, 3, 15, 15, 4), BooleanOp.ONLY_FIRST);
+	private static final VoxelShape NORTH_CLOSED = Shapes.or(Shapes.or(Block.box(0, 0, 3, 16, 16, 16), Block.box(1, 1, 2, 15, 15, 3)), Shapes.joinUnoptimized(Block.box(4, 14, 0, 12, 15, 2), Block.box(5, 14, 1, 11, 15, 2), BooleanOp.ONLY_FIRST));
+	private static final VoxelShape EAST_OPEN = Shapes.joinUnoptimized(Shapes.or(Shapes.or(Block.box(0, 0, 0, 13, 16, 16), Block.box(13, 1, 1, 14, 2, 15)), Shapes.joinUnoptimized(Block.box(14, 1, 4, 16, 2, 12), Block.box(14, 1, 5, 15, 2, 11), BooleanOp.ONLY_FIRST)), Block.box(12, 2, 1, 13, 15, 15), BooleanOp.ONLY_FIRST);
+	private static final VoxelShape EAST_CLOSED = Shapes.or(Shapes.or(Block.box(0, 0, 0, 13, 16, 16), Block.box(13, 1, 1, 14, 15, 15)), Shapes.joinUnoptimized(Block.box(14, 14, 4, 16, 15, 12), Block.box(14, 14, 5, 15, 15, 11), BooleanOp.ONLY_FIRST));
+	private static final VoxelShape SOUTH_OPEN = Shapes.joinUnoptimized(Shapes.or(Shapes.or(Block.box(0, 0, 0, 16, 16, 13), Block.box(1, 1, 13, 15, 2, 14)), Shapes.joinUnoptimized(Block.box(4, 1, 14, 12, 2, 16), Block.box(5, 1, 14, 11, 2, 15), BooleanOp.ONLY_FIRST)), Block.box(1, 2, 12, 15, 15, 13), BooleanOp.ONLY_FIRST);
+	private static final VoxelShape SOUTH_CLOSED = Shapes.or(Shapes.or(Block.box(0, 0, 0, 16, 16, 13), Block.box(1, 1, 13, 15, 15, 14)), Shapes.joinUnoptimized(Block.box(4, 14, 14, 12, 15, 16), Block.box(5, 14, 14, 11, 15, 15), BooleanOp.ONLY_FIRST));
+	private static final VoxelShape WEST_OPEN = Shapes.joinUnoptimized(Shapes.or(Shapes.or(Block.box(3, 0, 0, 16, 16, 16), Block.box(2, 1, 1, 3, 2, 15)), Shapes.joinUnoptimized(Block.box(0, 1, 4, 2, 2, 12), Block.box(1, 1, 5, 2, 2, 11), BooleanOp.ONLY_FIRST)), Block.box(3, 2, 1, 4, 15, 15), BooleanOp.ONLY_FIRST);
+	private static final VoxelShape WEST_CLOSED = Shapes.or(Shapes.or(Block.box(3, 0, 0, 16, 16, 16), Block.box(2, 1, 1, 3, 15, 15)), Shapes.joinUnoptimized(Block.box(0, 14, 4, 2, 15, 12), Block.box(1, 14, 5, 2, 15, 11), BooleanOp.ONLY_FIRST));
 
 	public KeypadFurnaceBlock(Block.Properties properties) {
 		super(properties);
@@ -65,7 +65,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
 	{
 		switch(state.getValue(FACING))
 		{
@@ -89,20 +89,20 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 					return WEST_OPEN;
 				else
 					return WEST_CLOSED;
-			default: return VoxelShapes.block();
+			default: return Shapes.block();
 		}
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		if(!(newState.getBlock() instanceof KeypadFurnaceBlock))
 		{
-			TileEntity tileentity = world.getBlockEntity(pos);
+			BlockEntity tileentity = world.getBlockEntity(pos);
 
-			if (tileentity instanceof IInventory)
+			if (tileentity instanceof Container)
 			{
-				InventoryHelper.dropContents(world, pos, (IInventory)tileentity);
+				Containers.dropContents(world, pos, (Container)tileentity);
 				world.updateNeighbourForOutputSignal(pos, this);
 			}
 
@@ -111,7 +111,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		if(!world.isClientSide)
 		{
@@ -120,14 +120,14 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 			if(ModuleUtils.isDenied(te, player))
 			{
 				if(te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 
-				return ActionResultType.FAIL;
+				return InteractionResult.FAIL;
 			}
 			else if(ModuleUtils.isAllowed(te, player))
 			{
 				if(te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
 				activate(world, pos, player);
 			}
@@ -135,39 +135,39 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 				te.openPasswordGUI(player);
 		}
 
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
-	public static void activate(World world, BlockPos pos, PlayerEntity player){
+	public static void activate(Level world, BlockPos pos, Player player){
 		BlockState state = world.getBlockState(pos);
 		if(!state.getValue(KeypadFurnaceBlock.OPEN))
 			world.setBlockAndUpdate(pos, state.setValue(KeypadFurnaceBlock.OPEN, true));
 
-		if(player instanceof ServerPlayerEntity)
+		if(player instanceof ServerPlayer)
 		{
-			TileEntity te = world.getBlockEntity(pos);
+			BlockEntity te = world.getBlockEntity(pos);
 
-			if(te instanceof INamedContainerProvider)
+			if(te instanceof MenuProvider)
 			{
-				world.levelEvent((PlayerEntity)null, 1006, pos, 0);
-				NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
+				world.levelEvent((Player)null, 1006, pos, 0);
+				NetworkHooks.openGui((ServerPlayer)player, (MenuProvider)te, pos);
 			}
 		}
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
+	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
 		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()).setValue(OPEN, false).setValue(LIT, false);
 	}
 
 	@Override
-	public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
+	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
 	{
 		if(state.getValue(OPEN) && state.getValue(LIT))
 		{
@@ -176,7 +176,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 			double z = pos.getZ() + 0.5D;
 
 			if(rand.nextDouble() < 0.1D)
-				world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+				world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 
 			Direction direction = state.getValue(FACING);
 			Axis axis = direction.getAxis();
@@ -197,7 +197,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new KeypadFurnaceTileEntity();
 	}
 
@@ -222,13 +222,13 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 		}
 
 		@Override
-		public boolean convert(PlayerEntity player, World world, BlockPos pos)
+		public boolean convert(Player player, Level world, BlockPos pos)
 		{
 			BlockState state = world.getBlockState(pos);
 			Direction facing = state.getValue(FACING);
 			boolean lit = state.getValue(LIT);
-			FurnaceTileEntity furnace = (FurnaceTileEntity)world.getBlockEntity(pos);
-			CompoundNBT tag = furnace.save(new CompoundNBT());
+			FurnaceBlockEntity furnace = (FurnaceBlockEntity)world.getBlockEntity(pos);
+			CompoundTag tag = furnace.save(new CompoundTag());
 
 			furnace.clearContent();
 			world.setBlockAndUpdate(pos, SCContent.KEYPAD_FURNACE.get().defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(LIT, lit));

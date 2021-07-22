@@ -8,11 +8,11 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.server.level.ServerLevel;
 
 public class AlarmTileEntity extends CustomizableTileEntity {
 
@@ -37,9 +37,9 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 			{
 				AlarmTileEntity te = (AlarmTileEntity) level.getBlockEntity(worldPosition);
 
-				for(ServerPlayerEntity player : ((ServerWorld)level).getPlayers(p -> p.blockPosition().distSqr(worldPosition) <= Math.pow(range.get(), 2)))
+				for(ServerPlayer player : ((ServerLevel)level).getPlayers(p -> p.blockPosition().distSqr(worldPosition) <= Math.pow(range.get(), 2)))
 				{
-					player.playNotifySound(SCSounds.ALARM.event, SoundCategory.BLOCKS, 0.3F, 1.0F);
+					player.playNotifySound(SCSounds.ALARM.event, SoundSource.BLOCKS, 0.3F, 1.0F);
 				}
 
 				te.setCooldown(delay.get() * 20);
@@ -56,7 +56,7 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 	 * @return
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		super.save(tag);
 		tag.putInt("cooldown", cooldown);
@@ -68,7 +68,7 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 

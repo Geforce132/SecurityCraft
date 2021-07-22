@@ -1,32 +1,32 @@
 package net.geforcemods.securitycraft.renderers;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import com.mojang.math.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 
-	public BouncingBettyRenderer(EntityRendererManager renderManager)
+	public BouncingBettyRenderer(EntityRenderDispatcher renderManager)
 	{
 		super(renderManager);
 		shadowRadius = 0.5F;
 	}
 
 	@Override
-	public void render(BouncingBettyEntity entity, float entityYaw, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight)
+	public void render(BouncingBettyEntity entity, float entityYaw, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int packedLight)
 	{
 		matrix.pushPose();
 		matrix.translate(0.0D, 0.5D, 0.0D);
@@ -34,7 +34,7 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 		if(entity.fuse - partialTicks + 1.0F < 10.0F)
 		{
 			float alpha = 1.0F - (entity.fuse - partialTicks + 1.0F) / 10.0F;
-			alpha = MathHelper.clamp(alpha, 0.0F, 1.0F);
+			alpha = Mth.clamp(alpha, 0.0F, 1.0F);
 			alpha *= alpha;
 			alpha *= alpha;
 			float scale = 1.0F + alpha * 0.3F;
@@ -52,6 +52,6 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 	@Override
 	public ResourceLocation getTextureLocation(BouncingBettyEntity entity)
 	{
-		return AtlasTexture.LOCATION_BLOCKS;
+		return TextureAtlas.LOCATION_BLOCKS;
 	}
 }

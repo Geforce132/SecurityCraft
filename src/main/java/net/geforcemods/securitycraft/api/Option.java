@@ -7,8 +7,8 @@ import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
@@ -55,9 +55,9 @@ public abstract class Option<T> {
 	 */
 	public abstract void toggle();
 
-	public abstract void readFromNBT(CompoundNBT tag);
+	public abstract void readFromNBT(CompoundTag tag);
 
-	public abstract void writeToNBT(CompoundNBT tag);
+	public abstract void writeToNBT(CompoundTag tag);
 
 	public void copy(Option<?> option) {
 		value = (T) option.get();
@@ -138,7 +138,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(CompoundNBT tag)
+		public void readFromNBT(CompoundTag tag)
 		{
 			if(tag.contains(getName()))
 				value = tag.getBoolean(getName());
@@ -147,7 +147,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void writeToNBT(CompoundNBT tag)
+		public void writeToNBT(CompoundTag tag)
 		{
 			tag.putBoolean(getName(), value);
 		}
@@ -198,7 +198,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(CompoundNBT tag)
+		public void readFromNBT(CompoundTag tag)
 		{
 			if(tag.contains(getName()))
 				value = tag.getInt(getName());
@@ -207,7 +207,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void writeToNBT(CompoundNBT tag)
+		public void writeToNBT(CompoundTag tag)
 		{
 			tag.putInt(getName(), value);
 		}
@@ -277,7 +277,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(CompoundNBT tag)
+		public void readFromNBT(CompoundTag tag)
 		{
 			if(tag.contains(getName()))
 				value = tag.getDouble(getName());
@@ -286,7 +286,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void writeToNBT(CompoundNBT tag)
+		public void writeToNBT(CompoundTag tag)
 		{
 			tag.putDouble(getName(), value);
 		}
@@ -343,7 +343,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(CompoundNBT tag)
+		public void readFromNBT(CompoundTag tag)
 		{
 			if(tag.contains(getName()))
 				value = tag.getFloat(getName());
@@ -352,7 +352,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void writeToNBT(CompoundNBT tag)
+		public void writeToNBT(CompoundTag tag)
 		{
 			tag.putFloat(getName(), value);
 		}

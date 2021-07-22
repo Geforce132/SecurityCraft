@@ -4,24 +4,24 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceContext.BlockMode;
-import net.minecraft.util.math.RayTraceContext.FluidMode;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.ClipContext.Block;
+import net.minecraft.world.level.ClipContext.Fluid;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.HitResult.Type;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 
 /**
  * Simple TileEntity that SecurityCraft uses to easily create blocks like
@@ -33,13 +33,13 @@ import net.minecraft.util.text.StringTextComponent;
  *
  * @author Geforce
  */
-public class SecurityCraftTileEntity extends OwnableTileEntity implements ITickableTileEntity, INameable {
+public class SecurityCraftTileEntity extends OwnableTileEntity implements TickableBlockEntity, INameable {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
 	private boolean attacks = false;
 	private boolean canBeNamed = false;
-	private ITextComponent customName = new StringTextComponent("name");
+	private Component customName = new TextComponent("name");
 	private double attackRange = 0.0D;
 	private int viewCooldown = 0;
 	private int ticksBetweenAttacks = 0;
@@ -51,7 +51,7 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 		this(SCContent.teTypeAbstract);
 	}
 
-	public SecurityCraftTileEntity(TileEntityType<?> type)
+	public SecurityCraftTileEntity(BlockEntityType<?> type)
 	{
 		super(type);
 	}
@@ -62,7 +62,7 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 			int x = worldPosition.getX();
 			int y = worldPosition.getY();
 			int z = worldPosition.getZ();
-			AxisAlignedBB area = (new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1));
+			AABB area = (new AABB(x, y, z, x + 1, y + 1, z + 1));
 			List<?> entities = level.getEntitiesOfClass(Entity.class, area);
 			Iterator<?> iterator = entities.iterator();
 			Entity entity;
@@ -83,8 +83,8 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 			int x = worldPosition.getX();
 			int y = worldPosition.getY();
 			int z = worldPosition.getZ();
-			AxisAlignedBB area = (new AxisAlignedBB(x, y, z, (x), (y), (z)).inflate(5, 5, 5));
-			List<?> entities = level.getEntitiesOfClass(LivingEntity.class, area, e -> !(e instanceof PlayerEntity) || !((PlayerEntity)e).isSpectator());
+			AABB area = (new AABB(x, y, z, (x), (y), (z)).inflate(5, 5, 5));
+			List<?> entities = level.getEntitiesOfClass(LivingEntity.class, area, e -> !(e instanceof Player) || !((Player)e).isSpectator());
 			Iterator<?> iterator = entities.iterator();
 			LivingEntity entity;
 
@@ -92,12 +92,12 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 			{
 				entity = (LivingEntity)iterator.next();
 				double eyeHeight = entity.getEyeHeight();
-				boolean isPlayer = (entity instanceof PlayerEntity);
-				Vector3d lookVec = new Vector3d((entity.getX() + (entity.getLookAngle().x * 5)), ((eyeHeight + entity.getY()) + (entity.getLookAngle().y * 5)), (entity.getZ() + (entity.getLookAngle().z * 5)));
+				boolean isPlayer = (entity instanceof Player);
+				Vec3 lookVec = new Vec3((entity.getX() + (entity.getLookAngle().x * 5)), ((eyeHeight + entity.getY()) + (entity.getLookAngle().y * 5)), (entity.getZ() + (entity.getLookAngle().z * 5)));
 
-				RayTraceResult mop = getLevel().clip(new RayTraceContext(new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
+				HitResult mop = getLevel().clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, Block.COLLIDER, Fluid.NONE, entity));
 				if(mop != null && mop.getType() == Type.BLOCK)
-					if(((BlockRayTraceResult)mop).getBlockPos().getX() == getBlockPos().getX() && ((BlockRayTraceResult)mop).getBlockPos().getY() == getBlockPos().getY() && ((BlockRayTraceResult)mop).getBlockPos().getZ() == getBlockPos().getZ())
+					if(((BlockHitResult)mop).getBlockPos().getX() == getBlockPos().getX() && ((BlockHitResult)mop).getBlockPos().getY() == getBlockPos().getY() && ((BlockHitResult)mop).getBlockPos().getZ() == getBlockPos().getZ())
 						if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {
 							entityViewed(entity);
 							viewCooldown = getViewCooldown();
@@ -112,7 +112,7 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 			}
 
 			if (canAttack()) {
-				AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(getAttackRange(), getAttackRange(), getAttackRange());
+				AABB area = new AABB(worldPosition).inflate(getAttackRange(), getAttackRange(), getAttackRange());
 				List<?> entities = level.getEntitiesOfClass(entityTypeToAttack(), area);
 				Iterator<?> iterator = entities.iterator();
 
@@ -183,14 +183,14 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	}
 
 	public boolean shouldAttackEntityType(Entity entity) {
-		return entity instanceof PlayerEntity || typeToAttack.isAssignableFrom(entity.getClass());
+		return entity instanceof Player || typeToAttack.isAssignableFrom(entity.getClass());
 	}
 
 	/**
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		super.save(tag);
 
@@ -209,7 +209,7 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 
@@ -235,7 +235,7 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 			ticksBetweenAttacks = tag.getInt("ticksBetweenAttacks");
 
 		if (tag.contains("customName"))
-			customName = new StringTextComponent(tag.getString("customName"));
+			customName = new TextComponent(tag.getString("customName"));
 	}
 
 	@Override
@@ -393,12 +393,12 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	}
 
 	@Override
-	public ITextComponent getCustomSCName() {
+	public Component getCustomSCName() {
 		return customName;
 	}
 
 	@Override
-	public void setCustomSCName(ITextComponent customName) {
+	public void setCustomSCName(Component customName) {
 		this.customName = customName;
 		sync();
 	}

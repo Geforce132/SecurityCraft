@@ -1,34 +1,34 @@
 package net.geforcemods.securitycraft.renderers;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.core.BlockPos;
+import com.mojang.math.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySystemTileEntity> {
+public class TrophySystemTileEntityRenderer extends BlockEntityRenderer<TrophySystemTileEntity> {
 
-	public TrophySystemTileEntityRenderer(TileEntityRendererDispatcher terd)
+	public TrophySystemTileEntityRenderer(BlockEntityRenderDispatcher terd)
 	{
 		super(terd);
 	}
 
 	@Override
-	public void render(TrophySystemTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_) {
+	public void render(TrophySystemTileEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int p_225616_5_, int p_225616_6_) {
 		// The code below draws a line between the trophy system and the projectile that
 		// it's targeting.
 
 		if(te.entityBeingTargeted == null) return;
 
-		IVertexBuilder builder = buffer.getBuffer(RenderType.lines());
+		VertexConsumer builder = buffer.getBuffer(RenderType.lines());
 		Matrix4f positionMatrix = matrix.last().pose();
 		BlockPos pos = te.getBlockPos();
 

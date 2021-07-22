@@ -4,12 +4,12 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class RemoteControlMine{
@@ -28,7 +28,7 @@ public class RemoteControlMine{
 		this.state = state;
 	}
 
-	public static void encode(RemoteControlMine message, PacketBuffer buf)
+	public static void encode(RemoteControlMine message, FriendlyByteBuf buf)
 	{
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
@@ -36,7 +36,7 @@ public class RemoteControlMine{
 		buf.writeUtf(message.state);
 	}
 
-	public static RemoteControlMine decode(PacketBuffer buf)
+	public static RemoteControlMine decode(FriendlyByteBuf buf)
 	{
 		RemoteControlMine message = new RemoteControlMine();
 
@@ -50,15 +50,15 @@ public class RemoteControlMine{
 	public static void onMessage(RemoteControlMine message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
-			World world = player.level;
+			Player player = ctx.get().getSender();
+			Level world = player.level;
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			BlockState state = world.getBlockState(pos);
 
 			if(state.getBlock() instanceof IExplosive)
 			{
 				IExplosive explosive = ((IExplosive) state.getBlock());
-				TileEntity te = world.getBlockEntity(pos);
+				BlockEntity te = world.getBlockEntity(pos);
 
 				if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner(player))
 				{

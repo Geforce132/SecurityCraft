@@ -18,21 +18,21 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.PaneBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
-import net.minecraft.block.WallHeight;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.state.properties.WallSide;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.state.properties.StairsShape;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.block.state.properties.StairsShape;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -45,7 +45,7 @@ import net.minecraftforge.fml.RegistryObject;
 
 public class BlockModelAndStateGenerator extends BlockStateProvider
 {
-	private static final Map<Direction,EnumProperty<WallHeight>> DIR_TO_WALL_HEIGHT = ImmutableMap.of(
+	private static final Map<Direction,EnumProperty<WallSide>> DIR_TO_WALL_HEIGHT = ImmutableMap.of(
 			Direction.EAST, BlockStateProperties.EAST_WALL,
 			Direction.NORTH, BlockStateProperties.NORTH_WALL,
 			Direction.SOUTH, BlockStateProperties.SOUTH_WALL,
@@ -75,7 +75,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 					else if(block instanceof ReinforcedStainedGlassBlock)
 						simpleBlock(block);
 					else if(block instanceof ReinforcedStainedGlassPaneBlock)
-						reinforcedPaneBlock((PaneBlock)block);
+						reinforcedPaneBlock((IronBarsBlock)block);
 					else if(block instanceof ReinforcedStairsBlock)
 						reinforcedStairsBlock(block);
 					else if(block instanceof ReinforcedWallBlock)
@@ -101,7 +101,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		horizontalBlock(SCContent.FURNACE_MINE.get(), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_side"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_front"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_top"));
 
 		simpleBlock(SCContent.REINFORCED_GLASS.get());
-		reinforcedPaneBlock((PaneBlock)SCContent.REINFORCED_GLASS_PANE.get());
+		reinforcedPaneBlock((IronBarsBlock)SCContent.REINFORCED_GLASS_PANE.get());
 
 		models().reinforcedColumn("reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
 
@@ -183,7 +183,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {new ConfiguredModel(new UncheckedModelFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/" + vanillaBlock.getRegistryName().getPath())))});
 	}
 
-	public void fourWayWallHeight(MultiPartBlockStateBuilder builder, ModelFile model, WallHeight height)
+	public void fourWayWallHeight(MultiPartBlockStateBuilder builder, ModelFile model, WallSide height)
 	{
 		Arrays.stream(Direction.values()).filter(dir -> dir.getAxis().isHorizontal()).forEach(dir -> {
 			builder.part().modelFile(model).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).addModel()
@@ -199,7 +199,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[]{new ConfiguredModel(model)});
 	}
 
-	public void reinforcedPaneBlock(PaneBlock block)
+	public void reinforcedPaneBlock(IronBarsBlock block)
 	{
 		String name = name(block);
 
@@ -275,9 +275,9 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		ModelFile stairsOuter = models().reinforcedStairsOuter(baseName + "_outer", side, bottom, top);
 
 		getVariantBuilder(block).forAllStatesExcept(state -> {
-			Direction facing = state.getValue(StairsBlock.FACING);
-			Half half = state.getValue(StairsBlock.HALF);
-			StairsShape shape = state.getValue(StairsBlock.SHAPE);
+			Direction facing = state.getValue(StairBlock.FACING);
+			Half half = state.getValue(StairBlock.HALF);
+			StairsShape shape = state.getValue(StairBlock.SHAPE);
 			int yRot = (int)facing.getClockWise().toYRot();
 
 			if(shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT)
@@ -294,7 +294,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 					.rotationY(yRot)
 					.uvLock(yRot != 0 || half == Half.TOP)
 					.build();
-		}, StairsBlock.WATERLOGGED);
+		}, StairBlock.WATERLOGGED);
 	}
 
 	public void reinforcedWallBlock(Block block)
@@ -313,8 +313,8 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 				.part().modelFile(post).addModel()
 				.condition(WallBlock.UP, true).end();
 
-		fourWayWallHeight(builder, side, WallHeight.LOW);
-		fourWayWallHeight(builder, sideTall, WallHeight.TALL);
+		fourWayWallHeight(builder, side, WallSide.LOW);
+		fourWayWallHeight(builder, sideTall, WallSide.TALL);
 		models().reinforcedWallInventory(baseName + "_inventory", texture);
 	}
 

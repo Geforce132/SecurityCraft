@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 
 public class HoverChecker
@@ -9,7 +9,7 @@ public class HoverChecker
 	private int bottom;
 	private int left;
 	private int right;
-	private Widget widget;
+	private AbstractWidget widget;
 
 	public HoverChecker(int top, int bottom, int left, int right)
 	{
@@ -19,7 +19,7 @@ public class HoverChecker
 		this.right = right;
 	}
 
-	public HoverChecker(Widget widget)
+	public HoverChecker(AbstractWidget widget)
 	{
 		this(widget.x, widget.x + widget.getHeight(), widget.y, widget.y + widget.getWidth());
 

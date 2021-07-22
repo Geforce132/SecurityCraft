@@ -1,17 +1,17 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IBeaconBeamColorProvider;
-import net.minecraft.item.DyeColor;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.BeaconBeamBlock;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements IBeaconBeamColorProvider
+public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements BeaconBeamBlock
 {
 	private final DyeColor color;
 
@@ -22,13 +22,13 @@ public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements
 	}
 
 	@Override
-	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos)
+	public float[] getBeaconColorMultiplier(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos)
 	{
 		return color.getTextureDiffuseColors();
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos)
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos)
 	{
 		return true;
 	}
@@ -40,7 +40,7 @@ public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements
 	}
 
 	@Override
-	public float getShadeBrightness(BlockState state, IBlockReader world, BlockPos pos)
+	public float getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos)
 	{
 		return 1.0F;
 	}

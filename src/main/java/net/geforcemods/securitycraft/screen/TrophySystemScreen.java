@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -15,34 +15,34 @@ import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
 
-public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
+public class TrophySystemScreen extends AbstractContainerScreen<GenericTEContainer> {
 
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
-	private final TranslationTextComponent projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
-	private final TranslationTextComponent moduleRequired = Utils.localize("gui.securitycraft:trophy_system.moduleRequired");
-	private final TranslationTextComponent toggle = Utils.localize("gui.securitycraft:trophy_system.toggle");
-	private final TranslationTextComponent moddedProjectiles = Utils.localize("gui.securitycraft:trophy_system.moddedProjectiles");
+	private final TranslatableComponent projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
+	private final TranslatableComponent moduleRequired = Utils.localize("gui.securitycraft:trophy_system.moduleRequired");
+	private final TranslatableComponent toggle = Utils.localize("gui.securitycraft:trophy_system.toggle");
+	private final TranslatableComponent moddedProjectiles = Utils.localize("gui.securitycraft:trophy_system.moddedProjectiles");
 	private final boolean isSmart;
 	private final List<EntityType<?>> orderedFilterList;
 	private TrophySystemTileEntity tileEntity;
 	private ProjectileScrollList projectileList;
 
-	public TrophySystemScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
+	public TrophySystemScreen(GenericTEContainer container, Inventory inv, Component name) {
 		super(container, inv, name);
 
 		this.tileEntity = (TrophySystemTileEntity)container.te;
@@ -66,13 +66,13 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
+	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY) {
 		font.draw(matrix, title, imageWidth / 2 - font.width(title) / 2, titleLabelY, 4210752);
 		font.draw(matrix, projectiles, imageWidth / 2 - font.width(projectiles) / 2, titleLabelY + 25, 4210752);
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
@@ -83,7 +83,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
 
@@ -128,7 +128,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 			if(isSmart && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
 				tileEntity.toggleFilter(orderedFilterList.get(slotIndex));
-				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 				return true;
 			}
 
@@ -136,7 +136,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		}
 
 		@Override
-		protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY)
+		protected void drawPanel(PoseStack matrix, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
 		{
 			int baseY = top + border - (int)scrollDistance;
 			int slotBuffer = slotHeight - 4;
@@ -153,7 +153,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 				RenderSystem.enableBlend();
 				RenderSystem.disableTexture();
 				RenderSystem.defaultBlendFunc();
-				bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+				bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR);
 				bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
 				bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
 				bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
@@ -163,7 +163,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 				bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 				bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 				bufferBuilder.end();
-				WorldVertexBufferUploader.end(bufferBuilder);
+				BufferUploader.end(bufferBuilder);
 				RenderSystem.enableTexture();
 				RenderSystem.disableBlend();
 			}
@@ -172,7 +172,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 			//draw entry strings and indicators whether the filter is enabled
 			for(EntityType<?> projectileType : orderedFilterList) {
-				ITextComponent projectileName = projectileType == EntityType.PIG ? moddedProjectiles : projectileType.getDescription();
+				Component projectileName = projectileType == EntityType.PIG ? moddedProjectiles : projectileType.getDescription();
 				int yStart = relativeY + (slotHeight * i);
 
 				font.draw(matrix, projectileName, left + width / 2 - font.width(projectileName) / 2, yStart, 0xC6C6C6);

@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 public interface IReinforcedBlock
 {

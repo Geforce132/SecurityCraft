@@ -7,42 +7,42 @@ import javax.annotation.Nullable;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.resources.DefaultPlayerSkin;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Matrix3f;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.world.LightType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.LightLayer;
 
-public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<RetinalScannerTileEntity>
+public class RetinalScannerTileEntityRenderer extends BlockEntityRenderer<RetinalScannerTileEntity>
 {
 	private static final float CORRECT_FACTOR = 1 / 550F;
 
-	public RetinalScannerTileEntityRenderer(TileEntityRendererDispatcher terd)
+	public RetinalScannerTileEntityRenderer(BlockEntityRenderDispatcher terd)
 	{
 		super(terd);
 	}
 
 	@Override
-	public void render(RetinalScannerTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
+	public void render(RetinalScannerTileEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
 	{
 		Direction direction = te.getBlockState().getValue(RetinalScannerBlock.FACING);
 
@@ -73,13 +73,13 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 
 			matrix.scale(-1.0F, -1.0F, 1.0F);
 
-			IVertexBuilder vertexBuilder = buffer.getBuffer(RenderType.entityCutout(getSkinTexture(te.getPlayerProfile())));
+			VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.entityCutout(getSkinTexture(te.getPlayerProfile())));
 			Matrix4f positionMatrix = matrix.last().pose();
 			Matrix3f normalMatrix = matrix.last().normal();
-			Vector3i normalVector = direction.getNormal();
+			Vec3i normalVector = direction.getNormal();
 			BlockPos offsetPos = te.getBlockPos().relative(direction);
 
-			combinedLight = LightTexture.pack(te.getLevel().getBrightness(LightType.BLOCK, offsetPos), te.getLevel().getBrightness(LightType.SKY, offsetPos));
+			combinedLight = LightTexture.pack(te.getLevel().getBrightness(LightLayer.BLOCK, offsetPos), te.getLevel().getBrightness(LightLayer.SKY, offsetPos));
 
 			// face
 			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.125F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
@@ -103,7 +103,7 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 		{
 			Minecraft minecraft = Minecraft.getInstance();
 			Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().getInsecureSkinInformation(profile);
-			return map.containsKey(Type.SKIN) ? minecraft.getSkinManager().registerTexture(map.get(Type.SKIN), Type.SKIN) : DefaultPlayerSkin.getDefaultSkin(PlayerEntity.createPlayerUUID(profile));
+			return map.containsKey(Type.SKIN) ? minecraft.getSkinManager().registerTexture(map.get(Type.SKIN), Type.SKIN) : DefaultPlayerSkin.getDefaultSkin(Player.createPlayerUUID(profile));
 		}
 		else
 			return DefaultPlayerSkin.getDefaultSkin();

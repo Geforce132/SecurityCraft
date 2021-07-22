@@ -3,13 +3,13 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -29,13 +29,13 @@ public class SyncTrophySystem {
 		this.allowed = allowed;
 	}
 
-	public static void encode(SyncTrophySystem message, PacketBuffer buf) {
+	public static void encode(SyncTrophySystem message, FriendlyByteBuf buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeResourceLocation(message.projectileType);
 		buf.writeBoolean(message.allowed);
 	}
 
-	public static SyncTrophySystem decode(PacketBuffer buf) {
+	public static SyncTrophySystem decode(FriendlyByteBuf buf) {
 		SyncTrophySystem message = new SyncTrophySystem();
 
 		message.pos = buf.readBlockPos();
@@ -50,10 +50,10 @@ public class SyncTrophySystem {
 
 			if(projectileType != null)
 			{
-				World world = ctx.get().getSender().level;
+				Level world = ctx.get().getSender().level;
 				BlockPos pos = message.pos;
 				boolean allowed = message.allowed;
-				TileEntity te = world.getBlockEntity(pos);
+				BlockEntity te = world.getBlockEntity(pos);
 
 				if(te instanceof TrophySystemTileEntity && ((TrophySystemTileEntity)te).getOwner().isOwner(ctx.get().getSender())) {
 					BlockState state = world.getBlockState(pos);

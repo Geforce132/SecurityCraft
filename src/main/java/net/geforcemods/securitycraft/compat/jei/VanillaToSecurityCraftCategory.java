@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.compat.jei;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -9,8 +9,8 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 
 public class VanillaToSecurityCraftCategory extends BaseCategory
 {
@@ -20,7 +20,7 @@ public class VanillaToSecurityCraftCategory extends BaseCategory
 	}
 
 	@Override
-	public void draw(ReinforcerRecipe recipe, MatrixStack matrix, double mouseX, double mouseY)
+	public void draw(ReinforcerRecipe recipe, PoseStack matrix, double mouseX, double mouseY)
 	{
 		Minecraft.getInstance().font.draw(matrix, OUTPUT_TEXT, 24, 5, 4210752);
 	}

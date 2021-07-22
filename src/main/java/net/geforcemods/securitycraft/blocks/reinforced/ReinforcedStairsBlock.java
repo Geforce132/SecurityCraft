@@ -4,46 +4,46 @@ import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.StairsShape;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.StairsShape;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWaterLoggable
+public class ReinforcedStairsBlock extends BaseReinforcedBlock implements SimpleWaterloggedBlock
 {
-	public static final DirectionProperty FACING = HorizontalBlock.FACING;
+	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 	public static final EnumProperty<Half> HALF = BlockStateProperties.HALF;
 	public static final EnumProperty<StairsShape> SHAPE = BlockStateProperties.STAIRS_SHAPE;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -87,16 +87,16 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 		VoxelShape shape = slabShape;
 
 		if((bitfield & 1) != 0)
-			shape = VoxelShapes.or(slabShape, nwCorner);
+			shape = Shapes.or(slabShape, nwCorner);
 
 		if((bitfield & 2) != 0)
-			shape = VoxelShapes.or(shape, neCorner);
+			shape = Shapes.or(shape, neCorner);
 
 		if((bitfield & 4) != 0)
-			shape = VoxelShapes.or(shape, swCorner);
+			shape = Shapes.or(shape, swCorner);
 
 		if((bitfield & 8) != 0)
-			shape = VoxelShapes.or(shape, seCorner);
+			shape = Shapes.or(shape, seCorner);
 
 		return shape;
 	}
@@ -108,7 +108,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
 	{
 		return (state.getValue(HALF) == Half.TOP ? SLAB_TOP_SHAPES : SLAB_BOTTOM_SHAPES)[SHAPE_BY_STATE[getShapeIndex(state)]];
 	}
@@ -120,25 +120,25 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
+	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand)
 	{
 		modelBlock.animateTick(stateIn, worldIn, pos, rand);
 	}
 
 	@Override
-	public void attack(BlockState state, World worldIn, BlockPos pos, PlayerEntity player)
+	public void attack(BlockState state, Level worldIn, BlockPos pos, Player player)
 	{
 		modelState.attack(worldIn, pos, player);
 	}
 
 	@Override
-	public void destroy(IWorld worldIn, BlockPos pos, BlockState state)
+	public void destroy(LevelAccessor worldIn, BlockPos pos, BlockState state)
 	{
 		modelBlock.destroy(worldIn, pos, state);
 	}
 
 	@Override
-	public void onPlace(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving)
+	public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean isMoving)
 	{
 		if(state.getBlock() != oldState.getBlock())
 		{
@@ -148,38 +148,38 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		if(state.getBlock() != newState.getBlock())
 			modelState.onRemove(world, pos, newState, isMoving);
 	}
 
 	@Override
-	public void stepOn(World worldIn, BlockPos pos, Entity entity)
+	public void stepOn(Level worldIn, BlockPos pos, Entity entity)
 	{
 		modelBlock.stepOn(worldIn, pos, entity);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random)
 	{
 		modelState.tick(world, pos, random);
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		return modelState.use(world, player, hand, hit);
 	}
 
 	@Override
-	public void wasExploded(World world, BlockPos pos, Explosion explosion)
+	public void wasExploded(Level world, BlockPos pos, Explosion explosion)
 	{
 		modelBlock.wasExploded(world, pos, explosion);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{
 		Direction dir = ctx.getClickedFace();
 		BlockPos pos = ctx.getClickedPos();
@@ -190,7 +190,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos)
 	{
 		if(state.getValue(WATERLOGGED))
 			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
@@ -198,7 +198,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 		return facing.getAxis().isHorizontal() ? state.setValue(SHAPE, getShapeProperty(state, world, currentPos)) : super.updateShape(state, facing, facingState, world, currentPos, facingPos);
 	}
 
-	private static StairsShape getShapeProperty(BlockState state, IBlockReader world, BlockPos pos)
+	private static StairsShape getShapeProperty(BlockState state, BlockGetter world, BlockPos pos)
 	{
 		Direction dir = state.getValue(FACING);
 		BlockState offsetState = world.getBlockState(pos.relative(dir));
@@ -232,7 +232,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 		return StairsShape.STRAIGHT;
 	}
 
-	private static boolean isDifferentStairs(BlockState state, IBlockReader world, BlockPos pos, Direction face)
+	private static boolean isDifferentStairs(BlockState state, BlockGetter world, BlockPos pos, Direction face)
 	{
 		BlockState offsetState = world.getBlockState(pos.relative(face));
 
@@ -241,7 +241,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 
 	public static boolean isBlockStairs(BlockState state)
 	{
-		return state.getBlock() instanceof ReinforcedStairsBlock || state.getBlock() instanceof StairsBlock;
+		return state.getBlock() instanceof ReinforcedStairsBlock || state.getBlock() instanceof StairBlock;
 	}
 
 	@Override
@@ -302,7 +302,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING, HALF, SHAPE, WATERLOGGED);
 	}
@@ -313,7 +313,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type)
+	public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type)
 	{
 		return false;
 	}

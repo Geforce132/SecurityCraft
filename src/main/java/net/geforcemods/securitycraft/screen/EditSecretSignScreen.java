@@ -2,33 +2,33 @@ package net.geforcemods.securitycraft.screen;
 
 import java.util.Arrays;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.StandingSignBlock;
-import net.minecraft.client.gui.DialogTexts;
-import net.minecraft.client.gui.fonts.TextInputUtil;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
-import net.minecraft.client.renderer.model.RenderMaterial;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.StandingSignBlock;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.client.gui.font.TextFieldHelper;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Button;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import net.minecraft.client.renderer.MultiBufferSource;
+import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer.SignModel;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.network.play.client.CUpdateSignPacket;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
+import net.minecraft.client.renderer.blockentity.SignRenderer.SignModel;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.network.protocol.game.ServerboundSignUpdatePacket;
+import net.minecraft.Util;
+import com.mojang.math.Matrix4f;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -39,12 +39,12 @@ public class EditSecretSignScreen extends Screen
 	private final SecretSignTileEntity te;
 	private int updateCounter;
 	private int editLine;
-	private TextInputUtil textInputUtil;
+	private TextFieldHelper textInputUtil;
 	private final String[] signText = Util.make(new String[4], i -> Arrays.fill(i, ""));
 
 	public EditSecretSignScreen(SecretSignTileEntity te)
 	{
-		super(new TranslationTextComponent("sign.edit"));
+		super(new TranslatableComponent("sign.edit"));
 		this.te = te;
 	}
 
@@ -52,12 +52,12 @@ public class EditSecretSignScreen extends Screen
 	protected void init()
 	{
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		addButton(new Button(width / 2 - 100, height / 4 + 120, 200, 20, DialogTexts.GUI_DONE, button -> close()));
+		addButton(new Button(width / 2 - 100, height / 4 + 120, 200, 20, CommonComponents.GUI_DONE, button -> close()));
 		te.setEditable(false);
-		textInputUtil = new TextInputUtil(() -> signText[editLine], s -> {
+		textInputUtil = new TextFieldHelper(() -> signText[editLine], s -> {
 			signText[editLine] = s;
-			te.setMessage(editLine, new StringTextComponent(s));
-		}, TextInputUtil.createClipboardGetter(minecraft), TextInputUtil.createClipboardSetter(minecraft), t -> minecraft.font.width(t) <= 90);
+			te.setMessage(editLine, new TextComponent(s));
+		}, TextFieldHelper.createClipboardGetter(minecraft), TextFieldHelper.createClipboardSetter(minecraft), t -> minecraft.font.width(t) <= 90);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class EditSecretSignScreen extends Screen
 		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 
 		if(minecraft.getConnection() != null)
-			minecraft.getConnection().send(new CUpdateSignPacket(te.getBlockPos(), signText[0], signText[1], signText[2], signText[3]));
+			minecraft.getConnection().send(new ServerboundSignUpdatePacket(te.getBlockPos(), signText[0], signText[1], signText[2], signText[3]));
 
 		te.setEditable(true);
 	}
@@ -119,21 +119,21 @@ public class EditSecretSignScreen extends Screen
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
 		BlockState state = this.te.getBlockState();
 		boolean isStanding = state.getBlock() instanceof StandingSignBlock;
 		boolean update = updateCounter / 6 % 2 == 0;
-		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
+		Material material = SignRenderer.getMaterial(state.getBlock());
 		int textColor = te.getColor().getTextColor();
 		int k = textInputUtil.getCursorPos();
 		int l = textInputUtil.getSelectionPos();
 		int j1 = editLine * 10 - signText.length * 5;
-		IRenderTypeBuffer.Impl buffer;
-		IVertexBuilder builder;
+		MultiBufferSource.BufferSource buffer;
+		VertexConsumer builder;
 		Matrix4f positionMatrix;
 
-		RenderHelper.setupForFlatItems();
+		Lighting.setupForFlatItems();
 		renderBackground(matrix);
 		drawCenteredString(matrix, font, title, width / 2, 40, 16777215);
 		matrix.pushPose();
@@ -205,18 +205,18 @@ public class EditSecretSignScreen extends Screen
 					int l2 = minecraft.font.width(s1.substring(0, j2)) - minecraft.font.width(s1) / 2;
 					int i3 = Math.min(k2, l2);
 					int j3 = Math.max(k2, l2);
-					BufferBuilder buf = Tessellator.getInstance().getBuilder();
+					BufferBuilder buf = Tesselator.getInstance().getBuilder();
 
 					RenderSystem.disableTexture();
 					RenderSystem.enableColorLogicOp();
 					RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
-					buf.begin(7, DefaultVertexFormats.POSITION_COLOR);
+					buf.begin(7, DefaultVertexFormat.POSITION_COLOR);
 					buf.vertex(positionMatrix, i3, j1 + 9, 0.0F).color(0, 0, 255, 255).endVertex();
 					buf.vertex(positionMatrix, j3, j1 + 9, 0.0F).color(0, 0, 255, 255).endVertex();
 					buf.vertex(positionMatrix, j3, j1, 0.0F).color(0, 0, 255, 255).endVertex();
 					buf.vertex(positionMatrix, i3, j1, 0.0F).color(0, 0, 255, 255).endVertex();
 					buf.end();
-					WorldVertexBufferUploader.end(buf);
+					BufferUploader.end(buf);
 					RenderSystem.disableColorLogicOp();
 					RenderSystem.enableTexture();
 				}
@@ -224,7 +224,7 @@ public class EditSecretSignScreen extends Screen
 		}
 
 		matrix.popPose();
-		RenderHelper.setupFor3DItems();
+		Lighting.setupFor3DItems();
 		super.render(matrix, mouseX, mouseY, partialTicks);
 	}
 }

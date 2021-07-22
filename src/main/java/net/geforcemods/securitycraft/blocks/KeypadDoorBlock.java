@@ -5,17 +5,19 @@ import net.geforcemods.securitycraft.tileentity.KeypadDoorTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class KeypadDoorBlock extends SpecialDoorBlock
 {
@@ -25,10 +27,10 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		if(state.getValue(OPEN))
-			return ActionResultType.PASS;
+			return InteractionResult.PASS;
 		else if(!world.isClientSide)
 		{
 			KeypadDoorTileEntity te = (KeypadDoorTileEntity)world.getBlockEntity(pos);
@@ -36,15 +38,15 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 			if(ModuleUtils.isDenied(te, player))
 			{
 				if(te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 
-				return ActionResultType.FAIL;
+				return InteractionResult.FAIL;
 			}
 
 			if(ModuleUtils.isAllowed(te, player))
 			{
 				if(te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
 				activate(world, pos, state, te.getSignalLength());
 			}
@@ -52,10 +54,10 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 				te.openPasswordGUI(player);
 		}
 
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
-	public static void activate(World world, BlockPos pos, BlockState state, int signalLength){
+	public static void activate(Level world, BlockPos pos, BlockState state, int signalLength){
 		boolean open = !state.getValue(OPEN);
 
 		world.levelEvent(null, open ? 1005 : 1011, pos, 0);
@@ -67,7 +69,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
 	{
 		return new KeypadDoorTileEntity().linkable();
 	}

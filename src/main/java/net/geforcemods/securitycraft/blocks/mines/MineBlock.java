@@ -6,25 +6,25 @@ import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 
 public class MineBlock extends ExplosiveBlock {
 
@@ -41,7 +41,7 @@ public class MineBlock extends ExplosiveBlock {
 	 * their own) Args: x, y, z, neighbor blockID
 	 */
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
 		if (world.getBlockState(pos.below()).getMaterial() != Material.AIR)
 			return;
 		else if (world.getBlockState(pos).getValue(DEACTIVATED))
@@ -54,12 +54,12 @@ public class MineBlock extends ExplosiveBlock {
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, pos
 	 */
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos){
+	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos){
 		return BlockUtils.isSideSolid(world, pos.below(), Direction.UP);
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid){
+	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid){
 		if(!world.isClientSide)
 			if(player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
@@ -72,7 +72,7 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
 		return SHAPE;
 	}
@@ -81,7 +81,7 @@ public class MineBlock extends ExplosiveBlock {
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity){
+	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity){
 		if(world.isClientSide)
 			return;
 		else if(entity instanceof ItemEntity)
@@ -91,7 +91,7 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean activateMine(World world, BlockPos pos) {
+	public boolean activateMine(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
 		if(state.getValue(DEACTIVATED))
@@ -104,7 +104,7 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean defuseMine(World world, BlockPos pos) {
+	public boolean defuseMine(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
 		if(!state.getValue(DEACTIVATED))
@@ -117,7 +117,7 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
+	public void explode(Level world, BlockPos pos) {
 		if(world.isClientSide)
 			return;
 
@@ -131,7 +131,7 @@ public class MineBlock extends ExplosiveBlock {
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state){
+	public ItemStack getCloneItemStack(BlockGetter worldIn, BlockPos pos, BlockState state){
 		return new ItemStack(SCContent.MINE.get().asItem());
 	}
 
@@ -142,7 +142,7 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean isActive(World world, BlockPos pos) {
+	public boolean isActive(Level world, BlockPos pos) {
 		return !world.getBlockState(pos).getValue(DEACTIVATED);
 	}
 
@@ -152,7 +152,7 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new OwnableTileEntity();
 	}
 

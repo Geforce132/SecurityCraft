@@ -5,7 +5,7 @@ import java.util.Deque;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -14,17 +14,17 @@ import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.EditBox;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ScrollPanel;
@@ -32,11 +32,11 @@ import net.minecraftforge.client.gui.ScrollPanel;
 @OnlyIn(Dist.CLIENT)
 public class EditModuleScreen extends Screen
 {
-	private static CompoundNBT savedModule;
+	private static CompoundTag savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
-	private final TranslationTextComponent editModule = Utils.localize("gui.securitycraft:editModule");
+	private final TranslatableComponent editModule = Utils.localize("gui.securitycraft:editModule");
 	private ItemStack module = ItemStack.EMPTY;
-	private TextFieldWidget inputField;
+	private EditBox inputField;
 	private IdButton addButton, removeButton, copyButton, pasteButton, clearButton;
 	private int xSize = 247, ySize = 166;
 	private PlayerList playerList;
@@ -44,7 +44,7 @@ public class EditModuleScreen extends Screen
 
 	public EditModuleScreen(ItemStack item)
 	{
-		super(new TranslationTextComponent(item.getDescriptionId()));
+		super(new TranslatableComponent(item.getDescriptionId()));
 
 		module = item;
 	}
@@ -59,7 +59,7 @@ public class EditModuleScreen extends Screen
 		int controlsStartX = (int)(guiLeft + xSize * (3.0F / 4.0F)) - 43;
 
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		addButton(inputField = new TextFieldWidget(font, controlsStartX - 17, height / 2 - 65, 110, 15, StringTextComponent.EMPTY));
+		addButton(inputField = new EditBox(font, controlsStartX - 17, height / 2 - 65, 110, 15, TextComponent.EMPTY));
 		addButton(addButton = new IdButton(0, controlsStartX, height / 2 - 45, 76, 20, Utils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
 		addButton(removeButton = new IdButton(1, controlsStartX, height / 2 - 20, 76, 20, Utils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
 		addButton(copyButton = new IdButton(2, controlsStartX, height / 2 + 5, 76, 20, Utils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
@@ -119,7 +119,7 @@ public class EditModuleScreen extends Screen
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks){
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
@@ -176,7 +176,7 @@ public class EditModuleScreen extends Screen
 				return;
 
 			if(module.getTag() == null)
-				module.setTag(new CompoundNBT());
+				module.setTag(new CompoundTag());
 
 			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 			{
@@ -202,7 +202,7 @@ public class EditModuleScreen extends Screen
 				return;
 
 			if(module.getTag() == null)
-				module.setTag(new CompoundNBT());
+				module.setTag(new CompoundTag());
 
 			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 			{
@@ -225,7 +225,7 @@ public class EditModuleScreen extends Screen
 			module.setTag(savedModule.copy());
 		else if(button.id == clearButton.id)
 		{
-			module.setTag(new CompoundNBT());
+			module.setTag(new CompoundTag());
 			inputField.setValue("");
 		}
 		else return;
@@ -240,7 +240,7 @@ public class EditModuleScreen extends Screen
 		clearButton.active = !(module.getTag() == null || module.getTag().isEmpty());
 	}
 
-	private int getNextFreeSlot(CompoundNBT tag) {
+	private int getNextFreeSlot(CompoundTag tag) {
 		for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 		{
 			if(!tag.contains("Player" + i) || tag.getString("Player" + i).isEmpty())
@@ -250,7 +250,7 @@ public class EditModuleScreen extends Screen
 		return 0;
 	}
 
-	private void defragmentTag(CompoundNBT tag)
+	private void defragmentTag(CompoundTag tag)
 	{
 		Deque<Integer> freeIndices = new ArrayDeque<>();
 
@@ -309,11 +309,11 @@ public class EditModuleScreen extends Screen
 		}
 
 		@Override
-		protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tessellator, int mouseX, int mouseY)
+		protected void drawPanel(PoseStack matrix, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY)
 		{
 			if(module.hasTag())
 			{
-				CompoundNBT tag = module.getTag();
+				CompoundTag tag = module.getTag();
 				int baseY = top + border - (int)scrollDistance;
 				int mouseListY = (int)(mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / slotHeight;
@@ -346,7 +346,7 @@ public class EditModuleScreen extends Screen
 			RenderSystem.enableBlend();
 			RenderSystem.disableTexture();
 			RenderSystem.defaultBlendFunc();
-			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR);
 			bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
 			bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
 			bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
@@ -356,7 +356,7 @@ public class EditModuleScreen extends Screen
 			bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 			bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 			bufferBuilder.end();
-			WorldVertexBufferUploader.end(bufferBuilder);
+			BufferUploader.end(bufferBuilder);
 			RenderSystem.enableTexture();
 			RenderSystem.disableBlend();
 		}

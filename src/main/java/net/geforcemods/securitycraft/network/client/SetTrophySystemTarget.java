@@ -4,11 +4,11 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SetTrophySystemTarget {
@@ -23,12 +23,12 @@ public class SetTrophySystemTarget {
 		this.targetID = targetID;
 	}
 
-	public static void encode(SetTrophySystemTarget message, PacketBuffer buf) {
+	public static void encode(SetTrophySystemTarget message, FriendlyByteBuf buf) {
 		buf.writeBlockPos(message.trophyPos);
 		buf.writeInt(message.targetID);
 	}
 
-	public static SetTrophySystemTarget decode(PacketBuffer buf) {
+	public static SetTrophySystemTarget decode(FriendlyByteBuf buf) {
 		SetTrophySystemTarget message = new SetTrophySystemTarget();
 
 		message.trophyPos = buf.readBlockPos();
@@ -38,14 +38,14 @@ public class SetTrophySystemTarget {
 
 	public static void onMessage(SetTrophySystemTarget message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			TileEntity te = Minecraft.getInstance().level.getBlockEntity(message.trophyPos);
+			BlockEntity te = Minecraft.getInstance().level.getBlockEntity(message.trophyPos);
 
 			if (te instanceof TrophySystemTileEntity) {
 				TrophySystemTileEntity trophySystemTE = (TrophySystemTileEntity)te;
 				Entity target = Minecraft.getInstance().level.getEntity(message.targetID);
 
-				if (target instanceof ProjectileEntity) {
-					trophySystemTE.setTarget((ProjectileEntity)target);
+				if (target instanceof Projectile) {
+					trophySystemTE.setTarget((Projectile)target);
 				}
 			}
 		});

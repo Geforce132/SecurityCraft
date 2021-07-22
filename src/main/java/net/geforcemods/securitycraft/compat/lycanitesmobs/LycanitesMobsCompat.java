@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.compat.lycanitesmobs;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 
 import net.geforcemods.securitycraft.api.IAttackTargetCheck;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 public class LycanitesMobsCompat implements IAttackTargetCheck
 {

@@ -5,25 +5,25 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySpawnPlacementRegistry.PlacementType;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.EntitySelectionContext;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.SpawnPlacements.Type;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.EntityCollisionContext;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -39,44 +39,44 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 		registerDefaultState(stateDefinition.any().setValue(SEE_THROUGH, true).setValue(SOLID, false));
 	}
 
-	public static boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
+	public static boolean causesSuffocation(BlockState state, BlockGetter world, BlockPos pos)
 	{
 		return state.getValue(SOLID);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
 	{
-		if(!state.getValue(SOLID) && ctx instanceof EntitySelectionContext)
+		if(!state.getValue(SOLID) && ctx instanceof EntityCollisionContext)
 		{
-			Entity entity = ((EntitySelectionContext)ctx).getEntity();
+			Entity entity = ((EntityCollisionContext)ctx).getEntity();
 
-			if(entity instanceof PlayerEntity)
+			if(entity instanceof Player)
 			{
-				TileEntity te1 = world.getBlockEntity(pos);
+				BlockEntity te1 = world.getBlockEntity(pos);
 
 				if(te1 instanceof BlockPocketTileEntity)
 				{
 					BlockPocketTileEntity te = (BlockPocketTileEntity)te1;
 
 					if(te.getManager() == null)
-						return VoxelShapes.empty();
+						return Shapes.empty();
 
 					if(ModuleUtils.isAllowed(te.getManager(), entity))
-						return VoxelShapes.empty();
-					else if(!te.getOwner().isOwner((PlayerEntity)entity))
-						return VoxelShapes.block();
+						return Shapes.empty();
+					else if(!te.getOwner().isOwner((Player)entity))
+						return Shapes.block();
 					else
-						return VoxelShapes.empty();
+						return Shapes.empty();
 				}
 			}
 		}
 
-		return VoxelShapes.block();
+		return Shapes.block();
 	}
 
 	@Override
-	public boolean canCreatureSpawn(BlockState state, IBlockReader world, BlockPos pos, PlacementType type, EntityType<?> entityType)
+	public boolean canCreatureSpawn(BlockState state, BlockGetter world, BlockPos pos, Type type, EntityType<?> entityType)
 	{
 		return false;
 	}
@@ -89,7 +89,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context)
+	public BlockState getStateForPlacement(BlockPlaceContext context)
 	{
 		return super.getStateForPlacement(context).setValue(SEE_THROUGH, true);
 	}
@@ -101,19 +101,19 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
 	{
 		return new BlockPocketTileEntity();
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, BlockState state, BlockPos pos)
+	public ItemStack getDisplayStack(Level world, BlockState state, BlockPos pos)
 	{
 		return new ItemStack(SCContent.BLOCK_POCKET_WALL.get(), 1);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos)
+	public boolean shouldShowSCInfo(Level world, BlockState state, BlockPos pos)
 	{
 		return true;
 	}

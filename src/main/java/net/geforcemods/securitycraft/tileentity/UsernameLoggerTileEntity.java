@@ -13,19 +13,19 @@ import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
+public class UsernameLoggerTileEntity extends DisguisableTileEntity implements MenuProvider {
 
 	private IntOption searchRadius = new IntOption(this::getBlockPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
@@ -39,8 +39,8 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 
 	@Override
 	public boolean attackEntity(Entity entity) {
-		if (!level.isClientSide && entity instanceof PlayerEntity) {
-			addPlayer((PlayerEntity)entity);
+		if (!level.isClientSide && entity instanceof Player) {
+			addPlayer((Player)entity);
 			sendChangeToClient(false);
 		}
 
@@ -55,17 +55,17 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	public void logPlayers(){
 		int range = searchRadius.get();
 
-		AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(range);
-		List<?> entities = level.getEntitiesOfClass(PlayerEntity.class, area);
+		AABB area = new AABB(worldPosition).inflate(range);
+		List<?> entities = level.getEntitiesOfClass(Player.class, area);
 		Iterator<?> iterator = entities.iterator();
 
 		while(iterator.hasNext())
-			addPlayer((PlayerEntity)iterator.next());
+			addPlayer((Player)iterator.next());
 
 		sendChangeToClient(false);
 	}
 
-	private void addPlayer(PlayerEntity player) {
+	private void addPlayer(Player player) {
 		String playerName = player.getName().getString();
 		long timestamp = System.currentTimeMillis();
 
@@ -98,7 +98,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag){
+	public CompoundTag save(CompoundTag tag){
 		super.save(tag);
 
 		for(int i = 0; i < players.length; i++)
@@ -112,7 +112,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag){
+	public void load(BlockState state, CompoundTag tag){
 		super.load(state, tag);
 
 		for(int i = 0; i < players.length; i++)
@@ -137,15 +137,15 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
 		return new GenericTEContainer(SCContent.cTypeUsernameLogger, windowId, level, worldPosition);
 	}
 
 	@Override
-	public ITextComponent getDisplayName()
+	public Component getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.USERNAME_LOGGER.get().getDescriptionId());
+		return new TranslatableComponent(SCContent.USERNAME_LOGGER.get().getDescriptionId());
 	}
 
 	@Override

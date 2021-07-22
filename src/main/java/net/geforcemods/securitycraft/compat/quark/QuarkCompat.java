@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.compat.quark;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.registries.ObjectHolder;
 

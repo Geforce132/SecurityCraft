@@ -9,23 +9,23 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.EntitySelectionContext;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.EntityCollisionContext;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 
 public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable, IOverlayDisplay, IBlockMine {
 
@@ -37,33 +37,33 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
 	{
-		if(ctx instanceof EntitySelectionContext)
+		if(ctx instanceof EntityCollisionContext)
 		{
-			Entity entity = ((EntitySelectionContext)ctx).getEntity();
+			Entity entity = ((EntityCollisionContext)ctx).getEntity();
 
 			if(entity instanceof ItemEntity)
-				return VoxelShapes.block();
-			else if(entity instanceof PlayerEntity)
+				return Shapes.block();
+			else if(entity instanceof Player)
 			{
-				TileEntity te = world.getBlockEntity(pos);
+				BlockEntity te = world.getBlockEntity(pos);
 
 				if(te instanceof OwnableTileEntity)
 				{
 					OwnableTileEntity ownableTe = (OwnableTileEntity) te;
 
-					if(ownableTe.getOwner().isOwner((PlayerEntity)entity))
-						return VoxelShapes.block();
+					if(ownableTe.getOwner().isOwner((Player)entity))
+						return Shapes.block();
 				}
 			}
 		}
 
-		return VoxelShapes.empty();
+		return Shapes.empty();
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity){
+	public void onEntityIntersected(Level world, BlockPos pos, Entity entity){
 		if(entity instanceof ItemEntity)
 			return;
 		else if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
@@ -74,7 +74,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	 * Called upon the block being destroyed by an explosion
 	 */
 	@Override
-	public void wasExploded(World world, BlockPos pos, Explosion explosion){
+	public void wasExploded(Level world, BlockPos pos, Explosion explosion){
 		if (!world.isClientSide)
 		{
 			if(pos.equals(new BlockPos(explosion.getPosition())))
@@ -85,7 +85,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid){
+	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid){
 		if(!world.isClientSide)
 			if(player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
@@ -98,19 +98,19 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	}
 
 	@Override
-	public boolean activateMine(World world, BlockPos pos)
+	public boolean activateMine(Level world, BlockPos pos)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean defuseMine(World world, BlockPos pos)
+	public boolean defuseMine(Level world, BlockPos pos)
 	{
 		return false;
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
+	public void explode(Level world, BlockPos pos) {
 		world.destroyBlock(pos, false);
 		world.explode((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 	}
@@ -124,7 +124,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	}
 
 	@Override
-	public boolean isActive(World world, BlockPos pos) {
+	public boolean isActive(Level world, BlockPos pos) {
 		return true;
 	}
 
@@ -139,17 +139,17 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new SecurityCraftTileEntity().intersectsEntities();
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, BlockState state, BlockPos pos) {
+	public ItemStack getDisplayStack(Level world, BlockState state, BlockPos pos) {
 		return new ItemStack(blockDisguisedAs);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos) {
+	public boolean shouldShowSCInfo(Level world, BlockState state, BlockPos pos) {
 		return false;
 	}
 

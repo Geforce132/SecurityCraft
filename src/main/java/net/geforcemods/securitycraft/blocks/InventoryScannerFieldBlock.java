@@ -11,30 +11,30 @@ import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -53,23 +53,23 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext ctx)
 	{
 		if (ctx.getEntity() == null)
-			return VoxelShapes.empty();
+			return Shapes.empty();
 
-		World world = ctx.getEntity().getCommandSenderWorld();
+		Level world = ctx.getEntity().getCommandSenderWorld();
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 		Entity entity = ctx.getEntity();
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
-			if (entity instanceof PlayerEntity && !EntityUtils.isInvisible((PlayerEntity)entity)) {
+			if (entity instanceof Player && !EntityUtils.isInvisible((Player)entity)) {
 				if (ModuleUtils.isAllowed(connectedScanner, entity))
-					return VoxelShapes.empty();
+					return Shapes.empty();
 
 				for (int i = 0; i < 10; i++) {
 					if (!connectedScanner.getStackInSlotCopy(i).isEmpty())
-						if (checkInventory((PlayerEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+						if (checkInventory((Player)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
 							return getShape(state, world, pos, ctx);
 				}
 			}
@@ -82,18 +82,18 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 			}
 		}
 
-		return VoxelShapes.empty();
+		return Shapes.empty();
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
+	public void onEntityIntersected(Level world, BlockPos pos, Entity entity)
 	{
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 		if(connectedScanner == null || connectedScanner.doesFieldSolidify())
 			return;
 
-		if(entity instanceof PlayerEntity && !EntityUtils.isInvisible((PlayerEntity)entity))
+		if(entity instanceof Player && !EntityUtils.isInvisible((Player)entity))
 		{
 			if(ModuleUtils.isAllowed(connectedScanner, entity))
 				return;
@@ -101,7 +101,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 			for(int i = 0; i < 10; i++)
 			{
 				if(!connectedScanner.getStackInSlotCopy(i).isEmpty())
-					checkInventory((PlayerEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
+					checkInventory((Player)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
 			}
 		}
 		else if(entity instanceof ItemEntity)
@@ -114,7 +114,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		}
 	}
 
-	public static boolean checkInventory(PlayerEntity player, InventoryScannerTileEntity te, ItemStack stack, boolean allowInteraction)
+	public static boolean checkInventory(Player player, InventoryScannerTileEntity te, ItemStack stack, boolean allowInteraction)
 	{
 		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && te.hasModule(ModuleType.STORAGE);
@@ -186,7 +186,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
 		if(item != null) {
 			if(!item.isEmpty() && item.getTag() != null && Block.byItem(item.getItem()) instanceof ShulkerBoxBlock) {
-				ListNBT list = item.getTag().getCompound("BlockEntityTag").getList("Items", NBT.TAG_COMPOUND);
+				ListTag list = item.getTag().getCompound("BlockEntityTag").getList("Items", NBT.TAG_COMPOUND);
 
 				for(int i = 0; i < list.size(); i++) {
 					ItemStack itemInChest = ItemStack.of(list.getCompound(i));
@@ -254,7 +254,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	}
 
 	@Override
-	public void destroy(IWorld world, BlockPos pos, BlockState state)
+	public void destroy(LevelAccessor world, BlockPos pos, BlockState state)
 	{
 		if(!world.isClientSide())
 		{
@@ -273,7 +273,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		}
 	}
 
-	private void checkAndDestroyFields(IWorld world, BlockPos pos, BiFunction<BlockPos,Integer,BlockPos> posModifier)
+	private void checkAndDestroyFields(LevelAccessor world, BlockPos pos, BiFunction<BlockPos,Integer,BlockPos> posModifier)
 	{
 		for(int i = 0; i < ConfigHandler.SERVER.inventoryScannerRange.get(); i++)
 		{
@@ -292,7 +292,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
 		if(state.getValue(HORIZONTAL))
 			return HORIZONTAL_SHAPE;
@@ -303,7 +303,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 			return SHAPE_EW; //ew
 		else if (facing == Direction.NORTH || facing == Direction.SOUTH)
 			return SHAPE_NS; //ns
-		return VoxelShapes.block();
+		return Shapes.block();
 	}
 
 	@Override
@@ -313,13 +313,13 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
 	{
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new SecurityCraftTileEntity().intersectsEntities();
 	}
 

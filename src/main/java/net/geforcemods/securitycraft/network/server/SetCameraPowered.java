@@ -4,11 +4,11 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SetCameraPowered
@@ -24,13 +24,13 @@ public class SetCameraPowered
 		this.powered = powered;
 	}
 
-	public static void encode(SetCameraPowered message, PacketBuffer buf)
+	public static void encode(SetCameraPowered message, FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(message.pos);
 		buf.writeBoolean(message.powered);
 	}
 
-	public static SetCameraPowered decode(PacketBuffer buf)
+	public static SetCameraPowered decode(FriendlyByteBuf buf)
 	{
 		SetCameraPowered message = new SetCameraPowered();
 
@@ -43,9 +43,9 @@ public class SetCameraPowered
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
-			PlayerEntity player = ctx.get().getSender();
-			World world = player.level;
-			TileEntity te = world.getBlockEntity(pos);
+			Player player = ctx.get().getSender();
+			Level world = player.level;
+			BlockEntity te = world.getBlockEntity(pos);
 
 			if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner(player))
 			{

@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class ClearLoggerClient
@@ -19,12 +19,12 @@ public class ClearLoggerClient
 		this.pos = pos;
 	}
 
-	public static void encode(ClearLoggerClient message, PacketBuffer buf)
+	public static void encode(ClearLoggerClient message, FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(message.pos);
 	}
 
-	public static ClearLoggerClient decode(PacketBuffer buf)
+	public static ClearLoggerClient decode(FriendlyByteBuf buf)
 	{
 		ClearLoggerClient message = new ClearLoggerClient();
 

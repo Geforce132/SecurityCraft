@@ -3,12 +3,12 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SyncProjector {
@@ -25,7 +25,7 @@ public class SyncProjector {
 		this.dataType = dataType;
 	}
 
-	public static void encode(SyncProjector message, PacketBuffer buf)
+	public static void encode(SyncProjector message, FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(message.pos);
 		buf.writeEnum(message.dataType);
@@ -36,7 +36,7 @@ public class SyncProjector {
 			buf.writeVarInt(message.data);
 	}
 
-	public static SyncProjector decode(PacketBuffer buf)
+	public static SyncProjector decode(FriendlyByteBuf buf)
 	{
 		SyncProjector message = new SyncProjector();
 
@@ -55,9 +55,9 @@ public class SyncProjector {
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
-			PlayerEntity player = ctx.get().getSender();
-			World world = player.level;
-			TileEntity te = world.getBlockEntity(pos);
+			Player player = ctx.get().getSender();
+			Level world = player.level;
+			BlockEntity te = world.getBlockEntity(pos);
 
 			if(world.isLoaded(pos) && te instanceof ProjectorTileEntity && ((ProjectorTileEntity)te).getOwner().isOwner(player))
 			{

@@ -6,12 +6,12 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DoorBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.ChatFormatting;
 
 public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 {
@@ -28,17 +28,17 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 
 		if(!level.isClientSide && upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity))
 		{
-			if(!(entity instanceof PlayerEntity))
+			if(!(entity instanceof Player))
 				return;
 
-			PlayerEntity player = (PlayerEntity)entity;
+			Player player = (Player)entity;
 
 			if(PlayerUtils.isPlayerMountedOnCamera(player))
 				return;
 
 			if(!getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, player))
 			{
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), ChatFormatting.RED);
 				return;
 			}
 
@@ -53,7 +53,7 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 				level.getBlockTicks().scheduleTick(worldPosition, SCContent.SCANNER_DOOR.get(), length);
 
 			if(open && sendsMessages())
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", player.getName()), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", player.getName()), ChatFormatting.GREEN);
 		}
 	}
 

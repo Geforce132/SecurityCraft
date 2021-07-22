@@ -1,17 +1,17 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 public class OwnerRestrictedSlot extends Slot {
 
 	private final IOwnable tileEntity;
 	private final boolean isGhostSlot;
 
-	public OwnerRestrictedSlot(IInventory inventory, IOwnable tileEntity, int index, int xPos, int yPos, boolean ghostSlot) {
+	public OwnerRestrictedSlot(Container inventory, IOwnable tileEntity, int index, int xPos, int yPos, boolean ghostSlot) {
 		super(inventory, index, xPos, yPos);
 		this.tileEntity = tileEntity;
 		isGhostSlot = ghostSlot;
@@ -21,7 +21,7 @@ public class OwnerRestrictedSlot extends Slot {
 	 * Return whether this slot's stack can be taken from this slot.
 	 */
 	@Override
-	public boolean mayPickup(PlayerEntity player){
+	public boolean mayPickup(Player player){
 		return tileEntity.getOwner().isOwner(player) && !isGhostSlot; //the !isGhostSlot check helps to prevent double clicking a stack to pull all items towards the stack
 	}
 

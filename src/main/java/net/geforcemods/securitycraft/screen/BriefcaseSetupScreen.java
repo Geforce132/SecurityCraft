@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -12,28 +12,28 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
+public class BriefcaseSetupScreen extends AbstractContainerScreen<GenericContainer> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslationTextComponent setupTitle = Utils.localize("gui.securitycraft:briefcase.setupTitle");
-	private TextFieldWidget keycodeTextbox;
+	private final TranslatableComponent setupTitle = Utils.localize("gui.securitycraft:briefcase.setupTitle");
+	private EditBox keycodeTextbox;
 	private Button saveAndContinueButton;
 
-	public BriefcaseSetupScreen(GenericContainer container, PlayerInventory inv, ITextComponent text) {
+	public BriefcaseSetupScreen(GenericContainer container, Inventory inv, Component text) {
 		super(container, inv, text);
 	}
 
@@ -44,7 +44,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::actionPerformed));
 		saveAndContinueButton.active = false;
 
-		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY));
+		addButton(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 47, 77, 12, TextComponent.EMPTY));
 		keycodeTextbox.setMaxLength(4);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = text.length() == 4);
@@ -58,18 +58,18 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		drawString(matrix, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
+	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY) {
 		font.draw(matrix, setupTitle, imageWidth / 2 - font.width(setupTitle) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
@@ -83,7 +83,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 			ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
 
 			if(!briefcase.hasTag())
-				briefcase.setTag(new CompoundNBT());
+				briefcase.setTag(new CompoundTag());
 
 			briefcase.getTag().putString("passcode", keycodeTextbox.getValue());
 

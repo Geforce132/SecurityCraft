@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SetSentryMode
@@ -23,13 +23,13 @@ public class SetSentryMode
 		this.mode = mode;
 	}
 
-	public static void encode(SetSentryMode message, PacketBuffer buf)
+	public static void encode(SetSentryMode message, FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(message.pos);
 		buf.writeInt(message.mode);
 	}
 
-	public static SetSentryMode decode(PacketBuffer buf)
+	public static SetSentryMode decode(FriendlyByteBuf buf)
 	{
 		SetSentryMode message = new SetSentryMode();
 
@@ -41,9 +41,9 @@ public class SetSentryMode
 	public static void onMessage(SetSentryMode message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
+			Player player = ctx.get().getSender();
 
-			List<SentryEntity> sentries = player.level.<SentryEntity>getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(message.pos));
+			List<SentryEntity> sentries = player.level.<SentryEntity>getEntitiesOfClass(SentryEntity.class, new AABB(message.pos));
 
 			if(!sentries.isEmpty() && sentries.get(0).getOwner().isOwner(player))
 				sentries.get(0).toggleMode(player, message.mode, false);

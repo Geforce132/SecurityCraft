@@ -15,32 +15,32 @@ import net.geforcemods.securitycraft.tileentity.ReinforcedIronBarsTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.EntitySelectionContext;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.EntityCollisionContext;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 
 public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
@@ -52,48 +52,48 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx){
-		TileEntity tile = world.getBlockEntity(pos);
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx){
+		BlockEntity tile = world.getBlockEntity(pos);
 
 		if(tile instanceof CageTrapTileEntity)
 		{
 			CageTrapTileEntity te = (CageTrapTileEntity)tile;
 
-			if(ctx instanceof EntitySelectionContext)
+			if(ctx instanceof EntityCollisionContext)
 			{
-				EntitySelectionContext esc = (EntitySelectionContext)ctx;
+				EntityCollisionContext esc = (EntityCollisionContext)ctx;
 				Entity entity = esc.getEntity();
 
-				if(entity instanceof PlayerEntity && (te.getOwner().isOwner((PlayerEntity)entity) || ModuleUtils.isAllowed(te, entity)))
+				if(entity instanceof Player && (te.getOwner().isOwner((Player)entity) || ModuleUtils.isAllowed(te, entity)))
 					return getCorrectShape(state, world, pos, ctx, te);
-				if(entity instanceof MobEntity && !state.getValue(DEACTIVATED))
-					return te.capturesMobs() ? VoxelShapes.empty() : getCorrectShape(state, world, pos, ctx, te);
+				if(entity instanceof Mob && !state.getValue(DEACTIVATED))
+					return te.capturesMobs() ? Shapes.empty() : getCorrectShape(state, world, pos, ctx, te);
 				else if(entity instanceof ItemEntity)
 					return getCorrectShape(state, world, pos, ctx, te);
 			}
 
-			return state.getValue(DEACTIVATED) ? getCorrectShape(state, world, pos, ctx, te) : VoxelShapes.empty();
+			return state.getValue(DEACTIVATED) ? getCorrectShape(state, world, pos, ctx, te) : Shapes.empty();
 		}
-		else return VoxelShapes.empty(); //shouldn't happen
+		else return Shapes.empty(); //shouldn't happen
 	}
 
-	private VoxelShape getCorrectShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx, DisguisableTileEntity disguisableTe)
+	private VoxelShape getCorrectShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx, DisguisableTileEntity disguisableTe)
 	{
 		ItemStack moduleStack = disguisableTe.getModule(ModuleType.DISGUISE);
 
 		if(!moduleStack.isEmpty() && (((ModuleItem)moduleStack.getItem()).getBlockAddons(moduleStack.getTag()).size() > 0))
 			return super.getCollisionShape(state, world, pos, ctx);
-		else return VoxelShapes.block();
+		else return Shapes.block();
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+	public void onEntityIntersected(Level world, BlockPos pos, Entity entity) {
 		if(!world.isClientSide){
 			CageTrapTileEntity tileEntity = (CageTrapTileEntity) world.getBlockEntity(pos);
-			boolean isPlayer = entity instanceof PlayerEntity;
+			boolean isPlayer = entity instanceof Player;
 
-			if(isPlayer || (entity instanceof MobEntity && tileEntity.capturesMobs())){
-				if((isPlayer && ((IOwnable)world.getBlockEntity(pos)).getOwner().isOwner((PlayerEntity)entity)))
+			if(isPlayer || (entity instanceof Mob && tileEntity.capturesMobs())){
+				if((isPlayer && ((IOwnable)world.getBlockEntity(pos)).getOwner().isOwner((Player)entity)))
 					return;
 
 				BlockState state = world.getBlockState(pos);
@@ -104,7 +104,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 				BlockPos topMiddle = pos.above(4);
 				String ownerName = ((IOwnable)world.getBlockEntity(pos)).getOwner().getName();
 
-				BlockModifier placer = new BlockModifier(world, new BlockPos.Mutable().set(pos), tileEntity.getOwner());
+				BlockModifier placer = new BlockModifier(world, new BlockPos.MutableBlockPos().set(pos), tileEntity.getOwner());
 
 				placer.loop((w, p, o) -> {
 					if(w.isEmptyBlock(p))
@@ -116,7 +116,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 					}
 				});
 				placer.loop((w, p, o) -> {
-					TileEntity te = w.getBlockEntity(p);
+					BlockEntity te = w.getBlockEntity(p);
 
 					if(te instanceof IOwnable)
 						((IOwnable)te).setOwner(o.getUUID(), o.getName());
@@ -125,16 +125,16 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 						((ReinforcedIronBarsTileEntity)te).setCanDrop(false);
 				});
 				world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
-				world.playSound(null, pos, SoundEvents.ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
+				world.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 3.0F, 1.0F);
 
 				if(isPlayer && PlayerUtils.isPlayerOnline(ownerName))
-					PlayerUtils.sendMessageToPlayer(ownerName, Utils.localize(SCContent.CAGE_TRAP.get().getDescriptionId()), Utils.localize("messages.securitycraft:cageTrap.captured", ((PlayerEntity) entity).getName(), Utils.getFormattedCoordinates(pos)), TextFormatting.BLACK);
+					PlayerUtils.sendMessageToPlayer(ownerName, Utils.localize(SCContent.CAGE_TRAP.get().getDescriptionId()), Utils.localize("messages.securitycraft:cageTrap.captured", ((Player) entity).getName(), Utils.getFormattedCoordinates(pos)), ChatFormatting.BLACK);
 			}
 		}
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		ItemStack stack = player.getItemInHand(hand);
 
@@ -147,8 +147,8 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 				if(!player.isCreative())
 					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				world.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				return ActionResultType.SUCCESS;
+				world.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
+				return InteractionResult.SUCCESS;
 			}
 		}
 		else if(stack.getItem() == Items.REDSTONE)
@@ -160,44 +160,44 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 				if(!player.isCreative())
 					stack.shrink(1);
 
-				world.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				return ActionResultType.SUCCESS;
+				world.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
+				return InteractionResult.SUCCESS;
 			}
 		}
 
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity player)
+	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player player)
 	{
 		return defaultBlockState().setValue(DEACTIVATED, false);
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
 		builder.add(DEACTIVATED);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new CageTrapTileEntity().intersectsEntities();
 	}
 
 	public static class BlockModifier
 	{
-		private World world;
-		private BlockPos.Mutable pos;
+		private Level world;
+		private BlockPos.MutableBlockPos pos;
 		private BlockPos origin;
 		private Owner owner;
 
-		public BlockModifier(World world, BlockPos.Mutable origin, Owner owner)
+		public BlockModifier(Level world, BlockPos.MutableBlockPos origin, Owner owner)
 		{
 			this.world = world;
 			pos = origin.move(-1, 1, -1);
@@ -205,7 +205,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 			this.owner = owner;
 		}
 
-		public void loop(TriConsumer<World,BlockPos.Mutable,Owner> ifTrue)
+		public void loop(TriConsumer<Level,BlockPos.MutableBlockPos,Owner> ifTrue)
 		{
 			for(int y = 0; y < 4; y++)
 			{

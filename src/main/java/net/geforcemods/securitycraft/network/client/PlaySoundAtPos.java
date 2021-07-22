@@ -4,12 +4,12 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class PlaySoundAtPos{
@@ -36,7 +36,7 @@ public class PlaySoundAtPos{
 		this((int)x, (int)y, (int)z, sound, volume, cat);
 	}
 
-	public static void encode(PlaySoundAtPos message, PacketBuffer buf)
+	public static void encode(PlaySoundAtPos message, FriendlyByteBuf buf)
 	{
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
@@ -46,7 +46,7 @@ public class PlaySoundAtPos{
 		buf.writeUtf(message.category);
 	}
 
-	public static PlaySoundAtPos decode(PacketBuffer buf)
+	public static PlaySoundAtPos decode(FriendlyByteBuf buf)
 	{
 		PlaySoundAtPos message = new PlaySoundAtPos();
 
@@ -62,13 +62,13 @@ public class PlaySoundAtPos{
 	public static void onMessage(PlaySoundAtPos message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = SecurityCraft.proxy.getClientPlayer();
+			Player player = SecurityCraft.proxy.getClientPlayer();
 			BlockPos pos = player.blockPosition();
 			BlockPos origin = new BlockPos(message.x, message.y, message.z);
 			int dist = Math.max(0, Math.min(pos.distManhattan(origin), 20)); //clamp between 0 and 20
 			float volume = (float)(message.volume * (1 - ((float)dist / 20))); //the further away the quieter
 
-			Minecraft.getInstance().level.playSound(player, origin, new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.valueOf(message.category.toUpperCase()), volume, 1.0F);
+			Minecraft.getInstance().level.playSound(player, origin, new SoundEvent(new ResourceLocation(message.sound)), SoundSource.valueOf(message.category.toUpperCase()), volume, 1.0F);
 		});
 
 		ctx.get().setPacketHandled(true);

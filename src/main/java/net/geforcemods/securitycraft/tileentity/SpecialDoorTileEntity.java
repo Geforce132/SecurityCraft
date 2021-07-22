@@ -8,20 +8,20 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DoorBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.BlockPos;
 
 public abstract class SpecialDoorTileEntity extends CustomizableTileEntity
 {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
 
-	public SpecialDoorTileEntity(TileEntityType<?> type)
+	public SpecialDoorTileEntity(BlockEntityType<?> type)
 	{
 		super(type);
 	}
@@ -54,7 +54,7 @@ public abstract class SpecialDoorTileEntity extends CustomizableTileEntity
 
 		if(other.getValue(DoorBlock.HALF) != myHalf)
 		{
-			TileEntity otherTe = level.getBlockEntity(otherPos);
+			BlockEntity otherTe = level.getBlockEntity(otherPos);
 
 			if(otherTe instanceof SpecialDoorTileEntity)
 			{

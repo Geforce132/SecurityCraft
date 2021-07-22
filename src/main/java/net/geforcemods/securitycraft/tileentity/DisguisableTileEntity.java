@@ -7,8 +7,8 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.model.ModelDataManager;
 import net.minecraftforge.client.model.data.IModelData;
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class DisguisableTileEntity extends CustomizableTileEntity
 {
-	public DisguisableTileEntity(TileEntityType<?> type)
+	public DisguisableTileEntity(BlockEntityType<?> type)
 	{
 		super(type);
 	}

@@ -3,13 +3,13 @@ package net.geforcemods.securitycraft.entity;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MoverType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BouncingBettyEntity extends Entity {
@@ -17,11 +17,11 @@ public class BouncingBettyEntity extends Entity {
 	/** How long the fuse is */
 	public int fuse;
 
-	public BouncingBettyEntity(EntityType<BouncingBettyEntity> type, World world){
+	public BouncingBettyEntity(EntityType<BouncingBettyEntity> type, Level world){
 		super(SCContent.eTypeBouncingBetty, world);
 	}
 
-	public BouncingBettyEntity(World world, double x, double y, double z){
+	public BouncingBettyEntity(Level world, double x, double y, double z){
 		this(SCContent.eTypeBouncingBetty, world);
 		setPos(x, y, z);
 		float f = (float)(Math.random() * Math.PI * 2.0D);
@@ -88,7 +88,7 @@ public class BouncingBettyEntity extends Entity {
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	@Override
-	protected void addAdditionalSaveData(CompoundNBT tag)
+	protected void addAdditionalSaveData(CompoundTag tag)
 	{
 		tag.putByte("Fuse", (byte)fuse);
 	}
@@ -97,13 +97,13 @@ public class BouncingBettyEntity extends Entity {
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	@Override
-	protected void readAdditionalSaveData(CompoundNBT tag)
+	protected void readAdditionalSaveData(CompoundTag tag)
 	{
 		fuse = tag.getByte("Fuse");
 	}
 
 	@Override
-	public IPacket<?> getAddEntityPacket()
+	public Packet<?> getAddEntityPacket()
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}

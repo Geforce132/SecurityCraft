@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -32,7 +32,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	/**
 	 * @return The TileEntity this inventory is for
 	 */
-	public TileEntity getTileEntity();
+	public BlockEntity getTileEntity();
 
 	/**
 	 * @return The amount of modules that can be inserted
@@ -50,7 +50,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 */
 	public default void onModuleInserted(ItemStack stack, ModuleType module)
 	{
-		TileEntity te = getTileEntity();
+		BlockEntity te = getTileEntity();
 
 		if(!te.getLevel().isClientSide)
 			te.getLevel().sendBlockUpdated(te.getBlockPos(), te.getBlockState(), te.getBlockState(), 3);
@@ -64,7 +64,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 */
 	public default void onModuleRemoved(ItemStack stack, ModuleType module)
 	{
-		TileEntity te = getTileEntity();
+		BlockEntity te = getTileEntity();
 
 		if(!te.getLevel().isClientSide)
 			te.getLevel().sendBlockUpdated(te.getBlockPos(), te.getBlockState(), te.getBlockState(), 3);
@@ -121,7 +121,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		{
 			if(!simulate)
 			{
-				TileEntity te = getTileEntity();
+				BlockEntity te = getTileEntity();
 
 				if(stack.getItem() instanceof ModuleItem)
 				{
@@ -155,7 +155,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 			if(!simulate)
 			{
 				ItemStack copy = stack.copy();
-				TileEntity te = getTileEntity();
+				BlockEntity te = getTileEntity();
 
 				copy.setCount(1);
 				getInventory().set(slot, copy);
@@ -185,7 +185,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	{
 		slot = fixSlotId(slot);
 
-		TileEntity te = getTileEntity();
+		BlockEntity te = getTileEntity();
 		ItemStack previous = getModuleInSlot(slot);
 
 		//call the correct methods, should there have been a module in the slot previously
@@ -375,14 +375,14 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 * @param tag The tag to read the inventory from
 	 * @return A NonNullList of ItemStacks that were read from the given tag
 	 */
-	public default NonNullList<ItemStack> readModuleInventory(CompoundNBT tag)
+	public default NonNullList<ItemStack> readModuleInventory(CompoundTag tag)
 	{
-		ListNBT list = tag.getList("Modules", Constants.NBT.TAG_COMPOUND);
+		ListTag list = tag.getList("Modules", Constants.NBT.TAG_COMPOUND);
 		NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
 		for(int i = 0; i < list.size(); ++i)
 		{
-			CompoundNBT stackTag = list.getCompound(i);
+			CompoundTag stackTag = list.getCompound(i);
 			byte slot = stackTag.getByte("ModuleSlot");
 
 			if(slot >= 0 && slot < modules.size())
@@ -397,16 +397,16 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 * @param tag The tag to write the inventory to
 	 * @return The modified CompoundNBT
 	 */
-	public default CompoundNBT writeModuleInventory(CompoundNBT tag)
+	public default CompoundTag writeModuleInventory(CompoundTag tag)
 	{
-		ListNBT list = new ListNBT();
+		ListTag list = new ListTag();
 		NonNullList<ItemStack> modules = getInventory();
 
 		for(int i = 0; i < modules.size(); i++)
 		{
 			if(!modules.get(i).isEmpty())
 			{
-				CompoundNBT stackTag = new CompoundNBT();
+				CompoundTag stackTag = new CompoundTag();
 
 				stackTag.putByte("ModuleSlot", (byte)i);
 				modules.get(i).save(stackTag);

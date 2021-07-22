@@ -2,22 +2,22 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DoorBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.state.properties.DoorHingeSide;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.state.properties.DoorHingeSide;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public abstract class SpecialDoorItem extends Item
 {
@@ -27,17 +27,17 @@ public abstract class SpecialDoorItem extends Item
 	}
 
 	@Override
-	public ActionResultType useOn(ItemUseContext ctx)
+	public InteractionResult useOn(UseOnContext ctx)
 	{
 		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx);
 	}
 
-	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, ItemUseContext ctx)
+	public InteractionResult onItemUse(Player player, Level world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, UseOnContext ctx)
 	{
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (!block.canBeReplaced(state, new BlockItemUseContext(ctx)))
+		if (!block.canBeReplaced(state, new BlockPlaceContext(ctx)))
 			pos = pos.relative(facing);
 
 		if (player.mayUseItemAt(pos, facing, stack) && BlockUtils.isSideSolid(world, pos.below(), Direction.UP))
@@ -48,11 +48,11 @@ public abstract class SpecialDoorItem extends Item
 			boolean flag = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;
 
 			if(!placeDoor(world, pos, angleFacing, getDoorBlock(), flag, ctx))
-				return ActionResultType.FAIL;
+				return InteractionResult.FAIL;
 
 			SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
 
-			world.playSound(null, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+			world.playSound(null, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 
 			if(!player.isCreative())
 				stack.shrink(1);
@@ -67,17 +67,17 @@ public abstract class SpecialDoorItem extends Item
 				CustomizableTileEntity.link(lowerTe, upperTe);
 			}
 
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 		else
-			return ActionResultType.FAIL;
+			return InteractionResult.FAIL;
 	}
 
-	public boolean placeDoor(World world, BlockPos pos, Direction facing, Block door, boolean isRightHinge, ItemUseContext ctx) //naming might not be entirely correct, but it's giving a rough idea
+	public boolean placeDoor(Level world, BlockPos pos, Direction facing, Block door, boolean isRightHinge, UseOnContext ctx) //naming might not be entirely correct, but it's giving a rough idea
 	{
 		BlockPos posAbove = pos.above();
 
-		if(!world.getBlockState(posAbove).canBeReplaced(new BlockItemUseContext(ctx)))
+		if(!world.getBlockState(posAbove).canBeReplaced(new BlockPlaceContext(ctx)))
 			return false;
 
 		BlockPos left = pos.relative(facing.getClockWise());

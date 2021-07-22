@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class OpenSRATGui
@@ -19,12 +19,12 @@ public class OpenSRATGui
 		this.viewDistance = viewDistance;
 	}
 
-	public static void encode(OpenSRATGui message, PacketBuffer buf)
+	public static void encode(OpenSRATGui message, FriendlyByteBuf buf)
 	{
 		buf.writeInt(message.viewDistance);
 	}
 
-	public static OpenSRATGui decode(PacketBuffer buf)
+	public static OpenSRATGui decode(FriendlyByteBuf buf)
 	{
 		OpenSRATGui message = new OpenSRATGui();
 

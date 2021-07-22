@@ -2,44 +2,44 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.model.RenderMaterial;
-import net.minecraft.client.renderer.texture.NativeImage;
-import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer.SignModel;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.IReorderingProcessor;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.resources.model.Material;
+import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
+import net.minecraft.client.renderer.blockentity.SignRenderer.SignModel;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.util.FormattedCharSequence;
+import com.mojang.math.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignTileEntity>
+public class SecretSignTileEntityRenderer extends BlockEntityRenderer<SecretSignTileEntity>
 {
 	private final SignModel model = new SignModel();
 
-	public SecretSignTileEntityRenderer(TileEntityRendererDispatcher terd)
+	public SecretSignTileEntityRenderer(BlockEntityRenderDispatcher terd)
 	{
 		super(terd);
 	}
 
 	@Override
-	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
+	public void render(SecretSignTileEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
 	{
 		BlockState state = te.getBlockState();
-		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
-		FontRenderer font = renderer.getFont();
-		IVertexBuilder builder;
+		Material material = SignRenderer.getMaterial(state.getBlock());
+		Font font = renderer.getFont();
+		VertexConsumer builder;
 
 		matrix.pushPose();
 
@@ -76,9 +76,9 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 
 			for(int line = 0; line < 4; ++line)
 			{
-				IReorderingProcessor rp = te.getRenderMessage(line, (p_243502_1_) -> {
-					List<IReorderingProcessor> list = font.split(p_243502_1_, 90);
-					return list.isEmpty() ? IReorderingProcessor.EMPTY : list.get(0);
+				FormattedCharSequence rp = te.getRenderMessage(line, (p_243502_1_) -> {
+					List<FormattedCharSequence> list = font.split(p_243502_1_, 90);
+					return list.isEmpty() ? FormattedCharSequence.EMPTY : list.get(0);
 				});
 
 				if(rp != null)

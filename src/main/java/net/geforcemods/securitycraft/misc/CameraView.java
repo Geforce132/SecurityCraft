@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.misc;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Simple wrapper class for LookingGlass camera views
@@ -20,9 +20,9 @@ public class CameraView { //TODO: is this still needed? could switch to net.mine
 	public int x = 0;
 	public int y = 0;
 	public int z = 0;
-	public ResourceLocation dimension = World.OVERWORLD.location();
+	public ResourceLocation dimension = Level.OVERWORLD.location();
 
-	public CameraView(int x, int y, int z, RegistryKey<World> dim) {
+	public CameraView(int x, int y, int z, ResourceKey<Level> dim) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -40,7 +40,7 @@ public class CameraView { //TODO: is this still needed? could switch to net.mine
 			dimension = dim;
 	}
 
-	public CameraView(BlockPos pos, RegistryKey<World> dim) {
+	public CameraView(BlockPos pos, ResourceKey<Level> dim) {
 		x = pos.getX();
 		y = pos.getY();
 		z = pos.getZ();

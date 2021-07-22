@@ -13,21 +13,21 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
-public class IMSTileEntity extends CustomizableTileEntity implements INamedContainerProvider {
+public class IMSTileEntity extends CustomizableTileEntity implements MenuProvider {
 
 	private IntOption range = new IntOption(this::getBlockPos, "range", 12, 1, 30, 1, true);
 	/** Number of bombs remaining in storage. **/
@@ -67,12 +67,12 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	 */
 	private void launchMine() {
 		if(bombsRemaining > 0){
-			AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(range.get());
+			AABB area = new AABB(worldPosition).inflate(range.get());
 			LivingEntity target = null;
 
 			if(targetingMode == IMSTargetingMode.MOBS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS)
 			{
-				List<MonsterEntity> mobs = level.<MonsterEntity>getEntitiesOfClass(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
+				List<Monster> mobs = level.<Monster>getEntitiesOfClass(Monster.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if(!mobs.isEmpty())
 					target = mobs.get(0);
@@ -80,7 +80,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 			if(target == null && (targetingMode == IMSTargetingMode.PLAYERS  || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS))
 			{
-				List<PlayerEntity> players = level.<PlayerEntity>getEntitiesOfClass(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
+				List<Player> players = level.<Player>getEntitiesOfClass(Player.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if(!players.isEmpty())
 					target = players.get(0);
@@ -97,7 +97,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				level.addFreshEntity(new IMSBombEntity(level, worldPosition.getX() + addToX, worldPosition.getY(), worldPosition.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
 
 				if (!level.isClientSide)
-					level.playSound(null, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), SoundEvents.ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+					level.playSound(null, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F);
 
 				bombsRemaining--;
 				updateBombCount = true;
@@ -108,7 +108,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	public boolean canAttackEntity(LivingEntity entity)
 	{
 		return entity != null
-				&& (!(entity instanceof PlayerEntity) || !getOwner().isOwner((PlayerEntity)entity) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !((PlayerEntity)entity).isCreative() && !((PlayerEntity)entity).isSpectator()) //PlayerEntity checks
+				&& (!(entity instanceof Player) || !getOwner().isOwner((Player)entity) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !((Player)entity).isCreative() && !((Player)entity).isSpectator()) //PlayerEntity checks
 				&& !(ModuleUtils.isAllowed(this, entity)); //checks for all entities
 	}
 
@@ -136,7 +136,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	 * @return
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT tag){
+	public CompoundTag save(CompoundTag tag){
 		super.save(tag);
 
 		tag.putInt("bombsRemaining", bombsRemaining);
@@ -149,7 +149,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void load(BlockState state, CompoundNBT tag){
+	public void load(BlockState state, CompoundTag tag){
 		super.load(state, tag);
 
 		bombsRemaining = tag.getInt("bombsRemaining");
@@ -180,15 +180,15 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	}
 
 	@Override
-	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
 		return new GenericTEContainer(SCContent.cTypeIMS, windowId, level, worldPosition);
 	}
 
 	@Override
-	public ITextComponent getDisplayName()
+	public Component getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.IMS.get().getDescriptionId());
+		return new TranslatableComponent(SCContent.IMS.get().getDescriptionId());
 	}
 
 	public int getAttackInterval()

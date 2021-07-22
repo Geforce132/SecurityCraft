@@ -1,11 +1,11 @@
 package net.geforcemods.securitycraft.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class WorldUtils{
@@ -14,7 +14,7 @@ public class WorldUtils{
 	 * Correctly schedules a task for execution on the main thread depending on if the
 	 * provided world is client- or serverside
 	 */
-	public static void addScheduledTask(IWorld w, Runnable r)
+	public static void addScheduledTask(LevelAccessor w, Runnable r)
 	{
 		if(w.isClientSide()) //clientside
 			Minecraft.getInstance().execute(r);
@@ -22,14 +22,14 @@ public class WorldUtils{
 			ServerLifecycleHooks.getCurrentServer().execute(r);
 	}
 
-	public static void spawnLightning(World world, Vector3d pos, boolean effectOnly)
+	public static void spawnLightning(Level world, Vec3 pos, boolean effectOnly)
 	{
 		world.addFreshEntity(createLightning(world, pos, effectOnly));
 	}
 
-	public static LightningBoltEntity createLightning(World world, Vector3d pos, boolean effectOnly)
+	public static LightningBolt createLightning(Level world, Vec3 pos, boolean effectOnly)
 	{
-		LightningBoltEntity lightning = EntityType.LIGHTNING_BOLT.create(world);
+		LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(world);
 
 		lightning.moveTo(pos);
 		lightning.setVisualOnly(effectOnly);

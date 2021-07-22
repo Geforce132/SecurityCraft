@@ -5,11 +5,11 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SetKeycardUses
@@ -25,13 +25,13 @@ public class SetKeycardUses
 		this.uses = uses;
 	}
 
-	public static void encode(SetKeycardUses message, PacketBuffer buf)
+	public static void encode(SetKeycardUses message, FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(message.pos);
 		buf.writeVarInt(message.uses);
 	}
 
-	public static SetKeycardUses decode(PacketBuffer buf)
+	public static SetKeycardUses decode(FriendlyByteBuf buf)
 	{
 		SetKeycardUses message = new SetKeycardUses();
 
@@ -44,8 +44,8 @@ public class SetKeycardUses
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
-			PlayerEntity player = ctx.get().getSender();
-			TileEntity tile = player.level.getBlockEntity(pos);
+			Player player = ctx.get().getSender();
+			BlockEntity tile = player.level.getBlockEntity(pos);
 
 			if(tile instanceof KeycardReaderTileEntity)
 			{
@@ -53,7 +53,7 @@ public class SetKeycardUses
 
 				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
 				{
-					Container container = player.containerMenu;
+					AbstractContainerMenu container = player.containerMenu;
 
 					if(container instanceof KeycardReaderContainer)
 						((KeycardReaderContainer)container).setKeycardUses(message.uses);

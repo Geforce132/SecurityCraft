@@ -8,22 +8,22 @@ import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class UniversalBlockModifierItem extends Item
@@ -34,42 +34,42 @@ public class UniversalBlockModifierItem extends Item
 	}
 
 	@Override
-	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
+	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx)
 	{
-		World world = ctx.getLevel();
+		Level world = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		TileEntity te = world.getBlockEntity(pos);
-		PlayerEntity player = ctx.getPlayer();
+		BlockEntity te = world.getBlockEntity(pos);
+		Player player = ctx.getPlayer();
 
 		if(te instanceof IModuleInventory)
 		{
 			if(te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player))
 			{
 				if(!(te instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)te).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) te).getOwner().getName()), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) te).getOwner().getName()), ChatFormatting.RED);
 
-				return ActionResultType.FAIL;
+				return InteractionResult.FAIL;
 			}
 			else if(!ctx.getLevel().isClientSide)
 			{
-				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+				NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 					{
 						return new CustomizeBlockContainer(windowId, world, pos, inv);
 					}
 
 					@Override
-					public ITextComponent getDisplayName()
+					public Component getDisplayName()
 					{
-						return new TranslationTextComponent(te.getBlockState().getBlock().getDescriptionId());
+						return new TranslatableComponent(te.getBlockState().getBlock().getDescriptionId());
 					}
 				}, pos);
 			}
 
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 }

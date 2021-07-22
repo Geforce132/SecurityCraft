@@ -6,27 +6,27 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class CustomizeBlockContainer extends Container{
+public class CustomizeBlockContainer extends AbstractContainerMenu{
 
 	public IModuleInventory moduleInv;
-	private IWorldPosCallable worldPosCallable;
+	private ContainerLevelAccess worldPosCallable;
 	private final int maxSlots;
 
-	public CustomizeBlockContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
+	public CustomizeBlockContainer(int windowId, Level world, BlockPos pos, Inventory inventory) {
 		super(SCContent.cTypeCustomizeBlock, windowId);
 		this.moduleInv = (IModuleInventory)world.getBlockEntity(pos);
-		worldPosCallable = IWorldPosCallable.create(world, pos);
+		worldPosCallable = ContainerLevelAccess.create(world, pos);
 
 		int slotId = 0;
 
@@ -66,7 +66,7 @@ public class CustomizeBlockContainer extends Container{
 	}
 
 	@Override
-	public ItemStack quickMoveStack(PlayerEntity player, int index)
+	public ItemStack quickMoveStack(Player player, int index)
 	{
 		ItemStack copy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
@@ -110,7 +110,7 @@ public class CustomizeBlockContainer extends Container{
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return stillValid(worldPosCallable, player, moduleInv.getTileEntity().getBlockState().getBlock());
 	}
 

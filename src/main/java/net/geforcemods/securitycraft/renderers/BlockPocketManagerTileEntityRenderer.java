@@ -1,29 +1,29 @@
 package net.geforcemods.securitycraft.renderers;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.core.Direction;
+import com.mojang.math.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<BlockPocketManagerTileEntity>
+public class BlockPocketManagerTileEntityRenderer extends BlockEntityRenderer<BlockPocketManagerTileEntity>
 {
-	public BlockPocketManagerTileEntityRenderer(TileEntityRendererDispatcher terd)
+	public BlockPocketManagerTileEntityRenderer(BlockEntityRenderDispatcher terd)
 	{
 		super(terd);
 	}
 
 	@Override
-	public void render(BlockPocketManagerTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
+	public void render(BlockPocketManagerTileEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
 	{
 		// The code below draws the outline border of a block pocket.
 
@@ -32,7 +32,7 @@ public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<Blo
 
 		Matrix4f positionMatrix = matrix.last().pose();
 		Direction facing = te.getBlockState().getValue(BlockPocketManagerBlock.FACING);
-		IVertexBuilder builder = buffer.getBuffer(RenderType.lines());
+		VertexConsumer builder = buffer.getBuffer(RenderType.lines());
 		int offset = facing == Direction.NORTH || facing == Direction.EAST ? -te.autoBuildOffset : te.autoBuildOffset; //keep negative values moving the offset to the left consistent
 		int size = te.size;
 		int half = (size - 1) / 2;

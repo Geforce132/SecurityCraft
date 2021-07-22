@@ -4,21 +4,21 @@ import java.util.Arrays;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.text.ITextComponent;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Matrix4f;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 
 public class ClientUtils{
@@ -55,14 +55,14 @@ public class ClientUtils{
 		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(item));
 	}
 
-	public static void renderModuleInfo(MatrixStack matrix, ModuleType module, ITextComponent moduleTooltip, ITextComponent noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY)
+	public static void renderModuleInfo(PoseStack matrix, ModuleType module, Component moduleTooltip, Component noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY)
 	{
 		Minecraft mc = Minecraft.getInstance();
 		float alpha = isModuleInstalled ? 1.0F : 0.5F;
 		int moduleRight = moduleLeft + 16;
 		int moduleBottom = moduleTop + 16;
 		Matrix4f m4f = matrix.last().pose();
-		BufferBuilder bufferBuilder = Tessellator.getInstance().getBuilder();
+		BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
 
 		RenderSystem.enableAlphaTest();
 		RenderSystem.enableBlend();
@@ -87,7 +87,7 @@ public class ClientUtils{
 
 		if(mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
 		{
-			ITextComponent text = isModuleInstalled ? moduleTooltip : noModuleTooltip;
+			Component text = isModuleInstalled ? moduleTooltip : noModuleTooltip;
 
 			if(text != null)
 				GuiUtils.drawHoveringText(matrix, Arrays.asList(text), mouseX, mouseY, screenWidth, screenHeight, -1, mc.font);
@@ -96,12 +96,12 @@ public class ClientUtils{
 
 	private static void drawTexture(BufferBuilder bufferBuilder, Matrix4f m4f, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha)
 	{
-		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
+		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
 		bufferBuilder.vertex(m4f, moduleLeft, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(0, 1).endVertex();
 		bufferBuilder.vertex(m4f, moduleRight, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(1, 1).endVertex();
 		bufferBuilder.vertex(m4f, moduleRight, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(1, 0).endVertex();
 		bufferBuilder.vertex(m4f, moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(0, 0).endVertex();
 		bufferBuilder.end();
-		WorldVertexBufferUploader.end(bufferBuilder);
+		BufferUploader.end(bufferBuilder);
 	}
 }

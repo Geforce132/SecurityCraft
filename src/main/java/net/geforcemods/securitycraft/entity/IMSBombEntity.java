@@ -6,33 +6,33 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.projectile.AbstractFireballEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.projectile.Fireball;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.HitResult.Type;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class IMSBombEntity extends AbstractFireballEntity {
+public class IMSBombEntity extends Fireball {
 
-	private static final DataParameter<Owner> OWNER = EntityDataManager.defineId(IMSBombEntity.class, Owner.getSerializer());
+	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.defineId(IMSBombEntity.class, Owner.getSerializer());
 	private int ticksFlying = 0;
 	private int launchTime;
 	private boolean launching = true;
 	private boolean isFast;
 
-	public IMSBombEntity(EntityType<IMSBombEntity> type, World world){
+	public IMSBombEntity(EntityType<IMSBombEntity> type, Level world){
 		super(SCContent.eTypeImsBomb, world);
 	}
 
-	public IMSBombEntity(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSTileEntity te){
+	public IMSBombEntity(Level world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSTileEntity te){
 		super(SCContent.eTypeImsBomb, x, y, z, accelerationX, accelerationY, accelerationZ, world);
 		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
 
@@ -66,9 +66,9 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	}
 
 	@Override
-	protected void onHit(RayTraceResult result){
-		if(!level.isClientSide && result.getType() == Type.BLOCK && level.getBlockState(((BlockRayTraceResult)result).getBlockPos()).getBlock() != SCContent.IMS.get()){
-			BlockPos impactPos = ((BlockRayTraceResult)result).getBlockPos();
+	protected void onHit(HitResult result){
+		if(!level.isClientSide && result.getType() == Type.BLOCK && level.getBlockState(((BlockHitResult)result).getBlockPos()).getBlock() != SCContent.IMS.get()){
+			BlockPos impactPos = ((BlockHitResult)result).getBlockPos();
 
 			level.explode(this, impactPos.getX(), impactPos.getY() + 1D, impactPos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.5F : 7F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 			remove();
@@ -76,7 +76,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT tag)
+	public void addAdditionalSaveData(CompoundTag tag)
 	{
 		super.addAdditionalSaveData(tag);
 		tag.putInt("launchTime", launchTime);
@@ -86,7 +86,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundNBT tag)
+	public void readAdditionalSaveData(CompoundTag tag)
 	{
 		super.readAdditionalSaveData(tag);
 		launchTime = tag.getInt("launchTime");
@@ -131,7 +131,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	}
 
 	@Override
-	public IPacket<?> getAddEntityPacket()
+	public Packet<?> getAddEntityPacket()
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}

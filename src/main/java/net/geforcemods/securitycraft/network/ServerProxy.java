@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.network;
 
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 
 public class ServerProxy implements IProxy
 {
@@ -13,7 +13,7 @@ public class ServerProxy implements IProxy
 	public void tint() {}
 
 	@Override
-	public PlayerEntity getClientPlayer()
+	public Player getClientPlayer()
 	{
 		return null;
 	}
@@ -28,7 +28,7 @@ public class ServerProxy implements IProxy
 	public void displayEditModuleGui(ItemStack stack) {}
 
 	@Override
-	public void displayCameraMonitorGui(PlayerInventory inv, CameraMonitorItem item, CompoundNBT stackTag) {}
+	public void displayCameraMonitorGui(Inventory inv, CameraMonitorItem item, CompoundTag stackTag) {}
 
 	@Override
 	public void displaySCManualGui() {}

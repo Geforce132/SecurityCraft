@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -35,37 +35,39 @@ import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.item.crafting.ShapelessRecipe;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IReorderingProcessor;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.ClickEvent.Action;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Button;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.ClickEvent.Action;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.fml.client.gui.GuiUtils;
+
+import net.minecraft.client.gui.components.Button.OnPress;
 
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {
@@ -81,18 +83,18 @@ public class SCManualScreen extends Screen {
 	private NonNullList<Ingredient> recipe;
 	private IngredientDisplay[] displays = new IngredientDisplay[9];
 	private int startX = -1;
-	private List<ITextProperties> subpages = new ArrayList<>();
-	private List<IReorderingProcessor> author = new ArrayList<>();
+	private List<FormattedText> subpages = new ArrayList<>();
+	private List<FormattedCharSequence> author = new ArrayList<>();
 	private int currentSubpage = 0;
 	private final int subpageLength = 1285;
-	private final IFormattableTextComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.setUnderlined(true));
-	private final TranslationTextComponent ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
-	private List<IReorderingProcessor> intro2;
+	private final MutableComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.setUnderlined(true));
+	private final TranslatableComponent ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
+	private List<FormattedCharSequence> intro2;
 	private PatronList patronList;
 	private Button patreonLinkButton;
 
 	public SCManualScreen() {
-		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getDescriptionId()));
+		super(new TranslatableComponent(SCContent.SC_MANUAL.get().getDescriptionId()));
 	}
 
 	@Override
@@ -105,7 +107,7 @@ public class SCManualScreen extends Screen {
 		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 188, false, this::actionPerformed)); //previous page
 		addButton(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
 		addButton(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
-		addButton(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, StringTextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
+		addButton(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, TextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
 		children.add(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
 
 		for(int i = 0; i < 3; i++)
@@ -126,7 +128,7 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks){
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -174,7 +176,7 @@ public class SCManualScreen extends Screen {
 
 				if(block.hasTileEntity(block.defaultBlockState()))
 				{
-					TileEntity te = block.createTileEntity(block.defaultBlockState(), Minecraft.getInstance().level);
+					BlockEntity te = block.createTileEntity(block.defaultBlockState(), Minecraft.getInstance().level);
 
 					if(te instanceof IOwnable)
 						blit(matrix, startX + 29, 118, 1, 1, 16, 16);
@@ -229,14 +231,14 @@ public class SCManualScreen extends Screen {
 
 			for(int i = 0; i < intro2.size(); i++)
 			{
-				IReorderingProcessor text = intro2.get(i);
+				FormattedCharSequence text = intro2.get(i);
 
 				font.draw(matrix, text, width / 2 - font.width(text) / 2, 150 + 10 * i, 0);
 			}
 
 			for(int i = 0; i < author.size(); i++)
 			{
-				IReorderingProcessor text = author.get(i);
+				FormattedCharSequence text = author.get(i);
 
 				font.draw(matrix, text, width / 2 - font.width(text) / 2, 180 + 10 * i, 0);
 			}
@@ -366,7 +368,7 @@ public class SCManualScreen extends Screen {
 
 		recipe = null;
 
-		for(IRecipe<?> object : Minecraft.getInstance().level.getRecipeManager().getRecipes())
+		for(Recipe<?> object : Minecraft.getInstance().level.getRecipeManager().getRecipes())
 		{
 			if(object instanceof ShapedRecipe){
 				ShapedRecipe recipe = (ShapedRecipe) object;
@@ -402,7 +404,7 @@ public class SCManualScreen extends Screen {
 			}
 		}
 
-		TranslationTextComponent helpInfo = page.getHelpInfo();
+		TranslatableComponent helpInfo = page.getHelpInfo();
 		boolean reinforcedPage = helpInfo.getKey().equals("help.securitycraft:reinforced.info") || helpInfo.getKey().contains("reinforced_hopper");
 
 		if(page.hasRecipeDescription())
@@ -439,7 +441,7 @@ public class SCManualScreen extends Screen {
 
 			if(block.hasTileEntity(block.defaultBlockState()))
 			{
-				TileEntity te = block.createTileEntity(block.defaultBlockState(), Minecraft.getInstance().level);
+				BlockEntity te = block.createTileEntity(block.defaultBlockState(), Minecraft.getInstance().level);
 
 				if(te instanceof IOwnable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock")));
@@ -458,15 +460,15 @@ public class SCManualScreen extends Screen {
 
 					if(scte.customOptions() != null && scte.customOptions().length > 0)
 					{
-						List<ITextComponent> display = new ArrayList<>();
+						List<Component> display = new ArrayList<>();
 
 						display.add(Utils.localize("gui.securitycraft:scManual.options"));
-						display.add(new StringTextComponent("---"));
+						display.add(new TextComponent("---"));
 
 						for(Option<?> option : scte.customOptions())
 						{
-							display.add(new StringTextComponent("- ").append(Utils.localize("option" + block.getDescriptionId().substring(5) + "." + option.getName() + ".description")));
-							display.add(StringTextComponent.EMPTY);
+							display.add(new TextComponent("- ").append(Utils.localize("option" + block.getDescriptionId().substring(5) + "." + option.getName() + ".description")));
+							display.add(TextComponent.EMPTY);
 						}
 
 						display.remove(display.size() - 1);
@@ -480,15 +482,15 @@ public class SCManualScreen extends Screen {
 
 					if(moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0)
 					{
-						List<ITextComponent> display = new ArrayList<>();
+						List<Component> display = new ArrayList<>();
 
 						display.add(Utils.localize("gui.securitycraft:scManual.modules"));
-						display.add(new StringTextComponent("---"));
+						display.add(new TextComponent("---"));
 
 						for(ModuleType module : moduleInv.acceptedModules())
 						{
-							display.add(new StringTextComponent("- ").append(Utils.localize("module" + block.getDescriptionId().substring(5) + "." + module.getItem().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description")));
-							display.add(StringTextComponent.EMPTY);
+							display.add(new TextComponent("- ").append(Utils.localize("module" + block.getDescriptionId().substring(5) + "." + module.getItem().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description")));
+							display.add(TextComponent.EMPTY);
 						}
 
 						display.remove(display.size() - 1);
@@ -565,9 +567,9 @@ public class SCManualScreen extends Screen {
 		private boolean patronsRequested;
 		private final int barWidth = 6;
 		private final int barLeft;
-		private final List<IReorderingProcessor> fetchErrorLines;
-		private final List<IReorderingProcessor> noPatronsLines;
-		private final ITextComponent loadingText = Utils.localize("gui.securitycraft:scManual.patreon.loading");
+		private final List<FormattedCharSequence> fetchErrorLines;
+		private final List<FormattedCharSequence> noPatronsLines;
+		private final Component loadingText = Utils.localize("gui.securitycraft:scManual.patreon.loading");
 
 		public PatronList(Minecraft client, int width, int height, int top, int left)
 		{
@@ -590,11 +592,11 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+		public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
 		{
 			if(patronsAvailable) //code from ScrollPanel to be able to change colors
 			{
-				Tessellator tess = Tessellator.getInstance();
+				Tesselator tess = Tesselator.getInstance();
 				BufferBuilder buffer = tess.getBuilder();
 				Minecraft client = Minecraft.getInstance();
 				double scale = client.getWindow().getGuiScale();
@@ -617,21 +619,21 @@ public class SCManualScreen extends Screen {
 						barTop = top;
 
 					//scrollbar background
-					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+					buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR);
 					buffer.vertex(barLeft,            bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
 					buffer.vertex(barLeft + barWidth, bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
 					buffer.vertex(barLeft + barWidth, top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
 					buffer.vertex(barLeft,            top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
 					tess.end();
 					//scrollbar border
-					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+					buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR);
 					buffer.vertex(barLeft,            barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
 					buffer.vertex(barLeft + barWidth, barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
 					buffer.vertex(barLeft + barWidth, barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
 					buffer.vertex(barLeft,            barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
 					tess.end();
 					//scrollbar
-					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+					buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR);
 					buffer.vertex(barLeft,                barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
 					buffer.vertex(barLeft + barWidth - 1, barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
 					buffer.vertex(barLeft + barWidth - 1, barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
@@ -655,12 +657,12 @@ public class SCManualScreen extends Screen {
 					int length = font.width(patron);
 
 					if(length >= width - barWidth)
-						renderTooltip(matrix, new StringTextComponent(patron), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
+						renderTooltip(matrix, new TextComponent(patron), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
 				}
 
 				if (patrons.isEmpty()) {
 					for(int i = 0; i < noPatronsLines.size(); i++) {
-						IReorderingProcessor line = noPatronsLines.get(i);
+						FormattedCharSequence line = noPatronsLines.get(i);
 
 						font.draw(matrix, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFF333333);
 					}
@@ -670,7 +672,7 @@ public class SCManualScreen extends Screen {
 			{
 				for(int i = 0; i < fetchErrorLines.size(); i++)
 				{
-					IReorderingProcessor line = fetchErrorLines.get(i);
+					FormattedCharSequence line = fetchErrorLines.get(i);
 
 					font.draw(matrix, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFFB00101);
 				}
@@ -693,7 +695,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tesselator, int mouseX, int mouseY)
+		protected void drawPanel(PoseStack matrix, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY)
 		{
 			//draw entry strings
 			for(int i = 0; i < patrons.size(); i++)
@@ -751,7 +753,7 @@ public class SCManualScreen extends Screen {
 		 * Draws this button to the screen.
 		 */
 		@Override
-		public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+		public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks){
 			if(visible){
 				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
@@ -764,13 +766,13 @@ public class SCManualScreen extends Screen {
 
 	class HyperlinkButton extends Button
 	{
-		public HyperlinkButton(int xPos, int yPos, int width, int height, ITextComponent displayString, IPressable handler)
+		public HyperlinkButton(int xPos, int yPos, int width, int height, Component displayString, OnPress handler)
 		{
 			super(xPos, yPos, width, height, displayString, handler);
 		}
 
 		@Override
-		public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partial)
+		public void renderButton(PoseStack matrix, int mouseX, int mouseY, float partial)
 		{
 			minecraft.getTextureManager().bind(infoBookIcons);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;

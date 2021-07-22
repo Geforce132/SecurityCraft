@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -10,35 +10,35 @@ import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
+public class SetPasswordScreen extends AbstractContainerScreen<GenericTEContainer> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private TileEntity tileEntity;
-	private TranslationTextComponent blockName;
-	private TranslationTextComponent setup;
-	private IFormattableTextComponent combined;
-	private TextFieldWidget keycodeTextbox;
+	private BlockEntity tileEntity;
+	private TranslatableComponent blockName;
+	private TranslatableComponent setup;
+	private MutableComponent combined;
+	private EditBox keycodeTextbox;
 	private IdButton saveAndContinueButton;
 
-	public SetPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
+	public SetPasswordScreen(GenericTEContainer container, Inventory inv, Component name){
 		super(container, inv, name);
 		this.tileEntity = container.te;
 		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getDescriptionId());
 		setup = Utils.localize("gui.securitycraft:password.setup");
-		combined = blockName.plainCopy().append(new StringTextComponent(" ")).append(setup);
+		combined = blockName.plainCopy().append(new TextComponent(" ")).append(setup);
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::actionPerformed));
 		saveAndContinueButton.active = false;
 
-		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY));
+		addButton(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 47, 77, 12, TextComponent.EMPTY));
 		keycodeTextbox.setMaxLength(20);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = !text.isEmpty());
@@ -63,13 +63,13 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks){
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		drawString(matrix, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY){
+	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY){
 		if(font.width(combined) < imageWidth - 10)
 			font.draw(matrix, combined, imageWidth / 2 - font.width(combined) / 2, 6, 4210752);
 		else
@@ -80,7 +80,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY){
+	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY){
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);

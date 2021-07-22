@@ -11,25 +11,25 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.SignTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.NonNullList;
 
-public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IModuleInventory, ICustomizable
+public class SecretSignTileEntity extends SignBlockEntity implements IOwnable, IModuleInventory, ICustomizable
 {
 	private Owner owner = new Owner();
 	private BooleanOption isSecret = new BooleanOption("isSecret", true);
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
 	@Override
-	public TileEntityType<?> getType()
+	public BlockEntityType<?> getType()
 	{
 		return SCContent.teTypeSecretSign;
 	}
@@ -39,7 +39,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	 * @return
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		super.save(tag);
 
@@ -58,7 +58,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 
@@ -69,7 +69,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	}
 
 	@Override
-	public TileEntity getTileEntity()
+	public BlockEntity getTileEntity()
 	{
 		return this;
 	}
@@ -93,7 +93,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 		return isSecret.get();
 	}
 
-	public boolean isPlayerAllowedToSeeText(PlayerEntity player) {
+	public boolean isPlayerAllowedToSeeText(Player player) {
 		return !isSecret() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player);
 	}
 
@@ -104,14 +104,14 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		CompoundNBT tag = new CompoundNBT();
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		CompoundTag tag = new CompoundTag();
 		save(tag);
-		return new SUpdateTileEntityPacket(worldPosition, 1, tag);
+		return new ClientboundBlockEntityDataPacket(worldPosition, 1, tag);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
 		load(getBlockState(), packet.getTag());
 	}
 

@@ -5,15 +5,15 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 
 public class SCManualItem extends Item {
 
@@ -24,21 +24,21 @@ public class SCManualItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		if(world.isClientSide)
 			SecurityCraft.proxy.displaySCManualGui();
 
-		return ActionResult.consume(player.getItemInHand(hand));
+		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, World world, Entity entity, int slotIndex, boolean isSelected){
+	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slotIndex, boolean isSelected){
 		if(stack.getTag() == null){
-			ListNBT bookPages = new ListNBT();
+			ListTag bookPages = new ListTag();
 
 			stack.addTagElement("pages", bookPages);
-			stack.addTagElement("author", StringNBT.valueOf("Geforce"));
-			stack.addTagElement("title", StringNBT.valueOf("SecurityCraft"));
+			stack.addTagElement("author", StringTag.valueOf("Geforce"));
+			stack.addTagElement("title", StringTag.valueOf("SecurityCraft"));
 		}
 	}
 

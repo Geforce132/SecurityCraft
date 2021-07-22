@@ -4,26 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.MissingTextureSprite;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 import net.minecraftforge.client.ForgeHooksClient;
 
-public class BlockMineModel implements IBakedModel
+public class BlockMineModel implements BakedModel
 {
-	private final IBakedModel defaultModel;
-	private final IBakedModel guiModel;
+	private final BakedModel defaultModel;
+	private final BakedModel guiModel;
 
-	public BlockMineModel(IBakedModel defaultModel, IBakedModel guiModel)
+	public BlockMineModel(BakedModel defaultModel, BakedModel guiModel)
 	{
 		this.defaultModel = defaultModel;
 		this.guiModel = guiModel;
@@ -36,7 +36,7 @@ public class BlockMineModel implements IBakedModel
 	}
 
 	@Override
-	public IBakedModel handlePerspective(TransformType cameraTransformType, MatrixStack matrix)
+	public BakedModel handlePerspective(TransformType cameraTransformType, PoseStack matrix)
 	{
 		if(cameraTransformType == TransformType.GUI)
 			return ForgeHooksClient.handlePerspective(guiModel, cameraTransformType, matrix);
@@ -77,12 +77,12 @@ public class BlockMineModel implements IBakedModel
 	@Override
 	public TextureAtlasSprite getParticleIcon()
 	{
-		return defaultModel == null ? Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(MissingTextureSprite.getLocation()) : defaultModel.getParticleIcon();
+		return defaultModel == null ? Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(MissingTextureAtlasSprite.getLocation()) : defaultModel.getParticleIcon();
 	}
 
 	@Override
-	public ItemOverrideList getOverrides()
+	public ItemOverrides getOverrides()
 	{
-		return defaultModel == null ? ItemOverrideList.EMPTY : defaultModel.getOverrides();
+		return defaultModel == null ? ItemOverrides.EMPTY : defaultModel.getOverrides();
 	}
 }

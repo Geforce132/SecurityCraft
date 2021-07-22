@@ -3,17 +3,17 @@ package net.geforcemods.securitycraft.api;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 /**
  * Used to give this tile entity an owner
  */
-public class OwnableTileEntity extends TileEntity implements IOwnable {
+public class OwnableTileEntity extends BlockEntity implements IOwnable {
 
 	private Owner owner = new Owner();
 
@@ -22,7 +22,7 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 		this(SCContent.teTypeOwnable);
 	}
 
-	public OwnableTileEntity(TileEntityType<?> type)
+	public OwnableTileEntity(BlockEntityType<?> type)
 	{
 		super(type);
 	}
@@ -32,7 +32,7 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	 * @return
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		super.save(tag);
 
@@ -48,7 +48,7 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 
@@ -60,18 +60,18 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag()
+	public CompoundTag getUpdateTag()
 	{
-		return save(new CompoundNBT());
+		return save(new CompoundTag());
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(worldPosition, 1, getUpdateTag());
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return new ClientboundBlockEntityDataPacket(worldPosition, 1, getUpdateTag());
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
 		load(getBlockState(), packet.getTag());
 	}
 

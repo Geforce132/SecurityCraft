@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 
 public class ReinforcedRedstoneBlock extends BaseReinforcedBlock
 {
@@ -20,7 +20,7 @@ public class ReinforcedRedstoneBlock extends BaseReinforcedBlock
 	}
 
 	@Override
-	public int getSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side)
+	public int getSignal(BlockState state, BlockGetter world, BlockPos pos, Direction side)
 	{
 		return 15;
 	}

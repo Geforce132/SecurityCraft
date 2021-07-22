@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SetCameraRotation {
@@ -20,13 +20,13 @@ public class SetCameraRotation {
 		rotationPitch = pitch;
 	}
 
-	public static void encode(SetCameraRotation message, PacketBuffer buf)
+	public static void encode(SetCameraRotation message, FriendlyByteBuf buf)
 	{
 		buf.writeFloat(message.rotationYaw);
 		buf.writeFloat(message.rotationPitch);
 	}
 
-	public static SetCameraRotation decode(PacketBuffer buf)
+	public static SetCameraRotation decode(FriendlyByteBuf buf)
 	{
 		SetCameraRotation message = new SetCameraRotation();
 
@@ -38,7 +38,7 @@ public class SetCameraRotation {
 	public static void onMessage(SetCameraRotation message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
+			Player player = ctx.get().getSender();
 
 			if(player.getVehicle() instanceof SecurityCameraEntity){
 				player.getVehicle().yRot = message.rotationYaw;

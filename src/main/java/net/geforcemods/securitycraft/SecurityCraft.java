@@ -25,13 +25,13 @@ import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.network.ServerProxy;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.conditions.LootConditionManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -59,10 +59,10 @@ public class SecurityCraft {
 	public static IProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new);
 	public static final String PROTOCOL_VERSION = "3";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-	public static ItemGroup groupSCTechnical = new SCTechnicalGroup();
-	public static ItemGroup groupSCMine = new SCExplosivesGroup();
-	public static ItemGroup groupSCDecoration = new SCDecorationGroup();
-	public static final LootConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootConditionManager.register(SecurityCraft.MODID + ":tile_entity_nbt", new TileEntityNBTCondition.Serializer());
+	public static CreativeModeTab groupSCTechnical = new SCTechnicalGroup();
+	public static CreativeModeTab groupSCMine = new SCExplosivesGroup();
+	public static CreativeModeTab groupSCDecoration = new SCDecorationGroup();
+	public static final LootItemConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootItemConditions.register(SecurityCraft.MODID + ":tile_entity_nbt", new TileEntityNBTCondition.Serializer());
 
 	public SecurityCraft()
 	{
@@ -139,7 +139,7 @@ public class SecurityCraft {
 						key = hmp.specialInfoKey();
 
 
-					SCManualPage page = new SCManualPage(item, new TranslationTextComponent(key));
+					SCManualPage page = new SCManualPage(item, new TranslatableComponent(key));
 
 					if(!hmp.designedBy().isEmpty())
 						page.setDesignedBy(hmp.designedBy());

@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 
 public class BlockPocketTileEntity extends SecurityCraftTileEntity
 {
@@ -41,7 +41,7 @@ public class BlockPocketTileEntity extends SecurityCraftTileEntity
 
 		if(manager == null && managerPos != null)
 		{
-			TileEntity te = level.getBlockEntity(managerPos);
+			BlockEntity te = level.getBlockEntity(managerPos);
 
 			if(te instanceof BlockPocketManagerTileEntity)
 				manager = (BlockPocketManagerTileEntity)te;
@@ -60,7 +60,7 @@ public class BlockPocketTileEntity extends SecurityCraftTileEntity
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		if(manager != null)
 			tag.putLong("ManagerPos", manager.getBlockPos().asLong());
@@ -68,7 +68,7 @@ public class BlockPocketTileEntity extends SecurityCraftTileEntity
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 

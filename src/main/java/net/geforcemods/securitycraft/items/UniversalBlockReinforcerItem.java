@@ -4,24 +4,24 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class UniversalBlockReinforcerItem extends Item
@@ -32,30 +32,30 @@ public class UniversalBlockReinforcerItem extends Item
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand)
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
 	{
-		if(!world.isClientSide && player instanceof ServerPlayerEntity)
+		if(!world.isClientSide && player instanceof ServerPlayer)
 		{
-			NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+			NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 				@Override
-				public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+				public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 				{
 					return new BlockReinforcerContainer(windowId, inv, UniversalBlockReinforcerItem.this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
 				}
 
 				@Override
-				public ITextComponent getDisplayName()
+				public Component getDisplayName()
 				{
-					return new TranslationTextComponent(getDescriptionId());
+					return new TranslatableComponent(getDescriptionId());
 				}
 			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
 		}
 
-		return ActionResult.consume(player.getItemInHand(hand));
+		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}
 
 	@Override
-	public boolean canAttackBlock(BlockState vanillaState, World world, BlockPos pos, PlayerEntity player) //gets rid of the stuttering experienced with onBlockStartBreak
+	public boolean canAttackBlock(BlockState vanillaState, Level world, BlockPos pos, Player player) //gets rid of the stuttering experienced with onBlockStartBreak
 	{
 		if(!player.isCreative() && player.getMainHandItem().getItem() == this)
 		{
@@ -65,15 +65,15 @@ public class UniversalBlockReinforcerItem extends Item
 			if(rb != null)
 			{
 				BlockState convertedState = ((IReinforcedBlock)rb).getConvertedState(vanillaState);
-				TileEntity te = world.getBlockEntity(pos);
-				CompoundNBT tag = null;
+				BlockEntity te = world.getBlockEntity(pos);
+				CompoundTag tag = null;
 
 				if(te != null)
 				{
-					tag = te.save(new CompoundNBT());
+					tag = te.save(new CompoundTag());
 
-					if(te instanceof IInventory)
-						((IInventory)te).clearContent();
+					if(te instanceof Container)
+						((Container)te).clearContent();
 				}
 
 				world.setBlockAndUpdate(pos, convertedState);

@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class AssembleBlockPocket
@@ -21,13 +21,13 @@ public class AssembleBlockPocket
 		this.size = size;
 	}
 
-	public static void encode(AssembleBlockPocket message, PacketBuffer buf)
+	public static void encode(AssembleBlockPocket message, FriendlyByteBuf buf)
 	{
 		buf.writeLong(message.pos.asLong());
 		buf.writeInt(message.size);
 	}
 
-	public static AssembleBlockPocket decode(PacketBuffer buf)
+	public static AssembleBlockPocket decode(FriendlyByteBuf buf)
 	{
 		AssembleBlockPocket message = new AssembleBlockPocket();
 
@@ -39,7 +39,7 @@ public class AssembleBlockPocket
 	public static void onMessage(AssembleBlockPocket message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			TileEntity te = ctx.get().getSender().level.getBlockEntity(message.pos);
+			BlockEntity te = ctx.get().getSender().level.getBlockEntity(message.pos);
 
 			if(te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(ctx.get().getSender()))
 			{

@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -11,26 +11,26 @@ import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity.IMSTargetingMode;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class IMSScreen extends ContainerScreen<GenericTEContainer>{
+public class IMSScreen extends AbstractContainerScreen<GenericTEContainer>{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslationTextComponent imsName = Utils.localize(SCContent.IMS.get().getDescriptionId());
-	private final TranslationTextComponent target = Utils.localize("gui.securitycraft:ims.target");
+	private final TranslatableComponent imsName = Utils.localize(SCContent.IMS.get().getDescriptionId());
+	private final TranslatableComponent target = Utils.localize("gui.securitycraft:ims.target");
 
 	private IMSTileEntity tileEntity;
 	private IdButton targetButton;
 	private IMSTargetingMode targetMode;
 
-	public IMSScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
+	public IMSScreen(GenericTEContainer container, Inventory inv, Component name) {
 		super(container, inv, name);
 		tileEntity = (IMSTileEntity)container.te;
 		targetMode = tileEntity.getTargetingMode();
@@ -48,14 +48,14 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY){
+	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY){
 
 		font.draw(matrix, imsName, imageWidth / 2 - font.width(imsName) / 2, 6, 4210752);
 		font.draw(matrix, target, imageWidth / 2 - font.width(target) / 2, 30, 4210752);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);

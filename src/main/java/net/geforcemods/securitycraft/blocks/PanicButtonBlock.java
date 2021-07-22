@@ -2,29 +2,29 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.minecraft.block.AbstractButtonBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.properties.AttachFace;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 
-public class PanicButtonBlock extends AbstractButtonBlock {
+public class PanicButtonBlock extends ButtonBlock {
 	private static final VoxelShape FLOOR_NS_POWERED = Block.box(3, 0, 5, 13, 1, 11);
 	private static final VoxelShape FLOOR_NS_UNPOWERED = Block.box(3, 0, 5, 13, 2, 11);
 	private static final VoxelShape FLOOR_EW_POWERED = Block.box(5, 0, 3, 11, 1, 13);
@@ -47,14 +47,14 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+		if(placer instanceof Player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)placer));
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		boolean newPowered = !state.getValue(POWERED);
 
@@ -68,31 +68,31 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 		else if(state.getValue(FACE) == AttachFace.FLOOR)
 			notifyNeighbors(world, pos, Direction.UP);
 
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
-	private void notifyNeighbors(World world, BlockPos pos, Direction facing)
+	private void notifyNeighbors(Level world, BlockPos pos, Direction facing)
 	{
 		world.updateNeighborsAt(pos, this);
 		world.updateNeighborsAt(pos.relative(facing.getOpposite()), this);
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		super.onRemove(state, world, pos, newState, isMoving);
 		world.removeBlockEntity(pos);
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param){
+	public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int id, int param){
 		super.triggerEvent(state, world, pos, id, param);
-		TileEntity tileentity = world.getBlockEntity(pos);
+		BlockEntity tileentity = world.getBlockEntity(pos);
 		return tileentity == null ? false : tileentity.triggerEvent(id, param);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
 		switch(state.getValue(FACE))
 		{
@@ -155,13 +155,13 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 				}
 		}
 
-		return VoxelShapes.block();
+		return Shapes.block();
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
 	{
-		return VoxelShapes.empty();
+		return Shapes.empty();
 	}
 
 	@Override
@@ -171,7 +171,7 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new OwnableTileEntity();
 	}
 

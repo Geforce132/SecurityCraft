@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
 /**
@@ -27,11 +27,11 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 {
 	private boolean linkable = false;
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
-	private ListNBT nbtTagStorage = null;
+	private ListTag nbtTagStorage = null;
 
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
-	public CustomizableTileEntity(TileEntityType<?> type)
+	public CustomizableTileEntity(BlockEntityType<?> type)
 	{
 		super(type);
 	}
@@ -48,7 +48,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 
@@ -70,7 +70,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		super.save(tag);
 
@@ -79,13 +79,13 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 		tag.putBoolean("linkable", linkable);
 
 		if(linkable && hasLevel() && linkedBlocks.size() > 0) {
-			ListNBT tagList = new ListNBT();
+			ListTag tagList = new ListTag();
 
 			WorldUtils.addScheduledTask(level, () -> {
 				for(int i = linkedBlocks.size() - 1; i >= 0; i--)
 				{
 					LinkedBlock block = linkedBlocks.get(i);
-					CompoundNBT toAppend = new CompoundNBT();
+					CompoundTag toAppend = new CompoundTag();
 
 					if(block != null) {
 						if(!block.validate(level)) {
@@ -109,7 +109,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 		return tag;
 	}
 
-	private void readLinkedBlocks(ListNBT list) {
+	private void readLinkedBlocks(ListTag list) {
 		if(!linkable) return;
 
 		for(int i = 0; i < list.size(); i++) {
@@ -142,7 +142,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	}
 
 	@Override
-	public TileEntity getTileEntity()
+	public BlockEntity getTileEntity()
 	{
 		return this;
 	}

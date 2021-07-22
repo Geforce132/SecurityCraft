@@ -3,25 +3,25 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.TrapDoorBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.properties.Half;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinforcedBlock {
@@ -31,26 +31,26 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinf
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos neighbor, boolean flag)
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos neighbor, boolean flag)
 	{
 		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
 
 		if(hasActiveSCBlock != state.getValue(OPEN))
 		{
 			world.setBlock(pos, state.setValue(OPEN, hasActiveSCBlock), 2);
-			playSound((PlayerEntity)null, world, pos, hasActiveSCBlock);
+			playSound((Player)null, world, pos, hasActiveSCBlock);
 		}
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+		if(placer instanceof Player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)placer));
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		BlockState blockstate = this.defaultBlockState();
 		FluidState fluidstate = ctx.getLevel().getFluidState(ctx.getClickedPos());
 		Direction direction = ctx.getClickedFace();
@@ -69,13 +69,13 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinf
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
-		return ActionResultType.FAIL;
+		return InteractionResult.FAIL;
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		super.onRemove(state, world, pos, newState, isMoving);
 
@@ -84,10 +84,10 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinf
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param)
+	public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int id, int param)
 	{
 		super.triggerEvent(state, world, pos, id, param);
-		TileEntity tileentity = world.getBlockEntity(pos);
+		BlockEntity tileentity = world.getBlockEntity(pos);
 		return tileentity == null ? false : tileentity.triggerEvent(id, param);
 	}
 
@@ -98,7 +98,7 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinf
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new OwnableTileEntity();
 	}
 

@@ -5,19 +5,21 @@ import java.util.List;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.PressurePlateBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.PressurePlateBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
+
+import net.minecraft.world.level.block.PressurePlateBlock.Sensitivity;
 
 public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements IReinforcedBlock
 {
@@ -31,39 +33,39 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity)
+	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity)
 	{
 		int redstoneStrength = getSignalForState(state);
 
-		if(!world.isClientSide && redstoneStrength == 0 && entity instanceof PlayerEntity)
+		if(!world.isClientSide && redstoneStrength == 0 && entity instanceof Player)
 		{
-			TileEntity tileEntity = world.getBlockEntity(pos);
+			BlockEntity tileEntity = world.getBlockEntity(pos);
 
 			if(tileEntity instanceof AllowlistOnlyTileEntity)
 			{
-				if(isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)tileEntity, (PlayerEntity)entity))
+				if(isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)tileEntity, (Player)entity))
 					checkPressed(world, pos, state, redstoneStrength);
 			}
 		}
 	}
 
 	@Override
-	protected int getSignalStrength(World world, BlockPos pos)
+	protected int getSignalStrength(Level world, BlockPos pos)
 	{
-		AxisAlignedBB aabb = TOUCH_AABB.move(pos);
+		AABB aabb = TOUCH_AABB.move(pos);
 		List<? extends Entity> list;
 
 		list = world.getEntities(null, aabb);
 
 		if(!list.isEmpty())
 		{
-			TileEntity tileEntity = world.getBlockEntity(pos);
+			BlockEntity tileEntity = world.getBlockEntity(pos);
 
 			if(tileEntity instanceof AllowlistOnlyTileEntity)
 			{
 				for(Entity entity : list)
 				{
-					if(entity instanceof PlayerEntity && isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)tileEntity, (PlayerEntity)entity))
+					if(entity instanceof Player && isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)tileEntity, (Player)entity))
 						return 15;
 				}
 			}
@@ -72,16 +74,16 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		return 0;
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyTileEntity te, PlayerEntity entity)
+	public boolean isAllowedToPress(Level world, BlockPos pos, AllowlistOnlyTileEntity te, Player entity)
 	{
 		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+		if(placer instanceof Player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)placer));
 	}
 
 	@Override
@@ -103,7 +105,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
 	{
 		return new AllowlistOnlyTileEntity();
 	}

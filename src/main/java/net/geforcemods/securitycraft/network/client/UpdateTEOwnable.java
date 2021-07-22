@@ -4,10 +4,10 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateTEOwnable
@@ -16,11 +16,11 @@ public class UpdateTEOwnable
 	private String name;
 	private String uuid;
 	private boolean syncTag;
-	private CompoundNBT tag;
+	private CompoundTag tag;
 
 	public UpdateTEOwnable() {}
 
-	public UpdateTEOwnable(BlockPos pos, String name, String uuid, boolean syncTag, CompoundNBT tag)
+	public UpdateTEOwnable(BlockPos pos, String name, String uuid, boolean syncTag, CompoundTag tag)
 	{
 		this.pos = pos;
 		this.name = name;
@@ -29,7 +29,7 @@ public class UpdateTEOwnable
 		this.tag = tag;
 	}
 
-	public static void encode(UpdateTEOwnable message, PacketBuffer buf)
+	public static void encode(UpdateTEOwnable message, FriendlyByteBuf buf)
 	{
 		buf.writeLong(message.pos.asLong());
 		buf.writeUtf(message.name);
@@ -40,7 +40,7 @@ public class UpdateTEOwnable
 			buf.writeNbt(message.tag);
 	}
 
-	public static UpdateTEOwnable decode(PacketBuffer buf)
+	public static UpdateTEOwnable decode(FriendlyByteBuf buf)
 	{
 		UpdateTEOwnable message = new UpdateTEOwnable();
 
@@ -58,7 +58,7 @@ public class UpdateTEOwnable
 	public static void onMessage(UpdateTEOwnable message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			TileEntity te = Minecraft.getInstance().level.getBlockEntity(message.pos);
+			BlockEntity te = Minecraft.getInstance().level.getBlockEntity(message.pos);
 
 			if(!(te instanceof IOwnable))
 				return;

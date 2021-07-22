@@ -14,14 +14,14 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.ChatFormatting;
 
 public class PortableRadarTileEntity extends CustomizableTileEntity {
 
@@ -47,9 +47,9 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 		{
 			ticksUntilNextSearch = getSearchDelay();
 
-			ServerPlayerEntity owner = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
-			AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(getSearchRadius(), getSearchRadius(), getSearchRadius());
-			List<PlayerEntity> entities = level.getEntitiesOfClass(PlayerEntity.class, area, e -> {
+			ServerPlayer owner = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
+			AABB area = new AABB(worldPosition).inflate(getSearchRadius(), getSearchRadius(), getSearchRadius());
+			List<Player> entities = level.getEntitiesOfClass(Player.class, area, e -> {
 				boolean isNotAllowed = true;
 
 				if(hasModule(ModuleType.ALLOWLIST))
@@ -63,19 +63,19 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 
 			if(owner != null)
 			{
-				for(PlayerEntity e : entities)
+				for(Player e : entities)
 				{
 					if(shouldSendMessage(e))
 					{
-						IFormattableTextComponent attackedName = e.getName().plainCopy().withStyle(TextFormatting.ITALIC);
-						IFormattableTextComponent text;
+						MutableComponent attackedName = e.getName().plainCopy().withStyle(ChatFormatting.ITALIC);
+						MutableComponent text;
 
 						if(hasCustomSCName())
-							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().plainCopy().withStyle(TextFormatting.ITALIC));
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().plainCopy().withStyle(ChatFormatting.ITALIC));
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(worldPosition));
 
-						PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, TextFormatting.BLUE);
+						PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, ChatFormatting.BLUE);
 						setSentMessage();
 					}
 				}
@@ -93,7 +93,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		super.save(tag);
 
@@ -103,7 +103,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 
@@ -111,7 +111,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 		lastPlayerName = tag.getString("lastPlayerName");
 	}
 
-	public boolean shouldSendMessage(PlayerEntity player) {
+	public boolean shouldSendMessage(Player player) {
 		if(!player.getName().getString().equals(lastPlayerName)) {
 			shouldSendNewMessage = true;
 			lastPlayerName = player.getName().getString();

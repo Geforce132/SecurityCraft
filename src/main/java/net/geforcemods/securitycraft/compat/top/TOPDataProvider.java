@@ -23,18 +23,18 @@ import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.ModList;
 
 public class TOPDataProvider implements Function<ITheOneProbe, Void>
@@ -57,7 +57,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				.item(disguisedAs)
 				.vertical()
 				.itemLabel(disguisedAs)
-				.text(new StringTextComponent("" + TextFormatting.BLUE + TextFormatting.ITALIC + ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()));
+				.text(new TextComponent("" + ChatFormatting.BLUE + ChatFormatting.ITALIC + ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()));
 				return true;
 			}
 
@@ -71,27 +71,27 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 			}
 
 			@Override
-			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data)
+			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, Player player, Level world, BlockState blockState, IProbeHitData data)
 			{
 				Block block = blockState.getBlock();
 
 				if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(world, blockState, data.getPos()))
 					return;
 
-				TileEntity te = world.getBlockEntity(data.getPos());
+				BlockEntity te = world.getBlockEntity(data.getPos());
 
 				if(te instanceof IOwnable)
-					probeInfo.vertical().text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ((IOwnable) te).getOwner().getName()).getString()));
+					probeInfo.vertical().text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ((IOwnable) te).getOwner().getName()).getString()));
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
 				if(te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))
 				{
 					if(!((IModuleInventory)te).getInsertedModules().isEmpty())
 					{
-						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getString()));
+						probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getString()));
 
 						for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(module.getTranslationKey())));
+							probeInfo.text(new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(module.getTranslationKey())));
 					}
 				}
 
@@ -99,14 +99,14 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				{
 					String password = ((IPasswordProtected) te).getPassword();
 
-					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).getString()));
+					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).getString()));
 				}
 
 				if(te instanceof INameable && ((INameable) te).canBeNamed()){
-					ITextComponent text = ((INameable) te).getCustomSCName();
-					ITextComponent name = text == null ? StringTextComponent.EMPTY : text;
+					Component text = ((INameable) te).getCustomSCName();
+					Component name = text == null ? TextComponent.EMPTY : text;
 
-					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:customName", (((INameable) te).hasCustomSCName() ? name : Utils.localize("waila.securitycraft:customName.notSet"))).getString()));
+					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:customName", (((INameable) te).hasCustomSCName() ? name : Utils.localize("waila.securitycraft:customName.notSet"))).getString()));
 				}
 			}
 		});
@@ -117,34 +117,34 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 			}
 
 			@Override
-			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, PlayerEntity player, World world, Entity entity, IProbeHitEntityData data) {
+			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level world, Entity entity, IProbeHitEntityData data) {
 				if (entity instanceof SentryEntity)
 				{
 					SentryEntity sentry = (SentryEntity)entity;
 					SentryMode mode = sentry.getMode();
 
-					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ((SentryEntity) entity).getOwner().getName()).getString()));
+					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ((SentryEntity) entity).getOwner().getName()).getString()));
 
 					if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())
 					{
-						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getString()));
+						probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getString()));
 
 						if(!sentry.getAllowlistModule().isEmpty())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())));
+							probeInfo.text(new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.ALLOWLIST.getTranslationKey())));
 
 						if(!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
+							probeInfo.text(new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.DISGUISE.getTranslationKey())));
 
 						if(sentry.hasSpeedModule())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())));
+							probeInfo.text(new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.SPEED.getTranslationKey())));
 					}
 
-					IFormattableTextComponent modeDescription = Utils.localize(mode.getModeKey());
+					MutableComponent modeDescription = Utils.localize(mode.getModeKey());
 
 					if(mode != SentryMode.IDLE)
 						modeDescription.append("- ").append(Utils.localize(mode.getTargetKey()));
 
-					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + modeDescription.getString()));
+					probeInfo.text(new TextComponent(ChatFormatting.GRAY + modeDescription.getString()));
 				}
 			}
 		});

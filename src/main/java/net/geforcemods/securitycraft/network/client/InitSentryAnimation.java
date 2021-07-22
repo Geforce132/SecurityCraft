@@ -5,10 +5,10 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class InitSentryAnimation
@@ -25,14 +25,14 @@ public class InitSentryAnimation
 		this.animateUpwards = animateUpwards;
 	}
 
-	public static void encode(InitSentryAnimation message, PacketBuffer buf)
+	public static void encode(InitSentryAnimation message, FriendlyByteBuf buf)
 	{
 		buf.writeLong(message.pos.asLong());
 		buf.writeBoolean(message.animate);
 		buf.writeBoolean(message.animateUpwards);
 	}
 
-	public static InitSentryAnimation decode(PacketBuffer buf)
+	public static InitSentryAnimation decode(FriendlyByteBuf buf)
 	{
 		InitSentryAnimation message = new InitSentryAnimation();
 
@@ -45,7 +45,7 @@ public class InitSentryAnimation
 	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			List<CreatureEntity> sentries = Minecraft.getInstance().level.<CreatureEntity>getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(message.pos));
+			List<PathfinderMob> sentries = Minecraft.getInstance().level.<PathfinderMob>getEntitiesOfClass(SentryEntity.class, new AABB(message.pos));
 
 			if(!sentries.isEmpty())
 			{

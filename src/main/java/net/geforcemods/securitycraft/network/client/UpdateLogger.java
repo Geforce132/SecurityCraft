@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateLogger {
@@ -29,7 +29,7 @@ public class UpdateLogger {
 		this.timestamp = timestamp;
 	}
 
-	public static void encode(UpdateLogger message, PacketBuffer buf)
+	public static void encode(UpdateLogger message, FriendlyByteBuf buf)
 	{
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
@@ -40,7 +40,7 @@ public class UpdateLogger {
 		buf.writeLong(message.timestamp);
 	}
 
-	public static UpdateLogger decode(PacketBuffer buf)
+	public static UpdateLogger decode(FriendlyByteBuf buf)
 	{
 		UpdateLogger message = new UpdateLogger();
 

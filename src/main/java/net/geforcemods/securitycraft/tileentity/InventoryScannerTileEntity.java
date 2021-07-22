@@ -9,29 +9,29 @@ import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class InventoryScannerTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider{
+public class InventoryScannerTileEntity extends DisguisableTileEntity implements Container, MenuProvider{
 
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
@@ -56,15 +56,15 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag){
+	public void load(BlockState state, CompoundTag tag){
 		super.load(state, tag);
 
-		ListNBT list = tag.getList("Items", 10);
+		ListTag list = tag.getList("Items", 10);
 		inventoryContents = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i)
 		{
-			CompoundNBT stackTag = list.getCompound(i);
+			CompoundTag stackTag = list.getCompound(i);
 			int slot = stackTag.getByte("Slot") & 255;
 
 			if (slot >= 0 && slot < inventoryContents.size())
@@ -75,15 +75,15 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag){
+	public CompoundTag save(CompoundTag tag){
 		super.save(tag);
 
-		ListNBT list = new ListNBT();
+		ListTag list = new ListTag();
 
 		for (int i = 0; i < inventoryContents.size(); ++i)
 			if (!inventoryContents.get(i).isEmpty())
 			{
-				CompoundNBT stackTag = new CompoundNBT();
+				CompoundTag stackTag = new CompoundTag();
 				stackTag.putByte("Slot", (byte)i);
 				inventoryContents.get(i).save(stackTag);
 				list.add(stackTag);
@@ -233,15 +233,15 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return true;
 	}
 
 	@Override
-	public void startOpen(PlayerEntity player) {}
+	public void startOpen(Player player) {}
 
 	@Override
-	public void stopOpen(PlayerEntity player) {}
+	public void stopOpen(Player player) {}
 
 	@Override
 	public boolean canPlaceItem(int var1, ItemStack var2) {
@@ -293,7 +293,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 		{
 			for(int i = 10; i < getContainerSize(); i++) //first 10 slots (0-9) are the prohibited slots
 			{
-				InventoryHelper.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), getContents().get(i));
+				Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), getContents().get(i));
 			}
 
 			if(connectedScanner != null)
@@ -375,15 +375,15 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
 		return new InventoryScannerContainer(windowId, level, worldPosition, inv);
 	}
 
 	@Override
-	public ITextComponent getDisplayName()
+	public Component getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.INVENTORY_SCANNER.get().getDescriptionId());
+		return new TranslatableComponent(SCContent.INVENTORY_SCANNER.get().getDescriptionId());
 	}
 
 	@Override

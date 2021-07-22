@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 
 public enum SCSounds {
 

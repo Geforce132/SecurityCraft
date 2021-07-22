@@ -3,11 +3,11 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class CheckPassword {
@@ -26,7 +26,7 @@ public class CheckPassword {
 		password = code;
 	}
 
-	public static void encode(CheckPassword message, PacketBuffer buf)
+	public static void encode(CheckPassword message, FriendlyByteBuf buf)
 	{
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
@@ -34,7 +34,7 @@ public class CheckPassword {
 		buf.writeUtf(message.password);
 	}
 
-	public static CheckPassword decode(PacketBuffer buf)
+	public static CheckPassword decode(FriendlyByteBuf buf)
 	{
 		CheckPassword message = new CheckPassword();
 
@@ -50,12 +50,12 @@ public class CheckPassword {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			String password = message.password;
-			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.level.getBlockEntity(pos);
+			Player player = ctx.get().getSender();
+			BlockEntity te = player.level.getBlockEntity(pos);
 
 			if(te instanceof IPasswordProtected && ((IPasswordProtected)te).getPassword().equals(password))
 			{
-				((ServerPlayerEntity) player).closeContainer();
+				((ServerPlayer) player).closeContainer();
 				((IPasswordProtected)te).activate(player);
 			}
 		});

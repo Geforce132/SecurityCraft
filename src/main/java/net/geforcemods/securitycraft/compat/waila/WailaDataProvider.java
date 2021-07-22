@@ -23,16 +23,16 @@ import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 @WailaPlugin(SecurityCraft.MODID)
 public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider
@@ -64,7 +64,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	}
 
 	@Override
-	public void appendBody(List<ITextComponent> body, IDataAccessor data, IPluginConfig config) {
+	public void appendBody(List<Component> body, IDataAccessor data, IPluginConfig config) {
 		Block block = data.getBlock();
 		boolean disguised = false;
 
@@ -81,7 +81,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 		if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return;
 
-		TileEntity te = data.getTileEntity();
+		BlockEntity te = data.getTileEntity();
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
 		if(config.get(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
@@ -96,7 +96,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				body.add(Utils.localize("waila.securitycraft:equipped"));
 
 			for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
-				body.add(new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())));
+				body.add(new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())));
 		}
 
 		if(config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
@@ -106,14 +106,14 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		}
 
 		if(config.get(SHOW_CUSTOM_NAME) && te instanceof INameable && ((INameable) te).canBeNamed()){
-			ITextComponent text = ((INameable) te).getCustomSCName();
+			Component text = ((INameable) te).getCustomSCName();
 
 			body.add(Utils.localize("waila.securitycraft:customName", (((INameable) te).hasCustomSCName() ? text : Utils.localize("waila.securitycraft:customName.notSet"))));
 		}
 	}
 
 	@Override
-	public void appendBody(List<ITextComponent> body, IEntityAccessor data, IPluginConfig config) {
+	public void appendBody(List<Component> body, IEntityAccessor data, IPluginConfig config) {
 		Entity entity = data.getEntity();
 
 		if(entity instanceof SentryEntity)
@@ -131,17 +131,17 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 					body.add(Utils.localize("waila.securitycraft:equipped"));
 
 					if(!sentry.getAllowlistModule().isEmpty())
-						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())));
+						body.add(new TextComponent("- ").append(new TranslatableComponent(ModuleType.ALLOWLIST.getTranslationKey())));
 
 					if(!sentry.getDisguiseModule().isEmpty())
-						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
+						body.add(new TextComponent("- ").append(new TranslatableComponent(ModuleType.DISGUISE.getTranslationKey())));
 
 					if(sentry.hasSpeedModule())
-						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())));
+						body.add(new TextComponent("- ").append(new TranslatableComponent(ModuleType.SPEED.getTranslationKey())));
 				}
 			}
 
-			IFormattableTextComponent modeDescription = Utils.localize(mode.getModeKey());
+			MutableComponent modeDescription = Utils.localize(mode.getModeKey());
 
 			if(mode != SentryMode.IDLE)
 				modeDescription.append("- ").append(Utils.localize(mode.getTargetKey()));

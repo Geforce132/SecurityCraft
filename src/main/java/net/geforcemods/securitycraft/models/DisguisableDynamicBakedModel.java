@@ -7,18 +7,18 @@ import javax.annotation.Nonnull;
 
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemOverrideList;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockDisplayReader;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraftforge.client.model.data.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
@@ -28,9 +28,9 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 {
 	public static final ModelProperty<ResourceLocation> DISGUISED_BLOCK_RL = new ModelProperty<>();
 	private final ResourceLocation defaultStateRl;
-	private final IBakedModel oldModel;
+	private final BakedModel oldModel;
 
-	public DisguisableDynamicBakedModel(ResourceLocation defaultStateRl, IBakedModel oldModel)
+	public DisguisableDynamicBakedModel(ResourceLocation defaultStateRl, BakedModel oldModel)
 	{
 		this.defaultStateRl = defaultStateRl;
 		this.oldModel = oldModel;
@@ -47,7 +47,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 
 			if(block != null)
 			{
-				final IBakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(block.defaultBlockState());
+				final BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(block.defaultBlockState());
 
 				if(model != null && model != this)
 					return model.getQuads(block.defaultBlockState(), side, rand, modelData);
@@ -75,9 +75,9 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 
 	@Override
 	@Nonnull
-	public IModelData getModelData(IBlockDisplayReader world, BlockPos pos, BlockState state, IModelData tileData)
+	public IModelData getModelData(BlockAndTintGetter world, BlockPos pos, BlockState state, IModelData tileData)
 	{
-		TileEntity te = world.getBlockEntity(pos);
+		BlockEntity te = world.getBlockEntity(pos);
 
 		if(te instanceof DisguisableTileEntity)
 		{
@@ -124,7 +124,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 	}
 
 	@Override
-	public ItemOverrideList getOverrides()
+	public ItemOverrides getOverrides()
 	{
 		return null;
 	}

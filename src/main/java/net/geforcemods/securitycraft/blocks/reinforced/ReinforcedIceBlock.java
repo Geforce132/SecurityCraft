@@ -2,12 +2,14 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.LightType;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.server.level.ServerLevel;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class ReinforcedIceBlock extends BaseReinforcedBlock
 {
@@ -23,9 +25,9 @@ public class ReinforcedIceBlock extends BaseReinforcedBlock
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
+	public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
 	{
-		if(world.getBrightness(LightType.BLOCK, pos) > 11 - state.getLightBlock(world, pos))
+		if(world.getBrightness(LightLayer.BLOCK, pos) > 11 - state.getLightBlock(world, pos))
 		{
 			if(world.dimensionType().ultraWarm())
 				world.removeBlock(pos, false);

@@ -5,8 +5,8 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class RemoveCameraTag
@@ -22,13 +22,13 @@ public class RemoveCameraTag
 		camID = cid;
 	}
 
-	public static void encode(RemoveCameraTag message, PacketBuffer buf)
+	public static void encode(RemoveCameraTag message, FriendlyByteBuf buf)
 	{
 		buf.writeItem(message.heldItem);
 		buf.writeInt(message.camID);
 	}
 
-	public static RemoveCameraTag decode(PacketBuffer buf)
+	public static RemoveCameraTag decode(FriendlyByteBuf buf)
 	{
 		RemoveCameraTag message = new RemoveCameraTag();
 

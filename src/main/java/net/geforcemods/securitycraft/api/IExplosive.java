@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Enables a Block to be remotely detonated using SecurityCraft's mine remote access tool.
@@ -16,7 +16,7 @@ public interface IExplosive {
 	 * @param world The world your block is in.
 	 * @param pos Your block's position.
 	 */
-	public void explode(World world, BlockPos pos);
+	public void explode(Level world, BlockPos pos);
 
 	/**
 	 * Re-activate your defused mine.
@@ -25,7 +25,7 @@ public interface IExplosive {
 	 * @param pos Your block's position.
 	 * @return true if the mine was activated, false otherwise
 	 */
-	public boolean activateMine(World world, BlockPos pos);
+	public boolean activateMine(Level world, BlockPos pos);
 
 	/**
 	 * Defuse your active mine.
@@ -34,7 +34,7 @@ public interface IExplosive {
 	 * @param pos Your block's position.
 	 * @return true if the mine was defused, false otherwise
 	 */
-	public boolean defuseMine(World world, BlockPos pos);
+	public boolean defuseMine(Level world, BlockPos pos);
 
 	/**
 	 * Is your mine currently active?
@@ -42,7 +42,7 @@ public interface IExplosive {
 	 * @param world
 	 * @param pos
 	 */
-	public boolean isActive(World world, BlockPos pos);
+	public boolean isActive(Level world, BlockPos pos);
 
 	/**
 	 * @return Is your mine defusable?

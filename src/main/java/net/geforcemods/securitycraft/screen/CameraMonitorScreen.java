@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import java.util.ArrayList;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -19,16 +19,16 @@ import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -36,10 +36,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class CameraMonitorScreen extends Screen {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslationTextComponent selectCameras = Utils.localize("gui.securitycraft:monitor.selectCameras");
-	private PlayerInventory playerInventory;
+	private final TranslatableComponent selectCameras = Utils.localize("gui.securitycraft:monitor.selectCameras");
+	private Inventory playerInventory;
 	private CameraMonitorItem cameraMonitor;
-	private CompoundNBT nbtTag;
+	private CompoundTag nbtTag;
 	private IdButton prevPageButton;
 	private IdButton nextPageButton;
 	private IdButton[] cameraButtons = new IdButton[10];
@@ -50,14 +50,14 @@ public class CameraMonitorScreen extends Screen {
 	private int xSize = 176, ySize = 166;
 	private int page = 1;
 
-	public CameraMonitorScreen(PlayerInventory inventory, CameraMonitorItem item, CompoundNBT itemNBTTag) {
-		super(new TranslationTextComponent(SCContent.CAMERA_MONITOR.get().getDescriptionId()));
+	public CameraMonitorScreen(Inventory inventory, CameraMonitorItem item, CompoundTag itemNBTTag) {
+		super(new TranslatableComponent(SCContent.CAMERA_MONITOR.get().getDescriptionId()));
 		playerInventory = inventory;
 		cameraMonitor = item;
 		nbtTag = itemNBTTag;
 	}
 
-	public CameraMonitorScreen(PlayerInventory inventory, CameraMonitorItem item, CompoundNBT itemNBTTag, int page) {
+	public CameraMonitorScreen(Inventory inventory, CameraMonitorItem item, CompoundTag itemNBTTag, int page) {
 		this(inventory, item, itemNBTTag);
 		this.page = page;
 	}
@@ -97,7 +97,7 @@ public class CameraMonitorScreen extends Screen {
 			ArrayList<CameraView> views = cameraMonitor.getCameraPositions(nbtTag);
 			CameraView view;
 
-			button.setMessage(button.getMessage().plainCopy().append(new StringTextComponent("" + camID)));
+			button.setMessage(button.getMessage().plainCopy().append(new TextComponent("" + camID)));
 			addButton(button);
 
 			if((view = views.get(camID - 1)) != null) {
@@ -106,8 +106,8 @@ public class CameraMonitorScreen extends Screen {
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
 
-				World world = Minecraft.getInstance().level;
-				TileEntity te = world.getBlockEntity(view.getLocation());
+				Level world = Minecraft.getInstance().level;
+				BlockEntity te = world.getBlockEntity(view.getLocation());
 
 				if(world.getBlockState(view.getLocation()).getBlock() != SCContent.SECURITY_CAMERA.get() || (te instanceof SecurityCameraTileEntity && !((SecurityCameraTileEntity)te).getOwner().isOwner(Minecraft.getInstance().player) && !((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART)))
 				{
@@ -143,7 +143,7 @@ public class CameraMonitorScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);

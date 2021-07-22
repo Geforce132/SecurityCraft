@@ -3,25 +3,25 @@ package net.geforcemods.securitycraft.containers;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
-public class BlockReinforcerContainer extends Container
+public class BlockReinforcerContainer extends AbstractContainerMenu
 {
 	private final ItemStack blockReinforcer;
-	private final Inventory itemInventory = new Inventory(2);
+	private final SimpleContainer itemInventory = new SimpleContainer(2);
 	public final SlotBlockReinforcer reinforcingSlot;
 	public final SlotBlockReinforcer unreinforcingSlot;
 	public final boolean isLvl1;
 
-	public BlockReinforcerContainer(int windowId, PlayerInventory inventory, boolean isLvl1)
+	public BlockReinforcerContainer(int windowId, Inventory inventory, boolean isLvl1)
 	{
 		super(SCContent.cTypeBlockReinforcer, windowId);
 
@@ -45,15 +45,15 @@ public class BlockReinforcerContainer extends Container
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity player)
+	public boolean stillValid(Player player)
 	{
 		return true;
 	}
 
 	@Override
-	public void removed(PlayerEntity player)
+	public void removed(Player player)
 	{
-		if(!player.isAlive() || player instanceof ServerPlayerEntity && ((ServerPlayerEntity)player).hasDisconnected())
+		if(!player.isAlive() || player instanceof ServerPlayer && ((ServerPlayer)player).hasDisconnected())
 		{
 			for(int slot = 0; slot < itemInventory.getContainerSize(); ++slot)
 			{
@@ -91,7 +91,7 @@ public class BlockReinforcerContainer extends Container
 	}
 
 	@Override
-	public ItemStack quickMoveStack(PlayerEntity player, int id)
+	public ItemStack quickMoveStack(Player player, int id)
 	{
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(id);
@@ -211,7 +211,7 @@ public class BlockReinforcerContainer extends Container
 		private final boolean reinforce;
 		private ItemStack output = ItemStack.EMPTY;
 
-		public SlotBlockReinforcer(IInventory inventory, int index, int x, int y, boolean reinforce)
+		public SlotBlockReinforcer(Container inventory, int index, int x, int y, boolean reinforce)
 		{
 			super(inventory, index, x, y);
 

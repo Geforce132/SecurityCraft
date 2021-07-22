@@ -23,15 +23,15 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.server.management.PlayerProfileCache;
-import net.minecraft.util.StringUtils;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.server.players.GameProfileCache;
+import net.minecraft.util.StringUtil;
+import net.minecraft.core.BlockPos;
+import net.minecraft.ChatFormatting;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class RetinalScannerTileEntity extends DisguisableTileEntity {
@@ -41,7 +41,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private GameProfile ownerProfile;
-	private static PlayerProfileCache profileCache;
+	private static GameProfileCache profileCache;
 	private static MinecraftSessionService sessionService;
 
 	public RetinalScannerTileEntity()
@@ -55,22 +55,22 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 		{
 			BlockState state = level.getBlockState(worldPosition);
 			if(!state.getValue(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)){
-				if(!(entity instanceof PlayerEntity) && !activatedByEntities.get())
+				if(!(entity instanceof Player) && !activatedByEntities.get())
 					return;
 
-				if(entity instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera(entity))
+				if(entity instanceof Player && PlayerUtils.isPlayerMountedOnCamera(entity))
 					return;
 
-				if(entity instanceof PlayerEntity && !getOwner().isOwner((PlayerEntity) entity) && !ModuleUtils.isAllowed(this, entity)) {
-					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
+				if(entity instanceof Player && !getOwner().isOwner((Player) entity) && !ModuleUtils.isAllowed(this, entity)) {
+					PlayerUtils.sendMessageToPlayer((Player) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), ChatFormatting.RED);
 					return;
 				}
 
 				level.setBlockAndUpdate(worldPosition, state.setValue(RetinalScannerBlock.POWERED, true));
 				level.getBlockTicks().scheduleTick(new BlockPos(worldPosition), SCContent.RETINAL_SCANNER.get(), getSignalLength());
 
-				if(entity instanceof PlayerEntity && sendMessage.get())
-					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", entity.getName()), TextFormatting.GREEN);
+				if(entity instanceof Player && sendMessage.get())
+					PlayerUtils.sendMessageToPlayer((Player) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", entity.getName()), ChatFormatting.GREEN);
 			}
 		}
 	}
@@ -100,7 +100,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 		return new Option[]{ activatedByEntities, sendMessage, signalLength };
 	}
 
-	public static void setProfileCache(PlayerProfileCache profileCacheIn) {
+	public static void setProfileCache(GameProfileCache profileCacheIn) {
 		profileCache = profileCacheIn;
 	}
 
@@ -109,16 +109,16 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag) {
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
-		if(!StringUtils.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")))
+		if(!StringUtil.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")))
 		{
 			if(ownerProfile == null || !getOwner().getName().equals(ownerProfile.getName()))
 				setPlayerProfile(new GameProfile((UUID)null, getOwner().getName()));
 
 			updatePlayerProfile();
-			CompoundNBT ownerProfileTag = new CompoundNBT();
-			NBTUtil.writeGameProfile(ownerProfileTag, ownerProfile);
+			CompoundTag ownerProfileTag = new CompoundTag();
+			NbtUtils.writeGameProfile(ownerProfileTag, ownerProfile);
 			tag.put("ownerProfile", ownerProfileTag);
 			return tag;
 		}
@@ -126,9 +126,9 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag) {
+	public void load(BlockState state, CompoundTag tag) {
 		super.load(state, tag);
-		ownerProfile = NBTUtil.readGameProfile(tag.getCompound("ownerProfile"));
+		ownerProfile = NbtUtils.readGameProfile(tag.getCompound("ownerProfile"));
 	}
 
 	@Nullable
@@ -150,7 +150,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	}
 
 	private GameProfile updateGameProfile(GameProfile input) {
-		if (ConfigHandler.SERVER.retinalScannerFace.get() && input != null && !StringUtils.isNullOrEmpty(input.getName())) {
+		if (ConfigHandler.SERVER.retinalScannerFace.get() && input != null && !StringUtil.isNullOrEmpty(input.getName())) {
 			if (input.isComplete() && input.getProperties().containsKey("textures"))
 				return input;
 			else if (profileCache != null && sessionService != null) {

@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Defines a block that can be converted to a password-protected variant by rightclicking it with a Key Panel.
@@ -32,5 +32,5 @@ public interface IPasswordConvertible
 	 * @param pos The position the conversaion takes place at
 	 * @return true if the conversion was successful, false otherwise
 	 */
-	public boolean convert(PlayerEntity player, World world, BlockPos pos);
+	public boolean convert(Player player, Level world, BlockPos pos);
 }

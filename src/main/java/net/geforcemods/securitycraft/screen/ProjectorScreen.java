@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import java.util.Arrays;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -14,22 +14,22 @@ import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
+public class ProjectorScreen extends AbstractContainerScreen<ProjectorContainer> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
-	private static final TranslationTextComponent SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block");
+	private static final TranslatableComponent SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block");
 	private ProjectorTileEntity tileEntity;
-	private TranslationTextComponent blockName;
+	private TranslatableComponent blockName;
 
 	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[5];
 	private TextHoverChecker slotHoverChecker;
@@ -42,7 +42,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 
 	private int sliderWidth = 120;
 
-	public ProjectorScreen(ProjectorContainer container, PlayerInventory inv, ITextComponent name)
+	public ProjectorScreen(ProjectorContainer container, Inventory inv, Component name)
 	{
 		super(container, inv, name);
 		this.tileEntity = container.te;
@@ -68,7 +68,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		projectionRangeSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.range", tileEntity.getProjectionRange()), blockName, id, left, topPos + 89, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", ""), "", ProjectorTileEntity.MIN_RANGE, ProjectorTileEntity.MAX_RANGE, tileEntity.getProjectionRange(), false, true, slider -> {
 			//show a different number so it makes sense within the world
 			if(tileEntity.isHorizontal())
-				slider.setMessage(new StringTextComponent("").append(slider.dispString).append(Integer.toString((int)Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
+				slider.setMessage(new TextComponent("").append(slider.dispString).append(Integer.toString((int)Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
 		}, this::sliderReleased));
 		projectionRangeSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionRangeSlider, Utils.localize("gui.securitycraft:projector.range.description"));
@@ -90,7 +90,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
@@ -107,13 +107,13 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY)
+	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY)
 	{
 		font.draw(matrix, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
+	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);

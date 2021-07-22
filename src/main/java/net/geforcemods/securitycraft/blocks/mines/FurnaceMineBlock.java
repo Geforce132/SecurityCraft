@@ -6,26 +6,26 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 
 public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
 
@@ -37,7 +37,7 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	}
 
 	@Override
-	public void wasExploded(World world, BlockPos pos, Explosion explosion) {
+	public void wasExploded(Level world, BlockPos pos, Explosion explosion) {
 		if (!world.isClientSide)
 		{
 			if(pos.equals(new BlockPos(explosion.getPosition())))
@@ -48,7 +48,7 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid){
+	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid){
 		if(!world.isClientSide)
 			if(player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
@@ -61,41 +61,41 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		if(player.getItemInHand(hand).getItem() != SCContent.REMOTE_ACCESS_MINE.get() && !EntityUtils.doesPlayerOwn(player, world, pos)){
 			explode(world, pos);
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 		else
-			return ActionResultType.PASS;
+			return InteractionResult.PASS;
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
+	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
 		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
 	}
 
 	@Override
-	public boolean activateMine(World world, BlockPos pos)
+	public boolean activateMine(Level world, BlockPos pos)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean defuseMine(World world, BlockPos pos)
+	public boolean defuseMine(Level world, BlockPos pos)
 	{
 		return false;
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos) {
+	public void explode(Level world, BlockPos pos) {
 		if(world.isClientSide)
 			return;
 
@@ -119,7 +119,7 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	}
 
 	@Override
-	public boolean isActive(World world, BlockPos pos) {
+	public boolean isActive(Level world, BlockPos pos) {
 		return true;
 	}
 
@@ -129,12 +129,12 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, BlockState state, BlockPos pos) {
+	public ItemStack getDisplayStack(Level world, BlockState state, BlockPos pos) {
 		return new ItemStack(Blocks.FURNACE);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos) {
+	public boolean shouldShowSCInfo(Level world, BlockState state, BlockPos pos) {
 		return false;
 	}
 

@@ -7,11 +7,11 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.Util;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.VersionChecker;
@@ -31,9 +31,9 @@ public class SendTip
 
 	public SendTip() {}
 
-	public static void encode(SendTip message, PacketBuffer packet) {}
+	public static void encode(SendTip message, FriendlyByteBuf packet) {}
 
-	public static SendTip decode(PacketBuffer packet)
+	public static SendTip decode(FriendlyByteBuf packet)
 	{
 		return new SendTip();
 	}
@@ -45,9 +45,9 @@ public class SendTip
 				return;
 
 			String tipKey = getRandomTip();
-			IFormattableTextComponent message = new StringTextComponent("[")
-					.append(new StringTextComponent("SecurityCraft").withStyle(TextFormatting.GOLD))
-					.append(new StringTextComponent("] "))
+			MutableComponent message = new TextComponent("[")
+					.append(new TextComponent("SecurityCraft").withStyle(ChatFormatting.GOLD))
+					.append(new TextComponent("] "))
 					.append(Utils.localize("messages.securitycraft:thanks",
 							SecurityCraft.getVersion(),
 							Utils.localize("messages.securitycraft:tip"),

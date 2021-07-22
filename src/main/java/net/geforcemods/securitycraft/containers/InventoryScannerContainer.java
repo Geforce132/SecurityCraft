@@ -4,27 +4,27 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.ClickType;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
-public class InventoryScannerContainer extends Container {
+public class InventoryScannerContainer extends AbstractContainerMenu {
 
 	private final int numRows;
 	public final InventoryScannerTileEntity te;
-	private IWorldPosCallable worldPosCallable;
+	private ContainerLevelAccess worldPosCallable;
 
-	public InventoryScannerContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory){
+	public InventoryScannerContainer(int windowId, Level world, BlockPos pos, Inventory inventory){
 		super(SCContent.cTypeInventoryScanner, windowId);
 		te = (InventoryScannerTileEntity)world.getBlockEntity(pos);
 		numRows = te.getContainerSize() / 9;
-		worldPosCallable = IWorldPosCallable.create(world, pos);
+		worldPosCallable = ContainerLevelAccess.create(world, pos);
 
 		//prohibited items
 		for(int i = 0; i < 10; i++)
@@ -50,7 +50,7 @@ public class InventoryScannerContainer extends Container {
 	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
 	 */
 	@Override
-	public ItemStack quickMoveStack(PlayerEntity player, int index)
+	public ItemStack quickMoveStack(Player player, int index)
 	{
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
@@ -81,7 +81,7 @@ public class InventoryScannerContainer extends Container {
 	 * Called when the container is closed.
 	 */
 	@Override
-	public void removed(PlayerEntity player)
+	public void removed(Player player)
 	{
 		super.removed(player);
 
@@ -89,12 +89,12 @@ public class InventoryScannerContainer extends Container {
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return stillValid(worldPosCallable, player, SCContent.INVENTORY_SCANNER.get());
 	}
 
 	@Override
-	public ItemStack clicked(int slotId, int dragType, ClickType clickType, PlayerEntity player)
+	public ItemStack clicked(int slotId, int dragType, ClickType clickType, Player player)
 	{
 		if(slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof OwnerRestrictedSlot && ((OwnerRestrictedSlot)getSlot(slotId)).isGhostSlot())
 		{

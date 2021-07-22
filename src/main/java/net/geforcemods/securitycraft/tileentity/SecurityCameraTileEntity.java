@@ -7,10 +7,10 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
 
 public class SecurityCameraTileEntity extends CustomizableTileEntity {
 
@@ -56,7 +56,7 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		tag.putFloat("LastPitch", lastPitch);
 		tag.putFloat("LastYaw", lastYaw);
@@ -64,7 +64,7 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 		lastPitch = tag.getFloat("LastPitch");

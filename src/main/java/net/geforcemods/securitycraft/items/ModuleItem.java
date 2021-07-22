@@ -9,29 +9,29 @@ import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
@@ -39,7 +39,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ModuleItem extends Item{
 
-	public static final Style GRAY_STYLE = Style.EMPTY.withColor(TextFormatting.GRAY);
+	public static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
 	public static final int MAX_PLAYERS = 50;
 	private final ModuleType module;
 	private final boolean nbtCanBeModified;
@@ -65,9 +65,9 @@ public class ModuleItem extends Item{
 	}
 
 	@Override
-	public ActionResultType useOn(ItemUseContext ctx)
+	public InteractionResult useOn(UseOnContext ctx)
 	{
-		TileEntity te = ctx.getLevel().getBlockEntity(ctx.getClickedPos());
+		BlockEntity te = ctx.getLevel().getBlockEntity(ctx.getClickedPos());
 		ItemStack stack = ctx.getItemInHand();
 
 		if(te instanceof IModuleInventory)
@@ -83,55 +83,55 @@ public class ModuleItem extends Item{
 				if(!ctx.getPlayer().isCreative())
 					stack.shrink(1);
 
-				return ActionResultType.SUCCESS;
+				return InteractionResult.SUCCESS;
 			}
 		}
 
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if(canBeCustomized())
 		{
 			if(module == ModuleType.ALLOWLIST || module == ModuleType.DENYLIST) {
 				SecurityCraft.proxy.displayEditModuleGui(stack);
-				return ActionResult.consume(stack);
+				return InteractionResultHolder.consume(stack);
 			}
 			else if(module == ModuleType.DISGUISE)
 			{
 				if (!world.isClientSide) {
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+					NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
 							return new DisguiseModuleContainer(windowId, inv, new ModuleItemInventory(player.getItemInHand(hand)));
 						}
 
 						@Override
-						public ITextComponent getDisplayName()
+						public Component getDisplayName()
 						{
-							return new TranslationTextComponent(getDescriptionId());
+							return new TranslatableComponent(getDescriptionId());
 						}
 					});
 				}
 
-				return ActionResult.consume(stack);
+				return InteractionResultHolder.consume(stack);
 			}
 		}
 
-		return ActionResult.pass(stack);
+		return InteractionResultHolder.pass(stack);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Level world, List<Component> list, TooltipFlag flag) {
 		if(nbtCanBeModified || canBeCustomized())
-			list.add(new TranslationTextComponent("tooltip.securitycraft:module.modifiable").setStyle(GRAY_STYLE));
+			list.add(new TranslatableComponent("tooltip.securitycraft:module.modifiable").setStyle(GRAY_STYLE));
 		else
-			list.add(new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").setStyle(GRAY_STYLE));
+			list.add(new TranslatableComponent("tooltip.securitycraft:module.notModifiable").setStyle(GRAY_STYLE));
 
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
@@ -144,12 +144,12 @@ public class ModuleItem extends Item{
 				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks", numberOfBlockAddons).setStyle(GRAY_STYLE));
 
 			if(getNumberOfAddons() > 0 && !getAddons(stack.getTag()).isEmpty()) {
-				list.add(StringTextComponent.EMPTY);
+				list.add(TextComponent.EMPTY);
 
 				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added").setStyle(GRAY_STYLE));
 
 				for(ItemStack addon : getAddons(stack.getTag()))
-					list.add(new StringTextComponent("- ").append(Utils.localize(addon.getDescriptionId())).setStyle(GRAY_STYLE));
+					list.add(new TextComponent("- ").append(Utils.localize(addon.getDescriptionId())).setStyle(GRAY_STYLE));
 			}
 		}
 	}
@@ -170,15 +170,15 @@ public class ModuleItem extends Item{
 		return numberOfBlockAddons;
 	}
 
-	public ArrayList<Block> getBlockAddons(CompoundNBT tag){
+	public ArrayList<Block> getBlockAddons(CompoundTag tag){
 		ArrayList<Block> list = new ArrayList<>();
 
 		if(tag == null) return list;
 
-		ListNBT items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		ListTag items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
 		for(int i = 0; i < items.size(); i++) {
-			CompoundNBT item = items.getCompound(i);
+			CompoundTag item = items.getCompound(i);
 			int slot = item.getInt("Slot");
 
 			if(slot < numberOfBlockAddons) {
@@ -192,15 +192,15 @@ public class ModuleItem extends Item{
 		return list;
 	}
 
-	public ArrayList<ItemStack> getAddons(CompoundNBT tag){
+	public ArrayList<ItemStack> getAddons(CompoundTag tag){
 		ArrayList<ItemStack> list = new ArrayList<>();
 
 		if(tag == null) return list;
 
-		ListNBT items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		ListTag items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
 		for(int i = 0; i < items.size(); i++) {
-			CompoundNBT item = items.getCompound(i);
+			CompoundTag item = items.getCompound(i);
 			int slot = item.getInt("Slot");
 
 			if(slot < numberOfBlockAddons)

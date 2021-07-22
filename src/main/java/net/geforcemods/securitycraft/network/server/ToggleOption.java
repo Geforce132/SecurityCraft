@@ -5,10 +5,10 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class ToggleOption {
@@ -24,7 +24,7 @@ public class ToggleOption {
 		this.id = id;
 	}
 
-	public static void encode(ToggleOption message, PacketBuffer buf)
+	public static void encode(ToggleOption message, FriendlyByteBuf buf)
 	{
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
@@ -32,7 +32,7 @@ public class ToggleOption {
 		buf.writeInt(message.id);
 	}
 
-	public static ToggleOption decode(PacketBuffer buf)
+	public static ToggleOption decode(FriendlyByteBuf buf)
 	{
 		ToggleOption message = new ToggleOption();
 
@@ -48,8 +48,8 @@ public class ToggleOption {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			int id = message.id;
-			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.level.getBlockEntity(pos);
+			Player player = ctx.get().getSender();
+			BlockEntity te = player.level.getBlockEntity(pos);
 
 			if(te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player))) {
 				((ICustomizable)te).customOptions()[id].toggle();

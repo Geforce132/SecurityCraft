@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.api;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * This interface can be used to create Blocks that do something when
@@ -18,5 +18,5 @@ public interface IIntersectable {
 	/**
 	 * Called when an Entity collides with a Block's bounding box.
 	 */
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity);
+	public void onEntityIntersected(Level world, BlockPos pos, Entity entity);
 }

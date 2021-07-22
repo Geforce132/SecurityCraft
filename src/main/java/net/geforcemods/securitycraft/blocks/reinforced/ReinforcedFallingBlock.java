@@ -3,18 +3,18 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.item.FallingBlockEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 public class ReinforcedFallingBlock extends BaseReinforcedBlock
 {
@@ -24,38 +24,38 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock
 	}
 
 	@Override
-	public void onPlace(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag)
+	public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean flag)
 	{
 		world.getBlockTicks().scheduleTick(pos, this, 2);
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos)
 	{
 		world.getBlockTicks().scheduleTick(currentPos, this, 2);
 		return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random)
 	{
 		if(!world.isClientSide)
 			checkFallable(world, pos);
 	}
 
-	private void checkFallable(World world, BlockPos pos)
+	private void checkFallable(Level world, BlockPos pos)
 	{
 		if(canFallThrough(world.getBlockState(pos.below())) && pos.getY() >= 0)
 		{
 			if(world.hasChunksAt(pos.offset(-32, -32, -32), pos.offset(32, 32, 32)))
 			{
-				TileEntity te = world.getBlockEntity(pos);
+				BlockEntity te = world.getBlockEntity(pos);
 
 				if(!world.isClientSide && te instanceof IOwnable)
 				{
 					FallingBlockEntity entity = new FallingBlockEntity(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos));
 
-					entity.blockData = te.save(new CompoundNBT());
+					entity.blockData = te.save(new CompoundTag());
 					world.addFreshEntity(entity);
 				}
 			}

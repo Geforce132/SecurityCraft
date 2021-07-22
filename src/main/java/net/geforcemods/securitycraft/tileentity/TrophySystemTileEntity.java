@@ -19,23 +19,23 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.ExperienceBottleEntity;
-import net.minecraft.entity.projectile.FishingBobberEntity;
-import net.minecraft.entity.projectile.PotionEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.entity.projectile.TridentEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.Explosion;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.ThrownExperienceBottle;
+import net.minecraft.world.entity.projectile.FishingHook;
+import net.minecraft.world.entity.projectile.ThrownPotion;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ThrownTrident;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.Explosion;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class TrophySystemTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
+public class TrophySystemTileEntity extends CustomizableTileEntity implements TickableBlockEntity {
 
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
@@ -45,7 +45,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	public static final int RENDER_DISTANCE = 50;
 
 	private final Map<EntityType<?>, Boolean> projectileFilter = new LinkedHashMap<>();
-	public ProjectileEntity entityBeingTargeted = null;
+	public Projectile entityBeingTargeted = null;
 	public int cooldown = getCooldownTime();
 	private final Random random = new Random();
 
@@ -76,7 +76,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		if (!level.isClientSide) {
 			// If the trophy does not have a target, try looking for one
 			if(entityBeingTargeted == null) {
-				ProjectileEntity target = getPotentialTarget();
+				Projectile target = getPotentialTarget();
 
 				if(target != null) {
 					Entity shooter = target.getOwner();
@@ -108,15 +108,15 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	}
 
 	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
-		return new AxisAlignedBB(getBlockPos()).inflate(RENDER_DISTANCE);
+	public AABB getRenderBoundingBox() {
+		return new AABB(getBlockPos()).inflate(RENDER_DISTANCE);
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag) {
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 
-		CompoundNBT projectilesNBT = new CompoundNBT();
+		CompoundTag projectilesNBT = new CompoundTag();
 		int i = 0;
 
 		for (boolean b : projectileFilter.values()) {
@@ -129,11 +129,11 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag) {
+	public void load(BlockState state, CompoundTag tag) {
 		super.load(state, tag);
 
 		if (tag.contains("projectiles", NBT.TAG_COMPOUND)) {
-			CompoundNBT projectilesNBT = tag.getCompound("projectiles");
+			CompoundTag projectilesNBT = tag.getCompound("projectiles");
 			int i = 0;
 
 			for (EntityType<?> projectileType : projectileFilter.keySet()) {
@@ -143,7 +143,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		}
 	}
 
-	public void setTarget(ProjectileEntity target) {
+	public void setTarget(Projectile target) {
 		this.entityBeingTargeted = target;
 
 		if (!level.isClientSide) {
@@ -158,7 +158,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		entityBeingTargeted.remove();
 
 		if(!level.isClientSide)
-			level.explode(null, entityBeingTargeted.getX(), entityBeingTargeted.getY(), entityBeingTargeted.getZ(), 0.1F, Explosion.Mode.NONE);
+			level.explode(null, entityBeingTargeted.getX(), entityBeingTargeted.getY(), entityBeingTargeted.getZ(), 0.1F, Explosion.BlockInteraction.NONE);
 
 		resetTarget();
 	}
@@ -175,11 +175,11 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	 * Randomly returns a new Entity target from the list of all entities
 	 * within range of the trophy
 	 */
-	private ProjectileEntity getPotentialTarget() {
-		List<ProjectileEntity> potentialTargets = new ArrayList<>();
-		AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(RANGE, RANGE, RANGE);
+	private Projectile getPotentialTarget() {
+		List<Projectile> potentialTargets = new ArrayList<>();
+		AABB area = new AABB(worldPosition).inflate(RANGE, RANGE, RANGE);
 
-		potentialTargets.addAll(level.getEntitiesOfClass(ProjectileEntity.class, area, this::isAllowedToTarget));
+		potentialTargets.addAll(level.getEntitiesOfClass(Projectile.class, area, this::isAllowedToTarget));
 
 		//remove bullets shot by sentries/IMSs of this trophy system's owner or players on the allowlist
 		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
@@ -193,15 +193,15 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		return potentialTargets.get(target);
 	}
 
-	private boolean isAllowedToTarget(ProjectileEntity target) {
-		if (target instanceof TridentEntity || target instanceof FishingBobberEntity || target instanceof PotionEntity || target instanceof ExperienceBottleEntity)
+	private boolean isAllowedToTarget(Projectile target) {
+		if (target instanceof ThrownTrident || target instanceof FishingHook || target instanceof ThrownPotion || target instanceof ThrownExperienceBottle)
 			return false;
 
 		//try to get the target's type filter first. if not found, it's a modded projectile and the return value falls back to the modded filter (designated by the PIG entity type)
 		return projectileFilter.getOrDefault(target.getType(), projectileFilter.get(EntityType.PIG));
 	}
 
-	private boolean filterSCProjectiles(ProjectileEntity projectile) {
+	private boolean filterSCProjectiles(Projectile projectile) {
 		Owner owner = null;
 
 		if(projectile instanceof BulletEntity)

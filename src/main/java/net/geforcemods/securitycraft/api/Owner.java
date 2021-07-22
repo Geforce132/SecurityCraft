@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.datasync.IDataSerializer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -50,7 +50,7 @@ public class Owner {
 	/**
 	 * @return If this person is the same person as the given player.
 	 */
-	public boolean isOwner(PlayerEntity player) {
+	public boolean isOwner(Player player) {
 		if(player == null) return false;
 		String uuid = player.getGameProfile().getId().toString();
 		String owner = player.getName().getString();
@@ -112,8 +112,8 @@ public class Owner {
 		return obj instanceof Owner && getName().equals(((Owner)obj).getName()) && getUUID().equals(((Owner)obj).getUUID());
 	}
 
-	public static IDataSerializer<Owner> getSerializer()
+	public static EntityDataSerializer<Owner> getSerializer()
 	{
-		return (IDataSerializer<Owner>)SERIALIZER.getSerializer();
+		return (EntityDataSerializer<Owner>)SERIALIZER.getSerializer();
 	}
 }

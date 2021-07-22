@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -11,30 +11,30 @@ import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
+public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEContainer> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private TileEntity tileEntity;
+	private BlockEntity tileEntity;
 	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u001B'}; //0-9, backspace and escape
-	private TranslationTextComponent blockName;
-	private TextFieldWidget keycodeTextbox;
+	private TranslatableComponent blockName;
+	private EditBox keycodeTextbox;
 	private String currentString = "";
 	private static final int MAX_CHARS = 20;
 
-	public CheckPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
+	public CheckPasswordScreen(GenericTEContainer container, Inventory inv, Component name){
 		super(container, inv, name);
 		this.tileEntity = container.te;
 		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getDescriptionId());
@@ -57,7 +57,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		addButton(new IdButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "9", this::actionPerformed));
 		addButton(new IdButton(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
 
-		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 67, 77, 12, StringTextComponent.EMPTY));
+		addButton(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 67, 77, 12, TextComponent.EMPTY));
 		keycodeTextbox.setMaxLength(MAX_CHARS);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
 		setInitialFocus(keycodeTextbox);
@@ -70,12 +70,12 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY){
+	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY){
 		font.draw(matrix, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY){
+	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY){
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
@@ -134,7 +134,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		}
 	}
 
-	private void setTextboxCensoredText(TextFieldWidget textField, String text) {
+	private void setTextboxCensoredText(EditBox textField, String text) {
 		String x = "";
 
 		for(int i = 1; i <= text.length(); i++)

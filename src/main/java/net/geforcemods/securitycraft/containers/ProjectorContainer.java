@@ -2,30 +2,30 @@ package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
-public class ProjectorContainer extends Container {
+public class ProjectorContainer extends AbstractContainerMenu {
 
 	public static final int SIZE = 1;
 	public ProjectorTileEntity te;
-	private IWorldPosCallable worldPosCallable;
+	private ContainerLevelAccess worldPosCallable;
 
-	public ProjectorContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory)
+	public ProjectorContainer(int windowId, Level world, BlockPos pos, Inventory inventory)
 	{
 		super(SCContent.cTypeProjector, windowId);
 
 		if(world.getBlockEntity(pos) instanceof ProjectorTileEntity)
 			te = (ProjectorTileEntity) world.getBlockEntity(pos);
 
-		worldPosCallable = IWorldPosCallable.create(world, pos);
+		worldPosCallable = ContainerLevelAccess.create(world, pos);
 
 		for(int y = 0; y < 3; y++)
 			for(int x = 0; x < 9; ++x)
@@ -46,7 +46,7 @@ public class ProjectorContainer extends Container {
 	}
 
 	@Override
-	public ItemStack quickMoveStack(PlayerEntity player, int index)
+	public ItemStack quickMoveStack(Player player, int index)
 	{
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
@@ -79,7 +79,7 @@ public class ProjectorContainer extends Container {
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity player)
+	public boolean stillValid(Player player)
 	{
 		return stillValid(worldPosCallable, player, SCContent.PROJECTOR.get());
 	}

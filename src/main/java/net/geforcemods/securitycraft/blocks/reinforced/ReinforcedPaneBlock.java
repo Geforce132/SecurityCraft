@@ -2,23 +2,23 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.PaneBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock
+public class ReinforcedPaneBlock extends IronBarsBlock implements IReinforcedBlock
 {
 	private final Block vanillaBlock;
 
@@ -30,11 +30,11 @@ public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return getStateForPlacement(context.getLevel(), context.getClickedPos());
 	}
 
-	public BlockState getStateForPlacement(IBlockReader world, BlockPos pos)
+	public BlockState getStateForPlacement(BlockGetter world, BlockPos pos)
 	{
 		FluidState fluidState = world.getFluidState(pos);
 		BlockPos northPos = pos.north();
@@ -57,14 +57,14 @@ public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
-		return defaultBlockState().setValue(NORTH, vanillaState.getValue(PaneBlock.NORTH)).setValue(EAST, vanillaState.getValue(PaneBlock.EAST)).setValue(WEST, vanillaState.getValue(PaneBlock.WEST)).setValue(SOUTH, vanillaState.getValue(PaneBlock.SOUTH)).setValue(WATERLOGGED, vanillaState.getValue(PaneBlock.WATERLOGGED));
+		return defaultBlockState().setValue(NORTH, vanillaState.getValue(IronBarsBlock.NORTH)).setValue(EAST, vanillaState.getValue(IronBarsBlock.EAST)).setValue(WEST, vanillaState.getValue(IronBarsBlock.WEST)).setValue(SOUTH, vanillaState.getValue(IronBarsBlock.SOUTH)).setValue(WATERLOGGED, vanillaState.getValue(IronBarsBlock.WATERLOGGED));
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+		if(placer instanceof Player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)placer));
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
 	{
 		return new OwnableTileEntity();
 	}

@@ -4,16 +4,16 @@ import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.WallOrFloorItem;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
-public class SecretSignItem extends WallOrFloorItem
+public class SecretSignItem extends StandingAndWallBlockItem
 {
 	private final String translationKey;
 
@@ -37,7 +37,7 @@ public class SecretSignItem extends WallOrFloorItem
 	}
 
 	@Override
-	public boolean updateCustomBlockEntityTag(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack, BlockState state)
+	public boolean updateCustomBlockEntityTag(BlockPos pos, Level world, @Nullable Player player, ItemStack stack, BlockState state)
 	{
 		boolean flag = super.updateCustomBlockEntityTag(pos, world, player, stack, state);
 

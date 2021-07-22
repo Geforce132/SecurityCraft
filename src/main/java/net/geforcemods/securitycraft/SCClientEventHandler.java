@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.api.IExplosive;
@@ -14,33 +14,33 @@ import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.GameSettings;
-import net.minecraft.client.MainWindow;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.Options;
+import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceContext.BlockMode;
-import net.minecraft.util.math.RayTraceContext.FluidMode;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.ClipContext.Block;
+import net.minecraft.world.level.ClipContext.Fluid;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.HitResult.Type;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.DrawHighlightEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
@@ -64,7 +64,7 @@ public class SCClientEventHandler
 	@SubscribeEvent
 	public static void onScreenshot(ScreenshotEvent event)
 	{
-		PlayerEntity player = Minecraft.getInstance().player;
+		Player player = Minecraft.getInstance().player;
 
 		if(PlayerUtils.isPlayerMountedOnCamera(player))
 		{
@@ -73,7 +73,7 @@ public class SCClientEventHandler
 			if(camera.screenshotSoundCooldown == 0)
 			{
 				camera.screenshotSoundCooldown = 7;
-				Minecraft.getInstance().level.playLocalSound(player.blockPosition(), SCSounds.CAMERASNAP.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+				Minecraft.getInstance().level.playLocalSound(player.blockPosition(), SCSounds.CAMERASNAP.event, SoundSource.BLOCKS, 1.0F, 1.0F, true);
 			}
 		}
 	}
@@ -100,22 +100,22 @@ public class SCClientEventHandler
 		else if(event.getType() == ElementType.ALL)
 		{
 			Minecraft mc = Minecraft.getInstance();
-			ClientPlayerEntity player = mc.player;
-			World world = player.getCommandSenderWorld();
+			LocalPlayer player = mc.player;
+			Level world = player.getCommandSenderWorld();
 
-			for (Hand hand : Hand.values()) {
+			for (InteractionHand hand : InteractionHand.values()) {
 				int uCoord = 0;
 				ItemStack stack = player.getItemInHand(hand);
 
 				if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
 				{
 					double eyeHeight = player.getEyeHeight();
-					Vector3d lookVec = new Vector3d((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
-					RayTraceResult mop = world.clip(new RayTraceContext(new Vector3d(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
+					Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
+					HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
-					if(mop != null && mop.getType() == Type.BLOCK && world.getBlockEntity(((BlockRayTraceResult)mop).getBlockPos()) instanceof SecurityCameraTileEntity)
+					if(mop != null && mop.getType() == Type.BLOCK && world.getBlockEntity(((BlockHitResult)mop).getBlockPos()) instanceof SecurityCameraTileEntity)
 					{
-						CompoundNBT cameras = stack.getTag();
+						CompoundTag cameras = stack.getTag();
 						uCoord = 110;
 
 						if(cameras != null) {
@@ -126,7 +126,7 @@ public class SCClientEventHandler
 
 								String[] coords = cameras.getString("Camera" + i).split(" ");
 
-								if(Integer.parseInt(coords[0]) == ((BlockRayTraceResult)mop).getBlockPos().getX() && Integer.parseInt(coords[1]) == ((BlockRayTraceResult)mop).getBlockPos().getY() && Integer.parseInt(coords[2]) == ((BlockRayTraceResult)mop).getBlockPos().getZ())
+								if(Integer.parseInt(coords[0]) == ((BlockHitResult)mop).getBlockPos().getX() && Integer.parseInt(coords[1]) == ((BlockHitResult)mop).getBlockPos().getY() && Integer.parseInt(coords[2]) == ((BlockHitResult)mop).getBlockPos().getZ())
 								{
 									uCoord = 88;
 									break;
@@ -138,13 +138,13 @@ public class SCClientEventHandler
 				else if(stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get())
 				{
 					double eyeHeight = player.getEyeHeight();
-					Vector3d lookVec = new Vector3d((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
-					RayTraceResult mop = world.clip(new RayTraceContext(new Vector3d(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
+					Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
+					HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
-					if(mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockRayTraceResult)mop).getBlockPos()).getBlock() instanceof IExplosive)
+					if(mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockHitResult)mop).getBlockPos()).getBlock() instanceof IExplosive)
 					{
 						uCoord = 110;
-						CompoundNBT mines = stack.getTag();
+						CompoundTag mines = stack.getTag();
 
 						if(mines != null) {
 							for(int i = 1; i <= 6; i++)
@@ -153,7 +153,7 @@ public class SCClientEventHandler
 								{
 									int[] coords = mines.getIntArray("mine" + i);
 
-									if(coords[0] == ((BlockRayTraceResult)mop).getBlockPos().getX() && coords[1] == ((BlockRayTraceResult)mop).getBlockPos().getY() && coords[2] == ((BlockRayTraceResult)mop).getBlockPos().getZ())
+									if(coords[0] == ((BlockHitResult)mop).getBlockPos().getX() && coords[1] == ((BlockHitResult)mop).getBlockPos().getY() && coords[2] == ((BlockHitResult)mop).getBlockPos().getZ())
 									{
 										uCoord = 88;
 										break;
@@ -170,7 +170,7 @@ public class SCClientEventHandler
 					if(hitEntity instanceof SentryEntity)
 					{
 						uCoord = 110;
-						CompoundNBT sentries = stack.getTag();
+						CompoundTag sentries = stack.getTag();
 
 						if(sentries != null) {
 							for(int i = 1; i <= 12; i++)
@@ -192,7 +192,7 @@ public class SCClientEventHandler
 				if (uCoord != 0) {
 					RenderSystem.enableAlphaTest();
 					Minecraft.getInstance().textureManager.bind(BEACON_GUI);
-					AbstractGui.blit(event.getMatrixStack(), Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == Hand.MAIN_HAND ? player.inventory.selected * 20 : -29), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+					GuiComponent.blit(event.getMatrixStack(), Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.inventory.selected * 20 : -29), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
 					RenderSystem.disableAlphaTest();
 				}
 			}
@@ -223,23 +223,23 @@ public class SCClientEventHandler
 		}
 	}
 
-	private static void drawCameraOverlay(MatrixStack matrix, Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {
-		FontRenderer font = Minecraft.getInstance().font;
-		GameSettings settings = Minecraft.getInstance().options;
+	private static void drawCameraOverlay(PoseStack matrix, Minecraft mc, GuiComponent gui, Window resolution, Player player, Level world, BlockPos pos) {
+		Font font = Minecraft.getInstance().font;
+		Options settings = Minecraft.getInstance().options;
 		SecurityCameraTileEntity te = (SecurityCameraTileEntity)world.getBlockEntity(pos);
 		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
-		ITextComponent lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyUp.getTranslatedKeyMessage(), settings.keyLeft.getTranslatedKeyMessage(), settings.keyDown.getTranslatedKeyMessage(), settings.keyRight.getTranslatedKeyMessage());
-		ITextComponent exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyShift.getTranslatedKeyMessage());
-		ITextComponent zoom = Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage());
-		ITextComponent nightVision = Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage());
-		ITextComponent redstone = Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage());
-		ITextComponent redstoneNote = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
+		Component lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyUp.getTranslatedKeyMessage(), settings.keyLeft.getTranslatedKeyMessage(), settings.keyDown.getTranslatedKeyMessage(), settings.keyRight.getTranslatedKeyMessage());
+		Component exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyShift.getTranslatedKeyMessage());
+		Component zoom = Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage());
+		Component nightVision = Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage());
+		Component redstone = Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage());
+		Component redstoneNote = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 		String time = ClientUtils.getFormattedMinecraftTime();
 		int timeY = 25;
 
 		if(te.hasCustomSCName())
 		{
-			ITextComponent cameraName = te.getCustomSCName();
+			Component cameraName = te.getCustomSCName();
 
 			font.drawShadow(matrix, cameraName, resolution.getGuiScaledWidth() - font.width(cameraName) - 8, 25, 16777215);
 			timeY += 10;
@@ -258,11 +258,11 @@ public class SCClientEventHandler
 		gui.blit(matrix, 5, 0, 0, 0, 90, 20);
 		gui.blit(matrix, resolution.getGuiScaledWidth() - 55, 5, 205, 0, 50, 30);
 
-		if(!player.hasEffect(Effects.NIGHT_VISION))
+		if(!player.hasEffect(MobEffects.NIGHT_VISION))
 			gui.blit(matrix, 28, 4, 90, 12, 16, 11);
 		else{
 			mc.getTextureManager().bind(NIGHT_VISION);
-			AbstractGui.blit(matrix, 27, -1, 0, 0, 18, 18, 18, 18);
+			GuiComponent.blit(matrix, 27, -1, 0, 0, 18, 18, 18, 18);
 			mc.getTextureManager().bind(CAMERA_DASHBOARD);
 		}
 

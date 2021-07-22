@@ -11,103 +11,103 @@ import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class CameraMonitorItem extends Item {
 
-	private static final Style GRAY_STYLE = Style.EMPTY.withColor(TextFormatting.GRAY);
+	private static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
 
 	public CameraMonitorItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public ActionResultType useOn(ItemUseContext ctx)
+	public InteractionResult useOn(UseOnContext ctx)
 	{
 		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
 	}
 
-	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
+	public InteractionResult onItemUse(Player player, Level world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
 		if(world.getBlockState(pos).getBlock() == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)){
 			SecurityCameraTileEntity te = (SecurityCameraTileEntity)world.getBlockEntity(pos);
 
 			if(!te.getOwner().isOwner(player) && !te.hasModule(ModuleType.SMART)){
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
-				return ActionResultType.FAIL;
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), ChatFormatting.RED);
+				return InteractionResult.FAIL;
 			}
 
 			if(stack.getTag() == null)
-				stack.setTag(new CompoundNBT());
+				stack.setTag(new CompoundTag());
 
 			CameraView view = new CameraView(pos, player.level.dimension());
 
 			if(isCameraAdded(stack.getTag(), view)){
 				stack.getTag().remove(getTagNameFromPosition(stack.getTag(), view));
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.unbound", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
-				return ActionResultType.SUCCESS;
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
+				return InteractionResult.SUCCESS;
 			}
 
 			for(int i = 1; i <= 30; i++)
 				if (!stack.getTag().contains("Camera" + i)){
 					stack.getTag().putString("Camera" + i, view.toNBTString());
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.bound", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 					break;
 				}
 
 			if (!world.isClientSide)
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new UpdateNBTTagOnClient(stack));
 
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
 	@Override
-	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if(!stack.hasTag() || !hasCameraAdded(stack.getTag())) {
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
-			return ActionResult.pass(stack);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), ChatFormatting.RED);
+			return InteractionResultHolder.pass(stack);
 		}
 
 		if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
 			SecurityCraft.proxy.displayCameraMonitorGui(player.inventory, (CameraMonitorItem) stack.getItem(), stack.getTag());
 
-		return ActionResult.consume(stack);
+		return InteractionResultHolder.consume(stack);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
 		if(stack.getTag() == null)
 			return;
 
-		tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor").append(new StringTextComponent(" " + getNumberOfCamerasBound(stack.getTag()) + "/30")).setStyle(GRAY_STYLE));
+		tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor").append(new TextComponent(" " + getNumberOfCamerasBound(stack.getTag()) + "/30")).setStyle(GRAY_STYLE));
 	}
 
-	public static String getTagNameFromPosition(CompoundNBT tag, CameraView view) {
+	public static String getTagNameFromPosition(CompoundTag tag, CameraView view) {
 		for(int i = 1; i <= 30; i++)
 			if(tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
@@ -119,7 +119,7 @@ public class CameraMonitorItem extends Item {
 		return "";
 	}
 
-	public boolean hasCameraAdded(CompoundNBT tag){
+	public boolean hasCameraAdded(CompoundTag tag){
 		if(tag == null) return false;
 
 		for(int i = 1; i <= 30; i++)
@@ -129,7 +129,7 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public boolean isCameraAdded(CompoundNBT tag, CameraView view){
+	public boolean isCameraAdded(CompoundTag tag, CameraView view){
 		for(int i = 1; i <= 30; i++)
 			if(tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
@@ -141,7 +141,7 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public ArrayList<CameraView> getCameraPositions(CompoundNBT tag){
+	public ArrayList<CameraView> getCameraPositions(CompoundTag tag){
 		ArrayList<CameraView> list = new ArrayList<>();
 
 		for(int i = 1; i <= 30; i++)
@@ -156,7 +156,7 @@ public class CameraMonitorItem extends Item {
 		return list;
 	}
 
-	public int getNumberOfCamerasBound(CompoundNBT tag) {
+	public int getNumberOfCamerasBound(CompoundTag tag) {
 		if(tag == null) return 0;
 
 		int amount = 0;

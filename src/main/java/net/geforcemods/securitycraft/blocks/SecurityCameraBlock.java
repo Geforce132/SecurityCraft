@@ -10,41 +10,41 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Direction.Axis;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 public class SecurityCameraBlock extends OwnableBlock{
 
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != Direction.UP);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-	private static final VoxelShape SHAPE_SOUTH = VoxelShapes.create(new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F));
-	private static final VoxelShape SHAPE_NORTH = VoxelShapes.create(new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F));
-	private static final VoxelShape SHAPE_WEST = VoxelShapes.create(new AxisAlignedBB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F));
-	private static final VoxelShape SHAPE = VoxelShapes.create(new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F));
-	private static final VoxelShape SHAPE_DOWN = VoxelShapes.or(Block.box(7, 15, 5, 9, 16, 11), VoxelShapes.or(Block.box(6, 15, 6, 7, 16, 10), VoxelShapes.or(Block.box(5, 15, 7, 6, 16, 9), VoxelShapes.or(Block.box(9, 15, 6, 10, 16, 10), VoxelShapes.or(Block.box(10, 15, 7, 11, 16, 9), Block.box(7, 14, 7, 9, 15, 9))))));
+	private static final VoxelShape SHAPE_SOUTH = Shapes.create(new AABB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F));
+	private static final VoxelShape SHAPE_NORTH = Shapes.create(new AABB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F));
+	private static final VoxelShape SHAPE_WEST = Shapes.create(new AABB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F));
+	private static final VoxelShape SHAPE = Shapes.create(new AABB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F));
+	private static final VoxelShape SHAPE_DOWN = Shapes.or(Block.box(7, 15, 5, 9, 16, 11), Shapes.or(Block.box(6, 15, 6, 7, 16, 10), Shapes.or(Block.box(5, 15, 7, 6, 16, 9), Shapes.or(Block.box(9, 15, 6, 10, 16, 10), Shapes.or(Block.box(10, 15, 7, 11, 16, 9), Block.box(7, 14, 7, 9, 15, 9))))));
 
 	public SecurityCameraBlock(Block.Properties properties) {
 		super(properties);
@@ -52,17 +52,17 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader access, BlockPos pos, ISelectionContext ctx){
-		return VoxelShapes.empty();
+	public VoxelShape getCollisionShape(BlockState blockState, BlockGetter access, BlockPos pos, CollisionContext ctx){
+		return Shapes.empty();
 	}
 
 	@Override
-	public BlockRenderType getRenderShape(BlockState state){
-		return state.getValue(FACING) == Direction.DOWN ? BlockRenderType.MODEL : BlockRenderType.ENTITYBLOCK_ANIMATED;
+	public RenderShape getRenderShape(BlockState state){
+		return state.getValue(FACING) == Direction.DOWN ? RenderShape.MODEL : RenderShape.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		super.onRemove(state, world, pos, newState, isMoving);
 
@@ -73,7 +73,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
 		Direction dir = state.getValue(FACING);
 
@@ -90,12 +90,12 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{
 		return ctx.getClickedFace() != Direction.UP ? getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer()) : null;
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
+	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
 		BlockState state = defaultBlockState().setValue(POWERED, false);
 
@@ -116,7 +116,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 		}
 	}
 
-	public void mountCamera(World world, int x, int y, int z, int id, PlayerEntity player){
+	public void mountCamera(Level world, int x, int y, int z, int id, Player player){
 		if(player.getVehicle() instanceof SecurityCameraEntity){
 			SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, x, y, z, id, (SecurityCameraEntity) player.getVehicle());
 			WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(dummyEntity));
@@ -128,24 +128,24 @@ public class SecurityCameraBlock extends OwnableBlock{
 		WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(dummyEntity));
 		player.startRiding(dummyEntity);
 
-		if(world instanceof ServerWorld)
+		if(world instanceof ServerLevel)
 		{
-			ServerWorld serverWorld = (ServerWorld)world;
+			ServerLevel serverWorld = (ServerLevel)world;
 			List<Entity> loadedEntityList = serverWorld.getEntities().collect(Collectors.toList());
 
 			for(Entity e : loadedEntityList)
 			{
-				if(e instanceof MobEntity)
+				if(e instanceof Mob)
 				{
-					if(((MobEntity)e).getTarget() == player)
-						((MobEntity)e).setTarget(null);
+					if(((Mob)e).getTarget() == player)
+						((Mob)e).setTarget(null);
 				}
 			}
 		}
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos){
+	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos){
 		Direction facing = state.getValue(FACING);
 
 		return BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing);
@@ -157,7 +157,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	@Override
-	public int getSignal(BlockState blockState, IBlockReader world, BlockPos pos, Direction side){
+	public int getSignal(BlockState blockState, BlockGetter world, BlockPos pos, Direction side){
 		if(blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
 			return 15;
 		else
@@ -165,7 +165,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	@Override
-	public int getDirectSignal(BlockState blockState, IBlockReader world, BlockPos pos, Direction side){
+	public int getDirectSignal(BlockState blockState, BlockGetter world, BlockPos pos, Direction side){
 		if(blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
 			return 15;
 		else
@@ -173,20 +173,20 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
 		if (!canSurvive(world.getBlockState(pos), world, pos) && !canSurvive(state, world, pos))
 			world.destroyBlock(pos, true);
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 		builder.add(POWERED);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new SecurityCameraTileEntity().nameable();
 	}
 

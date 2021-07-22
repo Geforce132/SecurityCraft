@@ -6,35 +6,35 @@ import com.google.common.collect.Sets;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class BulletEntity extends AbstractArrowEntity
+public class BulletEntity extends AbstractArrow
 {
-	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>defineId(BulletEntity.class, Owner.getSerializer());
-	private Collection<EffectInstance> potionEffects = Sets.newHashSet();
+	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(BulletEntity.class, Owner.getSerializer());
+	private Collection<MobEffectInstance> potionEffects = Sets.newHashSet();
 
-	public BulletEntity(EntityType<BulletEntity> type, World world)
+	public BulletEntity(EntityType<BulletEntity> type, Level world)
 	{
 		super(SCContent.eTypeBullet, world);
 	}
 
-	public BulletEntity(World world, SentryEntity shooter)
+	public BulletEntity(Level world, SentryEntity shooter)
 	{
 		super(SCContent.eTypeBullet, shooter, world);
 
@@ -60,14 +60,14 @@ public class BulletEntity extends AbstractArrowEntity
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT compound) {
+	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 
 		if (!this.potionEffects.isEmpty()) {
-			ListNBT list = new ListNBT();
+			ListTag list = new ListTag();
 
-			for(EffectInstance effect : this.potionEffects) {
-				list.add(effect.save(new CompoundNBT()));
+			for(MobEffectInstance effect : this.potionEffects) {
+				list.add(effect.save(new CompoundTag()));
 			}
 
 			compound.put("PotionEffects", list);
@@ -75,15 +75,15 @@ public class BulletEntity extends AbstractArrowEntity
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundNBT compound) {
+	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 
 		if (compound.contains("PotionEffects", 9)) {
-			ListNBT potionList = compound.getList("PotionEffects", 10);
+			ListTag potionList = compound.getList("PotionEffects", 10);
 
 			if (!potionList.isEmpty()) {
 				for (int i = 0; i < potionList.size(); ++i) {
-					EffectInstance effect = EffectInstance.load(potionList.getCompound(i));
+					MobEffectInstance effect = MobEffectInstance.load(potionList.getCompound(i));
 
 					if (effect != null) {
 						potionEffects.add(effect);
@@ -94,16 +94,16 @@ public class BulletEntity extends AbstractArrowEntity
 	}
 
 	@Override
-	protected void onHitEntity(EntityRayTraceResult raytraceResult)
+	protected void onHitEntity(EntityHitResult raytraceResult)
 	{
 		Entity target = raytraceResult.getEntity();
 
 		if(!(target instanceof SentryEntity))
 		{
-			target.hurt(DamageSource.arrow(this, getOwner()), MathHelper.ceil(getDeltaMovement().length()));
+			target.hurt(DamageSource.arrow(this, getOwner()), Mth.ceil(getDeltaMovement().length()));
 
 			if (target instanceof LivingEntity && !potionEffects.isEmpty()) {
-				for (EffectInstance effect : potionEffects) {
+				for (MobEffectInstance effect : potionEffects) {
 					((LivingEntity)target).addEffect(effect);
 				}
 			}
@@ -113,7 +113,7 @@ public class BulletEntity extends AbstractArrowEntity
 	}
 
 	@Override
-	protected void onHitBlock(BlockRayTraceResult raytraceResult) //onBlockHit
+	protected void onHitBlock(BlockHitResult raytraceResult) //onBlockHit
 	{
 		remove();
 	}
@@ -131,7 +131,7 @@ public class BulletEntity extends AbstractArrowEntity
 	}
 
 	@Override
-	public IPacket<?> getAddEntityPacket()
+	public Packet<?> getAddEntityPacket()
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}

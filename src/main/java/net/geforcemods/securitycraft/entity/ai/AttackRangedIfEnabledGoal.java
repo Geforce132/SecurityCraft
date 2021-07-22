@@ -5,10 +5,12 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.util.Mth;
+
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class AttackRangedIfEnabledGoal extends Goal
 {
@@ -18,7 +20,7 @@ public class AttackRangedIfEnabledGoal extends Goal
 	private final Supplier<Integer> maxAttackTime;
 	private final float attackRadius;
 
-	public AttackRangedIfEnabledGoal(IRangedAttackMob attacker, Supplier<Integer> maxAttackTime, float maxAttackDistance)
+	public AttackRangedIfEnabledGoal(RangedAttackMob attacker, Supplier<Integer> maxAttackTime, float maxAttackDistance)
 	{
 		sentry = (SentryEntity)attacker;
 		rangedAttackTime = -1;
@@ -60,13 +62,13 @@ public class AttackRangedIfEnabledGoal extends Goal
 			if(!sentry.getSensing().canSee(attackTarget))
 				return;
 
-			float f = MathHelper.sqrt(targetDistance) / attackRadius;
-			float distanceFactor = MathHelper.clamp(f, 0.1F, 1.0F);
+			float f = Mth.sqrt(targetDistance) / attackRadius;
+			float distanceFactor = Mth.clamp(f, 0.1F, 1.0F);
 
 			sentry.performRangedAttack(attackTarget, distanceFactor);
-			rangedAttackTime = MathHelper.floor(maxAttackTime.get());
+			rangedAttackTime = Mth.floor(maxAttackTime.get());
 		}
 		else if(rangedAttackTime < 0)
-			rangedAttackTime = MathHelper.floor(maxAttackTime.get());
+			rangedAttackTime = Mth.floor(maxAttackTime.get());
 	}
 }

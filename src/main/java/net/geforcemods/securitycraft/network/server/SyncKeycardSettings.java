@@ -5,11 +5,11 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SyncKeycardSettings
@@ -29,7 +29,7 @@ public class SyncKeycardSettings
 		this.link = link;
 	}
 
-	public static void encode(SyncKeycardSettings message, PacketBuffer buf)
+	public static void encode(SyncKeycardSettings message, FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(message.pos);
 		buf.writeVarInt(message.signature);
@@ -41,7 +41,7 @@ public class SyncKeycardSettings
 		}
 	}
 
-	public static SyncKeycardSettings decode(PacketBuffer buf)
+	public static SyncKeycardSettings decode(FriendlyByteBuf buf)
 	{
 		SyncKeycardSettings message = new SyncKeycardSettings();
 
@@ -62,8 +62,8 @@ public class SyncKeycardSettings
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
-			PlayerEntity player = ctx.get().getSender();
-			TileEntity tile = player.level.getBlockEntity(pos);
+			Player player = ctx.get().getSender();
+			BlockEntity tile = player.level.getBlockEntity(pos);
 
 			if(tile instanceof KeycardReaderTileEntity)
 			{
@@ -80,7 +80,7 @@ public class SyncKeycardSettings
 
 					if(message.link)
 					{
-						Container container = player.containerMenu;
+						AbstractContainerMenu container = player.containerMenu;
 
 						if(container instanceof KeycardReaderContainer)
 							((KeycardReaderContainer)container).link();

@@ -3,22 +3,22 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DoorBlock;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.MinecraftForge;
 
 public abstract class SpecialDoorBlock extends DoorBlock
@@ -29,16 +29,16 @@ public abstract class SpecialDoorBlock extends DoorBlock
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
+	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
 	{
 		onNeighborChanged(world, pos, fromPos);
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+		if(placer instanceof Player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)placer));
 
 		super.setPlacedBy(world, pos, state, placer, stack);
 	}
@@ -49,7 +49,7 @@ public abstract class SpecialDoorBlock extends DoorBlock
 	 * @param pos The position of this block
 	 * @param neighbor The position of the changed block
 	 */
-	public void onNeighborChanged(World world, BlockPos pos, BlockPos neighbor)
+	public void onNeighborChanged(Level world, BlockPos pos, BlockPos neighbor)
 	{
 		BlockState state = world.getBlockState(pos);
 		Block neighborBlock = world.getBlockState(neighbor).getBlock();
@@ -97,7 +97,7 @@ public abstract class SpecialDoorBlock extends DoorBlock
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
+	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
 	{
 		BlockState upperState = world.getBlockState(pos);
 		BlockState lowerState;
@@ -117,7 +117,7 @@ public abstract class SpecialDoorBlock extends DoorBlock
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		super.onRemove(state, world, pos, newState, isMoving);
 
@@ -126,17 +126,17 @@ public abstract class SpecialDoorBlock extends DoorBlock
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param)
+	public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int id, int param)
 	{
 		super.triggerEvent(state, world, pos, id, param);
 
-		TileEntity tileentity = world.getBlockEntity(pos);
+		BlockEntity tileentity = world.getBlockEntity(pos);
 
 		return tileentity == null ? false : tileentity.triggerEvent(id, param);
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
 	{
 		return new ItemStack(getDoorItem());
 	}
@@ -154,7 +154,7 @@ public abstract class SpecialDoorBlock extends DoorBlock
 	}
 
 	@Override
-	public abstract TileEntity createTileEntity(BlockState state, IBlockReader world);
+	public abstract BlockEntity createTileEntity(BlockState state, BlockGetter world);
 
 	public abstract Item getDoorItem();
 }

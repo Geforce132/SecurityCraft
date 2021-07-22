@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public class LinkedBlock {
 
@@ -18,11 +18,11 @@ public class LinkedBlock {
 		blockPos = tileEntity.getBlockPos();
 	}
 
-	public boolean validate(World world) {
+	public boolean validate(Level world) {
 		return !(world == null || (world.isEmptyBlock(blockPos) || !world.getBlockState(blockPos).getBlock().getDescriptionId().equals(blockName)));
 	}
 
-	public CustomizableTileEntity asTileEntity(World world) {
+	public CustomizableTileEntity asTileEntity(Level world) {
 		if(!validate(world)) return null;
 
 		return (CustomizableTileEntity) world.getBlockEntity(blockPos);

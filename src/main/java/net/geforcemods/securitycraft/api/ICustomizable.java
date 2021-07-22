@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 /**
  * Let your TileEntity implement this to be able to add options to it
@@ -23,7 +23,7 @@ public interface ICustomizable
 	 * Call this from your read method. Used for reading the options from a tag. Use in conjunction with writeOptions.
 	 * @param tag The tag to read the options from
 	 */
-	public default void readOptions(CompoundNBT tag)
+	public default void readOptions(CompoundTag tag)
 	{
 		if(customOptions() != null)
 			for(Option<?> option : customOptions())
@@ -35,7 +35,7 @@ public interface ICustomizable
 	 * @param tag The tag to write the options to
 	 * @return The modified CompoundNBT
 	 */
-	public default CompoundNBT writeOptions(CompoundNBT tag)
+	public default CompoundTag writeOptions(CompoundTag tag)
 	{
 		if(customOptions() != null)
 			for(Option<?> option : customOptions())

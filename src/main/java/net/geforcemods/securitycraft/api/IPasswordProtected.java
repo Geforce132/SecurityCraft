@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -28,7 +28,7 @@ public interface IPasswordProtected {
 	 *
 	 * @param player The player who entered the password.
 	 */
-	public void activate(PlayerEntity player);
+	public void activate(Player player);
 
 	/**
 	 * Open the correct password GUI depending on if a password is already set or not. <p>
@@ -41,7 +41,7 @@ public interface IPasswordProtected {
 	 *
 	 * @param player The player who the GUI should be opened to.
 	 */
-	public void openPasswordGUI(PlayerEntity player);
+	public void openPasswordGUI(Player player);
 
 	/**
 	 * Can the codebreaker be used on that password-protected block?
@@ -59,7 +59,7 @@ public interface IPasswordProtected {
 	 * @param player The player who used the codebreaker.
 	 * @return Return true if the codebreaker "hack" was successful, false otherwise.
 	 */
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player);
+	public boolean onCodebreakerUsed(BlockState blockState, Player player);
 
 	/**
 	 * Return your TileEntity's password variable here.

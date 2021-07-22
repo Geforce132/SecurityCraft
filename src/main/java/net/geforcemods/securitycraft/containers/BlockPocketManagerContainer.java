@@ -3,34 +3,34 @@ package net.geforcemods.securitycraft.containers;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class BlockPocketManagerContainer extends Container
+public class BlockPocketManagerContainer extends AbstractContainerMenu
 {
 	public BlockPocketManagerTileEntity te;
-	private IWorldPosCallable worldPosCallable;
+	private ContainerLevelAccess worldPosCallable;
 	public final boolean storage;
 	public final boolean isOwner;
 
-	public BlockPocketManagerContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory)
+	public BlockPocketManagerContainer(int windowId, Level world, BlockPos pos, Inventory inventory)
 	{
 		super(SCContent.cTypeBlockPocketManager, windowId);
 
-		TileEntity tile = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
 		if(tile instanceof BlockPocketManagerTileEntity)
 			te = (BlockPocketManagerTileEntity)tile;
 
-		worldPosCallable = IWorldPosCallable.create(world, pos);
+		worldPosCallable = ContainerLevelAccess.create(world, pos);
 		isOwner = te.getOwner().isOwner(inventory.player);
 		storage = te != null && te.hasModule(ModuleType.STORAGE) && isOwner;
 
@@ -64,7 +64,7 @@ public class BlockPocketManagerContainer extends Container
 	}
 
 	@Override
-	public ItemStack quickMoveStack(PlayerEntity player, int index)
+	public ItemStack quickMoveStack(Player player, int index)
 	{
 		ItemStack copy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
@@ -96,7 +96,7 @@ public class BlockPocketManagerContainer extends Container
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity player)
+	public boolean stillValid(Player player)
 	{
 		return stillValid(worldPosCallable, player, SCContent.BLOCK_POCKET_MANAGER.get());
 	}

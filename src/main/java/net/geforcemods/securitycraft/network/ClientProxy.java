@@ -52,24 +52,24 @@ import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.util.Reinforced;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.renderer.Atlases;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.IDyeableArmorItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.GrassColors;
-import net.minecraft.world.biome.BiomeColors;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.GrassColor;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -164,7 +164,7 @@ public class ClientProxy implements IProxy
 	@SubscribeEvent
 	public static void onTextureStitchPre(TextureStitchEvent.Pre event)
 	{
-		if(event.getMap().location().equals(Atlases.CHEST_SHEET))
+		if(event.getMap().location().equals(Sheets.CHEST_SHEET))
 		{
 			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/active"));
 			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/inactive"));
@@ -185,69 +185,69 @@ public class ClientProxy implements IProxy
 		RenderType cutoutMipped = RenderType.cutoutMipped();
 		RenderType translucent = RenderType.translucent();
 
-		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_POCKET_MANAGER.get(), cutoutMipped);
-		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_POCKET_WALL.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.CAGE_TRAP.get(), cutoutMipped);
-		RenderTypeLookup.setRenderLayer(SCContent.FAKE_WATER.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get(), cutoutMipped);
-		RenderTypeLookup.setRenderLayer(SCContent.INVENTORY_SCANNER.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.INVENTORY_SCANNER_FIELD.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.KEYCARD_READER.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD_DOOR.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.LASER_BLOCK.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.LASER_FIELD.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLUE_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BROWN_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_CHAIN.get(), cutoutMipped);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_COBWEB.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_CYAN_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_DOOR.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GLASS.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GLASS_PANE.get(), cutoutMipped);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GRASS_BLOCK.get(), cutoutMipped);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GRAY_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GREEN_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_HOPPER.get(), cutoutMipped);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_ICE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_IRON_BARS.get(), cutoutMipped);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_IRON_TRAPDOOR.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LANTERN.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_SOUL_LANTERN.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIME_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIME_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_PINK_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_PINK_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_PURPLE_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_RED_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_WHITE_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.RETINAL_SCANNER.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.SCANNER_DOOR.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.TRACK_MINE.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.TROPHY_SYSTEM.get(), cutoutMipped);
-		RenderTypeLookup.setRenderLayer(SCContent.USERNAME_LOGGER.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.PROJECTOR.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.BLOCK_POCKET_MANAGER.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.BLOCK_POCKET_WALL.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.CAGE_TRAP.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.FAKE_WATER.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.INVENTORY_SCANNER.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.INVENTORY_SCANNER_FIELD.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYCARD_READER.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_DOOR.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.LASER_BLOCK.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.LASER_FIELD.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLUE_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BROWN_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_CHAIN.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_COBWEB.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_CYAN_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_DOOR.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS_PANE.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GRASS_BLOCK.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GRAY_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GREEN_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_HOPPER.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_ICE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_IRON_BARS.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_IRON_TRAPDOOR.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LANTERN.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_SOUL_LANTERN.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIME_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIME_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_PINK_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_PINK_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_PURPLE_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_RED_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WHITE_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.RETINAL_SCANNER.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.SCANNER_DOOR.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.TRACK_MINE.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.TROPHY_SYSTEM.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.USERNAME_LOGGER.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.PROJECTOR.get(), cutoutMipped);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBouncingBetty, BouncingBettyRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeImsBomb, IMSBombRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSecurityCamera, EmptyRenderer::new);
@@ -260,23 +260,23 @@ public class ClientProxy implements IProxy
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecretSign, SecretSignTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeTrophySystem, TrophySystemTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeProjector, ProjectorTileEntityRenderer::new);
-		ScreenManager.register(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
-		ScreenManager.register(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
-		ScreenManager.register(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
-		ScreenManager.register(SCContent.cTypeBriefcaseSetup, BriefcaseSetupScreen::new);
-		ScreenManager.register(SCContent.cTypeCustomizeBlock, CustomizeBlockScreen::new);
-		ScreenManager.register(SCContent.cTypeDisguiseModule, DisguiseModuleScreen::new);
-		ScreenManager.register(SCContent.cTypeInventoryScanner, InventoryScannerScreen::new);
-		ScreenManager.register(SCContent.cTypeKeypadFurnace, KeypadFurnaceScreen::new);
-		ScreenManager.register(SCContent.cTypeCheckPassword, CheckPasswordScreen::new);
-		ScreenManager.register(SCContent.cTypeSetPassword, SetPasswordScreen::new);
-		ScreenManager.register(SCContent.cTypeUsernameLogger, UsernameLoggerScreen::new);
-		ScreenManager.register(SCContent.cTypeIMS, IMSScreen::new);
-		ScreenManager.register(SCContent.cTypeKeycardReader, KeycardReaderScreen::new);
-		ScreenManager.register(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
-		ScreenManager.register(SCContent.cTypeBlockPocketManager, BlockPocketManagerScreen::new);
-		ScreenManager.register(SCContent.cTypeProjector, ProjectorScreen::new);
-		ScreenManager.register(SCContent.cTypeTrophySystem, TrophySystemScreen::new);
+		MenuScreens.register(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
+		MenuScreens.register(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
+		MenuScreens.register(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
+		MenuScreens.register(SCContent.cTypeBriefcaseSetup, BriefcaseSetupScreen::new);
+		MenuScreens.register(SCContent.cTypeCustomizeBlock, CustomizeBlockScreen::new);
+		MenuScreens.register(SCContent.cTypeDisguiseModule, DisguiseModuleScreen::new);
+		MenuScreens.register(SCContent.cTypeInventoryScanner, InventoryScannerScreen::new);
+		MenuScreens.register(SCContent.cTypeKeypadFurnace, KeypadFurnaceScreen::new);
+		MenuScreens.register(SCContent.cTypeCheckPassword, CheckPasswordScreen::new);
+		MenuScreens.register(SCContent.cTypeSetPassword, SetPasswordScreen::new);
+		MenuScreens.register(SCContent.cTypeUsernameLogger, UsernameLoggerScreen::new);
+		MenuScreens.register(SCContent.cTypeIMS, IMSScreen::new);
+		MenuScreens.register(SCContent.cTypeKeycardReader, KeycardReaderScreen::new);
+		MenuScreens.register(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
+		MenuScreens.register(SCContent.cTypeBlockPocketManager, BlockPocketManagerScreen::new);
+		MenuScreens.register(SCContent.cTypeProjector, ProjectorScreen::new);
+		MenuScreens.register(SCContent.cTypeTrophySystem, TrophySystemScreen::new);
 		KeyBindings.init();
 	}
 
@@ -285,8 +285,8 @@ public class ClientProxy implements IProxy
 	{
 		Set<Block> reinforcedTint = new HashSet<>();
 		Map<Block, Integer> toTint = new HashMap<>();
-		Map<Block, IBlockColor> specialBlockTint = new HashMap<>();
-		Map<Block, IItemColor> specialItemTint = new HashMap<>();
+		Map<Block, BlockColor> specialBlockTint = new HashMap<>();
+		Map<Block, ItemColor> specialItemTint = new HashMap<>();
 
 		for(Field field : SCContent.class.getFields())
 		{
@@ -322,7 +322,7 @@ public class ClientProxy implements IProxy
 
 		specialBlockTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (state, world, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
-				int grassTint = world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
+				int grassTint = world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5D, 1.0D);
 
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
@@ -338,7 +338,7 @@ public class ClientProxy implements IProxy
 
 		specialItemTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (stack, tintIndex) -> {
 			if (tintIndex == 1) {
-				int grassTint = GrassColors.get(0.5D, 1.0D);
+				int grassTint = GrassColor.get(0.5D, 1.0D);
 
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
@@ -378,7 +378,7 @@ public class ClientProxy implements IProxy
 		Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
 			if(tintIndex == 0)
 			{
-				IDyeableArmorItem item = ((IDyeableArmorItem)stack.getItem());
+				DyeableLeatherItem item = ((DyeableLeatherItem)stack.getItem());
 
 				if(item.hasCustomColor(stack))
 					return item.getColor(stack);
@@ -410,7 +410,7 @@ public class ClientProxy implements IProxy
 	}
 
 	@Override
-	public PlayerEntity getClientPlayer()
+	public Player getClientPlayer()
 	{
 		return Minecraft.getInstance().player;
 	}
@@ -434,7 +434,7 @@ public class ClientProxy implements IProxy
 	}
 
 	@Override
-	public void displayCameraMonitorGui(PlayerInventory inv, CameraMonitorItem item, CompoundNBT stackTag)
+	public void displayCameraMonitorGui(Inventory inv, CameraMonitorItem item, CompoundTag stackTag)
 	{
 		Minecraft.getInstance().setScreen(new CameraMonitorScreen(inv, item, stackTag));
 	}

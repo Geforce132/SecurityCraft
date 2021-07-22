@@ -8,18 +8,20 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameter;
-import net.minecraft.loot.LootParameters;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.core.BlockPos;
 
-public class TileEntityNBTCondition implements ILootCondition
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition.Builder;
+
+public class TileEntityNBTCondition implements LootItemCondition
 {
 	private String key;
 	private boolean value;
@@ -31,22 +33,22 @@ public class TileEntityNBTCondition implements ILootCondition
 	}
 
 	@Override
-	public Set<LootParameter<?>> getReferencedContextParams()
+	public Set<LootContextParam<?>> getReferencedContextParams()
 	{
-		return ImmutableSet.of(LootParameters.ORIGIN);
+		return ImmutableSet.of(LootContextParams.ORIGIN);
 	}
 
 	@Override
 	public boolean test(LootContext lootContext)
 	{
-		TileEntity te = lootContext.getLevel().getBlockEntity(new BlockPos(lootContext.getParamOrNull(LootParameters.ORIGIN)));
-		CompoundNBT nbt = te.save(new CompoundNBT());
+		BlockEntity te = lootContext.getLevel().getBlockEntity(new BlockPos(lootContext.getParamOrNull(LootContextParams.ORIGIN)));
+		CompoundTag nbt = te.save(new CompoundTag());
 
 		return nbt.contains(key) && nbt.getBoolean(key) == value;
 	}
 
 	@Override
-	public LootConditionType getType()
+	public LootItemConditionType getType()
 	{
 		return SecurityCraft.TILE_ENTITY_NBT_LOOT_CONDITION;
 	}
@@ -56,7 +58,7 @@ public class TileEntityNBTCondition implements ILootCondition
 		return new Builder();
 	}
 
-	public static class Builder implements IBuilder
+	public static class Builder implements Builder
 	{
 		private String key;
 		private boolean value;
@@ -69,13 +71,13 @@ public class TileEntityNBTCondition implements ILootCondition
 		}
 
 		@Override
-		public ILootCondition build()
+		public LootItemCondition build()
 		{
 			return new TileEntityNBTCondition(key, value);
 		}
 	}
 
-	public static class Serializer implements ILootSerializer<TileEntityNBTCondition>
+	public static class Serializer implements Serializer<TileEntityNBTCondition>
 	{
 		@Override
 		public void serialize(JsonObject json, TileEntityNBTCondition condition, JsonSerializationContext ctx)
@@ -87,7 +89,7 @@ public class TileEntityNBTCondition implements ILootCondition
 		@Override
 		public TileEntityNBTCondition deserialize(JsonObject json, JsonDeserializationContext ctx)
 		{
-			return new TileEntityNBTCondition(JSONUtils.getAsString(json, "key"), JSONUtils.getAsBoolean(json, "value"));
+			return new TileEntityNBTCondition(GsonHelper.getAsString(json, "key"), GsonHelper.getAsBoolean(json, "value"));
 		}
 	}
 }

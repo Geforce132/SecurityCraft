@@ -21,34 +21,34 @@ import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.state.properties.ChestType;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable {
+public class KeypadChestTileEntity extends ChestBlockEntity implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable {
 
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private String passcode;
@@ -66,7 +66,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	 * @return
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		super.save(tag);
 
@@ -88,7 +88,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 
@@ -100,14 +100,14 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		CompoundNBT tag = new CompoundNBT();
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		CompoundTag tag = new CompoundTag();
 		save(tag);
-		return new SUpdateTileEntityPacket(worldPosition, 1, tag);
+		return new ClientboundBlockEntityDataPacket(worldPosition, 1, tag);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
 		load(getBlockState(), packet.getTag());
 	}
 
@@ -115,7 +115,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	 * Returns the default name of the inventory
 	 */
 	@Override
-	public ITextComponent getDefaultName()
+	public Component getDefaultName()
 	{
 		return Utils.localize("block.securitycraft.keypad_chest");
 	}
@@ -168,31 +168,31 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	}
 
 	@Override
-	public void activate(PlayerEntity player) {
+	public void activate(Player player) {
 		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadChestBlock && !isBlocked())
 			KeypadChestBlock.activate(level, worldPosition, player);
 	}
 
 	@Override
-	public void openPasswordGUI(PlayerEntity player) {
+	public void openPasswordGUI(Player player) {
 		if(isBlocked())
 			return;
 
 		if(getPassword() != null)
 		{
-			if(player instanceof ServerPlayerEntity)
+			if(player instanceof ServerPlayer)
 			{
-				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+				NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 					{
 						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
-					public ITextComponent getDisplayName()
+					public Component getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEYPAD_CHEST.get().getDescriptionId());
+						return new TranslatableComponent(SCContent.KEYPAD_CHEST.get().getDescriptionId());
 					}
 				}, worldPosition);
 			}
@@ -201,30 +201,30 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		{
 			if(getOwner().isOwner(player))
 			{
-				if(player instanceof ServerPlayerEntity)
+				if(player instanceof ServerPlayer)
 				{
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+					NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
 							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override
-						public ITextComponent getDisplayName()
+						public Component getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEYPAD_CHEST.get().getDescriptionId());
+							return new TranslatableComponent(SCContent.KEYPAD_CHEST.get().getDescriptionId());
 						}
 					}, worldPosition);
 				}
 			}
 			else
-				PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
 		}
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
+	public boolean onCodebreakerUsed(BlockState blockState, Player player) {
 		activate(player);
 		return true;
 	}
@@ -289,7 +289,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 
 				if(offsetType != ChestType.SINGLE && type != offsetType && state.getValue(KeypadChestBlock.FACING) == offsetState.getValue(KeypadChestBlock.FACING))
 				{
-					TileEntity offsetTe = level.getBlockEntity(offsetPos);
+					BlockEntity offsetTe = level.getBlockEntity(offsetPos);
 
 					if(offsetTe instanceof KeypadChestTileEntity)
 						return (KeypadChestTileEntity)offsetTe;
@@ -346,7 +346,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	}
 
 	@Override
-	public TileEntity getTileEntity()
+	public BlockEntity getTileEntity()
 	{
 		return this;
 	}

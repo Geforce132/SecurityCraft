@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
 
 /**
  * Implementing this interface in your {@link TileEntity} allows
@@ -16,7 +16,7 @@ public interface INameable {
 	/**
 	 * @return The TileEntity's custom name.
 	 */
-	public ITextComponent getCustomSCName();
+	public Component getCustomSCName();
 
 	/**
 	 * Set the TileEntity's new name. It might be best
@@ -25,7 +25,7 @@ public interface INameable {
 	 *
 	 * @param customName The new name
 	 */
-	public void setCustomSCName(ITextComponent customName);
+	public void setCustomSCName(Component customName);
 
 	/**
 	 * @return Does this TileEntity currently have a custom name?

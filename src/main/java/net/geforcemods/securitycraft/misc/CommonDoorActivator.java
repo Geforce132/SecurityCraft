@@ -5,12 +5,12 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDoorActivator;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public class CommonDoorActivator implements IDoorActivator
 {
@@ -43,7 +43,7 @@ public class CommonDoorActivator implements IDoorActivator
 	});
 
 	@Override
-	public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te)
+	public boolean isPowering(Level world, BlockPos pos, BlockState state, BlockEntity te)
 	{
 		return state.getValue(BlockStateProperties.POWERED);
 	}

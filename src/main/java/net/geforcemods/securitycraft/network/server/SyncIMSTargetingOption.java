@@ -4,10 +4,10 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity.IMSTargetingMode;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SyncIMSTargetingOption
@@ -23,13 +23,13 @@ public class SyncIMSTargetingOption
 		this.targetingMode = targetingMode;
 	}
 
-	public static void encode(SyncIMSTargetingOption message, PacketBuffer buf)
+	public static void encode(SyncIMSTargetingOption message, FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(message.pos);
 		buf.writeEnum(message.targetingMode);
 	}
 
-	public static SyncIMSTargetingOption decode(PacketBuffer buf)
+	public static SyncIMSTargetingOption decode(FriendlyByteBuf buf)
 	{
 		SyncIMSTargetingOption message = new SyncIMSTargetingOption();
 
@@ -42,8 +42,8 @@ public class SyncIMSTargetingOption
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
-			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.level.getBlockEntity(pos);
+			Player player = ctx.get().getSender();
+			BlockEntity te = player.level.getBlockEntity(pos);
 
 			if(te instanceof IMSTileEntity && ((IMSTileEntity)te).getOwner().isOwner(player))
 				((IMSTileEntity)te).setTargetingMode(message.targetingMode);

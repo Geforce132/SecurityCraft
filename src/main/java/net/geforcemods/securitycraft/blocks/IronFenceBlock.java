@@ -7,44 +7,44 @@ import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.SixWayBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 public class IronFenceBlock extends OwnableBlock implements IIntersectable {
-	public static final BooleanProperty NORTH = SixWayBlock.NORTH;
-	public static final BooleanProperty EAST = SixWayBlock.EAST;
-	public static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
-	public static final BooleanProperty WEST = SixWayBlock.WEST;
-	protected static final Map<Direction, BooleanProperty> FACING_TO_PROPERTY_MAP = SixWayBlock.PROPERTY_BY_DIRECTION.entrySet().stream().filter(entry -> entry.getKey().getAxis().isHorizontal()).collect(Util.toMap());
+	public static final BooleanProperty NORTH = PipeBlock.NORTH;
+	public static final BooleanProperty EAST = PipeBlock.EAST;
+	public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
+	public static final BooleanProperty WEST = PipeBlock.WEST;
+	protected static final Map<Direction, BooleanProperty> FACING_TO_PROPERTY_MAP = PipeBlock.PROPERTY_BY_DIRECTION.entrySet().stream().filter(entry -> entry.getKey().getAxis().isHorizontal()).collect(Util.toMap());
 	protected final VoxelShape[] collisionShapes;
 	protected final VoxelShape[] shapes;
 	private final VoxelShape[] renderShapes;
@@ -60,7 +60,7 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	}
 
 	@Override
-	public VoxelShape getOcclusionShape(BlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getOcclusionShape(BlockState state, BlockGetter world, BlockPos pos)
 	{
 		return renderShapes[getIndex(state)];
 	}
@@ -76,26 +76,26 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 		VoxelShape voxelshape2 = Block.box(f2, p_196408_4_, f2, f3, p_196408_5_, 16.0D);
 		VoxelShape voxelshape3 = Block.box(0.0D, p_196408_4_, f2, f3, p_196408_5_, f3);
 		VoxelShape voxelshape4 = Block.box(f2, p_196408_4_, f2, 16.0D, p_196408_5_, f3);
-		VoxelShape voxelshape5 = VoxelShapes.or(voxelshape1, voxelshape4);
-		VoxelShape voxelshape6 = VoxelShapes.or(voxelshape2, voxelshape3);
-		VoxelShape[] returnValue = {VoxelShapes.empty(), voxelshape2, voxelshape3, voxelshape6, voxelshape1, VoxelShapes.or(voxelshape2, voxelshape1), VoxelShapes.or(voxelshape3, voxelshape1), VoxelShapes.or(voxelshape6, voxelshape1), voxelshape4, VoxelShapes.or(voxelshape2, voxelshape4), VoxelShapes.or(voxelshape3, voxelshape4), VoxelShapes.or(voxelshape6, voxelshape4), voxelshape5, VoxelShapes.or(voxelshape2, voxelshape5), VoxelShapes.or(voxelshape3, voxelshape5), VoxelShapes.or(voxelshape6, voxelshape5)};
+		VoxelShape voxelshape5 = Shapes.or(voxelshape1, voxelshape4);
+		VoxelShape voxelshape6 = Shapes.or(voxelshape2, voxelshape3);
+		VoxelShape[] returnValue = {Shapes.empty(), voxelshape2, voxelshape3, voxelshape6, voxelshape1, Shapes.or(voxelshape2, voxelshape1), Shapes.or(voxelshape3, voxelshape1), Shapes.or(voxelshape6, voxelshape1), voxelshape4, Shapes.or(voxelshape2, voxelshape4), Shapes.or(voxelshape3, voxelshape4), Shapes.or(voxelshape6, voxelshape4), voxelshape5, Shapes.or(voxelshape2, voxelshape5), Shapes.or(voxelshape3, voxelshape5), Shapes.or(voxelshape6, voxelshape5)};
 
 		for(int i = 0; i < 16; ++i)
 		{
-			returnValue[i] = VoxelShapes.or(voxelshape, returnValue[i]);
+			returnValue[i] = Shapes.or(voxelshape, returnValue[i]);
 		}
 
 		return returnValue;
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
 	{
 		return shapes[getIndex(state)];
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
 	{
 		return collisionShapes[getIndex(state)];
 	}
@@ -134,7 +134,7 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type)
+	public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type)
 	{
 		return false;
 	}
@@ -170,9 +170,9 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{
-		IBlockReader iblockreader = ctx.getLevel();
+		BlockGetter iblockreader = ctx.getLevel();
 		BlockPos blockpos = ctx.getClickedPos();
 		BlockPos blockpos1 = blockpos.north();
 		BlockPos blockpos2 = blockpos.east();
@@ -186,41 +186,41 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
 		builder.add(NORTH, EAST, WEST, SOUTH);
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos)
 	{
 		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? state.setValue(FACING_TO_PROPERTY_MAP.get(facing), connectsTo(facingState, facingState.isFaceSturdy(world, facingPos, facing.getOpposite()), facing.getOpposite())) : super.updateShape(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
-		return ActionResultType.FAIL;
+		return InteractionResult.FAIL;
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
+	public void onEntityIntersected(Level world, BlockPos pos, Entity entity)
 	{
 		//so dropped items don't get destroyed
 		if(entity instanceof ItemEntity)
 			return;
 		//owner check
-		else if(entity instanceof PlayerEntity)
+		else if(entity instanceof Player)
 		{
-			if(((OwnableTileEntity) world.getBlockEntity(pos)).getOwner().isOwner((PlayerEntity)entity))
+			if(((OwnableTileEntity) world.getBlockEntity(pos)).getOwner().isOwner((Player)entity))
 				return;
 		}
-		else if(!world.isClientSide && entity instanceof CreeperEntity)
+		else if(!world.isClientSide && entity instanceof Creeper)
 		{
-			CreeperEntity creeper = (CreeperEntity)entity;
-			LightningBoltEntity lightning = WorldUtils.createLightning(world, Vector3d.atBottomCenterOf(pos), true);
+			Creeper creeper = (Creeper)entity;
+			LightningBolt lightning = WorldUtils.createLightning(world, Vec3.atBottomCenterOf(pos), true);
 
-			creeper.thunderHit((ServerWorld)world, lightning);
+			creeper.thunderHit((ServerLevel)world, lightning);
 			creeper.clearFire();
 			return;
 		}
@@ -229,15 +229,15 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int eventID, int eventParam)
+	public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam)
 	{
 		super.triggerEvent(state, world, pos, eventID, eventParam);
-		TileEntity tileentity = world.getBlockEntity(pos);
+		BlockEntity tileentity = world.getBlockEntity(pos);
 		return tileentity == null ? false : tileentity.triggerEvent(eventID, eventParam);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
+	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
 	{
 		return new SecurityCraftTileEntity().intersectsEntities();
 	}

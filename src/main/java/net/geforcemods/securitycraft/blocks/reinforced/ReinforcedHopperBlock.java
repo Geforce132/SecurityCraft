@@ -7,22 +7,22 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HopperBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HopperBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlock
@@ -33,14 +33,14 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+		if(placer instanceof Player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)placer));
 
 		if(stack.hasCustomHoverName())
 		{
-			TileEntity te = world.getBlockEntity(pos);
+			BlockEntity te = world.getBlockEntity(pos);
 
 			if(te instanceof ReinforcedHopperTileEntity)
 				((ReinforcedHopperTileEntity)te).setCustomName(stack.getHoverName());
@@ -48,11 +48,11 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		if(!world.isClientSide)
 		{
-			TileEntity tileEntity = world.getBlockEntity(pos);
+			BlockEntity tileEntity = world.getBlockEntity(pos);
 
 			if(tileEntity instanceof ReinforcedHopperTileEntity)
 			{
@@ -64,19 +64,19 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 			}
 		}
 
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		if(state.getBlock() != newState.getBlock())
 		{
-			TileEntity te = world.getBlockEntity(pos);
+			BlockEntity te = world.getBlockEntity(pos);
 
 			if(te instanceof ReinforcedHopperTileEntity)
 			{
-				InventoryHelper.dropContents(world, pos, (ReinforcedHopperTileEntity)te);
+				Containers.dropContents(world, pos, (ReinforcedHopperTileEntity)te);
 				world.updateNeighbourForOutputSignal(pos, this);
 			}
 
@@ -85,16 +85,16 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity)
+	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity)
 	{
-		TileEntity te = world.getBlockEntity(pos);
+		BlockEntity te = world.getBlockEntity(pos);
 
 		if(te instanceof ReinforcedHopperTileEntity)
 			((ReinforcedHopperTileEntity)te).onEntityCollision(entity);
 	}
 
 	@Override
-	public TileEntity newBlockEntity(IBlockReader world)
+	public BlockEntity newBlockEntity(BlockGetter world)
 	{
 		return new ReinforcedHopperTileEntity();
 	}
@@ -120,7 +120,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	public static class ExtractionBlock implements IExtractionBlock
 	{
 		@Override
-		public boolean canExtract(IOwnable te, World world, BlockPos pos, BlockState state)
+		public boolean canExtract(IOwnable te, Level world, BlockPos pos, BlockState state)
 		{
 			ReinforcedHopperTileEntity hopperTe = (ReinforcedHopperTileEntity)world.getBlockEntity(pos);
 

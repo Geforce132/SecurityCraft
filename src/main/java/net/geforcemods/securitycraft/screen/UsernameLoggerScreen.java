@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -16,27 +16,27 @@ import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
 
-public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
+public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEContainer>{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslationTextComponent logged = Utils.localize("gui.securitycraft:logger.logged");
-	private final TranslationTextComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
+	private final TranslatableComponent logged = Utils.localize("gui.securitycraft:logger.logged");
+	private final TranslatableComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
 	private UsernameLoggerTileEntity tileEntity;
 	private PlayerList playerList;
 
-	public UsernameLoggerScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
+	public UsernameLoggerScreen(GenericTEContainer container, Inventory inv, Component name) {
 		super(container, inv, name);
 		tileEntity = (UsernameLoggerTileEntity)container.te;
 	}
@@ -57,7 +57,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY)
+	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY)
 	{
 		font.draw(matrix, logged, imageWidth / 2 - font.width(logged) / 2, 6, 4210752);
 
@@ -66,7 +66,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
@@ -75,7 +75,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
@@ -142,7 +142,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 		}
 
 		@Override
-		public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+		public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
 		{
 			super.render(matrix, mouseX, mouseY, partialTicks);
 
@@ -155,10 +155,10 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 				{
 					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
 					{
-						TranslationTextComponent localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
+						TranslatableComponent localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
 
 						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
-							renderTooltip(matrix, new StringTextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);
+							renderTooltip(matrix, new TextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);
 
 						font.draw(matrix, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752);
 					}
@@ -167,7 +167,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 		}
 
 		@Override
-		protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY)
+		protected void drawPanel(PoseStack matrix, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
 		{
 			int baseY = top + border - (int)scrollDistance;
 			int slotBuffer = slotHeight - 4;
@@ -187,7 +187,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 					RenderSystem.enableBlend();
 					RenderSystem.disableTexture();
 					RenderSystem.defaultBlendFunc();
-					bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+					bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR);
 					bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
 					bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
 					bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
@@ -197,7 +197,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 					bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 					bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 					bufferBuilder.end();
-					WorldVertexBufferUploader.end(bufferBuilder);
+					BufferUploader.end(bufferBuilder);
 					RenderSystem.enableTexture();
 					RenderSystem.disableBlend();
 				}

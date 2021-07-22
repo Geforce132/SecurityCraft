@@ -2,11 +2,11 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 /**
  * Defines a block that can activate a Reinforced Doors/Reinforced Trapdoors/Reinforced Fence Gates (henceforth referred to as "the doors").
@@ -24,7 +24,7 @@ public interface IDoorActivator
 	 * @param te The tile entity of the block that could power the doors, if it has one. null if there is no tile entity present
 	 * @return true if the door should get powered, false otherwise
 	 */
-	public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te);
+	public boolean isPowering(Level world, BlockPos pos, BlockState state, BlockEntity te);
 
 	/**
 	 * @return The block(s) that this IDoorActivator defines as being able to activate the doors

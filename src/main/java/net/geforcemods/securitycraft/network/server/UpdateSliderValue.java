@@ -8,10 +8,10 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateSliderValue {
@@ -28,14 +28,14 @@ public class UpdateSliderValue {
 		value = v;
 	}
 
-	public static void encode(UpdateSliderValue message, PacketBuffer buf)
+	public static void encode(UpdateSliderValue message, FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(message.pos);
 		buf.writeInt(message.id);
 		buf.writeDouble(message.value);
 	}
 
-	public static UpdateSliderValue decode(PacketBuffer buf)
+	public static UpdateSliderValue decode(FriendlyByteBuf buf)
 	{
 		UpdateSliderValue message = new UpdateSliderValue();
 
@@ -51,8 +51,8 @@ public class UpdateSliderValue {
 			BlockPos pos = message.pos;
 			int id = message.id;
 			double value = message.value;
-			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.level.getBlockEntity(pos);
+			Player player = ctx.get().getSender();
+			BlockEntity te = player.level.getBlockEntity(pos);
 
 			if(te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player))) {
 				Option<?> o = ((ICustomizable)te).customOptions()[id];

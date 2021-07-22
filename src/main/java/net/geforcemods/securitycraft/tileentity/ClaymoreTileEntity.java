@@ -11,14 +11,14 @@ import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
 
 public class ClaymoreTileEntity extends CustomizableTileEntity
 {
@@ -51,7 +51,7 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 			}
 
 			Direction dir = getBlockState().getValue(ClaymoreBlock.FACING);
-			AxisAlignedBB area = new AxisAlignedBB(worldPosition);
+			AABB area = new AABB(worldPosition);
 
 			if(dir == Direction.NORTH)
 				area = area.contract(-0, -0, range.get());
@@ -76,7 +76,7 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 				entityY = entity.getY();
 				entityZ = entity.getZ();
 				cooldown = 20;
-				getLevel().playSound(null, new BlockPos(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+				getLevel().playSound(null, new BlockPos(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
 				break;
 			}
 		}
@@ -88,7 +88,7 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 	 * @return
 	 */
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		super.save(tag);
 		writeOptions(tag);
@@ -103,7 +103,7 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 

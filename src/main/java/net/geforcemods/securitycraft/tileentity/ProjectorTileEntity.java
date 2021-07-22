@@ -4,20 +4,20 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
-public class ProjectorTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider {
+public class ProjectorTileEntity extends DisguisableTileEntity implements Container, MenuProvider {
 
 	public static final int MIN_WIDTH = 1; //also for height
 	public static final int MAX_WIDTH = 10; //also for height
@@ -44,12 +44,12 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	}
 
 	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
-		return new AxisAlignedBB(getBlockPos()).inflate(RENDER_DISTANCE);
+	public AABB getRenderBoundingBox() {
+		return new AABB(getBlockPos()).inflate(RENDER_DISTANCE);
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		super.save(tag);
 
@@ -59,12 +59,12 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 		tag.putInt("offset", projectionOffset);
 		tag.putBoolean("active", active);
 		tag.putBoolean("horizontal", horizontal);
-		tag.put("storedItem", projectedBlock.save(new CompoundNBT()));
+		tag.put("storedItem", projectedBlock.save(new CompoundTag()));
 		return tag;
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 
@@ -183,15 +183,15 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	}
 
 	@Override
-	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
 		return new ProjectorContainer(windowId, level, worldPosition, inv);
 	}
 
 	@Override
-	public ITextComponent getDisplayName()
+	public Component getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.PROJECTOR.get().getDescriptionId());
+		return new TranslatableComponent(SCContent.PROJECTOR.get().getDescriptionId());
 	}
 
 	@Override
@@ -242,7 +242,7 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity arg0)
+	public boolean stillValid(Player arg0)
 	{
 		return true;
 	}

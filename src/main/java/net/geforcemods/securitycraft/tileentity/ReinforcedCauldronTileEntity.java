@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class ReinforcedCauldronTileEntity extends CustomizableTileEntity {
 
@@ -16,7 +16,7 @@ public class ReinforcedCauldronTileEntity extends CustomizableTileEntity {
 		super(SCContent.teTypeReinforcedCauldron);
 	}
 
-	public boolean isAllowedToInteract(PlayerEntity player) {
+	public boolean isAllowedToInteract(Player player) {
 		return isPublic.get() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player);
 	}
 

@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.misc;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
@@ -10,18 +10,18 @@ import net.minecraftforge.eventbus.api.Event;
  */
 public class OwnershipEvent extends Event
 {
-	private World world;
+	private Level world;
 	private BlockPos pos;
-	private PlayerEntity player;
+	private Player player;
 
-	public OwnershipEvent(World world, BlockPos pos, PlayerEntity player)
+	public OwnershipEvent(Level world, BlockPos pos, Player player)
 	{
 		this.world = world;
 		this.pos = pos;
 		this.player = player;
 	}
 
-	public World getWorld()
+	public Level getWorld()
 	{
 		return world;
 	}
@@ -31,7 +31,7 @@ public class OwnershipEvent extends Event
 		return pos;
 	}
 
-	public PlayerEntity getPlayer()
+	public Player getPlayer()
 	{
 		return player;
 	}

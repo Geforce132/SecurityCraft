@@ -2,15 +2,17 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.BlockSource;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class FakeLiquidBucketItem extends BucketItem
 {
@@ -22,11 +24,11 @@ public class FakeLiquidBucketItem extends BucketItem
 			private final DefaultDispenseItemBehavior instance = new DefaultDispenseItemBehavior();
 
 			@Override
-			public ItemStack execute(IBlockSource source, ItemStack stack)
+			public ItemStack execute(BlockSource source, ItemStack stack)
 			{
 				BucketItem bucket = (BucketItem)stack.getItem();
 				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-				World world = source.getLevel();
+				Level world = source.getLevel();
 
 				if(bucket.emptyBucket(null, world, pos, null))
 				{

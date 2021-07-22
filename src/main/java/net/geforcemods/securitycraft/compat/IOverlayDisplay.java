@@ -1,13 +1,13 @@
 package net.geforcemods.securitycraft.compat;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public interface IOverlayDisplay {
 
-	public ItemStack getDisplayStack(World world, BlockState state, BlockPos pos);
+	public ItemStack getDisplayStack(Level world, BlockState state, BlockPos pos);
 
-	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos);
+	public boolean shouldShowSCInfo(Level world, BlockState state, BlockPos pos);
 }

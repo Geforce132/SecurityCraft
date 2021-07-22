@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.misc;
 
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 
 /**
  * SecurityCraft's custom damage source handler.

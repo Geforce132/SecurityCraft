@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class StackHoverChecker extends HoverChecker
 {

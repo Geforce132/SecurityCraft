@@ -6,19 +6,19 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.command.ICommandSource;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.commands.CommandSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.Util;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.ChatFormatting;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.thread.EffectiveSide;
@@ -29,13 +29,13 @@ public class PlayerUtils{
 	/**
 	 * Gets the PlayerEntity instance of a player (if they're online) using their name. <p>
 	 */
-	public static PlayerEntity getPlayerFromName(String name){
+	public static Player getPlayerFromName(String name){
 		if(EffectiveSide.get() == LogicalSide.CLIENT){
-			List<AbstractClientPlayerEntity> players = Minecraft.getInstance().level.players();
+			List<AbstractClientPlayer> players = Minecraft.getInstance().level.players();
 			Iterator<?> iterator = players.iterator();
 
 			while(iterator.hasNext()){
-				PlayerEntity tempPlayer = (PlayerEntity) iterator.next();
+				Player tempPlayer = (Player) iterator.next();
 				if(tempPlayer.getName().getString().equals(name))
 					return tempPlayer;
 			}
@@ -46,7 +46,7 @@ public class PlayerUtils{
 			Iterator<?> iterator = players.iterator();
 
 			while(iterator.hasNext()){
-				PlayerEntity tempPlayer = (PlayerEntity) iterator.next();
+				Player tempPlayer = (Player) iterator.next();
 				if(tempPlayer.getName().getString().equals(name))
 					return tempPlayer;
 			}
@@ -60,7 +60,7 @@ public class PlayerUtils{
 	 */
 	public static boolean isPlayerOnline(String name) {
 		if(EffectiveSide.get() == LogicalSide.CLIENT){
-			for(AbstractClientPlayerEntity player : Minecraft.getInstance().level.players()){
+			for(AbstractClientPlayer player : Minecraft.getInstance().level.players()){
 				if(player != null && player.getName().getString().equals(name))
 					return true;
 			}
@@ -71,22 +71,22 @@ public class PlayerUtils{
 			return (ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByName(name) != null);
 	}
 
-	public static void sendMessageToPlayer(String playerName, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color){
-		PlayerEntity player = getPlayerFromName(playerName);
+	public static void sendMessageToPlayer(String playerName, MutableComponent prefix, MutableComponent text, ChatFormatting color){
+		Player player = getPlayerFromName(playerName);
 
 		if (player != null)
 			sendMessageToPlayer(player, prefix, text, color, false);
 	}
 
-	public static void sendMessageToPlayer(PlayerEntity player, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color) {
+	public static void sendMessageToPlayer(Player player, MutableComponent prefix, MutableComponent text, ChatFormatting color) {
 		sendMessageToPlayer(player, prefix, text, color, false);
 	}
 
-	public static void sendMessageToPlayer(PlayerEntity player, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color, boolean shouldSendFromClient){
+	public static void sendMessageToPlayer(Player player, MutableComponent prefix, MutableComponent text, ChatFormatting color, boolean shouldSendFromClient){
 		if (player.level.isClientSide == shouldSendFromClient) {
-			player.sendMessage(new StringTextComponent("[")
+			player.sendMessage(new TextComponent("[")
 					.append(prefix.setStyle(Style.EMPTY.withColor(color)))
-					.append(new StringTextComponent("] ")).setStyle(Style.EMPTY.withColor(TextFormatting.WHITE))
+					.append(new TextComponent("] ")).setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE))
 					.append(text), Util.NIL_UUID); //appendSibling
 		}
 	}
@@ -94,19 +94,19 @@ public class PlayerUtils{
 	/**
 	 * Sends the given {@link ICommandSource} a chat message, followed by a link prefixed with a colon. <p>
 	 */
-	public static void sendMessageEndingWithLink(ICommandSource sender, IFormattableTextComponent prefix, IFormattableTextComponent text, String link, TextFormatting color){
-		sender.sendMessage(new StringTextComponent("[")
+	public static void sendMessageEndingWithLink(CommandSource sender, MutableComponent prefix, MutableComponent text, String link, ChatFormatting color){
+		sender.sendMessage(new TextComponent("[")
 				.append(prefix.setStyle(Style.EMPTY.withColor(color)))
-				.append(new StringTextComponent("] ")).setStyle(Style.EMPTY.withColor(TextFormatting.WHITE))
+				.append(new TextComponent("] ")).setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE))
 				.append(text)
-				.append(new StringTextComponent(": "))
+				.append(new TextComponent(": "))
 				.append(ForgeHooks.newChatWithLinks(link)), Util.NIL_UUID); //appendSibling
 	}
 
 	/**
 	 * Returns true if the player is holding the given item.
 	 */
-	public static boolean isHoldingItem(PlayerEntity player, Supplier<Item> item, Hand hand){
+	public static boolean isHoldingItem(Player player, Supplier<Item> item, InteractionHand hand){
 		return isHoldingItem(player, item.get(), hand);
 	}
 
@@ -117,14 +117,14 @@ public class PlayerUtils{
 	 * @param hand The hand in which the item should be; if hand is null, both hands are checked
 	 * @return true if the item was found in the mainhand or offhand, or if no item was found and item was null
 	 */
-	public static boolean isHoldingItem(PlayerEntity player, Item item, Hand hand){
-		if (hand != Hand.OFF_HAND && !player.getItemInHand(Hand.MAIN_HAND).isEmpty()) {
-			if (player.getItemInHand(Hand.MAIN_HAND).getItem() == item)
+	public static boolean isHoldingItem(Player player, Item item, InteractionHand hand){
+		if (hand != InteractionHand.OFF_HAND && !player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+			if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == item)
 				return true;
 		}
 
-		if (hand != Hand.MAIN_HAND && !player.getItemInHand(Hand.OFF_HAND).isEmpty()) {
-			if (player.getItemInHand(Hand.OFF_HAND).getItem() == item)
+		if (hand != InteractionHand.MAIN_HAND && !player.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
+			if (player.getItemInHand(InteractionHand.OFF_HAND).getItem() == item)
 				return true;
 		}
 
@@ -137,7 +137,7 @@ public class PlayerUtils{
 	 * @param item The item type that should be searched for
 	 * @return The item stack if it has been found, ItemStack.EMPTY if not
 	 */
-	public static ItemStack getSelectedItemStack(PlayerEntity player, Item item) {
+	public static ItemStack getSelectedItemStack(Player player, Item item) {
 		return getSelectedItemStack(player.inventory, item);
 	}
 
@@ -147,7 +147,7 @@ public class PlayerUtils{
 	 * @param item The item type that should be searched for
 	 * @return The respective item stack if it has been found, ItemStack.EMPTY if not
 	 */
-	public static ItemStack getSelectedItemStack(PlayerInventory inventory, Item item) {
+	public static ItemStack getSelectedItemStack(Inventory inventory, Item item) {
 		if (!inventory.getSelected().isEmpty()) {
 			if (inventory.getSelected().getItem() == item)
 				return inventory.getSelected();

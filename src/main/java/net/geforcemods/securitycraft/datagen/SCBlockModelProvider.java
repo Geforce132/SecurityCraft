@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.datagen;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;

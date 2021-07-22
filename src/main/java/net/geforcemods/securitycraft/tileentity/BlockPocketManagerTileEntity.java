@@ -23,37 +23,37 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Direction.Axis;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.Containers;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.NonNullList;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class BlockPocketManagerTileEntity extends CustomizableTileEntity implements INamedContainerProvider
+public class BlockPocketManagerTileEntity extends CustomizableTileEntity implements MenuProvider
 {
 	public static final int RENDER_DISTANCE = 100;
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
@@ -82,7 +82,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 		if(!level.isClientSide && shouldPlaceBlocks)
 		{
-			PlayerEntity owner = PlayerUtils.getPlayerFromName(getOwner().getName());
+			Player owner = PlayerUtils.getPlayerFromName(getOwner().getName());
 			boolean isCreative = owner.isCreative();
 			boolean placed4 = true;
 
@@ -115,7 +115,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 					BlockPos pos = toPlace.getLeft();
 					BlockState stateToPlace = toPlace.getRight();
 					SoundType soundType = stateToPlace.getSoundType();
-					TileEntity te;
+					BlockEntity te;
 
 					if(!isCreative) //queue blocks for removal from the inventory
 					{
@@ -133,7 +133,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 					}
 
 					level.setBlockAndUpdate(pos, stateToPlace);
-					level.playSound(null, pos, soundType.getPlaceSound(), SoundCategory.BLOCKS, soundType.getVolume(), soundType.getPitch());
+					level.playSound(null, pos, soundType.getPlaceSound(), SoundSource.BLOCKS, soundType.getVolume(), soundType.getPitch());
 					te = level.getBlockEntity(pos);
 
 					//assigning the owner
@@ -144,7 +144,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 				}
 
 				//when an invalid block is in the way
-				PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslationTextComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().getValue(BlockPocketManagerBlock.FACING)), new TranslationTextComponent(stateInWorld.getBlock().getDescriptionId())), TextFormatting.DARK_AQUA);
+				PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslatableComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().getValue(BlockPocketManagerBlock.FACING)), new TranslatableComponent(stateInWorld.getBlock().getDescriptionId())), ChatFormatting.DARK_AQUA);
 				placed4 = false;
 				break placeLoop;
 			}
@@ -157,7 +157,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 				else //no more blocks left to place, assembling must be done
 				{
 					setWalls(!hasModule(ModuleType.DISGUISE));
-					PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslationTextComponent("messages.securitycraft:blockpocket.assembled"), TextFormatting.DARK_AQUA);
+					PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslatableComponent("messages.securitycraft:blockpocket.assembled"), ChatFormatting.DARK_AQUA);
 				}
 
 				shouldPlaceBlocks = false;
@@ -169,7 +169,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	 * Enables the block pocket
 	 * @return The feedback message. null if none should be sent.
 	 */
-	public TranslationTextComponent enableMultiblock()
+	public TranslatableComponent enableMultiblock()
 	{
 		if(!enabled) //multiblock detection
 		{
@@ -227,7 +227,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 						BlockState currentState = level.getBlockState(currentPos);
 
 						if(currentState.getBlock() instanceof BlockPocketManagerBlock && !currentPos.equals(getBlockPos()))
-							return new TranslationTextComponent("messages.securitycraft:blockpocket.multipleManagers");
+							return new TranslatableComponent("messages.securitycraft:blockpocket.multipleManagers");
 
 						//checking the lowest and highest level of the cube
 						if((yi == lowest && !currentPos.equals(getBlockPos())) || yi == highest) //if (y level is lowest AND it's not the block pocket manager's position) OR (y level is highest)
@@ -236,7 +236,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							if(((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 							{
 								if(currentState.getBlock() != SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslationTextComponent(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslatableComponent(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get().getDescriptionId()));
 							}
 							//checking the sides parallel to the block pocket manager
 							else if((zi == lowest || zi == highest) && xi > lowest && xi < highest)
@@ -246,8 +246,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() || currentState.getValue(BlockStateProperties.AXIS) != typeToCheckFor)
 								{
 									if(currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-										return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock.rotation", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslationTextComponent(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDescriptionId()));
+										return new TranslatableComponent("messages.securitycraft:blockpocket.invalidBlock.rotation", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslatableComponent(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDescriptionId()));
 								}
 							}
 							//checking the sides orthogonal to the block pocket manager
@@ -258,15 +258,15 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() || currentState.getValue(BlockStateProperties.AXIS) != typeToCheckFor)
 								{
 									if (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-										return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock.rotation", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslationTextComponent(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDescriptionId()));
+										return new TranslatableComponent("messages.securitycraft:blockpocket.invalidBlock.rotation", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslatableComponent(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDescriptionId()));
 								}
 							}
 							//checking the middle plane
 							else if(xi > lowest && zi > lowest && xi < highest && zi < highest)
 							{
 								if(!(currentState.getBlock() instanceof BlockPocketWallBlock))
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslationTextComponent(SCContent.BLOCK_POCKET_WALL.get().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslatableComponent(SCContent.BLOCK_POCKET_WALL.get().getDescriptionId()));
 
 								floor.add(currentPos);
 								sides.add(currentPos);
@@ -278,8 +278,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() || currentState.getValue(BlockStateProperties.AXIS) != Axis.Y)
 							{
 								if (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock.rotation", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
-								return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslationTextComponent(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.invalidBlock.rotation", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
+								return new TranslatableComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslatableComponent(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDescriptionId()));
 							}
 						}
 						//checking the walls
@@ -289,7 +289,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							if((zi == lowest || zi == highest) && xi > lowest && xi < highest)
 							{
 								if(!(currentState.getBlock() instanceof BlockPocketWallBlock))
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslationTextComponent(SCContent.BLOCK_POCKET_WALL.get().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslatableComponent(SCContent.BLOCK_POCKET_WALL.get().getDescriptionId()));
 
 								sides.add(currentPos);
 							}
@@ -297,7 +297,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							else if((xi == lowest || xi == highest) && zi > lowest && zi < highest)
 							{
 								if(!(currentState.getBlock() instanceof BlockPocketWallBlock))
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslationTextComponent(SCContent.BLOCK_POCKET_WALL.get().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()), new TranslatableComponent(SCContent.BLOCK_POCKET_WALL.get().getDescriptionId()));
 
 								sides.add(currentPos);
 							}
@@ -306,7 +306,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 						OwnableTileEntity te = (OwnableTileEntity)level.getBlockEntity(currentPos);
 
 						if(!getOwner().owns(te))
-							return new TranslationTextComponent("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
+							return new TranslatableComponent("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
 						else
 							blocks.add(currentPos);
 
@@ -331,7 +331,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 			for(BlockPos blockPos : blocks)
 			{
-				TileEntity te = level.getBlockEntity(blockPos);
+				BlockEntity te = level.getBlockEntity(blockPos);
 
 				if(te instanceof BlockPocketTileEntity)
 					((BlockPocketTileEntity)te).setManager(this);
@@ -343,7 +343,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			}
 
 			setWalls(!hasModule(ModuleType.DISGUISE));
-			return new TranslationTextComponent("messages.securitycraft:blockpocket.activated");
+			return new TranslatableComponent("messages.securitycraft:blockpocket.activated");
 		}
 
 		return null;
@@ -354,7 +354,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	 * First it makes sure that the space isn't occupied, then it checks its inventory for the required items, then it places the blocks.
 	 * @return The feedback message. null if none should be sent.
 	 */
-	public IFormattableTextComponent autoAssembleMultiblock()
+	public MutableComponent autoAssembleMultiblock()
 	{
 		if(!enabled)
 		{
@@ -405,7 +405,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							if(((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 							{
 								if(currentState.getBlock() != SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get() && !replaceable)
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
 
 								if(replaceable)
 									chiseledNeeded++;
@@ -416,7 +416,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 								Axis typeToCheckFor = managerFacing == Direction.NORTH || managerFacing == Direction.SOUTH ? Axis.X : Axis.Z;
 
 								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && !replaceable || (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && currentState.getValue(BlockStateProperties.AXIS) != typeToCheckFor))
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
 
 								if(replaceable)
 									pillarsNeeded++;
@@ -427,7 +427,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 								Axis typeToCheckFor = managerFacing == Direction.NORTH || managerFacing == Direction.SOUTH ? Axis.Z : Axis.X;
 
 								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && !replaceable || (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && currentState.getValue(BlockStateProperties.AXIS) != typeToCheckFor))
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
 
 								if(replaceable)
 									pillarsNeeded++;
@@ -436,7 +436,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							else if(xi > lowest && zi > lowest && xi < highest && zi < highest)
 							{
 								if(!(currentState.getBlock() instanceof BlockPocketWallBlock) && !replaceable)
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
 
 								if(replaceable)
 									wallsNeeded++;
@@ -446,7 +446,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 						else if(yi != lowest && yi != highest && ((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 						{
 							if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && !replaceable || (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && currentState.getValue(BlockStateProperties.AXIS) != Axis.Y))
-								return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
+								return new TranslatableComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
 
 							if(replaceable)
 								pillarsNeeded++;
@@ -458,7 +458,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							if((zi == lowest || zi == highest) && xi > lowest && xi < highest)
 							{
 								if(!(currentState.getBlock() instanceof BlockPocketWallBlock) && !replaceable)
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
 
 								if(replaceable)
 									wallsNeeded++;
@@ -467,7 +467,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							else if((xi == lowest || xi == highest) && zi > lowest && zi < highest)
 							{
 								if(!(currentState.getBlock() instanceof BlockPocketWallBlock) && !replaceable)
-									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
+									return new TranslatableComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
 
 								if(replaceable)
 									wallsNeeded++;
@@ -479,7 +479,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							OwnableTileEntity te = (OwnableTileEntity)level.getBlockEntity(currentPos);
 
 							if(!getOwner().owns(te))
-								return new TranslationTextComponent("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
+								return new TranslatableComponent("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
 						}
 
 						xi++;
@@ -496,7 +496,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			} //if the code comes to this place, the space is either clear or occupied by blocks that would have been placed either way, or existing blocks can be replaced (like grass)
 
 			if(chiseledNeeded + pillarsNeeded + wallsNeeded == 0) //this applies when no blocks are missing, so when the BP is already in place
-				return new TranslationTextComponent("messages.securitycraft:blockpocket.alreadyAssembled");
+				return new TranslatableComponent("messages.securitycraft:blockpocket.alreadyAssembled");
 
 			pos = getBlockPos().immutable().relative(right, -half);
 			xi = lowest;
@@ -521,7 +521,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 						BlockState currentState = level.getBlockState(currentPos);
 
 						if(currentState.getBlock() instanceof BlockPocketManagerBlock && !currentPos.equals(getBlockPos()))
-							return new TranslationTextComponent("messages.securitycraft:blockpocket.multipleManagers");
+							return new TranslatableComponent("messages.securitycraft:blockpocket.multipleManagers");
 
 						//placing the lowest and highest level of the cube
 						if((yi == lowest && !currentPos.equals(getBlockPos())) || yi == highest) //if (y level is lowest AND it's not the block pocket manager's position) OR (y level is highest)
@@ -590,12 +590,12 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 				SecurityCraft.channel.sendToServer(new ToggleBlockPocketManager(this, false, size));
 			}
 
-			PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);
+			PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:blockpocket.deactivated"), ChatFormatting.DARK_AQUA);
 			enabled = false;
 
 			for(BlockPos pos : blocks)
 			{
-				TileEntity te = level.getBlockEntity(pos);
+				BlockEntity te = level.getBlockEntity(pos);
 
 				if(te instanceof BlockPocketTileEntity)
 					((BlockPocketTileEntity)te).removeManager();
@@ -618,12 +618,12 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		}
 	}
 
-	private TranslationTextComponent getFormattedRelativeCoordinates(BlockPos pos, Direction managerFacing) {
+	private TranslatableComponent getFormattedRelativeCoordinates(BlockPos pos, Direction managerFacing) {
 		BlockPos difference = pos.subtract(this.worldPosition);
 		int offsetLeft;
 		int offsetBehind;
 		int offsetAbove = difference.getY();
-		List<TranslationTextComponent> components = new ArrayList<>();
+		List<TranslatableComponent> components = new ArrayList<>();
 
 		switch (managerFacing) {
 			case NORTH:
@@ -721,20 +721,20 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			getStorageHandler().ifPresent(handler -> {
 				for(int i = 0; i < handler.getSlots(); i++)
 				{
-					InventoryHelper.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), handler.getStackInSlot(i));
+					Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), handler.getStackInSlot(i));
 				}
 			});
 		}
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		tag.putBoolean("BlockPocketEnabled", enabled);
 		tag.putBoolean("ShowOutline", showOutline);
 		tag.putInt("Size", size);
 		tag.putInt("AutoBuildOffset", autoBuildOffset);
-		ItemStackHelper.saveAllItems(tag, storage);
+		ContainerHelper.saveAllItems(tag, storage);
 
 		for(int i = 0; i < blocks.size(); i++)
 		{
@@ -755,7 +755,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		int i = 0;
 
@@ -764,7 +764,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		showOutline = tag.getBoolean("ShowOutline");
 		size = tag.getInt("Size");
 		autoBuildOffset = tag.getInt("AutoBuildOffset");
-		ItemStackHelper.loadAllItems(tag, storage);
+		ContainerHelper.loadAllItems(tag, storage);
 
 		while(tag.contains("BlocksList" + i))
 		{
@@ -806,21 +806,21 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	}
 
 	@Override
-	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
 		return new BlockPocketManagerContainer(windowId, level, worldPosition, inv);
 	}
 
 	@Override
-	public ITextComponent getDisplayName()
+	public Component getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId());
+		return new TranslatableComponent(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId());
 	}
 
 	@Override
-	public AxisAlignedBB getRenderBoundingBox()
+	public AABB getRenderBoundingBox()
 	{
-		return new AxisAlignedBB(getBlockPos()).inflate(RENDER_DISTANCE);
+		return new AABB(getBlockPos()).inflate(RENDER_DISTANCE);
 	}
 
 	public LazyOptional<IItemHandler> getStorageHandler()

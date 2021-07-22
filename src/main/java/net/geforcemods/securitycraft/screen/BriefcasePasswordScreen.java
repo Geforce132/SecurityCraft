@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -11,32 +11,32 @@ import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
+public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericContainer> {
 
 	public static final String UP_ARROW  = "\u2191";
 	public static final String DOWN_ARROW  = "\u2193";
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslationTextComponent enterPasscode = Utils.localize("gui.securitycraft:briefcase.enterPasscode");
+	private final TranslatableComponent enterPasscode = Utils.localize("gui.securitycraft:briefcase.enterPasscode");
 	private Button[] keycodeTopButtons = new Button[4];
 	private Button[] keycodeBottomButtons = new Button[4];
-	private TextFieldWidget[] keycodeTextboxes = new TextFieldWidget[4];
+	private EditBox[] keycodeTextboxes = new EditBox[4];
 	private IdButton continueButton;
 	private int[] digits = {0, 0, 0, 0};
 
-	public BriefcasePasswordScreen(GenericContainer container, PlayerInventory inv, ITextComponent text) {
+	public BriefcasePasswordScreen(GenericContainer container, Inventory inv, Component text) {
 		super(container, inv, text);
 	}
 
@@ -56,28 +56,28 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
 			//text boxes are not added via addButton because they should not be selectable
-			keycodeTextboxes[i] = new TextFieldWidget(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, StringTextComponent.EMPTY);
+			keycodeTextboxes[i] = new EditBox(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, TextComponent.EMPTY);
 			keycodeTextboxes[i].setMaxLength(1);
 			keycodeTextboxes[i].setValue("0");
 		}
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 
-		for(TextFieldWidget textfield : keycodeTextboxes)
+		for(EditBox textfield : keycodeTextboxes)
 			textfield.render(matrix, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
+	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY) {
 		font.draw(matrix, enterPasscode, imageWidth / 2 - font.width(enterPasscode) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
@@ -90,7 +90,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 		if(button.id == continueButton.id)
 		{
 			if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
-				CompoundNBT nbt = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get()).getTag();
+				CompoundTag nbt = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get()).getTag();
 				String code = digits[0] + "" + digits[1] + "" +  digits[2] + "" + digits[3];
 
 				if(nbt.getString("passcode").equals(code)) {

@@ -3,10 +3,10 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class ToggleBlockPocketManager
@@ -24,14 +24,14 @@ public class ToggleBlockPocketManager
 		this.size = size;
 	}
 
-	public static void encode(ToggleBlockPocketManager message, PacketBuffer buf)
+	public static void encode(ToggleBlockPocketManager message, FriendlyByteBuf buf)
 	{
 		buf.writeLong(message.pos.asLong());
 		buf.writeBoolean(message.enabling);
 		buf.writeInt(message.size);
 	}
 
-	public static ToggleBlockPocketManager decode(PacketBuffer buf)
+	public static ToggleBlockPocketManager decode(FriendlyByteBuf buf)
 	{
 		ToggleBlockPocketManager message = new ToggleBlockPocketManager();
 
@@ -44,8 +44,8 @@ public class ToggleBlockPocketManager
 	public static void onMessage(ToggleBlockPocketManager message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.level.getBlockEntity(message.pos);
+			Player player = ctx.get().getSender();
+			BlockEntity te = player.level.getBlockEntity(message.pos);
 
 			if(te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(player))
 			{

@@ -19,48 +19,48 @@ import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.AbstractFurnaceTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implements IPasswordProtected, INamedContainerProvider, IOwnable, INameable, IModuleInventory, ICustomizable
+public class KeypadFurnaceTileEntity extends AbstractFurnaceBlockEntity implements IPasswordProtected, MenuProvider, IOwnable, INameable, IModuleInventory, ICustomizable
 {
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private Owner owner = new Owner();
 	private String passcode;
-	private ITextComponent furnaceCustomName;
+	private Component furnaceCustomName;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
 	public KeypadFurnaceTileEntity()
 	{
-		super(SCContent.teTypeKeypadFurnace, IRecipeType.SMELTING);
+		super(SCContent.teTypeKeypadFurnace, RecipeType.SMELTING);
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT tag)
+	public CompoundTag save(CompoundTag tag)
 	{
 		super.save(tag);
 
@@ -82,7 +82,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundTag tag)
 	{
 		super.load(state, tag);
 
@@ -91,23 +91,23 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 		owner.setOwnerName(tag.getString("owner"));
 		owner.setOwnerUUID(tag.getString("ownerUUID"));
 		passcode = tag.getString("passcode");
-		furnaceCustomName = new StringTextComponent(tag.getString("CustomName"));
+		furnaceCustomName = new TextComponent(tag.getString("CustomName"));
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag()
+	public CompoundTag getUpdateTag()
 	{
-		return save(new CompoundNBT());
+		return save(new CompoundTag());
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket()
+	public ClientboundBlockEntityDataPacket getUpdatePacket()
 	{
-		return new SUpdateTileEntityPacket(worldPosition, 1, getUpdateTag());
+		return new ClientboundBlockEntityDataPacket(worldPosition, 1, getUpdateTag());
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet)
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet)
 	{
 		load(getBlockState(), packet.getTag());
 	}
@@ -160,28 +160,28 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	}
 
 	@Override
-	public void activate(PlayerEntity player) {
+	public void activate(Player player) {
 		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadFurnaceBlock)
 			KeypadFurnaceBlock.activate(level, worldPosition, player);
 	}
 
 	@Override
-	public void openPasswordGUI(PlayerEntity player) {
+	public void openPasswordGUI(Player player) {
 		if(getPassword() != null)
 		{
-			if(player instanceof ServerPlayerEntity)
+			if(player instanceof ServerPlayer)
 			{
-				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+				NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 					{
 						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
-					public ITextComponent getDisplayName()
+					public Component getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
+						return new TranslatableComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
 					}
 				}, worldPosition);
 			}
@@ -190,30 +190,30 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 		{
 			if(getOwner().isOwner(player))
 			{
-				if(player instanceof ServerPlayerEntity)
+				if(player instanceof ServerPlayer)
 				{
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+					NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
 							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override
-						public ITextComponent getDisplayName()
+						public Component getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
+							return new TranslatableComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
 						}
 					}, worldPosition);
 				}
 			}
 			else
-				PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
 		}
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
+	public boolean onCodebreakerUsed(BlockState blockState, Player player) {
 		activate(player);
 		return true;
 	}
@@ -228,43 +228,43 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 		passcode = password;
 	}
 
-	public IIntArray getFurnaceData()
+	public ContainerData getFurnaceData()
 	{
 		return dataAccess;
 	}
 
 	@Override
-	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
 		return new KeypadFurnaceContainer(windowId, level, worldPosition, inv, this, dataAccess);
 	}
 
 	@Override
-	protected Container createMenu(int windowId, PlayerInventory inv)
+	protected AbstractContainerMenu createMenu(int windowId, Inventory inv)
 	{
 		return createMenu(windowId, inv, inv.player);
 	}
 
 	@Override
-	public ITextComponent getDisplayName()
+	public Component getDisplayName()
 	{
 		return hasCustomSCName() ? getCustomSCName() : getDefaultName();
 	}
 
 	@Override
-	protected ITextComponent getDefaultName()
+	protected Component getDefaultName()
 	{
-		return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
+		return new TranslatableComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
 	}
 
 	@Override
-	public ITextComponent getCustomSCName()
+	public Component getCustomSCName()
 	{
 		return furnaceCustomName;
 	}
 
 	@Override
-	public void setCustomSCName(ITextComponent customName)
+	public void setCustomSCName(Component customName)
 	{
 		furnaceCustomName = customName;
 	}
@@ -282,7 +282,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	}
 
 	@Override
-	public TileEntity getTileEntity()
+	public BlockEntity getTileEntity()
 	{
 		return this;
 	}

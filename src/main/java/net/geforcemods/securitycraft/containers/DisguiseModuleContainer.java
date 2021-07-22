@@ -2,19 +2,19 @@ package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.ClickType;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 
-public class DisguiseModuleContainer extends Container {
+public class DisguiseModuleContainer extends AbstractContainerMenu {
 
 	private ModuleItemInventory inventory;
 
-	public DisguiseModuleContainer(int windowId, PlayerInventory playerInventory, ModuleItemInventory moduleInventory) {
+	public DisguiseModuleContainer(int windowId, Inventory playerInventory, ModuleItemInventory moduleInventory) {
 		super(SCContent.cTypeDisguiseModule, windowId);
 		inventory = moduleInventory;
 		addSlot(new AddonSlot(inventory, 0, 79, 20));
@@ -28,7 +28,7 @@ public class DisguiseModuleContainer extends Container {
 	}
 
 	@Override
-	public ItemStack quickMoveStack(PlayerEntity player, int index) {
+	public ItemStack quickMoveStack(Player player, int index) {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
@@ -61,7 +61,7 @@ public class DisguiseModuleContainer extends Container {
 	}
 
 	@Override
-	public ItemStack clicked(int slot, int dragType, ClickType clickType, PlayerEntity player)
+	public ItemStack clicked(int slot, int dragType, ClickType clickType, Player player)
 	{
 		if(slot >= 0 && getSlot(slot) != null && ((!player.getMainHandItem().isEmpty() && getSlot(slot).getItem() == player.getMainHandItem() && player.getMainHandItem().getItem() == SCContent.DISGUISE_MODULE.get())))
 			return ItemStack.EMPTY;
@@ -70,7 +70,7 @@ public class DisguiseModuleContainer extends Container {
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return true;
 	}
 

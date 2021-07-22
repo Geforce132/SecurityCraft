@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -12,31 +12,31 @@ import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
+public class KeyChangerScreen extends AbstractContainerScreen<GenericTEContainer> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslationTextComponent ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId());
-	private final TranslationTextComponent enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode");
-	private final TranslationTextComponent confirmPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode");
-	private TextFieldWidget textboxNewPasscode;
-	private TextFieldWidget textboxConfirmPasscode;
+	private final TranslatableComponent ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId());
+	private final TranslatableComponent enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode");
+	private final TranslatableComponent confirmPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode");
+	private EditBox textboxNewPasscode;
+	private EditBox textboxConfirmPasscode;
 	private IdButton confirmButton;
-	private TileEntity tileEntity;
+	private BlockEntity tileEntity;
 
-	public KeyChangerScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
+	public KeyChangerScreen(GenericTEContainer container, Inventory inv, Component name) {
 		super(container, inv, name);
 		tileEntity = container.te;
 	}
@@ -48,13 +48,13 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		addButton(confirmButton = new IdButton(0, width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::actionPerformed));
 		confirmButton.active = false;
 
-		addButton(textboxNewPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 47, 110, 12, StringTextComponent.EMPTY));
+		addButton(textboxNewPasscode = new EditBox(font, width / 2 - 57, height / 2 - 47, 110, 12, TextComponent.EMPTY));
 		textboxNewPasscode.setMaxLength(20);
 		setInitialFocus(textboxNewPasscode);
 		textboxNewPasscode.setFilter(s -> s.matches("[0-9]*"));
 		textboxNewPasscode.setResponder(s -> updateConfirmButtonState());
 
-		addButton(textboxConfirmPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 7, 110, 12, StringTextComponent.EMPTY));
+		addButton(textboxConfirmPasscode = new EditBox(font, width / 2 - 57, height / 2 - 7, 110, 12, TextComponent.EMPTY));
 		textboxConfirmPasscode.setMaxLength(20);
 		textboxConfirmPasscode.setFilter(s -> s.matches("[0-9]*"));
 		textboxConfirmPasscode.setResponder(s -> updateConfirmButtonState());
@@ -67,14 +67,14 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY){
+	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY){
 		font.draw(matrix, ukcName, imageWidth / 2 - font.width(ukcName) / 2, 6, 4210752);
 		font.draw(matrix, enterPasscode, imageWidth / 2 - font.width(enterPasscode) / 2, 25, 4210752);
 		font.draw(matrix, confirmPasscode, imageWidth / 2 - font.width(confirmPasscode) / 2, 65, 4210752);
 	}
 
 	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY){
+	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY){
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
@@ -95,6 +95,6 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), textboxNewPasscode.getValue()));
 
 		Minecraft.getInstance().player.closeContainer();
-		PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN, true);
+		PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), ChatFormatting.GREEN, true);
 	}
 }

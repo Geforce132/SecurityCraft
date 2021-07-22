@@ -3,35 +3,35 @@ package net.geforcemods.securitycraft.containers;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
-public class KeycardReaderContainer extends Container
+public class KeycardReaderContainer extends AbstractContainerMenu
 {
-	private final Inventory itemInventory = new Inventory(1);
+	private final SimpleContainer itemInventory = new SimpleContainer(1);
 	public final Slot keycardSlot;
 	public KeycardReaderTileEntity te;
-	private IWorldPosCallable worldPosCallable;
+	private ContainerLevelAccess worldPosCallable;
 
-	public KeycardReaderContainer(int windowId, PlayerInventory inventory, World world, BlockPos pos)
+	public KeycardReaderContainer(int windowId, Inventory inventory, Level world, BlockPos pos)
 	{
 		super(SCContent.cTypeKeycardReader, windowId);
 
-		TileEntity tile = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
 		if(tile instanceof KeycardReaderTileEntity)
 			te = (KeycardReaderTileEntity)tile;
 
-		worldPosCallable = IWorldPosCallable.create(world, pos);
+		worldPosCallable = ContainerLevelAccess.create(world, pos);
 
 		//main player inventory
 		for(int i = 0; i < 3; i++)
@@ -66,7 +66,7 @@ public class KeycardReaderContainer extends Container
 
 		if(!keycard.isEmpty())
 		{
-			CompoundNBT tag = keycard.getOrCreateTag();
+			CompoundTag tag = keycard.getOrCreateTag();
 
 			tag.putBoolean("linked", true);
 			tag.putInt("signature", te.getSignature());
@@ -81,7 +81,7 @@ public class KeycardReaderContainer extends Container
 
 		if(!keycard.isEmpty())
 		{
-			CompoundNBT tag = keycard.getOrCreateTag();
+			CompoundTag tag = keycard.getOrCreateTag();
 
 			if(tag.getBoolean("limited"))
 				tag.putInt("uses", uses);
@@ -89,14 +89,14 @@ public class KeycardReaderContainer extends Container
 	}
 
 	@Override
-	public void removed(PlayerEntity player)
+	public void removed(Player player)
 	{
 		super.removed(player);
 		clearContainer(player, te.getLevel(), itemInventory);
 	}
 
 	@Override
-	public ItemStack quickMoveStack(PlayerEntity player, int id)
+	public ItemStack quickMoveStack(Player player, int id)
 	{
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(id);
@@ -131,7 +131,7 @@ public class KeycardReaderContainer extends Container
 	}
 
 	@Override
-	public boolean stillValid(PlayerEntity player)
+	public boolean stillValid(Player player)
 	{
 		return stillValid(worldPosCallable, player, SCContent.KEYCARD_READER.get());
 	}

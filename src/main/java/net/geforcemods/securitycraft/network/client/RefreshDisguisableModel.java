@@ -5,9 +5,9 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class RefreshDisguisableModel
@@ -25,14 +25,14 @@ public class RefreshDisguisableModel
 		this.stack = stack;
 	}
 
-	public static void encode(RefreshDisguisableModel message, PacketBuffer buf)
+	public static void encode(RefreshDisguisableModel message, FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(message.pos);
 		buf.writeBoolean(message.insert);
 		buf.writeItem(message.stack);
 	}
 
-	public static RefreshDisguisableModel decode(PacketBuffer buf)
+	public static RefreshDisguisableModel decode(FriendlyByteBuf buf)
 	{
 		RefreshDisguisableModel message = new RefreshDisguisableModel();
 
