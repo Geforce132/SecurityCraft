@@ -168,34 +168,38 @@ public class SCManualScreen extends Screen {
 
 			if(item instanceof BlockItem){
 				Block block = ((BlockItem) item).getBlock();
-				TileEntity te = block.hasTileEntity(block.getDefaultState()) ? block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world) : null;
 
 				if(block instanceof IExplosive)
 					blit(matrix, startX + 107, 117, 54, 1, 18, 18);
 
-				if(te instanceof IOwnable)
-					blit(matrix, startX + 29, 118, 1, 1, 16, 16);
-
-				if(te instanceof IPasswordProtected)
-					blit(matrix, startX + 55, 118, 18, 1, 17, 16);
-
-				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
-					blit(matrix, startX + 81, 118, 36, 1, 17, 16);
-
-				if(te instanceof ICustomizable)
+				if(block.hasTileEntity(block.getDefaultState()))
 				{
-					ICustomizable scte = (ICustomizable)te;
+					TileEntity te = block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world);
 
-					blit(matrix, startX + 213, 118, 72, 1, 16, 16);
+					if(te instanceof IOwnable)
+						blit(matrix, startX + 29, 118, 1, 1, 16, 16);
 
-					if(scte.customOptions() != null && scte.customOptions().length > 0)
-						blit(matrix, startX + 136, 118, 88, 1, 16, 16);
-				}
+					if(te instanceof IPasswordProtected)
+						blit(matrix, startX + 55, 118, 18, 1, 17, 16);
 
-				if(te instanceof IModuleInventory)
-				{
-					if(((IModuleInventory)te).acceptedModules() != null && ((IModuleInventory)te).acceptedModules().length > 0)
-						blit(matrix, startX + 163, 118, 105, 1, 16, 16);
+					if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
+						blit(matrix, startX + 81, 118, 36, 1, 17, 16);
+
+					if(te instanceof ICustomizable)
+					{
+						ICustomizable scte = (ICustomizable)te;
+
+						blit(matrix, startX + 213, 118, 72, 1, 16, 16);
+
+						if(scte.customOptions() != null && scte.customOptions().length > 0)
+							blit(matrix, startX + 136, 118, 88, 1, 16, 16);
+					}
+
+					if(te instanceof IModuleInventory)
+					{
+						if(((IModuleInventory)te).acceptedModules() != null && ((IModuleInventory)te).acceptedModules().length > 0)
+							blit(matrix, startX + 163, 118, 105, 1, 16, 16);
+					}
 				}
 			}
 
@@ -360,6 +364,8 @@ public class SCManualScreen extends Screen {
 
 		SCManualPage page = SCManualItem.PAGES.get(currentPage);
 
+		recipe = null;
+
 		for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes())
 		{
 			if(object instanceof ShapedRecipe){
@@ -394,8 +400,6 @@ public class SCManualScreen extends Screen {
 					break;
 				}
 			}
-
-			recipe = null;
 		}
 
 		TranslationTextComponent helpInfo = page.getHelpInfo();
@@ -430,12 +434,12 @@ public class SCManualScreen extends Screen {
 		if(item instanceof BlockItem){
 			Block block = ((BlockItem) item).getBlock();
 
+			if(block instanceof IExplosive)
+				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));
+
 			if(block.hasTileEntity(block.getDefaultState()))
 			{
 				TileEntity te = block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world);
-
-				if(block instanceof IExplosive)
-					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
 				if(te instanceof IOwnable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock")));
