@@ -32,7 +32,6 @@ import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -68,7 +67,6 @@ public class GuiSCManual extends GuiScreen {
 	private int currentPage = lastPage;
 	private NonNullList<Ingredient> recipe;
 	private int startX = -1;
-	private boolean update = false;
 	private List<String> subpages = new ArrayList<>();
 	private List<String> author = new ArrayList<>();
 	private int currentSubpage = 0;
@@ -82,9 +80,6 @@ public class GuiSCManual extends GuiScreen {
 	@Override
 	public void initGui(){
 		byte startY = 2;
-
-		if((width - 256) / 2 != startX && startX != -1)
-			update = true;
 
 		startX = (width - 256) / 2;
 		Keyboard.enableRepeatEvents(true);
@@ -108,12 +103,6 @@ public class GuiSCManual extends GuiScreen {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-		if(update)
-		{
-			updateRecipeAndIcons();
-			update = false;
-		}
-
 		if(currentPage == -1)
 			mc.getTextureManager().bindTexture(infoBookTitlePage);
 		else if(recipe != null || ItemSCManual.PAGES.get(currentPage).isRecipeDisabled())
@@ -123,64 +112,45 @@ public class GuiSCManual extends GuiScreen {
 
 		drawTexturedModalRect(startX, 5, 0, 0, 256, 250);
 
-		if(currentPage > -1){
+		for(int i = 0; i < buttonList.size(); i++)
+		{
+			buttonList.get(i).drawButton(mc, mouseX, mouseY, 0);
+		}
+
+		if(currentPage > -1)
+		{
+			Item item = ItemSCManual.PAGES.get(currentPage).getItem();
+			boolean isItemBlock = item instanceof ItemBlock;
+			String pageNumberText = (currentPage + 2) + "/" + (ItemSCManual.PAGES.size() + 1); //+1 because the "welcome" page is not included
+			String designedBy = ItemSCManual.PAGES.get(currentPage).getDesignedBy();
+
+			if(subpages.size() > 1)
+				fontRenderer.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
+
 			if(ItemSCManual.PAGES.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
 				fontRenderer.drawString(Utils.localize("gui.securitycraft:scManual.reinforced").getFormattedText(), startX + 39, 27, 0, false);
 			else
 				fontRenderer.drawString(Utils.localize(ItemSCManual.PAGES.get(currentPage).getItem().getTranslationKey() + ".name").getFormattedText(), startX + 39, 27, 0, false);
 
-			fontRenderer.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
-
-			String designedBy = ItemSCManual.PAGES.get(currentPage).getDesignedBy();
-
 			if(designedBy != null && !designedBy.isEmpty())
 				fontRenderer.drawSplitString(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy).getFormattedText(), startX + 18, 150, 75, 0);
-		}else{
-			fontRenderer.drawString(intro1, width / 2 - fontRenderer.getStringWidth(intro1) / 2, 22, 0, false);
-
-			for(int i = 0; i < intro2.size(); i++)
-			{
-				String text = intro2.get(i);
-
-				fontRenderer.drawString(text, width / 2 - fontRenderer.getStringWidth(text) / 2, 150 + 10 * i, 0);
-			}
-
-			for(int i = 0; i < author.size(); i++)
-			{
-				String text = author.get(i);
-
-				fontRenderer.drawString(text, width / 2 - fontRenderer.getStringWidth(text) / 2, 180 + 10 * i, 0);
-			}
-
-			fontRenderer.drawString(ourPatrons, width / 2 - fontRenderer.getStringWidth(ourPatrons) / 2 + 30, 40, 0);
-		}
-
-		for(int i = 0; i < buttonList.size(); i++)
-			buttonList.get(i).drawButton(mc, mouseX, mouseY, 0);
-
-		if(currentPage > -1)
-		{
-			Item item = ItemSCManual.PAGES.get(currentPage).getItem();
-			ItemStack stack = new ItemStack(item);
-			Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
-			TileEntity te = itemBlock instanceof ITileEntityProvider ? ((ITileEntityProvider) itemBlock).createNewTileEntity(Minecraft.getMinecraft().world, 0) : null;
-
-			//draw page numbers
-			if(subpages.size() > 1)
-				fontRenderer.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
-
-			String pageNumberText = (currentPage + 2) + "/" + (ItemSCManual.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
 			fontRenderer.drawString(pageNumberText, startX + 240 - fontRenderer.getStringWidth(pageNumberText), 182, 0x8E8270);
-
-			GuiUtils.drawItemStackToGui(stack, startX + 19, 22, !(ItemSCManual.PAGES.get(currentPage).getItem() instanceof ItemBlock));
+			GuiUtils.drawItemStackToGui(new ItemStack(item), startX + 19, 22, !isItemBlock);
+			fontRenderer.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			mc.getTextureManager().bindTexture(infoBookIcons);
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-			if(itemBlock != null){
-				if(itemBlock instanceof IExplosive)
+			if(isItemBlock){
+				Block block = ((ItemBlock)item).getBlock();
+
+				if(block instanceof IExplosive)
 					drawTexturedModalRect(startX + 107, 117, 54, 1, 18, 18);
 
-				if(te != null){
+				if(block.hasTileEntity(block.getDefaultState()))
+				{
+					TileEntity te = block.createTileEntity(Minecraft.getMinecraft().world, block.getDefaultState());
+
 					if(te instanceof IOwnable)
 						drawTexturedModalRect(startX + 29, 118, 1, 1, 16, 16);
 
@@ -211,6 +181,7 @@ public class GuiSCManual extends GuiScreen {
 			if(recipe != null)
 			{
 				for(int i = 0; i < 3; i++)
+				{
 					for(int j = 0; j < 3; j++)
 					{
 						if(((i * 3) + j) >= recipe.size())
@@ -223,6 +194,7 @@ public class GuiSCManual extends GuiScreen {
 
 						GuiUtils.drawItemStackToGui(matchingStacks[0], (startX + 101) + (j * 19), 144 + (i * 19), !(matchingStacks[0].getItem() instanceof ItemBlock));
 					}
+				}
 			}
 
 			for(HoverChecker chc : hoverCheckers)
@@ -240,11 +212,28 @@ public class GuiSCManual extends GuiScreen {
 		{
 			String pageNumberText = "1/" + (ItemSCManual.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
+			fontRenderer.drawString(intro1, width / 2 - fontRenderer.getStringWidth(intro1) / 2, 22, 0, false);
+
+			for(int i = 0; i < intro2.size(); i++)
+			{
+				String text = intro2.get(i);
+
+				fontRenderer.drawString(text, width / 2 - fontRenderer.getStringWidth(text) / 2, 150 + 10 * i, 0);
+			}
+
+			for(int i = 0; i < author.size(); i++)
+			{
+				String text = author.get(i);
+
+				fontRenderer.drawString(text, width / 2 - fontRenderer.getStringWidth(text) / 2, 180 + 10 * i, 0);
+			}
+
 			//the patreon link button may overlap with a name tooltip from the list, so draw the list after the buttons
 			if(patronList != null)
 				patronList.drawScreen(mouseX, mouseY, partialTicks);
 
 			fontRenderer.drawString(pageNumberText, startX + 240 - fontRenderer.getStringWidth(pageNumberText), 182, 0x8E8270);
+			fontRenderer.drawString(ourPatrons, width / 2 - fontRenderer.getStringWidth(ourPatrons) / 2 + 30, 40, 0);
 		}
 	}
 
@@ -372,6 +361,9 @@ public class GuiSCManual extends GuiScreen {
 		if(page.hasCustomRecipe())
 			recipe = page.getRecipe();
 		else
+		{
+			recipe = null;
+
 			for(int o = 0; o < CraftingManager.REGISTRY.getKeys().size(); o++)
 			{
 				IRecipe object = CraftingManager.REGISTRY.getObjectById(o);
@@ -408,9 +400,8 @@ public class GuiSCManual extends GuiScreen {
 						break;
 					}
 				}
-
-				recipe = null;
 			}
+		}
 
 		String helpInfo = page.getHelpInfo();
 		boolean reinforcedPage = helpInfo.equals("help.securitycraft:reinforced.info") || helpInfo.contains("reinforced_hopper");
@@ -444,65 +435,70 @@ public class GuiSCManual extends GuiScreen {
 		}
 
 		Item item = page.getItem();
-		TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().world, 0) : null);
-		Block block = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
 
-		if(te != null){
-			if(te instanceof IOwnable)
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock").getFormattedText()));
-
-			if(te instanceof IPasswordProtected)
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passwordProtectedBlock").getFormattedText()));
-
-			if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView())
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock").getFormattedText()));
+		if(item instanceof ItemBlock){
+			Block block = ((ItemBlock) item).getBlock();
 
 			if(block instanceof IExplosive)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock").getFormattedText()));
 
-			if(te instanceof ICustomizable)
+			if(block.hasTileEntity(block.getDefaultState()))
 			{
-				ICustomizable scte = (ICustomizable)te;
+				TileEntity te = block.createTileEntity(Minecraft.getMinecraft().world, block.getDefaultState());
 
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock").getFormattedText()));
+				if(te instanceof IOwnable)
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock").getFormattedText()));
 
-				if(scte.customOptions() != null && scte.customOptions().length > 0)
+				if(te instanceof IPasswordProtected)
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passwordProtectedBlock").getFormattedText()));
+
+				if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView())
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock").getFormattedText()));
+
+				if(te instanceof ICustomizable)
 				{
-					List<String> display = new ArrayList<>();
+					ICustomizable scte = (ICustomizable)te;
 
-					display.add(Utils.localize("gui.securitycraft:scManual.options").getFormattedText());
-					display.add("---");
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock").getFormattedText()));
 
-					for(Option<?> option : scte.customOptions())
+					if(scte.customOptions() != null && scte.customOptions().length > 0)
 					{
-						display.add("- " + Utils.localize("option." + block.getTranslationKey().substring(5) + "." + option.getName() + ".description").getFormattedText());
-						display.add("");
-					}
+						List<String> display = new ArrayList<>();
 
-					display.remove(display.size() - 1);
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, display));
+						display.add(Utils.localize("gui.securitycraft:scManual.options").getFormattedText());
+						display.add("---");
+
+						for(Option<?> option : scte.customOptions())
+						{
+							display.add("- " + Utils.localize("option." + block.getTranslationKey().substring(5) + "." + option.getName() + ".description").getFormattedText());
+							display.add("");
+						}
+
+						display.remove(display.size() - 1);
+						hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, display));
+					}
 				}
-			}
 
-			if(te instanceof IModuleInventory)
-			{
-				IModuleInventory moduleInv = (IModuleInventory)te;
-
-				if(moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0)
+				if(te instanceof IModuleInventory)
 				{
-					List<String> display = new ArrayList<>();
+					IModuleInventory moduleInv = (IModuleInventory)te;
 
-					display.add(Utils.localize("gui.securitycraft:scManual.modules").getFormattedText());
-					display.add("---");
-
-					for(EnumModuleType module : moduleInv.acceptedModules())
+					if(moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0)
 					{
-						display.add("- " + Utils.localize("module." + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft:", "") + ".description").getFormattedText());
-						display.add("");
-					}
+						List<String> display = new ArrayList<>();
 
-					display.remove(display.size() - 1);
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, display));
+						display.add(Utils.localize("gui.securitycraft:scManual.modules").getFormattedText());
+						display.add("---");
+
+						for(EnumModuleType module : moduleInv.acceptedModules())
+						{
+							display.add("- " + Utils.localize("module." + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft:", "") + ".description").getFormattedText());
+							display.add("");
+						}
+
+						display.remove(display.size() - 1);
+						hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, display));
+					}
 				}
 			}
 		}
