@@ -21,6 +21,7 @@
 - Fix: Sentry animation does not work properly when changing modes
 - Fix: Lasers cannot be toggled properly
 - Fix: Trophy System GUI is too dark in certain cases
+- Fix: SecurityCraft's key binding names don't get translated
 - Misc.: The block "securitycraft:alarm_lit" is no longer in use. It is kept for backwards compatibility, and any existing blocks will automatically be converted to "securitycraft:alarm". The latter now has a "lit" block property.
 - Misc.: The SecurityCraft Manual's textures have been modified, and buttons as well as items were moved around. Not bringing resourcepacks up to date with these changes may lead to buttons and items not fitting the textures properly
 
