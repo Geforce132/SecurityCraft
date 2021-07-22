@@ -166,7 +166,7 @@ public class KeypadChestBlock extends ChestBlock {
 		TileEntity te = world.getTileEntity(pos);
 
 		if (te instanceof KeypadChestTileEntity) {
-			return ((KeypadChestTileEntity)te).hasModule(ModuleType.REDSTONE) ? MathHelper.clamp(ChestTileEntity.getPlayersUsing(world, pos), 0, 15) : 0;
+			return ((KeypadChestTileEntity)te).hasModule(ModuleType.REDSTONE) ? MathHelper.clamp(((KeypadChestTileEntity)te).getNumPlayersUsing(), 0, 15) : 0;
 		}
 
 		return 0;
