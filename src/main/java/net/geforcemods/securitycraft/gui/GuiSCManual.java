@@ -536,6 +536,7 @@ public class GuiSCManual extends GuiScreen {
 		private boolean patronsRequested;
 		private final int barWidth = 6;
 		private final List<String> fetchErrorLines;
+		private final List<String> noPatronsLines;
 		private final String loadingText = Utils.localize("gui.securitycraft:scManual.patreon.loading").getFormattedText();
 		private final int border = 4;
 
@@ -544,6 +545,7 @@ public class GuiSCManual extends GuiScreen {
 			super(client, width, height, top, top + height, left, 12, screenWidth, screenHeight);
 
 			fetchErrorLines = fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:scManual.patreon.error").getFormattedText(), listWidth);
+			noPatronsLines = fontRenderer.listFormattedStringToWidth(Utils.localize("advancements.empty").getFormattedText(), listWidth - 10);
 		}
 
 		@Override
@@ -584,6 +586,14 @@ public class GuiSCManual extends GuiScreen {
 					{
 						drawHoveringText(patron, left - 10, baseY + (slotHeight * slotIndex + slotHeight));
 						GlStateManager.disableLighting();
+					}
+				}
+
+				if (patrons.isEmpty()) {
+					for(int i = 0; i < noPatronsLines.size(); i++) {
+						String line = noPatronsLines.get(i);
+
+						fontRenderer.drawString(line, left + listWidth / 2 - fontRenderer.getStringWidth(line) / 2, top + 30 + i * 10, 0xFF333333);
 					}
 				}
 			}
