@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.ObjectHolder;
 

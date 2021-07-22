@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
-import net.minecraft.world.item.Item;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.Item;
 
 public class SCManualPage {
 

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.screen.components;
 
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraftforge.fml.client.gui.widget.Slider;
+import net.minecraftforge.fmlclient.gui.widget.Slider;
 
 public class HoverChecker
 {

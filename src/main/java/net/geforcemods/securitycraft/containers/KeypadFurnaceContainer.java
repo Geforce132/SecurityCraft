@@ -3,15 +3,15 @@ package net.geforcemods.securitycraft.containers;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.inventory.RecipeBookType;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 public class KeypadFurnaceContainer extends AbstractFurnaceMenu{

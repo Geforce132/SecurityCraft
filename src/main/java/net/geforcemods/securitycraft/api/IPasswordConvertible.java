@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 
 /**
  * Defines a block that can be converted to a password-protected variant by rightclicking it with a Key Panel.

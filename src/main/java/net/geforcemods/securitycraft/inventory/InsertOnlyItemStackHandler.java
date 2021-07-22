@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.inventory;
 
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class InsertOnlyItemStackHandler extends ItemStackHandler

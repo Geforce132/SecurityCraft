@@ -5,10 +5,10 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
 import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockPocketBlock extends BaseReinforcedBlock implements IBlockPocket
 {

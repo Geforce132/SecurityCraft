@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.misc;
 
+import javax.swing.text.JTextComponent.KeyBinding;
+
 import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fmlclient.registry.ClientRegistry;
 
 /**
  * Custom {@link KeyBinding}s that SecurityCraft uses.

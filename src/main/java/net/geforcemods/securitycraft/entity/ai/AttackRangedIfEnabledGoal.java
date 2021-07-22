@@ -5,12 +5,10 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
-import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.util.Mth;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 
 public class AttackRangedIfEnabledGoal extends Goal
 {

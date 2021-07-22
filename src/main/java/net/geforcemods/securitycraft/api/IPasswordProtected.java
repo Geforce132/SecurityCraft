@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Implementing this interface designates a TileEntity as being password-protected.

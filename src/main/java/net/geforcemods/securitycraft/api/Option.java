@@ -7,10 +7,10 @@ import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
-import net.minecraftforge.fml.client.gui.widget.Slider;
-import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraftforge.fmlclient.gui.widget.Slider;
+import net.minecraftforge.fmlclient.gui.widget.Slider.ISlider;
 
 /**
  * A class that allows blocks that have

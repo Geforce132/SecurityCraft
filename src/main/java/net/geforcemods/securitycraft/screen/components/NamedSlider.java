@@ -4,15 +4,14 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraftforge.fml.client.gui.widget.Slider;
-
-import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
+import net.minecraftforge.fmlclient.gui.widget.Slider;
+import net.minecraftforge.fmlclient.gui.widget.Slider.ISlider;
 
 public class NamedSlider extends Slider
 {

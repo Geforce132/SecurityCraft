@@ -5,11 +5,11 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.phys.AABB;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class InitSentryAnimation
 {
