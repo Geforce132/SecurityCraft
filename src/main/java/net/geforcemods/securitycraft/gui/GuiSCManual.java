@@ -283,7 +283,7 @@ public class GuiSCManual extends GuiScreen {
 		int mouseX = Mouse.getEventX() * width / mc.displayWidth;
 		int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
 
-		if(currentPage == -1 && patronList != null && patronList.isHovering)
+		if(currentPage == -1 && patronList != null && patronList.isHovering && !patronList.patrons.isEmpty())
 		{
 			patronList.handleMouseInput(mouseX, mouseY);
 			return;
