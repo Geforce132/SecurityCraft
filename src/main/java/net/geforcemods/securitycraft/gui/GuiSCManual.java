@@ -10,7 +10,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.lwjgl.input.Keyboard;
@@ -23,7 +22,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
-import net.geforcemods.securitycraft.gui.components.ClickButton;
 import net.geforcemods.securitycraft.gui.components.HoverChecker;
 import net.geforcemods.securitycraft.gui.components.PatronScrollList;
 import net.geforcemods.securitycraft.gui.components.StackHoverChecker;
@@ -56,6 +54,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.ClickEvent.Action;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class GuiSCManual extends GuiScreen {
 
@@ -93,7 +92,7 @@ public class GuiSCManual extends GuiScreen {
 		buttonList.add(new GuiSCManual.ChangePageButton(2, startX + 16, startY + 188, false)); //previous page
 		buttonList.add(new GuiSCManual.ChangePageButton(3, startX + 180, startY + 97, true)); //next subpage
 		buttonList.add(new GuiSCManual.ChangePageButton(4, startX + 155, startY + 97, false)); //previous subpage
-		buttonList.add(patreonLinkButton = new HyperlinkButton(5, startX + 225, 143, 16, 16, "", b -> handleComponentClick(new TextComponentString("").setStyle(new Style().setClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce"))))));
+		buttonList.add(patreonLinkButton = new HyperlinkButton(5, startX + 225, 143, 16, 16, ""));
 		patronList = new PatronList(mc, 115, 90, 50, startX + 125, width, height);
 		updateRecipeAndIcons();
 		ItemSCManual.PAGES.sort((page1, page2) -> {
@@ -276,6 +275,11 @@ public class GuiSCManual extends GuiScreen {
 			nextSubpage();
 		else if(button.id == 4)
 			previousSubpage();
+		else if(button.id == patreonLinkButton.id)
+		{
+			handleComponentClick(new TextComponentString("").setStyle(new Style().setClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce"))));
+			return;
+		}
 
 		//hide subpage buttons on main page
 		buttonList.get(2).visible = currentPage != -1 && subpages.size() > 1;
@@ -663,11 +667,11 @@ public class GuiSCManual extends GuiScreen {
 		}
 	}
 
-	class HyperlinkButton extends ClickButton
+	class HyperlinkButton extends GuiButtonExt
 	{
-		public HyperlinkButton(int id, int xPos, int yPos, int width, int height, String displayString, Consumer<ClickButton> handler)
+		public HyperlinkButton(int id, int xPos, int yPos, int width, int height, String displayString)
 		{
-			super(id, xPos, yPos, width, height, displayString, handler);
+			super(id, xPos, yPos, width, height, displayString);
 		}
 
 		@Override
