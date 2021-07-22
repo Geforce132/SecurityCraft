@@ -576,6 +576,7 @@ public class SCManualScreen extends Screen {
 		private final int barWidth = 6;
 		private final int barLeft;
 		private final List<IReorderingProcessor> fetchErrorLines;
+		private final List<IReorderingProcessor> noPatronsLines;
 		private final ITextComponent loadingText = Utils.localize("gui.securitycraft:scManual.patreon.loading");
 
 		public PatronList(Minecraft client, int width, int height, int top, int left)
@@ -584,6 +585,7 @@ public class SCManualScreen extends Screen {
 
 			barLeft = left + width - barWidth;
 			fetchErrorLines = font.trimStringToWidth(Utils.localize("gui.securitycraft:scManual.patreon.error"), width);
+			noPatronsLines = font.trimStringToWidth(Utils.localize("advancements.empty"), width - 10);
 		}
 
 		@Override
@@ -664,6 +666,14 @@ public class SCManualScreen extends Screen {
 
 					if(length >= width - barWidth)
 						renderTooltip(matrix, new StringTextComponent(patron), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
+				}
+
+				if (patrons.isEmpty()) {
+					for(int i = 0; i < noPatronsLines.size(); i++) {
+						IReorderingProcessor line = noPatronsLines.get(i);
+
+						font.func_238422_b_(matrix, line, left + width / 2 - font.func_243245_a(line) / 2, top + 30 + i * 10, 0xFF333333);
+					}
 				}
 			}
 			else if(error)
