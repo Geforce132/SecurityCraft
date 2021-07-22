@@ -673,13 +673,16 @@ public class GuiSCManual extends GuiScreen {
 		@Override
 		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
 		{
-			mc.getTextureManager().bindTexture(infoBookIcons);
-			hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+			if(visible)
+			{
+				mc.getTextureManager().bindTexture(infoBookIcons);
+				hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
-			if(hovered)
-				drawTexturedModalRect(x, y, 138, 1, 16, 16);
-			else
-				drawTexturedModalRect(x, y, 122, 1, 16, 16);
+				if(hovered)
+					drawTexturedModalRect(x, y, 138, 1, 16, 16);
+				else
+					drawTexturedModalRect(x, y, 122, 1, 16, 16);
+			}
 		}
 	}
 
