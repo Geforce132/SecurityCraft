@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
 import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
@@ -14,7 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -130,16 +127,13 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 		if(world instanceof ServerLevel serverWorld)
 		{
-			List<Entity> loadedEntityList = serverWorld.getEntities().collect(Collectors.toList());
-
-			for(Entity e : loadedEntityList)
-			{
-				if(e instanceof Mob)
+			serverWorld.getEntities().getAll().forEach(e -> {
+				if(e instanceof Mob mob)
 				{
-					if(((Mob)e).getTarget() == player)
-						((Mob)e).setTarget(null);
+					if(mob.getTarget() == player)
+						mob.setTarget(null);
 				}
-			}
+			});
 		}
 	}
 
