@@ -35,14 +35,10 @@ public class BouncingBettyEntity extends Entity {
 	@Override
 	protected void defineSynchedData() {}
 
-	/**
-	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-	 * prevent them from trampling crops
-	 */
 	@Override
-	protected boolean isMovementNoisy()
+	protected MovementEmission getMovementEmission()
 	{
-		return false;
+		return MovementEmission.NONE;
 	}
 
 	/**

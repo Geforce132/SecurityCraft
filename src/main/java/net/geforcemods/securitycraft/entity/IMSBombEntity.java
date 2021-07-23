@@ -116,8 +116,8 @@ public class IMSBombEntity extends Fireball {
 	}
 
 	@Override
-	protected boolean isMovementNoisy(){
-		return false;
+	protected MovementEmission getMovementEmission(){
+		return MovementEmission.NONE;
 	}
 
 	@Override
