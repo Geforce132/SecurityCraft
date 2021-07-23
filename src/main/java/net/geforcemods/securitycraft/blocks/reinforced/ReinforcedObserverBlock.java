@@ -13,12 +13,13 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.ObserverBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock
+public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock, EntityBlock
 {
 	public ReinforcedObserverBlock(Block.Properties properties)
 	{
@@ -51,13 +52,7 @@ public class ReinforcedObserverBlock extends ObserverBlock implements IReinforce
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
-		return true;
-	}
-
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new OwnableTileEntity();
 	}

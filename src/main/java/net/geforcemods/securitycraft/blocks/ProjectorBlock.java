@@ -118,10 +118,8 @@ public class ProjectorBlock extends DisguisableBlock {
 		{
 			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tile instanceof ProjectorTileEntity)
+			if(tile instanceof ProjectorTileEntity te)
 			{
-				ProjectorTileEntity te =  (ProjectorTileEntity)tile;
-
 				if(te.isActivatedByRedstone())
 				{
 					te.setActive(world.hasNeighborSignal(pos));
@@ -138,10 +136,8 @@ public class ProjectorBlock extends DisguisableBlock {
 		{
 			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tile instanceof ProjectorTileEntity)
+			if(tile instanceof ProjectorTileEntity te)
 			{
-				ProjectorTileEntity te =  (ProjectorTileEntity)tile;
-
 				if(te.isActivatedByRedstone())
 					te.setActive(false);
 			}
@@ -166,7 +162,7 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ProjectorTileEntity();
 	}
 

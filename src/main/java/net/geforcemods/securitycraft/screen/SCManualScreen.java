@@ -43,6 +43,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.ClickEvent.Action;
@@ -62,12 +63,12 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
-
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {
 
@@ -173,9 +174,9 @@ public class SCManualScreen extends Screen {
 				if(block instanceof IExplosive)
 					blit(matrix, startX + 107, 117, 54, 1, 18, 18);
 
-				if(block.hasTileEntity(block.defaultBlockState()))
+				if(block.defaultBlockState().hasBlockEntity())
 				{
-					BlockEntity te = block.createTileEntity(block.defaultBlockState(), Minecraft.getInstance().level);
+					BlockEntity te = ((EntityBlock)block).newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
 
 					if(te instanceof IOwnable)
 						blit(matrix, startX + 29, 118, 1, 1, 16, 16);
@@ -432,9 +433,9 @@ public class SCManualScreen extends Screen {
 			if(block instanceof IExplosive)
 				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
-			if(block.hasTileEntity(block.defaultBlockState()))
+			if(block.defaultBlockState().hasBlockEntity())
 			{
-				BlockEntity te = block.createTileEntity(block.defaultBlockState(), Minecraft.getInstance().level);
+				BlockEntity te = ((EntityBlock)block).newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
 
 				if(te instanceof IOwnable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock")));

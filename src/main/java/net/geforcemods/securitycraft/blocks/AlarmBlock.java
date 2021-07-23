@@ -99,10 +99,8 @@ public class AlarmBlock extends OwnableBlock {
 
 	@Override
 	public void onNeighborChange(BlockState state, LevelReader w, BlockPos pos, BlockPos neighbor){
-		if(w.isClientSide() || !(w instanceof Level))
+		if(w.isClientSide() || !(w instanceof Level world))
 			return;
-
-		Level world = (Level)w;
 
 		playSoundAndUpdate((world), pos);
 
@@ -143,10 +141,8 @@ public class AlarmBlock extends OwnableBlock {
 
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof AlarmTileEntity)
+		if(tile instanceof AlarmTileEntity te)
 		{
-			AlarmTileEntity te = (AlarmTileEntity)tile;
-
 			if(world.getBestNeighborSignal(pos) > 0){
 				boolean isPowered = te.isPowered();
 
@@ -179,7 +175,7 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter reader){
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new AlarmTileEntity();
 	}
 

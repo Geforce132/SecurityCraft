@@ -145,11 +145,8 @@ public class KeypadBlock extends DisguisableBlock {
 		builder.add(POWERED);
 	}
 
-	/**
-	 * Returns a new instance of a block's tile entity class. Called on placing the block.
-	 */
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new KeypadTileEntity();
 	}
 

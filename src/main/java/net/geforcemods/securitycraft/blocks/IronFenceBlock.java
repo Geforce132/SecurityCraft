@@ -215,9 +215,8 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 			if(((OwnableTileEntity) world.getBlockEntity(pos)).getOwner().isOwner((Player)entity))
 				return;
 		}
-		else if(!world.isClientSide && entity instanceof Creeper)
+		else if(!world.isClientSide && entity instanceof Creeper creeper)
 		{
-			Creeper creeper = (Creeper)entity;
 			LightningBolt lightning = WorldUtils.createLightning(world, Vec3.atBottomCenterOf(pos), true);
 
 			creeper.thunderHit((ServerLevel)world, lightning);
@@ -237,7 +236,7 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new SecurityCraftTileEntity().intersectsEntities();
 	}

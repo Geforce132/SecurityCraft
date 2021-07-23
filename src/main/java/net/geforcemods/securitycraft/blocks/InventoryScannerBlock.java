@@ -176,10 +176,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof InventoryScannerTileEntity)
+		if(tile instanceof InventoryScannerTileEntity te)
 		{
-			InventoryScannerTileEntity te = (InventoryScannerTileEntity)tile;
-
 			for(int i = 10; i < te.getContainerSize(); i++) //first 10 slots (0-9) are the prohibited slots
 			{
 				Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), te.getContents().get(i));
@@ -285,7 +283,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new InventoryScannerTileEntity();
 	}
 

@@ -324,9 +324,8 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 
 	public static ItemStack putStackInInventoryAllSlots(Container source, Container destination, ItemStack stack, Direction direction)
 	{
-		if(destination instanceof WorldlyContainer && direction != null)
+		if(destination instanceof WorldlyContainer inv && direction != null)
 		{
-			WorldlyContainer inv = (WorldlyContainer)destination;
 			int[] slots = inv.getSlotsForFace(direction);
 
 			for(int k = 0; k < slots.length && !stack.isEmpty(); ++k)
@@ -385,17 +384,13 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 
 			if(hasChanged)
 			{
-				if (isDestEmpty && destination instanceof ReinforcedHopperTileEntity)
+				if (isDestEmpty && destination instanceof ReinforcedHopperTileEntity te)
 				{
-					ReinforcedHopperTileEntity te = (ReinforcedHopperTileEntity)destination;
-
 					if(!te.mayTransfer())
 					{
 						int k = 0;
 
-						if(source instanceof ReinforcedHopperTileEntity) {
-							ReinforcedHopperTileEntity te2 = (ReinforcedHopperTileEntity)source;
-
+						if(source instanceof ReinforcedHopperTileEntity te2) {
 							if (te.tickedGameTime >= te2.tickedGameTime)
 								k = 1;
 						}
@@ -447,7 +442,7 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 
 		if(block instanceof WorldlyContainerHolder)
 			inv = ((WorldlyContainerHolder)block).getContainer(state, world, pos);
-		else if(state.hasTileEntity())
+		else if(state.hasBlockEntity())
 		{
 			BlockEntity te = world.getBlockEntity(pos);
 
@@ -694,10 +689,8 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 
 			if (insertedItem)
 			{
-				if (inventoryWasEmpty && destination instanceof HopperBlockEntity)
+				if (inventoryWasEmpty && destination instanceof HopperBlockEntity destinationHopper)
 				{
-					HopperBlockEntity destinationHopper = (HopperBlockEntity)destination;
-
 					if (!destinationHopper.isOnCustomCooldown())
 					{
 						destinationHopper.setCooldown(8);

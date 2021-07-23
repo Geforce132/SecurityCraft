@@ -21,6 +21,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,7 +32,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.PlantType;
 
-public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, BonemealableBlock
+public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, BonemealableBlock, EntityBlock
 {
 	private Block vanillaBlock;
 
@@ -181,13 +182,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
-		return true;
-	}
-
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new OwnableTileEntity();
 	}

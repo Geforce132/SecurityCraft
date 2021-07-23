@@ -18,9 +18,9 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,7 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedFenceGateBlock extends FenceGateBlock implements IIntersectable {
+public class ReinforcedFenceGateBlock extends FenceGateBlock implements IIntersectable, EntityBlock {
 
 	public ReinforcedFenceGateBlock(Block.Properties properties){
 		super(properties);
@@ -57,16 +57,13 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 
 		if(entity instanceof ItemEntity)
 			return;
-		else if(entity instanceof Player)
+		else if(entity instanceof Player player)
 		{
-			Player player = (Player)entity;
-
 			if(((OwnableTileEntity)world.getBlockEntity(pos)).getOwner().isOwner(player))
 				return;
 		}
-		else if(!world.isClientSide && entity instanceof Creeper)
+		else if(!world.isClientSide && entity instanceof Creeper creeper)
 		{
-			Creeper creeper = (Creeper)entity;
 			LightningBolt lightning = WorldUtils.createLightning(world, Vec3.atBottomCenterOf(pos), true);
 
 			creeper.thunderHit((ServerLevel)world, lightning);
@@ -103,13 +100,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
-		return true;
-	}
-
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new SecurityCraftTileEntity().intersectsEntities();
 	}
 

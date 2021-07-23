@@ -216,7 +216,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new KeycardReaderTileEntity();
 	}
 

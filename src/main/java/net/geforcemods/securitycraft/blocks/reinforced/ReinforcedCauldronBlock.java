@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CauldronBlock;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -22,7 +23,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforcedBlock {
+public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforcedBlock, EntityBlock {
 
 	public ReinforcedCauldronBlock(Properties properties) {
 		super(properties);
@@ -32,8 +33,7 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx) {
 		Entity entity = ctx.getEntity();
 
-		if (entity instanceof Player) {
-			Player player = ((Player)entity);
+		if (entity instanceof Player player) {
 			BlockEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof ReinforcedCauldronTileEntity && ((ReinforcedCauldronTileEntity)te).isAllowedToInteract(player))
@@ -73,12 +73,7 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
-
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ReinforcedCauldronTileEntity();
 	}
 }

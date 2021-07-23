@@ -55,10 +55,8 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 			{
 				BlockEntity te1 = world.getBlockEntity(pos);
 
-				if(te1 instanceof BlockPocketTileEntity)
+				if(te1 instanceof BlockPocketTileEntity te)
 				{
-					BlockPocketTileEntity te = (BlockPocketTileEntity)te1;
-
 					if(te.getManager() == null)
 						return Shapes.empty();
 
@@ -101,7 +99,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new BlockPocketTileEntity();
 	}

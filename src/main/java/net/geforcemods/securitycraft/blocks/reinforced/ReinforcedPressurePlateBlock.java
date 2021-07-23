@@ -10,16 +10,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements IReinforcedBlock
+public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements IReinforcedBlock, EntityBlock
 {
 	private final Block vanillaBlock;
 
@@ -97,13 +97,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
-		return true;
-	}
-
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new AllowlistOnlyTileEntity();
 	}

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.tileentity.ReinforcedIronBarsTileEntity;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,7 +14,7 @@ public class ReinforcedIronBarsBlock extends ReinforcedPaneBlock
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new ReinforcedIronBarsTileEntity();
 	}

@@ -11,6 +11,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,7 +19,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedPaneBlock extends IronBarsBlock implements IReinforcedBlock
+public class ReinforcedPaneBlock extends IronBarsBlock implements IReinforcedBlock, EntityBlock
 {
 	private final Block vanillaBlock;
 
@@ -68,13 +69,7 @@ public class ReinforcedPaneBlock extends IronBarsBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
-		return true;
-	}
-
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new OwnableTileEntity();
 	}

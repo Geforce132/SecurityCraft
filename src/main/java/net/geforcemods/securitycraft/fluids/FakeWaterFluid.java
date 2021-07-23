@@ -91,7 +91,7 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	@Override
 	protected void beforeDestroyingBlock(LevelAccessor world, BlockPos pos, BlockState state)
 	{
-		BlockEntity te = state.hasTileEntity() ? world.getBlockEntity(pos) : null;
+		BlockEntity te = state.hasBlockEntity() ? world.getBlockEntity(pos) : null;
 
 		Block.dropResources(state, world, pos, te);
 	}

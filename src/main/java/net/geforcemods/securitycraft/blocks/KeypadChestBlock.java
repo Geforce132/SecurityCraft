@@ -47,7 +47,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class KeypadChestBlock extends ChestBlock {
 
-	private static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>> CONTAINER_MERGER = new DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>>() {
+	private static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>> CONTAINER_MERGER = new DoubleBlockCombiner.Combiner<>() {
 		@Override
 		public Optional<MenuProvider> acceptDouble(final ChestBlockEntity chest1, final ChestBlockEntity chest2) {
 			final Container chestInventory = new CompoundContainer(chest1, chest2);
@@ -192,11 +192,8 @@ public class KeypadChestBlock extends ChestBlock {
 		return this.combine(state, world, pos, false).apply(CONTAINER_MERGER).orElse(null);
 	}
 
-	/**
-	 * Returns a new instance of a block's tile entity class. Called on placing the block.
-	 */
 	@Override
-	public BlockEntity newBlockEntity(BlockGetter reader)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new KeypadChestTileEntity();
 	}

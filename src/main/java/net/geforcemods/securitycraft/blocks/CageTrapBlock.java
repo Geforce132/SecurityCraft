@@ -55,13 +55,10 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx){
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof CageTrapTileEntity)
+		if(tile instanceof CageTrapTileEntity te)
 		{
-			CageTrapTileEntity te = (CageTrapTileEntity)tile;
-
-			if(ctx instanceof EntityCollisionContext)
+			if(ctx instanceof EntityCollisionContext esc)
 			{
-				EntityCollisionContext esc = (EntityCollisionContext)ctx;
 				Entity entity = esc.getEntity();
 
 				if(entity instanceof Player && (te.getOwner().isOwner((Player)entity) || ModuleUtils.isAllowed(te, entity)))
@@ -186,7 +183,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new CageTrapTileEntity().intersectsEntities();
 	}
 

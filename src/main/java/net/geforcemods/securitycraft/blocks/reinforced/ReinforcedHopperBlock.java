@@ -15,7 +15,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -54,10 +53,8 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		{
 			BlockEntity tileEntity = world.getBlockEntity(pos);
 
-			if(tileEntity instanceof ReinforcedHopperTileEntity)
+			if(tileEntity instanceof ReinforcedHopperTileEntity te)
 			{
-				ReinforcedHopperTileEntity te = (ReinforcedHopperTileEntity)tileEntity;
-
 				//only allow the owner or players on the allowlist to access a reinforced hopper
 				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
 					player.openMenu(te);
@@ -94,7 +91,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockGetter world)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new ReinforcedHopperTileEntity();
 	}
@@ -126,10 +123,8 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 
 			if(!te.getOwner().owns(hopperTe))
 			{
-				if(te instanceof IModuleInventory)
+				if(te instanceof IModuleInventory inv)
 				{
-					IModuleInventory inv = (IModuleInventory)te;
-
 					//hoppers can extract out of e.g. chests if the hopper's owner is on the chest's allowlist module
 					if(ModuleUtils.isAllowed(inv, hopperTe.getOwner().getName()))
 						return true;

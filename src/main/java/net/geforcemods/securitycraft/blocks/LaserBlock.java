@@ -210,7 +210,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new LaserBlockTileEntity().linkable();
 	}
 }

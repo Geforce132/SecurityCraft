@@ -7,14 +7,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 
-public class OwnableBlock extends Block {
+public class OwnableBlock extends Block implements EntityBlock {
 
 	public OwnableBlock(Block.Properties properties) {
 		super(properties);
@@ -36,13 +36,8 @@ public class OwnableBlock extends Block {
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return true;
-	}
-
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
 		return new OwnableTileEntity();
 	}
 }

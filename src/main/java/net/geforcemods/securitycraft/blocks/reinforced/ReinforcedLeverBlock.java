@@ -9,17 +9,17 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock {
+public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock, EntityBlock {
 
 	public ReinforcedLeverBlock(Properties properties)
 	{
@@ -58,13 +58,7 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
-		return true;
-	}
-
-	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new AllowlistOnlyTileEntity();
 	}

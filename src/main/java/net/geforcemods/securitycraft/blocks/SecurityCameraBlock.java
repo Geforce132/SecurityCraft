@@ -128,9 +128,8 @@ public class SecurityCameraBlock extends OwnableBlock{
 		WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(dummyEntity));
 		player.startRiding(dummyEntity);
 
-		if(world instanceof ServerLevel)
+		if(world instanceof ServerLevel serverWorld)
 		{
-			ServerLevel serverWorld = (ServerLevel)world;
 			List<Entity> loadedEntityList = serverWorld.getEntities().collect(Collectors.toList());
 
 			for(Entity e : loadedEntityList)
@@ -186,7 +185,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new SecurityCameraTileEntity().nameable();
 	}
 

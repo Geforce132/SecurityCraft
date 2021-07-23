@@ -110,7 +110,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new RetinalScannerTileEntity().activatedByView();
 	}
 

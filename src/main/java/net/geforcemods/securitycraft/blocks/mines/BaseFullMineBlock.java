@@ -49,10 +49,8 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 			{
 				BlockEntity te = world.getBlockEntity(pos);
 
-				if(te instanceof OwnableTileEntity)
+				if(te instanceof OwnableTileEntity ownableTe)
 				{
-					OwnableTileEntity ownableTe = (OwnableTileEntity) te;
-
 					if(ownableTe.getOwner().isOwner((Player)entity))
 						return Shapes.block();
 				}
@@ -139,7 +137,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new SecurityCraftTileEntity().intersectsEntities();
 	}
 

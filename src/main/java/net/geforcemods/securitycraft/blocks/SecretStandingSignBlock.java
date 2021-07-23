@@ -58,7 +58,7 @@ public class SecretStandingSignBlock extends StandingSignBlock
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockGetter world)
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new SecretSignTileEntity();
 	}

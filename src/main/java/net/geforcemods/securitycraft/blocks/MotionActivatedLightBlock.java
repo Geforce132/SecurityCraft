@@ -100,7 +100,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 	}
 
 	@Override
-	public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new MotionActivatedLightTileEntity().attacks(LivingEntity.class, 5, 1);
 	}
 

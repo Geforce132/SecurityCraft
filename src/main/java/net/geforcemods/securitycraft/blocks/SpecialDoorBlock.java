@@ -14,6 +14,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.MinecraftForge;
 
-public abstract class SpecialDoorBlock extends DoorBlock
+public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock
 {
 	public SpecialDoorBlock(Block.Properties properties)
 	{
@@ -146,15 +147,6 @@ public abstract class SpecialDoorBlock extends DoorBlock
 	{
 		return PushReaction.BLOCK;
 	}
-
-	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
-		return true;
-	}
-
-	@Override
-	public abstract BlockEntity createTileEntity(BlockState state, BlockGetter world);
 
 	public abstract Item getDoorItem();
 }
