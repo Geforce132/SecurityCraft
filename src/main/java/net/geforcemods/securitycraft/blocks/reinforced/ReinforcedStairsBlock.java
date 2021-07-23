@@ -108,7 +108,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context)
 	{
 		return (state.getValue(HALF) == Half.TOP ? SLAB_TOP_SHAPES : SLAB_BOTTOM_SHAPES)[SHAPE_BY_STATE[getShapeIndex(state)]];
 	}
@@ -120,21 +120,21 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand)
+	public void animateTick(BlockState stateIn, Level world, BlockPos pos, Random rand)
 	{
-		modelBlock.animateTick(stateIn, worldIn, pos, rand);
+		modelBlock.animateTick(stateIn, world, pos, rand);
 	}
 
 	@Override
-	public void attack(BlockState state, Level worldIn, BlockPos pos, Player player)
+	public void attack(BlockState state, Level world, BlockPos pos, Player player)
 	{
-		modelState.attack(worldIn, pos, player);
+		modelState.attack(world, pos, player);
 	}
 
 	@Override
-	public void destroy(LevelAccessor worldIn, BlockPos pos, BlockState state)
+	public void destroy(LevelAccessor world, BlockPos pos, BlockState state)
 	{
-		modelBlock.destroy(worldIn, pos, state);
+		modelBlock.destroy(world, pos, state);
 	}
 
 	@Override
@@ -155,9 +155,9 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	}
 
 	@Override
-	public void stepOn(Level worldIn, BlockPos pos, BlockState state, Entity entity)
+	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity)
 	{
-		modelBlock.stepOn(worldIn, pos, state, entity);
+		modelBlock.stepOn(world, pos, state, entity);
 	}
 
 	@Override

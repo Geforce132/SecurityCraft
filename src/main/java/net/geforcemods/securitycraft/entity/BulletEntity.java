@@ -108,14 +108,14 @@ public class BulletEntity extends AbstractArrow
 				}
 			}
 
-			remove(RemovalReason.DISCARDED);
+			discard();
 		}
 	}
 
 	@Override
 	protected void onHitBlock(BlockHitResult raytraceResult) //onBlockHit
 	{
-		remove(RemovalReason.DISCARDED);
+		discard();
 	}
 
 	@Override

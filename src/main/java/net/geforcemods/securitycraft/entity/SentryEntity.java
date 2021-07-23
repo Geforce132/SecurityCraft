@@ -127,7 +127,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 			BlockPos downPos = getBlockPosBelowThatAffectsMyMovement();
 
 			if(level.getBlockState(downPos).isAir() || level.noCollision(new AABB(downPos)))
-				remove(RemovalReason.DISCARDED);
+				discard();
 		}
 		else
 		{
@@ -181,10 +181,10 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 			player.closeContainer();
 
 			if(player.isCrouching())
-				remove(RemovalReason.DISCARDED);
+				discard();
 			else if(item == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
 			{
-				remove(RemovalReason.KILLED);
+				kill();
 
 				if(!player.isCreative())
 					player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
@@ -279,7 +279,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 		else if(!getOwner().isOwner(player) && hand == InteractionHand.MAIN_HAND && player.isCreative())
 		{
 			if(player.isCrouching() || player.getMainHandItem().getItem() == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
-				remove(RemovalReason.KILLED);
+				kill();
 		}
 
 		return super.mobInteract(player, hand);
@@ -316,7 +316,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 	@Override
 	public void kill()
 	{
-		remove(RemovalReason.KILLED);
+		kill();
 	}
 
 	/**

@@ -68,7 +68,7 @@ public class BouncingBettyEntity extends Entity {
 
 		if (!level.isClientSide && fuse-- <= 0)
 		{
-			remove(RemovalReason.DISCARDED);
+			discard();
 			explode();
 		}
 		else if(level.isClientSide)

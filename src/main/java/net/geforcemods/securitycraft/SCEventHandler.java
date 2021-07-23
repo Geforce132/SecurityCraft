@@ -32,7 +32,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -92,7 +91,7 @@ public class SCEventHandler {
 		{
 			BlockPos pos = new BlockPos(((SecurityCameraEntity)player.getVehicle()).getPreviousPlayerPos());
 
-			player.getVehicle().remove(RemovalReason.KILLED);
+			player.getVehicle().kill();
 			player.getPersistentData().putLong(PREVIOUS_PLAYER_POS_NBT, pos.asLong());
 		}
 	}
