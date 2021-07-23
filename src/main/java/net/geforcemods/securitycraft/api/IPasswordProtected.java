@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 

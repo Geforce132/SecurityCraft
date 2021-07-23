@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.fmlclient.gui.widget.Slider;
-import net.minecraftforge.fmlclient.gui.widget.Slider.ISlider;
 
 public class NamedSlider extends Slider
 {

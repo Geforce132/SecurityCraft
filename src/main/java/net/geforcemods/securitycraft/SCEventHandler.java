@@ -32,6 +32,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -91,7 +92,7 @@ public class SCEventHandler {
 		{
 			BlockPos pos = new BlockPos(((SecurityCameraEntity)player.getVehicle()).getPreviousPlayerPos());
 
-			player.getVehicle().remove();
+			player.getVehicle().remove(RemovalReason.KILLED);
 			player.getPersistentData().putLong(PREVIOUS_PLAYER_POS_NBT, pos.asLong());
 		}
 	}
@@ -212,10 +213,8 @@ public class SCEventHandler {
 						if(te instanceof CustomizableTileEntity)
 							((CustomizableTileEntity)te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModuleType() }, (CustomizableTileEntity)te);
 
-						if(te instanceof SecurityCameraTileEntity)
+						if(te instanceof SecurityCameraTileEntity cam)
 						{
-							SecurityCameraTileEntity cam = (SecurityCameraTileEntity)te;
-
 							cam.getLevel().updateNeighborsAt(cam.getBlockPos().relative(cam.getLevel().getBlockState(cam.getBlockPos()).getValue(SecurityCameraBlock.FACING), -1), cam.getLevel().getBlockState(cam.getBlockPos()).getBlock());
 						}
 					}
@@ -291,8 +290,8 @@ public class SCEventHandler {
 
 			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART))
 			{
-				((SecurityCameraTileEntity)te).lastPitch = player.xRot;
-				((SecurityCameraTileEntity)te).lastYaw = player.yRot;
+				((SecurityCameraTileEntity)te).lastPitch = player.getXRot();
+				((SecurityCameraTileEntity)te).lastYaw = player.getYRot();
 			}
 		}
 	}

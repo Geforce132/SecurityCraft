@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.api;
 
-import net.minecraft.tileentity.TileEntity;
-
 /**
  * This interface marks a {@link TileEntity} as "ownable". Any TileEntity
  * that implements this interface is able to be destroyed by the

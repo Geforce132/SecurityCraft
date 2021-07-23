@@ -62,7 +62,7 @@ public class SecurityCraft {
 	public static CreativeModeTab groupSCTechnical = new SCTechnicalGroup();
 	public static CreativeModeTab groupSCMine = new SCExplosivesGroup();
 	public static CreativeModeTab groupSCDecoration = new SCDecorationGroup();
-	public static final LootItemConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootItemConditions.register(SecurityCraft.MODID + ":tile_entity_nbt", new TileEntityNBTCondition.Serializer());
+	public static final LootItemConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootItemConditions.register(SecurityCraft.MODID + ":tile_entity_nbt", new TileEntityNBTCondition.ConditionSerializer()); //TODO: AT
 
 	public SecurityCraft()
 	{

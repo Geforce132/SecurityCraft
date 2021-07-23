@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.tileentity.TileEntity;
 
 /**
  * Implementing this interface in your {@link TileEntity} allows
