@@ -53,7 +53,7 @@ public class EditSecretSignScreen extends Screen
 	protected void init()
 	{
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		addButton(new Button(width / 2 - 100, height / 4 + 120, 200, 20, CommonComponents.GUI_DONE, button -> close()));
+		addRenderableWidget(new Button(width / 2 - 100, height / 4 + 120, 200, 20, CommonComponents.GUI_DONE, button -> close()));
 		te.setEditable(false);
 		textInputUtil = new TextFieldHelper(() -> signText[editLine], s -> {
 			signText[editLine] = s;

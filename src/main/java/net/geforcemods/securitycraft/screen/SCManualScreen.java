@@ -103,12 +103,12 @@ public class SCManualScreen extends Screen {
 
 		startX = (width - 256) / 2;
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		addButton(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 188, true, this::actionPerformed)); //next page
-		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 188, false, this::actionPerformed)); //previous page
-		addButton(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
-		addButton(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
-		addButton(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, TextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
-		children.add(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
+		addRenderableWidget(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 188, true, this::actionPerformed)); //next page
+		addRenderableWidget(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 188, false, this::actionPerformed)); //previous page
+		addRenderableWidget(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
+		addRenderableWidget(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
+		addRenderableWidget(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, TextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
+		addRenderableOnly(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
 
 		for(int i = 0; i < 3; i++)
 		{
@@ -241,6 +241,7 @@ public class SCManualScreen extends Screen {
 				font.draw(matrix, text, width / 2 - font.width(text) / 2, 180 + 10 * i, 0);
 			}
 
+			//TODO: still needed?
 			//the patreon link button may overlap with a name tooltip from the list, so draw the list after the buttons
 			if(patronList != null)
 				patronList.render(matrix, mouseX, mouseY, partialTicks);
@@ -519,6 +520,7 @@ public class SCManualScreen extends Screen {
 		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
 
+	//TODO: are these still needed?
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button)
 	{

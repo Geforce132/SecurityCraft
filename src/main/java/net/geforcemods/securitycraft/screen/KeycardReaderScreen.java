@@ -101,7 +101,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderCo
 		//keycard level buttons
 		for(int i = 0; i < 5; i++)
 		{
-			toggleButtons[i] = addButton(new TogglePictureButton(i, leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[]{110, 88}, new int[]{219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
+			toggleButtons[i] = addRenderableWidget(new TogglePictureButton(i, leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[]{110, 88}, new int[]{219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
 				if(!isSmart)
 				{
@@ -136,23 +136,23 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderCo
 			}
 		}
 
-		minusThree = addButton(new ExtendedButton(leftPos + 22, buttonY, 24, buttonHeight, new TextComponent("---"), b -> changeSignature(signature - 100)));
-		minusTwo = addButton(new ExtendedButton(leftPos + 48, buttonY, 18, buttonHeight, new TextComponent("--"), b -> changeSignature(signature - 10)));
-		minusOne = addButton(new ExtendedButton(leftPos + 68, buttonY, 12, buttonHeight, new TextComponent("-"), b -> changeSignature(signature - 1)));
-		reset = addButton(new PictureButton(-1, leftPos + 82, buttonY, 12, buttonHeight, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(previousSignature)) {
+		minusThree = addRenderableWidget(new ExtendedButton(leftPos + 22, buttonY, 24, buttonHeight, new TextComponent("---"), b -> changeSignature(signature - 100)));
+		minusTwo = addRenderableWidget(new ExtendedButton(leftPos + 48, buttonY, 18, buttonHeight, new TextComponent("--"), b -> changeSignature(signature - 10)));
+		minusOne = addRenderableWidget(new ExtendedButton(leftPos + 68, buttonY, 12, buttonHeight, new TextComponent("-"), b -> changeSignature(signature - 1)));
+		reset = addRenderableWidget(new PictureButton(-1, leftPos + 82, buttonY, 12, buttonHeight, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(previousSignature)) {
 			@Override
 			public ResourceLocation getTextureLocation()
 			{
 				return active ? RESET_TEXTURE : RESET_INACTIVE_TEXTURE;
 			}
 		});
-		plusOne = addButton(new ExtendedButton(leftPos + 96, buttonY, 12, buttonHeight, new TextComponent("+"), b -> changeSignature(signature + 1)));
-		plusTwo = addButton(new ExtendedButton(leftPos + 110, buttonY, 18, buttonHeight, new TextComponent("++"), b -> changeSignature(signature + 10)));
-		plusThree = addButton(new ExtendedButton(leftPos + 130, buttonY, 24, buttonHeight, new TextComponent("+++"), b -> changeSignature(signature + 100)));
+		plusOne = addRenderableWidget(new ExtendedButton(leftPos + 96, buttonY, 12, buttonHeight, new TextComponent("+"), b -> changeSignature(signature + 1)));
+		plusTwo = addRenderableWidget(new ExtendedButton(leftPos + 110, buttonY, 18, buttonHeight, new TextComponent("++"), b -> changeSignature(signature + 10)));
+		plusThree = addRenderableWidget(new ExtendedButton(leftPos + 130, buttonY, 24, buttonHeight, new TextComponent("+++"), b -> changeSignature(signature + 100)));
 		//set correct signature
 		changeSignature(signature);
 		//link button
-		linkButton = addButton(new ExtendedButton(leftPos + 8, topPos + 126, 70, 20, linkText, b -> {
+		linkButton = addRenderableWidget(new ExtendedButton(leftPos + 8, topPos + 126, 70, 20, linkText, b -> {
 			previousSignature = signature;
 			changeSignature(signature);
 			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getBlockPos(), acceptedLevels, signature, true));
@@ -162,7 +162,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderCo
 		}));
 		linkButton.active = false;
 		//button for saving the amount of limited uses onto the keycard
-		setUsesButton = addButton(new PictureButton(-1, leftPos + 62, topPos + 106, 16, 17, RETURN_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(te.getBlockPos(), Integer.parseInt(usesTextField.getValue())))) {
+		setUsesButton = addRenderableWidget(new PictureButton(-1, leftPos + 62, topPos + 106, 16, 17, RETURN_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(te.getBlockPos(), Integer.parseInt(usesTextField.getValue())))) {
 			@Override
 			public ResourceLocation getTextureLocation()
 			{
@@ -171,7 +171,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderCo
 		});
 		setUsesButton.active = false;
 		//text field for setting amount of limited uses
-		usesTextField = addButton(new EditBox(font, leftPos + 28, topPos + 107, 30, 15, TextComponent.EMPTY));
+		usesTextField = addRenderableWidget(new EditBox(font, leftPos + 28, topPos + 107, 30, 15, TextComponent.EMPTY));
 		usesTextField.setFilter(s -> s.matches("[0-9]*"));
 		usesTextField.setMaxLength(3);
 		//info text when hovering over text field
@@ -203,7 +203,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderCo
 				}
 			}
 
-			addButton(new ExtendedButton(leftPos + 135, topPos + 67, 18, 18, isExactLevel ? EQUALS : GREATER_THAN_EQUALS, b -> {
+			addRenderableWidget(new ExtendedButton(leftPos + 135, topPos + 67, 18, 18, isExactLevel ? EQUALS : GREATER_THAN_EQUALS, b -> {
 				boolean change = false;
 
 				isExactLevel = !isExactLevel;

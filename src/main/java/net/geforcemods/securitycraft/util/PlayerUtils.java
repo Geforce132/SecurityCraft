@@ -138,7 +138,7 @@ public class PlayerUtils{
 	 * @return The item stack if it has been found, ItemStack.EMPTY if not
 	 */
 	public static ItemStack getSelectedItemStack(Player player, Item item) {
-		return getSelectedItemStack(player.inventory, item);
+		return getSelectedItemStack(player.getInventory(), item);
 	}
 
 	/**

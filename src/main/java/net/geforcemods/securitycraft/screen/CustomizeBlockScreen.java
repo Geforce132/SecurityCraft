@@ -69,16 +69,14 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		for(int i = 0; i < moduleInv.getMaxNumberOfModules(); i++){
 			int column = i % numberOfColumns;
 
-			addButton(descriptionButtons[i] = new PictureButton(i, leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
+			addRenderableWidget(descriptionButtons[i] = new PictureButton(i, leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 
 		BlockEntity te = moduleInv.getTileEntity();
 
-		if(te instanceof ICustomizable && ((ICustomizable)te).customOptions() != null)
+		if(te instanceof ICustomizable customizableTe && ((ICustomizable)te).customOptions() != null)
 		{
-			ICustomizable customizableTe = (ICustomizable)te;
-
 			for(int i = 0; i < customizableTe.customOptions().length; i++){
 				Option<?> option = customizableTe.customOptions()[i];
 
@@ -99,7 +97,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 					optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
 				}
 
-				addButton(optionButtons[i]);
+				addRenderableWidget(optionButtons[i]);
 				hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i]);
 			}
 		}

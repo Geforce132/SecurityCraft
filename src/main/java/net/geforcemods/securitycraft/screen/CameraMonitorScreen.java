@@ -66,8 +66,8 @@ public class CameraMonitorScreen extends Screen {
 	public void init(){
 		super.init();
 
-		addButton(prevPageButton = new IdButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<", this::actionPerformed));
-		addButton(nextPageButton = new IdButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">", this::actionPerformed));
+		addRenderableWidget(prevPageButton = new IdButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<", this::actionPerformed));
+		addRenderableWidget(nextPageButton = new IdButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">", this::actionPerformed));
 
 		cameraButtons[0] = new IdButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
 		cameraButtons[1] = new IdButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
@@ -98,7 +98,7 @@ public class CameraMonitorScreen extends Screen {
 			CameraView view;
 
 			button.setMessage(button.getMessage().plainCopy().append(new TextComponent("" + camID)));
-			addButton(button);
+			addRenderableWidget(button);
 
 			if((view = views.get(camID - 1)) != null) {
 				if(!view.dimension.equals(Minecraft.getInstance().player.level.dimension().location())) {
@@ -129,7 +129,7 @@ public class CameraMonitorScreen extends Screen {
 		}
 
 		for(int i = 0; i < 10; i++)
-			addButton(unbindButtons[i]);
+			addRenderableWidget(unbindButtons[i]);
 
 		if(page == 1)
 			prevPageButton.active = false;

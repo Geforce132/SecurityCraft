@@ -89,7 +89,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 						break;
 				}
 
-				addButton(guiButtons[i][j]);
+				addRenderableWidget(guiButtons[i][j]);
 			}
 
 			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);

@@ -93,7 +93,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						break;
 				}
 
-				addButton(guiButtons[i][j]);
+				addRenderableWidget(guiButtons[i][j]);
 			}
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
@@ -155,7 +155,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 		for (int j = 0; j < 3; j++) {
 			guiButtonsGlobal[j].active = foundSentry;
-			addButton(guiButtonsGlobal[j]);
+			addRenderableWidget(guiButtonsGlobal[j]);
 		}
 
 		hoverCheckers.add(new TextHoverChecker(guiButtonsGlobal[MODE], Arrays.asList(Utils.localize("gui.securitycraft:srat.mode2"), Utils.localize("gui.securitycraft:srat.mode1"), Utils.localize("gui.securitycraft:srat.mode3"))));

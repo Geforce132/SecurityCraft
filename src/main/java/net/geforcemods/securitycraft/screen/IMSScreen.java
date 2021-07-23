@@ -40,7 +40,7 @@ public class IMSScreen extends AbstractContainerScreen<GenericTEContainer>{
 	public void init(){
 		super.init();
 
-		addButton(targetButton = new IdButton(0, width / 2 - 75, height / 2 - 38, 150, 20, "", this::actionPerformed));
+		addRenderableWidget(targetButton = new IdButton(0, width / 2 - 75, height / 2 - 38, 150, 20, "", this::actionPerformed));
 		updateButtonText();
 	}
 

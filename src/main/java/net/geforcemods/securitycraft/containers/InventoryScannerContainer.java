@@ -94,20 +94,21 @@ public class InventoryScannerContainer extends AbstractContainerMenu {
 	}
 
 	@Override
-	public ItemStack clicked(int slotId, int dragType, ClickType clickType, Player player)
+	public void clicked(int slotId, int dragType, ClickType clickType, Player player)
 	{
 		if(slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof OwnerRestrictedSlot && ((OwnerRestrictedSlot)getSlot(slotId)).isGhostSlot())
 		{
 			if(te.getOwner().isOwner(player))
 			{
-				ItemStack pickedUpStack = player.inventory.getCarried().copy();
+				ItemStack pickedUpStack = player.getInventory().getCarried().copy();
 
 				pickedUpStack.setCount(1);
 				te.getContents().set(slotId, pickedUpStack);
 			}
 
-			return ItemStack.EMPTY;
+			return;
 		}
-		else return super.clicked(slotId, dragType, clickType, player);
+		else
+			super.clicked(slotId, dragType, clickType, player);
 	}
 }

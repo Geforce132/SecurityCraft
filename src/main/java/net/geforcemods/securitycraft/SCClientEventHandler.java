@@ -192,7 +192,7 @@ public class SCClientEventHandler
 				if (uCoord != 0) {
 					RenderSystem.enableAlphaTest();
 					Minecraft.getInstance().textureManager.bind(BEACON_GUI);
-					GuiComponent.blit(event.getMatrixStack(), Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.inventory.selected * 20 : -29), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+					GuiComponent.blit(event.getMatrixStack(), Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.getInventory().selected * 20 : -29), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
 					RenderSystem.disableAlphaTest();
 				}
 			}
@@ -217,7 +217,7 @@ public class SCClientEventHandler
 		{
 			if(event.getButton() != 1 && Minecraft.getInstance().player.containerMenu == null) //anything other than rightclick and only if no gui is open)
 			{
-				if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.inventory.getSelected().getItem() != SCContent.CAMERA_MONITOR.get())
+				if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getInventory().getSelected().getItem() != SCContent.CAMERA_MONITOR.get())
 					event.setCanceled(true);
 			}
 		}

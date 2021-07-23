@@ -58,14 +58,14 @@ public class EditModuleScreen extends Screen
 		int controlsStartX = (int)(guiLeft + xSize * (3.0F / 4.0F)) - 43;
 
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		addButton(inputField = new EditBox(font, controlsStartX - 17, height / 2 - 65, 110, 15, TextComponent.EMPTY));
-		addButton(addButton = new IdButton(0, controlsStartX, height / 2 - 45, 76, 20, Utils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
-		addButton(removeButton = new IdButton(1, controlsStartX, height / 2 - 20, 76, 20, Utils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
-		addButton(copyButton = new IdButton(2, controlsStartX, height / 2 + 5, 76, 20, Utils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
-		addButton(pasteButton = new IdButton(3, controlsStartX, height / 2 + 30, 76, 20, Utils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed));
-		addButton(clearButton = new IdButton(4, controlsStartX, height / 2 + 55, 76, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed));
-		addButton(clearButton);
-		children.add(playerList = new PlayerList(minecraft, 110, 141, height / 2 - 66, guiLeft + 10));
+		addRenderableWidget(inputField = new EditBox(font, controlsStartX - 17, height / 2 - 65, 110, 15, TextComponent.EMPTY));
+		addRenderableWidget(addButton = new IdButton(0, controlsStartX, height / 2 - 45, 76, 20, Utils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
+		addRenderableWidget(removeButton = new IdButton(1, controlsStartX, height / 2 - 20, 76, 20, Utils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
+		addRenderableWidget(copyButton = new IdButton(2, controlsStartX, height / 2 + 5, 76, 20, Utils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
+		addRenderableWidget(pasteButton = new IdButton(3, controlsStartX, height / 2 + 30, 76, 20, Utils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed));
+		addRenderableWidget(clearButton = new IdButton(4, controlsStartX, height / 2 + 55, 76, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed));
+		addRenderableWidget(clearButton);
+		addRenderableOnly(playerList = new PlayerList(minecraft, 110, 141, height / 2 - 66, guiLeft + 10));
 
 		addButton.active = false;
 		removeButton.active = false;
@@ -128,7 +128,7 @@ public class EditModuleScreen extends Screen
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		font.drawWordWrap(editModule, startX + xSize / 2 - font.width(editModule) / 2, startY + 6, width, 4210752);
 
-		if(playerList != null)
+		if(playerList != null) //TODO: still needed?
 			playerList.render(matrix, mouseX, mouseY, partialTicks);
 	}
 
@@ -141,6 +141,7 @@ public class EditModuleScreen extends Screen
 		return super.mouseScrolled(mouseX, mouseY, scroll);
 	}
 
+	//TODO: are these still needed?
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button)
 	{

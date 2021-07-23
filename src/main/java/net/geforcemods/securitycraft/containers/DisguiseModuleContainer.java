@@ -61,12 +61,12 @@ public class DisguiseModuleContainer extends AbstractContainerMenu {
 	}
 
 	@Override
-	public ItemStack clicked(int slot, int dragType, ClickType clickType, Player player)
+	public void clicked(int slot, int dragType, ClickType clickType, Player player)
 	{
 		if(slot >= 0 && getSlot(slot) != null && ((!player.getMainHandItem().isEmpty() && getSlot(slot).getItem() == player.getMainHandItem() && player.getMainHandItem().getItem() == SCContent.DISGUISE_MODULE.get())))
-			return ItemStack.EMPTY;
-
-		return super.clicked(slot, dragType, clickType, player);
+			return;
+		else
+			super.clicked(slot, dragType, clickType, player);
 	}
 
 	@Override

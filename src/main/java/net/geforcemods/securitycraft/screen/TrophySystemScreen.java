@@ -61,7 +61,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEContain
 	protected void init() {
 		super.init();
 
-		children.add(projectileList = new ProjectileScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
+		addRenderableOnly(projectileList = new ProjectileScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
 	}
 
 	@Override
@@ -75,6 +75,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEContain
 	{
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
+		//TODO: still needed?
 		if(projectileList != null)
 			projectileList.render(matrix, mouseX, mouseY, partialTicks);
 
@@ -92,6 +93,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEContain
 		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
+	//TODO: still needed?
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY)
 	{

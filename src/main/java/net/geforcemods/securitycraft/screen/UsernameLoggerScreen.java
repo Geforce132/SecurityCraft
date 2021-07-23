@@ -45,11 +45,11 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEConta
 	{
 		super.init();
 
-		addButton(new IdButton(0, leftPos + 4, topPos + 4, 8, 8, "x", b -> {
+		addRenderableWidget(new IdButton(0, leftPos + 4, topPos + 4, 8, 8, "x", b -> {
 			tileEntity.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getBlockPos()));
 		})).active = tileEntity.getOwner().isOwner(minecraft.player);
-		children.add(playerList = new PlayerList(minecraft, imageWidth - 24, imageHeight - 40, topPos + 20, leftPos + 12));
+		addRenderableOnly(playerList = new PlayerList(minecraft, imageWidth - 24, imageHeight - 40, topPos + 20, leftPos + 12));
 	}
 
 	/**
@@ -69,6 +69,7 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEConta
 	{
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
+		//TODO: still needed?
 		if(playerList != null)
 			playerList.render(matrix, mouseX, mouseY, partialTicks);
 	}
@@ -83,6 +84,7 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEConta
 		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
+	//TODO: are these still needed?
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scroll)
 	{

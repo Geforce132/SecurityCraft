@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
@@ -53,14 +54,14 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext ctx)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext collisionContext)
 	{
-		if (ctx.getEntity() == null)
+		if(!(collisionContext instanceof EntityCollisionContext ctx) || ctx.getEntity() == null || !ctx.getEntity().isPresent())
 			return Shapes.empty();
 
-		Level world = ctx.getEntity().getCommandSenderWorld();
+		Entity entity = ctx.getEntity().get();
+		Level world = entity.getCommandSenderWorld();
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
-		Entity entity = ctx.getEntity();
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
 			if (entity instanceof Player && !EntityUtils.isInvisible((Player)entity)) {
@@ -123,9 +124,9 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || te.getOwner().isOwner(player))
 			return false;
 
-		return loopInventory(player.inventory.items, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) ||
-				loopInventory(player.inventory.armor, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) ||
-				loopInventory(player.inventory.offhand, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		return loopInventory(player.getInventory().items, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) ||
+				loopInventory(player.getInventory().armor, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) ||
+				loopInventory(player.getInventory().offhand, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
 	private static boolean loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
@@ -170,7 +171,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		{
 			if (hasStorageModule) {
 				te.addItemToStorage(entity.getItem());
-				entity.remove();
+				entity.discard();
 			}
 
 			if (hasRedstoneModule) {

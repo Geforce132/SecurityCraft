@@ -45,14 +45,14 @@ public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericCont
 		super.init();
 
 		for(int i = 0; i < keycodeTopButtons.length; i++) {
-			addButton(keycodeTopButtons[i] = new IdButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed));
+			addRenderableWidget(keycodeTopButtons[i] = new IdButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed));
 		}
 
 		for(int i = 0; i < keycodeBottomButtons.length; i++) {
-			addButton(keycodeBottomButtons[i] = new IdButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW, this::actionPerformed));
+			addRenderableWidget(keycodeBottomButtons[i] = new IdButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW, this::actionPerformed));
 		}
 
-		addButton(continueButton = new IdButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">", this::actionPerformed));
+		addRenderableWidget(continueButton = new IdButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">", this::actionPerformed));
 
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
 			//text boxes are not added via addButton because they should not be selectable

@@ -45,16 +45,16 @@ public class KeyChangerScreen extends AbstractContainerScreen<GenericTEContainer
 	public void init(){
 		super.init();
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		addButton(confirmButton = new IdButton(0, width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::actionPerformed));
+		addRenderableWidget(confirmButton = new IdButton(0, width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::actionPerformed));
 		confirmButton.active = false;
 
-		addButton(textboxNewPasscode = new EditBox(font, width / 2 - 57, height / 2 - 47, 110, 12, TextComponent.EMPTY));
+		addRenderableWidget(textboxNewPasscode = new EditBox(font, width / 2 - 57, height / 2 - 47, 110, 12, TextComponent.EMPTY));
 		textboxNewPasscode.setMaxLength(20);
 		setInitialFocus(textboxNewPasscode);
 		textboxNewPasscode.setFilter(s -> s.matches("[0-9]*"));
 		textboxNewPasscode.setResponder(s -> updateConfirmButtonState());
 
-		addButton(textboxConfirmPasscode = new EditBox(font, width / 2 - 57, height / 2 - 7, 110, 12, TextComponent.EMPTY));
+		addRenderableWidget(textboxConfirmPasscode = new EditBox(font, width / 2 - 57, height / 2 - 7, 110, 12, TextComponent.EMPTY));
 		textboxConfirmPasscode.setMaxLength(20);
 		textboxConfirmPasscode.setFilter(s -> s.matches("[0-9]*"));
 		textboxConfirmPasscode.setResponder(s -> updateConfirmButtonState());
