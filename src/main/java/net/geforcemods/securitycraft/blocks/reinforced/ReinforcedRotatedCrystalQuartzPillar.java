@@ -19,6 +19,6 @@ public class ReinforcedRotatedCrystalQuartzPillar extends ReinforcedRotatedPilla
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new BlockPocketTileEntity();
+		return new BlockPocketTileEntity(pos, state);
 	}
 }

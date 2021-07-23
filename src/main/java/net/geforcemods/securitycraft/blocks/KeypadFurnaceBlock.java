@@ -198,7 +198,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new KeypadFurnaceTileEntity();
+		return new KeypadFurnaceTileEntity(pos, state);
 	}
 
 	@Override

@@ -54,6 +54,6 @@ public class ReinforcedObserverBlock extends ObserverBlock implements IReinforce
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new OwnableTileEntity();
+		return new OwnableTileEntity(pos, state);
 	}
 }

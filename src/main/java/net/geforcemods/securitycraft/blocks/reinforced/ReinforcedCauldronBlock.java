@@ -74,6 +74,6 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new ReinforcedCauldronTileEntity();
+		return new ReinforcedCauldronTileEntity(pos, state);
 	}
 }

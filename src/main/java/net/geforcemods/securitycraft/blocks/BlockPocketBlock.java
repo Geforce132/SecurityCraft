@@ -20,6 +20,6 @@ public class BlockPocketBlock extends BaseReinforcedBlock implements IBlockPocke
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new BlockPocketTileEntity();
+		return new BlockPocketTileEntity(pos, state);
 	}
 }

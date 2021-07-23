@@ -91,7 +91,7 @@ public class TrophySystemBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new TrophySystemTileEntity();
+		return new TrophySystemTileEntity(pos, state);
 	}
 
 }

@@ -101,7 +101,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCraftTileEntity().intersectsEntities();
+		return new SecurityCraftTileEntity(pos, state).intersectsEntities();
 	}
 
 }

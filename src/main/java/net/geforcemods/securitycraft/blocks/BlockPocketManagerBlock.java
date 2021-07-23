@@ -79,7 +79,7 @@ public class BlockPocketManagerBlock extends OwnableBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new BlockPocketManagerTileEntity();
+		return new BlockPocketManagerTileEntity(pos, state);
 	}
 
 	@Override

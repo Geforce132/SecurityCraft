@@ -60,6 +60,6 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new AllowlistOnlyTileEntity();
+		return new AllowlistOnlyTileEntity(pos, state);
 	}
 }

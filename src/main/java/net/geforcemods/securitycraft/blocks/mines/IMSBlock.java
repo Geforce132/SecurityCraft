@@ -148,7 +148,7 @@ public class IMSBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new IMSTileEntity();
+		return new IMSTileEntity(pos, state);
 	}
 
 }

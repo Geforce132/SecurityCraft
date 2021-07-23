@@ -163,7 +163,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new ProjectorTileEntity();
+		return new ProjectorTileEntity(pos, state);
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public class ScannerDoorBlock extends SpecialDoorBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new ScannerDoorTileEntity().linkable().activatedByView();
+		return new ScannerDoorTileEntity(pos, state).linkable().activatedByView();
 	}
 
 	@Override

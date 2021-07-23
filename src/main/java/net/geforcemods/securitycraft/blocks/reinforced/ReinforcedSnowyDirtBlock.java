@@ -184,7 +184,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new OwnableTileEntity();
+		return new OwnableTileEntity(pos, state);
 	}
 }
 

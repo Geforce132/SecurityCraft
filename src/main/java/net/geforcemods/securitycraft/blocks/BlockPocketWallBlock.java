@@ -101,7 +101,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new BlockPocketTileEntity();
+		return new BlockPocketTileEntity(pos, state);
 	}
 
 	@Override

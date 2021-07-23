@@ -184,7 +184,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new CageTrapTileEntity().intersectsEntities();
+		return new CageTrapTileEntity(pos, state).intersectsEntities();
 	}
 
 	public static class BlockModifier

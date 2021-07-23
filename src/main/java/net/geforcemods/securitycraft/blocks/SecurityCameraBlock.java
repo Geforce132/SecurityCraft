@@ -186,7 +186,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCameraTileEntity().nameable();
+		return new SecurityCameraTileEntity(pos, state).nameable();
 	}
 
 	@Override

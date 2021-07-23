@@ -55,6 +55,6 @@ public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock, 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new OwnableTileEntity();
+		return new OwnableTileEntity(pos, state);
 	}
 }

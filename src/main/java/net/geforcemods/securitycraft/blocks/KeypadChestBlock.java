@@ -195,7 +195,7 @@ public class KeypadChestBlock extends ChestBlock {
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new KeypadChestTileEntity();
+		return new KeypadChestTileEntity(pos, state);
 	}
 
 	public static boolean isBlocked(Level world, BlockPos pos)

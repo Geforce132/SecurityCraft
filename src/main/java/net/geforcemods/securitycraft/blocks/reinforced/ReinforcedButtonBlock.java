@@ -73,6 +73,6 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new AllowlistOnlyTileEntity();
+		return new AllowlistOnlyTileEntity(pos, state);
 	}
 }

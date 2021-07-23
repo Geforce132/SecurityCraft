@@ -93,7 +93,7 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinf
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableTileEntity();
+		return new OwnableTileEntity(pos, state);
 	}
 
 	@Override

@@ -284,7 +284,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new InventoryScannerTileEntity();
+		return new InventoryScannerTileEntity(pos, state);
 	}
 
 	@Override

@@ -155,7 +155,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCraftTileEntity().intersectsEntities();
+		return new SecurityCraftTileEntity(pos, state).intersectsEntities();
 	}
 
 	@Override

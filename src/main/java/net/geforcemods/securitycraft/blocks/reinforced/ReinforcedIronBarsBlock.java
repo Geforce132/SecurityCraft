@@ -16,6 +16,6 @@ public class ReinforcedIronBarsBlock extends ReinforcedPaneBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new ReinforcedIronBarsTileEntity();
+		return new ReinforcedIronBarsTileEntity(pos, state);
 	}
 }

@@ -59,7 +59,7 @@ public class ProtectoBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new ProtectoTileEntity().attacks(LivingEntity.class, 10, 200);
+		return new ProtectoTileEntity(pos, state).attacks(LivingEntity.class, 10, 200);
 	}
 
 }

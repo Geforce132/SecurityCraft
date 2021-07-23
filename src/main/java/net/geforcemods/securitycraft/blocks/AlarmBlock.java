@@ -176,7 +176,7 @@ public class AlarmBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new AlarmTileEntity();
+		return new AlarmTileEntity(pos, state);
 	}
 
 	@Override

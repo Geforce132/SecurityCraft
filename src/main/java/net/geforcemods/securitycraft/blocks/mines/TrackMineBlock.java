@@ -148,7 +148,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new TrackMineTileEntity();
+		return new TrackMineTileEntity(pos, state);
 	}
 
 }

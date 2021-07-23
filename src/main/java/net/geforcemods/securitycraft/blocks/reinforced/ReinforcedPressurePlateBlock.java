@@ -99,6 +99,6 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new AllowlistOnlyTileEntity();
+		return new AllowlistOnlyTileEntity(pos, state);
 	}
 }

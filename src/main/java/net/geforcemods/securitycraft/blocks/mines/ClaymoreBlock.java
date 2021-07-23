@@ -178,7 +178,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new ClaymoreTileEntity();
+		return new ClaymoreTileEntity(pos, state);
 	}
 
 	@Override

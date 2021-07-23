@@ -147,7 +147,7 @@ public class KeypadBlock extends DisguisableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new KeypadTileEntity();
+		return new KeypadTileEntity(pos, state);
 	}
 
 	@Override

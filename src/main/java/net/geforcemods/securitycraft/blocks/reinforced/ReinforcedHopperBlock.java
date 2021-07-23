@@ -93,7 +93,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new ReinforcedHopperTileEntity();
+		return new ReinforcedHopperTileEntity(pos, state);
 	}
 
 	@Override

@@ -211,6 +211,6 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new LaserBlockTileEntity().linkable();
+		return new LaserBlockTileEntity(pos, state).linkable();
 	}
 }
