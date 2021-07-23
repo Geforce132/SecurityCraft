@@ -44,9 +44,9 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag)
+	public void load(CompoundTag tag)
 	{
-		super.load(state, tag);
+		super.load(tag);
 
 		passcode = tag.getString("passcode");
 	}

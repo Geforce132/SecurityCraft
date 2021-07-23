@@ -20,7 +20,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class PortableRadarTileEntity extends CustomizableTileEntity {
@@ -103,9 +102,9 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag)
+	public void load(CompoundTag tag)
 	{
-		super.load(state, tag);
+		super.load(tag);
 
 		shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
 		lastPlayerName = tag.getString("lastPlayerName");

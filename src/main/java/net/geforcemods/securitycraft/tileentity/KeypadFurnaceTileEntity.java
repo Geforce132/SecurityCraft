@@ -82,9 +82,9 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceBlockEntity implemen
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag)
+	public void load(CompoundTag tag)
 	{
-		super.load(state, tag);
+		super.load(tag);
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
@@ -109,7 +109,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceBlockEntity implemen
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet)
 	{
-		load(getBlockState(), packet.getTag());
+		load(packet.getTag());
 	}
 
 	@Override

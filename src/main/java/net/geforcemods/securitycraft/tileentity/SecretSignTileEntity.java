@@ -20,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class SecretSignTileEntity extends SignBlockEntity implements IOwnable, IModuleInventory, ICustomizable
 {
@@ -58,9 +57,9 @@ public class SecretSignTileEntity extends SignBlockEntity implements IOwnable, I
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void load(BlockState state, CompoundTag tag)
+	public void load(CompoundTag tag)
 	{
-		super.load(state, tag);
+		super.load(tag);
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
@@ -112,7 +111,7 @@ public class SecretSignTileEntity extends SignBlockEntity implements IOwnable, I
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		load(getBlockState(), packet.getTag());
+		load(packet.getTag());
 	}
 
 	@Override

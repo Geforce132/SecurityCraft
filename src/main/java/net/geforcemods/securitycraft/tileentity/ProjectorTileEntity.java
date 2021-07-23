@@ -14,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class ProjectorTileEntity extends DisguisableTileEntity implements Container, MenuProvider {
@@ -64,9 +63,9 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements Contai
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag)
+	public void load(CompoundTag tag)
 	{
-		super.load(state, tag);
+		super.load(tag);
 
 		projectionWidth = tag.getInt("width");
 		projectionHeight = tag.getInt("height");

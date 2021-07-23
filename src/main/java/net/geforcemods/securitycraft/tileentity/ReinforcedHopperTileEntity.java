@@ -69,9 +69,9 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag)
+	public void load(CompoundTag tag)
 	{
-		super.load(state, tag);
+		super.load(tag);
 
 		inventory = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
 
@@ -558,7 +558,7 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet)
 	{
-		load(getBlockState(), packet.getTag());
+		load(packet.getTag());
 	}
 
 	@Override

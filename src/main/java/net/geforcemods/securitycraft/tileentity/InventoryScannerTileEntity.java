@@ -56,8 +56,8 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag){
-		super.load(state, tag);
+	public void load(CompoundTag tag){
+		super.load(tag);
 
 		ListTag list = tag.getList("Items", 10);
 		inventoryContents = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);

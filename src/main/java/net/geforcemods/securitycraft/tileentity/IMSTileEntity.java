@@ -149,8 +149,8 @@ public class IMSTileEntity extends CustomizableTileEntity implements MenuProvide
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void load(BlockState state, CompoundTag tag){
-		super.load(state, tag);
+	public void load(CompoundTag tag){
+		super.load(tag);
 
 		bombsRemaining = tag.getInt("bombsRemaining");
 		targetingMode = IMSTargetingMode.values()[tag.getInt("targetingOption")];

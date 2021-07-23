@@ -30,7 +30,6 @@ import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.block.entity.TickableBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
@@ -129,8 +128,8 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements Ti
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag) {
-		super.load(state, tag);
+	public void load(CompoundTag tag) {
+		super.load(tag);
 
 		if (tag.contains("projectiles", NBT.TAG_COMPOUND)) {
 			CompoundTag projectilesNBT = tag.getCompound("projectiles");

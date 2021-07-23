@@ -68,9 +68,9 @@ public class BlockPocketTileEntity extends SecurityCraftTileEntity
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag)
+	public void load(CompoundTag tag)
 	{
-		super.load(state, tag);
+		super.load(tag);
 
 		if(tag.contains("ManagerPos"))
 			managerPos = BlockPos.of(tag.getLong("ManagerPos"));

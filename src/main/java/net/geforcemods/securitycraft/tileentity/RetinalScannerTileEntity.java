@@ -126,8 +126,8 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag) {
-		super.load(state, tag);
+	public void load(CompoundTag tag) {
+		super.load(tag);
 		ownerProfile = NbtUtils.readGameProfile(tag.getCompound("ownerProfile"));
 	}
 

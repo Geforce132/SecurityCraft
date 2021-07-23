@@ -21,7 +21,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
@@ -112,8 +111,8 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements M
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag){
-		super.load(state, tag);
+	public void load(CompoundTag tag){
+		super.load(tag);
 
 		for(int i = 0; i < players.length; i++)
 		{

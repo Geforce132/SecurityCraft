@@ -625,25 +625,30 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		int offsetAbove = difference.getY();
 		List<TranslatableComponent> components = new ArrayList<>();
 
-		switch (managerFacing) {
-			case NORTH:
+		offsetLeft = switch(managerFacing)
+		{
+			case NORTH ->
+			{
 				offsetBehind = difference.getZ();
-				offsetLeft = difference.getX();
-				break;
-			case SOUTH:
+				yield difference.getX();
+			}
+			case SOUTH ->
+			{
 				offsetBehind = -difference.getZ();
-				offsetLeft = -difference.getX();
-				break;
-			case WEST:
+				yield -difference.getX();
+			}
+			case WEST ->
+			{
 				offsetBehind = difference.getX();
-				offsetLeft = -difference.getZ();
-				break;
-			case EAST:
+				yield -difference.getZ();
+			}
+			case EAST ->
+			{
 				offsetBehind = -difference.getX();
-				offsetLeft = difference.getZ();
-				break;
-			default: throw new IllegalArgumentException("Invalid Block Pocket Manager direction: " + managerFacing.name());
-		}
+				yield difference.getZ();
+			}
+			default -> throw new IllegalArgumentException("Invalid Block Pocket Manager direction: " + managerFacing.name());
+		};
 
 		if (offsetLeft > 0) {
 			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksLeft", offsetLeft));
@@ -755,11 +760,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag)
+	public void load(CompoundTag tag)
 	{
 		int i = 0;
 
-		super.load(state, tag);
+		super.load(tag);
 		enabled = tag.getBoolean("BlockPocketEnabled");
 		showOutline = tag.getBoolean("ShowOutline");
 		size = tag.getInt("Size");

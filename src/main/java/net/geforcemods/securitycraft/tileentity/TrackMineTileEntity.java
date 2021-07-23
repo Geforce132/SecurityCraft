@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class TrackMineTileEntity extends OwnableTileEntity
 {
@@ -45,9 +44,9 @@ public class TrackMineTileEntity extends OwnableTileEntity
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag)
+	public void load(CompoundTag tag)
 	{
-		super.load(state, tag);
+		super.load(tag);
 		active = tag.getBoolean("TrackMineEnabled");
 	}
 }

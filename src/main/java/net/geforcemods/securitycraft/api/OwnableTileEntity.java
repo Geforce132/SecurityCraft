@@ -8,7 +8,6 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Used to give this tile entity an owner
@@ -48,9 +47,9 @@ public class OwnableTileEntity extends BlockEntity implements IOwnable {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void load(BlockState state, CompoundTag tag)
+	public void load(CompoundTag tag)
 	{
-		super.load(state, tag);
+		super.load(tag);
 
 		if (tag.contains("owner"))
 			owner.setOwnerName(tag.getString("owner"));
@@ -72,7 +71,7 @@ public class OwnableTileEntity extends BlockEntity implements IOwnable {
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		load(getBlockState(), packet.getTag());
+		load(packet.getTag());
 	}
 
 	@Override

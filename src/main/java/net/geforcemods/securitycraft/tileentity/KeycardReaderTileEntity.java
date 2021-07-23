@@ -13,7 +13,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class KeycardReaderTileEntity extends DisguisableTileEntity implements MenuProvider {
@@ -45,8 +44,8 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements Me
 	}
 
 	@Override
-	public void load(BlockState state, CompoundTag tag){
-		super.load(state, tag);
+	public void load(CompoundTag tag){
+		super.load(tag);
 
 		//carry over old data
 		if(tag.contains("passLV"))
