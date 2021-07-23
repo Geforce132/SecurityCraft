@@ -42,7 +42,7 @@ public abstract class SpecialDoorItem extends Item
 
 		if (player.mayUseItemAt(pos, facing, stack) && BlockUtils.isSideSolid(world, pos.below(), Direction.UP))
 		{
-			Direction angleFacing = Direction.fromYRot(player.yRot);
+			Direction angleFacing = Direction.fromYRot(player.getYRot());
 			int offsetX = angleFacing.getStepX();
 			int offsetZ = angleFacing.getStepZ();
 			boolean flag = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;

@@ -93,7 +93,7 @@ public class CameraMonitorItem extends Item {
 		}
 
 		if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
-			SecurityCraft.proxy.displayCameraMonitorGui(player.inventory, (CameraMonitorItem) stack.getItem(), stack.getTag());
+			SecurityCraft.proxy.displayCameraMonitorGui(player.getInventory(), (CameraMonitorItem) stack.getItem(), stack.getTag());
 
 		return InteractionResultHolder.consume(stack);
 	}

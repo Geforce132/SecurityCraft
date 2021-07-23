@@ -45,7 +45,7 @@ public class SecretSignItem extends StandingAndWallBlockItem
 		{
 			SecretSignTileEntity te = (SecretSignTileEntity)world.getBlockEntity(pos);
 
-			te.setAllowedPlayerEditor(player);
+			te.setAllowedPlayerEditor(player.getUUID());
 
 			if(world.isClientSide)
 				SecurityCraft.proxy.displayEditSecretSignGui(te);

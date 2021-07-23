@@ -80,7 +80,7 @@ public class UniversalBlockReinforcerItem extends Item
 				te = world.getBlockEntity(pos);
 
 				if(tag != null)
-					te.load(convertedState, tag);
+					te.load(tag);
 
 				((IOwnable)te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));

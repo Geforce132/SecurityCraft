@@ -87,7 +87,7 @@ public class AdminToolItem extends Item {
 
 					for(int i = 0; i < 4; i++)
 					{
-						FormattedText text = ((SecretSignTileEntity)te).messages[i];
+						FormattedText text = ((SecretSignTileEntity)te).getMessage(i, false);
 
 						if(text instanceof MutableComponent)
 							PlayerUtils.sendMessageToPlayer(player, adminToolName, (MutableComponent)text, ChatFormatting.DARK_PURPLE);
