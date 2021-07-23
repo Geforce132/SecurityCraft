@@ -42,7 +42,7 @@ public class RecipeGenerator extends RecipeProvider
 	}
 
 	@Override
-	protected final void buildShapelessRecipes(Consumer<FinishedRecipe> consumer)
+	protected final void buildCraftingRecipes(Consumer<FinishedRecipe> consumer)
 	{
 		ItemStack healingStack = new ItemStack(Items.POTION);
 		ItemStack strongHealingStack = new ItemStack(Items.POTION);
@@ -1278,7 +1278,7 @@ public class RecipeGenerator extends RecipeProvider
 	protected final void addStonecuttingRecipe(Consumer<FinishedRecipe> consumer, ItemLike ingredient, ItemLike result, int count)
 	{
 		SingleItemRecipeBuilder.stonecutting(Ingredient.of(ingredient), result, count)
-		.unlocks("has_" + ingredient.asItem().getRegistryName().getPath(), has(ingredient))
+		.unlockedBy("has_" + ingredient.asItem().getRegistryName().getPath(), has(ingredient))
 		.save(consumer, result.asItem().getRegistryName() + "_from_" + ingredient.asItem().getRegistryName().getPath() + "_stonecutting");
 	}
 

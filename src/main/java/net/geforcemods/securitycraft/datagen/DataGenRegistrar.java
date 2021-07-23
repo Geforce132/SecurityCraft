@@ -17,7 +17,7 @@ public class DataGenRegistrar
 	public static void onGatherData(GatherDataEvent event)
 	{
 		DataGenerator generator = event.getGenerator();
-		ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.EMPTY_LIST, Collections.EMPTY_SET, false);
+		ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.EMPTY_LIST, Collections.EMPTY_SET, false, null, null);
 		BlockTagGenerator blockTagGenerator = new BlockTagGenerator(generator, existingFileHelper);
 
 		generator.addProvider(new BlockLootTableGenerator(generator));

@@ -40,8 +40,8 @@ import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.fmllegacy.RegistryObject;
-import sun.jvm.hotspot.code.ConstantIntValue;
 
 public class BlockLootTableGenerator implements DataProvider
 {
@@ -95,7 +95,7 @@ public class BlockLootTableGenerator implements DataProvider
 			if(i == 1) //default
 				continue;
 
-			imsLootEntryBuilder.apply(SetItemCountFunction.setCount(ConstantIntValue.exactly(i))
+			imsLootEntryBuilder.apply(SetItemCountFunction.setCount(ConstantValue.exactly(i))
 					.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(SCContent.IMS.get())
 							.setProperties(StatePropertiesPredicate.Builder.properties()
 									.hasProperty(IMSBlock.MINES, i))));
@@ -103,7 +103,7 @@ public class BlockLootTableGenerator implements DataProvider
 
 		lootTables.put(SCContent.IMS, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
-						.setRolls(ConstantIntValue.exactly(1))
+						.setRolls(ConstantValue.exactly(1))
 						.add(imsLootEntryBuilder)));
 		putStandardBlockLootTable(SCContent.KEYPAD_CHEST);
 		putDoorLootTable(SCContent.KEYPAD_DOOR, SCContent.KEYPAD_DOOR_ITEM);
@@ -111,7 +111,7 @@ public class BlockLootTableGenerator implements DataProvider
 		lootTables.put(SCContent.REINFORCED_IRON_BARS,
 				LootTable.lootTable()
 				.withPool(LootPool.lootPool()
-						.setRolls(ConstantIntValue.exactly(1))
+						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(SCContent.REINFORCED_IRON_BARS.get())
 								.when(TileEntityNBTCondition.builder().equals("canDrop", true)))
 						.when(ExplosionCondition.survivesExplosion())));
@@ -140,7 +140,7 @@ public class BlockLootTableGenerator implements DataProvider
 	{
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool()
-						.setRolls(ConstantIntValue.exactly(1))
+						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(block.get()))
 						.when(ExplosionCondition.survivesExplosion()));
 	}
@@ -149,7 +149,7 @@ public class BlockLootTableGenerator implements DataProvider
 	{
 		lootTables.put(door, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
-						.setRolls(ConstantIntValue.exactly(1))
+						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(doorItem.get())
 								.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(door.get())
 										.setProperties(StatePropertiesPredicate.Builder.properties()
@@ -166,7 +166,7 @@ public class BlockLootTableGenerator implements DataProvider
 	{
 		lootTables.put(mine, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
-						.setRolls(ConstantIntValue.exactly(1))
+						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(mine.get()))
 						.when(ExplosionCondition.survivesExplosion())
 						.when(InvertedLootItemCondition.invert(LootItemEntityPropertyCondition.entityPresent(EntityTarget.THIS)))));
@@ -176,9 +176,9 @@ public class BlockLootTableGenerator implements DataProvider
 	{
 		lootTables.put(slab, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
-						.setRolls(ConstantIntValue.exactly(1))
+						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(slab.get())
-								.apply(SetItemCountFunction.setCount(ConstantIntValue.exactly(2))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))
 										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(slab.get())
 												.setProperties(StatePropertiesPredicate.Builder.properties()
 														.hasProperty(BlockStateProperties.SLAB_TYPE, SlabType.DOUBLE))))
