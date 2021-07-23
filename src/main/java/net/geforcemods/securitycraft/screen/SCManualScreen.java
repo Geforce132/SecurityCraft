@@ -21,6 +21,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -185,10 +186,8 @@ public class SCManualScreen extends Screen {
 					if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
 						blit(matrix, startX + 81, 118, 36, 1, 17, 16);
 
-					if(te instanceof ICustomizable)
+					if(te instanceof ICustomizable scte)
 					{
-						ICustomizable scte = (ICustomizable)te;
-
 						blit(matrix, startX + 213, 118, 72, 1, 16, 16);
 
 						if(scte.customOptions() != null && scte.customOptions().length > 0)
@@ -368,9 +367,7 @@ public class SCManualScreen extends Screen {
 
 		for(Recipe<?> object : Minecraft.getInstance().level.getRecipeManager().getRecipes())
 		{
-			if(object instanceof ShapedRecipe){
-				ShapedRecipe recipe = (ShapedRecipe) object;
-
+			if(object instanceof ShapedRecipe recipe){
 				if(!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.getItem()){
 					NonNullList<Ingredient> ingredients = recipe.getIngredients();
 					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
@@ -383,9 +380,7 @@ public class SCManualScreen extends Screen {
 					this.recipe = recipeItems;
 					break;
 				}
-			}else if(object instanceof ShapelessRecipe){
-				ShapelessRecipe recipe = (ShapelessRecipe) object;
-
+			}else if(object instanceof ShapelessRecipe recipe){
 				if(!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.getItem()){
 					//don't show keycard reset recipes
 					if(recipe.getId().getPath().endsWith("_reset"))
@@ -450,10 +445,8 @@ public class SCManualScreen extends Screen {
 				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
-				if(te instanceof ICustomizable)
+				if(te instanceof ICustomizable scte)
 				{
-					ICustomizable scte = (ICustomizable)te;
-
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock")));
 
 					if(scte.customOptions() != null && scte.customOptions().length > 0)
@@ -474,10 +467,8 @@ public class SCManualScreen extends Screen {
 					}
 				}
 
-				if(te instanceof IModuleInventory)
+				if(te instanceof IModuleInventory moduleInv)
 				{
-					IModuleInventory moduleInv = (IModuleInventory)te;
-
 					if(moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0)
 					{
 						List<Component> display = new ArrayList<>();
@@ -617,21 +608,21 @@ public class SCManualScreen extends Screen {
 						barTop = top;
 
 					//scrollbar background
-					buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR);
+					buffer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 					buffer.vertex(barLeft,            bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
 					buffer.vertex(barLeft + barWidth, bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
 					buffer.vertex(barLeft + barWidth, top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
 					buffer.vertex(barLeft,            top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
 					tess.end();
 					//scrollbar border
-					buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR);
+					buffer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 					buffer.vertex(barLeft,            barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
 					buffer.vertex(barLeft + barWidth, barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
 					buffer.vertex(barLeft + barWidth, barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
 					buffer.vertex(barLeft,            barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
 					tess.end();
 					//scrollbar
-					buffer.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_COLOR);
+					buffer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 					buffer.vertex(barLeft,                barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
 					buffer.vertex(barLeft + barWidth - 1, barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
 					buffer.vertex(barLeft + barWidth - 1, barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();

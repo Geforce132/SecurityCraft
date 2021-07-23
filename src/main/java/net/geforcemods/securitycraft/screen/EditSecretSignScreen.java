@@ -11,6 +11,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import com.mojang.math.Matrix4f;
 
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
@@ -210,7 +211,7 @@ public class EditSecretSignScreen extends Screen
 					RenderSystem.disableTexture();
 					RenderSystem.enableColorLogicOp();
 					RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
-					buf.begin(7, DefaultVertexFormat.POSITION_COLOR);
+					buf.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 					buf.vertex(positionMatrix, i3, j1 + 9, 0.0F).color(0, 0, 255, 255).endVertex();
 					buf.vertex(positionMatrix, j3, j1 + 9, 0.0F).color(0, 0, 255, 255).endVertex();
 					buf.vertex(positionMatrix, j3, j1, 0.0F).color(0, 0, 255, 255).endVertex();
