@@ -13,10 +13,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.Serializer;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition.Builder;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 public class TileEntityNBTCondition implements LootItemCondition
@@ -51,17 +51,17 @@ public class TileEntityNBTCondition implements LootItemCondition
 		return SecurityCraft.TILE_ENTITY_NBT_LOOT_CONDITION;
 	}
 
-	public static Builder builder()
+	public static ConditionBuilder builder()
 	{
-		return new Builder();
+		return new ConditionBuilder();
 	}
 
-	public static class Builder implements Builder
+	public static class ConditionBuilder implements Builder
 	{
 		private String key;
 		private boolean value;
 
-		public Builder equals(String key, boolean value)
+		public ConditionBuilder equals(String key, boolean value)
 		{
 			this.key = key;
 			this.value = value;
@@ -75,7 +75,7 @@ public class TileEntityNBTCondition implements LootItemCondition
 		}
 	}
 
-	public static class Serializer implements Serializer<TileEntityNBTCondition>
+	public static class ConditionSerializer implements Serializer<TileEntityNBTCondition>
 	{
 		@Override
 		public void serialize(JsonObject json, TileEntityNBTCondition condition, JsonSerializationContext ctx)
