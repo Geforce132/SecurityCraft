@@ -14,7 +14,7 @@ import groovy.json.JsonSlurper
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
-version = 'v1.8.23'
+version = '1.8.23'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
@@ -23,20 +23,8 @@ println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getPro
 
 processResources { 
 	exclude ".cache"
- 
-	//replace ${version} in mods.toml
-	inputs.property 'version', project.version
-
-	from(sourceSets.main.resources.srcDirs) {
-		include 'META-INF/mods.toml'
-
-		expand 'version': project.version
-	}
-
-	from(sourceSets.main.resources.srcDirs) {
-		exclude 'META-INF/mods.toml'
-	}
-
+	duplicatesStrategy = 'include'
+	
     //minify json resources
     doLast {
         fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
