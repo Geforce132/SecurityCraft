@@ -56,8 +56,8 @@ public class SecurityCameraEntity extends Entity{
 		cameraUseX = player.getX();
 		cameraUseY = player.getY();
 		cameraUseZ = player.getZ();
-		cameraUseYaw = player.yRot;
-		cameraUsePitch = player.xRot;
+		cameraUseYaw = player.getYRot();
+		cameraUsePitch = player.getXRot();
 		this.id = id;
 		setPos(x + 0.5D, y, z + 0.5D);
 
@@ -87,25 +87,25 @@ public class SecurityCameraEntity extends Entity{
 	{
 		if(te != null && te.hasModule(ModuleType.SMART) && te.lastPitch != Float.MAX_VALUE && te.lastYaw != Float.MAX_VALUE)
 		{
-			xRot = te.lastPitch;
-			yRot = te.lastYaw;
+			setXRot(te.lastPitch);
+			setYRot(te.lastYaw);
 		}
 		else
 		{
-			xRot = 30F;
+			setXRot(30F);
 
 			Direction facing = level.getBlockState(blockPosition()).getValue(SecurityCameraBlock.FACING);
 
 			if(facing == Direction.NORTH)
-				yRot = 180F;
+				setYRot(180F);
 			else if(facing == Direction.WEST)
-				yRot = 90F;
+				setYRot(90F);
 			else if(facing == Direction.SOUTH)
-				yRot = 0F;
+				setYRot(0F);
 			else if(facing == Direction.EAST)
-				yRot = 270F;
+				setYRot(270F);
 			else if(facing == Direction.DOWN)
-				xRot = 75;
+				setYRot(75);
 		}
 	}
 
@@ -144,13 +144,13 @@ public class SecurityCameraEntity extends Entity{
 			if(toggleLightCooldown > 0)
 				toggleLightCooldown -= 1;
 
-			if(lowestEntity.yRot != yRot){
-				lowestEntity.absMoveTo(lowestEntity.getX(), lowestEntity.getY(), lowestEntity.getZ(), yRot, xRot);
-				lowestEntity.yRot = yRot;
+			if(lowestEntity.getYRot() != getYRot()){
+				lowestEntity.absMoveTo(lowestEntity.getX(), lowestEntity.getY(), lowestEntity.getZ(), getYRot(), getXRot());
+				lowestEntity.setYRot(getYRot());
 			}
 
-			if(lowestEntity.xRot != xRot)
-				lowestEntity.absMoveTo(lowestEntity.getX(), lowestEntity.getY(), lowestEntity.getZ(), yRot, xRot);
+			if(lowestEntity.getXRot() != getXRot())
+				lowestEntity.absMoveTo(lowestEntity.getX(), lowestEntity.getY(), lowestEntity.getZ(), getYRot(), getXRot());
 
 			checkKeysPressed();
 
@@ -160,7 +160,7 @@ public class SecurityCameraEntity extends Entity{
 
 		if(!level.isClientSide)
 			if(getPassengers().size() == 0 || level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get()){
-				remove();
+				discard();
 				return;
 			}
 	}
@@ -203,11 +203,11 @@ public class SecurityCameraEntity extends Entity{
 	public void moveViewUp() {
 		if(isCameraDown())
 		{
-			if(xRot > 40F)
-				setRot(yRot, xRot -= CAMERA_SPEED);
+			if(getXRot() > 40F)
+				setRot(getYRot(), (float)(getXRot() - CAMERA_SPEED));
 		}
-		else if(xRot > -25F)
-			setRot(yRot, xRot -= CAMERA_SPEED);
+		else if(getXRot() > -25F)
+			setRot(getYRot(), (float)(getXRot() - CAMERA_SPEED));
 
 		updateServerRotation();
 	}
@@ -215,11 +215,11 @@ public class SecurityCameraEntity extends Entity{
 	public void moveViewDown(){
 		if(isCameraDown())
 		{
-			if(xRot < 100F)
-				setRot(yRot, xRot += CAMERA_SPEED);
+			if(getXRot() < 100F)
+				setRot(getYRot(), (float)(getXRot() + CAMERA_SPEED));
 		}
-		else if(xRot < 60F)
-			setRot(yRot, xRot += CAMERA_SPEED);
+		else if(getXRot() < 60F)
+			setRot(getYRot(), (float)(getXRot() + CAMERA_SPEED));
 
 		updateServerRotation();
 	}
@@ -229,30 +229,32 @@ public class SecurityCameraEntity extends Entity{
 
 		if(state.hasProperty(SecurityCameraBlock.FACING)) {
 			Direction facing = state.getValue(SecurityCameraBlock.FACING);
+			float xRot = getXRot();
+			float yRot = getYRot();
 
 			if(facing == Direction.EAST)
 			{
 				if((yRot - CAMERA_SPEED) > -180F)
-					setRot(yRot -= CAMERA_SPEED, xRot);
+					setRot((float)(yRot - CAMERA_SPEED), xRot);
 			}
 			else if(facing == Direction.WEST)
 			{
 				if((yRot - CAMERA_SPEED) > 0F)
-					setRot(yRot -= CAMERA_SPEED, xRot);
+					setRot((float)(yRot - CAMERA_SPEED), xRot);
 			}
 			else if(facing == Direction.NORTH)
 			{
 				// Handles some problems the occurs from the way the rotationYaw value works in MC
 				if((((yRot - CAMERA_SPEED) > 90F) && ((yRot - CAMERA_SPEED) < 185F)) || (((yRot - CAMERA_SPEED) > -190F) && ((yRot - CAMERA_SPEED) < -90F)))
-					setRot(yRot -= CAMERA_SPEED, xRot);
+					setRot((float)(yRot - CAMERA_SPEED), xRot);
 			}
 			else if(facing == Direction.SOUTH)
 			{
 				if((yRot - CAMERA_SPEED) > -90F)
-					setRot(yRot -= CAMERA_SPEED, xRot);
+					setRot((float)(yRot - CAMERA_SPEED), xRot);
 			}
 			else if(facing == Direction.DOWN)
-				setRot(yRot -= CAMERA_SPEED, xRot);
+				setRot((float)(yRot - CAMERA_SPEED), xRot);
 
 			updateServerRotation();
 		}
@@ -263,29 +265,31 @@ public class SecurityCameraEntity extends Entity{
 
 		if(state.hasProperty(SecurityCameraBlock.FACING)) {
 			Direction facing = state.getValue(SecurityCameraBlock.FACING);
+			float xRot = getXRot();
+			float yRot = getYRot();
 
 			if(facing == Direction.EAST)
 			{
 				if((yRot + CAMERA_SPEED) < 0F)
-					setRot(yRot += CAMERA_SPEED, xRot);
+					setRot((float)(yRot + CAMERA_SPEED), xRot);
 			}
 			else if(facing == Direction.WEST)
 			{
 				if((yRot + CAMERA_SPEED) < 180F)
-					setRot(yRot += CAMERA_SPEED, xRot);
+					setRot((float)(yRot + CAMERA_SPEED), xRot);
 			}
 			else if(facing == Direction.NORTH)
 			{
 				if((((yRot + CAMERA_SPEED) > 85F) && ((yRot + CAMERA_SPEED) < 185F)) || ((yRot + CAMERA_SPEED) < -95F) && ((yRot + CAMERA_SPEED) > -180F))
-					setRot(yRot += CAMERA_SPEED, xRot);
+					setRot((float)(yRot + CAMERA_SPEED), xRot);
 			}
 			else if(facing == Direction.SOUTH)
 			{
 				if((yRot + CAMERA_SPEED) < 90F)
-					setRot(yRot += CAMERA_SPEED, xRot);
+					setRot((float)(yRot + CAMERA_SPEED), xRot);
 			}
 			else if(facing == Direction.DOWN)
-				setRot(yRot += CAMERA_SPEED, xRot);
+				setRot((float)(yRot + CAMERA_SPEED), xRot);
 
 			updateServerRotation();
 		}
@@ -324,7 +328,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	private void updateServerRotation(){
-		SecurityCraft.channel.sendToServer(new SetCameraRotation(yRot, xRot));
+		SecurityCraft.channel.sendToServer(new SetCameraRotation(getYRot(), getXRot()));
 	}
 
 	private boolean isCameraDown()
@@ -335,10 +339,10 @@ public class SecurityCameraEntity extends Entity{
 	@Override
 	public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity)
 	{
-		livingEntity.yRot = cameraUseYaw % 360.0F;
-		livingEntity.xRot = Mth.clamp(cameraUsePitch, -90.0F, 90.0F) % 360.0F;
-		livingEntity.yRotO = livingEntity.yRot;
-		livingEntity.xRotO = livingEntity.xRot;
+		livingEntity.setYRot(cameraUseYaw % 360.0F);
+		livingEntity.setXRot(Mth.clamp(cameraUsePitch, -90.0F, 90.0F) % 360.0F);
+		livingEntity.yRotO = livingEntity.getYRot();
+		livingEntity.xRotO = livingEntity.getXRot();
 		return getPreviousPlayerPos();
 	}
 
