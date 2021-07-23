@@ -19,7 +19,7 @@ import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -267,12 +267,12 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	protected void actionPerformedGlobal(IdButton button) {
-		for (int i = 0; i < buttons.size() / 3; i++) {
-			AbstractWidget widget = buttons.get(i * 3);
+		for (int i = 0; i < renderables.size() / 3; i++) {
+			Widget widget = renderables.get(i * 3);
 
-			if(widget instanceof IdButton && getSentryCoordinates(i)[1] != 0)
+			if(widget instanceof IdButton idButton && getSentryCoordinates(i)[1] != 0)
 			{
-				int sentry = ((IdButton)buttons.get(i * 3)).id / 3;
+				int sentry = idButton.id / 3;
 				int mode = button.id == guiButtonsGlobal[MODE].id ? ((TogglePictureButton)guiButtonsGlobal[MODE]).getCurrentIndex() : ((TogglePictureButton)guiButtons[sentry][MODE]).getCurrentIndex();
 				int targets = button.id == guiButtonsGlobal[TARGETS].id ? ((TogglePictureButton)guiButtonsGlobal[TARGETS]).getCurrentIndex() : ((TogglePictureButton)guiButtons[sentry][TARGETS]).getCurrentIndex();
 

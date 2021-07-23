@@ -41,6 +41,7 @@ import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
@@ -92,6 +93,8 @@ public class SCManualScreen extends Screen {
 	private List<FormattedCharSequence> intro2;
 	private PatronList patronList;
 	private Button patreonLinkButton;
+	private Button nextSubpage;
+	private Button previousSubpage;
 
 	public SCManualScreen() {
 		super(new TranslatableComponent(SCContent.SC_MANUAL.get().getDescriptionId()));
@@ -105,8 +108,8 @@ public class SCManualScreen extends Screen {
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addRenderableWidget(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 188, true, this::actionPerformed)); //next page
 		addRenderableWidget(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 188, false, this::actionPerformed)); //previous page
-		addRenderableWidget(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
-		addRenderableWidget(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
+		addRenderableWidget(nextSubpage = new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
+		addRenderableWidget(previousSubpage = new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
 		addRenderableWidget(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, TextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
 		addRenderableOnly(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
 
@@ -141,9 +144,9 @@ public class SCManualScreen extends Screen {
 
 		blit(matrix, startX, 5, 0, 0, 256, 250);
 
-		for(int i = 0; i < buttons.size(); i++)
+		for(Widget widget : renderables)
 		{
-			buttons.get(i).render(matrix, mouseX, mouseY, partialTicks);
+			widget.render(matrix, mouseX, mouseY, partialTicks);
 		}
 
 		if(currentPage > -1)
@@ -279,8 +282,8 @@ public class SCManualScreen extends Screen {
 			previousSubpage();
 
 		//hide subpage buttons on main page
-		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
-		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
+		nextSubpage.visible = currentPage != -1 && subpages.size() > 1;
+		previousSubpage.visible = currentPage != -1 && subpages.size() > 1;
 	}
 
 	@Override
@@ -301,8 +304,8 @@ public class SCManualScreen extends Screen {
 		}
 
 		//hide subpage buttons on main page
-		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
-		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
+		nextSubpage.visible = currentPage != -1 && subpages.size() > 1;
+		previousSubpage.visible = currentPage != -1 && subpages.size() > 1;
 		return true;
 	}
 
@@ -349,8 +352,8 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage < 0){
 			recipe = null;
-			buttons.get(2).visible = false;
-			buttons.get(3).visible = false;
+			nextSubpage.visible = false;
+			previousSubpage.visible = false;
 
 			if(I18n.exists("gui.securitycraft:scManual.author"))
 				author = font.split(Utils.localize("gui.securitycraft:scManual.author"), 180);
@@ -516,8 +519,8 @@ public class SCManualScreen extends Screen {
 
 		//set up subpages
 		subpages = font.getSplitter().splitLines(helpInfo, subpageLength, Style.EMPTY);
-		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
-		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
+		nextSubpage.visible = currentPage != -1 && subpages.size() > 1;
+		previousSubpage.visible = currentPage != -1 && subpages.size() > 1;
 	}
 
 	//TODO: are these still needed?
