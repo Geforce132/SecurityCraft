@@ -37,11 +37,11 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext collisionContext)
 	{
-		if(ctx instanceof EntityCollisionContext)
+		if(collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent())
 		{
-			Entity entity = ((EntityCollisionContext)ctx).getEntity();
+			Entity entity = ctx.getEntity().get();
 
 			if(entity instanceof ItemEntity)
 				return Shapes.block();

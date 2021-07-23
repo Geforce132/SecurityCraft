@@ -52,24 +52,24 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx){
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext collisionContext){
 		BlockEntity tile = world.getBlockEntity(pos);
 
 		if(tile instanceof CageTrapTileEntity te)
 		{
-			if(ctx instanceof EntityCollisionContext esc)
+			if(collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent())
 			{
-				Entity entity = esc.getEntity();
+				Entity entity = ctx.getEntity().get();
 
 				if(entity instanceof Player && (te.getOwner().isOwner((Player)entity) || ModuleUtils.isAllowed(te, entity)))
-					return getCorrectShape(state, world, pos, ctx, te);
+					return getCorrectShape(state, world, pos, collisionContext, te);
 				if(entity instanceof Mob && !state.getValue(DEACTIVATED))
-					return te.capturesMobs() ? Shapes.empty() : getCorrectShape(state, world, pos, ctx, te);
+					return te.capturesMobs() ? Shapes.empty() : getCorrectShape(state, world, pos, collisionContext, te);
 				else if(entity instanceof ItemEntity)
-					return getCorrectShape(state, world, pos, ctx, te);
+					return getCorrectShape(state, world, pos, collisionContext, te);
 			}
 
-			return state.getValue(DEACTIVATED) ? getCorrectShape(state, world, pos, ctx, te) : Shapes.empty();
+			return state.getValue(DEACTIVATED) ? getCorrectShape(state, world, pos, collisionContext, te) : Shapes.empty();
 		}
 		else return Shapes.empty(); //shouldn't happen
 	}

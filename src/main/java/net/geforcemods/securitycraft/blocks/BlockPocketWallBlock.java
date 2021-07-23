@@ -45,11 +45,11 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext collisionContext)
 	{
-		if(!state.getValue(SOLID) && ctx instanceof EntityCollisionContext)
+		if(!state.getValue(SOLID) && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent())
 		{
-			Entity entity = ((EntityCollisionContext)ctx).getEntity();
+			Entity entity = ctx.getEntity().get();
 
 			if(entity instanceof Player)
 			{
