@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Block;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -32,7 +33,7 @@ import net.minecraft.world.phys.Vec3;
  *
  * @author Geforce
  */
-public class SecurityCraftTileEntity extends OwnableTileEntity implements TickableBlockEntity, INameable {
+public class SecurityCraftTileEntity extends OwnableTileEntity implements INameable {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
@@ -45,14 +46,14 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements Tickab
 	private int attackCooldown = 0;
 	private Class<? extends Entity> typeToAttack = Entity.class;
 
-	public SecurityCraftTileEntity()
+	public SecurityCraftTileEntity(BlockPos pos, BlockState state)
 	{
-		this(SCContent.teTypeAbstract);
+		this(SCContent.teTypeAbstract, pos, state);
 	}
 
-	public SecurityCraftTileEntity(BlockEntityType<?> type)
+	public SecurityCraftTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
 	{
-		super(type);
+		super(type, pos, state);
 	}
 
 	@Override

@@ -9,7 +9,9 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class LaserBlockTileEntity extends DisguisableTileEntity {
 
@@ -22,9 +24,9 @@ public class LaserBlockTileEntity extends DisguisableTileEntity {
 		}
 	};
 
-	public LaserBlockTileEntity()
+	public LaserBlockTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeLaserBlock);
+		super(SCContent.teTypeLaserBlock, pos, state);
 	}
 
 	private void toggleLaser(BooleanOption option) {

@@ -3,11 +3,13 @@ package net.geforcemods.securitycraft.api;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Used to give this tile entity an owner
@@ -16,14 +18,14 @@ public class OwnableTileEntity extends BlockEntity implements IOwnable {
 
 	private Owner owner = new Owner();
 
-	public OwnableTileEntity()
+	public OwnableTileEntity(BlockPos pos, BlockState state)
 	{
-		this(SCContent.teTypeOwnable);
+		this(SCContent.teTypeOwnable, pos, state);
 	}
 
-	public OwnableTileEntity(BlockEntityType<?> type)
+	public OwnableTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
 	{
-		super(type);
+		super(type, pos, state);
 	}
 
 	/**

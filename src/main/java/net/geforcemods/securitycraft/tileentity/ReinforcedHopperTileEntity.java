@@ -45,7 +45,6 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.Hopper;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -55,7 +54,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.VanillaInventoryCodeHooks;
 
 //fuck vanilla for not making the hopper te extensible
-public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity implements Hopper, TickableBlockEntity, IOwnable, IModuleInventory
+public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity implements Hopper, IOwnable, IModuleInventory
 {
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
@@ -63,9 +62,9 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 	private int transferCooldown = -1;
 	private long tickedGameTime;
 
-	public ReinforcedHopperTileEntity()
+	public ReinforcedHopperTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeReinforcedHopper);
+		super(SCContent.teTypeReinforcedHopper, pos, state);
 	}
 
 	@Override
@@ -314,7 +313,7 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 		if(remainder.isEmpty())
 		{
 			capturedEverything = true;
-			entity.remove();
+			entity.discard();
 		}
 		else
 			entity.setItem(remainder);

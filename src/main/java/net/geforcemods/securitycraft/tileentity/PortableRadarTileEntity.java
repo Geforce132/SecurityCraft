@@ -15,11 +15,13 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class PortableRadarTileEntity extends CustomizableTileEntity {
@@ -32,9 +34,9 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	private String lastPlayerName = "";
 	private int ticksUntilNextSearch = getSearchDelay();
 
-	public PortableRadarTileEntity()
+	public PortableRadarTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypePortableRadar);
+		super(SCContent.teTypePortableRadar, pos, state);
 	}
 
 	@Override

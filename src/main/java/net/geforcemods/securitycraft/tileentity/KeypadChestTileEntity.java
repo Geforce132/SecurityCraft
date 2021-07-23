@@ -37,6 +37,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -56,9 +57,9 @@ public class KeypadChestTileEntity extends ChestBlockEntity implements IPassword
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
-	public KeypadChestTileEntity()
+	public KeypadChestTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeKeypadChest);
+		super(SCContent.teTypeKeypadChest, pos, state);
 	}
 
 	/**
@@ -111,24 +112,22 @@ public class KeypadChestTileEntity extends ChestBlockEntity implements IPassword
 		load(packet.getTag());
 	}
 
-	/**
-	 * Returns the default name of the inventory
-	 */
 	@Override
 	public Component getDefaultName()
 	{
 		return Utils.localize("block.securitycraft.keypad_chest");
 	}
 
-	protected void signalOpenCount() {
-		super.signalOpenCount();
+	@Override
+	protected void signalOpenCount(Level level, BlockPos pos, BlockState state, int i, int j) {
+		super.signalOpenCount(level, pos, state, i, j);
 
-		if (hasModule(ModuleType.REDSTONE))
-			this.level.updateNeighborsAt(this.worldPosition.below(), this.getBlockState().getBlock());
+		if(hasModule(ModuleType.REDSTONE))
+			level.updateNeighborsAt(worldPosition.below(), getBlockState().getBlock());
 	}
 
 	public int getNumPlayersUsing() {
-		return openCount;
+		return openersCounter.getOpenerCount(); //TODO: AT
 	}
 
 	@Override

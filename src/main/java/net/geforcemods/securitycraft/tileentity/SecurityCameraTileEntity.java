@@ -7,9 +7,11 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class SecurityCameraTileEntity extends CustomizableTileEntity {
 
@@ -22,9 +24,9 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
 	private DoubleOption customRotationOption = new DoubleOption(this::getBlockPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
 
-	public SecurityCameraTileEntity()
+	public SecurityCameraTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeSecurityCamera);
+		super(SCContent.teTypeSecurityCamera, pos, state);
 	}
 
 	@Override

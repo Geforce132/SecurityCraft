@@ -19,8 +19,10 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -29,12 +31,12 @@ import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
-public class TrophySystemTileEntity extends CustomizableTileEntity implements TickableBlockEntity {
+public class TrophySystemTileEntity extends CustomizableTileEntity {
 
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
@@ -48,9 +50,9 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements Ti
 	public int cooldown = getCooldownTime();
 	private final Random random = new Random();
 
-	public TrophySystemTileEntity()
+	public TrophySystemTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeTrophySystem);
+		super(SCContent.teTypeTrophySystem, pos, state);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
 		//ordering is done in TrophySystemScreen based on the user's current language
 		projectileFilter.put(SCContent.eTypeBullet, true);
@@ -154,7 +156,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements Ti
 	 * Deletes the targeted entity and creates a small explosion where it last was
 	 */
 	private void destroyTarget() {
-		entityBeingTargeted.remove();
+		entityBeingTargeted.remove(RemovalReason.KILLED);
 
 		if(!level.isClientSide)
 			level.explode(null, entityBeingTargeted.getX(), entityBeingTargeted.getY(), entityBeingTargeted.getZ(), 0.1F, Explosion.BlockInteraction.NONE);

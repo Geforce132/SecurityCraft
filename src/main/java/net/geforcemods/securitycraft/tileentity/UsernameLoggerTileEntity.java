@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -21,6 +22,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
@@ -31,9 +33,9 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements M
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
 
-	public UsernameLoggerTileEntity()
+	public UsernameLoggerTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeUsernameLogger);
+		super(SCContent.teTypeUsernameLogger, pos, state);
 	}
 
 	@Override

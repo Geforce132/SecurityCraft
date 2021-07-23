@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -39,9 +40,9 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
-	public KeypadTileEntity()
+	public KeypadTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeKeypad);
+		super(SCContent.teTypeKeypad, pos, state);
 	}
 
 	/**

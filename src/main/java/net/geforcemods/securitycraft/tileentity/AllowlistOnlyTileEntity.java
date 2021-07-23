@@ -4,12 +4,14 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class AllowlistOnlyTileEntity extends CustomizableTileEntity
 {
-	public AllowlistOnlyTileEntity()
+	public AllowlistOnlyTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeAllowlistOnly);
+		super(SCContent.teTypeAllowlistOnly, pos, state);
 	}
 
 	@Override

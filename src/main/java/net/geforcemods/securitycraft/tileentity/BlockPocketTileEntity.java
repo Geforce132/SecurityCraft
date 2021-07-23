@@ -12,9 +12,9 @@ public class BlockPocketTileEntity extends SecurityCraftTileEntity
 	private BlockPocketManagerTileEntity manager;
 	private BlockPos managerPos;
 
-	public BlockPocketTileEntity()
+	public BlockPocketTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeBlockPocket);
+		super(SCContent.teTypeBlockPocket, pos, state);
 	}
 
 	public void setManager(BlockPocketManagerTileEntity manager)

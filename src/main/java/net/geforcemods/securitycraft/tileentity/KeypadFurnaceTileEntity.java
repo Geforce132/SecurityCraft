@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -54,9 +55,9 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceBlockEntity implemen
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
-	public KeypadFurnaceTileEntity()
+	public KeypadFurnaceTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeKeypadFurnace, RecipeType.SMELTING);
+		super(SCContent.teTypeKeypadFurnace, pos, state, RecipeType.SMELTING);
 	}
 
 	@Override

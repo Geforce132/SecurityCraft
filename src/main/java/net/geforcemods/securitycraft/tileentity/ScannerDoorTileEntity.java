@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.DoorBlock;
@@ -15,9 +16,9 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 {
-	public ScannerDoorTileEntity()
+	public ScannerDoorTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeScannerDoor);
+		super(SCContent.teTypeScannerDoor, pos, state);
 	}
 
 	@Override
@@ -28,10 +29,8 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 
 		if(!level.isClientSide && upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity))
 		{
-			if(!(entity instanceof Player))
+			if(!(entity instanceof Player player))
 				return;
-
-			Player player = (Player)entity;
 
 			if(PlayerUtils.isPlayerMountedOnCamera(player))
 				return;

@@ -2,15 +2,17 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedIronBarsTileEntity extends OwnableTileEntity
 {
 	private boolean canDrop = true;
 
-	public ReinforcedIronBarsTileEntity()
+	public ReinforcedIronBarsTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeReinforcedIronBars);
+		super(SCContent.teTypeReinforcedIronBars, pos, state);
 	}
 
 	@Override

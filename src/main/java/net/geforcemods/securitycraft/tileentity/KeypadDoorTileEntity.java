@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -27,9 +28,9 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 {
 	private String passcode;
 
-	public KeypadDoorTileEntity()
+	public KeypadDoorTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeKeypadDoor);
+		super(SCContent.teTypeKeypadDoor, pos, state);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class ProjectorTileEntity extends DisguisableTileEntity implements Container, MenuProvider {
@@ -37,9 +39,9 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements Contai
 
 	private ItemStack projectedBlock = ItemStack.EMPTY;
 
-	public ProjectorTileEntity()
+	public ProjectorTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeProjector);
+		super(SCContent.teTypeProjector, pos, state);
 	}
 
 	@Override

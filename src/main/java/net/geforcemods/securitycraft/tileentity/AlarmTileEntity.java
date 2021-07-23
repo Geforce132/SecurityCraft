@@ -8,10 +8,12 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class AlarmTileEntity extends CustomizableTileEntity {
 
@@ -20,9 +22,9 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 	private int cooldown = 0;
 	private boolean isPowered = false;
 
-	public AlarmTileEntity()
+	public AlarmTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeAlarm);
+		super(SCContent.teTypeAlarm, pos, state);
 	}
 
 	@Override
@@ -43,7 +45,7 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 
 				te.setCooldown(delay.get() * 20);
 				level.setBlock(worldPosition, level.getBlockState(worldPosition).setValue(AlarmBlock.FACING, level.getBlockState(worldPosition).getValue(AlarmBlock.FACING)), 2);
-				level.setBlockEntity(worldPosition, te);
+				level.setBlockEntity(te);
 			}
 		}
 

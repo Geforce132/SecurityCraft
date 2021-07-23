@@ -21,9 +21,9 @@ public abstract class SpecialDoorTileEntity extends CustomizableTileEntity
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
 
-	public SpecialDoorTileEntity(BlockEntityType<?> type)
+	public SpecialDoorTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
 	{
-		super(type);
+		super(type, pos, state);
 	}
 
 	@Override
@@ -56,10 +56,8 @@ public abstract class SpecialDoorTileEntity extends CustomizableTileEntity
 		{
 			BlockEntity otherTe = level.getBlockEntity(otherPos);
 
-			if(otherTe instanceof SpecialDoorTileEntity)
+			if(otherTe instanceof SpecialDoorTileEntity otherDoorTe)
 			{
-				SpecialDoorTileEntity otherDoorTe = (SpecialDoorTileEntity)otherTe;
-
 				if(!removed && !otherDoorTe.hasModule(module))
 					otherDoorTe.insertModule(stack);
 				else if(removed && otherDoorTe.hasModule(module))

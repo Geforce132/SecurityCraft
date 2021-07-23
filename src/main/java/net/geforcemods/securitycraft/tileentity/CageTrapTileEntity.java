@@ -4,14 +4,16 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class CageTrapTileEntity extends DisguisableTileEntity {
 
 	private BooleanOption shouldCaptureMobsOption = new BooleanOption("captureMobs", false);
 
-	public CageTrapTileEntity()
+	public CageTrapTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeCageTrap);
+		super(SCContent.teTypeCageTrap, pos, state);
 	}
 
 	@Override

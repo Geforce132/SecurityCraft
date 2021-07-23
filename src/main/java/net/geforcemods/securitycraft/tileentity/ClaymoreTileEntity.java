@@ -17,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class ClaymoreTileEntity extends CustomizableTileEntity
@@ -27,9 +28,9 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 	private double entityZ = -1D;
 	private int cooldown = -1;
 
-	public ClaymoreTileEntity()
+	public ClaymoreTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeClaymore);
+		super(SCContent.teTypeClaymore, pos, state);
 	}
 
 	@Override

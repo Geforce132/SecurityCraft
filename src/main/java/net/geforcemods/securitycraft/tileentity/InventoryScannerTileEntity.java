@@ -40,9 +40,9 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	private boolean isProvidingPower;
 	private int cooldown;
 
-	public InventoryScannerTileEntity()
+	public InventoryScannerTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeInventoryScanner);
+		super(SCContent.teTypeInventoryScanner, pos, state);
 	}
 
 	@Override
@@ -329,7 +329,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 
 					if (block == SCContent.INVENTORY_SCANNER_FIELD.get())
 						level.setBlockAndUpdate(offsetPos, state.setValue(InventoryScannerFieldBlock.HORIZONTAL, bo.get()));
-					else if (!state.isAir(level, offsetPos) && block != SCContent.INVENTORY_SCANNER_FIELD.get() && block != SCContent.INVENTORY_SCANNER.get())
+					else if (!state.isAir() && block != SCContent.INVENTORY_SCANNER_FIELD.get() && block != SCContent.INVENTORY_SCANNER.get())
 						break;
 					else if (block == SCContent.INVENTORY_SCANNER.get() && state.getValue(InventoryScannerBlock.FACING) == facing.getOpposite())
 						break;

@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -13,6 +14,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class KeycardReaderTileEntity extends DisguisableTileEntity implements MenuProvider {
@@ -22,9 +24,9 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements Me
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
-	public KeycardReaderTileEntity()
+	public KeycardReaderTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeKeycardReader);
+		super(SCContent.teTypeKeycardReader, pos, state);
 	}
 
 	@Override

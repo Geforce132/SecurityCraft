@@ -70,9 +70,9 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	private List<Pair<BlockPos,BlockState>> placeQueue = new ArrayList<>();
 	private boolean shouldPlaceBlocks = false;
 
-	public BlockPocketManagerTileEntity()
+	public BlockPocketManagerTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeBlockPocketManager);
+		super(SCContent.teTypeBlockPocketManager, pos, state);
 	}
 
 	@Override
@@ -626,46 +626,46 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		List<TranslatableComponent> components = new ArrayList<>();
 
 		offsetLeft = switch(managerFacing)
-		{
-			case NORTH ->
-			{
-				offsetBehind = difference.getZ();
-				yield difference.getX();
-			}
-			case SOUTH ->
-			{
-				offsetBehind = -difference.getZ();
-				yield -difference.getX();
-			}
-			case WEST ->
-			{
-				offsetBehind = difference.getX();
-				yield -difference.getZ();
-			}
-			case EAST ->
-			{
-				offsetBehind = -difference.getX();
-				yield difference.getZ();
-			}
-			default -> throw new IllegalArgumentException("Invalid Block Pocket Manager direction: " + managerFacing.name());
-		};
+				{
+					case NORTH ->
+					{
+						offsetBehind = difference.getZ();
+						yield difference.getX();
+					}
+					case SOUTH ->
+					{
+						offsetBehind = -difference.getZ();
+						yield -difference.getX();
+					}
+					case WEST ->
+					{
+						offsetBehind = difference.getX();
+						yield -difference.getZ();
+					}
+					case EAST ->
+					{
+						offsetBehind = -difference.getX();
+						yield difference.getZ();
+					}
+					default -> throw new IllegalArgumentException("Invalid Block Pocket Manager direction: " + managerFacing.name());
+				};
 
-		if (offsetLeft > 0) {
-			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksLeft", offsetLeft));
-		}
-		else if (offsetLeft < 0) {
-			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksRight", -offsetLeft));
-		}
+				if (offsetLeft > 0) {
+					components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksLeft", offsetLeft));
+				}
+				else if (offsetLeft < 0) {
+					components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksRight", -offsetLeft));
+				}
 
-		if (offsetBehind > 0) {
-			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksBehind", offsetBehind));
-		}
+				if (offsetBehind > 0) {
+					components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksBehind", offsetBehind));
+				}
 
-		if (offsetAbove > 0) {
-			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksAbove", offsetAbove));
-		}
+				if (offsetAbove > 0) {
+					components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksAbove", offsetAbove));
+				}
 
-		return Utils.localize("messages.securitycraft:blockpocket.position." + components.size(), components.toArray());
+				return Utils.localize("messages.securitycraft:blockpocket.position." + components.size(), components.toArray());
 	}
 
 	public void toggleOutline()

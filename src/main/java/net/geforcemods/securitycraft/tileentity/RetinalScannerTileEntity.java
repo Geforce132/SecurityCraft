@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -44,9 +45,9 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	private static GameProfileCache profileCache;
 	private static MinecraftSessionService sessionService;
 
-	public RetinalScannerTileEntity()
+	public RetinalScannerTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeRetinalScanner);
+		super(SCContent.teTypeRetinalScanner, pos, state);
 	}
 
 	@Override
@@ -154,10 +155,11 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 			if (input.isComplete() && input.getProperties().containsKey("textures"))
 				return input;
 			else if (profileCache != null && sessionService != null) {
-				GameProfile gameprofile = profileCache.get(input.getName());
-				if (gameprofile == null)
+				Optional<GameProfile> optional = profileCache.get(input.getName());
+				if (!optional.isPresent())
 					return input;
 				else {
+					GameProfile gameprofile = optional.get();
 					Property property = Iterables.getFirst(gameprofile.getProperties().get("textures"), (Property)null);
 					if (property == null) {
 						try {

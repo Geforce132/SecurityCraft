@@ -8,17 +8,19 @@ import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getBlockPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
 
-	public MotionActivatedLightTileEntity()
+	public MotionActivatedLightTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeMotionLight);
+		super(SCContent.teTypeMotionLight, pos, state);
 	}
 
 	@Override

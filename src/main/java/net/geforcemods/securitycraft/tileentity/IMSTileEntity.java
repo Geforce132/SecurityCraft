@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -37,9 +38,9 @@ public class IMSTileEntity extends CustomizableTileEntity implements MenuProvide
 	private boolean updateBombCount = false;
 	private int attackTime = getAttackInterval();
 
-	public IMSTileEntity()
+	public IMSTileEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeIms);
+		super(SCContent.teTypeIms, pos, state);
 	}
 
 	@Override
@@ -122,7 +123,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements MenuProvide
 		{
 			BlockState state = getLevel().getBlockState(getBlockPos().above(height));
 
-			if(state == null || state.isAir(getLevel(), getBlockPos()))
+			if(state == null || state.isAir())
 				continue;
 			else
 				break;
