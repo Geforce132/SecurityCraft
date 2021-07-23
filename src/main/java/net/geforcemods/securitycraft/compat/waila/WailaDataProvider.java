@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.compat.waila;
 
+import java.lang.reflect.Field;
+
 import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.EntityAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
@@ -12,6 +14,7 @@ import mcp.mobius.waila.api.WailaPlugin;
 import mcp.mobius.waila.api.config.IPluginConfig;
 import mcp.mobius.waila.api.ui.IElement;
 import mcp.mobius.waila.impl.ui.ItemStackElement;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
@@ -35,6 +38,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 @WailaPlugin(SecurityCraft.MODID)
 public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider
@@ -52,7 +56,24 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		registrar.addConfig(SHOW_MODULES, true);
 		registrar.addConfig(SHOW_PASSWORDS, true);
 		registrar.addConfig(SHOW_CUSTOM_NAME, true);
-		//TODO: registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, IOwnable.class);
+
+		//TODO: is this the best it can get? does this even work?
+		for(Field field : SCContent.class.getFields())
+		{
+			try
+			{
+				if(field.get(null) instanceof RegistryObject<?> ro)
+				{
+					if(ro.get() instanceof Block block)
+						registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
+				}
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
 		//TODO: check if all sub classes of these work as well
 		registrar.registerIconProvider(INSTANCE, BaseFullMineBlock.class);
 		registrar.registerIconProvider(INSTANCE, BlockPocketWallBlock.class);
@@ -92,32 +113,35 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 			BlockEntity te = data.getBlockEntity();
 
-			//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
-			if(config.get(SHOW_OWNER) && te instanceof IOwnable ownable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-				tooltip.add(Utils.localize("waila.securitycraft:owner", ownable.getOwner().getName()));
+			if(te != null)
+			{
+				//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
+				if(config.get(SHOW_OWNER) && te instanceof IOwnable ownable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
+					tooltip.add(Utils.localize("waila.securitycraft:owner", ownable.getOwner().getName()));
 
-			if(disguised)
-				return;
+				if(disguised)
+					return;
 
-			//if the te is ownable, show modules only when it's owned, otherwise always show
-			if(config.get(SHOW_MODULES) && te instanceof IModuleInventory moduleInv && (!(te instanceof IOwnable ownable) || ownable.getOwner().isOwner(data.getPlayer()))){
-				if(!moduleInv.getInsertedModules().isEmpty())
-					tooltip.add(Utils.localize("waila.securitycraft:equipped"));
+				//if the te is ownable, show modules only when it's owned, otherwise always show
+				if(config.get(SHOW_MODULES) && te instanceof IModuleInventory moduleInv && (!(te instanceof IOwnable ownable) || ownable.getOwner().isOwner(data.getPlayer()))){
+					if(!moduleInv.getInsertedModules().isEmpty())
+						tooltip.add(Utils.localize("waila.securitycraft:equipped"));
 
-				for(ModuleType module : moduleInv.getInsertedModules())
-					tooltip.add(new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())));
-			}
+					for(ModuleType module : moduleInv.getInsertedModules())
+						tooltip.add(new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())));
+				}
 
-			if(config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected ipp && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
-				String password = ipp.getPassword();
+				if(config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected ipp && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
+					String password = ipp.getPassword();
 
-				tooltip.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
-			}
+					tooltip.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
+				}
 
-			if(config.get(SHOW_CUSTOM_NAME) && te instanceof INameable nameable && nameable.canBeNamed()){
-				Component text = nameable.getCustomSCName();
+				if(config.get(SHOW_CUSTOM_NAME) && te instanceof INameable nameable && nameable.canBeNamed()){
+					Component text = nameable.getCustomSCName();
 
-				tooltip.add(Utils.localize("waila.securitycraft:customName", nameable.hasCustomSCName() ? text : Utils.localize("waila.securitycraft:customName.notSet")));
+					tooltip.add(Utils.localize("waila.securitycraft:customName", nameable.hasCustomSCName() ? text : Utils.localize("waila.securitycraft:customName.notSet")));
+				}
 			}
 		}
 	}
