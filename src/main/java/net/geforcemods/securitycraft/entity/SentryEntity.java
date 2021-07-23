@@ -422,7 +422,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 		double x = target.getX() - getX();
 		double y = baseY - throwableEntity.getY();
 		double z = target.getZ() - getZ();
-		float yOffset = Mth.sqrt(x * x + z * z) * 0.2F;
+		float yOffset = Mth.sqrt((float)(x * x + z * z)) * 0.2F;
 
 		entityData.set(HEAD_ROTATION, (float)(Mth.atan2(x, -z) * (180D / Math.PI)));
 		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
