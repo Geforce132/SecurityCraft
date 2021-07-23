@@ -149,7 +149,7 @@ public class BlockReinforcerContainer extends AbstractContainerMenu
 				slot = slots.get(currentIndex);
 				slotStack = slot.getItem();
 
-				if(!slotStack.isEmpty() && consideredTheSameItem(stack, slotStack) && slot.mayPlace(stack))
+				if(!slotStack.isEmpty() && ItemStack.isSameItemSameTags(stack, slotStack) && slot.mayPlace(stack))
 				{
 					int combinedCount = slotStack.getCount() + stack.getCount();
 
