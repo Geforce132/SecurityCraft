@@ -57,10 +57,10 @@ public class AttackRangedIfEnabledGoal extends Goal
 
 		if(--rangedAttackTime == 0)
 		{
-			if(!sentry.getSensing().canSee(attackTarget))
+			if(!sentry.getSensing().hasLineOfSight(attackTarget))
 				return;
 
-			float f = Mth.sqrt(targetDistance) / attackRadius;
+			float f = Mth.sqrt((float)targetDistance) / attackRadius;
 			float distanceFactor = Mth.clamp(f, 0.1F, 1.0F);
 
 			sentry.performRangedAttack(attackTarget, distanceFactor);
