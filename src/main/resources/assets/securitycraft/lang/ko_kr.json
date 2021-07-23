@@ -629,7 +629,6 @@
 	"messages.securitycraft:universalOwnerChanger.noBlockClaiming": "소유자가 없으면 블록을 청구할 수 없습니다.",
 	"messages.securitycraft:irc.connected": "세큐리티크래프트의 v1.8.3에서는 IRC 채팅이 더 이상 지원되지 않습니다. 도움이 필요한 경우 세큐리티크래프트의 디스코드 #help 채널을 참조해 주세요!",
 	"messages.securitycraft:cageTrap.captured": "%1$s는 %2$s에서 잡혔습니다.",
-	"messages.securitycraft:frame.rightclick": "바인딩된 모니터로 마우스 오른쪽 버튼을 클릭하여 봅니다.",
 	"messages.securitycraft:command.sc.usage": "사용법: /sc 연결 또는 /sc 연결 해제 또는 /sc 연락처 또는 /sc 다시 시작",
 	"messages.securitycraft:naming.alreadyMatches": "이 블록의 이름이 이미 '%s'과(와) 일치합니다.",
 	"messages.securitycraft:thanks": "세큐리티크래프트 %1$s를 사용해 주셔서 감사합니다! %2$s %3$s ",
