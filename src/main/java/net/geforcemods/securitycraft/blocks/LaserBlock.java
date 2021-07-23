@@ -61,7 +61,7 @@ public class LaserBlock extends DisguisableBlock {
 				BlockState offsetState = world.getBlockState(offsetPos);
 				Block offsetBlock = offsetState.getBlock();
 
-				if(!offsetState.isAir(world, offsetPos) && offsetBlock != SCContent.LASER_BLOCK.get())
+				if(!offsetState.isAir() && offsetBlock != SCContent.LASER_BLOCK.get())
 					break inner;
 				else if(offsetBlock == SCContent.LASER_BLOCK.get())
 				{
@@ -82,7 +82,7 @@ public class LaserBlock extends DisguisableBlock {
 							{
 								offsetPos = pos.relative(facing, j);
 
-								if(world.getBlockState(offsetPos).isAir(world, offsetPos))
+								if(world.getBlockState(offsetPos).isAir())
 								{
 									world.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
 

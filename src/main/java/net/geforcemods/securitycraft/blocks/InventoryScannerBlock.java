@@ -210,7 +210,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			BlockState state = world.getBlockState(offsetPos);
 			Block block = state.getBlock();
 
-			if(!state.isAir(world, offsetPos) && block != SCContent.INVENTORY_SCANNER_FIELD.get() && block != SCContent.INVENTORY_SCANNER.get())
+			if(!state.isAir() && block != SCContent.INVENTORY_SCANNER_FIELD.get() && block != SCContent.INVENTORY_SCANNER.get())
 				return null;
 
 			if(block == SCContent.INVENTORY_SCANNER.get() && state.getValue(FACING) == facing.getOpposite())

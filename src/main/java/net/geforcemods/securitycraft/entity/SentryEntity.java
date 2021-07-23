@@ -497,7 +497,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 			ItemStack disguiseStack = blocks.get(0);
 			BlockState state = Block.byItem(disguiseStack.getItem()).defaultBlockState();
 
-			if (level.getBlockState(blockPosition()).isAir(level, blockPosition()))
+			if (level.getBlockState(blockPosition()).isAir())
 				level.setBlockAndUpdate(blockPosition(), state.getShape(level, blockPosition()) == Shapes.block() ? state : Blocks.AIR.defaultBlockState());
 		}
 

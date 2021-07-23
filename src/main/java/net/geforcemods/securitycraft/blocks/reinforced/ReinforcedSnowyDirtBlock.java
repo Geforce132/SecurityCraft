@@ -97,7 +97,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	@Override
 	public boolean isValidBonemealTarget(BlockGetter world, BlockPos pos, BlockState state, boolean isClient)
 	{
-		return this == SCContent.REINFORCED_GRASS_BLOCK.get() && world.getBlockState(pos.above()).isAir(world, pos.above());
+		return this == SCContent.REINFORCED_GRASS_BLOCK.get() && world.getBlockState(pos.above()).isAir();
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 					if(tempState.getBlock() == grass.getBlock() && rand.nextInt(10) == 0)
 						((BonemealableBlock)grass.getBlock()).performBonemeal(world, rand, tempPos, tempState);
 
-					if(!tempState.isAir(world, tempPos))
+					if(!tempState.isAir())
 						break;
 
 					BlockState placeState;
