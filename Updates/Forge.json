@@ -19,8 +19,8 @@
     "1.12-recommended": "v1.8.8.1",
     "1.12.1-latest": "v1.8.8.1",
     "1.12.1-recommended": "v1.8.8.1",
-    "1.12.2-latest": "v1.8.22.2",
-    "1.12.2-recommended": "v1.8.22.2",
+    "1.12.2-latest": "v1.8.23",
+    "1.12.2-recommended": "v1.8.23",
     "1.13.2-latest": "v1.8.13",
     "1.13.2-recommended": "v1.8.13",
     "1.14.3-latest": "v1.8.12-beta2",
@@ -29,8 +29,8 @@
     "1.14.4-recommended": "v1.8.22.2",
     "1.15.1-latest": "v1.8.15-beta2",
     "1.15.1-recommended": "v1.8.15-beta2",
-    "1.15.2-latest": "v1.8.22.2",
-    "1.15.2-recommended": "v1.8.22.2",
+    "1.15.2-latest": "v1.8.23",
+    "1.15.2-recommended": "v1.8.23",
     "1.16.1-latest": "v1.8.19.3",
     "1.16.1-recommended": "v1.8.19.3",
     "1.16.2-latest": "v1.8.19.3",
@@ -39,8 +39,8 @@
     "1.16.3-recommended": "v1.8.21.1",
     "1.16.4-latest": "v1.8.21.1",
     "1.16.4-recommended": "v1.8.21.1",
-    "1.16.5-latest": "v1.8.22.2",
-    "1.16.5-recommended": "v1.8.22.2"
+    "1.16.5-latest": "v1.8.23",
+    "1.16.5-recommended": "v1.8.23"
   },
   "1.7.10": {
     "v1.8.13": "Tons of new features and fixes"
@@ -70,7 +70,7 @@
     "v1.8.8.1": "Several new reinforced blocks, dozens of fixes and some small new features."
   },
   "1.12.2": {
-    "v1.8.22.2": "Keycard overhaul, new Speed Module, module renames, proper offhand support, quality of life changes and a bunch of fixes."
+    "v1.8.23": "Buffed Sentry, new module support for some blocks, bunch of fixes."
   },
   "1.13.2": {
     "v1.8.13": "Tons of new features and fixes"
@@ -85,7 +85,7 @@
     "v1.8.15-beta2": "Sentry Remote Access Tool and a ton of QoL fixes and additions"
   },
   "1.15.2": {
-    "v1.8.22.2": "Keycard overhaul, new Speed Module, module renames, proper offhand support, quality of life changes and a bunch of fixes."
+    "v1.8.23": "Buffed Sentry, new module support for some blocks, bunch of fixes."
   },
   "1.16.1": {
 	"v1.8.19.3": "Backport fixes from SecurityCraft for Minecraft 1.16.2"
@@ -100,6 +100,6 @@
 	"v1.8.21.1": "Sentry & Block Pocket Manager overhaul, configuration file restructure, other new features, lots of fixes."
   },
   "1.16.5": {
-	"v1.8.22.2": "Keycard overhaul, new Speed Module, module renames, proper offhand support, quality of life changes and a bunch of fixes."
+	"v1.8.23": "Buffed Sentry, new module support for some blocks, bunch of fixes."
   }
 }

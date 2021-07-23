@@ -1,6 +1,6 @@
 {
-	"version": "v1.8.22.2",
-	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/3361074",
-	"fileName": "[1.16.5] SecurityCraft v1.8.22.2",
-	"changelog": "Keycard overhaul, new Speed Module, module renames, proper offhand support, quality of life changes and a bunch of fixes."
+	"version": "v1.8.23",
+	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/3398327",
+	"fileName": "[1.16.5] SecurityCraft v1.8.23",
+	"changelog": "Buffed Sentry, new module support for some blocks, bunch of fixes."
 }
