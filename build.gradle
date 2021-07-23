@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
@@ -19,10 +18,12 @@ version = 'v1.8.23'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 processResources { 
 	exclude ".cache"
+	duplicatesStrategy = 'include'
  
 	//replace ${version} in mods.toml
 	inputs.property 'version', project.version
