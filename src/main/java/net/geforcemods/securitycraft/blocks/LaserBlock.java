@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import com.mojang.math.Vector3f;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
@@ -190,15 +192,16 @@ public class LaserBlock extends DisguisableBlock {
 			double z = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double magicNumber1 = 0.2199999988079071D;
 			double magicNumber2 = 0.27000001072883606D;
-			float f1 = 0.6F + 0.4F;
-			float f2 = Math.max(0.0F, 0.7F - 0.5F);
-			float f3 = Math.max(0.0F, 0.6F - 0.7F);
+			float r = 0.6F + 0.4F;
+			float g = Math.max(0.0F, 0.7F - 0.5F);
+			float b = Math.max(0.0F, 0.6F - 0.7F);
+			Vector3f vec = new Vector3f(r, g, b);
 
-			world.addParticle(new DustParticleOptions(f1, f2, f3, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new DustParticleOptions(f1, f2, f3, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new DustParticleOptions(f1, f2, f3, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new DustParticleOptions(f1, f2, f3, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new DustParticleOptions(f1, f2, f3, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new DustParticleOptions(vec, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new DustParticleOptions(vec, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new DustParticleOptions(vec, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new DustParticleOptions(vec, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new DustParticleOptions(vec, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 
 	}
