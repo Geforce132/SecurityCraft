@@ -66,7 +66,7 @@ public class UpdateTEOwnable
 			((IOwnable)te).setOwner(message.uuid, message.name);
 
 			if(message.syncTag)
-				te.load(Minecraft.getInstance().level.getBlockState(message.pos), message.tag);
+				te.load( message.tag);
 		});
 
 		ctx.get().setPacketHandled(true);

@@ -77,6 +77,6 @@ public class SendTip
 
 	private static boolean isOutdated()
 	{
-		return VersionChecker.getResult(ModList.get().getModContainerById(SecurityCraft.MODID).get().getModInfo()).status == Status.OUTDATED;
+		return VersionChecker.getResult(ModList.get().getModContainerById(SecurityCraft.MODID).get().getModInfo()).status() == Status.OUTDATED;
 	}
 }

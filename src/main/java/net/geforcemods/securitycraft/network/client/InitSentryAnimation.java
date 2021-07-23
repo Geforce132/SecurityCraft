@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
@@ -45,12 +44,12 @@ public class InitSentryAnimation
 	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			List<PathfinderMob> sentries = Minecraft.getInstance().level.<PathfinderMob>getEntitiesOfClass(SentryEntity.class, new AABB(message.pos));
+			List<SentryEntity> sentries = Minecraft.getInstance().level.<SentryEntity>getEntitiesOfClass(SentryEntity.class, new AABB(message.pos));
 
 			if(!sentries.isEmpty())
 			{
-				((SentryEntity)sentries.get(0)).animateUpwards = message.animateUpwards;
-				((SentryEntity)sentries.get(0)).animate = message.animate;
+				sentries.get(0).animateUpwards = message.animateUpwards;
+				sentries.get(0).animate = message.animate;
 			}
 		});
 
