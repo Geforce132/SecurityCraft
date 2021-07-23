@@ -155,9 +155,9 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	}
 
 	@Override
-	public void stepOn(Level worldIn, BlockPos pos, Entity entity)
+	public void stepOn(Level worldIn, BlockPos pos, BlockState state, Entity entity)
 	{
-		modelBlock.stepOn(worldIn, pos, entity);
+		modelBlock.stepOn(worldIn, pos, state, entity);
 	}
 
 	@Override

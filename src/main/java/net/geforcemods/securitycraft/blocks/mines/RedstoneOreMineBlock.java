@@ -42,10 +42,10 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock
 	}
 
 	@Override
-	public void stepOn(Level world, BlockPos pos, Entity entity)
+	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity)
 	{
-		activate(world.getBlockState(pos), world, pos);
-		super.stepOn(world, pos, entity);
+		activate(state, world, pos);
+		super.stepOn(world, pos, state, entity);
 	}
 
 	@Override
