@@ -127,7 +127,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 			BlockPos downPos = getBlockPosBelowThatAffectsMyMovement();
 
 			if(level.getBlockState(downPos).isAir() || level.noCollision(new AABB(downPos)))
-				remove();
+				remove(RemovalReason.DISCARDED);
 		}
 		else
 		{
@@ -181,10 +181,10 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 			player.closeContainer();
 
 			if(player.isCrouching())
-				remove();
+				remove(RemovalReason.DISCARDED);
 			else if(item == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
 			{
-				remove();
+				remove(RemovalReason.KILLED);
 
 				if(!player.isCreative())
 					player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
@@ -279,7 +279,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 		else if(!getOwner().isOwner(player) && hand == InteractionHand.MAIN_HAND && player.isCreative())
 		{
 			if(player.isCrouching() || player.getMainHandItem().getItem() == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
-				remove();
+				remove(RemovalReason.KILLED);
 		}
 
 		return super.mobInteract(player, hand);
@@ -289,7 +289,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 	 * Cleanly removes this sentry from the world, dropping the module and removing the block the sentry is disguised with
 	 */
 	@Override
-	public void remove()
+	public void remove(RemovalReason reason)
 	{
 		BlockPos pos = blockPosition();
 
@@ -304,7 +304,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 			}
 		}
 
-		super.remove();
+		super.remove(reason);
 		Block.popResource(level, pos, new ItemStack(SCContent.SENTRY.get()));
 		Block.popResource(level, pos, getDisguiseModule()); //if there is none, nothing will drop
 		Block.popResource(level, pos, getAllowlistModule()); //if there is none, nothing will drop
@@ -316,7 +316,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 	@Override
 	public void kill()
 	{
-		remove();
+		remove(RemovalReason.KILLED);
 	}
 
 	/**

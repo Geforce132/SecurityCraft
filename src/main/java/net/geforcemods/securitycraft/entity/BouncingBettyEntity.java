@@ -51,7 +51,7 @@ public class BouncingBettyEntity extends Entity {
 	@Override
 	public boolean isPickable()
 	{
-		return !removed;
+		return !isRemoved();
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class BouncingBettyEntity extends Entity {
 
 		if (!level.isClientSide && fuse-- <= 0)
 		{
-			remove();
+			remove(RemovalReason.DISCARDED);
 			explode();
 		}
 		else if(level.isClientSide)

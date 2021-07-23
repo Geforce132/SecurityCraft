@@ -71,7 +71,7 @@ public class IMSBombEntity extends Fireball {
 			BlockPos impactPos = ((BlockHitResult)result).getBlockPos();
 
 			level.explode(this, impactPos.getX(), impactPos.getY() + 1D, impactPos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.5F : 7F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
-			remove();
+			remove(RemovalReason.DISCARDED);
 		}
 	}
 
