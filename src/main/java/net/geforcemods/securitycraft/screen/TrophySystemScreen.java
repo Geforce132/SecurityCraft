@@ -88,8 +88,8 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEContain
 		int startY = (height - imageHeight) / 2;
 
 		renderBackground(matrix);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bind(GUI_TEXTURE);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bindForSetup(GUI_TEXTURE);
 		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
@@ -177,7 +177,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEContain
 				int yStart = relativeY + (slotHeight * i);
 
 				font.draw(matrix, projectileName, left + width / 2 - font.width(projectileName) / 2, yStart, 0xC6C6C6);
-				minecraft.getTextureManager().bind(BEACON_GUI);
+				minecraft.getTextureManager().bindForSetup(BEACON_GUI);
 				blit(matrix, left, yStart - 3, 14, 14, tileEntity.getFilter(projectileType) ? 88 : 110, 219, 21, 22, 256, 256);
 				i++;
 			}

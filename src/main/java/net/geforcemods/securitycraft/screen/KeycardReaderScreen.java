@@ -287,7 +287,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderCo
 			int left = leftPos + 40;
 			int top = topPos + 60;
 
-			minecraft.getTextureManager().bind(WORLD_SELECTION_ICONS);
+			minecraft.getTextureManager().bindForSetup(WORLD_SELECTION_ICONS);
 			blit(matrix, left, top, 22, 22, 70, 37, 22, 22, 256, 256);
 
 			if(mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
@@ -305,8 +305,8 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderCo
 	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
 		renderBackground(matrix);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bind(TEXTURE);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bindForSetup(TEXTURE);
 		blit(matrix, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, imageWidth, imageHeight);
 	}
 

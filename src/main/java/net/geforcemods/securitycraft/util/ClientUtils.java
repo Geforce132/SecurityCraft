@@ -63,22 +63,20 @@ public class ClientUtils{
 		Matrix4f m4f = matrix.last().pose();
 		BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
 
-		RenderSystem.enableAlphaTest();
 		RenderSystem.enableBlend();
-		RenderSystem.defaultAlphaFunc();
 		RenderSystem.defaultBlendFunc();
 
-		mc.getTextureManager().bind(MODULE_TEXTURES[module.ordinal()]);
+		mc.getTextureManager().bindForSetup(MODULE_TEXTURES[module.ordinal()]);
 		drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 
 		if(module == ModuleType.REDSTONE)
 		{
-			mc.getTextureManager().bind(REDSTONE_TEXTURE);
+			mc.getTextureManager().bindForSetup(REDSTONE_TEXTURE);
 			drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 		else if(module == ModuleType.SPEED)
 		{
-			mc.getTextureManager().bind(SUGAR_TEXTURE);
+			mc.getTextureManager().bindForSetup(SUGAR_TEXTURE);
 			drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 

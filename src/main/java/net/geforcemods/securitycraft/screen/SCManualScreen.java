@@ -133,14 +133,14 @@ public class SCManualScreen extends Screen {
 	@Override
 	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks){
 		renderBackground(matrix);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		if(currentPage == -1)
-			minecraft.getTextureManager().bind(infoBookTitlePage);
+			minecraft.getTextureManager().bindForSetup(infoBookTitlePage);
 		else if(recipe != null && recipe.size() > 0)
-			minecraft.getTextureManager().bind(infoBookTexture);
+			minecraft.getTextureManager().bindForSetup(infoBookTexture);
 		else
-			minecraft.getTextureManager().bind(infoBookTextureSpecial);
+			minecraft.getTextureManager().bindForSetup(infoBookTextureSpecial);
 
 		blit(matrix, startX, 5, 0, 0, 256, 250);
 
@@ -169,7 +169,7 @@ public class SCManualScreen extends Screen {
 			font.drawWordWrap(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			font.draw(matrix, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
 			minecraft.getItemRenderer().renderAndDecorateItem(new ItemStack(item), startX + 19, 22);
-			minecraft.getTextureManager().bind(infoBookIcons);
+			minecraft.getTextureManager().bindForSetup(infoBookIcons);
 
 			if(item instanceof BlockItem){
 				Block block = ((BlockItem) item).getBlock();
@@ -637,8 +637,6 @@ public class SCManualScreen extends Screen {
 				}
 
 				RenderSystem.enableTexture();
-				RenderSystem.shadeModel(GL11.GL_FLAT);
-				RenderSystem.enableAlphaTest();
 				RenderSystem.disableBlend();
 				GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
@@ -752,8 +750,8 @@ public class SCManualScreen extends Screen {
 			if(visible){
 				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
-				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				Minecraft.getInstance().getTextureManager().bind(bookGuiTextures);
+				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+				Minecraft.getInstance().getTextureManager().bindForSetup(bookGuiTextures);
 				blit(matrix, x, y, isHovering ? 23 : 0, textureY, 23, 13);
 			}
 		}
@@ -769,7 +767,7 @@ public class SCManualScreen extends Screen {
 		@Override
 		public void renderButton(PoseStack matrix, int mouseX, int mouseY, float partial)
 		{
-			minecraft.getTextureManager().bind(infoBookIcons);
+			minecraft.getTextureManager().bindForSetup(infoBookIcons);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 			if(isHovered)

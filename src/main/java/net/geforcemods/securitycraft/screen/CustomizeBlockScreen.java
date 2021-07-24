@@ -153,8 +153,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
 		renderBackground(matrix);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bind(TEXTURES[moduleInv.getMaxNumberOfModules()]);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bindForSetup(TEXTURES[moduleInv.getMaxNumberOfModules()]);
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
 		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);

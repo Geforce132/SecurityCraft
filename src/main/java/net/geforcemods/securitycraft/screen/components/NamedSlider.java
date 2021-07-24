@@ -51,8 +51,8 @@ public class NamedSlider extends Slider
 				updateSlider();
 			}
 
-			mc.getTextureManager().bind(WIDGETS_LOCATION);
-			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			mc.getTextureManager().bindForSetup(WIDGETS_LOCATION);
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			blit(matrix, x + (int)(sliderValue * (width - 8)), y, 0, 46 + offset, 4, 20);
 			blit(matrix, x + (int)(sliderValue * (width - 8)) + 4, y, 196, 46 + offset, 4, 20);
 		}

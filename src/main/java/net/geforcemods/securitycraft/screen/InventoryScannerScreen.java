@@ -57,7 +57,6 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks){
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		RenderSystem.disableLighting();
 		font.drawWordWrap(infoStringRedstone, leftPos + 28, topPos + 45, 150, 4210752);
 		font.drawWordWrap(infoStringStorage, leftPos + 28, topPos + 75, 150, 4210752);
 		ClientUtils.renderModuleInfo(matrix, ModuleType.REDSTONE, null, redstoneModuleNotInstalled, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
@@ -88,8 +87,8 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	@Override
 	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bind(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bindForSetup(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
 		blit(matrix, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, imageWidth, imageHeight + 30);
 	}
 }

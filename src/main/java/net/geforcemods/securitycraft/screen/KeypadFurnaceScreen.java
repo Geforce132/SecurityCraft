@@ -48,8 +48,8 @@ public class KeypadFurnaceScreen extends AbstractContainerScreen<KeypadFurnaceCo
 	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
 		renderBackground(matrix);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bind(FURNACE_GUI_TEXTURES);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bindForSetup(FURNACE_GUI_TEXTURES);
 		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 
 		if(((AbstractFurnaceMenu)menu).isLit())

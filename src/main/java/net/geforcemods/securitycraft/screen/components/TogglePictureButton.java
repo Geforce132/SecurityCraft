@@ -57,13 +57,13 @@ public class TogglePictureButton extends IdButton{
 	{
 		if (visible)
 		{
-			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			GuiUtils.drawContinuousTexturedBox(matrix, WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHovered()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 
 			if(getTextureLocation() != null)
 			{
-				Minecraft.getInstance().getTextureManager().bind(getTextureLocation());
+				Minecraft.getInstance().getTextureManager().bindForSetup(getTextureLocation());
 				blit(matrix, x + drawOffset, y + drawOffset, drawWidth, drawHeight, u[currentIndex], v[currentIndex], uWidth, vHeight, textureWidth, textureHeight);
 			}
 		}

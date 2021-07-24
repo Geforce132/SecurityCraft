@@ -74,24 +74,21 @@ public class PictureButton extends IdButton{
 			Minecraft mc = Minecraft.getInstance();
 			Font font = mc.font;
 
-			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			GuiUtils.drawContinuousTexturedBox(matrix, WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHovered()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 
 			if(blockToRender != null){
-				RenderSystem.enableRescaleNormal();
 				itemRenderer.renderAndDecorateItem(new ItemStack(blockToRender), x + 2, y + 3);
 				itemRenderer.renderGuiItemDecorations(font, new ItemStack(blockToRender), x + 2, y + 3, "");
 			}else if(itemToRender != null){
-				RenderSystem.enableRescaleNormal();
 				itemRenderer.renderAndDecorateItem(new ItemStack(itemToRender), x + 2, y + 2);
 				itemRenderer.renderGuiItemDecorations(font, new ItemStack(itemToRender), x + 2, y + 2, "");
-				RenderSystem.disableLighting();
 			}
 			else if(getTextureLocation() != null)
 			{
-				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				mc.getTextureManager().bind(getTextureLocation());
+				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+				mc.getTextureManager().bindForSetup(getTextureLocation());
 				blit(matrix, x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
 			}
 		}

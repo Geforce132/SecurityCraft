@@ -43,7 +43,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.DrawHighlightEvent;
+import net.minecraftforge.client.event.DrawSelectionEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseClickedEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
@@ -85,7 +85,7 @@ public class SCClientEventHandler
 	}
 
 	@SubscribeEvent
-	public static void onDrawBlockHighlight(DrawHighlightEvent.HighlightBlock event)
+	public static void onDrawBlockHighlight(DrawSelectionEvent.HighlightBlock event)
 	{
 		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getVehicle().blockPosition().equals(event.getTarget().getBlockPos()))
 			event.setCanceled(true);
@@ -195,10 +195,8 @@ public class SCClientEventHandler
 			}
 
 			if (uCoord != 0) {
-				RenderSystem.enableAlphaTest();
-				Minecraft.getInstance().textureManager.bind(BEACON_GUI);
+				Minecraft.getInstance().textureManager.bindForSetup(BEACON_GUI);
 				GuiComponent.blit(pose, Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.getInventory().selected * 20 : -29), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
-				RenderSystem.disableAlphaTest();
 			}
 		}
 	}
@@ -257,17 +255,17 @@ public class SCClientEventHandler
 		font.drawShadow(matrix, redstone, resolution.getGuiScaledWidth() - font.width(redstone) - 8, resolution.getGuiScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
 		font.drawShadow(matrix, redstoneNote, resolution.getGuiScaledWidth() - font.width(redstoneNote) -8, resolution.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
 
-		mc.getTextureManager().bind(CAMERA_DASHBOARD);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		mc.getTextureManager().bindForSetup(CAMERA_DASHBOARD);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.blit(matrix, 5, 0, 0, 0, 90, 20);
 		gui.blit(matrix, resolution.getGuiScaledWidth() - 55, 5, 205, 0, 50, 30);
 
 		if(!player.hasEffect(MobEffects.NIGHT_VISION))
 			gui.blit(matrix, 28, 4, 90, 12, 16, 11);
 		else{
-			mc.getTextureManager().bind(NIGHT_VISION);
+			mc.getTextureManager().bindForSetup(NIGHT_VISION);
 			GuiComponent.blit(matrix, 27, -1, 0, 0, 18, 18, 18, 18);
-			mc.getTextureManager().bind(CAMERA_DASHBOARD);
+			mc.getTextureManager().bindForSetup(CAMERA_DASHBOARD);
 		}
 
 		BlockState state = world.getBlockState(pos);

@@ -74,8 +74,8 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
 		renderBackground(matrix);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bind(isLvl1 ? TEXTURE_LVL1 : TEXTURE);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bindForSetup(isLvl1 ? TEXTURE_LVL1 : TEXTURE);
 		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 }
