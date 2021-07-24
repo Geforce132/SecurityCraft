@@ -37,7 +37,6 @@ import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.EditModuleScreen;
-import net.geforcemods.securitycraft.screen.EditSecretSignScreen;
 import net.geforcemods.securitycraft.screen.IMSScreen;
 import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.KeyChangerScreen;
@@ -56,6 +55,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.gui.screen.EditSignScreen;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -446,6 +446,6 @@ public class ClientProxy implements IProxy
 	@Override
 	public void displayEditSecretSignGui(SecretSignTileEntity te)
 	{
-		Minecraft.getInstance().displayGuiScreen(new EditSecretSignScreen(te));
+		Minecraft.getInstance().displayGuiScreen(new EditSignScreen(te));
 	}
 }
