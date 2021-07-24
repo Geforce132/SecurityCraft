@@ -35,14 +35,14 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	{
 		int redstoneStrength = getSignalForState(state);
 
-		if(!world.isClientSide && redstoneStrength == 0 && entity instanceof Player)
+		if(!world.isClientSide && redstoneStrength == 0 && entity instanceof Player player)
 		{
-			BlockEntity tileEntity = world.getBlockEntity(pos);
+			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tileEntity instanceof AllowlistOnlyTileEntity)
+			if(tile instanceof AllowlistOnlyTileEntity te)
 			{
-				if(isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)tileEntity, (Player)entity))
-					checkPressed(world, pos, state, redstoneStrength);
+				if(isAllowedToPress(world, pos, te, player))
+					checkPressed(player, world, pos, state, redstoneStrength);
 			}
 		}
 	}
