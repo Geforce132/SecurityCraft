@@ -19,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -45,11 +46,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.DrawHighlightEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseClickedEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -91,42 +91,74 @@ public class SCClientEventHandler
 			event.setCanceled(true);
 	}
 
-	@SubscribeEvent
-	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
-		if(event.getType() == ElementType.EXPERIENCE && Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
-			if(Minecraft.getInstance().level.getBlockState(Minecraft.getInstance().player.getVehicle().blockPosition()).getBlock() instanceof SecurityCameraBlock)
-				drawCameraOverlay(event.getMatrixStack(), Minecraft.getInstance(), Minecraft.getInstance().gui, Minecraft.getInstance().getWindow(), Minecraft.getInstance().player, Minecraft.getInstance().level, Minecraft.getInstance().player.getVehicle().blockPosition());
+	public static void cameraOverlay(ForgeIngameGui gui, PoseStack pose, float partialTicks, int width, int height) {
+		Minecraft mc = Minecraft.getInstance();
+		LocalPlayer player = mc.player;
+
+		if(PlayerUtils.isPlayerMountedOnCamera(player)){
+			ClientLevel level = mc.level;
+
+			if(level.getBlockState(player.getVehicle().blockPosition()).getBlock() instanceof SecurityCameraBlock)
+				drawCameraOverlay(pose, mc, gui, mc.getWindow(), player, level, player.getVehicle().blockPosition());
 		}
-		else if(event.getType() == ElementType.ALL)
-		{
-			Minecraft mc = Minecraft.getInstance();
-			LocalPlayer player = mc.player;
-			Level world = player.getCommandSenderWorld();
+	}
 
-			for (InteractionHand hand : InteractionHand.values()) {
-				int uCoord = 0;
-				ItemStack stack = player.getItemInHand(hand);
+	public static void hotbarBindOverlay(ForgeIngameGui gui, PoseStack pose, float partialTicks, int width, int height) {
+		Minecraft mc = Minecraft.getInstance();
+		LocalPlayer player = mc.player;
+		Level world = player.getCommandSenderWorld();
 
-				if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
+		for (InteractionHand hand : InteractionHand.values()) {
+			int uCoord = 0;
+			ItemStack stack = player.getItemInHand(hand);
+
+			if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
+			{
+				double eyeHeight = player.getEyeHeight();
+				Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
+				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
+
+				if(mop != null && mop.getType() == Type.BLOCK && world.getBlockEntity(((BlockHitResult)mop).getBlockPos()) instanceof SecurityCameraTileEntity)
 				{
-					double eyeHeight = player.getEyeHeight();
-					Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
-					HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
+					CompoundTag cameras = stack.getTag();
+					uCoord = 110;
 
-					if(mop != null && mop.getType() == Type.BLOCK && world.getBlockEntity(((BlockHitResult)mop).getBlockPos()) instanceof SecurityCameraTileEntity)
-					{
-						CompoundTag cameras = stack.getTag();
-						uCoord = 110;
+					if(cameras != null) {
+						for(int i = 1; i < 31; i++)
+						{
+							if(!cameras.contains("Camera" + i))
+								continue;
 
-						if(cameras != null) {
-							for(int i = 1; i < 31; i++)
+							String[] coords = cameras.getString("Camera" + i).split(" ");
+
+							if(Integer.parseInt(coords[0]) == ((BlockHitResult)mop).getBlockPos().getX() && Integer.parseInt(coords[1]) == ((BlockHitResult)mop).getBlockPos().getY() && Integer.parseInt(coords[2]) == ((BlockHitResult)mop).getBlockPos().getZ())
 							{
-								if(!cameras.contains("Camera" + i))
-									continue;
+								uCoord = 88;
+								break;
+							}
+						}
+					}
+				}
+			}
+			else if(stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get())
+			{
+				double eyeHeight = player.getEyeHeight();
+				Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
+				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
-								String[] coords = cameras.getString("Camera" + i).split(" ");
+				if(mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockHitResult)mop).getBlockPos()).getBlock() instanceof IExplosive)
+				{
+					uCoord = 110;
+					CompoundTag mines = stack.getTag();
 
-								if(Integer.parseInt(coords[0]) == ((BlockHitResult)mop).getBlockPos().getX() && Integer.parseInt(coords[1]) == ((BlockHitResult)mop).getBlockPos().getY() && Integer.parseInt(coords[2]) == ((BlockHitResult)mop).getBlockPos().getZ())
+					if(mines != null) {
+						for(int i = 1; i <= 6; i++)
+						{
+							if(stack.getTag().getIntArray("mine" + i).length > 0)
+							{
+								int[] coords = mines.getIntArray("mine" + i);
+
+								if(coords[0] == ((BlockHitResult)mop).getBlockPos().getX() && coords[1] == ((BlockHitResult)mop).getBlockPos().getY() && coords[2] == ((BlockHitResult)mop).getBlockPos().getZ())
 								{
 									uCoord = 88;
 									break;
@@ -135,66 +167,38 @@ public class SCClientEventHandler
 						}
 					}
 				}
-				else if(stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get())
+			}
+			else if(stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get())
+			{
+				Entity hitEntity = Minecraft.getInstance().crosshairPickEntity;
+
+				if(hitEntity instanceof SentryEntity)
 				{
-					double eyeHeight = player.getEyeHeight();
-					Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
-					HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
+					uCoord = 110;
+					CompoundTag sentries = stack.getTag();
 
-					if(mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockHitResult)mop).getBlockPos()).getBlock() instanceof IExplosive)
-					{
-						uCoord = 110;
-						CompoundTag mines = stack.getTag();
-
-						if(mines != null) {
-							for(int i = 1; i <= 6; i++)
+					if(sentries != null) {
+						for(int i = 1; i <= 12; i++)
+						{
+							if(stack.getTag().getIntArray("sentry" + i).length > 0)
 							{
-								if(stack.getTag().getIntArray("mine" + i).length > 0)
+								int[] coords = sentries.getIntArray("sentry" + i);
+								if(coords[0] == hitEntity.blockPosition().getX() && coords[1] == hitEntity.blockPosition().getY() && coords[2] == hitEntity.blockPosition().getZ())
 								{
-									int[] coords = mines.getIntArray("mine" + i);
-
-									if(coords[0] == ((BlockHitResult)mop).getBlockPos().getX() && coords[1] == ((BlockHitResult)mop).getBlockPos().getY() && coords[2] == ((BlockHitResult)mop).getBlockPos().getZ())
-									{
-										uCoord = 88;
-										break;
-									}
+									uCoord = 88;
+									break;
 								}
 							}
 						}
 					}
 				}
-				else if(stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get())
-				{
-					Entity hitEntity = Minecraft.getInstance().crosshairPickEntity;
+			}
 
-					if(hitEntity instanceof SentryEntity)
-					{
-						uCoord = 110;
-						CompoundTag sentries = stack.getTag();
-
-						if(sentries != null) {
-							for(int i = 1; i <= 12; i++)
-							{
-								if(stack.getTag().getIntArray("sentry" + i).length > 0)
-								{
-									int[] coords = sentries.getIntArray("sentry" + i);
-									if(coords[0] == hitEntity.blockPosition().getX() && coords[1] == hitEntity.blockPosition().getY() && coords[2] == hitEntity.blockPosition().getZ())
-									{
-										uCoord = 88;
-										break;
-									}
-								}
-							}
-						}
-					}
-				}
-
-				if (uCoord != 0) {
-					RenderSystem.enableAlphaTest();
-					Minecraft.getInstance().textureManager.bind(BEACON_GUI);
-					GuiComponent.blit(event.getMatrixStack(), Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.getInventory().selected * 20 : -29), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
-					RenderSystem.disableAlphaTest();
-				}
+			if (uCoord != 0) {
+				RenderSystem.enableAlphaTest();
+				Minecraft.getInstance().textureManager.bind(BEACON_GUI);
+				GuiComponent.blit(pose, Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.getInventory().selected * 20 : -29), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+				RenderSystem.disableAlphaTest();
 			}
 		}
 	}
