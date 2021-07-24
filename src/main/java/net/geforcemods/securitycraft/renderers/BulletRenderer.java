@@ -9,8 +9,8 @@ import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,9 +22,9 @@ public class BulletRenderer extends EntityRenderer<BulletEntity>
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/bullet.png");
 	private static final BulletModel MODEL = new BulletModel();
 
-	public BulletRenderer(EntityRenderDispatcher renderManager)
+	public BulletRenderer(EntityRendererProvider.Context ctx)
 	{
-		super(renderManager);
+		super(ctx);
 	}
 
 	@Override

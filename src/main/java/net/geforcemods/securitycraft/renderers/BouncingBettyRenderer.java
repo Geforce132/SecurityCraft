@@ -7,8 +7,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
@@ -19,9 +19,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 
-	public BouncingBettyRenderer(EntityRenderDispatcher renderManager)
+	public BouncingBettyRenderer(EntityRendererProvider.Context ctx)
 	{
-		super(renderManager);
+		super(ctx);
 		shadowRadius = 0.5F;
 	}
 

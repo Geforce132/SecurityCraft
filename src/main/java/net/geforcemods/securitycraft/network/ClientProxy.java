@@ -61,6 +61,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -78,7 +79,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fmlclient.registry.RenderingRegistry;
 import net.minecraftforge.fmllegacy.RegistryObject;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD, value=Dist.CLIENT)
@@ -248,11 +248,11 @@ public class ClientProxy implements IProxy
 		ItemBlockRenderTypes.setRenderLayer(SCContent.TROPHY_SYSTEM.get(), cutoutMipped);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.USERNAME_LOGGER.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.PROJECTOR.get(), cutoutMipped);
-		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBouncingBetty, BouncingBettyRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeImsBomb, IMSBombRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSecurityCamera, EmptyRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSentry, SentryRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBullet, BulletRenderer::new);
+		EntityRenderers.register(SCContent.eTypeBouncingBetty, BouncingBettyRenderer::new);
+		EntityRenderers.register(SCContent.eTypeImsBomb, IMSBombRenderer::new);
+		EntityRenderers.register(SCContent.eTypeSecurityCamera, EmptyRenderer::new);
+		EntityRenderers.register(SCContent.eTypeSentry, SentryRenderer::new);
+		EntityRenderers.register(SCContent.eTypeBullet, BulletRenderer::new);
 		BlockEntityRenderers.register(SCContent.teTypeBlockPocketManager, BlockPocketManagerTileEntityRenderer::new);
 		BlockEntityRenderers.register(SCContent.teTypeKeypadChest, KeypadChestTileEntityRenderer::new);
 		BlockEntityRenderers.register(SCContent.teTypeRetinalScanner, RetinalScannerTileEntityRenderer::new);

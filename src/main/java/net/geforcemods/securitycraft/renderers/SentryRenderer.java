@@ -10,8 +10,8 @@ import net.geforcemods.securitycraft.models.SentryModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,9 +23,9 @@ public class SentryRenderer extends EntityRenderer<SentryEntity>
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/sentry.png");
 	private static final SentryModel MODEL = new SentryModel();
 
-	public SentryRenderer(EntityRenderDispatcher renderManager)
+	public SentryRenderer(EntityRendererProvider.Context ctx)
 	{
-		super(renderManager);
+		super(ctx);
 	}
 
 	@Override
