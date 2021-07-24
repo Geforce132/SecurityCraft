@@ -22,6 +22,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
@@ -64,7 +65,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			{
 				if(field.get(null) instanceof RegistryObject<?> ro)
 				{
-					if(ro.get() instanceof Block block)
+					if(ro.get() instanceof Block block && !(ro.get() instanceof OwnableBlock))
 						registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
 				}
 			}
@@ -75,6 +76,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		}
 
 		//TODO: check if all sub classes of these work as well
+		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, OwnableBlock.class);
 		registrar.registerIconProvider(INSTANCE, BaseFullMineBlock.class);
 		registrar.registerIconProvider(INSTANCE, BlockPocketWallBlock.class);
 		registrar.registerIconProvider(INSTANCE, DisguisableBlock.class);
