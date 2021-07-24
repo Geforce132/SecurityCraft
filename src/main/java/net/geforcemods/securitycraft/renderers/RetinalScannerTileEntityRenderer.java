@@ -21,8 +21,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.core.BlockPos;
@@ -32,14 +32,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LightLayer;
 
-public class RetinalScannerTileEntityRenderer extends BlockEntityRenderer<RetinalScannerTileEntity>
+public class RetinalScannerTileEntityRenderer implements BlockEntityRenderer<RetinalScannerTileEntity>
 {
 	private static final float CORRECT_FACTOR = 1 / 550F;
 
-	public RetinalScannerTileEntityRenderer(BlockEntityRenderDispatcher terd)
-	{
-		super(terd);
-	}
+	public RetinalScannerTileEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
 	public void render(RetinalScannerTileEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)

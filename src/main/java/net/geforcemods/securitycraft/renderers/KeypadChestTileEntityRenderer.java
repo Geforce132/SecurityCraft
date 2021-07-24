@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
@@ -25,9 +25,9 @@ public class KeypadChestTileEntityRenderer extends ChestRenderer<KeypadChestTile
 	private static final Material CHRISTMAS_RIGHT = createMaterial("christmas_right");
 	protected boolean isChristmas;
 
-	public KeypadChestTileEntityRenderer(BlockEntityRenderDispatcher terd)
+	public KeypadChestTileEntityRenderer(BlockEntityRendererProvider.Context ctx)
 	{
-		super(terd);
+		super(ctx);
 
 		Calendar calendar = Calendar.getInstance();
 

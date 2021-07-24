@@ -8,19 +8,16 @@ import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BlockPocketManagerTileEntityRenderer extends BlockEntityRenderer<BlockPocketManagerTileEntity>
+public class BlockPocketManagerTileEntityRenderer implements BlockEntityRenderer<BlockPocketManagerTileEntity>
 {
-	public BlockPocketManagerTileEntityRenderer(BlockEntityRenderDispatcher terd)
-	{
-		super(terd);
-	}
+	public BlockPocketManagerTileEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
 	public void render(BlockPocketManagerTileEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)

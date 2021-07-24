@@ -13,8 +13,8 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -23,20 +23,16 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SecurityCameraTileEntityRenderer extends BlockEntityRenderer<SecurityCameraTileEntity> {
+public class SecurityCameraTileEntityRenderer implements BlockEntityRenderer<SecurityCameraTileEntity> {
 
 	private static final Quaternion POSITIVE_Y_180 = Vector3f.YP.rotationDegrees(180.0F);
 	private static final Quaternion POSITIVE_Y_90 = Vector3f.YP.rotationDegrees(90.0F);
 	private static final Quaternion NEGATIVE_Y_90 = Vector3f.YN.rotationDegrees(90.0F);
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
-
-	public SecurityCameraTileEntityRenderer(BlockEntityRenderDispatcher terd)
-	{
-		super(terd);
-	}
-
 	private static final SecurityCameraModel modelSecurityCamera = new SecurityCameraModel();
 	private static final ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/block/security_camera1.png");
+
+	public SecurityCameraTileEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
 	public void render(SecurityCameraTileEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int p_225616_5_, int p_225616_6_)
