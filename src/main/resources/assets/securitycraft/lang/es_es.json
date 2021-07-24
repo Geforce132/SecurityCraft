@@ -485,8 +485,6 @@
 	"key.securitycraft.cameraEmitRedstone": "Alternar salida de redstone",
 	"key.securitycraft.cameraZoomIn": "Acercar",
 	"key.securitycraft.cameraZoomOut": "Alejar",
-	"key.securitycraft.cameraPrevious": "Cámara anterior",
-	"key.securitycraft.cameraNext": "Cámara siguiente",
 
 	"help.securitycraft.laser_block.info": "El bloque láser se utiliza colocando dos de ellos con una distancia entre sí igual o menor a 5 bloques. Al colocarlos correctamente debe aparecer un láser entre ellos. Cuando un jugador cruza el láser, ambos bloques emitirán una señal de redstone con 15 bloques de alcance.",
 	"help.securitycraft.keypad.info": "El teclado se utiliza colocándolo, haciendo clic derecho y estableciendo una contraseña numérica. Una vez establecida, al hacer clic derecho podrás introducirla. Si es correcta, el teclado emitirá una señal de redstone durante 3 segundos.",
@@ -734,7 +732,6 @@
 	"messages.securitycraft:universalOwnerChanger.briefcase.notOwned": "Este no es tu maletín, no puedes cambiar su propietario.",
 	"messages.securitycraft:irc.connected": "El chat de IRC no es compatible desde la v1.8.3 de SecurityCraft. ¡Si necesitas ayuda, dirígete al canal \"#help\" de SecurityCraft en Discord!",
 	"messages.securitycraft:cageTrap.captured": "%1$s ha sido atrapado en %2$s.",
-	"messages.securitycraft:frame.rightclick": "Haz clic derecho con un monitor vinculado para ver.",
 	"messages.securitycraft:command.sc.usage": "Usa: /sc connect O /sc disconnect O /sc contact O /sc resume.",
 	"messages.securitycraft:naming.alreadyMatches": "El nombre de este bloque ya coincide con \"%s\".",
 	"messages.securitycraft:naming.named": "Este bloque ha sido renombrado a '%s'.",

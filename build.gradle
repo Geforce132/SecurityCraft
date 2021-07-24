@@ -1,11 +1,10 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 
@@ -15,14 +14,16 @@ import groovy.json.JsonSlurper
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
-version = 'v1.8.22.2'
+version = 'v1.8.23'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 processResources { 
 	exclude ".cache"
+	duplicatesStrategy = 'include'
  
 	//replace ${version} in mods.toml
 	inputs.property 'version', project.version
@@ -98,7 +99,7 @@ minecraft {
 repositories { 
 	maven { // TOP
 		name 'tterrag maven'
-		url "http://maven.tterrag.com/"
+		url "https://maven.tterrag.com/"
 	}
     maven { // JEI
         name = "Progwml6 maven"
@@ -110,9 +111,9 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.1.32'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.0'
     
-	implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.0.106")
+	implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.110")
 	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.1.4-22")
     implementation fg.deobf("curse.maven:hwyla-253449:3033593")
 	compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame

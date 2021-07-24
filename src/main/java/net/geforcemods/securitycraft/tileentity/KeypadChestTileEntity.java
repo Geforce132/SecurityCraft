@@ -127,6 +127,10 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 			this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockState().getBlock());
 	}
 
+	public int getNumPlayersUsing() {
+		return numPlayersUsing;
+	}
+
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
