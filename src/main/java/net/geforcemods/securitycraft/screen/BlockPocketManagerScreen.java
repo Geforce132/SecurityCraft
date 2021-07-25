@@ -126,7 +126,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 		if(storage)
 		{
-			font.draw(matrix, inventory.getDisplayName(), 8, imageHeight - 94, 4210752);
+			font.draw(matrix, playerInventoryTitle, 8, imageHeight - 94, 4210752);
 			renderTooltip(matrix, mouseX - leftPos, mouseY - topPos);
 		}
 

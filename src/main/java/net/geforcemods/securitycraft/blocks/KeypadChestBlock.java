@@ -184,7 +184,7 @@ public class KeypadChestBlock extends ChestBlock {
 		BlockEntity tileEntity = world.getBlockEntity(pos);
 
 		if (tileEntity instanceof KeypadChestTileEntity)
-			((KeypadChestTileEntity) tileEntity).clearCache();
+			((KeypadChestTileEntity) tileEntity).setBlockState(state);
 	}
 
 	@Override

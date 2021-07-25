@@ -41,7 +41,7 @@ public class KeypadFurnaceScreen extends AbstractContainerScreen<KeypadFurnaceCo
 	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY)
 	{
 		font.draw(matrix, title, imageWidth / 2 - font.width(title) / 2, 6.0F, 4210752);
-		font.draw(matrix, inventory.getDisplayName().getString(), 8.0F, imageHeight - 96 + 2, 4210752);
+		font.draw(matrix, playerInventoryTitle.getString(), 8.0F, imageHeight - 96 + 2, 4210752);
 	}
 
 	@Override
@@ -52,9 +52,9 @@ public class KeypadFurnaceScreen extends AbstractContainerScreen<KeypadFurnaceCo
 		minecraft.getTextureManager().bindForSetup(FURNACE_GUI_TEXTURES);
 		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 
-		if(((AbstractFurnaceMenu)menu).isLit())
+		if(menu.isLit())
 		{
-			int burnLeftScaled = ((AbstractFurnaceMenu)menu).getLitProgress();
+			int burnLeftScaled = menu.getLitProgress();
 
 			blit(matrix, leftPos + 56, topPos + 36 + 12 - burnLeftScaled, 176, 12 - burnLeftScaled, 14, burnLeftScaled + 1);
 		}
