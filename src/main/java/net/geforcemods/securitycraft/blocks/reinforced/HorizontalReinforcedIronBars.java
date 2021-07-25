@@ -11,14 +11,12 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BucketPickup;
-import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -26,7 +24,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements BucketPickup, LiquidBlockContainer
+public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements SimpleWaterloggedBlock
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape SHAPE = Block.box(-8.0D, 14.0D, -8.0D, 24.0D, 16.0D, 24.0D);
@@ -62,44 +60,9 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	}
 
 	@Override
-	public Fluid takeLiquid(LevelAccessor world, BlockPos pos, BlockState state)
-	{
-		if(state.getValue(WATERLOGGED))
-		{
-			world.setBlock(pos, state.setValue(WATERLOGGED, false), 3);
-			return Fluids.WATER;
-		}
-		else
-			return Fluids.EMPTY;
-	}
-
-	@Override
 	public FluidState getFluidState(BlockState state)
 	{
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-	}
-
-	@Override
-	public boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid)
-	{
-		return !state.getValue(WATERLOGGED) && fluid == Fluids.WATER;
-	}
-
-	@Override
-	public boolean placeLiquid(LevelAccessor world, BlockPos pos, BlockState state, FluidState fluidState)
-	{
-		if(!state.getValue(WATERLOGGED) && fluidState.getType() == Fluids.WATER)
-		{
-			if(!world.isClientSide())
-			{
-				world.setBlock(pos, state.setValue(WATERLOGGED, true), 3);
-				world.getLiquidTicks().scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(world));
-			}
-
-			return true;
-		}
-		else
-			return false;
 	}
 
 	@Override
