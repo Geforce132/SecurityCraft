@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -131,98 +131,73 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 		return new TranslatableComponent("container.hopper");
 	}
 
-	@Override
-	public void tick()
+	public static void pushItemsTick(Level world, BlockPos pos, BlockState state, ReinforcedHopperTileEntity te)
 	{
-		if(level != null && !level.isClientSide)
-		{
-			--transferCooldown;
-			tickedGameTime = level.getGameTime();
+		--te.transferCooldown;
+		te.tickedGameTime = world.getGameTime();
 
-			if(!isOnTransferCooldown())
-			{
-				setTransferCooldown(0);
-				updateHopper(() -> pullItems(this));
-			}
+		if(!te.isOnTransferCooldown())
+		{
+			te.setTransferCooldown(0);
+			tryMoveItems(world, pos, state, te, () -> suckInItems(world, te));
 		}
 	}
 
-	private boolean updateHopper(Supplier<Boolean> idk)
+	private static boolean tryMoveItems(Level world, BlockPos pos, BlockState state, ReinforcedHopperTileEntity te, BooleanSupplier supplier)
 	{
-		if(level != null && !level.isClientSide)
-		{
-			if (!isOnTransferCooldown() && getBlockState().getValue(HopperBlock.ENABLED))
+		if (!world.isClientSide) {
+			if (!te.isOnTransferCooldown() && state.getValue(HopperBlock.ENABLED))
 			{
 				boolean hasChanged = false;
 
-				if(!isInventoryEmpty())
-					hasChanged = transferItemsOut();
+				if (!te.isEmpty())
+					hasChanged = ejectItems(world, pos, state, te);
 
-				if(!isFull())
-					hasChanged |= idk.get();
+				if (!te.inventoryFull())
+					hasChanged |= supplier.getAsBoolean();
 
-				if(hasChanged)
-				{
-					setTransferCooldown(8);
-					setChanged();
+				if (hasChanged) {
+					te.setTransferCooldown(8);
+					setChanged(world, pos, state);
 					return true;
 				}
 			}
-
-			return false;
 		}
-		else return false;
+
+		return false;
 	}
 
-	private boolean isInventoryEmpty()
-	{
-		for(ItemStack stack : inventory)
-		{
-			if(!stack.isEmpty())
+	private boolean inventoryFull() {
+		for(ItemStack itemstack : this.inventory) {
+			if (itemstack.isEmpty() || itemstack.getCount() != itemstack.getMaxStackSize()) {
 				return false;
+			}
 		}
 
 		return true;
 	}
 
-	@Override
-	public boolean isEmpty()
+	private static boolean ejectItems(Level world, BlockPos pos, BlockState state, ReinforcedHopperTileEntity te)
 	{
-		return isInventoryEmpty();
-	}
-
-	private boolean isFull()
-	{
-		for(ItemStack stack : inventory)
-		{
-			if(stack.isEmpty() || stack.getCount() != stack.getMaxStackSize())
-				return false;
-		}
-
-		return true;
-	}
-
-	private boolean transferItemsOut()
-	{
-		if(insertHook())
+		if(insertHook(te))
 			return true;
 
-		Container inv = getInventoryForHopperTransfer();
+		Container inv = getAttachedContainer(world, pos, state);
 
 		if(inv != null)
 		{
-			Direction direction = getBlockState().getValue(HopperBlock.FACING).getOpposite();
+			Direction direction = state.getValue(HopperBlock.FACING).getOpposite();
 
-			if(isInventoryFull(inv, direction))
+			if(isFullContainer(inv, direction))
 				return false;
 			else
 			{
-				for(int i = 0; i < getContainerSize(); ++i)
+				for(int i = 0; i < te.getContainerSize(); ++i)
 				{
-					if(!getItem(i).isEmpty())
+					if(!te.getItem(i).isEmpty())
 					{
-						ItemStack copy = getItem(i).copy();
-						ItemStack remainder = putStackInInventoryAllSlots(this, inv, removeItem(i, 1), direction);
+						ItemStack copy = te.getItem(i).copy();
+						ItemStack remainder = addItem(te, inv, te.removeItem(i, 1), direction);
 
 						if(remainder.isEmpty())
 						{
@@ -230,7 +205,7 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 							return true;
 						}
 
-						setItem(i, copy);
+						te.setItem(i, copy);
 					}
 				}
 			}
@@ -239,43 +214,43 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 		return false;
 	}
 
-	private static IntStream getSlotStreamForSide(Container inv, Direction dir)
+	private static IntStream getSlots(Container inv, Direction dir)
 	{
 		return inv instanceof WorldlyContainer ? IntStream.of(((WorldlyContainer)inv).getSlotsForFace(dir)) : IntStream.range(0, inv.getContainerSize());
 	}
 
-	private boolean isInventoryFull(Container inventory, Direction side)
+	private static boolean isFullContainer(Container inventory, Direction side)
 	{
-		return getSlotStreamForSide(inventory, side).allMatch(slot -> {
+		return getSlots(inventory, side).allMatch(slot -> {
 			ItemStack stack = inventory.getItem(slot);
 			return stack.getCount() >= stack.getMaxStackSize();
 		});
 	}
 
-	private static boolean isInventoryEmpty(Container inventory, Direction side)
+	private static boolean isEmptyContainer(Container inventory, Direction side)
 	{
-		return getSlotStreamForSide(inventory, side).allMatch(slot -> inventory.getItem(slot).isEmpty());
+		return getSlots(inventory, side).allMatch(slot -> inventory.getItem(slot).isEmpty());
 	}
 
-	public static boolean pullItems(Hopper hopper)
+	public static boolean suckInItems(Level world, Hopper hopper)
 	{
-		Boolean ret = VanillaInventoryCodeHooks.extractHook(hopper);
+		Boolean ret = VanillaInventoryCodeHooks.extractHook(world, hopper);
 
 		if(ret != null)
 			return ret;
 
-		Container inv = getSourceInventory(hopper);
+		Container inv = getSourceInventory(world, hopper);
 
 		if(inv != null)
 		{
 			Direction direction = Direction.DOWN;
-			return isInventoryEmpty(inv, direction) ? false : getSlotStreamForSide(inv, direction).anyMatch(slot -> pullItemFromSlot(hopper, inv, slot, direction));
+			return isEmptyContainer(inv, direction) ? false : getSlots(inv, direction).anyMatch(slot -> tryTakeInItemFromSlot(hopper, inv, slot, direction));
 		}
 		else
 		{
-			for(ItemEntity entity : getCaptureItems(hopper))
+			for(ItemEntity entity : getItemsAtAndAbove(world, hopper))
 			{
-				if (captureItem(hopper, entity))
+				if (addItem(hopper, entity))
 					return true;
 			}
 
@@ -283,14 +258,14 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 		}
 	}
 
-	private static boolean pullItemFromSlot(Hopper hopper, Container inventory, int index, Direction direction)
+	private static boolean tryTakeInItemFromSlot(Hopper hopper, Container inventory, int index, Direction direction)
 	{
 		ItemStack stack = inventory.getItem(index);
 
-		if(!stack.isEmpty() && canExtractItemFromSlot(inventory, stack, index, direction))
+		if(!stack.isEmpty() && canTakeItemFromContainer(inventory, stack, index, direction))
 		{
 			ItemStack copy = stack.copy();
-			ItemStack remainder = putStackInInventoryAllSlots(inventory, hopper, inventory.removeItem(index, 1), null);
+			ItemStack remainder = addItem(inventory, hopper, inventory.removeItem(index, 1), null);
 
 			if(remainder.isEmpty())
 			{
@@ -304,11 +279,11 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 		return false;
 	}
 
-	public static boolean captureItem(Container inv, ItemEntity entity)
+	public static boolean addItem(Container inv, ItemEntity entity)
 	{
 		boolean capturedEverything = false;
 		ItemStack copy = entity.getItem().copy();
-		ItemStack remainder = putStackInInventoryAllSlots(null, inv, copy, null);
+		ItemStack remainder = addItem(null, inv, copy, null);
 
 		if(remainder.isEmpty())
 		{
@@ -321,7 +296,7 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 		return capturedEverything;
 	}
 
-	public static ItemStack putStackInInventoryAllSlots(Container source, Container destination, ItemStack stack, Direction direction)
+	public static ItemStack addItem(Container source, Container destination, ItemStack stack, Direction direction)
 	{
 		if(destination instanceof WorldlyContainer inv && direction != null)
 		{
@@ -329,7 +304,7 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 
 			for(int k = 0; k < slots.length && !stack.isEmpty(); ++k)
 			{
-				stack = insertStack(source, destination, stack, slots[k], direction);
+				stack = tryMoveInItem(source, destination, stack, slots[k], direction);
 			}
 		}
 		else
@@ -338,30 +313,30 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 
 			for(int j = 0; j < destSize && !stack.isEmpty(); ++j)
 			{
-				stack = insertStack(source, destination, stack, j, direction);
+				stack = tryMoveInItem(source, destination, stack, j, direction);
 			}
 		}
 
 		return stack;
 	}
 
-	private static boolean canInsertItemInSlot(Container inventory, ItemStack stack, int index, Direction side)
+	private static boolean canPlaceItemInContainer(Container inventory, ItemStack stack, int index, Direction side)
 	{
 		if(!inventory.canPlaceItem(index, stack))
 			return false;
 		else return !(inventory instanceof WorldlyContainer) || ((WorldlyContainer)inventory).canPlaceItemThroughFace(index, stack, side);
 	}
 
-	private static boolean canExtractItemFromSlot(Container inventory, ItemStack stack, int index, Direction side)
+	private static boolean canTakeItemFromContainer(Container inventory, ItemStack stack, int index, Direction side)
 	{
 		return !(inventory instanceof WorldlyContainer) || ((WorldlyContainer)inventory).canTakeItemThroughFace(index, stack, side);
 	}
 
-	private static ItemStack insertStack(Container source, Container destination, ItemStack stack, int index, Direction direction)
+	private static ItemStack tryMoveInItem(Container source, Container destination, ItemStack stack, int index, Direction direction)
 	{
 		ItemStack destStack = destination.getItem(index);
 
-		if(canInsertItemInSlot(destination, stack, index, direction))
+		if(canPlaceItemInContainer(destination, stack, index, direction))
 		{
 			boolean hasChanged = false;
 			boolean isDestEmpty = destination.isEmpty();
@@ -372,7 +347,7 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 				stack = ItemStack.EMPTY;
 				hasChanged = true;
 			}
-			else if (canCombine(destStack, stack))
+			else if (canMergeItems(destStack, stack))
 			{
 				int sizeDifference = stack.getMaxStackSize() - destStack.getCount();
 				int minSize = Math.min(stack.getCount(), sizeDifference);
@@ -385,7 +360,7 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 			{
 				if (isDestEmpty && destination instanceof ReinforcedHopperTileEntity te)
 				{
-					if(!te.mayTransfer())
+					if(!te.isOnCustomCooldown())
 					{
 						int k = 0;
 
@@ -406,33 +381,33 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 	}
 
 	@Nullable
-	private Container getInventoryForHopperTransfer()
+	private static Container getAttachedContainer(Level world, BlockPos pos, BlockState state)
 	{
-		Direction direction = getBlockState().getValue(HopperBlock.FACING);
-		return getInventoryAtPosition(getLevel(), worldPosition.relative(direction));
+		Direction direction = state.getValue(HopperBlock.FACING);
+		return getContainerAt(world, pos.relative(direction));
 	}
 
 	@Nullable
-	public static Container getSourceInventory(Hopper hopper)
+	public static Container getSourceInventory(Level world, Hopper hopper)
 	{
-		return getInventoryAtPosition(hopper.getLevel(), hopper.getLevelX(), hopper.getLevelY() + 1.0D, hopper.getLevelZ());
+		return getContainerAt(world, hopper.getLevelX(), hopper.getLevelY() + 1.0D, hopper.getLevelZ());
 	}
 
-	public static List<ItemEntity> getCaptureItems(Hopper hopper)
+	public static List<ItemEntity> getItemsAtAndAbove(Level world, Hopper hopper)
 	{
 		return hopper.getSuckShape().toAabbs().stream().flatMap((box) -> {
-			return hopper.getLevel().getEntitiesOfClass(ItemEntity.class, box.move(hopper.getLevelX() - 0.5D, hopper.getLevelY() - 0.5D, hopper.getLevelZ() - 0.5D), EntitySelector.ENTITY_STILL_ALIVE).stream();
+			return world.getEntitiesOfClass(ItemEntity.class, box.move(hopper.getLevelX() - 0.5D, hopper.getLevelY() - 0.5D, hopper.getLevelZ() - 0.5D), EntitySelector.ENTITY_STILL_ALIVE).stream();
 		}).collect(Collectors.toList());
 	}
 
 	@Nullable
-	public static Container getInventoryAtPosition(Level world, BlockPos pos)
+	public static Container getContainerAt(Level world, BlockPos pos)
 	{
-		return getInventoryAtPosition(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+		return getContainerAt(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
 	}
 
 	@Nullable
-	public static Container getInventoryAtPosition(Level world, double x, double y, double z)
+	public static Container getContainerAt(Level world, double x, double y, double z)
 	{
 		Container inv = null;
 		BlockPos pos = new BlockPos(x, y, z);
@@ -465,7 +440,7 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 		return inv;
 	}
 
-	private static boolean canCombine(ItemStack stack1, ItemStack stack2)
+	private static boolean canMergeItems(ItemStack stack1, ItemStack stack2)
 	{
 		if(stack1.getItem() != stack2.getItem())
 			return false;
@@ -503,7 +478,7 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 		return transferCooldown > 0;
 	}
 
-	public boolean mayTransfer()
+	public boolean isOnCustomCooldown()
 	{
 		return transferCooldown > 8;
 	}
@@ -520,14 +495,11 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 		inventory = items;
 	}
 
-	public void onEntityCollision(Entity entity)
+	public static void entityInside(Level world, BlockPos pos, BlockState state, Entity entity, ReinforcedHopperTileEntity te)
 	{
-		if(entity instanceof ItemEntity)
+		if(entity instanceof ItemEntity && Shapes.joinIsNotEmpty(Shapes.create(entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ())), te.getSuckShape(), BooleanOp.AND))
 		{
-			BlockPos pos = getBlockPos();
-
-			if(Shapes.joinIsNotEmpty(Shapes.create(entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ())), getSuckShape(), BooleanOp.AND))
-				updateHopper(() -> captureItem(this, (ItemEntity)entity));
+			tryMoveItems(world, pos, state, te, () -> addItem(te, (ItemEntity)entity));
 		}
 	}
 
@@ -537,9 +509,8 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 		return new HopperMenu(id, player, this);
 	}
 
-	public long getLastUpdateTime()
-	{
-		return tickedGameTime;
+	public long getLastUpdateTime() {
+		return this.tickedGameTime;
 	}
 
 	@Override
@@ -610,33 +581,33 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 	}
 
 	//code from Forge, as it is hardcoded to the vanilla hopper
-	private boolean insertHook()
+	private static boolean insertHook(ReinforcedHopperTileEntity te)
 	{
-		Direction hopperFacing = getBlockState().getValue(HopperBlock.FACING);
-		return getItemHandler(this, hopperFacing)
+		Direction hopperFacing = te.getBlockState().getValue(HopperBlock.FACING);
+		return getItemHandler(te.getLevel(), te, hopperFacing)
 				.map(destinationResult -> {
 					IItemHandler itemHandler = destinationResult.getKey();
 					Object destination = destinationResult.getValue();
-					if (isFull())
+					if (isFull(itemHandler))
 					{
 						return false;
 					}
 					else
 					{
-						for (int i = 0; i < getContainerSize(); ++i)
+						for (int i = 0; i < te.getContainerSize(); ++i)
 						{
-							if (!getItem(i).isEmpty())
+							if (!te.getItem(i).isEmpty())
 							{
-								ItemStack originalSlotContents = getItem(i).copy();
-								ItemStack insertStack = removeItem(i, 1);
-								ItemStack remainder = putStackInInventoryAllSlots(this, destination, itemHandler, insertStack);
+								ItemStack originalSlotContents = te.getItem(i).copy();
+								ItemStack insertStack = te.removeItem(i, 1);
+								ItemStack remainder = putStackInInventoryAllSlots(te, destination, itemHandler, insertStack);
 
 								if (remainder.isEmpty())
 								{
 									return true;
 								}
 
-								setItem(i, originalSlotContents);
+								te.setItem(i, originalSlotContents);
 							}
 						}
 
@@ -647,12 +618,25 @@ public class ReinforcedHopperTileEntity extends RandomizableContainerBlockEntity
 	}
 
 	//these are private in forge's code, so it's copied here
-	private Optional<Pair<IItemHandler, Object>> getItemHandler(Hopper hopper, Direction hopperFacing)
+	private static Optional<Pair<IItemHandler, Object>> getItemHandler(Level world, Hopper hopper, Direction hopperFacing)
 	{
 		double x = hopper.getLevelX() + hopperFacing.getStepX();
 		double y = hopper.getLevelY() + hopperFacing.getStepY();
 		double z = hopper.getLevelZ() + hopperFacing.getStepZ();
-		return VanillaInventoryCodeHooks.getItemHandler(hopper.getLevel(), x, y, z, hopperFacing.getOpposite());
+		return VanillaInventoryCodeHooks.getItemHandler(world, x, y, z, hopperFacing.getOpposite());
+	}
+
+	private static boolean isFull(IItemHandler itemHandler)
+	{
+		for (int slot = 0; slot < itemHandler.getSlots(); slot++)
+		{
+			ItemStack stack = itemHandler.getStackInSlot(slot);
+
+			if(stack.isEmpty() || stack.getCount() < itemHandler.getSlotLimit(slot))
+				return false;
+		}
+
+		return true;
 	}
 
 	private static ItemStack putStackInInventoryAllSlots(BlockEntity source, Object destination, IItemHandler destInventory, ItemStack stack)

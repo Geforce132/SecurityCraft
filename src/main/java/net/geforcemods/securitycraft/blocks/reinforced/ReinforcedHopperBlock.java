@@ -20,6 +20,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HopperBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +31,11 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	public ReinforcedHopperBlock(Block.Properties properties)
 	{
 		super(properties);
+	}
+
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+		return world.isClientSide ? null : createTickerHelper(type, SCContent.teTypeReinforcedHopper, ReinforcedHopperTileEntity::pushItemsTick);
 	}
 
 	@Override
@@ -87,19 +94,13 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		BlockEntity te = world.getBlockEntity(pos);
 
 		if(te instanceof ReinforcedHopperTileEntity)
-			((ReinforcedHopperTileEntity)te).onEntityCollision(entity);
+			ReinforcedHopperTileEntity.entityInside(world, pos, state, entity, (ReinforcedHopperTileEntity)te);
 	}
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new ReinforcedHopperTileEntity(pos, state);
-	}
-
-	@Override
-	public boolean is(Block block)
-	{
-		return block == this || block == Blocks.HOPPER;
 	}
 
 	@Override
