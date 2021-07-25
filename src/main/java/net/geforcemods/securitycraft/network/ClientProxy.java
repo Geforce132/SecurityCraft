@@ -62,7 +62,6 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -74,6 +73,7 @@ import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
@@ -252,11 +252,6 @@ public class ClientProxy implements IProxy
 		ItemBlockRenderTypes.setRenderLayer(SCContent.USERNAME_LOGGER.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.PROJECTOR.get(), cutoutMipped);
 		event.enqueueWork(() -> {
-			EntityRenderers.register(SCContent.eTypeBouncingBetty, BouncingBettyRenderer::new);
-			EntityRenderers.register(SCContent.eTypeImsBomb, IMSBombRenderer::new);
-			EntityRenderers.register(SCContent.eTypeSecurityCamera, EmptyRenderer::new);
-			EntityRenderers.register(SCContent.eTypeSentry, SentryRenderer::new);
-			EntityRenderers.register(SCContent.eTypeBullet, BulletRenderer::new);
 			BlockEntityRenderers.register(SCContent.teTypeBlockPocketManager, BlockPocketManagerTileEntityRenderer::new);
 			BlockEntityRenderers.register(SCContent.teTypeKeypadChest, KeypadChestTileEntityRenderer::new);
 			BlockEntityRenderers.register(SCContent.teTypeRetinalScanner, RetinalScannerTileEntityRenderer::new);
@@ -285,6 +280,16 @@ public class ClientProxy implements IProxy
 		KeyBindings.init();
 		OverlayRegistry.registerOverlayTop(SecurityCraft.MODID + ":camera_overlay", SCClientEventHandler::cameraOverlay);
 		OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, SecurityCraft.MODID + ":hotbar_bind_overlay", SCClientEventHandler::hotbarBindOverlay);
+	}
+
+	@SubscribeEvent
+	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event)
+	{
+		event.registerEntityRenderer(SCContent.eTypeBouncingBetty, BouncingBettyRenderer::new);
+		event.registerEntityRenderer(SCContent.eTypeImsBomb, IMSBombRenderer::new);
+		event.registerEntityRenderer(SCContent.eTypeSecurityCamera, EmptyRenderer::new);
+		event.registerEntityRenderer(SCContent.eTypeSentry, SentryRenderer::new);
+		event.registerEntityRenderer(SCContent.eTypeBullet, BulletRenderer::new);
 	}
 
 	@Override
