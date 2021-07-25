@@ -109,16 +109,17 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 				for(int i = 0; i < ConfigHandler.laserBlockRange; i++)
 				{
 					BlockPos offsetPos = pos.offset(facing, i);
-					Block block = world.getBlockState(offsetPos).getBlock();
+					IBlockState offsetState = world.getBlockState(offsetPos);
+					Block block = offsetState.getBlock();
 
-					if(block == SCContent.laserBlock && !state.getValue(BlockLaserBlock.POWERED))
+					if(block == SCContent.laserBlock && !offsetState.getValue(BlockLaserBlock.POWERED))
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 
 						if(te instanceof IModuleInventory && ModuleUtils.isAllowed((IModuleInventory)te, entity))
 							return;
 
-						world.setBlockState(offsetPos, state.withProperty(BlockLaserBlock.POWERED, true));
+						world.setBlockState(offsetPos, offsetState.withProperty(BlockLaserBlock.POWERED, true));
 						world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
 
 						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(EnumModuleType.HARMING))
