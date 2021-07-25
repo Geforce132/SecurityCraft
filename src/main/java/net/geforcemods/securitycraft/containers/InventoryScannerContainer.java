@@ -100,7 +100,7 @@ public class InventoryScannerContainer extends AbstractContainerMenu {
 		{
 			if(te.getOwner().isOwner(player))
 			{
-				ItemStack pickedUpStack = player.getInventory().getCarried().copy();
+				ItemStack pickedUpStack = getCarried().copy();
 
 				pickedUpStack.setCount(1);
 				te.getContents().set(slotId, pickedUpStack);

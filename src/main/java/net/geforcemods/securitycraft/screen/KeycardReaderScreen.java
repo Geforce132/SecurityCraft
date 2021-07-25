@@ -239,9 +239,9 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderCo
 	}
 
 	@Override
-	public void tick()
+	public void containerTick()
 	{
-		super.tick();
+		super.containerTick();
 
 		ItemStack stack = menu.keycardSlot.getItem();
 		boolean isEmpty = stack.isEmpty();
