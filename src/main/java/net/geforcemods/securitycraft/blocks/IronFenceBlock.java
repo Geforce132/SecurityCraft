@@ -103,10 +103,10 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	public boolean connectsTo(BlockState state, boolean p_220111_2_, Direction direction)
 	{
 		Block block = state.getBlock();
-		boolean flag = block.is(BlockTags.FENCES) && state.getMaterial() == material;
+		boolean flag = state.is(BlockTags.FENCES) && state.getMaterial() == material;
 		boolean flag1 = block instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, direction);
 
-		return !isExceptionForConnection(block) && p_220111_2_ || flag || flag1;
+		return !isExceptionForConnection(state) && p_220111_2_ || flag || flag1;
 	}
 
 	private static int getMask(Direction facing)

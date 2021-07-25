@@ -59,10 +59,10 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		else if(type == PlantType.CAVE)
 			return state.isFaceSturdy(world, pos, Direction.UP);
 		else if(type == PlantType.PLAINS)
-			return is(SCTags.Blocks.REINFORCED_DIRT);
+			return state.is(SCTags.Blocks.REINFORCED_DIRT);
 		else if(type == PlantType.BEACH)
 		{
-			boolean isBeach = is(SCTags.Blocks.REINFORCED_DIRT) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
+			boolean isBeach = state.is(SCTags.Blocks.REINFORCED_DIRT) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 			boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
 					world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
 					world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
