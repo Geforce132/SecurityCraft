@@ -127,7 +127,7 @@ public class KeypadChestTileEntity extends ChestBlockEntity implements IPassword
 	}
 
 	public int getNumPlayersUsing() {
-		return openersCounter.getOpenerCount(); //TODO: AT
+		return openersCounter.getOpenerCount();
 	}
 
 	@Override
