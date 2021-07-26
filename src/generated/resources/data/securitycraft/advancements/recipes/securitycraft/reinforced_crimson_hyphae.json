@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:reinforced_crimson_stem"
+            "items": [
+              "securitycraft:reinforced_crimson_stem"
+            ]
           }
         ]
       }

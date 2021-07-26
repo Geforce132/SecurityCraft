@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:reinforced_polished_blackstone_slab"
+            "items": [
+              "securitycraft:reinforced_polished_blackstone_slab"
+            ]
           }
         ]
       }

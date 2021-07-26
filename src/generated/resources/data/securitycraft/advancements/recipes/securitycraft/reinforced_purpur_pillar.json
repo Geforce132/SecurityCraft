@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:reinforced_purpur_slab"
+            "items": [
+              "securitycraft:reinforced_purpur_slab"
+            ]
           }
         ]
       }

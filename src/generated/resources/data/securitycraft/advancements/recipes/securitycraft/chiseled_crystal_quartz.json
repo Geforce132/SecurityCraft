@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:crystal_quartz_slab"
+            "items": [
+              "securitycraft:crystal_quartz_slab"
+            ]
           }
         ]
       }

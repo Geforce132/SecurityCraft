@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:keycard_lv1"
+            "items": [
+              "securitycraft:keycard_lv1"
+            ]
           }
         ]
       }

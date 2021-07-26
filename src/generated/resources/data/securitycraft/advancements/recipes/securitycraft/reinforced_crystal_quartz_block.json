@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:block_pocket_wall"
+            "items": [
+              "securitycraft:block_pocket_wall"
+            ]
           }
         ]
       }

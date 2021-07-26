@@ -20,7 +20,7 @@ public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer
 
 	public ItemKeypadChestRenderer()
 	{
-		super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+		super(null, null);
 	}
 
 	@Override

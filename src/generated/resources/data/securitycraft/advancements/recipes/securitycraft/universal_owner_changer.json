@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:name_tag"
+            "items": [
+              "minecraft:name_tag"
+            ]
           }
         ]
       }
