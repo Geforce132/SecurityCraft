@@ -251,7 +251,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	}
 
 	/**
-	 * @param The module type of the stack to get
+	 * @param module The module type of the stack to get
 	 * @return The ItemStack for the given ModuleType type.
 	 * If there is no ItemStack for that type, returns ItemStack.EMPTY.
 	 */

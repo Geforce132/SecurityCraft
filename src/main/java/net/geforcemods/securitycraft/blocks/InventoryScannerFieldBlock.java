@@ -229,7 +229,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	}
 
 	/**
-	 * See {@link ItemStack#areItemStacksEqual(ItemStack, ItemStack)} but without size restriction
+	 * See {@link ItemStack#matches(ItemStack, ItemStack)} but without size restriction
 	 */
 	public static boolean areItemStacksEqual(ItemStack stack1, ItemStack stack2)
 	{
