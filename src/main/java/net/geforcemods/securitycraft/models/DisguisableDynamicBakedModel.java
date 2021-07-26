@@ -58,7 +58,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleTexture(IModelData modelData)
+	public TextureAtlasSprite getParticleIcon(IModelData modelData)
 	{
 		ResourceLocation rl = modelData.getData(DISGUISED_BLOCK_RL);
 
@@ -67,10 +67,10 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 			Block block = ForgeRegistries.BLOCKS.getValue(rl);
 
 			if(block != null && !(block instanceof DisguisableBlock))
-				return Minecraft.getInstance().getBlockRenderer().getBlockModel(block.defaultBlockState()).getParticleTexture(modelData);
+				return Minecraft.getInstance().getBlockRenderer().getBlockModel(block.defaultBlockState()).getParticleIcon(modelData);
 		}
 
-		return oldModel.getParticleTexture(modelData);
+		return oldModel.getParticleIcon(modelData);
 	}
 
 	@Override

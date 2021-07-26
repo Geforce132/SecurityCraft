@@ -6,29 +6,36 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * IMSBomb - Geforce
- * Created using Tabula 4.1.1
- */
 @OnlyIn(Dist.CLIENT)
 public class IMSBombModel extends EntityModel<IMSBombEntity> {
-	public ModelPart shape1;
+	public ModelPart bomb;
 
-	public IMSBombModel() {
-		texWidth = 24;
-		texHeight = 24;
-		shape1 = new ModelPart(this, 0, 0);
-		shape1.setPos(0.0F, 0.0F, 0.0F);
-		shape1.addBox(0.0F, 0.0F, 0.0F, 3, 4, 3);
+	public IMSBombModel(ModelPart modelPart)
+	{
+		bomb = modelPart.getChild("ims_bomb");
+	}
+
+	public static LayerDefinition createLayer()
+	{
+		MeshDefinition meshDefinition = new MeshDefinition();
+		PartDefinition partDefinition = meshDefinition.getRoot();
+
+		partDefinition.addOrReplaceChild("ims_bomb", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, 0.0F, 0.0F, 3.0F, 4.0F, 3.0F), PartPose.offset(0.0F, 0.0F, 0.0F));
+		return LayerDefinition.create(meshDefinition, 24, 24);
 	}
 
 	@Override
 	public void renderToBuffer(PoseStack matrix, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
 	{
-		shape1.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
+		bomb.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override

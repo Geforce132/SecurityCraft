@@ -15,7 +15,11 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.BlockMineModel;
+import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
+import net.geforcemods.securitycraft.models.IMSBombModel;
+import net.geforcemods.securitycraft.models.SecurityCameraModel;
+import net.geforcemods.securitycraft.models.SentryModel;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
@@ -57,6 +61,7 @@ import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.SignEditScreen;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -87,6 +92,11 @@ import net.minecraftforge.fmllegacy.RegistryObject;
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD, value=Dist.CLIENT)
 public class ClientProxy implements IProxy
 {
+	public static final ModelLayerLocation BULLET_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "bullet"), "main");
+	public static final ModelLayerLocation IMS_BOMB_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "ims_bomb"), "main");
+	public static final ModelLayerLocation SENTRY_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "sentry"), "main");
+	public static final ModelLayerLocation SECURITY_CAMERA_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "security_camera"), "main");
+
 	@SubscribeEvent
 	public static void onModelBake(ModelBakeEvent event)
 	{
@@ -292,6 +302,15 @@ public class ClientProxy implements IProxy
 		event.registerEntityRenderer(SCContent.eTypeBullet, BulletRenderer::new);
 	}
 
+	@SubscribeEvent
+	public static void registerEntityRenderers(EntityRenderersEvent.RegisterLayerDefinitions event)
+	{
+		event.registerLayerDefinition(BULLET_LOCATION, BulletModel::createLayer);
+		event.registerLayerDefinition(IMS_BOMB_LOCATION, IMSBombModel::createLayer);
+		event.registerLayerDefinition(SENTRY_LOCATION, SentryModel::createLayer);
+		event.registerLayerDefinition(SECURITY_CAMERA_LOCATION, SecurityCameraModel::createLayer);
+	}
+
 	@Override
 	public void tint()
 	{
@@ -331,7 +350,6 @@ public class ClientProxy implements IProxy
 		toTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), crystalQuartzTint);
 		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
 		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
-
 		specialBlockTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (state, world, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
 				int grassTint = world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5D, 1.0D);
@@ -347,7 +365,6 @@ public class ClientProxy implements IProxy
 
 			return noTint;
 		});
-
 		specialItemTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (stack, tintIndex) -> {
 			if (tintIndex == 1) {
 				int grassTint = GrassColor.get(0.5D, 1.0D);
@@ -357,7 +374,6 @@ public class ClientProxy implements IProxy
 
 			return noTint;
 		});
-
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
 			if (tintIndex == 0)
 				return reinforcedTint.contains(block) ? mixWithReinforcedTintIfEnabled(tint) : tint;

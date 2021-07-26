@@ -7,6 +7,7 @@ import com.mojang.math.Vector3f;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.models.BulletModel;
+import net.geforcemods.securitycraft.network.ClientProxy;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -20,18 +21,20 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BulletRenderer extends EntityRenderer<BulletEntity>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/bullet.png");
-	private static final BulletModel MODEL = new BulletModel();
+	private final BulletModel model;
 
 	public BulletRenderer(EntityRendererProvider.Context ctx)
 	{
 		super(ctx);
+
+		model = new BulletModel(ctx.bakeLayer(ClientProxy.BULLET_LOCATION));
 	}
 
 	@Override
 	public void render(BulletEntity entity, float p_225623_2_, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int p_225623_6_)
 	{
 		matrix.mulPose(new Quaternion(Vector3f.YP, entity.getYRot(), true));
-		MODEL.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity))), p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity))), p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import com.mojang.math.Vector3f;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
+import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.CameraType;
@@ -29,10 +30,13 @@ public class SecurityCameraTileEntityRenderer implements BlockEntityRenderer<Sec
 	private static final Quaternion POSITIVE_Y_90 = Vector3f.YP.rotationDegrees(90.0F);
 	private static final Quaternion NEGATIVE_Y_90 = Vector3f.YN.rotationDegrees(90.0F);
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
-	private static final SecurityCameraModel modelSecurityCamera = new SecurityCameraModel();
-	private static final ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/block/security_camera1.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/security_camera1.png");
+	private final SecurityCameraModel modelSecurityCamera;
 
-	public SecurityCameraTileEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
+	public SecurityCameraTileEntityRenderer(BlockEntityRendererProvider.Context ctx)
+	{
+		modelSecurityCamera = new SecurityCameraModel(ctx.bakeLayer(ClientProxy.SECURITY_CAMERA_LOCATION));
+	}
 
 	@Override
 	public void render(SecurityCameraTileEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int p_225616_5_, int p_225616_6_)
@@ -61,6 +65,6 @@ public class SecurityCameraTileEntityRenderer implements BlockEntityRenderer<Sec
 
 		matrix.mulPose(POSITIVE_X_180);
 		modelSecurityCamera.cameraRotationPoint.yRot = (float)te.cameraRotation;
-		modelSecurityCamera.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(cameraTexture)), p_225616_5_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		modelSecurityCamera.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), p_225616_5_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }
