@@ -43,6 +43,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -136,11 +137,11 @@ public class SCManualScreen extends Screen {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		if(currentPage == -1)
-			minecraft.getTextureManager().bindForSetup(infoBookTitlePage);
+			RenderSystem._setShaderTexture(0, infoBookTitlePage);
 		else if(recipe != null && recipe.size() > 0)
-			minecraft.getTextureManager().bindForSetup(infoBookTexture);
+			RenderSystem._setShaderTexture(0, infoBookTexture);
 		else
-			minecraft.getTextureManager().bindForSetup(infoBookTextureSpecial);
+			RenderSystem._setShaderTexture(0, infoBookTextureSpecial);
 
 		blit(matrix, startX, 5, 0, 0, 256, 250);
 
@@ -169,7 +170,7 @@ public class SCManualScreen extends Screen {
 			font.drawWordWrap(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			font.draw(matrix, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
 			minecraft.getItemRenderer().renderAndDecorateItem(new ItemStack(item), startX + 19, 22);
-			minecraft.getTextureManager().bindForSetup(infoBookIcons);
+			RenderSystem._setShaderTexture(0, infoBookIcons);
 
 			if(item instanceof BlockItem){
 				Block block = ((BlockItem) item).getBlock();
@@ -243,11 +244,6 @@ public class SCManualScreen extends Screen {
 
 				font.draw(matrix, text, width / 2 - font.width(text) / 2, 180 + 10 * i, 0);
 			}
-
-			//TODO: still needed?
-			//the patreon link button may overlap with a name tooltip from the list, so draw the list after the buttons
-			if(patronList != null)
-				patronList.render(matrix, mouseX, mouseY, partialTicks);
 
 			font.draw(matrix, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
 			font.draw(matrix, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, 0);
@@ -361,7 +357,6 @@ public class SCManualScreen extends Screen {
 				author.clear();
 
 			intro2 = font.split(Utils.localize("gui.securitycraft:scManual.intro.2"), 225);
-
 			patronList.fetchPatrons();
 			return;
 		}
@@ -523,7 +518,6 @@ public class SCManualScreen extends Screen {
 		previousSubpage.visible = currentPage != -1 && subpages.size() > 1;
 	}
 
-	//TODO: are these still needed?
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button)
 	{
@@ -589,102 +583,106 @@ public class SCManualScreen extends Screen {
 		@Override
 		public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
 		{
-			if(patronsAvailable) //code from ScrollPanel to be able to change colors
+			if(currentPage == -1)
 			{
-				Tesselator tess = Tesselator.getInstance();
-				BufferBuilder buffer = tess.getBuilder();
-				Minecraft client = Minecraft.getInstance();
-				double scale = client.getWindow().getGuiScale();
-				int baseY = top + border - (int)scrollDistance;
-				int extraHeight = getContentHeight() + border - height;
-
-				GL11.glEnable(GL11.GL_SCISSOR_TEST);
-				GL11.glScissor((int)(left  * scale), (int)(client.getWindow().getHeight() - (bottom * scale)),
-						(int)(width * scale), (int)(height * scale));
-				drawGradientRect(matrix, left, top, right, bottom, 0xC0BFBBB2, 0xD0BFBBB2); //list background
-				drawPanel(matrix, right, baseY, tess, mouseX, mouseY);
-				RenderSystem.disableDepthTest();
-
-				if(extraHeight > 0)
+				if(patronsAvailable) //code from ScrollPanel to be able to change colors
 				{
-					int barHeight = getBarHeight();
-					int barTop = (int)scrollDistance * (height - barHeight) / extraHeight + top;
+					Tesselator tess = Tesselator.getInstance();
+					BufferBuilder buffer = tess.getBuilder();
+					Minecraft client = Minecraft.getInstance();
+					double scale = client.getWindow().getGuiScale();
+					int baseY = top + border - (int)scrollDistance;
+					int extraHeight = getContentHeight() + border - height;
 
-					if(barTop < top)
-						barTop = top;
+					GL11.glEnable(GL11.GL_SCISSOR_TEST);
+					GL11.glScissor((int)(left  * scale), (int)(client.getWindow().getHeight() - (bottom * scale)),
+							(int)(width * scale), (int)(height * scale));
+					drawGradientRect(matrix, left, top, right, bottom, 0xC0BFBBB2, 0xD0BFBBB2); //list background
+					drawPanel(matrix, right, baseY, tess, mouseX, mouseY);
+					RenderSystem.disableDepthTest();
 
-					//scrollbar background
-					buffer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-					buffer.vertex(barLeft,            bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
-					buffer.vertex(barLeft + barWidth, bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
-					buffer.vertex(barLeft + barWidth, top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
-					buffer.vertex(barLeft,            top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
-					tess.end();
-					//scrollbar border
-					buffer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-					buffer.vertex(barLeft,            barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
-					buffer.vertex(barLeft + barWidth, barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
-					buffer.vertex(barLeft + barWidth, barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
-					buffer.vertex(barLeft,            barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
-					tess.end();
-					//scrollbar
-					buffer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-					buffer.vertex(barLeft,                barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
-					buffer.vertex(barLeft + barWidth - 1, barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
-					buffer.vertex(barLeft + barWidth - 1, barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
-					buffer.vertex(barLeft,                barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
-					tess.end();
-				}
+					if(extraHeight > 0)
+					{
+						int barHeight = getBarHeight();
+						int barTop = (int)scrollDistance * (height - barHeight) / extraHeight + top;
 
-				RenderSystem.enableTexture();
-				RenderSystem.disableBlend();
-				GL11.glDisable(GL11.GL_SCISSOR_TEST);
+						if(barTop < top)
+							barTop = top;
 
-				//draw tooltip for long patron names
-				int mouseListY = (int)(mouseY - top + scrollDistance - border);
-				int slotIndex = mouseListY / slotHeight;
+						RenderSystem.setShader(GameRenderer::getPositionColorShader);
+						//scrollbar background
+						buffer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+						buffer.vertex(barLeft,            bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
+						buffer.vertex(barLeft + barWidth, bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
+						buffer.vertex(barLeft + barWidth, top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
+						buffer.vertex(barLeft,            top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
+						tess.end();
+						//scrollbar border
+						buffer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+						buffer.vertex(barLeft,            barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
+						buffer.vertex(barLeft + barWidth, barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
+						buffer.vertex(barLeft + barWidth, barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
+						buffer.vertex(barLeft,            barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
+						tess.end();
+						//scrollbar
+						buffer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+						buffer.vertex(barLeft,                barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
+						buffer.vertex(barLeft + barWidth - 1, barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
+						buffer.vertex(barLeft + barWidth - 1, barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
+						buffer.vertex(barLeft,                barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
+						tess.end();
+					}
 
-				if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < patrons.size() && mouseY >= top && mouseY <= bottom)
-				{
-					String patron = patrons.get(slotIndex);
-					int length = font.width(patron);
+					RenderSystem.enableTexture();
+					RenderSystem.disableBlend();
+					GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
-					if(length >= width - barWidth)
-						renderTooltip(matrix, new TextComponent(patron), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
-				}
+					//draw tooltip for long patron names
+					int mouseListY = (int)(mouseY - top + scrollDistance - border);
+					int slotIndex = mouseListY / slotHeight;
 
-				if (patrons.isEmpty()) {
-					for(int i = 0; i < noPatronsLines.size(); i++) {
-						FormattedCharSequence line = noPatronsLines.get(i);
+					if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < patrons.size() && mouseY >= top && mouseY <= bottom)
+					{
+						String patron = patrons.get(slotIndex);
+						int length = font.width(patron);
 
-						font.draw(matrix, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFF333333);
+						if(length >= width - barWidth)
+							renderTooltip(matrix, new TextComponent(patron), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
+					}
+
+					if (patrons.isEmpty()) {
+						for(int i = 0; i < noPatronsLines.size(); i++) {
+							FormattedCharSequence line = noPatronsLines.get(i);
+
+							font.draw(matrix, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFF333333);
+						}
 					}
 				}
-			}
-			else if(error)
-			{
-				for(int i = 0; i < fetchErrorLines.size(); i++)
+				else if(error)
 				{
-					FormattedCharSequence line = fetchErrorLines.get(i);
+					for(int i = 0; i < fetchErrorLines.size(); i++)
+					{
+						FormattedCharSequence line = fetchErrorLines.get(i);
 
-					font.draw(matrix, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFFB00101);
+						font.draw(matrix, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFFB00101);
+					}
 				}
-			}
-			else if(patronRequestFuture != null && patronRequestFuture.isDone())
-			{
-				try
+				else if(patronRequestFuture != null && patronRequestFuture.isDone())
 				{
-					patrons = patronRequestFuture.get();
-					executor.shutdown();
-					patronsAvailable = true;
+					try
+					{
+						patrons = patronRequestFuture.get();
+						executor.shutdown();
+						patronsAvailable = true;
+					}
+					catch(InterruptedException | ExecutionException e)
+					{
+						error = true;
+					}
 				}
-				catch(InterruptedException | ExecutionException e)
-				{
-					error = true;
-				}
+				else
+					font.draw(matrix, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, 0);
 			}
-			else
-				font.draw(matrix, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, 0);
 		}
 
 		@Override
@@ -706,7 +704,7 @@ public class SCManualScreen extends Screen {
 			{
 				//create thread to fetch patrons. without this, and for example if the player has no internet connection, the game will hang
 				patronRequestFuture = executor.submit(() -> {
-					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw").openStream())))
+					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://gist.githubusercontent.com/bl4ckscor3/3196e6740774e386871a74a9606eaa61/raw").openStream())))
 					{
 						return reader.lines().collect(Collectors.toList());
 					}
@@ -751,7 +749,7 @@ public class SCManualScreen extends Screen {
 				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-				Minecraft.getInstance().getTextureManager().bindForSetup(bookGuiTextures);
+				RenderSystem._setShaderTexture(0, bookGuiTextures);
 				blit(matrix, x, y, isHovering ? 23 : 0, textureY, 23, 13);
 			}
 		}
@@ -767,7 +765,7 @@ public class SCManualScreen extends Screen {
 		@Override
 		public void renderButton(PoseStack matrix, int mouseX, int mouseY, float partial)
 		{
-			minecraft.getTextureManager().bindForSetup(infoBookIcons);
+			RenderSystem._setShaderTexture(0, infoBookIcons);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 			if(isHovered)
