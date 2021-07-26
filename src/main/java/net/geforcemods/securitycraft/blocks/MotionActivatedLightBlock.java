@@ -35,10 +35,10 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
-	private static final VoxelShape SHAPE_NORTH = Shapes.or(Block.box(6, 3, 13, 10, 4, 14), Shapes.or(Block.box(6, 6, 13, 10, 9, 14), Shapes.joinUnoptimized(Block.box(7, 3, 14, 9, 8, 16), Block.box(7, 4, 15, 9, 7, 14), BooleanOp.ONLY_FIRST)));
-	private static final VoxelShape SHAPE_EAST = Shapes.or(Block.box(3, 3, 6, 2, 4, 10), Shapes.or(Block.box(3, 6, 6, 2, 9, 10), Shapes.joinUnoptimized(Block.box(2, 3, 7, 0, 8, 9), Block.box(1, 4, 7, 2, 7, 9), BooleanOp.ONLY_FIRST)));
+	private static final VoxelShape SHAPE_NORTH = Shapes.or(Block.box(6, 3, 13, 10, 4, 14), Shapes.or(Block.box(6, 6, 13, 10, 9, 14), Shapes.joinUnoptimized(Block.box(7, 3, 14, 9, 8, 16), Block.box(7, 4, 14, 9, 7, 15), BooleanOp.ONLY_FIRST)));
+	private static final VoxelShape SHAPE_EAST = Shapes.or(Block.box(2, 3, 6, 3, 4, 10), Shapes.or(Block.box(2, 6, 6, 3, 9, 10), Shapes.joinUnoptimized(Block.box(0, 3, 7, 2, 8, 9), Block.box(1, 4, 7, 2, 7, 9), BooleanOp.ONLY_FIRST)));
 	private static final VoxelShape SHAPE_SOUTH = Shapes.or(Block.box(6, 3, 2, 10, 4, 3), Shapes.or(Block.box(6, 6, 2, 10, 9, 3), Shapes.joinUnoptimized(Block.box(7, 3, 0, 9, 8, 2), Block.box(7, 4, 1, 9, 7, 2), BooleanOp.ONLY_FIRST)));
-	private static final VoxelShape SHAPE_WEST = Shapes.or(Block.box(13, 3, 6, 14, 4, 10), Shapes.or(Block.box(13, 6, 6, 14, 9, 10), Shapes.joinUnoptimized(Block.box(14, 3, 7, 16, 8, 9), Block.box(15, 4, 7, 14, 7, 9), BooleanOp.ONLY_FIRST)));
+	private static final VoxelShape SHAPE_WEST = Shapes.or(Block.box(13, 3, 6, 14, 4, 10), Shapes.or(Block.box(13, 6, 6, 14, 9, 10), Shapes.joinUnoptimized(Block.box(14, 3, 7, 16, 8, 9), Block.box(14, 4, 7, 15, 7, 9), BooleanOp.ONLY_FIRST)));
 
 	public MotionActivatedLightBlock(Block.Properties properties) {
 		super(properties);

@@ -32,10 +32,10 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	private static final VoxelShape FLOOR_EW_UNPOWERED = Block.box(5, 0, 3, 11, 2, 13);
 	private static final VoxelShape WALL_N_POWERED = Block.box(3, 5, 15, 13, 11, 16);
 	private static final VoxelShape WALL_N_UNPOWERED = Block.box(3, 5, 14, 13, 11, 16);
-	private static final VoxelShape WALL_S_POWERED = Block.box(3, 5, 1, 13, 11, 0);
-	private static final VoxelShape WALL_S_UNPOWERED = Block.box(3, 5, 2, 13, 11, 0);
-	private static final VoxelShape WALL_E_POWERED = Block.box(1, 5, 3, 0, 11, 13);
-	private static final VoxelShape WALL_E_UNPOWERED = Block.box(2, 5, 3, 0, 11, 13);
+	private static final VoxelShape WALL_S_POWERED = Block.box(3, 5, 0, 13, 11, 1);
+	private static final VoxelShape WALL_S_UNPOWERED = Block.box(3, 5, 0, 13, 11, 2);
+	private static final VoxelShape WALL_E_POWERED = Block.box(0, 5, 3, 1, 11, 13);
+	private static final VoxelShape WALL_E_UNPOWERED = Block.box(0, 5, 3, 2, 11, 13);
 	private static final VoxelShape WALL_W_POWERED = Block.box(15, 5, 3, 16, 11, 13);
 	private static final VoxelShape WALL_W_UNPOWERED = Block.box(14, 5, 3, 16, 11, 13);
 	private static final VoxelShape CEILING_NS_POWERED = Block.box(3, 15, 5, 13, 16, 11);

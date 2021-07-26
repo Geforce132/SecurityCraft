@@ -41,8 +41,8 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	private static final VoxelShape EAST_ON = Shapes.or(EAST_OFF, Shapes.or(Block.box(13, 4, 3, 14, 5, 4), Block.box(13, 4, 12, 14, 5, 13)));
 	private static final VoxelShape SOUTH_OFF = Shapes.or(Block.box(4, 0, 9, 12, 4, 11), Shapes.or(Block.box(4, 4, 10, 12, 5, 11), Shapes.or(Block.box(5, 4, 11, 6, 5, 12), Shapes.or(Block.box(10, 4, 11, 11, 5, 12), Shapes.or(Block.box(4, 4, 12, 5, 5, 13), Block.box(11, 4, 12, 12, 5, 13))))));
 	private static final VoxelShape SOUTH_ON = Shapes.or(SOUTH_OFF, Shapes.or(Block.box(3, 4, 13, 4, 5, 14), Block.box(12, 4, 13, 13, 5, 14)));
-	private static final VoxelShape WEST_OFF = Shapes.or(Block.box(7, 0, 4, 5, 4, 12), Shapes.or(Block.box(6, 4, 4, 5, 5, 12), Shapes.or(Block.box(5, 4, 5, 4, 5, 6), Shapes.or(Block.box(5, 4, 10, 4, 5, 11), Shapes.or(Block.box(4, 4, 4, 3, 5, 5), Block.box(4, 4, 11, 3, 5, 12))))));
-	private static final VoxelShape WEST_ON = Shapes.or(WEST_OFF, Shapes.or(Block.box(3, 4, 3, 2, 5, 4), Block.box(3, 4, 12, 2, 5, 13)));
+	private static final VoxelShape WEST_OFF = Shapes.or(Block.box(5, 0, 4, 7, 4, 12), Shapes.or(Block.box(5, 4, 4, 6, 5, 12), Shapes.or(Block.box(4, 4, 5, 5, 5, 6), Shapes.or(Block.box(4, 4, 10, 5, 5, 11), Shapes.or(Block.box(3, 4, 4, 4, 5, 5), Block.box(3, 4, 11, 4, 5, 12))))));
+	private static final VoxelShape WEST_ON = Shapes.or(WEST_OFF, Shapes.or(Block.box(2, 4, 3, 3, 5, 4), Block.box(2, 4, 12, 3, 5, 13)));
 
 	public ClaymoreBlock(Block.Properties properties) {
 		super(properties);
