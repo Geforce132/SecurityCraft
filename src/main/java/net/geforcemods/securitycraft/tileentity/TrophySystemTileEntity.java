@@ -31,6 +31,7 @@ import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -72,40 +73,39 @@ public class TrophySystemTileEntity extends CustomizableTileEntity {
 		projectileFilter.put(EntityType.PIG, false); //modded projectiles
 	}
 
-	@Override
-	public void tick() {
-		if (!level.isClientSide) {
+	public static void tick(Level world, BlockPos pos, BlockState state, TrophySystemTileEntity te) {
+		if (!world.isClientSide) {
 			// If the trophy does not have a target, try looking for one
-			if(entityBeingTargeted == null) {
-				Projectile target = getPotentialTarget();
+			if(te.entityBeingTargeted == null) {
+				Projectile target = getPotentialTarget(world, pos, te);
 
 				if(target != null) {
 					Entity shooter = target.getOwner();
 
 					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if(!(shooter != null && ((shooter.getUUID() != null && shooter.getUUID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
-						setTarget(target);
+					if(!(shooter != null && ((shooter.getUUID() != null && shooter.getUUID().toString().equals(te.getOwner().getUUID())) || ModuleUtils.isAllowed(te, shooter.getName().getString()))))
+						te.setTarget(target);
 				}
 			}
 		}
 
 		// If there are no entities to target, return
-		if(entityBeingTargeted == null)
+		if(te.entityBeingTargeted == null)
 			return;
 
-		if(!entityBeingTargeted.isAlive())
+		if(!te.entityBeingTargeted.isAlive())
 		{
-			resetTarget();
+			te.resetTarget();
 			return;
 		}
 
 		// If the cooldown hasn't finished yet, don't destroy any projectiles
-		if(cooldown > 0) {
-			cooldown--;
+		if(te.cooldown > 0) {
+			te.cooldown--;
 			return;
 		}
 
-		destroyTarget();
+		te.destroyTarget();
 	}
 
 	@Override
@@ -176,20 +176,20 @@ public class TrophySystemTileEntity extends CustomizableTileEntity {
 	 * Randomly returns a new Entity target from the list of all entities
 	 * within range of the trophy
 	 */
-	private Projectile getPotentialTarget() {
+	private static Projectile getPotentialTarget(Level world, BlockPos pos, TrophySystemTileEntity te) {
 		List<Projectile> potentialTargets = new ArrayList<>();
-		AABB area = new AABB(worldPosition).inflate(RANGE, RANGE, RANGE);
+		AABB area = new AABB(pos).inflate(RANGE);
 
-		potentialTargets.addAll(level.getEntitiesOfClass(Projectile.class, area, this::isAllowedToTarget));
+		potentialTargets.addAll(world.getEntitiesOfClass(Projectile.class, area, te::isAllowedToTarget));
 
 		//remove bullets shot by sentries/IMSs of this trophy system's owner or players on the allowlist
-		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
+		potentialTargets = potentialTargets.stream().filter(te::filterSCProjectiles).collect(Collectors.toList());
 
 		// If there are no projectiles, return
 		if(potentialTargets.size() <= 0) return null;
 
 		// Return a random entity to target from the list of all possible targets
-		int target = random.nextInt(potentialTargets.size());
+		int target = te.random.nextInt(potentialTargets.size());
 
 		return potentialTargets.get(target);
 	}

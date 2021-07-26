@@ -15,11 +15,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Block;
 import net.minecraft.world.level.ClipContext.Fluid;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 
@@ -56,35 +56,34 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements INamea
 		super(type, pos, state);
 	}
 
-	@Override
-	public void tick() {
-		if(intersectsEntities){
-			int x = worldPosition.getX();
-			int y = worldPosition.getY();
-			int z = worldPosition.getZ();
+	public static void tick(Level world, BlockPos pos, BlockState state, SecurityCraftTileEntity te) {
+		if(te.intersectsEntities){
+			int x = te.worldPosition.getX();
+			int y = te.worldPosition.getY();
+			int z = te.worldPosition.getZ();
 			AABB area = (new AABB(x, y, z, x + 1, y + 1, z + 1));
-			List<?> entities = level.getEntitiesOfClass(Entity.class, area);
+			List<?> entities = world.getEntitiesOfClass(Entity.class, area);
 			Iterator<?> iterator = entities.iterator();
 			Entity entity;
 
 			while (iterator.hasNext())
 			{
 				entity = (Entity)iterator.next();
-				entityIntersecting(entity);
+				entityIntersecting(world, pos, entity);
 			}
 		}
 
-		if(viewActivated){
-			if(viewCooldown > 0){
-				viewCooldown--;
+		if(te.viewActivated){
+			if(te.viewCooldown > 0){
+				te.viewCooldown--;
 				return;
 			}
 
-			int x = worldPosition.getX();
-			int y = worldPosition.getY();
-			int z = worldPosition.getZ();
-			AABB area = (new AABB(x, y, z, (x), (y), (z)).inflate(5, 5, 5));
-			List<?> entities = level.getEntitiesOfClass(LivingEntity.class, area, e -> !(e instanceof Player) || !((Player)e).isSpectator());
+			int x = te.worldPosition.getX();
+			int y = te.worldPosition.getY();
+			int z = te.worldPosition.getZ();
+			AABB area = (new AABB(x, y, z, (x), (y), (z)).inflate(5));
+			List<?> entities = world.getEntitiesOfClass(LivingEntity.class, area, e -> !(e instanceof Player) || !e.isSpectator());
 			Iterator<?> iterator = entities.iterator();
 			LivingEntity entity;
 
@@ -95,57 +94,57 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements INamea
 				boolean isPlayer = (entity instanceof Player);
 				Vec3 lookVec = new Vec3((entity.getX() + (entity.getLookAngle().x * 5)), ((eyeHeight + entity.getY()) + (entity.getLookAngle().y * 5)), (entity.getZ() + (entity.getLookAngle().z * 5)));
 
-				HitResult mop = getLevel().clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, Block.COLLIDER, Fluid.NONE, entity));
+				BlockHitResult mop = world.clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, Block.COLLIDER, Fluid.NONE, entity));
 				if(mop != null && mop.getType() == Type.BLOCK)
-					if(((BlockHitResult)mop).getBlockPos().getX() == getBlockPos().getX() && ((BlockHitResult)mop).getBlockPos().getY() == getBlockPos().getY() && ((BlockHitResult)mop).getBlockPos().getZ() == getBlockPos().getZ())
-						if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {
-							entityViewed(entity);
-							viewCooldown = getViewCooldown();
+					if(mop.getBlockPos().getX() == pos.getX() && mop.getBlockPos().getY() == pos.getY() && mop.getBlockPos().getZ() == pos.getZ())
+						if((isPlayer && te.activatedOnlyByPlayer()) || !te.activatedOnlyByPlayer()) {
+							te.entityViewed(entity);
+							te.viewCooldown = te.getViewCooldown();
 						}
 			}
 		}
 
-		if (attacks) {
-			if (attackCooldown < getTicksBetweenAttacks()) {
-				attackCooldown++;
+		if (te.attacks) {
+			if (te.attackCooldown < te.getTicksBetweenAttacks()) {
+				te.attackCooldown++;
 				return;
 			}
 
-			if (canAttack()) {
-				AABB area = new AABB(worldPosition).inflate(getAttackRange(), getAttackRange(), getAttackRange());
-				List<?> entities = level.getEntitiesOfClass(entityTypeToAttack(), area);
+			if (te.canAttack()) {
+				AABB area = new AABB(pos).inflate(te.getAttackRange());
+				List<?> entities = world.getEntitiesOfClass(te.entityTypeToAttack(), area);
 				Iterator<?> iterator = entities.iterator();
 
-				if(!level.isClientSide){
+				if(!world.isClientSide){
 					boolean attacked = false;
 
 					if(!iterator.hasNext())
-						attackFailed();
+						te.attackFailed();
 
 					while (iterator.hasNext()) {
 						Entity mobToAttack = (Entity) iterator.next();
 
-						if (mobToAttack == null || mobToAttack instanceof ItemEntity || !shouldAttackEntityType(mobToAttack))
+						if (mobToAttack == null || mobToAttack instanceof ItemEntity || !te.shouldAttackEntityType(mobToAttack))
 							continue;
 
-						if (attackEntity(mobToAttack))
+						if (te.attackEntity(mobToAttack))
 							attacked = true;
 					}
 
-					if (attacked || shouldRefreshAttackCooldown())
-						attackCooldown = 0;
+					if (attacked || te.shouldRefreshAttackCooldown())
+						te.attackCooldown = 0;
 
-					if(attacked || shouldSyncToClient())
-						sync();
+					if(attacked || te.shouldSyncToClient())
+						te.sync();
 				}
 			}
 		}
 	}
 
-	public void entityIntersecting(Entity entity) {
-		if(!(level.getBlockState(getBlockPos()).getBlock() instanceof IIntersectable)) return;
+	private static void entityIntersecting(Level world, BlockPos pos, Entity entity) {
+		if(!(world.getBlockState(pos).getBlock() instanceof IIntersectable)) return;
 
-		((IIntersectable) level.getBlockState(getBlockPos()).getBlock()).onEntityIntersected(getLevel(), getBlockPos(), entity);
+		((IIntersectable) world.getBlockState(pos).getBlock()).onEntityIntersected(world, pos, entity);
 	}
 
 	/**
@@ -412,5 +411,4 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements INamea
 	public boolean canBeNamed() {
 		return canBeNamed;
 	}
-
 }

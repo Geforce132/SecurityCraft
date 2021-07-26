@@ -39,6 +39,8 @@ import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
@@ -196,6 +198,11 @@ public class KeypadChestBlock extends ChestBlock {
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new KeypadChestTileEntity(pos, state);
+	}
+
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+		return world.isClientSide ? createTickerHelper(type, SCContent.teTypeKeypadChest, KeypadChestTileEntity::lidAnimateTick) : null;
 	}
 
 	public static boolean isBlocked(Level world, BlockPos pos)

@@ -34,11 +34,6 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return world.isClientSide ? null : createTickerHelper(type, SCContent.teTypeReinforcedHopper, ReinforcedHopperTileEntity::pushItemsTick);
-	}
-
-	@Override
 	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof Player)
@@ -101,6 +96,11 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
 		return new ReinforcedHopperTileEntity(pos, state);
+	}
+
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+		return world.isClientSide ? null : createTickerHelper(type, SCContent.teTypeReinforcedHopper, ReinforcedHopperTileEntity::pushItemsTick);
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
@@ -33,54 +34,49 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 		super(SCContent.teTypeClaymore, pos, state);
 	}
 
-	@Override
-	public void tick() {
-		if(!getLevel().isClientSide)
-		{
-			if(getBlockState().getValue(ClaymoreBlock.DEACTIVATED))
-				return;
+	public static void serverTick(Level world, BlockPos pos, BlockState state, ClaymoreTileEntity te) {
+		if(state.getValue(ClaymoreBlock.DEACTIVATED))
+			return;
 
-			if(cooldown > 0){
-				cooldown--;
-				return;
-			}
-
-			if(cooldown == 0){
-				((ClaymoreBlock)getBlockState().getBlock()).explode(level, worldPosition);
-				return;
-			}
-
-			Direction dir = getBlockState().getValue(ClaymoreBlock.FACING);
-			AABB area = new AABB(worldPosition);
-
-			if(dir == Direction.NORTH)
-				area = area.contract(-0, -0, range.get());
-			else if(dir == Direction.SOUTH)
-				area = area.contract(-0, -0, -range.get());
-			else if(dir == Direction.EAST)
-				area = area.contract(-range.get(), -0, -0);
-			else if(dir == Direction.WEST)
-				area = area.contract(range.get(), -0, -0);
-
-			List<?> entities = getLevel().getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e));
-			Iterator<?> iterator = entities.iterator();
-			LivingEntity entity;
-
-			while(iterator.hasNext()){
-				entity = (LivingEntity) iterator.next();
-
-				if(PlayerUtils.isPlayerMountedOnCamera(entity) || EntityUtils.doesEntityOwn(entity, level, worldPosition))
-					continue;
-
-				entityX = entity.getX();
-				entityY = entity.getY();
-				entityZ = entity.getZ();
-				cooldown = 20;
-				getLevel().playSound(null, new BlockPos(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
-				break;
-			}
+		if(te.cooldown > 0){
+			te.cooldown--;
+			return;
 		}
 
+		if(te.cooldown == 0){
+			((ClaymoreBlock)state.getBlock()).explode(world, pos);
+			return;
+		}
+
+		Direction dir = state.getValue(ClaymoreBlock.FACING);
+		AABB area = new AABB(pos);
+
+		if(dir == Direction.NORTH)
+			area = area.contract(-0, -0, te.range.get());
+		else if(dir == Direction.SOUTH)
+			area = area.contract(-0, -0, -te.range.get());
+		else if(dir == Direction.EAST)
+			area = area.contract(-te.range.get(), -0, -0);
+		else if(dir == Direction.WEST)
+			area = area.contract(te.range.get(), -0, -0);
+
+		List<?> entities = world.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e));
+		Iterator<?> iterator = entities.iterator();
+		LivingEntity entity;
+
+		while(iterator.hasNext()){
+			entity = (LivingEntity) iterator.next();
+
+			if(PlayerUtils.isPlayerMountedOnCamera(entity) || EntityUtils.doesEntityOwn(entity, world, pos))
+				continue;
+
+			te.entityX = entity.getX();
+			te.entityY = entity.getY();
+			te.entityZ = entity.getZ();
+			te.cooldown = 20;
+			world.playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
+			break;
+		}
 	}
 
 	/**

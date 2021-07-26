@@ -10,6 +10,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,14 +37,13 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 		super(type, pos, state);
 	}
 
-	@Override
-	public void tick() {
-		super.tick();
+	public static void tick(Level world, BlockPos pos, BlockState state, CustomizableTileEntity te) {
+		SecurityCraftTileEntity.tick(world, pos, state, te);
 
-		if(hasLevel() && nbtTagStorage != null) {
-			readLinkedBlocks(nbtTagStorage);
-			sync();
-			nbtTagStorage = null;
+		if(te.hasLevel() && te.nbtTagStorage != null) {
+			te.readLinkedBlocks(te.nbtTagStorage);
+			te.sync();
+			te.nbtTagStorage = null;
 		}
 	}
 

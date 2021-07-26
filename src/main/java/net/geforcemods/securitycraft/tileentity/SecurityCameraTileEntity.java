@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SecurityCameraTileEntity extends CustomizableTileEntity {
@@ -29,31 +30,30 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 		super(SCContent.teTypeSecurityCamera, pos, state);
 	}
 
-	@Override
-	public void tick(){
-		super.tick();
+	public static void tick(Level world, BlockPos pos, BlockState state, SecurityCameraTileEntity te){
+		CustomizableTileEntity.tick(world, pos, state, te);
 
-		if(!downSet)
+		if(!te.downSet)
 		{
-			down = getBlockState().getValue(SecurityCameraBlock.FACING) == Direction.DOWN;
-			downSet = true;
+			te.down = state.getValue(SecurityCameraBlock.FACING) == Direction.DOWN;
+			te.downSet = true;
 		}
 
-		if(!shouldRotateOption.get())
+		if(!te.shouldRotateOption.get())
 		{
-			cameraRotation = customRotationOption.get();
+			te.cameraRotation = te.customRotationOption.get();
 			return;
 		}
 
-		if(addToRotation && cameraRotation <= 1.55F)
-			cameraRotation += rotationSpeedOption.get();
+		if(te.addToRotation && te.cameraRotation <= 1.55F)
+			te.cameraRotation += te.rotationSpeedOption.get();
 		else
-			addToRotation = false;
+			te.addToRotation = false;
 
-		if(!addToRotation && cameraRotation >= -1.55F)
-			cameraRotation -= rotationSpeedOption.get();
+		if(!te.addToRotation && te.cameraRotation >= -1.55F)
+			te.cameraRotation -= te.rotationSpeedOption.get();
 		else
-			addToRotation = true;
+			te.addToRotation = true;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -34,17 +35,16 @@ public class BlockPocketTileEntity extends SecurityCraftTileEntity
 		return manager;
 	}
 
-	@Override
-	public void tick()
+	public static void tick(Level world, BlockPos pos, BlockState state, BlockPocketTileEntity te)
 	{
-		super.tick();
+		SecurityCraftTileEntity.tick(world, pos, state, te);
 
-		if(manager == null && managerPos != null)
+		if(te.manager == null && te.managerPos != null)
 		{
-			BlockEntity te = level.getBlockEntity(managerPos);
+			BlockEntity manager = world.getBlockEntity(te.managerPos);
 
-			if(te instanceof BlockPocketManagerTileEntity)
-				manager = (BlockPocketManagerTileEntity)te;
+			if(manager instanceof BlockPocketManagerTileEntity)
+				te.manager = (BlockPocketManagerTileEntity)manager;
 		}
 	}
 

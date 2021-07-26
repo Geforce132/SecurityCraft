@@ -21,6 +21,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
@@ -39,45 +40,44 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 		super(SCContent.teTypePortableRadar, pos, state);
 	}
 
-	@Override
-	public void tick()
+	public static void tick(Level world, BlockPos pos, BlockState state, PortableRadarTileEntity te)
 	{
-		super.tick();
+		CustomizableTileEntity.tick(world, pos, state, te);
 
-		if(!level.isClientSide && enabledOption.get() && ticksUntilNextSearch-- <= 0)
+		if(!world.isClientSide && te.enabledOption.get() && te.ticksUntilNextSearch-- <= 0)
 		{
-			ticksUntilNextSearch = getSearchDelay();
+			te.ticksUntilNextSearch = te.getSearchDelay();
 
-			ServerPlayer owner = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
-			AABB area = new AABB(worldPosition).inflate(getSearchRadius(), getSearchRadius(), getSearchRadius());
-			List<Player> entities = level.getEntitiesOfClass(Player.class, area, e -> {
+			ServerPlayer owner = world.getServer().getPlayerList().getPlayerByName(te.getOwner().getName());
+			AABB area = new AABB(pos).inflate(te.getSearchRadius());
+			List<Player> entities = world.getEntitiesOfClass(Player.class, area, e -> {
 				boolean isNotAllowed = true;
 
-				if(hasModule(ModuleType.ALLOWLIST))
-					isNotAllowed = !ModuleUtils.isAllowed(this, e);
+				if(te.hasModule(ModuleType.ALLOWLIST))
+					isNotAllowed = !ModuleUtils.isAllowed(te, e);
 
 				return e != owner && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
-			if(hasModule(ModuleType.REDSTONE))
-				PortableRadarBlock.togglePowerOutput(level, worldPosition, !entities.isEmpty());
+			if(te.hasModule(ModuleType.REDSTONE))
+				PortableRadarBlock.togglePowerOutput(world, pos, !entities.isEmpty());
 
 			if(owner != null)
 			{
 				for(Player e : entities)
 				{
-					if(shouldSendMessage(e))
+					if(te.shouldSendMessage(e))
 					{
 						MutableComponent attackedName = e.getName().plainCopy().withStyle(ChatFormatting.ITALIC);
 						MutableComponent text;
 
-						if(hasCustomSCName())
-							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().plainCopy().withStyle(ChatFormatting.ITALIC));
+						if(te.hasCustomSCName())
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, te.getCustomSCName().plainCopy().withStyle(ChatFormatting.ITALIC));
 						else
-							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(worldPosition));
+							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
 
 						PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, ChatFormatting.BLUE);
-						setSentMessage();
+						te.setSentMessage();
 					}
 				}
 			}

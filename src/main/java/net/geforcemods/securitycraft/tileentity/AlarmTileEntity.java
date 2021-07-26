@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.core.BlockPos;
@@ -13,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class AlarmTileEntity extends CustomizableTileEntity {
@@ -27,29 +27,19 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 		super(SCContent.teTypeAlarm, pos, state);
 	}
 
-	@Override
-	public void tick(){
-		if(!level.isClientSide)
+	public static void serverTick(Level world, BlockPos pos, BlockState state, AlarmTileEntity te){
+		if(te.cooldown > 0)
+			te.cooldown--;
+
+		if(te.isPowered && te.cooldown == 0)
 		{
-			if(cooldown > 0)
-				cooldown--;
-
-			if(isPowered && cooldown == 0)
+			for(ServerPlayer player : ((ServerLevel)world).getPlayers(p -> p.blockPosition().distSqr(pos) <= Math.pow(te.range.get(), 2)))
 			{
-				AlarmTileEntity te = (AlarmTileEntity) level.getBlockEntity(worldPosition);
-
-				for(ServerPlayer player : ((ServerLevel)level).getPlayers(p -> p.blockPosition().distSqr(worldPosition) <= Math.pow(range.get(), 2)))
-				{
-					player.playNotifySound(SCSounds.ALARM.event, SoundSource.BLOCKS, 0.3F, 1.0F);
-				}
-
-				te.setCooldown(delay.get() * 20);
-				level.setBlock(worldPosition, level.getBlockState(worldPosition).setValue(AlarmBlock.FACING, level.getBlockState(worldPosition).getValue(AlarmBlock.FACING)), 2);
-				level.setBlockEntity(te);
+				player.playNotifySound(SCSounds.ALARM.event, SoundSource.BLOCKS, 0.3F, 1.0F);
 			}
-		}
 
-		requestModelDataUpdate();
+			te.setCooldown(te.delay.get() * 20);
+		}
 	}
 
 	/**

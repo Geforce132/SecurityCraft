@@ -23,6 +23,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -45,13 +46,12 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 		super(SCContent.teTypeInventoryScanner, pos, state);
 	}
 
-	@Override
-	public void tick(){
-		if(cooldown > 0)
-			cooldown--;
-		else if(isProvidingPower){
-			isProvidingPower = false;
-			BlockUtils.updateAndNotify(getLevel(), worldPosition, getLevel().getBlockState(worldPosition).getBlock(), 1, true);
+	public static void tick(Level world, BlockPos pos, BlockState state, InventoryScannerTileEntity te){
+		if(te.cooldown > 0)
+			te.cooldown--;
+		else if(te.isProvidingPower){
+			te.isProvidingPower = false;
+			BlockUtils.updateAndNotify(world, pos, state.getBlock(), 1, true);
 		}
 	}
 
