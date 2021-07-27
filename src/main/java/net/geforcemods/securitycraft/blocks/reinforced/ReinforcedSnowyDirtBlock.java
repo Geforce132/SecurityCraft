@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
@@ -28,10 +27,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.AbstractFlowerFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.PlantType;
 
 public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, BonemealableBlock, EntityBlock
 {
@@ -79,23 +76,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	@Override
 	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable)
 	{
-		PlantType type = plantable.getPlantType(world, pos.relative(facing));
-
-		if(type == PlantType.CAVE)
-			return state.isFaceSturdy(world, pos, Direction.UP);
-		else if(type == PlantType.PLAINS)
-			return true;
-		else if(type == PlantType.BEACH)
-		{
-			boolean isBeach = state.is(SCTags.Blocks.REINFORCED_DIRT) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
-			boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
-					world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
-					world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
-					world.getBlockState(pos.south()).getMaterial() == Material.WATER);
-			return isBeach && hasWater;
-		}
-
-		return false;
+		return super.canSustainPlant(state, world, pos, facing, plantable);
 	}
 
 	@Override
