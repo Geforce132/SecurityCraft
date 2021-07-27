@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -49,15 +50,18 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 			return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
 		else
 		{
-			Block block = facingState.getBlock();
-			return state.setValue(SNOWY, block == Blocks.SNOW_BLOCK || block == Blocks.SNOW || block == SCContent.REINFORCED_SNOW_BLOCK.get());
+			return state.setValue(SNOWY, isSnowySetting(facingState));
 		}
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		Block block = ctx.getLevel().getBlockState(ctx.getClickedPos().above()).getBlock();
-		return defaultBlockState().setValue(SNOWY, block == Blocks.SNOW_BLOCK || block == Blocks.SNOW || block == SCContent.REINFORCED_SNOW_BLOCK.get());
+		BlockState state = ctx.getLevel().getBlockState(ctx.getClickedPos().above());
+		return defaultBlockState().setValue(SNOWY, isSnowySetting(state));
+	}
+
+	private static boolean isSnowySetting(BlockState state) {
+		return state.is(BlockTags.SNOW);
 	}
 
 	@Override
