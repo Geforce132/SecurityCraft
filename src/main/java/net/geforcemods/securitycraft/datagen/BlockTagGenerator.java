@@ -280,6 +280,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_NETHERITE_BLOCK.get());
 		tag(BlockTags.CARPETS).addTag(SCTags.Blocks.REINFORCED_CARPETS);
 		tag(BlockTags.CAULDRONS).add(SCContent.REINFORCED_CAULDRON.get()); //TODO: add reinforced lava/water/ps cauldrons to that tag
+		tag(BlockTags.DIRT).addTag(SCTags.Blocks.REINFORCED_DIRT);
 		tag(BlockTags.DOORS).add(SCContent.KEYPAD_DOOR.get(), SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
 		tag(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
 		tag(BlockTags.IMPERMEABLE).add(
@@ -305,7 +306,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.CRYSTAL_QUARTZ.get(),
 				SCContent.CHISELED_CRYSTAL_QUARTZ.get(),
 				SCContent.CRYSTAL_QUARTZ_PILLAR.get(),
-				SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get(),
+				SCContent.STAIRS_CRYSTAL_QUARTZ.get(),
 				SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(
 				SCContent.REINFORCED_MYCELIUM.get(),
