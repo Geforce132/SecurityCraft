@@ -7,6 +7,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fmllegacy.RegistryObject;
 
@@ -261,6 +262,9 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_POLISHED_ANDESITE.get(),
 				SCContent.REINFORCED_POLISHED_DIORITE.get(),
 				SCContent.REINFORCED_POLISHED_GRANITE.get());
+
+		//forge tags
+		tag(Tags.Blocks.DIRT).addTag(SCTags.Blocks.REINFORCED_DIRT);
 
 		//minecraft tags
 		TagAppender<Block> dragonImmune = tag(BlockTags.DRAGON_IMMUNE);
