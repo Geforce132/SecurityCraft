@@ -43,6 +43,9 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		BlockState plant = plantable.getPlant(world, pos.relative(facing));
 		PlantType type = plantable.getPlantType(world, pos.relative(facing));
 
+		if (super.canSustainPlant(state, world, pos, facing, plantable))
+			return true;
+
 		if(plant.getBlock() == Blocks.CACTUS)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 
