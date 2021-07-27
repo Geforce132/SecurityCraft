@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
@@ -12,7 +11,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SnowyDirtBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -30,7 +28,6 @@ import net.minecraft.world.gen.feature.FlowersFeature;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.PlantType;
 
 public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, IGrowable
 {
@@ -75,23 +72,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	@Override
 	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable)
 	{
-		PlantType type = plantable.getPlantType(world, pos.offset(facing));
-
-		switch(type)
-		{
-			case Cave: return Block.hasSolidSide(state, world, pos, Direction.UP);
-			case Plains: return true;
-			case Beach:
-				boolean isBeach = SCTags.Blocks.REINFORCED_DIRT.contains(this) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
-				boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
-						world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
-						world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
-						world.getBlockState(pos.south()).getMaterial() == Material.WATER);
-				return isBeach && hasWater;
-			default: break;
-		}
-
-		return false;
+		return SCContent.REINFORCED_DIRT.get().canSustainPlant(state, world, pos, facing, plantable);
 	}
 
 	@Override
