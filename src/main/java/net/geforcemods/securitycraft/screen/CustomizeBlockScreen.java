@@ -154,7 +154,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	{
 		renderBackground(matrix);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindForSetup(TEXTURES[moduleInv.getMaxNumberOfModules()]);
+		RenderSystem._setShaderTexture(0, TEXTURES[moduleInv.getMaxNumberOfModules()]);
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
 		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);

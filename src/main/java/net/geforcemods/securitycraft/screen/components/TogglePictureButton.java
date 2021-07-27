@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -63,7 +62,7 @@ public class TogglePictureButton extends IdButton{
 
 			if(getTextureLocation() != null)
 			{
-				Minecraft.getInstance().getTextureManager().bindForSetup(getTextureLocation());
+				RenderSystem._setShaderTexture(0, getTextureLocation());
 				blit(matrix, x + drawOffset, y + drawOffset, drawWidth, drawHeight, u[currentIndex], v[currentIndex], uWidth, vHeight, textureWidth, textureHeight);
 			}
 		}

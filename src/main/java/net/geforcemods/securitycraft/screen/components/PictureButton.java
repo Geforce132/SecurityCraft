@@ -88,7 +88,7 @@ public class PictureButton extends IdButton{
 			else if(getTextureLocation() != null)
 			{
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-				mc.getTextureManager().bindForSetup(getTextureLocation());
+				RenderSystem._setShaderTexture(0, getTextureLocation());
 				blit(matrix, x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
 			}
 		}

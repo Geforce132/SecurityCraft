@@ -195,7 +195,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 		renderBackground(matrix);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindForSetup(storage ? TEXTURE_STORAGE : TEXTURE);
+		RenderSystem._setShaderTexture(0, storage ? TEXTURE_STORAGE : TEXTURE);
 		blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 

@@ -72,7 +72,7 @@ public class BriefcaseSetupScreen extends AbstractContainerScreen<GenericContain
 	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindForSetup(TEXTURE);
+		RenderSystem._setShaderTexture(0, TEXTURE);
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
 		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);

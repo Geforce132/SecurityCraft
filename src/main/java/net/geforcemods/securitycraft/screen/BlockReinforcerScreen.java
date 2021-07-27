@@ -75,7 +75,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	{
 		renderBackground(matrix);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindForSetup(isLvl1 ? TEXTURE_LVL1 : TEXTURE);
+		RenderSystem._setShaderTexture(0, isLvl1 ? TEXTURE_LVL1 : TEXTURE);
 		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 }

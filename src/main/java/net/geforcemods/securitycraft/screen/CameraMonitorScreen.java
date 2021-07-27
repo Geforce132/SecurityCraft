@@ -146,7 +146,7 @@ public class CameraMonitorScreen extends Screen {
 	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(matrix);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindForSetup(TEXTURE);
+		RenderSystem._setShaderTexture(0, TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);

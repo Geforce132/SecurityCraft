@@ -1,11 +1,11 @@
 package net.geforcemods.securitycraft.renderers;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.models.IMSBombModel;
 import net.geforcemods.securitycraft.network.ClientProxy;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -32,7 +32,7 @@ public class IMSBombRenderer extends EntityRenderer<IMSBombEntity> {
 	{
 		matrix.translate(-0.1D, 0, 0.1D);
 		matrix.scale(1.4F, 1.4F, 1.4F);
-		Minecraft.getInstance().textureManager.bindForSetup(getTextureLocation(imsBomb));
+		RenderSystem._setShaderTexture(0, getTextureLocation(imsBomb));
 		model.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(imsBomb))), p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 

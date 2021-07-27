@@ -88,7 +88,7 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindForSetup(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
+		RenderSystem._setShaderTexture(0, hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
 		blit(matrix, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, imageWidth, imageHeight + 30);
 	}
 }

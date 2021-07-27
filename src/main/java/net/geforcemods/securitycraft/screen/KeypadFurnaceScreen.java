@@ -49,7 +49,7 @@ public class KeypadFurnaceScreen extends AbstractContainerScreen<KeypadFurnaceCo
 	{
 		renderBackground(matrix);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindForSetup(FURNACE_GUI_TEXTURES);
+		RenderSystem._setShaderTexture(0, FURNACE_GUI_TEXTURES);
 		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 
 		if(menu.isLit())

@@ -171,7 +171,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 		renderBackground(matrix);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindForSetup(TEXTURE);
+		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(matrix, startX, startY, 0, 0, xSize, ySize, 512, 256);
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		font.draw(matrix, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getDescriptionId()), startX + 5, startY - 25 + 13, 0xFF0000);

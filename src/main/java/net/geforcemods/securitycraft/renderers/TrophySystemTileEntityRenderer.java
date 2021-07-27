@@ -29,7 +29,6 @@ public class TrophySystemTileEntityRenderer implements BlockEntityRenderer<Troph
 		Matrix4f positionMatrix = matrix.last().pose();
 		BlockPos pos = te.getBlockPos();
 
-		//pos, color
 		builder.vertex(positionMatrix, 0.5F, 0.75F, 0.5F).color(255, 0, 0, 255).endVertex();
 		builder.vertex(positionMatrix, (float)(te.entityBeingTargeted.getX() - pos.getX()), (float)(te.entityBeingTargeted.getY() - pos.getY()), (float)(te.entityBeingTargeted.getZ() - pos.getZ())).color(255, 0, 0, 255).endVertex();
 	}

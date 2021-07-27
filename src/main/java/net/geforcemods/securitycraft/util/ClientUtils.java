@@ -66,17 +66,17 @@ public class ClientUtils{
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 
-		mc.getTextureManager().bindForSetup(MODULE_TEXTURES[module.ordinal()]);
+		RenderSystem._setShaderTexture(0, MODULE_TEXTURES[module.ordinal()]);
 		drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 
 		if(module == ModuleType.REDSTONE)
 		{
-			mc.getTextureManager().bindForSetup(REDSTONE_TEXTURE);
+			RenderSystem._setShaderTexture(0, REDSTONE_TEXTURE);
 			drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 		else if(module == ModuleType.SPEED)
 		{
-			mc.getTextureManager().bindForSetup(SUGAR_TEXTURE);
+			RenderSystem._setShaderTexture(0, SUGAR_TEXTURE);
 			drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 

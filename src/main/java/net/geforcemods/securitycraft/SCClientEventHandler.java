@@ -195,7 +195,7 @@ public class SCClientEventHandler
 			}
 
 			if (uCoord != 0) {
-				Minecraft.getInstance().textureManager.bindForSetup(BEACON_GUI);
+				RenderSystem._setShaderTexture(0, BEACON_GUI);
 				GuiComponent.blit(pose, Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.getInventory().selected * 20 : -29), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
 			}
 		}
@@ -255,7 +255,7 @@ public class SCClientEventHandler
 		font.drawShadow(matrix, redstone, resolution.getGuiScaledWidth() - font.width(redstone) - 8, resolution.getGuiScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
 		font.drawShadow(matrix, redstoneNote, resolution.getGuiScaledWidth() - font.width(redstoneNote) -8, resolution.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
 
-		mc.getTextureManager().bindForSetup(CAMERA_DASHBOARD);
+		RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.blit(matrix, 5, 0, 0, 0, 90, 20);
 		gui.blit(matrix, resolution.getGuiScaledWidth() - 55, 5, 205, 0, 50, 30);
@@ -263,9 +263,9 @@ public class SCClientEventHandler
 		if(!player.hasEffect(MobEffects.NIGHT_VISION))
 			gui.blit(matrix, 28, 4, 90, 12, 16, 11);
 		else{
-			mc.getTextureManager().bindForSetup(NIGHT_VISION);
+			RenderSystem._setShaderTexture(0, NIGHT_VISION);
 			GuiComponent.blit(matrix, 27, -1, 0, 0, 18, 18, 18, 18);
-			mc.getTextureManager().bindForSetup(CAMERA_DASHBOARD);
+			RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
 		}
 
 		BlockState state = world.getBlockState(pos);

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.renderers;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -8,7 +9,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.models.SentryModel;
 import net.geforcemods.securitycraft.network.ClientProxy;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -38,7 +38,7 @@ public class SentryRenderer extends EntityRenderer<SentryEntity>
 
 		stack.translate(0.0D, 1.5D, 0.0D);
 		stack.scale(-1, -1, 1); //rotate model rightside up
-		Minecraft.getInstance().textureManager.bindForSetup(getTextureLocation(entity));
+		RenderSystem._setShaderTexture(0, getTextureLocation(entity));
 		model.renderBase(stack, builder, p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.mulPose(Vector3f.YP.rotationDegrees(entity.getEntityData().get(SentryEntity.HEAD_ROTATION)));
 		stack.translate(0.0F, entity.getHeadYTranslation(), 0.0F);
