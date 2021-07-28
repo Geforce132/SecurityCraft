@@ -202,7 +202,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 					if(blocks.size() > 0)
 					{
 						if(blocks.get(0) == level.getBlockState(pos).getBlock())
-							level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+							level.removeBlock(pos, false);
 					}
 				}
 
@@ -300,7 +300,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 			if(blocks.size() > 0)
 			{
 				if(blocks.get(0) == level.getBlockState(pos).getBlock())
-					level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+					level.removeBlock(pos, false);
 			}
 		}
 

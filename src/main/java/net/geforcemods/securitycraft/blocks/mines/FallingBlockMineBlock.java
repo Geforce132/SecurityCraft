@@ -79,7 +79,7 @@ public class FallingBlockMineBlock extends BaseFullMineBlock
 		Block block = state.getBlock();
 		Material material = state.getMaterial();
 
-		return block == Blocks.FIRE || material == Material.AIR || material == Material.WATER || material == Material.LAVA;
+		return block == Blocks.FIRE || state.isAir() || material == Material.WATER || material == Material.LAVA;
 	}
 
 	/**

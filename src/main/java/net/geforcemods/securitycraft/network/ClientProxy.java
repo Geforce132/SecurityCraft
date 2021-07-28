@@ -76,7 +76,7 @@ import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -396,9 +396,10 @@ public class ClientProxy implements IProxy
 			if(block instanceof DisguisableBlock disguisedBlock)
 			{
 				Block blockFromItem = Block.byItem(disguisedBlock.getDisguisedStack(world, pos).getItem());
+				BlockState defaultBlockState = blockFromItem.defaultBlockState();
 
-				if(blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
-					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.defaultBlockState(), world, pos, tintIndex);
+				if(!defaultBlockState.isAir() && !(blockFromItem instanceof DisguisableBlock))
+					return Minecraft.getInstance().getBlockColors().getColor(defaultBlockState, world, pos, tintIndex);
 			}
 
 			return noTint;
