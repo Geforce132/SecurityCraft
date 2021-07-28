@@ -46,10 +46,10 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, world, blockState, data) -> {
 			ItemStack disguisedAs = ItemStack.EMPTY;
 
-			if(blockState.getBlock() instanceof DisguisableBlock)
-				disguisedAs = ((DisguisableBlock)blockState.getBlock()).getDisguisedStack(world, data.getPos());
-			else if(blockState.getBlock() instanceof IOverlayDisplay)
-				disguisedAs = ((IOverlayDisplay)blockState.getBlock()).getDisplayStack(world, blockState, data.getPos());
+			if(blockState.getBlock() instanceof DisguisableBlock disguisedBlock)
+				disguisedAs = disguisedBlock.getDisguisedStack(world, data.getPos());
+			else if(blockState.getBlock() instanceof IOverlayDisplay display)
+				disguisedAs = display.getDisplayStack(world, blockState, data.getPos());
 
 			if(!disguisedAs.isEmpty())
 			{
@@ -75,38 +75,38 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 			{
 				Block block = blockState.getBlock();
 
-				if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(world, blockState, data.getPos()))
+				if(block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(world, blockState, data.getPos()))
 					return;
 
 				BlockEntity te = world.getBlockEntity(data.getPos());
 
-				if(te instanceof IOwnable)
-					probeInfo.vertical().text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ((IOwnable) te).getOwner().getName()).getString()));
+				if(te instanceof IOwnable ownable)
+					probeInfo.vertical().text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownable.getOwner().getName()).getString()));
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
-				if(te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))
+				if(te instanceof IModuleInventory inv && (!(te instanceof IOwnable ownable) || ownable.getOwner().isOwner(player)))
 				{
-					if(!((IModuleInventory)te).getInsertedModules().isEmpty())
+					if(!inv.getInsertedModules().isEmpty())
 					{
 						probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getString()));
 
-						for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
+						for(ModuleType module : inv.getInsertedModules())
 							probeInfo.text(new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(module.getTranslationKey())));
 					}
 				}
 
-				if(te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable)te).getOwner().isOwner(player))
+				if(te instanceof IPasswordProtected passwordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable)te).getOwner().isOwner(player))
 				{
-					String password = ((IPasswordProtected) te).getPassword();
+					String password = passwordProtected.getPassword();
 
 					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).getString()));
 				}
 
-				if(te instanceof INameable && ((INameable) te).canBeNamed()){
-					Component text = ((INameable) te).getCustomSCName();
+				if(te instanceof INameable nameable && nameable.canBeNamed()){
+					Component text = nameable.getCustomSCName();
 					Component name = text == null ? TextComponent.EMPTY : text;
 
-					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:customName", (((INameable) te).hasCustomSCName() ? name : Utils.localize("waila.securitycraft:customName.notSet"))).getString()));
+					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:customName", nameable.hasCustomSCName() ? name : Utils.localize("waila.securitycraft:customName.notSet")).getString()));
 				}
 			}
 		});

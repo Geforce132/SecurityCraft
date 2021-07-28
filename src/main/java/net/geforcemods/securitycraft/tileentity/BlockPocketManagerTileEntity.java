@@ -137,8 +137,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 					placedTe = world.getBlockEntity(placeLocation);
 
 					//assigning the owner
-					if(placedTe instanceof OwnableTileEntity)
-						((OwnableTileEntity)placedTe).setOwner(te.getOwner().getUUID(), te.getOwner().getName());
+					if(placedTe instanceof OwnableTileEntity ownable)
+						ownable.setOwner(te.getOwner().getUUID(), te.getOwner().getName());
 
 					continue;
 				}
@@ -331,10 +331,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 			for(BlockPos blockPos : blocks)
 			{
-				BlockEntity te = level.getBlockEntity(blockPos);
-
-				if(te instanceof BlockPocketTileEntity)
-					((BlockPocketTileEntity)te).setManager(this);
+				if(level.getBlockEntity(blockPos) instanceof BlockPocketTileEntity te)
+					te.setManager(this);
 			}
 
 			for(BlockPos blockPos : floor)
@@ -474,10 +472,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							}
 						}
 
-						if(level.getBlockEntity(currentPos) instanceof OwnableTileEntity)
+						if(level.getBlockEntity(currentPos) instanceof OwnableTileEntity te)
 						{
-							OwnableTileEntity te = (OwnableTileEntity)level.getBlockEntity(currentPos);
-
 							if(!getOwner().owns(te))
 								return new TranslatableComponent("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
 						}
@@ -595,10 +591,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 			for(BlockPos pos : blocks)
 			{
-				BlockEntity te = level.getBlockEntity(pos);
-
-				if(te instanceof BlockPocketTileEntity)
-					((BlockPocketTileEntity)te).removeManager();
+				if(level.getBlockEntity(pos) instanceof BlockPocketTileEntity te)
+					te.removeManager();
 			}
 
 			for(BlockPos pos : floor)
@@ -620,52 +614,45 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 	private TranslatableComponent getFormattedRelativeCoordinates(BlockPos pos, Direction managerFacing) {
 		BlockPos difference = pos.subtract(this.worldPosition);
-		int offsetLeft;
 		int offsetBehind;
 		int offsetAbove = difference.getY();
 		List<TranslatableComponent> components = new ArrayList<>();
+		int offsetLeft = switch(managerFacing) {
+			case NORTH -> {
+				offsetBehind = difference.getZ();
+				yield difference.getX();
+			}
+			case SOUTH -> {
+				offsetBehind = -difference.getZ();
+				yield -difference.getX();
+			}
+			case WEST -> {
+				offsetBehind = difference.getX();
+				yield -difference.getZ();
+			}
+			case EAST -> {
+				offsetBehind = -difference.getX();
+				yield difference.getZ();
+			}
+			default -> throw new IllegalArgumentException("Invalid Block Pocket Manager direction: " + managerFacing.name());
+		};
 
-		offsetLeft = switch(managerFacing)
-				{
-					case NORTH ->
-					{
-						offsetBehind = difference.getZ();
-						yield difference.getX();
-					}
-					case SOUTH ->
-					{
-						offsetBehind = -difference.getZ();
-						yield -difference.getX();
-					}
-					case WEST ->
-					{
-						offsetBehind = difference.getX();
-						yield -difference.getZ();
-					}
-					case EAST ->
-					{
-						offsetBehind = -difference.getX();
-						yield difference.getZ();
-					}
-					default -> throw new IllegalArgumentException("Invalid Block Pocket Manager direction: " + managerFacing.name());
-				};
+		if (offsetLeft > 0) {
+			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksLeft", offsetLeft));
+		}
+		else if (offsetLeft < 0) {
+			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksRight", -offsetLeft));
+		}
 
-				if (offsetLeft > 0) {
-					components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksLeft", offsetLeft));
-				}
-				else if (offsetLeft < 0) {
-					components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksRight", -offsetLeft));
-				}
+		if (offsetBehind > 0) {
+			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksBehind", offsetBehind));
+		}
 
-				if (offsetBehind > 0) {
-					components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksBehind", offsetBehind));
-				}
+		if (offsetAbove > 0) {
+			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksAbove", offsetAbove));
+		}
 
-				if (offsetAbove > 0) {
-					components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksAbove", offsetAbove));
-				}
-
-				return Utils.localize("messages.securitycraft:blockpocket.position." + components.size(), components.toArray());
+		return Utils.localize("messages.securitycraft:blockpocket.position." + components.size(), components.toArray());
 	}
 
 	public void toggleOutline()
@@ -867,9 +854,9 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 	public static boolean isItemValid(ItemStack stack)
 	{
-		if(stack.getItem() instanceof BlockItem)
+		if(stack.getItem() instanceof BlockItem blockItem)
 		{
-			Block block = ((BlockItem)stack.getItem()).getBlock();
+			Block block = blockItem.getBlock();
 
 			return block == SCContent.BLOCK_POCKET_WALL.get() || block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get() || block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get();
 		}

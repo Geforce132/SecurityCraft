@@ -24,7 +24,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public boolean attackEntity(Entity entity){
-		if (entity instanceof LivingEntity && !(entity instanceof SentryEntity) && !EntityUtils.isInvisible(((LivingEntity)entity))) {
+		if (entity instanceof LivingEntity lEntity && !(entity instanceof SentryEntity) && !EntityUtils.isInvisible(lEntity)) {
 			if (entity instanceof Player player)
 			{
 				if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))

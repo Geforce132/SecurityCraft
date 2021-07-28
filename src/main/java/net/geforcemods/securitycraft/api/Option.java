@@ -226,12 +226,12 @@ public abstract class Option<T> {
 		@Override
 		public void onChangeSliderValue(Slider slider)
 		{
-			if(!isSlider() || !(slider instanceof NamedSlider))
+			if(!isSlider() || !(slider instanceof NamedSlider namedSlider))
 				return;
 
 			setValue((int)slider.getValue());
-			slider.setMessage(Utils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName(), toString()));
-			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), ((NamedSlider)slider).id, get()));
+			slider.setMessage(Utils.localize("option" + namedSlider.getBlockName() + "." + getName(), toString()));
+			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), namedSlider.id, get()));
 		}
 	}
 
@@ -305,12 +305,12 @@ public abstract class Option<T> {
 		@Override
 		public void onChangeSliderValue(Slider slider)
 		{
-			if(!isSlider() || !(slider instanceof NamedSlider))
+			if(!isSlider() || !(slider instanceof NamedSlider namedSlider))
 				return;
 
 			setValue(slider.getValue());
-			slider.setMessage(Utils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName(), toString()));
-			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), ((NamedSlider)slider).id, get()));
+			slider.setMessage(Utils.localize("option" + namedSlider.getBlockName() + "." + getName(), toString()));
+			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), namedSlider.id, get()));
 		}
 	}
 

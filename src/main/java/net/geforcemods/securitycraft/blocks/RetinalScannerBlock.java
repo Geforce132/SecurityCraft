@@ -44,14 +44,17 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	@Override
 	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack)
 	{
-		if (entity instanceof Player)
+		if(entity instanceof Player player)
 		{
-			BlockEntity tileentity = world.getBlockEntity(pos);
-			if (!world.isClientSide && tileentity instanceof RetinalScannerTileEntity)
+			if(!world.isClientSide)
 			{
-				((RetinalScannerTileEntity)tileentity).setPlayerProfile(((Player)entity).getGameProfile());
+				BlockEntity tile = world.getBlockEntity(pos);
+
+				if(tile instanceof RetinalScannerTileEntity te)
+					te.setPlayerProfile(player.getGameProfile());
 			}
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)entity));
+
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
 		}
 	}
 

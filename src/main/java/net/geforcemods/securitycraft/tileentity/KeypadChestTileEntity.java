@@ -245,20 +245,20 @@ public class KeypadChestTileEntity extends ChestBlockEntity implements IPassword
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option)
+	public void onOptionChanged(Option<?> o)
 	{
-		if(option instanceof BooleanOption)
+		if(o instanceof BooleanOption option)
 		{
 			KeypadChestTileEntity offsetTe = findOther();
 
 			if(offsetTe != null)
-				offsetTe.setSendsMessages(((BooleanOption)option).get());
+				offsetTe.setSendsMessages(option.get());
 		}
 	}
 
 	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove)
 	{
-		if(module.isEmpty() || !(module.getItem() instanceof ModuleItem))
+		if(module.isEmpty() || !(module.getItem() instanceof ModuleItem moduleItem))
 			return;
 
 		KeypadChestTileEntity offsetTe = findOther();
@@ -266,7 +266,7 @@ public class KeypadChestTileEntity extends ChestBlockEntity implements IPassword
 		if(offsetTe != null)
 		{
 			if(remove)
-				offsetTe.removeModule(((ModuleItem)module.getItem()).getModuleType());
+				offsetTe.removeModule(moduleItem.getModuleType());
 			else
 				offsetTe.insertModule(module);
 		}
@@ -290,8 +290,8 @@ public class KeypadChestTileEntity extends ChestBlockEntity implements IPassword
 				{
 					BlockEntity offsetTe = level.getBlockEntity(offsetPos);
 
-					if(offsetTe instanceof KeypadChestTileEntity)
-						return (KeypadChestTileEntity)offsetTe;
+					if(offsetTe instanceof KeypadChestTileEntity te)
+						return te;
 				}
 			}
 		}

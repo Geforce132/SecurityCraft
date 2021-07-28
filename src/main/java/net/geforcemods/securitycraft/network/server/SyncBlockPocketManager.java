@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
@@ -53,11 +52,9 @@ public class SyncBlockPocketManager
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
 			Level world = player.level;
-			BlockEntity te = world.getBlockEntity(pos);
 
-			if(world.isLoaded(pos) && te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(player))
+			if(world.isLoaded(pos) && world.getBlockEntity(pos) instanceof BlockPocketManagerTileEntity bpm && bpm.getOwner().isOwner(player))
 			{
-				BlockPocketManagerTileEntity bpm = (BlockPocketManagerTileEntity)te;
 				BlockState state = world.getBlockState(pos);
 
 				bpm.size = message.size;

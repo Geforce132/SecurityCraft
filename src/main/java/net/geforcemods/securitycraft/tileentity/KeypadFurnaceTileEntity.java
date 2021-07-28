@@ -170,9 +170,9 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceBlockEntity implemen
 	public void openPasswordGUI(Player player) {
 		if(getPassword() != null)
 		{
-			if(player instanceof ServerPlayer)
+			if(player instanceof ServerPlayer serverPlayer)
 			{
-				NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+				NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 					{
@@ -191,9 +191,9 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceBlockEntity implemen
 		{
 			if(getOwner().isOwner(player))
 			{
-				if(player instanceof ServerPlayer)
+				if(player instanceof ServerPlayer serverPlayer)
 				{
-					NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+					NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
@@ -214,7 +214,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceBlockEntity implemen
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, Player player) {
+	public boolean onCodebreakerUsed(BlockState state, Player player) {
 		activate(player);
 		return true;
 	}

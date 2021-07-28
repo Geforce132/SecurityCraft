@@ -93,8 +93,8 @@ public class LaserBlock extends DisguisableBlock {
 
 									BlockEntity te = world.getBlockEntity(offsetPos);
 
-									if(te instanceof IOwnable)
-										((IOwnable)te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
+									if(te instanceof IOwnable ownable)
+										ownable.setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
 								}
 							}
 						}

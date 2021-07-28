@@ -66,27 +66,22 @@ public class SecurityCameraBlock extends OwnableBlock{
 	{
 		super.onRemove(state, world, pos, newState, isMoving);
 
-		world.updateNeighborsAt(pos.north(), world.getBlockState(pos).getBlock());
-		world.updateNeighborsAt(pos.south(), world.getBlockState(pos).getBlock());
-		world.updateNeighborsAt(pos.east(), world.getBlockState(pos).getBlock());
-		world.updateNeighborsAt(pos.west(), world.getBlockState(pos).getBlock());
+		world.updateNeighborsAt(pos.north(), state.getBlock());
+		world.updateNeighborsAt(pos.south(), state.getBlock());
+		world.updateNeighborsAt(pos.east(), state.getBlock());
+		world.updateNeighborsAt(pos.west(), state.getBlock());
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
-		Direction dir = state.getValue(FACING);
-
-		if(dir == Direction.SOUTH)
-			return SHAPE_SOUTH;
-		else if(dir == Direction.NORTH)
-			return SHAPE_NORTH;
-		else if(dir == Direction.WEST)
-			return SHAPE_WEST;
-		else if(dir == Direction.DOWN)
-			return SHAPE_DOWN;
-		else
-			return SHAPE;
+		return switch(state.getValue(FACING)) {
+			case SOUTH -> SHAPE_SOUTH;
+			case NORTH -> SHAPE_NORTH;
+			case WEST -> SHAPE_WEST;
+			case DOWN -> SHAPE_DOWN;
+			default -> SHAPE;
+		};
 	}
 
 	@Override
@@ -117,8 +112,8 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	public void mountCamera(Level world, int x, int y, int z, int id, Player player){
-		if(player.getVehicle() instanceof SecurityCameraEntity){
-			SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, x, y, z, id, (SecurityCameraEntity) player.getVehicle());
+		if(player.getVehicle() instanceof SecurityCameraEntity cam){
+			SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, x, y, z, id, cam);
 			WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(dummyEntity));
 			player.startRiding(dummyEntity);
 			return;

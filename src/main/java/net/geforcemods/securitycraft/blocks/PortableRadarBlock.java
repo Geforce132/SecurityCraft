@@ -48,25 +48,15 @@ public class PortableRadarBlock extends OwnableBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
-		Direction facing = state.getValue(FACING);
-
-		switch(facing)
-		{
-			case EAST:
-				return SHAPE_EAST;
-			case WEST:
-				return SHAPE_WEST;
-			case NORTH:
-				return SHAPE_NORTH;
-			case SOUTH:
-				return SHAPE_SOUTH;
-			case UP:
-				return SHAPE_UP;
-			case DOWN:
-				return SHAPE_DOWN;
-		}
-
-		return Shapes.block();
+		return switch(state.getValue(FACING)) {
+			case EAST -> SHAPE_EAST;
+			case WEST -> SHAPE_WEST;
+			case NORTH -> SHAPE_NORTH;
+			case SOUTH -> SHAPE_SOUTH;
+			case UP -> SHAPE_UP;
+			case DOWN -> SHAPE_DOWN;
+			default -> Shapes.block();
+		};
 	}
 
 	@Override

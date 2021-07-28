@@ -41,10 +41,10 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 
 		if(stack.hasCustomHoverName())
 		{
-			BlockEntity te = world.getBlockEntity(pos);
+			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(te instanceof ReinforcedHopperTileEntity)
-				((ReinforcedHopperTileEntity)te).setCustomName(stack.getHoverName());
+			if(tile instanceof ReinforcedHopperTileEntity te)
+				te.setCustomName(stack.getHoverName());
 		}
 	}
 
@@ -53,9 +53,9 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	{
 		if(!world.isClientSide)
 		{
-			BlockEntity tileEntity = world.getBlockEntity(pos);
+			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tileEntity instanceof ReinforcedHopperTileEntity te)
+			if(tile instanceof ReinforcedHopperTileEntity te)
 			{
 				//only allow the owner or players on the allowlist to access a reinforced hopper
 				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
@@ -71,11 +71,11 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	{
 		if(state.getBlock() != newState.getBlock())
 		{
-			BlockEntity te = world.getBlockEntity(pos);
+			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(te instanceof ReinforcedHopperTileEntity)
+			if(tile instanceof ReinforcedHopperTileEntity te)
 			{
-				Containers.dropContents(world, pos, (ReinforcedHopperTileEntity)te);
+				Containers.dropContents(world, pos, te);
 				world.updateNeighbourForOutputSignal(pos, this);
 			}
 
@@ -86,10 +86,10 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	@Override
 	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity)
 	{
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(te instanceof ReinforcedHopperTileEntity)
-			ReinforcedHopperTileEntity.entityInside(world, pos, state, entity, (ReinforcedHopperTileEntity)te);
+		if(tile instanceof ReinforcedHopperTileEntity te)
+			ReinforcedHopperTileEntity.entityInside(world, pos, state, entity, te);
 	}
 
 	@Override

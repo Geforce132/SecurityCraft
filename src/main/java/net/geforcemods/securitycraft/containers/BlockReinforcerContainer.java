@@ -27,6 +27,7 @@ public class BlockReinforcerContainer extends AbstractContainerMenu
 
 		blockReinforcer = inventory.getSelected().getItem() instanceof UniversalBlockReinforcerItem ? inventory.getSelected() : inventory.offhand.get(0);
 		this.isLvl1 = isLvl1;
+
 		//main player inventory
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; j++)
@@ -53,7 +54,7 @@ public class BlockReinforcerContainer extends AbstractContainerMenu
 	@Override
 	public void removed(Player player)
 	{
-		if(!player.isAlive() || player instanceof ServerPlayer && ((ServerPlayer)player).hasDisconnected())
+		if(!player.isAlive() || player instanceof ServerPlayer serverPlayer && serverPlayer.hasDisconnected())
 		{
 			for(int slot = 0; slot < itemInventory.getContainerSize(); ++slot)
 			{

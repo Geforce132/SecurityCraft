@@ -8,22 +8,19 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class EntityUtils{
 
 	public static boolean doesEntityOwn(Entity entity, Level world, BlockPos pos)
 	{
-		if(entity instanceof Player)
-			return doesPlayerOwn((Player)entity, world, pos);
+		if(entity instanceof Player player)
+			return doesPlayerOwn(player, world, pos);
 		else return false;
 	}
 
 	public static boolean doesPlayerOwn(Player player, Level world, BlockPos pos)
 	{
-		BlockEntity te = world.getBlockEntity(pos);
-
-		return te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner(player);
+		return world.getBlockEntity(pos) instanceof IOwnable ownable && ownable.getOwner().isOwner(player);
 	}
 
 	public static boolean isInvisible(LivingEntity entity)

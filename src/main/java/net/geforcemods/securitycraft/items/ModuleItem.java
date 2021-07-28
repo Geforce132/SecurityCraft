@@ -70,9 +70,8 @@ public class ModuleItem extends Item{
 		BlockEntity te = ctx.getLevel().getBlockEntity(ctx.getClickedPos());
 		ItemStack stack = ctx.getItemInHand();
 
-		if(te instanceof IModuleInventory)
+		if(te instanceof IModuleInventory inv)
 		{
-			IModuleInventory inv = (IModuleInventory)te;
 			ModuleType type = ((ModuleItem)stack.getItem()).getModuleType();
 
 			if(inv.getAcceptedModules().contains(type) && !inv.hasModule(type))

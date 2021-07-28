@@ -43,6 +43,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	}
 
 	public InteractionResult onItemUse(Player player, Level world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, InteractionHand hand) {
+		//TODO: need to adapt this cast
 		if(world.getBlockState(pos).getBlock() instanceof CauldronBlock) //don't open the briefcase when a cauldron is rightclicked for removing the dye
 			return InteractionResult.SUCCESS;
 

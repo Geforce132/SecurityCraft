@@ -65,16 +65,6 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEConta
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
-	{
-		super.render(matrix, mouseX, mouseY, partialTicks);
-
-		//TODO: still needed?
-		if(playerList != null)
-			playerList.render(matrix, mouseX, mouseY, partialTicks);
-	}
-
-	@Override
 	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -84,7 +74,6 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEConta
 		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
-	//TODO: are these still needed?
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scroll)
 	{

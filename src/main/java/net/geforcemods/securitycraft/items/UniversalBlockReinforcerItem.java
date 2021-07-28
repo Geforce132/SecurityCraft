@@ -72,8 +72,8 @@ public class UniversalBlockReinforcerItem extends Item
 				{
 					tag = te.save(new CompoundTag());
 
-					if(te instanceof Container)
-						((Container)te).clearContent();
+					if(te instanceof Container container)
+						container.clearContent();
 				}
 
 				world.setBlockAndUpdate(pos, convertedState);

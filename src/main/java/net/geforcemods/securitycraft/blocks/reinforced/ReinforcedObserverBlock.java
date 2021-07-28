@@ -37,8 +37,8 @@ public class ReinforcedObserverBlock extends ObserverBlock implements IReinforce
 	@Override
 	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)placer));
+		if(placer instanceof Player player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
 	}
 
 	@Override

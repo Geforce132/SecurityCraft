@@ -109,29 +109,25 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 	@Override
 	public boolean isPathfindable(BlockState state, BlockGetter worldIn, BlockPos pos, PathComputationType type) {
-		switch(type) {
-			case LAND:
-				return state.getValue(OPEN);
-			case WATER:
-				return false;
-			case AIR:
-				return state.getValue(OPEN);
-			default:
-				return false;
-		}
+		return switch(type) {
+			case LAND -> state.getValue(OPEN);
+			case WATER -> false;
+			case AIR -> state.getValue(OPEN);
+			default -> false;
+		};
 	}
 
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		BlockPos blockpos = context.getClickedPos();
-		if (blockpos.getY() < 255 && context.getLevel().getBlockState(blockpos.above()).canBeReplaced(context)) {
-			Level world = context.getLevel();
-			boolean flag = world.hasNeighborSignal(blockpos) || world.hasNeighborSignal(blockpos.above());
-			return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(HINGE, this.getHingeSide(context)).setValue(OPEN, flag).setValue(HALF, DoubleBlockHalf.LOWER);
-		} else {
-			return null;
+		BlockPos pos = context.getClickedPos();
+		Level world = context.getLevel();
+
+		if (pos.getY() < world.getHeight() && context.getLevel().getBlockState(pos.above()).canBeReplaced(context)) {
+			boolean flag = world.hasNeighborSignal(pos) || world.hasNeighborSignal(pos.above());
+			return defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(HINGE, getHingeSide(context)).setValue(OPEN, flag).setValue(HALF, DoubleBlockHalf.LOWER);
 		}
+		else return null;
 	}
 
 	@Override
@@ -310,22 +306,20 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			}
 		}
 
-		if(previousOwner != null && world.getBlockEntity(pos) instanceof OwnableTileEntity && world.getBlockEntity(pos.above()) instanceof OwnableTileEntity)
+		if(previousOwner != null && world.getBlockEntity(pos) instanceof OwnableTileEntity thisTe && world.getBlockEntity(pos.above()) instanceof OwnableTileEntity aboveTe)
 		{
-			((OwnableTileEntity)world.getBlockEntity(pos)).setOwner(previousOwner.getUUID(), previousOwner.getName());
-			((OwnableTileEntity)world.getBlockEntity(pos.above())).setOwner(previousOwner.getUUID(), previousOwner.getName());
+			thisTe.setOwner(previousOwner.getUUID(), previousOwner.getName());
+			aboveTe.setOwner(previousOwner.getUUID(), previousOwner.getName());
 		}
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-		BlockPos blockpos = pos.below();
-		BlockState blockstate = worldIn.getBlockState(blockpos);
-		if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
-			return blockstate.isFaceSturdy(worldIn, blockpos, Direction.UP);
-		} else {
-			return blockstate.getBlock() == this;
-		}
+	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+		BlockPos posBelow = pos.below();
+
+		if(state.getValue(HALF) == DoubleBlockHalf.LOWER)
+			return state.isFaceSturdy(world, posBelow, Direction.UP);
+		else return state.getBlock() == this;
 	}
 
 	@Override

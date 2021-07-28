@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
@@ -49,15 +48,15 @@ public class ItemModelGenerator extends ItemModelProvider
 						simpleParent(block);
 					else if(block instanceof ReinforcedStainedGlassPaneBlock)
 						reinforcedPane(block);
-					else if(block instanceof ReinforcedWallBlock)
-						reinforcedWallInventory(block, ((IReinforcedBlock)block).getVanillaBlock());
+					else if(block instanceof ReinforcedWallBlock wall)
+						reinforcedWallInventory(block, wall.getVanillaBlock());
 				}
 				else if(field.isAnnotationPresent(RegisterItemBlock.class) && field.getAnnotation(RegisterItemBlock.class).value() == SCItemGroup.EXPLOSIVES)
 				{
 					Block block = ((RegistryObject<Block>)field.get(null)).get();
 
-					if(block instanceof BaseFullMineBlock)
-						blockMine(((BaseFullMineBlock)block).getBlockDisguisedAs(), block);
+					if(block instanceof BaseFullMineBlock mine)
+						blockMine(mine.getBlockDisguisedAs(), block);
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)

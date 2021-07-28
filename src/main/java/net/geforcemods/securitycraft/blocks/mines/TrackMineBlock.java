@@ -73,15 +73,15 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	@Override
 	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)placer));
+		if(placer instanceof Player player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
 	}
 
 	@Override
 	public void onMinecartPass(BlockState state, Level world, BlockPos pos, AbstractMinecart cart){
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive())
+		if(tile instanceof TrackMineTileEntity te && te.isActive())
 		{
 			world.destroyBlock(pos, false);
 			world.explode(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
@@ -98,9 +98,9 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 
 	@Override
 	public void explode(Level world, BlockPos pos) {
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive())
+		if(tile instanceof TrackMineTileEntity te && te.isActive())
 		{
 			world.destroyBlock(pos, false);
 			world.explode((Entity) null, pos.getX(), pos.above().getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
@@ -110,11 +110,11 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	@Override
 	public boolean activateMine(Level world, BlockPos pos)
 	{
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(te instanceof TrackMineTileEntity && !((TrackMineTileEntity)te).isActive())
+		if(tile instanceof TrackMineTileEntity te && !te.isActive())
 		{
-			((TrackMineTileEntity)te).activate();
+			te.activate();
 			return true;
 		}
 		else return false;
@@ -123,11 +123,11 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	@Override
 	public boolean defuseMine(Level world, BlockPos pos)
 	{
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive())
+		if(tile instanceof TrackMineTileEntity te && te.isActive())
 		{
-			((TrackMineTileEntity)te).deactivate();
+			te.deactivate();
 			return true;
 		}
 		else return false;
@@ -136,9 +136,9 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	@Override
 	public boolean isActive(Level world, BlockPos pos)
 	{
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
-		return te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive();
+		return tile instanceof TrackMineTileEntity te && te.isActive();
 	}
 
 	@Override

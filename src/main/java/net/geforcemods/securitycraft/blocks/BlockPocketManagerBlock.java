@@ -37,10 +37,10 @@ public class BlockPocketManagerBlock extends OwnableBlock
 	{
 		if(!world.isClientSide)
 		{
-			BlockEntity te = world.getBlockEntity(pos);
+			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(te instanceof BlockPocketManagerTileEntity && !((BlockPocketManagerTileEntity)te).isPlacingBlocks())
-				NetworkHooks.openGui((ServerPlayer)player, (BlockPocketManagerTileEntity)te, pos);
+			if(tile instanceof BlockPocketManagerTileEntity te && !te.isPlacingBlocks())
+				NetworkHooks.openGui((ServerPlayer)player, te, pos);
 		}
 
 		return InteractionResult.SUCCESS;

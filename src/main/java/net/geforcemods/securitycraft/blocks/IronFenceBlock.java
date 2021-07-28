@@ -213,9 +213,9 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 		if(entity instanceof ItemEntity)
 			return;
 		//owner check
-		else if(entity instanceof Player)
+		else if(entity instanceof Player player)
 		{
-			if(((OwnableTileEntity) world.getBlockEntity(pos)).getOwner().isOwner((Player)entity))
+			if(((OwnableTileEntity) world.getBlockEntity(pos)).getOwner().isOwner(player))
 				return;
 		}
 		else if(!world.isClientSide && entity instanceof Creeper creeper)

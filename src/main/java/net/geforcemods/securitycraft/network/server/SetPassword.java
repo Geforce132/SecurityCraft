@@ -56,13 +56,13 @@ public class SetPassword {
 			String password = message.password;
 			Player player = ctx.get().getSender();
 			Level world = player.level;
-			BlockEntity te = world.getBlockEntity(pos);
+			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player))){
-				((IPasswordProtected)te).setPassword(password);
+			if(tile instanceof IPasswordProtected te && (!(tile instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))){
+				te.setPassword(password);
 
-				if(te instanceof KeypadChestTileEntity)
-					checkAndUpdateAdjacentChest((KeypadChestTileEntity)te, world, pos, password, player);
+				if(te instanceof KeypadChestTileEntity chestTe)
+					checkAndUpdateAdjacentChest(chestTe, world, pos, password, player);
 			}
 		});
 
@@ -75,9 +75,9 @@ public class SetPassword {
 			BlockPos offsetPos = pos.relative(KeypadChestBlock.getConnectedDirection(te.getBlockState()));
 			BlockEntity otherTe = world.getBlockEntity(offsetPos);
 
-			if(otherTe instanceof KeypadChestTileEntity && te.getOwner().owns((KeypadChestTileEntity)otherTe))
+			if(otherTe instanceof KeypadChestTileEntity chestTe && te.getOwner().owns(chestTe))
 			{
-				((KeypadChestTileEntity)otherTe).setPassword(codeToSet);
+				chestTe.setPassword(codeToSet);
 				world.sendBlockUpdated(offsetPos, otherTe.getBlockState(), otherTe.getBlockState(), 2);
 			}
 		}

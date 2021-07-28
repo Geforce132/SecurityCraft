@@ -58,14 +58,13 @@ public class IMSBlock extends OwnableBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
-		switch(state.getValue(MINES))
-		{
-			case 4: return SHAPE_4_MINES;
-			case 3: return SHAPE_3_MINES;
-			case 2: return SHAPE_2_MINES;
-			case 1: return SHAPE_1_MINE;
-			default: return SHAPE;
-		}
+		return switch(state.getValue(MINES)) {
+			case 4 -> SHAPE_4_MINES;
+			case 3 -> SHAPE_3_MINES;
+			case 2 -> SHAPE_2_MINES;
+			case 1 -> SHAPE_1_MINE;
+			default -> SHAPE;
+		};
 	}
 
 	@Override
@@ -81,7 +80,9 @@ public class IMSBlock extends OwnableBlock {
 	{
 		if(!world.isClientSide)
 		{
-			if(((IOwnable) world.getBlockEntity(pos)).getOwner().isOwner(player))
+			BlockEntity te = world.getBlockEntity(pos);
+
+			if(((IOwnable)te).getOwner().isOwner(player))
 			{
 				ItemStack held = player.getItemInHand(hand);
 				int mines = state.getValue(MINES);
@@ -92,14 +93,13 @@ public class IMSBlock extends OwnableBlock {
 						held.shrink(1);
 
 					world.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
-					((IMSTileEntity)world.getBlockEntity(pos)).setBombsRemaining(mines + 1);
+					((IMSTileEntity)te).setBombsRemaining(mines + 1);
 				}
 				else if(player instanceof ServerPlayer)
 				{
-					BlockEntity te = world.getBlockEntity(pos);
 
-					if(te instanceof MenuProvider)
-						NetworkHooks.openGui((ServerPlayer)player, (MenuProvider)te, pos);
+					if(te instanceof MenuProvider menuProvider)
+						NetworkHooks.openGui((ServerPlayer)player, menuProvider, pos);
 				}
 			}
 		}

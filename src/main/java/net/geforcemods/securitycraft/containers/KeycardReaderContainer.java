@@ -28,8 +28,8 @@ public class KeycardReaderContainer extends AbstractContainerMenu
 
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof KeycardReaderTileEntity)
-			te = (KeycardReaderTileEntity)tile;
+		if(tile instanceof KeycardReaderTileEntity te)
+			this.te = te;
 
 		worldPosCallable = ContainerLevelAccess.create(world, pos);
 

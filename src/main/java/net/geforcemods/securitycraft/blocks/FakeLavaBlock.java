@@ -27,10 +27,8 @@ public class FakeLavaBlock extends LiquidBlock
 	{
 		super.entityInside(state, world, pos, entity);
 
-		if(entity instanceof LivingEntity)
+		if(entity instanceof LivingEntity lEntity)
 		{
-			LivingEntity lEntity = (LivingEntity)entity;
-
 			lEntity.clearFire();
 
 			if(!world.isClientSide)

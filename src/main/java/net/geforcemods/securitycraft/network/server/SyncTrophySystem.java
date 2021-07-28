@@ -8,7 +8,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -53,12 +52,11 @@ public class SyncTrophySystem {
 				Level world = ctx.get().getSender().level;
 				BlockPos pos = message.pos;
 				boolean allowed = message.allowed;
-				BlockEntity te = world.getBlockEntity(pos);
 
-				if(te instanceof TrophySystemTileEntity && ((TrophySystemTileEntity)te).getOwner().isOwner(ctx.get().getSender())) {
+				if(world.getBlockEntity(pos) instanceof TrophySystemTileEntity te && te.getOwner().isOwner(ctx.get().getSender())) {
 					BlockState state = world.getBlockState(pos);
 
-					((TrophySystemTileEntity)te).setFilter(projectileType, allowed);
+					te.setFilter(projectileType, allowed);
 					world.sendBlockUpdated(pos, state, state, 2);
 				}
 			}

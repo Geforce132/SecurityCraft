@@ -28,15 +28,12 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		switch(state.getValue(AXIS)) {
-			case X:
-			default:
-				return X_AXIS_SHAPE;
-			case Y:
-				return Y_AXIS_SHAPE;
-			case Z:
-				return Z_AXIS_SHAPE;
-		}
+		return switch(state.getValue(AXIS)) {
+			case X -> X_AXIS_SHAPE;
+			case Y -> Y_AXIS_SHAPE;
+			case Z -> Z_AXIS_SHAPE;
+			default -> X_AXIS_SHAPE;
+		};
 	}
 
 	@Override

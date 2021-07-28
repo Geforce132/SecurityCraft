@@ -61,13 +61,13 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 
 		if(!list.isEmpty())
 		{
-			BlockEntity tileEntity = world.getBlockEntity(pos);
+			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tileEntity instanceof AllowlistOnlyTileEntity)
+			if(tile instanceof AllowlistOnlyTileEntity te)
 			{
 				for(Entity entity : list)
 				{
-					if(entity instanceof Player && isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)tileEntity, (Player)entity))
+					if(entity instanceof Player player && isAllowedToPress(world, pos, te, player))
 						return 15;
 				}
 			}

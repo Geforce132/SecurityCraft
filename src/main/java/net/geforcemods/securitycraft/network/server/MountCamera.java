@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
@@ -53,9 +52,7 @@ public class MountCamera
 
 			if(state.getBlock() == SCContent.SECURITY_CAMERA.get())
 			{
-				BlockEntity te = world.getBlockEntity(pos);
-
-				if(te instanceof SecurityCameraTileEntity && (((SecurityCameraTileEntity)te).getOwner().isOwner(player) || ((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART)))
+				if(world.getBlockEntity(pos) instanceof SecurityCameraTileEntity te && (te.getOwner().isOwner(player) || te.hasModule(ModuleType.SMART)))
 					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), id, player);
 			}
 		});

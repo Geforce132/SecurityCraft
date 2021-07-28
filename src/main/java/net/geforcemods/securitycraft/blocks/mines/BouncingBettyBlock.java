@@ -67,7 +67,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	@Override
 	public void onEntityIntersected(Level world, BlockPos pos, Entity entity) {
 		if(!EntityUtils.doesEntityOwn(entity, world, pos))
-			if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity))
+			if(entity instanceof LivingEntity lEntity && !PlayerUtils.isPlayerMountedOnCamera(lEntity))
 				explode(world, pos);
 	}
 	@Override
@@ -104,17 +104,15 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 
 	@Override
 	public void explode(Level world, BlockPos pos){
-		if(world.isClientSide)
-			return;
-		if(world.getBlockState(pos).getValue(DEACTIVATED))
+		if(world.isClientSide || world.getBlockState(pos).getValue(DEACTIVATED))
 			return;
 
 		world.destroyBlock(pos, false);
-		BouncingBettyEntity entitytntprimed = new BouncingBettyEntity(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
-		entitytntprimed.fuse = 15;
-		entitytntprimed.setDeltaMovement(entitytntprimed.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
-		WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(entitytntprimed));
-		entitytntprimed.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.tnt.primed")), 1.0F, 1.0F);
+		BouncingBettyEntity bouncingBettyEntity = new BouncingBettyEntity(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
+		bouncingBettyEntity.fuse = 15;
+		bouncingBettyEntity.setDeltaMovement(bouncingBettyEntity.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
+		WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(bouncingBettyEntity));
+		bouncingBettyEntity.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.tnt.primed")), 1.0F, 1.0F);
 	}
 
 	/**

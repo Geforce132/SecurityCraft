@@ -61,7 +61,7 @@ public class MineRemoteAccessToolItem extends Item {
 					return InteractionResult.FAIL;
 				}
 
-				if(world.getBlockEntity(pos) instanceof IOwnable && !((IOwnable) world.getBlockEntity(pos)).getOwner().isOwner(player))
+				if(world.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.getOwner().isOwner(player))
 				{
 					SecurityCraft.proxy.displayMRATGui(stack);
 					return InteractionResult.SUCCESS;

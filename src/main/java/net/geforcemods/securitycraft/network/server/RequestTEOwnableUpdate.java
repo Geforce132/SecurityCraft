@@ -58,8 +58,8 @@ public class RequestTEOwnableUpdate
 			boolean syncTag = te instanceof CustomizableTileEntity || te instanceof IPasswordProtected;
 			CompoundTag tag = syncTag ? te.save(new CompoundTag()) : null;
 
-			if(te instanceof IOwnable)
-				SecurityCraft.channel.reply(new UpdateTEOwnable(te.getBlockPos(), ((IOwnable)te).getOwner().getName(), ((IOwnable)te).getOwner().getUUID(), syncTag, tag), ctx.get());
+			if(te instanceof IOwnable ownable)
+				SecurityCraft.channel.reply(new UpdateTEOwnable(te.getBlockPos(), ownable.getOwner().getName(), ownable.getOwner().getUUID(), syncTag, tag), ctx.get());
 		});
 
 		ctx.get().setPacketHandled(true);

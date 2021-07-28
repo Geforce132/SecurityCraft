@@ -60,10 +60,10 @@ public class UpdateTEOwnable
 		ctx.get().enqueueWork(() -> {
 			BlockEntity te = Minecraft.getInstance().level.getBlockEntity(message.pos);
 
-			if(!(te instanceof IOwnable))
+			if(!(te instanceof IOwnable ownable))
 				return;
 
-			((IOwnable)te).setOwner(message.uuid, message.name);
+			ownable.setOwner(message.uuid, message.name);
 
 			if(message.syncTag)
 				te.load( message.tag);

@@ -95,68 +95,26 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
-		switch(state.getValue(FACE))
-		{
-			case FLOOR:
-				switch(state.getValue(FACING))
-				{
-					case NORTH: case SOUTH:
-						if(state.getValue(POWERED))
-							return FLOOR_NS_POWERED;
-						else
-							return FLOOR_NS_UNPOWERED;
-					case EAST: case WEST:
-						if(state.getValue(POWERED))
-							return FLOOR_EW_POWERED;
-						else
-							return FLOOR_EW_UNPOWERED;
-					default: break;
-				}
-				break;
-			case WALL:
-				switch(state.getValue(FACING))
-				{
-					case NORTH:
-						if(state.getValue(POWERED))
-							return WALL_N_POWERED;
-						else
-							return WALL_N_UNPOWERED;
-					case SOUTH:
-						if(state.getValue(POWERED))
-							return WALL_S_POWERED;
-						else
-							return WALL_S_UNPOWERED;
-					case EAST:
-						if(state.getValue(POWERED))
-							return WALL_E_POWERED;
-						else
-							return WALL_E_UNPOWERED;
-					case WEST:
-						if(state.getValue(POWERED))
-							return WALL_W_POWERED;
-						else
-							return WALL_W_UNPOWERED;
-					default: break;
-				}
-				break;
-			case CEILING:
-				switch(state.getValue(FACING))
-				{
-					case NORTH: case SOUTH:
-						if(state.getValue(POWERED))
-							return CEILING_NS_POWERED;
-						else
-							return CEILING_NS_UNPOWERED;
-					case EAST: case WEST:
-						if(state.getValue(POWERED))
-							return CEILING_EW_POWERED;
-						else
-							return CEILING_EW_UNPOWERED;
-					default: break;
-				}
-		}
-
-		return Shapes.block();
+		return switch(state.getValue(FACE)) {
+			case FLOOR -> switch(state.getValue(FACING)) {
+				case NORTH, SOUTH -> state.getValue(POWERED) ? FLOOR_NS_POWERED : FLOOR_NS_UNPOWERED;
+				case EAST, WEST -> state.getValue(POWERED) ? FLOOR_EW_POWERED : FLOOR_EW_UNPOWERED;
+				default -> Shapes.block();
+			};
+			case WALL -> switch(state.getValue(FACING)) {
+				case NORTH -> state.getValue(POWERED) ? WALL_N_POWERED : WALL_N_UNPOWERED;
+				case SOUTH -> state.getValue(POWERED) ? WALL_S_POWERED : WALL_S_UNPOWERED;
+				case EAST -> state.getValue(POWERED) ? WALL_E_POWERED : WALL_E_UNPOWERED;
+				case WEST -> state.getValue(POWERED) ? WALL_W_POWERED : WALL_W_UNPOWERED;
+				default -> Shapes.block();
+			};
+			case CEILING -> switch(state.getValue(FACING)) {
+				case NORTH, SOUTH -> state.getValue(POWERED) ? CEILING_NS_POWERED : CEILING_NS_UNPOWERED;
+				case EAST, WEST -> state.getValue(POWERED) ? CEILING_EW_POWERED : CEILING_EW_UNPOWERED;
+				default -> Shapes.block();
+			};
+			default -> Shapes.block();
+		};
 	}
 
 	@Override

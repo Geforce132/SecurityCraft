@@ -102,9 +102,9 @@ public class BulletEntity extends AbstractArrow
 		{
 			target.hurt(DamageSource.arrow(this, getOwner()), Mth.ceil(getDeltaMovement().length()));
 
-			if (target instanceof LivingEntity && !potionEffects.isEmpty()) {
+			if (target instanceof LivingEntity lEntity && !potionEffects.isEmpty()) {
 				for (MobEffectInstance effect : potionEffects) {
-					((LivingEntity)target).addEffect(effect);
+					lEntity.addEffect(effect);
 				}
 			}
 

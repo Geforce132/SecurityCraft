@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.player.Player;
@@ -49,26 +48,20 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext collisionContext)
 	{
-		if(!state.getValue(SOLID) && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent())
+		if(!state.getValue(SOLID) && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent() && ctx.getEntity().get() instanceof Player player)
 		{
-			Entity entity = ctx.getEntity().get();
+			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(entity instanceof Player)
+			if(tile instanceof BlockPocketTileEntity te)
 			{
-				BlockEntity te1 = world.getBlockEntity(pos);
-
-				if(te1 instanceof BlockPocketTileEntity te)
-				{
-					if(te.getManager() == null)
-						return Shapes.empty();
-
-					if(ModuleUtils.isAllowed(te.getManager(), entity))
-						return Shapes.empty();
-					else if(!te.getOwner().isOwner((Player)entity))
-						return Shapes.block();
-					else
-						return Shapes.empty();
-				}
+				if(te.getManager() == null)
+					return Shapes.empty();
+				else if(ModuleUtils.isAllowed(te.getManager(), player))
+					return Shapes.empty();
+				else if(!te.getOwner().isOwner(player))
+					return Shapes.block();
+				else
+					return Shapes.empty();
 			}
 		}
 

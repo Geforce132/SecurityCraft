@@ -142,22 +142,22 @@ public class SCEventHandler {
 				return;
 			}
 
-			if(tileEntity instanceof INameable && ((INameable)tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getItemInHand(event.getHand()).hasCustomHoverName()){
+			if(tileEntity instanceof INameable nameable && nameable.canBeNamed() && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getItemInHand(event.getHand()).hasCustomHoverName()){
 				ItemStack nametag = event.getPlayer().getItemInHand(event.getHand());
 
 				event.setCanceled(true);
 				event.setCancellationResult(InteractionResult.SUCCESS);
 
-				if(((INameable) tileEntity).getCustomSCName().equals(nametag.getHoverName())) {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(tileEntity.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable)tileEntity).getCustomSCName()), ChatFormatting.RED);
+				if(nameable.getCustomSCName().equals(nametag.getHoverName())) {
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(tileEntity.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getCustomSCName()), ChatFormatting.RED);
 					return;
 				}
 
 				if(!event.getPlayer().isCreative())
 					nametag.shrink(1);
 
-				((INameable) tileEntity).setCustomSCName(nametag.getHoverName());
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(tileEntity.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomSCName()), ChatFormatting.RED);
+				nameable.setCustomSCName(nametag.getHoverName());
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(tileEntity.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomSCName()), ChatFormatting.RED);
 				return;
 			}
 		}
@@ -194,28 +194,26 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onBlockEventBreak(BlockEvent.BreakEvent event)
 	{
-		if(!(event.getWorld() instanceof Level))
+		if(!(event.getWorld() instanceof Level level))
 			return;
 
-		if(!event.getWorld().isClientSide()) {
-			if(event.getWorld().getBlockEntity(event.getPos()) instanceof IModuleInventory){
-				IModuleInventory te = (IModuleInventory) event.getWorld().getBlockEntity(event.getPos());
+		if(!level.isClientSide()) {
+			BlockEntity tile = level.getBlockEntity(event.getPos());
 
+			if(tile instanceof IModuleInventory te){
 				for(int i = 0; i < te.getMaxNumberOfModules(); i++)
 					if(!te.getInventory().get(i).isEmpty()){
 						ItemStack stack = te.getInventory().get(i);
-						ItemEntity item = new ItemEntity((Level)event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
-						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().addFreshEntity(item));
+						ItemEntity item = new ItemEntity(level, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
+						WorldUtils.addScheduledTask(level, () -> level.addFreshEntity(item));
 
 						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
 
-						if(te instanceof CustomizableTileEntity)
-							((CustomizableTileEntity)te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModuleType() }, (CustomizableTileEntity)te);
+						if(te instanceof CustomizableTileEntity cte)
+							cte.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModuleType() }, cte);
 
 						if(te instanceof SecurityCameraTileEntity cam)
-						{
-							cam.getLevel().updateNeighborsAt(cam.getBlockPos().relative(cam.getLevel().getBlockState(cam.getBlockPos()).getValue(SecurityCameraBlock.FACING), -1), cam.getLevel().getBlockState(cam.getBlockPos()).getBlock());
-						}
+							level.updateNeighborsAt(cam.getBlockPos().relative(level.getBlockState(cam.getBlockPos()).getValue(SecurityCameraBlock.FACING), -1), level.getBlockState(cam.getBlockPos()).getBlock());
 					}
 			}
 		}
@@ -241,18 +239,18 @@ public class SCEventHandler {
 	{
 		BlockEntity te = event.getWorld().getBlockEntity(event.getPos());
 
-		if(te instanceof IOwnable) {
+		if(te instanceof IOwnable ownable) {
 			String name = event.getPlayer().getName().getString();
 			String uuid = event.getPlayer().getGameProfile().getId().toString();
 
-			((IOwnable)te).setOwner(uuid, name);
+			ownable.setOwner(uuid, name);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
-		if((event.getTarget() instanceof Player && PlayerUtils.isPlayerMountedOnCamera(event.getTarget())) || event.getTarget() instanceof SentryEntity)
+		if((event.getTarget() instanceof Player player && PlayerUtils.isPlayerMountedOnCamera(player)) || event.getTarget() instanceof SentryEntity)
 			((Mob)event.getEntity()).setTarget(null);
 	}
 
@@ -282,15 +280,14 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onEntityMount(EntityMountEvent event)
 	{
-		if(event.isDismounting() && event.getEntityBeingMounted() instanceof SecurityCameraEntity && event.getEntityMounting() instanceof Player)
+		if(event.isDismounting() && event.getEntityBeingMounted() instanceof SecurityCameraEntity camera && event.getEntityMounting() instanceof Player player)
 		{
-			Player player = (Player)event.getEntityMounting();
-			BlockEntity te = event.getWorldObj().getBlockEntity(event.getEntityBeingMounted().blockPosition());
+			BlockEntity tile = event.getWorldObj().getBlockEntity(camera.blockPosition());
 
-			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART))
+			if(PlayerUtils.isPlayerMountedOnCamera(player) && tile instanceof SecurityCameraTileEntity te && te.hasModule(ModuleType.SMART))
 			{
-				((SecurityCameraTileEntity)te).lastPitch = player.getXRot();
-				((SecurityCameraTileEntity)te).lastYaw = player.getYRot();
+				te.lastPitch = player.getXRot();
+				te.lastYaw = player.getYRot();
 			}
 		}
 	}
@@ -307,15 +304,15 @@ public class SCEventHandler {
 	{
 		Item item = event.getItemStack().getItem();
 
-		if(item instanceof BlockItem && ((BlockItem)item).getBlock() instanceof ReinforcedCarpetBlock)
+		if(item instanceof BlockItem blockItem && blockItem.getBlock() instanceof ReinforcedCarpetBlock)
 			event.setBurnTime(0);
 	}
 
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
 		Level world = event.getPlayer().level;
-		BlockEntity tileEntity = world.getBlockEntity(event.getPos());
+		BlockEntity tile = world.getBlockEntity(event.getPos());
 
-		if(tileEntity instanceof IPasswordProtected && ((IPasswordProtected)tileEntity).isCodebreakable())
+		if(tile instanceof IPasswordProtected passwordProtected && passwordProtected.isCodebreakable())
 		{
 			if(ConfigHandler.SERVER.allowCodebreakerItem.get())
 			{
@@ -323,7 +320,7 @@ public class SCEventHandler {
 					event.getPlayer().getItemInHand(event.getHand()).hurtAndBreak(1, event.getPlayer(), p -> p.broadcastBreakEvent(event.getHand()));
 
 				if(event.getPlayer().isCreative() || new Random().nextInt(3) == 1)
-					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer());
+					return passwordProtected.onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer());
 				else {
 					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
 					return true;

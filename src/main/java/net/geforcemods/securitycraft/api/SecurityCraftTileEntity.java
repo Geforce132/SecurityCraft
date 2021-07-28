@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -83,24 +82,29 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements INamea
 			int y = te.worldPosition.getY();
 			int z = te.worldPosition.getZ();
 			AABB area = (new AABB(x, y, z, (x), (y), (z)).inflate(5));
-			List<?> entities = world.getEntitiesOfClass(LivingEntity.class, area, e -> !(e instanceof Player) || !e.isSpectator());
-			Iterator<?> iterator = entities.iterator();
+			List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, area, e -> !(e instanceof Player) || !e.isSpectator());
+			Iterator<LivingEntity> iterator = entities.iterator();
 			LivingEntity entity;
 
 			while (iterator.hasNext())
 			{
-				entity = (LivingEntity)iterator.next();
+				entity = iterator.next();
 				double eyeHeight = entity.getEyeHeight();
-				boolean isPlayer = (entity instanceof Player);
+				boolean isPlayer = entity instanceof Player;
 				Vec3 lookVec = new Vec3((entity.getX() + (entity.getLookAngle().x * 5)), ((eyeHeight + entity.getY()) + (entity.getLookAngle().y * 5)), (entity.getZ() + (entity.getLookAngle().z * 5)));
 
 				BlockHitResult mop = world.clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, Block.COLLIDER, Fluid.NONE, entity));
-				if(mop != null && mop.getType() == Type.BLOCK)
+
+				if(mop != null)
+				{
 					if(mop.getBlockPos().getX() == pos.getX() && mop.getBlockPos().getY() == pos.getY() && mop.getBlockPos().getZ() == pos.getZ())
+					{
 						if((isPlayer && te.activatedOnlyByPlayer()) || !te.activatedOnlyByPlayer()) {
 							te.entityViewed(entity);
 							te.viewCooldown = te.getViewCooldown();
 						}
+					}
+				}
 			}
 		}
 
@@ -112,8 +116,8 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements INamea
 
 			if (te.canAttack()) {
 				AABB area = new AABB(pos).inflate(te.getAttackRange());
-				List<?> entities = world.getEntitiesOfClass(te.entityTypeToAttack(), area);
-				Iterator<?> iterator = entities.iterator();
+				List<? extends Entity> entities = world.getEntitiesOfClass(te.entityTypeToAttack(), area);
+				Iterator<? extends Entity> iterator = entities.iterator();
 
 				if(!world.isClientSide){
 					boolean attacked = false;
@@ -122,7 +126,7 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements INamea
 						te.attackFailed();
 
 					while (iterator.hasNext()) {
-						Entity mobToAttack = (Entity) iterator.next();
+						Entity mobToAttack = iterator.next();
 
 						if (mobToAttack == null || mobToAttack instanceof ItemEntity || !te.shouldAttackEntityType(mobToAttack))
 							continue;
@@ -142,9 +146,9 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements INamea
 	}
 
 	private static void entityIntersecting(Level world, BlockPos pos, Entity entity) {
-		if(!(world.getBlockState(pos).getBlock() instanceof IIntersectable)) return;
+		if(!(world.getBlockState(pos).getBlock() instanceof IIntersectable intersectable)) return;
 
-		((IIntersectable) world.getBlockState(pos).getBlock()).onEntityIntersected(world, pos, entity);
+		intersectable.onEntityIntersected(world, pos, entity);
 	}
 
 	/**

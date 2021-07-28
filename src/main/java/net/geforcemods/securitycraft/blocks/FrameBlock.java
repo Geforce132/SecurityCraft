@@ -42,16 +42,13 @@ public class FrameBlock extends OwnableBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
 	{
-		VoxelShape shape = null;
-
-		switch(state.getValue(FACING))
-		{
-			case NORTH: shape = SHAPE_NORTH; break;
-			case EAST: shape = SHAPE_EAST; break;
-			case SOUTH: shape = SHAPE_SOUTH; break;
-			case WEST: shape = SHAPE_WEST; break;
-			default: shape = Shapes.empty();
-		}
+		VoxelShape shape = switch(state.getValue(FACING)) {
+			case NORTH -> SHAPE_NORTH;
+			case EAST -> SHAPE_EAST;
+			case SOUTH -> SHAPE_SOUTH;
+			case WEST -> SHAPE_WEST;
+			default -> Shapes.empty();
+		};
 
 		return Shapes.joinUnoptimized(Shapes.block(), shape, BooleanOp.ONLY_FIRST); //subtract
 	}

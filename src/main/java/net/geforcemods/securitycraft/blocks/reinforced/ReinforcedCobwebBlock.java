@@ -30,13 +30,13 @@ public class ReinforcedCobwebBlock extends BaseReinforcedBlock
 	@Override
 	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity)
 	{
-		if(entity instanceof Player)
+		if(entity instanceof Player player)
 		{
-			BlockEntity te = world.getBlockEntity(pos);
+			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(te instanceof OwnableTileEntity)
+			if(tile instanceof OwnableTileEntity te)
 			{
-				if(((OwnableTileEntity)te).getOwner().isOwner((Player)entity))
+				if(te.getOwner().isOwner(player))
 					return;
 			}
 		}

@@ -60,12 +60,12 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 		else if(dir == Direction.WEST)
 			area = area.contract(te.range.get(), -0, -0);
 
-		List<?> entities = world.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e));
-		Iterator<?> iterator = entities.iterator();
+		List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e));
+		Iterator<LivingEntity> iterator = entities.iterator();
 		LivingEntity entity;
 
 		while(iterator.hasNext()){
-			entity = (LivingEntity) iterator.next();
+			entity = iterator.next();
 
 			if(PlayerUtils.isPlayerMountedOnCamera(entity) || EntityUtils.doesEntityOwn(entity, world, pos))
 				continue;

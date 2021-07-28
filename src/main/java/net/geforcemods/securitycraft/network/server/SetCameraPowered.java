@@ -8,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SetCameraPowered
@@ -45,9 +44,8 @@ public class SetCameraPowered
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
 			Level world = player.level;
-			BlockEntity te = world.getBlockEntity(pos);
 
-			if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner(player))
+			if(world.getBlockEntity(pos) instanceof IOwnable te && te.getOwner().isOwner(player))
 			{
 				world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(SecurityCameraBlock.POWERED, message.powered));
 				world.updateNeighborsAt(pos.relative(world.getBlockState(pos).getValue(SecurityCameraBlock.FACING), -1), world.getBlockState(pos).getBlock());

@@ -27,8 +27,8 @@ public class BlockPocketManagerContainer extends AbstractContainerMenu
 
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof BlockPocketManagerTileEntity)
-			te = (BlockPocketManagerTileEntity)tile;
+		if(tile instanceof BlockPocketManagerTileEntity te)
+			this.te = te;
 
 		worldPosCallable = ContainerLevelAccess.create(world, pos);
 		isOwner = te.getOwner().isOwner(inventory.player);

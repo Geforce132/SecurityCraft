@@ -184,7 +184,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 		Direction dir = ctx.getClickedFace();
 		BlockPos pos = ctx.getClickedPos();
 		FluidState fluidState = ctx.getLevel().getFluidState(pos);
-		BlockState state = this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(HALF, dir != Direction.DOWN && (dir == Direction.UP || !(ctx.getClickLocation().y - pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+		BlockState state = defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(HALF, dir != Direction.DOWN && (dir == Direction.UP || !(ctx.getClickLocation().y - pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 
 		return state.setValue(SHAPE, getShapeProperty(state, ctx.getLevel(), pos));
 	}

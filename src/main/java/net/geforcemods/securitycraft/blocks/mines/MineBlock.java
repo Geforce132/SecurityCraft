@@ -86,7 +86,7 @@ public class MineBlock extends ExplosiveBlock {
 			return;
 		else if(entity instanceof ItemEntity)
 			return;
-		else if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
+		else if(entity instanceof LivingEntity lEntity && !PlayerUtils.isPlayerMountedOnCamera(lEntity) && !EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 
@@ -118,10 +118,7 @@ public class MineBlock extends ExplosiveBlock {
 
 	@Override
 	public void explode(Level world, BlockPos pos) {
-		if(world.isClientSide)
-			return;
-
-		if(!world.getBlockState(pos).getValue(DEACTIVATED)){
+		if(!world.isClientSide && !world.getBlockState(pos).getValue(DEACTIVATED)){
 			world.destroyBlock(pos, false);
 			world.explode((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.0F : 3.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 		}

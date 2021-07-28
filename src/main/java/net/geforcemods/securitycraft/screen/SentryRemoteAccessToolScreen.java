@@ -329,7 +329,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	@Override
 	public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
 		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(p_keyPressed_1_, p_keyPressed_2_))) {
-			this.removed();
+			removed();
 			return true;
 		}
 		return super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);

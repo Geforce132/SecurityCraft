@@ -371,23 +371,23 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 	public void performRangedAttack(LivingEntity target, float distanceFactor)
 	{
 		//don't shoot if somehow a non player is a target, or if the player is in spectator or creative mode
-		if(target instanceof Player && (((Player)target).isSpectator() || ((Player)target).isCreative()))
+		if(target instanceof Player player && (player.isSpectator() || player.isCreative()))
 			return;
 
 		//also don't shoot if the target is too far away
 		if(distanceToSqr(target) > MAX_TARGET_DISTANCE * MAX_TARGET_DISTANCE)
 			return;
 
-		BlockEntity te = level.getBlockEntity(blockPosition().below());
+		BlockEntity tile = level.getBlockEntity(blockPosition().below());
 		Projectile throwableEntity = null;
 		SoundEvent shootSound = SoundEvents.ARROW_SHOOT;
 		AbstractProjectileDispenseBehavior pdb = null;
 		LazyOptional<IItemHandler> optional = LazyOptional.empty();
 
-		if(te instanceof KeypadChestTileEntity)
-			optional = ((KeypadChestTileEntity)te).getHandlerForSentry(this);
-		else if(te != null)
-			optional = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
+		if(tile instanceof KeypadChestTileEntity te)
+			optional = te.getHandlerForSentry(this);
+		else if(tile != null)
+			optional = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
 
 		if(optional.isPresent())
 		{
@@ -401,11 +401,11 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 				{
 					DispenseItemBehavior dispenseBehavior = ((DispenserBlock)Blocks.DISPENSER).getDispenseMethod(stack);
 
-					if(dispenseBehavior instanceof AbstractProjectileDispenseBehavior)
+					if(dispenseBehavior instanceof AbstractProjectileDispenseBehavior projectileDispenseBehavior)
 					{
 						ItemStack extracted = handler.extractItem(i, 1, false);
 
-						pdb = ((AbstractProjectileDispenseBehavior)dispenseBehavior);
+						pdb = projectileDispenseBehavior;
 						throwableEntity = pdb.getProjectile(level, position().add(0.0D, 1.6D, 0.0D), extracted);
 						throwableEntity.setOwner(this);
 						shootSound = null;

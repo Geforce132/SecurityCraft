@@ -66,17 +66,11 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context)
 	{
-		SlabType type = state.getValue(TYPE);
-
-		switch(type)
-		{
-			case DOUBLE:
-				return Shapes.block();
-			case TOP:
-				return TOP_SHAPE;
-			default:
-				return BOTTOM_SHAPE;
-		}
+		return switch(state.getValue(TYPE)) {
+			case DOUBLE -> Shapes.block();
+			case TOP -> TOP_SHAPE;
+			default -> BOTTOM_SHAPE;
+		};
 	}
 
 	@Override
@@ -90,7 +84,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 
 		if(state.getBlock() == this)
 		{
-			if(te instanceof IOwnable && !((IOwnable)te).getOwner().isOwner(ctx.getPlayer()))
+			if(te instanceof IOwnable ownable && !ownable.getOwner().isOwner(ctx.getPlayer()))
 			{
 				PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), ChatFormatting.RED);
 
@@ -164,17 +158,12 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 	@Override
 	public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type)
 	{
-		switch(type)
-		{
-			case LAND:
-				return false;
-			case WATER:
-				return world.getFluidState(pos).is(FluidTags.WATER);
-			case AIR:
-				return false;
-			default:
-				return false;
-		}
+		return switch(type) {
+			case LAND -> false;
+			case WATER -> world.getFluidState(pos).is(FluidTags.WATER);
+			case AIR -> false;
+			default -> false;
+		};
 	}
 
 	@Override

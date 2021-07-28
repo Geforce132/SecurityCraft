@@ -27,9 +27,9 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	public static boolean isNormalCube(BlockState state, BlockGetter world, BlockPos pos)
 	{
-		if(state.getBlock() instanceof DisguisableBlock) //should not happen, but just to be safe
+		if(state.getBlock() instanceof DisguisableBlock disguisableBlock) //should not happen, but just to be safe
 		{
-			BlockState disguisedState = ((DisguisableBlock)state.getBlock()).getDisguisedStateOrDefault(state, world, pos);
+			BlockState disguisedState = disguisableBlock.getDisguisedStateOrDefault(state, world, pos);
 
 			if(disguisedState.getBlock() != state.getBlock())
 				return disguisedState.isRedstoneConductor(world, pos);
@@ -40,9 +40,9 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	public static boolean isSuffocating(BlockState state, BlockGetter world, BlockPos pos)
 	{
-		if(state.getBlock() instanceof DisguisableBlock) //should not happen, but just to be safe
+		if(state.getBlock() instanceof DisguisableBlock disguisableBlock) //should not happen, but just to be safe
 		{
-			BlockState disguisedState = ((DisguisableBlock)state.getBlock()).getDisguisedStateOrDefault(state, world, pos);
+			BlockState disguisedState = disguisableBlock.getDisguisedStateOrDefault(state, world, pos);
 
 			if(disguisedState.getBlock() != state.getBlock())
 				return disguisedState.isSuffocating(world, pos);
@@ -110,9 +110,8 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	public BlockState getDisguisedBlockState(BlockGetter world, BlockPos pos)
 	{
-		if(world.getBlockEntity(pos) instanceof DisguisableTileEntity)
+		if(world.getBlockEntity(pos) instanceof DisguisableTileEntity te)
 		{
-			DisguisableTileEntity te = (DisguisableTileEntity) world.getBlockEntity(pos);
 			ItemStack module = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if(!module.isEmpty() && !((ModuleItem) module.getItem()).getBlockAddons(module.getTag()).isEmpty())
@@ -124,9 +123,8 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	public ItemStack getDisguisedStack(BlockGetter world, BlockPos pos)
 	{
-		if(world != null && world.getBlockEntity(pos) instanceof DisguisableTileEntity)
+		if(world != null && world.getBlockEntity(pos) instanceof DisguisableTileEntity te)
 		{
-			DisguisableTileEntity te = (DisguisableTileEntity) world.getBlockEntity(pos);
 			ItemStack stack = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if(!stack.isEmpty() && !((ModuleItem) stack.getItem()).getBlockAddons(stack.getTag()).isEmpty())

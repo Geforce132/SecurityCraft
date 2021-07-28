@@ -48,27 +48,27 @@ public class UniversalBlockRemoverItem extends Item
 		BlockPos pos = ctx.getClickedPos();
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		BlockEntity tileEntity = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 		Player player = ctx.getPlayer();
 
-		if(tileEntity != null && isOwnableBlock(block, tileEntity))
+		if(tile != null && isOwnableBlock(block, tile))
 		{
-			if(!((IOwnable) tileEntity).getOwner().isOwner(player))
+			if(!((IOwnable) tile).getOwner().isOwner(player))
 			{
-				if(!(block instanceof IBlockMine) && (!(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)))
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), ChatFormatting.RED);
+				if(!(block instanceof IBlockMine) && (!(tile instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tile).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)))
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) tile).getOwner().getName()), ChatFormatting.RED);
 
 				return InteractionResult.FAIL;
 			}
 
-			if(tileEntity instanceof IModuleInventory)
+			if(tile instanceof IModuleInventory inv)
 			{
-				boolean isChest = tileEntity instanceof KeypadChestTileEntity;
+				boolean isChest = tile instanceof KeypadChestTileEntity;
 
-				for(ItemStack module : ((IModuleInventory)tileEntity).getInventory())
+				for(ItemStack module : inv.getInventory())
 				{
 					if(isChest)
-						((KeypadChestTileEntity)tileEntity).addOrRemoveModuleFromAttached(module, true);
+						((KeypadChestTileEntity)tile).addOrRemoveModuleFromAttached(module, true);
 
 					Block.popResource(world, pos, module);
 				}
@@ -96,10 +96,10 @@ public class UniversalBlockRemoverItem extends Item
 				BlockPos middlePos = originalPos.above(4);
 
 				if (!world.isClientSide) {
-					new CageTrapBlock.BlockModifier(world, new BlockPos.MutableBlockPos().set(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
+					new CageTrapBlock.BlockModifier(world, new BlockPos.MutableBlockPos().set(originalPos), ((IOwnable)tile).getOwner()).loop((w, p, o) -> {
 						BlockEntity te = w.getBlockEntity(p);
 
-						if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))
+						if(te instanceof IOwnable ownable && ownable.getOwner().equals(o))
 						{
 							Block b = w.getBlockState(p).getBlock();
 

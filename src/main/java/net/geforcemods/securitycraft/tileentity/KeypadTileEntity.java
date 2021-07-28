@@ -81,9 +81,9 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	public void openPasswordGUI(Player player) {
 		if(getPassword() != null)
 		{
-			if(player instanceof ServerPlayer)
+			if(player instanceof ServerPlayer serverPlayer)
 			{
-				NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+				NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 					{
@@ -102,9 +102,9 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 		{
 			if(getOwner().isOwner(player))
 			{
-				if(player instanceof ServerPlayer)
+				if(player instanceof ServerPlayer serverPlayer)
 				{
-					NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+					NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
@@ -125,8 +125,8 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, Player player) {
-		if(!blockState.getValue(KeypadBlock.POWERED)) {
+	public boolean onCodebreakerUsed(BlockState state, Player player) {
+		if(!state.getValue(KeypadBlock.POWERED)) {
 			activate(player);
 			return true;
 		}

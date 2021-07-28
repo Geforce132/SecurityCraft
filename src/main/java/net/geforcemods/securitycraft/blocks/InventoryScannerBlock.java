@@ -56,12 +56,12 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
-		if(isFacingAnotherScanner(world, pos) && player instanceof ServerPlayer)
+		if(isFacingAnotherScanner(world, pos) && player instanceof ServerPlayer serverPlayer)
 		{
 			BlockEntity te = world.getBlockEntity(pos);
 
-			if(!world.isClientSide && te instanceof MenuProvider)
-				NetworkHooks.openGui((ServerPlayer)player, (MenuProvider)te, pos);
+			if(!world.isClientSide && te instanceof MenuProvider menuProvider)
+				NetworkHooks.openGui(serverPlayer, menuProvider, pos);
 
 			return InteractionResult.SUCCESS;
 		}
@@ -87,8 +87,9 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	private void checkAndPlaceAppropriately(Level world, BlockPos pos)
 	{
 		InventoryScannerTileEntity connectedScanner = getConnectedInventoryScanner(world, pos);
+		InventoryScannerTileEntity thisTe = (InventoryScannerTileEntity)world.getBlockEntity(pos);
 
-		if(connectedScanner == null || !connectedScanner.getOwner().equals(((InventoryScannerTileEntity)world.getBlockEntity(pos)).getOwner()))
+		if(connectedScanner == null || !connectedScanner.getOwner().equals(thisTe.getOwner()))
 			return;
 
 		boolean horizontal = false;
@@ -96,10 +97,10 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		if(connectedScanner.getBlockState().getValue(HORIZONTAL))
 			horizontal = true;
 
-		((InventoryScannerTileEntity)world.getBlockEntity(pos)).setHorizontal(horizontal);
-
 		Direction facing = world.getBlockState(pos).getValue(FACING);
 		int loopBoundary = facing == Direction.WEST || facing == Direction.EAST ? Math.abs(pos.getX() - connectedScanner.getBlockPos().getX()) : (facing == Direction.NORTH || facing == Direction.SOUTH ? Math.abs(pos.getZ() - connectedScanner.getBlockPos().getZ()) : 0);
+
+		thisTe.setHorizontal(horizontal);
 
 		for(int i = 1; i < loopBoundary; i++)
 		{
@@ -107,7 +108,6 @@ public class InventoryScannerBlock extends DisguisableBlock {
 				return;
 		}
 
-		InventoryScannerTileEntity thisTe = (InventoryScannerTileEntity)world.getBlockEntity(pos);
 		Option<?>[] customOptions = thisTe.customOptions();
 
 		for(int i = 1; i < loopBoundary; i++)
@@ -118,8 +118,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 			BlockEntity te = world.getBlockEntity(offsetPos);
 
-			if(te instanceof IOwnable)
-				((IOwnable)te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
+			if(te instanceof IOwnable ownable)
+				ownable.setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
 		}
 
 		CustomizableTileEntity.link(thisTe, connectedScanner);
@@ -250,11 +250,11 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	@Override
 	public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
 	{
-		if(!(blockAccess.getBlockEntity(pos) instanceof InventoryScannerTileEntity)){
+		if(!(blockAccess.getBlockEntity(pos) instanceof InventoryScannerTileEntity te)){
 			return 0;
 		}
 
-		return (((InventoryScannerTileEntity) blockAccess.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE) && ((InventoryScannerTileEntity) blockAccess.getBlockEntity(pos)).shouldProvidePower())? 15 : 0;
+		return te.hasModule(ModuleType.REDSTONE) && te.shouldProvidePower() ? 15 : 0;
 	}
 
 	/**

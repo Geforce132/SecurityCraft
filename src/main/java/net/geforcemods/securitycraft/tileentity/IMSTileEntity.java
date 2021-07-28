@@ -109,7 +109,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements MenuProvide
 	public boolean canAttackEntity(LivingEntity entity)
 	{
 		return entity != null
-				&& (!(entity instanceof Player) || !getOwner().isOwner((Player)entity) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !((Player)entity).isCreative() && !((Player)entity).isSpectator()) //PlayerEntity checks
+				&& (!(entity instanceof Player player) || !getOwner().isOwner(player) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !player.isCreative() && !player.isSpectator()) //Player checks
 				&& !(ModuleUtils.isAllowed(this, entity)); //checks for all entities
 	}
 

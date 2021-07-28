@@ -44,10 +44,10 @@ public class Utils {
 	{
 		for(int i = 0; i < params.length; i++)
 		{
-			if(params[i] instanceof TranslatableComponent)
-				params[i] = localize(((TranslatableComponent)params[i]).getKey(), ((TranslatableComponent)params[i]).getArgs());
-			else if(params[i] instanceof BlockPos)
-				params[i] = getFormattedCoordinates((BlockPos)params[i]);
+			if(params[i] instanceof TranslatableComponent component)
+				params[i] = localize(component.getKey(), component.getArgs());
+			else if(params[i] instanceof BlockPos pos)
+				params[i] = getFormattedCoordinates(pos);
 		}
 
 		return new TranslatableComponent(key, params);

@@ -54,18 +54,18 @@ public class UpdateSliderValue {
 			Player player = ctx.get().getSender();
 			BlockEntity te = player.level.getBlockEntity(pos);
 
-			if(te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player))) {
-				Option<?> o = ((ICustomizable)te).customOptions()[id];
+			if(te instanceof ICustomizable customizable && (!(te instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
+				Option<?> option =customizable.customOptions()[id];
 
-				if(o instanceof DoubleOption)
-					((DoubleOption)o).setValue(value);
-				else if(o instanceof IntOption)
-					((IntOption)o).setValue((int)value);
+				if(option instanceof DoubleOption o)
+					o.setValue(value);
+				else if(option instanceof IntOption o)
+					o.setValue((int)value);
 
-				((ICustomizable)te).onOptionChanged(((ICustomizable)te).customOptions()[id]);
+				customizable.onOptionChanged(customizable.customOptions()[id]);
 
-				if(te instanceof CustomizableTileEntity)
-					((CustomizableTileEntity)te).sync();
+				if(te instanceof CustomizableTileEntity customizableTe)
+					customizableTe.sync();
 			}
 		});
 

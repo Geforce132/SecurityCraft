@@ -48,15 +48,12 @@ public class KeypadChestTileEntityRenderer extends ChestRenderer<KeypadChestTile
 
 	private Material getMaterialForType(ChestType type, Material left, Material right, Material single)
 	{
-		switch(type)
-		{
-			case LEFT:
-				return left;
-			case RIGHT:
-				return right;
-			case SINGLE: default:
-				return single;
-		}
+		return switch(type) {
+			case LEFT -> left;
+			case RIGHT -> right;
+			case SINGLE -> single;
+			default -> single;
+		};
 	}
 
 	private static Material createMaterial(String name)

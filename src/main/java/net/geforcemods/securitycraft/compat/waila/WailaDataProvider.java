@@ -125,11 +125,11 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 					return;
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
-				if(config.get(SHOW_MODULES) && te instanceof IModuleInventory moduleInv && (!(te instanceof IOwnable ownable) || ownable.getOwner().isOwner(data.getPlayer()))){
-					if(!moduleInv.getInsertedModules().isEmpty())
+				if(config.get(SHOW_MODULES) && te instanceof IModuleInventory inv && (!(te instanceof IOwnable ownable) || ownable.getOwner().isOwner(data.getPlayer()))){
+					if(!inv.getInsertedModules().isEmpty())
 						tooltip.add(Utils.localize("waila.securitycraft:equipped"));
 
-					for(ModuleType module : moduleInv.getInsertedModules())
+					for(ModuleType module : inv.getInsertedModules())
 						tooltip.add(new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())));
 				}
 

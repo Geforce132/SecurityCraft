@@ -54,13 +54,13 @@ public class UniversalOwnerChangerItem extends Item
 		BlockEntity te = world.getBlockEntity(pos);
 		String newOwner = stack.getHoverName().getString();
 
-		if(!(te instanceof IOwnable))
+		if(!(te instanceof IOwnable ownable))
 		{
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), ChatFormatting.RED);
 			return InteractionResult.FAIL;
 		}
 
-		Owner owner = ((IOwnable)te).getOwner();
+		Owner owner = ownable.getOwner();
 		boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
 
 		if(!owner.isOwner(player) && !isDefault)
@@ -92,28 +92,27 @@ public class UniversalOwnerChangerItem extends Item
 
 		if(block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock)
 		{
-			((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
+			ownable.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
 
 			//check if the above block is a door, and if not (tryUpdateBlock returned false), try the same thing with the block below
 			if(!tryUpdateBlock(world, pos.above(), newOwner))
 				tryUpdateBlock(world, pos.below(), newOwner);
 		}
 
-		if(te instanceof IOwnable)
-			((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
+		ownable.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
 
 		if (!world.isClientSide)
 			world.getServer().getPlayerList().broadcastAll(te.getUpdatePacket());
 
 		//disable this in a development environment
-		if(FMLLoader.isProduction() && te instanceof IModuleInventory)
+		if(FMLLoader.isProduction() && te instanceof IModuleInventory inv)
 		{
-			for(ModuleType moduleType : ((IModuleInventory)te).getInsertedModules())
+			for(ModuleType moduleType : inv.getInsertedModules())
 			{
-				ItemStack moduleStack = ((IModuleInventory)te).getModule(moduleType);
+				ItemStack moduleStack = inv.getModule(moduleType);
 
-				((IModuleInventory)te).removeModule(moduleType);
-				((IModuleInventory)te).onModuleRemoved(moduleStack, moduleType);
+				inv.removeModule(moduleType);
+				inv.onModuleRemoved(moduleStack, moduleType);
 				Block.popResource(world, pos, moduleStack);
 			}
 		}

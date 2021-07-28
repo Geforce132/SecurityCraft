@@ -47,14 +47,13 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx){
-		switch(state.getValue(FACING))
-		{
-			case NORTH: return SHAPE_NORTH;
-			case EAST: return SHAPE_EAST;
-			case SOUTH: return SHAPE_SOUTH;
-			case WEST: return SHAPE_WEST;
-			default: return Shapes.block();
-		}
+		return switch(state.getValue(FACING)) {
+			case NORTH -> SHAPE_NORTH;
+			case EAST -> SHAPE_EAST;
+			case SOUTH -> SHAPE_SOUTH;
+			case WEST -> SHAPE_WEST;
+			default -> Shapes.block();
+		};
 	}
 
 	public static void toggleLight(Level world, BlockPos pos, BlockState state, Owner owner, boolean isLit) {
@@ -64,8 +63,8 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 			BlockEntity te = world.getBlockEntity(pos);
 
-			if(te instanceof IOwnable)
-				((IOwnable) te).setOwner(owner.getUUID(), owner.getName());
+			if(te instanceof IOwnable ownable)
+				ownable.setOwner(owner.getUUID(), owner.getName());
 
 			BlockUtils.updateAndNotify(world, pos, SCContent.MOTION_ACTIVATED_LIGHT.get(), 1, false);
 		}

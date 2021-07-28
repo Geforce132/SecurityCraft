@@ -40,7 +40,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.DrawSelectionEvent;
@@ -80,7 +79,7 @@ public class SCClientEventHandler
 
 	@SubscribeEvent
 	public static void onPlayerRendered(RenderPlayerEvent.Pre event) {
-		if(event.getEntity() instanceof LivingEntity && PlayerUtils.isPlayerMountedOnCamera((LivingEntity)event.getEntity()))
+		if(event.getEntity() instanceof LivingEntity e && PlayerUtils.isPlayerMountedOnCamera(e))
 			event.setCanceled(true);
 	}
 
@@ -118,7 +117,7 @@ public class SCClientEventHandler
 				Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
 				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
-				if(mop != null && mop.getType() == Type.BLOCK && world.getBlockEntity(((BlockHitResult)mop).getBlockPos()) instanceof SecurityCameraTileEntity)
+				if(mop instanceof BlockHitResult bhr && world.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraTileEntity)
 				{
 					CompoundTag cameras = stack.getTag();
 					uCoord = 110;
@@ -131,7 +130,7 @@ public class SCClientEventHandler
 
 							String[] coords = cameras.getString("Camera" + i).split(" ");
 
-							if(Integer.parseInt(coords[0]) == ((BlockHitResult)mop).getBlockPos().getX() && Integer.parseInt(coords[1]) == ((BlockHitResult)mop).getBlockPos().getY() && Integer.parseInt(coords[2]) == ((BlockHitResult)mop).getBlockPos().getZ())
+							if(Integer.parseInt(coords[0]) == bhr.getBlockPos().getX() && Integer.parseInt(coords[1]) == bhr.getBlockPos().getY() && Integer.parseInt(coords[2]) == bhr.getBlockPos().getZ())
 							{
 								uCoord = 88;
 								break;
@@ -146,7 +145,7 @@ public class SCClientEventHandler
 				Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
 				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
-				if(mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockHitResult)mop).getBlockPos()).getBlock() instanceof IExplosive)
+				if(mop instanceof BlockHitResult bhr && world.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive)
 				{
 					uCoord = 110;
 					CompoundTag mines = stack.getTag();
@@ -158,7 +157,7 @@ public class SCClientEventHandler
 							{
 								int[] coords = mines.getIntArray("mine" + i);
 
-								if(coords[0] == ((BlockHitResult)mop).getBlockPos().getX() && coords[1] == ((BlockHitResult)mop).getBlockPos().getY() && coords[2] == ((BlockHitResult)mop).getBlockPos().getZ())
+								if(coords[0] == bhr.getBlockPos().getX() && coords[1] == bhr.getBlockPos().getY() && coords[2] == bhr.getBlockPos().getZ())
 								{
 									uCoord = 88;
 									break;

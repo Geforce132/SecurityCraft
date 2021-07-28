@@ -124,8 +124,8 @@ public class SCManualScreen extends Screen {
 
 		updateRecipeAndIcons();
 		SCManualItem.PAGES.sort((page1, page2) -> {
-			String key1 = Utils.localize(page1.getItem().getDescriptionId()).getString();
-			String key2 = Utils.localize(page2.getItem().getDescriptionId()).getString();
+			String key1 = Utils.localize(page1.item().getDescriptionId()).getString();
+			String key2 = Utils.localize(page2.item().getDescriptionId()).getString();
 
 			return key1.compareTo(key2);
 		});
@@ -152,9 +152,9 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage > -1)
 		{
-			Item item = SCManualItem.PAGES.get(currentPage).getItem();
+			Item item = SCManualItem.PAGES.get(currentPage).item();
 			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
-			String designedBy = SCManualItem.PAGES.get(currentPage).getDesignedBy();
+			String designedBy = SCManualItem.PAGES.get(currentPage).designedBy();
 
 			if(subpages.size() > 1)
 				font.draw(matrix, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
@@ -162,18 +162,18 @@ public class SCManualScreen extends Screen {
 			if(designedBy != null && !designedBy.isEmpty())
 				font.drawWordWrap(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 150, 75, 0);
 
-			if(SCManualItem.PAGES.get(currentPage).getHelpInfo().getKey().equals("help.securitycraft:reinforced.info"))
+			if(SCManualItem.PAGES.get(currentPage).helpInfo().getKey().equals("help.securitycraft:reinforced.info"))
 				font.draw(matrix, Utils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
 			else
-				font.draw(matrix, Utils.localize(SCManualItem.PAGES.get(currentPage).getItem().getDescriptionId()), startX + 39, 27, 0);
+				font.draw(matrix, Utils.localize(SCManualItem.PAGES.get(currentPage).item().getDescriptionId()), startX + 39, 27, 0);
 
 			font.drawWordWrap(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			font.draw(matrix, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
 			minecraft.getItemRenderer().renderAndDecorateItem(new ItemStack(item), startX + 19, 22);
 			RenderSystem._setShaderTexture(0, infoBookIcons);
 
-			if(item instanceof BlockItem){
-				Block block = ((BlockItem) item).getBlock();
+			if(item instanceof BlockItem blockItem){
+				Block block = blockItem.getBlock();
 
 				if(block instanceof IExplosive)
 					blit(matrix, startX + 107, 117, 54, 1, 18, 18);
@@ -188,20 +188,20 @@ public class SCManualScreen extends Screen {
 					if(te instanceof IPasswordProtected)
 						blit(matrix, startX + 55, 118, 18, 1, 17, 16);
 
-					if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
+					if(te instanceof SecurityCraftTileEntity scte && scte.isActivatedByView())
 						blit(matrix, startX + 81, 118, 36, 1, 17, 16);
 
-					if(te instanceof ICustomizable scte)
+					if(te instanceof ICustomizable customizable)
 					{
 						blit(matrix, startX + 213, 118, 72, 1, 16, 16);
 
-						if(scte.customOptions() != null && scte.customOptions().length > 0)
+						if(customizable.customOptions() != null && customizable.customOptions().length > 0)
 							blit(matrix, startX + 136, 118, 88, 1, 16, 16);
 					}
 
-					if(te instanceof IModuleInventory)
+					if(te instanceof IModuleInventory inv)
 					{
-						if(((IModuleInventory)te).acceptedModules() != null && ((IModuleInventory)te).acceptedModules().length > 0)
+						if(inv.acceptedModules() != null && inv.acceptedModules().length > 0)
 							blit(matrix, startX + 163, 118, 105, 1, 16, 16);
 					}
 				}
@@ -218,8 +218,8 @@ public class SCManualScreen extends Screen {
 
 				if(chc != null && chc.checkHover(mouseX, mouseY))
 				{
-					if(chc instanceof TextHoverChecker && ((TextHoverChecker)chc).getName() != null)
-						GuiUtils.drawHoveringText(matrix, ((TextHoverChecker)chc).getLines(), mouseX, mouseY, width, height, -1, font);
+					if(chc instanceof TextHoverChecker thc && thc.getName() != null)
+						GuiUtils.drawHoveringText(matrix, thc.getLines(), mouseX, mouseY, width, height, -1, font);
 					else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
 						renderTooltip(matrix, displays[i].getCurrentStack(), mouseX, mouseY);
 				}
@@ -368,7 +368,7 @@ public class SCManualScreen extends Screen {
 		for(Recipe<?> object : Minecraft.getInstance().level.getRecipeManager().getRecipes())
 		{
 			if(object instanceof ShapedRecipe recipe){
-				if(!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.getItem()){
+				if(!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.item()){
 					NonNullList<Ingredient> ingredients = recipe.getIngredients();
 					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
 
@@ -381,7 +381,7 @@ public class SCManualScreen extends Screen {
 					break;
 				}
 			}else if(object instanceof ShapelessRecipe recipe){
-				if(!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.getItem()){
+				if(!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.item()){
 					//don't show keycard reset recipes
 					if(recipe.getId().getPath().endsWith("_reset"))
 						continue;
@@ -397,12 +397,12 @@ public class SCManualScreen extends Screen {
 			}
 		}
 
-		TranslatableComponent helpInfo = page.getHelpInfo();
+		TranslatableComponent helpInfo = page.helpInfo();
 		boolean reinforcedPage = helpInfo.getKey().equals("help.securitycraft:reinforced.info") || helpInfo.getKey().contains("reinforced_hopper");
 
 		if(page.hasRecipeDescription())
 		{
-			String name = page.getItem().getRegistryName().getPath();
+			String name = page.item().getRegistryName().getPath();
 
 			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.recipe." + name)));
 		}
@@ -424,7 +424,7 @@ public class SCManualScreen extends Screen {
 		else
 			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.disabled")));
 
-		Item item = page.getItem();
+		Item item = page.item();
 
 		if(item instanceof BlockItem){
 			Block block = ((BlockItem) item).getBlock();
@@ -442,21 +442,21 @@ public class SCManualScreen extends Screen {
 				if(te instanceof IPasswordProtected)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passwordProtectedBlock")));
 
-				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
+				if(te instanceof SecurityCraftTileEntity scte && scte.isActivatedByView())
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
-				if(te instanceof ICustomizable scte)
+				if(te instanceof ICustomizable customizable)
 				{
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock")));
 
-					if(scte.customOptions() != null && scte.customOptions().length > 0)
+					if(customizable.customOptions() != null && customizable.customOptions().length > 0)
 					{
 						List<Component> display = new ArrayList<>();
 
 						display.add(Utils.localize("gui.securitycraft:scManual.options"));
 						display.add(new TextComponent("---"));
 
-						for(Option<?> option : scte.customOptions())
+						for(Option<?> option : customizable.customOptions())
 						{
 							display.add(new TextComponent("- ").append(Utils.localize("option" + block.getDescriptionId().substring(5) + "." + option.getName() + ".description")));
 							display.add(TextComponent.EMPTY);

@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
@@ -38,16 +37,10 @@ public class SetTrophySystemTarget {
 
 	public static void onMessage(SetTrophySystemTarget message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			BlockEntity te = Minecraft.getInstance().level.getBlockEntity(message.trophyPos);
+			BlockEntity tile = Minecraft.getInstance().level.getBlockEntity(message.trophyPos);
 
-			if (te instanceof TrophySystemTileEntity) {
-				TrophySystemTileEntity trophySystemTE = (TrophySystemTileEntity)te;
-				Entity target = Minecraft.getInstance().level.getEntity(message.targetID);
-
-				if (target instanceof Projectile) {
-					trophySystemTE.setTarget((Projectile)target);
-				}
-			}
+			if(tile instanceof TrophySystemTileEntity te && Minecraft.getInstance().level.getEntity(message.targetID) instanceof Projectile projectile)
+				te.setTarget(projectile);
 		});
 
 		ctx.get().setPacketHandled(true);

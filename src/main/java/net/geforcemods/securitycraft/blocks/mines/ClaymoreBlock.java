@@ -136,30 +136,13 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
-		switch(state.getValue(FACING))
-		{
-			case NORTH:
-				if(state.getValue(DEACTIVATED))
-					return NORTH_OFF;
-				else
-					return NORTH_ON;
-			case EAST:
-				if(state.getValue(DEACTIVATED))
-					return EAST_OFF;
-				else
-					return EAST_ON;
-			case SOUTH:
-				if(state.getValue(DEACTIVATED))
-					return SOUTH_OFF;
-				else
-					return SOUTH_ON;
-			case WEST:
-				if(state.getValue(DEACTIVATED))
-					return WEST_OFF;
-				else
-					return WEST_ON;
-			default: return Shapes.block();
-		}
+		return switch(state.getValue(FACING)) {
+			case NORTH -> state.getValue(DEACTIVATED) ? NORTH_OFF : NORTH_ON;
+			case EAST -> state.getValue(DEACTIVATED) ? EAST_OFF : EAST_ON;
+			case SOUTH -> state.getValue(DEACTIVATED) ? SOUTH_OFF : SOUTH_ON;
+			case WEST -> state.getValue(DEACTIVATED) ? WEST_OFF : WEST_ON;
+			default -> Shapes.block();
+		};
 	}
 
 	@Override

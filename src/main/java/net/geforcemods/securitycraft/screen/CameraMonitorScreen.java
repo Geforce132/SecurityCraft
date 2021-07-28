@@ -107,16 +107,16 @@ public class CameraMonitorScreen extends Screen {
 				}
 
 				Level world = Minecraft.getInstance().level;
-				BlockEntity te = world.getBlockEntity(view.getLocation());
+				BlockEntity tile = world.getBlockEntity(view.getLocation());
 
-				if(world.getBlockState(view.getLocation()).getBlock() != SCContent.SECURITY_CAMERA.get() || (te instanceof SecurityCameraTileEntity && !((SecurityCameraTileEntity)te).getOwner().isOwner(Minecraft.getInstance().player) && !((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART)))
+				if(world.getBlockState(view.getLocation()).getBlock() != SCContent.SECURITY_CAMERA.get() || (tile instanceof SecurityCameraTileEntity te && !te.getOwner().isOwner(Minecraft.getInstance().player) && !te.hasModule(ModuleType.SMART)))
 				{
 					button.active = false;
 					cameraTEs[button.id - 1] = null;
 					continue;
 				}
 
-				cameraTEs[button.id - 1] = (SecurityCraftTileEntity)te;
+				cameraTEs[button.id - 1] = (SecurityCraftTileEntity)tile;
 				hoverCheckers[button.id - 1] = new HoverChecker(button);
 			}
 			else
@@ -149,10 +149,9 @@ public class CameraMonitorScreen extends Screen {
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 
+		blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-
 		font.draw(matrix, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
@@ -172,7 +171,6 @@ public class CameraMonitorScreen extends Screen {
 			minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1));
 		else if (button.id < 11){
 			int camID = button.id + ((page - 1) * 10);
-
 			CameraView view = (cameraMonitor.getCameraPositions(nbtTag).get(camID - 1));
 			Block block = Minecraft.getInstance().level.getBlockState(view.getLocation()).getBlock();
 

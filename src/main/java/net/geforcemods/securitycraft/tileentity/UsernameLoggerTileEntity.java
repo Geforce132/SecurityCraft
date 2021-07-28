@@ -40,8 +40,8 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements M
 
 	@Override
 	public boolean attackEntity(Entity entity) {
-		if (!level.isClientSide && entity instanceof Player) {
-			addPlayer((Player)entity);
+		if (!level.isClientSide && entity instanceof Player player) {
+			addPlayer(player);
 			sendChangeToClient(false);
 		}
 
@@ -57,11 +57,11 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements M
 		int range = searchRadius.get();
 
 		AABB area = new AABB(worldPosition).inflate(range);
-		List<?> entities = level.getEntitiesOfClass(Player.class, area);
-		Iterator<?> iterator = entities.iterator();
+		List<Player> entities = level.getEntitiesOfClass(Player.class, area);
+		Iterator<Player> iterator = entities.iterator();
 
 		while(iterator.hasNext())
-			addPlayer((Player)iterator.next());
+			addPlayer(iterator.next());
 
 		sendChangeToClient(false);
 	}

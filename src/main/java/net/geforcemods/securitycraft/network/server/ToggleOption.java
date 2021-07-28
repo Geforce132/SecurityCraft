@@ -51,12 +51,12 @@ public class ToggleOption {
 			Player player = ctx.get().getSender();
 			BlockEntity te = player.level.getBlockEntity(pos);
 
-			if(te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player))) {
-				((ICustomizable)te).customOptions()[id].toggle();
-				((ICustomizable)te).onOptionChanged(((ICustomizable)te).customOptions()[id]);
+			if(te instanceof ICustomizable customizable && (!(te instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
+				customizable.customOptions()[id].toggle();
+				customizable.onOptionChanged(customizable.customOptions()[id]);
 
-				if(te instanceof CustomizableTileEntity)
-					((CustomizableTileEntity)te).sync();
+				if(te instanceof CustomizableTileEntity customizableTe)
+					customizableTe.sync();
 			}
 		});
 

@@ -18,14 +18,14 @@ public class ModuleItemInventory implements Container {
 	public int maxNumberOfItems;
 	public int maxNumberOfBlocks;
 
-	public ModuleItemInventory(ItemStack moduleItem) {
-		module = moduleItem;
+	public ModuleItemInventory(ItemStack moduleStack) {
+		module = moduleStack;
 
-		if(!(moduleItem.getItem() instanceof ModuleItem)) return;
+		if(!(moduleStack.getItem() instanceof ModuleItem moduleItem)) return;
 
-		SIZE = ((ModuleItem) moduleItem.getItem()).getNumberOfAddons();
-		maxNumberOfItems = ((ModuleItem) moduleItem.getItem()).getNumberOfItemAddons();
-		maxNumberOfBlocks = ((ModuleItem) moduleItem.getItem()).getNumberOfBlockAddons();
+		SIZE = moduleItem.getNumberOfAddons();
+		maxNumberOfItems = moduleItem.getNumberOfItemAddons();
+		maxNumberOfBlocks = moduleItem.getNumberOfBlockAddons();
 		moduleInventory = NonNullList.withSize(SIZE, ItemStack.EMPTY);
 
 		if (!module.hasTag())

@@ -62,9 +62,9 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 	public void openPasswordGUI(Player player) {
 		if(getPassword() != null)
 		{
-			if(player instanceof ServerPlayer)
+			if(player instanceof ServerPlayer serverPlayer)
 			{
-				NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+				NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 					{
@@ -83,9 +83,9 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 		{
 			if(getOwner().isOwner(player))
 			{
-				if(player instanceof ServerPlayer)
+				if(player instanceof ServerPlayer serverPlayer)
 				{
-					NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+					NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
@@ -131,8 +131,8 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 		else if(getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
 			te = level.getBlockEntity(worldPosition.below());
 
-		if(te instanceof KeypadDoorTileEntity)
-			((KeypadDoorTileEntity)te).setPasswordExclusively(password);
+		if(te instanceof KeypadDoorTileEntity doorTe)
+			doorTe.setPasswordExclusively(password);
 	}
 
 	//only set the password for this door half

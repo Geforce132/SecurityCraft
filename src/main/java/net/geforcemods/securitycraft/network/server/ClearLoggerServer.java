@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class ClearLoggerServer
@@ -37,12 +36,11 @@ public class ClearLoggerServer
 	{
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
-			BlockEntity te = player.level.getBlockEntity(message.pos);
 
-			if(te instanceof UsernameLoggerTileEntity && ((UsernameLoggerTileEntity)te).getOwner().isOwner(player))
+			if(player.level.getBlockEntity(message.pos) instanceof UsernameLoggerTileEntity te && te.getOwner().isOwner(player))
 			{
-				((UsernameLoggerTileEntity)te).players = new String[100];
-				((UsernameLoggerTileEntity)te).sendChangeToClient(true);
+				te.players = new String[100];
+				te.sendChangeToClient(true);
 			}
 		});
 

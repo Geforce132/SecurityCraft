@@ -22,8 +22,8 @@ public class ProjectorContainer extends AbstractContainerMenu {
 	{
 		super(SCContent.cTypeProjector, windowId);
 
-		if(world.getBlockEntity(pos) instanceof ProjectorTileEntity)
-			te = (ProjectorTileEntity) world.getBlockEntity(pos);
+		if(world.getBlockEntity(pos) instanceof ProjectorTileEntity tile)
+			te = tile;
 
 		worldPosCallable = ContainerLevelAccess.create(world, pos);
 

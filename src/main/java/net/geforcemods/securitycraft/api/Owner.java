@@ -109,7 +109,7 @@ public class Owner {
 	@Override
 	public boolean equals(Object obj)
 	{
-		return obj instanceof Owner && getName().equals(((Owner)obj).getName()) && getUUID().equals(((Owner)obj).getUUID());
+		return obj instanceof Owner owner && getName().equals(owner.getName()) && getUUID().equals(owner.getUUID());
 	}
 
 	public static EntityDataSerializer<Owner> getSerializer()

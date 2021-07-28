@@ -30,7 +30,7 @@ public class HoverChecker
 	{
 		if(widget != null)
 		{
-			if(!widget.visible || (widget instanceof Slider && ((Slider)widget).dragging))
+			if(!widget.visible || (widget instanceof Slider slider && slider.dragging))
 				return false;
 			else return widget.isHovered();
 		}

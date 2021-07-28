@@ -69,30 +69,13 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
 	{
-		switch(state.getValue(FACING))
-		{
-			case NORTH:
-				if(state.getValue(OPEN))
-					return NORTH_OPEN;
-				else
-					return NORTH_CLOSED;
-			case EAST:
-				if(state.getValue(OPEN))
-					return EAST_OPEN;
-				else
-					return EAST_CLOSED;
-			case SOUTH:
-				if(state.getValue(OPEN))
-					return SOUTH_OPEN;
-				else
-					return SOUTH_CLOSED;
-			case WEST:
-				if(state.getValue(OPEN))
-					return WEST_OPEN;
-				else
-					return WEST_CLOSED;
-			default: return Shapes.block();
-		}
+		return switch(state.getValue(FACING)) {
+			case NORTH -> state.getValue(OPEN) ? NORTH_OPEN : NORTH_CLOSED;
+			case EAST -> state.getValue(OPEN) ? EAST_OPEN : EAST_CLOSED;
+			case SOUTH -> state.getValue(OPEN) ? SOUTH_OPEN : SOUTH_CLOSED;
+			case WEST -> state.getValue(OPEN) ? WEST_OPEN : WEST_CLOSED;
+			default -> Shapes.block();
+		};
 	}
 
 	@Override
@@ -100,11 +83,11 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	{
 		if(!(newState.getBlock() instanceof KeypadFurnaceBlock))
 		{
-			BlockEntity tileentity = world.getBlockEntity(pos);
+			BlockEntity te = world.getBlockEntity(pos);
 
-			if (tileentity instanceof Container)
+			if (te instanceof Container container)
 			{
-				Containers.dropContents(world, pos, (Container)tileentity);
+				Containers.dropContents(world, pos, container);
 				world.updateNeighbourForOutputSignal(pos, this);
 			}
 
@@ -145,14 +128,14 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 		if(!state.getValue(KeypadFurnaceBlock.OPEN))
 			world.setBlockAndUpdate(pos, state.setValue(KeypadFurnaceBlock.OPEN, true));
 
-		if(player instanceof ServerPlayer)
+		if(player instanceof ServerPlayer serverPlayer)
 		{
 			BlockEntity te = world.getBlockEntity(pos);
 
-			if(te instanceof MenuProvider)
+			if(te instanceof MenuProvider menuProvider)
 			{
 				world.levelEvent((Player)null, 1006, pos, 0);
-				NetworkHooks.openGui((ServerPlayer)player, (MenuProvider)te, pos);
+				NetworkHooks.openGui(serverPlayer, menuProvider, pos);
 			}
 		}
 	}

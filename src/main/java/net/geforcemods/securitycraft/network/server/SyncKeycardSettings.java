@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SyncKeycardSettings
@@ -63,11 +62,9 @@ public class SyncKeycardSettings
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
-			BlockEntity tile = player.level.getBlockEntity(pos);
 
-			if(tile instanceof KeycardReaderTileEntity)
+			if(player.level.getBlockEntity(pos) instanceof KeycardReaderTileEntity te)
 			{
-				KeycardReaderTileEntity te = (KeycardReaderTileEntity)tile;
 				boolean isOwner = te.getOwner().isOwner(player);
 
 				if(isOwner || ModuleUtils.isAllowed(te, player))
@@ -82,8 +79,8 @@ public class SyncKeycardSettings
 					{
 						AbstractContainerMenu container = player.containerMenu;
 
-						if(container instanceof KeycardReaderContainer)
-							((KeycardReaderContainer)container).link();
+						if(container instanceof KeycardReaderContainer keycardReaderContainer)
+							keycardReaderContainer.link();
 					}
 				}
 			}

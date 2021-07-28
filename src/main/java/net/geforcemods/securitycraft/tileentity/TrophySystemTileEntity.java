@@ -205,12 +205,12 @@ public class TrophySystemTileEntity extends CustomizableTileEntity {
 	private boolean filterSCProjectiles(Projectile projectile) {
 		Owner owner = null;
 
-		if(projectile instanceof BulletEntity)
-			owner = ((BulletEntity)projectile).getSCOwner();
-		else if(projectile instanceof IMSBombEntity)
-			owner = ((IMSBombEntity)projectile).getSCOwner();
-		else if(projectile.getOwner() instanceof SentryEntity)
-			owner = ((SentryEntity)projectile.getOwner()).getOwner();
+		if(projectile instanceof BulletEntity bullet)
+			owner = bullet.getSCOwner();
+		else if(projectile instanceof IMSBombEntity imsBomb)
+			owner = imsBomb.getSCOwner();
+		else if(projectile.getOwner() instanceof SentryEntity sentry)
+			owner = sentry.getOwner();
 
 		return owner == null || (!owner.equals(getOwner()) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}

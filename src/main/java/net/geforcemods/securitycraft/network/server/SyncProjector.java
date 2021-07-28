@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
@@ -57,29 +56,27 @@ public class SyncProjector {
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
 			Level world = player.level;
-			BlockEntity te = world.getBlockEntity(pos);
 
-			if(world.isLoaded(pos) && te instanceof ProjectorTileEntity && ((ProjectorTileEntity)te).getOwner().isOwner(player))
+			if(world.isLoaded(pos) && world.getBlockEntity(pos) instanceof ProjectorTileEntity te && te.getOwner().isOwner(player))
 			{
-				ProjectorTileEntity projector = (ProjectorTileEntity)te;
 				BlockState state = world.getBlockState(pos);
 
 				switch(message.dataType)
 				{
 					case WIDTH:
-						projector.setProjectionWidth(message.data);
+						te.setProjectionWidth(message.data);
 						break;
 					case HEIGHT:
-						projector.setProjectionHeight(message.data);
+						te.setProjectionHeight(message.data);
 						break;
 					case RANGE:
-						projector.setProjectionRange(message.data);
+						te.setProjectionRange(message.data);
 						break;
 					case OFFSET:
-						projector.setProjectionOffset(message.data);
+						te.setProjectionOffset(message.data);
 						break;
 					case HORIZONTAL:
-						projector.setHorizontal(message.data == 1);
+						te.setHorizontal(message.data == 1);
 						break;
 					case INVALID: break;
 				}

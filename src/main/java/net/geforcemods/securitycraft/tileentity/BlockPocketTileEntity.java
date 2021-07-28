@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockPocketTileEntity extends SecurityCraftTileEntity
@@ -41,10 +40,8 @@ public class BlockPocketTileEntity extends SecurityCraftTileEntity
 
 		if(te.manager == null && te.managerPos != null)
 		{
-			BlockEntity manager = world.getBlockEntity(te.managerPos);
-
-			if(manager instanceof BlockPocketManagerTileEntity)
-				te.manager = (BlockPocketManagerTileEntity)manager;
+			if(world.getBlockEntity(te.managerPos) instanceof BlockPocketManagerTileEntity manager)
+				te.manager = manager;
 		}
 	}
 

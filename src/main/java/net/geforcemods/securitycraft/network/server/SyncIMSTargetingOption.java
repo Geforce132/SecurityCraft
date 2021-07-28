@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.tileentity.IMSTileEntity.IMSTargetingMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SyncIMSTargetingOption
@@ -43,10 +42,9 @@ public class SyncIMSTargetingOption
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
-			BlockEntity te = player.level.getBlockEntity(pos);
 
-			if(te instanceof IMSTileEntity && ((IMSTileEntity)te).getOwner().isOwner(player))
-				((IMSTileEntity)te).setTargetingMode(message.targetingMode);
+			if(player.level.getBlockEntity(pos) instanceof IMSTileEntity te && te.getOwner().isOwner(player))
+				te.setTargetingMode(message.targetingMode);
 		});
 
 		ctx.get().setPacketHandled(true);

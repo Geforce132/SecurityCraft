@@ -100,9 +100,9 @@ public class MineRemoteAccessToolScreen extends Screen{
 				if (Minecraft.getInstance().player.level.isLoaded(minePos)) {
 					Block block = minecraft.level.getBlockState(minePos).getBlock();
 
-					if (block instanceof IExplosive) {
-						boolean active = ((IExplosive) block).isActive(minecraft.level, minePos);
-						boolean defusable = ((IExplosive) block).isDefusable();
+					if (block instanceof IExplosive explosive) {
+						boolean active = explosive.isActive(minecraft.level, minePos);
+						boolean defusable = explosive.isDefusable();
 
 						guiButtons[i][DEFUSE].active = active && defusable;
 						guiButtons[i][ACTIVATE].active = !active && defusable;
@@ -248,7 +248,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 	@Override
 	public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
 		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(p_keyPressed_1_, p_keyPressed_2_))) {
-			this.removed();
+			removed();
 			return true;
 		}
 		return super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);

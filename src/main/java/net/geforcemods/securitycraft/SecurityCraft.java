@@ -125,8 +125,8 @@ public class SecurityCraft {
 					Item item;
 					String key;
 
-					if(o instanceof Block)
-						item = ((Block)o).asItem();
+					if(o instanceof Block block)
+						item = block.asItem();
 					else
 					{
 						item = (Item)o;
@@ -138,16 +138,7 @@ public class SecurityCraft {
 					else
 						key = hmp.specialInfoKey();
 
-
-					SCManualPage page = new SCManualPage(item, new TranslatableComponent(key));
-
-					if(!hmp.designedBy().isEmpty())
-						page.setDesignedBy(hmp.designedBy());
-
-					if(hmp.hasRecipeDescription())
-						page.setHasRecipeDescription(true);
-
-					SCManualItem.PAGES.add(page);
+					SCManualItem.PAGES.add(new SCManualPage(item, new TranslatableComponent(key), hmp.designedBy(), hmp.hasRecipeDescription()));
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)

@@ -32,7 +32,7 @@ public class TextHoverChecker extends HoverChecker
 	{
 		super(button);
 		this.lines = lines;
-		this.button = button instanceof TogglePictureButton ? (TogglePictureButton)button : null;
+		this.button = button instanceof TogglePictureButton tpb ? tpb : null;
 	}
 
 	public Component getName()

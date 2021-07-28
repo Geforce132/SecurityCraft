@@ -25,10 +25,10 @@ public class SecurityCraftAPI
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event)
 	{
-		event.getIMCStream(s -> s.equals(IMC_EXTRACTION_BLOCK_MSG)).forEach(msg -> registeredExtractionBlocks.add((IExtractionBlock)msg.getMessageSupplier().get()));
-		event.getIMCStream(s -> s.equals(IMC_PASSWORD_CONVERTIBLE_MSG)).forEach(msg -> registeredPasswordConvertibles.add((IPasswordConvertible)msg.getMessageSupplier().get()));
-		event.getIMCStream(s -> s.equals(IMC_SENTRY_ATTACK_TARGET_MSG)).forEach(msg -> registeredSentryAttackTargetChecks.add((IAttackTargetCheck)msg.getMessageSupplier().get()));
-		event.getIMCStream(s -> s.equals(IMC_DOOR_ACTIVATOR_MSG)).forEach(msg -> registeredDoorActivators.add((IDoorActivator)msg.getMessageSupplier().get()));
+		event.getIMCStream(s -> s.equals(IMC_EXTRACTION_BLOCK_MSG)).forEach(msg -> registeredExtractionBlocks.add((IExtractionBlock)msg.messageSupplier().get()));
+		event.getIMCStream(s -> s.equals(IMC_PASSWORD_CONVERTIBLE_MSG)).forEach(msg -> registeredPasswordConvertibles.add((IPasswordConvertible)msg.messageSupplier().get()));
+		event.getIMCStream(s -> s.equals(IMC_SENTRY_ATTACK_TARGET_MSG)).forEach(msg -> registeredSentryAttackTargetChecks.add((IAttackTargetCheck)msg.messageSupplier().get()));
+		event.getIMCStream(s -> s.equals(IMC_DOOR_ACTIVATOR_MSG)).forEach(msg -> registeredDoorActivators.add((IDoorActivator)msg.messageSupplier().get()));
 
 		registeredExtractionBlocks = Collections.unmodifiableList(registeredExtractionBlocks);
 		registeredPasswordConvertibles = Collections.unmodifiableList(registeredPasswordConvertibles);

@@ -24,14 +24,14 @@ public class OwnableBlock extends BaseEntityBlock {
 	@Override
 	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)placer));
+		if(placer instanceof Player player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
 
 		if (stack.hasCustomHoverName()) {
 			BlockEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof INameable && ((INameable)te).canBeNamed()) {
-				((INameable)te).setCustomSCName(stack.getHoverName());
+			if (te instanceof INameable nameable && nameable.canBeNamed()) {
+				nameable.setCustomSCName(stack.getHoverName());
 			}
 		}
 	}

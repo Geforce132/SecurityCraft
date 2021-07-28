@@ -66,20 +66,20 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
-			if (entity instanceof Player && !EntityUtils.isInvisible((Player)entity)) {
+			if (entity instanceof Player player && !EntityUtils.isInvisible(player)) {
 				if (ModuleUtils.isAllowed(connectedScanner, entity))
 					return Shapes.empty();
 
 				for (int i = 0; i < 10; i++) {
 					if (!connectedScanner.getStackInSlotCopy(i).isEmpty())
-						if (checkInventory((Player)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+						if (checkInventory(player, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
 							return getShape(state, world, pos, ctx);
 				}
 			}
-			else if (entity instanceof ItemEntity) {
+			else if (entity instanceof ItemEntity item) {
 				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((ItemEntity)entity).getItem().isEmpty())
-						if (checkItemEntity((ItemEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !item.getItem().isEmpty())
+						if (checkItemEntity(item, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
 							return getShape(state, world, pos, ctx);
 				}
 			}
@@ -96,7 +96,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		if(connectedScanner == null || connectedScanner.doesFieldSolidify())
 			return;
 
-		if(entity instanceof Player && !EntityUtils.isInvisible((Player)entity))
+		if(entity instanceof Player player && !EntityUtils.isInvisible(player))
 		{
 			if(ModuleUtils.isAllowed(connectedScanner, entity))
 				return;
@@ -104,15 +104,15 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 			for(int i = 0; i < 10; i++)
 			{
 				if(!connectedScanner.getStackInSlotCopy(i).isEmpty())
-					checkInventory((Player)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
+					checkInventory(player, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
 			}
 		}
-		else if(entity instanceof ItemEntity)
+		else if(entity instanceof ItemEntity item)
 		{
 			for(int i = 0; i < 10; i++)
 			{
-				if(!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((ItemEntity)entity).getItem().isEmpty())
-					checkItemEntity((ItemEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
+				if(!connectedScanner.getStackInSlotCopy(i).isEmpty() && !item.getItem().isEmpty())
+					checkItemEntity(item, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
 			}
 		}
 	}

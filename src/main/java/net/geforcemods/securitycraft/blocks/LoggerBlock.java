@@ -37,12 +37,12 @@ public class LoggerBlock extends DisguisableBlock {
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
-		if(!world.isClientSide && player instanceof ServerPlayer)
+		if(!world.isClientSide)
 		{
 			BlockEntity te = world.getBlockEntity(pos);
 
-			if(te instanceof MenuProvider)
-				NetworkHooks.openGui((ServerPlayer)player, (MenuProvider)te, pos);
+			if(te instanceof MenuProvider menuProvider)
+				NetworkHooks.openGui((ServerPlayer)player, menuProvider, pos);
 		}
 
 		return InteractionResult.SUCCESS;

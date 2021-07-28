@@ -85,7 +85,7 @@ public class InventoryScannerContainer extends AbstractContainerMenu {
 	{
 		super.removed(player);
 
-		Utils.setISinTEAppropriately(player.level, te.getBlockPos(), ((InventoryScannerTileEntity) player.level.getBlockEntity(te.getBlockPos())).getContents());
+		Utils.setISinTEAppropriately(te.getLevel(), te.getBlockPos(), te.getContents());
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class InventoryScannerContainer extends AbstractContainerMenu {
 	@Override
 	public void clicked(int slotId, int dragType, ClickType clickType, Player player)
 	{
-		if(slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof OwnerRestrictedSlot && ((OwnerRestrictedSlot)getSlot(slotId)).isGhostSlot())
+		if(slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof OwnerRestrictedSlot slot && slot.isGhostSlot())
 		{
 			if(te.getOwner().isOwner(player))
 			{

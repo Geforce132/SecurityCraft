@@ -57,19 +57,19 @@ public class AdminToolItem extends Item {
 			if(te != null) {
 				boolean hasInfo = false;
 
-				if(te instanceof IOwnable) {
-					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", (((IOwnable) te).getOwner().getName() == null ? "????" : ((IOwnable) te).getOwner().getName())), ChatFormatting.DARK_PURPLE);
-					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", (((IOwnable) te).getOwner().getUUID() == null ? "????" : ((IOwnable) te).getOwner().getUUID())), ChatFormatting.DARK_PURPLE);
+				if(te instanceof IOwnable ownable) {
+					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", (ownable.getOwner().getName() == null ? "????" : ownable.getOwner().getName())), ChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", (ownable.getOwner().getUUID() == null ? "????" : ownable.getOwner().getUUID())), ChatFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
-				if(te instanceof IPasswordProtected) {
-					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.password", (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword())), ChatFormatting.DARK_PURPLE);
+				if(te instanceof IPasswordProtected passwordProtected) {
+					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.password", (passwordProtected.getPassword() == null ? "????" : passwordProtected.getPassword())), ChatFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
-				if(te instanceof IModuleInventory) {
-					List<ModuleType> modules = ((IModuleInventory) te).getInsertedModules();
+				if(te instanceof IModuleInventory inv) {
+					List<ModuleType> modules = inv.getInsertedModules();
 
 					if(!modules.isEmpty()) {
 						PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.equippedModules"), ChatFormatting.DARK_PURPLE);
@@ -81,16 +81,16 @@ public class AdminToolItem extends Item {
 					}
 				}
 
-				if(te instanceof SecretSignTileEntity)
+				if(te instanceof SecretSignTileEntity signTe)
 				{
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, new TextComponent(""), ChatFormatting.DARK_PURPLE); //EMPTY
 
 					for(int i = 0; i < 4; i++)
 					{
-						FormattedText text = ((SecretSignTileEntity)te).getMessage(i, false);
+						FormattedText text = signTe.getMessage(i, false);
 
-						if(text instanceof MutableComponent)
-							PlayerUtils.sendMessageToPlayer(player, adminToolName, (MutableComponent)text, ChatFormatting.DARK_PURPLE);
+						if(text instanceof MutableComponent mutableComponent)
+							PlayerUtils.sendMessageToPlayer(player, adminToolName, mutableComponent, ChatFormatting.DARK_PURPLE);
 					}
 
 					hasInfo = true;

@@ -141,19 +141,17 @@ public class KeypadChestBlock extends ChestBlock {
 	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack){
 		super.setPlacedBy(world, pos, state, entity, stack);
 
-		boolean isPlayer = entity instanceof Player;
-
-		if(isPlayer)
+		if(entity instanceof Player player)
 		{
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)entity));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
 
 			if(state.getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE)
 			{
 				KeypadChestTileEntity thisTe = (KeypadChestTileEntity)world.getBlockEntity(pos);
 				BlockEntity otherTe = world.getBlockEntity(pos.relative(getConnectedDirection(state)));
 
-				if(otherTe instanceof KeypadChestTileEntity && thisTe.getOwner().owns((KeypadChestTileEntity)otherTe))
-					thisTe.setPassword(((KeypadChestTileEntity)otherTe).getPassword());
+				if(otherTe instanceof KeypadChestTileEntity te && thisTe.getOwner().owns(te))
+					thisTe.setPassword(te.getPassword());
 			}
 		}
 	}
@@ -165,13 +163,11 @@ public class KeypadChestBlock extends ChestBlock {
 
 	@Override
 	public int getSignal(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
-		if (te instanceof KeypadChestTileEntity) {
-			return ((KeypadChestTileEntity)te).hasModule(ModuleType.REDSTONE) ? Mth.clamp(((KeypadChestTileEntity)te).getNumPlayersUsing(), 0, 15) : 0;
-		}
-
-		return 0;
+		if(tile instanceof KeypadChestTileEntity te)
+			return te.hasModule(ModuleType.REDSTONE) ? Mth.clamp(te.getNumPlayersUsing(), 0, 15) : 0;
+		else return 0;
 	}
 
 	@Override
@@ -183,15 +179,15 @@ public class KeypadChestBlock extends ChestBlock {
 	public void onNeighborChange(BlockState state, LevelReader world, BlockPos pos, BlockPos neighbor){
 		super.onNeighborChange(state, world, pos, neighbor);
 
-		BlockEntity tileEntity = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
-		if (tileEntity instanceof KeypadChestTileEntity)
-			((KeypadChestTileEntity) tileEntity).setBlockState(state);
+		if(tile instanceof KeypadChestTileEntity te)
+			te.setBlockState(state);
 	}
 
 	@Override
 	public MenuProvider getMenuProvider(BlockState state, Level world, BlockPos pos) {
-		return this.combine(state, world, pos, false).apply(CONTAINER_MERGER).orElse(null);
+		return combine(state, world, pos, false).apply(CONTAINER_MERGER).orElse(null);
 	}
 
 	@Override

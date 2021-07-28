@@ -87,8 +87,8 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 				{
 					Block block = ((RegistryObject<Block>)field.get(null)).get();
 
-					if(block instanceof BaseFullMineBlock)
-						blockMine(((BaseFullMineBlock)block).getBlockDisguisedAs(), block);
+					if(block instanceof BaseFullMineBlock mine)
+						blockMine(mine.getBlockDisguisedAs(), block);
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)

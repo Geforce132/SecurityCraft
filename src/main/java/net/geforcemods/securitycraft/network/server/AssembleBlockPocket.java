@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class AssembleBlockPocket
@@ -39,12 +38,10 @@ public class AssembleBlockPocket
 	public static void onMessage(AssembleBlockPocket message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			BlockEntity te = ctx.get().getSender().level.getBlockEntity(message.pos);
-
-			if(te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(ctx.get().getSender()))
+			if(ctx.get().getSender().level.getBlockEntity(message.pos) instanceof BlockPocketManagerTileEntity te && te.getOwner().isOwner(ctx.get().getSender()))
 			{
-				((BlockPocketManagerTileEntity)te).size = message.size;
-				((BlockPocketManagerTileEntity)te).autoAssembleMultiblock();
+				te.size = message.size;
+				te.autoAssembleMultiblock();
 			}
 		});
 		ctx.get().setPacketHandled(true);

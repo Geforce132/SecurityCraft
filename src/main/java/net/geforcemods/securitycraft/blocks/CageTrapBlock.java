@@ -63,7 +63,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 			{
 				Entity entity = ctx.getEntity().get();
 
-				if(entity instanceof Player && (te.getOwner().isOwner((Player)entity) || ModuleUtils.isAllowed(te, entity)))
+				if(entity instanceof Player player && (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)))
 					return getCorrectShape(state, world, pos, collisionContext, te);
 				if(entity instanceof Mob && !state.getValue(DEACTIVATED))
 					return te.capturesMobs() ? Shapes.empty() : getCorrectShape(state, world, pos, collisionContext, te);
@@ -88,11 +88,11 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 	@Override
 	public void onEntityIntersected(Level world, BlockPos pos, Entity entity) {
 		if(!world.isClientSide){
-			CageTrapTileEntity tileEntity = (CageTrapTileEntity) world.getBlockEntity(pos);
+			CageTrapTileEntity tile = (CageTrapTileEntity) world.getBlockEntity(pos);
 			boolean isPlayer = entity instanceof Player;
 
-			if(isPlayer || (entity instanceof Mob && tileEntity.capturesMobs())){
-				if((isPlayer && ((IOwnable)world.getBlockEntity(pos)).getOwner().isOwner((Player)entity)))
+			if(isPlayer || (entity instanceof Mob && tile.capturesMobs())){
+				if((isPlayer && tile.getOwner().isOwner((Player)entity)))
 					return;
 
 				BlockState state = world.getBlockState(pos);
@@ -101,9 +101,9 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 					return;
 
 				BlockPos topMiddle = pos.above(4);
-				String ownerName = ((IOwnable)world.getBlockEntity(pos)).getOwner().getName();
+				String ownerName = tile.getOwner().getName();
 
-				BlockModifier placer = new BlockModifier(world, new BlockPos.MutableBlockPos().set(pos), tileEntity.getOwner());
+				BlockModifier placer = new BlockModifier(world, new BlockPos.MutableBlockPos().set(pos), tile.getOwner());
 
 				placer.loop((w, p, o) -> {
 					if(w.isEmptyBlock(p))
@@ -117,11 +117,11 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 				placer.loop((w, p, o) -> {
 					BlockEntity te = w.getBlockEntity(p);
 
-					if(te instanceof IOwnable)
-						((IOwnable)te).setOwner(o.getUUID(), o.getName());
+					if(te instanceof IOwnable ownable)
+						ownable.setOwner(o.getUUID(), o.getName());
 
-					if(te instanceof ReinforcedIronBarsTileEntity)
-						((ReinforcedIronBarsTileEntity)te).setCanDrop(false);
+					if(te instanceof ReinforcedIronBarsTileEntity ironBarsTe)
+						ironBarsTe.setCanDrop(false);
 				});
 				world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 				world.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 3.0F, 1.0F);

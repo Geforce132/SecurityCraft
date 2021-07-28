@@ -5,7 +5,6 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.ChatFormatting;
@@ -18,7 +17,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -66,35 +64,27 @@ public class ProjectorBlock extends DisguisableBlock {
 
 		if(disguisedState.getBlock() != this)
 			return disguisedState.getShape(world, pos, ctx);
-		else
-		{
-			switch(state.getValue(FACING))
-			{
-				case NORTH:
-					return SOUTH;
-				case EAST:
-					return WEST;
-				case SOUTH:
-					return NORTH;
-				case WEST:
-					return EAST;
-				default: return Shapes.block();
-			}
-		}
+		else return switch(state.getValue(FACING)) {
+			case NORTH -> SOUTH;
+			case EAST -> WEST;
+			case SOUTH -> NORTH;
+			case WEST -> EAST;
+			default -> Shapes.block();
+		};
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(!(te instanceof ProjectorTileEntity))
+		if(!(tile instanceof ProjectorTileEntity te))
 			return InteractionResult.FAIL;
 
-		boolean isOwner = ((IOwnable)te).getOwner().isOwner(player);
+		boolean isOwner = te.getOwner().isOwner(player);
 
 		if(!world.isClientSide && isOwner)
-			NetworkHooks.openGui((ServerPlayer)player, (MenuProvider) te, pos);
+			NetworkHooks.openGui((ServerPlayer)player, te, pos);
 
 		return isOwner ? InteractionResult.SUCCESS : InteractionResult.FAIL;
 	}
@@ -102,12 +92,12 @@ public class ProjectorBlock extends DisguisableBlock {
 	@Override
 	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(te instanceof ProjectorTileEntity)
+		if(tile instanceof ProjectorTileEntity te)
 		{
 			// Drop the block being projected
-			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorTileEntity)te).getStackInSlot(36));
+			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), te.getStackInSlot(36));
 			WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
 		}
 

@@ -58,8 +58,7 @@ public class LinkedBlock {
 
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof LinkedBlock) {
-			LinkedBlock block = (LinkedBlock) o;
+		if(o instanceof LinkedBlock block) {
 			return (block.getPos().getX() == blockPos.getX() && block.getPos().getY() == blockPos.getY() && block.getPos().getZ() == blockPos.getZ());
 		}
 

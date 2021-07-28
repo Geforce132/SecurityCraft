@@ -325,10 +325,10 @@ public class ClientProxy implements IProxy
 			{
 				try
 				{
-					if (field.getAnnotation(Reinforced.class).hasReinforcedTint())
+					if(field.getAnnotation(Reinforced.class).hasReinforcedTint())
 						reinforcedTint.add(((RegistryObject<Block>)field.get(null)).get());
 
-					if (field.getAnnotation(Reinforced.class).hasReinforcedTint() || field.getAnnotation(Reinforced.class).customTint() != 0xFFFFFF)
+					if(field.getAnnotation(Reinforced.class).hasReinforcedTint() || field.getAnnotation(Reinforced.class).customTint() != 0xFFFFFF)
 						toTint.put(((RegistryObject<Block>)field.get(null)).get(), field.getAnnotation(Reinforced.class).customTint());
 				}
 				catch(IllegalArgumentException | IllegalAccessException e)
@@ -351,7 +351,7 @@ public class ClientProxy implements IProxy
 		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
 		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
 		specialBlockTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (state, world, pos, tintIndex) -> {
-			if (tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
+			if(tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
 				int grassTint = world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColor.get(0.5D, 1.0D);
 
 				return mixWithReinforcedTintIfEnabled(grassTint);
@@ -360,13 +360,13 @@ public class ClientProxy implements IProxy
 			return noTint;
 		});
 		specialBlockTint.put(SCContent.REINFORCED_CAULDRON.get(), (state, world, pos, tintIndex) -> {
-			if (tintIndex == 1)
+			if(tintIndex == 1)
 				return world != null && pos != null ? BiomeColors.getAverageWaterColor(world, pos) : -1;
 
 			return noTint;
 		});
 		specialItemTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (stack, tintIndex) -> {
-			if (tintIndex == 1) {
+			if(tintIndex == 1) {
 				int grassTint = GrassColor.get(0.5D, 1.0D);
 
 				return mixWithReinforcedTintIfEnabled(grassTint);
@@ -375,17 +375,17 @@ public class ClientProxy implements IProxy
 			return noTint;
 		});
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
-			if (tintIndex == 0)
+			if(tintIndex == 0)
 				return reinforcedTint.contains(block) ? mixWithReinforcedTintIfEnabled(tint) : tint;
-			else if (specialBlockTint.containsKey(block))
+			else if(specialBlockTint.containsKey(block))
 				return specialBlockTint.get(block).getColor(state, world, pos, tintIndex);
 			else
 				return noTint;
 		}, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
-			if (tintIndex == 0)
+			if(tintIndex == 0)
 				return reinforcedTint.contains(item) ? mixWithReinforcedTintIfEnabled(tint) : tint;
-			else if (specialItemTint.containsKey(item))
+			else if(specialItemTint.containsKey(item))
 				return specialItemTint.get(item).getColor(stack, tintIndex);
 			else
 				return noTint;
@@ -393,9 +393,9 @@ public class ClientProxy implements IProxy
 		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
 			Block block = state.getBlock();
 
-			if(block instanceof DisguisableBlock)
+			if(block instanceof DisguisableBlock disguisedBlock)
 			{
-				Block blockFromItem = Block.byItem(((DisguisableBlock)block).getDisguisedStack(world, pos).getItem());
+				Block blockFromItem = Block.byItem(disguisedBlock.getDisguisedStack(world, pos).getItem());
 
 				if(blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
 					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.defaultBlockState(), world, pos, tintIndex);

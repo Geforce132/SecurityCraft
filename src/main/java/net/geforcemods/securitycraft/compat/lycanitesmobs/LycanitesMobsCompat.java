@@ -8,6 +8,6 @@ public class LycanitesMobsCompat implements IAttackTargetCheck
 	@Override
 	public boolean canAttack(Entity potentialTarget)
 	{
-		return false;//potentialTarget instanceof BaseCreatureEntity && ((BaseCreatureEntity)potentialTarget).isAggressive();
+		return false;//potentialTarget instanceof BaseCreatureEntity bce && bce.isAggressive();
 	}
 }

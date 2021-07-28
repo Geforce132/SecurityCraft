@@ -54,7 +54,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 	@Override
 	public void onEntityIntersected(Level world, BlockPos pos, Entity entity)
 	{
-		if(!world.isClientSide && entity instanceof LivingEntity && !EntityUtils.isInvisible((LivingEntity)entity))
+		if(!world.isClientSide && entity instanceof LivingEntity livingEntity && !EntityUtils.isInvisible(livingEntity))
 		{
 			for(Direction facing : Direction.values())
 			{
@@ -68,17 +68,17 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 					{
 						BlockEntity te = world.getBlockEntity(offsetPos);
 
-						if(te instanceof IModuleInventory && ModuleUtils.isAllowed((IModuleInventory)te, entity))
+						if(te instanceof IModuleInventory moduleInv && ModuleUtils.isAllowed(moduleInv, entity))
 							return;
 
 						world.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
 						world.updateNeighborsAt(offsetPos, SCContent.LASER_BLOCK.get());
 						world.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
 
-						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(ModuleType.HARMING))
+						if(te instanceof IModuleInventory moduleInv && moduleInv.hasModule(ModuleType.HARMING))
 						{
-							if(!(entity instanceof Player && ((IOwnable)te).getOwner().isOwner((Player)entity)))
-								((LivingEntity) entity).hurt(CustomDamageSources.LASER, 10F);
+							if(!(entity instanceof Player player && ((IOwnable)te).getOwner().isOwner(player)))
+								livingEntity.hurt(CustomDamageSources.LASER, 10F);
 						}
 					}
 				}
@@ -117,7 +117,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
-		if(source.getBlockState(pos).getBlock() instanceof LaserFieldBlock)
+		if(state.getBlock() instanceof LaserFieldBlock)
 		{
 			int boundType = source.getBlockState(pos).getValue(BOUNDTYPE);
 

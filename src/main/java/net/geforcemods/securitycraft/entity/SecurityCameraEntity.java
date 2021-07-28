@@ -63,8 +63,8 @@ public class SecurityCameraEntity extends Entity{
 
 		BlockEntity te = world.getBlockEntity(blockPosition());
 
-		if(te instanceof SecurityCameraTileEntity)
-			setInitialPitchYaw((SecurityCameraTileEntity)te);
+		if(te instanceof SecurityCameraTileEntity cam)
+			setInitialPitchYaw(cam);
 	}
 
 	public SecurityCameraEntity(Level world, double x, double y, double z, int id, SecurityCameraEntity camera){
@@ -79,8 +79,8 @@ public class SecurityCameraEntity extends Entity{
 
 		BlockEntity te = world.getBlockEntity(blockPosition());
 
-		if(te instanceof SecurityCameraTileEntity)
-			setInitialPitchYaw((SecurityCameraTileEntity)te);
+		if(te instanceof SecurityCameraTileEntity cam)
+			setInitialPitchYaw(cam);
 	}
 
 	private void setInitialPitchYaw(SecurityCameraTileEntity te)
@@ -333,7 +333,7 @@ public class SecurityCameraEntity extends Entity{
 
 	private boolean isCameraDown()
 	{
-		return level.getBlockEntity(blockPosition()) instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)level.getBlockEntity(blockPosition())).down;
+		return level.getBlockEntity(blockPosition()) instanceof SecurityCameraTileEntity cam && cam.down;
 	}
 
 	@Override

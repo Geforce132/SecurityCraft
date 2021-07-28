@@ -62,7 +62,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 				if(entity instanceof Player && PlayerUtils.isPlayerMountedOnCamera(entity))
 					return;
 
-				if(entity instanceof Player && !getOwner().isOwner((Player) entity) && !ModuleUtils.isAllowed(this, entity)) {
+				if(entity instanceof Player player && !getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, entity)) {
 					PlayerUtils.sendMessageToPlayer((Player) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), ChatFormatting.RED);
 					return;
 				}
@@ -70,8 +70,8 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 				level.setBlockAndUpdate(worldPosition, state.setValue(RetinalScannerBlock.POWERED, true));
 				level.getBlockTicks().scheduleTick(new BlockPos(worldPosition), SCContent.RETINAL_SCANNER.get(), getSignalLength());
 
-				if(entity instanceof Player && sendMessage.get())
-					PlayerUtils.sendMessageToPlayer((Player) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", entity.getName()), ChatFormatting.GREEN);
+				if(entity instanceof Player player && sendMessage.get())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", entity.getName()), ChatFormatting.GREEN);
 			}
 		}
 	}

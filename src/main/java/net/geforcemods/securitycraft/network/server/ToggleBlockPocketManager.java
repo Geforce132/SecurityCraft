@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class ToggleBlockPocketManager
@@ -45,16 +44,15 @@ public class ToggleBlockPocketManager
 	{
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
-			BlockEntity te = player.level.getBlockEntity(message.pos);
 
-			if(te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(player))
+			if(player.level.getBlockEntity(message.pos) instanceof BlockPocketManagerTileEntity te && te.getOwner().isOwner(player))
 			{
-				((BlockPocketManagerTileEntity)te).size = message.size;
+				te.size = message.size;
 
 				if(message.enabling)
-					((BlockPocketManagerTileEntity)te).enableMultiblock();
+					te.enableMultiblock();
 				else
-					((BlockPocketManagerTileEntity)te).disableMultiblock();
+					te.disableMultiblock();
 			}
 		});
 

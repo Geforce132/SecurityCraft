@@ -100,7 +100,7 @@ public class BlockUtils{
 
 						BlockEntity offsetTe = world.getBlockEntity(newOffsetPos);
 
-						return activator.isPowering(world, newOffsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
+						return activator.isPowering(world, newOffsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable ownable) || ownable.getOwner().owns((IOwnable)te));
 					}
 				}
 			}

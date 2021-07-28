@@ -48,13 +48,13 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 
 			if(entity instanceof ItemEntity)
 				return Shapes.block();
-			else if(entity instanceof Player)
+			else if(entity instanceof Player player)
 			{
 				BlockEntity te = world.getBlockEntity(pos);
 
 				if(te instanceof OwnableTileEntity ownableTe)
 				{
-					if(ownableTe.getOwner().isOwner((Player)entity))
+					if(ownableTe.getOwner().isOwner(player))
 						return Shapes.block();
 				}
 			}
@@ -67,7 +67,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	public void onEntityIntersected(Level world, BlockPos pos, Entity entity){
 		if(entity instanceof ItemEntity)
 			return;
-		else if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
+		else if(entity instanceof LivingEntity lEntity && !PlayerUtils.isPlayerMountedOnCamera(lEntity) && !EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 

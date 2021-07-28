@@ -8,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
@@ -55,12 +54,9 @@ public class RemoteControlMine{
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			BlockState state = world.getBlockState(pos);
 
-			if(state.getBlock() instanceof IExplosive)
+			if(state.getBlock() instanceof IExplosive explosive)
 			{
-				IExplosive explosive = ((IExplosive) state.getBlock());
-				BlockEntity te = world.getBlockEntity(pos);
-
-				if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner(player))
+				if(world.getBlockEntity(pos) instanceof IOwnable te && te.getOwner().isOwner(player))
 				{
 					if(message.state.equalsIgnoreCase("activate"))
 						explosive.activateMine(world,pos);

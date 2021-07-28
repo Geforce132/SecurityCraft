@@ -229,9 +229,9 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 				{
 					ItemStack stack = handler.getStackInSlot(i);
 
-					if(stack.getItem() instanceof BlockItem)
+					if(stack.getItem() instanceof BlockItem blockItem)
 					{
-						Block block = ((BlockItem)stack.getItem()).getBlock();
+						Block block = blockItem.getBlock();
 
 						if(block == SCContent.BLOCK_POCKET_WALL.get())
 							materialCounts[0] += stack.getCount();

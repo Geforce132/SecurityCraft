@@ -24,6 +24,7 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock
 
 		registerDefaultState(defaultBlockState().setValue(LIT, false));
 	}
+
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockPlaceContext ctx)

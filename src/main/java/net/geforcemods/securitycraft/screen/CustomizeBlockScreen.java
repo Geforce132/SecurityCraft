@@ -75,10 +75,10 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 		BlockEntity te = moduleInv.getTileEntity();
 
-		if(te instanceof ICustomizable customizableTe && ((ICustomizable)te).customOptions() != null)
+		if(te instanceof ICustomizable customizable && customizable.customOptions() != null)
 		{
-			for(int i = 0; i < customizableTe.customOptions().length; i++){
-				Option<?> option = customizableTe.customOptions()[i];
+			for(int i = 0; i < customizable.customOptions().length; i++){
+				Option<?> option = customizable.customOptions()[i];
 
 				if(option instanceof ISlider && option.isSlider())
 				{
@@ -116,8 +116,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	{
 		for(Button b : optionButtons)
 		{
-			if(b instanceof Slider && ((Slider)b).dragging)
-				((Slider)b).mouseReleased(mouseX, mouseY, button);
+			if(b instanceof Slider slider && slider.dragging)
+				slider.mouseReleased(mouseX, mouseY, button);
 		}
 
 		return super.mouseReleased(mouseX, mouseY, button);
@@ -191,8 +191,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 	private Component getValueText(Option<?> option)
 	{
-		if(option instanceof BooleanOption)
-			return new TranslatableComponent(((BooleanOption)option).get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
+		if(option instanceof BooleanOption booleanOption)
+			return new TranslatableComponent(booleanOption.get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
 		else
 			return new TextComponent(option.toString());
 	}
