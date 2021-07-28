@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
@@ -22,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class BulletEntity extends AbstractArrow
 {
@@ -127,6 +127,6 @@ public class BulletEntity extends AbstractArrow
 	@Override
 	public Packet<?> getAddEntityPacket()
 	{
-		return NetworkHooks.getEntitySpawningPacket(this);
+		return new ClientboundAddEntityPacket(this);
 	}
 }

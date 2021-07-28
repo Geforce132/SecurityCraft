@@ -208,7 +208,6 @@ public class RegistrationHandler
 				.setTrackingRange(256)
 				.setUpdateInterval(1)
 				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> new SentryEntity(SCContent.eTypeSentry, world))
 				.build(SecurityCraft.MODID + ":sentry")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sentry"));
 
@@ -217,7 +216,6 @@ public class RegistrationHandler
 				.setTrackingRange(128)
 				.setUpdateInterval(1)
 				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> new BouncingBettyEntity(SCContent.eTypeBouncingBetty, world))
 				.build(SecurityCraft.MODID + ":bouncingbetty")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bouncingbetty")));
 		event.getRegistry().register(EntityType.Builder.<IMSBombEntity>of(IMSBombEntity::new, MobCategory.MISC)
@@ -225,7 +223,6 @@ public class RegistrationHandler
 				.setTrackingRange(256)
 				.setUpdateInterval(1)
 				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> new IMSBombEntity(SCContent.eTypeImsBomb, world))
 				.build(SecurityCraft.MODID + ":imsbomb")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "imsbomb")));
 		event.getRegistry().register(EntityType.Builder.<SecurityCameraEntity>of(SecurityCameraEntity::new, MobCategory.MISC)
@@ -233,7 +230,6 @@ public class RegistrationHandler
 				.setTrackingRange(256)
 				.setUpdateInterval(20)
 				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> new SecurityCameraEntity(SCContent.eTypeSecurityCamera, world))
 				.build(SecurityCraft.MODID + ":securitycamera")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "securitycamera")));
 		event.getRegistry().register(sentry);
@@ -242,7 +238,6 @@ public class RegistrationHandler
 				.setTrackingRange(256)
 				.setUpdateInterval(1)
 				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> new BulletEntity(SCContent.eTypeBullet, world))
 				.build(SecurityCraft.MODID + ":bullet")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bullet")));
 	}

@@ -6,11 +6,11 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class BouncingBettyEntity extends Entity {
 
@@ -101,6 +101,6 @@ public class BouncingBettyEntity extends Entity {
 	@Override
 	public Packet<?> getAddEntityPacket()
 	{
-		return NetworkHooks.getEntitySpawningPacket(this);
+		return new ClientboundAddEntityPacket(this);
 	}
 }
