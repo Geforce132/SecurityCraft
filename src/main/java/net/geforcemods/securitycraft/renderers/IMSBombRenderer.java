@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.renderers;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.models.IMSBombModel;
-import net.geforcemods.securitycraft.network.ClientProxy;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -24,7 +24,7 @@ public class IMSBombRenderer extends EntityRenderer<IMSBombEntity> {
 	public IMSBombRenderer(EntityRendererProvider.Context ctx){
 		super(ctx);
 
-		model = new IMSBombModel(ctx.bakeLayer(ClientProxy.IMS_BOMB_LOCATION));
+		model = new IMSBombModel(ctx.bakeLayer(ClientHandler.IMS_BOMB_LOCATION));
 	}
 
 	@Override

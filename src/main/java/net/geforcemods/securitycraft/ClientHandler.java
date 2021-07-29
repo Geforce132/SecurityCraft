@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network;
+package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -6,10 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.SCClientEventHandler;
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
@@ -90,7 +86,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fmllegacy.RegistryObject;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD, value=Dist.CLIENT)
-public class ClientProxy implements IProxy
+public class ClientHandler
 {
 	public static final ModelLayerLocation BULLET_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "bullet"), "main");
 	public static final ModelLayerLocation IMS_BOMB_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "ims_bomb"), "main");
@@ -290,6 +286,7 @@ public class ClientProxy implements IProxy
 		KeyBindings.init();
 		OverlayRegistry.registerOverlayTop(SecurityCraft.MODID + ":camera_overlay", SCClientEventHandler::cameraOverlay);
 		OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, SecurityCraft.MODID + ":hotbar_bind_overlay", SCClientEventHandler::hotbarBindOverlay);
+		tint();
 	}
 
 	@SubscribeEvent
@@ -311,8 +308,7 @@ public class ClientProxy implements IProxy
 		event.registerLayerDefinition(SECURITY_CAMERA_LOCATION, SecurityCameraModel::createLayer);
 	}
 
-	@Override
-	public void tint()
+	private static void tint()
 	{
 		Set<Block> reinforcedTint = new HashSet<>();
 		Map<Block, Integer> toTint = new HashMap<>();
@@ -419,13 +415,13 @@ public class ClientProxy implements IProxy
 		}, SCContent.BRIEFCASE.get());
 	}
 
-	private int mixWithReinforcedTintIfEnabled(int tint1) {
+	private static int mixWithReinforcedTintIfEnabled(int tint1) {
 		boolean tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
 		return tintReinforcedBlocks ? mixTints(tint1, 0x999999) : tint1;
 	}
 
-	private int mixTints(int tint1, int tint2)
+	private static int mixTints(int tint1, int tint2)
 	{
 		int red = (tint1 >> 0x10) & 0xFF;
 		int green = (tint1 >> 0x8) & 0xFF;
@@ -438,44 +434,38 @@ public class ClientProxy implements IProxy
 		return ((red << 8) + green << 8) + blue;
 	}
 
-	@Override
-	public Player getClientPlayer()
+	public static Player getClientPlayer()
 	{
 		return Minecraft.getInstance().player;
 	}
 
-	@Override
-	public void displayMRATGui(ItemStack stack)
+	public static void displayMRATGui(ItemStack stack)
 	{
 		Minecraft.getInstance().setScreen(new MineRemoteAccessToolScreen(stack));
 	}
 
-	@Override
-	public void displaySRATGui(ItemStack stack, int viewDistance)
+	public static void displaySRATGui(ItemStack stack, int viewDistance)
 	{
 		Minecraft.getInstance().setScreen(new SentryRemoteAccessToolScreen(stack, viewDistance));
 	}
 
-	@Override
-	public void displayEditModuleGui(ItemStack stack)
+	public static void displayEditModuleGui(ItemStack stack)
 	{
 		Minecraft.getInstance().setScreen(new EditModuleScreen(stack));
 	}
 
-	@Override
-	public void displayCameraMonitorGui(Inventory inv, CameraMonitorItem item, CompoundTag stackTag)
+	public static void displayCameraMonitorGui(Inventory inv, CameraMonitorItem item, CompoundTag stackTag)
 	{
+		System.out.println(Thread.currentThread());
 		Minecraft.getInstance().setScreen(new CameraMonitorScreen(inv, item, stackTag));
 	}
 
-	@Override
-	public void displaySCManualGui()
+	public static void displaySCManualGui()
 	{
 		Minecraft.getInstance().setScreen(new SCManualScreen());
 	}
 
-	@Override
-	public void displayEditSecretSignGui(SecretSignTileEntity te)
+	public static void displayEditSecretSignGui(SecretSignTileEntity te)
 	{
 		Minecraft.getInstance().setScreen(new SignEditScreen(te, Minecraft.getInstance().isTextFilteringEnabled()));
 	}

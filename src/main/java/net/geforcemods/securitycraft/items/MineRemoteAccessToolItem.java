@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
@@ -41,7 +42,9 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
-		SecurityCraft.proxy.displayMRATGui(player.getItemInHand(hand));
+		if(world.isClientSide)
+			ClientHandler.displayMRATGui(player.getItemInHand(hand));
+
 		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}
 
@@ -63,7 +66,9 @@ public class MineRemoteAccessToolItem extends Item {
 
 				if(world.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.getOwner().isOwner(player))
 				{
-					SecurityCraft.proxy.displayMRATGui(stack);
+					if(world.isClientSide)
+						ClientHandler.displayMRATGui(stack);
+
 					return InteractionResult.SUCCESS;
 				}
 

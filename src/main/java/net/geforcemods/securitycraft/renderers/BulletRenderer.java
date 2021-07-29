@@ -4,10 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.models.BulletModel;
-import net.geforcemods.securitycraft.network.ClientProxy;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -27,7 +27,7 @@ public class BulletRenderer extends EntityRenderer<BulletEntity>
 	{
 		super(ctx);
 
-		model = new BulletModel(ctx.bakeLayer(ClientProxy.BULLET_LOCATION));
+		model = new BulletModel(ctx.bakeLayer(ClientHandler.BULLET_LOCATION));
 	}
 
 	@Override

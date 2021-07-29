@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -26,7 +26,7 @@ public class SCManualItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		if(world.isClientSide)
-			SecurityCraft.proxy.displaySCManualGui();
+			ClientHandler.displaySCManualGui();
 
 		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}

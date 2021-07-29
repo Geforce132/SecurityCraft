@@ -5,10 +5,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.models.SentryModel;
-import net.geforcemods.securitycraft.network.ClientProxy;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -28,7 +28,7 @@ public class SentryRenderer extends EntityRenderer<SentryEntity>
 	{
 		super(ctx);
 
-		model = new SentryModel(ctx.bakeLayer(ClientProxy.SENTRY_LOCATION));
+		model = new SentryModel(ctx.bakeLayer(ClientHandler.SENTRY_LOCATION));
 	}
 
 	@Override

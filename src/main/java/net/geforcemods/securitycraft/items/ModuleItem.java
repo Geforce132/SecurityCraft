@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
@@ -96,7 +96,9 @@ public class ModuleItem extends Item{
 		if(canBeCustomized())
 		{
 			if(module == ModuleType.ALLOWLIST || module == ModuleType.DENYLIST) {
-				SecurityCraft.proxy.displayEditModuleGui(stack);
+				if(world.isClientSide)
+					ClientHandler.displayEditModuleGui(stack);
+
 				return InteractionResultHolder.consume(stack);
 			}
 			else if(module == ModuleType.DISGUISE)

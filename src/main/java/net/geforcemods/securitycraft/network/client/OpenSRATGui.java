@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
@@ -34,7 +34,7 @@ public class OpenSRATGui
 
 	public static void onMessage(OpenSRATGui message, Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(() -> SecurityCraft.proxy.displaySRATGui(PlayerUtils.getSelectedItemStack(SecurityCraft.proxy.getClientPlayer(), SCContent.REMOTE_ACCESS_SENTRY.get()), message.viewDistance));
+		ctx.get().enqueueWork(() -> ClientHandler.displaySRATGui(PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.REMOTE_ACCESS_SENTRY.get()), message.viewDistance));
 		ctx.get().setPacketHandled(true);
 	}
 }

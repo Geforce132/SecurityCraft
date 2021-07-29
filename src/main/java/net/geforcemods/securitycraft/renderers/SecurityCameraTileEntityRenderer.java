@@ -4,10 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
-import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.CameraType;
@@ -35,7 +35,7 @@ public class SecurityCameraTileEntityRenderer implements BlockEntityRenderer<Sec
 
 	public SecurityCameraTileEntityRenderer(BlockEntityRendererProvider.Context ctx)
 	{
-		modelSecurityCamera = new SecurityCameraModel(ctx.bakeLayer(ClientProxy.SECURITY_CAMERA_LOCATION));
+		modelSecurityCamera = new SecurityCameraModel(ctx.bakeLayer(ClientHandler.SECURITY_CAMERA_LOCATION));
 	}
 
 	@Override
