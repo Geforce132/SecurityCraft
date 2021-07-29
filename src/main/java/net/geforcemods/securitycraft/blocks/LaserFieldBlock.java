@@ -117,19 +117,12 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
 	{
-		if(state.getBlock() instanceof LaserFieldBlock)
-		{
-			int boundType = source.getBlockState(pos).getValue(BOUNDTYPE);
-
-			if (boundType == 1)
-				return SHAPE_Y;
-			else if (boundType == 2)
-				return SHAPE_Z;
-			else if (boundType == 3)
-				return SHAPE_X;
-		}
-
-		return Shapes.empty();
+		return switch(state.getValue(BOUNDTYPE)) {
+			case 1 -> SHAPE_Y;
+			case 2 -> SHAPE_Z;
+			case 3 -> SHAPE_X;
+			default -> Shapes.empty();
+		};
 	}
 
 	@Override
