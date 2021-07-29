@@ -47,32 +47,32 @@ public class BlockPocketManagerTileEntityRenderer implements BlockEntityRenderer
 		}
 
 		//bottom lines
-		builder.vertex(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
 		//top lines
-		builder.vertex(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
 		//corner edge lines
-		builder.vertex(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.vertex(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
 	}
 
 	@Override
