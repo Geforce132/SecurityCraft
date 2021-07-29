@@ -2,11 +2,11 @@ package net.geforcemods.securitycraft.screen.components;
 
 import java.util.function.Consumer;
 
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraftforge.fmlclient.gui.widget.ExtendedButton;
 
-public class IdButton extends ExtendedButton
+public class IdButton extends Button
 {
 	public final int id;
 
