@@ -456,7 +456,6 @@ public class ClientHandler
 
 	public static void displayCameraMonitorGui(Inventory inv, CameraMonitorItem item, CompoundTag stackTag)
 	{
-		System.out.println(Thread.currentThread());
 		Minecraft.getInstance().setScreen(new CameraMonitorScreen(inv, item, stackTag));
 	}
 
