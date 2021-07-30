@@ -20,9 +20,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
-import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
@@ -58,15 +56,15 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		registrar.addConfig(SHOW_PASSWORDS, true);
 		registrar.addConfig(SHOW_CUSTOM_NAME, true);
 
-		//TODO: is this the best it can get? does this even work?
 		for(Field field : SCContent.class.getFields())
 		{
 			try
 			{
 				if(field.get(null) instanceof RegistryObject<?> ro)
 				{
-					if(ro.get() instanceof Block block && !(ro.get() instanceof OwnableBlock))
-						registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
+					if(ro.get() instanceof Block block && block instanceof IOverlayDisplay) {
+						registrar.usePickedResult(block);
+					}
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
@@ -75,8 +73,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			}
 		}
 
-		//TODO: check if all sub classes of these work as well
-		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, OwnableBlock.class);
+		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, Block.class);
 		registrar.registerIconProvider(INSTANCE, BaseFullMineBlock.class);
 		registrar.registerIconProvider(INSTANCE, DisguisableBlock.class);
 		registrar.registerIconProvider(INSTANCE, FurnaceMineBlock.class);

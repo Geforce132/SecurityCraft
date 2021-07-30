@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -157,6 +158,11 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	@Override
 	public boolean shouldShowSCInfo(Level world, BlockState state, BlockPos pos) {
 		return false;
+	}
+
+	@Override
+	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+		return new ItemStack(blockDisguisedAs);
 	}
 
 	public Block getBlockDisguisedAs()

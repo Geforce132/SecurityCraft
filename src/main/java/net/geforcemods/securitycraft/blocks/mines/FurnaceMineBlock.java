@@ -14,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -26,6 +27,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
 public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
 
@@ -136,6 +138,11 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	@Override
 	public boolean shouldShowSCInfo(Level world, BlockState state, BlockPos pos) {
 		return false;
+	}
+
+	@Override
+	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+		return new ItemStack(Blocks.FURNACE);
 	}
 
 	@Override
