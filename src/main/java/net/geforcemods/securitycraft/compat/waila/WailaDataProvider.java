@@ -21,8 +21,7 @@ import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
-import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
-import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
@@ -62,8 +61,12 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			{
 				if(field.get(null) instanceof RegistryObject<?> ro)
 				{
-					if(ro.get() instanceof Block block && block instanceof IOverlayDisplay) {
-						registrar.usePickedResult(block);
+					if(ro.get() instanceof Block block) {
+						if(!(block instanceof OwnableBlock) && !block.getRegistryName().getPath().matches("(?!(reinforced_)).*?crystal_.*")) //don't register unreinforced crystal quartz
+							registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
+
+						if (block instanceof IOverlayDisplay)
+							registrar.usePickedResult(block);
 					}
 				}
 			}
@@ -73,10 +76,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			}
 		}
 
-		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, Block.class);
-		registrar.registerIconProvider(INSTANCE, BaseFullMineBlock.class);
+		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, OwnableBlock.class);
 		registrar.registerIconProvider(INSTANCE, DisguisableBlock.class);
-		registrar.registerIconProvider(INSTANCE, FurnaceMineBlock.class);
 		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, SentryEntity.class);
 	}
 
