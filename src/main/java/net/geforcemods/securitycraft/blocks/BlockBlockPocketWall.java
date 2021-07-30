@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.ITileEntityProvider;
@@ -17,7 +16,6 @@ import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -28,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityProvider, IOverlayDisplay
+public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityProvider
 {
 	public static final PropertyBool SEE_THROUGH = PropertyBool.create("see_through");
 	public static final PropertyBool SOLID = PropertyBool.create("solid");
@@ -155,17 +153,5 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
 	{
 		return Item.getItemFromBlock(this);
-	}
-
-	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
-	{
-		return new ItemStack(Item.getItemFromBlock(SCContent.blockPocketWall), 1, 0);
-	}
-
-	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
-	{
-		return true;
 	}
 }
