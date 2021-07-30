@@ -78,7 +78,6 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		//TODO: check if all sub classes of these work as well
 		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, OwnableBlock.class);
 		registrar.registerIconProvider(INSTANCE, BaseFullMineBlock.class);
-		registrar.registerIconProvider(INSTANCE, BlockPocketWallBlock.class);
 		registrar.registerIconProvider(INSTANCE, DisguisableBlock.class);
 		registrar.registerIconProvider(INSTANCE, FurnaceMineBlock.class);
 		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, SentryEntity.class);
