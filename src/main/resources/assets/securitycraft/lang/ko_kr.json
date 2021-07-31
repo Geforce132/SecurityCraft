@@ -772,6 +772,8 @@
 	"messages.securitycraft:blockpocket.invalidBlock": "잘못된 블록 \"%2$s\" %1$s 블록 포켓 매니저! (예상: \"%3$s\")",
 	"messages.securitycraft:blockpocket.blockInWay": "\"%2$s\"이(가) 공간 %1$s 블록 포켓 매니저를 차단하고 있습니다!",
 	"messages.securitycraft:blockpocket.unowned": "%1$s 위치에 블록 \"%2$s\"을(를) 소유하고 있지 않습니다!",
+	"messages.securitycraft:blockpocket.position.2": "%1$s, %2$s",
+	"messages.securitycraft:blockpocket.position.3": "%1$s, %2$s, %3$s",
 	"messages.securitycraft:blockpocket.position.blocksLeft": "%s 블록의 왼쪽",
 	"messages.securitycraft:blockpocket.position.blocksRight": "%s 블록의 오른쪽",
 	"messages.securitycraft:blockpocket.position.blocksBehind": "%s 블록의 뒷쪽",
