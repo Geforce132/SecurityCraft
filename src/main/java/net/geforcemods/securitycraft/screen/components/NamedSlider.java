@@ -8,6 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.fmlclient.gui.widget.Slider;
@@ -36,6 +37,13 @@ public class NamedSlider extends Slider
 		blockName = bN.getString();
 		this.id = id;
 		consumer = method;
+	}
+
+	@Override
+	public void renderButton(PoseStack matrix, int mouseX, int mouseY, float partial)
+	{
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		super.renderButton(matrix, mouseX, mouseY, partial);
 	}
 
 	@Override
