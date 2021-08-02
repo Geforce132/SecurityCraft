@@ -62,7 +62,6 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -258,13 +257,6 @@ public class ClientHandler
 		ItemBlockRenderTypes.setRenderLayer(SCContent.USERNAME_LOGGER.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.PROJECTOR.get(), cutoutMipped);
 		event.enqueueWork(() -> {
-			BlockEntityRenderers.register(SCContent.teTypeBlockPocketManager, BlockPocketManagerTileEntityRenderer::new);
-			BlockEntityRenderers.register(SCContent.teTypeKeypadChest, KeypadChestTileEntityRenderer::new);
-			BlockEntityRenderers.register(SCContent.teTypeRetinalScanner, RetinalScannerTileEntityRenderer::new);
-			BlockEntityRenderers.register(SCContent.teTypeSecurityCamera, SecurityCameraTileEntityRenderer::new);
-			BlockEntityRenderers.register(SCContent.teTypeSecretSign, SecretSignTileEntityRenderer::new);
-			BlockEntityRenderers.register(SCContent.teTypeTrophySystem, TrophySystemTileEntityRenderer::new);
-			BlockEntityRenderers.register(SCContent.teTypeProjector, ProjectorTileEntityRenderer::new);
 			MenuScreens.register(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
 			MenuScreens.register(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
 			MenuScreens.register(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
@@ -297,6 +289,13 @@ public class ClientHandler
 		event.registerEntityRenderer(SCContent.eTypeSecurityCamera, EmptyRenderer::new);
 		event.registerEntityRenderer(SCContent.eTypeSentry, SentryRenderer::new);
 		event.registerEntityRenderer(SCContent.eTypeBullet, BulletRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.teTypeBlockPocketManager, BlockPocketManagerTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.teTypeKeypadChest, KeypadChestTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.teTypeRetinalScanner, RetinalScannerTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.teTypeSecurityCamera, SecurityCameraTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.teTypeSecretSign, SecretSignTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.teTypeTrophySystem, TrophySystemTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.teTypeProjector, ProjectorTileEntityRenderer::new);
 	}
 
 	@SubscribeEvent
