@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -65,7 +66,7 @@ public class ClientUtils{
 
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-
+		RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
 		RenderSystem._setShaderTexture(0, MODULE_TEXTURES[module.ordinal()]);
 		drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 
