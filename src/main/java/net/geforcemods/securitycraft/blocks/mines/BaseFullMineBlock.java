@@ -162,6 +162,9 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 
 	@Override
 	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+		if (player.isCreative() || (world.getBlockEntity(pos) instanceof OwnableTileEntity te && te.getOwner().isOwner(player)))
+			return super.getPickBlock(state, target, world, pos, player);
+
 		return new ItemStack(blockDisguisedAs);
 	}
 
