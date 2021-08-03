@@ -122,8 +122,10 @@ public class KeypadChestTileEntity extends ChestBlockEntity implements IPassword
 	protected void signalOpenCount(Level level, BlockPos pos, BlockState state, int i, int j) {
 		super.signalOpenCount(level, pos, state, i, j);
 
-		if(hasModule(ModuleType.REDSTONE))
-			level.updateNeighborsAt(worldPosition.below(), getBlockState().getBlock());
+		if(hasModule(ModuleType.REDSTONE)) {
+			level.updateNeighborsAt(pos, state.getBlock());
+			level.updateNeighborsAt(worldPosition.below(), state.getBlock());
+		}
 	}
 
 	public int getNumPlayersUsing() {
