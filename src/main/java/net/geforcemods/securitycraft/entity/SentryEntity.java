@@ -316,7 +316,7 @@ public class SentryEntity extends PathfinderMob implements RangedAttackMob //nee
 	@Override
 	public void kill()
 	{
-		kill();
+		remove(RemovalReason.KILLED);
 	}
 
 	/**
