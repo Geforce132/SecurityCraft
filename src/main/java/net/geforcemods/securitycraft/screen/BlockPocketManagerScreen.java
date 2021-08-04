@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.screen;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -13,6 +15,7 @@ import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
+import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -49,6 +52,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	private final int[] materialCounts = new int[3];
 	public BlockPocketManagerTileEntity te;
 	private int size = 5;
+	private final int[] allowedSizes = {5, 9, 13, 17, 21, 25};
 	private Button toggleButton;
 	private Button sizeButton;
 	private Button assembleButton;
@@ -89,7 +93,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		int[] yOffset = storage ? new int[]{-76, -100, -52, -28, -4} : new int[]{-40, -70, 23, 47, 71};
 
 		addRenderableWidget(toggleButton = new IdButton(0, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")), this::toggleButtonClicked));
-		addRenderableWidget(sizeButton = new IdButton(1, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[1], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size), this::sizeButtonClicked));
+		addRenderableWidget(sizeButton = new ToggleComponentButton(1, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[1], widgetWidth, 20, this::updateSizeButtonText, ArrayUtils.indexOf(allowedSizes, size), allowedSizes.length, this::sizeButtonClicked));
 		addRenderableWidget(assembleButton = new IdButton(2, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[2], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked));
 		addRenderableWidget(outlineButton = new IdButton(3, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")), this::outlineButtonClicked));
 		addRenderableWidget(offsetSlider = new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", te.autoBuildOffset), TextComponent.EMPTY, 4, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", (-size + 2) / 2, (size - 2) / 2, te.autoBuildOffset, false, true, null, this::offsetSliderReleased));
@@ -277,11 +281,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		int newMin;
 		int newMax;
 
-		size += 4;
-
-		if(size > 25)
-			size = 5;
-
+		size = allowedSizes[((ToggleComponentButton)button).getCurrentIndex()];
 		newMin = (-size + 2) / 2;
 		newMax = (size - 2) / 2;
 
@@ -297,8 +297,11 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		te.autoBuildOffset = newOffset;
 		offsetSlider.setValue(newOffset);
 		offsetSlider.updateSlider();
-		button.setMessage(Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size));
 		sync();
+	}
+
+	public Component updateSizeButtonText(int index) {
+		return Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size);
 	}
 
 	public void assembleButtonClicked(IdButton button)

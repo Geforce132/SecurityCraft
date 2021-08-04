@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.screen.components.IdButton;
+import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity.IMSTargetingMode;
 import net.geforcemods.securitycraft.util.Utils;
@@ -27,7 +28,7 @@ public class IMSScreen extends AbstractContainerScreen<GenericTEContainer>{
 	private final TranslatableComponent target = Utils.localize("gui.securitycraft:ims.target");
 
 	private IMSTileEntity tileEntity;
-	private IdButton targetButton;
+	private ToggleComponentButton targetButton;
 	private IMSTargetingMode targetMode;
 
 	public IMSScreen(GenericTEContainer container, Inventory inv, Component name) {
@@ -40,8 +41,7 @@ public class IMSScreen extends AbstractContainerScreen<GenericTEContainer>{
 	public void init(){
 		super.init();
 
-		addRenderableWidget(targetButton = new IdButton(0, width / 2 - 75, height / 2 - 38, 150, 20, "", this::actionPerformed));
-		updateButtonText();
+		addRenderableWidget(targetButton = new ToggleComponentButton(0, width / 2 - 75, height / 2 - 38, 150, 20, this::updateButtonText, targetMode.ordinal(), 3, this::actionPerformed));
 	}
 
 	/**
@@ -65,14 +65,13 @@ public class IMSScreen extends AbstractContainerScreen<GenericTEContainer>{
 	}
 
 	protected void actionPerformed(IdButton button){
-		targetMode = IMSTargetingMode.values()[(targetMode.ordinal() + 1) % IMSTargetingMode.values().length]; //next enum value
+		targetMode = IMSTargetingMode.values()[((ToggleComponentButton)button).getCurrentIndex()];
 		tileEntity.setTargetingMode(targetMode);
 		SecurityCraft.channel.sendToServer(new SyncIMSTargetingOption(tileEntity.getBlockPos(), tileEntity.getTargetingMode()));
-		updateButtonText();
 	}
 
-	private void updateButtonText() {
-		targetButton.setMessage(Utils.localize("gui.securitycraft:srat.targets" + (((targetMode.ordinal() + 2) % 3) + 1)));
+	private Component updateButtonText(int index) {
+		return Utils.localize("gui.securitycraft:srat.targets" + ((index + 2) % 3 + 1));
 	}
 
 }

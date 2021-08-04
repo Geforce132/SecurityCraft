@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -73,8 +74,22 @@ public class TogglePictureButton extends IdButton{
 	@Override
 	public void onClick(double mouseX, double mouseY)
 	{
-		setCurrentIndex(currentIndex + 1);
-		super.onClick(mouseX, mouseY);
+		if (Screen.hasShiftDown()) {
+			setCurrentIndex(currentIndex - 1);
+		} else {
+			setCurrentIndex(currentIndex + 1);
+		}
+	}
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+		if (delta > 0.0D) {
+			this.setCurrentIndex(currentIndex - 1);
+		} else if (delta < 0.0D) {
+			this.setCurrentIndex(currentIndex + 1);
+		}
+
+		return true;
 	}
 
 	public int getCurrentIndex()
@@ -84,7 +99,8 @@ public class TogglePictureButton extends IdButton{
 
 	public void setCurrentIndex(int newIndex)
 	{
-		currentIndex = newIndex % toggleCount;
+		currentIndex = Math.floorMod(newIndex, toggleCount);
+		onPress.onPress(this);
 	}
 
 	public ResourceLocation getTextureLocation()
