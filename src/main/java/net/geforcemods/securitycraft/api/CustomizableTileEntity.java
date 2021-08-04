@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
@@ -29,7 +31,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	private boolean linkable = false;
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private ListTag nbtTagStorage = null;
-
+	private boolean firstTick = true;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
 	public CustomizableTileEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
@@ -38,6 +40,12 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	}
 
 	public static void tick(Level world, BlockPos pos, BlockState state, CustomizableTileEntity te) {
+		if(te.firstTick && world.isClientSide && te instanceof DisguisableTileEntity)
+		{
+			te.firstTick = false;
+			ClientHandler.refreshModelData(te);
+		}
+
 		SecurityCraftTileEntity.tick(world, pos, state, te);
 
 		if(te.hasLevel() && te.nbtTagStorage != null) {

@@ -63,6 +63,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -71,6 +72,7 @@ import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -78,6 +80,7 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.client.model.ModelDataManager;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -466,5 +469,13 @@ public class ClientHandler
 	public static void displayEditSecretSignGui(SecretSignTileEntity te)
 	{
 		Minecraft.getInstance().setScreen(new SignEditScreen(te, Minecraft.getInstance().isTextFilteringEnabled()));
+	}
+
+	public static void refreshModelData(BlockEntity te)
+	{
+		BlockPos pos = te.getBlockPos();
+
+		ModelDataManager.requestModelDataRefresh(te);
+		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
 	}
 }

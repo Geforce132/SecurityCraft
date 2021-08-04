@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.minecraft.client.Minecraft;
@@ -54,7 +55,7 @@ public class RefreshDisguisableModel
 				else
 					te.removeModule(ModuleType.DISGUISE);
 
-				te.refreshModel();
+				ClientHandler.refreshModelData(te);
 			}
 		});
 

@@ -1,21 +1,18 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.model.ModelDataManager;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class DisguisableTileEntity extends CustomizableTileEntity
@@ -67,14 +64,6 @@ public class DisguisableTileEntity extends CustomizableTileEntity
 		super.onLoad();
 
 		if(level != null && level.isClientSide)
-			refreshModel();
-	}
-
-	public void refreshModel()
-	{
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-			ModelDataManager.requestModelDataRefresh(this);
-			Minecraft.getInstance().levelRenderer.setBlocksDirty(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
-		});
+			ClientHandler.refreshModelData(this);
 	}
 }
