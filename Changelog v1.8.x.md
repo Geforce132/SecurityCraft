@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
+
+- Fix: Trophy System crash
+
 --------------------------Changelog for v1.8.23.1 of SecurityCraft--------------------------
 
 - Fix: Crash when walking through lasers

@@ -88,13 +88,15 @@ public class TileEntityTrophySystem extends CustomizableSCTE implements ITickabl
 
 					if(shooter == null)
 						setTarget(target);
+					else
+					{
+						UUID uuid = shooter instanceof EntitySentry ? UUID.fromString(((EntitySentry)shooter).getOwner().getUUID()) : shooter.getUniqueID();
+						String name = shooter instanceof EntitySentry ? ((EntitySentry)shooter).getOwner().getName() : shooter.getName();
 
-					UUID uuid = shooter instanceof EntitySentry ? UUID.fromString(((EntitySentry)shooter).getOwner().getUUID()) : shooter.getUniqueID();
-					String name = shooter instanceof EntitySentry ? ((EntitySentry)shooter).getOwner().getName() : shooter.getName();
-
-					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if(!((uuid != null && uuid.toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, name)))
-						setTarget(target);
+						//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
+						if(!((uuid != null && uuid.toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, name)))
+							setTarget(target);
+					}
 				}
 			}
 		}
