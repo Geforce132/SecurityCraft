@@ -14,14 +14,10 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -34,6 +30,7 @@ import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
+import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
@@ -43,7 +40,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -69,7 +65,6 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {
@@ -545,7 +540,7 @@ public class SCManualScreen extends Screen {
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
-	class PatronList extends ScrollPanel
+	class PatronList extends ColorableScrollPanel
 	{
 		private final int slotHeight = 12;
 		private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -554,17 +549,14 @@ public class SCManualScreen extends Screen {
 		private boolean patronsAvailable = false;
 		private boolean error = false;
 		private boolean patronsRequested;
-		private final int barWidth = 6;
-		private final int barLeft;
 		private final List<FormattedCharSequence> fetchErrorLines;
 		private final List<FormattedCharSequence> noPatronsLines;
 		private final Component loadingText = Utils.localize("gui.securitycraft:scManual.patreon.loading");
 
 		public PatronList(Minecraft client, int width, int height, int top, int left)
 		{
-			super(client, width, height, top, left);
+			super(client, width, height, top, left, new Color(0xC0, 0xBF, 0xBB, 0xB2), new Color(0xD0, 0xBF, 0xBB, 0xB2), new Color(0x8E, 0x82, 0x70, 0xFF), new Color(0x80, 0x70, 0x55, 0xFF), new Color(0xD1, 0xBF, 0xA1, 0xFF));
 
-			barLeft = left + width - barWidth;
 			fetchErrorLines = font.split(Utils.localize("gui.securitycraft:scManual.patreon.error"), width);
 			noPatronsLines = font.split(Utils.localize("advancements.empty"), width - 10);
 		}
@@ -587,55 +579,7 @@ public class SCManualScreen extends Screen {
 			{
 				if(patronsAvailable) //code from ScrollPanel to be able to change colors
 				{
-					Tesselator tess = Tesselator.getInstance();
-					BufferBuilder buffer = tess.getBuilder();
-					Minecraft client = Minecraft.getInstance();
-					double scale = client.getWindow().getGuiScale();
-					int baseY = top + border - (int)scrollDistance;
-					int extraHeight = getContentHeight() + border - height;
-
-					GL11.glEnable(GL11.GL_SCISSOR_TEST);
-					GL11.glScissor((int)(left  * scale), (int)(client.getWindow().getHeight() - (bottom * scale)),
-							(int)(width * scale), (int)(height * scale));
-					drawGradientRect(matrix, left, top, right, bottom, 0xC0BFBBB2, 0xD0BFBBB2); //list background
-					drawPanel(matrix, right, baseY, tess, mouseX, mouseY);
-					RenderSystem.disableDepthTest();
-
-					if(extraHeight > 0)
-					{
-						int barHeight = getBarHeight();
-						int barTop = (int)scrollDistance * (height - barHeight) / extraHeight + top;
-
-						if(barTop < top)
-							barTop = top;
-
-						RenderSystem.setShader(GameRenderer::getPositionColorShader);
-						//scrollbar background
-						buffer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-						buffer.vertex(barLeft,            bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
-						buffer.vertex(barLeft + barWidth, bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
-						buffer.vertex(barLeft + barWidth, top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
-						buffer.vertex(barLeft,            top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
-						tess.end();
-						//scrollbar border
-						buffer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-						buffer.vertex(barLeft,            barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
-						buffer.vertex(barLeft + barWidth, barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
-						buffer.vertex(barLeft + barWidth, barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
-						buffer.vertex(barLeft,            barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
-						tess.end();
-						//scrollbar
-						buffer.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-						buffer.vertex(barLeft,                barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
-						buffer.vertex(barLeft + barWidth - 1, barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
-						buffer.vertex(barLeft + barWidth - 1, barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
-						buffer.vertex(barLeft,                barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
-						tess.end();
-					}
-
-					RenderSystem.enableTexture();
-					RenderSystem.disableBlend();
-					GL11.glDisable(GL11.GL_SCISSOR_TEST);
+					super.render(matrix, mouseX, mouseY, partialTicks);
 
 					//draw tooltip for long patron names
 					int mouseListY = (int)(mouseY - top + scrollDistance - border);
@@ -645,6 +589,7 @@ public class SCManualScreen extends Screen {
 					{
 						String patron = patrons.get(slotIndex);
 						int length = font.width(patron);
+						int baseY = top + border - (int)scrollDistance;
 
 						if(length >= width - barWidth)
 							renderTooltip(matrix, new TextComponent(patron), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
@@ -716,19 +661,6 @@ public class SCManualScreen extends Screen {
 				});
 				patronsRequested = true;
 			}
-		}
-
-		public int getBarHeight()
-		{
-			int barHeight = (height * height) / getContentHeight();
-
-			if(barHeight < 32)
-				barHeight = 32;
-
-			if(barHeight > height - border * 2)
-				barHeight = height - border * 2;
-
-			return barHeight;
 		}
 	}
 

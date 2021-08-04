@@ -15,6 +15,7 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
+import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
@@ -25,7 +26,6 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.client.gui.ScrollPanel;
 
 public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEContainer>{
 
@@ -110,7 +110,7 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEConta
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
-	class PlayerList extends ScrollPanel
+	class PlayerList extends ColorableScrollPanel
 	{
 		private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 		private final int slotHeight = 12, listLength = 100;

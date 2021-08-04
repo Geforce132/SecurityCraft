@@ -14,6 +14,7 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
+import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -26,7 +27,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.gui.ScrollPanel;
 
 @OnlyIn(Dist.CLIENT)
 public class EditModuleScreen extends Screen
@@ -266,7 +266,7 @@ public class EditModuleScreen extends Screen
 		}
 	}
 
-	class PlayerList extends ScrollPanel
+	class PlayerList extends ColorableScrollPanel
 	{
 		private final int slotHeight = 12, listLength = ModuleItem.MAX_PLAYERS;
 		private int selectedIndex = -1;
