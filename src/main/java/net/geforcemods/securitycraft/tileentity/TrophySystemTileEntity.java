@@ -88,13 +88,15 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 					if(shooter == null)
 						setTarget(target);
+					else
+					{
+						UUID uuid = shooter instanceof SentryEntity ? UUID.fromString(((SentryEntity)shooter).getOwner().getUUID()) : shooter.getUniqueID();
+						String name = shooter instanceof SentryEntity ? ((SentryEntity)shooter).getOwner().getName() : shooter.getName().getString();
 
-					UUID uuid = shooter instanceof SentryEntity ? UUID.fromString(((SentryEntity)shooter).getOwner().getUUID()) : shooter.getUniqueID();
-					String name = shooter instanceof SentryEntity ? ((SentryEntity)shooter).getOwner().getName() : shooter.getName().getString();
-
-					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if(!((uuid != null && uuid.toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, name)))
-						setTarget(target);
+						//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
+						if(!((uuid != null && uuid.toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, name)))
+							setTarget(target);
+					}
 				}
 			}
 		}
