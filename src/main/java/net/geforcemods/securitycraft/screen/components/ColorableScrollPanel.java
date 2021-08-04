@@ -60,7 +60,7 @@ public abstract class ColorableScrollPanel extends ScrollPanel
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		GL11.glScissor((int)(left  * scale), (int)(client.getWindow().getHeight() - (bottom * scale)),
 				(int)(width * scale), (int)(height * scale));
-		drawGradientRect(matrix, left, top, right, bottom, backgroundTo.combinedRGBA(), backgroundFrom.combinedRGBA()); //list background
+		drawGradientRect(matrix, left, top, right, bottom, backgroundFrom.combinedRGBA(), backgroundTo.combinedRGBA()); //list background
 		drawPanel(matrix, right, baseY, tess, mouseX, mouseY);
 		RenderSystem.disableDepthTest();
 
