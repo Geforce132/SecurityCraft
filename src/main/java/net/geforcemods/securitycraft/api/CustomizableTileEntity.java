@@ -40,7 +40,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	}
 
 	public static void tick(Level world, BlockPos pos, BlockState state, CustomizableTileEntity te) {
-		if(te.firstTick && world.isClientSide && te instanceof DisguisableTileEntity)
+		if(world.isClientSide && te.firstTick && te instanceof DisguisableTileEntity)
 		{
 			te.firstTick = false;
 			ClientHandler.refreshModelData(te);
