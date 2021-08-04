@@ -26,9 +26,7 @@ public class IMSScreen extends AbstractContainerScreen<GenericTEContainer>{
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent imsName = Utils.localize(SCContent.IMS.get().getDescriptionId());
 	private final TranslatableComponent target = Utils.localize("gui.securitycraft:ims.target");
-
 	private IMSTileEntity tileEntity;
-	private ToggleComponentButton targetButton;
 	private IMSTargetingMode targetMode;
 
 	public IMSScreen(GenericTEContainer container, Inventory inv, Component name) {
@@ -41,7 +39,7 @@ public class IMSScreen extends AbstractContainerScreen<GenericTEContainer>{
 	public void init(){
 		super.init();
 
-		addRenderableWidget(targetButton = new ToggleComponentButton(0, width / 2 - 75, height / 2 - 38, 150, 20, this::updateButtonText, targetMode.ordinal(), 3, this::actionPerformed));
+		addRenderableWidget(new ToggleComponentButton(0, width / 2 - 75, height / 2 - 38, 150, 20, this::updateButtonText, targetMode.ordinal(), 3, this::actionPerformed));
 	}
 
 	/**
