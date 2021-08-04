@@ -101,10 +101,14 @@ public class KeypadChestTileEntity extends ChestBlockEntity implements IPassword
 	}
 
 	@Override
+	public CompoundTag getUpdateTag()
+	{
+		return save(new CompoundTag());
+	}
+
+	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		CompoundTag tag = new CompoundTag();
-		save(tag);
-		return new ClientboundBlockEntityDataPacket(worldPosition, 1, tag);
+		return new ClientboundBlockEntityDataPacket(worldPosition, 1, getUpdateTag());
 	}
 
 	@Override
