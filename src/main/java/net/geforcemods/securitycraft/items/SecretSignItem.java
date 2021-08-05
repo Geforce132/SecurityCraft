@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import javax.annotation.Nullable;
 
-import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -48,7 +48,7 @@ public class SecretSignItem extends WallOrFloorItem
 			te.setPlayer(player);
 
 			if(world.isRemote)
-				SecurityCraft.proxy.displayEditSecretSignGui(te);
+				ClientHandler.displayEditSecretSignGui(te);
 		}
 
 		return flag;

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +26,7 @@ public class SCManualItem extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		if(world.isRemote)
-			SecurityCraft.proxy.displaySCManualGui();
+			ClientHandler.displaySCManualGui();
 
 		return ActionResult.resultConsume(player.getHeldItem(hand));
 	}
