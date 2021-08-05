@@ -9,6 +9,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.BreakableBlock;
+import net.minecraft.block.BushBlock;
+import net.minecraft.block.DeadBushBlock;
+import net.minecraft.block.LilyPadBlock;
+import net.minecraft.block.WitherRoseBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -51,12 +55,22 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		if (plant.getBlock() == Blocks.CACTUS)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 
+		if (plantable instanceof BushBlock) //a nasty workaround because BaseReinforcedBlock can't use BushBlock#isValidGround because it is protected
+		{
+			boolean bushCondition = this == SCContent.REINFORCED_GRASS_BLOCK.get() || this == SCContent.REINFORCED_DIRT.get() || this == SCContent.REINFORCED_COARSE_DIRT.get() || this == SCContent.REINFORCED_PODZOL.get();
+
+			if (plantable instanceof LilyPadBlock)
+				return world.getFluidState(pos).getFluid() == SCContent.FAKE_WATER.get();
+			else if (plantable instanceof WitherRoseBlock)
+				return this == SCContent.REINFORCED_NETHERRACK.get() || bushCondition;
+			else if (plantable instanceof DeadBushBlock)
+				return state.isIn(SCTags.Blocks.REINFORCED_SAND) || this == SCContent.REINFORCED_TERRACOTTA.get() || this == SCContent.REINFORCED_WHITE_TERRACOTTA.get() || this == SCContent.REINFORCED_ORANGE_TERRACOTTA.get() || this == SCContent.REINFORCED_MAGENTA_TERRACOTTA.get() || this == SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get() || this == SCContent.REINFORCED_YELLOW_TERRACOTTA.get() || this == SCContent.REINFORCED_LIME_TERRACOTTA.get() || this == SCContent.REINFORCED_PINK_TERRACOTTA.get() || this == SCContent.REINFORCED_GRAY_TERRACOTTA.get() || this == SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get() || this == SCContent.REINFORCED_CYAN_TERRACOTTA.get() || this == SCContent.REINFORCED_PURPLE_TERRACOTTA.get() || this == SCContent.REINFORCED_BLUE_TERRACOTTA.get() || this == SCContent.REINFORCED_BROWN_TERRACOTTA.get() || this == SCContent.REINFORCED_GREEN_TERRACOTTA.get() || this == SCContent.REINFORCED_RED_TERRACOTTA.get() || this == SCContent.REINFORCED_BLACK_TERRACOTTA.get() || this == SCContent.REINFORCED_DIRT.get() || this == SCContent.REINFORCED_COARSE_DIRT.get() || this == SCContent.REINFORCED_PODZOL.get();
+		}
+
 		switch (type) {
 			case Desert: return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
-			case Cave:   return Block.hasSolidSide(state, world, pos, Direction.UP);
-			case Plains: return SCTags.Blocks.REINFORCED_DIRT.contains(this);
 			case Beach:
-				boolean isBeach = SCTags.Blocks.REINFORCED_DIRT.contains(this) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
+				boolean isBeach = this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 				boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
 						world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
 						world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
