@@ -10,10 +10,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.BreakableBlock;
 import net.minecraft.block.BushBlock;
+import net.minecraft.block.DeadBushBlock;
 import net.minecraft.block.FungusBlock;
+import net.minecraft.block.LilyPadBlock;
 import net.minecraft.block.NetherRootsBlock;
 import net.minecraft.block.NetherSproutsBlock;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.WitherRoseBlock;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -49,27 +53,38 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		if(plant.getBlock() == Blocks.CACTUS)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 
-		if (plantable instanceof BushBlock) //a workaround because BaseReinforcedBlock can't use isValidGround because it is protected
+		if (plantable instanceof BushBlock) //a nasty workaround because BaseReinforcedBlock can't use BushBlock#isValidGround because it is protected
 		{
 			boolean bushCondition = state.matchesBlock(SCContent.REINFORCED_GRASS_BLOCK.get()) || state.matchesBlock(SCContent.REINFORCED_DIRT.get()) || state.matchesBlock(SCContent.REINFORCED_COARSE_DIRT.get()) || state.matchesBlock(SCContent.REINFORCED_PODZOL.get());
 
-			if (plantable instanceof NetherSproutsBlock || plantable instanceof NetherRootsBlock || plantable instanceof FungusBlock)
-				return state.isIn(SCTags.Blocks.REINFORCED_NYLIUM) || state.matchesBlock(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
+			if (plantable instanceof NetherSproutsBlock || plantable instanceof NetherRootsBlock)
+				return state.matchesBlock(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
+			else if (plantable instanceof FungusBlock)
+				return state.matchesBlock(SCContent.REINFORCED_MYCELIUM.get()) || state.matchesBlock(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
+			else if (plantable instanceof LilyPadBlock)
+				return world.getFluidState(pos).getFluid() == SCContent.FAKE_WATER.get() && world.getFluidState(pos.up()).getFluid() == Fluids.EMPTY;
+			else if (plantable instanceof WitherRoseBlock)
+				return state.matchesBlock(SCContent.REINFORCED_NETHERRACK.get()) || state.matchesBlock(SCContent.REINFORCED_SOUL_SOIL.get());
+			else if (plantable instanceof DeadBushBlock)
+				return state.isIn(SCTags.Blocks.REINFORCED_SAND) || state.matchesBlock(SCContent.REINFORCED_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_WHITE_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_ORANGE_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_MAGENTA_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_YELLOW_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_LIME_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_PINK_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_GRAY_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_CYAN_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_PURPLE_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_BLUE_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_BROWN_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_GREEN_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_RED_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_BLACK_TERRACOTTA.get());
 		}
 
 		if(type == PlantType.DESERT)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
-		else if(type == PlantType.CAVE)
-			return state.isSolidSide(world, pos, Direction.UP);
-		else if(type == PlantType.PLAINS)
-			return isIn(SCTags.Blocks.REINFORCED_DIRT);
 		else if(type == PlantType.BEACH)
 		{
-			boolean isBeach = isIn(SCTags.Blocks.REINFORCED_DIRT) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
-			boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
-					world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
-					world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
-					world.getBlockState(pos.south()).getMaterial() == Material.WATER);
+			boolean isBeach = state.isIn(SCTags.Blocks.REINFORCED_SAND);
+			boolean hasWater = false;
+
+			for (Direction face : Direction.Plane.HORIZONTAL) {
+				BlockState blockState = world.getBlockState(pos.offset(face));
+				FluidState fluidState = world.getFluidState(pos.offset(face));
+
+				hasWater |= blockState.matchesBlock(Blocks.FROSTED_ICE);
+				hasWater |= fluidState.isTagged(net.minecraft.tags.FluidTags.WATER);
+				if (hasWater)
+					break; //No point continuing.
+			}
 			return isBeach && hasWater;
 		}
 		return false;
