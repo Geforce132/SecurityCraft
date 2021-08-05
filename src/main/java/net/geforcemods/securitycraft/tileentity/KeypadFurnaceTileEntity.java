@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
@@ -15,7 +14,6 @@ import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -123,13 +121,6 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceBlockEntity implemen
 	public void setOwner(String uuid, String name)
 	{
 		owner.set(uuid, name);
-	}
-
-	@Override
-	public void onLoad()
-	{
-		if(level.isClientSide)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(worldPosition));
 	}
 
 	@Override

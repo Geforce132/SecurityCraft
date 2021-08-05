@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -17,7 +16,6 @@ import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -341,13 +339,6 @@ public class KeypadChestTileEntity extends ChestBlockEntity implements IPassword
 	public boolean isSingleBlocked()
 	{
 		return KeypadChestBlock.isBlocked(getLevel(), getBlockPos());
-	}
-
-	@Override
-	public void onLoad()
-	{
-		if(level.isClientSide)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(worldPosition));
 	}
 
 	@Override

@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -84,12 +82,5 @@ public class OwnableTileEntity extends BlockEntity implements IOwnable {
 	@Override
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
-	}
-
-	@Override
-	public void onLoad()
-	{
-		if(level.isClientSide)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(this));
 	}
 }

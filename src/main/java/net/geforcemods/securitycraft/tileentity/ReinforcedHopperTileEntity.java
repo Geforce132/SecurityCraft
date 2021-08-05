@@ -1,12 +1,10 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -87,13 +85,6 @@ public class ReinforcedHopperTileEntity extends HopperBlockEntity implements IOw
 	public void setOwner(String uuid, String name)
 	{
 		owner.set(uuid, name);
-	}
-
-	@Override
-	public void onLoad()
-	{
-		if(level.isClientSide)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(getBlockPos()));
 	}
 
 	@Override
