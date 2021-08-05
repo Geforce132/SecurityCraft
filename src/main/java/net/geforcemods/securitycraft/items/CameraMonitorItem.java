@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.items;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.CameraView;
@@ -88,8 +89,8 @@ public class CameraMonitorItem extends Item {
 			return ActionResult.resultPass(stack);
 		}
 
-		if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
-			SecurityCraft.proxy.displayCameraMonitorGui(player.inventory, (CameraMonitorItem) stack.getItem(), stack.getTag());
+		if(world.isRemote && stack.getItem() == SCContent.CAMERA_MONITOR.get())
+			ClientHandler.displayCameraMonitorGui(player.inventory, (CameraMonitorItem) stack.getItem(), stack.getTag());
 
 		return ActionResult.resultConsume(stack);
 	}

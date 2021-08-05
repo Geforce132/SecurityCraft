@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -38,7 +38,7 @@ public class UpdateNBTTagOnClient{
 	public static void onMessage(UpdateNBTTagOnClient message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			ItemStack stackToUpdate = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player.inventory, message.stack.getItem());
+			ItemStack stackToUpdate = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), message.stack.getItem());
 
 			if(!stackToUpdate.isEmpty())
 				stackToUpdate.setTag(message.stack.getTag());

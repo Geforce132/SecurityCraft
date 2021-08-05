@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network;
+package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -6,9 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
@@ -67,12 +64,15 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.ModelDataManager;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -82,7 +82,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD, value=Dist.CLIENT)
-public class ClientProxy implements IProxy
+public class ClientHandler
 {
 	@SubscribeEvent
 	public static void onModelBake(ModelBakeEvent event)
@@ -101,7 +101,7 @@ public class ClientProxy implements IProxy
 		ResourceLocation[] poweredBlocks = {
 				new ResourceLocation(SecurityCraft.MODID, "laser_block")
 		};
-		String[] mines = {"coal_ore", "cobblestone", "diamond_ore", "dirt", "emerald_ore", "gravel", "gold_ore", "furnace", "iron_ore", "lapis_ore", "redstone_ore", "sand", "stone"};
+		String[] mines = {"coal_ore", "cobblestone", "diamond_ore", "dirt", "emerald_ore", "gravel", "gold_ore", "gilded_blackstone", "furnace", "iron_ore", "lapis_ore", "nether_gold_ore", "redstone_ore", "sand", "stone"};
 
 		for(String facing : facings)
 		{
@@ -276,10 +276,10 @@ public class ClientProxy implements IProxy
 		ScreenManager.registerFactory(SCContent.cTypeProjector, ProjectorScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeTrophySystem, TrophySystemScreen::new);
 		KeyBindings.init();
+		tint();
 	}
 
-	@Override
-	public void tint()
+	public static void tint()
 	{
 		Set<Block> reinforcedTint = new HashSet<>();
 		Map<Block, Integer> toTint = new HashMap<>();
@@ -388,13 +388,13 @@ public class ClientProxy implements IProxy
 		}, SCContent.BRIEFCASE.get());
 	}
 
-	private int mixWithReinforcedTintIfEnabled(int tint1) {
+	private static int mixWithReinforcedTintIfEnabled(int tint1) {
 		boolean tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
 		return tintReinforcedBlocks ? mixTints(tint1, 0x999999) : tint1;
 	}
 
-	private int mixTints(int tint1, int tint2)
+	private static int mixTints(int tint1, int tint2)
 	{
 		int red = (tint1 >> 0x10) & 0xFF;
 		int green = (tint1 >> 0x8) & 0xFF;
@@ -407,45 +407,46 @@ public class ClientProxy implements IProxy
 		return ((red << 8) + green << 8) + blue;
 	}
 
-	@Override
-	public PlayerEntity getClientPlayer()
+	public static PlayerEntity getClientPlayer()
 	{
 		return Minecraft.getInstance().player;
 	}
 
-	@Override
-	public void displayMRATGui(ItemStack stack)
+	public static void displayMRATGui(ItemStack stack)
 	{
 		Minecraft.getInstance().displayGuiScreen(new MineRemoteAccessToolScreen(stack));
 	}
 
-	@Override
-	public void displaySRATGui(ItemStack stack, int viewDistance)
+	public static void displaySRATGui(ItemStack stack, int viewDistance)
 	{
 		Minecraft.getInstance().displayGuiScreen(new SentryRemoteAccessToolScreen(stack, viewDistance));
 	}
 
-	@Override
-	public void displayEditModuleGui(ItemStack stack)
+	public static void displayEditModuleGui(ItemStack stack)
 	{
 		Minecraft.getInstance().displayGuiScreen(new EditModuleScreen(stack));
 	}
 
-	@Override
-	public void displayCameraMonitorGui(PlayerInventory inv, CameraMonitorItem item, CompoundNBT stackTag)
+	public static void displayCameraMonitorGui(PlayerInventory inv, CameraMonitorItem item, CompoundNBT stackTag)
 	{
 		Minecraft.getInstance().displayGuiScreen(new CameraMonitorScreen(inv, item, stackTag));
 	}
 
-	@Override
-	public void displaySCManualGui()
+	public static void displaySCManualGui()
 	{
 		Minecraft.getInstance().displayGuiScreen(new SCManualScreen());
 	}
 
-	@Override
-	public void displayEditSecretSignGui(SecretSignTileEntity te)
+	public static void displayEditSecretSignGui(SecretSignTileEntity te)
 	{
 		Minecraft.getInstance().displayGuiScreen(new EditSignScreen(te));
+	}
+
+	public static void refreshModelData(TileEntity te)
+	{
+		BlockPos pos = te.getPos();
+
+		ModelDataManager.requestModelDataRefresh(te);
+		Minecraft.getInstance().worldRenderer.markBlockRangeForRenderUpdate(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
 	}
 }

@@ -20,9 +20,6 @@ import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.conditions.TileEntityNBTCondition;
-import net.geforcemods.securitycraft.network.ClientProxy;
-import net.geforcemods.securitycraft.network.IProxy;
-import net.geforcemods.securitycraft.network.ServerProxy;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
@@ -33,7 +30,6 @@ import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -54,7 +50,6 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
-	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 	public static final String PROTOCOL_VERSION = "4";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 	public static ItemGroup groupSCTechnical = new SCTechnicalGroup();
@@ -97,8 +92,6 @@ public class SecurityCraft {
 
 		if(ModList.get().isLoaded("quark"))
 			QuarkCompat.registerChestConversions();
-
-		proxy.tint();
 	}
 
 	@SubscribeEvent
