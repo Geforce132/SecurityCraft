@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -17,7 +16,6 @@ import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -100,10 +98,14 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	}
 
 	@Override
+	public CompoundNBT getUpdateTag()
+	{
+		return write(new CompoundNBT());
+	}
+
+	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		CompoundNBT tag = new CompoundNBT();
-		write(tag);
-		return new SUpdateTileEntityPacket(pos, 1, tag);
+		return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
 	}
 
 	@Override
@@ -120,6 +122,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		return Utils.localize("block.securitycraft.keypad_chest");
 	}
 
+	@Override
 	protected void onOpenOrClose() {
 		super.onOpenOrClose();
 
@@ -336,13 +339,6 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	public boolean isSingleBlocked()
 	{
 		return KeypadChestBlock.isBlocked(getWorld(), getPos());
-	}
-
-	@Override
-	public void onLoad()
-	{
-		if(world.isRemote)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(pos));
 	}
 
 	@Override
