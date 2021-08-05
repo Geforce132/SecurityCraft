@@ -64,12 +64,15 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.ModelDataManager;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -439,5 +442,13 @@ public class ClientHandler
 	public static void displayEditSecretSignGui(SecretSignTileEntity te)
 	{
 		Minecraft.getInstance().displayGuiScreen(new EditSignScreen(te));
+	}
+
+	public static void refreshModelData(TileEntity te)
+	{
+		BlockPos pos = te.getPos();
+
+		ModelDataManager.requestModelDataRefresh(te);
+		Minecraft.getInstance().worldRenderer.markBlockRangeForRenderUpdate(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
 	}
 }
