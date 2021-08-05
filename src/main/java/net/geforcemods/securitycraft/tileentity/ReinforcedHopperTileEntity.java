@@ -1,12 +1,10 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -80,13 +78,6 @@ public class ReinforcedHopperTileEntity extends HopperTileEntity implements IOwn
 	public void setOwner(String uuid, String name)
 	{
 		owner.set(uuid, name);
-	}
-
-	@Override
-	public void onLoad()
-	{
-		if(world.isRemote)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(getPos()));
 	}
 
 	@Override
