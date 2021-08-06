@@ -101,7 +101,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 	 * Called on server when World#addBlockEvent is called. If server returns true, then also called on the client. On
 	 * the Server, this may perform additional changes to the world, like pistons replacing the block with an extended
 	 * base. On the client, the update may involve replacing tile entities or effects such as sounds or particles
-	 * @deprecated call via {@link IBlockState#onBlockEventReceived(World,BlockPos,int,int)} whenever possible.
+	 * @deprecated call via {@link BlockState#receiveBlockEvent(World,BlockPos,int,int)} whenever possible.
 	 * Implementing/overriding is fine.
 	 */
 	@Override
@@ -343,15 +343,6 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		if (pistonTE instanceof IOwnable){
 			return blockTE.getOwner().owns(((IOwnable)pistonTE));
 		}
-		//TODO: check if needed
-		/*else {
-			CompoundNBT originalTag = (CompoundNBT)world.getTileEntity(pistonPos).getUpdateTag().get("originalTag");
-			if (originalTag != null && originalTag.contains("owner")){
-				return ((OwnableTileEntity)world.getTileEntity(blockPos)).getOwner().getName().equals(originalTag.getString("owner"));
-			}
-			else
-				return false;
-		}*/
 
 		return false;
 	}

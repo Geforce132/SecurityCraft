@@ -10,7 +10,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend PistonBlockStructureHelper because that whole class is private
+public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend PistonBlockStructureHelper because the content of that whole class is private
 
 	private final World world;
 	private final BlockPos pistonPos;

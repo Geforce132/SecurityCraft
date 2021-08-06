@@ -34,7 +34,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ReinforcedPistonTileEntity extends TileEntity implements ITickableTileEntity, IOwnable { //this class doesn't extend PistonTileEntity because that class is almost completely private
+public class ReinforcedPistonTileEntity extends TileEntity implements ITickableTileEntity, IOwnable { //this class doesn't extend PistonTileEntity because almost all of that class' content is private
 
 	private BlockState pistonState;
 	private CompoundNBT tileEntityTag;
@@ -64,7 +64,7 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 
 	/**
 	 * Get an NBT compound to sync to the client with SPacketChunkData, used for initial loading of the chunk or when
-	 * many blocks change at once. This compound comes back to you clientside in {@link handleUpdateTag}
+	 * many blocks change at once. This compound comes back to you clientside in {@link TileEntity#handleUpdateTag}
 	 */
 	@Override
 	public CompoundNBT getUpdateTag() {
@@ -113,17 +113,17 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 		return this.pistonFacing.getZOffset() * this.getExtendedProgress(this.getProgress(ticks));
 	}
 
-	private float getExtendedProgress(float p_184320_1_) {
-		return this.extending ? p_184320_1_ - 1.0F : 1.0F - p_184320_1_;
+	private float getExtendedProgress(float progress) {
+		return this.extending ? progress - 1.0F : 1.0F - progress;
 	}
 
 	private BlockState getCollisionRelatedBlockState() {
 		return !this.isExtending() && this.shouldPistonHeadBeRendered() && this.pistonState.getBlock() instanceof ReinforcedPistonBlock ? SCContent.REINFORCED_PISTON_HEAD.get().getDefaultState().with(PistonHeadBlock.TYPE, this.pistonState.getBlock() == SCContent.REINFORCED_STICKY_PISTON.get() ? PistonType.STICKY : PistonType.DEFAULT).with(PistonHeadBlock.FACING, this.pistonState.get(PistonBlock.FACING)) : this.pistonState;
 	}
 
-	private void moveCollidedEntities(float p_184322_1_) {
+	private void moveCollidedEntities(float progress) {
 		Direction direction = this.getMotionDirection();
-		double d0 = (double)(progress - this.progress);
+		double d0 = progress - this.progress;
 		VoxelShape voxelshape = this.getCollisionRelatedBlockState().getCollisionShapeUncached(this.world, this.getPos());
 		if (!voxelshape.isEmpty()) {
 			AxisAlignedBB axisalignedbb = this.moveByPositionAndProgress(voxelshape.getBoundingBox());
@@ -193,9 +193,9 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 		}
 	}
 
-	private static void pushEntity(Direction direction, Entity entity, double progress, Direction p_227022_4_) {
+	private static void pushEntity(Direction direction, Entity entity, double progress, Direction moveDirection) {
 		MOVING_ENTITY.set(direction);
-		entity.move(MoverType.PISTON, new Vector3d(progress * (double)p_227022_4_.getXOffset(), progress * (double)p_227022_4_.getYOffset(), progress * (double)p_227022_4_.getZOffset()));
+		entity.move(MoverType.PISTON, new Vector3d(progress * (double)moveDirection.getXOffset(), progress * (double)moveDirection.getYOffset(), progress * (double)moveDirection.getZOffset()));
 		MOVING_ENTITY.set(null);
 	}
 
@@ -250,16 +250,16 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 		return boundingBox.offset((double)this.pos.getX() + d0 * (double)this.pistonFacing.getXOffset(), (double)this.pos.getY() + d0 * (double)this.pistonFacing.getYOffset(), (double)this.pos.getZ() + d0 * (double)this.pistonFacing.getZOffset());
 	}
 
-	private void fixEntityWithinPistonBase(Entity p_190605_1_, Direction p_190605_2_, double p_190605_3_) {
-		AxisAlignedBB axisalignedbb = p_190605_1_.getBoundingBox();
+	private void fixEntityWithinPistonBase(Entity entity, Direction pushDirection, double progress) {
+		AxisAlignedBB axisalignedbb = entity.getBoundingBox();
 		AxisAlignedBB axisalignedbb1 = VoxelShapes.fullCube().getBoundingBox().offset(this.pos);
 		if (axisalignedbb.intersects(axisalignedbb1)) {
-			Direction direction = p_190605_2_.getOpposite();
+			Direction direction = pushDirection.getOpposite();
 			double d0 = getMovement(axisalignedbb1, direction, axisalignedbb) + 0.01D;
 			double d1 = getMovement(axisalignedbb1, direction, axisalignedbb.intersect(axisalignedbb1)) + 0.01D;
 			if (Math.abs(d0 - d1) < 0.01D) {
 				d0 = Math.min(d0, progress) + 0.01D;
-				pushEntity(p_190605_2_, p_190605_1_, d0, direction);
+				pushEntity(pushDirection, entity, d0, direction);
 			}
 		}
 	}
@@ -323,12 +323,9 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 
 						this.world.setBlockState(this.pos, pushedState, 67);
 
-						//System.out.println("blockstate: " + pushedState);
 						if (tileEntityTag != null){
-							//System.out.println("pre-saving te: " + tagIn);
 							TileEntity te = pushedState.hasTileEntity() ? pushedState.createTileEntity(this.world) : null;
 							if (te != null){
-								//System.out.println("te not null:");
 								te.read(this.pistonState, tileEntityTag);
 								this.world.setTileEntity(this.pos, te);
 								this.world.markChunkDirty(this.pos, te);
@@ -386,10 +383,10 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 		return compound;
 	}
 
-	public VoxelShape getCollisionShape(IBlockReader p_195508_1_, BlockPos p_195508_2_) {
+	public VoxelShape getCollisionShape(IBlockReader world, BlockPos pos) {
 		VoxelShape voxelshape;
 		if (!this.extending && this.shouldHeadBeRendered) {
-			voxelshape = this.pistonState.with(PistonBlock.EXTENDED, true).getCollisionShape(p_195508_1_, p_195508_2_);
+			voxelshape = this.pistonState.with(PistonBlock.EXTENDED, true).getCollisionShape(world, pos);
 		} else {
 			voxelshape = VoxelShapes.empty();
 		}
@@ -409,7 +406,7 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 			double d0 = this.pistonFacing.getXOffset() * f;
 			double d1 = this.pistonFacing.getYOffset() * f;
 			double d2 = this.pistonFacing.getZOffset() * f;
-			return VoxelShapes.or(voxelshape, blockstate.getCollisionShape(p_195508_1_, p_195508_2_).withOffset(d0, d1, d2));
+			return VoxelShapes.or(voxelshape, blockstate.getCollisionShape(world, pos).withOffset(d0, d1, d2));
 		}
 	}
 
