@@ -31,8 +31,7 @@ import net.minecraftforge.client.gui.ScrollPanel;
 
 public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
-	private static final ResourceLocation FILTER_ENABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_bound.png");
-	private static final ResourceLocation FILTER_DISABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_not_bound.png");
+	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	private final TranslationTextComponent projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
 	private final TranslationTextComponent moduleRequired = Utils.localize("gui.securitycraft:trophy_system.moduleRequired");
@@ -80,7 +79,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		if(projectileList != null)
 			projectileList.render(matrix, mouseX, mouseY, partialTicks);
 
-		ClientUtils.renderSmartModuleInfo(matrix, toggle, moduleRequired, isSmart, guiLeft, guiTop, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, toggle, moduleRequired, isSmart, guiLeft + 5, guiTop + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override
@@ -177,8 +176,8 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 				int yStart = relativeY + (slotHeight * i);
 
 				font.drawText(matrix, projectileName, left + width / 2 - font.getStringPropertyWidth(projectileName) / 2, yStart, 0xC6C6C6);
-				minecraft.getTextureManager().bindTexture(tileEntity.getFilter(projectileType) ? FILTER_ENABLED_TEXTURE : FILTER_DISABLED_TEXTURE);
-				blit(matrix, left, yStart - 2, 0, 0, 12, 12, 12, 12);
+				minecraft.getTextureManager().bindTexture(BEACON_GUI);
+				blit(matrix, left, yStart - 3, 14, 14, tileEntity.getFilter(projectileType) ? 88 : 110, 219, 21, 22, 256, 256);
 				i++;
 			}
 		}

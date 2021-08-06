@@ -8,14 +8,15 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ProjectorContainer extends Container {
 
 	public static final int SIZE = 1;
-
 	public ProjectorTileEntity te;
+	private IWorldPosCallable worldPosCallable;
 
 	public ProjectorContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory)
 	{
@@ -23,6 +24,8 @@ public class ProjectorContainer extends Container {
 
 		if(world.getTileEntity(pos) instanceof ProjectorTileEntity)
 			te = (ProjectorTileEntity) world.getTileEntity(pos);
+
+		worldPosCallable = IWorldPosCallable.of(world, pos);
 
 		for(int y = 0; y < 3; y++)
 			for(int x = 0; x < 9; ++x)
@@ -76,9 +79,8 @@ public class ProjectorContainer extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity playerIn)
+	public boolean canInteractWith(PlayerEntity player)
 	{
-		return true;
+		return isWithinUsableDistance(worldPosCallable, player, SCContent.PROJECTOR.get());
 	}
-
 }

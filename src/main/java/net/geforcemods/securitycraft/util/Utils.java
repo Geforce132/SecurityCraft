@@ -49,7 +49,7 @@ public class Utils {
 			else if(params[i] instanceof BlockPos)
 				params[i] = getFormattedCoordinates((BlockPos)params[i]);
 		}
-	
+
 		return new TranslationTextComponent(key, params);
 	}
 }

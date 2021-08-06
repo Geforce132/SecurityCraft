@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.misc.ModuleType;
 
 public class CageTrapTileEntity extends DisguisableTileEntity {
 
@@ -11,6 +12,12 @@ public class CageTrapTileEntity extends DisguisableTileEntity {
 	public CageTrapTileEntity()
 	{
 		super(SCContent.teTypeCageTrap);
+	}
+
+	@Override
+	public ModuleType[] acceptedModules()
+	{
+		return new ModuleType[]{ModuleType.DISGUISE, ModuleType.ALLOWLIST};
 	}
 
 	public boolean capturesMobs()

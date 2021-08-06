@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.CauldronBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.IDyeableArmorItem;
@@ -43,7 +43,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, Hand hand) {
-		if(world.getBlockState(pos).getBlock() == Blocks.CAULDRON) //don't open the briefcase when a cauldron is rightclicked for removing the dye
+		if(world.getBlockState(pos).getBlock() instanceof CauldronBlock) //don't open the briefcase when a cauldron is rightclicked for removing the dye
 			return ActionResultType.SUCCESS;
 
 		handle(stack, world, player, hand);
@@ -76,11 +76,29 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack briefcase, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
-		if (briefcase.hasTag() && briefcase.getTag().contains("owner"))
-			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTag().getString("owner")).setStyle(GRAY_STYLE));
+		String ownerName = getOwnerName(briefcase);
+
+		if(!ownerName.isEmpty())
+			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(GRAY_STYLE));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, PlayerEntity player) {
-		return !briefcase.hasTag() || !briefcase.getTag().contains("owner") || briefcase.getTag().getString("ownerUUID").equals(player.getUniqueID().toString()) || (briefcase.getTag().getString("ownerUUID").equals("ownerUUID") && briefcase.getTag().getString("owner").equals(player.getName().getString()));
+		if(!briefcase.hasTag())
+			return true;
+
+		String ownerName = getOwnerName(briefcase);
+		String ownerUUID = getOwnerUUID(briefcase);
+
+		return ownerName.isEmpty() || ownerUUID.equals(player.getUniqueID().toString()) || (ownerUUID.equals("ownerUUID") && ownerName.equals(player.getName().getString()));
+	}
+
+	public static String getOwnerName(ItemStack briefcase)
+	{
+		return briefcase.hasTag() ? briefcase.getTag().getString("owner") : "";
+	}
+
+	public static String getOwnerUUID(ItemStack briefcase)
+	{
+		return briefcase.hasTag() ? briefcase.getTag().getString("ownerUUID") : "";
 	}
 }

@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_metals_diamond",
+    "parent": "securitycraft:block/reinforced_diamond_block",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

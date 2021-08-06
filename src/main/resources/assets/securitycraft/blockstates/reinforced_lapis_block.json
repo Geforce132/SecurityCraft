@@ -1,7 +1,7 @@
 {
     "variants": {
         "": [
-            { "model": "securitycraft:block/reinforced_compressed_blocks_lapis" }
+            { "model": "securitycraft:block/reinforced_lapis_block" }
         ]
     }
 }

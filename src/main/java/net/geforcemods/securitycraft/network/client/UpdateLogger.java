@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
@@ -58,7 +57,7 @@ public class UpdateLogger {
 	public static void onMessage(UpdateLogger message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
+			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			int i = message.i;
 
 			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity) Minecraft.getInstance().player.world.getTileEntity(pos);

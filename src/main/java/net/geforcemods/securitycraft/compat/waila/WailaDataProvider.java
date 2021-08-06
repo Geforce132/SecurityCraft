@@ -126,7 +126,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 			if(config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())){
 
-				if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
+				if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())
 				{
 					body.add(Utils.localize("waila.securitycraft:equipped"));
 
@@ -135,6 +135,9 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 					if(!sentry.getDisguiseModule().isEmpty())
 						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
+
+					if(sentry.hasSpeedModule())
+						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())));
 				}
 			}
 

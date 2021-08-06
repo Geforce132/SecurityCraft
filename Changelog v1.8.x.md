@@ -1,3 +1,29 @@
+--------------------------Changelog for v1.8.23 of SecurityCraft--------------------------
+
+- New: The Frame block will now send a message when being rightclicked with a Camera Monitor, notifying the player that viewing a Camera Monitor in a Frame is currently not possible
+- New: The Trophy System now supports the Allowlist Module. Projectiles by listed players (as well as their Sentries' and I.M.S.' projectiles) will be ignored
+- New: Sentry bullets will now apply the Sentry's potion effects to their target
+- New: The value of per-block customization options is now shown in the tooltip, "true" and "false" have also been changed to "Yes" and "No" for clarity
+- New: Sentries can now use more projectiles to shoot. Place a chest below the Sentry and put arrows, tipped arrows, snowballs, or eggs into the chest to let the sentry use them
+- New: SecurityCraft's Patrons (people who pledge over on our Patreon page) are now being displayed in the SecurityCraft Manual. Resourcepacks should be adjusted for the new page layout
+- New: Inserting a Redstone Module into a Password-protected Chest now makes the chest output a redstone signal while being open, with a strength depending on how many players are simultaneously looking into the chest
+- Fix: Blocks with a tint (Grass, leaves, reinforced blocks, ...) projected by the Projector are not tinted correctly
+- Fix: Blocks projected by the projector have incorrect lighting
+- Fix: The Protecto does not attack players
+- Fix: The Frame's model does not match up with the vanilla iron block (this fix may break resource packs slightly)
+- Fix: Tooltips in the Block Pocket Manager's GUI still show up even if the block pocket is activated or not owned by the player looking at it
+- Fix: Reinforced Lanterns and Reinforced Chains don't have a reinforced block tint
+- Fix: Crash when trying to change the owner of a door
+- Fix: Placing a Password-protected Chest or setting/changing its passcode can lead to the wrong chest's passcode being changed
+- Fix: Sentry animation does not work properly when changing modes
+- Fix: Lasers cannot be toggled properly
+- Misc.: Some SecurityCraft model files have been renamed to better fit Minecraft's model name structure. This will break resourcepacks
+- Misc.: The SecurityCraft Manual's textures have been modified, and buttons as well as items were moved around. Not bringing resourcepacks up to date with these changes may lead to buttons and items not fitting the textures properly
+
+--------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------
+
+- Fix: Players cannot open other players' Password-protected Chests/Furnaces, or Keypads with the correct code
+
 --------------------------Changelog for v1.8.22 of SecurityCraft--------------------------
 
 - New: SecurityCraft's blocks and items can now properly be used by the offhand
@@ -12,16 +38,21 @@
 - New: The Trophy System is now also capable of targeting Ender Pearls, Snowballs, Eggs, Llama Spit and Firework Rockets
 - New: Inserting a Smart Module into a Trophy System now allows its owner to manually configure which projectile types the Trophy System is allowed to target
 - New: Keycards can now be linked to Keycard Readers via a signature that can be shared with multiple other readers. See the SecurityCraft Manual for more info
+- New: The Allowlist Module can now be used in the Cage Trap
+- New: Reinforced Cauldron
+- New: Speed Module. Can be used in an I.M.S., Protecto, Sentry, or Trophy System
+- New: The Portable Radar can now be placed on all sides of a block and will rotate accordingly
+- New: The Admin Tool now shows information about briefcases by holding the Briefcase in the off hand and the Admin Tool in the main hand and rightclicking
 - Change: The information on how to look around inside a camera is now displayed in the camera's overlay instead of being sent to the chat
 - Change: Messages sent due to changing a Sentry's mode will now show up above the hotbar to avoid spamming the chat
 - Change: The Whitelist Module has been renamed to "Allowlist Module" to be more clear about its function
 - Change: The Blacklist Module has been renamed to "Denylist Module" to be more clear about its function
 - Change: Auto-assembling the Block Pocket no longer instantly builds the structure
+- Change: The Redstone and Speed Modules now both use the resource pack's redstone/sugar texture
 - API: Added hook for mods to define a block that can open Reinforced Doors/Reinforced Trapdoors/Reinforced Fence Gates. For more info, see IDoorActivator
 - Fix: Double Crystal Quartz Slab does not drop two slab items
 - Fix: An item stack cannot be put into the Universal Block Reinforcer's slots if the stack's count is larger than the Reinforcer's durability
 - Fix: I.M.S. entity gets stuck in mid-air when leaving and rejoining the world
-- Fix: Newly added block mines don't get affected by the ableToCraftMines config setting
 - Fix: Portable Radar does not respect the "respect_invisibility" config option
 - Fix: I.M.S. attacks players in spectator mode
 - Fix: The Briefcase's NBT contains empty Briefcase inventory slots
@@ -44,8 +75,11 @@
 - Fix: Rejoining a server/world while being mounted to a camera teleports the player to that camera
 - Fix: The fourth I.M.S. Bomb doesn't get shot properly
 - Fix: The SecurityCraft Manual does not properly reflect recipes that have been disabled via datapacks/3rd-party mods
+- Fix: Sentry does not attack hostile mobs from Lycanites Mobs
+- Fix: Rightclicking a block while attempting to change a Briefcase's owner does not change the owner
 - Removed: Ability to take screenshots via middle mouse click while being mounted to a camera, as it is unneeded due to Minecraft's own screenshot feature
 - Removed: All configuration values that disable recipes. Use datapacks or 3rd-party mods to disable recipes instead
+- Removed: Version Checker integration (Forge's update checker is already being used instead)
 - Misc.: All of SecurityCraft's blocks now have loot tables
 - Misc.: Added data generators for more blockstates and models and renamed some textures and models along the way. This will break resourcepacks
 - Misc.: The minimum required Forge version is now 36.0.42

@@ -9,6 +9,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.SlotItemHandler;
@@ -16,6 +17,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class BlockPocketManagerContainer extends Container
 {
 	public BlockPocketManagerTileEntity te;
+	private IWorldPosCallable worldPosCallable;
 	public final boolean storage;
 	public final boolean isOwner;
 
@@ -28,6 +30,7 @@ public class BlockPocketManagerContainer extends Container
 		if(tile instanceof BlockPocketManagerTileEntity)
 			te = (BlockPocketManagerTileEntity)tile;
 
+		worldPosCallable = IWorldPosCallable.of(world, pos);
 		isOwner = te.getOwner().isOwner(inventory.player);
 		storage = te != null && te.hasModule(ModuleType.STORAGE) && isOwner;
 
@@ -93,8 +96,8 @@ public class BlockPocketManagerContainer extends Container
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity playerIn)
+	public boolean canInteractWith(PlayerEntity player)
 	{
-		return true;
+		return isWithinUsableDistance(worldPosCallable, player, SCContent.BLOCK_POCKET_MANAGER.get());
 	}
 }

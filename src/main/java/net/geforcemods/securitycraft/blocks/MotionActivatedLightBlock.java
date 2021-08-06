@@ -54,10 +54,10 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 		}
 	}
 
-	public static void toggleLight(World world, BlockPos pos, Owner owner, boolean isLit) {
+	public static void toggleLight(World world, BlockPos pos, BlockState state, Owner owner, boolean isLit) {
 		if(!world.isRemote)
 		{
-			world.setBlockState(pos, world.getBlockState(pos).with(LIT, isLit));
+			world.setBlockState(pos, state.with(LIT, isLit));
 
 			TileEntity te = world.getTileEntity(pos);
 

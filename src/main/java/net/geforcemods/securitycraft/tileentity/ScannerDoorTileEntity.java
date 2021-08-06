@@ -36,7 +36,7 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 			if(PlayerUtils.isPlayerMountedOnCamera(player))
 				return;
 
-			if(!getOwner().isOwner(player) && (!hasModule(ModuleType.ALLOWLIST) || !ModuleUtils.getPlayersFromModule(getModule(ModuleType.ALLOWLIST)).contains(player.getName().getString().toLowerCase())))
+			if(!getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, player))
 			{
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
 				return;

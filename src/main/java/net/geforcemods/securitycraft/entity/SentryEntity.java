@@ -10,13 +10,18 @@ import net.geforcemods.securitycraft.entity.ai.AttackRangedIfEnabledGoal;
 import net.geforcemods.securitycraft.entity.ai.TargetNearestPlayerOrMobGoal;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
+import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.material.PushReaction;
+import net.minecraft.dispenser.IDispenseItemBehavior;
+import net.minecraft.dispenser.ProjectileDispenseBehavior;
+import net.minecraft.dispenser.ProxyBlockSource;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -26,6 +31,7 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,10 +42,12 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -51,14 +59,19 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class SentryEntity extends CreatureEntity implements IRangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
 {
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(SentryEntity.class, Owner.getSerializer());
-	private static final DataParameter<CompoundNBT> MODULE = EntityDataManager.<CompoundNBT>createKey(SentryEntity.class, DataSerializers.COMPOUND_NBT);
+	private static final DataParameter<CompoundNBT> DISGUISE_MODULE = EntityDataManager.<CompoundNBT>createKey(SentryEntity.class, DataSerializers.COMPOUND_NBT);
 	private static final DataParameter<CompoundNBT> ALLOWLIST = EntityDataManager.<CompoundNBT>createKey(SentryEntity.class, DataSerializers.COMPOUND_NBT);
+	private static final DataParameter<Boolean> HAS_SPEED_MODULE = EntityDataManager.<Boolean>createKey(SentryEntity.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(SentryEntity.class, DataSerializers.VARINT);
 	public static final DataParameter<Float> HEAD_ROTATION = EntityDataManager.<Float>createKey(SentryEntity.class, DataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
@@ -78,8 +91,9 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	public void setupSentry(PlayerEntity owner)
 	{
 		dataManager.set(OWNER, new Owner(owner.getName().getString(), PlayerEntity.getUUID(owner.getGameProfile()).toString()));
-		dataManager.set(MODULE, new CompoundNBT());
+		dataManager.set(DISGUISE_MODULE, new CompoundNBT());
 		dataManager.set(ALLOWLIST, new CompoundNBT());
+		dataManager.set(HAS_SPEED_MODULE, false);
 		dataManager.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
 	}
@@ -89,8 +103,9 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	{
 		super.registerData();
 		dataManager.register(OWNER, new Owner());
-		dataManager.register(MODULE, new CompoundNBT());
+		dataManager.register(DISGUISE_MODULE, new CompoundNBT());
 		dataManager.register(ALLOWLIST, new CompoundNBT());
+		dataManager.register(HAS_SPEED_MODULE, false);
 		dataManager.register(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.register(HEAD_ROTATION, 0.0F);
 	}
@@ -98,7 +113,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	@Override
 	protected void registerGoals()
 	{
-		goalSelector.addGoal(1, new AttackRangedIfEnabledGoal(this, 5, 10.0F));
+		goalSelector.addGoal(1, new AttackRangedIfEnabledGoal(this, this::getShootingSpeed, 10.0F));
 		targetSelector.addGoal(1, new TargetNearestPlayerOrMobGoal(this));
 	}
 
@@ -208,6 +223,16 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				if(!player.isCreative())
 					player.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
 			}
+			else if(item == SCContent.SPEED_MODULE.get())
+			{
+				if(!hasSpeedModule())
+				{
+					setHasSpeedModule(true);
+
+					if(!player.isCreative())
+						player.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
+				}
+			}
 			else if(item == SCContent.UNIVERSAL_BLOCK_MODIFIER.get())
 			{
 				if (!getDisguiseModule().isEmpty())
@@ -223,8 +248,13 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 				Block.spawnAsEntity(world, pos, getDisguiseModule());
 				Block.spawnAsEntity(world, pos, getAllowlistModule());
-				dataManager.set(MODULE, new CompoundNBT());
+
+				if(hasSpeedModule())
+					Block.spawnAsEntity(world, pos, new ItemStack(SCContent.SPEED_MODULE.get()));
+
+				dataManager.set(DISGUISE_MODULE, new CompoundNBT());
 				dataManager.set(ALLOWLIST, new CompoundNBT());
+				dataManager.set(HAS_SPEED_MODULE, false);;
 			}
 			else if(item == SCContent.REMOTE_ACCESS_SENTRY.get()) //bind/unbind sentry to remote control
 				item.onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vector3d(0.0D, 0.0D, 0.0D), Direction.NORTH, pos, false)));
@@ -278,6 +308,9 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		Block.spawnAsEntity(world, pos, new ItemStack(SCContent.SENTRY.get()));
 		Block.spawnAsEntity(world, pos, getDisguiseModule()); //if there is none, nothing will drop
 		Block.spawnAsEntity(world, pos, getAllowlistModule()); //if there is none, nothing will drop
+
+		if(hasSpeedModule())
+			Block.spawnAsEntity(world, pos, new ItemStack(SCContent.SPEED_MODULE.get()));
 	}
 
 	@Override
@@ -309,7 +342,8 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 		if(sendMessage)
 			player.sendStatusMessage(Utils.localize(SentryMode.values()[mode].getModeKey()).appendSibling(Utils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
-		else if(!player.world.isRemote)
+
+		if(!player.world.isRemote)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, SentryMode.values()[mode].isAggressive()));
 	}
 
@@ -344,17 +378,63 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		if(getDistanceSq(target) > MAX_TARGET_DISTANCE * MAX_TARGET_DISTANCE)
 			return;
 
-		BulletEntity throwableEntity = new BulletEntity(world, this);
+		TileEntity te = world.getTileEntity(getPosition().down());
+		ProjectileEntity throwableEntity = null;
+		SoundEvent shootSound = SoundEvents.ENTITY_ARROW_SHOOT;
+		ProjectileDispenseBehavior pdb = null;
+		LazyOptional<IItemHandler> optional = LazyOptional.empty();
+
+		if(te instanceof KeypadChestTileEntity)
+			optional = ((KeypadChestTileEntity)te).getHandlerForSentry(this);
+		else if(te != null)
+			optional = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
+
+		if(optional.isPresent())
+		{
+			IItemHandler handler = optional.orElse(null); //this is safe, because the presence was checked beforehand
+
+			for(int i = 0; i < handler.getSlots(); i++)
+			{
+				ItemStack stack = handler.getStackInSlot(i);
+
+				if(!stack.isEmpty())
+				{
+					IDispenseItemBehavior dispenseBehavior = ((DispenserBlock)Blocks.DISPENSER).getBehavior(stack);
+
+					if(dispenseBehavior instanceof ProjectileDispenseBehavior)
+					{
+						ItemStack extracted = handler.extractItem(i, 1, false);
+
+						pdb = ((ProjectileDispenseBehavior)dispenseBehavior);
+						throwableEntity = pdb.getProjectileEntity(world, getPositionVec().add(0.0D, 1.6D, 0.0D), extracted);
+						throwableEntity.setShooter(this);
+						shootSound = null;
+						break;
+					}
+				}
+			}
+		}
+
+		if(throwableEntity == null)
+			throwableEntity = new BulletEntity(world, this);
+
 		double baseY = target.getPosY() + target.getEyeHeight() - 1.100000023841858D;
 		double x = target.getPosX() - getPosX();
 		double y = baseY - throwableEntity.getPosY();
 		double z = target.getPosZ() - getPosZ();
 		float yOffset = MathHelper.sqrt(x * x + z * z) * 0.2F;
 
-		throwableEntity.setRawPosition(throwableEntity.getPosX(), throwableEntity.getPosY() - 0.1F, throwableEntity.getPosZ());
 		dataManager.set(HEAD_ROTATION, (float)(MathHelper.atan2(x, -z) * (180D / Math.PI)));
 		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
-		playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
+
+		if(shootSound == null)
+		{
+			if(!world.isRemote)
+				pdb.playDispenseSound(new ProxyBlockSource((ServerWorld)world, getPosition()));
+		}
+		else
+			playSound(shootSound, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
+
 		world.addEntity(throwableEntity);
 	}
 
@@ -364,6 +444,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		tag.put("TileEntityData", getOwnerTag());
 		tag.put("InstalledModule", getDisguiseModule().write(new CompoundNBT()));
 		tag.put("InstalledWhitelist", getAllowlistModule().write(new CompoundNBT()));
+		tag.putBoolean("HasSpeedModule", hasSpeedModule());
 		tag.putInt("SentryMode", dataManager.get(MODE));
 		tag.putFloat("HeadRotation", dataManager.get(HEAD_ROTATION));
 		super.writeAdditional(tag);
@@ -387,8 +468,9 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		String uuid = teTag.getString("ownerUUID");
 
 		dataManager.set(OWNER, new Owner(name, uuid));
-		dataManager.set(MODULE, tag.getCompound("InstalledModule"));
+		dataManager.set(DISGUISE_MODULE, tag.getCompound("InstalledModule"));
 		dataManager.set(ALLOWLIST, tag.getCompound("InstalledWhitelist"));
+		dataManager.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		dataManager.set(MODE, tag.getInt("SentryMode"));
 		dataManager.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
 		super.readAdditional(tag);
@@ -419,7 +501,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				world.setBlockState(getPosition(), state.getShape(world, getPosition()) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
 		}
 
-		dataManager.set(MODULE, module.write(new CompoundNBT()));
+		dataManager.set(DISGUISE_MODULE, module.write(new CompoundNBT()));
 	}
 
 	/**
@@ -432,11 +514,20 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	}
 
 	/**
+	 * Sets whether this sentry has a speed module installed
+	 * @param hasSpeedModule true to set that this sentry has a speed module, false otherwise
+	 */
+	public void setHasSpeedModule(boolean hasSpeedModule)
+	{
+		dataManager.set(HAS_SPEED_MODULE, hasSpeedModule);
+	}
+
+	/**
 	 * @return The disguise module that is added to this sentry. ItemStack.EMPTY if none available
 	 */
 	public ItemStack getDisguiseModule()
 	{
-		CompoundNBT tag = dataManager.get(MODULE);
+		CompoundNBT tag = dataManager.get(DISGUISE_MODULE);
 
 		if(tag == null || tag.isEmpty())
 			return ItemStack.EMPTY;
@@ -455,6 +546,11 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			return ItemStack.EMPTY;
 		else
 			return ItemStack.read(tag);
+	}
+
+	public boolean hasSpeedModule()
+	{
+		return dataManager.get(HAS_SPEED_MODULE);
 	}
 
 	/**
@@ -489,6 +585,11 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		}
 
 		return false;
+	}
+
+	public int getShootingSpeed()
+	{
+		return hasSpeedModule() ? 5 : 10;
 	}
 
 	//start: disallow sentry to take damage

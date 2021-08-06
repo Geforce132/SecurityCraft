@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_stone_brick_default",
+    "parent": "securitycraft:block/reinforced_stone_bricks",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

@@ -1,7 +1,7 @@
 {
     "variants": {
         "": [
-            { "model": "securitycraft:block/reinforced_purpur_default" }
+            { "model": "securitycraft:block/reinforced_purpur_block" }
         ]
     }
 }

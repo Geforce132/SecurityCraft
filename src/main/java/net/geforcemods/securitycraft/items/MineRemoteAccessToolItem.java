@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
@@ -17,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -41,7 +43,9 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand){
-		SecurityCraft.proxy.displayMRATGui(player.getHeldItem(hand));
+		if(world.isRemote)
+			ClientHandler.displayMRATGui(player.getHeldItem(hand));
+
 		return ActionResult.resultConsume(player.getHeldItem(hand));
 	}
 
@@ -52,7 +56,7 @@ public class MineRemoteAccessToolItem extends Item {
 	}
 
 	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
-		if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
+		if(world.getBlockState(pos).getBlock() instanceof IExplosive){
 			if(!isMineAdded(stack, pos)){
 				int availSlot = getNextAvaliableSlot(stack);
 
@@ -61,16 +65,20 @@ public class MineRemoteAccessToolItem extends Item {
 					return ActionResultType.FAIL;
 				}
 
-				if(world.getTileEntity(pos) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
+				TileEntity te = world.getTileEntity(pos);
+
+				if(te instanceof IOwnable && !((IOwnable)te).getOwner().isOwner(player))
 				{
-					SecurityCraft.proxy.displayMRATGui(stack);
+					if(world.isRemote)
+						ClientHandler.displayMRATGui(stack);
+
 					return ActionResultType.SUCCESS;
 				}
 
 				if(stack.getTag() == null)
 					stack.setTag(new CompoundNBT());
 
-				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.fromPos(pos));
+				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.posToIntArray(pos));
 
 				if (!world.isRemote)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));

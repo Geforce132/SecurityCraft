@@ -5,19 +5,22 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
+import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ExperienceBottleEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
@@ -37,16 +40,13 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
 
-	/* Number of ticks that the trophy takes to "charge" */
-	public static final int COOLDOWN_TIME = 8;
-
 	/* The number of blocks away from the trophy system you can be for
 	 * the laser beam between itself and the projectile to be rendered */
 	public static final int RENDER_DISTANCE = 50;
 
 	private final Map<EntityType<?>, Boolean> projectileFilter = new LinkedHashMap<>();
 	public ProjectileEntity entityBeingTargeted = null;
-	public int cooldown = COOLDOWN_TIME;
+	public int cooldown = getCooldownTime();
 	private final Random random = new Random();
 
 	public TrophySystemTileEntity()
@@ -79,11 +79,11 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 				ProjectileEntity target = getPotentialTarget();
 
 				if(target != null) {
-					UUID shooterUUID = getShooterUUID(target);
+					Entity shooter = target.getShooter();
 
-					if (shooterUUID == null || !shooterUUID.toString().equals(getOwner().getUUID())) {
+					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
+					if(!(shooter != null && ((shooter.getUniqueID() != null && shooter.getUniqueID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
 						setTarget(target);
-					}
 				}
 			}
 		}
@@ -167,7 +167,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	 * Resets the cooldown and targeted entity variables
 	 */
 	private void resetTarget() {
-		cooldown = COOLDOWN_TIME;
+		cooldown = getCooldownTime();
 		entityBeingTargeted = null;
 	}
 
@@ -181,7 +181,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 		potentialTargets.addAll(world.getEntitiesWithinAABB(ProjectileEntity.class, area, this::isAllowedToTarget));
 
-		//remove bullets shot by sentries of this trophy system's owner
+		//remove bullets shot by sentries/IMSs of this trophy system's owner or players on the allowlist
 		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
 
 		// If there are no projectiles, return
@@ -202,23 +202,16 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	}
 
 	private boolean filterSCProjectiles(ProjectileEntity projectile) {
-		if (projectile instanceof BulletEntity)
-			return !((BulletEntity)projectile).getOwner().equals(getOwner());
-		else if (projectile instanceof IMSBombEntity)
-			return !((IMSBombEntity)projectile).getOwner().equals(getOwner());
+		Owner owner = null;
 
-		return true;
-	}
+		if(projectile instanceof BulletEntity)
+			owner = ((BulletEntity)projectile).getOwner();
+		else if(projectile instanceof IMSBombEntity)
+			owner = ((IMSBombEntity)projectile).getOwner();
+		else if(projectile.getShooter() instanceof SentryEntity)
+			owner = ((SentryEntity)projectile.getShooter()).getOwner();
 
-	/**
-	 * Returns the UUID of the player who shot the given Entity
-	 */
-	public UUID getShooterUUID(ProjectileEntity projectile) {
-		if (projectile.func_234616_v_() != null) { //getShooter
-			return projectile.func_234616_v_().getUniqueID();
-		} else {
-			return null;
-		}
+		return owner == null || (!owner.equals(getOwner()) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}
 
 	public void toggleFilter(EntityType<?> projectileType) {
@@ -258,11 +251,19 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.SMART};
+		return new ModuleType[]{ModuleType.SMART, ModuleType.SPEED, ModuleType.ALLOWLIST};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
 		return null;
+	}
+
+	/*
+	 * @return The number of ticks that the trophy takes to "charge"
+	 */
+	public int getCooldownTime()
+	{
+		return hasModule(ModuleType.SPEED) ? 4 : 8;
 	}
 }

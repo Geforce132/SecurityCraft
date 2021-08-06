@@ -5,11 +5,9 @@ import javax.annotation.Nullable;
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.IBucketPickupHandler;
-import net.minecraft.block.ILiquidContainer;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -26,7 +24,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 
-public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements IBucketPickupHandler, ILiquidContainer
+public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements IWaterLoggable
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(-8.0D, 14.0D, -8.0D, 24.0D, 16.0D, 24.0D);
@@ -60,46 +58,11 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 		else
 			return getDefaultState().with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getPos()).getFluid() == Fluids.WATER);
 	}
-
-	@Override
-	public Fluid pickupFluid(IWorld world, BlockPos pos, BlockState state)
-	{
-		if(state.get(WATERLOGGED))
-		{
-			world.setBlockState(pos, state.with(WATERLOGGED, false), 3);
-			return Fluids.WATER;
-		}
-		else
-			return Fluids.EMPTY;
-	}
-
+	
 	@Override
 	public FluidState getFluidState(BlockState state)
 	{
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	@Override
-	public boolean canContainFluid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid)
-	{
-		return !state.get(WATERLOGGED) && fluid == Fluids.WATER;
-	}
-
-	@Override
-	public boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, FluidState fluidState)
-	{
-		if(!state.get(WATERLOGGED) && fluidState.getFluid() == Fluids.WATER)
-		{
-			if(!world.isRemote())
-			{
-				world.setBlockState(pos, state.with(WATERLOGGED, true), 3);
-				world.getPendingFluidTicks().scheduleTick(pos, fluidState.getFluid(), fluidState.getFluid().getTickRate(world));
-			}
-
-			return true;
-		}
-		else
-			return false;
 	}
 
 	@Override

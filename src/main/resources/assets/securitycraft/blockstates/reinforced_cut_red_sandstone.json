@@ -1,7 +1,7 @@
 {
     "variants": {
         "": [
-            { "model": "securitycraft:block/reinforced_red_sandstone_smooth" }
+            { "model": "securitycraft:block/reinforced_cut_red_sandstone" }
         ]
     }
 }

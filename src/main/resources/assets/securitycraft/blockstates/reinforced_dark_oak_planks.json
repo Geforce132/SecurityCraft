@@ -1,7 +1,7 @@
 {
     "variants": {
         "": [
-            { "model": "securitycraft:block/reinforced_planks_dark_oak" }
+            { "model": "securitycraft:block/reinforced_dark_oak_planks" }
         ]
     }
 }

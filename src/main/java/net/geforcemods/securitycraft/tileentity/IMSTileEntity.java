@@ -35,6 +35,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
 	private IMSTargetingMode targetingMode = IMSTargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;
+	private int attackTime = getAttackInterval();
 
 	public IMSTileEntity()
 	{
@@ -54,8 +55,11 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			updateBombCount = false;
 		}
 
-		if(world.getGameTime() % 80L == 0L)
+		if(attackTime-- == 0)
+		{
+			attackTime = getAttackInterval();
 			launchMine();
+		}
 	}
 
 	/**
@@ -105,7 +109,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	{
 		return entity != null
 				&& (!(entity instanceof PlayerEntity) || !getOwner().isOwner((PlayerEntity)entity) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !((PlayerEntity)entity).isCreative() && !((PlayerEntity)entity).isSpectator()) //PlayerEntity checks
-				&& !(hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(entity.getName().getString().toLowerCase())); //checks for all entities
+				&& !(ModuleUtils.isAllowed(this, entity)); //checks for all entities
 	}
 
 	/**
@@ -167,7 +171,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST};
+		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.SPEED};
 	}
 
 	@Override
@@ -185,6 +189,11 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	public ITextComponent getDisplayName()
 	{
 		return new TranslationTextComponent(SCContent.IMS.get().getTranslationKey());
+	}
+
+	public int getAttackInterval()
+	{
+		return hasModule(ModuleType.SPEED) ? 40 : 80;
 	}
 
 	public static enum IMSTargetingMode {

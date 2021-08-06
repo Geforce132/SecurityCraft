@@ -1,7 +1,7 @@
 {
     "variants": {
         "": [
-            { "model": "securitycraft:block/reinforced_compressed_blocks_coal" }
+            { "model": "securitycraft:block/reinforced_coal_block" }
         ]
     }
 }

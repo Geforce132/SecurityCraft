@@ -1,5 +1,5 @@
 {
     "variants": {
-        "":  { "model": "securitycraft:block/reinforced_wool_brown" }
+        "":  { "model": "securitycraft:block/reinforced_brown_wool" }
     }
 }

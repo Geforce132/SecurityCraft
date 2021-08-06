@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -58,7 +57,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class SCClientEventHandler
 {
 	public static final ResourceLocation CAMERA_DASHBOARD = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
-	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("minecraft:textures/mob_effect/night_vision.png");
+	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 
 	@SubscribeEvent
@@ -94,8 +94,8 @@ public class SCClientEventHandler
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
 		if(event.getType() == ElementType.EXPERIENCE && Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
-			if((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosX()), (int)Minecraft.getInstance().player.getRidingEntity().getPosY(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosZ()))) instanceof SecurityCameraBlock))
-				drawCameraOverlay(event.getMatrixStack(), Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().getMainWindow(), Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosX()), (int)Minecraft.getInstance().player.getRidingEntity().getPosY(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosZ())));
+			if(Minecraft.getInstance().world.getBlockState(Minecraft.getInstance().player.getRidingEntity().getPosition()).getBlock() instanceof SecurityCameraBlock)
+				drawCameraOverlay(event.getMatrixStack(), Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().getMainWindow(), Minecraft.getInstance().player, Minecraft.getInstance().world, Minecraft.getInstance().player.getRidingEntity().getPosition());
 		}
 		else if(event.getType() == ElementType.ALL)
 		{
@@ -104,7 +104,7 @@ public class SCClientEventHandler
 			World world = player.getEntityWorld();
 
 			for (Hand hand : Hand.values()) {
-				String textureToUse = null;
+				int uCoord = 0;
 				ItemStack stack = player.getHeldItem(hand);
 
 				if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
@@ -116,7 +116,7 @@ public class SCClientEventHandler
 					if(mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(((BlockRayTraceResult)mop).getPos()) instanceof SecurityCameraTileEntity)
 					{
 						CompoundNBT cameras = stack.getTag();
-						textureToUse = "item_not_bound";
+						uCoord = 110;
 
 						if(cameras != null) {
 							for(int i = 1; i < 31; i++)
@@ -128,7 +128,7 @@ public class SCClientEventHandler
 
 								if(Integer.parseInt(coords[0]) == ((BlockRayTraceResult)mop).getPos().getX() && Integer.parseInt(coords[1]) == ((BlockRayTraceResult)mop).getPos().getY() && Integer.parseInt(coords[2]) == ((BlockRayTraceResult)mop).getPos().getZ())
 								{
-									textureToUse = "item_bound";
+									uCoord = 88;
 									break;
 								}
 							}
@@ -143,7 +143,7 @@ public class SCClientEventHandler
 
 					if(mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockRayTraceResult)mop).getPos()).getBlock() instanceof IExplosive)
 					{
-						textureToUse = "item_not_bound";
+						uCoord = 110;
 						CompoundNBT mines = stack.getTag();
 
 						if(mines != null) {
@@ -155,7 +155,7 @@ public class SCClientEventHandler
 
 									if(coords[0] == ((BlockRayTraceResult)mop).getPos().getX() && coords[1] == ((BlockRayTraceResult)mop).getPos().getY() && coords[2] == ((BlockRayTraceResult)mop).getPos().getZ())
 									{
-										textureToUse = "item_bound";
+										uCoord = 88;
 										break;
 									}
 								}
@@ -169,7 +169,7 @@ public class SCClientEventHandler
 
 					if(hitEntity instanceof SentryEntity)
 					{
-						textureToUse = "item_not_bound";
+						uCoord = 110;
 						CompoundNBT sentries = stack.getTag();
 
 						if(sentries != null) {
@@ -180,7 +180,7 @@ public class SCClientEventHandler
 									int[] coords = sentries.getIntArray("sentry" + i);
 									if(coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ())
 									{
-										textureToUse = "item_bound";
+										uCoord = 88;
 										break;
 									}
 								}
@@ -189,10 +189,10 @@ public class SCClientEventHandler
 					}
 				}
 
-				if (textureToUse != null) {
+				if (uCoord != 0) {
 					RenderSystem.enableAlphaTest();
-					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					AbstractGui.blit(event.getMatrixStack(), Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + (hand == Hand.MAIN_HAND ? player.inventory.currentItem * 20 : -29) + 2, Minecraft.getInstance().getMainWindow().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					Minecraft.getInstance().textureManager.bindTexture(BEACON_GUI);
+					AbstractGui.blit(event.getMatrixStack(), Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + (hand == Hand.MAIN_HAND ? player.inventory.currentItem * 20 : -29), Minecraft.getInstance().getMainWindow().getScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
 					RenderSystem.disableAlphaTest();
 				}
 			}

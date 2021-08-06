@@ -1,7 +1,8 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import java.util.stream.Collectors;
+
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -11,14 +12,13 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.player.PlayerEntity;
@@ -98,10 +98,14 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	}
 
 	@Override
+	public CompoundNBT getUpdateTag()
+	{
+		return write(new CompoundNBT());
+	}
+
+	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		CompoundNBT tag = new CompoundNBT();
-		write(tag);
-		return new SUpdateTileEntityPacket(pos, 1, tag);
+		return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
 	}
 
 	@Override
@@ -116,6 +120,18 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	public ITextComponent getDefaultName()
 	{
 		return Utils.localize("block.securitycraft.keypad_chest");
+	}
+
+	@Override
+	protected void onOpenOrClose() {
+		super.onOpenOrClose();
+
+		if (hasModule(ModuleType.REDSTONE))
+			this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockState().getBlock());
+	}
+
+	public int getNumPlayersUsing() {
+		return numPlayersUsing;
 	}
 
 	@Override
@@ -134,6 +150,14 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		return insertOnlyHandler;
 	}
 
+	public LazyOptional<IItemHandler> getHandlerForSentry(SentryEntity entity)
+	{
+		if(entity.getOwner().owns(this))
+			return super.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
+		else
+			return LazyOptional.empty();
+	}
+
 	@Override
 	public boolean enableHack()
 	{
@@ -148,7 +172,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 
 	@Override
 	public void activate(PlayerEntity player) {
-		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof KeypadChestBlock && !isBlocked())
+		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadChestBlock && !isBlocked())
 			KeypadChestBlock.activate(world, pos, player);
 	}
 
@@ -301,32 +325,20 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 
 	public boolean isBlocked()
 	{
-		Block east = BlockUtils.getBlock(getWorld(), getPos().east());
-		Block south = BlockUtils.getBlock(getWorld(), getPos().south());
-		Block west = BlockUtils.getBlock(getWorld(), getPos().west());
-		Block north = BlockUtils.getBlock(getWorld(), getPos().north());
+		for(Direction dir : Direction.Plane.HORIZONTAL.getDirectionValues().collect(Collectors.toList()))
+		{
+			BlockPos pos = getPos().offset(dir);
 
-		if(east instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(getWorld(), getPos().east()))
-			return true;
-		else if(south instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(getWorld(), getPos().south()))
-			return true;
-		else if(west instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(getWorld(), getPos().west()))
-			return true;
-		else if(north instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(getWorld(), getPos().north()))
-			return true;
-		else return isSingleBlocked();
+			if(world.getBlockState(pos).getBlock() instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(world, pos))
+				return true;
+		}
+
+		return isSingleBlocked();
 	}
 
 	public boolean isSingleBlocked()
 	{
 		return KeypadChestBlock.isBlocked(getWorld(), getPos());
-	}
-
-	@Override
-	public void onLoad()
-	{
-		if(world.isRemote)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(pos));
 	}
 
 	@Override
@@ -344,7 +356,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	@Override
 	public ModuleType[] acceptedModules()
 	{
-		return new ModuleType[] {ModuleType.ALLOWLIST, ModuleType.DENYLIST};
+		return new ModuleType[] {ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE};
 	}
 
 	@Override

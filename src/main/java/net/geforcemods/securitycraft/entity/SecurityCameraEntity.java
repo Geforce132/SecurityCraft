@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetCameraRotation;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -33,9 +32,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class SecurityCameraEntity extends Entity{
 
 	private final double CAMERA_SPEED = ConfigHandler.CLIENT.cameraSpeed.get();
-	public int blockPosX;
-	public int blockPosY;
-	public int blockPosZ;
 	private double cameraUseX;
 	private double cameraUseY;
 	private double cameraUseZ;
@@ -57,9 +53,6 @@ public class SecurityCameraEntity extends Entity{
 
 	public SecurityCameraEntity(World world, double x, double y, double z, int id, PlayerEntity player){
 		this(SCContent.eTypeSecurityCamera, world);
-		blockPosX = (int) x;
-		blockPosY = (int) y;
-		blockPosZ = (int) z;
 		cameraUseX = player.getPosX();
 		cameraUseY = player.getPosY();
 		cameraUseZ = player.getPosZ();
@@ -76,9 +69,6 @@ public class SecurityCameraEntity extends Entity{
 
 	public SecurityCameraEntity(World world, double x, double y, double z, int id, SecurityCameraEntity camera){
 		this(SCContent.eTypeSecurityCamera, world);
-		blockPosX = (int) x;
-		blockPosY = (int) y;
-		blockPosZ = (int) z;
 		cameraUseX = camera.cameraUseX;
 		cameraUseY = camera.cameraUseY;
 		cameraUseZ = camera.cameraUseZ;
@@ -104,7 +94,7 @@ public class SecurityCameraEntity extends Entity{
 		{
 			rotationPitch = 30F;
 
-			Direction facing = world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()))).get(SecurityCameraBlock.FACING);
+			Direction facing = world.getBlockState(getPosition()).get(SecurityCameraBlock.FACING);
 
 			if(facing == Direction.NORTH)
 				rotationYaw = 180F;
@@ -169,7 +159,7 @@ public class SecurityCameraEntity extends Entity{
 		}
 
 		if(!world.isRemote)
-			if(getPassengers().size() == 0 || BlockUtils.getBlock(world, blockPosX, blockPosY, blockPosZ) != SCContent.SECURITY_CAMERA.get()){
+			if(getPassengers().size() == 0 || world.getBlockState(getPosition()).getBlock() != SCContent.SECURITY_CAMERA.get()){
 				remove();
 				return;
 			}
@@ -235,7 +225,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	public void moveViewLeft() {
-		BlockState state = world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())));
+		BlockState state = world.getBlockState(getPosition());
 
 		if(state.hasProperty(SecurityCameraBlock.FACING)) {
 			Direction facing = state.get(SecurityCameraBlock.FACING);
@@ -269,7 +259,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	public void moveViewRight(){
-		BlockState state = world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())));
+		BlockState state = world.getBlockState(getPosition());
 
 		if(state.hasProperty(SecurityCameraBlock.FACING)) {
 			Direction facing = state.get(SecurityCameraBlock.FACING);
@@ -318,7 +308,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	public void setRedstonePower() {
-		BlockPos pos = BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()));
+		BlockPos pos = getPosition();
 
 		if(((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE))
 			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !world.getBlockState(pos).get(SecurityCameraBlock.POWERED)));

@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_compressed_blocks_coal",
+    "parent": "securitycraft:block/reinforced_coal_block",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

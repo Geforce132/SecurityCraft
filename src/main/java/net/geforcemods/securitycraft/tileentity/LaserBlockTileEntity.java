@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.item.ItemStack;
 
 public class LaserBlockTileEntity extends DisguisableTileEntity {
@@ -29,10 +28,8 @@ public class LaserBlockTileEntity extends DisguisableTileEntity {
 	}
 
 	private void toggleLaser(BooleanOption option) {
-		if(BlockUtils.getBlock(world, pos) != SCContent.LASER_BLOCK.get()) return;
-
 		if(option.get())
-			((LaserBlock) BlockUtils.getBlock(world, pos)).setLaser(world, pos);
+			((LaserBlock)getBlockState().getBlock()).setLaser(world, pos);
 		else
 			LaserBlock.destroyAdjacentLasers(world, pos);
 	}

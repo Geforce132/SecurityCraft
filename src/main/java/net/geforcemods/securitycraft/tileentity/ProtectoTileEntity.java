@@ -23,8 +23,13 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	@Override
 	public boolean attackEntity(Entity entity){
 		if (entity instanceof LivingEntity && !(entity instanceof SentryEntity) && !EntityUtils.isInvisible(((LivingEntity)entity))) {
-			if ((entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || (hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(((LivingEntity) entity).getName().getString().toLowerCase())))))
-				return false;
+			if (entity instanceof PlayerEntity)
+			{
+				PlayerEntity player = (PlayerEntity)entity;
+
+				if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
+					return false;
+			}
 
 			if(!world.isRemote)
 				WorldUtils.spawnLightning(world, entity.getPositionVec(), false);
@@ -38,7 +43,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public boolean canAttack() {
-		boolean canAttack = (getAttackCooldown() == 200 && world.canBlockSeeSky(pos) && world.isRaining());
+		boolean canAttack = (getAttackCooldown() >= getTicksBetweenAttacks() && world.canBlockSeeSky(pos) && world.isRaining());
 
 		if(canAttack && !getBlockState().get(ProtectoBlock.ACTIVATED))
 			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, true));
@@ -51,7 +56,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	@Override
 	public boolean shouldAttackEntityType(Entity entity)
 	{
-		return !(entity instanceof PlayerEntity) && entity instanceof LivingEntity;
+		return entity instanceof LivingEntity;
 	}
 
 	@Override
@@ -60,8 +65,14 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
+	public int getTicksBetweenAttacks()
+	{
+		return hasModule(ModuleType.SPEED) ? 100 : 200;
+	}
+
+	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST};
+		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.SPEED};
 	}
 
 	@Override

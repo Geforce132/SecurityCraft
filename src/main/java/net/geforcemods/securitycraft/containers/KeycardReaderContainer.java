@@ -11,6 +11,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -19,6 +20,7 @@ public class KeycardReaderContainer extends Container
 	private final Inventory itemInventory = new Inventory(1);
 	public final Slot keycardSlot;
 	public KeycardReaderTileEntity te;
+	private IWorldPosCallable worldPosCallable;
 
 	public KeycardReaderContainer(int windowId, PlayerInventory inventory, World world, BlockPos pos)
 	{
@@ -28,6 +30,8 @@ public class KeycardReaderContainer extends Container
 
 		if(tile instanceof KeycardReaderTileEntity)
 			te = (KeycardReaderTileEntity)tile;
+
+		worldPosCallable = IWorldPosCallable.of(world, pos);
 
 		//main player inventory
 		for(int i = 0; i < 3; i++)
@@ -44,10 +48,14 @@ public class KeycardReaderContainer extends Container
 			{
 				//only allow keycards
 				//do not allow limited use keycards as they are only crafting components
+				if(!(stack.getItem() instanceof KeycardItem) || stack.getItem() == SCContent.LIMITED_USE_KEYCARD.get())
+					return false;
+
+				boolean hasTag = stack.hasTag();
+				String ownerUUID = hasTag ? stack.getTag().getString("ownerUUID") : "";
+
 				//only allow keycards that have been linked to a keycard reader with the same owner as this keycard reader
-				return stack.getItem() instanceof KeycardItem
-						&& stack.getItem() != SCContent.LIMITED_USE_KEYCARD.get()
-						&& (!stack.hasTag() || stack.getTag().getString("ownerUUID").equals(te.getOwner().getUUID()));
+				return !hasTag || ownerUUID.isEmpty() || ownerUUID.equals(te.getOwner().getUUID());
 			}
 		});
 	}
@@ -123,8 +131,8 @@ public class KeycardReaderContainer extends Container
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity playerIn)
+	public boolean canInteractWith(PlayerEntity player)
 	{
-		return true;
+		return isWithinUsableDistance(worldPosCallable, player, SCContent.KEYCARD_READER.get());
 	}
 }
