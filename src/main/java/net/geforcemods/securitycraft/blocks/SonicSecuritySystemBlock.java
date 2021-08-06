@@ -57,24 +57,10 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		/*if(world.isRemote && hand != Hand.MAIN_HAND) return ActionResultType.PASS;*/
 		if(world.isRemote)
 		{
 			SecurityCraft.proxy.displaySonicSecuritySystemGui((SonicSecuritySystemTileEntity) world.getTileEntity(pos));
 		}
-
-		/*
-		if(((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).isRecording())
-		{
-			((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).setRecording(false);
-			System.out.println(((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).recordedNotes.size());
-		}
-		else if(!((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).isRecording()){
-			((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).setRecording(true);
-		}
-
-		System.out.println("Is recording: " + ((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).isRecording());
-		 */
 
 		return ActionResultType.SUCCESS;
 	}

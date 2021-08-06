@@ -327,8 +327,6 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onNoteBlockPlayed(NoteBlockEvent.Play event)
 	{
-		System.out.println(event.getNote() + " | " + event.getOctave() + " | " + event.getVanillaNoteId() + " | " + event.getInstrument());
-
 		AxisAlignedBB searchBox = new AxisAlignedBB(event.getPos());
 		searchBox = searchBox.grow(SonicSecuritySystemTileEntity.MAX_RANGE, SonicSecuritySystemTileEntity.MAX_RANGE, SonicSecuritySystemTileEntity.MAX_RANGE); //TODO double-check to be sure this is the correct function to use and not expand()
 
@@ -340,12 +338,15 @@ public class SCEventHandler {
 			{
 				SonicSecuritySystemTileEntity te = ((SonicSecuritySystemTileEntity) event.getWorld().getTileEntity(searchingPos));
 
-				// If the found SSS is within range, linked to this block, and active, return true
-				if(te.isActive() && te.isRecording())
+				// If the SSS is recording, record the note being played
+				if(te.isRecording())
+				{
 					te.recordNote(event.getVanillaNoteId(), event.getInstrument().getString());
+				}
+				// If the SSS is active, check to see if the note being played matches the saved combination.
+				// If so, toggle its redstone power output on
 				else if(te.isActive() && !te.isRecording() && te.listenToNote(event.getVanillaNoteId(), event.getInstrument().getString()))
 				{
-					System.out.println("opening");
 					te.shouldEmitPower = true;
 					event.getWorld().updateBlock(searchingPos, SCContent.SONIC_SECURITY_SYSTEM.get());
 				}

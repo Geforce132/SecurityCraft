@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -14,6 +15,7 @@ import net.geforcemods.securitycraft.api.Option.EnumOption;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.network.client.SyncSSSSettingsOnClient;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -27,11 +29,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implements INamedContainerProvider {
 
 	// The delay between each ping sound in ticks
-	private static final int DELAY = 100;
+	private static final int PING_DELAY = 100;
+	private static final int LISTEN_DELAY = 60;
 
 	// How far away can this SSS reach (possibly a config option?)
 	public static final int MAX_RANGE = 30;
@@ -43,7 +47,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	private BooleanOption isSilent = new BooleanOption("isSilent", false);
 	private EnumOption mode = new EnumOption("mode", 0, Mode.ON, Mode.REDSTONE, Mode.OFF);
 
-	private int pingCooldown = DELAY;
+	private int pingCooldown = PING_DELAY;
 	private int powerCooldown = 40;
 	public float radarRotationDegrees = 0;
 
@@ -52,8 +56,11 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 
 	private boolean isRecording = false;
 	public ArrayList<NoteWrapper> recordedNotes = new ArrayList<>();
-	private int listenPos = 0;
 	public boolean shouldEmitPower = false;
+
+	private boolean isListening = false;
+	private int listeningTimer = LISTEN_DELAY;
+	private int listenPos = 0;
 
 	public SonicSecuritySystemTileEntity()
 	{
@@ -77,6 +84,25 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 					powerCooldown = 40;
 					shouldEmitPower = false;
 					world.updateBlock(pos, SCContent.SONIC_SECURITY_SYSTEM.get());
+				}
+			}
+
+			// If the SSS is currently listening to a note, check to see
+			// if the timer has run out and needs to be reset
+			if(isListening)
+			{
+				if(listeningTimer > 0)
+				{
+					listeningTimer--;
+					return;
+				}
+				else
+				{
+					listeningTimer = LISTEN_DELAY;
+					listenPos = 0;
+					isListening = false;
+					world.updateBlock(pos, SCContent.SONIC_SECURITY_SYSTEM.get());
+					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new SyncSSSSettingsOnClient(pos, SyncSSSSettingsOnClient.DataType.LISTENING_OFF));
 				}
 			}
 
@@ -112,19 +138,22 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 				}
 
 				// Play the ping sound if it was not disabled
-				if(!isSilent.get())
+				if(!isSilent.get() && !isRecording)
 					world.playSound(null, pos, SCSounds.PING.event, SoundCategory.BLOCKS, 0.3F, 1.0F);
 
-				pingCooldown = DELAY;
+				pingCooldown = PING_DELAY;
 			}
 		}
 		else
 		{
-			// Turn the radar dish slightly
-			radarRotationDegrees += 0.15;
+			if(isActive() || isRecording())
+			{
+				// Turn the radar dish slightly
+				radarRotationDegrees += 0.15;
 
-			if(radarRotationDegrees >= 360)
-				radarRotationDegrees = 0;
+				if(radarRotationDegrees >= 360)
+					radarRotationDegrees = 0;
+			}
 		}
 	}
 
@@ -168,6 +197,9 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 			tag.getList("Notes", Constants.NBT.TAG_COMPOUND).add(nbt);
 		}
 
+		tag.putBoolean("isRecording", isRecording);
+		tag.putInt("listenPos", listenPos);
+
 		return tag;
 	}
 
@@ -202,6 +234,12 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 				recordedNotes.add(new NoteWrapper(note.getInt("noteID"), note.getString("instrument")));
 			}
 		}
+
+		if(tag.contains("isRecording"))
+			isRecording = tag.getBoolean("isRecording");
+
+		if(tag.contains("listenPos"))
+			listenPos = tag.getInt("listenPos");
 	}
 
 	/**
@@ -297,6 +335,16 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 		isRecording = recording;
 	}
 
+	public boolean isListening()
+	{
+		return isListening;
+	}
+
+	public void setListening(boolean listening)
+	{
+		isListening = listening;
+	}
+
 	public void recordNote(int noteID, String instrumentName)
 	{
 		recordedNotes.add(new NoteWrapper(noteID, instrumentName));
@@ -308,7 +356,8 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 		if(recordedNotes.isEmpty())
 			return false;
 
-		System.out.println("checking " + noteID);
+		if(!isListening)
+			isListening = true;
 
 		if(recordedNotes.get(listenPos++).isSameNote(noteID, instrumentName))
 		{
@@ -328,6 +377,10 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 		// An incorrect note was played
 		listenPos = 0;
 		return false;
+	}
+
+	public void clearNotes() {
+		recordedNotes.clear();
 	}
 
 	@Override
