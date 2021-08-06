@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.minecraft.block.Block;
@@ -76,8 +75,6 @@ public class LaserBlock extends DisguisableBlock {
 						{
 							thisTe.insertModule(thatTe.getModule(type));
 						}
-
-						((BooleanOption)thisTe.customOptions()[0]).setValue(thatTe.isEnabled());
 
 						if (thisTe.isEnabled() && thatTe.isEnabled())
 						{

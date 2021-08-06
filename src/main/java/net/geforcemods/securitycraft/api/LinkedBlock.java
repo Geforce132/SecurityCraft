@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.api;
 
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -14,18 +13,13 @@ public class LinkedBlock {
 		blockPos = pos;
 	}
 
-	public LinkedBlock(String name, int x, int y, int z) {
-		blockName = name;
-		blockPos = BlockUtils.toPos(x, y, z);
-	}
-
 	public LinkedBlock(CustomizableTileEntity tileEntity) {
-		blockName = BlockUtils.getBlock(tileEntity.getWorld(), tileEntity.getPos()).getTranslationKey();
+		blockName = tileEntity.getBlockState().getBlock().getTranslationKey();
 		blockPos = tileEntity.getPos();
 	}
 
 	public boolean validate(World world) {
-		return !(world == null || (world.isAirBlock(blockPos) || !BlockUtils.getBlock(world, blockPos).getTranslationKey().equals(blockName)));
+		return !(world == null || (world.isAirBlock(blockPos) || !world.getBlockState(blockPos).getBlock().getTranslationKey().equals(blockName)));
 	}
 
 	public CustomizableTileEntity asTileEntity(World world) {

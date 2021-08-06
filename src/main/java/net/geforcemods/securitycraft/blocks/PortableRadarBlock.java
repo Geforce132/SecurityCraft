@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
@@ -91,10 +92,10 @@ public class PortableRadarBlock extends OwnableBlock {
 
 		if(par5 && !state.get(POWERED)){
 			world.setBlockState(pos, state.with(POWERED, true));
-			BlockUtils.updateAndNotify(world, pos, BlockUtils.getBlock(world, pos), 1, false);
+			BlockUtils.updateAndNotify(world, pos, SCContent.PORTABLE_RADAR.get(), 1, false);
 		}else if(!par5 && state.get(POWERED)){
 			world.setBlockState(pos, state.with(POWERED, false));
-			BlockUtils.updateAndNotify(world, pos, BlockUtils.getBlock(world, pos), 1, false);
+			BlockUtils.updateAndNotify(world, pos, SCContent.PORTABLE_RADAR.get(), 1, false);
 		}
 	}
 

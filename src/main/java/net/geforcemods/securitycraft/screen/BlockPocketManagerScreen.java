@@ -166,12 +166,15 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	{
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		for(StackHoverChecker shc : hoverCheckers)
+		if(!te.enabled && isOwner)
 		{
-			if(shc.checkHover(mouseX, mouseY))
+			for(StackHoverChecker shc : hoverCheckers)
 			{
-				renderTooltip(matrix, shc.getStack(), mouseX, mouseY);
-				return;
+				if(shc.checkHover(mouseX, mouseY))
+				{
+					renderTooltip(matrix, shc.getStack(), mouseX, mouseY);
+					return;
+				}
 			}
 		}
 

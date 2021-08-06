@@ -7,7 +7,7 @@
       "model": "securitycraft:block/reinforced_mossy_stone_brick_slab"
     },
     "type=double": {
-      "model": "securitycraft:block/reinforced_stone_brick_mossy"
+      "model": "securitycraft:block/reinforced_mossy_stone_bricks"
     }
   }
 }

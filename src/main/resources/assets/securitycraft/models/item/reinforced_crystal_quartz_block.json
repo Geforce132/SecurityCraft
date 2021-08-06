@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_quartz_default",
+    "parent": "securitycraft:block/reinforced_quartz_block",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

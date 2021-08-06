@@ -22,7 +22,7 @@ public class SCBlockModelProvider extends BlockModelProvider
 
 	public BlockModelBuilder reinforcedColumn(String name, String side, String end)
 	{
-		return withExistingParent(name, modLoc(BLOCK_FOLDER + "/reinforced_column"))
+		return withExistingParent(name, modLoc(BLOCK_FOLDER + "/reinforced_cube_column"))
 				.texture("side", mcLoc(BLOCK_FOLDER + "/" + side))
 				.texture("end", mcLoc(BLOCK_FOLDER + "/" + end));
 	}
@@ -54,12 +54,12 @@ public class SCBlockModelProvider extends BlockModelProvider
 
 	public BlockModelBuilder reinforcedWallPost(String name, ResourceLocation wall)
 	{
-		return uncheckedSingleTexture(name, modLoc(BLOCK_FOLDER + "/reinforced_wall_post"), "wall", wall);
+		return uncheckedSingleTexture(name, modLoc(BLOCK_FOLDER + "/template_reinforced_wall_post"), "wall", wall);
 	}
 
 	public BlockModelBuilder reinforcedWallSide(String name, ResourceLocation wall, boolean tall)
 	{
-		return uncheckedSingleTexture(name, modLoc(BLOCK_FOLDER + "/reinforced_wall_side" + (tall ? "_tall" : "")), "wall", wall);
+		return uncheckedSingleTexture(name, modLoc(BLOCK_FOLDER + "/template_reinforced_wall_side" + (tall ? "_tall" : "")), "wall", wall);
 	}
 
 	public BlockModelBuilder reinforcedWallInventory(String name, ResourceLocation wall)

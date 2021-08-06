@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
@@ -15,7 +14,6 @@ import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -125,13 +123,6 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	}
 
 	@Override
-	public void onLoad()
-	{
-		if(world.isRemote)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(pos));
-	}
-
-	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
 		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
@@ -161,7 +152,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 
 	@Override
 	public void activate(PlayerEntity player) {
-		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof KeypadFurnaceBlock)
+		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadFurnaceBlock)
 			KeypadFurnaceBlock.activate(world, pos, player);
 	}
 

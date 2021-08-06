@@ -1,5 +1,5 @@
 {
     "variants": {
-        "":  { "model": "securitycraft:block/reinforced_stone_brick_cracked" }
+        "":  { "model": "securitycraft:block/reinforced_cracked_stone_bricks" }
     }
 }

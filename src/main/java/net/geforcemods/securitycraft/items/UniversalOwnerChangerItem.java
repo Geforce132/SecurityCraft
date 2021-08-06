@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.SpecialDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -140,14 +139,17 @@ public class UniversalOwnerChangerItem extends Item
 
 	private boolean tryUpdateBlock(World world, BlockPos pos, String newOwner)
 	{
-		Block block = BlockUtils.getBlock(world, pos);
+		Block block = world.getBlockState(pos).getBlock();
 
 		if(block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock)
 		{
 			OwnableTileEntity te = (OwnableTileEntity)world.getTileEntity(pos);
 
 			te.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-			world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+
+			if(!world.isRemote)
+				world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+
 			return true;
 		}
 

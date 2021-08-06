@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_purpur_default",
+    "parent": "securitycraft:block/reinforced_purpur_block",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

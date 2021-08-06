@@ -279,7 +279,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		{
 			BlockPos modifiedPos = posModifier.apply(pos, i);
 
-			if(BlockUtils.getBlock(world, modifiedPos) == SCContent.INVENTORY_SCANNER.get())
+			if(world.getBlockState(modifiedPos).getBlock() == SCContent.INVENTORY_SCANNER.get())
 			{
 				for(int j = 1; j < i; j++)
 				{

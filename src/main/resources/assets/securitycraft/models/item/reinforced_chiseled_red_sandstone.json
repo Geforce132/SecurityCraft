@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_red_sandstone_chiseled",
+    "parent": "securitycraft:block/reinforced_chiseled_red_sandstone",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

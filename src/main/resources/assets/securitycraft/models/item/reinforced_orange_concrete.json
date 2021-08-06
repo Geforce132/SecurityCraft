@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_concrete_orange",
+    "parent": "securitycraft:block/reinforced_orange_concrete",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

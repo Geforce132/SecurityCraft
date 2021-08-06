@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.block.BlockState;
@@ -35,16 +34,12 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 
 			if(isPowered && cooldown == 0)
 			{
-				AlarmTileEntity te = (AlarmTileEntity) world.getTileEntity(pos);
-
 				for(ServerPlayerEntity player : ((ServerWorld)world).getPlayers(p -> p.getPosition().distanceSq(pos) <= Math.pow(range.get(), 2)))
 				{
 					player.playSound(SCSounds.ALARM.event, SoundCategory.BLOCKS, 0.3F, 1.0F);
 				}
 
-				te.setCooldown(delay.get() * 20);
-				world.setBlockState(pos, world.getBlockState(pos).with(AlarmBlock.FACING, world.getBlockState(pos).get(AlarmBlock.FACING)), 2);
-				world.setTileEntity(pos, te);
+				setCooldown(delay.get() * 20);
 			}
 		}
 

@@ -7,7 +7,7 @@
       "model": "securitycraft:block/reinforced_brick_slab"
     },
     "type=double": {
-      "model": "securitycraft:block/reinforced_brick"
+      "model": "securitycraft:block/reinforced_bricks"
     }
   }
 }

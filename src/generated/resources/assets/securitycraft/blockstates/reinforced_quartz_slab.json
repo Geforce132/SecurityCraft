@@ -7,7 +7,7 @@
       "model": "securitycraft:block/reinforced_quartz_slab"
     },
     "type=double": {
-      "model": "securitycraft:block/reinforced_quartz_default"
+      "model": "securitycraft:block/reinforced_quartz_block"
     }
   }
 }

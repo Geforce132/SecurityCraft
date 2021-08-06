@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.Utils;
@@ -56,7 +57,7 @@ public class SendTip
 			if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
 				message = message.appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 
-			SecurityCraft.proxy.getClientPlayer().sendMessage(message, Util.DUMMY_UUID);
+			ClientHandler.getClientPlayer().sendMessage(message, Util.DUMMY_UUID);
 		});
 
 		ctx.get().setPacketHandled(true);

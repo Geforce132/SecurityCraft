@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.ClientHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -62,7 +62,7 @@ public class PlaySoundAtPos{
 	public static void onMessage(PlaySoundAtPos message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			PlayerEntity player = SecurityCraft.proxy.getClientPlayer();
+			PlayerEntity player = ClientHandler.getClientPlayer();
 			BlockPos pos = player.getPosition();
 			BlockPos origin = new BlockPos(message.x, message.y, message.z);
 			int dist = Math.max(0, Math.min(pos.manhattanDistance(origin), 20)); //clamp between 0 and 20
