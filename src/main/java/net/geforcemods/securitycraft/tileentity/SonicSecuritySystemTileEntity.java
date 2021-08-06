@@ -309,11 +309,18 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 		sync();
 	}
 
+	/**
+	 * @return Returns the number of blocks that this Sonic Security System is linked to
+	 */
 	public int getNumberOfLinkedBlocks()
 	{
 		return linkedBlocks.size();
 	}
 
+	/**
+	 * @return Whether or not this SecurityCraft is actively running (either by being toggled on
+	 *         or powered by redstone)
+	 */
 	public boolean isActive()
 	{
 		// toggle
@@ -325,31 +332,59 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 			return false;
 	}
 
+	/**
+	 * @return True if this Sonic Security System is currently recording notes produced by Note Blocks,
+	 * 		   false otherwise
+	 */
 	public boolean isRecording()
 	{
 		return isRecording;
 	}
 
+	/**
+	 * Toggle the recording state of the Sonic Security System
+	 * @param recording true if the SSS should be recording, false if not
+	 */
 	public void setRecording(boolean recording)
 	{
 		isRecording = recording;
 	}
 
+	/**
+	 * @return True if this Sonic Security System if listening to notes currently being played,
+	 * 		   false otherwise
+	 */
 	public boolean isListening()
 	{
 		return isListening;
 	}
 
+	/**
+	 * Toggle the listening state of the Sonic Security System
+	 * @param listening true if the SSS should be listening, false if not
+	 */
 	public void setListening(boolean listening)
 	{
 		isListening = listening;
 	}
 
+	/**
+	 * Record a note to use in the audio "passcode"
+	 * @param noteID the ID of the note that was played
+	 * @param instrumentName the name of the instrument that played the note
+	 */
 	public void recordNote(int noteID, String instrumentName)
 	{
 		recordedNotes.add(new NoteWrapper(noteID, instrumentName));
 	}
 
+	/**
+	 * Listen to a note and check whether or not it is the next correct note
+	 * that was recorded by the Sonic Security System
+	 *
+	 * @param noteID the ID of the note that was played
+	 * @param instrumentName the name of the instrument that played the note
+	 */
 	public boolean listenToNote(int noteID, String instrumentName)
 	{
 		// No notes
@@ -379,6 +414,9 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 		return false;
 	}
 
+	/**
+	 * Clears all recorded notes
+	 */
 	public void clearNotes() {
 		recordedNotes.clear();
 	}
@@ -407,6 +445,9 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 		return new Option[] { isSilent, mode };
 	}
 
+	/**
+	 * A simple wrapper that makes it slightly easier to store and compare notes with
+	 */
 	public static class NoteWrapper {
 
 		public final int noteID;
