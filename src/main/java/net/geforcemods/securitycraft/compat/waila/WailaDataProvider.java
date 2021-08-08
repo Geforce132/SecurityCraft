@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.compat.waila;
 
-import java.lang.reflect.Field;
-
 import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.EntityAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
@@ -22,6 +20,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
@@ -55,28 +54,20 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		registrar.addConfig(SHOW_PASSWORDS, true);
 		registrar.addConfig(SHOW_CUSTOM_NAME, true);
 
-		for(Field field : SCContent.class.getFields())
+		for(RegistryObject<Block> registryObject : SCContent.BLOCKS.getEntries())
 		{
-			try
-			{
-				if(field.get(null) instanceof RegistryObject<?> ro)
-				{
-					if(ro.get() instanceof Block block) {
-						if(!(block instanceof OwnableBlock) && !block.getRegistryName().getPath().matches("(?!(reinforced_)).*?crystal_.*")) //don't register unreinforced crystal quartz
-							registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
+			Block block = registryObject.get();
 
-						if (block instanceof IOverlayDisplay)
-							registrar.usePickedResult(block);
-					}
-				}
-			}
-			catch(IllegalArgumentException | IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
+			if(!(block instanceof OwnableBlock) && !block.getRegistryName().getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedPaneBlock)) //don't register unreinforced crystal quartz and all IReinforcedBlocks that are or have a IReinforcedBlock subclass
+				registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
+
+			if (block instanceof IOverlayDisplay)
+				registrar.usePickedResult(block);
 		}
 
 		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, OwnableBlock.class);
+		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedCauldronBlock.class);
+		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedPaneBlock.class);
 		registrar.registerIconProvider(INSTANCE, DisguisableBlock.class);
 		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, SentryEntity.class);
 	}
