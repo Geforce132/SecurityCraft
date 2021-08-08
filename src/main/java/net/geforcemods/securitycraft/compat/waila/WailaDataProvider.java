@@ -59,7 +59,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		{
 			Block block = registryObject.get();
 
-			if(!(block instanceof OwnableBlock) && !block.getRegistryName().getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock)) //don't register unreinforced crystal quartz and all IReinforcedBlocks that are or have a IReinforcedBlock subclass
+			if(!(block instanceof OwnableBlock) && !block.getRegistryName().getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock)) //don't register unreinforced Crystal Quartz, Reinforced Cauldrons and Reinforced Glass Panes here, this prevents our component provider from being registered multiple times for certain blocks
 				registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
 
 			if (block instanceof IOverlayDisplay)
