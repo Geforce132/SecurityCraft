@@ -283,7 +283,11 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_IRON_BLOCK.get(),
 				SCContent.REINFORCED_NETHERITE_BLOCK.get());
 		tag(BlockTags.CARPETS).addTag(SCTags.Blocks.REINFORCED_CARPETS);
-		tag(BlockTags.CAULDRONS).add(SCContent.REINFORCED_CAULDRON.get()); //TODO: add reinforced lava/water/ps cauldrons to that tag
+		tag(BlockTags.CAULDRONS).add(
+				SCContent.REINFORCED_CAULDRON.get(),
+				SCContent.REINFORCED_LAVA_CAULDRON.get(),
+				SCContent.REINFORCED_WATER_CAULDRON.get(),
+				SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get());
 		tag(BlockTags.DIRT).addTag(SCTags.Blocks.REINFORCED_DIRT);
 		tag(BlockTags.DOORS).add(SCContent.KEYPAD_DOOR.get(), SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
 		tag(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());

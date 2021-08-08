@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock.IReinforcedCauldronInteraction;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.lycanitesmobs.LycanitesMobsCompat;
@@ -139,6 +140,8 @@ public class SecurityCraft {
 				e.printStackTrace();
 			}
 		}
+
+		IReinforcedCauldronInteraction.bootStrap();
 	}
 
 	public void registerCommands(RegisterCommandsEvent event){

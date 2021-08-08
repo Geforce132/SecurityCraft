@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "securitycraft:reinforced_cauldron"
+    "securitycraft:reinforced_cauldron",
+    "securitycraft:reinforced_lava_cauldron",
+    "securitycraft:reinforced_water_cauldron",
+    "securitycraft:reinforced_powder_snow_cauldron"
   ]
 }

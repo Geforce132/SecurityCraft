@@ -125,7 +125,7 @@ public class RegistrationHandler
 		{
 			try
 			{
-				if(field.isAnnotationPresent(Reinforced.class))
+				if(field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem())
 				{
 					Block block = ((RegistryObject<Block>)field.get(null)).get();
 
@@ -195,7 +195,7 @@ public class RegistrationHandler
 		event.getRegistry().register(BlockEntityType.Builder.of(ProjectorTileEntity::new, SCContent.PROJECTOR.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "projector")));
 		event.getRegistry().register(BlockEntityType.Builder.of(KeypadDoorTileEntity::new, SCContent.KEYPAD_DOOR.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_door")));
 		event.getRegistry().register(BlockEntityType.Builder.of(ReinforcedIronBarsTileEntity::new, SCContent.REINFORCED_IRON_BARS.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_iron_bars")));
-		event.getRegistry().register(BlockEntityType.Builder.of(ReinforcedCauldronTileEntity::new, SCContent.REINFORCED_CAULDRON.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_cauldron")));
+		event.getRegistry().register(BlockEntityType.Builder.of(ReinforcedCauldronTileEntity::new, SCContent.REINFORCED_CAULDRON.get(), SCContent.REINFORCED_WATER_CAULDRON.get(), SCContent.REINFORCED_LAVA_CAULDRON.get(), SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_cauldron")));
 	}
 
 	@SubscribeEvent

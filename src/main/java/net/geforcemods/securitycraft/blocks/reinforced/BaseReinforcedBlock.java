@@ -66,7 +66,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			else if (plantable instanceof WitherRoseBlock)
 				return state.is(SCContent.REINFORCED_NETHERRACK.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get());
 			else if (plantable instanceof SmallDripleafBlock)
-				return world.getFluidState(pos.above()).isSourceOfType(SCContent.FAKE_WATER.get()); //TODO: DoublePlantBlock, see if this works and add our blocks to that tag
+				return world.getFluidState(pos.above()).isSourceOfType(SCContent.FAKE_WATER.get()); //TODO: DoublePlantBlock, see if this works and add reinforced moss to the SMALL_DRIPLEAF_PLACEABLE tag
 			else if (plantable instanceof DeadBushBlock)
 				return state.is(SCTags.Blocks.REINFORCED_SAND) || state.is(SCContent.REINFORCED_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_WHITE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_ORANGE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_MAGENTA_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_YELLOW_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIME_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_PINK_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_GRAY_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_CYAN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_PURPLE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BLUE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BROWN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_GREEN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_RED_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BLACK_TERRACOTTA.get());
 		}

@@ -357,7 +357,7 @@ public class ClientHandler
 
 			return noTint;
 		});
-		specialBlockTint.put(SCContent.REINFORCED_CAULDRON.get(), (state, world, pos, tintIndex) -> {
+		specialBlockTint.put(SCContent.REINFORCED_WATER_CAULDRON.get(), (state, world, pos, tintIndex) -> {
 			if(tintIndex == 1)
 				return world != null && pos != null ? BiomeColors.getAverageWaterColor(world, pos) : -1;
 

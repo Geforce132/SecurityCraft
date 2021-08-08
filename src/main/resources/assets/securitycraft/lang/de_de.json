@@ -417,6 +417,9 @@
 	"block.securitycraft.secret_warped_sign": "Geheimes Wirrschild",
 	"block.securitycraft.keypad_door": "Nummernschloss-Tür",
 	"block.securitycraft.reinforced_cauldron": "Verstärkter Kessel",
+	"block.securitycraft.reinforced_water_cauldron": "Verstärkter Wasserkessel",
+	"block.securitycraft.reinforced_lava_cauldron": "Verstärkter Lavakessel",
+	"block.securitycraft.reinforced_powder_snow_cauldron": "Verstärkter Pulverschneekessel",
 
 	"item.securitycraft.codebreaker": "Codebrecher",
 	"item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",

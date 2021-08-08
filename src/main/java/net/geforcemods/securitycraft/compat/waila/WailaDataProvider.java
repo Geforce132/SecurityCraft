@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.SentryEntity;
@@ -58,7 +59,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		{
 			Block block = registryObject.get();
 
-			if(!(block instanceof OwnableBlock) && !block.getRegistryName().getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedPaneBlock)) //don't register unreinforced crystal quartz and all IReinforcedBlocks that are or have a IReinforcedBlock subclass
+			if(!(block instanceof OwnableBlock) && !block.getRegistryName().getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock)) //don't register unreinforced crystal quartz and all IReinforcedBlocks that are or have a IReinforcedBlock subclass
 				registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
 
 			if (block instanceof IOverlayDisplay)
