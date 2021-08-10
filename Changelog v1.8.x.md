@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.24 of SecurityCraft--------------------------
+
+- Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
+
 --------------------------Changelog for v1.8.23 of SecurityCraft--------------------------
 
 - New: The Frame block will now send a message when being rightclicked with a Camera Monitor, notifying the player that viewing a Camera Monitor in a Frame is currently not possible
