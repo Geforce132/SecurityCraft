@@ -60,7 +60,8 @@ public class BlockUtils{
 			{
 				TileEntity offsetTe = world.getTileEntity(offsetPos);
 
-				return activator.isPowering(world, offsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
+				if(activator.isPowering(world, offsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te)))
+					return true;
 			}
 
 			if(world.getRedstonePower(offsetPos, facing) == 15 && !offsetState.canProvidePower())
@@ -79,17 +80,18 @@ public class BlockUtils{
 						if(offsetState.getPropertyKeys().contains(BlockLever.FACING))
 						{
 							if(dirOffset != offsetState.getValue(BlockLever.FACING).getFacing())
-								return false;
+								continue;
 						}
 						else if(offsetState.getPropertyKeys().contains(BlockDirectional.FACING))
 						{
 							if(dirOffset != offsetState.getValue(BlockDirectional.FACING))
-								return false;
+								continue;
 						}
 
 						TileEntity offsetTe = world.getTileEntity(newOffsetPos);
 
-						return activator.isPowering(world, newOffsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
+						if(activator.isPowering(world, newOffsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te)))
+							return true;
 					}
 				}
 			}
