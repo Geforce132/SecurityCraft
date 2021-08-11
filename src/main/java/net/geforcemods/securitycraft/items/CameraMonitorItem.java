@@ -6,12 +6,12 @@ import java.util.List;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -24,10 +24,12 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.GlobalPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -56,7 +58,7 @@ public class CameraMonitorItem extends Item {
 			if(stack.getTag() == null)
 				stack.setTag(new CompoundNBT());
 
-			CameraView view = new CameraView(pos, player.dimension.getId());
+			GlobalPos view = GlobalPos.of(player.dimension, pos);
 
 			if(isCameraAdded(stack.getTag(), view)){
 				stack.getTag().remove(getTagNameFromPosition(stack.getTag(), view));
@@ -66,7 +68,7 @@ public class CameraMonitorItem extends Item {
 
 			for(int i = 1; i <= 30; i++)
 				if (!stack.getTag().contains("Camera" + i)){
-					stack.getTag().putString("Camera" + i, view.toNBTString());
+					stack.getTag().putString("Camera" + i, WorldUtils.toNBTString(view));
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), Utils.localize("messages.securitycraft:cameraMonitor.bound", pos), TextFormatting.GREEN);
 					break;
 				}
@@ -104,12 +106,12 @@ public class CameraMonitorItem extends Item {
 		tooltip.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:cameraMonitor").getFormattedText() + " " + getNumberOfCamerasBound(stack.getTag()) + "/30"));
 	}
 
-	public static String getTagNameFromPosition(CompoundNBT tag, CameraView view) {
+	public static String getTagNameFromPosition(CompoundNBT tag, GlobalPos view) {
 		for(int i = 1; i <= 30; i++)
 			if(tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
-				if(view.checkCoordinates(coords))
+				if(WorldUtils.checkCoordinates(view, coords))
 					return "Camera" + i;
 			}
 
@@ -126,26 +128,26 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public boolean isCameraAdded(CompoundNBT tag, CameraView view){
+	public boolean isCameraAdded(CompoundNBT tag, GlobalPos view){
 		for(int i = 1; i <= 30; i++)
 			if(tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
-				if(view.checkCoordinates(coords))
+				if(WorldUtils.checkCoordinates(view, coords))
 					return true;
 			}
 
 		return false;
 	}
 
-	public ArrayList<CameraView> getCameraPositions(CompoundNBT tag){
-		ArrayList<CameraView> list = new ArrayList<>();
+	public ArrayList<GlobalPos> getCameraPositions(CompoundNBT tag){
+		ArrayList<GlobalPos> list = new ArrayList<>();
 
 		for(int i = 1; i <= 30; i++)
 			if(tag != null && tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
-				list.add(new CameraView(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), (coords.length == 4 ? Integer.parseInt(coords[3]) : 0)));
+				list.add(GlobalPos.of(DimensionType.getById(coords.length == 4 ? Integer.parseInt(coords[3]) : 0), new BlockPos(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]))));
 			}
 			else
 				list.add(null);

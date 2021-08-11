@@ -53,7 +53,7 @@ public class SecurityCameraEntity extends Entity{
 		noClip = true;
 	}
 
-	public SecurityCameraEntity(World world, double x, double y, double z, int id, PlayerEntity player){
+	public SecurityCameraEntity(World world, BlockPos pos, int id, PlayerEntity player){
 		this(SCContent.eTypeSecurityCamera, world);
 		cameraUseX = player.getPosX();
 		cameraUseY = player.getPosY();
@@ -62,7 +62,7 @@ public class SecurityCameraEntity extends Entity{
 		cameraUsePitch = player.rotationPitch;
 		this.id = id;
 		playerViewingName = player.getName().getFormattedText();
-		setPosition(x + 0.5D, y, z + 0.5D);
+		setPosition(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
 
 		TileEntity te = world.getTileEntity(getPosition());
 
@@ -70,7 +70,7 @@ public class SecurityCameraEntity extends Entity{
 			setInitialPitchYaw((SecurityCameraTileEntity)te);
 	}
 
-	public SecurityCameraEntity(World world, double x, double y, double z, int id, SecurityCameraEntity camera){
+	public SecurityCameraEntity(World world, BlockPos pos, int id, SecurityCameraEntity camera){
 		this(SCContent.eTypeSecurityCamera, world);
 		cameraUseX = camera.cameraUseX;
 		cameraUseY = camera.cameraUseY;
@@ -79,7 +79,7 @@ public class SecurityCameraEntity extends Entity{
 		cameraUsePitch = camera.cameraUsePitch;
 		this.id = id;
 		playerViewingName = camera.playerViewingName;
-		setPosition(x + 0.5D, y, z + 0.5D);
+		setPosition(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
 
 		TileEntity te = world.getTileEntity(getPosition());
 
