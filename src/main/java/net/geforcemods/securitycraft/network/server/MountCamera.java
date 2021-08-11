@@ -56,7 +56,7 @@ public class MountCamera
 				TileEntity te = world.getTileEntity(pos);
 
 				if(te instanceof SecurityCameraTileEntity && (((SecurityCameraTileEntity)te).getOwner().isOwner(player) || ((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART)))
-					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), id, player);
+					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos, id, player);
 			}
 		});
 
