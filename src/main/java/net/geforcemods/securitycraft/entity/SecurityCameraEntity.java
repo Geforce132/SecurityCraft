@@ -51,7 +51,7 @@ public class SecurityCameraEntity extends Entity{
 		noPhysics = true;
 	}
 
-	public SecurityCameraEntity(Level world, double x, double y, double z, int id, Player player){
+	public SecurityCameraEntity(Level world, BlockPos pos, int id, Player player){
 		this(SCContent.eTypeSecurityCamera, world);
 		cameraUseX = player.getX();
 		cameraUseY = player.getY();
@@ -59,7 +59,7 @@ public class SecurityCameraEntity extends Entity{
 		cameraUseYaw = player.getYRot();
 		cameraUsePitch = player.getXRot();
 		this.id = id;
-		setPos(x + 0.5D, y, z + 0.5D);
+		setPos(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
 
 		BlockEntity te = world.getBlockEntity(blockPosition());
 
@@ -67,7 +67,7 @@ public class SecurityCameraEntity extends Entity{
 			setInitialPitchYaw(cam);
 	}
 
-	public SecurityCameraEntity(Level world, double x, double y, double z, int id, SecurityCameraEntity camera){
+	public SecurityCameraEntity(Level world, BlockPos pos, int id, SecurityCameraEntity camera){
 		this(SCContent.eTypeSecurityCamera, world);
 		cameraUseX = camera.cameraUseX;
 		cameraUseY = camera.cameraUseY;
@@ -75,7 +75,7 @@ public class SecurityCameraEntity extends Entity{
 		cameraUseYaw = camera.cameraUseYaw;
 		cameraUsePitch = camera.cameraUsePitch;
 		this.id = id;
-		setPos(x + 0.5D, y, z + 0.5D);
+		setPos(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
 
 		BlockEntity te = world.getBlockEntity(blockPosition());
 

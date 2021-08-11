@@ -111,15 +111,15 @@ public class SecurityCameraBlock extends OwnableBlock{
 		}
 	}
 
-	public void mountCamera(Level world, int x, int y, int z, int id, Player player){
+	public void mountCamera(Level world, BlockPos pos, int id, Player player){
 		if(player.getVehicle() instanceof SecurityCameraEntity cam){
-			SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, x, y, z, id, cam);
+			SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, pos, id, cam);
 			WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(dummyEntity));
 			player.startRiding(dummyEntity);
 			return;
 		}
 
-		SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, x, y, z, id, player);
+		SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, pos, id, player);
 		WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(dummyEntity));
 		player.startRiding(dummyEntity);
 

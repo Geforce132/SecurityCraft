@@ -6,19 +6,22 @@ import java.util.List;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -60,7 +63,7 @@ public class CameraMonitorItem extends Item {
 			if(stack.getTag() == null)
 				stack.setTag(new CompoundTag());
 
-			CameraView view = new CameraView(pos, player.level.dimension());
+			GlobalPos view = GlobalPos.of(player.level.dimension(), pos);
 
 			if(isCameraAdded(stack.getTag(), view)){
 				stack.getTag().remove(getTagNameFromPosition(stack.getTag(), view));
@@ -70,7 +73,7 @@ public class CameraMonitorItem extends Item {
 
 			for(int i = 1; i <= 30; i++)
 				if (!stack.getTag().contains("Camera" + i)){
-					stack.getTag().putString("Camera" + i, view.toNBTString());
+					stack.getTag().putString("Camera" + i, WorldUtils.toNBTString(view));
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 					break;
 				}
@@ -108,12 +111,12 @@ public class CameraMonitorItem extends Item {
 		tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor").append(new TextComponent(" " + getNumberOfCamerasBound(stack.getTag()) + "/30")).setStyle(GRAY_STYLE));
 	}
 
-	public static String getTagNameFromPosition(CompoundTag tag, CameraView view) {
+	public static String getTagNameFromPosition(CompoundTag tag, GlobalPos view) {
 		for(int i = 1; i <= 30; i++)
 			if(tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
-				if(view.checkCoordinates(coords))
+				if(WorldUtils.checkCoordinates(view, coords))
 					return "Camera" + i;
 			}
 
@@ -130,26 +133,27 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public boolean isCameraAdded(CompoundTag tag, CameraView view){
+	public boolean isCameraAdded(CompoundTag tag, GlobalPos view){
 		for(int i = 1; i <= 30; i++)
 			if(tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
-				if(view.checkCoordinates(coords))
+				if(WorldUtils.checkCoordinates(view, coords))
 					return true;
 			}
 
 		return false;
 	}
 
-	public ArrayList<CameraView> getCameraPositions(CompoundTag tag){
-		ArrayList<CameraView> list = new ArrayList<>();
+	public ArrayList<GlobalPos> getCameraPositions(CompoundTag tag){
+		ArrayList<GlobalPos> list = new ArrayList<>();
 
 		for(int i = 1; i <= 30; i++)
 			if(tag != null && tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
-				list.add(new CameraView(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), (coords.length == 4 ? new ResourceLocation(coords[3]) : null)));
+				//default to overworld if there is no dimension saved
+				list.add(GlobalPos.of(coords.length == 4 ? ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(coords[3])) : Level.OVERWORLD, new BlockPos(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]))));
 			}
 			else
 				list.add(null);

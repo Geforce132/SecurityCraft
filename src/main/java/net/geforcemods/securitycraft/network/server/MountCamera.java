@@ -53,7 +53,7 @@ public class MountCamera
 			if(state.getBlock() == SCContent.SECURITY_CAMERA.get())
 			{
 				if(world.getBlockEntity(pos) instanceof SecurityCameraTileEntity te && (te.getOwner().isOwner(player) || te.hasModule(ModuleType.SMART)))
-					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), id, player);
+					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos, id, player);
 			}
 		});
 
