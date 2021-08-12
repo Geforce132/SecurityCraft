@@ -94,7 +94,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.28'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.33'
     
 	//implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.110")
     implementation fg.deobf("curse.maven:the-one-probe-245211:3418788")
