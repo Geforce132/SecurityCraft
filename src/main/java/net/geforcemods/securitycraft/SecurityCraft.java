@@ -28,6 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraftforge.common.MinecraftForge;
@@ -142,6 +143,13 @@ public class SecurityCraft {
 		}
 
 		IReinforcedCauldronInteraction.bootStrap();
+
+		//TODO: remove these and the fluid field AT when this is fixed in forge
+		LiquidBlock fakeWaterBlock = ((LiquidBlock)SCContent.FAKE_WATER_BLOCK.get());
+		LiquidBlock fakeLavaBlock = ((LiquidBlock)SCContent.FAKE_LAVA_BLOCK.get());
+
+		fakeWaterBlock.fluid = fakeWaterBlock.getFluid();
+		fakeLavaBlock.fluid = fakeLavaBlock.getFluid();
 	}
 
 	public void registerCommands(RegisterCommandsEvent event){
