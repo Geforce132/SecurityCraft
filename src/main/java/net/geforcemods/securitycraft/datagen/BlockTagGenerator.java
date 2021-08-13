@@ -18,6 +18,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 		super(dataGenerator, SecurityCraft.MODID, existingFileHelper);
 	}
 
+	//TODO: add reinforced moss to minecraft:small_dripleaf_placeable
 	@Override
 	protected void addTags()
 	{
