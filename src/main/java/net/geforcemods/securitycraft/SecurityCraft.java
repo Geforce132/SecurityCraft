@@ -158,6 +158,6 @@ public class SecurityCraft {
 
 	public static String getVersion()
 	{
-		return ModList.get().getModContainerById(MODID).get().getModInfo().getVersion().getQualifier();
+		return "v" + ModList.get().getModContainerById(MODID).get().getModInfo().getVersion().toString();
 	}
 }
