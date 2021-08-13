@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
+import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -62,11 +62,11 @@ public class ProtectoBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new ProtectoTileEntity(pos, state).attacks(LivingEntity.class, 10, 200);
+		return new ProtectoBlockEntity(pos, state).attacks(LivingEntity.class, 10, 200);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeProtecto, ProtectoTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeProtecto, ProtectoBlockEntity::tick);
 	}
 }

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,7 +39,7 @@ public class BlockPocketManagerBlock extends OwnableBlock
 		{
 			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tile instanceof BlockPocketManagerTileEntity te && !te.isPlacingBlocks())
+			if(tile instanceof BlockPocketManagerBlockEntity te && !te.isPlacingBlocks())
 				NetworkHooks.openGui((ServerPlayer)player, te, pos);
 		}
 
@@ -54,7 +54,7 @@ public class BlockPocketManagerBlock extends OwnableBlock
 
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof BlockPocketManagerTileEntity te)
+		if(tile instanceof BlockPocketManagerBlockEntity te)
 		{
 			te.getStorageHandler().ifPresent(handler -> {
 				for(int i = 0; i < handler.getSlots(); i++)
@@ -82,12 +82,12 @@ public class BlockPocketManagerBlock extends OwnableBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new BlockPocketManagerTileEntity(pos, state);
+		return new BlockPocketManagerBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeBlockPocketManager, BlockPocketManagerTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeBlockPocketManager, BlockPocketManagerBlockEntity::tick);
 	}
 
 	@Override

@@ -6,10 +6,10 @@ import com.mojang.math.Vector3f;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -54,7 +54,7 @@ public class LaserBlock extends DisguisableBlock {
 
 	public void setLaser(Level world, BlockPos pos)
 	{
-		LaserBlockTileEntity thisTe = (LaserBlockTileEntity)world.getBlockEntity(pos);
+		LaserBlockBlockEntity thisTe = (LaserBlockBlockEntity)world.getBlockEntity(pos);
 
 		for(Direction facing : Direction.values())
 		{
@@ -70,11 +70,11 @@ public class LaserBlock extends DisguisableBlock {
 					break inner;
 				else if(offsetBlock == SCContent.LASER_BLOCK.get())
 				{
-					LaserBlockTileEntity thatTe = (LaserBlockTileEntity)world.getBlockEntity(offsetPos);
+					LaserBlockBlockEntity thatTe = (LaserBlockBlockEntity)world.getBlockEntity(offsetPos);
 
 					if(thisTe.getOwner().equals(thatTe.getOwner()))
 					{
-						CustomizableTileEntity.link(thisTe, thatTe);
+						CustomizableBlockEntity.link(thisTe, thatTe);
 
 						for(ModuleType type : thatTe.getInsertedModules())
 						{
@@ -217,11 +217,11 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new LaserBlockTileEntity(pos, state).linkable();
+		return new LaserBlockBlockEntity(pos, state).linkable();
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeLaserBlock, LaserBlockTileEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeLaserBlock, LaserBlockBlockEntity::tick);
 	}
 }

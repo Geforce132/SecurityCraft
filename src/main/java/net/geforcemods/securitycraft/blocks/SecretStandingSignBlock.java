@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -49,7 +49,7 @@ public class SecretStandingSignBlock extends StandingSignBlock
 		if(!world.isClientSide && player.getItemInHand(hand).getItem() == SCContent.ADMIN_TOOL.get())
 			return SCContent.ADMIN_TOOL.get().useOn(new UseOnContext(player, hand, hit));
 
-		SecretSignTileEntity te = (SecretSignTileEntity)world.getBlockEntity(pos);
+		SecretSignBlockEntity te = (SecretSignBlockEntity)world.getBlockEntity(pos);
 
 		if (te != null && te.isPlayerAllowedToSeeText(player))
 			return super.use(state, world, pos, player, hand, hit);
@@ -60,7 +60,7 @@ public class SecretStandingSignBlock extends StandingSignBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new SecretSignTileEntity(pos, state);
+		return new SecretSignBlockEntity(pos, state);
 	}
 
 	@Override

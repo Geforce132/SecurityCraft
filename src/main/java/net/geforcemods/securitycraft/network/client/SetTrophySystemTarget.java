@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
+import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -39,7 +39,7 @@ public class SetTrophySystemTarget {
 		ctx.get().enqueueWork(() -> {
 			BlockEntity tile = Minecraft.getInstance().level.getBlockEntity(message.trophyPos);
 
-			if(tile instanceof TrophySystemTileEntity te && Minecraft.getInstance().level.getEntity(message.targetID) instanceof Projectile projectile)
+			if(tile instanceof TrophySystemBlockEntity te && Minecraft.getInstance().level.getEntity(message.targetID) instanceof Projectile projectile)
 				te.setTarget(projectile);
 		});
 

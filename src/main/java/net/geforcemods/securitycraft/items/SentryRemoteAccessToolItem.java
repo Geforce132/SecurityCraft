@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.network.client.OpenSRATGui;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -55,10 +55,10 @@ public class SentryRemoteAccessToolItem extends Item {
 	}
 
 	public InteractionResult onItemUse(Player player, Level world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
-		List<SentryEntity> sentries = world.getEntitiesOfClass(SentryEntity.class, new AABB(pos));
+		List<Sentry> sentries = world.getEntitiesOfClass(Sentry.class, new AABB(pos));
 
 		if(!sentries.isEmpty()) {
-			SentryEntity sentry = sentries.get(0);
+			Sentry sentry = sentries.get(0);
 			BlockPos pos2 = sentry.blockPosition();
 
 			if(!isSentryAdded(stack, pos2)){
@@ -113,7 +113,7 @@ public class SentryRemoteAccessToolItem extends Item {
 				else
 				{
 					BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
-					List<SentryEntity> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(SentryEntity.class, new AABB(pos));
+					List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(pos));
 					String nameToShow;
 
 					if(!sentries.isEmpty() && sentries.get(0).hasCustomName())

@@ -13,11 +13,11 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.screen.components.IdButton;
-import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -32,12 +32,12 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEConta
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent logged = Utils.localize("gui.securitycraft:logger.logged");
 	private final TranslatableComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
-	private UsernameLoggerTileEntity tileEntity;
+	private UsernameLoggerBlockEntity tileEntity;
 	private PlayerList playerList;
 
 	public UsernameLoggerScreen(GenericTEContainer container, Inventory inv, Component name) {
 		super(container, inv, name);
-		tileEntity = (UsernameLoggerTileEntity)container.te;
+		tileEntity = (UsernameLoggerBlockEntity)container.te;
 	}
 
 	@Override

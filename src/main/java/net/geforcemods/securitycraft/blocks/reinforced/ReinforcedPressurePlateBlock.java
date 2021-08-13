@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -43,7 +43,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		{
 			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tile instanceof AllowlistOnlyTileEntity te)
+			if(tile instanceof AllowlistOnlyBlockEntity te)
 			{
 				if(isAllowedToPress(world, pos, te, player))
 					checkPressed(player, world, pos, state, redstoneStrength);
@@ -63,7 +63,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		{
 			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tile instanceof AllowlistOnlyTileEntity te)
+			if(tile instanceof AllowlistOnlyBlockEntity te)
 			{
 				for(Entity entity : list)
 				{
@@ -76,7 +76,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		return 0;
 	}
 
-	public boolean isAllowedToPress(Level world, BlockPos pos, AllowlistOnlyTileEntity te, Player entity)
+	public boolean isAllowedToPress(Level world, BlockPos pos, AllowlistOnlyBlockEntity te, Player entity)
 	{
 		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
 	}
@@ -103,11 +103,11 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new AllowlistOnlyTileEntity(pos, state);
+		return new AllowlistOnlyBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeAllowlistOnly, AllowlistOnlyTileEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeAllowlistOnly, AllowlistOnlyBlockEntity::tick);
 	}
 }

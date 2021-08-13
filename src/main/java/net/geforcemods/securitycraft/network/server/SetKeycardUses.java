@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
-import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -45,7 +45,7 @@ public class SetKeycardUses
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
 
-			if(player.level.getBlockEntity(pos) instanceof KeycardReaderTileEntity te)
+			if(player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity te)
 			{
 				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
 				{

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.util;
 
+import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
-import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -26,7 +26,7 @@ public class Utils {
 
 	public static void setISinTEAppropriately(Level world, BlockPos pos, NonNullList<ItemStack> contents)
 	{
-		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 		if(connectedScanner == null)
 			return;

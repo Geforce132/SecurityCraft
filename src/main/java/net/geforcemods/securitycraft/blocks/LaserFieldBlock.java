@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -150,12 +150,12 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCraftTileEntity(pos, state).intersectsEntities();
+		return new SecurityCraftBlockEntity(pos, state).intersectsEntities();
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeAbstract, SecurityCraftTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeAbstract, SecurityCraftBlockEntity::tick);
 	}
 
 	@Override

@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
-import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -15,12 +15,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BlockPocketManagerTileEntityRenderer implements BlockEntityRenderer<BlockPocketManagerTileEntity>
+public class BlockPocketManagerTileEntityRenderer implements BlockEntityRenderer<BlockPocketManagerBlockEntity>
 {
 	public BlockPocketManagerTileEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(BlockPocketManagerTileEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+	public void render(BlockPocketManagerBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
 	{
 		// The code below draws the outline border of a block pocket.
 
@@ -76,7 +76,7 @@ public class BlockPocketManagerTileEntityRenderer implements BlockEntityRenderer
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(BlockPocketManagerTileEntity te)
+	public boolean shouldRenderOffScreen(BlockPocketManagerBlockEntity te)
 	{
 		return te.showOutline;
 	}

@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -32,12 +32,12 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if(isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)world.getBlockEntity(pos), player))
+		if(isAllowedToPress(world, pos, (AllowlistOnlyBlockEntity)world.getBlockEntity(pos), player))
 			return super.use(state, world, pos, player, hand, result);
 		return InteractionResult.FAIL;
 	}
 
-	public boolean isAllowedToPress(Level world, BlockPos pos, AllowlistOnlyTileEntity te, Player entity)
+	public boolean isAllowedToPress(Level world, BlockPos pos, AllowlistOnlyBlockEntity te, Player entity)
 	{
 		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
 	}
@@ -64,11 +64,11 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new AllowlistOnlyTileEntity(pos, state);
+		return new AllowlistOnlyBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeAllowlistOnly, AllowlistOnlyTileEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeAllowlistOnly, AllowlistOnlyBlockEntity::tick);
 	}
 }

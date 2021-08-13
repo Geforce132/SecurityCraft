@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
+import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -57,7 +57,7 @@ public class SyncProjector {
 			Player player = ctx.get().getSender();
 			Level world = player.level;
 
-			if(world.isLoaded(pos) && world.getBlockEntity(pos) instanceof ProjectorTileEntity te && te.getOwner().isOwner(player))
+			if(world.isLoaded(pos) && world.getBlockEntity(pos) instanceof ProjectorBlockEntity te && te.getOwner().isOwner(player))
 			{
 				BlockState state = world.getBlockState(pos);
 

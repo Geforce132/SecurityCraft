@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -63,7 +63,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 			return;
 		else if(entity instanceof Player player)
 		{
-			if(((OwnableTileEntity)world.getBlockEntity(pos)).getOwner().isOwner(player))
+			if(((OwnableBlockEntity)world.getBlockEntity(pos)).getOwner().isOwner(player))
 				return;
 		}
 		else if(!world.isClientSide && entity instanceof Creeper creeper)
@@ -105,11 +105,11 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCraftTileEntity(pos, state).intersectsEntities();
+		return new SecurityCraftBlockEntity(pos, state).intersectsEntities();
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeAbstract, SecurityCraftTileEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeAbstract, SecurityCraftBlockEntity::tick);
 	}
 }

@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
@@ -40,7 +40,7 @@ public class SetCameraRotation {
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
 
-			if(player.getVehicle() instanceof SecurityCameraEntity){
+			if(player.getVehicle() instanceof SecurityCamera){
 				player.getVehicle().setYRot(message.rotationYaw);
 				player.getVehicle().setXRot(message.rotationPitch);
 			}

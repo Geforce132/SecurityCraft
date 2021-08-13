@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +37,7 @@ public class ClearLoggerServer
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
 
-			if(player.level.getBlockEntity(message.pos) instanceof UsernameLoggerTileEntity te && te.getOwner().isOwner(player))
+			if(player.level.getBlockEntity(message.pos) instanceof UsernameLoggerBlockEntity te && te.getOwner().isOwner(player))
 			{
 				te.players = new String[100];
 				te.sendChangeToClient(true);

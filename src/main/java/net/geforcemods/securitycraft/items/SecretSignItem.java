@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
+import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -43,7 +43,7 @@ public class SecretSignItem extends StandingAndWallBlockItem
 
 		if(!flag && player != null)
 		{
-			SecretSignTileEntity te = (SecretSignTileEntity)world.getBlockEntity(pos);
+			SecretSignBlockEntity te = (SecretSignBlockEntity)world.getBlockEntity(pos);
 
 			te.setAllowedPlayerEditor(player.getUUID());
 

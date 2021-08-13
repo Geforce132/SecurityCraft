@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.containers.BlockPocketManagerContainer;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.screen.components.IdButton;
@@ -16,7 +17,6 @@ import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
-import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -50,7 +50,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	private final boolean storage;
 	private final boolean isOwner;
 	private final int[] materialCounts = new int[3];
-	public BlockPocketManagerTileEntity te;
+	public BlockPocketManagerBlockEntity te;
 	private int size = 5;
 	private final int[] allowedSizes = {5, 9, 13, 17, 21, 25};
 	private Button toggleButton;

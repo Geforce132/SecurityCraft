@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -48,7 +48,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 		{
 			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tile instanceof RetinalScannerTileEntity te)
+			if(tile instanceof RetinalScannerBlockEntity te)
 				te.setPlayerProfile(player.getGameProfile());
 
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
@@ -114,12 +114,12 @@ public class RetinalScannerBlock extends DisguisableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new RetinalScannerTileEntity(pos, state).activatedByView();
+		return new RetinalScannerBlockEntity(pos, state).activatedByView();
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeRetinalScanner, RetinalScannerTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeRetinalScanner, RetinalScannerBlockEntity::tick);
 	}
 
 	@Override

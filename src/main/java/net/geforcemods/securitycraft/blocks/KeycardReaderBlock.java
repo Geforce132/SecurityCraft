@@ -5,8 +5,8 @@ import java.util.Random;
 import com.mojang.math.Vector3f;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.items.KeycardItem;
-import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -58,7 +58,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	{
 		if(!world.isClientSide)
 		{
-			KeycardReaderTileEntity te = (KeycardReaderTileEntity)world.getBlockEntity(pos);
+			KeycardReaderBlockEntity te = (KeycardReaderBlockEntity)world.getBlockEntity(pos);
 
 			if(ModuleUtils.isDenied(te, player))
 			{
@@ -102,7 +102,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		return InteractionResult.SUCCESS;
 	}
 
-	public MutableComponent insertCard(Level world, BlockPos pos, KeycardReaderTileEntity te, ItemStack stack, Player player)
+	public MutableComponent insertCard(Level world, BlockPos pos, KeycardReaderBlockEntity te, ItemStack stack, Player player)
 	{
 		CompoundTag tag = stack.getTag();
 
@@ -222,12 +222,12 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new KeycardReaderTileEntity(pos, state);
+		return new KeycardReaderBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeKeycardReader, KeycardReaderTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeKeycardReader, KeycardReaderBlockEntity::tick);
 	}
 
 	@Override

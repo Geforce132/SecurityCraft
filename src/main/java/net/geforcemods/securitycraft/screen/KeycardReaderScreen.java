@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -19,7 +20,6 @@ import net.geforcemods.securitycraft.screen.components.FixedExtendedButton;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
-import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.components.Button;
@@ -56,7 +56,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderCo
 	private final Component smartModule = Utils.localize("gui.securitycraft:keycard_reader.smartModule");
 	private final Component levelMismatchInfo = Utils.localize("gui.securitycraft:keycard_reader.level_mismatch");
 	private final Component limitedInfo = Utils.localize("tooltip.securitycraft:keycard.limited_info");
-	private final KeycardReaderTileEntity te;
+	private final KeycardReaderBlockEntity te;
 	private final boolean isSmart;
 	private final boolean isOwner;
 	private boolean isExactLevel = true;

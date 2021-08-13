@@ -1,11 +1,14 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkedAction;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
@@ -13,9 +16,6 @@ import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.blocks.SpecialDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
-import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
-import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -55,7 +55,7 @@ public class UniversalBlockRemoverItem extends Item
 		{
 			if(!((IOwnable) tile).getOwner().isOwner(player))
 			{
-				if(!(block instanceof IBlockMine) && (!(tile instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tile).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)))
+				if(!(block instanceof IBlockMine) && (!(tile instanceof DisguisableBlockEntity) || (((BlockItem)((DisguisableBlock)((DisguisableBlockEntity)tile).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) tile).getOwner().getName()), ChatFormatting.RED);
 
 				return InteractionResult.FAIL;
@@ -63,12 +63,12 @@ public class UniversalBlockRemoverItem extends Item
 
 			if(tile instanceof IModuleInventory inv)
 			{
-				boolean isChest = tile instanceof KeypadChestTileEntity;
+				boolean isChest = tile instanceof KeypadChestBlockEntity;
 
 				for(ItemStack module : inv.getInventory())
 				{
 					if(isChest)
-						((KeypadChestTileEntity)tile).addOrRemoveModuleFromAttached(module, true);
+						((KeypadChestBlockEntity)tile).addOrRemoveModuleFromAttached(module, true);
 
 					Block.popResource(world, pos, module);
 				}
@@ -76,7 +76,7 @@ public class UniversalBlockRemoverItem extends Item
 
 			if(block == SCContent.LASER_BLOCK.get())
 			{
-				CustomizableTileEntity te = (CustomizableTileEntity)world.getBlockEntity(pos);
+				CustomizableBlockEntity te = (CustomizableBlockEntity)world.getBlockEntity(pos);
 
 				for(ItemStack module : te.getInventory())
 				{
@@ -119,7 +119,7 @@ public class UniversalBlockRemoverItem extends Item
 
 				if(block == SCContent.INVENTORY_SCANNER.get())
 				{
-					InventoryScannerTileEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+					InventoryScannerBlockEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 					if(te != null)
 						te.getInventory().clear();
@@ -140,6 +140,6 @@ public class UniversalBlockRemoverItem extends Item
 
 	private static boolean isOwnableBlock(Block block, BlockEntity te)
 	{
-		return (te instanceof OwnableTileEntity || te instanceof IOwnable || block instanceof OwnableBlock);
+		return (te instanceof OwnableBlockEntity || te instanceof IOwnable || block instanceof OwnableBlock);
 	}
 }

@@ -5,9 +5,9 @@ import java.util.function.BiFunction;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
+import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -63,7 +63,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 		Entity entity = ctx.getEntity().get();
 		Level world = entity.getCommandSenderWorld();
-		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
 			if (entity instanceof Player player && !EntityUtils.isInvisible(player)) {
@@ -91,7 +91,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	@Override
 	public void onEntityIntersected(Level world, BlockPos pos, Entity entity)
 	{
-		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 		if(connectedScanner == null || connectedScanner.doesFieldSolidify())
 			return;
@@ -117,7 +117,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		}
 	}
 
-	public static boolean checkInventory(Player player, InventoryScannerTileEntity te, ItemStack stack, boolean allowInteraction)
+	public static boolean checkInventory(Player player, InventoryScannerBlockEntity te, ItemStack stack, boolean allowInteraction)
 	{
 		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && te.hasModule(ModuleType.STORAGE);
@@ -131,7 +131,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 				loopInventory(player.getInventory().offhand, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
-	private static boolean loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+	private static boolean loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerBlockEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
 		for(int i = 1; i <= inventory.size(); i++)
 		{
 			ItemStack itemStackChecking = inventory.get(i - 1);
@@ -160,7 +160,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		return false;
 	}
 
-	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerTileEntity te, ItemStack stack, boolean allowInteraction)
+	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerBlockEntity te, ItemStack stack, boolean allowInteraction)
 	{
 		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && te.hasModule(ModuleType.STORAGE);
@@ -186,7 +186,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		return checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
-	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
 		if(item != null) {
 			if(!item.isEmpty() && item.getTag() != null && Block.byItem(item.getItem()) instanceof ShulkerBoxBlock) {
 				ListTag list = item.getTag().getCompound("BlockEntityTag").getList("Items", NBT.TAG_COMPOUND);
@@ -218,7 +218,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 				|| (!hasSmartModule && firstItemStack.getItem() == secondItemStack.getItem());
 	}
 
-	private static void updateInventoryScannerPower(InventoryScannerTileEntity te)
+	private static void updateInventoryScannerPower(InventoryScannerBlockEntity te)
 	{
 		if(!te.shouldProvidePower())
 			te.setShouldProvidePower(true);
@@ -241,9 +241,9 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		return ItemStack.matches(s1, s2);
 	}
 
-	private static void checkAndUpdateTEAppropriately(InventoryScannerTileEntity te)
+	private static void checkAndUpdateTEAppropriately(InventoryScannerBlockEntity te)
 	{
-		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(te.getLevel(), te.getBlockPos());
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(te.getLevel(), te.getBlockPos());
 
 		if(connectedScanner == null)
 			return;
@@ -323,12 +323,12 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCraftTileEntity(pos, state).intersectsEntities();
+		return new SecurityCraftBlockEntity(pos, state).intersectsEntities();
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeAbstract, SecurityCraftTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeAbstract, SecurityCraftBlockEntity::tick);
 	}
 
 	@Override

@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.ReinforcedCauldronTileEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.InteractionHand;
@@ -43,7 +43,7 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 				if(entity instanceof Player player) {
 					BlockEntity tile = world.getBlockEntity(pos);
 
-					if(tile instanceof ReinforcedCauldronTileEntity te && te.isAllowedToInteract(player))
+					if(tile instanceof ReinforcedCauldronBlockEntity te && te.isAllowedToInteract(player))
 						return SHAPE;
 					else
 						return Shapes.block();
@@ -58,7 +58,7 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof ReinforcedCauldronTileEntity te && te.isAllowedToInteract(player))
+		if(tile instanceof ReinforcedCauldronBlockEntity te && te.isAllowedToInteract(player))
 			return super.use(state, world, pos, player, hand, hit);
 
 		return InteractionResult.PASS;
@@ -92,6 +92,6 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new ReinforcedCauldronTileEntity(pos, state);
+		return new ReinforcedCauldronBlockEntity(pos, state);
 	}
 }

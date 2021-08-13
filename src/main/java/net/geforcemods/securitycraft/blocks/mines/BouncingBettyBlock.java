@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
-import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
+import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
+import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -107,7 +107,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 			return;
 
 		world.destroyBlock(pos, false);
-		BouncingBettyEntity bouncingBettyEntity = new BouncingBettyEntity(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
+		BouncingBetty bouncingBettyEntity = new BouncingBetty(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
 		bouncingBettyEntity.fuse = 15;
 		bouncingBettyEntity.setDeltaMovement(bouncingBettyEntity.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
 		WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(bouncingBettyEntity));
@@ -140,11 +140,11 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCraftTileEntity(pos, state).intersectsEntities();
+		return new SecurityCraftBlockEntity(pos, state).intersectsEntities();
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeAbstract, SecurityCraftTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeAbstract, SecurityCraftBlockEntity::tick);
 	}
 }

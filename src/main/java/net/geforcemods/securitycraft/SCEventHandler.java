@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft;
 import java.util.List;
 import java.util.Random;
 
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -11,11 +11,12 @@ import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
-import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.SecurityCamera;
+import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -23,7 +24,6 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.network.client.SendTip;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -89,7 +89,7 @@ public class SCEventHandler {
 
 		if(PlayerUtils.isPlayerMountedOnCamera(player))
 		{
-			BlockPos pos = new BlockPos(((SecurityCameraEntity)player.getVehicle()).getPreviousPlayerPos());
+			BlockPos pos = new BlockPos(((SecurityCamera)player.getVehicle()).getPreviousPlayerPos());
 
 			player.getVehicle().kill();
 			player.getPersistentData().putLong(PREVIOUS_PLAYER_POS_NBT, pos.asLong());
@@ -164,7 +164,7 @@ public class SCEventHandler {
 
 		//outside !world.isRemote for properly checking the interaction
 		//all the sentry functionality for when the sentry is diguised
-		List<SentryEntity> sentries = world.getEntitiesOfClass(SentryEntity.class, new AABB(event.getPos()));
+		List<Sentry> sentries = world.getEntitiesOfClass(Sentry.class, new AABB(event.getPos()));
 
 		if(!sentries.isEmpty())
 			event.setCanceled(sentries.get(0).mobInteract(event.getPlayer(), event.getHand()) == InteractionResult.SUCCESS); //cancel if an action was taken
@@ -209,16 +209,16 @@ public class SCEventHandler {
 
 						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
 
-						if(te instanceof CustomizableTileEntity cte)
+						if(te instanceof CustomizableBlockEntity cte)
 							cte.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModuleType() }, cte);
 
-						if(te instanceof SecurityCameraTileEntity cam)
+						if(te instanceof SecurityCameraBlockEntity cam)
 							level.updateNeighborsAt(cam.getBlockPos().relative(level.getBlockState(cam.getBlockPos()).getValue(SecurityCameraBlock.FACING), -1), level.getBlockState(cam.getBlockPos()).getBlock());
 					}
 			}
 		}
 
-		List<SentryEntity> sentries = ((Level)event.getWorld()).getEntitiesOfClass(SentryEntity.class, new AABB(event.getPos()));
+		List<Sentry> sentries = ((Level)event.getWorld()).getEntitiesOfClass(Sentry.class, new AABB(event.getPos()));
 
 		//don't let people break the disguise block
 		if(!sentries.isEmpty() && !sentries.get(0).getDisguiseModule().isEmpty())
@@ -250,7 +250,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
-		if((event.getTarget() instanceof Player player && PlayerUtils.isPlayerMountedOnCamera(player)) || event.getTarget() instanceof SentryEntity)
+		if((event.getTarget() instanceof Player player && PlayerUtils.isPlayerMountedOnCamera(player)) || event.getTarget() instanceof Sentry)
 			((Mob)event.getEntity()).setTarget(null);
 	}
 
@@ -280,11 +280,11 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onEntityMount(EntityMountEvent event)
 	{
-		if(event.isDismounting() && event.getEntityBeingMounted() instanceof SecurityCameraEntity camera && event.getEntityMounting() instanceof Player player)
+		if(event.isDismounting() && event.getEntityBeingMounted() instanceof SecurityCamera camera && event.getEntityMounting() instanceof Player player)
 		{
 			BlockEntity tile = event.getWorldObj().getBlockEntity(camera.blockPosition());
 
-			if(PlayerUtils.isPlayerMountedOnCamera(player) && tile instanceof SecurityCameraTileEntity te && te.hasModule(ModuleType.SMART))
+			if(PlayerUtils.isPlayerMountedOnCamera(player) && tile instanceof SecurityCameraBlockEntity te && te.hasModule(ModuleType.SMART))
 			{
 				te.lastPitch = player.getXRot();
 				te.lastYaw = player.getYRot();

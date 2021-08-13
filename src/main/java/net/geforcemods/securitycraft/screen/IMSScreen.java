@@ -5,12 +5,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
+import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.IMSTargetingMode;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
-import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
-import net.geforcemods.securitycraft.tileentity.IMSTileEntity.IMSTargetingMode;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -26,12 +26,12 @@ public class IMSScreen extends AbstractContainerScreen<GenericTEContainer>{
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent imsName = Utils.localize(SCContent.IMS.get().getDescriptionId());
 	private final TranslatableComponent target = Utils.localize("gui.securitycraft:ims.target");
-	private IMSTileEntity tileEntity;
+	private IMSBlockEntity tileEntity;
 	private IMSTargetingMode targetMode;
 
 	public IMSScreen(GenericTEContainer container, Inventory inv, Component name) {
 		super(container, inv, name);
-		tileEntity = (IMSTileEntity)container.te;
+		tileEntity = (IMSBlockEntity)container.te;
 		targetMode = tileEntity.getTargetingMode();
 	}
 

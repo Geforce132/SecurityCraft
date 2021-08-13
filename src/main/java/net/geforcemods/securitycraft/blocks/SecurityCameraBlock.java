@@ -4,9 +4,9 @@ import java.util.Iterator;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
@@ -112,14 +112,14 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	public void mountCamera(Level world, BlockPos pos, int id, Player player){
-		if(player.getVehicle() instanceof SecurityCameraEntity cam){
-			SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, pos, id, cam);
+		if(player.getVehicle() instanceof SecurityCamera cam){
+			SecurityCamera dummyEntity = new SecurityCamera(world, pos, id, cam);
 			WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(dummyEntity));
 			player.startRiding(dummyEntity);
 			return;
 		}
 
-		SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, pos, id, player);
+		SecurityCamera dummyEntity = new SecurityCamera(world, pos, id, player);
 		WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(dummyEntity));
 		player.startRiding(dummyEntity);
 
@@ -178,12 +178,12 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCameraTileEntity(pos, state).nameable();
+		return new SecurityCameraBlockEntity(pos, state).nameable();
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeSecurityCamera, SecurityCameraTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeSecurityCamera, SecurityCameraBlockEntity::tick);
 	}
 
 	@Override

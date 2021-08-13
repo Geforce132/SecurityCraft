@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
+import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -103,12 +103,12 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new MotionActivatedLightTileEntity(pos, state).attacks(LivingEntity.class, 5, 1);
+		return new MotionActivatedLightBlockEntity(pos, state).attacks(LivingEntity.class, 5, 1);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeMotionLight, MotionActivatedLightTileEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeMotionLight, MotionActivatedLightBlockEntity::tick);
 	}
 
 	@Override

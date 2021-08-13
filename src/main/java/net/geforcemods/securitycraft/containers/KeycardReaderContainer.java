@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.items.KeycardItem;
-import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
@@ -19,7 +19,7 @@ public class KeycardReaderContainer extends AbstractContainerMenu
 {
 	private final SimpleContainer itemInventory = new SimpleContainer(1);
 	public final Slot keycardSlot;
-	public KeycardReaderTileEntity te;
+	public KeycardReaderBlockEntity te;
 	private ContainerLevelAccess worldPosCallable;
 
 	public KeycardReaderContainer(int windowId, Inventory inventory, Level world, BlockPos pos)
@@ -28,7 +28,7 @@ public class KeycardReaderContainer extends AbstractContainerMenu
 
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof KeycardReaderTileEntity te)
+		if(tile instanceof KeycardReaderBlockEntity te)
 			this.te = te;
 
 		worldPosCallable = ContainerLevelAccess.create(world, pos);

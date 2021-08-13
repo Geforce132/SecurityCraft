@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
+import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -15,14 +15,14 @@ import net.minecraft.world.level.Level;
 public class ProjectorContainer extends AbstractContainerMenu {
 
 	public static final int SIZE = 1;
-	public ProjectorTileEntity te;
+	public ProjectorBlockEntity te;
 	private ContainerLevelAccess worldPosCallable;
 
 	public ProjectorContainer(int windowId, Level world, BlockPos pos, Inventory inventory)
 	{
 		super(SCContent.cTypeProjector, windowId);
 
-		if(world.getBlockEntity(pos) instanceof ProjectorTileEntity tile)
+		if(world.getBlockEntity(pos) instanceof ProjectorBlockEntity tile)
 			te = tile;
 
 		worldPosCallable = ContainerLevelAccess.create(world, pos);

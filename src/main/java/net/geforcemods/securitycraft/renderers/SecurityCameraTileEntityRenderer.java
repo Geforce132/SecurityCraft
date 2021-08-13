@@ -6,9 +6,9 @@ import com.mojang.math.Vector3f;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -24,7 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SecurityCameraTileEntityRenderer implements BlockEntityRenderer<SecurityCameraTileEntity> {
+public class SecurityCameraTileEntityRenderer implements BlockEntityRenderer<SecurityCameraBlockEntity> {
 
 	private static final Quaternion POSITIVE_Y_180 = Vector3f.YP.rotationDegrees(180.0F);
 	private static final Quaternion POSITIVE_Y_90 = Vector3f.YP.rotationDegrees(90.0F);
@@ -39,7 +39,7 @@ public class SecurityCameraTileEntityRenderer implements BlockEntityRenderer<Sec
 	}
 
 	@Override
-	public void render(SecurityCameraTileEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int p_225616_5_, int p_225616_6_)
+	public void render(SecurityCameraBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int p_225616_5_, int p_225616_6_)
 	{
 		if(te.down || (Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getVehicle().blockPosition().equals(te.getBlockPos())))
 			return;

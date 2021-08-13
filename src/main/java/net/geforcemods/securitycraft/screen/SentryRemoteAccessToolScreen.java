@@ -10,8 +10,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
+import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.IdButton;
@@ -102,10 +102,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				guiButtons[i][UNBIND].active = true;
 
 				if (Minecraft.getInstance().player.level.isLoaded(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
-					List<SentryEntity> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(SentryEntity.class, new AABB(sentryPos));
+					List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(sentryPos));
 
 					if (!sentries.isEmpty()) {
-						SentryEntity sentry = sentries.get(0);
+						Sentry sentry = sentries.get(0);
 						SentryMode mode = sentry.getMode();
 
 						if(sentry.hasCustomName())
@@ -204,7 +204,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	 */
 	protected void performSingleAction(int sentry, int mode, int targets){
 		int[] coords = getSentryCoordinates(sentry);
-		List<SentryEntity> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(SentryEntity.class, new AABB(new BlockPos(coords[0], coords[1], coords[2])));
+		List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(new BlockPos(coords[0], coords[1], coords[2])));
 
 		if(!sentries.isEmpty()) {
 			int resultingMode = Math.max(0, Math.min(targets + mode * 3, 6)); //bind between 0 and 6

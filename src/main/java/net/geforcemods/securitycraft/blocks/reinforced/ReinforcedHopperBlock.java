@@ -4,8 +4,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
@@ -43,7 +43,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		{
 			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tile instanceof ReinforcedHopperTileEntity te)
+			if(tile instanceof ReinforcedHopperBlockEntity te)
 				te.setCustomName(stack.getHoverName());
 		}
 	}
@@ -55,7 +55,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		{
 			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tile instanceof ReinforcedHopperTileEntity te)
+			if(tile instanceof ReinforcedHopperBlockEntity te)
 			{
 				//only allow the owner or players on the allowlist to access a reinforced hopper
 				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
@@ -73,7 +73,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		{
 			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tile instanceof ReinforcedHopperTileEntity te)
+			if(tile instanceof ReinforcedHopperBlockEntity te)
 			{
 				Containers.dropContents(world, pos, te);
 				world.updateNeighbourForOutputSignal(pos, this);
@@ -88,19 +88,19 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	{
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof ReinforcedHopperTileEntity te)
-			ReinforcedHopperTileEntity.entityInside(world, pos, state, entity, te);
+		if(tile instanceof ReinforcedHopperBlockEntity te)
+			ReinforcedHopperBlockEntity.entityInside(world, pos, state, entity, te);
 	}
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new ReinforcedHopperTileEntity(pos, state);
+		return new ReinforcedHopperBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return world.isClientSide ? null : createTickerHelper(type, SCContent.teTypeReinforcedHopper, ReinforcedHopperTileEntity::pushItemsTick);
+		return world.isClientSide ? null : createTickerHelper(type, SCContent.teTypeReinforcedHopper, ReinforcedHopperBlockEntity::pushItemsTick);
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		@Override
 		public boolean canExtract(IOwnable te, Level world, BlockPos pos, BlockState state)
 		{
-			ReinforcedHopperTileEntity hopperTe = (ReinforcedHopperTileEntity)world.getBlockEntity(pos);
+			ReinforcedHopperBlockEntity hopperTe = (ReinforcedHopperBlockEntity)world.getBlockEntity(pos);
 
 			if(!te.getOwner().owns(hopperTe))
 			{

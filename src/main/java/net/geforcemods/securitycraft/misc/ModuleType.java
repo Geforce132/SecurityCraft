@@ -3,11 +3,11 @@ package net.geforcemods.securitycraft.misc;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
 
 /**
- * Simple enum that is supposed to be used in conjunction with {@link CustomizableTileEntity}.
+ * Simple enum that is supposed to be used in conjunction with {@link CustomizableBlockEntity}.
  * Gives easy access to the module ItemStack and name.
  *
  * @author Geforce

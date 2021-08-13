@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -53,7 +53,7 @@ public class SyncBlockPocketManager
 			Player player = ctx.get().getSender();
 			Level world = player.level;
 
-			if(world.isLoaded(pos) && world.getBlockEntity(pos) instanceof BlockPocketManagerTileEntity bpm && bpm.getOwner().isOwner(player))
+			if(world.isLoaded(pos) && world.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity bpm && bpm.getOwner().isOwner(player))
 			{
 				BlockState state = world.getBlockState(pos);
 

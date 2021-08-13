@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -57,7 +57,7 @@ public class LoggerBlock extends DisguisableBlock {
 	{
 		if (!world.isClientSide)
 			if(world.hasNeighborSignal(pos))
-				((UsernameLoggerTileEntity)world.getBlockEntity(pos)).logPlayers();
+				((UsernameLoggerBlockEntity)world.getBlockEntity(pos)).logPlayers();
 	}
 
 	@Override
@@ -79,12 +79,12 @@ public class LoggerBlock extends DisguisableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new UsernameLoggerTileEntity(pos, state).attacks(Player.class, 3, 80);
+		return new UsernameLoggerBlockEntity(pos, state).attacks(Player.class, 3, 80);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeUsernameLogger, UsernameLoggerTileEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeUsernameLogger, UsernameLoggerBlockEntity::tick);
 	}
 
 	@Override

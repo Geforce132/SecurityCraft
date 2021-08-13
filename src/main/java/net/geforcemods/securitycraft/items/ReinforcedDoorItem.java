@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -58,10 +58,10 @@ public class ReinforcedDoorItem extends Item
 			if(!player.isCreative())
 				stack.shrink(1);
 
-			if(world.getBlockEntity(pos) instanceof OwnableTileEntity te)
+			if(world.getBlockEntity(pos) instanceof OwnableBlockEntity te)
 			{
 				te.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
-				((OwnableTileEntity) world.getBlockEntity(pos.above())).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				((OwnableBlockEntity) world.getBlockEntity(pos.above())).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 			}
 
 			return InteractionResult.SUCCESS;

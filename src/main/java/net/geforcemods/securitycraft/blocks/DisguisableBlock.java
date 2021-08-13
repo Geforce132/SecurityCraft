@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -110,7 +110,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	public BlockState getDisguisedBlockState(BlockGetter world, BlockPos pos)
 	{
-		if(world.getBlockEntity(pos) instanceof DisguisableTileEntity te)
+		if(world.getBlockEntity(pos) instanceof DisguisableBlockEntity te)
 		{
 			ItemStack module = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
@@ -123,7 +123,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	public ItemStack getDisguisedStack(BlockGetter world, BlockPos pos)
 	{
-		if(world != null && world.getBlockEntity(pos) instanceof DisguisableTileEntity te)
+		if(world != null && world.getBlockEntity(pos) instanceof DisguisableBlockEntity te)
 		{
 			ItemStack stack = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 

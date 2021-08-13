@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 
-import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
+import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -14,12 +14,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class TrophySystemTileEntityRenderer implements BlockEntityRenderer<TrophySystemTileEntity> {
+public class TrophySystemTileEntityRenderer implements BlockEntityRenderer<TrophySystemBlockEntity> {
 
 	public TrophySystemTileEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(TrophySystemTileEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int packedLight, int combinedOverlay) {
+	public void render(TrophySystemBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int packedLight, int combinedOverlay) {
 		// The code below draws a line between the trophy system and the projectile that
 		// it's targeting.
 
@@ -34,7 +34,7 @@ public class TrophySystemTileEntityRenderer implements BlockEntityRenderer<Troph
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(TrophySystemTileEntity te)
+	public boolean shouldRenderOffScreen(TrophySystemBlockEntity te)
 	{
 		return true;
 	}

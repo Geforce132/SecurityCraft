@@ -5,9 +5,9 @@ import java.util.Optional;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -99,7 +99,7 @@ public class KeypadChestBlock extends ChestBlock {
 	{
 		if(!world.isClientSide && !isBlocked(world, pos))
 		{
-			KeypadChestTileEntity te = (KeypadChestTileEntity)world.getBlockEntity(pos);
+			KeypadChestBlockEntity te = (KeypadChestBlockEntity)world.getBlockEntity(pos);
 
 			if(ModuleUtils.isDenied(te, player))
 			{
@@ -147,10 +147,10 @@ public class KeypadChestBlock extends ChestBlock {
 
 			if(state.getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE)
 			{
-				KeypadChestTileEntity thisTe = (KeypadChestTileEntity)world.getBlockEntity(pos);
+				KeypadChestBlockEntity thisTe = (KeypadChestBlockEntity)world.getBlockEntity(pos);
 				BlockEntity otherTe = world.getBlockEntity(pos.relative(getConnectedDirection(state)));
 
-				if(otherTe instanceof KeypadChestTileEntity te && thisTe.getOwner().owns(te))
+				if(otherTe instanceof KeypadChestBlockEntity te && thisTe.getOwner().owns(te))
 					thisTe.setPassword(te.getPassword());
 			}
 		}
@@ -165,7 +165,7 @@ public class KeypadChestBlock extends ChestBlock {
 	public int getSignal(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof KeypadChestTileEntity te)
+		if(tile instanceof KeypadChestBlockEntity te)
 			return te.hasModule(ModuleType.REDSTONE) ? Mth.clamp(te.getNumPlayersUsing(), 0, 15) : 0;
 		else return 0;
 	}
@@ -181,7 +181,7 @@ public class KeypadChestBlock extends ChestBlock {
 
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof KeypadChestTileEntity te)
+		if(tile instanceof KeypadChestBlockEntity te)
 			te.setBlockState(state);
 	}
 
@@ -193,12 +193,12 @@ public class KeypadChestBlock extends ChestBlock {
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new KeypadChestTileEntity(pos, state);
+		return new KeypadChestBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return world.isClientSide ? createTickerHelper(type, SCContent.teTypeKeypadChest, KeypadChestTileEntity::lidAnimateTick) : null;
+		return world.isClientSide ? createTickerHelper(type, SCContent.teTypeKeypadChest, KeypadChestBlockEntity::lidAnimateTick) : null;
 	}
 
 	public static boolean isBlocked(Level world, BlockPos pos)

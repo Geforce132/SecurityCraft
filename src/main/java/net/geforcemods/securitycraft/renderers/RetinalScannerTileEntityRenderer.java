@@ -14,9 +14,9 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -32,14 +32,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LightLayer;
 
-public class RetinalScannerTileEntityRenderer implements BlockEntityRenderer<RetinalScannerTileEntity>
+public class RetinalScannerTileEntityRenderer implements BlockEntityRenderer<RetinalScannerBlockEntity>
 {
 	private static final float CORRECT_FACTOR = 1 / 550F;
 
 	public RetinalScannerTileEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(RetinalScannerTileEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+	public void render(RetinalScannerBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
 	{
 		Direction direction = te.getBlockState().getValue(RetinalScannerBlock.FACING);
 

@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SecurityCameraModel extends EntityModel<SecurityCameraEntity> {
+public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 	public ModelPart shape1;
 	public ModelPart shape2;
 	public ModelPart cameraRotationPoint;
@@ -62,5 +62,5 @@ public class SecurityCameraModel extends EntityModel<SecurityCameraEntity> {
 	}
 
 	@Override
-	public void setupAnim(SecurityCameraEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+	public void setupAnim(SecurityCamera entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 }

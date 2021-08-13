@@ -14,7 +14,7 @@ import net.minecraftforge.fmlclient.gui.widget.Slider.ISlider;
 
 /**
  * A class that allows blocks that have
- * {@link CustomizableTileEntity}s to have custom, "per-block"
+ * {@link CustomizableBlockEntity}s to have custom, "per-block"
  * options that are separate from the main SecurityCraft
  * configuration options.
  *

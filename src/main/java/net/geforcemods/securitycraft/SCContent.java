@@ -1,7 +1,35 @@
 package net.geforcemods.securitycraft;
 
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
+import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
+import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
+import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
+import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
+import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
+import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
+import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
+import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
+import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ScannerDoorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
+import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
@@ -91,11 +119,11 @@ import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
 import net.geforcemods.securitycraft.containers.ProjectorContainer;
-import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
-import net.geforcemods.securitycraft.entity.BulletEntity;
-import net.geforcemods.securitycraft.entity.IMSBombEntity;
-import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.BouncingBetty;
+import net.geforcemods.securitycraft.entity.Bullet;
+import net.geforcemods.securitycraft.entity.IMSBomb;
+import net.geforcemods.securitycraft.entity.SecurityCamera;
+import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.fluids.FakeLavaFluid;
 import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
 import net.geforcemods.securitycraft.items.AdminToolItem;
@@ -122,34 +150,6 @@ import net.geforcemods.securitycraft.items.UniversalBlockRemoverItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.AlarmTileEntity;
-import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
-import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
-import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
-import net.geforcemods.securitycraft.tileentity.CageTrapTileEntity;
-import net.geforcemods.securitycraft.tileentity.ClaymoreTileEntity;
-import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
-import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadDoorTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
-import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
-import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
-import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
-import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
-import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
-import net.geforcemods.securitycraft.tileentity.ReinforcedCauldronTileEntity;
-import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
-import net.geforcemods.securitycraft.tileentity.ReinforcedIronBarsTileEntity;
-import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
-import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
-import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
-import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
-import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableTE;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
@@ -685,77 +685,77 @@ public class SCContent
 
 	//tile entity types
 	@ObjectHolder(SecurityCraft.MODID + ":ownable")
-	public static BlockEntityType<OwnableTileEntity> teTypeOwnable;
+	public static BlockEntityType<OwnableBlockEntity> teTypeOwnable;
 	@ObjectHolder(SecurityCraft.MODID + ":abstract")
-	public static BlockEntityType<SecurityCraftTileEntity> teTypeAbstract;
+	public static BlockEntityType<SecurityCraftBlockEntity> teTypeAbstract;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad")
-	public static BlockEntityType<KeypadTileEntity> teTypeKeypad;
+	public static BlockEntityType<KeypadBlockEntity> teTypeKeypad;
 	@ObjectHolder(SecurityCraft.MODID + ":laser_block")
-	public static BlockEntityType<LaserBlockTileEntity> teTypeLaserBlock;
+	public static BlockEntityType<LaserBlockBlockEntity> teTypeLaserBlock;
 	@ObjectHolder(SecurityCraft.MODID + ":cage_trap")
-	public static BlockEntityType<CageTrapTileEntity> teTypeCageTrap;
+	public static BlockEntityType<CageTrapBlockEntity> teTypeCageTrap;
 	@ObjectHolder(SecurityCraft.MODID + ":keycard_reader")
-	public static BlockEntityType<KeycardReaderTileEntity> teTypeKeycardReader;
+	public static BlockEntityType<KeycardReaderBlockEntity> teTypeKeycardReader;
 	@ObjectHolder(SecurityCraft.MODID + ":inventory_scanner")
-	public static BlockEntityType<InventoryScannerTileEntity> teTypeInventoryScanner;
+	public static BlockEntityType<InventoryScannerBlockEntity> teTypeInventoryScanner;
 	@ObjectHolder(SecurityCraft.MODID + ":portable_radar")
-	public static BlockEntityType<PortableRadarTileEntity> teTypePortableRadar;
+	public static BlockEntityType<PortableRadarBlockEntity> teTypePortableRadar;
 	@ObjectHolder(SecurityCraft.MODID + ":security_camera")
-	public static BlockEntityType<SecurityCameraTileEntity> teTypeSecurityCamera;
+	public static BlockEntityType<SecurityCameraBlockEntity> teTypeSecurityCamera;
 	@ObjectHolder(SecurityCraft.MODID + ":username_logger")
-	public static BlockEntityType<UsernameLoggerTileEntity> teTypeUsernameLogger;
+	public static BlockEntityType<UsernameLoggerBlockEntity> teTypeUsernameLogger;
 	@ObjectHolder(SecurityCraft.MODID + ":retinal_scanner")
-	public static BlockEntityType<RetinalScannerTileEntity> teTypeRetinalScanner;
+	public static BlockEntityType<RetinalScannerBlockEntity> teTypeRetinalScanner;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad_chest")
-	public static BlockEntityType<KeypadChestTileEntity> teTypeKeypadChest;
+	public static BlockEntityType<KeypadChestBlockEntity> teTypeKeypadChest;
 	@ObjectHolder(SecurityCraft.MODID + ":alarm")
-	public static BlockEntityType<AlarmTileEntity> teTypeAlarm;
+	public static BlockEntityType<AlarmBlockEntity> teTypeAlarm;
 	@ObjectHolder(SecurityCraft.MODID + ":claymore")
-	public static BlockEntityType<ClaymoreTileEntity> teTypeClaymore;
+	public static BlockEntityType<ClaymoreBlockEntity> teTypeClaymore;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
-	public static BlockEntityType<KeypadFurnaceTileEntity> teTypeKeypadFurnace;
+	public static BlockEntityType<KeypadFurnaceBlockEntity> teTypeKeypadFurnace;
 	@ObjectHolder(SecurityCraft.MODID + ":ims")
-	public static BlockEntityType<IMSTileEntity> teTypeIms;
+	public static BlockEntityType<IMSBlockEntity> teTypeIms;
 	@ObjectHolder(SecurityCraft.MODID + ":protecto")
-	public static BlockEntityType<ProtectoTileEntity> teTypeProtecto;
+	public static BlockEntityType<ProtectoBlockEntity> teTypeProtecto;
 	@ObjectHolder(SecurityCraft.MODID + ":scanner_door")
-	public static BlockEntityType<ScannerDoorTileEntity> teTypeScannerDoor;
+	public static BlockEntityType<ScannerDoorBlockEntity> teTypeScannerDoor;
 	@ObjectHolder(SecurityCraft.MODID + ":secret_sign")
-	public static BlockEntityType<SecretSignTileEntity> teTypeSecretSign;
+	public static BlockEntityType<SecretSignBlockEntity> teTypeSecretSign;
 	@ObjectHolder(SecurityCraft.MODID + ":motion_light")
-	public static BlockEntityType<MotionActivatedLightTileEntity> teTypeMotionLight;
+	public static BlockEntityType<MotionActivatedLightBlockEntity> teTypeMotionLight;
 	@ObjectHolder(SecurityCraft.MODID + ":track_mine")
-	public static BlockEntityType<TrackMineTileEntity> teTypeTrackMine;
+	public static BlockEntityType<TrackMineBlockEntity> teTypeTrackMine;
 	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
-	public static BlockEntityType<TrophySystemTileEntity> teTypeTrophySystem;
+	public static BlockEntityType<TrophySystemBlockEntity> teTypeTrophySystem;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
-	public static BlockEntityType<BlockPocketManagerTileEntity> teTypeBlockPocketManager;
+	public static BlockEntityType<BlockPocketManagerBlockEntity> teTypeBlockPocketManager;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket")
-	public static BlockEntityType<BlockPocketTileEntity> teTypeBlockPocket;
+	public static BlockEntityType<BlockPocketBlockEntity> teTypeBlockPocket;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_pressure_plate")
-	public static BlockEntityType<AllowlistOnlyTileEntity> teTypeAllowlistOnly;
+	public static BlockEntityType<AllowlistOnlyBlockEntity> teTypeAllowlistOnly;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_hopper")
-	public static BlockEntityType<ReinforcedHopperTileEntity> teTypeReinforcedHopper;
+	public static BlockEntityType<ReinforcedHopperBlockEntity> teTypeReinforcedHopper;
 	@ObjectHolder(SecurityCraft.MODID + ":projector")
-	public static BlockEntityType<ProjectorTileEntity> teTypeProjector;
+	public static BlockEntityType<ProjectorBlockEntity> teTypeProjector;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad_door")
-	public static BlockEntityType<KeypadDoorTileEntity> teTypeKeypadDoor;
+	public static BlockEntityType<KeypadDoorBlockEntity> teTypeKeypadDoor;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_iron_bars")
-	public static BlockEntityType<ReinforcedIronBarsTileEntity> teTypeReinforcedIronBars;
+	public static BlockEntityType<ReinforcedIronBarsBlockEntity> teTypeReinforcedIronBars;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_cauldron")
-	public static BlockEntityType<ReinforcedCauldronTileEntity> teTypeReinforcedCauldron;
+	public static BlockEntityType<ReinforcedCauldronBlockEntity> teTypeReinforcedCauldron;
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
-	public static EntityType<BouncingBettyEntity> eTypeBouncingBetty;
+	public static EntityType<BouncingBetty> eTypeBouncingBetty;
 	@ObjectHolder(SecurityCraft.MODID + ":imsbomb")
-	public static EntityType<IMSBombEntity> eTypeImsBomb;
+	public static EntityType<IMSBomb> eTypeImsBomb;
 	@ObjectHolder(SecurityCraft.MODID + ":securitycamera")
-	public static EntityType<SecurityCameraEntity> eTypeSecurityCamera;
+	public static EntityType<SecurityCamera> eTypeSecurityCamera;
 	@ObjectHolder(SecurityCraft.MODID + ":sentry")
-	public static EntityType<SentryEntity> eTypeSentry;
+	public static EntityType<Sentry> eTypeSentry;
 	@ObjectHolder(SecurityCraft.MODID + ":bullet")
-	public static EntityType<BulletEntity> eTypeBullet;
+	public static EntityType<Bullet> eTypeBullet;
 
 	//container types
 	@ObjectHolder(SecurityCraft.MODID + ":block_reinforcer")

@@ -9,9 +9,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 
+import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
-import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.LocalPlayer;
@@ -33,7 +33,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SecretSignTileEntityRenderer implements BlockEntityRenderer<SecretSignTileEntity>
+public class SecretSignTileEntityRenderer implements BlockEntityRenderer<SecretSignBlockEntity>
 {
 	public static final int MAX_LINE_WIDTH = 90;
 	private static final int LINE_HEIGHT = 10;
@@ -49,7 +49,7 @@ public class SecretSignTileEntityRenderer implements BlockEntityRenderer<SecretS
 	}
 
 	@Override
-	public void render(SecretSignTileEntity te, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+	public void render(SecretSignBlockEntity te, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
 	{
 		BlockState state = te.getBlockState();
 		WoodType woodtype = SignRenderer.getWoodType(state.getBlock());
@@ -122,7 +122,7 @@ public class SecretSignTileEntityRenderer implements BlockEntityRenderer<SecretS
 		pose.popPose();
 	}
 
-	private static boolean isOutlineVisible(SecretSignTileEntity te, int textColor)
+	private static boolean isOutlineVisible(SecretSignBlockEntity te, int textColor)
 	{
 		if(textColor == DyeColor.BLACK.getTextColor())
 			return true;
@@ -142,7 +142,7 @@ public class SecretSignTileEntityRenderer implements BlockEntityRenderer<SecretS
 		}
 	}
 
-	private static int getDarkColor(SecretSignTileEntity te)
+	private static int getDarkColor(SecretSignBlockEntity te)
 	{
 		int textColor = te.getColor().getTextColor();
 		int r = (int)(NativeImage.getR(textColor) * 0.4D);

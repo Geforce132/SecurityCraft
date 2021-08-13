@@ -6,12 +6,12 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
+import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.CageTrapTileEntity;
-import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
-import net.geforcemods.securitycraft.tileentity.ReinforcedIronBarsTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -57,7 +57,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext collisionContext){
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof CageTrapTileEntity te)
+		if(tile instanceof CageTrapBlockEntity te)
 		{
 			if(collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent())
 			{
@@ -76,7 +76,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 		else return Shapes.empty(); //shouldn't happen
 	}
 
-	private VoxelShape getCorrectShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx, DisguisableTileEntity disguisableTe)
+	private VoxelShape getCorrectShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx, DisguisableBlockEntity disguisableTe)
 	{
 		ItemStack moduleStack = disguisableTe.getModule(ModuleType.DISGUISE);
 
@@ -88,7 +88,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 	@Override
 	public void onEntityIntersected(Level world, BlockPos pos, Entity entity) {
 		if(!world.isClientSide){
-			CageTrapTileEntity tile = (CageTrapTileEntity) world.getBlockEntity(pos);
+			CageTrapBlockEntity tile = (CageTrapBlockEntity) world.getBlockEntity(pos);
 			boolean isPlayer = entity instanceof Player;
 
 			if(isPlayer || (entity instanceof Mob && tile.capturesMobs())){
@@ -120,7 +120,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 					if(te instanceof IOwnable ownable)
 						ownable.setOwner(o.getUUID(), o.getName());
 
-					if(te instanceof ReinforcedIronBarsTileEntity ironBarsTe)
+					if(te instanceof ReinforcedIronBarsBlockEntity ironBarsTe)
 						ironBarsTe.setCanDrop(false);
 				});
 				world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
@@ -186,12 +186,12 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new CageTrapTileEntity(pos, state).intersectsEntities();
+		return new CageTrapBlockEntity(pos, state).intersectsEntities();
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeCageTrap, CageTrapTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeCageTrap, CageTrapBlockEntity::tick);
 	}
 
 	public static class BlockModifier

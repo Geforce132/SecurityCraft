@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,12 +17,12 @@ import net.minecraft.world.level.Level;
 public class InventoryScannerContainer extends AbstractContainerMenu {
 
 	private final int numRows;
-	public final InventoryScannerTileEntity te;
+	public final InventoryScannerBlockEntity te;
 	private ContainerLevelAccess worldPosCallable;
 
 	public InventoryScannerContainer(int windowId, Level world, BlockPos pos, Inventory inventory){
 		super(SCContent.cTypeInventoryScanner, windowId);
-		te = (InventoryScannerTileEntity)world.getBlockEntity(pos);
+		te = (InventoryScannerBlockEntity)world.getBlockEntity(pos);
 		numRows = te.getContainerSize() / 9;
 		worldPosCallable = ContainerLevelAccess.create(world, pos);
 

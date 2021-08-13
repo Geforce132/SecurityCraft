@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -189,8 +189,8 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		Block neighborBlock = world.getBlockState(neighbor).getBlock();
 		Owner previousOwner = null;
 
-		if(world.getBlockEntity(pos) instanceof OwnableTileEntity)
-			previousOwner = ((OwnableTileEntity)world.getBlockEntity(pos)).getOwner();
+		if(world.getBlockEntity(pos) instanceof OwnableBlockEntity)
+			previousOwner = ((OwnableBlockEntity)world.getBlockEntity(pos)).getOwner();
 
 		if(state.getValue(HALF) == DoubleBlockHalf.UPPER)
 		{
@@ -306,7 +306,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			}
 		}
 
-		if(previousOwner != null && world.getBlockEntity(pos) instanceof OwnableTileEntity thisTe && world.getBlockEntity(pos.above()) instanceof OwnableTileEntity aboveTe)
+		if(previousOwner != null && world.getBlockEntity(pos) instanceof OwnableBlockEntity thisTe && world.getBlockEntity(pos.above()) instanceof OwnableBlockEntity aboveTe)
 		{
 			thisTe.setOwner(previousOwner.getUUID(), previousOwner.getName());
 			aboveTe.setOwner(previousOwner.getUUID(), previousOwner.getName());
@@ -367,7 +367,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableTileEntity(pos, state);
+		return new OwnableBlockEntity(pos, state);
 	}
 
 	@Override

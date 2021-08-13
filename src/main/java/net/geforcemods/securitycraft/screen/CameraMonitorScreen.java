@@ -7,7 +7,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -15,7 +16,6 @@ import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IdButton;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -45,7 +45,7 @@ public class CameraMonitorScreen extends Screen {
 	private IdButton[] cameraButtons = new IdButton[10];
 	private IdButton[] unbindButtons = new IdButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
-	private SecurityCraftTileEntity[] cameraTEs = new SecurityCraftTileEntity[10];
+	private SecurityCraftBlockEntity[] cameraTEs = new SecurityCraftBlockEntity[10];
 	private ResourceLocation[] cameraViewDim = new ResourceLocation[10];
 	private int xSize = 176, ySize = 166;
 	private int page = 1;
@@ -109,14 +109,14 @@ public class CameraMonitorScreen extends Screen {
 				Level world = Minecraft.getInstance().level;
 				BlockEntity tile = world.getBlockEntity(view.pos());
 
-				if(world.getBlockState(view.pos()).getBlock() != SCContent.SECURITY_CAMERA.get() || (tile instanceof SecurityCameraTileEntity te && !te.getOwner().isOwner(Minecraft.getInstance().player) && !te.hasModule(ModuleType.SMART)))
+				if(world.getBlockState(view.pos()).getBlock() != SCContent.SECURITY_CAMERA.get() || (tile instanceof SecurityCameraBlockEntity te && !te.getOwner().isOwner(Minecraft.getInstance().player) && !te.hasModule(ModuleType.SMART)))
 				{
 					button.active = false;
 					cameraTEs[button.id - 1] = null;
 					continue;
 				}
 
-				cameraTEs[button.id - 1] = (SecurityCraftTileEntity)tile;
+				cameraTEs[button.id - 1] = (SecurityCraftBlockEntity)tile;
 				hoverCheckers[button.id - 1] = new HoverChecker(button);
 			}
 			else

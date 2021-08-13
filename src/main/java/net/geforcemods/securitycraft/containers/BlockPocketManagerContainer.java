@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +16,7 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class BlockPocketManagerContainer extends AbstractContainerMenu
 {
-	public BlockPocketManagerTileEntity te;
+	public BlockPocketManagerBlockEntity te;
 	private ContainerLevelAccess worldPosCallable;
 	public final boolean storage;
 	public final boolean isOwner;
@@ -27,7 +27,7 @@ public class BlockPocketManagerContainer extends AbstractContainerMenu
 
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof BlockPocketManagerTileEntity te)
+		if(tile instanceof BlockPocketManagerBlockEntity te)
 			this.te = te;
 
 		worldPosCallable = ContainerLevelAccess.create(world, pos);

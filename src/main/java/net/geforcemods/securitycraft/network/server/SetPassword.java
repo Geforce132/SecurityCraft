@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
-import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -61,7 +61,7 @@ public class SetPassword {
 			if(tile instanceof IPasswordProtected te && (!(tile instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))){
 				te.setPassword(password);
 
-				if(te instanceof KeypadChestTileEntity chestTe)
+				if(te instanceof KeypadChestBlockEntity chestTe)
 					checkAndUpdateAdjacentChest(chestTe, world, pos, password, player);
 			}
 		});
@@ -69,13 +69,13 @@ public class SetPassword {
 		ctx.get().setPacketHandled(true);
 	}
 
-	private static void checkAndUpdateAdjacentChest(KeypadChestTileEntity te, Level world, BlockPos pos, String codeToSet, Player player) {
+	private static void checkAndUpdateAdjacentChest(KeypadChestBlockEntity te, Level world, BlockPos pos, String codeToSet, Player player) {
 		if(te.getBlockState().getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE)
 		{
 			BlockPos offsetPos = pos.relative(KeypadChestBlock.getConnectedDirection(te.getBlockState()));
 			BlockEntity otherTe = world.getBlockEntity(offsetPos);
 
-			if(otherTe instanceof KeypadChestTileEntity chestTe && te.getOwner().owns(chestTe))
+			if(otherTe instanceof KeypadChestBlockEntity chestTe && te.getOwner().owns(chestTe))
 			{
 				chestTe.setPassword(codeToSet);
 				world.sendBlockUpdated(offsetPos, otherTe.getBlockState(), otherTe.getBlockState(), 2);

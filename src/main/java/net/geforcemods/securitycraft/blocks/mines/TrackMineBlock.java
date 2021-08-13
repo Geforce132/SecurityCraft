@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
@@ -81,7 +81,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	public void onMinecartPass(BlockState state, Level world, BlockPos pos, AbstractMinecart cart){
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof TrackMineTileEntity te && te.isActive())
+		if(tile instanceof TrackMineBlockEntity te && te.isActive())
 		{
 			world.destroyBlock(pos, false);
 			world.explode(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
@@ -100,7 +100,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	public void explode(Level world, BlockPos pos) {
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof TrackMineTileEntity te && te.isActive())
+		if(tile instanceof TrackMineBlockEntity te && te.isActive())
 		{
 			world.destroyBlock(pos, false);
 			world.explode((Entity) null, pos.getX(), pos.above().getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
@@ -112,7 +112,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	{
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof TrackMineTileEntity te && !te.isActive())
+		if(tile instanceof TrackMineBlockEntity te && !te.isActive())
 		{
 			te.activate();
 			return true;
@@ -125,7 +125,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	{
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof TrackMineTileEntity te && te.isActive())
+		if(tile instanceof TrackMineBlockEntity te && te.isActive())
 		{
 			te.deactivate();
 			return true;
@@ -138,7 +138,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	{
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		return tile instanceof TrackMineTileEntity te && te.isActive();
+		return tile instanceof TrackMineBlockEntity te && te.isActive();
 	}
 
 	@Override
@@ -148,7 +148,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new TrackMineTileEntity(pos, state);
+		return new TrackMineBlockEntity(pos, state);
 	}
 
 }

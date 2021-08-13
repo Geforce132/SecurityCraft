@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
-import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -24,11 +24,11 @@ public class BlockPocketBlock extends BaseReinforcedBlock implements IBlockPocke
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new BlockPocketTileEntity(pos, state);
+		return new BlockPocketBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeBlockPocket, BlockPocketTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeBlockPocket, BlockPocketBlockEntity::tick);
 	}
 }

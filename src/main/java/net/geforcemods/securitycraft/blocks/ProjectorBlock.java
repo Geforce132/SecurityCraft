@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
+import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -78,7 +78,7 @@ public class ProjectorBlock extends DisguisableBlock {
 	{
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(!(tile instanceof ProjectorTileEntity te))
+		if(!(tile instanceof ProjectorBlockEntity te))
 			return InteractionResult.FAIL;
 
 		boolean isOwner = te.getOwner().isOwner(player);
@@ -94,7 +94,7 @@ public class ProjectorBlock extends DisguisableBlock {
 	{
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof ProjectorTileEntity te)
+		if(tile instanceof ProjectorBlockEntity te)
 		{
 			// Drop the block being projected
 			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), te.getStackInSlot(36));
@@ -111,7 +111,7 @@ public class ProjectorBlock extends DisguisableBlock {
 		{
 			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tile instanceof ProjectorTileEntity te)
+			if(tile instanceof ProjectorBlockEntity te)
 			{
 				if(te.isActivatedByRedstone())
 				{
@@ -129,7 +129,7 @@ public class ProjectorBlock extends DisguisableBlock {
 		{
 			BlockEntity tile = world.getBlockEntity(pos);
 
-			if(tile instanceof ProjectorTileEntity te)
+			if(tile instanceof ProjectorBlockEntity te)
 			{
 				if(te.isActivatedByRedstone())
 					te.setActive(false);
@@ -156,12 +156,12 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new ProjectorTileEntity(pos, state);
+		return new ProjectorBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeProjector, ProjectorTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeProjector, ProjectorBlockEntity::tick);
 	}
 
 	@Override

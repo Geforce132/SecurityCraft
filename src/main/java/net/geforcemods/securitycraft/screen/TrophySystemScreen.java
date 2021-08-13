@@ -12,9 +12,9 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -38,13 +38,13 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEContain
 	private final TranslatableComponent moddedProjectiles = Utils.localize("gui.securitycraft:trophy_system.moddedProjectiles");
 	private final boolean isSmart;
 	private final List<EntityType<?>> orderedFilterList;
-	private TrophySystemTileEntity tileEntity;
+	private TrophySystemBlockEntity tileEntity;
 	private ProjectileScrollList projectileList;
 
 	public TrophySystemScreen(GenericTEContainer container, Inventory inv, Component name) {
 		super(container, inv, name);
 
-		this.tileEntity = (TrophySystemTileEntity)container.te;
+		this.tileEntity = (TrophySystemBlockEntity)container.te;
 		isSmart = tileEntity.hasModule(ModuleType.SMART);
 		orderedFilterList = new ArrayList<>(tileEntity.getFilters().keySet());
 		orderedFilterList.sort((e1, e2) -> {

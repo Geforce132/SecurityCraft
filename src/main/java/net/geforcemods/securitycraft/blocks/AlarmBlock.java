@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.AlarmTileEntity;
+import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -132,7 +132,7 @@ public class AlarmBlock extends OwnableBlock {
 
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof AlarmTileEntity te)
+		if(tile instanceof AlarmBlockEntity te)
 		{
 			if(world.getBestNeighborSignal(pos) > 0){
 				boolean isPowered = te.isPowered();
@@ -167,12 +167,12 @@ public class AlarmBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new AlarmTileEntity(pos, state);
+		return new AlarmBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return world.isClientSide ? null : createTickerHelper(type, SCContent.teTypeAlarm, AlarmTileEntity::serverTick);
+		return world.isClientSide ? null : createTickerHelper(type, SCContent.teTypeAlarm, AlarmBlockEntity::serverTick);
 	}
 
 	@Override

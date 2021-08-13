@@ -4,8 +4,8 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.ReinforcedCauldronTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.sounds.SoundEvent;
@@ -66,7 +66,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				{
 					BlockEntity tile = world.getBlockEntity(pos);
 
-					if(tile instanceof ReinforcedCauldronTileEntity te && te.isAllowedToInteract(player))
+					if(tile instanceof ReinforcedCauldronBlockEntity te && te.isAllowedToInteract(player))
 						return SHAPE;
 					else
 						return Shapes.block();
@@ -82,7 +82,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	{
 		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof ReinforcedCauldronTileEntity te && te.isAllowedToInteract(player))
+		if(tile instanceof ReinforcedCauldronBlockEntity te && te.isAllowedToInteract(player))
 			return super.use(state, world, pos, player, hand, hit);
 
 		return InteractionResult.PASS;
@@ -166,7 +166,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new ReinforcedCauldronTileEntity(pos, state);
+		return new ReinforcedCauldronBlockEntity(pos, state);
 	}
 
 	public interface IReinforcedCauldronInteraction extends CauldronInteraction {

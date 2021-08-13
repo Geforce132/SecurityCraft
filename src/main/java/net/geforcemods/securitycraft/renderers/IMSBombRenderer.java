@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.entity.IMSBombEntity;
+import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.models.IMSBombModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class IMSBombRenderer extends EntityRenderer<IMSBombEntity> {
+public class IMSBombRenderer extends EntityRenderer<IMSBomb> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/entity/ims_bomb.png");
 	private final IMSBombModel model;
@@ -28,7 +28,7 @@ public class IMSBombRenderer extends EntityRenderer<IMSBombEntity> {
 	}
 
 	@Override
-	public void render(IMSBombEntity imsBomb, float p_225623_2_, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int p_225623_6_)
+	public void render(IMSBomb imsBomb, float p_225623_2_, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int p_225623_6_)
 	{
 		matrix.translate(-0.1D, 0, 0.1D);
 		matrix.scale(1.4F, 1.4F, 1.4F);
@@ -37,7 +37,7 @@ public class IMSBombRenderer extends EntityRenderer<IMSBombEntity> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(IMSBombEntity imsBomb) {
+	public ResourceLocation getTextureLocation(IMSBomb imsBomb) {
 		return TEXTURE;
 	}
 }

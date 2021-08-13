@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -59,12 +59,12 @@ public abstract class SpecialDoorItem extends Item
 
 			if(world.getBlockEntity(pos) != null)
 			{
-				CustomizableTileEntity lowerTe = ((CustomizableTileEntity) world.getBlockEntity(pos));
-				CustomizableTileEntity upperTe = ((CustomizableTileEntity) world.getBlockEntity(pos.above()));
+				CustomizableBlockEntity lowerTe = ((CustomizableBlockEntity) world.getBlockEntity(pos));
+				CustomizableBlockEntity upperTe = ((CustomizableBlockEntity) world.getBlockEntity(pos.above()));
 
 				lowerTe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				upperTe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
-				CustomizableTileEntity.link(lowerTe, upperTe);
+				CustomizableBlockEntity.link(lowerTe, upperTe);
 			}
 
 			return InteractionResult.SUCCESS;

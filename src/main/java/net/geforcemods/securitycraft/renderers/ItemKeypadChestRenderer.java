@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer
 {
-	private static final KeypadChestTileEntity DUMMY_TE = new KeypadChestTileEntity(BlockPos.ZERO, SCContent.KEYPAD_CHEST.get().defaultBlockState());
+	private static final KeypadChestBlockEntity DUMMY_TE = new KeypadChestBlockEntity(BlockPos.ZERO, SCContent.KEYPAD_CHEST.get().defaultBlockState());
 	private static KeypadChestTileEntityRenderer dummyRenderer = null;
 
 	public ItemKeypadChestRenderer()

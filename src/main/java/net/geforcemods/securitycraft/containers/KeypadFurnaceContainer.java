@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
-import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,16 +16,16 @@ import net.minecraft.world.level.Level;
 
 public class KeypadFurnaceContainer extends AbstractFurnaceMenu{
 
-	public KeypadFurnaceTileEntity te;
+	public KeypadFurnaceBlockEntity te;
 	private ContainerLevelAccess worldPosCallable;
 
 	public KeypadFurnaceContainer(int windowId, Level world, BlockPos pos, Inventory inventory) {
-		this(windowId, world, pos, inventory, (KeypadFurnaceTileEntity)world.getBlockEntity(pos), ((KeypadFurnaceTileEntity)world.getBlockEntity(pos)).getFurnaceData());
+		this(windowId, world, pos, inventory, (KeypadFurnaceBlockEntity)world.getBlockEntity(pos), ((KeypadFurnaceBlockEntity)world.getBlockEntity(pos)).getFurnaceData());
 	}
 
 	public KeypadFurnaceContainer(int windowId, Level world, BlockPos pos, Inventory inventory, Container furnaceInv, ContainerData furnaceData) {
 		super(SCContent.cTypeKeypadFurnace, RecipeType.SMELTING, RecipeBookType.FURNACE, windowId, inventory, furnaceInv, furnaceData);
-		this.te = (KeypadFurnaceTileEntity)world.getBlockEntity(pos);
+		this.te = (KeypadFurnaceBlockEntity)world.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(world, pos);
 	}
 

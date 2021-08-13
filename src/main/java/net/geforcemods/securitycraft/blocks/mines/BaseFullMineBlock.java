@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -53,7 +53,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 			{
 				BlockEntity te = world.getBlockEntity(pos);
 
-				if(te instanceof OwnableTileEntity ownableTe)
+				if(te instanceof OwnableBlockEntity ownableTe)
 				{
 					if(ownableTe.getOwner().isOwner(player))
 						return Shapes.block();
@@ -142,12 +142,12 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCraftTileEntity(pos, state).intersectsEntities();
+		return new SecurityCraftBlockEntity(pos, state).intersectsEntities();
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeAbstract, SecurityCraftTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeAbstract, SecurityCraftBlockEntity::tick);
 	}
 
 	@Override
@@ -162,7 +162,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 
 	@Override
 	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
-		if (player.isCreative() || (world.getBlockEntity(pos) instanceof OwnableTileEntity te && te.getOwner().isOwner(player)))
+		if (player.isCreative() || (world.getBlockEntity(pos) instanceof OwnableBlockEntity te && te.getOwner().isOwner(player)))
 			return super.getPickBlock(state, target, world, pos, player);
 
 		return new ItemStack(blockDisguisedAs);

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
+import net.geforcemods.securitycraft.blockentities.ScannerDoorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -21,12 +21,12 @@ public class ScannerDoorBlock extends SpecialDoorBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new ScannerDoorTileEntity(pos, state).linkable().activatedByView();
+		return new ScannerDoorBlockEntity(pos, state).linkable().activatedByView();
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeScannerDoor, ScannerDoorTileEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeScannerDoor, ScannerDoorBlockEntity::tick);
 	}
 
 	@Override

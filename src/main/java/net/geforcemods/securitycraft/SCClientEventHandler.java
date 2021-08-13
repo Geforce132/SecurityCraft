@@ -5,13 +5,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.SecurityCamera;
+import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -67,7 +67,7 @@ public class SCClientEventHandler
 
 		if(PlayerUtils.isPlayerMountedOnCamera(player))
 		{
-			SecurityCameraEntity camera = ((SecurityCameraEntity)player.getVehicle());
+			SecurityCamera camera = ((SecurityCamera)player.getVehicle());
 
 			if(camera.screenshotSoundCooldown == 0)
 			{
@@ -117,7 +117,7 @@ public class SCClientEventHandler
 				Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
 				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
-				if(mop instanceof BlockHitResult bhr && world.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraTileEntity)
+				if(mop instanceof BlockHitResult bhr && world.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity)
 				{
 					CompoundTag cameras = stack.getTag();
 					uCoord = 110;
@@ -171,7 +171,7 @@ public class SCClientEventHandler
 			{
 				Entity hitEntity = Minecraft.getInstance().crosshairPickEntity;
 
-				if(hitEntity instanceof SentryEntity)
+				if(hitEntity instanceof Sentry)
 				{
 					uCoord = 110;
 					CompoundTag sentries = stack.getTag();
@@ -203,7 +203,7 @@ public class SCClientEventHandler
 	@SubscribeEvent
 	public static void fovUpdateEvent(FOVUpdateEvent event){
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntity()))
-			event.setNewfov(((SecurityCameraEntity) event.getEntity().getVehicle()).getZoomAmount());
+			event.setNewfov(((SecurityCamera) event.getEntity().getVehicle()).getZoomAmount());
 	}
 
 	@SubscribeEvent
@@ -227,7 +227,7 @@ public class SCClientEventHandler
 	private static void drawCameraOverlay(PoseStack matrix, Minecraft mc, GuiComponent gui, Window resolution, Player player, Level world, BlockPos pos) {
 		Font font = Minecraft.getInstance().font;
 		Options settings = Minecraft.getInstance().options;
-		SecurityCameraTileEntity te = (SecurityCameraTileEntity)world.getBlockEntity(pos);
+		SecurityCameraBlockEntity te = (SecurityCameraBlockEntity)world.getBlockEntity(pos);
 		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
 		Component lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyUp.getTranslatedKeyMessage(), settings.keyLeft.getTranslatedKeyMessage(), settings.keyDown.getTranslatedKeyMessage(), settings.keyRight.getTranslatedKeyMessage());
 		Component exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyShift.getTranslatedKeyMessage());

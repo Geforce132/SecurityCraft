@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.KeypadDoorTileEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -33,7 +33,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 			return InteractionResult.PASS;
 		else if(!world.isClientSide)
 		{
-			KeypadDoorTileEntity te = (KeypadDoorTileEntity)world.getBlockEntity(pos);
+			KeypadDoorBlockEntity te = (KeypadDoorBlockEntity)world.getBlockEntity(pos);
 
 			if(ModuleUtils.isDenied(te, player))
 			{
@@ -71,12 +71,12 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new KeypadDoorTileEntity(pos, state).linkable();
+		return new KeypadDoorBlockEntity(pos, state).linkable();
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeKeypadDoor, KeypadDoorTileEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeKeypadDoor, KeypadDoorBlockEntity::tick);
 	}
 
 	@Override

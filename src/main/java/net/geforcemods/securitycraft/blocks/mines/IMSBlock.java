@@ -5,8 +5,8 @@ import java.util.Random;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
-import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -90,7 +90,7 @@ public class IMSBlock extends OwnableBlock {
 						held.shrink(1);
 
 					world.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
-					((IMSTileEntity)te).setBombsRemaining(mines + 1);
+					((IMSBlockEntity)te).setBombsRemaining(mines + 1);
 				}
 				else if(player instanceof ServerPlayer)
 				{
@@ -147,11 +147,11 @@ public class IMSBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new IMSTileEntity(pos, state);
+		return new IMSBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeIms, IMSTileEntity::tick);
+		return createTickerHelper(type, SCContent.teTypeIms, IMSBlockEntity::tick);
 	}
 }

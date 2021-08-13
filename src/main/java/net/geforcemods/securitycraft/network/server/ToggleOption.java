@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.core.BlockPos;
@@ -55,7 +55,7 @@ public class ToggleOption {
 				customizable.customOptions()[id].toggle();
 				customizable.onOptionChanged(customizable.customOptions()[id]);
 
-				if(te instanceof CustomizableTileEntity customizableTe)
+				if(te instanceof CustomizableBlockEntity customizableTe)
 					customizableTe.sync();
 			}
 		});

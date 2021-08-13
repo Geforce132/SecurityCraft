@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
@@ -14,7 +14,7 @@ public class AssembleBlockPocket
 
 	public AssembleBlockPocket() {}
 
-	public AssembleBlockPocket(BlockPocketManagerTileEntity te, int size)
+	public AssembleBlockPocket(BlockPocketManagerBlockEntity te, int size)
 	{
 		pos = te.getBlockPos();
 		this.size = size;
@@ -38,7 +38,7 @@ public class AssembleBlockPocket
 	public static void onMessage(AssembleBlockPocket message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			if(ctx.get().getSender().level.getBlockEntity(message.pos) instanceof BlockPocketManagerTileEntity te && te.getOwner().isOwner(ctx.get().getSender()))
+			if(ctx.get().getSender().level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity te && te.getOwner().isOwner(ctx.get().getSender()))
 			{
 				te.size = message.size;
 				te.autoAssembleMultiblock();

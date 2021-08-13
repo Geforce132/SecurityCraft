@@ -23,8 +23,8 @@ import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
+import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.chat.Component;
@@ -70,7 +70,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedCauldronBlock.class);
 		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedPaneBlock.class);
 		registrar.registerIconProvider(INSTANCE, DisguisableBlock.class);
-		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, SentryEntity.class);
+		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, Sentry.class);
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		{
 			Entity entity = data.getEntity();
 
-			if(entity instanceof SentryEntity sentry)
+			if(entity instanceof Sentry sentry)
 			{
 				SentryMode mode = sentry.getMode();
 

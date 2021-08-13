@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -165,6 +165,6 @@ public class PlayerUtils{
 	 * Is the entity mounted on to a security camera?
 	 */
 	public static boolean isPlayerMountedOnCamera(LivingEntity entity) {
-		return entity != null && entity.getVehicle() instanceof SecurityCameraEntity;
+		return entity != null && entity.getVehicle() instanceof SecurityCamera;
 	}
 }

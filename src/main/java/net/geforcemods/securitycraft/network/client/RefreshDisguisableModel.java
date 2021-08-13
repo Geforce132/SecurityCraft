@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -46,7 +46,7 @@ public class RefreshDisguisableModel
 	public static void onMessage(RefreshDisguisableModel message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			DisguisableTileEntity te = (DisguisableTileEntity)Minecraft.getInstance().level.getBlockEntity(message.pos);
+			DisguisableBlockEntity te = (DisguisableBlockEntity)Minecraft.getInstance().level.getBlockEntity(message.pos);
 
 			if(te != null)
 			{

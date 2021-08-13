@@ -5,7 +5,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
-import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -100,7 +100,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	{
 		if(!world.isClientSide)
 		{
-			KeypadFurnaceTileEntity te = (KeypadFurnaceTileEntity)world.getBlockEntity(pos);
+			KeypadFurnaceBlockEntity te = (KeypadFurnaceBlockEntity)world.getBlockEntity(pos);
 
 			if(ModuleUtils.isDenied(te, player))
 			{
@@ -183,12 +183,12 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new KeypadFurnaceTileEntity(pos, state);
+		return new KeypadFurnaceBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return world.isClientSide ? null : createTickerHelper(type, SCContent.teTypeKeypadFurnace, KeypadFurnaceTileEntity::serverTick);
+		return world.isClientSide ? null : createTickerHelper(type, SCContent.teTypeKeypadFurnace, KeypadFurnaceBlockEntity::serverTick);
 	}
 
 	@Override
@@ -222,7 +222,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 
 			furnace.clearContent();
 			world.setBlockAndUpdate(pos, SCContent.KEYPAD_FURNACE.get().defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(LIT, lit));
-			((KeypadFurnaceTileEntity)world.getBlockEntity(pos)).load(tag);
+			((KeypadFurnaceBlockEntity)world.getBlockEntity(pos)).load(tag);
 			((IOwnable) world.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
 			return true;
 		}
