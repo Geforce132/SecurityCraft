@@ -46,13 +46,10 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	{
 		if(entity instanceof Player player)
 		{
-			if(!world.isClientSide)
-			{
-				BlockEntity tile = world.getBlockEntity(pos);
+			BlockEntity tile = world.getBlockEntity(pos);
 
-				if(tile instanceof RetinalScannerTileEntity te)
-					te.setPlayerProfile(player.getGameProfile());
-			}
+			if(tile instanceof RetinalScannerTileEntity te)
+				te.setPlayerProfile(player.getGameProfile());
 
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
 		}

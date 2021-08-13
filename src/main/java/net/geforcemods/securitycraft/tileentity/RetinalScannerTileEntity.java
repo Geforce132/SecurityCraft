@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -32,6 +33,7 @@ import net.minecraft.server.players.GameProfileCache;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
@@ -44,6 +46,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	private GameProfile ownerProfile;
 	private static GameProfileCache profileCache;
 	private static MinecraftSessionService sessionService;
+	private static Executor mainThreadExecutor;
 
 	public RetinalScannerTileEntity(BlockPos pos, BlockState state)
 	{
@@ -109,27 +112,37 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 		sessionService = sessionServiceIn;
 	}
 
+	public static void setMainThreadExecutor(Executor mainThreadExecutorIn) {
+		mainThreadExecutor = mainThreadExecutorIn;
+	}
+
 	@Override
 	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
-		if(!StringUtil.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")))
-		{
-			if(ownerProfile == null || !getOwner().getName().equals(ownerProfile.getName()))
-				setPlayerProfile(new GameProfile((UUID)null, getOwner().getName()));
 
-			updatePlayerProfile();
+		if(!StringUtil.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")) && ownerProfile != null)
+		{
 			CompoundTag ownerProfileTag = new CompoundTag();
 			NbtUtils.writeGameProfile(ownerProfileTag, ownerProfile);
 			tag.put("ownerProfile", ownerProfileTag);
-			return tag;
 		}
+
 		return tag;
 	}
 
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
-		ownerProfile = NbtUtils.readGameProfile(tag.getCompound("ownerProfile"));
+
+		if (tag.contains("ownerProfile", 10)) {
+			setPlayerProfile(NbtUtils.readGameProfile(tag.getCompound("ownerProfile")));
+		}
+	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, Level world, BlockPos pos) {
+		super.onOwnerChanged(state, world, pos);
+		setPlayerProfile(new GameProfile(null, getOwner().getName()));
 	}
 
 	@Nullable
@@ -138,7 +151,11 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	}
 
 	public void setPlayerProfile(@Nullable GameProfile profile) {
-		ownerProfile = profile;
+		synchronized (this) {
+			ownerProfile = profile;
+		}
+
+		updatePlayerProfile();
 	}
 
 	public void updatePlayerProfile() {
@@ -146,35 +163,35 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 			setProfileCache(ServerLifecycleHooks.getCurrentServer().getProfileCache());
 		if(sessionService == null && ServerLifecycleHooks.getCurrentServer() != null)
 			setSessionService(ServerLifecycleHooks.getCurrentServer().getSessionService());
+		if(mainThreadExecutor == null && ServerLifecycleHooks.getCurrentServer() != null)
+			setMainThreadExecutor(ServerLifecycleHooks.getCurrentServer());
 
-		ownerProfile = updateGameProfile(ownerProfile);
+		updateGameProfile(ownerProfile, profile -> {
+			this.ownerProfile = profile;
+			this.setChanged();
+		});
 	}
 
-	private GameProfile updateGameProfile(GameProfile input) {
-		if (ConfigHandler.SERVER.retinalScannerFace.get() && input != null && !StringUtil.isNullOrEmpty(input.getName())) {
-			if (input.isComplete() && input.getProperties().containsKey("textures"))
-				return input;
-			else if (profileCache != null && sessionService != null) {
-				Optional<GameProfile> optional = profileCache.get(input.getName());
-				if (!optional.isPresent())
-					return input;
-				else {
-					GameProfile gameprofile = optional.get();
-					Property property = Iterables.getFirst(gameprofile.getProperties().get("textures"), (Property)null);
-					if (property == null) {
-						try {
-							gameprofile = sessionService.fillProfileProperties(gameprofile, true);
-						}
-						catch(IllegalArgumentException e) { //this seems to only happen on offline servers. log the exception nonetheless, just in case
-							LOGGER.warn("========= WARNING =========");
-							LOGGER.warn("The following error is likely caused by using an offline server. If you are not using an offline server (online-mode=true in the server.properties), please reach out to the SecurityCraft devs in their Discord #help channel: https://discord.gg/U8DvBAW");
-							LOGGER.warn("To mitigate this error, you can set the configuration option \"retinalScannerFace\" to false, in order to disable rendering the owner's face on retinal scanners.");
-							LOGGER.error("The exception's stacktrace is as follows:", e);
-						}
+	private void updateGameProfile(GameProfile input, Consumer<GameProfile> onChanged) {
+		if (ConfigHandler.SERVER.retinalScannerFace.get() && input != null && !StringUtil.isNullOrEmpty(input.getName()) && (!input.isComplete() || !input.getProperties().containsKey("textures")) && profileCache != null && sessionService != null) {
+			profileCache.getAsync(input.getName(), result -> Util.backgroundExecutor().execute(() -> {
+				Util.ifElse(result, gameProfile -> {
+					Property textures = (Property)Iterables.getFirst(gameProfile.getProperties().get("textures"), (Object)null);
+
+					if (textures == null) {
+						gameProfile = sessionService.fillProfileProperties(gameProfile, true);
 					}
-					return gameprofile;
-				}
-			} else return input;
-		} else return input;
+
+					GameProfile profile = gameProfile;
+					mainThreadExecutor.execute(() -> {
+						profileCache.add(profile);
+						onChanged.accept(profile);
+					});
+				}, () -> mainThreadExecutor.execute(() -> onChanged.accept(input)));
+			}));
+		}
+		else {
+			onChanged.accept(input);
+		}
 	}
 }
