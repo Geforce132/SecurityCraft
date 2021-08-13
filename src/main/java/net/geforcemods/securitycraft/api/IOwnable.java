@@ -1,5 +1,11 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+
 /**
  * This interface marks a {@link TileEntity} as "ownable". Any TileEntity
  * that implements this interface is able to be destroyed by the
@@ -31,4 +37,19 @@ public interface IOwnable {
 	 */
 	public void setOwner(String uuid, String name);
 
+	/**
+	 * Executes actions after the owner has been changed, for example making sure the owner of both halves of SecurityCraft's doors get changed
+	 *
+	 * @param world The current world
+	 * @param state The IOwnable's state
+	 * @param pos The IOwnable's position
+	 */
+	default void onOwnerChanged(BlockState state, Level world, BlockPos pos) {
+		if(state.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
+			UniversalOwnerChangerItem.tryUpdateBlock(world, switch(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
+				case LOWER -> pos.above();
+				case UPPER -> pos.below();
+			}, getOwner());
+		}
+	}
 }

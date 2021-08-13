@@ -29,6 +29,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.loading.FMLLoader;
 
 public class UniversalOwnerChangerItem extends Item
@@ -50,7 +51,8 @@ public class UniversalOwnerChangerItem extends Item
 		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get())
 			return handleBriefcase(player, stack).getResult();
 
-		Block block = world.getBlockState(pos).getBlock();
+		BlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
 		BlockEntity te = world.getBlockEntity(pos);
 		String newOwner = stack.getHoverName().getString();
 
@@ -90,16 +92,8 @@ public class UniversalOwnerChangerItem extends Item
 			}
 		}
 
-		if(block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock)
-		{
-			ownable.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
-
-			//check if the above block is a door, and if not (tryUpdateBlock returned false), try the same thing with the block below
-			if(!tryUpdateBlock(world, pos.above(), newOwner))
-				tryUpdateBlock(world, pos.below(), newOwner);
-		}
-
 		ownable.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
+		ownable.onOwnerChanged(state, world, pos);
 
 		if (!world.isClientSide)
 			world.getServer().getPlayerList().broadcastAll(te.getUpdatePacket());
@@ -136,7 +130,7 @@ public class UniversalOwnerChangerItem extends Item
 		return InteractionResultHolder.pass(ownerChanger);
 	}
 
-	private boolean tryUpdateBlock(Level world, BlockPos pos, String newOwner)
+	public static boolean tryUpdateBlock(Level world, BlockPos pos, Owner newOwner)
 	{
 		Block block = world.getBlockState(pos).getBlock();
 
@@ -144,7 +138,7 @@ public class UniversalOwnerChangerItem extends Item
 		{
 			OwnableTileEntity te = (OwnableTileEntity)world.getBlockEntity(pos);
 
-			te.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
+			te.setOwner(newOwner.getUUID(), newOwner.getName());
 
 			if(!world.isClientSide)
 				world.getServer().getPlayerList().broadcastAll(te.getUpdatePacket());
