@@ -10,9 +10,9 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
-import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -55,7 +55,7 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 
 	public KeypadFurnaceBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeKeypadFurnace, pos, state, RecipeType.SMELTING);
+		super(SCContent.beTypeKeypadFurnace, pos, state, RecipeType.SMELTING);
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 					{
-						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, level, worldPosition);
+						return new GenericTEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
@@ -188,7 +188,7 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
-							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, level, worldPosition);
+							return new GenericTEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override
@@ -228,7 +228,7 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
-		return new KeypadFurnaceContainer(windowId, level, worldPosition, inv, this, dataAccess);
+		return new KeypadFurnaceMenu(windowId, level, worldPosition, inv, this, dataAccess);
 	}
 
 	@Override

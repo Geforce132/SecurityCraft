@@ -108,17 +108,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
-import net.geforcemods.securitycraft.containers.BlockPocketManagerContainer;
-import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
-import net.geforcemods.securitycraft.containers.BriefcaseContainer;
-import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
-import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
-import net.geforcemods.securitycraft.containers.GenericContainer;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
-import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
-import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
-import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
-import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.Bullet;
 import net.geforcemods.securitycraft.entity.IMSBomb;
@@ -126,6 +115,17 @@ import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.fluids.FakeLavaFluid;
 import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
+import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
+import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
+import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
+import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
+import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
+import net.geforcemods.securitycraft.inventory.GenericMenu;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
+import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
+import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
+import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.items.AdminToolItem;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
@@ -759,39 +759,39 @@ public class SCContent
 
 	//container types
 	@ObjectHolder(SecurityCraft.MODID + ":block_reinforcer")
-	public static MenuType<BlockReinforcerContainer> cTypeBlockReinforcer;
+	public static MenuType<BlockReinforcerMenu> mTypeBlockReinforcer;
 	@ObjectHolder(SecurityCraft.MODID + ":briefcase")
-	public static MenuType<GenericContainer> cTypeBriefcase;
+	public static MenuType<GenericMenu> mTypeBriefcase;
 	@ObjectHolder(SecurityCraft.MODID + ":briefcase_inventory")
-	public static MenuType<BriefcaseContainer> cTypeBriefcaseInventory;
+	public static MenuType<BriefcaseMenu> mTypeBriefcaseInventory;
 	@ObjectHolder(SecurityCraft.MODID + ":briefcase_setup")
-	public static MenuType<GenericContainer> cTypeBriefcaseSetup;
+	public static MenuType<GenericMenu> mTypeBriefcaseSetup;
 	@ObjectHolder(SecurityCraft.MODID + ":customize_block")
-	public static MenuType<CustomizeBlockContainer> cTypeCustomizeBlock;
+	public static MenuType<CustomizeBlockMenu> mTypeCustomizeBlock;
 	@ObjectHolder(SecurityCraft.MODID + ":disguise_module")
-	public static MenuType<DisguiseModuleContainer> cTypeDisguiseModule;
+	public static MenuType<DisguiseModuleMenu> mTypeDisguiseModule;
 	@ObjectHolder(SecurityCraft.MODID + ":inventory_scanner")
-	public static MenuType<InventoryScannerContainer> cTypeInventoryScanner;
+	public static MenuType<InventoryScannerMenu> mTypeInventoryScanner;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
-	public static MenuType<KeypadFurnaceContainer> cTypeKeypadFurnace;
+	public static MenuType<KeypadFurnaceMenu> mTypeKeypadFurnace;
 	@ObjectHolder(SecurityCraft.MODID + ":projector")
-	public static MenuType<ProjectorContainer> cTypeProjector;
+	public static MenuType<ProjectorMenu> mTypeProjector;
 	@ObjectHolder(SecurityCraft.MODID + ":check_password")
-	public static MenuType<GenericTEContainer> cTypeCheckPassword;
+	public static MenuType<GenericTEMenu> mTypeCheckPassword;
 	@ObjectHolder(SecurityCraft.MODID + ":set_password")
-	public static MenuType<GenericTEContainer> cTypeSetPassword;
+	public static MenuType<GenericTEMenu> mTypeSetPassword;
 	@ObjectHolder(SecurityCraft.MODID + ":username_logger")
-	public static MenuType<GenericTEContainer> cTypeUsernameLogger;
+	public static MenuType<GenericTEMenu> mTypeUsernameLogger;
 	@ObjectHolder(SecurityCraft.MODID + ":ims")
-	public static MenuType<GenericTEContainer> cTypeIMS;
+	public static MenuType<GenericTEMenu> mTypeIMS;
 	@ObjectHolder(SecurityCraft.MODID + ":keycard_setup")
-	public static MenuType<KeycardReaderContainer> cTypeKeycardReader;
+	public static MenuType<KeycardReaderMenu> mTypeKeycardReader;
 	@ObjectHolder(SecurityCraft.MODID + ":key_changer")
-	public static MenuType<GenericTEContainer> cTypeKeyChanger;
+	public static MenuType<GenericTEMenu> cTypeKeyChanger;
 	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
-	public static MenuType<GenericTEContainer> cTypeTrophySystem;
+	public static MenuType<GenericTEMenu> cTypeTrophySystem;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
-	public static MenuType<BlockPocketManagerContainer> cTypeBlockPocketManager;
+	public static MenuType<BlockPocketManagerMenu> cTypeBlockPocketManager;
 
 	private static final Block.Properties prop()
 	{

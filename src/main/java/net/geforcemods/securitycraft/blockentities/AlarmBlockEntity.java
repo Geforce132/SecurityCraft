@@ -24,7 +24,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity {
 
 	public AlarmBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeAlarm, pos, state);
+		super(SCContent.beTypeAlarm, pos, state);
 	}
 
 	public static void serverTick(Level world, BlockPos pos, BlockState state, AlarmBlockEntity te){

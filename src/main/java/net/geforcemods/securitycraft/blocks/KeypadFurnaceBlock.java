@@ -188,7 +188,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return world.isClientSide ? null : createTickerHelper(type, SCContent.teTypeKeypadFurnace, KeypadFurnaceBlockEntity::serverTick);
+		return world.isClientSide ? null : createTickerHelper(type, SCContent.beTypeKeypadFurnace, KeypadFurnaceBlockEntity::serverTick);
 	}
 
 	@Override

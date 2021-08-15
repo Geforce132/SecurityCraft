@@ -26,7 +26,7 @@ public class ScannerDoorBlock extends SpecialDoorBlock
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeScannerDoor, ScannerDoorBlockEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypeScannerDoor, ScannerDoorBlockEntity::tick);
 	}
 
 	@Override

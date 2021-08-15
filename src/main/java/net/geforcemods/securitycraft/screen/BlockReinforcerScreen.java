@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
+import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.NonNullList;
@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforcerContainer>
+public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforcerMenu>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer.png");
 	private static final ResourceLocation TEXTURE_LVL1 = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer_lvl1.png");
@@ -25,7 +25,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	private final TranslatableComponent output = Utils.localize("gui.securitycraft:blockReinforcer.output");
 	private final boolean isLvl1;
 
-	public BlockReinforcerScreen(BlockReinforcerContainer container, Inventory inv, Component name)
+	public BlockReinforcerScreen(BlockReinforcerMenu container, Inventory inv, Component name)
 	{
 		super(container, inv, name);
 

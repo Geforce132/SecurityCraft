@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -70,7 +70,7 @@ public class TrophySystemBlock extends OwnableBlock {
 				NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-						return new GenericTEContainer(SCContent.cTypeTrophySystem, windowId, world, pos);
+						return new GenericTEMenu(SCContent.mTypeTrophySystem, windowId, world, pos);
 					}
 
 					@Override
@@ -98,6 +98,6 @@ public class TrophySystemBlock extends OwnableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeTrophySystem, TrophySystemBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeTrophySystem, TrophySystemBlockEntity::tick);
 	}
 }

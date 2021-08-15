@@ -20,7 +20,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity {
 
 	public MotionActivatedLightBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeMotionLight, pos, state);
+		super(SCContent.beTypeMotionLight, pos, state);
 	}
 
 	@Override

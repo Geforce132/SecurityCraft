@@ -87,7 +87,7 @@ public class BlockPocketManagerBlock extends OwnableBlock
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeBlockPocketManager, BlockPocketManagerBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeBlockPocketManager, BlockPocketManagerBlockEntity::tick);
 	}
 
 	@Override

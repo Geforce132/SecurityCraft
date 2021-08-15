@@ -152,6 +152,6 @@ public class IMSBlock extends OwnableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeIms, IMSBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeIms, IMSBlockEntity::tick);
 	}
 }

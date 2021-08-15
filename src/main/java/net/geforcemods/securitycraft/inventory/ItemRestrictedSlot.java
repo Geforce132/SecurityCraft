@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.containers;
+package net.geforcemods.securitycraft.inventory;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;

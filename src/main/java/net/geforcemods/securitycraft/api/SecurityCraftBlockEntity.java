@@ -47,7 +47,7 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 
 	public SecurityCraftBlockEntity(BlockPos pos, BlockState state)
 	{
-		this(SCContent.teTypeAbstract, pos, state);
+		this(SCContent.beTypeAbstract, pos, state);
 	}
 
 	public SecurityCraftBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)

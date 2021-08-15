@@ -222,6 +222,6 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeLaserBlock, LaserBlockBlockEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypeLaserBlock, LaserBlockBlockEntity::tick);
 	}
 }

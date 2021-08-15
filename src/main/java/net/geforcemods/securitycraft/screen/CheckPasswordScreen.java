@@ -6,7 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
@@ -24,7 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEContainer> {
+public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private BlockEntity tileEntity;
@@ -34,7 +34,7 @@ public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEContai
 	private String currentString = "";
 	private static final int MAX_CHARS = 20;
 
-	public CheckPasswordScreen(GenericTEContainer container, Inventory inv, Component name){
+	public CheckPasswordScreen(GenericTEMenu container, Inventory inv, Component name){
 		super(container, inv, name);
 		this.tileEntity = container.te;
 		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getDescriptionId());

@@ -10,7 +10,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
-import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
+import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -37,7 +37,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
 
 @OnlyIn(Dist.CLIENT)
-public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderContainer>
+public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMenu>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
@@ -75,7 +75,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderCo
 	//fixes link and set uses buttons being on for a split second when opening the container
 	private boolean firstTick = true;
 
-	public KeycardReaderScreen(KeycardReaderContainer container, Inventory inv, Component name)
+	public KeycardReaderScreen(KeycardReaderMenu container, Inventory inv, Component name)
 	{
 		super(container, inv, name);
 

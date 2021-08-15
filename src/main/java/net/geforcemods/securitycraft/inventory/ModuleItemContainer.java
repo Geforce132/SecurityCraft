@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.inventory;
 
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -8,19 +9,29 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.Constants;
 
-public class BriefcaseInventory implements Container {
+public class ModuleItemContainer implements Container {
 
-	public static final int SIZE = 12;
-	private final ItemStack briefcase;
-	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack>withSize(SIZE, ItemStack.EMPTY);
+	public int SIZE = 0;
+	private final ItemStack module;
 
-	public BriefcaseInventory(ItemStack briefcaseItem) {
-		briefcase = briefcaseItem;
+	public NonNullList<ItemStack> moduleInventory;
+	public int maxNumberOfItems;
+	public int maxNumberOfBlocks;
 
-		if (!briefcase.hasTag())
-			briefcase.setTag(new CompoundTag());
+	public ModuleItemContainer(ItemStack moduleStack) {
+		module = moduleStack;
 
-		readFromNBT(briefcase.getTag());
+		if(!(moduleStack.getItem() instanceof ModuleItem moduleItem)) return;
+
+		SIZE = moduleItem.getNumberOfAddons();
+		maxNumberOfItems = moduleItem.getNumberOfItemAddons();
+		maxNumberOfBlocks = moduleItem.getNumberOfBlockAddons();
+		moduleInventory = NonNullList.withSize(SIZE, ItemStack.EMPTY);
+
+		if (!module.hasTag())
+			module.setTag(new CompoundTag());
+
+		readFromNBT(module.getTag());
 	}
 
 	@Override
@@ -30,7 +41,7 @@ public class BriefcaseInventory implements Container {
 
 	@Override
 	public ItemStack getItem(int index) {
-		return briefcaseInventory.get(index);
+		return moduleInventory.get(index);
 	}
 
 	public void readFromNBT(CompoundTag tag) {
@@ -41,7 +52,7 @@ public class BriefcaseInventory implements Container {
 			int slot = item.getInt("Slot");
 
 			if(slot < getContainerSize())
-				briefcaseInventory.set(slot, ItemStack.of(item));
+				moduleInventory.set(slot, ItemStack.of(item));
 		}
 	}
 
@@ -83,11 +94,11 @@ public class BriefcaseInventory implements Container {
 	}
 
 	@Override
-	public void setItem(int index, ItemStack itemStack) {
-		briefcaseInventory.set(index, itemStack);
+	public void setItem(int index, ItemStack stack) {
+		moduleInventory.set(index, stack);
 
-		if(!itemStack.isEmpty() && itemStack.getCount() > getMaxStackSize())
-			itemStack.setCount(getMaxStackSize());
+		if(!stack.isEmpty() && stack.getCount() > getMaxStackSize())
+			stack.setCount(getMaxStackSize());
 
 		setChanged();
 	}
@@ -101,9 +112,9 @@ public class BriefcaseInventory implements Container {
 	public void setChanged() {
 		for(int i = 0; i < getContainerSize(); i++)
 			if(!getItem(i).isEmpty() && getItem(i).getCount() == 0)
-				briefcaseInventory.set(i, ItemStack.EMPTY);
+				moduleInventory.set(i, ItemStack.EMPTY);
 
-		writeToNBT(briefcase.getTag());
+		writeToNBT(module.getTag());
 	}
 
 	@Override
@@ -118,20 +129,17 @@ public class BriefcaseInventory implements Container {
 	public void stopOpen(Player player) {}
 
 	@Override
-	public boolean canPlaceItem(int index, ItemStack itemStack) {
+	public boolean canPlaceItem(int index, ItemStack stack) {
 		return true;
 	}
 
 	@Override
-	public void clearContent() {
-		for(int i = 0; i < SIZE; i++)
-			briefcaseInventory.set(i, ItemStack.EMPTY);
-	}
+	public void clearContent() {}
 
 	@Override
 	public boolean isEmpty()
 	{
-		for(ItemStack stack : briefcaseInventory)
+		for(ItemStack stack : moduleInventory)
 			if(!stack.isEmpty())
 				return false;
 

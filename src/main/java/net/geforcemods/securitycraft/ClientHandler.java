@@ -260,23 +260,23 @@ public class ClientHandler
 		ItemBlockRenderTypes.setRenderLayer(SCContent.USERNAME_LOGGER.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.PROJECTOR.get(), cutoutMipped);
 		event.enqueueWork(() -> {
-			MenuScreens.register(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
-			MenuScreens.register(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
-			MenuScreens.register(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
-			MenuScreens.register(SCContent.cTypeBriefcaseSetup, BriefcaseSetupScreen::new);
-			MenuScreens.register(SCContent.cTypeCustomizeBlock, CustomizeBlockScreen::new);
-			MenuScreens.register(SCContent.cTypeDisguiseModule, DisguiseModuleScreen::new);
-			MenuScreens.register(SCContent.cTypeInventoryScanner, InventoryScannerScreen::new);
-			MenuScreens.register(SCContent.cTypeKeypadFurnace, KeypadFurnaceScreen::new);
-			MenuScreens.register(SCContent.cTypeCheckPassword, CheckPasswordScreen::new);
-			MenuScreens.register(SCContent.cTypeSetPassword, SetPasswordScreen::new);
-			MenuScreens.register(SCContent.cTypeUsernameLogger, UsernameLoggerScreen::new);
-			MenuScreens.register(SCContent.cTypeIMS, IMSScreen::new);
-			MenuScreens.register(SCContent.cTypeKeycardReader, KeycardReaderScreen::new);
+			MenuScreens.register(SCContent.mTypeBlockReinforcer, BlockReinforcerScreen::new);
+			MenuScreens.register(SCContent.mTypeBriefcase, BriefcasePasswordScreen::new);
+			MenuScreens.register(SCContent.mTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
+			MenuScreens.register(SCContent.mTypeBriefcaseSetup, BriefcaseSetupScreen::new);
+			MenuScreens.register(SCContent.mTypeCustomizeBlock, CustomizeBlockScreen::new);
+			MenuScreens.register(SCContent.mTypeDisguiseModule, DisguiseModuleScreen::new);
+			MenuScreens.register(SCContent.mTypeInventoryScanner, InventoryScannerScreen::new);
+			MenuScreens.register(SCContent.mTypeKeypadFurnace, KeypadFurnaceScreen::new);
+			MenuScreens.register(SCContent.mTypeCheckPassword, CheckPasswordScreen::new);
+			MenuScreens.register(SCContent.mTypeSetPassword, SetPasswordScreen::new);
+			MenuScreens.register(SCContent.mTypeUsernameLogger, UsernameLoggerScreen::new);
+			MenuScreens.register(SCContent.mTypeIMS, IMSScreen::new);
+			MenuScreens.register(SCContent.mTypeKeycardReader, KeycardReaderScreen::new);
 			MenuScreens.register(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
-			MenuScreens.register(SCContent.cTypeBlockPocketManager, BlockPocketManagerScreen::new);
-			MenuScreens.register(SCContent.cTypeProjector, ProjectorScreen::new);
-			MenuScreens.register(SCContent.cTypeTrophySystem, TrophySystemScreen::new);
+			MenuScreens.register(SCContent.mTypeBlockPocketManager, BlockPocketManagerScreen::new);
+			MenuScreens.register(SCContent.mTypeProjector, ProjectorScreen::new);
+			MenuScreens.register(SCContent.mTypeTrophySystem, TrophySystemScreen::new);
 		});
 		KeyBindings.init();
 		OverlayRegistry.registerOverlayTop(SecurityCraft.MODID + ":camera_overlay", SCClientEventHandler::cameraOverlay);
@@ -292,13 +292,13 @@ public class ClientHandler
 		event.registerEntityRenderer(SCContent.eTypeSecurityCamera, EmptyRenderer::new);
 		event.registerEntityRenderer(SCContent.eTypeSentry, SentryRenderer::new);
 		event.registerEntityRenderer(SCContent.eTypeBullet, BulletRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.teTypeBlockPocketManager, BlockPocketManagerTileEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.teTypeKeypadChest, KeypadChestTileEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.teTypeRetinalScanner, RetinalScannerTileEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.teTypeSecurityCamera, SecurityCameraTileEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.teTypeSecretSign, SecretSignTileEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.teTypeTrophySystem, TrophySystemTileEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.teTypeProjector, ProjectorTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeBlockPocketManager, BlockPocketManagerTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeKeypadChest, KeypadChestTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeRetinalScanner, RetinalScannerTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeSecurityCamera, SecurityCameraTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeSecretSign, SecretSignTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeTrophySystem, TrophySystemTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeProjector, ProjectorTileEntityRenderer::new);
 	}
 
 	@SubscribeEvent

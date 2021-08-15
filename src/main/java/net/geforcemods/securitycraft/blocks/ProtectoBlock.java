@@ -67,6 +67,6 @@ public class ProtectoBlock extends OwnableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeProtecto, ProtectoBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeProtecto, ProtectoBlockEntity::tick);
 	}
 }

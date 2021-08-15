@@ -11,7 +11,7 @@ public class AllowlistOnlyBlockEntity extends CustomizableBlockEntity
 {
 	public AllowlistOnlyBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeAllowlistOnly, pos, state);
+		super(SCContent.beTypeAllowlistOnly, pos, state);
 	}
 
 	@Override

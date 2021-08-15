@@ -12,7 +12,7 @@ public class TrackMineBlockEntity extends OwnableBlockEntity
 
 	public TrackMineBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeTrackMine, pos, state);
+		super(SCContent.beTypeTrackMine, pos, state);
 	}
 
 	public void activate()

@@ -119,7 +119,7 @@ public class PortableRadarBlock extends OwnableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypePortableRadar, PortableRadarBlockEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypePortableRadar, PortableRadarBlockEntity::tick);
 	}
 
 	@Override

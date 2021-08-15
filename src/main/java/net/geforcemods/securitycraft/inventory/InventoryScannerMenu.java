@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.containers;
+package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
@@ -14,14 +14,14 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class InventoryScannerContainer extends AbstractContainerMenu {
+public class InventoryScannerMenu extends AbstractContainerMenu {
 
 	private final int numRows;
 	public final InventoryScannerBlockEntity te;
 	private ContainerLevelAccess worldPosCallable;
 
-	public InventoryScannerContainer(int windowId, Level world, BlockPos pos, Inventory inventory){
-		super(SCContent.cTypeInventoryScanner, windowId);
+	public InventoryScannerMenu(int windowId, Level world, BlockPos pos, Inventory inventory){
+		super(SCContent.mTypeInventoryScanner, windowId);
 		te = (InventoryScannerBlockEntity)world.getBlockEntity(pos);
 		numRows = te.getContainerSize() / 9;
 		worldPosCallable = ContainerLevelAccess.create(world, pos);

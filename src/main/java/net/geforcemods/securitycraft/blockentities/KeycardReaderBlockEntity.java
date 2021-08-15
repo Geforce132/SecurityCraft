@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
+import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -26,7 +26,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 
 	public KeycardReaderBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeKeycardReader, pos, state);
+		super(SCContent.beTypeKeycardReader, pos, state);
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
-		return new KeycardReaderContainer(windowId, inv, level, worldPosition);
+		return new KeycardReaderMenu(windowId, inv, level, worldPosition);
 	}
 
 	@Override

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
-import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
+import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -79,7 +79,7 @@ public class SyncKeycardSettings
 					{
 						AbstractContainerMenu container = player.containerMenu;
 
-						if(container instanceof KeycardReaderContainer keycardReaderContainer)
+						if(container instanceof KeycardReaderMenu keycardReaderContainer)
 							keycardReaderContainer.link();
 					}
 				}

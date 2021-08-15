@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.GenericContainer;
+import net.geforcemods.securitycraft.inventory.GenericMenu;
 import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -24,7 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericContainer> {
+public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericMenu> {
 
 	public static final String UP_ARROW  = "\u2191";
 	public static final String DOWN_ARROW  = "\u2193";
@@ -36,7 +36,7 @@ public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericCont
 	private IdButton continueButton;
 	private int[] digits = {0, 0, 0, 0};
 
-	public BriefcasePasswordScreen(GenericContainer container, Inventory inv, Component text) {
+	public BriefcasePasswordScreen(GenericMenu container, Inventory inv, Component text) {
 		super(container, inv, text);
 	}
 
@@ -98,7 +98,7 @@ public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericCont
 						nbt.putString("ownerUUID", Minecraft.getInstance().player.getUUID().toString());
 					}
 
-					SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcaseInventory.getRegistryName(), getTitle()));
+					SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcaseInventory.getRegistryName(), getTitle()));
 				}
 			}
 		}

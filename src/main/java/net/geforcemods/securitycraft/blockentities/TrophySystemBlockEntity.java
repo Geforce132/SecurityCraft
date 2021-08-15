@@ -53,7 +53,7 @@ public class TrophySystemBlockEntity extends CustomizableBlockEntity {
 
 	public TrophySystemBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeTrophySystem, pos, state);
+		super(SCContent.beTypeTrophySystem, pos, state);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
 		//ordering is done in TrophySystemScreen based on the user's current language
 		projectileFilter.put(SCContent.eTypeBullet, true);

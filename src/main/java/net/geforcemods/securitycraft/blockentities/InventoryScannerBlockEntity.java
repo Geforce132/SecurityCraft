@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
-import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
+import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -43,7 +43,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	public InventoryScannerBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeInventoryScanner, pos, state);
+		super(SCContent.beTypeInventoryScanner, pos, state);
 	}
 
 	public static void tick(Level world, BlockPos pos, BlockState state, InventoryScannerBlockEntity te){
@@ -377,7 +377,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
-		return new InventoryScannerContainer(windowId, level, worldPosition, inv);
+		return new InventoryScannerMenu(windowId, level, worldPosition, inv);
 	}
 
 	@Override

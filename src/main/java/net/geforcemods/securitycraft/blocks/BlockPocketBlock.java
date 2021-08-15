@@ -29,6 +29,6 @@ public class BlockPocketBlock extends BaseReinforcedBlock implements IBlockPocke
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeBlockPocket, BlockPocketBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeBlockPocket, BlockPocketBlockEntity::tick);
 	}
 }

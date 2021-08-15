@@ -110,6 +110,6 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeAbstract, SecurityCraftBlockEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypeAbstract, SecurityCraftBlockEntity::tick);
 	}
 }

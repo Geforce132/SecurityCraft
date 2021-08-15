@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.containers;
+package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
@@ -17,14 +17,14 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class CustomizeBlockContainer extends AbstractContainerMenu{
+public class CustomizeBlockMenu extends AbstractContainerMenu{
 
 	public IModuleInventory moduleInv;
 	private ContainerLevelAccess worldPosCallable;
 	private final int maxSlots;
 
-	public CustomizeBlockContainer(int windowId, Level world, BlockPos pos, Inventory inventory) {
-		super(SCContent.cTypeCustomizeBlock, windowId);
+	public CustomizeBlockMenu(int windowId, Level world, BlockPos pos, Inventory inventory) {
+		super(SCContent.mTypeCustomizeBlock, windowId);
 		this.moduleInv = (IModuleInventory)world.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(world, pos);
 

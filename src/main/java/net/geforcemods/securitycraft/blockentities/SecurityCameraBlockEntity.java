@@ -27,7 +27,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity {
 
 	public SecurityCameraBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeSecurityCamera, pos, state);
+		super(SCContent.beTypeSecurityCamera, pos, state);
 	}
 
 	public static void tick(Level world, BlockPos pos, BlockState state, SecurityCameraBlockEntity te){

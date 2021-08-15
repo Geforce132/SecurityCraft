@@ -191,7 +191,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeCageTrap, CageTrapBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeCageTrap, CageTrapBlockEntity::tick);
 	}
 
 	public static class BlockModifier

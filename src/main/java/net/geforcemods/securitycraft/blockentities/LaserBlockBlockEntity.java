@@ -26,7 +26,7 @@ public class LaserBlockBlockEntity extends DisguisableBlockEntity {
 
 	public LaserBlockBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeLaserBlock, pos, state);
+		super(SCContent.beTypeLaserBlock, pos, state);
 	}
 
 	private void toggleLaser(BooleanOption option) {

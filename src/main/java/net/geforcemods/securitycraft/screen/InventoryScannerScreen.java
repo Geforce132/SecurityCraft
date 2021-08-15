@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
-import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
+import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -19,7 +19,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class InventoryScannerScreen extends AbstractContainerScreen<InventoryScannerContainer> {
+public class InventoryScannerScreen extends AbstractContainerScreen<InventoryScannerMenu> {
 	private static final ResourceLocation REGULAR_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_gui.png");
 	private static final ResourceLocation ENHANCED_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
 	private InventoryScannerBlockEntity tileEntity;
@@ -30,7 +30,7 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	private final Component redstoneModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.REDSTONE_MODULE.get().getDescriptionId()));
 	private final Component storageModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.STORAGE_MODULE.get().getDescriptionId()));
 
-	public InventoryScannerScreen(InventoryScannerContainer container, Inventory inv, Component name){
+	public InventoryScannerScreen(InventoryScannerMenu container, Inventory inv, Component name){
 		super(container, inv, name);
 		tileEntity = container.te;
 		owns = tileEntity.getOwner().isOwner(inv.player);

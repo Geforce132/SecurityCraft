@@ -161,7 +161,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeProjector, ProjectorBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeProjector, ProjectorBlockEntity::tick);
 	}
 
 	@Override

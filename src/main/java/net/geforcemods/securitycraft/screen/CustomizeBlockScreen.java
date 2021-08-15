@@ -13,7 +13,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
+import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IdButton;
@@ -37,7 +37,7 @@ import net.minecraftforge.fmlclient.gui.widget.Slider;
 import net.minecraftforge.fmlclient.gui.widget.Slider.ISlider;
 
 @OnlyIn(Dist.CLIENT)
-public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockContainer>{
+public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu>{
 	private static final ResourceLocation[] TEXTURES = {
 			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
@@ -53,7 +53,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private final String blockName;
 
-	public CustomizeBlockScreen(CustomizeBlockContainer container, Inventory inv, Component name)
+	public CustomizeBlockScreen(CustomizeBlockMenu container, Inventory inv, Component name)
 	{
 		super(container, inv, name);
 		moduleInv = container.moduleInv;

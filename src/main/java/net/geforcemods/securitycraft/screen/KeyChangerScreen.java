@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -25,7 +25,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class KeyChangerScreen extends AbstractContainerScreen<GenericTEContainer> {
+public class KeyChangerScreen extends AbstractContainerScreen<GenericTEMenu> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId());
@@ -36,7 +36,7 @@ public class KeyChangerScreen extends AbstractContainerScreen<GenericTEContainer
 	private IdButton confirmButton;
 	private BlockEntity tileEntity;
 
-	public KeyChangerScreen(GenericTEContainer container, Inventory inv, Component name) {
+	public KeyChangerScreen(GenericTEMenu container, Inventory inv, Component name) {
 		super(container, inv, name);
 		tileEntity = container.te;
 	}

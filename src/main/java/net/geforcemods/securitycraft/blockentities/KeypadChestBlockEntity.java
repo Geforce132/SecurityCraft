@@ -11,8 +11,8 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -57,7 +57,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	public KeypadChestBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeKeypadChest, pos, state);
+		super(SCContent.beTypeKeypadChest, pos, state);
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 					{
-						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, level, worldPosition);
+						return new GenericTEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
@@ -210,7 +210,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
-							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, level, worldPosition);
+							return new GenericTEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override

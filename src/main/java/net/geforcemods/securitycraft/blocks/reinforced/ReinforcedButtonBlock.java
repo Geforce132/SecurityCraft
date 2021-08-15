@@ -82,6 +82,6 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeAllowlistOnly, AllowlistOnlyBlockEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypeAllowlistOnly, AllowlistOnlyBlockEntity::tick);
 	}
 }

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.geforcemods.securitycraft.containers.BriefcaseContainer;
+import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -12,12 +12,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BriefcaseInventoryScreen extends AbstractContainerScreen<BriefcaseContainer> {
+public class BriefcaseInventoryScreen extends AbstractContainerScreen<BriefcaseMenu> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
 	private final String formattedTitle;
 
-	public BriefcaseInventoryScreen(BriefcaseContainer container, Inventory inventory, Component name) {
+	public BriefcaseInventoryScreen(BriefcaseMenu container, Inventory inventory, Component name) {
 		super(container, inventory, name);
 
 		formattedTitle = name.getString();

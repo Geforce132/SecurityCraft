@@ -4,8 +4,8 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.containers.BriefcaseContainer;
-import net.geforcemods.securitycraft.inventory.BriefcaseInventory;
+import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
+import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -52,7 +52,7 @@ public class CodebreakerItem extends Item {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
-							return new BriefcaseContainer(windowId, inv, new BriefcaseInventory(briefcase));
+							return new BriefcaseMenu(windowId, inv, new BriefcaseContainer(briefcase));
 						}
 
 						@Override

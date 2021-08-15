@@ -100,7 +100,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return world.isClientSide ? null : createTickerHelper(type, SCContent.teTypeReinforcedHopper, ReinforcedHopperBlockEntity::pushItemsTick);
+		return world.isClientSide ? null : createTickerHelper(type, SCContent.beTypeReinforcedHopper, ReinforcedHopperBlockEntity::pushItemsTick);
 	}
 
 	@Override

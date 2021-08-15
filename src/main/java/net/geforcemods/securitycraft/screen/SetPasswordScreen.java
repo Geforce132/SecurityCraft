@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
@@ -23,7 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SetPasswordScreen extends AbstractContainerScreen<GenericTEContainer> {
+public class SetPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private BlockEntity tileEntity;
@@ -33,7 +33,7 @@ public class SetPasswordScreen extends AbstractContainerScreen<GenericTEContaine
 	private EditBox keycodeTextbox;
 	private IdButton saveAndContinueButton;
 
-	public SetPasswordScreen(GenericTEContainer container, Inventory inv, Component name){
+	public SetPasswordScreen(GenericTEMenu container, Inventory inv, Component name){
 		super(container, inv, name);
 		this.tileEntity = container.te;
 		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getDescriptionId());

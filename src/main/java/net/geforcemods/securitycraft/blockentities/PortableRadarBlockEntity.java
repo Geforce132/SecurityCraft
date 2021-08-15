@@ -37,7 +37,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity {
 
 	public PortableRadarBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypePortableRadar, pos, state);
+		super(SCContent.beTypePortableRadar, pos, state);
 	}
 
 	public static void tick(Level world, BlockPos pos, BlockState state, PortableRadarBlockEntity te)

@@ -5,7 +5,7 @@ import java.util.Random;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
+import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -17,12 +17,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class KeypadFurnaceScreen extends AbstractContainerScreen<KeypadFurnaceContainer>
+public class KeypadFurnaceScreen extends AbstractContainerScreen<KeypadFurnaceMenu>
 {
 	private static final ResourceLocation FURNACE_GUI_TEXTURES = new ResourceLocation("textures/gui/container/furnace.png");
 	private Component title;
 
-	public KeypadFurnaceScreen(KeypadFurnaceContainer container, Inventory inv, Component name)
+	public KeypadFurnaceScreen(KeypadFurnaceMenu container, Inventory inv, Component name)
 	{
 		super(container, inv, name);
 

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
+import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -40,7 +40,7 @@ public class UniversalBlockReinforcerItem extends Item
 				@Override
 				public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 				{
-					return new BlockReinforcerContainer(windowId, inv, UniversalBlockReinforcerItem.this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
+					return new BlockReinforcerMenu(windowId, inv, UniversalBlockReinforcerItem.this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
 				}
 
 				@Override

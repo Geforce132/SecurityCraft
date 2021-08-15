@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.containers;
+package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -13,7 +13,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 
-public class BlockReinforcerContainer extends AbstractContainerMenu
+public class BlockReinforcerMenu extends AbstractContainerMenu
 {
 	private final ItemStack blockReinforcer;
 	private final SimpleContainer itemInventory = new SimpleContainer(2);
@@ -21,9 +21,9 @@ public class BlockReinforcerContainer extends AbstractContainerMenu
 	public final SlotBlockReinforcer unreinforcingSlot;
 	public final boolean isLvl1;
 
-	public BlockReinforcerContainer(int windowId, Inventory inventory, boolean isLvl1)
+	public BlockReinforcerMenu(int windowId, Inventory inventory, boolean isLvl1)
 	{
-		super(SCContent.cTypeBlockReinforcer, windowId);
+		super(SCContent.mTypeBlockReinforcer, windowId);
 
 		blockReinforcer = inventory.getSelected().getItem() instanceof UniversalBlockReinforcerItem ? inventory.getSelected() : inventory.offhand.get(0);
 		this.isLvl1 = isLvl1;

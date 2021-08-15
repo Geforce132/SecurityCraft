@@ -18,7 +18,7 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 
 	public OwnableBlockEntity(BlockPos pos, BlockState state)
 	{
-		this(SCContent.teTypeOwnable, pos, state);
+		this(SCContent.beTypeOwnable, pos, state);
 	}
 
 	public OwnableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)

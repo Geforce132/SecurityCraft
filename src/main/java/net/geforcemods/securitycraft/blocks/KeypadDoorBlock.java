@@ -76,7 +76,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeKeypadDoor, KeypadDoorBlockEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypeKeypadDoor, KeypadDoorBlockEntity::tick);
 	}
 
 	@Override

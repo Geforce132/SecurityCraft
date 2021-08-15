@@ -154,7 +154,7 @@ public class KeypadBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeKeypad, KeypadBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeKeypad, KeypadBlockEntity::tick);
 	}
 
 	@Override

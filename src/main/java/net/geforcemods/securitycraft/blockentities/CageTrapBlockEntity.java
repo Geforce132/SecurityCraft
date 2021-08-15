@@ -13,7 +13,7 @@ public class CageTrapBlockEntity extends DisguisableBlockEntity {
 
 	public CageTrapBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeCageTrap, pos, state);
+		super(SCContent.beTypeCageTrap, pos, state);
 	}
 
 	@Override

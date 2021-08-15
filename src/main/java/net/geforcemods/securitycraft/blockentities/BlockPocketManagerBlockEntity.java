@@ -15,7 +15,7 @@ import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedCrystalQuartzPillar;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBlock;
-import net.geforcemods.securitycraft.containers.BlockPocketManagerContainer;
+import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
@@ -74,7 +74,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 	public BlockPocketManagerBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeBlockPocketManager, pos, state);
+		super(SCContent.beTypeBlockPocketManager, pos, state);
 	}
 
 	public static void tick(Level world, BlockPos pos, BlockState state, BlockPocketManagerBlockEntity te)
@@ -801,7 +801,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
-		return new BlockPocketManagerContainer(windowId, level, worldPosition, inv);
+		return new BlockPocketManagerMenu(windowId, level, worldPosition, inv);
 	}
 
 	@Override

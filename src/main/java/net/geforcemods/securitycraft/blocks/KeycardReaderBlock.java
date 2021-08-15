@@ -227,7 +227,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeKeycardReader, KeycardReaderBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeKeycardReader, KeycardReaderBlockEntity::tick);
 	}
 
 	@Override

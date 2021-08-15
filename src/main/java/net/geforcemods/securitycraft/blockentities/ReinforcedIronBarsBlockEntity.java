@@ -12,7 +12,7 @@ public class ReinforcedIronBarsBlockEntity extends OwnableBlockEntity
 
 	public ReinforcedIronBarsBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeReinforcedIronBars, pos, state);
+		super(SCContent.beTypeReinforcedIronBars, pos, state);
 	}
 
 	@Override

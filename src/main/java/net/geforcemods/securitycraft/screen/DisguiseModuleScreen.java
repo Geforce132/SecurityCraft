@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
+import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -15,11 +15,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModuleContainer> {
+public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModuleMenu> {
 	private static final ResourceLocation TEXTURE  = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
 	private final TranslatableComponent disguiseModuleName = Utils.localize(SCContent.DISGUISE_MODULE.get().getDescriptionId());
 
-	public DisguiseModuleScreen(DisguiseModuleContainer container, Inventory inv, Component name) {
+	public DisguiseModuleScreen(DisguiseModuleMenu container, Inventory inv, Component name) {
 		super(container, inv, name);
 	}
 

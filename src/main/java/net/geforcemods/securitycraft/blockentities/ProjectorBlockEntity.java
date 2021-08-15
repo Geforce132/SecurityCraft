@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.containers.ProjectorContainer;
+import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -41,7 +41,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 
 	public ProjectorBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeProjector, pos, state);
+		super(SCContent.beTypeProjector, pos, state);
 	}
 
 	@Override
@@ -186,7 +186,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
-		return new ProjectorContainer(windowId, level, worldPosition, inv);
+		return new ProjectorMenu(windowId, level, worldPosition, inv);
 	}
 
 	@Override
@@ -215,7 +215,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	@Override
 	public int getContainerSize()
 	{
-		return ProjectorContainer.SIZE;
+		return ProjectorMenu.SIZE;
 	}
 
 	@Override

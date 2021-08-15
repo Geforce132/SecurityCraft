@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.containers;
+package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
@@ -14,16 +14,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class BlockPocketManagerContainer extends AbstractContainerMenu
+public class BlockPocketManagerMenu extends AbstractContainerMenu
 {
 	public BlockPocketManagerBlockEntity te;
 	private ContainerLevelAccess worldPosCallable;
 	public final boolean storage;
 	public final boolean isOwner;
 
-	public BlockPocketManagerContainer(int windowId, Level world, BlockPos pos, Inventory inventory)
+	public BlockPocketManagerMenu(int windowId, Level world, BlockPos pos, Inventory inventory)
 	{
-		super(SCContent.cTypeBlockPocketManager, windowId);
+		super(SCContent.mTypeBlockPocketManager, windowId);
 
 		BlockEntity tile = world.getBlockEntity(pos);
 

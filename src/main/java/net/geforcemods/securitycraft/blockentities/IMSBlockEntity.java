@@ -7,8 +7,8 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.entity.IMSBomb;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -41,7 +41,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 
 	public IMSBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeIms, pos, state);
+		super(SCContent.beTypeIms, pos, state);
 	}
 
 	public static void tick(Level world, BlockPos pos, BlockState state, IMSBlockEntity te){
@@ -183,7 +183,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
-		return new GenericTEContainer(SCContent.cTypeIMS, windowId, level, worldPosition);
+		return new GenericTEMenu(SCContent.mTypeIMS, windowId, level, worldPosition);
 	}
 
 	@Override

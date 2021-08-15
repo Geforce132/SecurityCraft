@@ -10,7 +10,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
-import net.geforcemods.securitycraft.containers.BlockPocketManagerContainer;
+import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
@@ -38,7 +38,7 @@ import net.minecraftforge.fmlclient.gui.GuiUtils;
 import net.minecraftforge.fmlclient.gui.widget.Slider;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
-public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocketManagerContainer>
+public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocketManagerMenu>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager.png");
 	private static final ResourceLocation TEXTURE_STORAGE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager_storage.png");
@@ -67,7 +67,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	private int pillarsStillNeeded;
 	private int chiseledStillNeeded;
 
-	public BlockPocketManagerScreen(BlockPocketManagerContainer container, Inventory inv, Component name)
+	public BlockPocketManagerScreen(BlockPocketManagerMenu container, Inventory inv, Component name)
 	{
 		super(container, inv, name);
 

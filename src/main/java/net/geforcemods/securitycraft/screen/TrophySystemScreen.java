@@ -13,7 +13,7 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -28,7 +28,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.client.gui.ScrollPanel;
 
-public class TrophySystemScreen extends AbstractContainerScreen<GenericTEContainer> {
+public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
@@ -41,7 +41,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEContain
 	private TrophySystemBlockEntity tileEntity;
 	private ProjectileScrollList projectileList;
 
-	public TrophySystemScreen(GenericTEContainer container, Inventory inv, Component name) {
+	public TrophySystemScreen(GenericTEMenu container, Inventory inv, Component name) {
 		super(container, inv, name);
 
 		this.tileEntity = (TrophySystemBlockEntity)container.te;

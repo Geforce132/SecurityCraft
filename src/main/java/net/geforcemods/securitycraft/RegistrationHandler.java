@@ -9,17 +9,17 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
-import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
-import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
@@ -35,24 +35,24 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.geforcemods.securitycraft.containers.BlockPocketManagerContainer;
-import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
-import net.geforcemods.securitycraft.containers.BriefcaseContainer;
-import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
-import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
-import net.geforcemods.securitycraft.containers.GenericContainer;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
-import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
-import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
-import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
-import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.Bullet;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.geforcemods.securitycraft.entity.Sentry;
-import net.geforcemods.securitycraft.inventory.BriefcaseInventory;
-import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
+import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
+import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
+import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
+import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
+import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
+import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
+import net.geforcemods.securitycraft.inventory.GenericMenu;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
+import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
+import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
+import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
+import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
@@ -147,7 +147,7 @@ public class RegistrationHandler
 	}
 
 	@SubscribeEvent
-	public static void registerTileEntities(RegistryEvent.Register<BlockEntityType<?>> event)
+	public static void registerBlockEntities(RegistryEvent.Register<BlockEntityType<?>> event)
 	{
 		List<Block> teOwnableBlocks = new ArrayList<>();
 
@@ -247,25 +247,25 @@ public class RegistrationHandler
 	}
 
 	@SubscribeEvent
-	public static void registerContainers(RegistryEvent.Register<MenuType<?>> event)
+	public static void registerMenus(RegistryEvent.Register<MenuType<?>> event)
 	{
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BlockReinforcerContainer(windowId, inv, data.readBoolean())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_reinforcer")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericContainer(SCContent.cTypeBriefcase, windowId)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BriefcaseContainer(windowId, inv, new BriefcaseInventory(PlayerUtils.getSelectedItemStack(inv, SCContent.BRIEFCASE.get())))).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase_inventory")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericContainer(SCContent.cTypeBriefcaseSetup, windowId)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase_setup")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new CustomizeBlockContainer(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "customize_block")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new DisguiseModuleContainer(windowId, inv, new ModuleItemInventory(PlayerUtils.getSelectedItemStack(inv, SCContent.DISGUISE_MODULE.get())))).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "disguise_module")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new InventoryScannerContainer(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "inventory_scanner")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new KeypadFurnaceContainer(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_furnace")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new ProjectorContainer(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "projector")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "check_password")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeSetPassword, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "set_password")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeUsernameLogger, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "username_logger")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeIMS, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new KeycardReaderContainer(windowId, inv, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keycard_setup")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeKeyChanger, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_changer")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeTrophySystem, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BlockPocketManagerContainer(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BlockReinforcerMenu(windowId, inv, data.readBoolean())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_reinforcer")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericMenu(SCContent.mTypeBriefcase, windowId)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(inv, SCContent.BRIEFCASE.get())))).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase_inventory")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericMenu(SCContent.mTypeBriefcaseSetup, windowId)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase_setup")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new CustomizeBlockMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "customize_block")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new DisguiseModuleMenu(windowId, inv, new ModuleItemContainer(PlayerUtils.getSelectedItemStack(inv, SCContent.DISGUISE_MODULE.get())))).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "disguise_module")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new InventoryScannerMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "inventory_scanner")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new KeypadFurnaceMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_furnace")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new ProjectorMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "projector")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEMenu(SCContent.mTypeCheckPassword, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "check_password")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEMenu(SCContent.mTypeSetPassword, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "set_password")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEMenu(SCContent.mTypeUsernameLogger, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "username_logger")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEMenu(SCContent.mTypeIMS, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new KeycardReaderMenu(windowId, inv, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keycard_setup")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEMenu(SCContent.mTypeKeyChanger, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_changer")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEMenu(SCContent.mTypeTrophySystem, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BlockPocketManagerMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
 	}
 
 	public static void registerPackets()

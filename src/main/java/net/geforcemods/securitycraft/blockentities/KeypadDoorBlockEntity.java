@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -30,7 +30,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	public KeypadDoorBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeKeypadDoor, pos, state);
+		super(SCContent.beTypeKeypadDoor, pos, state);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 					{
-						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, level, worldPosition);
+						return new GenericTEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
@@ -89,7 +89,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
-							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, level, worldPosition);
+							return new GenericTEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override

@@ -18,7 +18,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity
 {
 	public ScannerDoorBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeScannerDoor, pos, state);
+		super(SCContent.beTypeScannerDoor, pos, state);
 	}
 
 	@Override

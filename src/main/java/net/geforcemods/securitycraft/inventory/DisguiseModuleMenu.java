@@ -1,7 +1,6 @@
-package net.geforcemods.securitycraft.containers;
+package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -10,12 +9,12 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 
-public class DisguiseModuleContainer extends AbstractContainerMenu {
+public class DisguiseModuleMenu extends AbstractContainerMenu {
 
-	private ModuleItemInventory inventory;
+	private ModuleItemContainer inventory;
 
-	public DisguiseModuleContainer(int windowId, Inventory playerInventory, ModuleItemInventory moduleInventory) {
-		super(SCContent.cTypeDisguiseModule, windowId);
+	public DisguiseModuleMenu(int windowId, Inventory playerInventory, ModuleItemContainer moduleInventory) {
+		super(SCContent.mTypeDisguiseModule, windowId);
 		inventory = moduleInventory;
 		addSlot(new AddonSlot(inventory, 0, 79, 20));
 
@@ -77,9 +76,9 @@ public class DisguiseModuleContainer extends AbstractContainerMenu {
 
 	public static class AddonSlot extends Slot {
 
-		private ModuleItemInventory inventory;
+		private ModuleItemContainer inventory;
 
-		public AddonSlot(ModuleItemInventory inventory, int index, int xPos, int yPos) {
+		public AddonSlot(ModuleItemContainer inventory, int index, int xPos, int yPos) {
 			super(inventory, index, xPos, yPos);
 			this.inventory = inventory;
 		}

@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.containers;
+package net.geforcemods.securitycraft.inventory;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -8,11 +8,11 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class GenericTEContainer extends AbstractContainerMenu {
+public class GenericTEMenu extends AbstractContainerMenu {
 	public final BlockEntity te;
 	private ContainerLevelAccess worldPosCallable;
 
-	public GenericTEContainer(MenuType<GenericTEContainer> type, int windowId, Level world, BlockPos pos)
+	public GenericTEMenu(MenuType<GenericTEMenu> type, int windowId, Level world, BlockPos pos)
 	{
 		super(type, windowId);
 

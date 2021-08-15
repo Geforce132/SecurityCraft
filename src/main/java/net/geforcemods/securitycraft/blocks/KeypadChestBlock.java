@@ -88,7 +88,7 @@ public class KeypadChestBlock extends ChestBlock {
 	};
 
 	public KeypadChestBlock(Block.Properties properties){
-		super(properties, () -> SCContent.teTypeKeypadChest);
+		super(properties, () -> SCContent.beTypeKeypadChest);
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class KeypadChestBlock extends ChestBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return world.isClientSide ? createTickerHelper(type, SCContent.teTypeKeypadChest, KeypadChestBlockEntity::lidAnimateTick) : null;
+		return world.isClientSide ? createTickerHelper(type, SCContent.beTypeKeypadChest, KeypadChestBlockEntity::lidAnimateTick) : null;
 	}
 
 	public static boolean isBlocked(Level world, BlockPos pos)

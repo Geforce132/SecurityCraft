@@ -1,7 +1,6 @@
-package net.geforcemods.securitycraft.containers;
+package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.inventory.BriefcaseInventory;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -10,10 +9,10 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-public class BriefcaseContainer extends AbstractContainerMenu {
+public class BriefcaseMenu extends AbstractContainerMenu {
 
-	public BriefcaseContainer(int windowId, Inventory playerInventory, BriefcaseInventory briefcaseInventory) {
-		super(SCContent.cTypeBriefcaseInventory, windowId);
+	public BriefcaseMenu(int windowId, Inventory playerInventory, BriefcaseContainer briefcaseInventory) {
+		super(SCContent.mTypeBriefcaseInventory, windowId);
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 4; j++)
@@ -36,14 +35,14 @@ public class BriefcaseContainer extends AbstractContainerMenu {
 			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
-			if(index < BriefcaseInventory.SIZE) {
-				if(!moveItemStackTo(slotStack, BriefcaseInventory.SIZE, 48, true))
+			if(index < BriefcaseContainer.SIZE) {
+				if(!moveItemStackTo(slotStack, BriefcaseContainer.SIZE, 48, true))
 					return ItemStack.EMPTY;
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if(index >= BriefcaseInventory.SIZE)
-				if(!moveItemStackTo(slotStack, 0, BriefcaseInventory.SIZE, false))
+			else if(index >= BriefcaseContainer.SIZE)
+				if(!moveItemStackTo(slotStack, 0, BriefcaseContainer.SIZE, false))
 					return ItemStack.EMPTY;
 
 			if(slotStack.getCount() == 0)

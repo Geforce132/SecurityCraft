@@ -328,7 +328,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.teTypeAbstract, SecurityCraftBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeAbstract, SecurityCraftBlockEntity::tick);
 	}
 
 	@Override

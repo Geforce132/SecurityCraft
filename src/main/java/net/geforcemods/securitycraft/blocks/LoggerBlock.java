@@ -84,7 +84,7 @@ public class LoggerBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.teTypeUsernameLogger, UsernameLoggerBlockEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypeUsernameLogger, UsernameLoggerBlockEntity::tick);
 	}
 
 	@Override

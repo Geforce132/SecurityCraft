@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
@@ -35,7 +35,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 
 	public UsernameLoggerBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeUsernameLogger, pos, state);
+		super(SCContent.beTypeUsernameLogger, pos, state);
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 	{
-		return new GenericTEContainer(SCContent.cTypeUsernameLogger, windowId, level, worldPosition);
+		return new GenericTEMenu(SCContent.mTypeUsernameLogger, windowId, level, worldPosition);
 	}
 
 	@Override

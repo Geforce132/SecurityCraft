@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
-import net.geforcemods.securitycraft.containers.ProjectorContainer;
+import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.network.server.SyncProjector.DataType;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
@@ -24,7 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ProjectorScreen extends AbstractContainerScreen<ProjectorContainer> {
+public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
 	private static final TranslatableComponent SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block");
@@ -42,7 +42,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorContainer>
 
 	private int sliderWidth = 120;
 
-	public ProjectorScreen(ProjectorContainer container, Inventory inv, Component name)
+	public ProjectorScreen(ProjectorMenu container, Inventory inv, Component name)
 	{
 		super(container, inv, name);
 		this.tileEntity = container.te;

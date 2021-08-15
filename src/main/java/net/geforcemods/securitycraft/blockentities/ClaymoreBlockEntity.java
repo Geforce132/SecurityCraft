@@ -31,7 +31,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity
 
 	public ClaymoreBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeClaymore, pos, state);
+		super(SCContent.beTypeClaymore, pos, state);
 	}
 
 	public static void serverTick(Level world, BlockPos pos, BlockState state, ClaymoreBlockEntity te) {

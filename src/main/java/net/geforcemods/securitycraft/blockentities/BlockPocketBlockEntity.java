@@ -14,7 +14,7 @@ public class BlockPocketBlockEntity extends SecurityCraftBlockEntity
 
 	public BlockPocketBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeBlockPocket, pos, state);
+		super(SCContent.beTypeBlockPocket, pos, state);
 	}
 
 	public void setManager(BlockPocketManagerBlockEntity manager)

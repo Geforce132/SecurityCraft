@@ -19,7 +19,7 @@ public class ProtectoBlockEntity extends CustomizableBlockEntity {
 
 	public ProtectoBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeProtecto, pos, state);
+		super(SCContent.beTypeProtecto, pos, state);
 	}
 
 	@Override

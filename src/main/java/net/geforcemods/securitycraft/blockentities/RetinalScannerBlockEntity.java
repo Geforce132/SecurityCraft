@@ -46,7 +46,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity {
 
 	public RetinalScannerBlockEntity(BlockPos pos, BlockState state)
 	{
-		super(SCContent.teTypeRetinalScanner, pos, state);
+		super(SCContent.beTypeRetinalScanner, pos, state);
 	}
 
 	@Override

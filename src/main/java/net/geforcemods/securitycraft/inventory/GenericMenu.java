@@ -1,12 +1,12 @@
-package net.geforcemods.securitycraft.containers;
+package net.geforcemods.securitycraft.inventory;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 
-public class GenericContainer extends AbstractContainerMenu {
+public class GenericMenu extends AbstractContainerMenu {
 
-	public GenericContainer(MenuType<GenericContainer> type, int windowId)
+	public GenericMenu(MenuType<GenericMenu> type, int windowId)
 	{
 		super(type, windowId);
 	}

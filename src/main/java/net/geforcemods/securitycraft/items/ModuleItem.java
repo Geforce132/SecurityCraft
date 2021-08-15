@@ -5,8 +5,8 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
-import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
+import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
+import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -108,7 +108,7 @@ public class ModuleItem extends Item{
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
-							return new DisguiseModuleContainer(windowId, inv, new ModuleItemInventory(player.getItemInHand(hand)));
+							return new DisguiseModuleMenu(windowId, inv, new ModuleItemContainer(player.getItemInHand(hand)));
 						}
 
 						@Override
