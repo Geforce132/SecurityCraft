@@ -47,6 +47,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	public static void tick(Level world, BlockPos pos, BlockState state, InventoryScannerBlockEntity te){
+		DisguisableBlockEntity.tick(world, pos, state, te);
+
 		if(te.cooldown > 0)
 			te.cooldown--;
 		else if(te.isProvidingPower){
