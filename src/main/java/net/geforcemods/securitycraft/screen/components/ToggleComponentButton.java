@@ -23,27 +23,23 @@ public class ToggleComponentButton extends IdButton {
 
 	@Override
 	public void onClick(double mouseX, double mouseY) {
-		if (Screen.hasShiftDown()) {
+		if(Screen.hasShiftDown())
 			cycleIndex(-1);
-		} else {
+		else
 			cycleIndex(1);
-		}
+
+		super.onClick(mouseX, mouseY);
 	}
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		if (delta > 0.0D) {
-			cycleIndex(-1);
-		} else if (delta < 0.0D) {
-			cycleIndex(1);
-		}
-
+		cycleIndex(-(int)Math.signum(delta));
+		onPress.onPress(this);
 		return true;
 	}
 
 	public void cycleIndex(int value) {
 		currentIndex = Math.floorMod(currentIndex + value, toggleCount);
-		onPress.onPress(this);
 		updateComponent();
 	}
 
@@ -52,6 +48,6 @@ public class ToggleComponentButton extends IdButton {
 	}
 
 	private void updateComponent() {
-		this.setMessage(componentFunction.apply(currentIndex));
+		setMessage(componentFunction.apply(currentIndex));
 	}
 }

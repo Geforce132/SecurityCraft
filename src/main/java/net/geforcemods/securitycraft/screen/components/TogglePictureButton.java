@@ -74,21 +74,18 @@ public class TogglePictureButton extends IdButton{
 	@Override
 	public void onClick(double mouseX, double mouseY)
 	{
-		if (Screen.hasShiftDown()) {
+		if(Screen.hasShiftDown())
 			setCurrentIndex(currentIndex - 1);
-		} else {
+		else
 			setCurrentIndex(currentIndex + 1);
-		}
+
+		super.onClick(mouseX, mouseY);
 	}
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		if (delta > 0.0D) {
-			this.setCurrentIndex(currentIndex - 1);
-		} else if (delta < 0.0D) {
-			this.setCurrentIndex(currentIndex + 1);
-		}
-
+		setCurrentIndex(currentIndex - (int)Math.signum(delta));
+		onPress.onPress(this);
 		return true;
 	}
 
@@ -100,7 +97,6 @@ public class TogglePictureButton extends IdButton{
 	public void setCurrentIndex(int newIndex)
 	{
 		currentIndex = Math.floorMod(newIndex, toggleCount);
-		onPress.onPress(this);
 	}
 
 	public ResourceLocation getTextureLocation()
