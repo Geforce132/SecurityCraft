@@ -57,7 +57,7 @@ public class UniversalKeyChangerItem extends Item {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
-							return new GenericTEMenu(SCContent.cTypeKeyChanger, windowId, world, pos);
+							return new GenericTEMenu(SCContent.mTypeKeyChanger, windowId, world, pos);
 						}
 
 						@Override

@@ -4,17 +4,17 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
-import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
-import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
@@ -685,65 +685,65 @@ public class SCContent
 
 	//tile entity types
 	@ObjectHolder(SecurityCraft.MODID + ":ownable")
-	public static BlockEntityType<OwnableBlockEntity> teTypeOwnable;
+	public static BlockEntityType<OwnableBlockEntity> beTypeOwnable;
 	@ObjectHolder(SecurityCraft.MODID + ":abstract")
-	public static BlockEntityType<SecurityCraftBlockEntity> teTypeAbstract;
+	public static BlockEntityType<SecurityCraftBlockEntity> beTypeAbstract;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad")
-	public static BlockEntityType<KeypadBlockEntity> teTypeKeypad;
+	public static BlockEntityType<KeypadBlockEntity> beTypeKeypad;
 	@ObjectHolder(SecurityCraft.MODID + ":laser_block")
-	public static BlockEntityType<LaserBlockBlockEntity> teTypeLaserBlock;
+	public static BlockEntityType<LaserBlockBlockEntity> beTypeLaserBlock;
 	@ObjectHolder(SecurityCraft.MODID + ":cage_trap")
-	public static BlockEntityType<CageTrapBlockEntity> teTypeCageTrap;
+	public static BlockEntityType<CageTrapBlockEntity> beTypeCageTrap;
 	@ObjectHolder(SecurityCraft.MODID + ":keycard_reader")
-	public static BlockEntityType<KeycardReaderBlockEntity> teTypeKeycardReader;
+	public static BlockEntityType<KeycardReaderBlockEntity> beTypeKeycardReader;
 	@ObjectHolder(SecurityCraft.MODID + ":inventory_scanner")
-	public static BlockEntityType<InventoryScannerBlockEntity> teTypeInventoryScanner;
+	public static BlockEntityType<InventoryScannerBlockEntity> beTypeInventoryScanner;
 	@ObjectHolder(SecurityCraft.MODID + ":portable_radar")
-	public static BlockEntityType<PortableRadarBlockEntity> teTypePortableRadar;
+	public static BlockEntityType<PortableRadarBlockEntity> beTypePortableRadar;
 	@ObjectHolder(SecurityCraft.MODID + ":security_camera")
-	public static BlockEntityType<SecurityCameraBlockEntity> teTypeSecurityCamera;
+	public static BlockEntityType<SecurityCameraBlockEntity> beTypeSecurityCamera;
 	@ObjectHolder(SecurityCraft.MODID + ":username_logger")
-	public static BlockEntityType<UsernameLoggerBlockEntity> teTypeUsernameLogger;
+	public static BlockEntityType<UsernameLoggerBlockEntity> beTypeUsernameLogger;
 	@ObjectHolder(SecurityCraft.MODID + ":retinal_scanner")
-	public static BlockEntityType<RetinalScannerBlockEntity> teTypeRetinalScanner;
+	public static BlockEntityType<RetinalScannerBlockEntity> beTypeRetinalScanner;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad_chest")
-	public static BlockEntityType<KeypadChestBlockEntity> teTypeKeypadChest;
+	public static BlockEntityType<KeypadChestBlockEntity> beTypeKeypadChest;
 	@ObjectHolder(SecurityCraft.MODID + ":alarm")
-	public static BlockEntityType<AlarmBlockEntity> teTypeAlarm;
+	public static BlockEntityType<AlarmBlockEntity> beTypeAlarm;
 	@ObjectHolder(SecurityCraft.MODID + ":claymore")
-	public static BlockEntityType<ClaymoreBlockEntity> teTypeClaymore;
+	public static BlockEntityType<ClaymoreBlockEntity> beTypeClaymore;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
-	public static BlockEntityType<KeypadFurnaceBlockEntity> teTypeKeypadFurnace;
+	public static BlockEntityType<KeypadFurnaceBlockEntity> beTypeKeypadFurnace;
 	@ObjectHolder(SecurityCraft.MODID + ":ims")
-	public static BlockEntityType<IMSBlockEntity> teTypeIms;
+	public static BlockEntityType<IMSBlockEntity> beTypeIms;
 	@ObjectHolder(SecurityCraft.MODID + ":protecto")
-	public static BlockEntityType<ProtectoBlockEntity> teTypeProtecto;
+	public static BlockEntityType<ProtectoBlockEntity> beTypeProtecto;
 	@ObjectHolder(SecurityCraft.MODID + ":scanner_door")
-	public static BlockEntityType<ScannerDoorBlockEntity> teTypeScannerDoor;
+	public static BlockEntityType<ScannerDoorBlockEntity> beTypeScannerDoor;
 	@ObjectHolder(SecurityCraft.MODID + ":secret_sign")
-	public static BlockEntityType<SecretSignBlockEntity> teTypeSecretSign;
+	public static BlockEntityType<SecretSignBlockEntity> beTypeSecretSign;
 	@ObjectHolder(SecurityCraft.MODID + ":motion_light")
-	public static BlockEntityType<MotionActivatedLightBlockEntity> teTypeMotionLight;
+	public static BlockEntityType<MotionActivatedLightBlockEntity> beTypeMotionLight;
 	@ObjectHolder(SecurityCraft.MODID + ":track_mine")
-	public static BlockEntityType<TrackMineBlockEntity> teTypeTrackMine;
+	public static BlockEntityType<TrackMineBlockEntity> beTypeTrackMine;
 	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
-	public static BlockEntityType<TrophySystemBlockEntity> teTypeTrophySystem;
+	public static BlockEntityType<TrophySystemBlockEntity> beTypeTrophySystem;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
-	public static BlockEntityType<BlockPocketManagerBlockEntity> teTypeBlockPocketManager;
+	public static BlockEntityType<BlockPocketManagerBlockEntity> beTypeBlockPocketManager;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket")
-	public static BlockEntityType<BlockPocketBlockEntity> teTypeBlockPocket;
+	public static BlockEntityType<BlockPocketBlockEntity> beTypeBlockPocket;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_pressure_plate")
-	public static BlockEntityType<AllowlistOnlyBlockEntity> teTypeAllowlistOnly;
+	public static BlockEntityType<AllowlistOnlyBlockEntity> beTypeAllowlistOnly;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_hopper")
-	public static BlockEntityType<ReinforcedHopperBlockEntity> teTypeReinforcedHopper;
+	public static BlockEntityType<ReinforcedHopperBlockEntity> beTypeReinforcedHopper;
 	@ObjectHolder(SecurityCraft.MODID + ":projector")
-	public static BlockEntityType<ProjectorBlockEntity> teTypeProjector;
+	public static BlockEntityType<ProjectorBlockEntity> beTypeProjector;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad_door")
-	public static BlockEntityType<KeypadDoorBlockEntity> teTypeKeypadDoor;
+	public static BlockEntityType<KeypadDoorBlockEntity> beTypeKeypadDoor;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_iron_bars")
-	public static BlockEntityType<ReinforcedIronBarsBlockEntity> teTypeReinforcedIronBars;
+	public static BlockEntityType<ReinforcedIronBarsBlockEntity> beTypeReinforcedIronBars;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_cauldron")
-	public static BlockEntityType<ReinforcedCauldronBlockEntity> teTypeReinforcedCauldron;
+	public static BlockEntityType<ReinforcedCauldronBlockEntity> beTypeReinforcedCauldron;
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
@@ -787,11 +787,11 @@ public class SCContent
 	@ObjectHolder(SecurityCraft.MODID + ":keycard_setup")
 	public static MenuType<KeycardReaderMenu> mTypeKeycardReader;
 	@ObjectHolder(SecurityCraft.MODID + ":key_changer")
-	public static MenuType<GenericTEMenu> cTypeKeyChanger;
+	public static MenuType<GenericTEMenu> mTypeKeyChanger;
 	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
-	public static MenuType<GenericTEMenu> cTypeTrophySystem;
+	public static MenuType<GenericTEMenu> mTypeTrophySystem;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
-	public static MenuType<BlockPocketManagerMenu> cTypeBlockPocketManager;
+	public static MenuType<BlockPocketManagerMenu> mTypeBlockPocketManager;
 
 	private static final Block.Properties prop()
 	{

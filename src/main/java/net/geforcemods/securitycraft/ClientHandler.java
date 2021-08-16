@@ -273,7 +273,7 @@ public class ClientHandler
 			MenuScreens.register(SCContent.mTypeUsernameLogger, UsernameLoggerScreen::new);
 			MenuScreens.register(SCContent.mTypeIMS, IMSScreen::new);
 			MenuScreens.register(SCContent.mTypeKeycardReader, KeycardReaderScreen::new);
-			MenuScreens.register(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
+			MenuScreens.register(SCContent.mTypeKeyChanger, KeyChangerScreen::new);
 			MenuScreens.register(SCContent.mTypeBlockPocketManager, BlockPocketManagerScreen::new);
 			MenuScreens.register(SCContent.mTypeProjector, ProjectorScreen::new);
 			MenuScreens.register(SCContent.mTypeTrophySystem, TrophySystemScreen::new);
