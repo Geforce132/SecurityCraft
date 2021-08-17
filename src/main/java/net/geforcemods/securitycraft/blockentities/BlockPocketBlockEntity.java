@@ -34,11 +34,6 @@ public class BlockPocketBlockEntity extends SecurityCraftBlockEntity
 		return manager;
 	}
 
-	public static void tick(Level world, BlockPos pos, BlockState state, BlockPocketBlockEntity te)
-	{
-		te.tick(world, pos, state);
-	}
-
 	@Override
 	public void tick(Level world, BlockPos pos, BlockState state)
 	{
