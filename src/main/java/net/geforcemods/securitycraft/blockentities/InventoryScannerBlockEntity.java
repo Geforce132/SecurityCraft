@@ -46,13 +46,15 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		super(SCContent.beTypeInventoryScanner, pos, state);
 	}
 
-	public static void tick(Level world, BlockPos pos, BlockState state, InventoryScannerBlockEntity te){
-		DisguisableBlockEntity.tick(world, pos, state, te);
+	@Override
+	public void tick(Level world, BlockPos pos, BlockState state)
+	{
+		super.tick(world, pos, state);
 
-		if(te.cooldown > 0)
-			te.cooldown--;
-		else if(te.isProvidingPower){
-			te.isProvidingPower = false;
+		if(cooldown > 0)
+			cooldown--;
+		else if(isProvidingPower){
+			isProvidingPower = false;
 			BlockUtils.updateAndNotify(world, pos, state.getBlock(), 1, true);
 		}
 	}

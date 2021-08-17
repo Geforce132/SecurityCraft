@@ -77,13 +77,14 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		super(SCContent.beTypeBlockPocketManager, pos, state);
 	}
 
-	public static void tick(Level world, BlockPos pos, BlockState state, BlockPocketManagerBlockEntity te)
+	@Override
+	public void tick(Level world, BlockPos pos, BlockState state)
 	{
-		CustomizableBlockEntity.tick(world, pos, state, te);
+		super.tick(world, pos, state);
 
-		if(!world.isClientSide && te.shouldPlaceBlocks)
+		if(!world.isClientSide && shouldPlaceBlocks)
 		{
-			Player owner = PlayerUtils.getPlayerFromName(te.getOwner().getName());
+			Player owner = PlayerUtils.getPlayerFromName(getOwner().getName());
 			boolean isCreative = owner.isCreative();
 			boolean placed4 = true;
 
@@ -97,13 +98,13 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 				do
 				{
-					if(te.placeQueue.isEmpty())
+					if(placeQueue.isEmpty())
 					{
 						placed4 = false;
 						break placeLoop;
 					}
 
-					toPlace = te.placeQueue.remove(0);
+					toPlace = placeQueue.remove(0);
 
 					if(!(toPlace.getRight().getBlock() instanceof IBlockPocket))
 						throw new IllegalStateException(String.format("Tried to automatically place non-block pocket block \"%s\"! This mustn't happen!", toPlace.getRight().getBlock().getDescriptionId()));
@@ -121,9 +122,9 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 					if(!isCreative) //queue blocks for removal from the inventory
 					{
 						//remove blocks from inventory
-						invLoop: for(int k = 0; k < te.storage.size(); k++)
+						invLoop: for(int k = 0; k < storage.size(); k++)
 						{
-							ItemStack stackToCheck = te.storage.get(k);
+							ItemStack stackToCheck = storage.get(k);
 
 							if(!stackToCheck.isEmpty() && ((BlockItem)stackToCheck.getItem()).getBlock() == stateToPlace.getBlock())
 							{
@@ -139,13 +140,13 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 					//assigning the owner
 					if(placedTe instanceof OwnableBlockEntity ownable)
-						ownable.setOwner(te.getOwner().getUUID(), te.getOwner().getName());
+						ownable.setOwner(getOwner().getUUID(), getOwner().getName());
 
 					continue;
 				}
 
 				//when an invalid block is in the way
-				PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslatableComponent("messages.securitycraft:blockpocket.assemblyFailed", te.getFormattedRelativeCoordinates(toPlace.getLeft(), state.getValue(BlockPocketManagerBlock.FACING)), new TranslatableComponent(stateInWorld.getBlock().getDescriptionId())), ChatFormatting.DARK_AQUA);
+				PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslatableComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), state.getValue(BlockPocketManagerBlock.FACING)), new TranslatableComponent(stateInWorld.getBlock().getDescriptionId())), ChatFormatting.DARK_AQUA);
 				placed4 = false;
 				break placeLoop;
 			}
@@ -153,15 +154,15 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			if(!placed4)
 			{
 				//there are still blocks left to place, so a different block is blocking (heh) a space
-				if(!te.placeQueue.isEmpty())
-					te.placeQueue.clear();
+				if(!placeQueue.isEmpty())
+					placeQueue.clear();
 				else //no more blocks left to place, assembling must be done
 				{
-					te.setWalls(!te.hasModule(ModuleType.DISGUISE));
+					setWalls(!hasModule(ModuleType.DISGUISE));
 					PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslatableComponent("messages.securitycraft:blockpocket.assembled"), ChatFormatting.DARK_AQUA);
 				}
 
-				te.shouldPlaceBlocks = false;
+				shouldPlaceBlocks = false;
 			}
 		}
 	}

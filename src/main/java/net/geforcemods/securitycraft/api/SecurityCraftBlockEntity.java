@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -32,7 +33,7 @@ import net.minecraft.world.phys.Vec3;
  *
  * @author Geforce
  */
-public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INameable {
+public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INameable, ITickingBlockEntity {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
@@ -55,11 +56,12 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 		super(type, pos, state);
 	}
 
-	public static void tick(Level world, BlockPos pos, BlockState state, SecurityCraftBlockEntity te) {
-		if(te.intersectsEntities){
-			int x = te.worldPosition.getX();
-			int y = te.worldPosition.getY();
-			int z = te.worldPosition.getZ();
+	@Override
+	public void tick(Level world, BlockPos pos, BlockState state) {
+		if(intersectsEntities){
+			int x = worldPosition.getX();
+			int y = worldPosition.getY();
+			int z = worldPosition.getZ();
 			AABB area = (new AABB(x, y, z, x + 1, y + 1, z + 1));
 			List<?> entities = world.getEntitiesOfClass(Entity.class, area);
 			Iterator<?> iterator = entities.iterator();
@@ -72,15 +74,15 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 			}
 		}
 
-		if(te.viewActivated){
-			if(te.viewCooldown > 0){
-				te.viewCooldown--;
+		if(viewActivated){
+			if(viewCooldown > 0){
+				viewCooldown--;
 				return;
 			}
 
-			int x = te.worldPosition.getX();
-			int y = te.worldPosition.getY();
-			int z = te.worldPosition.getZ();
+			int x = worldPosition.getX();
+			int y = worldPosition.getY();
+			int z = worldPosition.getZ();
 			AABB area = (new AABB(x, y, z, (x), (y), (z)).inflate(5));
 			List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, area, e -> !(e instanceof Player) || !e.isSpectator());
 			Iterator<LivingEntity> iterator = entities.iterator();
@@ -99,47 +101,47 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 				{
 					if(mop.getBlockPos().getX() == pos.getX() && mop.getBlockPos().getY() == pos.getY() && mop.getBlockPos().getZ() == pos.getZ())
 					{
-						if((isPlayer && te.activatedOnlyByPlayer()) || !te.activatedOnlyByPlayer()) {
-							te.entityViewed(entity);
-							te.viewCooldown = te.getViewCooldown();
+						if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {
+							entityViewed(entity);
+							viewCooldown = getViewCooldown();
 						}
 					}
 				}
 			}
 		}
 
-		if (te.attacks) {
-			if (te.attackCooldown < te.getTicksBetweenAttacks()) {
-				te.attackCooldown++;
+		if (attacks) {
+			if (attackCooldown < getTicksBetweenAttacks()) {
+				attackCooldown++;
 				return;
 			}
 
-			if (te.canAttack()) {
-				AABB area = new AABB(pos).inflate(te.getAttackRange());
-				List<? extends Entity> entities = world.getEntitiesOfClass(te.entityTypeToAttack(), area);
+			if (canAttack()) {
+				AABB area = new AABB(pos).inflate(getAttackRange());
+				List<? extends Entity> entities = world.getEntitiesOfClass(entityTypeToAttack(), area);
 				Iterator<? extends Entity> iterator = entities.iterator();
 
 				if(!world.isClientSide){
 					boolean attacked = false;
 
 					if(!iterator.hasNext())
-						te.attackFailed();
+						attackFailed();
 
 					while (iterator.hasNext()) {
 						Entity mobToAttack = iterator.next();
 
-						if (mobToAttack == null || mobToAttack instanceof ItemEntity || !te.shouldAttackEntityType(mobToAttack))
+						if (mobToAttack == null || mobToAttack instanceof ItemEntity || !shouldAttackEntityType(mobToAttack))
 							continue;
 
-						if (te.attackEntity(mobToAttack))
+						if (attackEntity(mobToAttack))
 							attacked = true;
 					}
 
-					if (attacked || te.shouldRefreshAttackCooldown())
-						te.attackCooldown = 0;
+					if (attacked || shouldRefreshAttackCooldown())
+						attackCooldown = 0;
 
-					if(attacked || te.shouldSyncToClient())
-						te.sync();
+					if(attacked || shouldSyncToClient())
+						sync();
 				}
 			}
 		}

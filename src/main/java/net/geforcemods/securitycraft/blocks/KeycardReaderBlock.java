@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -227,7 +228,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeKeycardReader, KeycardReaderBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeKeycardReader, WorldUtils::blockEntityTicker);
 	}
 
 	@Override

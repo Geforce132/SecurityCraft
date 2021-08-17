@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -147,7 +148,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeAbstract, SecurityCraftBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeAbstract, WorldUtils::blockEntityTicker);
 	}
 
 	@Override

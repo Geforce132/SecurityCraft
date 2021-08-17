@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -291,7 +292,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeInventoryScanner, InventoryScannerBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeInventoryScanner, WorldUtils::blockEntityTicker);
 	}
 
 	@Override

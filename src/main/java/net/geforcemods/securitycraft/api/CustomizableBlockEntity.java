@@ -2,8 +2,6 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
 
-import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -31,7 +29,6 @@ public abstract class CustomizableBlockEntity extends SecurityCraftBlockEntity i
 	private boolean linkable = false;
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private ListTag nbtTagStorage = null;
-	private boolean firstTick = true;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
 	public CustomizableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
@@ -39,19 +36,14 @@ public abstract class CustomizableBlockEntity extends SecurityCraftBlockEntity i
 		super(type, pos, state);
 	}
 
-	public static void tick(Level world, BlockPos pos, BlockState state, CustomizableBlockEntity te) {
-		if(world.isClientSide && te.firstTick && te instanceof DisguisableBlockEntity)
-		{
-			te.firstTick = false;
-			ClientHandler.refreshModelData(te);
-		}
+	@Override
+	public void tick(Level world, BlockPos pos, BlockState state) {
+		super.tick(world, pos, state);
 
-		SecurityCraftBlockEntity.tick(world, pos, state, te);
-
-		if(te.hasLevel() && te.nbtTagStorage != null) {
-			te.readLinkedBlocks(te.nbtTagStorage);
-			te.sync();
-			te.nbtTagStorage = null;
+		if(hasLevel() && nbtTagStorage != null) {
+			readLinkedBlocks(nbtTagStorage);
+			sync();
+			nbtTagStorage = null;
 		}
 	}
 

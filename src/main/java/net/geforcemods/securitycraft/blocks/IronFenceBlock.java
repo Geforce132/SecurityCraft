@@ -246,6 +246,6 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeAbstract, SecurityCraftBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeAbstract, WorldUtils::blockEntityTicker);
 	}
 }

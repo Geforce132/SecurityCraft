@@ -44,64 +44,66 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 		super(SCContent.beTypeIms, pos, state);
 	}
 
-	public static void tick(Level world, BlockPos pos, BlockState state, IMSBlockEntity te){
-		CustomizableBlockEntity.tick(world, pos, state, te);
+	@Override
+	public void tick(Level world, BlockPos pos, BlockState state)
+	{
+		super.tick(world, pos, state);
 
-		if(!world.isClientSide && te.updateBombCount){
+		if(!world.isClientSide && updateBombCount){
 			int mineCount = state.getValue(IMSBlock.MINES);
 
 			if(!(mineCount - 1 < 0 || mineCount > 4))
 				world.setBlockAndUpdate(pos, state.setValue(IMSBlock.MINES, mineCount - 1));
 
-			te.updateBombCount = false;
+			updateBombCount = false;
 		}
 
-		if(te.attackTime-- == 0)
+		if(attackTime-- == 0)
 		{
-			te.attackTime = te.getAttackInterval();
-			launchMine(world, pos, te);
+			attackTime = getAttackInterval();
+			launchMine(world, pos);
 		}
 	}
 
 	/**
 	 * Create a bounding box around the IMS, and fire a mine if a mob or player is found.
 	 */
-	private static void launchMine(Level world, BlockPos pos, IMSBlockEntity te) {
-		if(te.bombsRemaining > 0){
-			AABB area = new AABB(pos).inflate(te.range.get());
+	private void launchMine(Level world, BlockPos pos) {
+		if(bombsRemaining > 0){
+			AABB area = new AABB(pos).inflate(range.get());
 			LivingEntity target = null;
 
-			if(te.targetingMode == IMSTargetingMode.MOBS || te.targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS)
+			if(targetingMode == IMSTargetingMode.MOBS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS)
 			{
-				List<Monster> mobs = world.getEntitiesOfClass(Monster.class, area, e -> !EntityUtils.isInvisible(e) && te.canAttackEntity(e));
+				List<Monster> mobs = world.getEntitiesOfClass(Monster.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if(!mobs.isEmpty())
 					target = mobs.get(0);
 			}
 
-			if(target == null && (te.targetingMode == IMSTargetingMode.PLAYERS  || te.targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS))
+			if(target == null && (targetingMode == IMSTargetingMode.PLAYERS  || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS))
 			{
-				List<Player> players = world.getEntitiesOfClass(Player.class, area, e -> !EntityUtils.isInvisible(e) && te.canAttackEntity(e));
+				List<Player> players = world.getEntitiesOfClass(Player.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if(!players.isEmpty())
 					target = players.get(0);
 			}
 
 			if (target != null) {
-				double addToX = te.bombsRemaining == 4 || te.bombsRemaining == 3 ? 0.84375D : 0.0D; //0.84375 is the offset towards the bomb's position in the model
-				double addToZ = te.bombsRemaining == 4 || te.bombsRemaining == 2 ? 0.84375D : 0.0D;
-				int launchHeight = te.getLaunchHeight();
+				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 0.84375D : 0.0D; //0.84375 is the offset towards the bomb's position in the model
+				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 0.84375D : 0.0D;
+				int launchHeight = getLaunchHeight();
 				double accelerationX = target.getX() - pos.getX();
 				double accelerationY = target.getBoundingBox().minY + target.getBbHeight() / 2.0F - pos.getY() - launchHeight;
 				double accelerationZ = target.getZ() - pos.getZ();
 
-				world.addFreshEntity(new IMSBomb(world, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, te));
+				world.addFreshEntity(new IMSBomb(world, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
 
 				if (!world.isClientSide)
 					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F);
 
-				te.bombsRemaining--;
-				te.updateBombCount = true;
+				bombsRemaining--;
+				updateBombCount = true;
 			}
 		}
 	}

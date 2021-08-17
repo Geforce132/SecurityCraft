@@ -36,12 +36,18 @@ public class BlockPocketBlockEntity extends SecurityCraftBlockEntity
 
 	public static void tick(Level world, BlockPos pos, BlockState state, BlockPocketBlockEntity te)
 	{
-		SecurityCraftBlockEntity.tick(world, pos, state, te);
+		te.tick(world, pos, state);
+	}
 
-		if(te.manager == null && te.managerPos != null)
+	@Override
+	public void tick(Level world, BlockPos pos, BlockState state)
+	{
+		super.tick(world, pos, state);
+
+		if(manager == null && managerPos != null)
 		{
-			if(world.getBlockEntity(te.managerPos) instanceof BlockPocketManagerBlockEntity manager)
-				te.manager = manager;
+			if(world.getBlockEntity(managerPos) instanceof BlockPocketManagerBlockEntity manager)
+				this.manager = manager;
 		}
 	}
 

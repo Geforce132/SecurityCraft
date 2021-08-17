@@ -30,30 +30,32 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity {
 		super(SCContent.beTypeSecurityCamera, pos, state);
 	}
 
-	public static void tick(Level world, BlockPos pos, BlockState state, SecurityCameraBlockEntity te){
-		CustomizableBlockEntity.tick(world, pos, state, te);
+	@Override
+	public void tick(Level world, BlockPos pos, BlockState state)
+	{
+		super.tick(world, pos, state);
 
-		if(!te.downSet)
+		if(!downSet)
 		{
-			te.down = state.getValue(SecurityCameraBlock.FACING) == Direction.DOWN;
-			te.downSet = true;
+			down = state.getValue(SecurityCameraBlock.FACING) == Direction.DOWN;
+			downSet = true;
 		}
 
-		if(!te.shouldRotateOption.get())
+		if(!shouldRotateOption.get())
 		{
-			te.cameraRotation = te.customRotationOption.get();
+			cameraRotation = customRotationOption.get();
 			return;
 		}
 
-		if(te.addToRotation && te.cameraRotation <= 1.55F)
-			te.cameraRotation += te.rotationSpeedOption.get();
+		if(addToRotation && cameraRotation <= 1.55F)
+			cameraRotation += rotationSpeedOption.get();
 		else
-			te.addToRotation = false;
+			addToRotation = false;
 
-		if(!te.addToRotation && te.cameraRotation >= -1.55F)
-			te.cameraRotation -= te.rotationSpeedOption.get();
+		if(!addToRotation && cameraRotation >= -1.55F)
+			cameraRotation -= rotationSpeedOption.get();
 		else
-			te.addToRotation = true;
+			addToRotation = true;
 	}
 
 	@Override

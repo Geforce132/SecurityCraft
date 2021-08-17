@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -87,7 +88,7 @@ public class BlockPocketManagerBlock extends OwnableBlock
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeBlockPocketManager, BlockPocketManagerBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeBlockPocketManager, WorldUtils::blockEntityTicker);
 	}
 
 	@Override

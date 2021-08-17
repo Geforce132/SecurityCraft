@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -76,7 +77,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypeKeypadDoor, KeypadDoorBlockEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypeKeypadDoor, WorldUtils::blockEntityTicker);
 	}
 
 	@Override

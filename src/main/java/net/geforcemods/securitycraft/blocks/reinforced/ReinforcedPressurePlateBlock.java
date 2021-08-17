@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -108,6 +109,6 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypeAllowlistOnly, AllowlistOnlyBlockEntity::tick);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypeAllowlistOnly, WorldUtils::blockEntityTicker);
 	}
 }

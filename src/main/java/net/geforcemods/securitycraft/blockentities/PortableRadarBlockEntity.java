@@ -40,44 +40,45 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity {
 		super(SCContent.beTypePortableRadar, pos, state);
 	}
 
-	public static void tick(Level world, BlockPos pos, BlockState state, PortableRadarBlockEntity te)
+	@Override
+	public void tick(Level world, BlockPos pos, BlockState state)
 	{
-		CustomizableBlockEntity.tick(world, pos, state, te);
+		super.tick(world, pos, state);
 
-		if(!world.isClientSide && te.enabledOption.get() && te.ticksUntilNextSearch-- <= 0)
+		if(!world.isClientSide && enabledOption.get() && ticksUntilNextSearch-- <= 0)
 		{
-			te.ticksUntilNextSearch = te.getSearchDelay();
+			ticksUntilNextSearch = getSearchDelay();
 
-			ServerPlayer owner = world.getServer().getPlayerList().getPlayerByName(te.getOwner().getName());
-			AABB area = new AABB(pos).inflate(te.getSearchRadius());
+			ServerPlayer owner = world.getServer().getPlayerList().getPlayerByName(getOwner().getName());
+			AABB area = new AABB(pos).inflate(getSearchRadius());
 			List<Player> entities = world.getEntitiesOfClass(Player.class, area, e -> {
 				boolean isNotAllowed = true;
 
-				if(te.hasModule(ModuleType.ALLOWLIST))
-					isNotAllowed = !ModuleUtils.isAllowed(te, e);
+				if(hasModule(ModuleType.ALLOWLIST))
+					isNotAllowed = !ModuleUtils.isAllowed(this, e);
 
 				return e != owner && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
-			if(te.hasModule(ModuleType.REDSTONE))
+			if(hasModule(ModuleType.REDSTONE))
 				PortableRadarBlock.togglePowerOutput(world, pos, !entities.isEmpty());
 
 			if(owner != null)
 			{
 				for(Player e : entities)
 				{
-					if(te.shouldSendMessage(e))
+					if(shouldSendMessage(e))
 					{
 						MutableComponent attackedName = e.getName().plainCopy().withStyle(ChatFormatting.ITALIC);
 						MutableComponent text;
 
-						if(te.hasCustomSCName())
-							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, te.getCustomSCName().plainCopy().withStyle(ChatFormatting.ITALIC));
+						if(hasCustomSCName())
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().plainCopy().withStyle(ChatFormatting.ITALIC));
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
 
 						PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, ChatFormatting.BLUE);
-						te.setSentMessage();
+						setSentMessage();
 					}
 				}
 			}

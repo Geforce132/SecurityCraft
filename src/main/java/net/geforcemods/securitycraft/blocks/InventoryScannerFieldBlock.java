@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -328,7 +329,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeAbstract, SecurityCraftBlockEntity::tick);
+		return createTickerHelper(type, SCContent.beTypeAbstract, WorldUtils::blockEntityTicker);
 	}
 
 	@Override

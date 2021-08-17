@@ -73,39 +73,43 @@ public class TrophySystemBlockEntity extends CustomizableBlockEntity {
 		projectileFilter.put(EntityType.PIG, false); //modded projectiles
 	}
 
-	public static void tick(Level world, BlockPos pos, BlockState state, TrophySystemBlockEntity te) {
+	@Override
+	public void tick(Level world, BlockPos pos, BlockState state)
+	{
+		super.tick(world, pos, state);
+
 		if (!world.isClientSide) {
 			// If the trophy does not have a target, try looking for one
-			if(te.entityBeingTargeted == null) {
-				Projectile target = getPotentialTarget(world, pos, te);
+			if(entityBeingTargeted == null) {
+				Projectile target = getPotentialTarget(world, pos);
 
 				if(target != null) {
 					Entity shooter = target.getOwner();
 
 					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if(!(shooter != null && ((shooter.getUUID() != null && shooter.getUUID().toString().equals(te.getOwner().getUUID())) || ModuleUtils.isAllowed(te, shooter.getName().getString()))))
-						te.setTarget(target);
+					if(!(shooter != null && ((shooter.getUUID() != null && shooter.getUUID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
+						setTarget(target);
 				}
 			}
 		}
 
 		// If there are no entities to target, return
-		if(te.entityBeingTargeted == null)
+		if(entityBeingTargeted == null)
 			return;
 
-		if(!te.entityBeingTargeted.isAlive())
+		if(!entityBeingTargeted.isAlive())
 		{
-			te.resetTarget();
+			resetTarget();
 			return;
 		}
 
 		// If the cooldown hasn't finished yet, don't destroy any projectiles
-		if(te.cooldown > 0) {
-			te.cooldown--;
+		if(cooldown > 0) {
+			cooldown--;
 			return;
 		}
 
-		te.destroyTarget();
+		destroyTarget();
 	}
 
 	@Override
@@ -176,20 +180,20 @@ public class TrophySystemBlockEntity extends CustomizableBlockEntity {
 	 * Randomly returns a new Entity target from the list of all entities
 	 * within range of the trophy
 	 */
-	private static Projectile getPotentialTarget(Level world, BlockPos pos, TrophySystemBlockEntity te) {
+	private Projectile getPotentialTarget(Level world, BlockPos pos) {
 		List<Projectile> potentialTargets = new ArrayList<>();
 		AABB area = new AABB(pos).inflate(RANGE);
 
-		potentialTargets.addAll(world.getEntitiesOfClass(Projectile.class, area, te::isAllowedToTarget));
+		potentialTargets.addAll(world.getEntitiesOfClass(Projectile.class, area, this::isAllowedToTarget));
 
 		//remove bullets shot by sentries/IMSs of this trophy system's owner or players on the allowlist
-		potentialTargets = potentialTargets.stream().filter(te::filterSCProjectiles).collect(Collectors.toList());
+		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
 
 		// If there are no projectiles, return
 		if(potentialTargets.size() <= 0) return null;
 
 		// Return a random entity to target from the list of all possible targets
-		int target = te.random.nextInt(potentialTargets.size());
+		int target = random.nextInt(potentialTargets.size());
 
 		return potentialTargets.get(target);
 	}
