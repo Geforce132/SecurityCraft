@@ -78,7 +78,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.client.model.ModelDataManager;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -280,7 +279,7 @@ public class ClientHandler
 		});
 		KeyBindings.init();
 		OverlayRegistry.registerOverlayTop(SecurityCraft.MODID + ":camera_overlay", SCClientEventHandler::cameraOverlay);
-		OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, SecurityCraft.MODID + ":hotbar_bind_overlay", SCClientEventHandler::hotbarBindOverlay);
+		OverlayRegistry.registerOverlayTop(SecurityCraft.MODID + ":hotbar_bind_overlay", SCClientEventHandler::hotbarBindOverlay);
 		tint();
 	}
 
