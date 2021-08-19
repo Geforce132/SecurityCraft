@@ -27,18 +27,16 @@ public class AlarmBlockEntity extends CustomizableBlockEntity {
 		super(SCContent.beTypeAlarm, pos, state);
 	}
 
-	public static void serverTick(Level world, BlockPos pos, BlockState state, AlarmBlockEntity te){
-		if(te.cooldown > 0)
-			te.cooldown--;
-
-		if(te.isPowered && te.cooldown == 0)
+	@Override
+	public void tick(Level world, BlockPos pos, BlockState state){
+		if(isPowered && cooldown-- == 0)
 		{
-			for(ServerPlayer player : ((ServerLevel)world).getPlayers(p -> p.blockPosition().distSqr(pos) <= Math.pow(te.range.get(), 2)))
+			for(ServerPlayer player : ((ServerLevel)world).getPlayers(p -> p.blockPosition().distSqr(pos) <= Math.pow(range.get(), 2)))
 			{
 				player.playNotifySound(SCSounds.ALARM.event, SoundSource.BLOCKS, 0.3F, 1.0F);
 			}
 
-			te.setCooldown(te.delay.get() * 20);
+			setCooldown(delay.get() * 20);
 		}
 	}
 
