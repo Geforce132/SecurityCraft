@@ -38,10 +38,8 @@ public class TileEntityClaymore extends CustomizableSCTE
 			if(state.getValue(BlockClaymore.DEACTIVATED))
 				return;
 
-			if(cooldown > 0){
-				cooldown--;
+			if(cooldown-- > 0)
 				return;
-			}
 
 			if(cooldown == 0){
 				((BlockClaymore)getBlockType()).explode(world, pos);

@@ -22,9 +22,6 @@ public class TileEntityAlarm extends CustomizableSCTE {
 
 	@Override
 	public void update(){
-		if(cooldown > 0)
-			cooldown--;
-
 		//convert the old lit alarm block to the old unlit alarm block, which now has a LIT property
 		if(getBlockType() == SCContent.alarmLit)
 		{
@@ -40,7 +37,7 @@ public class TileEntityAlarm extends CustomizableSCTE {
 			return;
 		}
 
-		if(isPowered && cooldown == 0)
+		if(isPowered && --cooldown == 0)
 		{
 			for(EntityPlayer player : world.getPlayers(EntityPlayer.class, p -> p.getPosition().distanceSq(pos) <= Math.pow(range.get(), 2)))
 			{
