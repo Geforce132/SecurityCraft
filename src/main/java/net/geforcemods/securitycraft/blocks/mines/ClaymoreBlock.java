@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -166,7 +167,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return world.isClientSide ? null : createTickerHelper(type, SCContent.beTypeClaymore, ClaymoreBlockEntity::serverTick);
+		return world.isClientSide ? null : createTickerHelper(type, SCContent.beTypeClaymore, WorldUtils::blockEntityTicker);
 	}
 
 	@Override

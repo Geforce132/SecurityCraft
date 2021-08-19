@@ -34,16 +34,15 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity
 		super(SCContent.beTypeClaymore, pos, state);
 	}
 
-	public static void serverTick(Level world, BlockPos pos, BlockState state, ClaymoreBlockEntity te) {
+	@Override
+	public void tick(Level world, BlockPos pos, BlockState state) {  //server only as per ClaymoreBlock
 		if(state.getValue(ClaymoreBlock.DEACTIVATED))
 			return;
 
-		if(te.cooldown > 0){
-			te.cooldown--;
+		if(cooldown-- > 0)
 			return;
-		}
 
-		if(te.cooldown == 0){
+		if(cooldown == 0){
 			((ClaymoreBlock)state.getBlock()).explode(world, pos);
 			return;
 		}
@@ -52,13 +51,13 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity
 		AABB area = new AABB(pos);
 
 		if(dir == Direction.NORTH)
-			area = area.contract(-0, -0, te.range.get());
+			area = area.contract(-0, -0, range.get());
 		else if(dir == Direction.SOUTH)
-			area = area.contract(-0, -0, -te.range.get());
+			area = area.contract(-0, -0, -range.get());
 		else if(dir == Direction.EAST)
-			area = area.contract(-te.range.get(), -0, -0);
+			area = area.contract(-range.get(), -0, -0);
 		else if(dir == Direction.WEST)
-			area = area.contract(te.range.get(), -0, -0);
+			area = area.contract(range.get(), -0, -0);
 
 		List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e));
 		Iterator<LivingEntity> iterator = entities.iterator();
@@ -70,10 +69,10 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity
 			if(PlayerUtils.isPlayerMountedOnCamera(entity) || EntityUtils.doesEntityOwn(entity, world, pos))
 				continue;
 
-			te.entityX = entity.getX();
-			te.entityY = entity.getY();
-			te.entityZ = entity.getZ();
-			te.cooldown = 20;
+			entityX = entity.getX();
+			entityY = entity.getY();
+			entityZ = entity.getZ();
+			cooldown = 20;
 			world.playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
 			break;
 		}
