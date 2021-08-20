@@ -17,7 +17,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'eclipse'
 
-version = '1.8.23-beta1'
+version = '1.8.23-beta2'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
