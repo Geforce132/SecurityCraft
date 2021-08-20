@@ -7,18 +7,18 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 public class ToggleComponentButton extends IdButton {
-	private final IntFunction<Component> componentFunction;
+	private final IntFunction<Component> onValueChange;
 	private int currentIndex = 0;
 	private final int toggleCount;
 
-	public ToggleComponentButton(int id, int xPos, int yPos, int width, int height, IntFunction<Component> componentFunction, int initialValue, int toggleCount, Consumer<IdButton> onClick) {
+	public ToggleComponentButton(int id, int xPos, int yPos, int width, int height, IntFunction<Component> onValueChange, int initialValue, int toggleCount, Consumer<IdButton> onClick) {
 		super(id, xPos, yPos, width, height, "", onClick);
 
-		this.componentFunction = componentFunction;
+		this.onValueChange = onValueChange;
 		this.currentIndex = initialValue;
 		this.toggleCount = toggleCount;
 
-		updateComponent();
+		onValueChange();
 	}
 
 	@Override
@@ -40,14 +40,14 @@ public class ToggleComponentButton extends IdButton {
 
 	public void cycleIndex(int value) {
 		currentIndex = Math.floorMod(currentIndex + value, toggleCount);
-		updateComponent();
+		onValueChange();
 	}
 
 	public int getCurrentIndex() {
 		return currentIndex;
 	}
 
-	private void updateComponent() {
-		setMessage(componentFunction.apply(currentIndex));
+	public void onValueChange() {
+		setMessage(onValueChange.apply(currentIndex));
 	}
 }

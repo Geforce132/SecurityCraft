@@ -298,6 +298,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		offsetSlider.setValue(newOffset);
 		offsetSlider.updateSlider();
 		sync();
+		((ToggleComponentButton)button).onValueChange();
 	}
 
 	public Component updateSizeButtonText(int index) {
