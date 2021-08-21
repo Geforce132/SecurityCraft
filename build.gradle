@@ -1,11 +1,10 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 
@@ -19,10 +18,12 @@ version = 'v1.8.23.2'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 processResources { 
 	exclude ".cache"
+	duplicatesStrategy = 'include'
  
 	//replace ${version} in mods.toml
 	inputs.property 'version', project.version
@@ -98,7 +99,7 @@ minecraft {
 repositories {
 	maven { // TOP
 		name 'tterrag maven'
-		url "http://maven.tterrag.com/"
+		url "https://maven.tterrag.com/"
 	}
     maven { // JEI
         name = "Progwml6 maven"
