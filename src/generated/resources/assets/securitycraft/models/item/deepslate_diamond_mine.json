@@ -1,0 +1,11 @@
+{
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/deepslate_diamond_ore",
+    "up": "minecraft:block/deepslate_diamond_ore",
+    "north": "minecraft:block/deepslate_diamond_ore",
+    "east": "minecraft:block/deepslate_diamond_ore",
+    "south": "minecraft:block/deepslate_diamond_ore",
+    "west": "minecraft:block/deepslate_diamond_ore"
+  }
+}

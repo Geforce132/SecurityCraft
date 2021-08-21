@@ -1,0 +1,11 @@
+{
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/deepslate_copper_ore",
+    "up": "minecraft:block/deepslate_copper_ore",
+    "north": "minecraft:block/deepslate_copper_ore",
+    "east": "minecraft:block/deepslate_copper_ore",
+    "south": "minecraft:block/deepslate_copper_ore",
+    "west": "minecraft:block/deepslate_copper_ore"
+  }
+}

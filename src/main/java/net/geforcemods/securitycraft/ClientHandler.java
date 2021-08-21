@@ -111,7 +111,32 @@ public class ClientHandler
 		ResourceLocation[] poweredBlocks = {
 				new ResourceLocation(SecurityCraft.MODID, "laser_block")
 		};
-		String[] mines = {"coal_ore", "cobblestone", "diamond_ore", "dirt", "emerald_ore", "gravel", "gold_ore", "gilded_blackstone", "furnace", "iron_ore", "lapis_ore", "nether_gold_ore", "redstone_ore", "sand", "stone"};
+		String[] mines = {
+				"coal_ore",
+				"copper_ore",
+				"cobblestone",
+				"deepslate_coal_ore",
+				"deepslate_copper_ore",
+				"deepslate_diamond_ore",
+				"deepslate_emerald_ore",
+				"deepslate_gold_ore",
+				"deepslate_iron_ore",
+				"deepslate_lapis_ore",
+				"deepslate_redstone_ore",
+				"diamond_ore",
+				"dirt",
+				"emerald_ore",
+				"gravel",
+				"gold_ore",
+				"gilded_blackstone",
+				"furnace",
+				"iron_ore",
+				"lapis_ore",
+				"nether_gold_ore",
+				"redstone_ore",
+				"sand",
+				"stone"
+		};
 
 		for(String facing : facings)
 		{
