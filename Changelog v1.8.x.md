@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.24 of SecurityCraft--------------------------
 
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
+- Fix: Secret Signs cannot be broken (old secret signs will still not work, you will have to remove them in creative mode)
 
 --------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
 

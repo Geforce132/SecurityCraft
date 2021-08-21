@@ -12,7 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -58,17 +57,20 @@ public class ItemSecretSign extends Item
 						world.setBlockState(pos, SCContent.secretSignWall.getDefaultState().withProperty(BlockSecretSignWall.FACING, facing), 11);
 					}
 
-					TileEntity tileentity = world.getTileEntity(pos);
+					TileEntity tile = world.getTileEntity(pos);
 
-					if (tileentity instanceof TileEntitySecretSign && !ItemBlock.setTileEntityNBT(world, player, pos, stack))
+					if(tile instanceof TileEntitySecretSign && !ItemBlock.setTileEntityNBT(world, player, pos, stack))
 					{
-						player.openEditSign((TileEntitySign)tileentity);
+						TileEntitySecretSign te = (TileEntitySecretSign)tile;
+						String name = player.getName();
+						String uuid = player.getGameProfile().getId().toString();
+
+						player.openEditSign(te);
+						te.setOwner(uuid, name);
 					}
 
-					if (player instanceof EntityPlayerMP)
-					{
+					if(player instanceof EntityPlayerMP)
 						CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, pos, stack);
-					}
 
 					stack.shrink(1);
 					return EnumActionResult.SUCCESS;
