@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.compat.jei;
 
-import java.util.stream.Collectors;
-
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -16,6 +14,7 @@ import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 @JeiPlugin
 public class SCJEIPlugin implements IModPlugin
@@ -30,8 +29,14 @@ public class SCJEIPlugin implements IModPlugin
 		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD.get()), VanillaTypes.ITEM, Utils.localize("gui.securitycraft:scManual.recipe." + SCContent.KEYPAD.get().getRegistryName().getPath()));
 		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_CHEST.get()), VanillaTypes.ITEM, Utils.localize("gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_CHEST.get().getRegistryName().getPath()));
 		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_FURNACE.get()), VanillaTypes.ITEM, Utils.localize("gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_FURNACE.get().getRegistryName().getPath()));
-		registration.addRecipes(IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.entrySet().stream().map(entry -> new ReinforcerRecipe(entry.getKey(), entry.getValue())).collect(Collectors.toList()), VTS_ID);
-		registration.addRecipes(IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.entrySet().stream().map(entry -> new ReinforcerRecipe(entry.getValue(), entry.getKey())).collect(Collectors.toList()), STV_ID);
+		registration.addRecipes(IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.entrySet().stream()
+				.filter(entry -> entry.getKey().asItem() != Items.AIR)
+				.map(entry -> new ReinforcerRecipe(entry.getKey(), entry.getValue()))
+				.toList(), VTS_ID);
+		registration.addRecipes(IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.entrySet().stream()
+				.filter(entry -> entry.getValue().asItem() != Items.AIR)
+				.map(entry -> new ReinforcerRecipe(entry.getValue(), entry.getKey()))
+				.toList(), STV_ID);
 	}
 
 	@Override
