@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_cobbled_deepslate"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_polished_deepslate",
+    "count": 4
+  }
+}

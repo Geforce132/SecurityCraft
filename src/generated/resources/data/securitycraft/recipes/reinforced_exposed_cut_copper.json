@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_exposed_copper"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_exposed_cut_copper",
+    "count": 4
+  }
+}

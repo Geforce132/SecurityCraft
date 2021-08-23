@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:slabs",
+  "pattern": [
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_weathered_cut_copper"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_weathered_cut_copper_slab",
+    "count": 6
+  }
+}
