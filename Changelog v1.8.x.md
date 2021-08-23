@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.23-beta3 of SecurityCraft--------------------------
+
+- Misc.: Readd Just Enough Items integration
+
 --------------------------Changelog for v1.8.23-beta2 of SecurityCraft--------------------------
 
 - Fix: Keycard Reader crash
