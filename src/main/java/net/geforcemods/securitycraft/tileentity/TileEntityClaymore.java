@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -38,8 +37,10 @@ public class TileEntityClaymore extends CustomizableSCTE
 			if(state.getValue(BlockClaymore.DEACTIVATED))
 				return;
 
-			if(cooldown-- > 0)
+			if(cooldown > 0){
+				cooldown--;
 				return;
+			}
 
 			if(cooldown == 0){
 				((BlockClaymore)getBlockType()).explode(world, pos);
@@ -72,10 +73,7 @@ public class TileEntityClaymore extends CustomizableSCTE
 				entityY = entity.posY;
 				entityZ = entity.posZ;
 				cooldown = 20;
-
-				for(EntityPlayer player : getWorld().playerEntities)
-					getWorld().playSound(player, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-
+				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 				break;
 			}
 		}
