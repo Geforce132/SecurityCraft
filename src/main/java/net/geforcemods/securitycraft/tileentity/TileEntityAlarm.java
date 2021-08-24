@@ -37,7 +37,7 @@ public class TileEntityAlarm extends CustomizableSCTE {
 			return;
 		}
 
-		if(isPowered && --cooldown == 0)
+		if(isPowered && --cooldown <= 0)
 		{
 			for(EntityPlayer player : world.getPlayers(EntityPlayer.class, p -> p.getPosition().distanceSq(pos) <= Math.pow(range.get(), 2)))
 			{
