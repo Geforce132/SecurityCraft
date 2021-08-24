@@ -455,6 +455,12 @@
 	"block.securitycraft.reinforced_exposed_cut_copper_slab": "Verstärkte angelaufene geschnittene Kupferstufe",
 	"block.securitycraft.reinforced_weathered_cut_copper_slab": "Verstärkte verwitterte geschnittene Kupferstufe",
 	"block.securitycraft.reinforced_oxidized_cut_copper_slab": "Verstärkte oxidierte geschnittene Kupferstufe",
+	"block.securitycraft.reinforced_smooth_basalt": "Verstärkter glatter Basalt",
+	"block.securitycraft.reinforced_deepslate_bricks": "Verstärkte Tiefenschieferziegel",
+	"block.securitycraft.reinforced_cracked_deepslate_bricks": "Verstärkte rissige Tiefenschieferziegel",
+	"block.securitycraft.reinforced_deepslate_tiles": "Verstärkte Tiefenschieferfliesen",
+	"block.securitycraft.reinforced_cracked_deepslate_tiles": "Verstärkte rissige Tiefenschieferfliesen",
+	"block.securitycraft.reinforced_chiseled_deepslate": "Verstärkter gemeißelter Tiefenschiefer",
 
 	"item.securitycraft.codebreaker": "Codebrecher",
 	"item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",

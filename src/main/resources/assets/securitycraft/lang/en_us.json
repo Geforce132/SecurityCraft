@@ -455,6 +455,12 @@
 	"block.securitycraft.reinforced_exposed_cut_copper_slab": "Reinforced Exposed Cut Copper Slab",
 	"block.securitycraft.reinforced_weathered_cut_copper_slab": "Reinforced Weathered Cut Copper Slab",
 	"block.securitycraft.reinforced_oxidized_cut_copper_slab": "Reinforced Oxidized Cut Copper Slab",
+	"block.securitycraft.reinforced_smooth_basalt": "Reinforced Smooth Basalt",
+	"block.securitycraft.reinforced_deepslate_bricks": "Reinforced Deepslate Bricks",
+	"block.securitycraft.reinforced_cracked_deepslate_bricks": "Reinforced Cracked Deepslate Bricks",
+	"block.securitycraft.reinforced_deepslate_tiles": "Reinforced Deepslate Tiles",
+	"block.securitycraft.reinforced_cracked_deepslate_tiles": "Reinforced Cracked Deepslate Tiles",
+	"block.securitycraft.reinforced_chiseled_deepslate": "Reinforced Chiseled Deepslate",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",

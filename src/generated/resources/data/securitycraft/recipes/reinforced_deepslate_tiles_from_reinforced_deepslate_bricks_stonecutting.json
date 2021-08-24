@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "securitycraft:reinforced_deepslate_bricks"
+  },
+  "result": "securitycraft:reinforced_deepslate_tiles",
+  "count": 1
+}

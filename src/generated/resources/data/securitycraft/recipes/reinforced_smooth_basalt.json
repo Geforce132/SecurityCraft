@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "securitycraft:reinforced_basalt"
+  },
+  "result": "securitycraft:reinforced_smooth_basalt",
+  "experience": 0.1,
+  "cookingtime": 200
+}
