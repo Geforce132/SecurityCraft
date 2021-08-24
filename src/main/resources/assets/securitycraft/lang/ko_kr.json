@@ -417,6 +417,9 @@
 	"block.securitycraft.reinforced_hopper": "강화된 호퍼",
 	"block.securitycraft.keypad_door": "키패드 문",
 	"block.securitycraft.reinforced_cauldron": "강화된 가마솥",
+	"block.securitycraft.reinforced_water_cauldron": "강화된 물 가마솥",
+	"block.securitycraft.reinforced_lava_cauldron": "강화된 용암 가마솥",
+	"block.securitycraft.reinforced_powder_snow_cauldron": "강화된 가루눈이 담긴 가마솥",
 
 	"item.securitycraft.codebreaker": "코드브레이커",
 	"item.securitycraft.door_indestructible_iron_item": "강화된 철문",
