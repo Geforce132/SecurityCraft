@@ -901,7 +901,10 @@
 	"module.securitycraft.trophy_system.whitelist_module.description": "트로피 시스템에 허용목록 모듈을 추가하면 센트리 건의 총알과 IMS 폭탄뿐만 아니라 목록에 있는 플레이어가 던진 발사체도 무시됩니다.",
 	"module.securitycraft.cage_trap.whitelist_module.description": "새장 덫에 허용목록 모듈을 추가하면 목록에 있는 플레이어가 갇히는 것을 방지할 수 있습니다.",
 	"module.securitycraft.reinforced_cauldron.whitelist_module.description": "강화된 가마솥에 허용목록 모듈을 추가하면 목록에 있는 플레이어가 강화된 가마솥과 상호 작용할 수 있습니다.",
-	
+	"module.securitycraft.reinforced_water_cauldron.whitelist_module.description": "강화된 가마솥에 허용목록 모듈을 추가하면 목록에 있는 플레이어가 강화된 가마솥과 상호 작용할 수 있습니다.",
+	"module.securitycraft.reinforced_lava_cauldron.whitelist_module.description": "강화된 가마솥에 허용목록 모듈을 추가하면 목록에 있는 플레이어가 강화된 가마솥과 상호 작용할 수 있습니다.",
+	"module.securitycraft.reinforced_powder_snow_cauldron.whitelist_module.description": "강화된 가마솥에 허용목록 모듈을 추가하면 목록에 있는 플레이어가 강화된 가마솥과 상호 작용할 수 있습니다.",
+
 	"option.securitycraft.portable_radar.searchRadius": "검색 반경: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "레이더가 검색하는 반경입니다.",
 	"option.securitycraft.portable_radar.searchDelay": "검색 지연: %s초",
@@ -980,6 +983,12 @@
 	"option.securitycraft.keypad_door.signalLength.description": "문이 얼마나 열려 있어야 합니까? (20틱 = 1초) 도어를 열린 상태로 유지하려면 0으로 설정하십시오.)",
 	"option.securitycraft.reinforced_cauldron.isPublic": "공용: %s",
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "모든 플레이어가 이 블록과 상호작용할 수 있어야 합니까?",
+	"option.securitycraft.reinforced_water_cauldron.isPublic": "공용: %s",
+	"option.securitycraft.reinforced_water_cauldron.isPublic.description": "모든 플레이어가 이 블록과 상호작용할 수 있어야 합니까?",
+	"option.securitycraft.reinforced_lava_cauldron.isPublic": "공용: %s",
+	"option.securitycraft.reinforced_lava_cauldron.isPublic.description": "모든 플레이어가 이 블록과 상호작용할 수 있어야 합니까?",
+	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic": "공용: %s",
+	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic.description": "모든 플레이어가 이 블록과 상호작용할 수 있어야 합니까?",
 
 	"securitycraft.subtitle.alarm": "알람 소리",
 	"securitycraft.subtitle.electrified": "엔티티 감전",

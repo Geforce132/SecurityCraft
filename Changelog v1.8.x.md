@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.23-beta4 of SecurityCraft--------------------------
+
+- Fix: Reinforced Water/Lava/Powder Snow Cauldrons do not show option and module descriptions correctly
+
 --------------------------Changelog for v1.8.23-beta3 of SecurityCraft--------------------------
 
 - Misc.: Readd Just Enough Items integration
