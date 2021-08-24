@@ -28,7 +28,7 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 	public void tick(){
 		if(!world.isRemote)
 		{
-			if(isPowered && --cooldown == 0)
+			if(isPowered && --cooldown <= 0)
 			{
 				for(ServerPlayerEntity player : ((ServerWorld)world).getPlayers(p -> p.getPosition().distanceSq(pos) <= Math.pow(range.get(), 2)))
 				{
