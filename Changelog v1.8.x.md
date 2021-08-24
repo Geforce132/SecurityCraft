@@ -2,6 +2,7 @@
 
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play
+- Fix: Claymore does not explode
 
 --------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
 
