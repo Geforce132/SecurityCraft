@@ -40,8 +40,10 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 			if(getBlockState().get(ClaymoreBlock.DEACTIVATED))
 				return;
 
-			if(cooldown-- > 0)
+			if(cooldown > 0){
+				cooldown--;
 				return;
+			}
 
 			if(cooldown == 0){
 				((ClaymoreBlock)getBlockState().getBlock()).explode(world, pos);
