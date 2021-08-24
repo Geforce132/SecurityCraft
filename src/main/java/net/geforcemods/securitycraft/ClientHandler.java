@@ -20,7 +20,6 @@ import net.geforcemods.securitycraft.models.SentryModel;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
-import net.geforcemods.securitycraft.renderers.EmptyRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.ProjectorTileEntityRenderer;
@@ -62,6 +61,7 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -313,7 +313,7 @@ public class ClientHandler
 	{
 		event.registerEntityRenderer(SCContent.eTypeBouncingBetty, BouncingBettyRenderer::new);
 		event.registerEntityRenderer(SCContent.eTypeImsBomb, IMSBombRenderer::new);
-		event.registerEntityRenderer(SCContent.eTypeSecurityCamera, EmptyRenderer::new);
+		event.registerEntityRenderer(SCContent.eTypeSecurityCamera, NoopRenderer::new);
 		event.registerEntityRenderer(SCContent.eTypeSentry, SentryRenderer::new);
 		event.registerEntityRenderer(SCContent.eTypeBullet, BulletRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeBlockPocketManager, BlockPocketManagerTileEntityRenderer::new);
