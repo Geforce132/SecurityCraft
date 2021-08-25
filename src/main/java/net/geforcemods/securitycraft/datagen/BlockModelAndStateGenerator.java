@@ -180,6 +180,8 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		reinforcedWallBlock(SCContent.REINFORCED_RED_NETHER_BRICK_WALL.get(), "red_nether_bricks");
 		reinforcedWallBlock(SCContent.REINFORCED_END_STONE_BRICK_WALL.get(), "end_stone_bricks");
 		reinforcedWallBlock(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get(), "polished_blackstone_bricks");
+		reinforcedWallBlock(SCContent.REINFORCED_DEEPSLATE_BRICK_WALL.get(), "deepslate_bricks");
+		reinforcedWallBlock(SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get(), "deepslate_tiles");
 	}
 
 	public void blockMine(Block vanillaBlock, Block block)

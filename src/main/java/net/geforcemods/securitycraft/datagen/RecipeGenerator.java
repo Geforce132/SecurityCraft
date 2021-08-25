@@ -879,7 +879,10 @@ public class RecipeGenerator extends RecipeProvider
 		addWallRecipes(consumer, SCContent.REINFORCED_BLACKSTONE.get(), SCContent.REINFORCED_BLACKSTONE_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_BRICKS.get(), SCContent.REINFORCED_BRICK_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_COBBLESTONE.get(), SCContent.REINFORCED_COBBLESTONE_WALL.get());
+		addWallRecipes(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_COBBLED_DEEPSLATE_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_DIORITE.get(), SCContent.REINFORCED_DIORITE_WALL.get());
+		addWallRecipes(consumer, SCContent.REINFORCED_DEEPSLATE_BRICKS.get(), SCContent.REINFORCED_DEEPSLATE_BRICK_WALL.get());
+		addWallRecipes(consumer, SCContent.REINFORCED_DEEPSLATE_TILES.get(), SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_END_STONE_BRICKS.get(), SCContent.REINFORCED_END_STONE_BRICK_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_GRANITE.get(), SCContent.REINFORCED_GRANITE_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_MOSSY_COBBLESTONE.get(), SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get());
@@ -887,6 +890,7 @@ public class RecipeGenerator extends RecipeProvider
 		addWallRecipes(consumer, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_NETHER_BRICK_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICKS.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get());
+		addWallRecipes(consumer, SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), SCContent.REINFORCED_POLISHED_DEEPSLATE_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_PRISMARINE.get(), SCContent.REINFORCED_PRISMARINE_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_RED_NETHER_BRICKS.get(), SCContent.REINFORCED_RED_NETHER_BRICK_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_RED_SANDSTONE.get(), SCContent.REINFORCED_RED_SANDSTONE_WALL.get());
@@ -939,12 +943,15 @@ public class RecipeGenerator extends RecipeProvider
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_BRICKS.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_BRICK_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_BRICK_STAIRS.get(), 1);
+		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_BRICK_WALL.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_TILES.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_TILE_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_TILE_STAIRS.get(), 1);
+		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_POLISHED_DEEPSLATE_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_POLISHED_DEEPSLATE_STAIRS.get(), 1);
+		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_POLISHED_DEEPSLATE_WALL.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLESTONE.get(), SCContent.REINFORCED_COBBLESTONE_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COBBLESTONE.get(), SCContent.REINFORCED_COBBLESTONE_STAIRS.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_COPPER_BLOCK.get(), SCContent.REINFORCED_CUT_COPPER.get(), 1);
@@ -966,6 +973,7 @@ public class RecipeGenerator extends RecipeProvider
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_DEEPSLATE_BRICKS.get(), SCContent.REINFORCED_DEEPSLATE_TILES.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_DEEPSLATE_BRICKS.get(), SCContent.REINFORCED_DEEPSLATE_TILE_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_DEEPSLATE_BRICKS.get(), SCContent.REINFORCED_DEEPSLATE_TILE_STAIRS.get(), 1);
+		addStonecuttingRecipe(consumer, SCContent.REINFORCED_DEEPSLATE_BRICKS.get(), SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_DEEPSLATE_TILES.get(), SCContent.REINFORCED_DEEPSLATE_TILE_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_DEEPSLATE_TILES.get(), SCContent.REINFORCED_DEEPSLATE_TILE_STAIRS.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_DIORITE.get(), SCContent.REINFORCED_DIORITE_SLAB.get(), 2);
@@ -1017,9 +1025,11 @@ public class RecipeGenerator extends RecipeProvider
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_BRICKS.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_BRICK_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_BRICK_STAIRS.get(), 1);
+		addStonecuttingRecipe(consumer, SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_BRICK_WALL.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_TILES.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_TILE_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_TILE_STAIRS.get(), 1);
+		addStonecuttingRecipe(consumer, SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), SCContent.REINFORCED_POLISHED_DEEPSLATE_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_POLISHED_DEEPSLATE.get(), SCContent.REINFORCED_POLISHED_DEEPSLATE_STAIRS.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_POLISHED_DIORITE.get(), SCContent.REINFORCED_POLISHED_DIORITE_SLAB.get(), 2);

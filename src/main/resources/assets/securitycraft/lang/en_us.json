@@ -469,6 +469,10 @@
 	"block.securitycraft.reinforced_polished_deepslate_slab": "Reinforced Polished Deepslate Slab",
 	"block.securitycraft.reinforced_deepslate_brick_slab": "Reinforced Deepslate Brick Slab",
 	"block.securitycraft.reinforced_deepslate_tile_slab": "Reinforced Deepslate Tile Slab",
+	"block.securitycraft.reinforced_cobbled_deepslate_wall": "Reinforced Cobbled Deepslate Wall",
+	"block.securitycraft.reinforced_polished_deepslate_wall": "Reinforced Polished Deepslate Wall",
+	"block.securitycraft.reinforced_deepslate_brick_wall": "Reinforced Deepslate Brick Wall",
+	"block.securitycraft.reinforced_deepslate_tile_wall": "Reinforced Deepslate Tile Wall",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",

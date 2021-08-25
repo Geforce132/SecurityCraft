@@ -89,6 +89,8 @@ public class ItemModelGenerator extends ItemModelProvider
 		reinforcedWallInventory(SCContent.REINFORCED_RED_NETHER_BRICK_WALL.get(), "red_nether_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_END_STONE_BRICK_WALL.get(), "end_stone_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get(), "polished_blackstone_bricks");
+		reinforcedWallInventory(SCContent.REINFORCED_DEEPSLATE_BRICK_WALL.get(), "deepslate_bricks");
+		reinforcedWallInventory(SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get(), "deepslate_tiles");
 	}
 
 	public ItemModelBuilder reinforcedPane(Block block)
