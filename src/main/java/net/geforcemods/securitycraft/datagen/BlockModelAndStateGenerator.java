@@ -142,6 +142,8 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		reinforcedSlabBlock(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_SLAB.get(), "reinforced_polished_blackstone_bricks", "polished_blackstone_bricks");
 		reinforcedSlabBlock(SCContent.CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top");
 		reinforcedSlabBlock(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top");
+		reinforcedSlabBlock(SCContent.REINFORCED_DEEPSLATE_BRICK_SLAB.get(), "reinforced_deepslate_bricks", "deepslate_bricks");
+		reinforcedSlabBlock(SCContent.REINFORCED_DEEPSLATE_TILE_SLAB.get(), "reinforced_deepslate_tiles", "deepslate_tiles");
 
 		reinforcedStairsBlock(SCContent.REINFORCED_PURPUR_STAIRS.get(), "purpur_block");
 		reinforcedStairsBlock(SCContent.REINFORCED_OAK_STAIRS.get(), "oak_planks");
@@ -168,6 +170,8 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		reinforcedStairsBlock(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_STAIRS.get(), "polished_blackstone_bricks");
 		reinforcedStairsBlock(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top");
 		reinforcedStairsBlock(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), "quartz_block_side", "quartz_block_top");
+		reinforcedStairsBlock(SCContent.REINFORCED_DEEPSLATE_BRICK_STAIRS.get(), "deepslate_bricks");
+		reinforcedStairsBlock(SCContent.REINFORCED_DEEPSLATE_TILE_STAIRS.get(), "deepslate_tiles");
 
 		reinforcedWallBlock(SCContent.REINFORCED_BRICK_WALL.get(), "bricks");
 		reinforcedWallBlock(SCContent.REINFORCED_MOSSY_STONE_BRICK_WALL.get(), "mossy_stone_bricks");

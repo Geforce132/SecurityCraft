@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "securitycraft:reinforced_polished_deepslate"
+  },
+  "result": "securitycraft:reinforced_polished_deepslate_stairs",
+  "count": 1
+}
