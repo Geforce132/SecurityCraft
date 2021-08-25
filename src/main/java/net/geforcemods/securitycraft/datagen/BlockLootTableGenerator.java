@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.datagen;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -15,14 +14,13 @@ import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.misc.conditions.TileEntityNBTCondition;
-import net.geforcemods.securitycraft.util.RegisterItemBlock;
-import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -56,33 +54,16 @@ public class BlockLootTableGenerator implements DataProvider
 
 	private void addTables()
 	{
-		for(Field field : SCContent.class.getFields())
+		for(RegistryObject<Block> obj : SCContent.BLOCKS.getEntries())
 		{
-			try
-			{
-				if(field.isAnnotationPresent(Reinforced.class))
-				{
-					RegistryObject<Block> obj = ((RegistryObject<Block>)field.get(null));
+			Block block = obj.get();
 
-					if(obj.get() instanceof ReinforcedSlabBlock)
-						putSlabLootTable(obj);
-					else
-						putStandardBlockLootTable(obj);
-				}
-				else if(field.isAnnotationPresent(RegisterItemBlock.class))
-				{
-					RegistryObject<Block> obj = ((RegistryObject<Block>)field.get(null));
-
-					if(obj.get() instanceof IExplosive)
-						putMineLootTable(obj);
-					else
-						putStandardBlockLootTable(obj);
-				}
-			}
-			catch(IllegalArgumentException | IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
+			if(block instanceof ReinforcedSlabBlock)
+				putSlabLootTable(obj);
+			else if(block instanceof IExplosive)
+				putMineLootTable(obj);
+			else if(block.asItem() != Items.AIR)
+				putStandardBlockLootTable(obj);
 		}
 
 		putMineLootTable(SCContent.ANCIENT_DEBRIS_MINE);

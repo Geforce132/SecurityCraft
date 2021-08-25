@@ -17,6 +17,10 @@
     "securitycraft:reinforced_diorite_wall",
     "securitycraft:reinforced_blackstone_wall",
     "securitycraft:reinforced_polished_blackstone_wall",
-    "securitycraft:reinforced_polished_blackstone_brick_wall"
+    "securitycraft:reinforced_polished_blackstone_brick_wall",
+    "securitycraft:reinforced_cobbled_deepslate_wall",
+    "securitycraft:reinforced_polished_deepslate_wall",
+    "securitycraft:reinforced_deepslate_brick_wall",
+    "securitycraft:reinforced_deepslate_tile_wall"
   ]
 }
