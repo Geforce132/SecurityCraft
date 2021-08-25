@@ -812,7 +812,7 @@
 	"tooltip.securitycraft:module.playerCustomization.players": "Spieler:",
 	"tooltip.securitycraft:module.itemAddons.usage.blocks": "Du kannst %s Block/Blöcke hinzufügen.",
 	"tooltip.securitycraft:module.itemAddons.usage.items": "Du kannst %s Item(s) hinzufügen.",
-	"tooltip.securitycraft:module.itemAddons.usage.blocksAndItems": "Du kannst $1%s Block/Blöcke und $2%s Item(s) hinzufügen.",
+	"tooltip.securitycraft:module.itemAddons.usage.blocksAndItems": "Du kannst %1$s Block/Blöcke und %2$s Item(s) hinzufügen.",
 	"tooltip.securitycraft:module.itemAddons.added": "Hinzugefügt:",
 	"tooltip.securitycraft:briefcase.owner": "Besitzer: %s",
 	"tooltip.securitycraft:keycard.uses": "Verbleibende Benutzungen: %s",

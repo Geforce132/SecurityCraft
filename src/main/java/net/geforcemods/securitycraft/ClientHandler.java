@@ -24,6 +24,7 @@ import net.geforcemods.securitycraft.renderers.EmptyRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.ProjectorTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.ReinforcedPistonHeadRenderer;
 import net.geforcemods.securitycraft.renderers.RetinalScannerTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraTileEntityRenderer;
@@ -298,6 +299,7 @@ public class ClientHandler
 		event.registerBlockEntityRenderer(SCContent.beTypeSecretSign, SecretSignTileEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeTrophySystem, TrophySystemTileEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeProjector, ProjectorTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeReinforcedPiston, ReinforcedPistonHeadRenderer::new);
 	}
 
 	@SubscribeEvent

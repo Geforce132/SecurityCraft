@@ -419,6 +419,8 @@
     "securitycraft:reinforced_crystal_quartz_slab",
     "securitycraft:reinforced_crystal_quartz_stairs",
     "securitycraft:horizontal_reinforced_iron_bars",
-    "securitycraft:reinforced_grass_path"
+    "securitycraft:reinforced_grass_path",
+    "securitycraft:reinforced_moving_piston",
+    "securitycraft:reinforced_piston_head"
   ]
 }
