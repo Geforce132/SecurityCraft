@@ -115,6 +115,9 @@ public class BlockLootTableGenerator implements DataProvider
 						.add(LootItem.lootTableItem(SCContent.REINFORCED_IRON_BARS.get())
 								.when(TileEntityNBTCondition.builder().equals("canDrop", true)))
 						.when(ExplosionCondition.survivesExplosion())));
+		lootTables.put(SCContent.REINFORCED_LAVA_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON));
+		lootTables.put(SCContent.REINFORCED_POWDER_SNOW_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON));
+		lootTables.put(SCContent.REINFORCED_WATER_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON));
 		putDoorLootTable(SCContent.SCANNER_DOOR, SCContent.SCANNER_DOOR_ITEM);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_WALL_SIGN);

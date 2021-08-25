@@ -5,6 +5,11 @@
 - Fix: Alarm sound does not play
 - Fix: Claymore does not explode
 
+--------------------------Changelog for v1.8.23-beta4 of SecurityCraft--------------------------
+
+- Fix: Reinforced Water/Lava/Powder Snow Cauldrons do not show option and module descriptions correctly
+- Fix: Reinforced Water/Lava/Powder Snow Cauldrons do not drop anything when broken with the Universal Block Remover
+
 --------------------------Changelog for v1.8.23-beta3 of SecurityCraft--------------------------
 
 - Misc.: Readd Just Enough Items integration

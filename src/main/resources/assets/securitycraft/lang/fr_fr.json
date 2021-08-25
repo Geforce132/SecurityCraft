@@ -901,6 +901,9 @@
 	"module.securitycraft.trophy_system.speed_module.description": "L’ajout d’un module de vitesse à un système de trophée le permet à détruire des cibles deux fois plus vite.",
 	"module.securitycraft.trophy_system.whitelist_module.description": "L'ajout d'un module de liste d'autorisation au système de trophée le fera d'ignorer des projectiles lancé par les joueurs sur la liste, ainsi que les balles de leurs sentinelles et bombes de leurs S.M.I.s.",
 	"module.securitycraft.reinforced_cauldron.whitelist_module.description": "L’ajout d’un module de liste d’autorisation à un chaudron renforcé permettra aux joueurs sur la liste d’interagir avec le chaudron renforcé.",
+	"module.securitycraft.reinforced_water_cauldron.whitelist_module.description": "L’ajout d’un module de liste d’autorisation à un chaudron renforcé permettra aux joueurs sur la liste d’interagir avec le chaudron renforcé.",
+	"module.securitycraft.reinforced_lava_cauldron.whitelist_module.description": "L’ajout d’un module de liste d’autorisation à un chaudron renforcé permettra aux joueurs sur la liste d’interagir avec le chaudron renforcé.",
+	"module.securitycraft.reinforced_powder_snow_cauldron.whitelist_module.description": "L’ajout d’un module de liste d’autorisation à un chaudron renforcé permettra aux joueurs sur la liste d’interagir avec le chaudron renforcé.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Rayon de recherche: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "Le rayon dans lequel le radar effectue la recherche.",
@@ -980,6 +983,12 @@
 	"option.securitycraft.keypad_door.signalLength.description": "Pour combien de temps la porte resterait ouverte ? (En Ticks, 20 ticks = 1 seconde. Régler à 0 pour que la porte reste ouverte)",
 	"option.securitycraft.reinforced_cauldron.isPublic": "Publique : %s",
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "Chaque joueur devrait-il être capable d’interagir avec ce bloc ?",
+	"option.securitycraft.reinforced_water_cauldron.isPublic": "Publique : %s",
+	"option.securitycraft.reinforced_water_cauldron.isPublic.description": "Chaque joueur devrait-il être capable d’interagir avec ce bloc ?",
+	"option.securitycraft.reinforced_lava_cauldron.isPublic": "Publique : %s",
+	"option.securitycraft.reinforced_lava_cauldron.isPublic.description": "Chaque joueur devrait-il être capable d’interagir avec ce bloc ?",
+	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic": "Publique : %s",
+	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic.description": "Chaque joueur devrait-il être capable d’interagir avec ce bloc ?",
 
 	"securitycraft.subtitle.alarm": "Sonnerie d‘alarme",
 	"securitycraft.subtitle.electrified": "Entité électrocuté",

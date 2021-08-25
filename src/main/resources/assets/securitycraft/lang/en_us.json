@@ -957,6 +957,9 @@
 	"module.securitycraft.trophy_system.whitelist_module.description": "Adding an allowlist module to a Trophy System will make it ignore projectiles thrown by listed players, as well as their Sentries' bullets and I.M.S.' bombs.",
 	"module.securitycraft.cage_trap.whitelist_module.description": "Adding an allowlist module to a Cage Trap will prevent listed players from being trapped.",
 	"module.securitycraft.reinforced_cauldron.whitelist_module.description": "Adding an allowlist module to a Reinforced Cauldron will allow listed players to interact with the Reinforced Cauldron.",
+	"module.securitycraft.reinforced_water_cauldron.whitelist_module.description": "Adding an allowlist module to a Reinforced Cauldron will allow listed players to interact with the Reinforced Cauldron.",
+	"module.securitycraft.reinforced_lava_cauldron.whitelist_module.description": "Adding an allowlist module to a Reinforced Cauldron will allow listed players to interact with the Reinforced Cauldron.",
+	"module.securitycraft.reinforced_powder_snow_cauldron.whitelist_module.description": "Adding an allowlist module to a Reinforced Cauldron will allow listed players to interact with the Reinforced Cauldron.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",
@@ -1036,6 +1039,12 @@
 	"option.securitycraft.keypad_door.signalLength.description": "How long should the door stay open? (In Ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)",
 	"option.securitycraft.reinforced_cauldron.isPublic": "Public: %s",
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "Should every player be able to interact with this block?",
+	"option.securitycraft.reinforced_water_cauldron.isPublic": "Public: %s",
+	"option.securitycraft.reinforced_water_cauldron.isPublic.description": "Should every player be able to interact with this block?",
+	"option.securitycraft.reinforced_lava_cauldron.isPublic": "Public: %s",
+	"option.securitycraft.reinforced_lava_cauldron.isPublic.description": "Should every player be able to interact with this block?",
+	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic": "Public: %s",
+	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic.description": "Should every player be able to interact with this block?",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",

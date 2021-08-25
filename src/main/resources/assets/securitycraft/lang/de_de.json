@@ -955,6 +955,9 @@
 	"module.securitycraft.trophy_system.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Trophy-System lässt es Projektile, die von zugelassenen Spielern geworfen wurden, sowie Kugeln ihrer Geschütze und Bomben ihrer I.M.S. ignorieren.",
 	"module.securitycraft.cage_trap.whitelist_module.description": "Ein Zulassungslisten-Modul in einer Käfigfalle verhindert, dass die zugelassenen Spieler gefangen genommen werden.",
 	"module.securitycraft.reinforced_cauldron.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.",
+	"module.securitycraft.reinforced_water_cauldron.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.",
+	"module.securitycraft.reinforced_lava_cauldron.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.",
+	"module.securitycraft.reinforced_powder_snow_cauldron.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Suchradius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "Der Radius, in dem der Radar sucht.",
@@ -1034,6 +1037,12 @@
 	"option.securitycraft.keypad_door.signalLength.description": "Wie lange soll die Tür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Tür nicht schließt)",
 	"option.securitycraft.reinforced_cauldron.isPublic": "Öffentlich: %s",
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "Soll jeder Spieler mit diesem Block interagieren können?",
+	"option.securitycraft.reinforced_water_cauldron.isPublic": "Öffentlich: %s",
+	"option.securitycraft.reinforced_water_cauldron.isPublic.description": "Soll jeder Spieler mit diesem Block interagieren können?",
+	"option.securitycraft.reinforced_lava_cauldron.isPublic": "Öffentlich: %s",
+	"option.securitycraft.reinforced_lava_cauldron.isPublic.description": "Soll jeder Spieler mit diesem Block interagieren können?",
+	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic": "Öffentlich: %s",
+	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic.description": "Soll jeder Spieler mit diesem Block interagieren können?",
 
 	"securitycraft.subtitle.alarm": "Alarm geht los",
 	"securitycraft.subtitle.electrified": "Stromschlag",
