@@ -23,7 +23,7 @@ public class DebugOverlayGuiMixin
 	@Shadow
 	protected RayTraceResult rayTraceBlock;
 
-	@ModifyVariable(method="getDebugInfoRight", at=@At(value="INVOKE", target="Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
+	@ModifyVariable(method="getDebugInfoRight", at=@At(value="INVOKE_ASSIGN", target="Lnet/minecraft/client/world/ClientWorld;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
 	public BlockState spoofState(BlockState originalState)
 	{
 		Block originalBlock = originalState.getBlock();
