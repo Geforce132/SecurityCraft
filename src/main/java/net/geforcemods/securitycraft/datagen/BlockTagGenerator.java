@@ -2,7 +2,11 @@ package net.geforcemods.securitycraft.datagen;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
@@ -103,66 +107,13 @@ public class BlockTagGenerator extends BlockTagsProvider
 		getBuilder(SCTags.Blocks.REINFORCED_SAND).add(
 				SCContent.REINFORCED_RED_SAND.get(),
 				SCContent.REINFORCED_SAND.get());
-		getBuilder(SCTags.Blocks.REINFORCED_SLABS).add(SCTags.Blocks.REINFORCED_WOODEN_SLABS).add(
-				SCContent.REINFORCED_NORMAL_STONE_SLAB.get(),
-				SCContent.REINFORCED_SMOOTH_STONE_SLAB.get(),
-				SCContent.REINFORCED_SANDSTONE_SLAB.get(),
-				SCContent.REINFORCED_COBBLESTONE_SLAB.get(),
-				SCContent.REINFORCED_BRICK_SLAB.get(),
-				SCContent.REINFORCED_STONE_BRICK_SLAB.get(),
-				SCContent.REINFORCED_NETHER_BRICK_SLAB.get(),
-				SCContent.REINFORCED_QUARTZ_SLAB.get(),
-				SCContent.REINFORCED_RED_SANDSTONE_SLAB.get(),
-				SCContent.REINFORCED_PURPUR_SLAB.get(),
-				SCContent.REINFORCED_PRISMARINE_SLAB.get(),
-				SCContent.REINFORCED_PRISMARINE_BRICK_SLAB.get(),
-				SCContent.REINFORCED_DARK_PRISMARINE_SLAB.get(),
-				SCContent.REINFORCED_POLISHED_GRANITE_SLAB.get(),
-				SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_SLAB.get(),
-				SCContent.REINFORCED_MOSSY_STONE_BRICK_SLAB.get(),
-				SCContent.REINFORCED_POLISHED_DIORITE_SLAB.get(),
-				SCContent.REINFORCED_MOSSY_COBBLESTONE_SLAB.get(),
-				SCContent.REINFORCED_END_STONE_BRICK_SLAB.get(),
-				SCContent.REINFORCED_SMOOTH_SANDSTONE_SLAB.get(),
-				SCContent.REINFORCED_SMOOTH_QUARTZ_SLAB.get(),
-				SCContent.REINFORCED_GRANITE_SLAB.get(),
-				SCContent.REINFORCED_ANDESITE_SLAB.get(),
-				SCContent.REINFORCED_RED_NETHER_BRICK_SLAB.get(),
-				SCContent.REINFORCED_POLISHED_ANDESITE_SLAB.get(),
-				SCContent.REINFORCED_DIORITE_SLAB.get(),
-				SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get());
+		getBuilder(SCTags.Blocks.REINFORCED_SLABS).add(SCTags.Blocks.REINFORCED_WOODEN_SLABS);
 		getBuilder(SCTags.Blocks.REINFORCED_SPRUCE_LOGS).add(
 				SCContent.REINFORCED_SPRUCE_LOG.get(),
 				SCContent.REINFORCED_SPRUCE_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_SPRUCE_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_SPRUCE_WOOD.get());
-		getBuilder(SCTags.Blocks.REINFORCED_STAIRS).add(SCTags.Blocks.REINFORCED_WOODEN_STAIRS).add(
-				SCContent.REINFORCED_PURPUR_STAIRS.get(),
-				SCContent.REINFORCED_COBBLESTONE_STAIRS.get(),
-				SCContent.REINFORCED_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_STONE_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_NETHER_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_SANDSTONE_STAIRS.get(),
-				SCContent.REINFORCED_QUARTZ_STAIRS.get(),
-				SCContent.REINFORCED_PRISMARINE_STAIRS.get(),
-				SCContent.REINFORCED_PRISMARINE_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_DARK_PRISMARINE_STAIRS.get(),
-				SCContent.REINFORCED_RED_SANDSTONE_STAIRS.get(),
-				SCContent.REINFORCED_POLISHED_GRANITE_STAIRS.get(),
-				SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_STAIRS.get(),
-				SCContent.REINFORCED_MOSSY_STONE_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_POLISHED_DIORITE_STAIRS.get(),
-				SCContent.REINFORCED_MOSSY_COBBLESTONE_STAIRS.get(),
-				SCContent.REINFORCED_END_STONE_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_STONE_STAIRS.get(),
-				SCContent.REINFORCED_SMOOTH_SANDSTONE_STAIRS.get(),
-				SCContent.REINFORCED_SMOOTH_QUARTZ_STAIRS.get(),
-				SCContent.REINFORCED_GRANITE_STAIRS.get(),
-				SCContent.REINFORCED_ANDESITE_STAIRS.get(),
-				SCContent.REINFORCED_RED_NETHER_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_POLISHED_ANDESITE_STAIRS.get(),
-				SCContent.REINFORCED_DIORITE_STAIRS.get(),
-				SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get());
+		getBuilder(SCTags.Blocks.REINFORCED_STAIRS).add(SCTags.Blocks.REINFORCED_WOODEN_STAIRS);
 		getBuilder(SCTags.Blocks.REINFORCED_STONE_BRICKS).add(
 				SCContent.REINFORCED_STONE_BRICKS.get(),
 				SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(),
@@ -227,9 +178,6 @@ public class BlockTagGenerator extends BlockTagsProvider
 		getBuilder(Tags.Blocks.DIRT).add(SCTags.Blocks.REINFORCED_DIRT);
 
 		//minecraft tags
-		Builder<Block> dragonImmune = getBuilder(BlockTags.DRAGON_IMMUNE);
-		Builder<Block> witherImmune = getBuilder(BlockTags.WITHER_IMMUNE);
-
 		getBuilder(BlockTags.BAMBOO_PLANTABLE_ON).add(SCTags.Blocks.REINFORCED_SAND).add(SCContent.REINFORCED_GRAVEL.get(),
 				SCContent.REINFORCED_DIRT.get(),
 				SCContent.REINFORCED_GRASS_BLOCK.get(),
@@ -279,6 +227,10 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_END_STONE_BRICK_WALL.get(),
 				SCContent.REINFORCED_DIORITE_WALL.get());
 
+		//automatic
+		Builder<Block> dragonImmune = getBuilder(BlockTags.DRAGON_IMMUNE);
+		Builder<Block> witherImmune = getBuilder(BlockTags.WITHER_IMMUNE);
+
 		for(RegistryObject<Block> ro : SCContent.BLOCKS.getEntries())
 		{
 			Block block = ro.get();
@@ -288,6 +240,14 @@ public class BlockTagGenerator extends BlockTagsProvider
 				dragonImmune.add(block);
 				witherImmune.add(block);
 			}
+
+			//ugly way of checking if slabs/stairs are wood. they do not need to be added to the tag explicitly, as they are already present in the wooden equivalent tag
+			if(block instanceof ReinforcedSlabBlock && block.getSoundType(block.getDefaultState()) != SoundType.WOOD)
+				getBuilder(SCTags.Blocks.REINFORCED_SLABS).add(block);
+			else if(block instanceof ReinforcedStairsBlock && block.getSoundType(block.getDefaultState()) != SoundType.WOOD)
+				getBuilder(SCTags.Blocks.REINFORCED_STAIRS).add(block);
+			else if(block instanceof ReinforcedWallBlock)
+				getBuilder(BlockTags.WALLS).add(block);
 		}
 	}
 

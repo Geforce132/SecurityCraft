@@ -1,23 +1,18 @@
 package net.geforcemods.securitycraft.datagen;
 
-import java.lang.reflect.Field;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
-import net.geforcemods.securitycraft.util.RegisterItemBlock;
-import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
-import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.item.Item;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
@@ -37,33 +32,22 @@ public class ItemModelGenerator extends ItemModelProvider
 	@Override
 	protected void registerModels()
 	{
-		for(Field field : SCContent.class.getFields())
+		for(RegistryObject<Block> obj : SCContent.BLOCKS.getEntries())
 		{
-			try
-			{
-				if(field.isAnnotationPresent(Reinforced.class))
-				{
-					Block block = ((RegistryObject<Block>)field.get(null)).get();
+			Block block = obj.get();
+			Item item = block.asItem();
 
-					if(block instanceof ReinforcedCarpetBlock || block instanceof ReinforcedSlabBlock || block instanceof ReinforcedStainedGlassBlock || block instanceof ReinforcedStairsBlock)
-						simpleParent(block);
-					else if(block instanceof ReinforcedStainedGlassPaneBlock)
-						reinforcedPane(block);
-					else if(block instanceof ReinforcedWallBlock)
-						reinforcedWallInventory(block, ((IReinforcedBlock)block).getVanillaBlock());
-				}
-				else if(field.isAnnotationPresent(RegisterItemBlock.class) && field.getAnnotation(RegisterItemBlock.class).value() == SCItemGroup.EXPLOSIVES)
-				{
-					Block block = ((RegistryObject<Block>)field.get(null)).get();
-
-					if(block instanceof BaseFullMineBlock)
-						blockMine(((BaseFullMineBlock)block).getBlockDisguisedAs(), block);
-				}
-			}
-			catch(IllegalArgumentException | IllegalAccessException e)
+			if(item.getCreativeTabs().contains(SecurityCraft.groupSCDecoration))
 			{
-				e.printStackTrace();
+				if(block instanceof ReinforcedCarpetBlock || block instanceof ReinforcedSlabBlock || block instanceof ReinforcedStainedGlassBlock || block instanceof ReinforcedStairsBlock)
+					simpleParent(block);
+				else if(block instanceof ReinforcedStainedGlassPaneBlock)
+					reinforcedPane(block);
+				else if(block instanceof ReinforcedWallBlock)
+					reinforcedWallInventory(block, ((ReinforcedWallBlock)block).getVanillaBlock());
 			}
+			else if(item.getCreativeTabs().contains(SecurityCraft.groupSCMine) && block instanceof BaseFullMineBlock)
+				blockMine(((BaseFullMineBlock)block).getBlockDisguisedAs(), block);
 		}
 
 		//gui block mine model
