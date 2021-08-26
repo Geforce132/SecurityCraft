@@ -87,6 +87,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		horizontalBlock(SCContent.FURNACE_MINE.get(), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_side"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_front"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_top"));
 
 		simpleBlock(SCContent.REINFORCED_GLASS.get());
+		reinforcedCarpetBlock(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
 		reinforcedPaneBlock((IronBarsBlock)SCContent.REINFORCED_GLASS_PANE.get());
 
 		models().reinforcedColumn("reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
@@ -185,8 +186,13 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 
 	public void reinforcedCarpetBlock(Block block)
 	{
+		reinforcedCarpetBlock(block, "wool");
+	}
+
+	public void reinforcedCarpetBlock(Block block, String carpetReplacement)
+	{
 		String name = name(block);
-		ModelFile model = models().reinforcedCarpet(name, mcLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("reinforced_", "").replace("carpet", "wool")));
+		ModelFile model = models().reinforcedCarpet(name, mcLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("reinforced_", "").replace("carpet", carpetReplacement)));
 
 		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[]{new ConfiguredModel(model)});
 	}

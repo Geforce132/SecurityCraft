@@ -473,6 +473,8 @@
 	"block.securitycraft.reinforced_polished_deepslate_wall": "Verstärkte polierte Tiefenschiefermauer",
 	"block.securitycraft.reinforced_deepslate_brick_wall": "Verstärkte Tiefenschieferziegelmauer",
 	"block.securitycraft.reinforced_deepslate_tile_wall": "Verstärkte Tiefenschieferfliesenmauer",
+	"block.securitycraft.reinforced_moss_block": "Verstärkter Moosblock",
+	"block.securitycraft.reinforced_moss_carpet": "Verstärkter Moosteppich",
 
 	"item.securitycraft.codebreaker": "Codebrecher",
 	"item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",

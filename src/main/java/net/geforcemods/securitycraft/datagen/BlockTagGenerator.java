@@ -83,6 +83,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_DIRT.get(),
 				SCContent.REINFORCED_COARSE_DIRT.get(),
 				SCContent.REINFORCED_PODZOL.get(),
+				SCContent.REINFORCED_MOSS_BLOCK.get(),
 				SCContent.REINFORCED_MYCELIUM.get());
 		tag(SCTags.Blocks.REINFORCED_END_STONES).add(
 				SCContent.REINFORCED_END_STONE.get());
@@ -224,6 +225,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_GRASS_BLOCK.get(),
 				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_COARSE_DIRT.get(),
+				SCContent.REINFORCED_MOSS_BLOCK.get(),
 				SCContent.REINFORCED_MYCELIUM.get());
 		tag(BlockTags.BEACON_BASE_BLOCKS).add(
 				SCContent.REINFORCED_DIAMOND_BLOCK.get(),

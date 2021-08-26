@@ -629,6 +629,7 @@ public class RecipeGenerator extends RecipeProvider
 		addCarpetRecipe(consumer, SCContent.REINFORCED_LIGHT_GRAY_WOOL.get(), SCContent.REINFORCED_LIGHT_GRAY_CARPET.get());
 		addCarpetRecipe(consumer, SCContent.REINFORCED_LIME_WOOL.get(), SCContent.REINFORCED_LIME_CARPET.get());
 		addCarpetRecipe(consumer, SCContent.REINFORCED_MAGENTA_WOOL.get(), SCContent.REINFORCED_MAGENTA_CARPET.get());
+		addCarpetRecipe(consumer, SCContent.REINFORCED_MOSS_BLOCK.get(), SCContent.REINFORCED_MOSS_CARPET.get());
 		addCarpetRecipe(consumer, SCContent.REINFORCED_ORANGE_WOOL.get(), SCContent.REINFORCED_ORANGE_CARPET.get());
 		addCarpetRecipe(consumer, SCContent.REINFORCED_PINK_WOOL.get(), SCContent.REINFORCED_PINK_CARPET.get());
 		addCarpetRecipe(consumer, SCContent.REINFORCED_PURPLE_WOOL.get(), SCContent.REINFORCED_PURPLE_CARPET.get());
@@ -681,8 +682,6 @@ public class RecipeGenerator extends RecipeProvider
 		addModuleRecipe(consumer, SCContent.KEYPAD_CHEST.get(), SCContent.STORAGE_MODULE.get());
 		addModuleRecipe(consumer, Items.PAPER, SCContent.ALLOWLIST_MODULE.get());
 		addModuleRecipe(consumer, Items.SUGAR, SCContent.SPEED_MODULE.get());
-		addMossyRecipe(consumer, SCTags.Items.REINFORCED_COBBLESTONE, SCContent.REINFORCED_MOSSY_COBBLESTONE.get());
-		addMossyRecipe(consumer, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_MOSSY_STONE_BRICKS.get());
 		addPillarRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.CRYSTAL_QUARTZ_PILLAR.get());
 		addPillarRecipe(consumer, SCContent.REINFORCED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get());
 		addPillarRecipe(consumer, SCContent.REINFORCED_QUARTZ.get(), SCContent.REINFORCED_QUARTZ_PILLAR.get());
@@ -1084,6 +1083,37 @@ public class RecipeGenerator extends RecipeProvider
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_WEATHERED_CUT_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_WEATHERED_CUT_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER_STAIRS.get(), 1);
 
+		//moss conversions
+		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
+		.requires(SCContent.REINFORCED_COBBLESTONE.get())
+		.requires(Blocks.MOSS_BLOCK)
+		.unlockedBy("has_moss", has(Blocks.MOSS_BLOCK))
+		.save(consumer, "reinforced_mossy_cobblestone_from_vanilla_moss");
+		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
+		.requires(Blocks.COBBLESTONE)
+		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
+		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
+		.save(consumer, "reinforced_mossy_cobblestone_from_vanilla_cobblestone");
+		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
+		.requires(SCContent.REINFORCED_COBBLESTONE.get())
+		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
+		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
+		.save(consumer, "reinforced_mossy_cobblestone_from_reinforced_ingredients");
+		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
+		.requires(SCContent.REINFORCED_STONE_BRICKS.get())
+		.requires(Blocks.MOSS_BLOCK)
+		.unlockedBy("has_moss", has(Blocks.MOSS_BLOCK))
+		.save(consumer, "reinforced_mossy_stone_bricks_from_vanilla_moss");
+		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
+		.requires(Blocks.STONE_BRICKS)
+		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
+		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
+		.save(consumer, "reinforced_mossy_stone_bricks_from_vanilla_stone_bricks");
+		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
+		.requires(SCContent.REINFORCED_STONE_BRICKS.get())
+		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
+		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
+		.save(consumer, "reinforced_mossy_stone_bricks_from_reinforced_ingredients");
 	}
 
 	protected final void addBarkRecipe(Consumer<FinishedRecipe> consumer, ItemLike log, ItemLike result) //woof
@@ -1202,24 +1232,6 @@ public class RecipeGenerator extends RecipeProvider
 		.define('P', Items.PAPER)
 		.define('S', specialIngredient)
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
-		.save(consumer);
-	}
-
-	protected final void addMossyRecipe(Consumer<FinishedRecipe> consumer, Tag<Item> block, ItemLike result)
-	{
-		ShapelessRecipeBuilder.shapeless(result)
-		.requires(block)
-		.requires(Items.VINE)
-		.unlockedBy("has_block", has(block))
-		.save(consumer);
-	}
-
-	protected final void addMossyRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result)
-	{
-		ShapelessRecipeBuilder.shapeless(result)
-		.requires(block)
-		.requires(Items.VINE)
-		.unlockedBy("has_block", has(block))
 		.save(consumer);
 	}
 

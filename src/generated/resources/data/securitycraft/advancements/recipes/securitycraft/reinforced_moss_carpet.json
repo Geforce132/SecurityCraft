@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:reinforced_mossy_cobblestone"
+      "securitycraft:reinforced_moss_carpet"
     ]
   },
   "criteria": {
-    "has_block": {
+    "has_wool": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "securitycraft:reinforced/cobblestone"
+            "tag": "securitycraft:reinforced/wool"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:reinforced_mossy_cobblestone"
+        "recipe": "securitycraft:reinforced_moss_carpet"
       }
     }
   },
   "requirements": [
     [
-      "has_block",
+      "has_wool",
       "has_the_recipe"
     ]
   ]
