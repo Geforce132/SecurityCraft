@@ -49,19 +49,19 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	private float lastProgress;
 	private long lastTicked;
 	private int deathTicks;
-	private Owner owner;
+	private Owner owner = new Owner();
 
 	public ReinforcedPistonMovingBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeReinforcedPiston, pos, state);
 	}
 
-	public ReinforcedPistonMovingBlockEntity(BlockPos pos, BlockState state, BlockState movedState, CompoundTag tag, Direction direction, boolean extending, boolean isSourcePiston) {
+	public ReinforcedPistonMovingBlockEntity(BlockPos pos, BlockState state, BlockState movedState, CompoundTag tag, Direction direction, boolean extending, boolean shouldHeadBeRendered) {
 		this(pos, state);
 		this.movedState = movedState;
 		this.movedBlockEntityTag = tag;
 		this.direction = direction;
 		this.extending = extending;
-		this.isSourcePiston = isSourcePiston;
+		this.isSourcePiston = shouldHeadBeRendered;
 		this.owner = Owner.fromCompound(tag);
 	}
 
@@ -274,6 +274,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 			this.lastProgress = this.progress;
 			this.level.removeBlockEntity(this.worldPosition);
 			this.setRemoved();
+
 			if (this.level.getBlockState(this.worldPosition).is(SCContent.REINFORCED_MOVING_PISTON.get())) {
 				BlockState pushedState;
 

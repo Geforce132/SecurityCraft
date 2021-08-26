@@ -20,7 +20,6 @@ public class Owner {
 	private String playerUUID = "ownerUUID";
 
 	public Owner() {
-		System.out.println("owner without ctor");
 	}
 
 	public Owner(String playerName, String playerUUID) {
