@@ -284,18 +284,16 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 					pushedState = Block.updateFromNeighbourShapes(this.movedState, this.level, this.worldPosition);
 				}
 
-				this.level.setBlock(this.worldPosition, pushedState, 3);
-
 				if (movedBlockEntityTag != null){
 					BlockEntity te = pushedState.hasBlockEntity() ? ((EntityBlock)pushedState.getBlock()).newBlockEntity(this.worldPosition, pushedState) : null;
 
 					if (te != null){
 						te.load(movedBlockEntityTag);
 						this.level.setBlockEntity(te);
-						this.level.blockEntityChanged(this.worldPosition);
 					}
 				}
 
+				this.level.setBlock(this.worldPosition, pushedState, 3);
 				this.level.neighborChanged(this.worldPosition, pushedState.getBlock(), this.worldPosition);
 			}
 		}
@@ -323,18 +321,16 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 							pushedState = pushedState.setValue(BlockStateProperties.WATERLOGGED, false);
 						}
 
-						world.setBlock(pos, pushedState, 67);
-
 						if (te.movedBlockEntityTag != null){
 							BlockEntity storedTe = pushedState.hasBlockEntity() ? ((EntityBlock)pushedState.getBlock()).newBlockEntity(te.worldPosition, pushedState) : null;
 
 							if (storedTe != null){
 								storedTe.load(te.movedBlockEntityTag);
 								world.setBlockEntity(storedTe);
-								world.blockEntityChanged(pos);
 							}
 						}
 
+						world.setBlock(pos, pushedState, 67);
 						world.neighborChanged(pos, pushedState.getBlock(), pos);
 					}
 				}
