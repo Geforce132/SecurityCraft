@@ -17,7 +17,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'eclipse'
 
-version = '1.8.23-beta3'
+version = '1.8.23-beta4'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
@@ -98,9 +98,9 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.17.1-37.0.38'
     
-	implementation fg.deobf("mezz.jei:jei-1.17.1:8.0.0.12")
+	implementation fg.deobf("mezz.jei:jei-1.17.1:8.0.0.14")
     implementation fg.deobf("curse.maven:the-one-probe-245211:3430022")
-    implementation fg.deobf("curse.maven:jade-324717:3423220")
+    implementation fg.deobf("curse.maven:jade-324717:3439489")
 	//compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
 }
 
