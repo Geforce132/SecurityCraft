@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:reinforced_mossy_stone_bricks_from_reinforced_ingredients"
+      "securitycraft:reinforced_mossy_stone_bricks_from_reinforced_ingredients"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:reinforced_mossy_stone_bricks_from_reinforced_ingredients"
+        "recipe": "securitycraft:reinforced_mossy_stone_bricks_from_reinforced_ingredients"
       }
     }
   },

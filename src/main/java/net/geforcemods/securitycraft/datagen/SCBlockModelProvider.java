@@ -17,7 +17,7 @@ public class SCBlockModelProvider extends BlockModelProvider
 
 	public BlockModelBuilder reinforcedCarpet(String name, ResourceLocation wool)
 	{
-		return uncheckedSingleTexture(name, modLoc(BLOCK_FOLDER + "/reinforced_carpet"), "wool", wool);
+		return uncheckedSingleTexture(name, modLoc(BLOCK_FOLDER + "/reinforced_carpet"), "block", wool);
 	}
 
 	public BlockModelBuilder reinforcedColumn(String name, String side, String end)

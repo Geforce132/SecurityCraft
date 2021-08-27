@@ -1088,32 +1088,32 @@ public class RecipeGenerator extends RecipeProvider
 		.requires(SCContent.REINFORCED_COBBLESTONE.get())
 		.requires(Blocks.MOSS_BLOCK)
 		.unlockedBy("has_moss", has(Blocks.MOSS_BLOCK))
-		.save(consumer, "reinforced_mossy_cobblestone_from_vanilla_moss");
+		.save(consumer, "securitycraft:reinforced_mossy_cobblestone_from_vanilla_moss");
 		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
 		.requires(Blocks.COBBLESTONE)
 		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
 		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
-		.save(consumer, "reinforced_mossy_cobblestone_from_vanilla_cobblestone");
+		.save(consumer, "securitycraft:reinforced_mossy_cobblestone_from_vanilla_cobblestone");
 		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
 		.requires(SCContent.REINFORCED_COBBLESTONE.get())
 		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
 		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
-		.save(consumer, "reinforced_mossy_cobblestone_from_reinforced_ingredients");
+		.save(consumer, "securitycraft:reinforced_mossy_cobblestone_from_reinforced_ingredients");
 		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
 		.requires(SCContent.REINFORCED_STONE_BRICKS.get())
 		.requires(Blocks.MOSS_BLOCK)
 		.unlockedBy("has_moss", has(Blocks.MOSS_BLOCK))
-		.save(consumer, "reinforced_mossy_stone_bricks_from_vanilla_moss");
+		.save(consumer, "securitycraft:reinforced_mossy_stone_bricks_from_vanilla_moss");
 		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
 		.requires(Blocks.STONE_BRICKS)
 		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
 		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
-		.save(consumer, "reinforced_mossy_stone_bricks_from_vanilla_stone_bricks");
+		.save(consumer, "securitycraft:reinforced_mossy_stone_bricks_from_vanilla_stone_bricks");
 		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_MOSSY_STONE_BRICKS.get())
 		.requires(SCContent.REINFORCED_STONE_BRICKS.get())
 		.requires(SCContent.REINFORCED_MOSS_BLOCK.get())
 		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK.get()))
-		.save(consumer, "reinforced_mossy_stone_bricks_from_reinforced_ingredients");
+		.save(consumer, "securitycraft:reinforced_mossy_stone_bricks_from_reinforced_ingredients");
 	}
 
 	protected final void addBarkRecipe(Consumer<FinishedRecipe> consumer, ItemLike log, ItemLike result) //woof

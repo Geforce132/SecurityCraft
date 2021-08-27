@@ -1,6 +1,6 @@
 {
   "parent": "securitycraft:block/reinforced_carpet",
   "textures": {
-    "wool": "minecraft:block/white_wool"
+    "block": "minecraft:block/white_wool"
   }
 }

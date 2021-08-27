@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:reinforced_mossy_cobblestone_from_vanilla_cobblestone"
+      "securitycraft:reinforced_mossy_stone_bricks_from_vanilla_stone_bricks"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:reinforced_mossy_cobblestone_from_vanilla_cobblestone"
+        "recipe": "securitycraft:reinforced_mossy_stone_bricks_from_vanilla_stone_bricks"
       }
     }
   },

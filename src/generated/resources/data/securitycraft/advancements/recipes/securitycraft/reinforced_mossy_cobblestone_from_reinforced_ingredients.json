@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:reinforced_mossy_cobblestone_from_vanilla_moss"
+      "securitycraft:reinforced_mossy_cobblestone_from_reinforced_ingredients"
     ]
   },
   "criteria": {
-    "has_moss": {
+    "has_reinforced_moss": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:moss_block"
+              "securitycraft:reinforced_moss_block"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:reinforced_mossy_cobblestone_from_vanilla_moss"
+        "recipe": "securitycraft:reinforced_mossy_cobblestone_from_reinforced_ingredients"
       }
     }
   },
   "requirements": [
     [
-      "has_moss",
+      "has_reinforced_moss",
       "has_the_recipe"
     ]
   ]

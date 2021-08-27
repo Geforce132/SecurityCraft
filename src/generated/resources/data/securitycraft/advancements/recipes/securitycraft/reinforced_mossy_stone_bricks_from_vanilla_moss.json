@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "minecraft:reinforced_mossy_stone_bricks_from_vanilla_stone_bricks"
+      "securitycraft:reinforced_mossy_stone_bricks_from_vanilla_moss"
     ]
   },
   "criteria": {
-    "has_reinforced_moss": {
+    "has_moss": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "securitycraft:reinforced_moss_block"
+              "minecraft:moss_block"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "minecraft:reinforced_mossy_stone_bricks_from_vanilla_stone_bricks"
+        "recipe": "securitycraft:reinforced_mossy_stone_bricks_from_vanilla_moss"
       }
     }
   },
   "requirements": [
     [
-      "has_reinforced_moss",
+      "has_moss",
       "has_the_recipe"
     ]
   ]
