@@ -101,6 +101,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneLampBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRootedDirtBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedCrystalQuartzPillar;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
@@ -108,6 +109,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedTintedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.Bullet;
@@ -156,12 +158,14 @@ import net.geforcemods.securitycraft.util.OwnableTE;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
@@ -171,6 +175,7 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
@@ -299,6 +304,7 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_PODZOL = BLOCKS.register("reinforced_podzol", () -> new ReinforcedSnowyDirtBlock(prop(Material.DIRT).sound(SoundType.GRAVEL), Blocks.PODZOL));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_CRIMSON_NYLIUM = BLOCKS.register("reinforced_crimson_nylium", () -> new ReinforcedNyliumBlock(prop().sound(SoundType.NYLIUM), Blocks.CRIMSON_NYLIUM));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_WARPED_NYLIUM = BLOCKS.register("reinforced_warped_nylium", () -> new ReinforcedNyliumBlock(prop().sound(SoundType.NYLIUM), Blocks.WARPED_NYLIUM));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_ROOTED_DIRT = BLOCKS.register("reinforced_rooted_dirt", () -> new ReinforcedRootedDirtBlock(prop(Material.DIRT).sound(SoundType.ROOTED_DIRT), Blocks.ROOTED_DIRT));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_COBBLESTONE = BLOCKS.register("reinforced_cobblestone", () -> new BaseReinforcedBlock(prop(), Blocks.COBBLESTONE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_OAK_PLANKS = BLOCKS.register("reinforced_oak_planks", () -> new BaseReinforcedBlock(prop(Material.WOOD).sound(SoundType.WOOD), Blocks.OAK_PLANKS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_SPRUCE_PLANKS = BLOCKS.register("reinforced_spruce_planks", () -> new BaseReinforcedBlock(prop(Material.WOOD).sound(SoundType.WOOD), Blocks.SPRUCE_PLANKS));
@@ -368,7 +374,8 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DARK_OAK_WOOD = BLOCKS.register("reinforced_dark_oak_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD).sound(SoundType.WOOD), Blocks.DARK_OAK_WOOD));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_CRIMSON_HYPHAE = BLOCKS.register("reinforced_crimson_hyphae", () -> new ReinforcedRotatedPillarBlock(prop(Material.NETHER_WOOD).sound(SoundType.STEM), Blocks.CRIMSON_HYPHAE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_WARPED_HYPHAE = BLOCKS.register("reinforced_warped_hyphae", () -> new ReinforcedRotatedPillarBlock(prop(Material.NETHER_WOOD).sound(SoundType.STEM), Blocks.WARPED_HYPHAE));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_GLASS = BLOCKS.register("reinforced_glass", () -> new ReinforcedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), Blocks.GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_GLASS = BLOCKS.register("reinforced_glass", () -> new ReinforcedGlassBlock(glassProp(), Blocks.GLASS));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_TINTED_GLASS = BLOCKS.register("reinforced_tinted_glass", () -> new ReinforcedTintedGlassBlock(glassProp(), Blocks.TINTED_GLASS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_LAPIS_BLOCK = BLOCKS.register("reinforced_lapis_block", () ->  new BaseReinforcedBlock(prop(), Blocks.LAPIS_BLOCK));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_SANDSTONE = BLOCKS.register("reinforced_sandstone", () ->  new BaseReinforcedBlock(prop(), Blocks.SANDSTONE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_CHISELED_SANDSTONE = BLOCKS.register("reinforced_chiseled_sandstone", () ->  new BaseReinforcedBlock(prop(), Blocks.CHISELED_SANDSTONE));
@@ -484,22 +491,22 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_PACKED_ICE = BLOCKS.register("reinforced_packed_ice", () -> new BaseReinforcedBlock(prop(Material.ICE_SOLID).sound(SoundType.GLASS).friction(0.98F), Blocks.PACKED_ICE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_ACACIA_STAIRS = BLOCKS.register("reinforced_acacia_stairs", () -> new ReinforcedStairsBlock(prop(Material.WOOD).sound(SoundType.WOOD), Blocks.ACACIA_STAIRS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DARK_OAK_STAIRS = BLOCKS.register("reinforced_dark_oak_stairs", () -> new ReinforcedStairsBlock(prop(Material.WOOD).sound(SoundType.WOOD), Blocks.DARK_OAK_STAIRS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_WHITE_STAINED_GLASS = BLOCKS.register("reinforced_white_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.WHITE, Blocks.WHITE_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_ORANGE_STAINED_GLASS = BLOCKS.register("reinforced_orange_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_MAGENTA_STAINED_GLASS = BLOCKS.register("reinforced_magenta_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_LIGHT_BLUE_STAINED_GLASS = BLOCKS.register("reinforced_light_blue_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_YELLOW_STAINED_GLASS = BLOCKS.register("reinforced_yellow_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_LIME_STAINED_GLASS = BLOCKS.register("reinforced_lime_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.LIME, Blocks.LIME_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_PINK_STAINED_GLASS = BLOCKS.register("reinforced_pink_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.PINK, Blocks.PINK_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_GRAY_STAINED_GLASS = BLOCKS.register("reinforced_gray_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.GRAY, Blocks.GRAY_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_LIGHT_GRAY_STAINED_GLASS = BLOCKS.register("reinforced_light_gray_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_CYAN_STAINED_GLASS = BLOCKS.register("reinforced_cyan_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.CYAN, Blocks.CYAN_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_PURPLE_STAINED_GLASS = BLOCKS.register("reinforced_purple_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_BLUE_STAINED_GLASS = BLOCKS.register("reinforced_blue_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.BLUE, Blocks.BLUE_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_BROWN_STAINED_GLASS = BLOCKS.register("reinforced_brown_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.BROWN, Blocks.BROWN_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_GREEN_STAINED_GLASS = BLOCKS.register("reinforced_green_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_RED_STAINED_GLASS = BLOCKS.register("reinforced_red_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.RED, Blocks.RED_STAINED_GLASS));
-	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_BLACK_STAINED_GLASS = BLOCKS.register("reinforced_black_stained_glass", () -> new ReinforcedStainedGlassBlock(prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion(), DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_WHITE_STAINED_GLASS = BLOCKS.register("reinforced_white_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.WHITE, Blocks.WHITE_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_ORANGE_STAINED_GLASS = BLOCKS.register("reinforced_orange_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_MAGENTA_STAINED_GLASS = BLOCKS.register("reinforced_magenta_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_LIGHT_BLUE_STAINED_GLASS = BLOCKS.register("reinforced_light_blue_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_YELLOW_STAINED_GLASS = BLOCKS.register("reinforced_yellow_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_LIME_STAINED_GLASS = BLOCKS.register("reinforced_lime_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.LIME, Blocks.LIME_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_PINK_STAINED_GLASS = BLOCKS.register("reinforced_pink_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.PINK, Blocks.PINK_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_GRAY_STAINED_GLASS = BLOCKS.register("reinforced_gray_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.GRAY, Blocks.GRAY_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_LIGHT_GRAY_STAINED_GLASS = BLOCKS.register("reinforced_light_gray_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_CYAN_STAINED_GLASS = BLOCKS.register("reinforced_cyan_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.CYAN, Blocks.CYAN_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_PURPLE_STAINED_GLASS = BLOCKS.register("reinforced_purple_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_BLUE_STAINED_GLASS = BLOCKS.register("reinforced_blue_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.BLUE, Blocks.BLUE_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_BROWN_STAINED_GLASS = BLOCKS.register("reinforced_brown_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.BROWN, Blocks.BROWN_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_GREEN_STAINED_GLASS = BLOCKS.register("reinforced_green_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_RED_STAINED_GLASS = BLOCKS.register("reinforced_red_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.RED, Blocks.RED_STAINED_GLASS));
+	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_BLACK_STAINED_GLASS = BLOCKS.register("reinforced_black_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(), DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_PRISMARINE = BLOCKS.register("reinforced_prismarine", () -> new BaseReinforcedBlock(prop(), Blocks.PRISMARINE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_PRISMARINE_BRICKS = BLOCKS.register("reinforced_prismarine_bricks", () -> new BaseReinforcedBlock(prop(), Blocks.PRISMARINE_BRICKS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DARK_PRISMARINE = BLOCKS.register("reinforced_dark_prismarine", () -> new BaseReinforcedBlock(prop(), Blocks.DARK_PRISMARINE));
@@ -879,8 +886,23 @@ public class SCContent
 		return prop(mat).noOcclusion().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
 	}
 
+	private static final Block.Properties glassProp()
+	{
+		return prop(Material.GLASS).sound(SoundType.GLASS).noOcclusion().isValidSpawn(SCContent::never).isRedstoneConductor(SCContent::never).isSuffocating(SCContent::never).isViewBlocking(SCContent::never);
+	}
+
 	private static final Item.Properties itemProp(CreativeModeTab itemGroup)
 	{
 		return new Item.Properties().tab(itemGroup);
+	}
+
+	private static boolean never(BlockState state, BlockGetter level, BlockPos pos)
+	{
+		return false;
+	}
+
+	private static boolean never(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType)
+	{
+		return false;
 	}
 }

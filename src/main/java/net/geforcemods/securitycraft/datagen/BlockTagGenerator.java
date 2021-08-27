@@ -226,7 +226,8 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_COARSE_DIRT.get(),
 				SCContent.REINFORCED_MOSS_BLOCK.get(),
-				SCContent.REINFORCED_MYCELIUM.get());
+				SCContent.REINFORCED_MYCELIUM.get(),
+				SCContent.REINFORCED_ROOTED_DIRT.get());
 		tag(BlockTags.BEACON_BASE_BLOCKS).add(
 				SCContent.REINFORCED_DIAMOND_BLOCK.get(),
 				SCContent.REINFORCED_EMERALD_BLOCK.get(),
@@ -245,6 +246,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 		tag(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
 		tag(BlockTags.IMPERMEABLE).add(
 				SCContent.REINFORCED_GLASS.get(),
+				SCContent.REINFORCED_TINTED_GLASS.get(),
 				SCContent.REINFORCED_WHITE_STAINED_GLASS.get(),
 				SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(),
 				SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get(),

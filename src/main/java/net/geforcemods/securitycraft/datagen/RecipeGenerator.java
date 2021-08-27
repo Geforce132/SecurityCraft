@@ -364,6 +364,14 @@ public class RecipeGenerator extends RecipeProvider
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
+		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_TINTED_GLASS.get(), 2)
+		.pattern(" A ")
+		.pattern("AGA")
+		.pattern(" A ")
+		.define('A', Items.AMETHYST_SHARD)
+		.define('G', SCContent.REINFORCED_GLASS.get())
+		.unlockedBy("has_amethyst_shard", has(Items.AMETHYST_SHARD))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.REMOTE_ACCESS_MINE.get())
 		.pattern(" T ")
 		.pattern(" DG")
