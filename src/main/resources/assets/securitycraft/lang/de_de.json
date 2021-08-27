@@ -420,6 +420,10 @@
 	"block.securitycraft.reinforced_water_cauldron": "Verstärkter Wasserkessel",
 	"block.securitycraft.reinforced_lava_cauldron": "Verstärkter Lavakessel",
 	"block.securitycraft.reinforced_powder_snow_cauldron": "Verstärkter Pulverschneekessel",
+	"block.securitycraft.reinforced_piston": "Verstärkter Kolben",
+	"block.securitycraft.reinforced_sticky_piston": "Verstärkter klebriger Kolben",
+	"block.securitycraft.reinforced_piston_head": "Verstärkter Kolbenkopf",
+	"block.securitycraft.reinforced_moving_piston": "Verstärkter bewegter Block",
 
 	"item.securitycraft.codebreaker": "Codebrecher",
 	"item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",
