@@ -244,6 +244,13 @@ public class BlockTagGenerator extends BlockTagsProvider
 		tag(BlockTags.DIRT).addTag(SCTags.Blocks.REINFORCED_DIRT);
 		tag(BlockTags.DOORS).add(SCContent.KEYPAD_DOOR.get(), SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
 		tag(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
+		tag(BlockTags.GUARDED_BY_PIGLINS).add(
+				SCContent.DEEPSLATE_GOLD_ORE_MINE.get(),
+				SCContent.GILDED_BLACKSTONE_MINE.get(),
+				SCContent.GOLD_ORE_MINE.get(),
+				SCContent.NETHER_GOLD_ORE_MINE.get(),
+				SCContent.REINFORCED_GOLD_BLOCK.get(),
+				SCContent.REINFORCED_RAW_GOLD_BLOCK.get());
 		tag(BlockTags.IMPERMEABLE).add(
 				SCContent.REINFORCED_GLASS.get(),
 				SCContent.REINFORCED_TINTED_GLASS.get(),
