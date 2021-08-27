@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -368,7 +369,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableBlockEntity(pos, state);
+		return new ValidationOwnableBlockEntity(pos, state);
 	}
 
 	@Override

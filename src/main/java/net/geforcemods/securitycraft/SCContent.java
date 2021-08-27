@@ -31,6 +31,7 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
@@ -755,6 +756,8 @@ public class SCContent
 	public static BlockEntityType<ReinforcedCauldronBlockEntity> beTypeReinforcedCauldron;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_piston")
 	public static BlockEntityType<ReinforcedPistonMovingBlockEntity> beTypeReinforcedPiston;
+	@ObjectHolder(SecurityCraft.MODID + ":validation_ownable")
+	public static BlockEntityType<ValidationOwnableBlockEntity> beTypeValidationOwnable;
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")

@@ -1,7 +1,12 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -37,6 +42,15 @@ public interface IOwnable {
 	 */
 	public void setOwner(String uuid, String name);
 
+
+	/**
+     *
+	 * @return true if the owner of this IOwnable should be invalidated when changed by the Universal Owner Changer
+	 */
+	default boolean needsValidation() {
+		return false;
+	}
+
 	/**
 	 * Executes actions after the owner has been changed, for example making sure the owner of both halves of SecurityCraft's doors get changed
 	 *
@@ -44,7 +58,7 @@ public interface IOwnable {
 	 * @param state The IOwnable's state
 	 * @param pos The IOwnable's position
 	 */
-	default void onOwnerChanged(BlockState state, Level world, BlockPos pos) {
+	default void onOwnerChanged(BlockState state, Level world, BlockPos pos, Player player) {
 		if(state.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
 			UniversalOwnerChangerItem.tryUpdateBlock(world, switch(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
 				case LOWER -> pos.above();
@@ -52,6 +66,9 @@ public interface IOwnable {
 			}, getOwner());
 		}
 
-		getOwner().setValidated(false);
+		if (needsValidation()) {
+			getOwner().setValidated(false);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), ChatFormatting.GREEN);
+		}
 	}
 }
