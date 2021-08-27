@@ -51,5 +51,7 @@ public interface IOwnable {
 				case UPPER -> pos.below();
 			}, getOwner());
 		}
+
+		getOwner().setValidated(false);
 	}
 }

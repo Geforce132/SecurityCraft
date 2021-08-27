@@ -791,6 +791,8 @@
 	"messages.securitycraft:blockpocket.deactivated": "Blocktasche deaktiviert!",
 	"messages.securitycraft:blockpocket.assembled": "Blocktasche aufgebaut!",
 	"messages.securitycraft:blockpocket.assemblyFailed": "Die Blocktasche konnte nicht aufgebaut werden. Inkorrekter Block \"%2$s\" %1$s dem Blocktaschenverwalter.",
+	"messages.securitycraft:ownable.validate": "The owner of this block has been successfully validated.",
+	"messages.securitycraft:ownable.ownerNotValidated": "This block's owner has been changed by the Universal Owner Changer, and thus  needs to be validated by the new owner to work again. To validate a block, the new owner of the block has to rightclick it.",
 
 	"jei.securitycraft.category.reinforcing": "Blöcke verstärken",
 	"jei.securitycraft.category.unreinforcing": "Verstärkung entfernen",

@@ -68,8 +68,7 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 
 		if(owner != null)
 		{
-			tag.putString("owner", owner.getName());
-			tag.putString("ownerUUID", owner.getUUID());
+			owner.save(tag);
 		}
 
 		if(passcode != null && !passcode.isEmpty())
@@ -87,8 +86,7 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
-		owner.setOwnerName(tag.getString("owner"));
-		owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.load(tag);
 		passcode = tag.getString("passcode");
 		furnaceCustomName = new TextComponent(tag.getString("CustomName"));
 	}

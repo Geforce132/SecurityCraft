@@ -357,12 +357,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		this.extending = compound.getBoolean("extending");
 		this.isSourcePiston = compound.getBoolean("source");
 		this.movedBlockEntityTag = (CompoundTag)compound.get("movedBlockEntityTag");
-
-		if (compound.contains("owner"))
-			owner.setOwnerName(compound.getString("owner"));
-
-		if (compound.contains("ownerUUID"))
-			owner.setOwnerUUID(compound.getString("ownerUUID"));
+		owner.load(compound);
 	}
 
 	@Override
@@ -378,8 +373,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 			compound.put("movedBlockEntityTag", this.movedBlockEntityTag);
 
 		if(owner != null){
-			compound.putString("owner", owner.getName());
-			compound.putString("ownerUUID", owner.getUUID());
+			owner.save(movedBlockEntityTag);
 		}
 
 		return compound;

@@ -10,15 +10,22 @@ import com.google.common.collect.Maps;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -34,6 +41,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 
@@ -51,9 +59,33 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 	}
 
 	@Override
+	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (world.getBlockEntity(pos) instanceof OwnableBlockEntity te) {
+			Owner owner = te.getOwner();
+
+			if (!owner.isValidated()) {
+				if (owner.isOwner(player)) {
+					owner.setValidated(true);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), new TranslatableComponent("messages.securitycraft:ownable.validate"), ChatFormatting.GREEN);
+					return InteractionResult.SUCCESS;
+				}
+
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), new TranslatableComponent("messages.securitycraft:ownable.ownerNotValidated"), ChatFormatting.RED);
+				return InteractionResult.SUCCESS;
+			}
+		}
+
+		return InteractionResult.PASS;
+	}
+
+	@Override
 	public void checkIfExtend(Level world, BlockPos pos, BlockState state) {
 		Direction direction = state.getValue(FACING);
 		boolean hasSignal = this.getNeighborSignal(world, pos, direction);
+
+		if (world.getBlockEntity(pos) instanceof OwnableBlockEntity te && !te.getOwner().isValidated()) {
+			return;
+		}
 
 		if (hasSignal && !state.getValue(EXTENDED)) {
 			if ((new ReinforcedPistonStructureResolver(world, pos, direction, true)).resolve()) {
