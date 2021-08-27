@@ -22,12 +22,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSentryRemoteAccessTool extends Item {
+	private static final Style GRAY_STYLE = new Style().setColor(TextFormatting.GRAY);
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
@@ -105,9 +107,9 @@ public class ItemSentryRemoteAccessTool extends Item {
 					if(!sentries.isEmpty() && sentries.get(0).hasCustomName())
 						nameToShow = sentries.get(0).getCustomNameTag();
 					else
-						nameToShow = Utils.localize("tooltip.securitycraft:sentry").getFormattedText() + " " + i;
+						nameToShow = Utils.localize("tooltip.securitycraft:sentry").getFormattedText() + TextFormatting.GRAY + " " + i;
 
-					list.add(nameToShow + ": " + Utils.getFormattedCoordinates(pos));
+					list.add(nameToShow + ": " + Utils.getFormattedCoordinates(pos).setStyle(GRAY_STYLE).getFormattedText());
 				}
 			}
 			else

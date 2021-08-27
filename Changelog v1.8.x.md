@@ -4,6 +4,7 @@
 - Fix: Secret Signs cannot be broken (old secret signs will still not work, you will have to remove them in creative mode)
 - Fix: Alarm sound does not play
 - Fix: Claymore does not explode
+- Fix: Tooltip of Sentry Remote Access Tool does not show properly
 
 --------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
 
