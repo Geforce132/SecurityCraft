@@ -3,7 +3,7 @@
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play
 - Fix: Claymore does not explode
-- Fix: Some blocks/items were not in the correct block/item tags
+- Fix: Some blocks/items are not in the correct block/item tags
 
 --------------------------Changelog for v1.8.23 of SecurityCraft--------------------------
 
