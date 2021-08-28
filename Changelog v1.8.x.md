@@ -5,6 +5,7 @@
 - Fix: Alarm sound does not play
 - Fix: Claymore does not explode
 - Fix: Some blocks/items are not in the correct block/item tags
+- Fix: The top half of the Keypad Door does not get affected by resource packs
 
 --------------------------Changelog for v1.8.23-beta4 of SecurityCraft--------------------------
 
