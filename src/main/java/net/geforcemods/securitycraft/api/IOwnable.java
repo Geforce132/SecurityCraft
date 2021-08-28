@@ -42,7 +42,6 @@ public interface IOwnable {
 	 */
 	public void setOwner(String uuid, String name);
 
-
 	/**
      *
 	 * @return true if the owner of this IOwnable should be invalidated when changed by the Universal Owner Changer
@@ -52,11 +51,12 @@ public interface IOwnable {
 	}
 
 	/**
-	 * Executes actions after the owner has been changed, for example making sure the owner of both halves of SecurityCraft's doors get changed
+	 * Executes actions after the owner has been changed, for example making sure the owner of both halves of SecurityCraft's doors get changed, and marks IOwnables that need validation as invalidated
 	 *
 	 * @param world The current world
 	 * @param state The IOwnable's state
 	 * @param pos The IOwnable's position
+	 * @param player The player that changed the owner of the IOwnable
 	 */
 	default void onOwnerChanged(BlockState state, Level world, BlockPos pos, Player player) {
 		if(state.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
