@@ -55,10 +55,13 @@ public class Owner {
 			validated = tag.getBoolean("ownerValidated");
 	}
 
-	public void save(CompoundTag tag) {
+	public void save(CompoundTag tag, boolean saveValidationStatus) {
 		tag.putString("owner", playerName);
 		tag.putString("ownerUUID", playerUUID);
-		tag.putBoolean("ownerValidated", validated);
+
+		if (saveValidationStatus) {
+			tag.putBoolean("ownerValidated", validated);
+		}
 	}
 
 	/**

@@ -76,7 +76,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 			tag.putString("passcode", passcode);
 
 		if(owner != null){
-			owner.save(tag);
+			owner.save(tag, false);
 		}
 
 		return tag;

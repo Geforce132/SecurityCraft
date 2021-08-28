@@ -36,7 +36,7 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 		super.save(tag);
 
 		if(owner != null){
-			owner.save(tag);
+			owner.save(tag, needsValidation());
 		}
 
 		return tag;

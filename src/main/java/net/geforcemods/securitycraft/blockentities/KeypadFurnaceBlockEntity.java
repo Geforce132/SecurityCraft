@@ -68,7 +68,7 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 
 		if(owner != null)
 		{
-			owner.save(tag);
+			owner.save(tag, false);
 		}
 
 		if(passcode != null && !passcode.isEmpty())

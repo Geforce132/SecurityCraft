@@ -373,7 +373,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 			compound.put("movedBlockEntityTag", this.movedBlockEntityTag);
 
 		if(owner != null){
-			owner.save(movedBlockEntityTag);
+			owner.save(movedBlockEntityTag, false);
 		}
 
 		return compound;

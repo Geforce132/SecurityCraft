@@ -455,7 +455,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 		CompoundTag tag = new CompoundTag();
 		Owner owner = entityData.get(OWNER);
 
-		owner.save(tag);
+		owner.save(tag, false);
 		return tag;
 	}
 
