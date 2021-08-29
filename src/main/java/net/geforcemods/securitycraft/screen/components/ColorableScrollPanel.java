@@ -20,7 +20,7 @@ public abstract class ColorableScrollPanel extends ScrollPanel
 		{
 			return ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8) | (a & 0xFF);
 		}
-	};
+	}
 
 	protected final int barWidth = 6;
 	public final int barLeft;

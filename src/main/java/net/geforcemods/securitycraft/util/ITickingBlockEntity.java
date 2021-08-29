@@ -6,5 +6,5 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public interface ITickingBlockEntity
 {
-	default void tick(Level world, BlockPos pos, BlockState state) {};
+	default void tick(Level world, BlockPos pos, BlockState state) {}
 }

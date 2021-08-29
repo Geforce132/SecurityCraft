@@ -23,7 +23,7 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 	public ReinforcedPistonHeadRenderer(BlockEntityRendererProvider.Context ctx) {
 		this.blockRenderer = ctx.getBlockRenderDispatcher();
 	}
-	
+
 	@Override
 	public void render(ReinforcedPistonMovingBlockEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 		Level world = te.getLevel();
@@ -66,6 +66,7 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 		net.minecraftforge.client.ForgeHooksClient.renderPistonMovedBlocks(pos, state, stack, buffer, world, checkSides, combinedOverlay, blockRenderer == null ? blockRenderer = Minecraft.getInstance().getBlockRenderer() : blockRenderer);
 	}
 
+	@Override
 	public int getViewDistance() {
 		return 68;
 	}

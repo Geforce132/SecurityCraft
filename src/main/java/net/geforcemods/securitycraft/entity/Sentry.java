@@ -254,7 +254,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 
 				entityData.set(DISGUISE_MODULE, new CompoundTag());
 				entityData.set(ALLOWLIST, new CompoundTag());
-				entityData.set(HAS_SPEED_MODULE, false);;
+				entityData.set(HAS_SPEED_MODULE, false);
 			}
 			else if(item == SCContent.REMOTE_ACCESS_SENTRY.get()) //bind/unbind sentry to remote control
 				item.useOn(new UseOnContext(player, hand, new BlockHitResult(new Vec3(0.0D, 0.0D, 0.0D), Direction.NORTH, pos, false)));
