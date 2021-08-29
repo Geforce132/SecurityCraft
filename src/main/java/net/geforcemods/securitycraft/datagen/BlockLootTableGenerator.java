@@ -85,6 +85,7 @@ public class BlockLootTableGenerator implements DataProvider
 			}
 		}
 
+		lootTables.remove(SCContent.REINFORCED_PISTON_HEAD);
 		putMineLootTable(SCContent.ANCIENT_DEBRIS_MINE);
 		putSlabLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
 
