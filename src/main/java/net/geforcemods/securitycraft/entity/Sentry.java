@@ -455,8 +455,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 		CompoundTag tag = new CompoundTag();
 		Owner owner = entityData.get(OWNER);
 
-		tag.putString("owner", owner.getName());
-		tag.putString("ownerUUID", owner.getUUID());
+		owner.save(tag, false);
 		return tag;
 	}
 
@@ -464,10 +463,9 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	public void readAdditionalSaveData(CompoundTag tag)
 	{
 		CompoundTag teTag = tag.getCompound("TileEntityData");
-		String name = teTag.getString("owner");
-		String uuid = teTag.getString("ownerUUID");
+		Owner owner = Owner.fromCompound(teTag);
 
-		entityData.set(OWNER, new Owner(name, uuid));
+		entityData.set(OWNER, owner);
 		entityData.set(DISGUISE_MODULE, tag.getCompound("InstalledModule"));
 		entityData.set(ALLOWLIST, tag.getCompound("InstalledWhitelist"));
 		entityData.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));

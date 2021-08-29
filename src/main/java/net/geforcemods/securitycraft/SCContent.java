@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ScannerDoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
@@ -30,6 +31,7 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
@@ -94,10 +96,13 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLanternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLavaCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLayeredCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMovingPistonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedNyliumBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObserverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObsidianBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonHeadBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneLampBlock;
@@ -175,6 +180,7 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -652,6 +658,8 @@ public class SCContent
 
 	//ordered by vanilla redstone tab order
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock(prop(Material.METAL).sound(SoundType.METAL), Blocks.REDSTONE_BLOCK));
+	@Reinforced public static final RegistryObject<Block> REINFORCED_PISTON = BLOCKS.register("reinforced_piston", () -> new ReinforcedPistonBaseBlock(false, prop(Material.PISTON).isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED))));
+	@Reinforced public static final RegistryObject<Block> REINFORCED_STICKY_PISTON = BLOCKS.register("reinforced_sticky_piston", () -> new ReinforcedPistonBaseBlock(true, prop(Material.PISTON).isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED))));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop()));
 	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(Material.METAL, MaterialColor.STONE).sound(SoundType.METAL).noOcclusion()));
 	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(Material.WOOD).noCollission().sound(SoundType.WOOD)));
@@ -692,6 +700,8 @@ public class SCContent
 	@Reinforced(customTint=0x15B3A2) public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(), SCContent.STAIRS_CRYSTAL_QUARTZ));
 	@OwnableTE public static final RegistryObject<Block> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(prop(Material.METAL).sound(SoundType.METAL), Blocks.IRON_BLOCK));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DIRT_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedDirtPathBlock(prop(Material.DIRT).sound(SoundType.GRASS), Blocks.DIRT_PATH));
+	public static final RegistryObject<Block> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop(Material.PISTON).dynamicShape().noDrops().noOcclusion().isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> false).isViewBlocking((s, w, p) -> false)));
+	@Reinforced(registerBlockItem=false) public static final RegistryObject<Block> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop(Material.PISTON).noDrops()));
 
 	//items
 	@HasManualPage(hasRecipeDescription=true) public static final RegistryObject<Item> ADMIN_TOOL = ITEMS.register("admin_tool", () -> new AdminToolItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).stacksTo(1)));
@@ -807,6 +817,10 @@ public class SCContent
 	public static BlockEntityType<ReinforcedIronBarsBlockEntity> beTypeReinforcedIronBars;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_cauldron")
 	public static BlockEntityType<ReinforcedCauldronBlockEntity> beTypeReinforcedCauldron;
+	@ObjectHolder(SecurityCraft.MODID + ":reinforced_piston")
+	public static BlockEntityType<ReinforcedPistonMovingBlockEntity> beTypeReinforcedPiston;
+	@ObjectHolder(SecurityCraft.MODID + ":validation_ownable")
+	public static BlockEntityType<ValidationOwnableBlockEntity> beTypeValidationOwnable;
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")

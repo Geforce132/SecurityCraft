@@ -36,8 +36,7 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 		super.save(tag);
 
 		if(owner != null){
-			tag.putString("owner", owner.getName());
-			tag.putString("ownerUUID", owner.getUUID());
+			owner.save(tag, needsValidation());
 		}
 
 		return tag;
@@ -51,11 +50,7 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 	{
 		super.load(tag);
 
-		if (tag.contains("owner"))
-			owner.setOwnerName(tag.getString("owner"));
-
-		if (tag.contains("ownerUUID"))
-			owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.load(tag);
 	}
 
 	@Override

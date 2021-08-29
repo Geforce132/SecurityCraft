@@ -441,6 +441,8 @@
     "securitycraft:reinforced_soul_lantern",
     "securitycraft:reinforced_shroomlight",
     "securitycraft:reinforced_redstone_block",
+    "securitycraft:reinforced_piston",
+    "securitycraft:reinforced_sticky_piston",
     "securitycraft:reinforced_observer",
     "securitycraft:reinforced_hopper",
     "securitycraft:reinforced_lever",
@@ -476,6 +478,8 @@
     "securitycraft:reinforced_crystal_quartz_slab",
     "securitycraft:reinforced_crystal_quartz_stairs",
     "securitycraft:horizontal_reinforced_iron_bars",
-    "securitycraft:reinforced_grass_path"
+    "securitycraft:reinforced_grass_path",
+    "securitycraft:reinforced_moving_piston",
+    "securitycraft:reinforced_piston_head"
   ]
 }
