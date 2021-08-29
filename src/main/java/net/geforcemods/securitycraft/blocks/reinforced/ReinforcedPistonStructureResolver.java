@@ -12,50 +12,51 @@ import net.minecraft.world.level.material.PushReaction;
 
 public class ReinforcedPistonStructureResolver { //this class doesn't extend PistonStructureResolver because the content of that whole class is private
 
-	private final Level world;
+	private final Level level;
 	private final BlockPos pistonPos;
 	private final boolean extending;
 	private final BlockPos startPos;
 	private final Direction pushDirection;
-	/** All block positions to be moved by the piston */
 	private final List<BlockPos> toPush = Lists.newArrayList();
-	/** All blocks to be destroyed by the piston */
 	private final List<BlockPos> toDestroy = Lists.newArrayList();
 	private final Direction pistonDirection;
 
-	public ReinforcedPistonStructureResolver(Level world, BlockPos pos, Direction pistonFacing, boolean extending) {
-		this.world = world;
-		this.pistonPos = pos;
-		this.pistonDirection = pistonFacing;
+	public ReinforcedPistonStructureResolver(Level level, BlockPos pos, Direction pistonFacing, boolean extending) {
+		this.level = level;
+		pistonPos = pos;
+		pistonDirection = pistonFacing;
 		this.extending = extending;
+
 		if (extending) {
-			this.pushDirection = pistonFacing;
-			this.startPos = pos.relative(pistonFacing);
+			pushDirection = pistonFacing;
+			startPos = pos.relative(pistonFacing);
 		} else {
-			this.pushDirection = pistonFacing.getOpposite();
-			this.startPos = pos.relative(pistonFacing, 2);
+			pushDirection = pistonFacing.getOpposite();
+			startPos = pos.relative(pistonFacing, 2);
 		}
 
 	}
 
 	public boolean resolve() {
-		this.toPush.clear();
-		this.toDestroy.clear();
-		BlockState blockstate = this.world.getBlockState(this.startPos);
+		BlockState state = level.getBlockState(startPos);
 
-		if (!ReinforcedPistonBaseBlock.isPushable(blockstate, this.world, this.pistonPos, this.startPos, this.pushDirection, false, this.pistonDirection)) {
-			if (this.extending && blockstate.getPistonPushReaction() == PushReaction.DESTROY) {
-				this.toDestroy.add(this.startPos);
+		toPush.clear();
+		toDestroy.clear();
+
+		if (!ReinforcedPistonBaseBlock.isPushable(state, level, pistonPos, startPos, pushDirection, false, pistonDirection)) {
+			if (extending && state.getPistonPushReaction() == PushReaction.DESTROY) {
+				toDestroy.add(startPos);
 				return true;
 			} else {
 				return false;
 			}
-		} else if (!this.addBlockLine(this.startPos, this.pushDirection)) {
+		} else if (!addBlockLine(startPos, pushDirection)) {
 			return false;
 		} else {
-			for(int i = 0; i < this.toPush.size(); ++i) {
-				BlockPos blockpos = this.toPush.get(i);
-				if (this.world.getBlockState(blockpos).isStickyBlock() && !this.addBranchingBlocks(blockpos)) {
+			for(int i = 0; i < toPush.size(); ++i) {
+				BlockPos pos = toPush.get(i);
+
+				if (level.getBlockState(pos).isStickyBlock() && !addBranchingBlocks(pos)) {
 					return false;
 				}
 			}
@@ -65,31 +66,36 @@ public class ReinforcedPistonStructureResolver { //this class doesn't extend Pis
 	}
 
 	private boolean addBlockLine(BlockPos originPos, Direction facing) {
-		BlockState blockstate = this.world.getBlockState(originPos);
-		if (world.isEmptyBlock(originPos)) {
+		BlockState state = level.getBlockState(originPos);
+
+		if (level.isEmptyBlock(originPos)) {
 			return true;
-		} else if (!ReinforcedPistonBaseBlock.isPushable(blockstate, this.world, this.pistonPos, originPos, this.pushDirection, false, facing)) {
+		} else if (!ReinforcedPistonBaseBlock.isPushable(state, level, pistonPos, originPos, pushDirection, false, facing)) {
 			return true;
-		} else if (originPos.equals(this.pistonPos)) {
+		} else if (originPos.equals(pistonPos)) {
 			return true;
-		} else if (this.toPush.contains(originPos)) {
+		} else if (toPush.contains(originPos)) {
 			return true;
 		} else {
 			int i = 1;
-			if (i + this.toPush.size() > 12) {
+			if (i + toPush.size() > 12) {
 				return false;
 			} else {
 				BlockState oldState;
-				while(blockstate.isStickyBlock()) {
-					BlockPos blockpos = originPos.relative(this.pushDirection.getOpposite(), i);
-					oldState = blockstate;
-					blockstate = this.world.getBlockState(blockpos);
-					if (blockstate.isAir() || !oldState.canStickTo(blockstate) || !ReinforcedPistonBaseBlock.isPushable(blockstate, this.world, this.pistonPos, blockpos, this.pushDirection, false, this.pushDirection.getOpposite()) || blockpos.equals(this.pistonPos)) {
+
+				while(state.isStickyBlock()) {
+					BlockPos offsetPos = originPos.relative(pushDirection.getOpposite(), i);
+
+					oldState = state;
+					state = level.getBlockState(offsetPos);
+
+					if (state.isAir() || !oldState.canStickTo(state) || !ReinforcedPistonBaseBlock.isPushable(state, level, pistonPos, offsetPos, pushDirection, false, pushDirection.getOpposite()) || offsetPos.equals(pistonPos)) {
 						break;
 					}
 
 					++i;
-					if (i + this.toPush.size() > 12) {
+
+					if (i + toPush.size() > 12) {
 						return false;
 					}
 				}
@@ -97,21 +103,24 @@ public class ReinforcedPistonStructureResolver { //this class doesn't extend Pis
 				int l = 0;
 
 				for(int i1 = i - 1; i1 >= 0; --i1) {
-					this.toPush.add(originPos.relative(this.pushDirection.getOpposite(), i1));
+					toPush.add(originPos.relative(pushDirection.getOpposite(), i1));
 					++l;
 				}
 
 				int j1 = 1;
 
 				while(true) {
-					BlockPos blockpos1 = originPos.relative(this.pushDirection, j1);
-					int j = this.toPush.indexOf(blockpos1);
+					BlockPos offsetPos = originPos.relative(pushDirection, j1);
+
+					int j = toPush.indexOf(offsetPos);
+
 					if (j > -1) {
 						this.reorderListAtCollision(l, j);
 
 						for(int k = 0; k <= j + l; ++k) {
-							BlockPos blockpos2 = this.toPush.get(k);
-							if (this.world.getBlockState(blockpos2).isStickyBlock() && !this.addBranchingBlocks(blockpos2)) {
+							BlockPos posToPush = toPush.get(k);
+
+							if (level.getBlockState(posToPush).isStickyBlock() && !addBranchingBlocks(posToPush)) {
 								return false;
 							}
 						}
@@ -119,25 +128,26 @@ public class ReinforcedPistonStructureResolver { //this class doesn't extend Pis
 						return true;
 					}
 
-					blockstate = this.world.getBlockState(blockpos1);
-					if (blockstate.isAir()) {
+					state = level.getBlockState(offsetPos);
+
+					if (state.isAir()) {
 						return true;
 					}
 
-					if (!ReinforcedPistonBaseBlock.isPushable(blockstate, this.world, this.pistonPos, blockpos1, this.pushDirection, true, this.pushDirection) || blockpos1.equals(this.pistonPos)) {
+					if (!ReinforcedPistonBaseBlock.isPushable(state, level, pistonPos, offsetPos, pushDirection, true, pushDirection) || offsetPos.equals(pistonPos)) {
 						return false;
 					}
 
-					if (blockstate.getPistonPushReaction() == PushReaction.DESTROY) {
-						this.toDestroy.add(blockpos1);
+					if (state.getPistonPushReaction() == PushReaction.DESTROY) {
+						toDestroy.add(offsetPos);
 						return true;
 					}
 
-					if (this.toPush.size() >= 12) {
+					if (toPush.size() >= 12) {
 						return false;
 					}
 
-					this.toPush.add(blockpos1);
+					toPush.add(offsetPos);
 					++l;
 					++j1;
 				}
@@ -150,23 +160,24 @@ public class ReinforcedPistonStructureResolver { //this class doesn't extend Pis
 		List<BlockPos> list1 = Lists.newArrayList();
 		List<BlockPos> list2 = Lists.newArrayList();
 
-		list.addAll(this.toPush.subList(0, index));
-		list1.addAll(this.toPush.subList(this.toPush.size() - offsets, this.toPush.size()));
-		list2.addAll(this.toPush.subList(index, this.toPush.size() - offsets));
-		this.toPush.clear();
-		this.toPush.addAll(list);
-		this.toPush.addAll(list1);
-		this.toPush.addAll(list2);
+		list.addAll(toPush.subList(0, index));
+		list1.addAll(toPush.subList(toPush.size() - offsets, toPush.size()));
+		list2.addAll(toPush.subList(index, toPush.size() - offsets));
+		toPush.clear();
+		toPush.addAll(list);
+		toPush.addAll(list1);
+		toPush.addAll(list2);
 	}
 
 	private boolean addBranchingBlocks(BlockPos fromPos) {
-		BlockState blockstate = this.world.getBlockState(fromPos);
+		BlockState state = level.getBlockState(fromPos);
 
 		for(Direction direction : Direction.values()) {
-			if (direction.getAxis() != this.pushDirection.getAxis()) {
-				BlockPos blockpos = fromPos.relative(direction);
-				BlockState blockstate1 = this.world.getBlockState(blockpos);
-				if (blockstate1.canStickTo(blockstate) && !this.addBlockLine(blockpos, direction)) {
+			if (direction.getAxis() != pushDirection.getAxis()) {
+				BlockPos offsetPos = fromPos.relative(direction);
+				BlockState offsetState = level.getBlockState(offsetPos);
+
+				if (offsetState.canStickTo(state) && !addBlockLine(offsetPos, direction)) {
 					return false;
 				}
 			}
@@ -176,19 +187,13 @@ public class ReinforcedPistonStructureResolver { //this class doesn't extend Pis
 	}
 
 	public Direction getPushDirection() {
-		return this.pushDirection;
+		return pushDirection;
 	}
 
-	/**
-	 * @return all block positions to be moved by the piston
-	 */
 	public List<BlockPos> getToPush() {
 		return this.toPush;
 	}
 
-	/**
-	 * @return all block positions to be destroyed by the piston
-	 */
 	public List<BlockPos> getToDestroy() {
 		return this.toDestroy;
 	}

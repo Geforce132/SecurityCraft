@@ -41,46 +41,35 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			BlockEntity te = worldIn.getBlockEntity(pos);
-
-			if (te instanceof ReinforcedPistonMovingBlockEntity pistonBlockEntity) {
+			if (level.getBlockEntity(pos) instanceof ReinforcedPistonMovingBlockEntity pistonBlockEntity) {
 				pistonBlockEntity.finalTick();
 			}
-
 		}
 	}
 
-	/**
-	 * Called after this block has been removed by a player.
-	 */
 	@Override
-	public void destroy(LevelAccessor worldIn, BlockPos pos, BlockState state) {
-		BlockPos blockpos = pos.relative(state.getValue(FACING).getOpposite());
-		BlockState blockstate = worldIn.getBlockState(blockpos);
-		if (blockstate.getBlock() instanceof ReinforcedPistonBaseBlock && blockstate.getValue(PistonBaseBlock.EXTENDED)) {
-			worldIn.removeBlock(blockpos, false);
-		}
+	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
+		BlockPos oppositePos = pos.relative(state.getValue(FACING).getOpposite());
+		BlockState oppositeState = level.getBlockState(oppositePos);
 
+		if (oppositeState.getBlock() instanceof ReinforcedPistonBaseBlock && oppositeState.getValue(PistonBaseBlock.EXTENDED)) {
+			level.removeBlock(oppositePos, false);
+		}
 	}
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		ReinforcedPistonMovingBlockEntity reinforcedPistonMovingBlockEntity = this.getBlockEntity(builder.getLevel(), new BlockPos(builder.getParameter(LootContextParams.ORIGIN)));
-		return reinforcedPistonMovingBlockEntity == null ? Collections.emptyList() : reinforcedPistonMovingBlockEntity.getMovedState().getDrops(builder);
+		if(builder.getLevel().getBlockEntity(new BlockPos(builder.getParameter(LootContextParams.ORIGIN))) instanceof ReinforcedPistonMovingBlockEntity be)
+			return be.getMovedState().getDrops(builder);
+		else return Collections.emptyList();
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		ReinforcedPistonMovingBlockEntity reinforcedPistonMovingBlockEntity = this.getBlockEntity(world, pos);
-
-		return reinforcedPistonMovingBlockEntity != null ? reinforcedPistonMovingBlockEntity.getCollisionShape(world, pos) : Shapes.empty();
-	}
-
-	private ReinforcedPistonMovingBlockEntity getBlockEntity(BlockGetter world, BlockPos pos) {
-		BlockEntity te = world.getBlockEntity(pos);
-
-		return te instanceof ReinforcedPistonMovingBlockEntity ? (ReinforcedPistonMovingBlockEntity)te : null;
+		if(world.getBlockEntity(pos) instanceof ReinforcedPistonMovingBlockEntity be)
+			return be.getCollisionShape(world, pos);
+		else return Shapes.empty();
 	}
 }

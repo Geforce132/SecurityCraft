@@ -27,41 +27,40 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements Entity
 	}
 
 	@Override
-	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if(placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(worldIn, pos, player));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 
-		super.setPlacedBy(worldIn, pos, state, placer, stack);
+		super.setPlacedBy(level, pos, state, placer, stack);
 	}
 
 	@Override
-	public boolean isFittingBase(BlockState pBaseState, BlockState pExtendedState) {
-		Block block = pBaseState.getValue(TYPE) == PistonType.DEFAULT ? SCContent.REINFORCED_PISTON.get() : SCContent.REINFORCED_STICKY_PISTON.get();
+	public boolean isFittingBase(BlockState baseState, BlockState extendedState) {
+		Block block = baseState.getValue(TYPE) == PistonType.DEFAULT ? SCContent.REINFORCED_PISTON.get() : SCContent.REINFORCED_STICKY_PISTON.get();
 
-		return pExtendedState.is(block) && pExtendedState.getValue(PistonBaseBlock.EXTENDED) && pExtendedState.getValue(FACING) == pBaseState.getValue(FACING);
+		return extendedState.is(block) && extendedState.getValue(PistonBaseBlock.EXTENDED) && extendedState.getValue(FACING) == baseState.getValue(FACING);
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			super.onRemove(state, world, pos, newState, isMoving);
-			BlockPos blockPos = pos.relative(state.getValue(FACING).getOpposite());
+			super.onRemove(state, level, pos, newState, isMoving);
 
-			if (isFittingBase(state, world.getBlockState(blockPos))) {
-				world.destroyBlock(pos, true);
+			if (isFittingBase(state, level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())))) {
+				level.destroyBlock(pos, true);
 			}
-
 		}
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-		BlockState blockstate = worldIn.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
-		return isFittingBase(state, blockstate) || blockstate.is(SCContent.REINFORCED_MOVING_PISTON.get()) && blockstate.getValue(FACING) == state.getValue(FACING);
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+		BlockState oppositeState = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
+
+		return isFittingBase(state, oppositeState) || oppositeState.is(SCContent.REINFORCED_MOVING_PISTON.get()) && oppositeState.getValue(FACING) == state.getValue(FACING);
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter world, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
 		return new ItemStack(state.getValue(TYPE) == PistonType.STICKY ? SCContent.REINFORCED_STICKY_PISTON.get() : SCContent.REINFORCED_PISTON.get());
 	}
 
