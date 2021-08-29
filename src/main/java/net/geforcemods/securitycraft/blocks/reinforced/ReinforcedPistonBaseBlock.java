@@ -224,7 +224,9 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				else {
 					if (!state.is(Blocks.PISTON) && !state.is(Blocks.STICKY_PISTON) && !state.is(SCContent.REINFORCED_PISTON.get()) && !state.is(SCContent.REINFORCED_STICKY_PISTON.get())) {
 						if (state.getBlock() instanceof IReinforcedBlock) {
-							return isSameOwner(pos, pistonPos, world);
+							if (!isSameOwner(pos, pistonPos, world)) {
+								return false;
+							}
 						}
 						else if (state.getDestroySpeed(world, pos) == -1.0F) {
 							return false;
