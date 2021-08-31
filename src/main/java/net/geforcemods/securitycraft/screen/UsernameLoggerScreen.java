@@ -49,12 +49,9 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 			tileEntity.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getBlockPos()));
 		})).active = tileEntity.getOwner().isOwner(minecraft.player);
-		addRenderableOnly(playerList = new PlayerList(minecraft, imageWidth - 24, imageHeight - 40, topPos + 20, leftPos + 12));
+		addRenderableWidget(playerList = new PlayerList(minecraft, imageWidth - 24, imageHeight - 40, topPos + 20, leftPos + 12));
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
 	@Override
 	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY)
 	{
@@ -72,15 +69,6 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
 		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
-	}
-
-	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double scroll)
-	{
-		if(playerList != null && playerList.isMouseOver(mouseX, mouseY))
-			playerList.mouseScrolled(mouseX, mouseY, scroll);
-
-		return super.mouseScrolled(mouseX, mouseY, scroll);
 	}
 
 	@Override

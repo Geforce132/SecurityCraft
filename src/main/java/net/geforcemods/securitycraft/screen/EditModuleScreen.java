@@ -65,7 +65,7 @@ public class EditModuleScreen extends Screen
 		addRenderableWidget(pasteButton = new IdButton(3, controlsStartX, height / 2 + 30, 76, 20, Utils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed));
 		addRenderableWidget(clearButton = new IdButton(4, controlsStartX, height / 2 + 55, 76, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed));
 		addRenderableWidget(clearButton);
-		addRenderableOnly(playerList = new PlayerList(minecraft, 110, 141, height / 2 - 66, guiLeft + 10));
+		addRenderableWidget(playerList = new PlayerList(minecraft, 110, 141, height / 2 - 66, guiLeft + 10));
 
 		addButton.active = false;
 		removeButton.active = false;
@@ -127,15 +127,6 @@ public class EditModuleScreen extends Screen
 		blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		font.drawWordWrap(editModule, startX + xSize / 2 - font.width(editModule) / 2, startY + 6, width, 4210752);
-	}
-
-	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double scroll)
-	{
-		if(playerList != null && playerList.isMouseOver(mouseX, mouseY))
-			playerList.mouseScrolled(mouseX, mouseY, scroll);
-
-		return super.mouseScrolled(mouseX, mouseY, scroll);
 	}
 
 	@Override

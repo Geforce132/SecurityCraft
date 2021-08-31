@@ -61,7 +61,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 	protected void init() {
 		super.init();
 
-		addRenderableOnly(projectileList = new ProjectileScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
+		addRenderableWidget(projectileList = new ProjectileScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
 	}
 
 	@Override
