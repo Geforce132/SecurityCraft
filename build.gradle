@@ -41,7 +41,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '2021.08.22-1.17.1'
+    mappings channel: 'parchment', version: '2021.08.29-1.17.1'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
 	runs {
@@ -96,7 +96,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.38'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.47'
     
 	implementation fg.deobf("mezz.jei:jei-1.17.1:8.0.0.12")
     implementation fg.deobf("curse.maven:the-one-probe-245211:3430022")
