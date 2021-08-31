@@ -5,6 +5,7 @@
 - Fix: Claymore does not explode
 - Fix: Some blocks/items are not in the correct block/item tags
 - Fix: The top half of the Keypad Door does not get affected by resource packs
+- Fix: Jade display does not properly hide block mines and disguised blocks
 
 --------------------------Changelog for v1.8.23 of SecurityCraft--------------------------
 

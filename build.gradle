@@ -115,7 +115,7 @@ dependencies {
     
 	implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.110")
 	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.1.4-22")
-    implementation fg.deobf("curse.maven:hwyla-253449:3033593")
+    implementation fg.deobf("curse.maven:jade-324717:3439522")
 	compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
 }
 

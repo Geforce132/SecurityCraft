@@ -32,7 +32,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.ModList;
 
 @WailaPlugin(SecurityCraft.MODID)
 public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider
@@ -42,6 +45,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
 	public static final ResourceLocation SHOW_PASSWORDS = new ResourceLocation(SecurityCraft.MODID, "showpasswords");
 	public static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
+	private static final Style MOD_NAME_STYLE = Style.EMPTY.setFormatting(TextFormatting.BLUE).setItalic(true);
+	private static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormatting(TextFormatting.WHITE);
 
 	@Override
 	public void register(IRegistrar registrar)
@@ -50,17 +55,22 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		registrar.addConfig(SHOW_MODULES, true);
 		registrar.addConfig(SHOW_PASSWORDS, true);
 		registrar.addConfig(SHOW_CUSTOM_NAME, true);
+		registrar.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.HEAD, IOverlayDisplay.class);
 		registrar.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.BODY, IOwnable.class);
+		registrar.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.TAIL, IOverlayDisplay.class);
 		registrar.registerStackProvider(INSTANCE, IOverlayDisplay.class);
 		registrar.registerComponentProvider((IEntityComponentProvider) INSTANCE, TooltipPosition.BODY, SentryEntity.class);
 	}
 
 	@Override
 	public ItemStack getStack(IDataAccessor data, IPluginConfig config) {
-		if(data.getBlock() instanceof IOverlayDisplay)
-			return ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
+		return ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
+	}
 
-		return ItemStack.EMPTY;
+	@Override
+	public void appendHead(List<ITextComponent> head, IDataAccessor data, IPluginConfig config)
+	{
+		head.set(0, new TranslationTextComponent(((IOverlayDisplay)data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition()).getTranslationKey()).setStyle(ITEM_NAME_STYLE));
 	}
 
 	@Override
@@ -79,7 +89,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			}
 		}
 
-		if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return;
+		if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition()))
+			return;
 
 		TileEntity te = data.getTileEntity();
 
@@ -110,6 +121,14 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 			body.add(Utils.localize("waila.securitycraft:customName", (((INameable) te).hasCustomSCName() ? text : Utils.localize("waila.securitycraft:customName.notSet"))));
 		}
+	}
+
+	@Override
+	public void appendTail(List<ITextComponent> tail, IDataAccessor data, IPluginConfig config)
+	{
+		ItemStack disguisedAs = ((IOverlayDisplay)data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
+
+		tail.set(0, new StringTextComponent(ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()).setStyle(MOD_NAME_STYLE));
 	}
 
 	@Override
