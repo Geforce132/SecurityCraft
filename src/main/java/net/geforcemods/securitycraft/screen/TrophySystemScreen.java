@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -26,7 +27,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.client.gui.ScrollPanel;
 
 public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 
@@ -61,7 +61,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 	protected void init() {
 		super.init();
 
-		addRenderableOnly(projectileList = new ProjectileScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
+		addRenderableWidget(projectileList = new ProjectileScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
-	class ProjectileScrollList extends ScrollPanel
+	class ProjectileScrollList extends ColorableScrollPanel
 	{
 		private final int slotHeight = 12, listLength = orderedFilterList.size();
 

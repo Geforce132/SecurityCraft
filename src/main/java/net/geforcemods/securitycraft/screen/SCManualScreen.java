@@ -107,7 +107,7 @@ public class SCManualScreen extends Screen {
 		addRenderableWidget(nextSubpage = new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
 		addRenderableWidget(previousSubpage = new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
 		addRenderableWidget(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, TextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
-		addRenderableOnly(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
+		addRenderableWidget(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
 
 		for(int i = 0; i < 3; i++)
 		{

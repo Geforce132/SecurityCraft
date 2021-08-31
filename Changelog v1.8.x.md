@@ -9,6 +9,12 @@
 - Fix: Some blocks/items are not in the correct block/item tags
 - Fix: The top half of the Keypad Door does not get affected by resource packs
 
+--------------------------Changelog for v1.8.23-beta5 of SecurityCraft--------------------------
+
+- Fix: Crash on Forge 37.0.49 and newer
+- Fix: Scrollable lists do not respond (affects Allow-/Denylist Modules, SecurityCraft Manual, Trophy System, Username Logger)
+- Misc.: The minimum Forge version is now 37.0.50
+
 --------------------------Changelog for v1.8.23-beta4 of SecurityCraft--------------------------
 
 - Fix: Reinforced Water/Lava/Powder Snow Cauldrons do not show option and module descriptions correctly

@@ -16,7 +16,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
-import net.geforcemods.securitycraft.screen.components.FixedExtendedButton;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
@@ -35,6 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
+import net.minecraftforge.fmlclient.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
 public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMenu>
@@ -136,9 +136,9 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			}
 		}
 
-		minusThree = addRenderableWidget(new FixedExtendedButton(leftPos + 22, buttonY, 24, buttonHeight, new TextComponent("---"), b -> changeSignature(signature - 100)));
-		minusTwo = addRenderableWidget(new FixedExtendedButton(leftPos + 48, buttonY, 18, buttonHeight, new TextComponent("--"), b -> changeSignature(signature - 10)));
-		minusOne = addRenderableWidget(new FixedExtendedButton(leftPos + 68, buttonY, 12, buttonHeight, new TextComponent("-"), b -> changeSignature(signature - 1)));
+		minusThree = addRenderableWidget(new ExtendedButton(leftPos + 22, buttonY, 24, buttonHeight, new TextComponent("---"), b -> changeSignature(signature - 100)));
+		minusTwo = addRenderableWidget(new ExtendedButton(leftPos + 48, buttonY, 18, buttonHeight, new TextComponent("--"), b -> changeSignature(signature - 10)));
+		minusOne = addRenderableWidget(new ExtendedButton(leftPos + 68, buttonY, 12, buttonHeight, new TextComponent("-"), b -> changeSignature(signature - 1)));
 		reset = addRenderableWidget(new PictureButton(-1, leftPos + 82, buttonY, 12, buttonHeight, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(previousSignature)) {
 			@Override
 			public ResourceLocation getTextureLocation()
@@ -146,13 +146,13 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 				return active ? RESET_TEXTURE : RESET_INACTIVE_TEXTURE;
 			}
 		});
-		plusOne = addRenderableWidget(new FixedExtendedButton(leftPos + 96, buttonY, 12, buttonHeight, new TextComponent("+"), b -> changeSignature(signature + 1)));
-		plusTwo = addRenderableWidget(new FixedExtendedButton(leftPos + 110, buttonY, 18, buttonHeight, new TextComponent("++"), b -> changeSignature(signature + 10)));
-		plusThree = addRenderableWidget(new FixedExtendedButton(leftPos + 130, buttonY, 24, buttonHeight, new TextComponent("+++"), b -> changeSignature(signature + 100)));
+		plusOne = addRenderableWidget(new ExtendedButton(leftPos + 96, buttonY, 12, buttonHeight, new TextComponent("+"), b -> changeSignature(signature + 1)));
+		plusTwo = addRenderableWidget(new ExtendedButton(leftPos + 110, buttonY, 18, buttonHeight, new TextComponent("++"), b -> changeSignature(signature + 10)));
+		plusThree = addRenderableWidget(new ExtendedButton(leftPos + 130, buttonY, 24, buttonHeight, new TextComponent("+++"), b -> changeSignature(signature + 100)));
 		//set correct signature
 		changeSignature(signature);
 		//link button
-		linkButton = addRenderableWidget(new FixedExtendedButton(leftPos + 8, topPos + 126, 70, 20, linkText, b -> {
+		linkButton = addRenderableWidget(new ExtendedButton(leftPos + 8, topPos + 126, 70, 20, linkText, b -> {
 			previousSignature = signature;
 			changeSignature(signature);
 			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getBlockPos(), acceptedLevels, signature, true));
@@ -203,7 +203,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 				}
 			}
 
-			addRenderableWidget(new FixedExtendedButton(leftPos + 135, topPos + 67, 18, 18, isExactLevel ? EQUALS : GREATER_THAN_EQUALS, b -> {
+			addRenderableWidget(new ExtendedButton(leftPos + 135, topPos + 67, 18, 18, isExactLevel ? EQUALS : GREATER_THAN_EQUALS, b -> {
 				boolean change = false;
 
 				isExactLevel = !isExactLevel;
