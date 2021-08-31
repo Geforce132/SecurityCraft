@@ -4,8 +4,9 @@ import java.util.function.Consumer;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraftforge.fmlclient.gui.widget.ExtendedButton;
 
-public class IdButton extends FixedExtendedButton
+public class IdButton extends ExtendedButton
 {
 	public final int id;
 
