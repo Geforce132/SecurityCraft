@@ -17,7 +17,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'eclipse'
 
-version = '1.8.23-beta4'
+version = '1.8.23-beta5'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
@@ -96,7 +96,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.47'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.49'
     
 	implementation fg.deobf("mezz.jei:jei-1.17.1:8.0.0.14")
     implementation fg.deobf("curse.maven:the-one-probe-245211:3430022")

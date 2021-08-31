@@ -10,6 +10,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraftforge.client.gui.ScrollPanel;
 
@@ -113,4 +114,13 @@ public abstract class ColorableScrollPanel extends ScrollPanel
 
 		return barHeight;
 	}
+
+	@Override
+	public NarrationPriority narrationPriority()
+	{
+		return NarrationPriority.NONE;
+	}
+
+	@Override
+	public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 }
