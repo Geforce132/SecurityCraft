@@ -5,6 +5,7 @@
 - Fix: Claymore does not explode
 - Fix: Some blocks/items are not in the correct block/item tags
 - Fix: The top half of the Keypad Door does not get affected by resource packs
+- Fix: Panic Button loses its owner when pressed
 
 --------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
 
