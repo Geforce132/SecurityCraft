@@ -79,13 +79,6 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
-	{
-		super.onRemove(state, world, pos, newState, isMoving);
-		world.removeBlockEntity(pos);
-	}
-
-	@Override
 	public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int id, int param){
 		super.triggerEvent(state, world, pos, id, param);
 		BlockEntity tileentity = world.getBlockEntity(pos);
