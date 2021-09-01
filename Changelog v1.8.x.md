@@ -6,6 +6,7 @@
 - Fix: Some blocks/items are not in the correct block/item tags
 - Fix: The top half of the Keypad Door does not get affected by resource packs
 - Fix: Jade display does not properly hide block mines and disguised blocks
+- Fix: Panic Button loses its owner when pressed
 
 --------------------------Changelog for v1.8.23 of SecurityCraft--------------------------
 

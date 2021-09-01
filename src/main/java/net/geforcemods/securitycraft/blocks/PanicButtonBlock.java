@@ -78,10 +78,12 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onReplaced(BlockState oldState, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
-		super.onReplaced(state, world, pos, newState, isMoving);
-		world.removeTileEntity(pos);
+		super.onReplaced(oldState, world, pos, newState, isMoving);
+
+		if(oldState.getBlock() != newState.getBlock())
+			world.removeTileEntity(pos);
 	}
 
 	@Override
