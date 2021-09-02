@@ -33,6 +33,7 @@ import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -55,6 +56,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -102,6 +104,26 @@ public class SCEventHandler {
 
 		if(event.getSource() == CustomDamageSources.ELECTRICITY)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(event.getEntity().getPosX(), event.getEntity().getPosY(), event.getEntity().getPosZ(), SCSounds.ELECTRIFIED.path, 0.25F, "blocks"));
+	}
+
+	//disallow rightclicking doors, fixes wrenches from other mods being able to switch their state
+	//side effect for keypad door: it is now only openable with an empty hand
+	@SubscribeEvent(priority=EventPriority.HIGHEST)
+	public static void highestPriorityOnRightClickBlock(PlayerInteractEvent.RightClickBlock event)
+	{
+		ItemStack stack = event.getItemStack();
+		Item item = stack.getItem();
+
+		if(!stack.isEmpty() && item != SCContent.UNIVERSAL_BLOCK_REMOVER.get() && item != SCContent.UNIVERSAL_BLOCK_MODIFIER.get())
+		{
+			if(!(item instanceof BlockItem))
+			{
+				Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
+
+				if(block == SCContent.KEYPAD_DOOR.get() || block == SCContent.REINFORCED_DOOR.get() || block == SCContent.REINFORCED_IRON_TRAPDOOR.get() || block == SCContent.SCANNER_DOOR.get())
+					event.setCanceled(true);
+			}
+		}
 	}
 
 	@SubscribeEvent
