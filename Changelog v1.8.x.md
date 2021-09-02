@@ -5,6 +5,7 @@
 - Fix: Alarm sound does not play
 - Fix: Claymore does not explode
 - Fix: Tooltip of Sentry Remote Access Tool does not show properly
+- Fix: Wrenches or similar of other mods are able to open doors
 
 --------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
 

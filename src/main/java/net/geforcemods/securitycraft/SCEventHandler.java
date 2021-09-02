@@ -76,6 +76,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEve
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
@@ -167,6 +168,26 @@ public class SCEventHandler {
 		world.setBlockToAir(pos);
 		event.setFilledBucket(result);
 		event.setResult(Result.ALLOW);
+	}
+
+	//disallow rightclicking doors, fixes wrenches from other mods being able to switch their state
+	//side effect for keypad door: it is now only openable with an empty hand
+	@SubscribeEvent(priority=EventPriority.HIGHEST)
+	public static void highestPriorityOnRightClickBlock(PlayerInteractEvent.RightClickBlock event)
+	{
+		ItemStack stack = event.getItemStack();
+		Item item = stack.getItem();
+
+		if(!stack.isEmpty() && item != SCContent.universalBlockRemover && item != SCContent.universalBlockModifier)
+		{
+			if(!(item instanceof ItemBlock))
+			{
+				Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
+
+				if(block == SCContent.keypadDoor || block == SCContent.reinforcedDoor || block == SCContent.reinforcedIronTrapdoor || block == SCContent.scannerDoor)
+					event.setCanceled(true);
+			}
+		}
 	}
 
 	@SubscribeEvent
