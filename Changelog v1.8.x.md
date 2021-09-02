@@ -6,6 +6,7 @@
 - Fix: Claymore does not explode
 - Fix: Tooltip of Sentry Remote Access Tool does not show properly
 - Fix: Wrenches or similar of other mods are able to open doors
+- Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 
 --------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
 

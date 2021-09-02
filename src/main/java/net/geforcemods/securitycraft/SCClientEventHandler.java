@@ -27,7 +27,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
@@ -190,15 +189,6 @@ public class SCClientEventHandler
 	public static void renderHandEvent(RenderHandEvent event){
 		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player))
 			event.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public static void onMouseClicked(MouseEvent event) {
-		if(Minecraft.getMinecraft().world != null)
-		{
-			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && event.getButton() != 1) //anything other than rightclick
-				event.setCanceled(true);
-		}
 	}
 
 	private static void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight)
