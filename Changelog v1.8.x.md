@@ -10,6 +10,7 @@
 - Fix: The top half of the Keypad Door does not get affected by resource packs
 - Fix: Jade display does not properly hide block mines
 - Fix: Panic Button loses its owner when pressed
+- Fix: Wrenches or similar of other mods are able to open doors
 
 --------------------------Changelog for v1.8.23-beta5 of SecurityCraft--------------------------
 
