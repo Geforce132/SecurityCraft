@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.renderers.EmptyRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.ProjectorTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.ReinforcedPistonTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.RetinalScannerTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraTileEntityRenderer;
@@ -260,6 +261,7 @@ public class ClientHandler
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecretSign, SecretSignTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeTrophySystem, TrophySystemTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeProjector, ProjectorTileEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeReinforcedPiston, ReinforcedPistonTileEntityRenderer::new);
 		ScreenManager.registerFactory(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
@@ -319,6 +321,8 @@ public class ClientHandler
 		toTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), crystalQuartzTint);
 		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
 		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
+		toTint.put(SCContent.REINFORCED_PISTON_HEAD.get(), noTint); //this block doesn't have any default tint, but we need this anyways to add the reinforced tint
+		reinforcedTint.add(SCContent.REINFORCED_PISTON_HEAD.get());
 
 		specialBlockTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (state, world, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.get(ReinforcedSnowyDirtBlock.SNOWY)) {

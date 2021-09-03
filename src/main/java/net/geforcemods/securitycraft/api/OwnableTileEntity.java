@@ -35,8 +35,7 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 		super.write(tag);
 
 		if(owner != null){
-			tag.putString("owner", owner.getName());
-			tag.putString("ownerUUID", owner.getUUID());
+			owner.write(tag, needsValidation());
 		}
 
 		return tag;
@@ -50,11 +49,7 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	{
 		super.read(state, tag);
 
-		if (tag.contains("owner"))
-			owner.setOwnerName(tag.getString("owner"));
-
-		if (tag.contains("ownerUUID"))
-			owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.read(tag);
 	}
 
 	@Override

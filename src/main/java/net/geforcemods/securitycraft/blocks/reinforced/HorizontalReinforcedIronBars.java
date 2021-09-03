@@ -58,7 +58,7 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 		else
 			return getDefaultState().with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getPos()).getFluid() == Fluids.WATER);
 	}
-	
+
 	@Override
 	public FluidState getFluidState(BlockState state)
 	{

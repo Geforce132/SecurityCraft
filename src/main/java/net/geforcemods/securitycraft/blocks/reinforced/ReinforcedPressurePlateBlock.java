@@ -37,11 +37,11 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 
 		if(!world.isRemote && redstoneStrength == 0 && entity instanceof PlayerEntity)
 		{
-			TileEntity tileEntity = world.getTileEntity(pos);
+			TileEntity te = world.getTileEntity(pos);
 
-			if(tileEntity instanceof AllowlistOnlyTileEntity)
+			if(te instanceof AllowlistOnlyTileEntity)
 			{
-				if(isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)tileEntity, (PlayerEntity)entity))
+				if(isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)te, (PlayerEntity)entity))
 					updateState(world, pos, state, redstoneStrength);
 			}
 		}
@@ -57,13 +57,13 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 
 		if(!list.isEmpty())
 		{
-			TileEntity tileEntity = world.getTileEntity(pos);
+			TileEntity te = world.getTileEntity(pos);
 
-			if(tileEntity instanceof AllowlistOnlyTileEntity)
+			if(te instanceof AllowlistOnlyTileEntity)
 			{
 				for(Entity entity : list)
 				{
-					if(entity instanceof PlayerEntity && isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)tileEntity, (PlayerEntity)entity))
+					if(entity instanceof PlayerEntity && isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)te, (PlayerEntity)entity))
 						return 15;
 				}
 			}
