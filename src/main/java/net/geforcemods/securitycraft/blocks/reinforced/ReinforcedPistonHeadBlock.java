@@ -42,17 +42,6 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements Entity
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock()) {
-			super.onRemove(state, level, pos, newState, isMoving);
-
-			if (isFittingBase(state, level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())))) {
-				level.destroyBlock(pos, true);
-			}
-		}
-	}
-
-	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		BlockState oppositeState = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
 

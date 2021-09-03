@@ -79,10 +79,13 @@ public class UniversalBlockReinforcerItem extends Item
 				world.setBlockAndUpdate(pos, convertedState);
 				te = world.getBlockEntity(pos);
 
-				if(tag != null)
-					te.load(tag);
+				if (te != null) { //in case the converted state gets removed immediately after it is placed down
+					if (tag != null)
+						te.load(tag);
 
-				((IOwnable)te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+					((IOwnable)te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				}
+
 				player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
 				return false;
 			}
