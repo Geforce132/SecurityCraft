@@ -254,7 +254,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 				dataManager.set(DISGUISE_MODULE, new CompoundNBT());
 				dataManager.set(ALLOWLIST, new CompoundNBT());
-				dataManager.set(HAS_SPEED_MODULE, false);;
+				dataManager.set(HAS_SPEED_MODULE, false);
 			}
 			else if(item == SCContent.REMOTE_ACCESS_SENTRY.get()) //bind/unbind sentry to remote control
 				item.onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vector3d(0.0D, 0.0D, 0.0D), Direction.NORTH, pos, false)));

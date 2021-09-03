@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.ReinforcedPistonTileEntity;
 import net.geforcemods.securitycraft.tileentity.ValidationOwnableTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.ReinforcedPistonBlockStructureHelper;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -58,11 +59,9 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 	}
 
-
-
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		TileEntity te = level.getTileEntity(pos);
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		TileEntity te = world.getTileEntity(pos);
 
 		if (te instanceof OwnableTileEntity) {
 			Owner owner = ((OwnableTileEntity)te).getOwner();
@@ -115,7 +114,6 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 
 			world.addBlockEvent(pos, this, i, direction.getIndex());
 		}
-
 	}
 
 	private boolean shouldBeExtended(World world, BlockPos pos, Direction direction) { // copied because shouldBeExtended() in PistonBlock is private
@@ -161,7 +159,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 			if (ForgeEventFactory.onPistonMovePre(world, pos, direction, true))
 				return false;
 
-			if (!this.doMove(world, pos, direction, true)) {
+			if (!doMove(world, pos, direction, true)) {
 				return false;
 			}
 
@@ -185,19 +183,19 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 			world.updateBlock(pos, movingPiston.getBlock());
 			movingPiston.updateNeighbours(world, pos, 2);
 
-			if (this.isSticky) {
+			if (isSticky) {
 				BlockPos offsetPos = pos.add(direction.getXOffset() * 2, direction.getYOffset() * 2, direction.getZOffset() * 2);
 				BlockState offsetState = world.getBlockState(offsetPos);
 				boolean flag = false;
 
 				if (offsetState.matchesBlock(SCContent.REINFORCED_MOVING_PISTON.get())) {
-					TileEntity tileentity = world.getTileEntity(offsetPos);
+					TileEntity offsetTe = world.getTileEntity(offsetPos);
 
-					if (tileentity instanceof ReinforcedPistonTileEntity) {
-						ReinforcedPistonTileEntity pistontileentity = (ReinforcedPistonTileEntity)tileentity;
+					if (offsetTe instanceof ReinforcedPistonTileEntity) {
+						ReinforcedPistonTileEntity pistonTe = (ReinforcedPistonTileEntity)offsetTe;
 
-						if (pistontileentity.getFacing() == direction && pistontileentity.isExtending()) {
-							pistontileentity.clearPistonTileEntity();
+						if (pistonTe.getFacing() == direction && pistonTe.isExtending()) {
+							pistonTe.clearPistonTileEntity();
 							flag = true;
 						}
 					}
@@ -222,7 +220,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 	}
 
 	public static boolean canPush(BlockState state, World world, BlockPos pistonPos, BlockPos pos, Direction facing, boolean destroyBlocks, Direction direction) {
-		if (pos.getY() >= 0 && pos.getY() <= world.getHeight() - 1 && world.getWorldBorder().contains(pos)) {
+		if (pos.getY() >= 0 && pos.getY() < world.getHeight() && world.getWorldBorder().contains(pos)) {
 			if (state.isAir()) {
 				return true;
 			} else if (!state.matchesBlock(Blocks.OBSIDIAN) && !state.matchesBlock(Blocks.CRYING_OBSIDIAN) && !state.matchesBlock(Blocks.RESPAWN_ANCHOR) && !state.matchesBlock(SCContent.REINFORCED_OBSIDIAN.get()) && !state.matchesBlock(SCContent.REINFORCED_CRYING_OBSIDIAN.get())) {
@@ -270,6 +268,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		}
 
 		ReinforcedPistonBlockStructureHelper structureHelper = new ReinforcedPistonBlockStructureHelper(world, pos, facing, extending);
+
 		if (!structureHelper.canMove()) {
 			return false;
 		} else {
