@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.24 of SecurityCraft--------------------------
 
+- New: The debug menu now hides block mines and disguised blocks as well
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 
 --------------------------Changelog for v1.8.23 of SecurityCraft--------------------------
