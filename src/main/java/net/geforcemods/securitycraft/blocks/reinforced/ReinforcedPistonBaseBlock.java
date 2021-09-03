@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEn
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.ReinforcedPistonStructureResolver;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

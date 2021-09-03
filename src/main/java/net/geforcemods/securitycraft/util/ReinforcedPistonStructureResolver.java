@@ -1,9 +1,10 @@
-package net.geforcemods.securitycraft.blocks.reinforced;
+package net.geforcemods.securitycraft.util;
 
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
