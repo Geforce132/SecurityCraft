@@ -80,8 +80,8 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 
 				TileEntity te = world.getTileEntity(data.getPos());
 
-				/*if(te instanceof IOwnable)
-					probeInfo.vertical().text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ((IOwnable) te).getOwner().getName()).getString()));*/ //TODO: REENABLE
+				if(te instanceof IOwnable)
+					probeInfo.vertical().text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ((IOwnable) te).getOwner().getName()).getString()));
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
 				if(te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))

@@ -321,8 +321,6 @@ public class ClientHandler
 		toTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), crystalQuartzTint);
 		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
 		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
-		toTint.put(SCContent.REINFORCED_PISTON_HEAD.get(), noTint); //this block doesn't have any default tint, but we need this anyways to add the reinforced tint
-		reinforcedTint.add(SCContent.REINFORCED_PISTON_HEAD.get());
 
 		specialBlockTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (state, world, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.get(ReinforcedSnowyDirtBlock.SNOWY)) {
