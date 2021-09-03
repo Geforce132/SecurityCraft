@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
@@ -116,8 +116,8 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.0'
-    annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
-    
+    annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
+
 	implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.110")
 	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.1.4-22")
     implementation fg.deobf("curse.maven:hwyla-253449:3033593")
