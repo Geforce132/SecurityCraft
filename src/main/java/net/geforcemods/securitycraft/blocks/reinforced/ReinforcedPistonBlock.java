@@ -10,8 +10,12 @@ import com.google.common.collect.Maps;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.ReinforcedPistonTileEntity;
+import net.geforcemods.securitycraft.tileentity.ValidationOwnableTileEntity;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -25,14 +29,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.PistonType;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlock {
 
@@ -41,54 +51,87 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(worldIn, pos, (PlayerEntity)placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+		super.onBlockPlacedBy(world, pos, state, placer, stack);
+	}
+
+
+
+	@Override
+	public ActionResultType onBlockActivated(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		TileEntity te = level.getTileEntity(pos);
+
+		if (te instanceof OwnableTileEntity) {
+			Owner owner = ((OwnableTileEntity)te).getOwner();
+
+			if (!owner.isValidated()) {
+				if (owner.isOwner(player)) {
+					owner.setValidated(true);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), new TranslationTextComponent("messages.securitycraft:ownable.validate"), TextFormatting.GREEN);
+					return ActionResultType.SUCCESS;
+				}
+
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), new TranslationTextComponent("messages.securitycraft:ownable.ownerNotValidated"), TextFormatting.RED);
+				return ActionResultType.SUCCESS;
+			}
+		}
+
+		return ActionResultType.PASS;
 	}
 
 	@Override
-	public void checkForMove(World worldIn, BlockPos pos, BlockState state) {
+	public void checkForMove(World world, BlockPos pos, BlockState state) {
 		Direction direction = state.get(FACING);
-		boolean flag = this.shouldBeExtended(worldIn, pos, direction);
-		if (flag && !state.get(EXTENDED)) {
-			if ((new ReinforcedPistonBlockStructureHelper(worldIn, pos, direction, true)).canMove()) {
-				worldIn.addBlockEvent(pos, this, 0, direction.getIndex());
+		boolean hasSignal = shouldBeExtended(world, pos, direction);
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof OwnableTileEntity && !((OwnableTileEntity)te).getOwner().isValidated()) {
+			return;
+		}
+
+		if (hasSignal && !state.get(EXTENDED)) {
+			if ((new ReinforcedPistonBlockStructureHelper(world, pos, direction, true)).canMove()) {
+				world.addBlockEvent(pos, this, 0, direction.getIndex());
 			}
-		} else if (!flag && state.get(EXTENDED)) {
-			BlockPos blockpos = pos.offset(direction, 2);
-			BlockState blockstate = worldIn.getBlockState(blockpos);
+		} else if (!hasSignal && state.get(EXTENDED)) {
+			BlockPos offsetPos = pos.offset(direction, 2);
+			BlockState offsetState = world.getBlockState(offsetPos);
 			int i = 1;
-			if (blockstate.matchesBlock(SCContent.REINFORCED_MOVING_PISTON.get()) && blockstate.get(FACING) == direction) {
-				TileEntity tileentity = worldIn.getTileEntity(blockpos);
+
+			if (offsetState.matchesBlock(SCContent.REINFORCED_MOVING_PISTON.get()) && offsetState.get(FACING) == direction) {
+				TileEntity tileentity = world.getTileEntity(offsetPos);
+
 				if (tileentity instanceof ReinforcedPistonTileEntity) {
 					ReinforcedPistonTileEntity pistontileentity = (ReinforcedPistonTileEntity)tileentity;
-					if (pistontileentity.isExtending() && (pistontileentity.getProgress(0.0F) < 0.5F || worldIn.getGameTime() == pistontileentity.getLastTicked() || ((ServerWorld)worldIn).isInsideTick())) {
+
+					if (pistontileentity.isExtending() && (pistontileentity.getProgress(0.0F) < 0.5F || world.getGameTime() == pistontileentity.getLastTicked() || ((ServerWorld)world).isInsideTick())) {
 						i = 2;
 					}
 				}
 			}
 
-			worldIn.addBlockEvent(pos, this, i, direction.getIndex());
+			world.addBlockEvent(pos, this, i, direction.getIndex());
 		}
 
 	}
 
-	private boolean shouldBeExtended(World worldIn, BlockPos pos, Direction facing) { // copied because shouldBeExtended() in PistonBlock is private
-		for(Direction direction : Direction.values()) {
-			if (direction != facing && worldIn.isSidePowered(pos.offset(direction), direction)) {
+	private boolean shouldBeExtended(World world, BlockPos pos, Direction direction) { // copied because shouldBeExtended() in PistonBlock is private
+		for(Direction dir : Direction.values()) {
+			if (dir != direction && world.isSidePowered(pos.offset(dir), dir)) {
 				return true;
 			}
 		}
 
-		if (worldIn.isSidePowered(pos, Direction.DOWN)) {
+		if (world.isSidePowered(pos, Direction.DOWN)) {
 			return true;
 		} else {
-			BlockPos blockpos = pos.up();
+			BlockPos posAbove = pos.up();
 
-			for(Direction direction1 : Direction.values()) {
-				if (direction1 != Direction.DOWN && worldIn.isSidePowered(blockpos.offset(direction1), direction1)) {
+			for(Direction dir : Direction.values()) {
+				if (dir != Direction.DOWN && world.isSidePowered(posAbove.offset(dir), dir)) {
 					return true;
 				}
 			}
@@ -97,18 +140,13 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		}
 	}
 
-	/**
-	 * Called on server when World#addBlockEvent is called. If server returns true, then also called on the client. On
-	 * the Server, this may perform additional changes to the world, like pistons replacing the block with an extended
-	 * base. On the client, the update may involve replacing tile entities or effects such as sounds or particles
-	 * @deprecated call via {@link BlockState#receiveBlockEvent(World,BlockPos,int,int)} whenever possible.
-	 * Implementing/overriding is fine.
-	 */
 	@Override
 	public boolean eventReceived(BlockState state, World world, BlockPos pos, int id, int param) {
 		Direction direction = state.get(FACING);
+
 		if (!world.isRemote) {
 			boolean isPowered = this.shouldBeExtended(world, pos, direction);
+
 			if (isPowered && (id == 1 || id == 2)) {
 				world.setBlockState(pos, state.with(EXTENDED, true), 2);
 				return false;
@@ -120,7 +158,9 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		}
 
 		if (id == 0) {
-			if (net.minecraftforge.event.ForgeEventFactory.onPistonMovePre(world, pos, direction, true)) return false;
+			if (ForgeEventFactory.onPistonMovePre(world, pos, direction, true))
+				return false;
+
 			if (!this.doMove(world, pos, direction, true)) {
 				return false;
 			}
@@ -128,38 +168,46 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 			world.setBlockState(pos, state.with(EXTENDED, true), 67);
 			world.playSound(null, pos, SoundEvents.BLOCK_PISTON_EXTEND, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.25F + 0.6F);
 		} else if (id == 1 || id == 2) {
-			if (net.minecraftforge.event.ForgeEventFactory.onPistonMovePre(world, pos, direction, false)) return false;
+			if (ForgeEventFactory.onPistonMovePre(world, pos, direction, false))
+				return false;
+
 			TileEntity pistonTE = world.getTileEntity(pos.offset(direction));
+
 			if (pistonTE instanceof ReinforcedPistonTileEntity) {
 				((ReinforcedPistonTileEntity)pistonTE).clearPistonTileEntity();
 			}
 
 			TileEntity te = world.getTileEntity(pos);
 			BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().getDefaultState().with(MovingPistonBlock.FACING, direction).with(MovingPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT);
+
 			world.setBlockState(pos, movingPiston, 20);
 			world.setTileEntity(pos, ReinforcedMovingPistonBlock.createTilePiston(this.getDefaultState().with(FACING, Direction.byIndex(param & 7)), te != null ? te.getUpdateTag() : null, direction, false, true));
 			world.updateBlock(pos, movingPiston.getBlock());
 			movingPiston.updateNeighbours(world, pos, 2);
+
 			if (this.isSticky) {
-				BlockPos blockpos = pos.add(direction.getXOffset() * 2, direction.getYOffset() * 2, direction.getZOffset() * 2);
-				BlockState blockstate1 = world.getBlockState(blockpos);
-				boolean flag1 = false;
-				if (blockstate1.matchesBlock(SCContent.REINFORCED_MOVING_PISTON.get())) {
-					TileEntity tileentity = world.getTileEntity(blockpos);
+				BlockPos offsetPos = pos.add(direction.getXOffset() * 2, direction.getYOffset() * 2, direction.getZOffset() * 2);
+				BlockState offsetState = world.getBlockState(offsetPos);
+				boolean flag = false;
+
+				if (offsetState.matchesBlock(SCContent.REINFORCED_MOVING_PISTON.get())) {
+					TileEntity tileentity = world.getTileEntity(offsetPos);
+
 					if (tileentity instanceof ReinforcedPistonTileEntity) {
 						ReinforcedPistonTileEntity pistontileentity = (ReinforcedPistonTileEntity)tileentity;
+
 						if (pistontileentity.getFacing() == direction && pistontileentity.isExtending()) {
 							pistontileentity.clearPistonTileEntity();
-							flag1 = true;
+							flag = true;
 						}
 					}
 				}
 
-				if (!flag1) {
-					if (id != 1 || blockstate1.isAir() || !ReinforcedPistonBlock.canPush(blockstate1, world, pos, blockpos, direction.getOpposite(), false, direction) || blockstate1.getPushReaction() != PushReaction.NORMAL && !blockstate1.matchesBlock(SCContent.REINFORCED_PISTON.get()) && !blockstate1.matchesBlock(SCContent.REINFORCED_STICKY_PISTON.get())) {
+				if (!flag) {
+					if (id != 1 || offsetState.isAir() || !canPush(offsetState, world, pos, offsetPos, direction.getOpposite(), false, direction) || offsetState.getPushReaction() != PushReaction.NORMAL && !offsetState.matchesBlock(SCContent.REINFORCED_PISTON.get()) && !offsetState.matchesBlock(SCContent.REINFORCED_STICKY_PISTON.get())) {
 						world.removeBlock(pos.offset(direction), false);
 					} else {
-						this.doMove(world, pos, direction, false);
+						doMove(world, pos, direction, false);
 					}
 				}
 			} else {
@@ -169,7 +217,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 			world.playSound(null, pos, SoundEvents.BLOCK_PISTON_CONTRACT, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.15F + 0.6F);
 		}
 
-		net.minecraftforge.event.ForgeEventFactory.onPistonMovePost(world, pos, direction, (id == 0));
+		ForgeEventFactory.onPistonMovePost(world, pos, direction, (id == 0));
 		return true;
 	}
 
@@ -184,7 +232,9 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 				else {
 					if (!state.matchesBlock(Blocks.PISTON) && !state.matchesBlock(Blocks.STICKY_PISTON) && !state.matchesBlock(SCContent.REINFORCED_PISTON.get()) && !state.matchesBlock(SCContent.REINFORCED_STICKY_PISTON.get())) {
 						if (state.getBlock() instanceof IReinforcedBlock) {
-							return isSameOwner(pos, pistonPos, world);
+							if (!isSameOwner(pos, pistonPos, world)) {
+								return false;
+							}
 						}
 						else if (state.getBlockHardness(world, pos) == -1.0F) {
 							return false;
@@ -197,6 +247,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 								return destroyBlocks;
 							case PUSH_ONLY:
 								return facing == direction;
+							default: break;
 						}
 					} else if (state.get(EXTENDED)) {
 						return false;
@@ -224,13 +275,14 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		} else {
 			Map<BlockPos, BlockState> stateToPosMap = Maps.newHashMap();
 			List<BlockPos> blocksToMove = structureHelper.getBlocksToMove();
-			List<BlockState> list1 = Lists.newArrayList();
+			List<BlockState> statesToMove = Lists.newArrayList();
 
 			for(int i = 0; i < blocksToMove.size(); ++i) {
-				BlockPos blockpos1 = blocksToMove.get(i);
-				BlockState blockstate = world.getBlockState(blockpos1);
-				list1.add(blockstate);
-				stateToPosMap.put(blockpos1, blockstate);
+				BlockPos posToMove = blocksToMove.get(i);
+				BlockState stateToMove = world.getBlockState(posToMove);
+
+				statesToMove.add(stateToMove);
+				stateToPosMap.put(posToMove, stateToMove);
 			}
 
 			List<BlockPos> blocksToDestroy = structureHelper.getBlocksToDestroy();
@@ -239,35 +291,36 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 			int j = 0;
 
 			for(int k = blocksToDestroy.size() - 1; k >= 0; --k) {
-				BlockPos blockpos2 = blocksToDestroy.get(k);
-				BlockState blockstate1 = world.getBlockState(blockpos2);
-				TileEntity tileentity = blockstate1.hasTileEntity() ? world.getTileEntity(blockpos2) : null;
-				spawnDrops(blockstate1, world, blockpos2, tileentity);
-				world.setBlockState(blockpos2, Blocks.AIR.getDefaultState(), 18);
-				updatedBlocks[j++] = blockstate1;
+				BlockPos posToDestroy = blocksToDestroy.get(k);
+				BlockState stateToDestroy = world.getBlockState(posToDestroy);
+				TileEntity teToDestroy = stateToDestroy.hasTileEntity() ? world.getTileEntity(posToDestroy) : null;
+
+				spawnDrops(stateToDestroy, world, posToDestroy, teToDestroy);
+				world.setBlockState(posToDestroy, Blocks.AIR.getDefaultState(), 18);
+				updatedBlocks[j++] = stateToDestroy;
 			}
 
 			for(int l = blocksToMove.size() - 1; l >= 0; --l) {
 				BlockPos posToMove = blocksToMove.get(l);
 				BlockState stateToMove = world.getBlockState(posToMove);
-				TileEntity te = world.getTileEntity(posToMove);
+				TileEntity teToMove = world.getTileEntity(posToMove);
 				CompoundNBT tag = null;
 
-				if (te != null){
+				if (teToMove != null){
 					tag = new CompoundNBT();
-					te.setPos(posToMove.offset(direction));
-					te.write(tag);
+					teToMove.setPos(posToMove.offset(direction));
+					teToMove.write(tag);
 				}
 
 				posToMove = posToMove.offset(direction);
 				stateToPosMap.remove(posToMove);
 				world.setBlockState(posToMove, SCContent.REINFORCED_MOVING_PISTON.get().getDefaultState().with(FACING, facing), 68);
-				world.setTileEntity(posToMove, ReinforcedMovingPistonBlock.createTilePiston(list1.get(l), tag, facing, extending, false));
+				world.setTileEntity(posToMove, ReinforcedMovingPistonBlock.createTilePiston(statesToMove.get(l), tag, facing, extending, false));
 				updatedBlocks[j++] = stateToMove;
 			}
 
 			if (extending) {
-				PistonType type = this.isSticky ? PistonType.STICKY : PistonType.DEFAULT;
+				PistonType type = isSticky ? PistonType.STICKY : PistonType.DEFAULT;
 				BlockState pistonHead = SCContent.REINFORCED_PISTON_HEAD.get().getDefaultState().with(PistonHeadBlock.FACING, facing).with(PistonHeadBlock.TYPE, type);
 				BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().getDefaultState().with(MovingPistonBlock.FACING, facing).with(MovingPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT);
 				OwnableTileEntity headTe = new OwnableTileEntity();
@@ -283,25 +336,27 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 
 			BlockState air = Blocks.AIR.getDefaultState();
 
-			for(BlockPos blockpos4 : stateToPosMap.keySet()) {
-				world.setBlockState(blockpos4, air, 82);
+			for(BlockPos position : stateToPosMap.keySet()) {
+				world.setBlockState(position, air, 82);
 			}
 
 			for(Entry<BlockPos, BlockState> entry : stateToPosMap.entrySet()) {
-				BlockPos blockpos5 = entry.getKey();
-				BlockState blockstate2 = entry.getValue();
-				blockstate2.updateDiagonalNeighbors(world, blockpos5, 2);
-				air.updateNeighbours(world, blockpos5, 2);
-				air.updateDiagonalNeighbors(world, blockpos5, 2);
+				BlockPos posToUpdate = entry.getKey();
+				BlockState stateToUpdate = entry.getValue();
+
+				stateToUpdate.updateDiagonalNeighbors(world, posToUpdate, 2);
+				air.updateNeighbours(world, posToUpdate, 2);
+				air.updateDiagonalNeighbors(world, posToUpdate, 2);
 			}
 
 			j = 0;
 
 			for(int i1 = blocksToDestroy.size() - 1; i1 >= 0; --i1) {
-				BlockState blockstate7 = updatedBlocks[j++];
-				BlockPos blockpos6 = blocksToDestroy.get(i1);
-				blockstate7.updateDiagonalNeighbors(world, blockpos6, 2);
-				world.notifyNeighborsOfStateChange(blockpos6, blockstate7.getBlock());
+				BlockState updatedState = updatedBlocks[j++];
+				BlockPos posToDestroy = blocksToDestroy.get(i1);
+
+				updatedState.updateDiagonalNeighbors(world, posToDestroy, 2);
+				world.notifyNeighborsOfStateChange(posToDestroy, updatedState.getBlock());
 			}
 
 			for(int j1 = blocksToMove.size() - 1; j1 >= 0; --j1) {
@@ -323,7 +378,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity();
+		return new ValidationOwnableTileEntity();
 	}
 
 	@Override

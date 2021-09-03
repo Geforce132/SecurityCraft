@@ -18,9 +18,9 @@ public class Owner {
 	public static final DataSerializerEntry SERIALIZER = null;
 	private String playerName = "owner";
 	private String playerUUID = "ownerUUID";
+	private boolean validated = true;
 
 	public Owner() {
-		System.out.println("owner without ctor");
 	}
 
 	public Owner(String playerName, String playerUUID) {
@@ -28,12 +28,40 @@ public class Owner {
 		this.playerUUID = playerUUID;
 	}
 
+	public Owner(String playerName, String playerUUID, boolean validated) {
+		this.playerName = playerName;
+		this.playerUUID = playerUUID;
+		this.validated = validated;
+	}
+
 	public static Owner fromCompound(CompoundNBT tag) {
-		if (tag != null && tag.contains("owner")){
-			return new Owner(tag.getString("owner"), tag.getString("ownerUUID"));
+		Owner owner = new Owner();
+
+		if (tag != null){
+			owner.read(tag);
 		}
 
-		return new Owner();
+		return owner;
+	}
+
+	public void read(CompoundNBT tag) {
+		if (tag.contains("owner"))
+			playerName = tag.getString("owner");
+
+		if (tag.contains("ownerUUID"))
+			playerUUID = tag.getString("ownerUUID");
+
+		if (tag.contains("ownerValidated"))
+			validated = tag.getBoolean("ownerValidated");
+	}
+
+	public void write(CompoundNBT tag, boolean saveValidationStatus) {
+		tag.putString("owner", playerName);
+		tag.putString("ownerUUID", playerUUID);
+
+		if (saveValidationStatus) {
+			tag.putBoolean("ownerValidated", validated);
+		}
 	}
 
 	/**
@@ -99,6 +127,15 @@ public class Owner {
 	}
 
 	/**
+	 * Sets the validation status of the owner
+	 *
+	 * @param validated The owner's new validation status
+	 */
+	public void setValidated(boolean validated) {
+		this.validated = validated;
+	}
+
+	/**
 	 * @return The owner's name.
 	 */
 	public String getName() {
@@ -110,6 +147,13 @@ public class Owner {
 	 */
 	public String getUUID() {
 		return playerUUID;
+	}
+
+	/**
+	 * @return true if this owner is validated by the owning player
+	 */
+	public boolean isValidated() {
+		return validated;
 	}
 
 	@Override

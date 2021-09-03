@@ -60,7 +60,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		{
 			try
 			{
-				if(field.isAnnotationPresent(Reinforced.class))
+				if(field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem())
 				{
 					RegistryObject<Block> obj = ((RegistryObject<Block>)field.get(null));
 

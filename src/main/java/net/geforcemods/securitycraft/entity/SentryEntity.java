@@ -128,12 +128,6 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 			if(world.getBlockState(downPos).isAir() || world.hasNoCollisions(new AxisAlignedBB(downPos)))
 				remove();
-
-			BlockPos pos = new BlockPos(-174, 63, 70);
-			BlockState state = world.getBlockState(pos);
-			TileEntity te = world.getTileEntity(pos);
-
-			System.out.println("And the tileentity iiiis " + te);
 		}
 		else
 		{
@@ -461,8 +455,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		CompoundNBT tag = new CompoundNBT();
 		Owner owner = dataManager.get(OWNER);
 
-		tag.putString("owner", owner.getName());
-		tag.putString("ownerUUID", owner.getUUID());
+		owner.write(tag, false);
 		return tag;
 	}
 
@@ -470,10 +463,9 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	public void readAdditional(CompoundNBT tag)
 	{
 		CompoundNBT teTag = tag.getCompound("TileEntityData");
-		String name = teTag.getString("owner");
-		String uuid = teTag.getString("ownerUUID");
+		Owner owner = Owner.fromCompound(teTag);
 
-		dataManager.set(OWNER, new Owner(name, uuid));
+		dataManager.set(OWNER, owner);
 		dataManager.set(DISGUISE_MODULE, tag.getCompound("InstalledModule"));
 		dataManager.set(ALLOWLIST, tag.getCompound("InstalledWhitelist"));
 		dataManager.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));

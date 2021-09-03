@@ -17,44 +17,46 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 	private final boolean extending;
 	private final BlockPos blockToMove;
 	private final Direction moveDirection;
-	/** This is a List<BlockPos> of all blocks that will be moved by the piston. */
 	private final List<BlockPos> toMove = Lists.newArrayList();
-	/** This is a List<BlockPos> of blocks that will be destroyed when a piston attempts to move them. */
 	private final List<BlockPos> toDestroy = Lists.newArrayList();
 	private final Direction facing;
 
-	public ReinforcedPistonBlockStructureHelper(World worldIn, BlockPos posIn, Direction pistonFacing, boolean extending) {
-		this.world = worldIn;
-		this.pistonPos = posIn;
+	public ReinforcedPistonBlockStructureHelper(World world, BlockPos pos, Direction pistonFacing, boolean extending) {
+		this.world = world;
+		this.pistonPos = pos;
 		this.facing = pistonFacing;
 		this.extending = extending;
+
 		if (extending) {
-			this.moveDirection = pistonFacing;
-			this.blockToMove = posIn.offset(pistonFacing);
+			moveDirection = pistonFacing;
+			blockToMove = pos.offset(pistonFacing);
 		} else {
-			this.moveDirection = pistonFacing.getOpposite();
-			this.blockToMove = posIn.offset(pistonFacing, 2);
+			moveDirection = pistonFacing.getOpposite();
+			blockToMove = pos.offset(pistonFacing, 2);
 		}
 
 	}
 
 	public boolean canMove() {
-		this.toMove.clear();
-		this.toDestroy.clear();
-		BlockState blockstate = this.world.getBlockState(this.blockToMove);
-		if (!ReinforcedPistonBlock.canPush(blockstate, this.world, this.pistonPos, this.blockToMove, this.moveDirection, false, this.facing)) {
-			if (this.extending && blockstate.getPushReaction() == PushReaction.DESTROY) {
-				this.toDestroy.add(this.blockToMove);
+		BlockState state = world.getBlockState(blockToMove);
+
+		toMove.clear();
+		toDestroy.clear();
+
+		if (!ReinforcedPistonBlock.canPush(state, world, pistonPos, blockToMove, moveDirection, false, facing)) {
+			if (extending && state.getPushReaction() == PushReaction.DESTROY) {
+				toDestroy.add(blockToMove);
 				return true;
 			} else {
 				return false;
 			}
-		} else if (!this.addBlockLine(this.blockToMove, this.moveDirection)) {
+		} else if (!addBlockLine(blockToMove, moveDirection)) {
 			return false;
 		} else {
-			for(int i = 0; i < this.toMove.size(); ++i) {
-				BlockPos blockpos = this.toMove.get(i);
-				if (this.world.getBlockState(blockpos).isStickyBlock() && !this.addBranchingBlocks(blockpos)) {
+			for(int i = 0; i < toMove.size(); ++i) {
+				BlockPos pos = toMove.get(i);
+
+				if (world.getBlockState(pos).isStickyBlock() && !addBranchingBlocks(pos)) {
 					return false;
 				}
 			}
@@ -64,31 +66,35 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 	}
 
 	private boolean addBlockLine(BlockPos origin, Direction facing) {
-		BlockState blockstate = this.world.getBlockState(origin);
+		BlockState state = world.getBlockState(origin);
+
 		if (world.isAirBlock(origin)) {
 			return true;
-		} else if (!ReinforcedPistonBlock.canPush(blockstate, this.world, this.pistonPos, origin, this.moveDirection, false, facing)) {
+		} else if (!ReinforcedPistonBlock.canPush(state, world, pistonPos, origin, moveDirection, false, facing)) {
 			return true;
-		} else if (origin.equals(this.pistonPos)) {
+		} else if (origin.equals(pistonPos)) {
 			return true;
-		} else if (this.toMove.contains(origin)) {
+		} else if (toMove.contains(origin)) {
 			return true;
 		} else {
 			int i = 1;
-			if (i + this.toMove.size() > 12) {
+			if (i + toMove.size() > 12) {
 				return false;
 			} else {
 				BlockState oldState;
-				while(blockstate.isStickyBlock()) {
-					BlockPos blockpos = origin.offset(this.moveDirection.getOpposite(), i);
-					oldState = blockstate;
-					blockstate = this.world.getBlockState(blockpos);
-					if (blockstate.isAir(this.world, blockpos) || !oldState.canStickTo(blockstate) || !ReinforcedPistonBlock.canPush(blockstate, this.world, this.pistonPos, blockpos, this.moveDirection, false, this.moveDirection.getOpposite()) || blockpos.equals(this.pistonPos)) {
+
+				while(state.isStickyBlock()) {
+					BlockPos blockpos = origin.offset(moveDirection.getOpposite(), i);
+
+					oldState = state;
+					state = world.getBlockState(blockpos);
+
+					if (state.isAir(world, blockpos) || !oldState.canStickTo(state) || !ReinforcedPistonBlock.canPush(state, world, pistonPos, blockpos, moveDirection, false, moveDirection.getOpposite()) || blockpos.equals(pistonPos)) {
 						break;
 					}
 
 					++i;
-					if (i + this.toMove.size() > 12) {
+					if (i + toMove.size() > 12) {
 						return false;
 					}
 				}
@@ -96,21 +102,22 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 				int l = 0;
 
 				for(int i1 = i - 1; i1 >= 0; --i1) {
-					this.toMove.add(origin.offset(this.moveDirection.getOpposite(), i1));
+					toMove.add(origin.offset(moveDirection.getOpposite(), i1));
 					++l;
 				}
 
 				int j1 = 1;
 
 				while(true) {
-					BlockPos blockpos1 = origin.offset(this.moveDirection, j1);
-					int j = this.toMove.indexOf(blockpos1);
+					BlockPos offsetPos = origin.offset(moveDirection, j1);
+					int j = toMove.indexOf(offsetPos);
+
 					if (j > -1) {
-						this.reorderListAtCollision(l, j);
+						reorderListAtCollision(l, j);
 
 						for(int k = 0; k <= j + l; ++k) {
-							BlockPos blockpos2 = this.toMove.get(k);
-							if (this.world.getBlockState(blockpos2).isStickyBlock() && !this.addBranchingBlocks(blockpos2)) {
+							BlockPos posToPush = toMove.get(k);
+							if (world.getBlockState(posToPush).isStickyBlock() && !addBranchingBlocks(posToPush)) {
 								return false;
 							}
 						}
@@ -118,25 +125,26 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 						return true;
 					}
 
-					blockstate = this.world.getBlockState(blockpos1);
-					if (blockstate.isAir(world, blockpos1)) {
+					state = world.getBlockState(offsetPos);
+
+					if (state.isAir(world, offsetPos)) {
 						return true;
 					}
 
-					if (!ReinforcedPistonBlock.canPush(blockstate, this.world, this.pistonPos, blockpos1, this.moveDirection, true, this.moveDirection) || blockpos1.equals(this.pistonPos)) {
+					if (!ReinforcedPistonBlock.canPush(state, world, pistonPos, offsetPos, moveDirection, true, moveDirection) || offsetPos.equals(pistonPos)) {
 						return false;
 					}
 
-					if (blockstate.getPushReaction() == PushReaction.DESTROY) {
-						this.toDestroy.add(blockpos1);
+					if (state.getPushReaction() == PushReaction.DESTROY) {
+						toDestroy.add(offsetPos);
 						return true;
 					}
 
-					if (this.toMove.size() >= 12) {
+					if (toMove.size() >= 12) {
 						return false;
 					}
 
-					this.toMove.add(blockpos1);
+					toMove.add(offsetPos);
 					++l;
 					++j1;
 				}
@@ -148,23 +156,25 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 		List<BlockPos> list = Lists.newArrayList();
 		List<BlockPos> list1 = Lists.newArrayList();
 		List<BlockPos> list2 = Lists.newArrayList();
-		list.addAll(this.toMove.subList(0, index));
-		list1.addAll(this.toMove.subList(this.toMove.size() - offsets, this.toMove.size()));
-		list2.addAll(this.toMove.subList(index, this.toMove.size() - offsets));
-		this.toMove.clear();
-		this.toMove.addAll(list);
-		this.toMove.addAll(list1);
-		this.toMove.addAll(list2);
+
+		list.addAll(toMove.subList(0, index));
+		list1.addAll(toMove.subList(toMove.size() - offsets, toMove.size()));
+		list2.addAll(toMove.subList(index, toMove.size() - offsets));
+		toMove.clear();
+		toMove.addAll(list);
+		toMove.addAll(list1);
+		toMove.addAll(list2);
 	}
 
 	private boolean addBranchingBlocks(BlockPos fromPos) {
-		BlockState blockstate = this.world.getBlockState(fromPos);
+		BlockState blockstate = world.getBlockState(fromPos);
 
 		for(Direction direction : Direction.values()) {
-			if (direction.getAxis() != this.moveDirection.getAxis()) {
-				BlockPos blockpos = fromPos.offset(direction);
-				BlockState blockstate1 = this.world.getBlockState(blockpos);
-				if (blockstate1.canStickTo(blockstate) && !this.addBlockLine(blockpos, direction)) {
+			if (direction.getAxis() != moveDirection.getAxis()) {
+				BlockPos offsetPos = fromPos.offset(direction);
+				BlockState offsetState = world.getBlockState(offsetPos);
+
+				if (offsetState.canStickTo(blockstate) && !addBlockLine(offsetPos, direction)) {
 					return false;
 				}
 			}
@@ -173,16 +183,10 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 		return true;
 	}
 
-	/**
-	 * Returns a List<BlockPos> of all the blocks that are being moved by the piston.
-	 */
 	public List<BlockPos> getBlocksToMove() {
 		return this.toMove;
 	}
 
-	/**
-	 * Returns an List<BlockPos> of all the blocks that are being destroyed by the piston.
-	 */
 	public List<BlockPos> getBlocksToDestroy() {
 		return this.toDestroy;
 	}

@@ -33,9 +33,9 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			TileEntity te = worldIn.getTileEntity(pos);
+			TileEntity te = world.getTileEntity(pos);
 
 			if (te instanceof ReinforcedPistonTileEntity) {
 				((ReinforcedPistonTileEntity)te).clearPistonTileEntity();
@@ -48,13 +48,13 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	 * Called after a player destroys this Block - the posiiton pos may no longer hold the state indicated.
 	 */
 	@Override
-	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state) {
-		BlockPos blockpos = pos.offset(state.get(FACING).getOpposite());
-		BlockState blockstate = worldIn.getBlockState(blockpos);
-		if (blockstate.getBlock() instanceof ReinforcedPistonBlock && blockstate.get(PistonBlock.EXTENDED)) {
-			worldIn.removeBlock(blockpos, false);
-		}
+	public void onPlayerDestroy(IWorld world, BlockPos pos, BlockState state) {
+		BlockPos oppositePos = pos.offset(state.get(FACING).getOpposite());
+		BlockState oppositeState = world.getBlockState(oppositePos);
 
+		if (oppositeState.getBlock() instanceof ReinforcedPistonBlock && oppositeState.get(PistonBlock.EXTENDED)) {
+			world.removeBlock(oppositePos, false);
+		}
 	}
 
 	@Override
