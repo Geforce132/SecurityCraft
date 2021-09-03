@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.24 of SecurityCraft--------------------------
 
+- New: The debug menu now hides block mines and disguised blocks as well
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play
 - Fix: Claymore does not explode
@@ -7,6 +8,7 @@
 - Fix: The top half of the Keypad Door does not get affected by resource packs
 - Fix: Panic Button loses its owner when pressed
 - Fix: Wrenches or similar of other mods are able to open doors
+- Misc.: The minimum Forge version is now 31.2.45
 
 --------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
 
