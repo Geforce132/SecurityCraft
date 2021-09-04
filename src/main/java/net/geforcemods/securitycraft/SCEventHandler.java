@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -64,7 +65,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
@@ -289,7 +289,14 @@ public class SCEventHandler {
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
 			event.setCanceled(true);
 			event.setCancellationResult(EnumActionResult.FAIL);
+			return;
 		}
+
+		ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
+		Item held = stack.getItem();
+
+		if(held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3)
+			ItemUniversalBlockReinforcer.convertBlock(stack, event.getPos(), event.getEntityPlayer());
 	}
 
 	@SubscribeEvent
@@ -515,29 +522,6 @@ public class SCEventHandler {
 	public static void onWorldLoad(WorldEvent.Load event)
 	{
 		event.getWorld().addEventListener(new SCWorldListener());
-	}
-
-	@SubscribeEvent
-	public static void onBreakSpeed(BreakSpeed event)
-	{
-		if(event.getEntityPlayer() != null)
-		{
-			Item held = event.getEntityPlayer().getHeldItemMainhand().getItem();
-
-			if(held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3)
-			{
-				for(Block rb : IReinforcedBlock.BLOCKS)
-				{
-					IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
-
-					if(reinforcedBlock.getVanillaBlocks().contains(event.getState().getBlock()))
-					{
-						event.setNewSpeed(10000.0F);
-						return;
-					}
-				}
-			}
-		}
 	}
 
 	@SubscribeEvent
