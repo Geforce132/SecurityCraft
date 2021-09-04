@@ -11,6 +11,7 @@
 - Fix: Jade display does not properly hide block mines
 - Fix: Panic Button loses its owner when pressed
 - Fix: Wrenches or similar of other mods are able to open doors
+- Fix: Reinforcing blocks in the world may not work if some specific mods are installed
 
 --------------------------Changelog for v1.8.23-beta5 of SecurityCraft--------------------------
 

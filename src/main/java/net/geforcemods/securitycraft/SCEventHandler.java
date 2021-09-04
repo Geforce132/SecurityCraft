@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -195,7 +196,16 @@ public class SCEventHandler {
 	public static void onLeftClickBlock(LeftClickBlock event) {
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
 			event.setCanceled(true);
+			return;
 		}
+
+		ItemStack stack = event.getPlayer().getMainHandItem();
+		Item held = stack.getItem();
+		Level level = event.getWorld();
+		BlockPos pos = event.getPos();
+
+		if(held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
+			UniversalBlockReinforcerItem.convertBlock(level.getBlockState(pos), level, stack, pos, event.getPlayer());
 	}
 
 	@SubscribeEvent
