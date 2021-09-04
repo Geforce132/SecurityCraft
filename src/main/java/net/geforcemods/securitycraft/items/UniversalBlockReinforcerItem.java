@@ -54,8 +54,7 @@ public class UniversalBlockReinforcerItem extends Item
 		return ActionResult.resultConsume(player.getHeldItem(hand));
 	}
 
-	@Override
-	public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player)
+	public static boolean convertBlock(ItemStack stack, BlockPos pos, PlayerEntity player)
 	{
 		if(!player.isCreative())
 		{

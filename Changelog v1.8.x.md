@@ -8,6 +8,7 @@
 - Fix: The top half of the Keypad Door does not get affected by resource packs
 - Fix: Panic Button loses its owner when pressed
 - Fix: Wrenches or similar of other mods are able to open doors
+- Fix: Reinforcing blocks in the world may not work if some specific mods are installed
 - Misc.: The minimum Forge version is now 31.2.45
 
 --------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
