@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -50,7 +51,6 @@ import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -195,7 +195,16 @@ public class SCEventHandler {
 	public static void onLeftClickBlock(LeftClickBlock event) {
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
 			event.setCanceled(true);
+			return;
 		}
+
+		ItemStack stack = event.getPlayer().getHeldItemMainhand();
+		Item held = stack.getItem();
+		World world = event.getWorld();
+		BlockPos pos = event.getPos();
+
+		if(held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
+			UniversalBlockReinforcerItem.convertBlock(world.getBlockState(pos), world, stack, pos, event.getPlayer());
 	}
 
 	@SubscribeEvent
@@ -277,23 +286,6 @@ public class SCEventHandler {
 	{
 		if((event.getTarget() instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera(event.getTarget())) || event.getTarget() instanceof SentryEntity)
 			((MobEntity)event.getEntity()).setAttackTarget(null);
-	}
-
-	@SubscribeEvent
-	public static void onBreakSpeed(BreakSpeed event)
-	{
-		if(event.getPlayer() != null)
-		{
-			Item held = event.getPlayer().getHeldItemMainhand().getItem();
-
-			if(held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
-			{
-				Block block = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(event.getState().getBlock());
-
-				if(block != null)
-					event.setNewSpeed(10000.0F);
-			}
-		}
 	}
 
 	@SubscribeEvent
