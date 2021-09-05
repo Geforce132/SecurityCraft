@@ -36,10 +36,10 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 	private static final String SHOW_CUSTOM_NAME = "securitycraft.showcustomname";
 
 	public static void callbackRegister(IWailaRegistrar registrar){
-		registrar.addConfig("SecurityCraft", SHOW_OWNER, Utils.localize("waila.securitycraft:displayOwner").getFormattedText());
-		registrar.addConfig("SecurityCraft", SHOW_MODULES, Utils.localize("waila.securitycraft:showModules").getFormattedText());
-		registrar.addConfig("SecurityCraft", SHOW_PASSWORDS, Utils.localize("waila.securitycraft:showPasswords").getFormattedText());
-		registrar.addConfig("SecurityCraft", SHOW_CUSTOM_NAME, Utils.localize("waila.securitycraft:showCustomName").getFormattedText());
+		registrar.addConfigRemote("SecurityCraft", SHOW_OWNER, Utils.localize("waila.securitycraft:displayOwner").getFormattedText());
+		registrar.addConfigRemote("SecurityCraft", SHOW_MODULES, Utils.localize("waila.securitycraft:showModules").getFormattedText());
+		registrar.addConfigRemote("SecurityCraft", SHOW_PASSWORDS, Utils.localize("waila.securitycraft:showPasswords").getFormattedText());
+		registrar.addConfigRemote("SecurityCraft", SHOW_CUSTOM_NAME, Utils.localize("waila.securitycraft:showCustomName").getFormattedText());
 		registrar.registerBodyProvider((IWailaDataProvider)new WailaDataProvider(), IOwnable.class);
 		registrar.registerStackProvider(new WailaDataProvider(), IOverlayDisplay.class);
 		registrar.registerBodyProvider((IWailaEntityProvider)new WailaDataProvider(), EntitySentry.class);
