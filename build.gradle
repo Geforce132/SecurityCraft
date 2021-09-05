@@ -41,7 +41,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '2021.08.29-1.17.1'
+    mappings channel: 'parchment', version: '2021.09.05-1.17.1'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
 	runs {
