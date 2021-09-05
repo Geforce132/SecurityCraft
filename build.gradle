@@ -66,6 +66,9 @@ minecraft {
             workingDirectory project.file('run/client')
             property 'forge.logging.console.level', 'debug'
             args '-mixin.config=securitycraft.mixins.json'
+            //fixes refmap of deps
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 securitycraft {
@@ -77,7 +80,7 @@ minecraft {
         server {
             workingDirectory project.file('run/server')
             property 'forge.logging.console.level', 'debug'
-            args '-nogui', '-mixin.config=securitycraft.mixins.json'
+            args '-nogui'
 
             mods {
                 securitycraft {
@@ -121,6 +124,7 @@ dependencies {
 	implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.110")
 	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.1.4-22")
     implementation fg.deobf("curse.maven:jade-324717:3439522")
+    implementation fg.deobf("curse.maven:betterf3-401648:3293637")
 	compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
 }
 

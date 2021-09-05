@@ -4,6 +4,7 @@
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "securitycraft.refmap.json",
 	"client": [
+		"BetterF3TargetModuleMixin",
 		"DebugOverlayGuiMixin"
 	],
 	"minVersion": "0.8"
