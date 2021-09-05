@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.24 of SecurityCraft--------------------------
 
 - New: The debug menu now hides block mines and disguised blocks as well
+- Change: SecurityCraft's config values for HWYLA are now synchronized from server to client, meaning server owners can now control what HWYLA shows to players
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play
 - Fix: Claymore does not explode

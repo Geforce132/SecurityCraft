@@ -45,10 +45,10 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	@Override
 	public void register(IRegistrar registrar)
 	{
-		registrar.addConfig(SHOW_OWNER, true);
-		registrar.addConfig(SHOW_MODULES, true);
-		registrar.addConfig(SHOW_PASSWORDS, true);
-		registrar.addConfig(SHOW_CUSTOM_NAME, true);
+		registrar.addSyncedConfig(SHOW_OWNER, true);
+		registrar.addSyncedConfig(SHOW_MODULES, true);
+		registrar.addSyncedConfig(SHOW_PASSWORDS, true);
+		registrar.addSyncedConfig(SHOW_CUSTOM_NAME, true);
 		registrar.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.BODY, IOwnable.class);
 		registrar.registerStackProvider(INSTANCE, IOverlayDisplay.class);
 		registrar.registerComponentProvider((IEntityComponentProvider) INSTANCE, TooltipPosition.BODY, SentryEntity.class);
