@@ -7,13 +7,9 @@ import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.BooleanOption;
-import net.geforcemods.securitycraft.api.Option.EnumOption;
+import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.SyncSSSSettingsOnClient;
 import net.minecraft.block.BlockState;
@@ -31,7 +27,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implements INamedContainerProvider {
+public class SonicSecuritySystemTileEntity extends SecurityCraftTileEntity implements INamedContainerProvider {
 
 	// The delay between each ping sound in ticks
 	private static final int PING_DELAY = 100;
@@ -44,8 +40,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	public static final int MAX_LINKED_BLOCKS = 30;
 
 	// Whether the ping sound should be emitted or not
-	private BooleanOption isSilent = new BooleanOption("isSilent", false);
-	private EnumOption mode = new EnumOption("mode", 0, Mode.ON, Mode.REDSTONE, Mode.OFF);
+	private boolean emitsPings = true;
 
 	private int pingCooldown = PING_DELAY;
 	private int powerCooldown = 40;
@@ -54,8 +49,10 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	// A list containing all of the blocks that this SSS is linked to
 	public Set<BlockPos> linkedBlocks = new HashSet<>();
 
+	private boolean isActive = true;
+
 	private boolean isRecording = false;
-	public ArrayList<NoteWrapper> recordedNotes = new ArrayList<>();
+	private ArrayList<NoteWrapper> recordedNotes = new ArrayList<>();
 	public boolean shouldEmitPower = false;
 
 	private boolean isListening = false;
@@ -138,7 +135,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 				}
 
 				// Play the ping sound if it was not disabled
-				if(!isSilent.get() && !isRecording)
+				if(emitsPings && !isRecording)
 					world.playSound(null, pos, SCSounds.PING.event, SoundCategory.BLOCKS, 0.3F, 1.0F);
 
 				pingCooldown = PING_DELAY;
@@ -197,6 +194,8 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 			tag.getList("Notes", Constants.NBT.TAG_COMPOUND).add(nbt);
 		}
 
+		tag.putBoolean("emitsPings", emitsPings);
+		tag.putBoolean("isActive", isActive);
 		tag.putBoolean("isRecording", isRecording);
 		tag.putInt("listenPos", listenPos);
 
@@ -234,6 +233,12 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 				recordedNotes.add(new NoteWrapper(note.getInt("noteID"), note.getString("instrument")));
 			}
 		}
+
+		if(tag.contains("emitsPings"))
+			emitsPings = tag.getBoolean("emitsPings");
+
+		if(tag.contains("isActive"))
+			isActive = tag.getBoolean("isActive");
 
 		if(tag.contains("isRecording"))
 			isRecording = tag.getBoolean("isRecording");
@@ -317,19 +322,31 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 		return linkedBlocks.size();
 	}
 
+	public boolean pings()
+	{
+		return emitsPings;
+	}
+
+	public void setPings(boolean pings)
+	{
+		emitsPings = pings;
+	}
+
 	/**
-	 * @return Whether or not this SecurityCraft is actively running (either by being toggled on
-	 *         or powered by redstone)
+	 * @return Whether or not this Sonic Security System is actively running
 	 */
 	public boolean isActive()
 	{
-		// toggle
-		if(mode.get() == Mode.ON)
-			return true;
-		else if(mode.get() == Mode.REDSTONE)
-			return world.isBlockPowered(pos);
-		else
-			return false;
+		return isActive;
+	}
+
+	/**
+	 * Toggle the Sonic Security System on or off
+	 * @param active true if the SSS should be powered on, false if not
+	 */
+	public void setActive(boolean active)
+	{
+		isActive = active;
 	}
 
 	/**
@@ -388,7 +405,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	public boolean listenToNote(int noteID, String instrumentName)
 	{
 		// No notes
-		if(recordedNotes.isEmpty())
+		if(getNumberOfNotes() == 0)
 			return false;
 
 		if(!isListening)
@@ -415,9 +432,18 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	}
 
 	/**
+	 * @return The number of notes that this Sonic Security System has recorded
+	 */
+	public int getNumberOfNotes()
+	{
+		return recordedNotes.size();
+	}
+
+	/**
 	 * Clears all recorded notes
 	 */
-	public void clearNotes() {
+	public void clearNotes()
+	{
 		recordedNotes.clear();
 	}
 
@@ -431,18 +457,6 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	public ITextComponent getDisplayName()
 	{
 		return new TranslationTextComponent(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey());
-	}
-
-	@Override
-	public ModuleType[] acceptedModules()
-	{
-		return new ModuleType[]{};
-	}
-
-	@Override
-	public Option<?>[] customOptions()
-	{
-		return new Option[] { isSilent, mode };
 	}
 
 	/**
@@ -464,9 +478,4 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 			return noteID == note && instrumentName.equals(instrument);
 		}
 	}
-
-	public static enum Mode {
-		ON, REDSTONE, OFF;
-	}
-
 }

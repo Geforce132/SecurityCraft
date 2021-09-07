@@ -338,6 +338,10 @@ public class SCEventHandler {
 			{
 				SonicSecuritySystemTileEntity te = ((SonicSecuritySystemTileEntity) event.getWorld().getTileEntity(searchingPos));
 
+				// If the SSS is disabled, don't listen to any notes
+				if(!te.isActive())
+					continue;
+
 				// If the SSS is recording, record the note being played
 				if(te.isRecording())
 				{
