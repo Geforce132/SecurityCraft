@@ -2,7 +2,7 @@
 
 - New: Reinforced Pistons
 - New: The Reinforced Redstone Block and the Reinforced Observer can now be used to open doors, activate pistons, etc.
-- New: The debug menu now hides block mines and disguised blocks as well
+- New: The debug menu now hides block mines, disguised blocks, and fake fluids
 - Change: SecurityCraft's config values for Jade (HWYLA successor) are now synchronized from server to client, meaning server owners can now control what Jade shows to players
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play
