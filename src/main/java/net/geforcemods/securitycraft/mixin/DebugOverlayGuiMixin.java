@@ -34,7 +34,11 @@ public class DebugOverlayGuiMixin
 		Block originalBlock = originalState.getBlock();
 
 		if(originalBlock instanceof DisguisableBlock)
-			return ((DisguisableBlock)originalBlock).getDisguisedBlockState(Minecraft.getInstance().world, ((BlockRayTraceResult)rayTraceBlock).getPos());
+		{
+			BlockState disguisedState = ((DisguisableBlock)originalBlock).getDisguisedBlockState(Minecraft.getInstance().world, ((BlockRayTraceResult)rayTraceBlock).getPos());
+
+			return disguisedState != null ? disguisedState : originalState;
+		}
 		else if(originalBlock instanceof BaseFullMineBlock)
 			return ((BaseFullMineBlock)originalBlock).getBlockDisguisedAs().getDefaultState();
 		else if(originalBlock instanceof FurnaceMineBlock)
