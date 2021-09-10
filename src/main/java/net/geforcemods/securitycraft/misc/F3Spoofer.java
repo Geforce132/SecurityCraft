@@ -22,7 +22,11 @@ public class F3Spoofer
 		Block originalBlock = originalState.getBlock();
 
 		if(originalBlock instanceof DisguisableBlock)
-			return ((DisguisableBlock)originalBlock).getDisguisedBlockState(Minecraft.getInstance().world, pos);
+		{
+			BlockState disguisedState = ((DisguisableBlock)originalBlock).getDisguisedBlockState(Minecraft.getInstance().world, pos);
+
+			return disguisedState != null ? disguisedState : originalState;
+		}
 		else if(originalBlock instanceof BaseFullMineBlock)
 			return ((BaseFullMineBlock)originalBlock).getBlockDisguisedAs().getDefaultState();
 		else if(originalBlock instanceof FurnaceMineBlock)
