@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.24 of SecurityCraft--------------------------
 
+- New: Completely overhauled the overwhelming majority of SecurityCraft's textures. Direct feedback @ChainmailPickaxe in #sc-talk on our Discord server
 - New: The debug menu now hides block mines, disguised blocks, and fake fluids
 - Change: SecurityCraft's config values for HWYLA are now synchronized from server to client, meaning server owners can now control what HWYLA shows to players
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
@@ -10,6 +11,8 @@
 - Fix: Panic Button loses its owner when pressed
 - Fix: Wrenches or similar of other mods are able to open doors
 - Fix: Reinforcing blocks in the world may not work if some specific mods are installed
+- Removed: Unused textures
+- Misc.: Renamed a few textures
 - Misc.: The minimum Forge version is now 31.2.45
 
 --------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
