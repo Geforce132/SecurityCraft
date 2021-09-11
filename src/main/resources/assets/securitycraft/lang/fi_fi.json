@@ -1,6 +1,6 @@
 {
 	"block.securitycraft.laser_block": "laserpalikka",
-	"block.securitycraft.laser.name": "laser",
+	"block.securitycraft.laser": "laser",
 	"block.securitycraft.laser_active": "aktiivinen laser",
 	"block.securitycraft.keypad": "koodilukko",
 	"block.securitycraft.iron_door_reinforced": "vahvistettu ovi",

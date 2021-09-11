@@ -1,6 +1,6 @@
 {
 	"block.securitycraft.laser_block": "Laserblock",
-	"block.securitycraft.laser.name": "Laser",
+	"block.securitycraft.laser": "Laser",
 	"block.securitycraft.laser_active": "Aktivierter Laser",
 	"block.securitycraft.keypad": "Nummernschloss",
 	"block.securitycraft.iron_door_reinforced": "Verstärkte Tür",
