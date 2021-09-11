@@ -7,7 +7,7 @@
 	"block.securitycraft.keycard_reader": "키카드 판독기",
 	"block.securitycraft.reinforced_iron_trapdoor": "강화 철 다락문",
 	"block.securitycraft.inventory_scanner": "인벤토리 감지기",
-	"block.securitycraft.inventory_scanner_field.name": "인벤토리 감지기 필드",
+	"block.securitycraft.inventory_scanner_field": "인벤토리 감지기 필드",
 	"block.securitycraft.cage_trap": "새장 덫",
 	"block.securitycraft.deactivated_cage_trap": "비활성화된 새장 덫",
 	"block.securitycraft.portable_radar": "휴대용 레이더",

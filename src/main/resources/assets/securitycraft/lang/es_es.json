@@ -7,7 +7,7 @@
 	"block.securitycraft.keycard_reader": "Lector de tarjetas de acceso",
 	"block.securitycraft.reinforced_iron_trapdoor": "Trampilla de hierro reforzada",
 	"block.securitycraft.inventory_scanner": "Escáner de inventario",
-	"block.securitycraft.inventory_scanner_field.name": "Campo del escáner de inventario",
+	"block.securitycraft.inventory_scanner_field": "Campo del escáner de inventario",
 	"block.securitycraft.cage_trap": "Jaula trampa",
 	"block.securitycraft.deactivated_cage_trap": "Jaula trampa desactivada",
 	"block.securitycraft.portable_radar": "Radar portátil",

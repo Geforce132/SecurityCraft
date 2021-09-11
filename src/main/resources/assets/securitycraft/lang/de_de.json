@@ -7,7 +7,7 @@
 	"block.securitycraft.keycard_reader": "Schlüsselkartenleser",
 	"block.securitycraft.reinforced_iron_trapdoor": "Verstärkte Eisenfalltür",
 	"block.securitycraft.inventory_scanner": "Inventarscanner",
-	"block.securitycraft.inventory_scanner_field.name": "Inventarscannerfeld",
+	"block.securitycraft.inventory_scanner_field": "Inventarscannerfeld",
 	"block.securitycraft.cage_trap": "Käfigfalle",
 	"block.securitycraft.deactivated_cage_trap": "Deaktivierte Käfigfalle",
 	"block.securitycraft.portable_radar": "Tragbarer Radar",
