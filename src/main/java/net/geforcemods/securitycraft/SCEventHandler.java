@@ -178,7 +178,7 @@ public class SCEventHandler {
 		ItemStack stack = event.getItemStack();
 		Item item = stack.getItem();
 
-		if(!stack.isEmpty() && item != SCContent.universalBlockRemover && item != SCContent.universalBlockModifier)
+		if(!stack.isEmpty() && item != SCContent.universalBlockRemover && item != SCContent.universalBlockModifier && item != SCContent.universalOwnerChanger)
 		{
 			if(!(item instanceof ItemBlock))
 			{
