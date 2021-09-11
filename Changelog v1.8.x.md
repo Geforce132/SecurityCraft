@@ -9,6 +9,8 @@
 - Fix: Wrenches or similar of other mods are able to open doors
 - Fix: Reinforcing blocks in the world may not work if some specific mods are installed
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
+- Removed: Unused textures
+- Misc.: Renamed a few textures
 
 --------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
 

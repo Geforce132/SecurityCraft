@@ -19,7 +19,7 @@ public class ModelSecurityCamera extends ModelBase {
 	public ModelRenderer cameraLensTop;
 
 	public ModelSecurityCamera() {
-		textureWidth = 128;
+		textureWidth = 64;
 		textureHeight = 64;
 		cameraRotationPoint = new ModelRenderer(this, 0, 25);
 		cameraRotationPoint.setRotationPoint(0.0F, 14.0F, 3.0F);

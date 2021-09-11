@@ -16,8 +16,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<TileEntitySecurityCamera> {
 
-	private static final ModelSecurityCamera modelSecurityCamera = new ModelSecurityCamera();
-	private static final ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/security_camera1.png");
+	private static final ModelSecurityCamera MODEL = new ModelSecurityCamera();
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/blocks/security_camera.png");
 
 	@Override
 	public void render(TileEntitySecurityCamera te, double x, double y, double z, float par5, int par6, float alpha) {
@@ -39,7 +39,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(cameraTexture);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 		GlStateManager.pushMatrix();
 
 		if(te.hasWorld())
@@ -59,14 +59,14 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 		}
 
 		GlStateManager.rotate(180F, rotation, 0.0F, 1.0F);
-		modelSecurityCamera.cameraRotationPoint.rotateAngleY = (float)te.cameraRotation;
+		MODEL.cameraRotationPoint.rotateAngleY = (float)te.cameraRotation;
 
 		if(te.isShutDown())
-			modelSecurityCamera.cameraRotationPoint.rotateAngleX = 0.9F;
+			MODEL.cameraRotationPoint.rotateAngleX = 0.9F;
 		else
-			modelSecurityCamera.cameraRotationPoint.rotateAngleX = 0.2617993877991494F;
+			MODEL.cameraRotationPoint.rotateAngleX = 0.2617993877991494F;
 
-		modelSecurityCamera.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		MODEL.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
 	}
