@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.24 of SecurityCraft--------------------------
 
+- New: Completely overhauled the overwhelming majority of SecurityCraft's textures. Direct feedback @ChainmailPickaxe in #sc-talk on our Discord server
 - New: Reinforced Pistons
 - New: The Reinforced Redstone Block and the Reinforced Observer can now be used to open doors, activate pistons, etc.
 - New: Block Mines for Copper Ore, Deepslate Copper Ore, and where applicable, for the deepslate variants of the existing block mines
@@ -13,6 +14,8 @@
 - Fix: Panic Button loses its owner when pressed
 - Fix: Wrenches or similar of other mods are able to open doors
 - Fix: Reinforcing blocks in the world may not work if some specific mods are installed
+- Removed: Unused textures
+- Misc.: Renamed a few textures
 
 --------------------------Changelog for v1.8.23-beta5 of SecurityCraft--------------------------
 

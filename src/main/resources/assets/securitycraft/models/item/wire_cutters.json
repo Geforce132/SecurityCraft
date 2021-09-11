@@ -1,7 +1,7 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "securitycraft:item/wire_cutter"
+        "layer0": "securitycraft:item/wire_cutters"
     },
     "display": {
         "thirdperson": {

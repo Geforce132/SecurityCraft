@@ -30,12 +30,12 @@ public class SecurityCameraTileEntityRenderer implements BlockEntityRenderer<Sec
 	private static final Quaternion POSITIVE_Y_90 = Vector3f.YP.rotationDegrees(90.0F);
 	private static final Quaternion NEGATIVE_Y_90 = Vector3f.YN.rotationDegrees(90.0F);
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/security_camera1.png");
-	private final SecurityCameraModel modelSecurityCamera;
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/security_camera.png");
+	private final SecurityCameraModel model;
 
 	public SecurityCameraTileEntityRenderer(BlockEntityRendererProvider.Context ctx)
 	{
-		modelSecurityCamera = new SecurityCameraModel(ctx.bakeLayer(ClientHandler.SECURITY_CAMERA_LOCATION));
+		model = new SecurityCameraModel(ctx.bakeLayer(ClientHandler.SECURITY_CAMERA_LOCATION));
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class SecurityCameraTileEntityRenderer implements BlockEntityRenderer<Sec
 		}
 
 		matrix.mulPose(POSITIVE_X_180);
-		modelSecurityCamera.cameraRotationPoint.yRot = (float)te.cameraRotation;
-		modelSecurityCamera.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), p_225616_5_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.cameraRotationPoint.yRot = (float)te.cameraRotation;
+		model.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), p_225616_5_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }
