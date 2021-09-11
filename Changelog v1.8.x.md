@@ -8,6 +8,7 @@
 - Fix: Tooltip of Sentry Remote Access Tool does not show properly
 - Fix: Wrenches or similar of other mods are able to open doors
 - Fix: Reinforcing blocks in the world may not work if some specific mods are installed
+- Fix: Crash when placing a Reinforced Door next to an Inventory Scanner
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Misc.: Renamed a few textures
