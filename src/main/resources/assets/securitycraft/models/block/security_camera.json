@@ -4,7 +4,7 @@
     "ambientocclusion": false,
     "textures": {
         "particle": "securitycraft:block/security_camera_particle_texture",
-        "securityCamera": "securitycraft:block/security_camera2"
+        "securityCamera": "securitycraft:block/security_camera"
     },
     "display": {
          "ground": {
