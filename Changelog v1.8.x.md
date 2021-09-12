@@ -4,6 +4,7 @@
 - New: Reinforced Pistons
 - New: The Reinforced Redstone Block and the Reinforced Observer can now be used to open doors, activate pistons, etc.
 - New: Block Mines for Copper Ore, Deepslate Copper Ore, and where applicable, for the deepslate variants of the existing block mines
+- New: The debug menu now hides block mines, disguised blocks, and fake fluids
 - Change: SecurityCraft's config values for Jade are now synchronized from server to client, meaning server owners can now control what Jade shows to players
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play
@@ -16,6 +17,7 @@
 - Fix: Reinforcing blocks in the world may not work if some specific mods are installed
 - Removed: Unused textures
 - Misc.: Renamed a few textures
+- Misc.: The minimum Forge version is now 37.0.59
 
 --------------------------Changelog for v1.8.23-beta5 of SecurityCraft--------------------------
 
