@@ -34,6 +34,7 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements IReinf
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 	}
 
+	@Override
 	public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		if (!world.isRemote && player.abilities.isCreativeMode) {
 			BlockPos behindPos = pos.offset(state.get(FACING).getOpposite());
@@ -47,6 +48,7 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements IReinf
 		super.onBlockHarvested(world, pos, state, player);
 	}
 
+	@Override
 	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
 			super.onReplaced(state, worldIn, pos, newState, isMoving);
