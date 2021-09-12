@@ -67,8 +67,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 
 		if(owner != null)
 		{
-			tag.putString("owner", owner.getName());
-			tag.putString("ownerUUID", owner.getUUID());
+			owner.write(tag, false);
 		}
 
 		if(passcode != null && !passcode.isEmpty())
@@ -86,8 +85,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
-		owner.setOwnerName(tag.getString("owner"));
-		owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.read(tag);
 		passcode = tag.getString("passcode");
 		furnaceCustomName = new StringTextComponent(tag.getString("CustomName"));
 	}

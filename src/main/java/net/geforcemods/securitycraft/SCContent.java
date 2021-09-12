@@ -59,10 +59,13 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronBarsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLanternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMovingPistonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedNetherrackBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObserverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObsidianBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonHeadBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneLampBlock;
@@ -137,6 +140,7 @@ import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedCauldronTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedIronBarsTileEntity;
+import net.geforcemods.securitycraft.tileentity.ReinforcedPistonTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
@@ -144,6 +148,7 @@ import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
+import net.geforcemods.securitycraft.tileentity.ValidationOwnableTileEntity;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableTE;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
@@ -151,6 +156,7 @@ import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.PistonBlock;
 import net.minecraft.block.PressurePlateBlock.Sensitivity;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.SlabBlock;
@@ -531,6 +537,8 @@ public class SCContent
 	@OwnableTE @Reinforced(hasReinforcedTint=false) public static final RegistryObject<Block> REINFORCED_BLACK_STAINED_GLASS_PANE = BLOCKS.register("reinforced_black_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS_PANE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_LANTERN = BLOCKS.register("reinforced_lantern", () -> new ReinforcedLanternBlock(prop(Material.IRON).sound(SoundType.LANTERN).lightValue(15), Blocks.LANTERN));
 	//ordered by vanilla redstone tab order
+	@Reinforced public static final RegistryObject<Block> REINFORCED_STICKY_PISTON = BLOCKS.register("reinforced_sticky_piston", () -> new ReinforcedPistonBlock(true, prop(Material.PISTON)));
+	@Reinforced public static final RegistryObject<Block> REINFORCED_PISTON = BLOCKS.register("reinforced_piston", () -> new ReinforcedPistonBlock(false, prop(Material.PISTON)));
 	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(Material.WOOD).doesNotBlockMovement().sound(SoundType.WOOD)));
 	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_STONE_PRESSURE_PLATE = BLOCKS.register("reinforced_stone_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().doesNotBlockMovement(), Blocks.STONE_PRESSURE_PLATE));
 	@Reinforced public static final RegistryObject<Block> REINFORCED_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_oak_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD).doesNotBlockMovement().sound(SoundType.WOOD), Blocks.OAK_PRESSURE_PLATE));
@@ -562,6 +570,8 @@ public class SCContent
 	@Reinforced(customTint=0x15B3A2) public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(), SCContent.STAIRS_CRYSTAL_QUARTZ));
 	@OwnableTE public static final RegistryObject<Block> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(prop(Material.IRON).sound(SoundType.METAL), Blocks.IRON_BLOCK));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_GRASS_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedGrassPathBlock(prop(Material.EARTH).sound(SoundType.PLANT), Blocks.GRASS_PATH));
+	public static final RegistryObject<Block> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop(Material.PISTON).variableOpacity().noDrops().notSolid()));
+	@Reinforced(registerBlockItem=false) public static final RegistryObject<Block> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop(Material.PISTON).noDrops()));
 
 	//items
 	@HasManualPage(hasRecipeDescription=true) public static final RegistryObject<Item> ADMIN_TOOL = ITEMS.register("admin_tool", () -> new AdminToolItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1).maxStackSize(1)));
@@ -674,6 +684,10 @@ public class SCContent
 	public static TileEntityType<ReinforcedIronBarsTileEntity> teTypeReinforcedIronBars;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_cauldron")
 	public static TileEntityType<ReinforcedCauldronTileEntity> teTypeReinforcedCauldron;
+	@ObjectHolder(SecurityCraft.MODID + ":reinforced_piston")
+	public static TileEntityType<ReinforcedPistonTileEntity> teTypeReinforcedPiston;
+	@ObjectHolder(SecurityCraft.MODID + ":validation_ownable")
+	public static TileEntityType<ValidationOwnableTileEntity> teTypeValidationOwnable;
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")

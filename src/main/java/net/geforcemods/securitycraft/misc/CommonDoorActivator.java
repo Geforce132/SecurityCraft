@@ -33,7 +33,8 @@ public class CommonDoorActivator implements IDoorActivator
 			SCContent.REINFORCED_JUNGLE_BUTTON.get(),
 			SCContent.REINFORCED_ACACIA_BUTTON.get(),
 			SCContent.REINFORCED_DARK_OAK_BUTTON.get(),
-			SCContent.REINFORCED_LEVER.get()
+			SCContent.REINFORCED_LEVER.get(),
+			SCContent.REINFORCED_OBSERVER.get()
 	});
 
 	@Override

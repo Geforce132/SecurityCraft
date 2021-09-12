@@ -30,8 +30,7 @@ public class ReinforcedHopperTileEntity extends HopperTileEntity implements IOwn
 	{
 		super.read(tag);
 
-		owner.setOwnerName(tag.getString("owner"));
-		owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.read(tag);
 		modules = readModuleInventory(tag);
 	}
 
@@ -42,8 +41,7 @@ public class ReinforcedHopperTileEntity extends HopperTileEntity implements IOwn
 
 		if(owner != null)
 		{
-			tag.putString("owner", owner.getName());
-			tag.putString("ownerUUID", owner.getUUID());
+			owner.write(tag, false);
 		}
 
 		writeModuleInventory(tag);

@@ -44,8 +44,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 		writeOptions(tag);
 
 		if(owner != null){
-			tag.putString("owner", owner.getName());
-			tag.putString("ownerUUID", owner.getUUID());
+			owner.write(tag, false);
 		}
 
 		return tag;
@@ -61,8 +60,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
-		owner.setOwnerName(tag.getString("owner"));
-		owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.read(tag);
 	}
 
 	@Override

@@ -334,6 +334,8 @@
     "securitycraft:reinforced_red_stained_glass_pane",
     "securitycraft:reinforced_black_stained_glass_pane",
     "securitycraft:reinforced_lantern",
+    "securitycraft:reinforced_sticky_piston",
+    "securitycraft:reinforced_piston",
     "securitycraft:reinforced_lever",
     "securitycraft:reinforced_stone_pressure_plate",
     "securitycraft:reinforced_oak_pressure_plate",
@@ -361,6 +363,8 @@
     "securitycraft:reinforced_crystal_quartz_slab",
     "securitycraft:reinforced_crystal_quartz_stairs",
     "securitycraft:horizontal_reinforced_iron_bars",
-    "securitycraft:reinforced_grass_path"
+    "securitycraft:reinforced_grass_path",
+    "securitycraft:reinforced_moving_piston",
+    "securitycraft:reinforced_piston_head"
   ]
 }

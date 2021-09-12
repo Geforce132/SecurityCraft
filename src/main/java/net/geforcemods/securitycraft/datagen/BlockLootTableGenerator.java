@@ -66,6 +66,7 @@ public class BlockLootTableGenerator implements IDataProvider
 				putStandardBlockLootTable(obj);
 		}
 
+        lootTables.remove(SCContent.REINFORCED_PISTON_HEAD);
 		putSlabLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
 
 		StandaloneLootEntry.Builder<?> imsLootEntryBuilder = ItemLootEntry.builder(SCContent.BOUNCING_BETTY.get());
