@@ -1,17 +1,21 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockWoodSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -20,7 +24,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider, IOverlayDisplay {
+public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
 
 	private final boolean isDouble;
 
@@ -79,5 +83,17 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
 	{
 		return true;
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(Blocks.WOODEN_SLAB);
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 6;
 	}
 }

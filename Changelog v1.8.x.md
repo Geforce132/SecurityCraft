@@ -9,8 +9,10 @@
 - Fix: Wrenches or similar of other mods are able to open doors
 - Fix: Reinforcing blocks in the world may not work if some specific mods are installed
 - Fix: Crash when placing a Reinforced Door next to an Inventory Scanner
+- Fix: Stairs and slabs cannot be reinforced (this fix does not include some slabs due to technical reasons, they can still be crafted however)
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
+- Removed: Portuguese and Russian translations due to being severely outdated
 - Misc.: Renamed a few textures
 
 --------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
