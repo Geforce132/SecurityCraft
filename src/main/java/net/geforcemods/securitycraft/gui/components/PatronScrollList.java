@@ -161,7 +161,7 @@ public abstract class PatronScrollList
 
 	public void applyScrollLimits()
 	{
-		int listHeight = getContentHeight() - (bottom - top - 4);
+		int listHeight = getContentHeight() - (bottom - top - 7);
 
 		if(listHeight < 0)
 			listHeight /= 2;

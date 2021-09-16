@@ -564,7 +564,7 @@ public class GuiSCManual extends GuiScreen {
 		@Override
 		public void drawScreen(int mouseX, int mouseY, float partialTicks)
 		{
-			if(patronsAvailable) //code from ScrollPanel to be able to change colors
+			if(patronsAvailable)
 			{
 				super.drawScreen(mouseX, mouseY, partialTicks);
 
