@@ -389,9 +389,9 @@ public class TileEntityReinforcedPiston extends TileEntity implements IOwnable, 
 			}
 
 			float progress = getExtendedProgress(this.progress);
-			double d0 = (float)pistonFacing.getXOffset() * progress;
-			double d1 = (float)pistonFacing.getYOffset() * progress;
-			double d2 = (float)pistonFacing.getZOffset() * progress;
+			double d0 = pistonFacing.getXOffset() * progress;
+			double d1 = pistonFacing.getYOffset() * progress;
+			double d2 = pistonFacing.getZOffset() * progress;
 
 			state.addCollisionBoxToList(world, pos, entityBoundingBox.offset(-d0, -d1, -d2), collidingBoxes, entity, true);
 

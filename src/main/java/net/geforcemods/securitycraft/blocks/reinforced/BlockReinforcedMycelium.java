@@ -40,9 +40,7 @@ public class BlockReinforcedMycelium extends BlockMycelium implements IReinforce
 	{
 		Block block = world.getBlockState(pos.up()).getBlock();
 
-		state = state.withProperty(SNOWY, block == Blocks.SNOW || block == Blocks.SNOW_LAYER || block == SCContent.reinforcedSnowBlock);
-
-		return state;
+		return state.withProperty(SNOWY, block == Blocks.SNOW || block == Blocks.SNOW_LAYER || block == SCContent.reinforcedSnowBlock);
 	}
 
 	@Override

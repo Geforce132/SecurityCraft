@@ -212,6 +212,7 @@ public class BlockReinforcedPistonBase extends BlockPistonBase implements IReinf
 							return destroyBlocks;
 						case PUSH_ONLY:
 							return facing == direction;
+						default: break;
 					}
 				}
 				else if (state.getValue(EXTENDED)) {

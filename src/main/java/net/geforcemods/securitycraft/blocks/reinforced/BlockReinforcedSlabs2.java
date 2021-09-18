@@ -93,11 +93,7 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 
 	@Override
 	public IBlockState getStateFromMeta(int meta){
-		IBlockState state = getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta & 7));
-
-		state = state.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
-
-		return state;
+		return getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta & 7)).withProperty(HALF, (meta & 8) == 0 ? EnumBlockHalf.BOTTOM : EnumBlockHalf.TOP);
 	}
 
 	@Override
@@ -105,7 +101,7 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 		byte b0 = 0;
 		int meta = b0 | state.getValue(VARIANT).getMetadata();
 
-		if(state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
+		if(state.getValue(HALF) == EnumBlockHalf.TOP)
 			meta |= 8;
 
 		return meta;

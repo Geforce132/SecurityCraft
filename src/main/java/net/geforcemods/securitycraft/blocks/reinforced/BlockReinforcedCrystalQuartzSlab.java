@@ -61,11 +61,7 @@ public class BlockReinforcedCrystalQuartzSlab extends BlockSlab implements ITile
 
 	@Override
 	public IBlockState getStateFromMeta(int meta){
-		IBlockState state = getDefaultState();
-
-		state = state.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
-
-		return state;
+		return getDefaultState().withProperty(HALF, (meta & 8) == 0 ? EnumBlockHalf.BOTTOM : EnumBlockHalf.TOP);
 	}
 
 	@Override
@@ -73,7 +69,7 @@ public class BlockReinforcedCrystalQuartzSlab extends BlockSlab implements ITile
 		byte b0 = 0;
 		int meta = b0;
 
-		if(state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
+		if(state.getValue(HALF) == EnumBlockHalf.TOP)
 			meta |= 8;
 
 		return meta;

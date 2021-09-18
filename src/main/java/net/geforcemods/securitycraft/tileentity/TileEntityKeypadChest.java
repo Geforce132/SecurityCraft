@@ -288,6 +288,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		return world != null && world.getBlockState(pos).getBlock() instanceof BlockKeypadChest;
 	}
 
+	@Override
 	public void openInventory(EntityPlayer player)
 	{
 		if (!player.isSpectator())

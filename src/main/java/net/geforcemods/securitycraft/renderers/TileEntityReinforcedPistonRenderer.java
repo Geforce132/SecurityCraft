@@ -48,7 +48,7 @@ public class TileEntityReinforcedPistonRenderer extends TileEntitySpecialRendere
 			}
 
 			bufferbuilder.begin(7, DefaultVertexFormats.BLOCK);
-			bufferbuilder.setTranslation(x - (double)tePos.getX() + (double)te.getOffsetX(partialTicks), y - (double)tePos.getY() + (double)te.getOffsetY(partialTicks), z - (double)tePos.getZ() + (double)te.getOffsetZ(partialTicks));
+			bufferbuilder.setTranslation(x - tePos.getX() + te.getOffsetX(partialTicks), y - tePos.getY() + te.getOffsetY(partialTicks), z - tePos.getZ() + te.getOffsetZ(partialTicks));
 			World world = getWorld();
 
 			if (movedBlock == SCContent.reinforcedPistonHead && te.getProgress(partialTicks) <= 0.25F) {
@@ -61,7 +61,7 @@ public class TileEntityReinforcedPistonRenderer extends TileEntitySpecialRendere
 
 				pistonHeadState = pistonHeadState.withProperty(BlockPistonExtension.SHORT, te.getProgress(partialTicks) >= 0.5F);
 				renderStateModel(tePos, pistonHeadState, bufferbuilder, world, true);
-				bufferbuilder.setTranslation(x - (double)tePos.getX(), y - (double)tePos.getY(), z - (double)tePos.getZ());
+				bufferbuilder.setTranslation(x - tePos.getX(), y - tePos.getY(), z - tePos.getZ());
 				movedState = movedState.withProperty(BlockPistonBase.EXTENDED, true);
 				renderStateModel(tePos, movedState, bufferbuilder, world, true);
 			}
