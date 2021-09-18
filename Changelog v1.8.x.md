@@ -14,6 +14,7 @@
 - Fix: Panic Button loses its owner when pressed
 - Fix: Wrenches or similar of other mods are able to open doors
 - Fix: Reinforcing blocks in the world may not work if some specific mods are installed
+- Fix: Reinforced Smooth Quartz has the wrong texture
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 
