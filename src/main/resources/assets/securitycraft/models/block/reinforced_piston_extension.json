@@ -1,5 +1,5 @@
 {
   "textures": {
-    "particle": "minecraft:block/piston_side"
+    "particle": "minecraft:blocks/piston_side"
   }
 }
