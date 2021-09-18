@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=down,type=normal": { "model": "securitycraft:reinforced_piston_extension" },
+    "facing=up,type=normal": { "model": "securitycraft:reinforced_piston_extension" },
+    "facing=north,type=normal": { "model": "securitycraft:reinforced_piston_extension" },
+    "facing=south,type=normal": { "model": "securitycraft:reinforced_piston_extension" },
+    "facing=west,type=normal": { "model": "securitycraft:reinforced_piston_extension" },
+    "facing=east,type=normal": { "model": "securitycraft:reinforced_piston_extension" },
+    "facing=down,type=sticky": { "model": "securitycraft:reinforced_piston_extension" },
+    "facing=up,type=sticky": { "model": "securitycraft:reinforced_piston_extension" },
+    "facing=north,type=sticky": { "model": "securitycraft:reinforced_piston_extension" },
+    "facing=south,type=sticky": { "model": "securitycraft:reinforced_piston_extension" },
+    "facing=west,type=sticky": { "model": "securitycraft:reinforced_piston_extension" },
+    "facing=east,type=sticky": { "model": "securitycraft:reinforced_piston_extension" }
+  }
+}

@@ -93,12 +93,14 @@ import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedCauldron;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedHopper;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedIronBars;
+import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPiston;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
+import net.geforcemods.securitycraft.tileentity.TileEntityValidationOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
@@ -258,6 +260,10 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedWoodenPressurePlate, false);
 		registerBlock(event, SCContent.reinforcedBookshelf, false);
 		registerBlock(event, SCContent.reinforcedWalls, new ItemBlockReinforcedWalls(SCContent.reinforcedWalls), false);
+		registerBlock(event, SCContent.reinforcedStickyPiston, false);
+		registerBlock(event, SCContent.reinforcedPiston, false);
+		registerBlock(event, SCContent.reinforcedPistonHead, null, false);
+		registerBlock(event, SCContent.reinforcedPistonExtension, null, false);
 		registerBlock(event, SCContent.reinforcedObserver, false);
 		registerBlock(event, SCContent.reinforcedRedstoneLamp, false);
 		registerBlock(event, SCContent.reinforcedCobweb, false);
@@ -402,6 +408,8 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityKeypadDoor.class, new ResourceLocation("securitycraft:keypad_door"));
 		GameRegistry.registerTileEntity(TileEntityReinforcedIronBars.class, new ResourceLocation("securitycraft:reinforced_iron_bars"));
 		GameRegistry.registerTileEntity(TileEntityReinforcedCauldron.class, new ResourceLocation("securitycraft:reinforced_cauldron"));
+		GameRegistry.registerTileEntity(TileEntityReinforcedPiston.class, new ResourceLocation("securitycraft:reinforced_piston"));
+		GameRegistry.registerTileEntity(TileEntityValidationOwnable.class, new ResourceLocation("securitycraft:validation_ownable"));
 	}
 
 	@SubscribeEvent
@@ -763,6 +771,8 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedBookshelf), 0, new ModelResourceLocation("securitycraft:reinforced_bookshelf", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWalls), 0, new ModelResourceLocation("securitycraft:reinforced_cobblestone_wall", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWalls), 1, new ModelResourceLocation("securitycraft:reinforced_mossy_cobblestone_wall", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedStickyPiston), 0, new ModelResourceLocation("securitycraft:reinforced_sticky_piston", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedPiston), 0, new ModelResourceLocation("securitycraft:reinforced_piston", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedObserver), 0, new ModelResourceLocation("securitycraft:reinforced_observer", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedRedstoneLamp), 0, new ModelResourceLocation("securitycraft:reinforced_redstone_lamp", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCobweb), 0, new ModelResourceLocation("securitycraft:reinforced_cobweb", "inventory"));

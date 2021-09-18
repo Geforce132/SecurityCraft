@@ -98,6 +98,9 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedObsidian;
 	@Reinforced @Tinted public static Block reinforcedOldLogs;
 	@Reinforced @Tinted public static Block reinforcedPackedIce;
+	@Reinforced @Tinted public static Block reinforcedPiston;
+	@Reinforced @Tinted public static Block reinforcedPistonHead;
+	public static Block reinforcedPistonExtension;
 	@Reinforced @Tinted public static Block reinforcedPrismarine;
 	@Reinforced @Tinted public static Block reinforcedPurpur;
 	@Reinforced @Tinted public static Block reinforcedQuartz;
@@ -127,6 +130,7 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedStairsSpruce;
 	@Tinted public static Block reinforcedStairsStone;
 	@Reinforced @Tinted public static Block reinforcedStairsStoneBrick;
+	@Reinforced @Tinted public static Block reinforcedStickyPiston;
 	@Reinforced @Tinted public static Block reinforcedStone;
 	@Reinforced @Tinted public static Block reinforcedStoneBrick;
 	@Reinforced @Tinted public static Block reinforcedStoneButton;

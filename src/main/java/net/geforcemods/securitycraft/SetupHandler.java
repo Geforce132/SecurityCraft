@@ -77,6 +77,9 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedNetherrack
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedNewLog;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedObserver;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedOldLog;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPistonBase;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPistonExtension;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPistonMoving;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPressurePlate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPrismarine;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPurpur;
@@ -235,6 +238,10 @@ public class SetupHandler
 		SCContent.reinforcedBookshelf = new BlockReinforcedBookshelf(Material.WOOD, 1, Blocks.BOOKSHELF).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_bookshelf").setTranslationKey("securitycraft:reinforcedBookshelf");
 		SCContent.horizontalReinforcedIronBars = new BlockHorizontalReinforcedIronBars().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("horizontal_reinforced_iron_bars");
 		SCContent.reinforcedWalls = new BlockReinforcedWall().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_walls").setTranslationKey("securitycraft:reinforced_walls");
+		SCContent.reinforcedStickyPiston = new BlockReinforcedPistonBase(true).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_sticky_piston").setTranslationKey("securitycraft:reinforced_sticky_piston");
+		SCContent.reinforcedPiston = new BlockReinforcedPistonBase(false).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_piston").setTranslationKey("securitycraft:reinforced_piston");
+		SCContent.reinforcedPistonHead = new BlockReinforcedPistonExtension().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_piston_head").setTranslationKey("securitycraft:reinforced_piston_head");
+		SCContent.reinforcedPistonExtension = new BlockReinforcedPistonMoving().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_piston_extension").setTranslationKey("securitycraft:reinforced_piston_extension");
 		SCContent.reinforcedObserver = new BlockReinforcedObserver().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_observer").setTranslationKey("securitycraft:reinforced_observer");
 		SCContent.reinforcedRedstoneLamp = new BlockReinforcedRedstoneLamp().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_redstone_lamp").setTranslationKey("securitycraft:reinforced_redstone_lamp");
 		SCContent.reinforcedCobweb = new BlockReinforcedCobweb().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_cobweb").setTranslationKey("securitycraft:reinforced_cobweb");

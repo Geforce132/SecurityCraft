@@ -2,8 +2,10 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.block.Block;
@@ -16,6 +18,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
@@ -170,6 +173,25 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 
 			for (EnumType type : values)
 				META_LOOKUP[type.getMetadata()] = type;
+		}
+	}
+
+	public static class DoorActivator implements Function<Object, IDoorActivator>, IDoorActivator {
+		private List<Block> blocks = Arrays.asList(SCContent.reinforcedMetals);
+
+		@Override
+		public IDoorActivator apply(Object o) {
+			return this;
+		}
+
+		@Override
+		public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te) {
+			return state.getValue(VARIANT) == EnumType.REDSTONE;
+		}
+
+		@Override
+		public List<Block> getBlocks() {
+			return blocks;
 		}
 	}
 }

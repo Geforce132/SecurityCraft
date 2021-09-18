@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataSerializer;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.DataSerializerEntry;
@@ -17,6 +18,7 @@ public class Owner {
 	public static final DataSerializerEntry SERIALIZER = null;
 	private String playerName = "owner";
 	private String playerUUID = "ownerUUID";
+	private boolean validated = true;
 
 	public Owner() {}
 
@@ -24,6 +26,43 @@ public class Owner {
 		this.playerName = playerName;
 		this.playerUUID = playerUUID;
 	}
+
+	public Owner(String playerName, String playerUUID, boolean validated) {
+		this.playerName = playerName;
+		this.playerUUID = playerUUID;
+		this.validated = validated;
+	}
+
+	public static Owner fromCompound(NBTTagCompound tag) {
+		Owner owner = new Owner();
+
+		if (tag != null){
+			owner.readFromNBT(tag);
+		}
+
+		return owner;
+	}
+
+	public void readFromNBT(NBTTagCompound tag) {
+		if (tag.hasKey("owner"))
+			playerName = tag.getString("owner");
+
+		if (tag.hasKey("ownerUUID"))
+			playerUUID = tag.getString("ownerUUID");
+
+		if (tag.hasKey("ownerValidated"))
+			validated = tag.getBoolean("ownerValidated");
+	}
+
+	public void writeToNBT(NBTTagCompound tag, boolean saveValidationStatus) {
+		tag.setString("owner", playerName);
+		tag.setString("ownerUUID", playerUUID);
+
+		if (saveValidationStatus) {
+			tag.setBoolean("ownerValidated", validated);
+		}
+	}
+
 
 	/**
 	 * @return If this user is the owner of the given blocks.
@@ -88,6 +127,15 @@ public class Owner {
 	}
 
 	/**
+	 * Sets the validation status of the owner
+	 *
+	 * @param validated The owner's new validation status
+	 */
+	public void setValidated(boolean validated) {
+		this.validated = validated;
+	}
+
+	/**
 	 * @return The owner's name.
 	 */
 	public String getName() {
@@ -99,6 +147,13 @@ public class Owner {
 	 */
 	public String getUUID() {
 		return playerUUID;
+	}
+
+	/**
+	 * @return true if this owner is validated by the owning player
+	 */
+	public boolean isValidated() {
+		return validated;
 	}
 
 	@Override

@@ -74,10 +74,13 @@ public class ItemUniversalBlockReinforcer extends Item
 						world.setBlockState(pos, convertedState);
 						te = world.getTileEntity(pos);
 
-						if(tag != null)
-							te.readFromNBT(tag);
+						if (te != null) { //in case the converted state gets removed immediately after it is placed down
+							if (tag != null)
+								te.readFromNBT(tag);
 
-						((IOwnable)te).setOwner(player.getGameProfile().getId().toString(), player.getName());
+							((IOwnable)te).setOwner(player.getGameProfile().getId().toString(), player.getName());
+						}
+
 						stack.damageItem(1, player);
 					}
 

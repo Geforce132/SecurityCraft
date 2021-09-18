@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -21,8 +22,7 @@ public class TileEntityOwnable extends TileEntity implements IOwnable {
 		super.writeToNBT(tag);
 
 		if(owner != null){
-			tag.setString("owner", owner.getName());
-			tag.setString("ownerUUID", owner.getUUID());
+			owner.writeToNBT(tag, needsValidation());
 		}
 
 		return tag;
@@ -33,16 +33,12 @@ public class TileEntityOwnable extends TileEntity implements IOwnable {
 	{
 		super.readFromNBT(tag);
 
-		if (tag.hasKey("owner"))
-			owner.setOwnerName(tag.getString("owner"));
-
-		if (tag.hasKey("ownerUUID"))
-			owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.readFromNBT(tag);
 	}
 
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState){
-		return (oldState.getBlock() != newState.getBlock());
+		return oldState.getBlock() != newState.getBlock() && oldState.getBlock() != SCContent.reinforcedPistonExtension; //prevent this TileEntity from getting removed when the previous block was a Reinforced Moving Piston to make Reinforced Pistons work
 	}
 
 	@Override

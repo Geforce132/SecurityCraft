@@ -458,8 +458,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		NBTTagCompound tag = new NBTTagCompound();
 		Owner owner = dataManager.get(OWNER);
 
-		tag.setString("owner", owner.getName());
-		tag.setString("ownerUUID", owner.getUUID());
+		owner.writeToNBT(tag, false);
 		return tag;
 	}
 
@@ -467,10 +466,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	public void readEntityFromNBT(NBTTagCompound tag)
 	{
 		NBTTagCompound teTag = tag.getCompoundTag("TileEntityData");
-		String name = teTag.getString("owner");
-		String uuid = teTag.getString("ownerUUID");
+		Owner owner = Owner.fromCompound(teTag);
 
-		dataManager.set(OWNER, new Owner(name, uuid));
+		dataManager.set(OWNER, owner);
 		dataManager.set(DISGUISE_MODULE, tag.getCompoundTag("InstalledModule"));
 		dataManager.set(ALLOWLIST, tag.getCompoundTag("InstalledWhitelist"));
 		dataManager.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));

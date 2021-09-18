@@ -59,10 +59,8 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		if(passcode != null && !passcode.isEmpty())
 			tag.setString("passcode", passcode);
 
-		if(owner != null){
-			tag.setString("owner", owner.getName());
-			tag.setString("ownerUUID", owner.getUUID());
-		}
+		if(owner != null)
+			owner.writeToNBT(tag, false);
 
 		return tag;
 	}
@@ -84,8 +82,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		modules = readModuleInventory(tag);
 		readOptions(tag);
 		passcode = tag.getString("passcode");
-		owner.setOwnerName(tag.getString("owner"));
-		owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.readFromNBT(tag);
 	}
 
 	@Override

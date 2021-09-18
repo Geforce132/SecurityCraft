@@ -1,6 +1,17 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.items.ItemUniversalOwnerChanger;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockDoor.EnumDoorHalf;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 
 /**
  * This interface marks a {@link TileEntity} as "ownable". Any TileEntity
@@ -33,4 +44,30 @@ public interface IOwnable {
 	 */
 	public void setOwner(String uuid, String name);
 
+	/**
+	 *
+	 * @return true if the owner of this IOwnable should be invalidated when changed by the Universal Owner Changer
+	 */
+	default boolean needsValidation() {
+		return false;
+	}
+
+	/**
+	 * Executes actions after the owner has been changed, for example making sure the owner of both halves of SecurityCraft's doors get changed, and marks IOwnables that need validation as invalidated
+	 *
+	 * @param world The current world
+	 * @param state The IOwnable's state
+	 * @param pos The IOwnable's position
+	 * @param player The player that changed the owner of the IOwnable
+	 */
+	default void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player) {
+		if(state.getPropertyKeys().contains(BlockDoor.HALF)) {
+			ItemUniversalOwnerChanger.tryUpdateBlock(world, state.getValue(BlockDoor.HALF) == EnumDoorHalf.UPPER ? pos.down() : pos.up(), getOwner());
+		}
+
+		if (needsValidation()) {
+			getOwner().setValidated(false);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalOwnerChanger.getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), TextFormatting.GREEN);
+		}
+	}
 }
