@@ -326,7 +326,7 @@ item.securitycraft:keypad_door_item.name=Porta con tastiera
 item.securitycraft:speed_module.name=Modulo velocità
 
 entity.Sentry.name=Sentinella
-entity.IMSBomb.name=Bomba S.M.I."
+entity.IMSBomb.name=Bomba S.M.I.
 entity.SentryBullet.name=Proiettile per sentinelle
 
 death.attack.securitycraft.laser=%s è stato tagliato a metà da un laser
