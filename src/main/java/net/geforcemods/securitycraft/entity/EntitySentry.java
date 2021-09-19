@@ -254,6 +254,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 				dataManager.set(DISGUISE_MODULE, new NBTTagCompound());
 				dataManager.set(ALLOWLIST, new NBTTagCompound());
+				dataManager.set(HAS_SPEED_MODULE, false);
 			}
 			else if(item == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
 				item.onItemUse(player, world, pos, hand, EnumFacing.NORTH, 0.0F, 0.0F, 0.0F);
