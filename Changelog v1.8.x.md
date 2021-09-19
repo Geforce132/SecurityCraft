@@ -13,6 +13,7 @@
 - Fix: Crash when placing a Reinforced Door next to an Inventory Scanner
 - Fix: Stairs and slabs cannot be reinforced (this fix does not include some slabs due to technical reasons, they can still be crafted however)
 - Fix: The Speed Module doesn't get removed from a Sentry when rightclicking it with a Universal Block Modifier
+- Fix: Sentry Bullets deal twice as much damage as Sentry Bullets from newer Minecraft versions
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated

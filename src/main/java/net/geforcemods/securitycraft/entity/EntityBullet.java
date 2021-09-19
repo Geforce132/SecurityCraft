@@ -60,10 +60,10 @@ public class EntityBullet extends EntityArrow
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 
-		if (!this.potionEffects.isEmpty()) {
+		if (!potionEffects.isEmpty()) {
 			NBTTagList list = new NBTTagList();
 
-			for(PotionEffect effect : this.potionEffects) {
+			for(PotionEffect effect : potionEffects) {
 				list.appendTag(effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
 			}
 
@@ -96,7 +96,7 @@ public class EntityBullet extends EntityArrow
 		Entity target = raytraceResult.entityHit;
 
 		if(target != null && !(target instanceof EntitySentry)) {
-			target.attackEntityFrom(DamageSource.causeArrowDamage(this, shootingEntity == null ? this : shootingEntity), MathHelper.ceil(MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ) * 2.0D));
+			target.attackEntityFrom(DamageSource.causeArrowDamage(this, shootingEntity == null ? this : shootingEntity), MathHelper.ceil(MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ)));
 
 			if (target instanceof EntityLivingBase && !potionEffects.isEmpty()) {
 				for (PotionEffect effect : potionEffects) {
