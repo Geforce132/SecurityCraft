@@ -325,9 +325,9 @@ item.securitycraft:crystalQuartzItem.name=Cristal de Quartz
 item.securitycraft:keypad_door_item.name=Porte du clavier à code
 item.securitycraft:speed_module.name=Module de vitesse
 
-entity.securitycraft:sentry.name=Sentinelle
-entity.securitycraft:imsbomb.name=Bombe S.M.I.
-entity.securitycraft:bullet.name=Balle de sentinelle
+entity.Sentry.name=Sentinelle
+entity.IMSBomb.name=Bombe S.M.I.
+entity.SentryBullet.name=Balle de sentinelle
 
 death.attack.securitycraft.laser=%s a été découpé à mort par un laser
 death.attack.securitycraft.laser.player=%1$s a été tranché a mort par un laser en combattant %2$s

@@ -329,9 +329,9 @@ item.securitycraft:crystalQuartzItem.name=Kristallquartz
 item.securitycraft:keypad_door_item.name=Nummernschloss-Tür
 item.securitycraft:speed_module.name=Schnelligkeits-Modul
 
-entity.securitycraft:imsbomb.name=I.M.S.-Bombe
-entity.securitycraft:sentry.name=Geschütz
-entity.securitycraft:bullet.name=Geschützkugel
+entity.IMSBomb.name=I.M.S.-Bombe
+entity.Sentry.name=Geschütz
+entity.SentryBullet.name=Geschützkugel
 
 death.attack.securitycraft.laser=%s wurde von einem Laser zerschnitten
 death.attack.securitycraft.laser.player=%1$s wurde während des Kampfes mit %2$s von einem Laser zerschnitten

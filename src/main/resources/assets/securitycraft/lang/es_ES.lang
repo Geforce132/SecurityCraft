@@ -325,9 +325,9 @@ item.securitycraft:crystalQuartzItem.name=Cuarzo cristal
 item.securitycraft:keypad_door_item.name=Puerta con contraseña
 item.securitycraft:speed_module.name=Módulo de velocidad
 
-entity.securitycraft:imsbomb.name=Bombas del S.M.I.
-entity.securitycraft:sentry.name=Torreta
-entity.securitycraft:bullet.name=Bala
+entity.IMSBomb.name=Bombas del S.M.I.
+entity.Sentry.name=Torreta
+entity.SentryBullet.name=Bala
 
 death.attack.securitycraft.laser=Un láser ha rebanado a %s
 death.attack.securitycraft.laser.player=Un láser ha rebanado a %1$s mientras luchaba con %2$s

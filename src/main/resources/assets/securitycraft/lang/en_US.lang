@@ -329,9 +329,9 @@ item.securitycraft:crystalQuartzItem.name=Crystal Quartz
 item.securitycraft:keypad_door_item.name=Keypad Door
 item.securitycraft:speed_module.name=Speed Module
 
-entity.securitycraft:imsbomb.name=I.M.S. Bomb
-entity.securitycraft:sentry.name=Sentry
-entity.securitycraft:bullet.name=Sentry Bullet
+entity.IMSBomb.name=I.M.S. Bomb
+entity.Sentry.name=Sentry
+entity.SentryBullet.name=Sentry Bullet
 
 death.attack.securitycraft.laser=%s was sliced to death by a laser
 death.attack.securitycraft.laser.player=%1$s was sliced to death by a laser whilst fighting %2$s
