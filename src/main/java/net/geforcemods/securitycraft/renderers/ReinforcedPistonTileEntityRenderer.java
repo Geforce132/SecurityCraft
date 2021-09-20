@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.state.properties.PistonType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
 
 public class ReinforcedPistonTileEntityRenderer extends TileEntityRenderer<ReinforcedPistonTileEntity> {
 	private BlockRendererDispatcher blockRenderer = Minecraft.getInstance().getBlockRendererDispatcher();
@@ -25,39 +26,43 @@ public class ReinforcedPistonTileEntityRenderer extends TileEntityRenderer<Reinf
 	}
 
 	@Override
-	public void render(ReinforcedPistonTileEntity te, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(ReinforcedPistonTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		World world = te.getWorld();
+
 		if (world != null) {
-			BlockPos blockpos = te.getPos().offset(te.getMotionDirection().getOpposite());
-			BlockState blockstate = te.getPistonState();
-			if (!blockstate.isAir()) {
+			BlockPos oppositePos = te.getPos().offset(te.getMotionDirection().getOpposite());
+			BlockState state = te.getPistonState();
+
+			if (!state.isAir()) {
 				BlockModelRenderer.enableCache();
-				matrixStackIn.push();
-				matrixStackIn.translate(te.getOffsetX(partialTicks), te.getOffsetY(partialTicks), te.getOffsetZ(partialTicks));
-				if (blockstate.matchesBlock(SCContent.REINFORCED_PISTON_HEAD.get()) && te.getProgress(partialTicks) <= 4.0F) {
-					blockstate = blockstate.with(PistonHeadBlock.SHORT, te.getProgress(partialTicks) <= 0.5F);
-					this.renderBlocks(blockpos, blockstate, matrixStackIn, bufferIn, world, false, combinedOverlayIn);
+				matrix.push();
+				matrix.translate(te.getOffsetX(partialTicks), te.getOffsetY(partialTicks), te.getOffsetZ(partialTicks));
+
+				if (state.matchesBlock(SCContent.REINFORCED_PISTON_HEAD.get()) && te.getProgress(partialTicks) <= 4.0F) {
+					state = state.with(PistonHeadBlock.SHORT, te.getProgress(partialTicks) <= 0.5F);
+					renderBlocks(oppositePos, state, matrix, buffer, world, false, combinedOverlay);
 				} else if (te.shouldPistonHeadBeRendered() && !te.isExtending()) {
-					PistonType pistontype = blockstate.matchesBlock(SCContent.REINFORCED_STICKY_PISTON.get()) ? PistonType.STICKY : PistonType.DEFAULT;
-					BlockState blockstate1 = SCContent.REINFORCED_PISTON_HEAD.get().getDefaultState().with(PistonHeadBlock.TYPE, pistontype).with(PistonHeadBlock.FACING, blockstate.get(PistonBlock.FACING));
-					blockstate1 = blockstate1.with(PistonHeadBlock.SHORT, te.getProgress(partialTicks) >= 0.5F);
-					this.renderBlocks(blockpos, blockstate1, matrixStackIn, bufferIn, world, false, combinedOverlayIn);
-					BlockPos blockpos1 = blockpos.offset(te.getMotionDirection());
-					matrixStackIn.pop();
-					matrixStackIn.push();
-					blockstate = blockstate.with(PistonBlock.EXTENDED, true);
-					this.renderBlocks(blockpos1, blockstate, matrixStackIn, bufferIn, world, true, combinedOverlayIn);
+					PistonType pistonType = state.matchesBlock(SCContent.REINFORCED_STICKY_PISTON.get()) ? PistonType.STICKY : PistonType.DEFAULT;
+					BlockState headState = SCContent.REINFORCED_PISTON_HEAD.get().getDefaultState().with(PistonHeadBlock.TYPE, pistonType).with(PistonHeadBlock.FACING, state.get(PistonBlock.FACING));
+					BlockPos renderPos = oppositePos.offset(te.getMotionDirection());
+
+					headState = headState.with(PistonHeadBlock.SHORT, te.getProgress(partialTicks) >= 0.5F);
+					renderBlocks(oppositePos, headState, matrix, buffer, world, false, combinedOverlay);
+					matrix.pop();
+					matrix.push();
+					state = state.with(PistonBlock.EXTENDED, true);
+					renderBlocks(renderPos, state, matrix, buffer, world, true, combinedOverlay);
 				} else {
-					this.renderBlocks(blockpos, blockstate, matrixStackIn, bufferIn, world, false, combinedOverlayIn);
+					renderBlocks(oppositePos, state, matrix, buffer, world, false, combinedOverlay);
 				}
 
-				matrixStackIn.pop();
+				matrix.pop();
 				BlockModelRenderer.disableCache();
 			}
 		}
 	}
 
 	private void renderBlocks(BlockPos pos, BlockState state, MatrixStack stack, IRenderTypeBuffer buffer, World world, boolean checkSides, int combinedOverlay) {
-		net.minecraftforge.client.ForgeHooksClient.renderPistonMovedBlocks(pos, state, stack, buffer, world, checkSides, combinedOverlay, blockRenderer == null ? blockRenderer = Minecraft.getInstance().getBlockRendererDispatcher() : blockRenderer);
+		ForgeHooksClient.renderPistonMovedBlocks(pos, state, stack, buffer, world, checkSides, combinedOverlay, blockRenderer == null ? blockRenderer = Minecraft.getInstance().getBlockRendererDispatcher() : blockRenderer);
 	}
 }
