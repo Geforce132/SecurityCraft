@@ -99,7 +99,6 @@ public class ClientHandler
 	public static void onModelBake(ModelBakeEvent event)
 	{
 		String[] facings = {"east", "north", "south", "west"};
-		String[] bools = {"true", "false"};
 		ResourceLocation[] facingPoweredBlocks = {
 				new ResourceLocation(SecurityCraft.MODID, "keycard_reader"),
 				new ResourceLocation(SecurityCraft.MODID, "keypad"),
@@ -141,12 +140,10 @@ public class ClientHandler
 
 		for(String facing : facings)
 		{
-			for(String bool : bools)
+			for(ResourceLocation facingPoweredBlock : facingPoweredBlocks)
 			{
-				for(ResourceLocation facingPoweredBlock : facingPoweredBlocks)
-				{
-					registerDisguisedModel(event, facingPoweredBlock, "facing=" + facing + ",powered=" + bool);
-				}
+				registerDisguisedModel(event, facingPoweredBlock, "facing=" + facing + ",powered=true");
+				registerDisguisedModel(event, facingPoweredBlock, "facing=" + facing + ",powered=false");
 			}
 
 			for(ResourceLocation facingBlock : facingBlocks)
@@ -155,19 +152,21 @@ public class ClientHandler
 			}
 		}
 
-		for(String bool : bools)
+		for(ResourceLocation poweredBlock : poweredBlocks)
 		{
-			for(ResourceLocation poweredBlock : poweredBlocks)
-			{
-				registerDisguisedModel(event, poweredBlock, "powered=" + bool);
-			}
+			registerDisguisedModel(event, poweredBlock, "powered=true");
+			registerDisguisedModel(event, poweredBlock, "powered=false");
 		}
 
 		ResourceLocation cageTrapRl = new ResourceLocation(SecurityCraft.MODID, "cage_trap");
 		ResourceLocation invScanRL = new ResourceLocation(SecurityCraft.MODID, "inventory_scanner");
+		ResourceLocation protectoRl = new ResourceLocation(SecurityCraft.MODID, "protecto");
 
 		registerDisguisedModel(event, cageTrapRl, "deactivated=true");
 		registerDisguisedModel(event, cageTrapRl, "deactivated=false");
+		registerDisguisedModel(event, protectoRl, "enabled=true");
+		registerDisguisedModel(event, protectoRl, "enabled=false");
+		registerDisguisedModel(event, new ResourceLocation(SecurityCraft.MODID, "trophy_system"), "");
 
 		for(String facing : facings)
 		{
@@ -285,6 +284,7 @@ public class ClientHandler
 		ItemBlockRenderTypes.setRenderLayer(SCContent.TROPHY_SYSTEM.get(), cutoutMipped);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.USERNAME_LOGGER.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.PROJECTOR.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.PROTECTO.get(), cutoutMipped);
 		event.enqueueWork(() -> {
 			MenuScreens.register(SCContent.mTypeBlockReinforcer, BlockReinforcerScreen::new);
 			MenuScreens.register(SCContent.mTypeBriefcase, BriefcasePasswordScreen::new);
@@ -428,7 +428,16 @@ public class ClientHandler
 			}
 
 			return noTint;
-		}, SCContent.CAGE_TRAP.get(), SCContent.INVENTORY_SCANNER.get(), SCContent.KEYCARD_READER.get(), SCContent.KEYPAD.get(), SCContent.LASER_BLOCK.get(), SCContent.PROJECTOR.get(), SCContent.RETINAL_SCANNER.get(), SCContent.USERNAME_LOGGER.get());
+		}, SCContent.CAGE_TRAP.get(),
+				SCContent.INVENTORY_SCANNER.get(),
+				SCContent.KEYCARD_READER.get(),
+				SCContent.KEYPAD.get(),
+				SCContent.LASER_BLOCK.get(),
+				SCContent.PROJECTOR.get(),
+				SCContent.PROTECTO.get(),
+				SCContent.RETINAL_SCANNER.get(),
+				SCContent.TROPHY_SYSTEM.get(),
+				SCContent.USERNAME_LOGGER.get());
 		Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
 			if(tintIndex == 0)
 			{

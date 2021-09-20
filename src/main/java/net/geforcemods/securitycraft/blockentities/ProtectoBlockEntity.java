@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.entity.Sentry;
@@ -15,7 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ProtectoBlockEntity extends CustomizableBlockEntity {
+public class ProtectoBlockEntity extends DisguisableBlockEntity {
 
 	public ProtectoBlockEntity(BlockPos pos, BlockState state)
 	{
@@ -72,7 +71,7 @@ public class ProtectoBlockEntity extends CustomizableBlockEntity {
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.SPEED};
+		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.SPEED, ModuleType.DISGUISE};
 	}
 
 	@Override

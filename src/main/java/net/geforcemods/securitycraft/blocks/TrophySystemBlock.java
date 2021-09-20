@@ -34,7 +34,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-public class TrophySystemBlock extends OwnableBlock {
+public class TrophySystemBlock extends DisguisableBlock {
 
 	private static final VoxelShape SHAPE = Stream.of(
 			Block.box(6.5, 0, 12, 9.5, 1.5, 15),
@@ -87,9 +87,13 @@ public class TrophySystemBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext context)
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
 	{
-		return SHAPE;
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+
+		if(disguisedState.getBlock() != this)
+			return disguisedState.getShape(level, pos, ctx);
+		else return SHAPE;
 	}
 
 	@Override
