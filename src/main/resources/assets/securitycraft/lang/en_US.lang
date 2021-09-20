@@ -707,6 +707,7 @@ module.securitycraft:securityCamera.redstoneModule.description=Adding the redsto
 module.securitycraft:securityCamera.smartModule.description=Adding the smart module to a camera lets anyone access the camera.
 module.securitycraft:protecto.whitelistModule.description=Adding an allowlist module to a protecto will allow listed players to walk into the range of the protecto without being targeted.
 module.securitycraft:protecto.speed_module.description=Adding a speed module to a protecto will allow it to attack twice as fast.
+module.securitycraft:protecto.disguiseModule.description=Adding a disguise module to a protecto will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.
 module.securitycraft:blockPocketManager.disguiseModule.description=Adding a disguise module to a Block Pocket Manager will make the Block Pocket's sides opaque.
 module.securitycraft:blockPocketManager.whitelistModule.description=Adding an allowlist module to a Block Pocket Manager will allow listed players to pass through the Block Pocket's sides.
 module.securitycraft:blockPocketManager.storageModule.description=Adding a storage module to a Block Pocket Manager will add an inventory to it, allowing you to store the blocks you need for building the Block Pocket. This also allows you to auto-assemble the Block Pocket if all necessary building materials are present.
@@ -734,6 +735,7 @@ module.securitycraft:usernameLogger.whitelistModule.description=Adding an allowl
 module.securitycraft:trophy_system.smartModule.description=Adding a smart module to a Trophy System will allow you to configure which projectile types the Trophy System is allowed to target.
 module.securitycraft:trophy_system.whitelistModule.description=Adding an allowlist module to a Trophy System will make it ignore projectiles thrown by listed playerss, as well as their Sentries' bullets and I.M.S.' bombs.
 module.securitycraft:trophy_system.speed_module.description=Adding a speed module to a Trophy System allows it to destroy targets twice as fast.
+module.securitycraft:trophy_system.disguiseModule.description=Adding a disguise module to a Trophy System will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.
 module.securitycraft:reinforced_cauldron.whitelistModule.description=Adding an allowlist module to a Reinforced Cauldron will allow listed playerss to interact with the Reinforced Cauldron.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?

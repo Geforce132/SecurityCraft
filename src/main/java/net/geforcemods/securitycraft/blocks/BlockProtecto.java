@@ -13,12 +13,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockProtecto extends BlockOwnable {
+public class BlockProtecto extends BlockDisguisable {
 
 	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 
-	public BlockProtecto(Material par1) {
-		super(par1);
+	public BlockProtecto(Material material) {
+		super(material);
 		setSoundType(SoundType.METAL);
 	}
 

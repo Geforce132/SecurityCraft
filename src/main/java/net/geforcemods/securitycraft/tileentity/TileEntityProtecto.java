@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.entity.EntitySentry;
@@ -13,7 +12,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class TileEntityProtecto extends CustomizableSCTE {
+public class TileEntityProtecto extends TileEntityDisguisable {
 
 	@Override
 	public boolean attackEntity(Entity entity){
@@ -69,7 +68,7 @@ public class TileEntityProtecto extends CustomizableSCTE {
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.ALLOWLIST, EnumModuleType.SPEED};
+		return new EnumModuleType[]{EnumModuleType.ALLOWLIST, EnumModuleType.SPEED, EnumModuleType.DISGUISE};
 	}
 
 	@Override

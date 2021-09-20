@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockTrophySystem extends BlockOwnable {
+public class BlockTrophySystem extends BlockDisguisable {
 
 	public BlockTrophySystem(Material material) {
 		super(material);

@@ -9,7 +9,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.EntityBullet;
@@ -40,7 +39,7 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-public class TileEntityTrophySystem extends CustomizableSCTE implements ITickable {
+public class TileEntityTrophySystem extends TileEntityDisguisable implements ITickable {
 
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
@@ -286,7 +285,7 @@ public class TileEntityTrophySystem extends CustomizableSCTE implements ITickabl
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.SMART, EnumModuleType.SPEED, EnumModuleType.ALLOWLIST};
+		return new EnumModuleType[]{EnumModuleType.SMART, EnumModuleType.SPEED, EnumModuleType.ALLOWLIST, EnumModuleType.DISGUISE};
 	}
 
 	@Override
