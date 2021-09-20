@@ -33,7 +33,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SecretSignTileEntityRenderer implements BlockEntityRenderer<SecretSignBlockEntity>
+public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEntity>
 {
 	public static final int MAX_LINE_WIDTH = 90;
 	private static final int LINE_HEIGHT = 10;
@@ -42,7 +42,7 @@ public class SecretSignTileEntityRenderer implements BlockEntityRenderer<SecretS
 	private final Map<WoodType,SignModel> signModels;
 	private final Font font;
 
-	public SecretSignTileEntityRenderer(BlockEntityRendererProvider.Context ctx)
+	public SecretSignRenderer(BlockEntityRendererProvider.Context ctx)
 	{
 		signModels = WoodType.values().collect(ImmutableMap.toImmutableMap(woodType -> woodType, woodType -> SignRenderer.createSignModel(ctx.getModelSet(), woodType)));
 		font = ctx.getFont();

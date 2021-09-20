@@ -32,11 +32,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LightLayer;
 
-public class RetinalScannerTileEntityRenderer implements BlockEntityRenderer<RetinalScannerBlockEntity>
+public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScannerBlockEntity>
 {
 	private static final float CORRECT_FACTOR = 1 / 550F;
 
-	public RetinalScannerTileEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
+	public RetinalScannerRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
 	public void render(RetinalScannerBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)

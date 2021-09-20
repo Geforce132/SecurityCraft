@@ -15,9 +15,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BlockPocketManagerTileEntityRenderer implements BlockEntityRenderer<BlockPocketManagerBlockEntity>
+public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPocketManagerBlockEntity>
 {
-	public BlockPocketManagerTileEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
+	public BlockPocketManagerRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
 	public void render(BlockPocketManagerBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)

@@ -24,9 +24,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.RenderProperties;
 
 @OnlyIn(Dist.CLIENT)
-public class ProjectorTileEntityRenderer implements BlockEntityRenderer<ProjectorBlockEntity> {
+public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEntity> {
 
-	public ProjectorTileEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
+	public ProjectorRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
 	public void render(ProjectorBlockEntity te, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int combinedOverlay)

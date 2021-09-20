@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class KeypadChestTileEntityRenderer extends ChestRenderer<KeypadChestBlockEntity> {
+public class KeypadChestRenderer extends ChestRenderer<KeypadChestBlockEntity> {
 	private static final Material ACTIVE = createMaterial("active");
 	private static final Material INACTIVE = createMaterial("inactive");
 	private static final Material LEFT_ACTIVE = createMaterial("left_active");
@@ -25,7 +25,7 @@ public class KeypadChestTileEntityRenderer extends ChestRenderer<KeypadChestBloc
 	private static final Material CHRISTMAS_RIGHT = createMaterial("christmas_right");
 	protected boolean isChristmas;
 
-	public KeypadChestTileEntityRenderer(BlockEntityRendererProvider.Context ctx)
+	public KeypadChestRenderer(BlockEntityRendererProvider.Context ctx)
 	{
 		super(ctx);
 

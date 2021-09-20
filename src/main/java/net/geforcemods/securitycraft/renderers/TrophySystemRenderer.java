@@ -14,9 +14,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class TrophySystemTileEntityRenderer implements BlockEntityRenderer<TrophySystemBlockEntity> {
+public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlockEntity> {
 
-	public TrophySystemTileEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
+	public TrophySystemRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
 	public void render(TrophySystemBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int packedLight, int combinedOverlay) {
