@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.BulletEntity;
@@ -40,7 +39,7 @@ import net.minecraft.world.Explosion;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class TrophySystemTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
+public class TrophySystemTileEntity extends DisguisableTileEntity implements ITickableTileEntity {
 
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
@@ -284,7 +283,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.SMART, ModuleType.SPEED, ModuleType.ALLOWLIST};
+		return new ModuleType[]{ModuleType.SMART, ModuleType.SPEED, ModuleType.ALLOWLIST, ModuleType.DISGUISE};
 	}
 
 	@Override

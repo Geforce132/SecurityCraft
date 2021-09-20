@@ -4,6 +4,7 @@
 - New: Reinforced Pistons
 - New: The Reinforced Redstone Block and the Reinforced Observer can now be used to open doors, activate pistons, etc.
 - New: The debug menu now hides block mines, disguised blocks, and fake fluids
+- New: The Protecto and Trophy System now support the Disguise Module
 - Change: SecurityCraft's config values for HWYLA are now synchronized from server to client, meaning server owners can now control what HWYLA shows to players
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play

@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.entity.SentryEntity;
@@ -14,7 +13,7 @@ import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.server.ServerWorld;
 
-public class ProtectoTileEntity extends CustomizableTileEntity {
+public class ProtectoTileEntity extends DisguisableTileEntity {
 
 	public ProtectoTileEntity()
 	{
@@ -73,7 +72,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.SPEED};
+		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.SPEED, ModuleType.DISGUISE};
 	}
 
 	@Override
