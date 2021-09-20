@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPiston;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.BlockPistonExtension;
+import net.minecraft.block.BlockPistonExtension.EnumPistonType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -27,13 +28,13 @@ public class TileEntityReinforcedPistonRenderer extends TileEntitySpecialRendere
 		if (blockRenderer == null)
 			blockRenderer = Minecraft.getMinecraft().getBlockRendererDispatcher(); //Forge: Delay this from constructor to allow us to change it later
 
-		BlockPos tePos = te.getPos();
+		BlockPos pos = te.getPos();
 		IBlockState movedState = te.getPistonState();
 		Block movedBlock = movedState.getBlock();
 
 		if (movedState.getMaterial() != Material.AIR && te.getProgress(partialTicks) < 1.0F) {
 			Tessellator tessellator = Tessellator.getInstance();
-			BufferBuilder bufferbuilder = tessellator.getBuffer();
+			BufferBuilder bufferBuilder = tessellator.getBuffer();
 
 			bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			RenderHelper.disableStandardItemLighting();
@@ -47,29 +48,29 @@ public class TileEntityReinforcedPistonRenderer extends TileEntitySpecialRendere
 				GlStateManager.shadeModel(7424);
 			}
 
-			bufferbuilder.begin(7, DefaultVertexFormats.BLOCK);
-			bufferbuilder.setTranslation(x - tePos.getX() + te.getOffsetX(partialTicks), y - tePos.getY() + te.getOffsetY(partialTicks), z - tePos.getZ() + te.getOffsetZ(partialTicks));
+			bufferBuilder.begin(7, DefaultVertexFormats.BLOCK);
+			bufferBuilder.setTranslation(x - pos.getX() + te.getOffsetX(partialTicks), y - pos.getY() + te.getOffsetY(partialTicks), z - pos.getZ() + te.getOffsetZ(partialTicks));
 			World world = getWorld();
 
 			if (movedBlock == SCContent.reinforcedPistonHead && te.getProgress(partialTicks) <= 0.25F) {
 				movedState = movedState.withProperty(BlockPistonExtension.SHORT, true);
-				renderStateModel(tePos, movedState, bufferbuilder, world, true);
+				renderStateModel(pos, movedState, bufferBuilder, world, true);
 			}
 			else if (te.shouldPistonHeadBeRendered() && !te.isExtending()) {
-				BlockPistonExtension.EnumPistonType pistonType = movedBlock == SCContent.reinforcedStickyPiston ? BlockPistonExtension.EnumPistonType.STICKY : BlockPistonExtension.EnumPistonType.DEFAULT;
+				EnumPistonType pistonType = movedBlock == SCContent.reinforcedStickyPiston ? EnumPistonType.STICKY : EnumPistonType.DEFAULT;
 				IBlockState pistonHeadState = SCContent.reinforcedPistonHead.getDefaultState().withProperty(BlockPistonExtension.TYPE, pistonType).withProperty(BlockPistonExtension.FACING, movedState.getValue(BlockPistonBase.FACING));
 
 				pistonHeadState = pistonHeadState.withProperty(BlockPistonExtension.SHORT, te.getProgress(partialTicks) >= 0.5F);
-				renderStateModel(tePos, pistonHeadState, bufferbuilder, world, true);
-				bufferbuilder.setTranslation(x - tePos.getX(), y - tePos.getY(), z - tePos.getZ());
+				renderStateModel(pos, pistonHeadState, bufferBuilder, world, true);
+				bufferBuilder.setTranslation(x - pos.getX(), y - pos.getY(), z - pos.getZ());
 				movedState = movedState.withProperty(BlockPistonBase.EXTENDED, true);
-				renderStateModel(tePos, movedState, bufferbuilder, world, true);
+				renderStateModel(pos, movedState, bufferBuilder, world, true);
 			}
 			else {
-				renderStateModel(tePos, movedState, bufferbuilder, world, false);
+				renderStateModel(pos, movedState, bufferBuilder, world, false);
 			}
 
-			bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
+			bufferBuilder.setTranslation(0.0D, 0.0D, 0.0D);
 			tessellator.draw();
 			RenderHelper.enableStandardItemLighting();
 		}
