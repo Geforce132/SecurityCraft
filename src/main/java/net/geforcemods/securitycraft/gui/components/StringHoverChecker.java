@@ -36,7 +36,12 @@ public class StringHoverChecker extends HoverChecker
 
 	public String getName()
 	{
-		return lines.get(button == null ? 0 : button.getCurrentIndex());
+		int i = button == null ? 0 : button.getCurrentIndex();
+
+		if(i >= lines.size())
+			return "";
+
+		return lines.get(i);
 	}
 
 	public List<String> getLines()
