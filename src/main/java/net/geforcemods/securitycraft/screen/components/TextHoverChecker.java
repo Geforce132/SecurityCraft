@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 
 public class TextHoverChecker extends HoverChecker
 {
@@ -37,7 +38,12 @@ public class TextHoverChecker extends HoverChecker
 
 	public Component getName()
 	{
-		return lines.get(button == null ? 0 : button.getCurrentIndex());
+		int i = button == null ? 0 : button.getCurrentIndex();
+
+		if(i >= lines.size())
+			return TextComponent.EMPTY;
+
+		return lines.get(i);
 	}
 
 	public List<Component> getLines()
