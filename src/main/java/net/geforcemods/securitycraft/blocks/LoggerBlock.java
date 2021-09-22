@@ -76,7 +76,7 @@ public class LoggerBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new UsernameLoggerTileEntity().attacks(PlayerEntity.class, 3, 80);
+		return new UsernameLoggerTileEntity().attacks(PlayerEntity.class, 3, 80).lockable();
 	}
 
 	@Override
