@@ -1,0 +1,7 @@
+{
+	"parent": "securitycraft:block/key_panel",
+	"textures": {
+		"0": "securitycraft:block/key_panel_off",
+		"particle": "securitycraft:block/key_panel_off"
+	}
+}

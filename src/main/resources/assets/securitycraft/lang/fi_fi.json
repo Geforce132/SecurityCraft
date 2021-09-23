@@ -229,6 +229,7 @@
 	"block.securitycraft.gravel_mine": "soramiina",
 	"block.securitycraft.reinforced_sand": "vahvistettu hiekka",
 	"block.securitycraft.reinforced_gravel": "vahvistettu sora",
+	"block.securitycraft.key_panel": "salasana paneeli",
 
 	"item.securitycraft.codebreaker": "koodinmurtaja",
 	"item.securitycraft.door_indestructible_iron_item": "vahvistettu rautaovi",

@@ -481,6 +481,7 @@
 	"block.securitycraft.reinforced_moss_carpet": "Reinforced Moss Carpet",
 	"block.securitycraft.reinforced_rooted_dirt": "Reinforced Rooted Dirt",
 	"block.securitycraft.reinforced_tinted_glass": "Reinforced Tinted Glass",
+	"block.securitycraft.key_panel": "Key Panel",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",
@@ -613,7 +614,7 @@
 	"help.securitycraft.storage_module.info": "The storage module adds or upgrades the size of a block's inventory.",
 	"help.securitycraft.disguise_module.info": "The disguise module disguises certain blocks when added to them.",
 	"help.securitycraft.wire_cutters.info": "Rightclicking a mine with the wire cutters will defuse it.",
-	"help.securitycraft.keypad_item.info": "The key panel is used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.",
+	"help.securitycraft.keypad_item.info": "The key panel can be placed down for a smaller, waterloggable version of the keypad. It is also used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.",
 	"help.securitycraft.admin_tool.info": "The admin tool's main purpose is to display information about a SecurityCraft block. It will show the owner's UUID and name, and other information, like passcodes and any inserted modules.",
 	"help.securitycraft.taser.info": "The taser is a self-recharging stun gun. Rightclick to fire it. Entities hit with the taser will get Nausea II, Slowness II, and Weakness II for 10 seconds. If the Taser is sneak-rightclicked (provided some redstone in the inventory), it will double its strength for the next shot.",
 	"help.securitycraft.camera_monitor.info": "The camera monitor is a portable item used to view live feeds of up to 30 bound security cameras. Right-click a security camera with the camera monitor to bind it, then right-click air and select the camera in the GUI while the camera’s chunk is loaded to see its feed. Unbind a security camera by right-clicking it again with the camera monitor or by opening the camera monitor's GUI and clicking the corresponding \"X\" button.",
@@ -973,6 +974,8 @@
 	"module.securitycraft.reinforced_water_cauldron.whitelist_module.description": "Adding an allowlist module to a Reinforced Cauldron will allow listed players to interact with the Reinforced Cauldron.",
 	"module.securitycraft.reinforced_lava_cauldron.whitelist_module.description": "Adding an allowlist module to a Reinforced Cauldron will allow listed players to interact with the Reinforced Cauldron.",
 	"module.securitycraft.reinforced_powder_snow_cauldron.whitelist_module.description": "Adding an allowlist module to a Reinforced Cauldron will allow listed players to interact with the Reinforced Cauldron.",
+	"module.securitycraft.key_panel.whitelist_module.description": "Adding an allowlist module to a key panel  will allow listed players to use the block without knowing the code.",
+	"module.securitycraft.key_panel.blacklist_module.description": "Adding a denylist module to a key panel will ban listed players from interacting with the block.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",
@@ -1058,7 +1061,13 @@
 	"option.securitycraft.reinforced_lava_cauldron.isPublic.description": "Should every player be able to interact with this block?",
 	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic": "Public: %s",
 	"option.securitycraft.reinforced_powder_snow_cauldron.isPublic.description": "Should every player be able to interact with this block?",
-
+	"option.securitycraft.key_panel.isAlwaysActive": "Is always active: %s",
+	"option.securitycraft.key_panel.isAlwaysActive.description": "Should the key panel remain active and unlocked?",
+	"option.securitycraft.key_panel.sendMessage": "Message: %s",
+	"option.securitycraft.key_panel.sendMessage.description": "Does this key panel send a message upon activation (when using allowlist/denylist modules)?",
+	"option.securitycraft.key_panel.signalLength": "Signal length: %s",
+	"option.securitycraft.key_panel.signalLength.description": "How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)",
+	
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",
 	"securitycraft.subtitle.camerazoomin": "Camera zooming",

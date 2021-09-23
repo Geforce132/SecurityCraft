@@ -151,8 +151,8 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 
 	@Override
 	public void activate(Player player) {
-		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadFurnaceBlock)
-			KeypadFurnaceBlock.activate(level, worldPosition, player);
+		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadFurnaceBlock block)
+			block.activate(this, getBlockState(), level, worldPosition, player);
 	}
 
 	@Override

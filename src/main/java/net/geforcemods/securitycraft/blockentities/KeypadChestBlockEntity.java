@@ -170,8 +170,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	@Override
 	public void activate(Player player) {
-		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadChestBlock && !isBlocked())
-			KeypadChestBlock.activate(level, worldPosition, player);
+		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadChestBlock block && !isBlocked())
+			block.activate(getBlockState(), level, worldPosition, player);
 	}
 
 	@Override

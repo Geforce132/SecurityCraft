@@ -113,7 +113,7 @@ public class KeypadChestBlock extends ChestBlock {
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
-				activate(world, pos, player);
+				activate(state, world, pos, player);
 			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				te.openPasswordGUI(player);
@@ -122,13 +122,13 @@ public class KeypadChestBlock extends ChestBlock {
 		return InteractionResult.SUCCESS;
 	}
 
-	public static void activate(Level world, BlockPos pos, Player player){
+	public void activate(BlockState state, Level world, BlockPos pos, Player player){
 		if(!world.isClientSide) {
-			BlockState state = world.getBlockState(pos);
 			ChestBlock block = (ChestBlock)state.getBlock();
-			MenuProvider inamedcontainerprovider = block.getMenuProvider(state, world, pos);
-			if (inamedcontainerprovider != null) {
-				player.openMenu(inamedcontainerprovider);
+			MenuProvider menuProvider = block.getMenuProvider(state, world, pos);
+
+			if (menuProvider != null) {
+				player.openMenu(menuProvider);
 				player.awardStat(Stats.CUSTOM.get(Stats.OPEN_CHEST));
 			}
 		}

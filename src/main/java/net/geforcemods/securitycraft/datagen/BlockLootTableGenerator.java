@@ -21,6 +21,7 @@ import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -87,6 +88,7 @@ public class BlockLootTableGenerator implements DataProvider
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
 						.add(imsLootEntryBuilder)));
+		putStandardBlockLootTable(SCContent.KEY_PANEL_BLOCK, SCContent.KEY_PANEL.get());
 		putStandardBlockLootTable(SCContent.KEYPAD_CHEST);
 		putDoorLootTable(SCContent.KEYPAD_DOOR, SCContent.KEYPAD_DOOR_ITEM);
 		putDoorLootTable(SCContent.REINFORCED_DOOR, SCContent.REINFORCED_DOOR_ITEM);
@@ -121,12 +123,17 @@ public class BlockLootTableGenerator implements DataProvider
 		putStandardBlockLootTable(SCContent.STAIRS_CRYSTAL_QUARTZ);
 	}
 
-	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> block)
+	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> drop)
+	{
+		return createStandardBlockLootTable(drop.get());
+	}
+
+	protected final LootTable.Builder createStandardBlockLootTable(ItemLike drop)
 	{
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
-						.add(LootItem.lootTableItem(block.get()))
+						.add(LootItem.lootTableItem(drop))
 						.when(ExplosionCondition.survivesExplosion()));
 	}
 
@@ -144,7 +151,12 @@ public class BlockLootTableGenerator implements DataProvider
 
 	protected final void putStandardBlockLootTable(Supplier<Block> block)
 	{
-		lootTables.put(block, createStandardBlockLootTable(block));
+		putStandardBlockLootTable(block, block.get());
+	}
+
+	protected final void putStandardBlockLootTable(Supplier<Block> block, ItemLike drop)
+	{
+		lootTables.put(block, createStandardBlockLootTable(drop));
 	}
 
 	protected final void putMineLootTable(Supplier<Block> mine)
