@@ -234,7 +234,7 @@ public class SCClientEventHandler
 			timeY += 10;
 		}
 
-		Minecraft.getInstance().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(ClientUtils.getFormattedMinecraftTime()) - 8, timeY, 16777215);
+		Minecraft.getInstance().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(ClientUtils.getFormattedMinecraftTime()) - 4, timeY, 16777215);
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(lookAround, resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(lookAround) - 8, resolution.getScaledHeight() - 80, 16777215);
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(settings.keyBindSneak.getLocalizedName() + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText(), resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(settings.keyBindSneak.getLocalizedName() + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText()) - 8, resolution.getScaledHeight() - 70, 16777215);
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(KeyBindings.cameraZoomIn.getLocalizedName() + "/" + KeyBindings.cameraZoomOut.getLocalizedName() + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText(), resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(KeyBindings.cameraZoomIn.getLocalizedName() + "/" + Utils.localize(KeyBindings.cameraZoomOut.getTranslationKey()).getFormattedText() + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText()) - 8, resolution.getScaledHeight() - 60, 16777215);
@@ -245,7 +245,7 @@ public class SCClientEventHandler
 		mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.blit(5, 0, 0, 0, 90, 20);
-		gui.blit(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
+		gui.blit(resolution.getScaledWidth() - 70, 5, 190, 0, 65, 30);
 
 		if(!player.isPotionActive(Effects.NIGHT_VISION))
 			gui.blit(28, 4, 90, 12, 16, 11);
