@@ -246,7 +246,7 @@ public class SCClientEventHandler
 			timeY += 10;
 		}
 
-		font.drawShadow(matrix, time, resolution.getGuiScaledWidth() - font.width(time) - 8, timeY, 16777215);
+		font.drawShadow(matrix, time, resolution.getGuiScaledWidth() - font.width(time) - 4, timeY, 16777215);
 		font.drawShadow(matrix, lookAround, resolution.getGuiScaledWidth() - font.width(lookAround) - 8, resolution.getGuiScaledHeight() - 80, 16777215);
 		font.drawShadow(matrix, exit, resolution.getGuiScaledWidth() - font.width(exit) - 8, resolution.getGuiScaledHeight() - 70, 16777215);
 		font.drawShadow(matrix, zoom, resolution.getGuiScaledWidth() - font.width(zoom) - 8, resolution.getGuiScaledHeight() - 60, 16777215);
@@ -257,7 +257,7 @@ public class SCClientEventHandler
 		RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.blit(matrix, 5, 0, 0, 0, 90, 20);
-		gui.blit(matrix, resolution.getGuiScaledWidth() - 55, 5, 205, 0, 50, 30);
+		gui.blit(matrix, resolution.getGuiScaledWidth() - 70, 5, 190, 0, 65, 30);
 
 		if(!player.hasEffect(MobEffects.NIGHT_VISION))
 			gui.blit(matrix, 28, 4, 90, 12, 16, 11);
