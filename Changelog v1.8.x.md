@@ -17,6 +17,7 @@
 - Fix: Sentry Bullets deal twice as much damage as Sentry Bullets from newer Minecraft versions
 - Fix: Entity names don't display their correct translation
 - Fix: The Keypad and Keypad Door cannot be opened while holding the key panel
+- Fix: Converting chests whose loot has not been generated yet creates additional items
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated

@@ -570,9 +570,11 @@ public class BlockKeypadChest extends BlockContainer
 		private void convertChest(EntityPlayer player, World world, BlockPos pos, EnumFacing facing)
 		{
 			TileEntityChest chest = (TileEntityChest)world.getTileEntity(pos);
-			NBTTagCompound tag = chest.writeToNBT(new NBTTagCompound());
+			NBTTagCompound tag;
 			TileEntity newTe;
 
+			chest.fillWithLoot(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated
+			tag = chest.writeToNBT(new NBTTagCompound());
 			chest.clear();
 			world.setBlockState(pos, SCContent.keypadChest.getDefaultState().withProperty(FACING, facing));
 			newTe = world.getTileEntity(pos);
