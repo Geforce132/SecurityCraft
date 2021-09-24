@@ -61,7 +61,7 @@ public class GuiUtils{
 			timeY += 10;
 		}
 
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(ClientUtils.getFormattedMinecraftTime()) - 8, timeY, 16777215);
+		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(ClientUtils.getFormattedMinecraftTime()) - 4, timeY, 16777215);
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(lookAround, resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(lookAround) - 8, resolution.getScaledHeight() - 80, 16777215);
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(settings.keyBindSneak.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText(), resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(settings.keyBindSneak.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText()) - 8, resolution.getScaledHeight() - 70, 16777215);
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText(), resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText()) - 8, resolution.getScaledHeight() - 60, 16777215);
@@ -72,7 +72,7 @@ public class GuiUtils{
 		mc.getTextureManager().bindTexture(cameraDashboard);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.drawTexturedModalRect(5, 0, 0, 0, 90, 20);
-		gui.drawTexturedModalRect(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
+		gui.drawTexturedModalRect(resolution.getScaledWidth() - 70, 5, 190, 0, 65, 30);
 
 		if(player.getActivePotionEffect(Potion.getPotionFromResourceLocation("night_vision")) == null)
 			gui.drawTexturedModalRect(28, 4, 90, 12, 16, 11);
