@@ -15,6 +15,7 @@
 - Fix: Wrenches or similar of other mods are able to open doors
 - Fix: Reinforcing blocks in the world may not work if some specific mods are installed
 - Fix: Reinforced Smooth Quartz has the wrong texture
+- Fix: The Keypad and Keypad Door cannot be opened while holding the key panel
 - Fix: Converting chests whose loot has not been generated yet creates additional items
 - Removed: Unused textures
 - Misc.: Renamed a few textures
