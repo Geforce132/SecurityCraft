@@ -256,8 +256,10 @@ public class KeypadChestBlock extends ChestBlock {
 		private void convertChest(Player player, Level world, BlockPos pos, Direction facing, ChestType type)
 		{
 			ChestBlockEntity chest = (ChestBlockEntity)world.getBlockEntity(pos);
-			CompoundTag tag = chest.save(new CompoundTag());
+			CompoundTag tag;
 
+			chest.unpackLootTable(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated
+			tag = chest.save(new CompoundTag());
 			chest.clearContent();
 			world.setBlockAndUpdate(pos, SCContent.KEYPAD_CHEST.get().defaultBlockState().setValue(FACING, facing).setValue(TYPE, type));
 			((ChestBlockEntity)world.getBlockEntity(pos)).load(tag);
