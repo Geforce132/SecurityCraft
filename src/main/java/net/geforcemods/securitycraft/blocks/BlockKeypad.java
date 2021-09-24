@@ -63,7 +63,7 @@ public class BlockKeypad extends BlockDisguisable {
 				return true;
 			}
 
-			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand) && !PlayerUtils.isHoldingItem(player, SCContent.keyPanel, hand))
+			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
 				te.openPasswordGUI(player);
 		}
 

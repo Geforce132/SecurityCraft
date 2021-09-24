@@ -46,7 +46,7 @@ public class BlockKeypadDoor extends BlockSpecialDoor
 				return true;
 			}
 
-			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand) && !PlayerUtils.isHoldingItem(player, SCContent.keyPanel, hand))
+			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
 				te.openPasswordGUI(player);
 		}
 
