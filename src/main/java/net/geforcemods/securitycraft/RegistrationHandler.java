@@ -66,6 +66,7 @@ import net.geforcemods.securitycraft.tileentity.CageTrapTileEntity;
 import net.geforcemods.securitycraft.tileentity.ClaymoreTileEntity;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
+import net.geforcemods.securitycraft.tileentity.KeyPanelTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadDoorTileEntity;
@@ -200,6 +201,7 @@ public class RegistrationHandler
 		event.getRegistry().register(TileEntityType.Builder.create(ReinforcedCauldronTileEntity::new, SCContent.REINFORCED_CAULDRON.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_cauldron")));
 		event.getRegistry().register(TileEntityType.Builder.create(ReinforcedPistonTileEntity::new, SCContent.REINFORCED_MOVING_PISTON.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_piston")));
 		event.getRegistry().register(TileEntityType.Builder.create(ValidationOwnableTileEntity::new, SCContent.REINFORCED_PISTON.get(), SCContent.REINFORCED_STICKY_PISTON.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "validation_ownable")));
+		event.getRegistry().register(TileEntityType.Builder.create(KeyPanelTileEntity::new, SCContent.KEY_PANEL_BLOCK.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_panel")));
 	}
 
 	@SubscribeEvent

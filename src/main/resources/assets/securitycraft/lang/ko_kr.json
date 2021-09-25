@@ -421,6 +421,7 @@
 	"block.securitycraft.reinforced_sticky_piston": "강화된 끈끈이 피스톤",
 	"block.securitycraft.reinforced_piston_head": "강화된 피스톤 헤드",
 	"block.securitycraft.reinforced_moving_piston": "강화된 움직이는 피스톤",
+	"block.securitycraft.key_panel": "키 패널",
 
 	"item.securitycraft.codebreaker": "코드브레이커",
 	"item.securitycraft.door_indestructible_iron_item": "강화된 철문",
@@ -984,6 +985,10 @@
 	"option.securitycraft.keypad_door.signalLength.description": "문이 얼마나 열려 있어야 합니까? (20틱 = 1초) 도어를 열린 상태로 유지하려면 0으로 설정하십시오.)",
 	"option.securitycraft.reinforced_cauldron.isPublic": "공용: %s",
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "모든 플레이어가 이 블록과 상호작용할 수 있어야 합니까?",
+	"option.securitycraft.key_panel.isAlwaysActive": "항상 활성 상태: %s",
+	"option.securitycraft.key_panel.sendMessage": "메시지: %s",
+	"option.securitycraft.key_panel.signalLength": "신호 길이: %s",
+	"option.securitycraft.key_panel.signalLength.description": "활성화 시 레드스톤 신호는 얼마나 길어야 합니까? (20틱 = 1초)",
 
 	"securitycraft.subtitle.alarm": "알람 소리",
 	"securitycraft.subtitle.electrified": "엔티티 감전",

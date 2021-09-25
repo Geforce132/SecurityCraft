@@ -40,7 +40,8 @@ public class CommonDoorActivator implements IDoorActivator
 			SCContent.REINFORCED_WARPED_BUTTON.get(),
 			SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get(),
 			SCContent.REINFORCED_LEVER.get(),
-			SCContent.REINFORCED_OBSERVER.get()
+			SCContent.REINFORCED_OBSERVER.get(),
+			SCContent.KEY_PANEL_BLOCK.get()
 	});
 
 	@Override

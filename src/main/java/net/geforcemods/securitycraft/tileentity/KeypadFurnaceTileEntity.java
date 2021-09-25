@@ -151,7 +151,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	@Override
 	public void activate(PlayerEntity player) {
 		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadFurnaceBlock)
-			KeypadFurnaceBlock.activate(world, pos, player);
+			((KeypadFurnaceBlock)getBlockState().getBlock()).activate(getBlockState(), world, pos, player);
 	}
 
 	@Override

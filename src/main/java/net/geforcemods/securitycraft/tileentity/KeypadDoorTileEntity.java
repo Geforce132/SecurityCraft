@@ -54,7 +54,7 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 	@Override
 	public void activate(PlayerEntity player) {
 		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadDoorBlock)
-			KeypadDoorBlock.activate(world, pos, getBlockState(), getSignalLength());
+			((KeypadDoorBlock)getBlockState().getBlock()).activate(getBlockState(), world, pos, getSignalLength());
 	}
 
 	@Override

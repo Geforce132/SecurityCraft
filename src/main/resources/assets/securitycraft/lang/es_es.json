@@ -417,6 +417,7 @@
 	"block.securitycraft.reinforced_hopper": "Tolva reforzada",
 	"block.securitycraft.keypad_door": "Puerta con contraseña",
 	"block.securitycraft.reinforced_cauldron": "Caldero reforzado",
+	"block.securitycraft.key_panel": "Panel numérico",
 
 	"item.securitycraft.codebreaker": "Descifrador de contraseñas",
 	"item.securitycraft.door_indestructible_iron_item": "Puerta de hierro reforzada",
@@ -970,6 +971,10 @@
 	"option.securitycraft.keypad_door.signalLength.description": "¿Cuánto tiempo debe permanecer abierta la puerta? (En ticks, 20 ticks = 1 segundo. Establecer en 0 para mantener la puerta abierta)",
 	"option.securitycraft.reinforced_cauldron.isPublic": "Público: %s",
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "¿Todos los jugadores deberían poder interactuar con este bloque?",
+	"option.securitycraft.key_panel.isAlwaysActive": "Siempre activado: %s",
+	"option.securitycraft.key_panel.sendMessage": "Mensaje: %s",
+	"option.securitycraft.key_panel.signalLength": "Longitud de la señal: %s",
+	"option.securitycraft.key_panel.signalLength.description": "¿Cómo de larga debería ser la señal de redstone que se emite tras activarse? (En ticks, 20 ticks = 1 segundo)",
 
 	"securitycraft.subtitle.alarm": "Alarma suena",
 	"securitycraft.subtitle.electrified": "Entidad se electrocuta",

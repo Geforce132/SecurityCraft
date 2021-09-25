@@ -170,7 +170,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	@Override
 	public void activate(PlayerEntity player) {
 		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadChestBlock && !isBlocked())
-			KeypadChestBlock.activate(world, pos, player);
+			((KeypadChestBlock)getBlockState().getBlock()).activate(getBlockState(), world, pos, player);
 	}
 
 	@Override

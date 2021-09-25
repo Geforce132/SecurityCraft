@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.IronFenceBlock;
+import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
@@ -130,6 +131,7 @@ import net.geforcemods.securitycraft.tileentity.CageTrapTileEntity;
 import net.geforcemods.securitycraft.tileentity.ClaymoreTileEntity;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
+import net.geforcemods.securitycraft.tileentity.KeyPanelTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadDoorTileEntity;
@@ -211,6 +213,7 @@ public class SCContent
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> INVENTORY_SCANNER = BLOCKS.register("inventory_scanner", () -> new InventoryScannerBlock(propDisguisable()));
 	public static final RegistryObject<Block> INVENTORY_SCANNER_FIELD = BLOCKS.register("inventory_scanner_field", () -> new InventoryScannerFieldBlock(prop(Material.GLASS)));
 	@HasManualPage @RegisterItemBlock(SCItemGroup.DECORATION) public static final RegistryObject<Block> IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new IronFenceBlock(prop(Material.IRON, MaterialColor.IRON).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> KEY_PANEL_BLOCK = BLOCKS.register("key_panel", () -> new KeyPanelBlock(prop(Material.IRON)));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> KEYCARD_READER = BLOCKS.register("keycard_reader", () -> new KeycardReaderBlock(propDisguisable(Material.IRON).sound(SoundType.METAL)));
 	@HasManualPage(hasRecipeDescription=true) @RegisterItemBlock public static final RegistryObject<Block> KEYPAD = BLOCKS.register("keypad", () -> new KeypadBlock(propDisguisable(Material.IRON)));
 	@HasManualPage(hasRecipeDescription=true) public static final RegistryObject<Block> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(prop(Material.WOOD).sound(SoundType.WOOD)));
@@ -751,6 +754,8 @@ public class SCContent
 	public static TileEntityType<ReinforcedPistonTileEntity> teTypeReinforcedPiston;
 	@ObjectHolder(SecurityCraft.MODID + ":validation_ownable")
 	public static TileEntityType<ValidationOwnableTileEntity> teTypeValidationOwnable;
+	@ObjectHolder(SecurityCraft.MODID + ":key_panel")
+	public static TileEntityType<KeyPanelTileEntity> teTypeKeyPanel;
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")

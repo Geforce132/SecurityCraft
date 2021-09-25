@@ -1,11 +1,12 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.geforcemods.securitycraft.blocks.KeypadBlock;
+import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -23,31 +24,26 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class KeypadTileEntity extends DisguisableTileEntity implements IPasswordProtected {
-
+public class KeyPanelTileEntity extends CustomizableTileEntity implements IPasswordProtected
+{
 	private String passcode;
-
 	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
 		@Override
 		public void toggle() {
 			super.toggle();
 
-			world.setBlockState(pos, getBlockState().with(KeypadBlock.POWERED, get()));
-			world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
+			world.setBlockState(pos, getBlockState().with(KeyPanelBlock.POWERED, get()));
+			world.notifyNeighborsOfStateChange(pos, SCContent.KEY_PANEL_BLOCK.get());
 		}
 	};
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
-	public KeypadTileEntity()
+	public KeyPanelTileEntity()
 	{
-		super(SCContent.teTypeKeypad);
+		super(SCContent.teTypeKeyPanel);
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
 	public CompoundNBT write(CompoundNBT tag)
 	{
@@ -59,9 +55,6 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void read(BlockState state, CompoundNBT tag)
 	{
@@ -71,9 +64,22 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	}
 
 	@Override
-	public void activate(PlayerEntity player) {
-		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadBlock)
-			((KeypadBlock)getBlockState().getBlock()).activate(getBlockState(), world, pos, signalLength.get());
+	public ModuleType[] acceptedModules()
+	{
+		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.DENYLIST};
+	}
+
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{ isAlwaysActive, sendMessage, signalLength };
+	}
+
+	@Override
+	public void activate(PlayerEntity player)
+	{
+		if(!world.isRemote && getBlockState().getBlock() instanceof KeyPanelBlock)
+			((KeyPanelBlock)getBlockState().getBlock()).activate(getBlockState(), world, pos, signalLength.get());
 	}
 
 	@Override
@@ -92,7 +98,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEYPAD.get().getTranslationKey());
+						return new TranslationTextComponent(SCContent.KEY_PANEL_BLOCK.get().getTranslationKey());
 					}
 				}, pos);
 			}
@@ -113,7 +119,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEYPAD.get().getTranslationKey());
+							return new TranslationTextComponent(SCContent.KEY_PANEL_BLOCK.get().getTranslationKey());
 						}
 					}, pos);
 				}
@@ -124,8 +130,10 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
-		if(!blockState.get(KeypadBlock.POWERED)) {
+	public boolean onCodebreakerUsed(BlockState state, PlayerEntity player)
+	{
+		if(!state.get(KeyPanelBlock.POWERED))
+		{
 			activate(player);
 			return true;
 		}
@@ -134,23 +142,15 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	}
 
 	@Override
-	public String getPassword() {
+	public String getPassword()
+	{
 		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
 	}
 
 	@Override
-	public void setPassword(String password) {
+	public void setPassword(String password)
+	{
 		passcode = password;
-	}
-
-	@Override
-	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE};
-	}
-
-	@Override
-	public Option<?>[] customOptions() {
-		return new Option[]{ isAlwaysActive, sendMessage, signalLength };
 	}
 
 	public boolean sendsMessages()
