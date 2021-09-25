@@ -45,8 +45,14 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final EnumProperty<AttachFace> FACE = BlockStateProperties.ATTACH_FACE;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	public static final VoxelShape FLOOR = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 1.0D, 14.0D);
-	public static final VoxelShape CEILING = Block.box(2.0D, 15.0D, 2.0D, 14.0D, 16.0D, 14.0D);
+	public static final VoxelShape FLOOR_NS = Block.box(2.0D, 0.0D, 1.0D, 14.0D, 1.0D, 15.0D);
+	public static final VoxelShape FLOOR_EW = Block.box(1.0D, 0.0D, 2.0D, 15.0D, 1.0D, 14.0D);
+	public static final VoxelShape CEILING_NS = Block.box(2.0D, 15.0D, 1.0D, 14.0D, 16.0D, 15.0D);
+	public static final VoxelShape CEILING_EW = Block.box(1.0D, 15.0D, 2.0D, 15.0D, 16.0D, 14.0D);
+	public static final VoxelShape WALL_N = Block.box(2.0D, 1.0D, 15.0D, 14.0D, 15.0D, 16.0D);
+	public static final VoxelShape WALL_E = Block.box(0.0D, 1.0D, 2.0D, 1.0D, 15.0D, 14.0D);
+	public static final VoxelShape WALL_S = Block.box(2.0D, 1.0D, 0.0D, 14.0D, 15.0D, 1.0D);
+	public static final VoxelShape WALL_W = Block.box(15.0D, 1.0D, 2.0D, 16.0D, 15.0D, 14.0D);
 
 	public KeyPanelBlock(Properties properties)
 	{
@@ -58,13 +64,25 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
 	{
 		return switch(state.getValue(FACE)) {
-			case FLOOR -> FLOOR;
-			case CEILING -> CEILING;
+			case FLOOR -> switch(state.getValue(FACING)) {
+				case NORTH -> FLOOR_NS;
+				case EAST -> FLOOR_EW;
+				case SOUTH -> FLOOR_NS;
+				case WEST -> FLOOR_EW;
+				default -> Shapes.empty();
+			};
+			case CEILING -> switch(state.getValue(FACING)) {
+				case NORTH -> CEILING_NS;
+				case EAST -> CEILING_EW;
+				case SOUTH -> CEILING_NS;
+				case WEST -> CEILING_EW;
+				default -> Shapes.empty();
+			};
 			case WALL -> switch(state.getValue(FACING)) {
-				case NORTH -> Block.box(2.0D, 2.0D, 15.0D, 14.0D, 14.0D, 16.0D);
-				case EAST -> Block.box(0.0D, 2.0D, 2.0D, 1.0D, 14.0D, 14.0D);
-				case SOUTH -> Block.box(2.0D, 2.0D, 0.0D, 14.0D, 14.0D, 1.0D);
-				case WEST -> Block.box(15.0D, 2.0D, 2.0D, 16.0D, 14.0D, 14.0D);
+				case NORTH -> WALL_N;
+				case EAST -> WALL_E;
+				case SOUTH -> WALL_S;
+				case WEST -> WALL_W;
 				default -> Shapes.empty();
 			};
 		};

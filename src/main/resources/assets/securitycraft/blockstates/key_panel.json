@@ -70,49 +70,41 @@
     },
     "face=wall,facing=east,powered=false": {
       "model": "securitycraft:block/key_panel_off",
-      "y": 90,
-      "x": 90,
-      "uvlock": true
+      "y": 270,
+      "x": 270
     },
     "face=wall,facing=east,powered=true": {
       "model": "securitycraft:block/key_panel_on",
-      "y": 90,
-      "x": 90,
-      "uvlock": true
+      "y": 270,
+      "x": 270
     },
     "face=wall,facing=north,powered=false": {
       "model": "securitycraft:block/key_panel_off",
-      "x": 90,
-      "uvlock": true
+      "x": 270,
+      "y": 180
     },
     "face=wall,facing=north,powered=true": {
       "model": "securitycraft:block/key_panel_on",
-      "x": 90,
-      "uvlock": true
+      "x": 270,
+      "y": 180
     },
     "face=wall,facing=south,powered=false": {
       "model": "securitycraft:block/key_panel_off",
-      "y": 180,
-      "x": 90,
-      "uvlock": true
+      "x": 270
     },
     "face=wall,facing=south,powered=true": {
       "model": "securitycraft:block/key_panel_on",
-      "y": 180,
-      "x": 90,
-      "uvlock": true
+      "x": 270
     },
     "face=wall,facing=west,powered=false": {
       "model": "securitycraft:block/key_panel_off",
-      "y": 270,
-      "x": 90,
-      "uvlock": true
+      "y": 90,
+      "x": 270
     },
     "face=wall,facing=west,powered=true": {
       "model": "securitycraft:block/key_panel_on",
-      "y": 270,
-      "x": 90,
-      "uvlock": true
+      "y": 90,
+      "x": 270
     }
   }
 }
