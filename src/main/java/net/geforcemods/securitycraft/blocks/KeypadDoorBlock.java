@@ -46,7 +46,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(world, pos, state, te.getSignalLength());
+				activate(state, world, pos, te.getSignalLength());
 			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				te.openPasswordGUI(player);
@@ -55,7 +55,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 		return ActionResultType.SUCCESS;
 	}
 
-	public static void activate(World world, BlockPos pos, BlockState state, int signalLength){
+	public void activate(BlockState state, World world, BlockPos pos, int signalLength){
 		boolean open = !state.get(OPEN);
 
 		world.playEvent(null, open ? 1005 : 1011, pos, 0);

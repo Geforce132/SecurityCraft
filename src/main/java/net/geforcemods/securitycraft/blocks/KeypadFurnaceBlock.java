@@ -135,7 +135,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(world, pos, player);
+				activate(state, world, pos, player);
 			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				te.openPasswordGUI(player);
@@ -144,8 +144,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 		return ActionResultType.SUCCESS;
 	}
 
-	public static void activate(World world, BlockPos pos, PlayerEntity player){
-		BlockState state = world.getBlockState(pos);
+	public void activate(BlockState state, World world, BlockPos pos, PlayerEntity player){
 		if(!state.get(KeypadFurnaceBlock.OPEN))
 			world.setBlockState(pos, state.with(KeypadFurnaceBlock.OPEN, true));
 

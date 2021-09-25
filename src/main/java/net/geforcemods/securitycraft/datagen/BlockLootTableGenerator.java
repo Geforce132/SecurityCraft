@@ -24,6 +24,7 @@ import net.minecraft.item.Items;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.state.properties.SlabType;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.ConstantRange;
 import net.minecraft.world.storage.loot.ItemLootEntry;
@@ -86,6 +87,7 @@ public class BlockLootTableGenerator implements IDataProvider
 				.addLootPool(LootPool.builder()
 						.rolls(ConstantRange.of(1))
 						.addEntry(imsLootEntryBuilder)));
+		putStandardBlockLootTable(SCContent.KEY_PANEL_BLOCK, SCContent.KEY_PANEL.get());
 		putStandardBlockLootTable(SCContent.KEYPAD_CHEST);
 		putDoorLootTable(SCContent.KEYPAD_DOOR, SCContent.KEYPAD_DOOR_ITEM);
 		putDoorLootTable(SCContent.REINFORCED_DOOR, SCContent.REINFORCED_DOOR_ITEM);
@@ -111,12 +113,17 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_WALL_SIGN);
 	}
 
-	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> block)
+	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> drop)
+	{
+		return createStandardBlockLootTable(drop.get());
+	}
+
+	protected final LootTable.Builder createStandardBlockLootTable(IItemProvider drop)
 	{
 		return LootTable.builder()
 				.addLootPool(LootPool.builder()
 						.rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(block.get()))
+						.addEntry(ItemLootEntry.builder(drop.asItem()))
 						.acceptCondition(SurvivesExplosion.builder()));
 	}
 
@@ -134,7 +141,12 @@ public class BlockLootTableGenerator implements IDataProvider
 
 	protected final void putStandardBlockLootTable(Supplier<Block> block)
 	{
-		lootTables.put(block, createStandardBlockLootTable(block));
+		putStandardBlockLootTable(block, block.get());
+	}
+
+	protected final void putStandardBlockLootTable(Supplier<Block> block, IItemProvider drop)
+	{
+		lootTables.put(block, createStandardBlockLootTable(drop));
 	}
 
 	protected final void putMineLootTable(Supplier<Block> mine)

@@ -364,6 +364,7 @@
 	"block.securitycraft.keypad_door": "Porte du clavier à code",
 	"block.securitycraft.keypad_chest_double": "Grand coffre protégé par mot de passe",
 	"block.securitycraft.reinforced_cauldron": "Chaudron renforcé",
+	"block.securitycraft.key_panel": "Panneau à touches",
 
 	"item.securitycraft.codebreaker": "Déchiffreur de code",
 	"item.securitycraft.door_indestructible_iron_item": "Porte en fer renforcée",
@@ -913,6 +914,10 @@
 	"option.securitycraft.keypad_door.signalLength.description": "Pour combien de temps la porte resterait ouverte ? (En Ticks, 20 ticks = 1 seconde. Régler à 0 pour que la porte reste ouverte)",
 	"option.securitycraft.reinforced_cauldron.isPublic": "Publique : %s",
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "Chaque joueur devrait-il être capable d’interagir avec ce bloc ?",
+	"option.securitycraft.key_panel.isAlwaysActive": "Est toujours actif : #",
+	"option.securitycraft.key_panel.sendMessage": "Message : #",
+	"option.securitycraft.key_panel.signalLength": "Largeur du signal : #",
+	"option.securitycraft.key_panel.signalLength.description": "Pour combien de temps resterait le signal de redstone en cas de succès ? (En ticks, 20 ticks = 1 seconde)",
 
 	"securitycraft.subtitle.alarm": "Sonnerie d‘alarme",
 	"securitycraft.subtitle.electrified": "Entité électrocuté",

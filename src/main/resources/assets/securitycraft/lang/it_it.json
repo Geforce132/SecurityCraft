@@ -364,6 +364,7 @@
 	"block.securitycraft.keypad_chest_double": "Baule protetto da password lungo",
 	"block.securitycraft.reinforced_cauldron": "Calderone rinforzato",
 	"block.securitycraft.reinforced_lantern": "Lanterna rinforzata",
+	"block.securitycraft.key_panel": "Tastierino",
 
 	"item.securitycraft.codebreaker": "Decrittatore",
 	"item.securitycraft.door_indestructible_iron_item": "Porta di ferro rinforzata",
@@ -911,6 +912,10 @@
 	"option.securitycraft.keypad_door.signalLength.description": "Quanto dovrebbe stare aperta la porta? (In tick, 20 tick = 1 secondo. Imposta a 0 per far rimanere aperta la porta)",
 	"option.securitycraft.reinforced_cauldron.isPublic": "Pubblico: #",
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "Questo blocco dovrebbe permettere a ogni giocatore di interagirci?",
+	"option.securitycraft.key_panel.isAlwaysActive": "Sempre attivo: #",
+	"option.securitycraft.key_panel.sendMessage": "Messaggio: #",
+	"option.securitycraft.key_panel.signalLength": "Lunghezza segnale: #",
+	"option.securitycraft.key_panel.signalLength.description": "Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)",
 
 	"securitycraft.subtitle.alarm": "L'allarme sta suonando",
 	"securitycraft.subtitle.electrified": "Entità folgorata",
