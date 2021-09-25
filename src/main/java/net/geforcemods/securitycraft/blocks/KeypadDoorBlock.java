@@ -49,7 +49,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
-				activate(world, pos, state, te.getSignalLength());
+				activate(state, world, pos, te.getSignalLength());
 			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				te.openPasswordGUI(player);
@@ -58,7 +58,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 		return InteractionResult.SUCCESS;
 	}
 
-	public static void activate(Level world, BlockPos pos, BlockState state, int signalLength){
+	public void activate(BlockState state, Level world, BlockPos pos, int signalLength){
 		boolean open = !state.getValue(OPEN);
 
 		world.levelEvent(null, open ? 1005 : 1011, pos, 0);
