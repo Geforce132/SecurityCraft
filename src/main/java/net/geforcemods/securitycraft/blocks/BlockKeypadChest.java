@@ -149,10 +149,10 @@ public class BlockKeypadChest extends BlockContainer
 		return true;
 	}
 
-	public static void activate(World world, BlockPos pos, EntityPlayer player)
+	public void activate(World world, BlockPos pos, EntityPlayer player)
 	{
 		if(!isBlocked(world, pos))
-			player.displayGUIChest(((BlockKeypadChest)SCContent.keypadChest).getLockableContainer(world, pos));
+			player.displayGUIChest(getLockableContainer(world, pos));
 	}
 
 	@Override

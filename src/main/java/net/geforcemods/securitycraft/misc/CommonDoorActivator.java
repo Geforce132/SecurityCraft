@@ -26,7 +26,9 @@ public class CommonDoorActivator implements Function<Object,IDoorActivator>, IDo
 			SCContent.reinforcedStoneButton,
 			SCContent.reinforcedWoodenButton,
 			SCContent.reinforcedLever,
-			SCContent.reinforcedObserver
+			SCContent.reinforcedObserver,
+			SCContent.keyPanelFloorCeilingBlock,
+			SCContent.keyPanelWallBlock
 	});
 
 	@Override

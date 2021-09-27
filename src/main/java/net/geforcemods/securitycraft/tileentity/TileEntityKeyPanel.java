@@ -1,12 +1,12 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
-import net.geforcemods.securitycraft.blocks.BlockKeypad;
+import net.geforcemods.securitycraft.blocks.BlockKeyPanel;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -17,26 +17,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
-public class TileEntityKeypad extends TileEntityDisguisable implements IPasswordProtected {
-
+public class TileEntityKeyPanel extends CustomizableSCTE implements IPasswordProtected
+{
 	private String passcode;
-
 	private OptionBoolean isAlwaysActive = new OptionBoolean("isAlwaysActive", false) {
 		@Override
 		public void toggle() {
 			super.toggle();
 
-			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockKeypad.POWERED, get()));
-			world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockKeyPanel.POWERED, get()));
+			world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
 		}
 	};
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
@@ -48,9 +43,6 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void readFromNBT(NBTTagCompound tag)
 	{
@@ -59,13 +51,27 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 	}
 
 	@Override
-	public void activate(EntityPlayer player) {
-		if(!world.isRemote)
-			((BlockKeypad)getBlockType()).activate(world.getBlockState(pos), world, pos, signalLength.get());
+	public EnumModuleType[] acceptedModules()
+	{
+		return new EnumModuleType[]{EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST};
 	}
 
 	@Override
-	public void openPasswordGUI(EntityPlayer player) {
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{ isAlwaysActive, sendMessage, signalLength };
+	}
+
+	@Override
+	public void activate(EntityPlayer player)
+	{
+		if(!world.isRemote)
+			((BlockKeyPanel)getBlockType()).activate(world.getBlockState(pos), world, pos, signalLength.get());
+	}
+
+	@Override
+	public void openPasswordGUI(EntityPlayer player)
+	{
 		if(getPassword() != null)
 			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		else
@@ -78,8 +84,10 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
-		if(!state.getValue(BlockKeypad.POWERED)) {
+	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player)
+	{
+		if(!state.getValue(BlockKeyPanel.POWERED))
+		{
 			activate(player);
 			return true;
 		}
@@ -88,23 +96,15 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 	}
 
 	@Override
-	public String getPassword() {
+	public String getPassword()
+	{
 		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
 	}
 
 	@Override
-	public void setPassword(String password) {
+	public void setPassword(String password)
+	{
 		passcode = password;
-	}
-
-	@Override
-	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.DISGUISE};
-	}
-
-	@Override
-	public Option<?>[] customOptions() {
-		return new Option[]{ isAlwaysActive, sendMessage, signalLength };
 	}
 
 	public boolean sendsMessages()

@@ -287,6 +287,7 @@ tile.securitycraft:reinforced_piston.name=Verstärkter Kolben
 tile.securitycraft:reinforced_sticky_piston.name=Verstärkter klebriger Kolben
 tile.securitycraft:reinforced_piston_head.name=Verstärkter Kolbenkopf
 tile.securitycraft:reinforced_moving_piston.name=Verstärkter bewegter Block
+tile.securitycraft:key_panel.name=Nummernfeld
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür
@@ -409,7 +410,7 @@ help.securitycraft:smartModule.info=Das schlaue Modul berücksichtigt auch Verza
 help.securitycraft:storageModule.info=Das Lagermodul gibt einem Block (mehr) Speicherkapazität.
 help.securitycraft:disguiseModule.info=Das Tarnmodul tarnt bestimmte Blöcke, wenn es hinzugefügt wird.
 help.securitycraft:wireCutters.info=Ein Rechtsklick mit ihm auf eine Mine entschärft diese.
-help.securitycraft:keypadItem.info=Das Nummernfeld wird in der Herstellung von Nummernschlössern, passwortgesicherten Truhen und passwortgesicherten Öfen verwendet.
+help.securitycraft:keypadItem.info=Das Nummernfeld kann in der Welt platziert werden, und ist eine kleine Version des Nummernschlosses. Es wird außerdem in der Herstellung von Nummernschlössern, passwortgesicherten Truhen und passwortgesicherten Öfen verwendet.
 help.securitycraft:adminTool.info=Das Admin-Werkzeug zeigt einem Spieler alle möglichen Informationen über einen SecurityCraft Block an, wie Passwort, Besitzer und installierte Module.
 help.securitycraft:taser.info=Der Taser ist eine selbstladende Betäubungspistole, die mit einem Rechtsklick abschießt. Mobs oder Spieler, die erwischt werden, bekommen folgende Effekte für 10 Sekunden: Übelkeit II, Langsamkeit II, Schwäche II. Sollte ein Schleich-Rechtsklick ausgeführt werden (sofern Redstone im Inventar ist), verdoppelt sich die Stärke des Tasers für einen Schuss.
 help.securitycraft:cameraMonitor.info=Der Kameramonitor ist ein tragbarer Bildschirm, der dazu benutzt wird, bis zu 30 Überwachungskamera zu speichern. Ein Rechtsklick auf eine Kamera verbindet sie mit dem Monitor. Nun kann der Monitor rechtsgeklickt werden, um eine Kamera auszuwählen oder via dem "X"-Knopf zu entfernen. Alternativ kann die Kamera erneut mit dem Monitor gerechtsklickt werden, um sie zu entfernen.
@@ -735,6 +736,8 @@ module.securitycraft:trophy_system.speed_module.description=Ein Schnelligkeits-M
 module.securitycraft:trophy_system.whitelistModule.description=Ein Zulassungslisten-Modul in einem Trophy-System lässt es Projektile, die von zugelassenen Spielern geworfen wurden, sowie Kugeln ihrer Geschütze und Bomben ihrer I.M.S. ignorieren.
 module.securitycraft:trophy_system.disguiseModule.description=Wenn ein Tarnmodul zu einem Trophy-System hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.
 module.securitycraft:reinforced_cauldron.whitelistModule.description=Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.
+module.securitycraft:key_panel.whitelistModule.description=Ein Zulassungslisten-Modul in einem Nummernfeld erlaubt zugelassenen Spielern, es zu aktivieren, ohne den Code zu kennen.
+module.securitycraft:key_panel.blacklistModule.description=Ein Sperrlisten-Modul in einem Nummernfeld verhindert, dass gesperrte Spieler mit ihm interagieren können.
 
 config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?
 config.securitycraft:isCodebreakerAllowed.tooltip=Kann der Codebrecher benutzt werden?
@@ -865,6 +868,12 @@ option.securitycraft:keypad_door.signalLength=Dauer zum Schließen: #
 option.securitycraft:keypad_door.signalLength.description=Wie lange soll die Tür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Tür nicht schließt)
 option.securitycraft:reinforced_cauldron.isPublic=Öffentlich: #
 option.securitycraft:reinforced_cauldron.isPublic.description=Soll jeder Spieler mit diesem Block interagieren können?
+option.securitycraft:key_panel.isAlwaysActive=Immer aktiv: #
+option.securitycraft:key_panel.isAlwaysActive.description=Soll das Nummernfeld aktiv bleiben und immer offen sein?
+option.securitycraft:key_panel.sendMessage=Nachricht: #
+option.securitycraft:key_panel.sendMessage.description=Sendet dieses Nummernfeld eine Nachricht, wenn es aktiviert wird (bei Nutzung von Zulassungslisten/Sperrlisten-Modulen)?
+option.securitycraft:key_panel.signalLength=Signallänge: #
+option.securitycraft:key_panel.signalLength.description=Wie lange soll das Redstonesignal bei erfolgreicher Aktivierung sein? (In Ticks, 20 Ticks = 1 Sekunde)
 
 securitycraft.subtitle.alarm=Alarm geht los
 securitycraft.subtitle.electrified=Stromschlag

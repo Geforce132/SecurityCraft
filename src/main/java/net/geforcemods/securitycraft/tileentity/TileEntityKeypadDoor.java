@@ -53,7 +53,7 @@ public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPass
 					state = world.getBlockState(pos);
 				}
 
-				BlockKeypadDoor.activate(world, pos, state, getSignalLength());
+				((BlockKeypadDoor)state.getBlock()).activate(state, world, pos, getSignalLength());
 			}
 		}
 	}

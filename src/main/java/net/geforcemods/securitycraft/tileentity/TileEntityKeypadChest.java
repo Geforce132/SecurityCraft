@@ -150,8 +150,8 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!world.isRemote && world.getBlockState(pos).getBlock() instanceof BlockKeypadChest && !isBlocked())
-			BlockKeypadChest.activate(world, pos, player);
+		if(!world.isRemote && !isBlocked())
+			((BlockKeypadChest)getBlockType()).activate(world, pos, player);
 	}
 
 	@Override

@@ -39,6 +39,8 @@ public class SCContent
 	public static Block ironFence;
 	public static Block ironOreMine;
 	public static Block keycardReader;
+	public static Block keyPanelFloorCeilingBlock;
+	public static Block keyPanelWallBlock;
 	public static Block keypad;
 	public static Block keypadChest;
 	public static Block keypadDoor;

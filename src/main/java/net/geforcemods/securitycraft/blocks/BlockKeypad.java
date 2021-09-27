@@ -59,7 +59,7 @@ public class BlockKeypad extends BlockDisguisable {
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(world, pos, state, te.getSignalLength());
+				activate(state, world, pos, te.getSignalLength());
 				return true;
 			}
 
@@ -70,13 +70,10 @@ public class BlockKeypad extends BlockDisguisable {
 		return true;
 	}
 
-	public static void activate(World world, BlockPos pos, IBlockState state, int signalLength){
-		if(state.getBlock() != SCContent.keypad)
-			return;
-
+	public void activate(IBlockState state, World world, BlockPos pos, int signalLength){
 		world.setBlockState(pos, state.withProperty(POWERED, true));
-		world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
-		world.scheduleUpdate(pos, SCContent.keypad, signalLength);
+		world.notifyNeighborsOfStateChange(pos, this, false);
+		world.scheduleUpdate(pos, this, signalLength);
 	}
 
 	@Override

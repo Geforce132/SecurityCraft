@@ -79,6 +79,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityIronFence;
+import net.geforcemods.securitycraft.tileentity.TileEntityKeyPanel;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
@@ -282,6 +283,8 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.projector);
 		event.getRegistry().register(SCContent.keypadDoor);
 		registerBlock(event, SCContent.reinforcedCauldron, false);
+		event.getRegistry().register(SCContent.keyPanelFloorCeilingBlock);
+		event.getRegistry().register(SCContent.keyPanelWallBlock);
 
 		//block mines
 		registerBlock(event, SCContent.stoneMine, false);
@@ -410,6 +413,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityReinforcedCauldron.class, new ResourceLocation("securitycraft:reinforced_cauldron"));
 		GameRegistry.registerTileEntity(TileEntityReinforcedPiston.class, new ResourceLocation("securitycraft:reinforced_piston"));
 		GameRegistry.registerTileEntity(TileEntityValidationOwnable.class, new ResourceLocation("securitycraft:validation_ownable"));
+		GameRegistry.registerTileEntity(TileEntityKeyPanel.class, new ResourceLocation("securitycraft:key_panel"));
 	}
 
 	@SubscribeEvent

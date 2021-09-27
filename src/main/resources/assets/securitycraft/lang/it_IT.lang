@@ -283,6 +283,7 @@ tile.securitycraft:projector.name=Proiettore
 tile.securitycraft:secret_sign.name=Cartello segreto
 tile.securitycraft:keypad_door.name=Porta con tastiera
 tile.securitycraft:reinforced_cauldron.name=Calderone rinforzato
+tile.securitycraft:key_panel=Tastierino
 
 item.securitycraft:codebreaker.name=Decrittatore
 item.securitycraft:doorIndestructibleIronItem.name=Porta di ferro rinforzata
@@ -852,8 +853,12 @@ option.securitycraft:keypad_door.sendMessage=Messaggio: #
 option.securitycraft:keypad_door.sendMessage.description=Questa porta con tastiera manda un messaggio all'attivazione (usando moduli lista consentiti/negati)?
 option.securitycraft:keypad_door.signalLength=Lunghezza segnale: #
 option.securitycraft:keypad_door.signalLength.description=Quanto dovrebbe stare aperta la porta? (In tick, 20 tick = 1 secondo. Imposta a 0 per far rimanere aperta la porta)
-option.securitycraft:reinforced_cauldron.isPublic=Pubblico: #", 
-option.securitycraft:reinforced_cauldron.isPublic.description=Questo blocco dovrebbe permettere a ogni giocatore di interagirci?", 
+option.securitycraft:reinforced_cauldron.isPublic=Pubblico: #
+option.securitycraft:reinforced_cauldron.isPublic.description=Questo blocco dovrebbe permettere a ogni giocatore di interagirci?
+option.securitycraft.key_panel.isAlwaysActive=Sempre attivo: #
+option.securitycraft.key_panel.sendMessage=Messaggio: #
+option.securitycraft.key_panel.signalLength=Lunghezza segnale: #
+option.securitycraft.key_panel.signalLength.description=Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)
 
 securitycraft.subtitle.alarm=L'allarme sta suonando
 securitycraft.subtitle.electrified=Entità folgorata

@@ -42,7 +42,7 @@ public class BlockKeypadDoor extends BlockSpecialDoor
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(world, pos, state, te.getSignalLength());
+				activate(state, world, pos, te.getSignalLength());
 				return true;
 			}
 
@@ -53,16 +53,16 @@ public class BlockKeypadDoor extends BlockSpecialDoor
 		return true;
 	}
 
-	public static void activate(World world, BlockPos pos, IBlockState state, int signalLength){
+	public void activate(IBlockState state, World world, BlockPos pos, int signalLength){
 		boolean open = !state.getValue(OPEN);
 
 		world.playEvent(null, open ? 1005 : 1011, pos, 0);
 		world.setBlockState(pos, state.withProperty(OPEN, open));
 		world.markBlockRangeForRenderUpdate(pos, pos);
-		world.notifyNeighborsOfStateChange(pos, SCContent.keypadDoor, false);
+		world.notifyNeighborsOfStateChange(pos, this, false);
 
 		if(open && signalLength > 0)
-			world.scheduleUpdate(pos, SCContent.keypadDoor, signalLength);
+			world.scheduleUpdate(pos, this, signalLength);
 	}
 
 	@Override

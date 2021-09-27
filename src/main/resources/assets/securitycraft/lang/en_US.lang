@@ -287,6 +287,7 @@ tile.securitycraft:reinforced_piston.name=Reinforced Piston
 tile.securitycraft:reinforced_sticky_piston.name=Reinforced Sticky Piston
 tile.securitycraft:reinforced_piston_head.name=Reinforced Piston Head
 tile.securitycraft:reinforced_moving_piston.name=Reinforced Moving Piston
+tile.securitycraft:key_panel.name=Key Panel
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -409,7 +410,7 @@ help.securitycraft:smartModule.info=The smart module upgrades the range or funct
 help.securitycraft:storageModule.info=The storage module adds or upgrades the size of a block's inventory.
 help.securitycraft:disguiseModule.info=The disguise module disguises certain blocks when added to them.
 help.securitycraft:wireCutters.info=Rightclicking a mine with the wire cutters will defuse it.
-help.securitycraft:keypadItem.info=The key panel is used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.
+help.securitycraft:keypadItem.info=The key panel can be placed down for a smaller version of the keypad. It is also used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.
 help.securitycraft:adminTool.info=The admin tool's main purpose is to display information about a SecurityCraft block. It will show the owner's UUID and name, and other information, like passcodes and any inserted modules.
 help.securitycraft:taser.info=The taser is a self-recharging stun gun. Rightclick to fire it. Entities hit with the taser will get Nausea II, Slowness II, and Weakness II for 10 seconds. If the Taser is sneak-rightclicked (provided some redstone in the inventory), it will double its strength for the next shot.
 help.securitycraft:cameraMonitor.info=The camera monitor is a portable item used to view live feeds of up to 30 bound security cameras. Right-click a security camera with the camera monitor to bind it, then right-click air and select the camera in the GUI while the camera’s chunk is loaded to see its feed. Unbind a security camera by right-clicking it again with the camera monitor or by opening the camera monitor's GUI and clicking the corresponding "X" button.
@@ -737,6 +738,8 @@ module.securitycraft:trophy_system.whitelistModule.description=Adding an allowli
 module.securitycraft:trophy_system.speed_module.description=Adding a speed module to a Trophy System allows it to destroy targets twice as fast.
 module.securitycraft:trophy_system.disguiseModule.description=Adding a disguise module to a Trophy System will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.
 module.securitycraft:reinforced_cauldron.whitelistModule.description=Adding an allowlist module to a Reinforced Cauldron will allow listed playerss to interact with the Reinforced Cauldron.
+module.securitycraft:key_panel.whitelistModule.description=Adding an allowlist module to a key panel  will allow listed players to use the block without knowing the code.
+module.securitycraft:key_panel.blacklistModule.description=Adding a denylist module to a key panel will ban listed players from interacting with the block.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
 config.securitycraft:isCodebreakerAllowed.tooltip=Can the codebreaker be used?
@@ -867,6 +870,12 @@ option.securitycraft:keypad_door.signalLength=Signal length: #
 option.securitycraft:keypad_door.signalLength.description=How long should the door stay open? (In Ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)
 option.securitycraft:reinforced_cauldron.isPublic=Public: #
 option.securitycraft:reinforced_cauldron.isPublic.description=Should every player be able to interact with this block?
+option.securitycraft:key_panel.isAlwaysActive=Is always active: #
+option.securitycraft:key_panel.isAlwaysActive.description=Should the key panel remain active and unlocked?
+option.securitycraft:key_panel.sendMessage=Message: #
+option.securitycraft:key_panel.sendMessage.description=Does this key panel send a message upon activation (when using allowlist/denylist modules)?
+option.securitycraft:key_panel.signalLength=Signal length: #
+option.securitycraft:key_panel.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)
 
 securitycraft.subtitle.alarm=Alarm sounding
 securitycraft.subtitle.electrified=Entity electrocuted

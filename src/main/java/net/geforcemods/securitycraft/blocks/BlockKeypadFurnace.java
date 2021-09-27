@@ -96,7 +96,7 @@ public class BlockKeypadFurnace extends BlockOwnable {
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(world, pos, state, player);
+				activate(state, world, pos, player);
 			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
 				te.openPasswordGUI(player);
@@ -105,14 +105,11 @@ public class BlockKeypadFurnace extends BlockOwnable {
 		return true;
 	}
 
-	public static void activate(World world, BlockPos pos, IBlockState state, EntityPlayer player){
-		if(state.getBlock() != SCContent.keypadFurnace)
-			return;
-
+	public void activate(IBlockState state, World world, BlockPos pos, EntityPlayer player){
 		if(!state.getValue(OPEN))
 			world.setBlockState(pos, state.withProperty(OPEN, true));
 
-		world.playEvent((EntityPlayer)null, 1006, pos, 0);
+		world.playEvent(null, 1006, pos, 0);
 		player.openGui(SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 	}
 

@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.blocks.BlockFakeLava;
 import net.geforcemods.securitycraft.blocks.BlockFakeLavaBase;
 import net.geforcemods.securitycraft.blocks.BlockFakeWater;
 import net.geforcemods.securitycraft.blocks.BlockFakeWaterBase;
+import net.geforcemods.securitycraft.blocks.BlockFloorCeilingKeyPanel;
 import net.geforcemods.securitycraft.blocks.BlockFrame;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
@@ -36,6 +37,7 @@ import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.BlockTrophySystem;
+import net.geforcemods.securitycraft.blocks.BlockWallKeyPanel;
 import net.geforcemods.securitycraft.blocks.mines.BlockBouncingBetty;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
 import net.geforcemods.securitycraft.blocks.mines.BlockFullMineBase;
@@ -260,6 +262,8 @@ public class SetupHandler
 		SCContent.projector = new BlockProjector().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("projector").setTranslationKey("securitycraft:projector");
 		SCContent.keypadDoor = new BlockKeypadDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("keypad_door").setTranslationKey("securitycraft:keypad_door");
 		SCContent.reinforcedCauldron = new BlockReinforcedCauldron().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_cauldron").setTranslationKey("securitycraft:reinforced_cauldron");
+		SCContent.keyPanelFloorCeilingBlock = new BlockFloorCeilingKeyPanel(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("floor_ceiling_key_panel").setTranslationKey("securitycraft:key_panel");
+		SCContent.keyPanelWallBlock = new BlockWallKeyPanel(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("wall_key_panel").setTranslationKey("securitycraft:key_panel");
 	}
 
 	public static void setupMines()
