@@ -20,9 +20,10 @@
 - Fix: Reinforced Smooth Quartz has the wrong texture
 - Fix: The Keypad and Keypad Door cannot be opened while holding the key panel
 - Fix: Converting chests whose loot has not been generated yet creates additional items
+- Fix: Redstone does not connect to the Reinforced Observer
 - Removed: Unused textures
 - Misc.: Renamed a few textures
-- Misc.: The minimum Forge version is now 37.0.59
+- Misc.: The minimum Forge version is now 37.0.72
 
 --------------------------Changelog for v1.8.23-beta5 of SecurityCraft--------------------------
 
