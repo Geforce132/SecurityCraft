@@ -164,6 +164,9 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
+		World world = ctx.getWorld();
+		BlockPos pos = ctx.getPos();
+
 		for(Direction direction : ctx.getNearestLookingDirections())
 		{
 			BlockState state;
@@ -173,8 +176,8 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable
 			else
 				state = getDefaultState().with(FACE, AttachFace.WALL).with(FACING, direction.getOpposite());
 
-			if(state.isValidPosition(ctx.getWorld(), ctx.getPos()))
-				return state.with(POWERED, false);
+			if(state.isValidPosition(world, pos))
+				return state.with(POWERED, false).with(WATERLOGGED, world.getFluidState(pos).getFluid() == Fluids.WATER);
 		}
 
 		return null;
