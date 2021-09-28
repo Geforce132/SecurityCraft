@@ -159,6 +159,9 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+
 		for(Direction direction : ctx.getNearestLookingDirections())
 		{
 			BlockState state;
@@ -168,8 +171,8 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 			else
 				state = defaultBlockState().setValue(FACE, AttachFace.WALL).setValue(FACING, direction.getOpposite());
 
-			if(state.canSurvive(ctx.getLevel(), ctx.getClickedPos()))
-				return state.setValue(POWERED, false);
+			if(state.canSurvive(level, pos))
+				return state.setValue(POWERED, false).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
 		}
 
 		return null;
