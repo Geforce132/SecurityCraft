@@ -90,7 +90,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(world, pos);
 		InventoryScannerBlockEntity thisTe = (InventoryScannerBlockEntity)world.getBlockEntity(pos);
 
-		if(connectedScanner == null || !connectedScanner.getOwner().equals(thisTe.getOwner()))
+		if(connectedScanner == null || !connectedScanner.getOwner().owns(thisTe))
 			return;
 
 		boolean horizontal = false;

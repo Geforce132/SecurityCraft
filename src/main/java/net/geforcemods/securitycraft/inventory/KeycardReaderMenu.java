@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.inventory;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.items.KeycardItem;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
@@ -51,11 +53,15 @@ public class KeycardReaderMenu extends AbstractContainerMenu
 				if(!(stack.getItem() instanceof KeycardItem) || stack.getItem() == SCContent.LIMITED_USE_KEYCARD.get())
 					return false;
 
-				boolean hasTag = stack.hasTag();
-				String ownerUUID = hasTag ? stack.getTag().getString("ownerUUID") : "";
+				if(!stack.hasTag())
+					return true;
+
+				CompoundTag tag = stack.getTag();
+				String keycardOwnerUUID = tag.getString("ownerUUID");
+				String keycardOwnerName = tag.getString("ownerName");
 
 				//only allow keycards that have been linked to a keycard reader with the same owner as this keycard reader
-				return !hasTag || ownerUUID.isEmpty() || ownerUUID.equals(te.getOwner().getUUID());
+				return keycardOwnerUUID.isEmpty() || ((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(te.getOwner().getName(), keycardOwnerName)) || keycardOwnerUUID.equals(te.getOwner().getUUID()));
 			}
 		});
 	}

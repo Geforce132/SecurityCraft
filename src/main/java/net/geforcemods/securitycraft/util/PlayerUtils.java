@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
@@ -166,5 +167,18 @@ public class PlayerUtils{
 	 */
 	public static boolean isPlayerMountedOnCamera(LivingEntity entity) {
 		return entity != null && entity.getVehicle() instanceof SecurityCamera;
+	}
+
+	/**
+	 * Checks if two given players are on the same scoreboard team
+	 * @param name1 The name of the first player
+	 * @param name2 The name of the second player
+	 * @return true if both players are on the same team, false otherwise
+	 */
+	public static boolean areOnSameTeam(String name1, String name2)
+	{
+		PlayerTeam team = ServerLifecycleHooks.getCurrentServer().getScoreboard().getPlayersTeam(name1);
+
+		return team != null && team.getPlayers().contains(name2);
 	}
 }

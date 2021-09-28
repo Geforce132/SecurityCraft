@@ -73,7 +73,7 @@ public class LaserBlock extends DisguisableBlock {
 				{
 					LaserBlockBlockEntity thatTe = (LaserBlockBlockEntity)world.getBlockEntity(offsetPos);
 
-					if(thisTe.getOwner().equals(thatTe.getOwner()))
+					if(thisTe.getOwner().owns(thatTe))
 					{
 						CustomizableBlockEntity.link(thisTe, thatTe);
 
