@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -13,6 +14,7 @@ import net.minecraft.commands.CommandSource;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -177,7 +179,13 @@ public class PlayerUtils{
 	 */
 	public static boolean areOnSameTeam(String name1, String name2)
 	{
-		PlayerTeam team = ServerLifecycleHooks.getCurrentServer().getScoreboard().getPlayersTeam(name1);
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+		PlayerTeam team;
+
+		if(server != null)
+			team = server.getScoreboard().getPlayersTeam(name1);
+		else
+			team = ClientHandler.getClientPlayer().getScoreboard().getPlayersTeam(name1);
 
 		return team != null && team.getPlayers().contains(name2);
 	}
