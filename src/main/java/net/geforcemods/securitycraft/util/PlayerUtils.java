@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
@@ -14,6 +15,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScorePlayerTeam;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -167,8 +169,6 @@ public class PlayerUtils{
 		return entity != null && entity.getRidingEntity() instanceof SecurityCameraEntity;
 	}
 
-
-
 	/**
 	 * Checks if two given players are on the same scoreboard team
 	 * @param name1 The name of the first player
@@ -177,7 +177,13 @@ public class PlayerUtils{
 	 */
 	public static boolean areOnSameTeam(String name1, String name2)
 	{
-		ScorePlayerTeam team = ServerLifecycleHooks.getCurrentServer().getScoreboard().getPlayersTeam(name1);
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+		ScorePlayerTeam team;
+
+		if(server != null)
+			team = server.getScoreboard().getPlayersTeam(name1);
+		else
+			team = ClientHandler.getClientPlayer().getWorldScoreboard().getPlayersTeam(name1);
 
 		return team != null && team.getMembershipCollection().contains(name2);
 	}
