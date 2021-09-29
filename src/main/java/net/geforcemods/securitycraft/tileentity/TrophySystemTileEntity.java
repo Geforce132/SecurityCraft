@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Option;
@@ -18,6 +19,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -81,8 +83,12 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 					Entity shooter = target.getShooter();
 
 					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if(!(shooter != null && ((shooter.getUniqueID() != null && shooter.getUniqueID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
+					if(!(shooter != null &&
+							((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(shooter.getName().getString(), getOwner().getName()))
+									|| (shooter.getUniqueID() != null && shooter.getUniqueID().toString().equals(getOwner().getUUID()))
+									|| ModuleUtils.isAllowed(this, shooter.getName().getString())))) {
 						setTarget(target);
+					}
 				}
 			}
 		}
@@ -210,7 +216,7 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 		else if(projectile.getShooter() instanceof SentryEntity)
 			owner = ((SentryEntity)projectile.getShooter()).getOwner();
 
-		return owner == null || (!owner.equals(getOwner()) && !ModuleUtils.isAllowed(this, owner.getName()));
+		return owner == null || (!owner.owns(this) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}
 
 	public void toggleFilter(EntityType<?> projectileType) {

@@ -85,8 +85,9 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	private void checkAndPlaceAppropriately(World world, BlockPos pos)
 	{
 		InventoryScannerTileEntity connectedScanner = getConnectedInventoryScanner(world, pos);
+		InventoryScannerTileEntity thisTe = (InventoryScannerTileEntity)world.getTileEntity(pos);
 
-		if(connectedScanner == null || !connectedScanner.getOwner().equals(((InventoryScannerTileEntity)world.getTileEntity(pos)).getOwner()))
+		if(connectedScanner == null || !connectedScanner.getOwner().owns(thisTe))
 			return;
 
 		boolean horizontal = false;
@@ -94,7 +95,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		if(connectedScanner.getBlockState().get(HORIZONTAL))
 			horizontal = true;
 
-		((InventoryScannerTileEntity)world.getTileEntity(pos)).setHorizontal(horizontal);
+		thisTe.setHorizontal(horizontal);
 
 		Direction facing = world.getBlockState(pos).get(FACING);
 		int loopBoundary = facing == Direction.WEST || facing == Direction.EAST ? Math.abs(pos.getX() - connectedScanner.getPos().getX()) : (facing == Direction.NORTH || facing == Direction.SOUTH ? Math.abs(pos.getZ() - connectedScanner.getPos().getZ()) : 0);
@@ -105,7 +106,6 @@ public class InventoryScannerBlock extends DisguisableBlock {
 				return;
 		}
 
-		InventoryScannerTileEntity thisTe = (InventoryScannerTileEntity)world.getTileEntity(pos);
 		Option<?>[] customOptions = thisTe.customOptions();
 
 		for(int i = 1; i < loopBoundary; i++)

@@ -318,13 +318,14 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		BlockPos blockpos = pos.down();
-		BlockState blockstate = worldIn.getBlockState(blockpos);
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
+		BlockPos posBelow = pos.down();
+		BlockState stateBelow = world.getBlockState(posBelow);
+
 		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-			return blockstate.isSolidSide(worldIn, blockpos, Direction.UP);
+			return stateBelow.isSolidSide(world, posBelow, Direction.UP);
 		} else {
-			return blockstate.getBlock() == this;
+			return stateBelow.getBlock() == this;
 		}
 	}
 

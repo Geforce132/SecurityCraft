@@ -63,6 +63,7 @@ public class ConfigHandler {
 		public BooleanValue reinforcedBlockTint;
 		public BooleanValue forceReinforcedBlockTint;
 		public BooleanValue retinalScannerFace;
+		public BooleanValue enableTeamOwnership;
 
 		Server(ForgeConfigSpec.Builder builder)
 		{
@@ -125,6 +126,11 @@ public class ConfigHandler {
 			retinalScannerFace = builder
 					.comment("Display owner face on retinal scanner?")
 					.define("retinalScannerFace", true);
+
+			enableTeamOwnership = builder
+					.comment("Set this to true to enable every player on a scoreboard team to own the blocks of every other player on the same team.",
+							"This enables players on the same team to break each other's reinforced blocks, change options, add/remove modules, and have access to all other owner-restricted things.")
+					.define("enable_team_ownership", false);
 		}
 	}
 }
