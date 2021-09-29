@@ -113,4 +113,8 @@ public class ConfigHandler
 	@Name("Display owner face on retinal scanner?")
 	@LangKey("config.securitycraft:retinalScannerFace")
 	public static boolean retinalScannerFace = true;
+
+	@Name("Enable team ownership?")
+	@LangKey("config.securitycraft:enableTeamOwnership")
+	public static boolean enableTeamOwnership = false;
 }

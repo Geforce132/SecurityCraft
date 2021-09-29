@@ -82,7 +82,7 @@ public class ItemUniversalBlockRemover extends Item {
 				new BlockCageTrap.BlockModifier(world, new MutableBlockPos(originalPos), ((IOwnable) tileEntity).getOwner()).loop((w, p, o) -> {
 					TileEntity te = w.getTileEntity(p);
 
-					if(te instanceof IOwnable && ((IOwnable) te).getOwner().equals(o)) {
+					if(te instanceof IOwnable && ((IOwnable) te).getOwner().owns((IOwnable)te)) {
 						Block b = w.getBlockState(p).getBlock();
 
 						if(b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))

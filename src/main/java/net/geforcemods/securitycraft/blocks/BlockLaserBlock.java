@@ -78,7 +78,7 @@ public class BlockLaserBlock extends BlockDisguisable {
 				{
 					TileEntityLaserBlock thatTe = (TileEntityLaserBlock)world.getTileEntity(offsetPos);
 
-					if(owner.equals(thatTe.getOwner()))
+					if(owner.owns(thatTe))
 					{
 						CustomizableSCTE.link(thisTe, thatTe);
 

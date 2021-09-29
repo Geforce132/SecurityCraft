@@ -116,6 +116,7 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	private void checkAndPlaceAppropriately(World world, BlockPos pos, EntityLivingBase player)
 	{
 		TileEntityInventoryScanner connectedScanner = getConnectedInventoryScanner(world, pos);
+		TileEntityInventoryScanner thisTe = (TileEntityInventoryScanner)world.getTileEntity(pos);
 
 		if(connectedScanner == null)
 			return;
@@ -125,7 +126,7 @@ public class BlockInventoryScanner extends BlockDisguisable {
 			if(!connectedScanner.getOwner().isOwner((EntityPlayer)player))
 				return;
 		}
-		else if(!connectedScanner.getOwner().equals(((TileEntityInventoryScanner)world.getTileEntity(pos)).getOwner()))
+		else if(!connectedScanner.getOwner().owns(thisTe))
 			return;
 
 		boolean horizontal = false;
@@ -133,7 +134,7 @@ public class BlockInventoryScanner extends BlockDisguisable {
 		if(world.getBlockState(connectedScanner.getPos()).getValue(HORIZONTAL))
 			horizontal = true;
 
-		((TileEntityInventoryScanner)world.getTileEntity(pos)).setHorizontal(horizontal);
+		thisTe.setHorizontal(horizontal);
 
 		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
 		int loopBoundary = facing == EnumFacing.WEST || facing == EnumFacing.EAST ? Math.abs(pos.getX() - connectedScanner.getPos().getX()) : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? Math.abs(pos.getZ() - connectedScanner.getPos().getZ()) : 0);
@@ -144,7 +145,6 @@ public class BlockInventoryScanner extends BlockDisguisable {
 				return;
 		}
 
-		TileEntityInventoryScanner thisTe = (TileEntityInventoryScanner)world.getTileEntity(pos);
 		Option<?>[] customOptions = thisTe.customOptions();
 
 		for(int i = 1; i < loopBoundary; i++)

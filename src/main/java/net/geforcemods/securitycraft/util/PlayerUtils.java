@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.util;
 import java.util.Iterator;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
@@ -11,6 +12,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.scoreboard.ScorePlayerTeam;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -157,5 +160,24 @@ public class PlayerUtils{
 	 */
 	public static boolean isPlayerMountedOnCamera(EntityLivingBase entity) {
 		return entity != null && entity.getRidingEntity() instanceof EntitySecurityCamera;
+	}
+
+	/**
+	 * Checks if two given players are on the same scoreboard team
+	 * @param name1 The name of the first player
+	 * @param name2 The name of the second player
+	 * @return true if both players are on the same team, false otherwise
+	 */
+	public static boolean areOnSameTeam(String name1, String name2)
+	{
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+		ScorePlayerTeam team;
+
+		if(server != null)
+			team = server.getEntityWorld().getScoreboard().getPlayersTeam(name1);
+		else
+			team = SecurityCraft.proxy.getClientPlayer().world.getScoreboard().getPlayersTeam(name1);
+
+		return team != null && team.getMembershipCollection().contains(name2);
 	}
 }

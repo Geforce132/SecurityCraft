@@ -797,6 +797,8 @@ config.securitycraft:retinalScannerFace=Zeige Gesicht des Besitzers auf dem Auge
 config.securitycraft:retinalScannerFace.tooltip=Soll der Augenscanner das Gesicht seines Besitzers auf dem Block anzeigen? (Deaktiviere dies wenn du Probleme mit Mojangs Authentifizierungsservern hast)
 config.securitycraft:mineExplosionsBreakBlocks=Zerstören Minenexplosionen Blöcke?
 config.securitycraft:mineExplosionsBreakBlocks.tooltip=Setze diese Option auf false wenn Du möchtest, dass Minen keine Blöcke zerstören wenn sie explodieren.
+config.securitycraft:enableTeamOwnership=Ist das Besitzen von Blöcken innerhalb von Teams aktiviert?
+config.securitycraft:enableTeamOwnership.tooltip=Setze diese Option auf true, damit jeder Spieler in einem Scoreboard-Team die Blöcke aller anderen Spieler in dem selben Team bestitzt. Das macht es Spielern möglich, die verstärkten Blöcke aller anderen Spieler im selben Team zu zerbrechen, Optionen zu ändern, Module hinzufügen oder entfernen, und Zugriff auf alle anderen besitzergebundenen Sachen zu haben.
 
 option.securitycraft:portableRadar.searchRadius=Suchradius: #
 option.securitycraft:portableRadar.searchRadius.description=Der Radius, in dem der Radar sucht.

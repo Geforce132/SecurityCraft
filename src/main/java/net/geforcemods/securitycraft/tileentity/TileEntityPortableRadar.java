@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
@@ -99,8 +100,9 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 			shouldSendNewMessage = true;
 			lastPlayerName = player.getName();
 		}
+		boolean lastPlayerOwns = ConfigHandler.enableTeamOwnership ? PlayerUtils.areOnSameTeam(lastPlayerName, getOwner().getName()) : lastPlayerName.equals(getOwner().getName());
 
-		return (shouldSendNewMessage || repeatMessageOption.get()) && !player.getName().equals(getOwner().getName());
+		return (shouldSendNewMessage || repeatMessageOption.get()) && !lastPlayerOwns;
 	}
 
 	public void setSentMessage() {
