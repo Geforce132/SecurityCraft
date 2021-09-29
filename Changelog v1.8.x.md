@@ -6,6 +6,7 @@
 - New: The debug menu now hides block mines, disguised blocks, and fake fluids
 - New: The Protecto and Trophy System now support the Disguise Module
 - New: Key Panel Block. A waterloggable, smaller version of the keypad. Place it by rightclicking a Key Panel
+- New: Config option "enableTeamOwnership". Setting this to true will allow all players in the same scoreboard team to own each other's blocks
 - Change: SecurityCraft's config values for HWYLA are now synchronized from server to client, meaning server owners can now control what HWYLA shows to players
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play

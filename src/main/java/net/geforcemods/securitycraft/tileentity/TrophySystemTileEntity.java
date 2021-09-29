@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Option;
@@ -19,6 +20,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
@@ -93,8 +95,11 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 						String name = shooter instanceof SentryEntity ? ((SentryEntity)shooter).getOwner().getName() : shooter.getName().getString();
 
 						//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-						if(!((uuid != null && uuid.toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, name)))
+						if(!((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(shooter.getName().getString(), getOwner().getName()))
+								|| (uuid != null && uuid.toString().equals(getOwner().getUUID()))
+								|| ModuleUtils.isAllowed(this, name))) {
 							setTarget(target);
+						}
 					}
 				}
 			}
@@ -225,7 +230,7 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 		else if(projectile instanceof IMSBombEntity)
 			owner = ((IMSBombEntity)projectile).getOwner();
 
-		return owner == null || (!owner.equals(getOwner()) && !ModuleUtils.isAllowed(this, owner.getName()));
+		return owner == null || (!owner.owns(this) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}
 
 	/**

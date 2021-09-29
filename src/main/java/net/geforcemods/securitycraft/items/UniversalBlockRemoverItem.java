@@ -99,7 +99,7 @@ public class UniversalBlockRemoverItem extends Item
 					new CageTrapBlock.BlockModifier(world, new BlockPos.Mutable(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
 						TileEntity te = w.getTileEntity(p);
 
-						if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))
+						if(te instanceof IOwnable && ((IOwnable)te).getOwner().owns((IOwnable)te))
 						{
 							Block b = w.getBlockState(p).getBlock();
 
