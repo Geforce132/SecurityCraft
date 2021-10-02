@@ -5,8 +5,8 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkedAction;
-import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -54,7 +54,7 @@ public class ModuleUtils{
 
 		if(stack.hasTag() && stack.getTag().getBoolean("affectEveryone"))
 		{
-			if(inv.getTileEntity() instanceof OwnableBlockEntity ownable)
+			if(inv.getTileEntity() instanceof IOwnable ownable)
 			{
 				//only deny players that are not the owner
 				if(entity instanceof Player player)
