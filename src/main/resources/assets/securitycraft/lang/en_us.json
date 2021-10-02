@@ -658,6 +658,7 @@
 	"gui.securitycraft:editModule.copy": "Copy List",
 	"gui.securitycraft:editModule.paste": "Paste List",
 	"gui.securitycraft:editModule.clear": "Clear List",
+	"gui.securitycraft:editModule.affectEveryone": "Affect every player",
 	"gui.securitycraft:blockPocketManager.activate": "Activate",
 	"gui.securitycraft:blockPocketManager.deactivate": "Deactivate",
 	"gui.securitycraft:blockPocketManager.size": "Size: %sx%sx%s",
