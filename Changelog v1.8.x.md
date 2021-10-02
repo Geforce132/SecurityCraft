@@ -8,6 +8,7 @@
 - New: The Protecto and Trophy System now support the Disguise Module
 - New: Key Panel Block. A waterloggable, smaller version of the keypad. Place it by rightclicking a Key Panel
 - New: Config option "enableTeamOwnership". Setting this to true will allow all players in the same scoreboard team to own each other's blocks
+- New: The Allowlist and Denylist Module can now be set to affect every player instead of just those added to the list
 - Change: SecurityCraft's config values for Jade are now synchronized from server to client, meaning server owners can now control what Jade shows to players
 - Change: Renamed "Track Mine" to "Rail Mine" to be in line with vanilla
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
