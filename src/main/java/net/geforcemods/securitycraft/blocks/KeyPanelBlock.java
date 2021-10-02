@@ -112,11 +112,8 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-				return ActionResultType.FAIL;
 			}
-
-			if(ModuleUtils.isAllowed(te, player))
+			else if(ModuleUtils.isAllowed(te, player))
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);

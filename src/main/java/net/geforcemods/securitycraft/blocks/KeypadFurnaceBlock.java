@@ -121,8 +121,6 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-				return ActionResultType.FAIL;
 			}
 			else if(ModuleUtils.isAllowed(te, player))
 			{
