@@ -37,11 +37,8 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-				return ActionResultType.FAIL;
 			}
-
-			if(ModuleUtils.isAllowed(te, player))
+			else if(ModuleUtils.isAllowed(te, player))
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
