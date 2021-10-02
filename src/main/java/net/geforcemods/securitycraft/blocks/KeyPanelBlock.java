@@ -107,11 +107,8 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
-
-				return InteractionResult.FAIL;
 			}
-
-			if(ModuleUtils.isAllowed(te, player))
+			else if(ModuleUtils.isAllowed(te, player))
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);

@@ -105,8 +105,6 @@ public class KeypadChestBlock extends ChestBlock {
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
-
-				return InteractionResult.FAIL;
 			}
 			else if(ModuleUtils.isAllowed(te, player))
 			{
