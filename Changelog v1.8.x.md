@@ -21,6 +21,7 @@
 - Fix: Entity names don't display their correct translation
 - Fix: The Keypad and Keypad Door cannot be opened while holding the key panel
 - Fix: Converting chests whose loot has not been generated yet creates additional items
+- Fix: Crash when trying to power a taser while holding redstone in the offhand
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated
