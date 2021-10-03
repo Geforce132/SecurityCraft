@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.util.Utils;
@@ -34,7 +35,7 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 	private static NBTTagCompound savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
 	private final String editModule = Utils.localize("gui.securitycraft:editModule").getFormattedText();
-	private ItemStack module;
+	private final ItemStack module;
 	private GuiTextField inputField;
 	private GuiButton addButton, removeButton, copyButton, pasteButton, clearButton;
 	private PlayerList playerList;
@@ -45,6 +46,7 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 
 		module = item;
 		xSize = 247;
+		ySize = 186;
 	}
 
 	@Override
@@ -53,15 +55,23 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 		super.initGui();
 
 		int controlsStartX = (int)(guiLeft + xSize * (3.0F / 4.0F)) - 43;
+		String checkboxText = Utils.localize("gui.securitycraft:editModule.affectEveryone").getFormattedText();
+		int length = fontRenderer.getStringWidth(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
 
 		Keyboard.enableRepeatEvents(true);
-		inputField = new GuiTextField(5, fontRenderer, controlsStartX - 17, height / 2 - 65, 110, 15);
-		buttonList.add(addButton = new GuiButton(0, controlsStartX, height / 2 - 45, 76, 20, Utils.localize("gui.securitycraft:editModule.add").getFormattedText()));
-		buttonList.add(removeButton = new GuiButton(1, controlsStartX, height / 2 - 20, 76, 20, Utils.localize("gui.securitycraft:editModule.remove").getFormattedText()));
-		buttonList.add(copyButton = new GuiButton(2, controlsStartX, height / 2 + 5, 76, 20, Utils.localize("gui.securitycraft:editModule.copy").getFormattedText()));
-		buttonList.add(pasteButton = new GuiButton(3, controlsStartX, height / 2 + 30, 76, 20, Utils.localize("gui.securitycraft:editModule.paste").getFormattedText()));
-		buttonList.add(clearButton = new GuiButton(4, controlsStartX, height / 2 + 55, 76, 20, Utils.localize("gui.securitycraft:editModule.clear").getFormattedText()));
-		playerList = new PlayerList(mc, 110, 141, height / 2 - 66, guiLeft + 10, width, height);
+		inputField = new GuiTextField(5, fontRenderer, controlsStartX - 17, height / 2 - 75, 110, 15);
+		buttonList.add(addButton = new GuiButton(0, controlsStartX, height / 2 - 55, 76, 20, Utils.localize("gui.securitycraft:editModule.add").getFormattedText()));
+		buttonList.add(removeButton = new GuiButton(1, controlsStartX, height / 2 - 30, 76, 20, Utils.localize("gui.securitycraft:editModule.remove").getFormattedText()));
+		buttonList.add(copyButton = new GuiButton(2, controlsStartX, height / 2 - 5, 76, 20, Utils.localize("gui.securitycraft:editModule.copy").getFormattedText()));
+		buttonList.add(pasteButton = new GuiButton(3, controlsStartX, height / 2 + 20, 76, 20, Utils.localize("gui.securitycraft:editModule.paste").getFormattedText()));
+		buttonList.add(clearButton = new GuiButton(4, controlsStartX, height / 2 + 45, 76, 20, Utils.localize("gui.securitycraft:editModule.clear").getFormattedText()));
+		buttonList.add(new CallbackCheckbox(5, guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTagCompound() && module.getTagCompound().getBoolean("affectEveryone"), newState -> {
+			if(!module.hasTagCompound())
+				module.setTagCompound(new NBTTagCompound());
+
+			module.getTagCompound().setBoolean("affectEveryone", newState);
+		}, 0x404040));
+		playerList = new PlayerList(mc, 110, 141, height / 2 - 76, guiLeft + 10, width, height);
 
 		addButton.enabled = false;
 		removeButton.enabled = false;
@@ -189,6 +199,9 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 			case 4: //clear
 				module.setTagCompound(new NBTTagCompound());
 				inputField.setText("");
+				break;
+			case 5: //checkbox
+				((CallbackCheckbox)button).onPress();
 				break;
 			default: return;
 		}
