@@ -71,10 +71,25 @@ public class TaserItem extends Item {
 				else if(player.inventory.hasItemStack(oneRedstone))
 				{
 					int redstoneSlot = player.inventory.findSlotMatchingUnusedItem(oneRedstone);
-					ItemStack redstoneStack = player.inventory.getStackInSlot(redstoneSlot);
+					ItemStack redstoneStack;
+
+					if(redstoneSlot == -1)
+					{
+						if(player.getHeldItemOffhand().getItem() == Items.REDSTONE)
+							redstoneStack = player.getHeldItemOffhand();
+						else
+							return ActionResult.resultPass(stack);
+					}
+					else
+						redstoneStack = player.inventory.getStackInSlot(redstoneSlot);
 
 					redstoneStack.setCount(redstoneStack.getCount() - 1);
-					player.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
+
+					if(redstoneSlot == -1)
+						player.inventory.offHandInventory.set(0, redstoneStack);
+					else
+						player.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
+
 					setSlotBasedOnHand(player, hand, new ItemStack(SCContent.TASER_POWERED.get(), 1));
 					return ActionResult.resultSuccess(stack);
 				}
