@@ -774,6 +774,7 @@
 	"messages.securitycraft:module.removed": "# von dem Modul in deiner Hand entfernt.",
 	"messages.securitycraft:module.notHoldingForModify": "Du musst das Modul halten, das du modifizieren willst.",
 	"messages.securitycraft:notOwned": "Entschuldigung, du kannst das nicht mit diesem Block tun. Er gehört %s.",
+	"messages.securitycraft:teamOwner": "%s (Team)",
 	"messages.securitycraft:adminTool.owner.name": "Besitzer: %s",
 	"messages.securitycraft:adminTool.owner.uuid": "UUID des Besitzers: %s",
 	"messages.securitycraft:adminTool.password": "Passwort: %s",

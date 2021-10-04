@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.commands.CommandSource;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
@@ -179,14 +181,41 @@ public class PlayerUtils{
 	 */
 	public static boolean areOnSameTeam(String name1, String name2)
 	{
-		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-		PlayerTeam team;
-
-		if(server != null)
-			team = server.getScoreboard().getPlayersTeam(name1);
-		else
-			team = ClientHandler.getClientPlayer().getScoreboard().getPlayersTeam(name1);
+		PlayerTeam team = getPlayersTeam(name1);
 
 		return team != null && team.getPlayers().contains(name2);
+	}
+
+	/**
+	 * Gets the scoreboard team the given player is on
+	 * @param playerName The player whose team to get
+	 * @return The team the given player is on. null if the player is not part of a team
+	 */
+	public static PlayerTeam getPlayersTeam(String playerName)
+	{
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+
+		if(server != null)
+			return server.getScoreboard().getPlayersTeam(playerName);
+		else
+			return ClientHandler.getClientPlayer().getScoreboard().getPlayersTeam(playerName);
+	}
+
+	/**
+	 * Gets the component to use for displaying a block's owner. If team ownership is enabled and the given player is on a team, this will return the colored team name.
+	 * @param ownerName The player who owns the block
+	 * @return The component to display
+	 */
+	public static Component getOwnerComponent(String ownerName)
+	{
+		if(ConfigHandler.SERVER.enableTeamOwnership.get())
+		{
+			PlayerTeam team = getPlayersTeam(ownerName);
+
+			if(team != null)
+				return Utils.localize("messages.securitycraft:teamOwner", new TextComponent("").append(team.getDisplayName()).withStyle(team.getColor()));
+		}
+
+		return new TextComponent(ownerName);
 	}
 }

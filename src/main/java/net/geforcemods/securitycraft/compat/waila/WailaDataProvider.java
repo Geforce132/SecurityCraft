@@ -31,6 +31,7 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -132,7 +133,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				{
 					//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
 					if(config.get(SHOW_OWNER) && te instanceof IOwnable ownable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-						tooltip.add(Utils.localize("waila.securitycraft:owner", ownable.getOwner().getName()));
+						tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner().getName())));
 
 					if(disguised)
 						return;
@@ -184,7 +185,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				SentryMode mode = sentry.getMode();
 
 				if(config.get(SHOW_OWNER))
-					tooltip.add(Utils.localize("waila.securitycraft:owner", sentry.getOwner().getName()));
+					tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())));
 
 				if(config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())){
 
