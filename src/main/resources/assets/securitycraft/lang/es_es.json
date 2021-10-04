@@ -733,7 +733,7 @@
 	"config.waila.plugin_securitycraft.showmodules": "¿Mostrar módulos?",
 	"config.waila.plugin_securitycraft.showpasswords": "¿Mostrar contraseñas?",
 	"config.waila.plugin_securitycraft.showcustomname": "¿Mostrar nombre de bloques?",
-	"waila.securitycraft:owner": "Propietario:",
+	"waila.securitycraft:owner": "Propietario: %s",
 	"waila.securitycraft:equipped": "Equipado con:",
 	"waila.securitycraft:password": "Contraseña:",
 	"waila.securitycraft:password.notSet": "Sin establecer",

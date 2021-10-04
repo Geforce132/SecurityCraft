@@ -11,6 +11,7 @@ import mcjty.theoneprobe.api.IProbeInfoEntityProvider;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ITheOneProbe;
 import mcjty.theoneprobe.api.ProbeMode;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
@@ -22,14 +23,17 @@ import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -81,7 +85,20 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				TileEntity te = world.getTileEntity(data.getPos());
 
 				if(te instanceof IOwnable)
-					probeInfo.vertical().text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner").getFormattedText() + " " + ((IOwnable) te).getOwner().getName());
+				{
+					String ownerName = ((IOwnable)te).getOwner().getName();
+
+					if(ConfigHandler.SERVER.enableTeamOwnership.get())
+					{
+						ScorePlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
+
+						if(team != null)
+							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName().getFormattedText() + TextFormatting.GRAY).getFormattedText(); //TOP does not work with normal component formatting
+					}
+
+					System.out.println(ownerName);
+					probeInfo.vertical().text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getFormattedText()).getFormattedText());
+				}
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
 				if(te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))
@@ -122,8 +139,17 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				{
 					SentryEntity sentry = (SentryEntity)entity;
 					SentryMode mode = sentry.getMode();
+					String ownerName = sentry.getOwner().getName();
 
-					probeInfo.text(TextFormatting.GRAY + (Utils.localize("waila.securitycraft:owner").getFormattedText() + " " + ((SentryEntity) entity).getOwner().getName()));
+					if(ConfigHandler.SERVER.enableTeamOwnership.get())
+					{
+						ScorePlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
+
+						if(team != null)
+							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName().getFormattedText() + TextFormatting.GRAY).getFormattedText(); //TOP does not work with normal component formatting
+					}
+
+					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getFormattedText()).getFormattedText());
 
 					if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())
 					{

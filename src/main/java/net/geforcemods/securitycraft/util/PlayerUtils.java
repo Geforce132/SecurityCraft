@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
@@ -177,14 +178,41 @@ public class PlayerUtils{
 	 */
 	public static boolean areOnSameTeam(String name1, String name2)
 	{
-		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-		ScorePlayerTeam team;
-
-		if(server != null)
-			team = server.getScoreboard().getPlayersTeam(name1);
-		else
-			team = ClientHandler.getClientPlayer().getWorldScoreboard().getPlayersTeam(name1);
+		ScorePlayerTeam team = getPlayersTeam(name1);
 
 		return team != null && team.getMembershipCollection().contains(name2);
+	}
+
+	/**
+	 * Gets the scoreboard team the given player is on
+	 * @param playerName The player whose team to get
+	 * @return The team the given player is on. null if the player is not part of a team
+	 */
+	public static ScorePlayerTeam getPlayersTeam(String playerName)
+	{
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+
+		if(server != null)
+			return server.getScoreboard().getPlayersTeam(playerName);
+		else
+			return ClientHandler.getClientPlayer().getWorldScoreboard().getPlayersTeam(playerName);
+	}
+
+	/**
+	 * Gets the component to use for displaying a block's owner. If team ownership is enabled and the given player is on a team, this will return the colored team name.
+	 * @param ownerName The player who owns the block
+	 * @return The component to display
+	 */
+	public static ITextComponent getOwnerComponent(String ownerName)
+	{
+		if(ConfigHandler.SERVER.enableTeamOwnership.get())
+		{
+			ScorePlayerTeam team = getPlayersTeam(ownerName);
+
+			if(team != null)
+				return Utils.localize("messages.securitycraft:teamOwner", new StringTextComponent("").appendSibling(team.getDisplayName()).applyTextStyle(team.getColor()));
+		}
+
+		return new StringTextComponent(ownerName);
 	}
 }

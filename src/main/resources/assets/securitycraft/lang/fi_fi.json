@@ -313,7 +313,7 @@
 	"gui.securitycraft:editModule.paste": "sijoita lista",
 	"gui.securitycraft:editModule.clear": "tyhjennä Lista",
 
-	"waila.securitycraft:owner": "omistaja:",
+	"waila.securitycraft:owner": "omistaja: %s",
 	"waila.securitycraft:password": "salasana:",
 	
 	"securitycraft.subtitle.alarm": "hälytys soi",

@@ -746,7 +746,7 @@
 	"config.waila.plugin_securitycraft.showmodules": "모듈을 표시합니까?",
 	"config.waila.plugin_securitycraft.showpasswords": "비밀번호를 표시합니까?",
 	"config.waila.plugin_securitycraft.showcustomname": "명명된 블록을 표시합니까?",
-	"waila.securitycraft:owner": "소유자:",
+	"waila.securitycraft:owner": "소유자: %s",
 	"waila.securitycraft:equipped": "장착:",
 	"waila.securitycraft:password": "비밀번호:",
 	"waila.securitycraft:password.notSet": "설정되지 않음",

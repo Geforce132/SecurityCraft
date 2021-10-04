@@ -22,6 +22,7 @@ import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -84,7 +85,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
 		if(config.get(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-			body.add(new StringTextComponent(Utils.localize("waila.securitycraft:owner").getFormattedText() + " " + ((IOwnable) te).getOwner().getName()));
+			body.add(new StringTextComponent(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner().getName()).getFormattedText()).getFormattedText()));
 
 		if(disguised)
 			return;
@@ -122,7 +123,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			SentryMode mode = sentry.getMode();
 
 			if(config.get(SHOW_OWNER))
-				body.add(new StringTextComponent(Utils.localize("waila.securitycraft:owner").getFormattedText() + " " + sentry.getOwner().getName()));
+				body.add(new StringTextComponent(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName()).getFormattedText()).getFormattedText()));
 
 			if(config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer()))
 			{
