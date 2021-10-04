@@ -96,7 +96,6 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName().getFormattedText() + TextFormatting.GRAY).getFormattedText(); //TOP does not work with normal component formatting
 					}
 
-					System.out.println(ownerName);
 					probeInfo.vertical().text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getFormattedText()).getFormattedText());
 				}
 
