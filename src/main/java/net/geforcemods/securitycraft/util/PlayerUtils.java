@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.util;
 import java.util.Iterator;
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.minecraft.client.Minecraft;
@@ -170,14 +171,41 @@ public class PlayerUtils{
 	 */
 	public static boolean areOnSameTeam(String name1, String name2)
 	{
-		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-		ScorePlayerTeam team;
-
-		if(server != null)
-			team = server.getEntityWorld().getScoreboard().getPlayersTeam(name1);
-		else
-			team = SecurityCraft.proxy.getClientPlayer().world.getScoreboard().getPlayersTeam(name1);
+		ScorePlayerTeam team = getPlayersTeam(name1);
 
 		return team != null && team.getMembershipCollection().contains(name2);
+	}
+
+	/**
+	 * Gets the scoreboard team the given player is on
+	 * @param playerName The player whose team to get
+	 * @return The team the given player is on. null if the player is not part of a team
+	 */
+	public static ScorePlayerTeam getPlayersTeam(String playerName)
+	{
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+		if(server != null)
+			return server.getEntityWorld().getScoreboard().getPlayersTeam(playerName);
+		else
+			return SecurityCraft.proxy.getClientPlayer().world.getScoreboard().getPlayersTeam(playerName);
+	}
+
+	/**
+	 * Gets the component to use for displaying a block's owner. If team ownership is enabled and the given player is on a team, this will return the colored team name.
+	 * @param ownerName The player who owns the block
+	 * @return The component to display
+	 */
+	public static ITextComponent getOwnerComponent(String ownerName)
+	{
+		if(ConfigHandler.enableTeamOwnership)
+		{
+			ScorePlayerTeam team = getPlayersTeam(ownerName);
+
+			if(team != null)
+				return Utils.localize("messages.securitycraft:teamOwner", new TextComponentString(team.getDisplayName()).setStyle(new Style().setColor(team.getColor())));
+		}
+
+		return new TextComponentString(ownerName);
 	}
 }

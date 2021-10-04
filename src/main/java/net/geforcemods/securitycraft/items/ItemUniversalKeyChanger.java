@@ -39,7 +39,7 @@ public class ItemUniversalKeyChanger extends Item {
 				return EnumActionResult.SUCCESS;
 			}
 			else if(!(te instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)te).getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable)) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalKeyChanger.name"), Utils.localize("messages.securitycraft:notOwned", ((IOwnable)world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalKeyChanger.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable)world.getTileEntity(pos)).getOwner().getName())), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
 		}
