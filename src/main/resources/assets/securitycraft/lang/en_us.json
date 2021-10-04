@@ -567,7 +567,7 @@
 	"help.securitycraft.crystal_quartz_item.info": "Crystal Quartz is used to craft Crystal Quartz blocks.",
 	"help.securitycraft.keypad_door_item.info": "The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.",
 	"help.securitycraft.speed_module.info": "The speed module allows some of SecurityCraft's blocks to operate faster than usual.",
-	"help.securitycraft.sonic_security_system_item.info": "The Sonic Security System, inspired by the similarly-named device in the game \"Metroid Prime 2: Echoes\", is able to lock certain SecurityCraft blocks and prevent them from being used or interacted with.",
+	"help.securitycraft.sonic_security_system_item.info": "The Sonic Security System, inspired by the similarly-named device in the game \"Metroid Prime 2: Echoes\", is able to lock certain SecurityCraft blocks and prevent them from being used or interacted with. Shift-right-clicking a block will bind it to the Sonic Security System. Once the System is placed down, right-clicking it will open a GUI where you can enable, disable, or reset the Sonic Security System. In addition, it can also emit a redstone signal after \"hearing\" a set combination of nearby note block sounds. To do so, toggle note recording on in the Sonic Security System's GUI then play the note combination that you want using note blocks. Toggle the recording off once you are finished. Any time that combination of notes is played, a redstone signal will be emitted.",
 
 	"gui.securitycraft:scManual.disabled": "Disabled",
 	"gui.securitycraft:scManual.recipe.keycard_lv1": "Disabled",
