@@ -39,21 +39,7 @@ public class SonicSecuritySystemScreen extends Screen {
 	{
 		super.init();
 
-		recordingButton = addButton(new IdButton(0, width / 2 - 23, height / 2 - 28, 40, 20, getRecordingString(te.isRecording()), button -> {
-			boolean recording = !te.isRecording();
-
-			te.setRecording(recording);
-			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
-			recordingButton.setMessage(new StringTextComponent(getRecordingString(te.isRecording())));
-		}));
-
-		clearButton = addButton(new IdButton(1, width / 2 + 20, height / 2 - 28, 60, 20, "Clear", button -> {
-			te.clearNotes();
-			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
-			clearButton.active = false;
-		}));
-
-		powerButton = addButton(new IdButton(2, width / 2 - 43, height / 2 - 59, 40, 20, getPowerString(te.isActive()), button -> {
+		powerButton = addButton(new IdButton(0, width / 2 - 80, height / 2 - 59, 100, 20, getPowerString(te.isActive()), button -> {
 			boolean toggledState = !te.isActive();
 
 			te.setActive(toggledState);
@@ -61,13 +47,27 @@ public class SonicSecuritySystemScreen extends Screen {
 			powerButton.setMessage(new StringTextComponent(getPowerString(toggledState)));
 		}));
 
-		soundButton = addButton(new TogglePictureButton(3, width / 2 + 60, height / 2 - 59, 20, 20, STREAMER_ICONS, new int[]{0, 0}, new int[]{32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
+		recordingButton = addButton(new IdButton(1, width / 2 - 80, height / 2 - 32, 100, 20, getRecordingString(te.isRecording()), button -> {
+			boolean recording = !te.isRecording();
+
+			te.setRecording(recording);
+			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
+			recordingButton.setMessage(new StringTextComponent(getRecordingString(te.isRecording())));
+		}));
+
+		soundButton = addButton(new TogglePictureButton(2, width / 2 - 45, height / 2 + 32, 20, 20, STREAMER_ICONS, new int[]{0, 0}, new int[]{32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
 			boolean toggledPing = !te.pings();
 
 			te.setPings(toggledPing);
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), toggledPing ? SyncSSSSettingsOnServer.DataType.SOUND_ON : SyncSSSSettingsOnServer.DataType.SOUND_OFF));
 		}));
 		soundButton.setCurrentIndex(!te.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
+
+		clearButton = addButton(new IdButton(3, width / 2 - 80, height / 2 - 10, 100, 20, "Clear recording", button -> {
+			te.clearNotes();
+			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
+			clearButton.active = false;
+		}));
 
 		// Disable the "clear notes" button if no notes are recorded
 		if(te.getNumberOfNotes() == 0)
@@ -90,10 +90,8 @@ public class SonicSecuritySystemScreen extends Screen {
 		int textWidth = font.getStringPropertyWidth(text);
 		font.drawText(matrix, text, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
 
-		font.drawString(matrix, "Power:", startX + 10, startY + 30, 4210752);
-		font.drawString(matrix, "Sound:", startX + 113, startY + 30, 4210752);
-		font.drawString(matrix, "Recording:", startX + 10, startY + 60, 4210752);
-		font.drawString(matrix, "Notes recorded: " + te.getNumberOfNotes(), startX + 10, startY + 82, 4210752);
+		font.drawString(matrix, "Sound:", startX + 10, startY + 121, 4210752);
+		font.drawString(matrix, "Notes recorded: " + te.getNumberOfNotes(), startX + 13, startY + 98, 4210752);
 	}
 
 	@Override
@@ -105,12 +103,17 @@ public class SonicSecuritySystemScreen extends Screen {
 	// TODO: Replace hard-coded strings with .lang translations
 	private String getRecordingString(boolean recording)
 	{
-		return recording ? "On" : "Off";
+		return recording ? "Recording: on" : "Recording: off";
 	}
 
 	private String getPowerString(boolean on)
 	{
-		return on ? "On" : "Off";
+		return on ? "Power: on" : "Power: off";
+	}
+
+	private String getSoundString(boolean emittingSound)
+	{
+		return emittingSound ? "Ping sound: enabled" : "Ping sound: disabled";
 	}
 
 }
