@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -9,7 +8,6 @@ import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.IModelData;
@@ -18,23 +16,9 @@ import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class DisguisableBlockEntity extends CustomizableBlockEntity
 {
-	private boolean firstTick = true;
-
 	public DisguisableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
 	{
 		super(type, pos, state);
-	}
-
-	@Override
-	public void tick(Level world, BlockPos pos, BlockState state)
-	{
-		super.tick(world, pos, state);
-
-		if(world.isClientSide && firstTick)
-		{
-			firstTick = false;
-			ClientHandler.refreshModelData(this);
-		}
 	}
 
 	@Override
@@ -71,14 +55,5 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity
 	public IModelData getModelData()
 	{
 		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_BLOCK_RL, getBlockState().getBlock().getRegistryName()).build();
-	}
-
-	@Override
-	public void onLoad()
-	{
-		super.onLoad();
-
-		if(level != null && level.isClientSide)
-			ClientHandler.refreshModelData(this);
 	}
 }

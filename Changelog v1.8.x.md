@@ -28,7 +28,7 @@
 - Fix: Crash when trying to power a taser while holding redstone in the offhand
 - Removed: Unused textures
 - Misc.: Renamed a few textures
-- Misc.: The minimum Forge version is now 37.0.78
+- Misc.: The minimum Forge version is now 37.0.83
 
 --------------------------Changelog for v1.8.23-beta5 of SecurityCraft--------------------------
 
