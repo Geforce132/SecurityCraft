@@ -26,6 +26,7 @@
 - Fix: Converting chests whose loot has not been generated yet creates additional items
 - Fix: Redstone does not connect to the Reinforced Observer
 - Fix: Crash when trying to power a taser while holding redstone in the offhand
+- Fix: Anyone can insert modules into any block
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: The minimum Forge version is now 37.0.83

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -73,6 +74,9 @@ public class ModuleItem extends Item{
 		if(te instanceof IModuleInventory inv)
 		{
 			ModuleType type = ((ModuleItem)stack.getItem()).getModuleType();
+
+			if(te instanceof IOwnable ownable && !ownable.getOwner().isOwner(ctx.getPlayer()))
+				return InteractionResult.PASS;
 
 			if(inv.getAcceptedModules().contains(type) && !inv.hasModule(type))
 			{
