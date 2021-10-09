@@ -22,6 +22,7 @@
 - Fix: The Keypad and Keypad Door cannot be opened while holding the key panel
 - Fix: Converting chests whose loot has not been generated yet creates additional items
 - Fix: Crash when trying to power a taser while holding redstone in the offhand
+- Fix: Anyone can insert modules into any block
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated

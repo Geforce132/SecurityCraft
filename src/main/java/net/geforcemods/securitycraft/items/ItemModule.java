@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -66,6 +67,9 @@ public class ItemModule extends Item{
 			IModuleInventory inv = (IModuleInventory)te;
 			ItemStack stack = player.getHeldItem(hand);
 			EnumModuleType type = ((ItemModule)stack.getItem()).getModuleType();
+
+			if(te instanceof IOwnable && !((IOwnable)te).getOwner().isOwner(player))
+				return EnumActionResult.PASS;
 
 			if(inv.getAcceptedModules().contains(type) && !inv.hasModule(type))
 			{
