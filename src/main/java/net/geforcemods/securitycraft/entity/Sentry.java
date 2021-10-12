@@ -197,13 +197,10 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 				{
 					Block.popResource(level, pos, module);
 
-					List<Block> blocks = ((ModuleItem)module.getItem()).getBlockAddons(module.getTag());
+					Block block = ((ModuleItem)module.getItem()).getBlockAddon(module.getTag());
 
-					if(blocks.size() > 0)
-					{
-						if(blocks.get(0) == level.getBlockState(pos).getBlock())
-							level.removeBlock(pos, false);
-					}
+					if(block == level.getBlockState(pos).getBlock())
+						level.removeBlock(pos, false);
 				}
 
 				setDisguiseModule(player.getMainHandItem());
@@ -237,13 +234,10 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 			{
 				if (!getDisguiseModule().isEmpty())
 				{
-					List<Block> blocks = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTag());
+					Block block = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTag());
 
-					if(blocks.size() > 0)
-					{
-						if(blocks.get(0) == level.getBlockState(pos).getBlock())
-							level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-					}
+					if(block == level.getBlockState(pos).getBlock())
+						level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 				}
 
 				Block.popResource(level, pos, getDisguiseModule());
@@ -295,13 +289,10 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 
 		if (!getDisguiseModule().isEmpty())
 		{
-			List<Block> blocks = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTag());
+			Block block = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTag());
 
-			if(blocks.size() > 0)
-			{
-				if(blocks.get(0) == level.getBlockState(pos).getBlock())
-					level.removeBlock(pos, false);
-			}
+			if(block == level.getBlockState(pos).getBlock())
+				level.removeBlock(pos, false);
 		}
 
 		super.remove(reason);
@@ -488,12 +479,11 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	 */
 	public void setDisguiseModule(ItemStack module)
 	{
-		List<ItemStack> blocks = ((ModuleItem)module.getItem()).getAddons(module.getTag());
+		Block block = ((ModuleItem)module.getItem()).getBlockAddon(module.getTag());
 
-		if(blocks.size() > 0)
+		if(block != null)
 		{
-			ItemStack disguiseStack = blocks.get(0);
-			BlockState state = Block.byItem(disguiseStack.getItem()).defaultBlockState();
+			BlockState state = block.defaultBlockState();
 
 			if (level.getBlockState(blockPosition()).isAir())
 				level.setBlockAndUpdate(blockPosition(), state.getShape(level, blockPosition()) == Shapes.block() ? state : Blocks.AIR.defaultBlockState());

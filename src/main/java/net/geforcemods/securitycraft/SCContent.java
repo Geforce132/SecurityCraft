@@ -751,7 +751,7 @@ public class SCContent
 
 	//modules
 	@HasManualPage public static final RegistryObject<ModuleItem> DENYLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.DENYLIST, true, true));
-	@HasManualPage public static final RegistryObject<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.DISGUISE, false, true, 0, 1));
+	@HasManualPage public static final RegistryObject<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.DISGUISE, false, true));
 	@HasManualPage public static final RegistryObject<ModuleItem> HARMING_MODULE = ITEMS.register("harming_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.HARMING, false));
 	@HasManualPage public static final RegistryObject<ModuleItem> REDSTONE_MODULE = ITEMS.register("redstone_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.REDSTONE, false));
 	@HasManualPage public static final RegistryObject<ModuleItem> SMART_MODULE = ITEMS.register("smart_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.SMART, false));
