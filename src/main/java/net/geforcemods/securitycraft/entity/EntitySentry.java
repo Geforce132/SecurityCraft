@@ -197,13 +197,10 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				{
 					Block.spawnAsEntity(world, pos, module);
 
-					List<Block> blocks = ((ItemModule)module.getItem()).getBlockAddons(module.getTagCompound());
+					Block block = ((ItemModule)module.getItem()).getBlockAddon(module.getTagCompound());
 
-					if(blocks.size() > 0)
-					{
-						if(blocks.get(0) == world.getBlockState(pos).getBlock())
-							world.setBlockState(pos, Blocks.AIR.getDefaultState());
-					}
+					if(block == world.getBlockState(pos).getBlock())
+						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				}
 
 				setDisguiseModule(player.getHeldItemMainhand());
@@ -237,13 +234,10 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 			{
 				if (!getDisguiseModule().isEmpty())
 				{
-					List<Block> blocks = ((ItemModule)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTagCompound());
+					Block block = ((ItemModule)getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTagCompound());
 
-					if(blocks.size() > 0)
-					{
-						if(blocks.get(0) == world.getBlockState(pos).getBlock())
-							world.setBlockState(pos, Blocks.AIR.getDefaultState());
-					}
+					if(block == world.getBlockState(pos).getBlock())
+						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				}
 
 				Block.spawnAsEntity(world, pos, getDisguiseModule());
@@ -294,13 +288,10 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 		if (!getDisguiseModule().isEmpty())
 		{
-			List<Block> blocks = ((ItemModule)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTagCompound());
+			Block block = ((ItemModule)getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTagCompound());
 
-			if(blocks.size() > 0)
-			{
-				if(blocks.get(0) == world.getBlockState(pos).getBlock())
-					world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			}
+			if(block == world.getBlockState(pos).getBlock())
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 		}
 
 		Block.spawnAsEntity(world, pos, new ItemStack(SCContent.sentry));
@@ -492,11 +483,10 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	 */
 	public void setDisguiseModule(ItemStack module)
 	{
-		List<ItemStack> blocks = ((ItemModule)module.getItem()).getAddons(module.getTagCompound());
+		ItemStack disguiseStack = ((ItemModule)module.getItem()).getAddonAsStack(module.getTagCompound());
 
-		if(blocks.size() > 0)
+		if(!disguiseStack.isEmpty())
 		{
-			ItemStack disguiseStack = blocks.get(0);
 			IBlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getStateFromMeta(disguiseStack.getHasSubtypes() ? disguiseStack.getItemDamage() : 0);
 
 			if (world.isAirBlock(getPosition()))

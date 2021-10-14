@@ -117,10 +117,11 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 		if(te instanceof TileEntityDisguisable && ((TileEntityDisguisable)te).hasModule(EnumModuleType.DISGUISE))
 		{
 			ItemStack module = ((TileEntityDisguisable)te).getModule(EnumModuleType.DISGUISE);
+			Block block = ((ItemModule)module.getItem()).getBlockAddon(module.getTagCompound());
 
-			if(((ItemModule)module.getItem()).getBlockAddons(module.getTagCompound()).isEmpty())
+			if(block == null)
 				return BlockFaceShape.SOLID;
-			else return ((ItemModule)module.getItem()).getBlockAddons(module.getTagCompound()).get(0).getDefaultState().getBlockFaceShape(world, pos, face);
+			else return block.getDefaultState().getBlockFaceShape(world, pos, face);
 		}
 
 		return BlockFaceShape.SOLID;
@@ -138,12 +139,10 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 		if(te.hasModule(EnumModuleType.DISGUISE))
 		{
 			ItemStack disguiseModule = te.getModule(EnumModuleType.DISGUISE);
-			List<Block> blocks = ((ItemModule) disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
+			Block blockToDisguiseAs = ((ItemModule) disguiseModule.getItem()).getBlockAddon(disguiseModule.getTagCompound());
 
-			if(blocks.size() != 0)
+			if(blockToDisguiseAs != null)
 			{
-				Block blockToDisguiseAs = blocks.get(0);
-
 				// If this block has a disguise module added with a transparent block inserted.
 				if(!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
 					return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side), side);
@@ -185,9 +184,9 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 			TileEntityDisguisable te = (TileEntityDisguisable) world.getTileEntity(pos);
 			ItemStack module = te.hasModule(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
 
-			if(!module.isEmpty() && !((ItemModule) module.getItem()).getBlockAddons(module.getTagCompound()).isEmpty())
+			if(!module.isEmpty())
 			{
-				ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddons(module.getTagCompound()).get(0);
+				ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddonAsStack(module.getTagCompound());
 				Block block = Block.getBlockFromItem(disguisedStack.getItem());
 				boolean hasMeta = disguisedStack.getHasSubtypes();
 
@@ -208,12 +207,12 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 			TileEntityDisguisable te = (TileEntityDisguisable) world.getTileEntity(pos);
 			ItemStack stack = te.hasModule(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
 
-			if(!stack.isEmpty() && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty())
+			if(!stack.isEmpty())
 			{
-				ItemStack disguisedStack = ((ItemModule) stack.getItem()).getAddons(stack.getTagCompound()).get(0);
+				Block block = ((ItemModule) stack.getItem()).getBlockAddon(stack.getTagCompound());
 
-				if(Block.getBlockFromItem(disguisedStack.getItem()) != this)
-					return disguisedStack;
+				if(block != null)
+					return new ItemStack(block);
 			}
 		}
 

@@ -13,22 +13,18 @@ import net.minecraftforge.common.util.Constants;
 
 public class ModuleItemInventory implements IInventory {
 
-	public int SIZE = 0;
+	public final int size = 1;
 	private final ItemStack module;
 
 	public NonNullList<ItemStack> moduleInventory;
-	public int maxNumberOfItems;
-	public int maxNumberOfBlocks;
 
 	public ModuleItemInventory(ItemStack moduleItem) {
 		module = moduleItem;
 
-		if(!(moduleItem.getItem() instanceof ItemModule)) return;
+		if(!(moduleItem.getItem() instanceof ItemModule))
+			return;
 
-		SIZE = ((ItemModule) moduleItem.getItem()).getNumberOfAddons();
-		maxNumberOfItems = ((ItemModule) moduleItem.getItem()).getNumberOfItemAddons();
-		maxNumberOfBlocks = ((ItemModule) moduleItem.getItem()).getNumberOfBlockAddons();
-		moduleInventory = NonNullList.withSize(SIZE, ItemStack.EMPTY);
+		moduleInventory = NonNullList.withSize(size, ItemStack.EMPTY);
 
 		if (!module.hasTagCompound())
 			module.setTagCompound(new NBTTagCompound());
@@ -38,7 +34,7 @@ public class ModuleItemInventory implements IInventory {
 
 	@Override
 	public int getSizeInventory() {
-		return SIZE;
+		return size;
 	}
 
 	@Override

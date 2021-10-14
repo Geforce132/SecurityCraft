@@ -312,7 +312,7 @@ public class SetupHandler
 		SCContent.harmingModule = (ItemModule) new ItemModule(EnumModuleType.HARMING, false).setRegistryName("harming_module").setTranslationKey("securitycraft:harmingModule");
 		SCContent.smartModule = (ItemModule) new ItemModule(EnumModuleType.SMART, false).setRegistryName("smart_module").setTranslationKey("securitycraft:smartModule");
 		SCContent.storageModule = (ItemModule) new ItemModule(EnumModuleType.STORAGE, false).setRegistryName("storage_module").setTranslationKey("securitycraft:storageModule");
-		SCContent.disguiseModule = (ItemModule) new ItemModule(EnumModuleType.DISGUISE, false, true, GuiHandler.DISGUISE_MODULE, 0, 1).setRegistryName("disguise_module").setTranslationKey("securitycraft:disguiseModule");
+		SCContent.disguiseModule = (ItemModule) new ItemModule(EnumModuleType.DISGUISE, false, true, GuiHandler.DISGUISE_MODULE).setRegistryName("disguise_module").setTranslationKey("securitycraft:disguiseModule");
 		SCContent.speedModule = (ItemModule) new ItemModule(EnumModuleType.SPEED, false).setRegistryName("speed_module").setTranslationKey("securitycraft:speed_module");
 		SCContent.wireCutters = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("wire_cutters").setTranslationKey("securitycraft:wireCutters");
 		SCContent.keyPanel = new ItemKeyPanel().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad_item").setTranslationKey("securitycraft:keypadItem");

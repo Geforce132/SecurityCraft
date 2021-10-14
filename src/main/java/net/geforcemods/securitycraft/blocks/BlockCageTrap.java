@@ -110,7 +110,7 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 	{
 		ItemStack moduleStack = disguisableTe.getModule(EnumModuleType.DISGUISE);
 
-		if(!moduleStack.isEmpty() && (((ItemModule)moduleStack.getItem()).getBlockAddons(moduleStack.getTagCompound()).size() > 0))
+		if(!moduleStack.isEmpty() && (((ItemModule)moduleStack.getItem()).getBlockAddon(moduleStack.getTagCompound()) != null))
 			super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
 		else
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
