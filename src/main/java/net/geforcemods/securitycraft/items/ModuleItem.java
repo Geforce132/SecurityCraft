@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.items;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
@@ -28,7 +27,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -39,28 +38,21 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ModuleItem extends Item{
 
+	public static final Style GRAY_STYLE = new Style().setColor(TextFormatting.GRAY);
 	public static final int MAX_PLAYERS = 50;
 	private final ModuleType module;
-	private final boolean nbtCanBeModified;
+	private final boolean containsCustomData;
 	private boolean canBeCustomized;
-	private int numberOfItemAddons;
-	private int numberOfBlockAddons;
 
-	public ModuleItem(Item.Properties properties, ModuleType module, boolean nbtCanBeModified){
-		this(properties, module, nbtCanBeModified, false, 0, 0);
+	public ModuleItem(Item.Properties properties, ModuleType module, boolean containsCustomData){
+		this(properties, module, containsCustomData, false);
 	}
 
-	public ModuleItem(Item.Properties properties, ModuleType module, boolean nbtCanBeModified, boolean canBeCustomized){
-		this(properties, module, nbtCanBeModified, canBeCustomized, 0, 0);
-	}
-
-	public ModuleItem(Item.Properties properties, ModuleType module, boolean nbtCanBeModified, boolean canBeCustomized, int itemAddons, int blockAddons){
+	public ModuleItem(Item.Properties properties, ModuleType module, boolean containsCustomData, boolean canBeCustomized){
 		super(properties);
 		this.module = module;
-		this.nbtCanBeModified = nbtCanBeModified;
+		this.containsCustomData = containsCustomData;
 		this.canBeCustomized = canBeCustomized;
-		numberOfItemAddons = itemAddons;
-		numberOfBlockAddons = blockAddons;
 	}
 
 	@Override
@@ -132,28 +124,16 @@ public class ModuleItem extends Item{
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-		if(nbtCanBeModified || canBeCustomized())
-			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.modifiable").getFormattedText()));
+		if(containsCustomData || canBeCustomized())
+			list.add(new TranslationTextComponent("tooltip.securitycraft:module.modifiable").setStyle(GRAY_STYLE));
 		else
-			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").getFormattedText()));
+			list.add(new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").setStyle(GRAY_STYLE));
+
 		if(canBeCustomized()) {
-			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
-				list.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems", numberOfBlockAddons, numberOfItemAddons).getFormattedText()));
+			Block addon = getBlockAddon(stack.getTag());
 
-			if(numberOfItemAddons > 0 && numberOfBlockAddons == 0)
-				list.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:module.itemAddons.usage.items", numberOfItemAddons).getFormattedText()));
-
-			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
-				list.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks", numberOfBlockAddons).getFormattedText()));
-
-			if(getNumberOfAddons() > 0 && !getAddons(stack.getTag()).isEmpty()) {
-				list.add(new StringTextComponent(" "));
-
-				list.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:module.itemAddons.added").getFormattedText() + ":"));
-
-				for(ItemStack addon : getAddons(stack.getTag()))
-					list.add(new StringTextComponent(TextFormatting.GRAY + "- " + Utils.localize(addon.getTranslationKey()).getFormattedText()));
-			}
+			if(addon != null)
+				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getTranslationKey())).setStyle(GRAY_STYLE));
 		}
 	}
 
@@ -161,56 +141,21 @@ public class ModuleItem extends Item{
 		return module;
 	}
 
-	public int getNumberOfAddons(){
-		return numberOfItemAddons + numberOfBlockAddons;
-	}
-
-	public int getNumberOfItemAddons(){
-		return numberOfItemAddons;
-	}
-
-	public int getNumberOfBlockAddons(){
-		return numberOfBlockAddons;
-	}
-
-	public ArrayList<Block> getBlockAddons(CompoundNBT tag){
-		ArrayList<Block> list = new ArrayList<>();
-
-		if(tag == null) return list;
+	public Block getBlockAddon(CompoundNBT tag){
+		if(tag == null)
+			return null;
 
 		ListNBT items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
-		for(int i = 0; i < items.size(); i++) {
-			CompoundNBT item = items.getCompound(i);
-			int slot = item.getInt("Slot");
+		if(items != null && !items.isEmpty())
+		{
+			Item item = ItemStack.read(items.getCompound(0)).getItem();
 
-			if(slot < numberOfBlockAddons) {
-				ItemStack stack = ItemStack.read(item);
-
-				if(stack.getItem() instanceof BlockItem)
-					list.add(Block.getBlockFromItem(stack.getItem()));
-			}
+			if(item instanceof BlockItem)
+				return ((BlockItem)item).getBlock();
 		}
 
-		return list;
-	}
-
-	public ArrayList<ItemStack> getAddons(CompoundNBT tag){
-		ArrayList<ItemStack> list = new ArrayList<>();
-
-		if(tag == null) return list;
-
-		ListNBT items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
-
-		for(int i = 0; i < items.size(); i++) {
-			CompoundNBT item = items.getCompound(i);
-			int slot = item.getInt("Slot");
-
-			if(slot < numberOfBlockAddons)
-				list.add(ItemStack.read(item));
-		}
-
-		return list;
+		return null;
 	}
 
 	public boolean canBeCustomized(){

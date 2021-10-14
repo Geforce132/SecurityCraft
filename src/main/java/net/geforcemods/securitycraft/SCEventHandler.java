@@ -253,13 +253,10 @@ public class SCEventHandler {
 		if(!sentries.isEmpty() && !sentries.get(0).getDisguiseModule().isEmpty())
 		{
 			ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
-			List<Block> blocks = ((ModuleItem)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTag());
+			Block block = ((ModuleItem)disguiseModule.getItem()).getBlockAddon(disguiseModule.getTag());
 
-			if(blocks.size() > 0)
-			{
-				if(blocks.get(0) == event.getWorld().getBlockState(event.getPos()).getBlock())
-					event.setCanceled(true);
-			}
+			if(block == event.getWorld().getBlockState(event.getPos()).getBlock())
+				event.setCanceled(true);
 		}
 	}
 
