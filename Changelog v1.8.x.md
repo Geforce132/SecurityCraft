@@ -29,7 +29,7 @@
 - Fix: Anyone can insert modules into any block
 - Removed: Unused textures
 - Misc.: Renamed a few textures
-- Misc.: The minimum Forge version is now 37.0.83
+- Misc.: The minimum Forge version is now 37.0.85
 
 --------------------------Changelog for v1.8.23-beta5 of SecurityCraft--------------------------
 

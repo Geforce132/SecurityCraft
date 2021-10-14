@@ -33,7 +33,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
 import net.minecraftforge.fmlclient.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
@@ -291,11 +290,11 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			blit(matrix, left, top, 22, 22, 70, 37, 22, 22, 256, 256);
 
 			if(mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
-				GuiUtils.drawHoveringText(matrix, Arrays.asList(levelMismatchInfo), mouseX, mouseY, width, height, -1, font);
+				renderComponentTooltip(matrix, Arrays.asList(levelMismatchInfo), mouseX, mouseY);
 		}
 
 		if(!usesTextField.active && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
-			GuiUtils.drawHoveringText(matrix, usesHoverChecker.getLines(), mouseX, mouseY, width, height, -1, font);
+			renderComponentTooltip(matrix, usesHoverChecker.getLines(), mouseX, mouseY);
 
 		renderTooltip(matrix, mouseX, mouseY);
 		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, smartModule, noSmartModule, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
