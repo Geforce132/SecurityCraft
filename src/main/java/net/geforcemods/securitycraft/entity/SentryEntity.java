@@ -197,13 +197,10 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				{
 					Block.spawnAsEntity(world, pos, module);
 
-					List<Block> blocks = ((ModuleItem)module.getItem()).getBlockAddons(module.getTag());
+					Block block = ((ModuleItem)module.getItem()).getBlockAddon(module.getTag());
 
-					if(blocks.size() > 0)
-					{
-						if(blocks.get(0) == world.getBlockState(pos).getBlock())
-							world.setBlockState(pos, Blocks.AIR.getDefaultState());
-					}
+					if(block == world.getBlockState(pos).getBlock())
+						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				}
 
 				setDisguiseModule(player.getHeldItemMainhand());
@@ -237,13 +234,10 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			{
 				if (!getDisguiseModule().isEmpty())
 				{
-					List<Block> blocks = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTag());
+					Block block = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTag());
 
-					if(blocks.size() > 0)
-					{
-						if(blocks.get(0) == world.getBlockState(pos).getBlock())
-							world.setBlockState(pos, Blocks.AIR.getDefaultState());
-					}
+					if(block == world.getBlockState(pos).getBlock())
+						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 				}
 
 				Block.spawnAsEntity(world, pos, getDisguiseModule());
@@ -295,13 +289,10 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 		if (!getDisguiseModule().isEmpty())
 		{
-			List<Block> blocks = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTag());
+			Block block = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTag());
 
-			if(blocks.size() > 0)
-			{
-				if(blocks.get(0) == world.getBlockState(pos).getBlock())
-					world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			}
+			if(block == world.getBlockState(pos).getBlock())
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 		}
 
 		super.remove();
@@ -488,12 +479,11 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	 */
 	public void setDisguiseModule(ItemStack module)
 	{
-		List<ItemStack> blocks = ((ModuleItem)module.getItem()).getAddons(module.getTag());
+		Block block = ((ModuleItem)module.getItem()).getBlockAddon(module.getTag());
 
-		if(blocks.size() > 0)
+		if(block != null)
 		{
-			ItemStack disguiseStack = blocks.get(0);
-			BlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getDefaultState();
+			BlockState state = block.getDefaultState();
 
 			if (world.getBlockState(getPosition()).isAir(world, getPosition()))
 				world.setBlockState(getPosition(), state.getShape(world, getPosition()) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());

@@ -36,14 +36,14 @@ public class DisguiseModuleContainer extends Container {
 			ItemStack slotStack = slot.getStack();
 			slotStackCopy = slotStack.copy();
 
-			if(index < inventory.SIZE) {
-				if(!mergeItemStack(slotStack, inventory.SIZE, 37, true))
+			if(index < inventory.size) {
+				if(!mergeItemStack(slotStack, inventory.size, 37, true))
 					return ItemStack.EMPTY;
 
 				slot.onSlotChange(slotStack, slotStackCopy);
 			}
-			else if(index >= inventory.SIZE)
-				if(!mergeItemStack(slotStack, 0, inventory.SIZE, false))
+			else if(index >= inventory.size)
+				if(!mergeItemStack(slotStack, 0, inventory.size, false))
 					return ItemStack.EMPTY;
 
 			if(slotStack.getCount() == 0)
@@ -74,30 +74,15 @@ public class DisguiseModuleContainer extends Container {
 		return true;
 	}
 
-
 	public static class AddonSlot extends Slot {
-
-		private ModuleItemInventory inventory;
 
 		public AddonSlot(ModuleItemInventory inventory, int index, int xPos, int yPos) {
 			super(inventory, index, xPos, yPos);
-			this.inventory = inventory;
 		}
 
 		@Override
 		public boolean isItemValid(ItemStack itemStack) {
-			int numberOfItems = 0;
-			int numberOfBlocks = 0;
-			boolean isStackBlock = itemStack.getItem() instanceof BlockItem;
-
-			for(ItemStack stack : inventory.moduleInventory)
-				if(!stack.isEmpty())
-					if(stack.getItem() instanceof BlockItem)
-						numberOfBlocks++;
-					else if(stack.getItem() != null)
-						numberOfItems++;
-
-			return (isStackBlock && numberOfBlocks < inventory.maxNumberOfBlocks) || (!isStackBlock && numberOfItems < inventory.maxNumberOfItems);
+			return itemStack.getItem() instanceof BlockItem;
 		}
 
 		@Override

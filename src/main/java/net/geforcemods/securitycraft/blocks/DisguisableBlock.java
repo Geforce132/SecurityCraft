@@ -115,8 +115,13 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 			DisguisableTileEntity te = (DisguisableTileEntity) world.getTileEntity(pos);
 			ItemStack module = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
-			if(!module.isEmpty() && !((ModuleItem) module.getItem()).getBlockAddons(module.getTag()).isEmpty())
-				return ((ModuleItem) module.getItem()).getBlockAddons(module.getTag()).get(0).getDefaultState();
+			if(!module.isEmpty())
+			{
+				Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
+
+				if(block != null)
+					return block.getDefaultState();
+			}
 		}
 
 		return null;
@@ -129,12 +134,12 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 			DisguisableTileEntity te = (DisguisableTileEntity) world.getTileEntity(pos);
 			ItemStack stack = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
-			if(!stack.isEmpty() && !((ModuleItem) stack.getItem()).getBlockAddons(stack.getTag()).isEmpty())
+			if(!stack.isEmpty())
 			{
-				ItemStack disguisedStack = ((ModuleItem) stack.getItem()).getAddons(stack.getTag()).get(0);
+				Block block = ((ModuleItem) stack.getItem()).getBlockAddon(stack.getTag());
 
-				if(Block.getBlockFromItem(disguisedStack.getItem()) != this)
-					return disguisedStack;
+				if(block != null)
+					return new ItemStack(block);
 			}
 		}
 
