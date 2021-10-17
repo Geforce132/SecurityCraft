@@ -649,7 +649,7 @@ messages.securitycraft:ownable.ownerNotValidated=This block's owner has been cha
 messages.securitycraft:formattedCoordinates=X: %1$s Y: %2$s Z: %3$s
 
 jei.securitycraft.category.reinforcing=Block Reinforcing
-jei.securitycraft.category.unreinforcing=Removing Reinforcment
+jei.securitycraft.category.unreinforcing=Removing Reinforcement
 
 waila.securitycraft:displayOwner=Display Owner?
 waila.securitycraft:showModules=Show Modules?
