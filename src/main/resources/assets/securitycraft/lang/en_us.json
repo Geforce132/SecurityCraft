@@ -858,7 +858,7 @@
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",
 
 	"jei.securitycraft.category.reinforcing": "Block Reinforcing",
-	"jei.securitycraft.category.unreinforcing": "Removing Reinforcment",
+	"jei.securitycraft.category.unreinforcing": "Removing Reinforcement",
 
 	"config.waila.plugin_securitycraft": "SecurityCraft",
 	"config.waila.plugin_securitycraft.showowner": "Display Owner?",

@@ -136,7 +136,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 			{
 				Block block = ((ModuleItem) stack.getItem()).getBlockAddon(stack.getTag());
 
-				if(block != null && block != null)
+				if(block != null)
 					return new ItemStack(block);
 			}
 		}

@@ -48,10 +48,10 @@ public class ModuleItem extends Item{
 		this(properties, module, containsCustomData, false);
 	}
 
-	public ModuleItem(Item.Properties properties, ModuleType module, boolean nbtCanBeModified, boolean canBeCustomized){
+	public ModuleItem(Item.Properties properties, ModuleType module, boolean containsCustomData, boolean canBeCustomized){
 		super(properties);
 		this.module = module;
-		this.containsCustomData = nbtCanBeModified;
+		this.containsCustomData = containsCustomData;
 		this.canBeCustomized = canBeCustomized;
 	}
 
