@@ -16,7 +16,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -71,9 +70,9 @@ public class ItemTaser extends Item {
 				if(player.isCreative())
 				{
 					if(player.getHeldItem(hand).getItem() == SCContent.taser)
-						setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
+						player.setHeldItem(hand, new ItemStack(SCContent.taserPowered, 1));
 					else
-						setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taser, 1));
+						player.setHeldItem(hand, new ItemStack(SCContent.taser, 1));
 
 					return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 				}
@@ -99,7 +98,7 @@ public class ItemTaser extends Item {
 					else
 						player.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
 
-					setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
+					player.setHeldItem(hand, new ItemStack(SCContent.taserPowered, 1));
 					return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 				}
 
@@ -138,7 +137,7 @@ public class ItemTaser extends Item {
 					ItemStack taser = new ItemStack(SCContent.taser, 1);
 
 					taser.damageItem(150, player);
-					setSlotBasedOnHand(player, hand, taser);
+					player.setHeldItem(hand, taser);
 				}
 				else
 					stack.damageItem(150, player);
@@ -205,9 +204,9 @@ public class ItemTaser extends Item {
 		double d0 = endVec.x - startVec.x;
 		double d1 = endVec.y - startVec.y;
 		double d2 = endVec.z - startVec.z;
-		EnumFacing EnumFacing = func_197741_a(aabb, startVec, adouble, null, d0, d1, d2);
+		EnumFacing enumFacing = func_197741_a(aabb, startVec, adouble, null, d0, d1, d2);
 
-		if(EnumFacing == null)
+		if(enumFacing == null)
 			return Optional.empty();
 		else
 		{
@@ -250,19 +249,10 @@ public class ItemTaser extends Item {
 		} else return p_197740_1_;
 	}
 
-	private void setSlotBasedOnHand(EntityPlayer player, EnumHand hand, ItemStack taser)
-	{
-		if(hand == EnumHand.MAIN_HAND)
-			player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, taser);
-		else
-			player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, taser);
-	}
-
 	@Override
-	public void onUpdate(ItemStack par1ItemStack, World world, Entity entity, int slotIndex, boolean isSelected){
-		if(!world.isRemote)
-			if(par1ItemStack.getItemDamage() >= 1)
-				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
+	public void onUpdate(ItemStack stack, World world, Entity entity, int slotIndex, boolean isSelected){
+		if(!world.isRemote && stack.getItemDamage() >= 1)
+			stack.setItemDamage(stack.getItemDamage() - 1);
 	}
 
 	@Override
