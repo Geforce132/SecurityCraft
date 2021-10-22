@@ -21,7 +21,7 @@ public class ConfigHandler
 	@LangKey("config.securitycraft:shouldSpawnFire")
 	public static boolean shouldSpawnFire = true;
 
-	@Name("Are mines unbreakable?")
+	@Name("Are mines breakable?")
 	@LangKey("config.securitycraft:ableToBreakMines")
 	@RequiresMcRestart
 	public static boolean ableToBreakMines = true;
