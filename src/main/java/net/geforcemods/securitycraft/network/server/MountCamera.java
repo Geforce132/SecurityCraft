@@ -53,8 +53,13 @@ public class MountCamera
 			Level world = player.level;
 			BlockState state = world.getBlockState(pos);
 
-			if(world.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && world.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te && (te.getOwner().isOwner(player) || te.hasModule(ModuleType.SMART)))
-				((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos, id, player);
+			if(world.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && world.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te)
+			{
+				if(te.getOwner().isOwner(player) || te.hasModule(ModuleType.SMART))
+					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos, id, player);
+				else
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", pos), ChatFormatting.RED);
+			}
 			else
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", pos), ChatFormatting.RED);
 		});
