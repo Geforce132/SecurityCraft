@@ -490,7 +490,6 @@ gui.securitycraft:camera.toggleRedstoneNote=(nécessite un module redstone)
 gui.securitycraft:camera.zoom=Zoomer/dézoomer
 gui.securitycraft:monitor.selectCameras=Sélectionner la camera à voir:
 gui.securitycraft:monitor.cameraName=Nom de Caméra: #
-gui.securitycraft:monitor.cameraInDifferentDim=Vous pouvez ne pas voir cette caméra maintenant, car cette caméra est dans une autre dimension avec l`ID #.
 gui.securitycraft:briefcase.setupTitle=Entrer un code à 4 chiffres:
 gui.securitycraft:briefcase.enterPasscode=Entrez le code:
 gui.securitycraft:universalKeyChanger.enterNewPasscode=Entrez le nouveau code:

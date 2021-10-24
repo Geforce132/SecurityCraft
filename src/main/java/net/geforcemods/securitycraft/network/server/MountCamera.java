@@ -5,11 +5,14 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -53,13 +56,22 @@ public class MountCamera implements IMessage
 				World world = player.world;
 				IBlockState state = world.getBlockState(pos);
 
-				if(state.getBlock() == SCContent.securityCamera)
+				if(world.isBlockLoaded(pos) && state.getBlock() == SCContent.securityCamera)
 				{
 					TileEntity te = world.getTileEntity(pos);
 
-					if(te instanceof TileEntitySecurityCamera && (((TileEntitySecurityCamera)te).getOwner().isOwner(player) || ((TileEntitySecurityCamera)te).hasModule(EnumModuleType.SMART)))
-						((BlockSecurityCamera)state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), id, player);
+					if(te instanceof TileEntitySecurityCamera)
+					{
+						if(((TileEntitySecurityCamera)te).getOwner().isOwner(player) || ((TileEntitySecurityCamera)te).hasModule(EnumModuleType.SMART))
+							((BlockSecurityCamera)state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), id, player);
+					}
+					else
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.cameraMonitor.getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", pos), TextFormatting.RED);
+
+					return;
 				}
+
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.cameraMonitor.getTranslationKey()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", pos), TextFormatting.RED);
 			}));
 
 			return null;

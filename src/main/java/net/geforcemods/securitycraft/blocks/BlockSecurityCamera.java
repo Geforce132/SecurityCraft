@@ -13,7 +13,6 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -112,21 +111,26 @@ public class BlockSecurityCamera extends BlockOwnable{
 	}
 
 	public void mountCamera(World world, int x, int y, int z, int id, EntityPlayer player){
-		if(player.getRidingEntity() instanceof EntitySecurityCamera){
-			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, id, (EntitySecurityCamera) player.getRidingEntity());
+		if(!world.isRemote)
+		{
+			EntitySecurityCamera dummyEntity;
+
+			if(player.getRidingEntity() instanceof EntitySecurityCamera)
+				dummyEntity = new EntitySecurityCamera(world, x, y, z, id, (EntitySecurityCamera) player.getRidingEntity());
+			else
+				dummyEntity = new EntitySecurityCamera(world, x, y, z, id, player);
+
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
 			player.startRiding(dummyEntity);
-			return;
+			player.setPositionAndUpdate(dummyEntity.getPosition().getX(), dummyEntity.getPosition().getY(), dummyEntity.getPosition().getZ());
+			world.loadedEntityList.forEach(e -> {
+				if(e instanceof EntityLiving)
+				{
+					if(((EntityLiving)e).getAttackTarget() == player)
+						((EntityLiving)e).setAttackTarget(null);
+				}
+			});
 		}
-
-		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, id, player);
-		WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
-		player.startRiding(dummyEntity);
-
-		for(Entity e : world.loadedEntityList)
-			if(e instanceof EntityLiving)
-				if(((EntityLiving)e).getAttackTarget() == player)
-					((EntityLiving)e).setAttackTarget(null);
 	}
 
 	@Override

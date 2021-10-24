@@ -5,18 +5,15 @@ import java.util.ArrayList;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
-import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.HoverChecker;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.misc.CameraView;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -89,12 +86,12 @@ public class GuiCameraMonitor extends GuiContainer {
 			GuiButton button = cameraButtons[i];
 			int camID = (button.id + ((page - 1) * 10));
 			ArrayList<CameraView> views = cameraMonitor.getCameraPositions(nbtTag);
-			CameraView view;
+			CameraView view = views.get(camID - 1);
 
 			button.displayString += camID;
 			buttonList.add(button);
 
-			if((view = views.get(camID - 1)) != null) {
+			if(view != null) {
 				if(view.dimension != Minecraft.getMinecraft().player.dimension) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button);
 					cameraViewDim[button.id - 1] = view.dimension;
@@ -103,14 +100,7 @@ public class GuiCameraMonitor extends GuiContainer {
 				World world = Minecraft.getMinecraft().world;
 				TileEntity te = world.getTileEntity(view.getLocation());
 
-				if(world.getBlockState(view.getLocation()).getBlock() != SCContent.securityCamera || (te instanceof TileEntitySecurityCamera && (!((TileEntitySecurityCamera)te).getOwner().isOwner(Minecraft.getMinecraft().player) && !((TileEntitySecurityCamera)te).hasModule(EnumModuleType.SMART)) || (((TileEntitySecurityCamera)te).isShutDown())))
-				{
-					button.enabled = false;
-					cameraTEs[button.id - 1] = null;
-					continue;
-				}
-
-				cameraTEs[button.id - 1] = (TileEntitySecurityCamera) te;
+				cameraTEs[button.id - 1] = te instanceof TileEntitySecurityCamera ? (TileEntitySecurityCamera) te : null;
 				hoverCheckers[button.id - 1] = new HoverChecker(button);
 			}
 			else
@@ -142,9 +132,6 @@ public class GuiCameraMonitor extends GuiContainer {
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
-				if(cameraTEs[i] == null)
-					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraInDifferentDim").getFormattedText().replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, mc.fontRenderer);
-
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomName())
 					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, mc.fontRenderer);
 			}
@@ -159,16 +146,8 @@ public class GuiCameraMonitor extends GuiContainer {
 		else if (button.id < 11){
 			int camID = button.id + ((page - 1) * 10);
 
-			CameraView view = (cameraMonitor.getCameraPositions(nbtTag).get(camID - 1));
-			Block block = Minecraft.getMinecraft().world.getBlockState(view.getLocation()).getBlock();
-
-			if(block == SCContent.securityCamera) {
-				((BlockSecurityCamera)block).mountCamera(Minecraft.getMinecraft().world, view.x, view.y, view.z, camID, Minecraft.getMinecraft().player);
-				SecurityCraft.network.sendToServer(new MountCamera(view.getLocation(), camID));
-				Minecraft.getMinecraft().player.closeScreen();
-			}
-			else
-				button.enabled = false;
+			SecurityCraft.network.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getLocation(), camID));
+			Minecraft.getMinecraft().player.closeScreen();
 		}
 		else
 		{
