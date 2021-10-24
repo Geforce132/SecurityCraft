@@ -10,6 +10,7 @@
 - New: The Allowlist and Denylist Module can now be set to affect every player instead of just those added to the list
 - Change: SecurityCraft's config values for HWYLA are now synchronized from server to client, meaning server owners can now control what HWYLA shows to players
 - Change: Renamed "Track Mine" to "Rail Mine" to be in line with vanilla
+- Change: Cameras can now be viewed from anywhere in the same dimension, it is no longer necessary to be close to the camera to be able to view it
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play
 - Fix: Claymore does not explode

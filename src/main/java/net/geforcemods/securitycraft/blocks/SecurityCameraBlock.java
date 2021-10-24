@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
 import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
@@ -13,7 +11,6 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -117,30 +114,25 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	public void mountCamera(World world, BlockPos pos, int id, PlayerEntity player){
-		if(player.getRidingEntity() instanceof SecurityCameraEntity){
-			SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, pos, id, (SecurityCameraEntity) player.getRidingEntity());
-			WorldUtils.addScheduledTask(world, () -> world.addEntity(dummyEntity));
-			player.startRiding(dummyEntity);
-			return;
-		}
-
-		SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, pos, id, player);
-		WorldUtils.addScheduledTask(world, () -> world.addEntity(dummyEntity));
-		player.startRiding(dummyEntity);
-
 		if(world instanceof ServerWorld)
 		{
-			ServerWorld serverWorld = (ServerWorld)world;
-			List<Entity> loadedEntityList = serverWorld.getEntities().collect(Collectors.toList());
+			SecurityCameraEntity dummyEntity;
 
-			for(Entity e : loadedEntityList)
-			{
+			if(player.getRidingEntity() instanceof SecurityCameraEntity)
+				dummyEntity = new SecurityCameraEntity(world, pos, id, (SecurityCameraEntity)player.getRidingEntity());
+			else
+				dummyEntity = new SecurityCameraEntity(world, pos, id, player);
+
+			WorldUtils.addScheduledTask(world, () -> world.addEntity(dummyEntity));
+			player.startRiding(dummyEntity);
+			player.setPositionAndUpdate(dummyEntity.getPosition().getX(), dummyEntity.getPosition().getY(), dummyEntity.getPosition().getZ());
+			((ServerWorld)world).getEntities().forEach(e -> {
 				if(e instanceof MobEntity)
 				{
 					if(((MobEntity)e).getAttackTarget() == player)
 						((MobEntity)e).setAttackTarget(null);
 				}
-			}
+			});
 		}
 	}
 
