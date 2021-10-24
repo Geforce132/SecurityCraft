@@ -637,7 +637,6 @@
 	"gui.securitycraft:camera.zoom": "%1$s/%2$s - Acercar/Alejar",
 	"gui.securitycraft:monitor.selectCameras": "Selecciona la cámara a ver:",
 	"gui.securitycraft:monitor.cameraName": "Nombre de cámara: %s",
-	"gui.securitycraft:monitor.cameraInDifferentDim": "No puedes ver esta cámara ahora mismo, ya que está en otra dimensión con ID %s.",
 	"gui.securitycraft:briefcase.setupTitle": "Contraseña de 4 dígitos:",
 	"gui.securitycraft:briefcase.enterPasscode": "Introducir contraseña:",
 	"gui.securitycraft:universalKeyChanger.enterNewPasscode": "Introducir nueva contraseña:",
