@@ -114,7 +114,12 @@ public class SecurityCameraBlock extends OwnableBlock{
 	public void mountCamera(Level level, BlockPos pos, int id, Player player){
 		if(level instanceof ServerLevel serverLevel)
 		{
-			SecurityCamera dummyEntity = new SecurityCamera(level, pos, id, player);
+			SecurityCamera dummyEntity;
+
+			if(player.getVehicle() instanceof SecurityCamera cam)
+				dummyEntity = new SecurityCamera(level, pos, id, cam);
+			else
+				dummyEntity = new SecurityCamera(level, pos, id, player);
 
 			WorldUtils.addScheduledTask(level, () -> level.addFreshEntity(dummyEntity));
 			player.startRiding(dummyEntity);
