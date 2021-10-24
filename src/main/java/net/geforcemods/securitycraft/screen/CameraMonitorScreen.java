@@ -8,10 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
-import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
@@ -27,7 +24,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -95,12 +91,12 @@ public class CameraMonitorScreen extends Screen {
 			IdButton button = cameraButtons[i];
 			int camID = (button.id + ((page - 1) * 10));
 			ArrayList<GlobalPos> views = cameraMonitor.getCameraPositions(nbtTag);
-			GlobalPos view;
+			GlobalPos view = views.get(camID - 1);
 
 			button.setMessage(button.getMessage().plainCopy().append(new TextComponent("" + camID)));
 			addRenderableWidget(button);
 
-			if((view = views.get(camID - 1)) != null) {
+			if(view != null) {
 				if(!view.dimension().equals(Minecraft.getInstance().player.level.dimension())) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button);
 					cameraViewDim[button.id - 1] = view.dimension().location();
@@ -109,14 +105,7 @@ public class CameraMonitorScreen extends Screen {
 				Level world = Minecraft.getInstance().level;
 				BlockEntity tile = world.getBlockEntity(view.pos());
 
-				if(world.getBlockState(view.pos()).getBlock() != SCContent.SECURITY_CAMERA.get() || (tile instanceof SecurityCameraBlockEntity te && !te.getOwner().isOwner(Minecraft.getInstance().player) && !te.hasModule(ModuleType.SMART)))
-				{
-					button.active = false;
-					cameraTEs[button.id - 1] = null;
-					continue;
-				}
-
-				cameraTEs[button.id - 1] = (SecurityCraftBlockEntity)tile;
+				cameraTEs[button.id - 1] = tile instanceof SecurityCraftBlockEntity camera ? camera : null;
 				hoverCheckers[button.id - 1] = new HoverChecker(button);
 			}
 			else
@@ -156,9 +145,6 @@ public class CameraMonitorScreen extends Screen {
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
-				if(cameraTEs[i] == null)
-					renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraInDifferentDim", cameraViewDim[i]), 150), mouseX, mouseY);
-
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
 					renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomSCName()), 150), mouseX, mouseY);
 			}
@@ -171,16 +157,9 @@ public class CameraMonitorScreen extends Screen {
 			minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1));
 		else if (button.id < 11){
 			int camID = button.id + ((page - 1) * 10);
-			GlobalPos view = (cameraMonitor.getCameraPositions(nbtTag).get(camID - 1));
-			Block block = Minecraft.getInstance().level.getBlockState(view.pos()).getBlock();
 
-			if(block == SCContent.SECURITY_CAMERA.get()) {
-				((SecurityCameraBlock)block).mountCamera(Minecraft.getInstance().level, view.pos(), camID, Minecraft.getInstance().player);
-				SecurityCraft.channel.sendToServer(new MountCamera(view.pos(), camID));
-				Minecraft.getInstance().player.closeContainer();
-			}
-			else
-				button.active = false;
+			SecurityCraft.channel.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).pos(), camID));
+			Minecraft.getInstance().player.closeContainer();
 		}
 		else
 		{

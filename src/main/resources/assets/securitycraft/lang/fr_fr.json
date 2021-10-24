@@ -641,7 +641,6 @@
 	"gui.securitycraft:camera.zoom": "%1$s/%2$s - Zoomer/dézoomer",
 	"gui.securitycraft:monitor.selectCameras": "Sélectionner la caméra à voir :",
 	"gui.securitycraft:monitor.cameraName": "Nom de caméra : %s",
-	"gui.securitycraft:monitor.cameraInDifferentDim": "Vous pouvez ne pas voir cette caméra maintenant, car cette caméra est dans une autre dimension avec l’ID %s.",
 	"gui.securitycraft:briefcase.setupTitle": "Entrer un code à 4 chiffres :",
 	"gui.securitycraft:briefcase.enterPasscode": "Entrez le code :",
 	"gui.securitycraft:universalKeyChanger.enterNewPasscode": "Entrez le nouveau code :",

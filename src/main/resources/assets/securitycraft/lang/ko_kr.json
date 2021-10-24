@@ -648,7 +648,6 @@
 	"gui.securitycraft:camera.zoom": "%1$s/%2$s - 확대/축소",
 	"gui.securitycraft:monitor.selectCameras": "보려는 카메라 선택:",
 	"gui.securitycraft:monitor.cameraName": "카메라 이름: %s",
-	"gui.securitycraft:monitor.cameraInDifferentDim": "이 카메라는 ID %s와 다른 차원에 있으므로 지금은 이 카메라를 볼 수 없습니다.",
 	"gui.securitycraft:briefcase.setupTitle": "4자리 비밀번호 입력:",
 	"gui.securitycraft:briefcase.enterPasscode": "비밀번호 입력:",
 	"gui.securitycraft:universalKeyChanger.enterNewPasscode": "새 비밀번호 입력:",

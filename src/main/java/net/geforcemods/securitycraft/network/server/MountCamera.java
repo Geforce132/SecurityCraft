@@ -6,6 +6,9 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -50,11 +53,10 @@ public class MountCamera
 			Level world = player.level;
 			BlockState state = world.getBlockState(pos);
 
-			if(state.getBlock() == SCContent.SECURITY_CAMERA.get())
-			{
-				if(world.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te && (te.getOwner().isOwner(player) || te.hasModule(ModuleType.SMART)))
-					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos, id, player);
-			}
+			if(world.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && world.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te && (te.getOwner().isOwner(player) || te.hasModule(ModuleType.SMART)))
+				((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos, id, player);
+			else
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", pos), ChatFormatting.RED);
 		});
 
 		ctx.get().setPacketHandled(true);
