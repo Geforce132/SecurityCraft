@@ -181,6 +181,9 @@ public class PlayerUtils{
 	 */
 	public static boolean areOnSameTeam(String name1, String name2)
 	{
+		if(name1.equals(name2))
+			return true;
+
 		PlayerTeam team = getPlayersTeam(name1);
 
 		return team != null && team.getPlayers().contains(name2);
