@@ -16,12 +16,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class BlockUtils{
-	private static final IItemHandler EMPTY_INVENTORY = new EmptyHandler();
-
 	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate){
 		if(shouldUpdate)
 			world.scheduleUpdate(pos, block, delay);
@@ -103,7 +100,7 @@ public class BlockUtils{
 	public static <T> T getProtectedCapability(EnumFacing side, TileEntity te, Supplier<T> extractionPermittedHandler, Supplier<T> insertOnlyHandler)
 	{
 		if(side == null)
-			return (T)EMPTY_INVENTORY;
+			return (T)EmptyHandler.INSTANCE;
 
 		BlockPos offsetPos = te.getPos().offset(side);
 		IBlockState offsetState = te.getWorld().getBlockState(offsetPos);
@@ -113,7 +110,7 @@ public class BlockUtils{
 			if(offsetState.getBlock() == extractionBlock.getBlock())
 			{
 				if(!extractionBlock.canExtract((IOwnable)te, te.getWorld(), offsetPos, offsetState))
-					return (T)EMPTY_INVENTORY;
+					return (T)EmptyHandler.INSTANCE;
 				else return extractionPermittedHandler.get();
 			}
 		}

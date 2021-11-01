@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
+import net.geforcemods.securitycraft.inventory.ExtractOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -21,13 +22,14 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class TileEntityInventoryScanner extends TileEntityDisguisable implements IInventory{
 
 	private OptionBoolean horizontal = new OptionBoolean("horizontal", false);
 	private OptionBoolean solidifyField = new OptionBoolean("solidifyField", false);
-	private static final EmptyHandler EMPTY_INVENTORY = new EmptyHandler();
+	private IItemHandler storageHandler;
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
 	private int cooldown;
@@ -205,8 +207,24 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
 	{
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T) EMPTY_INVENTORY;
+			return (T)BlockUtils.getProtectedCapability(facing, this, () -> getExtractionHandler(), () -> EmptyHandler.INSTANCE); //disallow inserting
 		else return super.getCapability(capability, facing);
+	}
+
+	public IItemHandler getExtractionHandler()
+	{
+		if(storageHandler == null)
+		{
+			storageHandler = new ExtractOnlyItemStackHandler(inventoryContents) {
+				@Override
+				public ItemStack extractItem(int slot, int amount, boolean simulate)
+				{
+					return slot < 10 ? ItemStack.EMPTY : super.extractItem(slot, amount, simulate); //don't allow extracting from the prohibited item slots
+				}
+			};
+		}
+
+		return storageHandler;
 	}
 
 	@Override
