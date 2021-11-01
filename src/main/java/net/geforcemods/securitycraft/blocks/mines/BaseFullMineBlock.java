@@ -57,9 +57,11 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 						return VoxelShapes.fullCube();
 				}
 			}
+
+			return ctx == ISelectionContext.dummy() ? VoxelShapes.fullCube() : VoxelShapes.empty();
 		}
 
-		return VoxelShapes.empty();
+		return VoxelShapes.fullCube();
 	}
 
 	@Override
