@@ -60,9 +60,11 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 						return Shapes.block();
 				}
 			}
+
+			return Shapes.empty();
 		}
 
-		return Shapes.empty();
+		return Shapes.block();
 	}
 
 	@Override
