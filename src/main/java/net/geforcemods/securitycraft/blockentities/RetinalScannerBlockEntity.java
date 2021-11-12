@@ -58,9 +58,6 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity {
 				if(!(entity instanceof Player) && !activatedByEntities.get())
 					return;
 
-				if(entity instanceof Player && PlayerUtils.isPlayerMountedOnCamera(entity))
-					return;
-
 				if(entity instanceof Player player && !getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, entity)) {
 					PlayerUtils.sendMessageToPlayer((Player) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), ChatFormatting.RED);
 					return;

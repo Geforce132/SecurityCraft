@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -19,7 +20,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +29,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -42,13 +41,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.DrawSelectionEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseClickedEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -67,7 +66,7 @@ public class SCClientEventHandler
 
 		if(PlayerUtils.isPlayerMountedOnCamera(player))
 		{
-			SecurityCamera camera = ((SecurityCamera)player.getVehicle());
+			SecurityCamera camera = (SecurityCamera)Minecraft.getInstance().cameraEntity;
 
 			if(camera.screenshotSoundCooldown == 0)
 			{
@@ -77,29 +76,12 @@ public class SCClientEventHandler
 		}
 	}
 
-	@SubscribeEvent
-	public static void onPlayerRendered(RenderPlayerEvent.Pre event) {
-		if(event.getEntity() instanceof LivingEntity e && PlayerUtils.isPlayerMountedOnCamera(e))
-			event.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public static void onDrawBlockHighlight(DrawSelectionEvent.HighlightBlock event)
-	{
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getVehicle().blockPosition().equals(event.getTarget().getBlockPos()))
-			event.setCanceled(true);
-	}
-
 	public static void cameraOverlay(ForgeIngameGui gui, PoseStack pose, float partialTicks, int width, int height) {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
 
-		if(PlayerUtils.isPlayerMountedOnCamera(player)){
-			ClientLevel level = mc.level;
-
-			if(level.getBlockState(player.getVehicle().blockPosition()).getBlock() instanceof SecurityCameraBlock)
-				drawCameraOverlay(pose, mc, gui, mc.getWindow(), player, level, player.getVehicle().blockPosition());
-		}
+		if(PlayerUtils.isPlayerMountedOnCamera(player))
+			drawCameraOverlay(pose, mc, gui, mc.getWindow(), player, mc.level, mc.cameraEntity.blockPosition());
 	}
 
 	public static void hotbarBindOverlay(ForgeIngameGui gui, PoseStack pose, float partialTicks, int width, int height) {
@@ -203,7 +185,7 @@ public class SCClientEventHandler
 	@SubscribeEvent
 	public static void fovUpdateEvent(FOVUpdateEvent event){
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntity()))
-			event.setNewfov(((SecurityCamera) event.getEntity().getVehicle()).getZoomAmount());
+			event.setNewfov(((SecurityCamera)Minecraft.getInstance().cameraEntity).getZoomAmount());
 	}
 
 	@SubscribeEvent
@@ -221,6 +203,17 @@ public class SCClientEventHandler
 				if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getInventory().getSelected().getItem() != SCContent.CAMERA_MONITOR.get())
 					event.setCanceled(true);
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onClientTick(ClientTickEvent event)
+	{
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().options.keyShift.isDown())
+		{
+			Minecraft.getInstance().setCameraEntity(null);
+			SecurityCraft.channel.sendToServer(new DismountCamera());
+			OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, true);
 		}
 	}
 

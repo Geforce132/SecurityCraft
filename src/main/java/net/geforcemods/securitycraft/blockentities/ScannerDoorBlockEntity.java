@@ -32,9 +32,6 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity
 			if(!(entity instanceof Player player))
 				return;
 
-			if(PlayerUtils.isPlayerMountedOnCamera(player))
-				return;
-
 			if(!getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, player))
 			{
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), ChatFormatting.RED);

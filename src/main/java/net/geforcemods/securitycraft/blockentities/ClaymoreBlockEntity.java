@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -68,7 +67,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity
 		while(iterator.hasNext()){
 			entity = iterator.next();
 
-			if(PlayerUtils.isPlayerMountedOnCamera(entity) || EntityUtils.doesEntityOwn(entity, world, pos))
+			if(EntityUtils.doesEntityOwn(entity, world, pos))
 				continue;
 
 			entityX = entity.getX();

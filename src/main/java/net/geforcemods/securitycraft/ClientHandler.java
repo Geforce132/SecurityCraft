@@ -9,6 +9,7 @@ import java.util.Set;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
+import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.BlockMineModel;
@@ -513,5 +514,10 @@ public class ClientHandler
 
 		ModelDataManager.requestModelDataRefresh(te);
 		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	public static boolean isPlayerMountedOnCamera()
+	{
+		return Minecraft.getInstance().cameraEntity instanceof SecurityCamera;
 	}
 }

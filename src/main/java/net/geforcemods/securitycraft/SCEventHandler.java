@@ -20,7 +20,6 @@ import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
@@ -33,6 +32,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -46,16 +46,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -87,13 +84,13 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event)
 	{
-		Player player = event.getPlayer();
+		ServerPlayer player = (ServerPlayer)event.getPlayer();
 
-		if(PlayerUtils.isPlayerMountedOnCamera(player))
+		if(player.getCamera() instanceof SecurityCamera cam)
 		{
-			BlockPos pos = new BlockPos(((SecurityCamera)player.getVehicle()).getPreviousPlayerPos());
+			BlockPos pos = new BlockPos(cam.getPreviousPlayerPos());
 
-			player.getVehicle().kill();
+			cam.kill();
 			player.getPersistentData().putLong(PREVIOUS_PLAYER_POS_NBT, pos.asLong());
 		}
 	}
@@ -101,13 +98,14 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onDamageTaken(LivingHurtEvent event)
 	{
-		if(event.getEntity() != null && PlayerUtils.isPlayerMountedOnCamera(event.getEntityLiving())){
-			event.setCanceled(true);
-			return;
-		}
+		LivingEntity entity = event.getEntityLiving();
+		Level level = entity.level;
 
 		if(event.getSource() == CustomDamageSources.ELECTRICITY)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), SCSounds.ELECTRIFIED.path, 0.25F, "blocks"));
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(entity.getX(), entity.getY(), entity.getZ(), SCSounds.ELECTRIFIED.path, 0.25F, "blocks"));
+
+		if(!level.isClientSide && PlayerUtils.isPlayerMountedOnCamera(entity))
+			((ServerPlayer)entity).setCamera(entity);
 	}
 
 	//disallow rightclicking doors, fixes wrenches from other mods being able to switch their state
@@ -209,20 +207,6 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onAttackEntity(AttackEntityEvent event) {
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
-			event.setCanceled(true);
-		}
-	}
-
-	@SubscribeEvent
-	public static void onEntityInteracted(EntityInteract event) {
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
-			event.setCanceled(true);
-		}
-	}
-
-	@SubscribeEvent
 	public static void onBlockEventBreak(BlockEvent.BreakEvent event)
 	{
 		if(!(event.getWorld() instanceof Level level))
@@ -278,7 +262,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
-		if((event.getTarget() instanceof Player player && PlayerUtils.isPlayerMountedOnCamera(player)) || event.getTarget() instanceof Sentry)
+		if(event.getTarget() instanceof Sentry)
 			((Mob)event.getEntity()).setTarget(null);
 	}
 
@@ -303,21 +287,6 @@ public class SCEventHandler {
 	public static void onLivingDestroyEvent(LivingDestroyBlockEvent event)
 	{
 		event.setCanceled(event.getEntity() instanceof WitherBoss && event.getState().getBlock() instanceof IReinforcedBlock);
-	}
-
-	@SubscribeEvent
-	public void onEntityMount(EntityMountEvent event)
-	{
-		if(event.isDismounting() && event.getEntityBeingMounted() instanceof SecurityCamera camera && event.getEntityMounting() instanceof Player player)
-		{
-			BlockEntity tile = event.getWorldObj().getBlockEntity(camera.blockPosition());
-
-			if(PlayerUtils.isPlayerMountedOnCamera(player) && tile instanceof SecurityCameraBlockEntity te && te.hasModule(ModuleType.SMART))
-			{
-				te.lastPitch = player.getXRot();
-				te.lastYaw = player.getYRot();
-			}
-		}
 	}
 
 	@SubscribeEvent

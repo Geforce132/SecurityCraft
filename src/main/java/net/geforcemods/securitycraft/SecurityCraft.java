@@ -55,7 +55,7 @@ import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
-	public static final String PROTOCOL_VERSION = "3";
+	public static final String PROTOCOL_VERSION = "4";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 	public static CreativeModeTab groupSCTechnical = new SCTechnicalGroup();
 	public static CreativeModeTab groupSCMine = new SCExplosivesGroup();

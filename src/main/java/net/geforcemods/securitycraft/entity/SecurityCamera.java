@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
-import net.geforcemods.securitycraft.network.server.SetCameraRotation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -64,7 +63,12 @@ public class SecurityCamera extends Entity{
 		BlockEntity te = world.getBlockEntity(blockPosition());
 
 		if(te instanceof SecurityCameraBlockEntity cam)
+		{
 			setInitialPitchYaw(cam);
+
+			if(cam.down)
+				setPos(pos.getX() + 0.5D, pos.getY() + 0.75D, pos.getZ() + 0.5D);
+		}
 	}
 
 	public SecurityCamera(Level world, BlockPos pos, int id, SecurityCamera camera){
@@ -80,7 +84,14 @@ public class SecurityCamera extends Entity{
 		BlockEntity te = world.getBlockEntity(blockPosition());
 
 		if(te instanceof SecurityCameraBlockEntity cam)
+		{
 			setInitialPitchYaw(cam);
+
+			if(cam.down)
+				setPos(pos.getX() + 0.5D, pos.getY() + 0.75D, pos.getZ() + 0.5D);
+		}
+
+		camera.discard();
 	}
 
 	private void setInitialPitchYaw(SecurityCameraBlockEntity te)
@@ -158,11 +169,10 @@ public class SecurityCamera extends Entity{
 				SecurityCraft.channel.sendToServer(new GiveNightVision());
 		}
 
-		if(!level.isClientSide)
-			if(getPassengers().size() == 0 || level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get()){
-				discard();
-				return;
-			}
+		if(!level.isClientSide && level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get()){
+			discard();
+			return;
+		}
 	}
 
 	private void checkKeysPressed() {
@@ -208,8 +218,6 @@ public class SecurityCamera extends Entity{
 		}
 		else if(getXRot() > -25F)
 			setRot(getYRot(), (float)(getXRot() - CAMERA_SPEED));
-
-		updateServerRotation();
 	}
 
 	public void moveViewDown(){
@@ -220,8 +228,6 @@ public class SecurityCamera extends Entity{
 		}
 		else if(getXRot() < 60F)
 			setRot(getYRot(), (float)(getXRot() + CAMERA_SPEED));
-
-		updateServerRotation();
 	}
 
 	public void moveViewLeft() {
@@ -255,8 +261,6 @@ public class SecurityCamera extends Entity{
 			}
 			else if(facing == Direction.DOWN)
 				setRot((float)(yRot - CAMERA_SPEED), xRot);
-
-			updateServerRotation();
 		}
 	}
 
@@ -290,8 +294,6 @@ public class SecurityCamera extends Entity{
 			}
 			else if(facing == Direction.DOWN)
 				setRot((float)(yRot + CAMERA_SPEED), xRot);
-
-			updateServerRotation();
 		}
 	}
 
@@ -325,10 +327,6 @@ public class SecurityCamera extends Entity{
 
 	public float getZoomAmount(){
 		return zoomAmount;
-	}
-
-	private void updateServerRotation(){
-		SecurityCraft.channel.sendToServer(new SetCameraRotation(getYRot(), getXRot()));
 	}
 
 	private boolean isCameraDown()

@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -71,7 +70,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	public void onEntityIntersected(Level world, BlockPos pos, Entity entity){
 		if(entity instanceof ItemEntity)
 			return;
-		else if(entity instanceof LivingEntity lEntity && !PlayerUtils.isPlayerMountedOnCamera(lEntity) && !EntityUtils.doesEntityOwn(entity, world, pos))
+		else if(entity instanceof LivingEntity lEntity && !EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 

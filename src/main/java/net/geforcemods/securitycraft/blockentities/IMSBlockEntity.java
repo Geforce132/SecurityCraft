@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -111,7 +110,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 	public boolean canAttackEntity(LivingEntity entity)
 	{
 		return entity != null
-				&& (!(entity instanceof Player player) || !getOwner().isOwner(player) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !player.isCreative() && !player.isSpectator()) //Player checks
+				&& (!(entity instanceof Player player) || !getOwner().isOwner(player) && !player.isCreative() && !player.isSpectator()) //Player checks
 				&& !(ModuleUtils.isAllowed(this, entity)); //checks for all entities
 	}
 

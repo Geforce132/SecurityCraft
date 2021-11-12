@@ -3,17 +3,19 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Iterator;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -35,6 +37,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class SecurityCameraBlock extends OwnableBlock{
 
@@ -114,23 +117,18 @@ public class SecurityCameraBlock extends OwnableBlock{
 	public void mountCamera(Level level, BlockPos pos, int id, Player player){
 		if(level instanceof ServerLevel serverLevel)
 		{
+			ServerPlayer serverPlayer = (ServerPlayer)player;
 			SecurityCamera dummyEntity;
 
-			if(player.getVehicle() instanceof SecurityCamera cam)
+			if(serverPlayer.getCamera() instanceof SecurityCamera cam)
 				dummyEntity = new SecurityCamera(level, pos, id, cam);
 			else
 				dummyEntity = new SecurityCamera(level, pos, id, player);
 
-			WorldUtils.addScheduledTask(level, () -> level.addFreshEntity(dummyEntity));
-			player.startRiding(dummyEntity);
-			player.teleportTo(dummyEntity.position().x, dummyEntity.position().y, dummyEntity.position().z);
-			serverLevel.getEntities().getAll().forEach(e -> {
-				if(e instanceof Mob mob)
-				{
-					if(mob.getTarget() == player)
-						mob.setTarget(null);
-				}
-			});
+			level.addFreshEntity(dummyEntity);
+			//can't use ServerPlayer#setCamera here because it also teleports the player
+			serverPlayer.camera = dummyEntity;
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
 		}
 	}
 

@@ -39,9 +39,9 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 	}
 
 	@Override
-	public void render(SecurityCameraBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int p_225616_5_, int p_225616_6_)
+	public void render(SecurityCameraBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int packedLight, int packedOverlay)
 	{
-		if(te.down || (Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getVehicle().blockPosition().equals(te.getBlockPos())))
+		if(te.down || (Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(te.getBlockPos())))
 			return;
 
 		matrix.translate(0.5D, 1.5D, 0.5D);
@@ -65,6 +65,6 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 
 		matrix.mulPose(POSITIVE_X_180);
 		model.cameraRotationPoint.yRot = (float)te.cameraRotation;
-		model.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), p_225616_5_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }
