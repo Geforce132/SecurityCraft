@@ -42,7 +42,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.GuiScreenEvent.MouseClickedEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
@@ -195,14 +195,11 @@ public class SCClientEventHandler
 	}
 
 	@SubscribeEvent
-	public static void onMouseClicked(MouseClickedEvent.Pre event) {
-		if(Minecraft.getInstance().level != null)
+	public static void onClickInput(InputEvent.ClickInputEvent event) {
+		if(event.isAttack() && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player))
 		{
-			if(event.getButton() != 1 && Minecraft.getInstance().player.containerMenu == null) //anything other than rightclick and only if no gui is open)
-			{
-				if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getInventory().getSelected().getItem() != SCContent.CAMERA_MONITOR.get())
-					event.setCanceled(true);
-			}
+			event.setCanceled(true);
+			event.setSwingHand(false);
 		}
 	}
 
