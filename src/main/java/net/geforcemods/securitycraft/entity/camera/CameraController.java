@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -106,29 +105,16 @@ public class CameraController
 
 		if(state.hasProperty(SecurityCameraBlock.FACING))
 		{
-			Direction facing = state.getValue(SecurityCameraBlock.FACING);
+			boolean shouldSetRotation = switch(state.getValue(SecurityCameraBlock.FACING)) {
+				case NORTH -> next > 90F && next < 270F;
+				case SOUTH -> next > -90F && next < 90F;
+				case EAST -> next > 180F && next < 360F;
+				case WEST -> next > 0F && next < 180F;
+				case DOWN -> true;
+				default -> false;
+			};
 
-			if(facing == Direction.NORTH)
-			{
-				if(next > 90F && next < 270F)
-					cam.setRotation(next, xRot);
-			}
-			else if(facing == Direction.SOUTH)
-			{
-				if(next > -90F && next < 90F)
-					cam.setRotation(next, xRot);
-			}
-			else if(facing == Direction.EAST)
-			{
-				if(next > 180F && next < 360F)
-					cam.setRotation(next, xRot);
-			}
-			else if(facing == Direction.WEST)
-			{
-				if(next > 0F && next < 180F)
-					cam.setRotation(next, xRot);
-			}
-			else if(facing == Direction.DOWN)
+			if(shouldSetRotation)
 				cam.setRotation(next, xRot);
 		}
 	}
