@@ -44,6 +44,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -74,6 +75,9 @@ public class SCClientEventHandler
 
 	public static void cameraOverlay(ForgeIngameGui gui, PoseStack pose, float partialTicks, int width, int height) {
 		Minecraft mc = Minecraft.getInstance();
+
+		if(!ClientHandler.isPlayerMountedOnCamera())
+			OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, false);
 
 		drawCameraOverlay(pose, mc, gui, mc.getWindow(), mc.player, mc.level, mc.cameraEntity.blockPosition());
 	}
