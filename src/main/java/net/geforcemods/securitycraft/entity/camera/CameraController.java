@@ -8,6 +8,8 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -60,6 +62,14 @@ public class CameraController
 
 				if(KeyBindings.cameraActivateNightVision.consumeClick())
 					giveNightVision(cam);
+
+				//update other players with the head rotation
+				LocalPlayer player = Minecraft.getInstance().player;
+				double yRotChange = player.getYRot() - player.yRotLast;
+				double xRotChange = player.getXRot() - player.xRotLast;
+
+				if(yRotChange != 0.0D || xRotChange != 0.0D)
+					player.connection.send(new ServerboundMovePlayerPacket.Rot(player.getYRot(), player.getXRot(), player.isOnGround()));
 			}
 		}
 	}
