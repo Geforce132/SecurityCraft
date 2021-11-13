@@ -115,9 +115,12 @@ public class CameraController
 
 		if(state.hasProperty(SecurityCameraBlock.FACING))
 		{
+			if(next < 0)
+				next += 360;
+
 			boolean shouldSetRotation = switch(state.getValue(SecurityCameraBlock.FACING)) {
 				case NORTH -> next > 90F && next < 270F;
-				case SOUTH -> next > -90F && next < 90F;
+				case SOUTH -> next > 270F || next < 90F;
 				case EAST -> next > 180F && next < 360F;
 				case WEST -> next > 0F && next < 180F;
 				case DOWN -> true;
