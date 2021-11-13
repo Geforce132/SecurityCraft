@@ -100,7 +100,7 @@ public class CameraController
 			cam.setRotation(cam.getYRot(), next);
 	}
 
-	public static void moveViewHorizontally(SecurityCamera cam, float xRot, float yRot, float next)
+	public static void moveViewHorizontally(SecurityCamera cam, float yRot, float xRot, float next)
 	{
 		BlockState state = cam.level.getBlockState(cam.blockPosition());
 
