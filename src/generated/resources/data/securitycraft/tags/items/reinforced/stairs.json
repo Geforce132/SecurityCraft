@@ -2,6 +2,10 @@
   "replace": false,
   "values": [
     "#securitycraft:reinforced/wooden_stairs",
+    "securitycraft:reinforced_cut_copper_stairs",
+    "securitycraft:reinforced_exposed_cut_copper_stairs",
+    "securitycraft:reinforced_weathered_cut_copper_stairs",
+    "securitycraft:reinforced_oxidized_cut_copper_stairs",
     "securitycraft:reinforced_purpur_stairs",
     "securitycraft:reinforced_cobblestone_stairs",
     "securitycraft:reinforced_brick_stairs",
@@ -27,6 +31,13 @@
     "securitycraft:reinforced_red_nether_brick_stairs",
     "securitycraft:reinforced_polished_andesite_stairs",
     "securitycraft:reinforced_diorite_stairs",
+    "securitycraft:reinforced_cobbled_deepslate_stairs",
+    "securitycraft:reinforced_polished_deepslate_stairs",
+    "securitycraft:reinforced_deepslate_brick_stairs",
+    "securitycraft:reinforced_deepslate_tile_stairs",
+    "securitycraft:reinforced_blackstone_stairs",
+    "securitycraft:reinforced_polished_blackstone_stairs",
+    "securitycraft:reinforced_polished_blackstone_brick_stairs",
     "securitycraft:reinforced_crystal_quartz_stairs"
   ]
 }

@@ -197,13 +197,10 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 				{
 					Block.popResource(level, pos, module);
 
-					List<Block> blocks = ((ModuleItem)module.getItem()).getBlockAddons(module.getTag());
+					Block block = ((ModuleItem)module.getItem()).getBlockAddon(module.getTag());
 
-					if(blocks.size() > 0)
-					{
-						if(blocks.get(0) == level.getBlockState(pos).getBlock())
-							level.removeBlock(pos, false);
-					}
+					if(block == level.getBlockState(pos).getBlock())
+						level.removeBlock(pos, false);
 				}
 
 				setDisguiseModule(player.getMainHandItem());
@@ -237,13 +234,10 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 			{
 				if (!getDisguiseModule().isEmpty())
 				{
-					List<Block> blocks = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTag());
+					Block block = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTag());
 
-					if(blocks.size() > 0)
-					{
-						if(blocks.get(0) == level.getBlockState(pos).getBlock())
-							level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-					}
+					if(block == level.getBlockState(pos).getBlock())
+						level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 				}
 
 				Block.popResource(level, pos, getDisguiseModule());
@@ -254,7 +248,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 
 				entityData.set(DISGUISE_MODULE, new CompoundTag());
 				entityData.set(ALLOWLIST, new CompoundTag());
-				entityData.set(HAS_SPEED_MODULE, false);;
+				entityData.set(HAS_SPEED_MODULE, false);
 			}
 			else if(item == SCContent.REMOTE_ACCESS_SENTRY.get()) //bind/unbind sentry to remote control
 				item.useOn(new UseOnContext(player, hand, new BlockHitResult(new Vec3(0.0D, 0.0D, 0.0D), Direction.NORTH, pos, false)));
@@ -295,13 +289,10 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 
 		if (!getDisguiseModule().isEmpty())
 		{
-			List<Block> blocks = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTag());
+			Block block = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTag());
 
-			if(blocks.size() > 0)
-			{
-				if(blocks.get(0) == level.getBlockState(pos).getBlock())
-					level.removeBlock(pos, false);
-			}
+			if(block == level.getBlockState(pos).getBlock())
+				level.removeBlock(pos, false);
 		}
 
 		super.remove(reason);
@@ -455,8 +446,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 		CompoundTag tag = new CompoundTag();
 		Owner owner = entityData.get(OWNER);
 
-		tag.putString("owner", owner.getName());
-		tag.putString("ownerUUID", owner.getUUID());
+		owner.save(tag, false);
 		return tag;
 	}
 
@@ -464,10 +454,9 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	public void readAdditionalSaveData(CompoundTag tag)
 	{
 		CompoundTag teTag = tag.getCompound("TileEntityData");
-		String name = teTag.getString("owner");
-		String uuid = teTag.getString("ownerUUID");
+		Owner owner = Owner.fromCompound(teTag);
 
-		entityData.set(OWNER, new Owner(name, uuid));
+		entityData.set(OWNER, owner);
 		entityData.set(DISGUISE_MODULE, tag.getCompound("InstalledModule"));
 		entityData.set(ALLOWLIST, tag.getCompound("InstalledWhitelist"));
 		entityData.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
@@ -490,12 +479,11 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	 */
 	public void setDisguiseModule(ItemStack module)
 	{
-		List<ItemStack> blocks = ((ModuleItem)module.getItem()).getAddons(module.getTag());
+		Block block = ((ModuleItem)module.getItem()).getBlockAddon(module.getTag());
 
-		if(blocks.size() > 0)
+		if(block != null)
 		{
-			ItemStack disguiseStack = blocks.get(0);
-			BlockState state = Block.byItem(disguiseStack.getItem()).defaultBlockState();
+			BlockState state = block.defaultBlockState();
 
 			if (level.getBlockState(blockPosition()).isAir())
 				level.setBlockAndUpdate(blockPosition(), state.getShape(level, blockPosition()) == Shapes.block() ? state : Blocks.AIR.defaultBlockState());

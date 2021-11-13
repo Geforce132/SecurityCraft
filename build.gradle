@@ -2,10 +2,12 @@ buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://maven.parchmentmc.org' }
+        maven { url = 'https://repo.spongepowered.org/maven' }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
         classpath 'org.parchmentmc:librarian:1.+'
     }
 }
@@ -14,6 +16,7 @@ import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'eclipse'
 
@@ -41,13 +44,17 @@ sourceSets.main.resources {
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '2021.09.05-1.17.1'
+    mappings channel: 'parchment', version: '2021.10.24-1.17.1'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
 	runs {
         client {
             workingDirectory project.file('run/client')
             property 'forge.logging.console.level', 'debug'
+            args '-mixin.config=securitycraft.mixins.json'
+            //fixes refmap of deps
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 securitycraft {
@@ -59,7 +66,7 @@ minecraft {
         server {
             workingDirectory project.file('run/server')
             property 'forge.logging.console.level', 'debug'
-            args '-nogui'
+            args '-nogui', '-mixin.config=securitycraft.mixins.json'
 
             mods {
                 securitycraft {
@@ -96,12 +103,18 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.50'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.103'
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
     
 	implementation fg.deobf("mezz.jei:jei-1.17.1:8.0.0.14")
     implementation fg.deobf("curse.maven:the-one-probe-245211:3430022")
     implementation fg.deobf("curse.maven:jade-324717:3439489")
+    implementation fg.deobf("curse.maven:betterf3-401648:3466536")
 	//compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
+}
+
+mixin {
+    add sourceSets.main, "securitycraft.refmap.json"
 }
 
 jar {
@@ -114,6 +127,7 @@ jar {
                     "Implementation-Title": "SecurityCraft",
                     "Implementation-Version": "${version}",
                     "Implementation-Vendor" :"Geforce, bl4ckscor3, Redstone_Dubstep",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                    "MixinConfigs": "securitycraft.mixins.json"],)
     }
 }

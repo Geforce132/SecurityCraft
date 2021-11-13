@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "securitycraft:reinforced_cobbled_deepslate"
+  },
+  "result": "securitycraft:reinforced_deepslate_brick_stairs",
+  "count": 1
+}

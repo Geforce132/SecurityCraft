@@ -39,8 +39,10 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity
 		if(state.getValue(ClaymoreBlock.DEACTIVATED))
 			return;
 
-		if(cooldown-- > 0)
+		if(cooldown > 0){
+			cooldown--;
 			return;
+		}
 
 		if(cooldown == 0){
 			((ClaymoreBlock)state.getBlock()).explode(world, pos);

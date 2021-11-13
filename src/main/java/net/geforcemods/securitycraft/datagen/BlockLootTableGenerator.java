@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.datagen;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -15,14 +14,14 @@ import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.misc.conditions.TileEntityNBTCondition;
-import net.geforcemods.securitycraft.util.RegisterItemBlock;
-import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -56,35 +55,19 @@ public class BlockLootTableGenerator implements DataProvider
 
 	private void addTables()
 	{
-		for(Field field : SCContent.class.getFields())
+		for(RegistryObject<Block> obj : SCContent.BLOCKS.getEntries())
 		{
-			try
-			{
-				if(field.isAnnotationPresent(Reinforced.class))
-				{
-					RegistryObject<Block> obj = ((RegistryObject<Block>)field.get(null));
+			Block block = obj.get();
 
-					if(obj.get() instanceof ReinforcedSlabBlock)
-						putSlabLootTable(obj);
-					else
-						putStandardBlockLootTable(obj);
-				}
-				else if(field.isAnnotationPresent(RegisterItemBlock.class))
-				{
-					RegistryObject<Block> obj = ((RegistryObject<Block>)field.get(null));
-
-					if(obj.get() instanceof IExplosive)
-						putMineLootTable(obj);
-					else
-						putStandardBlockLootTable(obj);
-				}
-			}
-			catch(IllegalArgumentException | IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
+			if(block instanceof ReinforcedSlabBlock)
+				putSlabLootTable(obj);
+			else if(block instanceof IExplosive)
+				putMineLootTable(obj);
+			else if(block.asItem() != Items.AIR)
+				putStandardBlockLootTable(obj);
 		}
 
+		lootTables.remove(SCContent.REINFORCED_PISTON_HEAD);
 		putMineLootTable(SCContent.ANCIENT_DEBRIS_MINE);
 		putSlabLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
 
@@ -105,6 +88,7 @@ public class BlockLootTableGenerator implements DataProvider
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
 						.add(imsLootEntryBuilder)));
+		putStandardBlockLootTable(SCContent.KEY_PANEL_BLOCK, SCContent.KEY_PANEL.get());
 		putStandardBlockLootTable(SCContent.KEYPAD_CHEST);
 		putDoorLootTable(SCContent.KEYPAD_DOOR, SCContent.KEYPAD_DOOR_ITEM);
 		putDoorLootTable(SCContent.REINFORCED_DOOR, SCContent.REINFORCED_DOOR_ITEM);
@@ -139,12 +123,17 @@ public class BlockLootTableGenerator implements DataProvider
 		putStandardBlockLootTable(SCContent.STAIRS_CRYSTAL_QUARTZ);
 	}
 
-	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> block)
+	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> drop)
+	{
+		return createStandardBlockLootTable(drop.get());
+	}
+
+	protected final LootTable.Builder createStandardBlockLootTable(ItemLike drop)
 	{
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
-						.add(LootItem.lootTableItem(block.get()))
+						.add(LootItem.lootTableItem(drop))
 						.when(ExplosionCondition.survivesExplosion()));
 	}
 
@@ -162,7 +151,12 @@ public class BlockLootTableGenerator implements DataProvider
 
 	protected final void putStandardBlockLootTable(Supplier<Block> block)
 	{
-		lootTables.put(block, createStandardBlockLootTable(block));
+		putStandardBlockLootTable(block, block.get());
+	}
+
+	protected final void putStandardBlockLootTable(Supplier<Block> block, ItemLike drop)
+	{
+		lootTables.put(block, createStandardBlockLootTable(drop));
 	}
 
 	protected final void putMineLootTable(Supplier<Block> mine)

@@ -54,10 +54,9 @@ public class UniversalBlockReinforcerItem extends Item
 		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}
 
-	@Override
-	public boolean canAttackBlock(BlockState vanillaState, Level world, BlockPos pos, Player player) //gets rid of the stuttering experienced with onBlockStartBreak
+	public static boolean convertBlock(BlockState vanillaState, Level world, ItemStack stack, BlockPos pos, Player player) //gets rid of the stuttering experienced with onBlockStartBreak
 	{
-		if(!player.isCreative() && player.getMainHandItem().getItem() == this)
+		if(!player.isCreative())
 		{
 			Block block = vanillaState.getBlock();
 			Block rb = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(block);
@@ -79,11 +78,14 @@ public class UniversalBlockReinforcerItem extends Item
 				world.setBlockAndUpdate(pos, convertedState);
 				te = world.getBlockEntity(pos);
 
-				if(tag != null)
-					te.load(tag);
+				if (te != null) { //in case the converted state gets removed immediately after it is placed down
+					if (tag != null)
+						te.load(tag);
 
-				((IOwnable)te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
-				player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
+					((IOwnable)te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				}
+
+				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
 				return false;
 			}
 		}

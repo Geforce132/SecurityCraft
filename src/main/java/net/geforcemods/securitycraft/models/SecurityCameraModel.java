@@ -46,7 +46,7 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 		cameraBodyDefinition.addOrReplaceChild("camera_lens_right", CubeListBuilder.create().texOffs(10, 40).addBox(-2.0F, 0.0F, 0.0F, 1.0F, 3.0F, 1.0F), PartPose.offset(3.0F, 0.0F, -3.0F));
 		cameraBodyDefinition.addOrReplaceChild("camera_lens_left", CubeListBuilder.create().texOffs(0, 40).addBox(0.0F, 0.0F, 0.0F, 1.0F, 3.0F, 1.0F), PartPose.offset(-2.0F, 0.0F, -3.0F));
 		cameraBodyDefinition.addOrReplaceChild("camera_lens_top", CubeListBuilder.create().texOffs(20, 40).addBox(0.0F, 0.0F, 0.0F, 2.0F, 1.0F, 1.0F), PartPose.offset(-1.0F, 0.0F, -3.0F));
-		return LayerDefinition.create(meshDefinition, 128, 64);
+		return LayerDefinition.create(meshDefinition, 64, 64);
 	}
 
 	@Override

@@ -3,9 +3,11 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -20,6 +22,12 @@ public class ReinforcedObserverBlock extends ObserverBlock implements IReinforce
 	public ReinforcedObserverBlock(Block.Properties properties)
 	{
 		super(properties);
+	}
+
+	@Override
+	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side)
+	{
+		return side == state.getValue(ObserverBlock.FACING);
 	}
 
 	@Override

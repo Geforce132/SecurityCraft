@@ -1,0 +1,6 @@
+{
+  "parent": "securitycraft:block/reinforced_carpet",
+  "textures": {
+    "block": "minecraft:block/moss_block"
+  }
+}

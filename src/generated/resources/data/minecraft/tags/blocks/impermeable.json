@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "securitycraft:reinforced_glass",
+    "securitycraft:reinforced_tinted_glass",
     "securitycraft:reinforced_white_stained_glass",
     "securitycraft:reinforced_orange_stained_glass",
     "securitycraft:reinforced_magenta_stained_glass",

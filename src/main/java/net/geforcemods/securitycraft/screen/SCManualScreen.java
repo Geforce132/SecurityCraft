@@ -65,7 +65,6 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {
 
@@ -214,7 +213,7 @@ public class SCManualScreen extends Screen {
 				if(chc != null && chc.checkHover(mouseX, mouseY))
 				{
 					if(chc instanceof TextHoverChecker thc && thc.getName() != null)
-						GuiUtils.drawHoveringText(matrix, thc.getLines(), mouseX, mouseY, width, height, -1, font);
+						renderComponentTooltip(matrix, thc.getLines(), mouseX, mouseY);
 					else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
 						renderTooltip(matrix, displays[i].getCurrentStack(), mouseX, mouseY);
 				}

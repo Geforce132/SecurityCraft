@@ -3,10 +3,14 @@ package net.geforcemods.securitycraft.datagen;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -18,7 +22,6 @@ public class BlockTagGenerator extends BlockTagsProvider
 		super(dataGenerator, SecurityCraft.MODID, existingFileHelper);
 	}
 
-	//TODO: add reinforced moss to minecraft:small_dripleaf_placeable
 	@Override
 	protected void addTags()
 	{
@@ -79,6 +82,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_DIRT.get(),
 				SCContent.REINFORCED_COARSE_DIRT.get(),
 				SCContent.REINFORCED_PODZOL.get(),
+				SCContent.REINFORCED_MOSS_BLOCK.get(),
 				SCContent.REINFORCED_MYCELIUM.get());
 		tag(SCTags.Blocks.REINFORCED_END_STONES).add(
 				SCContent.REINFORCED_END_STONE.get());
@@ -131,66 +135,13 @@ public class BlockTagGenerator extends BlockTagsProvider
 		tag(SCTags.Blocks.REINFORCED_SAND).add(
 				SCContent.REINFORCED_RED_SAND.get(),
 				SCContent.REINFORCED_SAND.get());
-		tag(SCTags.Blocks.REINFORCED_SLABS).addTag(SCTags.Blocks.REINFORCED_WOODEN_SLABS).add(
-				SCContent.REINFORCED_NORMAL_STONE_SLAB.get(),
-				SCContent.REINFORCED_SMOOTH_STONE_SLAB.get(),
-				SCContent.REINFORCED_SANDSTONE_SLAB.get(),
-				SCContent.REINFORCED_COBBLESTONE_SLAB.get(),
-				SCContent.REINFORCED_BRICK_SLAB.get(),
-				SCContent.REINFORCED_STONE_BRICK_SLAB.get(),
-				SCContent.REINFORCED_NETHER_BRICK_SLAB.get(),
-				SCContent.REINFORCED_QUARTZ_SLAB.get(),
-				SCContent.REINFORCED_RED_SANDSTONE_SLAB.get(),
-				SCContent.REINFORCED_PURPUR_SLAB.get(),
-				SCContent.REINFORCED_PRISMARINE_SLAB.get(),
-				SCContent.REINFORCED_PRISMARINE_BRICK_SLAB.get(),
-				SCContent.REINFORCED_DARK_PRISMARINE_SLAB.get(),
-				SCContent.REINFORCED_POLISHED_GRANITE_SLAB.get(),
-				SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_SLAB.get(),
-				SCContent.REINFORCED_MOSSY_STONE_BRICK_SLAB.get(),
-				SCContent.REINFORCED_POLISHED_DIORITE_SLAB.get(),
-				SCContent.REINFORCED_MOSSY_COBBLESTONE_SLAB.get(),
-				SCContent.REINFORCED_END_STONE_BRICK_SLAB.get(),
-				SCContent.REINFORCED_SMOOTH_SANDSTONE_SLAB.get(),
-				SCContent.REINFORCED_SMOOTH_QUARTZ_SLAB.get(),
-				SCContent.REINFORCED_GRANITE_SLAB.get(),
-				SCContent.REINFORCED_ANDESITE_SLAB.get(),
-				SCContent.REINFORCED_RED_NETHER_BRICK_SLAB.get(),
-				SCContent.REINFORCED_POLISHED_ANDESITE_SLAB.get(),
-				SCContent.REINFORCED_DIORITE_SLAB.get(),
-				SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get());
+		tag(SCTags.Blocks.REINFORCED_SLABS).addTag(SCTags.Blocks.REINFORCED_WOODEN_SLABS);
 		tag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS).add(
 				SCContent.REINFORCED_SPRUCE_LOG.get(),
 				SCContent.REINFORCED_SPRUCE_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_SPRUCE_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_SPRUCE_WOOD.get());
-		tag(SCTags.Blocks.REINFORCED_STAIRS).addTag(SCTags.Blocks.REINFORCED_WOODEN_STAIRS).add(
-				SCContent.REINFORCED_PURPUR_STAIRS.get(),
-				SCContent.REINFORCED_COBBLESTONE_STAIRS.get(),
-				SCContent.REINFORCED_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_STONE_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_NETHER_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_SANDSTONE_STAIRS.get(),
-				SCContent.REINFORCED_QUARTZ_STAIRS.get(),
-				SCContent.REINFORCED_PRISMARINE_STAIRS.get(),
-				SCContent.REINFORCED_PRISMARINE_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_DARK_PRISMARINE_STAIRS.get(),
-				SCContent.REINFORCED_RED_SANDSTONE_STAIRS.get(),
-				SCContent.REINFORCED_POLISHED_GRANITE_STAIRS.get(),
-				SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_STAIRS.get(),
-				SCContent.REINFORCED_MOSSY_STONE_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_POLISHED_DIORITE_STAIRS.get(),
-				SCContent.REINFORCED_MOSSY_COBBLESTONE_STAIRS.get(),
-				SCContent.REINFORCED_END_STONE_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_STONE_STAIRS.get(),
-				SCContent.REINFORCED_SMOOTH_SANDSTONE_STAIRS.get(),
-				SCContent.REINFORCED_SMOOTH_QUARTZ_STAIRS.get(),
-				SCContent.REINFORCED_GRANITE_STAIRS.get(),
-				SCContent.REINFORCED_ANDESITE_STAIRS.get(),
-				SCContent.REINFORCED_RED_NETHER_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_POLISHED_ANDESITE_STAIRS.get(),
-				SCContent.REINFORCED_DIORITE_STAIRS.get(),
-				SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get());
+		tag(SCTags.Blocks.REINFORCED_STAIRS).addTag(SCTags.Blocks.REINFORCED_WOODEN_STAIRS);
 		tag(SCTags.Blocks.REINFORCED_STONE_BRICKS).add(
 				SCContent.REINFORCED_STONE_BRICKS.get(),
 				SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(),
@@ -268,15 +219,14 @@ public class BlockTagGenerator extends BlockTagsProvider
 		tag(Tags.Blocks.DIRT).addTag(SCTags.Blocks.REINFORCED_DIRT);
 
 		//minecraft tags
-		TagAppender<Block> dragonImmune = tag(BlockTags.DRAGON_IMMUNE);
-		TagAppender<Block> witherImmune = tag(BlockTags.WITHER_IMMUNE);
-
 		tag(BlockTags.BAMBOO_PLANTABLE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).add(SCContent.REINFORCED_GRAVEL.get(),
 				SCContent.REINFORCED_DIRT.get(),
 				SCContent.REINFORCED_GRASS_BLOCK.get(),
 				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_COARSE_DIRT.get(),
-				SCContent.REINFORCED_MYCELIUM.get());
+				SCContent.REINFORCED_MOSS_BLOCK.get(),
+				SCContent.REINFORCED_MYCELIUM.get(),
+				SCContent.REINFORCED_ROOTED_DIRT.get());
 		tag(BlockTags.BEACON_BASE_BLOCKS).add(
 				SCContent.REINFORCED_DIAMOND_BLOCK.get(),
 				SCContent.REINFORCED_EMERALD_BLOCK.get(),
@@ -289,11 +239,20 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_LAVA_CAULDRON.get(),
 				SCContent.REINFORCED_WATER_CAULDRON.get(),
 				SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get());
+		tag(BlockTags.CRYSTAL_SOUND_BLOCKS).add(SCContent.REINFORCED_AMETHYST_BLOCK.get());
 		tag(BlockTags.DIRT).addTag(SCTags.Blocks.REINFORCED_DIRT);
 		tag(BlockTags.DOORS).add(SCContent.KEYPAD_DOOR.get(), SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
 		tag(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
+		tag(BlockTags.GUARDED_BY_PIGLINS).add(
+				SCContent.DEEPSLATE_GOLD_ORE_MINE.get(),
+				SCContent.GILDED_BLACKSTONE_MINE.get(),
+				SCContent.GOLD_ORE_MINE.get(),
+				SCContent.NETHER_GOLD_ORE_MINE.get(),
+				SCContent.REINFORCED_GOLD_BLOCK.get(),
+				SCContent.REINFORCED_RAW_GOLD_BLOCK.get());
 		tag(BlockTags.IMPERMEABLE).add(
 				SCContent.REINFORCED_GLASS.get(),
+				SCContent.REINFORCED_TINTED_GLASS.get(),
 				SCContent.REINFORCED_WHITE_STAINED_GLASS.get(),
 				SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(),
 				SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get(),
@@ -328,7 +287,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 		tag(BlockTags.PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_PRESSURE_PLATES);
 		tag(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
 		tag(BlockTags.SLABS).addTag(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get());
-		tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(SCContent.REINFORCED_CLAY.get());
+		tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(SCContent.REINFORCED_CLAY.get(), SCContent.REINFORCED_MOSS_BLOCK.get());
 		tag(BlockTags.STAIRS).addTag(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
 		tag(BlockTags.STRIDER_WARM_BLOCKS).add(SCContent.FAKE_LAVA_BLOCK.get());
 		tag(BlockTags.SIGNS).addTag(SCTags.Blocks.SECRET_SIGNS);
@@ -338,25 +297,11 @@ public class BlockTagGenerator extends BlockTagsProvider
 		tag(BlockTags.STANDING_SIGNS).addTag(SCTags.Blocks.SECRET_STANDING_SIGNS);
 		tag(BlockTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get());
 		tag(BlockTags.WALL_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_SIGNS);
-		tag(BlockTags.WALLS).add(
-				SCContent.REINFORCED_COBBLESTONE_WALL.get(),
-				SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get(),
-				SCContent.REINFORCED_BRICK_WALL.get(),
-				SCContent.REINFORCED_PRISMARINE_WALL.get(),
-				SCContent.REINFORCED_RED_SANDSTONE_WALL.get(),
-				SCContent.REINFORCED_MOSSY_STONE_BRICK_WALL.get(),
-				SCContent.REINFORCED_GRANITE_WALL.get(),
-				SCContent.REINFORCED_STONE_BRICK_WALL.get(),
-				SCContent.REINFORCED_NETHER_BRICK_WALL.get(),
-				SCContent.REINFORCED_ANDESITE_WALL.get(),
-				SCContent.REINFORCED_RED_NETHER_BRICK_WALL.get(),
-				SCContent.REINFORCED_SANDSTONE_WALL.get(),
-				SCContent.REINFORCED_END_STONE_BRICK_WALL.get(),
-				SCContent.REINFORCED_DIORITE_WALL.get(),
-				SCContent.REINFORCED_BLACKSTONE_WALL.get(),
-				SCContent.REINFORCED_POLISHED_BLACKSTONE_WALL.get(),
-				SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get());
 		tag(BlockTags.WITHER_SUMMON_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
+
+		//automatic
+		TagAppender<Block> dragonImmune = tag(BlockTags.DRAGON_IMMUNE);
+		TagAppender<Block> witherImmune = tag(BlockTags.WITHER_IMMUNE);
 
 		for(RegistryObject<Block> ro : SCContent.BLOCKS.getEntries())
 		{
@@ -367,6 +312,14 @@ public class BlockTagGenerator extends BlockTagsProvider
 				dragonImmune.add(block);
 				witherImmune.add(block);
 			}
+
+			//ugly way of checking if slabs/stairs are wood. they do not need to be added to the tag explicitly, as they are already present in the wooden equivalent tag
+			if(block instanceof ReinforcedSlabBlock && block.getSoundType(block.defaultBlockState()) != SoundType.WOOD)
+				tag(SCTags.Blocks.REINFORCED_SLABS).add(block);
+			else if(block instanceof ReinforcedStairsBlock && block.getSoundType(block.defaultBlockState()) != SoundType.WOOD)
+				tag(SCTags.Blocks.REINFORCED_STAIRS).add(block);
+			else if(block instanceof ReinforcedWallBlock)
+				tag(BlockTags.WALLS).add(block);
 		}
 	}
 

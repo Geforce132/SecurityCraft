@@ -81,7 +81,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 	{
 		ItemStack moduleStack = disguisableTe.getModule(ModuleType.DISGUISE);
 
-		if(!moduleStack.isEmpty() && (((ModuleItem)moduleStack.getItem()).getBlockAddons(moduleStack.getTag()).size() > 0))
+		if(!moduleStack.isEmpty() && (((ModuleItem)moduleStack.getItem()).getBlockAddon(moduleStack.getTag()) != null))
 			return super.getCollisionShape(state, world, pos, ctx);
 		else return Shapes.block();
 	}

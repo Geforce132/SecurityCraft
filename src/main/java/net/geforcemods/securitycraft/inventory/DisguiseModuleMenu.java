@@ -35,14 +35,14 @@ public class DisguiseModuleMenu extends AbstractContainerMenu {
 			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
-			if(index < inventory.SIZE) {
-				if(!moveItemStackTo(slotStack, inventory.SIZE, 37, true))
+			if(index < inventory.size) {
+				if(!moveItemStackTo(slotStack, inventory.size, 37, true))
 					return ItemStack.EMPTY;
 
 				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else if(index >= inventory.SIZE)
-				if(!moveItemStackTo(slotStack, 0, inventory.SIZE, false))
+			else if(index >= inventory.size)
+				if(!moveItemStackTo(slotStack, 0, inventory.size, false))
 					return ItemStack.EMPTY;
 
 			if(slotStack.getCount() == 0)
@@ -73,30 +73,15 @@ public class DisguiseModuleMenu extends AbstractContainerMenu {
 		return true;
 	}
 
-
 	public static class AddonSlot extends Slot {
-
-		private ModuleItemContainer inventory;
 
 		public AddonSlot(ModuleItemContainer inventory, int index, int xPos, int yPos) {
 			super(inventory, index, xPos, yPos);
-			this.inventory = inventory;
 		}
 
 		@Override
 		public boolean mayPlace(ItemStack itemStack) {
-			int numberOfItems = 0;
-			int numberOfBlocks = 0;
-			boolean isStackBlock = itemStack.getItem() instanceof BlockItem;
-
-			for(ItemStack stack : inventory.moduleInventory)
-				if(!stack.isEmpty())
-					if(stack.getItem() instanceof BlockItem)
-						numberOfBlocks++;
-					else if(stack.getItem() != null)
-						numberOfItems++;
-
-			return (isStackBlock && numberOfBlocks < inventory.maxNumberOfBlocks) || (!isStackBlock && numberOfItems < inventory.maxNumberOfItems);
+			return itemStack.getItem() instanceof BlockItem;
 		}
 
 		@Override

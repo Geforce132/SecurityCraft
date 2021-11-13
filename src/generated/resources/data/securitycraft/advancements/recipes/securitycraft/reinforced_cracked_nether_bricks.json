@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "has_reinforced_nether_bricks": {
+    "has_item": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_reinforced_nether_bricks",
+      "has_item",
       "has_the_recipe"
     ]
   ]

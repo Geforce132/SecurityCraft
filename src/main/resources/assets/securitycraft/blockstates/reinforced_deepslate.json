@@ -1,0 +1,62 @@
+{
+  "variants": {
+    "axis=x": [
+      {
+        "model": "securitycraft:block/reinforced_deepslate",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "securitycraft:block/reinforced_deepslate_mirrored",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "securitycraft:block/reinforced_deepslate",
+        "y": 90,
+        "x": 90
+      },
+      {
+        "model": "securitycraft:block/reinforced_deepslate_mirrored",
+        "y": 90,
+        "x": 90
+      }
+    ],
+    "axis=y": [
+      {
+        "model": "securitycraft:block/reinforced_deepslate"
+      },
+      {
+        "model": "securitycraft:block/reinforced_deepslate_mirrored"
+      },
+      {
+        "model": "securitycraft:block/reinforced_deepslate",
+        "y": 180
+      },
+      {
+        "model": "securitycraft:block/reinforced_deepslate_mirrored",
+        "y": 180
+      }
+    ],
+    "axis=z": [
+      {
+        "model": "securitycraft:block/reinforced_deepslate",
+        "x": 90
+      },
+      {
+        "model": "securitycraft:block/reinforced_deepslate_mirrored",
+        "x": 90
+      },
+      {
+        "model": "securitycraft:block/reinforced_deepslate",
+        "y": 180,
+        "x": 90
+      },
+      {
+        "model": "securitycraft:block/reinforced_deepslate_mirrored",
+        "y": 180,
+        "x": 90
+      }
+    ]
+  }
+}

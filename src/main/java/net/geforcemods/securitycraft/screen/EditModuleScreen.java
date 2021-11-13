@@ -14,6 +14,7 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
+import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
@@ -34,10 +35,10 @@ public class EditModuleScreen extends Screen
 	private static CompoundTag savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
 	private final TranslatableComponent editModule = Utils.localize("gui.securitycraft:editModule");
-	private ItemStack module = ItemStack.EMPTY;
+	private final ItemStack module;
 	private EditBox inputField;
 	private IdButton addButton, removeButton, copyButton, pasteButton, clearButton;
-	private int xSize = 247, ySize = 166;
+	private int xSize = 247, ySize = 186;
 	private PlayerList playerList;
 	private int guiLeft;
 
@@ -55,17 +56,24 @@ public class EditModuleScreen extends Screen
 
 		guiLeft = (width - xSize) / 2;
 
+		int guiTop = (height - ySize) / 2;
 		int controlsStartX = (int)(guiLeft + xSize * (3.0F / 4.0F)) - 43;
+		TranslatableComponent checkboxText = Utils.localize("gui.securitycraft:editModule.affectEveryone");
+		int length = font.width(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
 
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		addRenderableWidget(inputField = new EditBox(font, controlsStartX - 17, height / 2 - 65, 110, 15, TextComponent.EMPTY));
-		addRenderableWidget(addButton = new IdButton(0, controlsStartX, height / 2 - 45, 76, 20, Utils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
-		addRenderableWidget(removeButton = new IdButton(1, controlsStartX, height / 2 - 20, 76, 20, Utils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
-		addRenderableWidget(copyButton = new IdButton(2, controlsStartX, height / 2 + 5, 76, 20, Utils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
-		addRenderableWidget(pasteButton = new IdButton(3, controlsStartX, height / 2 + 30, 76, 20, Utils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed));
-		addRenderableWidget(clearButton = new IdButton(4, controlsStartX, height / 2 + 55, 76, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed));
+		addRenderableWidget(inputField = new EditBox(font, controlsStartX - 17, height / 2 - 75, 110, 15, TextComponent.EMPTY));
+		addRenderableWidget(addButton = new IdButton(0, controlsStartX, height / 2 - 55, 76, 20, Utils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
+		addRenderableWidget(removeButton = new IdButton(1, controlsStartX, height / 2 - 30, 76, 20, Utils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
+		addRenderableWidget(copyButton = new IdButton(2, controlsStartX, height / 2 - 5, 76, 20, Utils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
+		addRenderableWidget(pasteButton = new IdButton(3, controlsStartX, height / 2 + 20, 76, 20, Utils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed));
+		addRenderableWidget(clearButton = new IdButton(4, controlsStartX, height / 2 + 45, 76, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed));
 		addRenderableWidget(clearButton);
-		addRenderableWidget(playerList = new PlayerList(minecraft, 110, 141, height / 2 - 66, guiLeft + 10));
+		addRenderableWidget(playerList = new PlayerList(minecraft, 110, 141, height / 2 - 76, guiLeft + 10));
+		addRenderableWidget(new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTag() && module.getTag().getBoolean("affectEveryone"), newState -> {
+			module.getOrCreateTag().putBoolean("affectEveryone", newState);
+			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
+		}, 0x404040));
 
 		addButton.active = false;
 		removeButton.active = false;

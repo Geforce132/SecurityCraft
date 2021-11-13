@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "net.geforcemods.securitycraft.mixin",
+	"compatibilityLevel": "JAVA_16",
+	"refmap": "securitycraft.refmap.json",
+	"client": [
+		"BetterF3TargetModuleMixin",
+		"DebugScreenOverlayMixin"
+	],
+	"minVersion": "0.8"
+}

@@ -22,7 +22,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -106,15 +105,13 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
-
-				return InteractionResult.FAIL;
 			}
 			else if(ModuleUtils.isAllowed(te, player))
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
-				activate(world, pos, player);
+				activate(te, state, world, pos, player);
 			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				te.openPasswordGUI(player);
@@ -123,20 +120,14 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 		return InteractionResult.SUCCESS;
 	}
 
-	public static void activate(Level world, BlockPos pos, Player player){
-		BlockState state = world.getBlockState(pos);
+	public void activate(KeypadFurnaceBlockEntity be, BlockState state, Level world, BlockPos pos, Player player){
 		if(!state.getValue(KeypadFurnaceBlock.OPEN))
 			world.setBlockAndUpdate(pos, state.setValue(KeypadFurnaceBlock.OPEN, true));
 
 		if(player instanceof ServerPlayer serverPlayer)
 		{
-			BlockEntity te = world.getBlockEntity(pos);
-
-			if(te instanceof MenuProvider menuProvider)
-			{
-				world.levelEvent((Player)null, 1006, pos, 0);
-				NetworkHooks.openGui(serverPlayer, menuProvider, pos);
-			}
+			world.levelEvent((Player)null, 1006, pos, 0);
+			NetworkHooks.openGui(serverPlayer, be, pos);
 		}
 	}
 

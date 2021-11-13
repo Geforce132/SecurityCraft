@@ -68,8 +68,7 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 
 		if(owner != null)
 		{
-			tag.putString("owner", owner.getName());
-			tag.putString("ownerUUID", owner.getUUID());
+			owner.save(tag, false);
 		}
 
 		if(passcode != null && !passcode.isEmpty())
@@ -87,8 +86,7 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
-		owner.setOwnerName(tag.getString("owner"));
-		owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.load(tag);
 		passcode = tag.getString("passcode");
 		furnaceCustomName = new TextComponent(tag.getString("CustomName"));
 	}
@@ -153,8 +151,8 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 
 	@Override
 	public void activate(Player player) {
-		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadFurnaceBlock)
-			KeypadFurnaceBlock.activate(level, worldPosition, player);
+		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadFurnaceBlock block)
+			block.activate(this, getBlockState(), level, worldPosition, player);
 	}
 
 	@Override

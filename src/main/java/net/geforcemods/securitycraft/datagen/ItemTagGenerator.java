@@ -60,10 +60,12 @@ public class ItemTagGenerator extends ItemTagsProvider
 		tag(ItemTags.CARPETS).addTag(SCTags.Items.REINFORCED_CARPETS);
 		tag(ItemTags.FENCES).add(SCContent.IRON_FENCE.get().asItem());
 		tag(ItemTags.PIGLIN_LOVED).add(
-				SCContent.REINFORCED_GOLD_BLOCK.get().asItem(),
-				SCContent.GOLD_ORE_MINE.get().asItem(),
+				SCContent.DEEPSLATE_GOLD_ORE_MINE.get().asItem(),
 				SCContent.GILDED_BLACKSTONE_MINE.get().asItem(),
-				SCContent.NETHER_GOLD_ORE_MINE.get().asItem());
+				SCContent.GOLD_ORE_MINE.get().asItem(),
+				SCContent.NETHER_GOLD_ORE_MINE.get().asItem(),
+				SCContent.REINFORCED_GOLD_BLOCK.get().asItem(),
+				SCContent.REINFORCED_RAW_GOLD_BLOCK.get().asItem());
 		tag(ItemTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get().asItem());
 		tag(ItemTags.RAILS).add(SCContent.TRACK_MINE.get().asItem());
 		tag(ItemTags.SLABS).addTag(SCTags.Items.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get().asItem());

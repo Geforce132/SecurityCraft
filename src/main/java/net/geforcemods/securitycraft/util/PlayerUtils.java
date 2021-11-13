@@ -4,21 +4,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.commands.CommandSource;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
@@ -166,5 +171,54 @@ public class PlayerUtils{
 	 */
 	public static boolean isPlayerMountedOnCamera(LivingEntity entity) {
 		return entity != null && entity.getVehicle() instanceof SecurityCamera;
+	}
+
+	/**
+	 * Checks if two given players are on the same scoreboard team
+	 * @param name1 The name of the first player
+	 * @param name2 The name of the second player
+	 * @return true if both players are on the same team, false otherwise
+	 */
+	public static boolean areOnSameTeam(String name1, String name2)
+	{
+		if(name1.equals(name2))
+			return true;
+
+		PlayerTeam team = getPlayersTeam(name1);
+
+		return team != null && team.getPlayers().contains(name2);
+	}
+
+	/**
+	 * Gets the scoreboard team the given player is on
+	 * @param playerName The player whose team to get
+	 * @return The team the given player is on. null if the player is not part of a team
+	 */
+	public static PlayerTeam getPlayersTeam(String playerName)
+	{
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+
+		if(server != null)
+			return server.getScoreboard().getPlayersTeam(playerName);
+		else
+			return ClientHandler.getClientPlayer().getScoreboard().getPlayersTeam(playerName);
+	}
+
+	/**
+	 * Gets the component to use for displaying a block's owner. If team ownership is enabled and the given player is on a team, this will return the colored team name.
+	 * @param ownerName The player who owns the block
+	 * @return The component to display
+	 */
+	public static Component getOwnerComponent(String ownerName)
+	{
+		if(ConfigHandler.SERVER.enableTeamOwnership.get())
+		{
+			PlayerTeam team = getPlayersTeam(ownerName);
+
+			if(team != null)
+				return Utils.localize("messages.securitycraft:teamOwner", new TextComponent("").append(team.getDisplayName()).withStyle(team.getColor()));
+		}
+
+		return new TextComponent(ownerName);
 	}
 }

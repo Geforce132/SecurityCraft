@@ -29,7 +29,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity {
 
 	@Override
 	public void tick(Level world, BlockPos pos, BlockState state){ //server only as per AlarmBlock
-		if(isPowered && --cooldown == 0)
+		if(isPowered && --cooldown <= 0)
 		{
 			for(ServerPlayer player : ((ServerLevel)world).getPlayers(p -> p.blockPosition().distSqr(pos) <= Math.pow(range.get(), 2)))
 			{

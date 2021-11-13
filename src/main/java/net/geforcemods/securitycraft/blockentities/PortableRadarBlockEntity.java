@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -119,7 +120,9 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity {
 			lastPlayerName = player.getName().getString();
 		}
 
-		return (shouldSendNewMessage || repeatMessageOption.get()) && !player.getName().getString().equals(getOwner().getName());
+		boolean lastPlayerOwns = ConfigHandler.SERVER.enableTeamOwnership.get() ? PlayerUtils.areOnSameTeam(lastPlayerName, getOwner().getName()) : lastPlayerName.equals(getOwner().getName());
+
+		return (shouldSendNewMessage || repeatMessageOption.get()) && !lastPlayerOwns;
 	}
 
 	public void setSentMessage() {

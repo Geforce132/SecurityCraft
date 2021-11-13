@@ -76,8 +76,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 			tag.putString("passcode", passcode);
 
 		if(owner != null){
-			tag.putString("owner", owner.getName());
-			tag.putString("ownerUUID", owner.getUUID());
+			owner.save(tag, false);
 		}
 
 		return tag;
@@ -94,8 +93,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		modules = readModuleInventory(tag);
 		readOptions(tag);
 		passcode = tag.getString("passcode");
-		owner.setOwnerName(tag.getString("owner"));
-		owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.load(tag);
 	}
 
 	@Override
@@ -172,8 +170,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	@Override
 	public void activate(Player player) {
-		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadChestBlock && !isBlocked())
-			KeypadChestBlock.activate(level, worldPosition, player);
+		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadChestBlock block && !isBlocked())
+			block.activate(getBlockState(), level, worldPosition, player);
 	}
 
 	@Override

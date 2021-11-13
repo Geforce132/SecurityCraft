@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
 
 public class ClientUtils{
 	private static final ResourceLocation[] MODULE_TEXTURES = {
@@ -87,8 +86,8 @@ public class ClientUtils{
 		{
 			Component text = isModuleInstalled ? moduleTooltip : noModuleTooltip;
 
-			if(text != null)
-				GuiUtils.drawHoveringText(matrix, Arrays.asList(text), mouseX, mouseY, screenWidth, screenHeight, -1, mc.font);
+			if(text != null && mc.screen != null)
+				mc.screen.renderComponentTooltip(matrix, Arrays.asList(text), mouseX, mouseY);
 		}
 	}
 

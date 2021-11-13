@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
@@ -28,6 +29,7 @@ import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ScannerDoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
@@ -35,6 +37,7 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.Bullet;
 import net.geforcemods.securitycraft.entity.IMSBomb;
@@ -167,7 +170,7 @@ public class RegistrationHandler
 		}
 
 		event.getRegistry().register(BlockEntityType.Builder.of(OwnableBlockEntity::new, teOwnableBlocks.toArray(new Block[teOwnableBlocks.size()])).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ownable")));
-		event.getRegistry().register(BlockEntityType.Builder.of(SecurityCraftBlockEntity::new, SCContent.LASER_FIELD.get(), SCContent.INVENTORY_SCANNER_FIELD.get(), SCContent.IRON_FENCE.get(), SCContent.COBBLESTONE_MINE.get(), SCContent.DIAMOND_ORE_MINE.get(), SCContent.DIRT_MINE.get(), SCContent.FURNACE_MINE.get(), SCContent.GRAVEL_MINE.get(), SCContent.SAND_MINE.get(), SCContent.STONE_MINE.get(), SCContent.BOUNCING_BETTY.get(), SCContent.REINFORCED_FENCEGATE.get(), SCContent.ANCIENT_DEBRIS_MINE.get(), SCContent.COAL_ORE_MINE.get(), SCContent.EMERALD_ORE_MINE.get(), SCContent.GOLD_ORE_MINE.get(), SCContent.GILDED_BLACKSTONE_MINE.get(), SCContent.IRON_ORE_MINE.get(), SCContent.LAPIS_ORE_MINE.get(), SCContent.NETHER_GOLD_ORE_MINE.get(), SCContent.QUARTZ_ORE_MINE.get(), SCContent.REDSTONE_ORE_MINE.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "abstract")));
+		event.getRegistry().register(BlockEntityType.Builder.of(SecurityCraftBlockEntity::new, SCContent.LASER_FIELD.get(), SCContent.INVENTORY_SCANNER_FIELD.get(), SCContent.IRON_FENCE.get(), SCContent.COBBLESTONE_MINE.get(), SCContent.DIAMOND_ORE_MINE.get(), SCContent.DIRT_MINE.get(), SCContent.FURNACE_MINE.get(), SCContent.GRAVEL_MINE.get(), SCContent.SAND_MINE.get(), SCContent.STONE_MINE.get(), SCContent.BOUNCING_BETTY.get(), SCContent.REINFORCED_FENCEGATE.get(), SCContent.ANCIENT_DEBRIS_MINE.get(), SCContent.COAL_ORE_MINE.get(), SCContent.EMERALD_ORE_MINE.get(), SCContent.GOLD_ORE_MINE.get(), SCContent.GILDED_BLACKSTONE_MINE.get(), SCContent.IRON_ORE_MINE.get(), SCContent.LAPIS_ORE_MINE.get(), SCContent.NETHER_GOLD_ORE_MINE.get(), SCContent.QUARTZ_ORE_MINE.get(), SCContent.REDSTONE_ORE_MINE.get(), SCContent.DEEPSLATE_COAL_ORE_MINE.get(), SCContent.DEEPSLATE_COPPER_ORE_MINE.get(), SCContent.DEEPSLATE_DIAMOND_ORE_MINE.get(), SCContent.DEEPSLATE_EMERALD_ORE_MINE.get(), SCContent.DEEPSLATE_GOLD_ORE_MINE.get(), SCContent.DEEPSLATE_IRON_ORE_MINE.get(), SCContent.DEEPSLATE_LAPIS_ORE_MINE.get(), SCContent.DEEPSLATE_REDSTONE_ORE_MINE.get(), SCContent.COPPER_ORE_MINE.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "abstract")));
 		event.getRegistry().register(BlockEntityType.Builder.of(KeypadBlockEntity::new, SCContent.KEYPAD.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad")));
 		event.getRegistry().register(BlockEntityType.Builder.of(LaserBlockBlockEntity::new, SCContent.LASER_BLOCK.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "laser_block")));
 		event.getRegistry().register(BlockEntityType.Builder.of(CageTrapBlockEntity::new, SCContent.CAGE_TRAP.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "cage_trap")));
@@ -196,6 +199,9 @@ public class RegistrationHandler
 		event.getRegistry().register(BlockEntityType.Builder.of(KeypadDoorBlockEntity::new, SCContent.KEYPAD_DOOR.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_door")));
 		event.getRegistry().register(BlockEntityType.Builder.of(ReinforcedIronBarsBlockEntity::new, SCContent.REINFORCED_IRON_BARS.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_iron_bars")));
 		event.getRegistry().register(BlockEntityType.Builder.of(ReinforcedCauldronBlockEntity::new, SCContent.REINFORCED_CAULDRON.get(), SCContent.REINFORCED_WATER_CAULDRON.get(), SCContent.REINFORCED_LAVA_CAULDRON.get(), SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_cauldron")));
+		event.getRegistry().register(BlockEntityType.Builder.of(ReinforcedPistonMovingBlockEntity::new, SCContent.REINFORCED_MOVING_PISTON.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_piston")));
+		event.getRegistry().register(BlockEntityType.Builder.of(ValidationOwnableBlockEntity::new, SCContent.REINFORCED_PISTON.get(), SCContent.REINFORCED_STICKY_PISTON.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "validation_ownable")));
+		event.getRegistry().register(BlockEntityType.Builder.of(KeyPanelBlockEntity::new, SCContent.KEY_PANEL_BLOCK.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_panel")));
 	}
 
 	@SubscribeEvent

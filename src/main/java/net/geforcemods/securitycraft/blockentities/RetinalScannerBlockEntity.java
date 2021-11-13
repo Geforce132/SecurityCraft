@@ -62,7 +62,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity {
 					return;
 
 				if(entity instanceof Player player && !getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, entity)) {
-					PlayerUtils.sendMessageToPlayer((Player) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer((Player) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), ChatFormatting.RED);
 					return;
 				}
 
@@ -136,8 +136,8 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity {
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, Level world, BlockPos pos) {
-		super.onOwnerChanged(state, world, pos);
+	public void onOwnerChanged(BlockState state, Level world, BlockPos pos, Player player) {
+		super.onOwnerChanged(state, world, pos, player);
 		setPlayerProfile(new GameProfile(null, getOwner().getName()));
 	}
 

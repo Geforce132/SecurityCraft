@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -59,6 +60,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
@@ -106,6 +108,26 @@ public class SCEventHandler {
 
 		if(event.getSource() == CustomDamageSources.ELECTRICITY)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), SCSounds.ELECTRIFIED.path, 0.25F, "blocks"));
+	}
+
+	//disallow rightclicking doors, fixes wrenches from other mods being able to switch their state
+	//side effect for keypad door: it is now only openable with an empty hand
+	@SubscribeEvent(priority=EventPriority.HIGHEST)
+	public static void highestPriorityOnRightClickBlock(PlayerInteractEvent.RightClickBlock event)
+	{
+		ItemStack stack = event.getItemStack();
+		Item item = stack.getItem();
+
+		if(!stack.isEmpty() && item != SCContent.UNIVERSAL_BLOCK_REMOVER.get() && item != SCContent.UNIVERSAL_BLOCK_MODIFIER.get() && item != SCContent.UNIVERSAL_OWNER_CHANGER.get())
+		{
+			if(!(item instanceof BlockItem))
+			{
+				Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
+
+				if(block == SCContent.KEYPAD_DOOR.get() || block == SCContent.REINFORCED_DOOR.get() || block == SCContent.REINFORCED_IRON_TRAPDOOR.get() || block == SCContent.SCANNER_DOOR.get())
+					event.setCanceled(true);
+			}
+		}
 	}
 
 	@SubscribeEvent
@@ -174,7 +196,16 @@ public class SCEventHandler {
 	public static void onLeftClickBlock(LeftClickBlock event) {
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
 			event.setCanceled(true);
+			return;
 		}
+
+		ItemStack stack = event.getPlayer().getMainHandItem();
+		Item held = stack.getItem();
+		Level level = event.getWorld();
+		BlockPos pos = event.getPos();
+
+		if(held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
+			UniversalBlockReinforcerItem.convertBlock(level.getBlockState(pos), level, stack, pos, event.getPlayer());
 	}
 
 	@SubscribeEvent
@@ -224,13 +255,10 @@ public class SCEventHandler {
 		if(!sentries.isEmpty() && !sentries.get(0).getDisguiseModule().isEmpty())
 		{
 			ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
-			List<Block> blocks = ((ModuleItem)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTag());
+			Block block = ((ModuleItem)disguiseModule.getItem()).getBlockAddon(disguiseModule.getTag());
 
-			if(blocks.size() > 0)
-			{
-				if(blocks.get(0) == event.getWorld().getBlockState(event.getPos()).getBlock())
-					event.setCanceled(true);
-			}
+			if(block == event.getWorld().getBlockState(event.getPos()).getBlock())
+				event.setCanceled(true);
 		}
 	}
 

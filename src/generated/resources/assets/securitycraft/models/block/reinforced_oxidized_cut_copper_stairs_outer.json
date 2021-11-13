@@ -1,0 +1,8 @@
+{
+  "parent": "securitycraft:block/reinforced_outer_stairs",
+  "textures": {
+    "side": "minecraft:block/oxidized_cut_copper",
+    "bottom": "minecraft:block/oxidized_cut_copper",
+    "top": "minecraft:block/oxidized_cut_copper"
+  }
+}

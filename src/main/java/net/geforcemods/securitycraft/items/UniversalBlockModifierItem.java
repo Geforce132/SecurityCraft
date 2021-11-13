@@ -46,7 +46,7 @@ public class UniversalBlockModifierItem extends Item
 			if(te instanceof IOwnable ownable && !ownable.getOwner().isOwner(player))
 			{
 				if(!(te instanceof DisguisableBlockEntity) || (((BlockItem)((DisguisableBlock)((DisguisableBlockEntity)te).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ownable.getOwner().getName()), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(ownable.getOwner().getName())), ChatFormatting.RED);
 
 				return InteractionResult.FAIL;
 			}

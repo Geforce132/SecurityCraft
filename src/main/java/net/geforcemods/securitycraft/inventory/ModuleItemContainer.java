@@ -11,22 +11,18 @@ import net.minecraftforge.common.util.Constants;
 
 public class ModuleItemContainer implements Container {
 
-	public int SIZE = 0;
+	public final int size = 1;
 	private final ItemStack module;
 
 	public NonNullList<ItemStack> moduleInventory;
-	public int maxNumberOfItems;
-	public int maxNumberOfBlocks;
 
 	public ModuleItemContainer(ItemStack moduleStack) {
 		module = moduleStack;
 
-		if(!(moduleStack.getItem() instanceof ModuleItem moduleItem)) return;
+		if(!(moduleStack.getItem() instanceof ModuleItem moduleItem))
+			return;
 
-		SIZE = moduleItem.getNumberOfAddons();
-		maxNumberOfItems = moduleItem.getNumberOfItemAddons();
-		maxNumberOfBlocks = moduleItem.getNumberOfBlockAddons();
-		moduleInventory = NonNullList.withSize(SIZE, ItemStack.EMPTY);
+		moduleInventory = NonNullList.withSize(size, ItemStack.EMPTY);
 
 		if (!module.hasTag())
 			module.setTag(new CompoundTag());
@@ -36,7 +32,7 @@ public class ModuleItemContainer implements Container {
 
 	@Override
 	public int getContainerSize() {
-		return SIZE;
+		return size;
 	}
 
 	@Override

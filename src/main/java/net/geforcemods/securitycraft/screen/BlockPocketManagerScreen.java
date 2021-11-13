@@ -34,7 +34,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
 import net.minecraftforge.fmlclient.gui.widget.Slider;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
@@ -185,9 +184,9 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		if(!te.enabled && isOwner && !assembleButton.active && assembleHoverChecker.checkHover(mouseX, mouseY))
 		{
 			if(!storage)
-				GuiUtils.drawHoveringText(matrix, assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY, width, height, -1, font);
+				renderComponentTooltip(matrix, assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY);
 			else
-				GuiUtils.drawHoveringText(matrix, assembleHoverChecker.getLines().subList(1, 2), mouseX, mouseY, width, height, -1, font);
+				renderComponentTooltip(matrix, assembleHoverChecker.getLines().subList(1, 2), mouseX, mouseY);
 		}
 	}
 

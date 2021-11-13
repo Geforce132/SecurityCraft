@@ -54,8 +54,8 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	@Override
 	public void activate(Player player) {
-		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadDoorBlock)
-			KeypadDoorBlock.activate(level, worldPosition, getBlockState(), getSignalLength());
+		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadDoorBlock block)
+			block.activate(getBlockState(), level, worldPosition, getSignalLength());
 	}
 
 	@Override

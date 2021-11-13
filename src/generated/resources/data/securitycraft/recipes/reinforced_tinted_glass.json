@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "AGA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "G": {
+      "item": "securitycraft:reinforced_glass"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_tinted_glass",
+    "count": 2
+  }
+}

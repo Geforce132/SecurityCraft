@@ -23,7 +23,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ProtectoBlock extends OwnableBlock {
+public class ProtectoBlock extends DisguisableBlock {
 
 	public static final BooleanProperty ACTIVATED = BlockStateProperties.ENABLED;
 	public static final VoxelShape SHAPE = Shapes.or(Block.box(0, 0, 5, 16, 16, 11), Block.box(5, 0, 0, 11, 16, 16));
@@ -36,7 +36,11 @@ public class ProtectoBlock extends OwnableBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
 	{
-		return SHAPE;
+		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+
+		if(disguisedState.getBlock() != this)
+			return disguisedState.getShape(world, pos, ctx);
+		else return SHAPE;
 	}
 
 	@Override

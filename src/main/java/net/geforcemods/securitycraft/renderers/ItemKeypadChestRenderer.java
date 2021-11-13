@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer
 {
 	private static final KeypadChestBlockEntity DUMMY_TE = new KeypadChestBlockEntity(BlockPos.ZERO, SCContent.KEYPAD_CHEST.get().defaultBlockState());
-	private static KeypadChestTileEntityRenderer dummyRenderer = null;
+	private static KeypadChestRenderer dummyRenderer = null;
 
 	public ItemKeypadChestRenderer()
 	{
@@ -36,7 +36,7 @@ public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer
 		{
 			Minecraft mc = Minecraft.getInstance();
 
-			dummyRenderer = new KeypadChestTileEntityRenderer(new BlockEntityRendererProvider.Context(mc.getBlockEntityRenderDispatcher(), mc.getBlockRenderer(), mc.getEntityModels(), mc.font));
+			dummyRenderer = new KeypadChestRenderer(new BlockEntityRendererProvider.Context(mc.getBlockEntityRenderDispatcher(), mc.getBlockRenderer(), mc.getEntityModels(), mc.font));
 		}
 
 		dummyRenderer.render(DUMMY_TE, 0.0F, matrix, buffer, combinedLight, combinedOverlay);

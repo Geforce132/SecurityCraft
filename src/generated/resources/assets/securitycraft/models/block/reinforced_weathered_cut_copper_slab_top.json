@@ -1,0 +1,8 @@
+{
+  "parent": "securitycraft:block/reinforced_slab_top",
+  "textures": {
+    "side": "minecraft:block/weathered_cut_copper",
+    "bottom": "minecraft:block/weathered_cut_copper",
+    "top": "minecraft:block/weathered_cut_copper"
+  }
+}
