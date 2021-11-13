@@ -7,12 +7,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.entity.SecurityCamera;
 import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -41,13 +40,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.OverlayRegistry;
-import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -183,12 +179,6 @@ public class SCClientEventHandler
 	}
 
 	@SubscribeEvent
-	public static void fovUpdateEvent(FOVUpdateEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntity()))
-			event.setNewfov(((SecurityCamera)Minecraft.getInstance().cameraEntity).getZoomAmount());
-	}
-
-	@SubscribeEvent
 	public static void renderHandEvent(RenderHandEvent event){
 		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player))
 			event.setCanceled(true);
@@ -200,17 +190,6 @@ public class SCClientEventHandler
 		{
 			event.setCanceled(true);
 			event.setSwingHand(false);
-		}
-	}
-
-	@SubscribeEvent
-	public static void onClientTick(ClientTickEvent event)
-	{
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().options.keyShift.isDown())
-		{
-			Minecraft.getInstance().setCameraEntity(null);
-			SecurityCraft.channel.sendToServer(new DismountCamera());
-			OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, true);
 		}
 	}
 

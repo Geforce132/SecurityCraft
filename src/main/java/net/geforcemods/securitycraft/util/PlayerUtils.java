@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.entity.SecurityCamera;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;

@@ -5,7 +5,8 @@
 	"refmap": "securitycraft.refmap.json",
 	"client": [
 		"BetterF3TargetModuleMixin",
-		"DebugScreenOverlayMixin"
+		"DebugScreenOverlayMixin",
+		"GameRendererMixin"
 	],
 	"mixins": [
 		"ServerPlayerMixin"
