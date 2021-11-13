@@ -992,7 +992,7 @@
 	"option.securitycraft.key_panel.sendMessage": "메시지: %s",
 	"option.securitycraft.key_panel.sendMessage.description": "이 키 패널은 활성화 시 메시지를 전송합니까(허용목록/거부목록 모듈 사용 시)?",
 	"option.securitycraft.key_panel.signalLength": "신호 길이: %s",
-	"option.securitycraft.key_panel.signalLength.description": "활성화 시 레드스톤 신호는 얼마나 걸립니까? (눈금 단위: 눈금 단위: 20틱 = 1초)",
+	"option.securitycraft.key_panel.signalLength.description": "활성화 시 레드스톤 신호는 얼마나 걸립니까? (눈금 단위: 20틱 = 1초)",
 
 	"securitycraft.subtitle.alarm": "알람 소리",
 	"securitycraft.subtitle.electrified": "엔티티 감전",
