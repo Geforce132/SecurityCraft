@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.entity.camera;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -69,6 +70,8 @@ public class CameraController
 		Minecraft.getInstance().setCameraEntity(null);
 		SecurityCraft.channel.sendToServer(new DismountCamera());
 		OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, true);
+		OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, false);
+		OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, true);
 	}
 
 	public static void moveViewUp(SecurityCamera cam)

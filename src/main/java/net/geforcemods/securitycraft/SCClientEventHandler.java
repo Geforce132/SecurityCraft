@@ -74,10 +74,8 @@ public class SCClientEventHandler
 
 	public static void cameraOverlay(ForgeIngameGui gui, PoseStack pose, float partialTicks, int width, int height) {
 		Minecraft mc = Minecraft.getInstance();
-		LocalPlayer player = mc.player;
 
-		if(PlayerUtils.isPlayerMountedOnCamera(player))
-			drawCameraOverlay(pose, mc, gui, mc.getWindow(), player, mc.level, mc.cameraEntity.blockPosition());
+		drawCameraOverlay(pose, mc, gui, mc.getWindow(), mc.player, mc.level, mc.cameraEntity.blockPosition());
 	}
 
 	public static void hotbarBindOverlay(ForgeIngameGui gui, PoseStack pose, float partialTicks, int width, int height) {
