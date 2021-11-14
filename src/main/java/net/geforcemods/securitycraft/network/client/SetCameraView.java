@@ -45,8 +45,9 @@ public class SetCameraView
 			{
 				mc.setCameraEntity(entity);
 				mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
-				OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, true);
 				OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, false);
+				OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, true);
+				OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, false);
 			}
 		});
 		ctx.get().setPacketHandled(true);
