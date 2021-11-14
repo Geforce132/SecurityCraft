@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -24,7 +25,9 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
@@ -136,6 +139,18 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	@Override
 	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos) {
 		return false;
+	}
+
+	@Override
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+		if (world.getTileEntity(pos) instanceof OwnableTileEntity) {
+			OwnableTileEntity te = ((OwnableTileEntity)world.getTileEntity(pos));
+
+			if (player.isCreative() || te.getOwner().isOwner(player))
+				return super.getPickBlock(state, target, world, pos, player);
+		}
+
+		return new ItemStack(Blocks.FURNACE);
 	}
 
 	@Override

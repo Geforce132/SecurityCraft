@@ -19,6 +19,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.EntitySelectionContext;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -114,9 +115,9 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	@Override
 	public void explode(World world, BlockPos pos) {
 		if(!world.isRemote) {
-		world.destroyBlock(pos, false);
-		world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
-	}
+			world.destroyBlock(pos, false);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+		}
 	}
 
 	/**
@@ -155,6 +156,18 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	@Override
 	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos) {
 		return false;
+	}
+
+	@Override
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+		if (world.getTileEntity(pos) instanceof OwnableTileEntity) {
+			OwnableTileEntity te = (OwnableTileEntity)world.getTileEntity(pos);
+
+			if (player.isCreative() || te.getOwner().isOwner(player))
+				return super.getPickBlock(state, target, world, pos, player);
+		}
+
+		return new ItemStack(blockDisguisedAs);
 	}
 
 	public Block getBlockDisguisedAs()
