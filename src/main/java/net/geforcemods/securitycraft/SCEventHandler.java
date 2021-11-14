@@ -77,6 +77,7 @@ public class SCEventHandler {
 			player.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
 		}
 
+		if(!ConfigHandler.SERVER.disableThanksMessage.get())
 		SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new SendTip());
 	}
 
