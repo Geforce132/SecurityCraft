@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
@@ -24,6 +25,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT)
 public class CameraController
 {
+	public static CameraType previousCameraType;
+
 	@SubscribeEvent
 	public static void onClientTick(ClientTickEvent event)
 	{
@@ -81,6 +84,9 @@ public class CameraController
 		OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, true);
 		OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, false);
 		OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, true);
+
+		if(previousCameraType != null)
+			Minecraft.getInstance().options.setCameraType(previousCameraType);
 	}
 
 	public static void moveViewUp(SecurityCamera cam)

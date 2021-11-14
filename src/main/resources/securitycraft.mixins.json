@@ -6,7 +6,8 @@
 	"client": [
 		"BetterF3TargetModuleMixin",
 		"DebugScreenOverlayMixin",
-		"GameRendererMixin"
+		"GameRendererMixin",
+		"MinecraftMixin"
 	],
 	"mixins": [
 		"ServerPlayerMixin"

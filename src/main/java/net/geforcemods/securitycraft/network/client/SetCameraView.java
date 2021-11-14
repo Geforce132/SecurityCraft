@@ -3,7 +3,9 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
@@ -44,6 +46,9 @@ public class SetCameraView
 			if(entity != null)
 			{
 				mc.setCameraEntity(entity);
+
+				CameraController.previousCameraType = mc.options.getCameraType();
+				mc.options.setCameraType(CameraType.FIRST_PERSON);
 				mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
 				OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, false);
 				OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, true);
