@@ -1,6 +1,6 @@
 {
 	"textures": {
-		"0": "securitycraft:block/security_camera_ceiling_viewed",
+		"0": "securitycraft:block/security_camera_ceiling_viewing",
 		"particle": "securitycraft:block/security_camera_ceiling"
 	},
 	"elements": [

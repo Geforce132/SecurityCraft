@@ -5,6 +5,6 @@
         "facing=west":  { "model": "securitycraft:block/security_camera", "y": 270 },
         "facing=east":  { "model": "securitycraft:block/security_camera", "y": 90 },
         "being_viewed=false,facing=down":  { "model": "securitycraft:block/security_camera_ceiling", "x": 180 },
-        "being_viewed=true,facing=down":  { "model": "securitycraft:block/security_camera_ceiling_viewed", "x": 180 }
+        "being_viewed=true,facing=down":  { "model": "securitycraft:block/security_camera_ceiling_viewing", "x": 180 }
     }
 }
