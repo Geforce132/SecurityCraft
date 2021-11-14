@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.mixin;
+package net.geforcemods.securitycraft.mixin.camera;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -7,6 +7,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.server.level.ServerPlayer;
 
+/**
+ * Makes sure the server does not move the player viewing a camera to the camera's position
+ */
 @Mixin(ServerPlayer.class)
 public class ServerPlayerMixin
 {

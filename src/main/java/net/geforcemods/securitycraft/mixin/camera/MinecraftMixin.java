@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.mixin;
+package net.geforcemods.securitycraft.mixin.camera;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -9,6 +9,9 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 
+/**
+ * Disallows players from pressing F5 (by default) to change to third person while viewing a camera
+ */
 @Mixin(Minecraft.class)
 public class MinecraftMixin
 {

@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.mixin;
+package net.geforcemods.securitycraft.mixin.f3;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,6 +12,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 
+/**
+ * Changes the targeted block/fluid text on the right side of the screen to the disguised block/fluid, so that the player cannot see the actual block (sand mine, fake water, inventory scanner (if disguised))
+ */
 @Mixin(TargetModule.class)
 public class BetterF3TargetModuleMixin
 {

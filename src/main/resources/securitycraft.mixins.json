@@ -4,13 +4,13 @@
 	"compatibilityLevel": "JAVA_16",
 	"refmap": "securitycraft.refmap.json",
 	"client": [
-		"BetterF3TargetModuleMixin",
-		"DebugScreenOverlayMixin",
-		"GameRendererMixin",
-		"MinecraftMixin"
+		"f3.BetterF3TargetModuleMixin",
+		"f3.DebugScreenOverlayMixin",
+		"camera.GameRendererMixin",
+		"camera.MinecraftMixin"
 	],
 	"mixins": [
-		"ServerPlayerMixin"
+		"camera.ServerPlayerMixin"
 	],
 	"minVersion": "0.8"
 }
