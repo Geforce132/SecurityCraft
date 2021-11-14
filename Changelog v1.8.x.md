@@ -27,6 +27,7 @@
 - Fix: Crash when trying to power a taser while holding redstone in the offhand
 - Fix: Anyone can insert modules into any block
 - Fix: "Are mines unbreakable?" config option does the exact opposite of what is implied. You'll have to set the "Are mines breakable?" config option appropriately, the old one is now defunct
+- Fix: Block Mine and Furnace Mine explosions can create fake blocks
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated

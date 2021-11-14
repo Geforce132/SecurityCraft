@@ -123,8 +123,10 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 
 	@Override
 	public void explode(World world, BlockPos pos) {
-		world.destroyBlock(pos, false);
-		world.newExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.smallerMineExplosion ? 2.5F : 5.0F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
+		if (!world.isRemote) {
+			world.destroyBlock(pos, false);
+			world.newExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.smallerMineExplosion ? 2.5F : 5.0F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
+		}
 	}
 
 	/**
