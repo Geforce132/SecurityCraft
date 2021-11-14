@@ -74,7 +74,12 @@ public class SCEventHandler {
 		ServerPlayer player = (ServerPlayer)event.getPlayer();
 
 		if(player.getCamera() instanceof SecurityCamera cam)
+		{
+			if(player.level.getBlockEntity(cam.blockPosition()) instanceof SecurityCameraBlockEntity camBe)
+				camBe.stopViewing();
+
 			cam.discard();
+		}
 	}
 
 	@SubscribeEvent

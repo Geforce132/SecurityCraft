@@ -65,6 +65,6 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 
 		matrix.mulPose(POSITIVE_X_180);
 		model.cameraRotationPoint.yRot = (float)te.cameraRotation;
-		model.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(te.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? new ResourceLocation("securitycraft:textures/block/security_camera_viewing.png") : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

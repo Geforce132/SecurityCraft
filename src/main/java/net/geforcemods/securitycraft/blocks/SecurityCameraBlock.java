@@ -43,6 +43,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != Direction.UP);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+	public static final BooleanProperty BEING_VIEWED = BooleanProperty.create("being_viewed");
 	private static final VoxelShape SHAPE_SOUTH = Shapes.create(new AABB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F));
 	private static final VoxelShape SHAPE_NORTH = Shapes.create(new AABB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F));
 	private static final VoxelShape SHAPE_WEST = Shapes.create(new AABB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F));
@@ -51,7 +52,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	public SecurityCameraBlock(Block.Properties properties) {
 		super(properties);
-		stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false);
+		stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false);
 	}
 
 	@Override
@@ -129,6 +130,9 @@ public class SecurityCameraBlock extends OwnableBlock{
 			//can't use ServerPlayer#setCamera here because it also teleports the player
 			serverPlayer.camera = dummyEntity;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
+
+			if(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity cam)
+				cam.startViewing();
 		}
 	}
 
@@ -169,8 +173,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
-		builder.add(FACING);
-		builder.add(POWERED);
+		builder.add(FACING, POWERED, BEING_VIEWED);
 	}
 
 	@Override

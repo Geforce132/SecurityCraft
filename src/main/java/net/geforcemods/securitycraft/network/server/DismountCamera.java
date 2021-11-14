@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,6 +26,9 @@ public class DismountCamera
 
 			if(player.getCamera() instanceof SecurityCamera cam)
 			{
+				if(player.level.getBlockEntity(cam.blockPosition()) instanceof SecurityCameraBlockEntity camBe)
+					camBe.stopViewing();
+
 				player.camera = player;
 				cam.discard();
 			}
