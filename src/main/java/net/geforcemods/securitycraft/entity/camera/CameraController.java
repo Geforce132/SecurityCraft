@@ -45,10 +45,10 @@ public class CameraController
 					moveViewDown(cam);
 
 				if(options.keyLeft.isDown())
-					moveViewHorizontally(cam, cam.getYRot(), cam.getXRot(), cam.getYRot() - (float)cam.cameraSpeed);
+					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() - (float)cam.cameraSpeed);
 
 				if(options.keyRight.isDown())
-					moveViewHorizontally(cam, cam.getYRot(), cam.getXRot(), cam.getYRot() + (float)cam.cameraSpeed);
+					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() + (float)cam.cameraSpeed);
 
 				if(KeyBindings.cameraZoomIn.isDown())
 					zoomIn(cam);
@@ -109,7 +109,7 @@ public class CameraController
 			cam.setRotation(cam.getYRot(), next);
 	}
 
-	public static void moveViewHorizontally(SecurityCamera cam, float yRot, float xRot, float next)
+	public static void moveViewHorizontally(SecurityCamera cam, float yRot, float next)
 	{
 		BlockState state = cam.level.getBlockState(cam.blockPosition());
 		float checkNext = next;
