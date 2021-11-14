@@ -16,8 +16,8 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SecurityCamera extends Entity
 {
@@ -30,44 +30,35 @@ public class SecurityCamera extends Entity
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
 
-	public SecurityCamera(EntityType<SecurityCamera> type, Level world){
-		super(SCContent.eTypeSecurityCamera, world);
+	public SecurityCamera(EntityType<SecurityCamera> type, Level level){
+		super(SCContent.eTypeSecurityCamera, level);
 		noPhysics = true;
 	}
 
-	public SecurityCamera(Level world, BlockPos pos, Player player){
-		this(SCContent.eTypeSecurityCamera, world);
+	public SecurityCamera(Level level, BlockPos pos){
+		this(SCContent.eTypeSecurityCamera, level);
+
+		BlockEntity be = level.getBlockEntity(pos);
+
+		if(!(be instanceof SecurityCameraBlockEntity cam))
+		{
+			discard();
+			return;
+		}
+
 		double x = pos.getX() + 0.5D;
 		double y = pos.getY() + 0.5D;
 		double z = pos.getZ() + 0.5D;
 
-		if(world.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity cam)
-		{
-			setInitialPitchYaw(cam);
-
-			if(cam.down)
-				y += 0.25D;
-		}
+		if(cam.down)
+			y += 0.25D;
 
 		setPos(x, y, z);
+		setInitialPitchYaw(cam);
 	}
 
-	public SecurityCamera(Level world, BlockPos pos, SecurityCamera oldCamera){
-		this(SCContent.eTypeSecurityCamera, world);
-
-		double x = pos.getX() + 0.5D;
-		double y = pos.getY() + 0.5D;
-		double z = pos.getZ() + 0.5D;
-
-		if(world.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity cam)
-		{
-			setInitialPitchYaw(cam);
-
-			if(cam.down)
-				y += 0.25D;
-		}
-
-		setPos(x, y, z);
+	public SecurityCamera(Level level, BlockPos pos, SecurityCamera oldCamera){
+		this(level, pos);
 		oldCamera.discard();
 	}
 
@@ -76,14 +67,15 @@ public class SecurityCamera extends Entity
 		setXRot(30F);
 
 		Direction facing = level.getBlockState(blockPosition()).getValue(SecurityCameraBlock.FACING);
+
 		if(facing == Direction.NORTH)
-			setYRot(-180F);
+			setYRot(180F);
 		else if(facing == Direction.WEST)
 			setYRot(90F);
 		else if(facing == Direction.SOUTH)
 			setYRot(0F);
 		else if(facing == Direction.EAST)
-			setYRot(-90F);
+			setYRot(270F);
 		else if(facing == Direction.DOWN)
 			setYRot(75F);
 	}
