@@ -112,23 +112,24 @@ public class CameraController
 	public static void moveViewHorizontally(SecurityCamera cam, float yRot, float xRot, float next)
 	{
 		BlockState state = cam.level.getBlockState(cam.blockPosition());
+		float checkNext = next;
 
 		if(state.hasProperty(SecurityCameraBlock.FACING))
 		{
-			if(next < 0)
-				next += 360;
+			if(checkNext < 0)
+				checkNext += 360;
 
 			boolean shouldSetRotation = switch(state.getValue(SecurityCameraBlock.FACING)) {
-				case NORTH -> next > 90F && next < 270F;
-				case SOUTH -> next > 270F || next < 90F;
-				case EAST -> next > 180F && next < 360F;
-				case WEST -> next > 0F && next < 180F;
+				case NORTH -> checkNext > 90F && checkNext < 270F;
+				case SOUTH -> checkNext > 270F || checkNext < 90F;
+				case EAST -> checkNext > 180F && checkNext < 360F;
+				case WEST -> checkNext > 0F && checkNext < 180F;
 				case DOWN -> true;
 				default -> false;
 			};
 
 			if(shouldSetRotation)
-				cam.setRotation(next, xRot);
+				cam.setYRot(next);
 		}
 	}
 
