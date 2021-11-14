@@ -28,6 +28,7 @@
 - Fix: Crash when trying to power a taser while holding redstone in the offhand
 - Fix: Anyone can insert modules into any block
 - Fix: Entity shadows do not render on block mines
+- Fix: Block Mine explosions can create fake blocks
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: The minimum Forge version is now 31.2.45
