@@ -76,7 +76,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity {
 
 	@Override
 	public ModuleType[] acceptedModules(){
-		return new ModuleType[] { ModuleType.REDSTONE, ModuleType.SMART };
+		return new ModuleType[] { ModuleType.REDSTONE, ModuleType.ALLOWLIST };
 	}
 
 	@Override

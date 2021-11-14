@@ -911,7 +911,7 @@
 	"module.securitycraft.retinal_scanner.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Augenscanner erlaubt zugelassenen Spielern, den Scanner zu nutzen, wenn sie nicht der Besitzer sind.",
 	"module.securitycraft.retinal_scanner.disguise_module.description": "Wenn ein Tarnmodul zu einem Augenscanner hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
 	"module.securitycraft.security_camera.redstone_module.description": "Ein Redstone Modul in einer Kamera lässt diese ein Redstonesignal abgeben, wenn angeschaltet.",
-	"module.securitycraft.security_camera.smart_module.description": "Ein schlaues Modul lässt jeden die Kamera anschauen.",
+	"module.securitycraft.security_camera.allowlist_module.description": "Ein Zulassungslisten-Modul erlaubt zugelassenen Spielern die Kamera anzuschauen.",
 	"module.securitycraft.protecto.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Protecto erlaubt zugelassenen Spielern, sich in dem Angriffsradius aufzuhalten, ohne attackiert zu werden.",
 	"module.securitycraft.protecto.speed_module.description": "Ein Schnelligkeits-Modul in einem Protecto erlaubt ihm doppelt so schnell zu attackieren.",
 	"module.securitycraft.protecto.disguise_module.description": "Wenn ein Tarnmodul zu einem Protecto hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
