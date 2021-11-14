@@ -81,7 +81,8 @@ public class SCEventHandler {
 			player.teleportTo(pos.getX(), pos.getY(), pos.getZ());
 		}
 
-		SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new SendTip());
+		if(!ConfigHandler.SERVER.disableThanksMessage.get())
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new SendTip());
 	}
 
 	@SubscribeEvent
