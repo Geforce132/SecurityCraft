@@ -64,6 +64,7 @@ public class ConfigHandler {
 		public BooleanValue forceReinforcedBlockTint;
 		public BooleanValue retinalScannerFace;
 		public BooleanValue enableTeamOwnership;
+		public BooleanValue disableThanksMessage;
 
 		Server(ForgeConfigSpec.Builder builder)
 		{
@@ -131,6 +132,11 @@ public class ConfigHandler {
 					.comment("Set this to true to enable every player on a scoreboard team to own the blocks of every other player on the same team.",
 							"This enables players on the same team to break each other's reinforced blocks, change options, add/remove modules, and have access to all other owner-restricted things.")
 					.define("enable_team_ownership", false);
+
+			disableThanksMessage = builder
+					.comment("Set this to true to disable sending the message that SecurityCraft shows when a player joins.",
+							"Note, that this stops showing the message for every player, even those that want to see them.")
+					.define("disable_thanks_message", false);
 		}
 	}
 }
