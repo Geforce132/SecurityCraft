@@ -53,7 +53,7 @@ public class MountCamera
 				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
 					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos, player);
 				else
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", pos), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", te.getOwner().getName()), ChatFormatting.RED);
 			}
 			else
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", pos), ChatFormatting.RED);
