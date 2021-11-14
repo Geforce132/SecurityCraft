@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -167,4 +168,15 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 		return false;
 	}
 
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		if (world.getTileEntity(pos) instanceof TileEntityOwnable) {
+			TileEntityOwnable te = (TileEntityOwnable)world.getTileEntity(pos);
+
+			if (player.isCreative() || te.getOwner().isOwner(player))
+				return super.getPickBlock(state, target, world, pos, player);
+		}
+
+		return new ItemStack(blockDisguisedAs);
+	}
 }

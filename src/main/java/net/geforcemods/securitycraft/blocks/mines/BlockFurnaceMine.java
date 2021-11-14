@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
@@ -19,6 +20,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
@@ -131,6 +133,18 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay,
 	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return false;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		if (world.getTileEntity(pos) instanceof TileEntityOwnable) {
+			TileEntityOwnable te = (TileEntityOwnable)world.getTileEntity(pos);
+
+			if (player.isCreative() || te.getOwner().isOwner(player))
+				return super.getPickBlock(state, target, world, pos, player);
+		}
+
+		return new ItemStack(Blocks.FURNACE);
 	}
 
 	@Override
