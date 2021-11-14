@@ -19,20 +19,17 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 public class MountCamera
 {
 	private BlockPos pos;
-	private int id;
 
 	public MountCamera() {}
 
-	public MountCamera(BlockPos pos, int id)
+	public MountCamera(BlockPos pos)
 	{
 		this.pos = pos;
-		this.id = id;
 	}
 
 	public static void encode(MountCamera message, FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(message.pos);
-		buf.writeInt(message.id);
 	}
 
 	public static MountCamera decode(FriendlyByteBuf buf)
@@ -40,7 +37,6 @@ public class MountCamera
 		MountCamera message = new MountCamera();
 
 		message.pos = buf.readBlockPos();
-		message.id = buf.readInt();
 		return message;
 	}
 
@@ -48,7 +44,6 @@ public class MountCamera
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
-			int id = message.id;
 			ServerPlayer player = ctx.get().getSender();
 			Level world = player.level;
 			BlockState state = world.getBlockState(pos);
@@ -56,7 +51,7 @@ public class MountCamera
 			if(world.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && world.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te)
 			{
 				if(te.getOwner().isOwner(player) || te.hasModule(ModuleType.SMART))
-					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos, id, player);
+					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos, player);
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", pos), ChatFormatting.RED);
 			}

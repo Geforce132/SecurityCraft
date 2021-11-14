@@ -114,16 +114,16 @@ public class SecurityCameraBlock extends OwnableBlock{
 		}
 	}
 
-	public void mountCamera(Level level, BlockPos pos, int id, Player player){
+	public void mountCamera(Level level, BlockPos pos, Player player){
 		if(level instanceof ServerLevel serverLevel)
 		{
 			ServerPlayer serverPlayer = (ServerPlayer)player;
 			SecurityCamera dummyEntity;
 
 			if(serverPlayer.getCamera() instanceof SecurityCamera cam)
-				dummyEntity = new SecurityCamera(level, pos, id, cam);
+				dummyEntity = new SecurityCamera(level, pos, cam);
 			else
-				dummyEntity = new SecurityCamera(level, pos, id, player);
+				dummyEntity = new SecurityCamera(level, pos, player);
 
 			level.addFreshEntity(dummyEntity);
 			//can't use ServerPlayer#setCamera here because it also teleports the player

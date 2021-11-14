@@ -36,7 +36,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -64,21 +63,9 @@ import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
-	private static final String PREVIOUS_PLAYER_POS_NBT = "SecurityCraftPreviousPlayerPos";
-
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		Player player = event.getPlayer();
-
-		if(player.getPersistentData().contains(PREVIOUS_PLAYER_POS_NBT))
-		{
-			BlockPos pos = BlockPos.of(player.getPersistentData().getLong(PREVIOUS_PLAYER_POS_NBT));
-
-			player.getPersistentData().remove(PREVIOUS_PLAYER_POS_NBT);
-			player.teleportTo(pos.getX(), pos.getY(), pos.getZ());
-		}
-
-		SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new SendTip());
+		SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)event.getPlayer()), new SendTip());
 	}
 
 	@SubscribeEvent
@@ -87,12 +74,7 @@ public class SCEventHandler {
 		ServerPlayer player = (ServerPlayer)event.getPlayer();
 
 		if(player.getCamera() instanceof SecurityCamera cam)
-		{
-			BlockPos pos = new BlockPos(cam.getPreviousPlayerPos());
-
-			cam.kill();
-			player.getPersistentData().putLong(PREVIOUS_PLAYER_POS_NBT, pos.asLong());
-		}
+			cam.discard();
 	}
 
 	@SubscribeEvent

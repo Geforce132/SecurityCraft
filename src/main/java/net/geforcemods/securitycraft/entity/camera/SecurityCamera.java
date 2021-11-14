@@ -14,24 +14,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.Vec3;
 
 public class SecurityCamera extends Entity
 {
 	protected final double cameraSpeed = ConfigHandler.CLIENT.cameraSpeed.get();
-	private double cameraUseX;
-	private double cameraUseY;
-	private double cameraUseZ;
-	private float cameraUseYaw;
-	private float cameraUsePitch;
-	private int id;
 	public int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
 	protected int toggleNightVisionCooldown = 0;
@@ -45,88 +35,61 @@ public class SecurityCamera extends Entity
 		noPhysics = true;
 	}
 
-	public SecurityCamera(Level world, BlockPos pos, int id, Player player){
+	public SecurityCamera(Level world, BlockPos pos, Player player){
 		this(SCContent.eTypeSecurityCamera, world);
-		cameraUseX = player.getX();
-		cameraUseY = player.getY();
-		cameraUseZ = player.getZ();
-		cameraUseYaw = player.getYRot();
-		cameraUsePitch = player.getXRot();
-		this.id = id;
-		setPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+		double x = pos.getX() + 0.5D;
+		double y = pos.getY() + 0.5D;
+		double z = pos.getZ() + 0.5D;
 
-		BlockEntity te = world.getBlockEntity(blockPosition());
-
-		if(te instanceof SecurityCameraBlockEntity cam)
+		if(world.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity cam)
 		{
 			setInitialPitchYaw(cam);
 
 			if(cam.down)
-				setPos(pos.getX() + 0.5D, pos.getY() + 0.75D, pos.getZ() + 0.5D);
+				y += 0.25D;
 		}
+
+		setPos(x, y, z);
 	}
 
-	public SecurityCamera(Level world, BlockPos pos, int id, SecurityCamera camera){
+	public SecurityCamera(Level world, BlockPos pos, SecurityCamera oldCamera){
 		this(SCContent.eTypeSecurityCamera, world);
-		cameraUseX = camera.cameraUseX;
-		cameraUseY = camera.cameraUseY;
-		cameraUseZ = camera.cameraUseZ;
-		cameraUseYaw = camera.cameraUseYaw;
-		cameraUsePitch = camera.cameraUsePitch;
-		this.id = id;
-		setPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
 
-		BlockEntity te = world.getBlockEntity(blockPosition());
+		double x = pos.getX() + 0.5D;
+		double y = pos.getY() + 0.5D;
+		double z = pos.getZ() + 0.5D;
 
-		if(te instanceof SecurityCameraBlockEntity cam)
+		if(world.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity cam)
 		{
 			setInitialPitchYaw(cam);
 
 			if(cam.down)
-				setPos(pos.getX() + 0.5D, pos.getY() + 0.75D, pos.getZ() + 0.5D);
+				y += 0.25D;
 		}
 
-		camera.discard();
+		setPos(x, y, z);
+		oldCamera.discard();
 	}
 
 	private void setInitialPitchYaw(SecurityCameraBlockEntity te)
 	{
-		if(te != null && te.hasModule(ModuleType.SMART) && te.lastPitch != Float.MAX_VALUE && te.lastYaw != Float.MAX_VALUE)
-		{
-			setXRot(te.lastPitch);
-			setYRot(te.lastYaw);
-		}
-		else
-		{
-			setXRot(30F);
+		setXRot(30F);
 
-			Direction facing = level.getBlockState(blockPosition()).getValue(SecurityCameraBlock.FACING);
-
-			if(facing == Direction.NORTH)
-				setYRot(180F);
-			else if(facing == Direction.WEST)
-				setYRot(90F);
-			else if(facing == Direction.SOUTH)
-				setYRot(0F);
-			else if(facing == Direction.EAST)
-				setYRot(270F);
-			else if(facing == Direction.DOWN)
-				setYRot(75F);
-		}
-	}
-
-	@Override
-	public double getPassengersRidingOffset(){
-		return -0.75D;
+		Direction facing = level.getBlockState(blockPosition()).getValue(SecurityCameraBlock.FACING);
+		if(facing == Direction.NORTH)
+			setYRot(-180F);
+		else if(facing == Direction.WEST)
+			setYRot(90F);
+		else if(facing == Direction.SOUTH)
+			setYRot(0F);
+		else if(facing == Direction.EAST)
+			setYRot(-90F);
+		else if(facing == Direction.DOWN)
+			setYRot(75F);
 	}
 
 	@Override
 	protected boolean repositionEntityAfterLoad(){
-		return false;
-	}
-
-	@Override
-	public boolean canBeRiddenInWater(Entity rider){
 		return false;
 	}
 
@@ -181,42 +144,13 @@ public class SecurityCamera extends Entity
 	}
 
 	@Override
-	public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity)
-	{
-		livingEntity.setYRot(cameraUseYaw % 360.0F);
-		livingEntity.setXRot(Mth.clamp(cameraUsePitch, -90.0F, 90.0F) % 360.0F);
-		livingEntity.yRotO = livingEntity.getYRot();
-		livingEntity.xRotO = livingEntity.getXRot();
-		return getPreviousPlayerPos();
-	}
-
-	public Vec3 getPreviousPlayerPos()
-	{
-		return new Vec3(cameraUseX, cameraUseY, cameraUseZ);
-	}
+	protected void defineSynchedData() {}
 
 	@Override
-	protected void defineSynchedData(){}
+	public void addAdditionalSaveData(CompoundTag tag) {}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag tag){
-		tag.putInt("CameraID", id);
-		tag.putDouble("cameraUseX", cameraUseX);
-		tag.putDouble("cameraUseY", cameraUseY);
-		tag.putDouble("cameraUseZ", cameraUseZ);
-		tag.putDouble("cameraUseYaw", cameraUseYaw);
-		tag.putDouble("cameraUsePitch", cameraUsePitch);
-	}
-
-	@Override
-	public void readAdditionalSaveData(CompoundTag tag){
-		id = tag.getInt("CameraID");
-		cameraUseX = tag.getDouble("cameraUseX");
-		cameraUseY = tag.getDouble("cameraUseY");
-		cameraUseZ = tag.getDouble("cameraUseZ");
-		cameraUseYaw = tag.getFloat("cameraUseYaw");
-		cameraUsePitch = tag.getFloat("cameraUsePitch");
-	}
+	public void readAdditionalSaveData(CompoundTag tag) {}
 
 	@Override
 	public Packet<?> getAddEntityPacket()
