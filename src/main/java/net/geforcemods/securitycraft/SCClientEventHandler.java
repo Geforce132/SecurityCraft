@@ -19,6 +19,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -40,10 +43,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -84,6 +89,19 @@ public class SCClientEventHandler
 		{
 			event.setCanceled(true);
 			event.setSwingHand(false);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onGuiOpen(GuiOpenEvent event)
+	{
+		Screen screen = event.getGui();
+
+		//makes sure the overlays are properly reset when the player exits a world/server when viewing a camera
+		if(screen instanceof TitleScreen || screen instanceof JoinMultiplayerScreen)
+		{
+			OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, false);
+			OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, true);
 		}
 	}
 
