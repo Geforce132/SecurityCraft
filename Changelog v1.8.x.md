@@ -4,7 +4,7 @@
 - New: Completely overhauled the overwhelming majority of SecurityCraft's textures. Direct feedback @ChainmailPickaxe in #sc-talk on our Discord server
 - New: Reinforced Pistons
 - New: The Reinforced Redstone Block and the Reinforced Observer can now be used to open doors, activate pistons, etc.
-- New: Block Mines for Copper Ore, Deepslate Copper Ore, and where applicable, for the deepslate variants of the existing block mines
+- New: Block Mines for Copper Ore, and all deepslate ores
 - New: The debug menu now hides block mines, disguised blocks, and fake fluids
 - New: The Protecto and Trophy System now support the Disguise Module
 - New: Key Panel Block. A waterloggable, smaller version of the keypad. Place it by rightclicking a Key Panel
