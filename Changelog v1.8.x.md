@@ -31,6 +31,7 @@
 - Fix: Entity shadows do not render on block mines
 - Fix: Block Mine explosions can create fake blocks
 - Fix: Placed Block Mines are identifiable via the pick block mechanic
+- Fix: Block Pockets get disabled when they get unloaded
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 
