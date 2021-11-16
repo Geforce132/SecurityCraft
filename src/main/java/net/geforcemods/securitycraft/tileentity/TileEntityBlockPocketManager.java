@@ -586,7 +586,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 				SecurityCraft.network.sendToServer(new ToggleBlockPocketManager(this, false, size));
 			}
 
-			PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), Utils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);
+			PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), Utils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA, true);
 			enabled = false;
 
 			for(BlockPos pos : blocks)

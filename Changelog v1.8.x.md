@@ -30,6 +30,7 @@
 - Fix: Block Mine and Furnace Mine explosions can create fake blocks
 - Fix: Placed Block Mines are identifiable via the pick block mechanic
 - Fix: Block Pockets get disabled when they get unloaded
+- Fix: Block Pocket deactivation message does not get sent
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated
