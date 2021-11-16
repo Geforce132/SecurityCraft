@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -47,8 +48,13 @@ public class TileEntityBlockPocket extends TileEntitySCTE
 	{
 		super.onTileEntityDestroyed();
 
-		if(manager != null && world.getBlockState(pos).getBlock() != SCContent.blockPocketWall && world.getBlockState(pos).getBlock() != SCContent.reinforcedCrystalQuartz)
-			manager.disableMultiblock();
+		if(world.isBlockLoaded(pos) && manager != null)
+		{
+			Block block = world.getBlockState(pos).getBlock();
+
+			if(block != SCContent.blockPocketWall && block != SCContent.reinforcedCrystalQuartz)
+				manager.disableMultiblock();
+		}
 	}
 
 	@Override

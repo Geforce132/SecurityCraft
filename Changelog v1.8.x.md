@@ -29,6 +29,7 @@
 - Fix: "Are mines unbreakable?" config option does the exact opposite of what is implied. You'll have to set the "Are mines breakable?" config option appropriately, the old one is now defunct
 - Fix: Block Mine and Furnace Mine explosions can create fake blocks
 - Fix: Placed Block Mines are identifiable via the pick block mechanic
+- Fix: Block Pockets get disabled when they get unloaded
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated
