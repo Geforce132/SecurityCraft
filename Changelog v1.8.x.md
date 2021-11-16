@@ -31,6 +31,7 @@
 - Fix: Block Mine explosions can create fake blocks
 - Fix: Placed Block Mines are identifiable via the pick block mechanic
 - Fix: Block Pockets get disabled when they get unloaded
+- Fix: Block Pocket deactivation message does not get sent
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: The minimum Forge version is now 31.2.45
