@@ -690,7 +690,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	{
 		super.onTileEntityDestroyed();
 
-		if (level.getBlockState(worldPosition).getBlock() != SCContent.BLOCK_POCKET_MANAGER.get())
+		if(level.isLoaded(worldPosition) && level.getBlockState(worldPosition).getBlock() != SCContent.BLOCK_POCKET_MANAGER.get())
 			disableMultiblock();
 	}
 

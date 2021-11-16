@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
+import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
@@ -51,9 +52,7 @@ public class BlockPocketBlockEntity extends SecurityCraftBlockEntity
 	{
 		super.onTileEntityDestroyed();
 
-		BlockState state = level.getBlockState(worldPosition);
-
-		if(manager != null && state.getBlock() != SCContent.BLOCK_POCKET_WALL.get() && state.getBlock() != SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get() && state.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
+		if(level.isLoaded(worldPosition) && manager != null && !(level.getBlockState(worldPosition).getBlock() instanceof IBlockPocket))
 			manager.disableMultiblock();
 	}
 
