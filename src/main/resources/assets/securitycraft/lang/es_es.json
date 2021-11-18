@@ -792,7 +792,6 @@
 	"waila.securitycraft:password": "Contraseña: %s",
 	"waila.securitycraft:password.notSet": "Sin establecer",
 	"waila.securitycraft:customName": "Nombre personalizado: %s",
-	"waila.securitycraft:customName.notSet": "Sin establecer",
 
 	"tooltip.securitycraft:mine": "Mina",
 	"tooltip.securitycraft:sentry": "Torreta",

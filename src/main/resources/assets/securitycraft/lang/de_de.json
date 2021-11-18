@@ -868,7 +868,6 @@
 	"waila.securitycraft:password": "Passwort: %s",
 	"waila.securitycraft:password.notSet": "Nicht gesetzt",
 	"waila.securitycraft:customName": "Benutzerdefinierter Name: %s",
-	"waila.securitycraft:customName.notSet": "Nicht gesetzt",
 
 	"tooltip.securitycraft:mine": "Mine",
 	"tooltip.securitycraft:sentry": "Geschütz",
