@@ -245,11 +245,6 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public boolean hasCustomSCName() {
-		return true;
-	}
-
-	@Override
 	public int getMaxStackSize() {
 		return 64;
 	}

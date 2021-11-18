@@ -73,8 +73,8 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity {
 						MutableComponent attackedName = e.getName().plainCopy().withStyle(ChatFormatting.ITALIC);
 						MutableComponent text;
 
-						if(hasCustomSCName())
-							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().plainCopy().withStyle(ChatFormatting.ITALIC));
+						if(hasCustomName())
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomName().plainCopy().withStyle(ChatFormatting.ITALIC));
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
 

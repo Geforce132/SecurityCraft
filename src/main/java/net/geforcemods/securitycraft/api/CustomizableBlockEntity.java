@@ -130,11 +130,6 @@ public abstract class CustomizableBlockEntity extends SecurityCraftBlockEntity i
 	}
 
 	@Override
-	public boolean hasCustomSCName() {
-		return (getCustomSCName() != null && !getCustomSCName().getString().equals("name"));
-	}
-
-	@Override
 	public void onTileEntityDestroyed() {
 		if(linkable)
 			for(LinkedBlock block : linkedBlocks)

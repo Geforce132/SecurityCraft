@@ -115,7 +115,7 @@ public class PortableRadarBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new PortableRadarBlockEntity(pos, state).nameable();
+		return new PortableRadarBlockEntity(pos, state);
 	}
 
 	@Override

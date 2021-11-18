@@ -5,12 +5,13 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameable;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
+import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -142,7 +143,7 @@ public class SCEventHandler {
 		Level world = event.getWorld();
 
 		if(!world.isClientSide){
-			BlockEntity tileEntity = world.getBlockEntity(event.getPos());
+			BlockEntity be = world.getBlockEntity(event.getPos());
 			BlockState state  = world.getBlockState(event.getPos());
 			Block block = state.getBlock();
 
@@ -165,22 +166,22 @@ public class SCEventHandler {
 				return;
 			}
 
-			if(tileEntity instanceof INameable nameable && nameable.canBeNamed() && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getItemInHand(event.getHand()).hasCustomHoverName()){
+			if(be instanceof INameSetter nameable && (be instanceof SecurityCameraBlockEntity || be instanceof PortableRadarBlockEntity) && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getItemInHand(event.getHand()).hasCustomHoverName()){
 				ItemStack nametag = event.getPlayer().getItemInHand(event.getHand());
 
 				event.setCanceled(true);
 				event.setCancellationResult(InteractionResult.SUCCESS);
 
-				if(nameable.getCustomSCName().equals(nametag.getHoverName())) {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(tileEntity.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getCustomSCName()), ChatFormatting.RED);
+				if(nameable.getCustomName().equals(nametag.getHoverName())) {
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getCustomName()), ChatFormatting.RED);
 					return;
 				}
 
 				if(!event.getPlayer().isCreative())
 					nametag.shrink(1);
 
-				nameable.setCustomSCName(nametag.getHoverName());
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(tileEntity.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomSCName()), ChatFormatting.RED);
+				nameable.setCustomName(nametag.getHoverName());
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomName()), ChatFormatting.RED);
 				return;
 			}
 		}

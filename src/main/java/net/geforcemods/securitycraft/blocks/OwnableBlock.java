@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.api.INameable;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
@@ -30,8 +30,8 @@ public class OwnableBlock extends BaseEntityBlock {
 		if (stack.hasCustomHoverName()) {
 			BlockEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof INameable nameable && nameable.canBeNamed()) {
-				nameable.setCustomSCName(stack.getHoverName());
+			if (te instanceof INameSetter nameable && nameable.hasCustomName()) {
+				nameable.setCustomName(stack.getHoverName());
 			}
 		}
 	}

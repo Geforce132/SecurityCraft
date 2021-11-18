@@ -27,7 +27,7 @@ public class KeypadFurnaceScreen extends AbstractContainerScreen<KeypadFurnaceMe
 		super(container, inv, name);
 
 		title = new Random().nextInt(100) < 5 ? new TextComponent("Keypad Gurnace")
-				: (container.te.hasCustomSCName() ? container.te.getCustomSCName() : Utils.localize("gui.securitycraft:protectedFurnace.name"));
+				: (container.te.hasCustomName() ? container.te.getCustomName() : Utils.localize("gui.securitycraft:protectedFurnace.name"));
 	}
 
 	@Override

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameable;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
@@ -44,12 +44,11 @@ import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity implements IPasswordProtected, MenuProvider, IOwnable, INameable, IModuleInventory, ICustomizable
+public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity implements IPasswordProtected, MenuProvider, IOwnable, INameSetter, IModuleInventory, ICustomizable
 {
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private Owner owner = new Owner();
 	private String passcode;
-	private Component furnaceCustomName;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
@@ -74,8 +73,6 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 		if(passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
-		if(hasCustomSCName())
-			tag.putString("CustomName", furnaceCustomName.getString());
 		return tag;
 	}
 
@@ -88,7 +85,6 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 		readOptions(tag);
 		owner.load(tag);
 		passcode = tag.getString("passcode");
-		furnaceCustomName = new TextComponent(tag.getString("CustomName"));
 	}
 
 	@Override
@@ -236,39 +232,9 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 	}
 
 	@Override
-	public Component getDisplayName()
-	{
-		return hasCustomSCName() ? getCustomSCName() : getDefaultName();
-	}
-
-	@Override
 	protected Component getDefaultName()
 	{
 		return new TranslatableComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
-	}
-
-	@Override
-	public Component getCustomSCName()
-	{
-		return furnaceCustomName;
-	}
-
-	@Override
-	public void setCustomSCName(Component customName)
-	{
-		furnaceCustomName = customName;
-	}
-
-	@Override
-	public boolean hasCustomSCName()
-	{
-		return furnaceCustomName != null && furnaceCustomName.getString() != null && !furnaceCustomName.getString().isEmpty();
-	}
-
-	@Override
-	public boolean canBeNamed()
-	{
-		return true;
 	}
 
 	@Override

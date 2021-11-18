@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -33,13 +34,12 @@ import net.minecraft.world.phys.Vec3;
  *
  * @author Geforce
  */
-public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INameable, ITickingBlockEntity {
+public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INameSetter, ITickingBlockEntity {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
 	private boolean attacks = false;
-	private boolean canBeNamed = false;
-	private Component customName = new TextComponent("name");
+	private Component customName = TextComponent.EMPTY;
 	private double attackRange = 0.0D;
 	private int viewCooldown = 0;
 	private int ticksBetweenAttacks = 0;
@@ -202,7 +202,6 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 		tag.putBoolean("intersectsEntities", intersectsEntities);
 		tag.putBoolean("viewActivated", viewActivated);
 		tag.putBoolean("attacks", attacks);
-		tag.putBoolean("canBeNamed", canBeNamed);
 		tag.putDouble("attackRange", attackRange);
 		tag.putInt("attackCooldown", attackCooldown);
 		tag.putInt("ticksBetweenAttacks", ticksBetweenAttacks);
@@ -226,9 +225,6 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 
 		if (tag.contains("attacks"))
 			attacks = tag.getBoolean("attacks");
-
-		if (tag.contains("canBeNamed"))
-			canBeNamed = tag.getBoolean("canBeNamed");
 
 		if (tag.contains("attackRange"))
 			attackRange = tag.getDouble("attackRange");
@@ -392,29 +388,31 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 		return attacks;
 	}
 
-	public SecurityCraftBlockEntity nameable() {
-		canBeNamed = true;
-		return this;
+	@Override
+	public Component getName()
+	{
+		return hasCustomName() ? customName : getDefaultName();
 	}
 
 	@Override
-	public Component getCustomSCName() {
+	public boolean hasCustomName() {
+		Component name = getCustomName();
+
+		return name != null && !TextComponent.EMPTY.equals(name) && !getDefaultName().equals(name);
+	}
+
+	@Override
+	public Component getCustomName() {
 		return customName;
 	}
 
 	@Override
-	public void setCustomSCName(Component customName) {
+	public void setCustomName(Component customName) {
 		this.customName = customName;
 		sync();
 	}
 
-	@Override
-	public boolean hasCustomSCName() {
-		return (customName != null && !customName.getString().equals("name"));
-	}
-
-	@Override
-	public boolean canBeNamed() {
-		return canBeNamed;
+	public Component getDefaultName() {
+		return Utils.localize(getBlockState().getBlock().getDescriptionId());
 	}
 }

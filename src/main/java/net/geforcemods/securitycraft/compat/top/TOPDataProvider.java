@@ -14,7 +14,6 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
@@ -31,6 +30,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -118,11 +118,11 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).getString()));
 				}
 
-				if(te instanceof INameable nameable && nameable.canBeNamed()){
-					Component text = nameable.getCustomSCName();
+				if(te instanceof Nameable nameable && nameable.hasCustomName()){
+					Component text = nameable.getCustomName();
 					Component name = text == null ? TextComponent.EMPTY : text;
 
-					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:customName", nameable.hasCustomSCName() ? name : Utils.localize("waila.securitycraft:customName.notSet")).getString()));
+					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:customName", name).getString()));
 				}
 			}
 		});

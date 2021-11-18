@@ -18,7 +18,6 @@ import mcp.mobius.waila.impl.ui.TextElement;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
@@ -151,12 +150,6 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 						String password = ipp.getPassword();
 
 						tooltip.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
-					}
-
-					if(config.get(SHOW_CUSTOM_NAME) && te instanceof INameable nameable && nameable.canBeNamed()){
-						Component text = nameable.getCustomSCName();
-
-						tooltip.add(Utils.localize("waila.securitycraft:customName", nameable.hasCustomSCName() ? text : Utils.localize("waila.securitycraft:customName.notSet")));
 					}
 				}
 
