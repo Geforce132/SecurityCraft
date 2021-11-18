@@ -66,7 +66,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 				{
 					if(shouldSendMessage(e))
 					{
-						PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.PORTABLE_RADAR.get().getTranslationKey()), hasCustomSCName() ? (Utils.localize("messages.securitycraft:portableRadar.withName", TextFormatting.ITALIC + e.getName().getFormattedText() + TextFormatting.RESET, TextFormatting.ITALIC + getCustomSCName().getFormattedText() + TextFormatting.RESET)) : (Utils.localize("messages.securitycraft:portableRadar.withoutName", TextFormatting.ITALIC + e.getName().getFormattedText() + TextFormatting.RESET, pos)), TextFormatting.BLUE);
+						PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.PORTABLE_RADAR.get().getTranslationKey()), hasCustomName() ? (Utils.localize("messages.securitycraft:portableRadar.withName", TextFormatting.ITALIC + e.getName().getFormattedText() + TextFormatting.RESET, TextFormatting.ITALIC + getCustomName().getFormattedText() + TextFormatting.RESET)) : (Utils.localize("messages.securitycraft:portableRadar.withoutName", TextFormatting.ITALIC + e.getName().getFormattedText() + TextFormatting.RESET, pos)), TextFormatting.BLUE);
 						setSentMessage();
 					}
 				}

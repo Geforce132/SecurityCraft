@@ -745,7 +745,6 @@
 	"waila.securitycraft:password": "Mot de passe :",
 	"waila.securitycraft:password.notSet": "Pas défini",
 	"waila.securitycraft:customName": "Alias :",
-	"waila.securitycraft:customName.notSet": "Pas défini",
 
 	"tooltip.securitycraft:mine": "Mine",
 	"tooltip.securitycraft:sentry": "Sentinelle",

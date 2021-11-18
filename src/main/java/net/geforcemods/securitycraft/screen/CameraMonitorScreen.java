@@ -143,8 +143,8 @@ public class CameraMonitorScreen extends Screen {
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
-				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
-					renderTooltip(font.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getCustomSCName().getFormattedText()), 150), mouseX, mouseY, font);
+				if(cameraTEs[i] != null && cameraTEs[i].hasCustomName())
+					renderTooltip(font.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getCustomName().getFormattedText()), 150), mouseX, mouseY, font);
 			}
 	}
 

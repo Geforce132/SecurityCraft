@@ -235,11 +235,6 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public boolean hasCustomSCName() {
-		return true;
-	}
-
-	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}

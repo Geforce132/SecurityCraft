@@ -226,9 +226,9 @@ public class SCClientEventHandler
 		GameSettings settings = Minecraft.getInstance().gameSettings;
 		String lookAround = settings.keyBindForward.getLocalizedName().toUpperCase() + settings.keyBindLeft.getLocalizedName().toUpperCase() + settings.keyBindBack.getLocalizedName().toUpperCase() + settings.keyBindRight.getLocalizedName().toUpperCase() + " - " + Utils.localize("gui.securitycraft:camera.lookAround").getFormattedText();
 
-		if(te.hasCustomSCName())
+		if(te.hasCustomName())
 		{
-			String cameraName = te.getCustomSCName().getFormattedText();
+			String cameraName = te.getCustomName().getFormattedText();
 
 			Minecraft.getInstance().fontRenderer.drawStringWithShadow(cameraName, resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(cameraName) - 8, 25, 16777215);
 			timeY += 10;

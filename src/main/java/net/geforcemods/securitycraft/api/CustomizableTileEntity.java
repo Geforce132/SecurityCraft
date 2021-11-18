@@ -129,11 +129,6 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	}
 
 	@Override
-	public boolean hasCustomSCName() {
-		return (getCustomSCName() != null && !getCustomSCName().getFormattedText().equals("name"));
-	}
-
-	@Override
 	public void onTileEntityDestroyed() {
 		if(linkable)
 			for(LinkedBlock block : linkedBlocks)

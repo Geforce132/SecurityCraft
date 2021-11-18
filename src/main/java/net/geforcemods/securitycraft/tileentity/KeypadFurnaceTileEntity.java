@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameable;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
@@ -43,12 +43,11 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implements IPasswordProtected, INamedContainerProvider, IOwnable, INameable, IModuleInventory, ICustomizable
+public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implements IPasswordProtected, INamedContainerProvider, IOwnable, INameSetter, IModuleInventory, ICustomizable
 {
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private Owner owner = new Owner();
 	private String passcode;
-	private ITextComponent furnaceCustomName;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
@@ -73,8 +72,6 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 		if(passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
-		if(hasCustomSCName())
-			tag.putString("CustomName", furnaceCustomName.getString());
 		return tag;
 	}
 
@@ -87,7 +84,6 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 		readOptions(tag);
 		owner.read(tag);
 		passcode = tag.getString("passcode");
-		furnaceCustomName = new StringTextComponent(tag.getString("CustomName"));
 	}
 
 	@Override
@@ -235,39 +231,9 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	}
 
 	@Override
-	public ITextComponent getDisplayName()
-	{
-		return hasCustomSCName() ? getCustomSCName() : getDefaultName();
-	}
-
-	@Override
 	protected ITextComponent getDefaultName()
 	{
 		return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getTranslationKey());
-	}
-
-	@Override
-	public ITextComponent getCustomSCName()
-	{
-		return furnaceCustomName;
-	}
-
-	@Override
-	public void setCustomSCName(ITextComponent customName)
-	{
-		furnaceCustomName = customName;
-	}
-
-	@Override
-	public boolean hasCustomSCName()
-	{
-		return furnaceCustomName != null && furnaceCustomName.getFormattedText() != null && !furnaceCustomName.getFormattedText().isEmpty();
-	}
-
-	@Override
-	public boolean canBeNamed()
-	{
-		return true;
 	}
 
 	@Override
