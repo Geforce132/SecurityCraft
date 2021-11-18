@@ -27,13 +27,8 @@ public class OwnableBlock extends BaseEntityBlock {
 		if(placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
 
-		if (stack.hasCustomHoverName()) {
-			BlockEntity te = world.getBlockEntity(pos);
-
-			if (te instanceof INameSetter nameable && nameable.hasCustomName()) {
-				nameable.setCustomName(stack.getHoverName());
-			}
-		}
+		if (stack.hasCustomHoverName() && world.getBlockEntity(pos) instanceof INameSetter nameable)
+			nameable.setCustomName(stack.getHoverName());
 	}
 
 	@Override
