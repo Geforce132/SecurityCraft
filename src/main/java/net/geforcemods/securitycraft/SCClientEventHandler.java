@@ -237,9 +237,9 @@ public class SCClientEventHandler
 		String time = ClientUtils.getFormattedMinecraftTime();
 		int timeY = 25;
 
-		if(te.hasCustomSCName())
+		if(te.hasCustomName())
 		{
-			ITextComponent cameraName = te.getCustomSCName();
+			ITextComponent cameraName = te.getCustomName();
 
 			font.drawTextWithShadow(matrix, cameraName, resolution.getScaledWidth() - font.getStringPropertyWidth(cameraName) - 8, 25, 16777215);
 			timeY += 10;

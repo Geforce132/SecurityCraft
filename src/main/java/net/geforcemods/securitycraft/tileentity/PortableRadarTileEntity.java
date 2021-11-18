@@ -71,8 +71,8 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 						IFormattableTextComponent attackedName = e.getName().copyRaw().mergeStyle(TextFormatting.ITALIC);
 						IFormattableTextComponent text;
 
-						if(hasCustomSCName())
-							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().copyRaw().mergeStyle(TextFormatting.ITALIC));
+						if(hasCustomName())
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomName().copyRaw().mergeStyle(TextFormatting.ITALIC));
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
 

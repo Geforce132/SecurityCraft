@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -33,13 +34,12 @@ import net.minecraft.util.text.StringTextComponent;
  *
  * @author Geforce
  */
-public class SecurityCraftTileEntity extends OwnableTileEntity implements ITickableTileEntity, INameable {
+public class SecurityCraftTileEntity extends OwnableTileEntity implements ITickableTileEntity, INameSetter {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
 	private boolean attacks = false;
-	private boolean canBeNamed = false;
-	private ITextComponent customName = new StringTextComponent("name");
+	private ITextComponent customName = StringTextComponent.EMPTY;
 	private double attackRange = 0.0D;
 	private int viewCooldown = 0;
 	private int ticksBetweenAttacks = 0;
@@ -197,7 +197,6 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 		tag.putBoolean("intersectsEntities", intersectsEntities);
 		tag.putBoolean("viewActivated", viewActivated);
 		tag.putBoolean("attacks", attacks);
-		tag.putBoolean("canBeNamed", canBeNamed);
 		tag.putDouble("attackRange", attackRange);
 		tag.putInt("attackCooldown", attackCooldown);
 		tag.putInt("ticksBetweenAttacks", ticksBetweenAttacks);
@@ -221,9 +220,6 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 
 		if (tag.contains("attacks"))
 			attacks = tag.getBoolean("attacks");
-
-		if (tag.contains("canBeNamed"))
-			canBeNamed = tag.getBoolean("canBeNamed");
 
 		if (tag.contains("attackRange"))
 			attackRange = tag.getDouble("attackRange");
@@ -387,30 +383,31 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 		return attacks;
 	}
 
-	public SecurityCraftTileEntity nameable() {
-		canBeNamed = true;
-		return this;
+	@Override
+	public ITextComponent getName()
+	{
+		return hasCustomName() ? customName : getDefaultName();
 	}
 
 	@Override
-	public ITextComponent getCustomSCName() {
+	public boolean hasCustomName() {
+		ITextComponent name = getCustomName();
+
+		return name != null && !StringTextComponent.EMPTY.equals(name) && !getDefaultName().equals(name);
+	}
+
+	@Override
+	public ITextComponent getCustomName() {
 		return customName;
 	}
 
 	@Override
-	public void setCustomSCName(ITextComponent customName) {
+	public void setCustomName(ITextComponent customName) {
 		this.customName = customName;
 		sync();
 	}
 
-	@Override
-	public boolean hasCustomSCName() {
-		return (customName != null && !customName.getString().equals("name"));
+	public ITextComponent getDefaultName() {
+		return Utils.localize(getBlockState().getBlock().getTranslationKey());
 	}
-
-	@Override
-	public boolean canBeNamed() {
-		return canBeNamed;
-	}
-
 }

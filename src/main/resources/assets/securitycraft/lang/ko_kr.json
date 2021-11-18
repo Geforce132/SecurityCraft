@@ -807,7 +807,6 @@
 	"waila.securitycraft:password": "비밀번호: %s",
 	"waila.securitycraft:password.notSet": "설정되지 않음",
 	"waila.securitycraft:customName": "사용자 지정 이름: %s",
-	"waila.securitycraft:customName.notSet": "설정되지 않음",
 
 	"tooltip.securitycraft:mine": "지뢰",
 	"tooltip.securitycraft:sentry": "센트리 건",

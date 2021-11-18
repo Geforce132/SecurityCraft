@@ -121,7 +121,7 @@ public class PortableRadarBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new PortableRadarTileEntity().nameable();
+		return new PortableRadarTileEntity();
 	}
 
 	@Override

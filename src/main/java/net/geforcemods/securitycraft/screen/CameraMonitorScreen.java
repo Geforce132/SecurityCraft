@@ -146,8 +146,8 @@ public class CameraMonitorScreen extends Screen {
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
-				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
-					renderTooltip(matrix, font.trimStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomSCName()), 150), mouseX, mouseY);
+				if(cameraTEs[i] != null && cameraTEs[i].hasCustomName())
+					renderTooltip(matrix, font.trimStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomName()), 150), mouseX, mouseY);
 			}
 	}
 

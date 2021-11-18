@@ -179,7 +179,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new SecurityCameraTileEntity().nameable();
+		return new SecurityCameraTileEntity();
 	}
 
 	@Override
