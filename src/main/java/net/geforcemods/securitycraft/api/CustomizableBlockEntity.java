@@ -130,7 +130,7 @@ public abstract class CustomizableBlockEntity extends SecurityCraftBlockEntity i
 	}
 
 	@Override
-	public void onTileEntityDestroyed() {
+	public void setRemoved() {
 		if(linkable)
 			for(LinkedBlock block : linkedBlocks)
 				CustomizableBlockEntity.unlink(block.asTileEntity(level), this);

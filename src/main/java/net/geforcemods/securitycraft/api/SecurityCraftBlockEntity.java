@@ -239,15 +239,6 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 			customName = new TextComponent(tag.getString("customName"));
 	}
 
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-
-		onTileEntityDestroyed();
-	}
-
-	public void onTileEntityDestroyed() {}
-
 	/**
 	 * Automatically detects the side this method was called on, and
 	 * sends the client-side value of this TileEntity's CompoundNBT
