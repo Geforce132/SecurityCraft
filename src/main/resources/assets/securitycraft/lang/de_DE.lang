@@ -386,10 +386,11 @@ help.securitycraft:reinforced_stone_button.info=Die verstärkten Knöpfe können
 help.securitycraft:reinforced_lever.info=Der verstärkte Hebel kann nur von seinem Besitzer oder zugelassenen Spielern aktiviert werden.
 help.securitycraft:reinforced_hopper.info=Der verstärkte Trichter ist der einzige Block, der benutzt werden kann, um Items aus einer/einem Passwort-gesicherten Truhe/Ofen zu extrahieren. Sonst verhält er sich wie ein normaler Trichter.
 help.securitycraft:projector.info=Der Projektor projiziert holographische Versionen eines Blockes deiner Wahl in die Welt. Dies kann genutzt werden, um Gebäude und andere Bereiche von Interesse von anderen Spielern zu verstecken. Der Entfernung und die Breite der Projektion kann im GUI des Projektors verändert werden.
+help.securitycraft:ironDoorReinforced.info=Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Blockentferner entfernt und durch Nummernschlösser, Inventarscanner, etc. geöffnet werden.
+help.securitycraft:scannerDoor.info=Die Scannertür verhält sich wie der Augenscanner. Sie öffnet sich von selbst, wenn man den oberen Teil anschaut.
+help.securitycraft:keypad_door.info=Die Nummernschloss-Tür verhält sich wie ein Nummernschloss. Um die Tür zu öffnen, muss man den korrekten Code eingeben.
 
 help.securitycraft:codebreaker.info=Der Codebrecher kann jedes Nummernschloss, jede passwortgesicherte Truhe und jeden passwortgesicherten Ofen durch einen Rechtsklick knacken. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)
-help.securitycraft:doorIndestructibleIronItem.info=Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Blockentferner entfernt und durch Nummernschlösser, Inventarscanner, etc. geöffnet werden.
-help.securitycraft:scannerDoorItem.info=Die Scannertür verhält sich wie der Augenscanner. Sie öffnet sich von selbst, wenn man den oberen Teil anschaut.
 help.securitycraft:universalBlockRemover.info=Der Universelle Blockentferner wird benutzt, um verstärkte Blöcke durch einen Rechtsklick zu entfernen. Nur der Spieler, der den Block platziert hat, kann ihn auch entfernen.
 help.securitycraft:keycardLV1.info=Schlüsselkarten können mit einem Schlüsselkarten-Leser verbunden werden, um diesen Leser dann öffnen zu können. Lies die Seite des Schlüsselkarten-Lesers für mehr Informationen.
 help.securitycraft:keycardLV2.info=Schlüsselkarten können mit einem Schlüsselkarten-Leser verbunden werden, um diesen Leser dann öffnen zu können. Lies die Seite des Schlüsselkarten-Lesers für mehr Informationen.
@@ -424,7 +425,6 @@ help.securitycraft:universalKeyChanger.info=Der Universelle Passwortwechsler erl
 help.securitycraft:secretSignItem.info=Das Geheime Schild funktioniert wie das Vanilla-Schild, mit dem Unterschied, dass nur der Besitzer und zugelassene Spieler den Text lesen und mit dem Schild interagieren können. Stelle sicher, dass keiner den Block, an dem das Schild ist, zerstören kann!
 help.securitycraft:sentry.info=Das Geschütz hat drei Modi, die mit einem Rechtsklick auf das Geschütz gewechselt werden können. Untätig (es wird niemals angreifen), Tarnen (es wird nur feindliche Spieler in seiner Nähe attackieren) und Aggressiv (es wird Mobs und feindliche Spieler attackieren). Rechtsklicke es mit einem Tarnmodul welches einen normalen, undurchsichtigen Block hat (z.B. Stein, aber nicht Glas oder Stufen), und das Geschütz wird sich tarnen. Das Modul kann direkt ausgewechselt, oder per Rechtsklick mit einem Universellen Block Modifizierer entfernt werden. Um das Geschütz zu entfernen, ducke Dich und rechtsklicke es.
 help.securitycraft:crystalQuartzItem.info=Kristallquartz wird benutzt, um Kristallquartz-Blöcke herzustellen.
-help.securitycraft:keypad_door_item.info=Die Nummernschloss-Tür verhält sich wie ein Nummernschloss. Um die Tür zu öffnen, muss man den korrekten Code eingeben.
 help.securitycraft:speed_module.info=Das Schnelligkeits-Modul erlaubt einigen von SecurityCrafts Blöcken, schneller zu arbeiten.
 
 gui.securitycraft:scManual.disabled=Deaktiviert

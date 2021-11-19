@@ -34,6 +34,7 @@
 - Fix: Placed Block Mines are identifiable via the pick block mechanic
 - Fix: Block Pockets get disabled when they get unloaded
 - Fix: Block Pocket deactivation message does not get sent
+- Fix: SecurityCraft Manual entries for doors are not properly showing all information
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated

@@ -6,7 +6,7 @@ import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -15,13 +15,12 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class ItemSpecialDoor extends Item
+public class ItemSpecialDoor extends ItemBlock
 {
+	public ItemSpecialDoor(Block block) {
+		super(block);
+	}
 
-	/**
-	 * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-	 */
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
@@ -37,13 +36,13 @@ public abstract class ItemSpecialDoor extends Item
 			if (!block.isReplaceable(world, pos))
 				pos = pos.offset(facing);
 
-			if (player.canPlayerEdit(pos, facing, stack) && getDoorBlock().canPlaceBlockAt(world, pos))
+			if (player.canPlayerEdit(pos, facing, stack) && getBlock().canPlaceBlockAt(world, pos))
 			{
 				EnumFacing angleFacing = EnumFacing.fromAngle(player.rotationYaw);
 				int offsetX = angleFacing.getXOffset();
 				int offsetZ = angleFacing.getZOffset();
 				boolean flag = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;
-				placeDoor(world, pos, angleFacing, getDoorBlock(), flag);
+				placeDoor(world, pos, angleFacing, getBlock(), flag);
 				SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
 				world.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				stack.shrink(1);
@@ -89,6 +88,4 @@ public abstract class ItemSpecialDoor extends Item
 		world.notifyNeighborsOfStateChange(pos, door, false);
 		world.notifyNeighborsOfStateChange(blockAbove, door, false);
 	}
-
-	public abstract Block getDoorBlock();
 }

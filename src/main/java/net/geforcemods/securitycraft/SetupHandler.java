@@ -109,16 +109,15 @@ import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemCodebreaker;
 import net.geforcemods.securitycraft.items.ItemKeyPanel;
 import net.geforcemods.securitycraft.items.ItemKeycard;
-import net.geforcemods.securitycraft.items.ItemKeypadDoor;
 import net.geforcemods.securitycraft.items.ItemMineRemoteAccessTool;
 import net.geforcemods.securitycraft.items.ItemModifiedBucket;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.items.ItemReinforcedDoor;
 import net.geforcemods.securitycraft.items.ItemSCManual;
-import net.geforcemods.securitycraft.items.ItemScannerDoor;
 import net.geforcemods.securitycraft.items.ItemSecretSign;
 import net.geforcemods.securitycraft.items.ItemSentry;
 import net.geforcemods.securitycraft.items.ItemSentryRemoteAccessTool;
+import net.geforcemods.securitycraft.items.ItemSpecialDoor;
 import net.geforcemods.securitycraft.items.ItemTaser;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockRemover;
@@ -299,7 +298,7 @@ public class SetupHandler
 		SCContent.keycardLvl4 = new ItemKeycard(3).setRegistryName("keycard_lv4").setTranslationKey("securitycraft:keycardLV4");
 		SCContent.keycardLvl5 = new ItemKeycard(4).setRegistryName("keycard_lv5").setTranslationKey("securitycraft:keycardLV5");
 		SCContent.limitedUseKeycard = new ItemKeycard(-1).setRegistryName("limited_use_keycard").setTranslationKey("securitycraft:limitedUseKeycard");
-		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setRegistryName("door_indestructible_iron_item").setTranslationKey("securitycraft:doorIndestructibleIronItem").setCreativeTab(SecurityCraft.tabSCDecoration);
+		SCContent.reinforcedDoorItem = new ItemReinforcedDoor(SCContent.reinforcedDoor).setRegistryName("door_indestructible_iron_item").setTranslationKey("securitycraft:doorIndestructibleIronItem").setCreativeTab(SecurityCraft.tabSCDecoration);
 		SCContent.universalBlockRemover = new ItemUniversalBlockRemover().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_remover").setTranslationKey("securitycraft:universalBlockRemover");
 		SCContent.remoteAccessMine = new ItemMineRemoteAccessTool().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("remote_access_mine").setTranslationKey("securitycraft:remoteAccessMine");
 		SCContent.remoteAccessSentry = new ItemSentryRemoteAccessTool().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("remote_access_sentry").setTranslationKey("securitycraft:remoteAccessSentry");
@@ -327,10 +326,10 @@ public class SetupHandler
 		SCContent.universalBlockReinforcerLvL3 = new ItemUniversalBlockReinforcer(0).setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_reinforcer_lvl3").setTranslationKey("securitycraft:universalBlockReinforcerLvL3");
 		SCContent.briefcase = new ItemBriefcase().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("briefcase").setTranslationKey("securitycraft:briefcase");
 		SCContent.universalKeyChanger = new ItemUniversalKeyChanger().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_key_changer").setTranslationKey("securitycraft:universalKeyChanger");
-		SCContent.scannerDoorItem = new ItemScannerDoor().setRegistryName("scanner_door_item").setTranslationKey("securitycraft:scannerDoorItem").setCreativeTab(SecurityCraft.tabSCDecoration);
+		SCContent.scannerDoorItem = new ItemSpecialDoor(SCContent.scannerDoor).setRegistryName("scanner_door_item").setTranslationKey("securitycraft:scannerDoorItem").setCreativeTab(SecurityCraft.tabSCDecoration);
 		SCContent.secretSignItem = new ItemSecretSign().setRegistryName("secret_sign_item").setTranslationKey("securitycraft:secretSignItem").setCreativeTab(SecurityCraft.tabSCDecoration);
 		SCContent.sentry = new ItemSentry().setRegistryName("sentry").setTranslationKey("securitycraft:sentry").setCreativeTab(SecurityCraft.tabSCTechnical);
 		SCContent.crystalQuartzItem = new Item().setRegistryName("crystal_quartz_item").setTranslationKey("securitycraft:crystalQuartzItem").setCreativeTab(SecurityCraft.tabSCDecoration);
-		SCContent.keypadDoorItem = new ItemKeypadDoor().setRegistryName("keypad_door_item").setTranslationKey("securitycraft:keypad_door_item").setCreativeTab(SecurityCraft.tabSCDecoration);
+		SCContent.keypadDoorItem = new ItemSpecialDoor(SCContent.keypadDoor).setRegistryName("keypad_door_item").setTranslationKey("securitycraft:keypad_door_item").setCreativeTab(SecurityCraft.tabSCDecoration);
 	}
 }

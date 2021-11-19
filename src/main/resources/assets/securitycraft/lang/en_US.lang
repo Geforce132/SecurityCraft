@@ -386,10 +386,11 @@ help.securitycraft:reinforced_stone_button.info=The Reinforced Buttons can only 
 help.securitycraft:reinforced_lever.info=The Reinforced Lever can only be activated by its owner or players on the allowlist.
 help.securitycraft:reinforced_hopper.info=The Reinforced Hopper is the only block that can be used to extract items out of a password protected chest/furnace if both are owned by the same player. It will otherwise act like a vanilla hopper.
 help.securitycraft:projector.info=The Projector projects holographic versions of a block of your choice into the world, which can be used to hide buildings and other areas of interest from other players. The range and width of the projection can be changed within the Projector's GUI.
+help.securitycraft:ironDoorReinforced.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.
+help.securitycraft:scannerDoor.info=The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top to open it.
+help.securitycraft:keypad_door.info=The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.
 
 help.securitycraft:codebreaker.info=The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)
-help.securitycraft:doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.
-help.securitycraft:scannerDoorItem.info=The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top to open it.
 help.securitycraft:universalBlockRemover.info=The universal block remover is used to destroy "reinforced" blocks by rightclicking it. Only the person who placed the block down can destroy it.
 help.securitycraft:keycardLV1.info=Keycards can be linked to Keycard Readers in order to open them. To reset the settings on keycard, put it into a crafting table. See the Keycard Reader's manual page for more information.
 help.securitycraft:keycardLV2.info=Keycards can be linked to Keycard Readers in order to open them. To reset the settings on keycard, put it into a crafting table. See the Keycard Reader's manual page for more information.
@@ -424,7 +425,6 @@ help.securitycraft:universalKeyChanger.info=The universal key changer allows you
 help.securitycraft:secretSignItem.info=The Secret Sign works like a vanilla sign, with the slight difference that only the owner of the sign and players on the allowlist can interact with, and view the text on it. Make sure noone can break the block it's placed on!
 help.securitycraft:sentry.info=The Sentry has three modes that can be switched by rightclicking it. Idle (it will never attack), Camouflage (it will only attack enemy players in its range) and Aggressive (it will attack hostile mobs and enemy players). Rightclicking it with a Disguise Module containing a full and opaque block (e.g. stone, but not glass or stairs) will make the Sentry disguise itself. The module can be switched directly, or extracted by rightclicking with a Universal Block Modifier. To remove the sentry, sneak-rightclick it.
 help.securitycraft:crystalQuartzItem.info=Crystal Quartz is used to craft Crystal Quartz blocks.
-help.securitycraft:keypad_door_item.info=The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.
 help.securitycraft:speed_module.info=The speed module allows some of SecurityCraft's blocks to operate faster than usual.
 
 gui.securitycraft:scManual.disabled=Disabled
