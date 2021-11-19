@@ -814,7 +814,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey());
+		return super.getDisplayName();
 	}
 
 	@Override

@@ -25,7 +25,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class IMSTileEntity extends CustomizableTileEntity implements INamedContainerProvider {
 
@@ -188,7 +187,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.IMS.get().getTranslationKey());
+		return super.getDisplayName();
 	}
 
 	public int getAttackInterval()

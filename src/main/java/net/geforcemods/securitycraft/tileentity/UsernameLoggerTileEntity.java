@@ -21,7 +21,6 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
@@ -144,7 +143,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.USERNAME_LOGGER.get().getTranslationKey());
+		return super.getDisplayName();
 	}
 
 	@Override

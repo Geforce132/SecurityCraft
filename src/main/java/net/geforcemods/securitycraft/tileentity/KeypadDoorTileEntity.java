@@ -20,7 +20,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPasswordProtected
@@ -73,7 +72,7 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEYPAD_DOOR.get().getTranslationKey());
+						return KeypadDoorTileEntity.super.getDisplayName();
 					}
 				}, pos);
 			}
@@ -94,7 +93,7 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEYPAD_DOOR.get().getTranslationKey());
+							return KeypadDoorTileEntity.super.getDisplayName();
 						}
 					}, pos);
 				}
