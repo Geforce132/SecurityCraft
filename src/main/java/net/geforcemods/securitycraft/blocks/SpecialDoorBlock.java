@@ -101,6 +101,10 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock
 	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
 	{
 		BlockState upperState = world.getBlockState(pos);
+
+		if(!upperState.getValue(DoorBlock.OPEN))
+			return;
+
 		BlockState lowerState;
 
 		if(upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
