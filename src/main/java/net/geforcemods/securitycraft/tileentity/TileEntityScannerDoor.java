@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -11,10 +12,18 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;
 
-public class TileEntityScannerDoor extends TileEntitySpecialDoor
+public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IViewActivated
 {
+	private int viewCooldown = 0;
+
 	@Override
-	public void entityViewed(EntityLivingBase entity)
+	public void update() {
+		super.update();
+		checkView(world, pos);
+	}
+
+	@Override
+	public void onEntityViewed(EntityLivingBase entity)
 	{
 		IBlockState upperState = world.getBlockState(pos);
 		IBlockState lowerState = world.getBlockState(pos.down());
@@ -54,7 +63,12 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor
 	@Override
 	public int getViewCooldown()
 	{
-		return 30;
+		return viewCooldown;
+	}
+
+	@Override
+	public void setViewCooldown(int viewCooldown) {
+		this.viewCooldown = viewCooldown;
 	}
 
 	@Override

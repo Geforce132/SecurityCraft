@@ -13,9 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -33,11 +30,9 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INameSetter {
 
 	protected boolean intersectsEntities = false;
-	protected boolean viewActivated = false;
 	private boolean attacks = false;
 	private String customName = "";
 	private double attackRange = 0.0D;
-	private int viewCooldown = 0;
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
 	private Class<? extends Entity> typeToAttack = Entity.class;
@@ -57,37 +52,6 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 			{
 				entity = (Entity)iterator.next();
 				entityIntersecting(entity);
-			}
-		}
-
-		if(viewActivated){
-			if(viewCooldown > 0){
-				viewCooldown--;
-				return;
-			}
-
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			AxisAlignedBB area = (new AxisAlignedBB(x, y, z, (x), (y), (z)).grow(5, 5, 5));
-			List<?> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, area);
-			Iterator<?> iterator = entities.iterator();
-			EntityLivingBase entity;
-
-			while (iterator.hasNext())
-			{
-				entity = (EntityLivingBase)iterator.next();
-				double eyeHeight = entity.getEyeHeight();
-				boolean isPlayer = (entity instanceof EntityPlayer);
-				Vec3d lookVec = new Vec3d((entity.posX + (entity.getLookVec().x * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().y * 5)), (entity.posZ + (entity.getLookVec().z * 5)));
-
-				RayTraceResult mop = getWorld().rayTraceBlocks(new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
-				if(mop != null && mop.typeOfHit == Type.BLOCK)
-					if(mop.getBlockPos().getX() == getPos().getX() && mop.getBlockPos().getY() == getPos().getY() && mop.getBlockPos().getZ() == getPos().getZ())
-						if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {
-							entityViewed(entity);
-							viewCooldown = getViewCooldown();
-						}
 			}
 		}
 
@@ -136,11 +100,6 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 	}
 
 	/**
-	 * Called when {@link TileEntitySCTE}.isViewActivated(), and when an entity looks directly at this block.
-	 */
-	public void entityViewed(EntityLivingBase entity) {}
-
-	/**
 	 * Handle your TileEntity's attack to entities here.
 	 * ONLY RUNS ON THE SERVER SIDE (to keep the TE's client cooldown in-sync)! If you need something done on the client,
 	 * use packets.<p>
@@ -182,7 +141,6 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 		super.writeToNBT(tag);
 
 		tag.setBoolean("intersectsEntities", intersectsEntities);
-		tag.setBoolean("viewActivated", viewActivated);
 		tag.setBoolean("attacks", attacks);
 		tag.setDouble("attackRange", attackRange);
 		tag.setInteger("attackCooldown", attackCooldown);
@@ -201,9 +159,6 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 
 		if (tag.hasKey("intersectsEntities"))
 			intersectsEntities = tag.getBoolean("intersectsEntities");
-
-		if (tag.hasKey("viewActivated"))
-			viewActivated = tag.getBoolean("viewActivated");
 
 		if (tag.hasKey("attacks"))
 			attacks = tag.getBoolean("attacks");
@@ -250,40 +205,6 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 
 	public boolean doesIntersectsEntities(){
 		return intersectsEntities;
-	}
-
-	/**
-	 * Sets this TileEntity able to be activated when a player looks at the block.
-	 * <p>
-	 * Calls {@link TileEntitySCTE}.entityViewed(EntityLivingBase) when an {@link EntityLivingBase} looks at this block.
-	 * <p>
-	 * Implement IViewActivated in your Block class in order to do stuff with that event.
-	 */
-	public TileEntitySCTE activatedByView(){
-		viewActivated = true;
-		return this;
-	}
-
-	/**
-	 * @return The amount of ticks the block should "cooldown"
-	 *         for after an Entity looks at this block.
-	 */
-	public int getViewCooldown() {
-		return 0;
-	}
-
-	/**
-	 * @return Can this TileEntity can only be activated by an EntityPlayer?
-	 */
-	public boolean activatedOnlyByPlayer() {
-		return true;
-	}
-
-	/**
-	 * @return If this TileEntity can be activated when an Entity looking at it.
-	 */
-	public boolean isActivatedByView(){
-		return viewActivated;
 	}
 
 	/**

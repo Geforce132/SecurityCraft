@@ -137,7 +137,7 @@ public class BlockRetinalScanner extends BlockDisguisable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityRetinalScanner().activatedByView();
+		return new TileEntityRetinalScanner();
 	}
 
 	@Override

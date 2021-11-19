@@ -20,8 +20,8 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.gui.components.HoverChecker;
 import net.geforcemods.securitycraft.gui.components.PatronScrollList;
 import net.geforcemods.securitycraft.gui.components.StackHoverChecker;
@@ -157,7 +157,7 @@ public class GuiSCManual extends GuiScreen {
 					if(te instanceof IPasswordProtected)
 						drawTexturedModalRect(startX + 55, 118, 18, 1, 17, 16);
 
-					if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView())
+					if(te instanceof IViewActivated)
 						drawTexturedModalRect(startX + 81, 118, 36, 1, 17, 16);
 
 					if(te instanceof ICustomizable)
@@ -452,7 +452,7 @@ public class GuiSCManual extends GuiScreen {
 				if(te instanceof IPasswordProtected)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passwordProtectedBlock").getFormattedText()));
 
-				if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView())
+				if(te instanceof IViewActivated)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock").getFormattedText()));
 
 				if(te instanceof ICustomizable)
