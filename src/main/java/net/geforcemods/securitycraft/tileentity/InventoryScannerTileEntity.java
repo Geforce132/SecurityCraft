@@ -24,6 +24,7 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -385,6 +386,12 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 	{
 		return new InventoryScannerContainer(windowId, world, pos, inv);
+	}
+
+	@Override
+	public ITextComponent getDisplayName()
+	{
+		return super.getDisplayName();
 	}
 
 	@Override
