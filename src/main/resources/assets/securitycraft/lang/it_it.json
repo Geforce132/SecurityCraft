@@ -471,10 +471,12 @@
 	"help.securitycraft.reinforced_lever.info": "La leva rinforzata può solo essere attivata dal loro possessore o dai giocatori nella lista consentiti.",
 	"help.securitycraft.reinforced_hopper.info": "La tramoggia rinforzata è l'unico blocco che può essere usato per estrarre oggetti da un baule protetto da password (entrambi gli oggetti devono essere posseduti dallo stesso giocatore). Negli altri casi funzionerà come una tramoggia classica.",
 	"help.securitycraft.projector.info": "Il proiettore proietta versioni olografiche nel mondo di un blocco a tua scelta, e può essere usato per nascondere costruzioni o aree di interesse ad altri giocatori. Il raggio e la larghezza dei blocchi possono essere cambiati nell'interfaccia del proiettore.",
-
-	"help.securitycraft.codebreaker.info": "Il decrittatore è capace di craccare il codice di qualsiasi tastiera o blocco protetto da password (fornace e baule) cliccando il blocco col tasto destro. (5 utilizzi con una possibilità di 2/3 di funzionare)",
 	"help.securitycraft.door_indestructible_iron_item.info": "La porta di ferro rinforzata è come una normale porta di ferro, ma è indistruttibile. Può essere aperta solo da tastiere, scanner dell'inventario, ecc. Il proprietario della porta può utilizzare il rimuovi-blocchi universale per distruggerla.",
 	"help.securitycraft.scanner_door_item.info": "La porta scanner agisce come uno scanner della retina integrato in una porta di ferro rinforzata, dove il proprietario la guarda per aprirla.",
+	"help.securitycraft.keypad_door.info": "La porta con tastiera funziona come una tastiera classica integrata in una porta rinforzata, dove bisogna inserire un codice per aprirla.",
+	"help.securitycraft.key_panel.info": "Il tastierino viene usato nelle ricette per craftare la tastiera e i blocchi protetti da password (baule e fornace).",
+
+	"help.securitycraft.codebreaker.info": "Il decrittatore è capace di craccare il codice di qualsiasi tastiera o blocco protetto da password (fornace e baule) cliccando il blocco col tasto destro. (5 utilizzi con una possibilità di 2/3 di funzionare)",
 	"help.securitycraft.universal_block_remover.info": "Il rimuovi-blocchi universale viene utilizzato per rimuovere i blocchi \"rinforzati\" cliccandoli col tasto destro tenendo lo strumento. Solo la persona che ha piazzato il blocco può distruggerlo.",
 	"help.securitycraft.keycard_lv1.info": "Le tessere magnetiche possono essere collegate ai loro lettori in modo da aprirli. Per resettare le impostazioni della tessera, mettila in un banco da lavoro. Vedi la pagina del manuale riguardante i lettori per più informazioni.",
 	"help.securitycraft.keycard_lv2.info": "Le tessere magnetiche possono essere collegate ai loro lettori in modo da aprirli. Per resettare le impostazioni della tessera, mettila in un banco da lavoro. Vedi la pagina del manuale riguardante i lettori per più informazioni.",
@@ -495,7 +497,6 @@
 	"help.securitycraft.storage_module.info": "Il modulo archiviazione aggiunge o aumenta la grandezza dell'inventario di un blocco.",
 	"help.securitycraft.disguise_module.info": "Il modulo mascheramento maschera certi blocchi quando aggiunti ad esso.",
 	"help.securitycraft.wire_cutters.info": "Cliccando col tasto destro una mina tenendo la tronchese in mano la disinnescherà.",
-	"help.securitycraft.keypad_item.info": "Il tastierino viene usato nelle ricette per craftare la tastiera e i blocchi protetti da password (baule e fornace).",
 	"help.securitycraft.admin_tool.info": "L'attrezzo dell'amministratore serve principalmente per mostrare le informazioni su un certo blocco della SecurityCraft. Mostra l'UUID dell'utente, il nome ed altre informazioni come codici e moduli applicati.",
 	"help.securitycraft.taser.info": "Il taser è una pistola stordente che si autoricarica. Clicca col tasto destro per utilizzarla. Le entità colpite col taser saranno affette da Nausea II, Lentezza II e Debolezza II per 10 secondi. Se il taser viene cliccato col tasto destro mentre si è piegati (con della redstone nell'inventario) la forza del prossimo colpo raddoppierà.",
 	"help.securitycraft.camera_monitor.info": "Lo schermo per telecamere è uno schermo che viene tenuto in mano, usato per vedere le vedute delle telecamere. Clicca col tasto destro su una telecamera per vedere la veduta della telecamera. A volte potrebbe spegnersi automaticamente per risparmiare risorse, in tal caso si può riattivare cliccando col tasto destro (configurabile).",
@@ -509,7 +510,6 @@
 	"help.securitycraft.secret_sign_item.info": "Il cartello segreto funziona come un cartello normale, ma solo il proprietario e i giocatori nella lista consentiti possono vederne e colorarne il testo. Assicurati che nessuno possa rompere il blocco sotto il cartello!",
 	"help.securitycraft.sentry.info": "La Sentinella ha tre modalità che possono essere intercambiate cliccando col tasto destro sulla Sentinella: Inattiva (non attaccherà mai), Nascosta (attaccherà solo giocatori nemici nel suo raggio) e Aggressiva (attaccherà mob ostili e giocatori nemici). Clicca la Sentinella col tasto destro tenendo un modulo mascheramento con un blocco opaco integro (ad esempio: pietra, ma NON vetro o scalini) per mascherare la Sentinella. Il modulo può essere intercambiato direttamente oppure rimosso cliccando col tasto destro con un modifica-blocchi universale . Per rimuovere la Sentinella, cliccala col tasto destro mentre sei piegato.",
 	"help.securitycraft.crystal_quartz_item.info": "Il quarzo cristallino viene utilizzato per craftare i blocchi di quarzo cristallino.",
-	"help.securitycraft.keypad_door_item.info": "La porta con tastiera funziona come una tastiera classica integrata in una porta rinforzata, dove bisogna inserire un codice per aprirla.",
 	"help.securitycraft.speed_module.info": "Il modulo velocità consente ad alcuni blocchi della SecurityCraft di operare più velocemente del normale.",
 
 	"gui.securitycraft:scManual.disabled": "Disattivata",

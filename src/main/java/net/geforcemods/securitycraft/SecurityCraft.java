@@ -26,6 +26,7 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -114,24 +115,15 @@ public class SecurityCraft {
 				{
 					Object o = ((RegistryObject<?>)field.get(null)).get();
 					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
-					boolean isBlock = true;
-					Item item;
-					String key;
-
-					if(o instanceof Block)
-						item = ((Block)o).asItem();
-					else
-					{
-						item = (Item)o;
-						isBlock = false;
-					}
+					Item item = ((IItemProvider)o).asItem();
+					String key = "help.";
 
 					if(hmp.specialInfoKey().isEmpty())
-						key = (isBlock ? "help" : "help.") + item.getTranslationKey().substring(5) + ".info";
+						key += item.getTranslationKey().substring(5) + ".info";
 					else
-						key = hmp.specialInfoKey();
+						key += hmp.specialInfoKey();
 
-					SCManualPage page = new SCManualPage(item, key);
+					SCManualPage page = new SCManualPage(item, key.replace("..", "."));
 
 					if(!hmp.designedBy().isEmpty())
 						page.setDesignedBy(hmp.designedBy());
