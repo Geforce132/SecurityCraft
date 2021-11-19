@@ -28,6 +28,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.loot.conditions.LootConditionManager;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
@@ -116,25 +117,15 @@ public class SecurityCraft {
 				{
 					Object o = ((RegistryObject<?>)field.get(null)).get();
 					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
-					boolean isBlock = true;
-					Item item;
-					String key;
-
-					if(o instanceof Block)
-						item = ((Block)o).asItem();
-					else
-					{
-						item = (Item)o;
-						isBlock = false;
-					}
+					Item item = ((IItemProvider)o).asItem();
+					String key = "help.";
 
 					if(hmp.specialInfoKey().isEmpty())
-						key = (isBlock ? "help" : "help.") + item.getTranslationKey().substring(5) + ".info";
+						key += item.getTranslationKey().substring(5) + ".info";
 					else
-						key = hmp.specialInfoKey();
+						key += hmp.specialInfoKey();
 
-
-					SCManualPage page = new SCManualPage(item, new TranslationTextComponent(key));
+					SCManualPage page = new SCManualPage(item, new TranslationTextComponent(key.replace("..", ".")));
 
 					if(!hmp.designedBy().isEmpty())
 						page.setDesignedBy(hmp.designedBy());

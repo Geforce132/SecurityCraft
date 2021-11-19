@@ -36,6 +36,7 @@
 - Fix: Placed Block Mines are identifiable via the pick block mechanic
 - Fix: Block Pockets get disabled when they get unloaded
 - Fix: Block Pocket deactivation message does not get sent
+- Fix: SecurityCraft Manual entries for doors are not properly showing all information
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 

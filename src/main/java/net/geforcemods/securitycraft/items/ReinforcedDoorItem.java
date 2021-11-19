@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -8,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,11 +20,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ReinforcedDoorItem extends Item
+public class ReinforcedDoorItem extends BlockItem
 {
-	public ReinforcedDoorItem(Item.Properties properties)
+	public ReinforcedDoorItem(Block block, Item.Properties properties)
 	{
-		super(properties);
+		super(block, properties);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ReinforcedDoorItem extends Item
 			int offsetZ = angleFacing.getZOffset();
 			boolean flag = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;
 
-			if(!placeDoor(world, pos, angleFacing, SCContent.REINFORCED_DOOR.get(), flag, ctx))
+			if(!placeDoor(world, pos, angleFacing, getBlock(), flag, ctx))
 				return ActionResultType.FAIL;
 
 			SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
