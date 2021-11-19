@@ -100,6 +100,10 @@ public abstract class SpecialDoorBlock extends DoorBlock
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
 	{
 		BlockState upperState = world.getBlockState(pos);
+
+		if(!upperState.get(DoorBlock.OPEN))
+			return;
+
 		BlockState lowerState;
 
 		if(upperState.get(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
