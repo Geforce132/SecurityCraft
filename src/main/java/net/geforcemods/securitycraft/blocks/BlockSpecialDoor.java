@@ -96,6 +96,10 @@ public abstract class BlockSpecialDoor extends BlockDoor implements ITileEntityP
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
 	{
 		IBlockState upperState = world.getBlockState(pos);
+
+		if(!upperState.getValue(BlockDoor.OPEN))
+			return;
+
 		IBlockState lowerState;
 
 		if(upperState.getValue(BlockDoor.HALF) == EnumDoorHalf.LOWER)
