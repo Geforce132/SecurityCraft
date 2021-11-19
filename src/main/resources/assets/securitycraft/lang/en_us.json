@@ -590,10 +590,12 @@
 	"help.securitycraft.reinforced_lever.info": "The Reinforced Lever can only be activated by its owner or players on the allowlist.",
 	"help.securitycraft.reinforced_hopper.info": "The Reinforced Hopper is the only block that can be used to extract items out of a password protected chest if both are owned by the same player. It will otherwise act like a vanilla hopper.",
 	"help.securitycraft.projector.info": "The Projector projects holographic versions of a block of your choice into the world, which can be used to hide buildings and other areas of interest from other players. The range and width of the projection can be changed within the Projector's GUI.",
-
+	"help.securitycraft.iron_door_reinforced.info": "The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.",
+	"help.securitycraft.scanner_door.info": "The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top to open it.",
+	"help.securitycraft.keypad_door.info": "The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.",
+	"help.securitycraft.key_panel.info": "The key panel can be placed down for a smaller, waterloggable version of the keypad. It is also used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.",
+	
 	"help.securitycraft.codebreaker.info": "The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)",
-	"help.securitycraft.door_indestructible_iron_item.info": "The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.",
-	"help.securitycraft.scanner_door_item.info": "The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top to open it.",
 	"help.securitycraft.universal_block_remover.info": "The universal block remover is used to destroy \"reinforced\" blocks by rightclicking it. Only the person who placed the block down can destroy it.",
 	"help.securitycraft.keycard_lv1.info": "Keycards can be linked to Keycard Readers in order to open them. To reset the settings on keycard, put it into a crafting table. See the Keycard Reader's manual page for more information.",
 	"help.securitycraft.keycard_lv2.info": "Keycards can be linked to Keycard Readers in order to open them. To reset the settings on keycard, put it into a crafting table. See the Keycard Reader's manual page for more information.",
@@ -614,7 +616,6 @@
 	"help.securitycraft.storage_module.info": "The storage module adds or upgrades the size of a block's inventory.",
 	"help.securitycraft.disguise_module.info": "The disguise module disguises certain blocks when added to them.",
 	"help.securitycraft.wire_cutters.info": "Rightclicking a mine with the wire cutters will defuse it.",
-	"help.securitycraft.keypad_item.info": "The key panel can be placed down for a smaller, waterloggable version of the keypad. It is also used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.",
 	"help.securitycraft.admin_tool.info": "The admin tool's main purpose is to display information about a SecurityCraft block. It will show the owner's UUID and name, and other information, like passcodes and any inserted modules.",
 	"help.securitycraft.taser.info": "The taser is a self-recharging stun gun. Rightclick to fire it. Entities hit with the taser will get Nausea II, Slowness II, and Weakness II for 10 seconds. If the Taser is sneak-rightclicked (provided some redstone in the inventory), it will double its strength for the next shot.",
 	"help.securitycraft.camera_monitor.info": "The camera monitor is a portable item used to view live feeds of up to 30 bound security cameras. Right-click a security camera with the camera monitor to bind it, then right-click air and select the camera in the GUI while the camera’s chunk is loaded to see its feed. Unbind a security camera by right-clicking it again with the camera monitor or by opening the camera monitor's GUI and clicking the corresponding \"X\" button.",
@@ -628,7 +629,6 @@
 	"help.securitycraft.secret_sign_item.info": "The Secret Sign works like a vanilla sign, with the slight difference that only the owner of the sign and players on the allowlist can interact with, and view the text on it. Make sure noone can break the block it's placed on!",
 	"help.securitycraft.sentry.info": "The Sentry has three modes that can be switched by rightclicking it. Idle (it will never attack), Camouflage (it will only attack enemy players in its range) and Aggressive (it will attack hostile mobs and enemy players). Rightclicking it with a Disguise Module containing a full and opaque block (e.g. stone, but not glass or stairs) will make the Sentry disguise itself. The module can be switched directly, or extracted by rightclicking with a Universal Block Modifier. To remove the sentry, sneak-rightclick it.",
 	"help.securitycraft.crystal_quartz_item.info": "Crystal Quartz is used to craft Crystal Quartz blocks.",
-	"help.securitycraft.keypad_door_item.info": "The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.",
 	"help.securitycraft.speed_module.info": "The speed module allows some of SecurityCraft's blocks to operate faster than usual.",
 
 	"gui.securitycraft:scManual.disabled": "Disabled",

@@ -28,6 +28,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
@@ -118,24 +119,15 @@ public class SecurityCraft {
 				{
 					Object o = ((RegistryObject<?>)field.get(null)).get();
 					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
-					boolean isBlock = true;
-					Item item;
-					String key;
-
-					if(o instanceof Block block)
-						item = block.asItem();
-					else
-					{
-						item = (Item)o;
-						isBlock = false;
-					}
+					Item item = ((ItemLike)o).asItem();
+					String key = "help.";
 
 					if(hmp.specialInfoKey().isEmpty())
-						key = (isBlock ? "help" : "help.") + item.getDescriptionId().substring(5) + ".info";
+						key += item.getDescriptionId().substring(5) + ".info";
 					else
-						key = hmp.specialInfoKey();
+						key += hmp.specialInfoKey();
 
-					SCManualItem.PAGES.add(new SCManualPage(item, new TranslatableComponent(key), hmp.designedBy(), hmp.hasRecipeDescription()));
+					SCManualItem.PAGES.add(new SCManualPage(item, new TranslatableComponent(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)

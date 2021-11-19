@@ -37,6 +37,7 @@
 - Fix: Entity shadows do not render on block mines
 - Fix: Block Mine explosions can create fake blocks
 - Fix: Block Pockets get disabled when they get unloaded
+- Fix: SecurityCraft Manual entries for doors are not properly showing all information
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: The minimum Forge version is now 37.0.85

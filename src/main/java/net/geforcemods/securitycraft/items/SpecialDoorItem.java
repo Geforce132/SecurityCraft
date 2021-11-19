@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -19,11 +20,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-public abstract class SpecialDoorItem extends Item
+public class SpecialDoorItem extends BlockItem
 {
-	public SpecialDoorItem(Item.Properties properties)
+	public SpecialDoorItem(Block block, Item.Properties properties)
 	{
-		super(properties);
+		super(block, properties);
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public abstract class SpecialDoorItem extends Item
 			int offsetZ = angleFacing.getStepZ();
 			boolean flag = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;
 
-			if(!placeDoor(world, pos, angleFacing, getDoorBlock(), flag, ctx))
+			if(!placeDoor(world, pos, angleFacing, getBlock(), flag, ctx))
 				return InteractionResult.FAIL;
 
 			SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
@@ -103,6 +104,4 @@ public abstract class SpecialDoorItem extends Item
 		world.updateNeighborsAt(posAbove, door);
 		return true;
 	}
-
-	public abstract Block getDoorBlock();
 }
