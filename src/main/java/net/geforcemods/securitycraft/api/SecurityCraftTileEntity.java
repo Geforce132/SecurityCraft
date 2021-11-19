@@ -13,13 +13,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceContext.BlockMode;
-import net.minecraft.util.math.RayTraceContext.FluidMode;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
@@ -36,11 +29,9 @@ import net.minecraft.util.text.StringTextComponent;
 public class SecurityCraftTileEntity extends OwnableTileEntity implements ITickableTileEntity, INameSetter {
 
 	protected boolean intersectsEntities = false;
-	protected boolean viewActivated = false;
 	private boolean attacks = false;
 	private ITextComponent customName = null;
 	private double attackRange = 0.0D;
-	private int viewCooldown = 0;
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
 	private Class<? extends Entity> typeToAttack = Entity.class;
@@ -72,38 +63,6 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 				entityIntersecting(entity);
 			}
 		}
-
-		if(viewActivated){
-			if(viewCooldown > 0){
-				viewCooldown--;
-				return;
-			}
-
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			AxisAlignedBB area = (new AxisAlignedBB(x, y, z, (x), (y), (z)).grow(5, 5, 5));
-			List<?> entities = world.getEntitiesWithinAABB(LivingEntity.class, area, e -> !(e instanceof PlayerEntity) || !((PlayerEntity)e).isSpectator());
-			Iterator<?> iterator = entities.iterator();
-			LivingEntity entity;
-
-			while (iterator.hasNext())
-			{
-				entity = (LivingEntity)iterator.next();
-				double eyeHeight = entity.getEyeHeight();
-				boolean isPlayer = (entity instanceof PlayerEntity);
-				Vec3d lookVec = new Vec3d((entity.getPosX() + (entity.getLookVec().x * 5)), ((eyeHeight + entity.getPosY()) + (entity.getLookVec().y * 5)), (entity.getPosZ() + (entity.getLookVec().z * 5)));
-
-				RayTraceResult mop = getWorld().rayTraceBlocks(new RayTraceContext(new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
-				if(mop != null && mop.getType() == Type.BLOCK)
-					if(((BlockRayTraceResult)mop).getPos().getX() == getPos().getX() && ((BlockRayTraceResult)mop).getPos().getY() == getPos().getY() && ((BlockRayTraceResult)mop).getPos().getZ() == getPos().getZ())
-						if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {
-							entityViewed(entity);
-							viewCooldown = getViewCooldown();
-						}
-			}
-		}
-
 		if (attacks) {
 			if (attackCooldown < getTicksBetweenAttacks()) {
 				attackCooldown++;
@@ -148,11 +107,6 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	}
 
 	/**
-	 * Called when {@link SecurityCraftTileEntity}.isViewActivated(), and when an entity looks directly at this block.
-	 */
-	public void entityViewed(LivingEntity entity) {}
-
-	/**
 	 * Handle your TileEntity's attack to entities here.
 	 * ONLY RUNS ON THE SERVER SIDE (to keep the TE's client cooldown in-sync)! If you need something done on the client,
 	 * use packets.<p>
@@ -194,7 +148,6 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 		super.write(tag);
 
 		tag.putBoolean("intersectsEntities", intersectsEntities);
-		tag.putBoolean("viewActivated", viewActivated);
 		tag.putBoolean("attacks", attacks);
 		tag.putDouble("attackRange", attackRange);
 		tag.putInt("attackCooldown", attackCooldown);
@@ -213,9 +166,6 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 
 		if (tag.contains("intersectsEntities"))
 			intersectsEntities = tag.getBoolean("intersectsEntities");
-
-		if (tag.contains("viewActivated"))
-			viewActivated = tag.getBoolean("viewActivated");
 
 		if (tag.contains("attacks"))
 			attacks = tag.getBoolean("attacks");
@@ -261,40 +211,6 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 
 	public boolean doesIntersectsEntities(){
 		return intersectsEntities;
-	}
-
-	/**
-	 * Sets this TileEntity able to be activated when a player looks at the block.
-	 * <p>
-	 * Calls {@link SecurityCraftTileEntity}.entityViewed(LivingEntity) when an {@link LivingEntity} looks at this block.
-	 * <p>
-	 * Implement IViewActivated in your Block class in order to do stuff with that event.
-	 */
-	public SecurityCraftTileEntity activatedByView(){
-		viewActivated = true;
-		return this;
-	}
-
-	/**
-	 * @return The amount of ticks the block should "cooldown"
-	 *         for after an Entity looks at this block.
-	 */
-	public int getViewCooldown() {
-		return 0;
-	}
-
-	/**
-	 * @return Can this TileEntity can only be activated by an PlayerEntity?
-	 */
-	public boolean activatedOnlyByPlayer() {
-		return true;
-	}
-
-	/**
-	 * @return If this TileEntity can be activated when an Entity looking at it.
-	 */
-	public boolean isActivatedByView(){
-		return viewActivated;
 	}
 
 	/**

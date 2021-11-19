@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -13,15 +14,23 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.text.TextFormatting;
 
-public class ScannerDoorTileEntity extends SpecialDoorTileEntity
+public class ScannerDoorTileEntity extends SpecialDoorTileEntity implements IViewActivated
 {
+	private int viewCooldown = 0;
+
 	public ScannerDoorTileEntity()
 	{
 		super(SCContent.teTypeScannerDoor);
 	}
 
 	@Override
-	public void entityViewed(LivingEntity entity)
+	public void tick() {
+		super.tick();
+		checkView(world, pos);
+	}
+
+	@Override
+	public void onEntityViewed(LivingEntity entity)
 	{
 		BlockState upperState = world.getBlockState(pos);
 		BlockState lowerState = world.getBlockState(pos.down());
@@ -60,7 +69,12 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 	@Override
 	public int getViewCooldown()
 	{
-		return 30;
+		return viewCooldown;
+	}
+
+	@Override
+	public void setViewCooldown(int viewCooldown) {
+		this.viewCooldown = viewCooldown;
 	}
 
 	@Override
