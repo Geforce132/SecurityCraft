@@ -13,7 +13,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class KeycardReaderTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
@@ -126,6 +125,6 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IN
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.KEYCARD_READER.get().getTranslationKey());
+		return super.getDisplayName();
 	}
 }

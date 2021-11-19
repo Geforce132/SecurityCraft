@@ -20,7 +20,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class KeypadTileEntity extends DisguisableTileEntity implements IPasswordProtected {
@@ -92,7 +91,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEYPAD.get().getTranslationKey());
+						return KeypadTileEntity.super.getDisplayName();
 					}
 				}, pos);
 			}
@@ -113,7 +112,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEYPAD.get().getTranslationKey());
+							return KeypadTileEntity.super.getDisplayName();
 						}
 					}, pos);
 				}

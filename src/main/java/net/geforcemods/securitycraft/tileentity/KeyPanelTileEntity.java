@@ -21,7 +21,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class KeyPanelTileEntity extends CustomizableTileEntity implements IPasswordProtected
@@ -98,7 +97,7 @@ public class KeyPanelTileEntity extends CustomizableTileEntity implements IPassw
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEY_PANEL_BLOCK.get().getTranslationKey());
+						return KeyPanelTileEntity.super.getDisplayName();
 					}
 				}, pos);
 			}
@@ -119,7 +118,7 @@ public class KeyPanelTileEntity extends CustomizableTileEntity implements IPassw
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEY_PANEL_BLOCK.get().getTranslationKey());
+							return KeyPanelTileEntity.super.getDisplayName();
 						}
 					}, pos);
 				}

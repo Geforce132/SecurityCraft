@@ -166,7 +166,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getTranslationKey());
+						return KeypadFurnaceTileEntity.super.getDisplayName();
 					}
 				}, pos);
 			}
@@ -187,7 +187,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getTranslationKey());
+							return KeypadFurnaceTileEntity.super.getDisplayName();
 						}
 					}, pos);
 				}

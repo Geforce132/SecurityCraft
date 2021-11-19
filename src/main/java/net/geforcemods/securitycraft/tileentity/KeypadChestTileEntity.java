@@ -39,7 +39,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -192,7 +191,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEYPAD_CHEST.get().getTranslationKey());
+						return KeypadChestTileEntity.super.getDisplayName();
 					}
 				}, pos);
 			}
@@ -213,7 +212,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEYPAD_CHEST.get().getTranslationKey());
+							return KeypadChestTileEntity.super.getDisplayName();
 						}
 					}, pos);
 				}

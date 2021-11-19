@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class ProjectorTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider {
 
@@ -191,7 +190,7 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.PROJECTOR.get().getTranslationKey());
+		return super.getDisplayName();
 	}
 
 	@Override
