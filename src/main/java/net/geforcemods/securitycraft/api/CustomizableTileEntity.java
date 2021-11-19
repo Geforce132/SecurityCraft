@@ -130,7 +130,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	}
 
 	@Override
-	public void onTileEntityDestroyed() {
+	public void remove() {
 		if(linkable)
 			for(LinkedBlock block : linkedBlocks)
 				CustomizableTileEntity.unlink(block.asTileEntity(world), this);

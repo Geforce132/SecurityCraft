@@ -234,15 +234,6 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 			customName = new StringTextComponent(tag.getString("customName"));
 	}
 
-	@Override
-	public void remove() {
-		super.remove();
-
-		onTileEntityDestroyed();
-	}
-
-	public void onTileEntityDestroyed() {}
-
 	/**
 	 * Automatically detects the side this method was called on, and
 	 * sends the client-side value of this TileEntity's CompoundNBT
