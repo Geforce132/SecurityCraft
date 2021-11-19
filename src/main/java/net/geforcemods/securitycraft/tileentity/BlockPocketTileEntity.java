@@ -1,13 +1,14 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class BlockPocketTileEntity extends SecurityCraftTileEntity
+public class BlockPocketTileEntity extends OwnableTileEntity implements ITickableTileEntity
 {
 	private BlockPocketManagerTileEntity manager;
 	private BlockPos managerPos;
@@ -37,8 +38,6 @@ public class BlockPocketTileEntity extends SecurityCraftTileEntity
 	@Override
 	public void tick()
 	{
-		super.tick();
-
 		if(manager == null && managerPos != null)
 		{
 			TileEntity te = world.getTileEntity(managerPos);
@@ -49,9 +48,9 @@ public class BlockPocketTileEntity extends SecurityCraftTileEntity
 	}
 
 	@Override
-	public void onTileEntityDestroyed()
+	public void remove()
 	{
-		super.onTileEntityDestroyed();
+		super.remove();
 
 		if(world.isBlockLoaded(pos) && manager != null && !(world.getBlockState(pos).getBlock() instanceof IBlockPocket))
 			manager.disableMultiblock();
