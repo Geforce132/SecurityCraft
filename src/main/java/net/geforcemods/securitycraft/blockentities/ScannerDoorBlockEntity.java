@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -10,19 +11,28 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity
+public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated
 {
+	private int viewCooldown = 0;
+
 	public ScannerDoorBlockEntity(BlockPos pos, BlockState state)
 	{
 		super(SCContent.beTypeScannerDoor, pos, state);
 	}
 
 	@Override
-	public void entityViewed(LivingEntity entity)
+	public void tick(Level level, BlockPos pos, BlockState state) {
+		super.tick(level, pos, state);
+		checkView(level, pos);
+	}
+
+	@Override
+	public void onEntityViewed(LivingEntity entity)
 	{
 		BlockState upperState = level.getBlockState(worldPosition);
 		BlockState lowerState = level.getBlockState(worldPosition.below());
@@ -57,9 +67,13 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity
 	}
 
 	@Override
-	public int getViewCooldown()
-	{
-		return 30;
+	public int getViewCooldown() {
+		return viewCooldown;
+	}
+
+	@Override
+	public void setViewCooldown(int viewCooldown) {
+		this.viewCooldown = viewCooldown;
 	}
 
 	@Override

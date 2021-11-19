@@ -14,15 +14,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.ClipContext.Block;
-import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 
 /**
  * Simple TileEntity that SecurityCraft uses to easily create blocks like
@@ -37,11 +32,9 @@ import net.minecraft.world.phys.Vec3;
 public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INameSetter, ITickingBlockEntity {
 
 	protected boolean intersectsEntities = false;
-	protected boolean viewActivated = false;
 	private boolean attacks = false;
 	private Component customName = TextComponent.EMPTY;
 	private double attackRange = 0.0D;
-	private int viewCooldown = 0;
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
 	private Class<? extends Entity> typeToAttack = Entity.class;
@@ -71,42 +64,6 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 			{
 				entity = (Entity)iterator.next();
 				entityIntersecting(world, pos, entity);
-			}
-		}
-
-		if(viewActivated){
-			if(viewCooldown > 0){
-				viewCooldown--;
-				return;
-			}
-
-			int x = worldPosition.getX();
-			int y = worldPosition.getY();
-			int z = worldPosition.getZ();
-			AABB area = (new AABB(x, y, z, (x), (y), (z)).inflate(5));
-			List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, area, e -> !(e instanceof Player) || !e.isSpectator());
-			Iterator<LivingEntity> iterator = entities.iterator();
-			LivingEntity entity;
-
-			while (iterator.hasNext())
-			{
-				entity = iterator.next();
-				double eyeHeight = entity.getEyeHeight();
-				boolean isPlayer = entity instanceof Player;
-				Vec3 lookVec = new Vec3((entity.getX() + (entity.getLookAngle().x * 5)), ((eyeHeight + entity.getY()) + (entity.getLookAngle().y * 5)), (entity.getZ() + (entity.getLookAngle().z * 5)));
-
-				BlockHitResult mop = world.clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, Block.COLLIDER, Fluid.NONE, entity));
-
-				if(mop != null)
-				{
-					if(mop.getBlockPos().getX() == pos.getX() && mop.getBlockPos().getY() == pos.getY() && mop.getBlockPos().getZ() == pos.getZ())
-					{
-						if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {
-							entityViewed(entity);
-							viewCooldown = getViewCooldown();
-						}
-					}
-				}
 			}
 		}
 
@@ -154,11 +111,6 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 	}
 
 	/**
-	 * Called when {@link SecurityCraftBlockEntity}.isViewActivated(), and when an entity looks directly at this block.
-	 */
-	public void entityViewed(LivingEntity entity) {}
-
-	/**
 	 * Handle your TileEntity's attack to entities here.
 	 * ONLY RUNS ON THE SERVER SIDE (to keep the TE's client cooldown in-sync)! If you need something done on the client,
 	 * use packets.<p>
@@ -200,7 +152,6 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 		super.save(tag);
 
 		tag.putBoolean("intersectsEntities", intersectsEntities);
-		tag.putBoolean("viewActivated", viewActivated);
 		tag.putBoolean("attacks", attacks);
 		tag.putDouble("attackRange", attackRange);
 		tag.putInt("attackCooldown", attackCooldown);
@@ -219,9 +170,6 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 
 		if (tag.contains("intersectsEntities"))
 			intersectsEntities = tag.getBoolean("intersectsEntities");
-
-		if (tag.contains("viewActivated"))
-			viewActivated = tag.getBoolean("viewActivated");
 
 		if (tag.contains("attacks"))
 			attacks = tag.getBoolean("attacks");
@@ -265,40 +213,6 @@ public class SecurityCraftBlockEntity extends OwnableBlockEntity implements INam
 
 	public boolean doesIntersectsEntities(){
 		return intersectsEntities;
-	}
-
-	/**
-	 * Sets this TileEntity able to be activated when a player looks at the block.
-	 * <p>
-	 * Calls {@link SecurityCraftBlockEntity}.entityViewed(LivingEntity) when an {@link LivingEntity} looks at this block.
-	 * <p>
-	 * Implement IViewActivated in your Block class in order to do stuff with that event.
-	 */
-	public SecurityCraftBlockEntity activatedByView(){
-		viewActivated = true;
-		return this;
-	}
-
-	/**
-	 * @return The amount of ticks the block should "cooldown"
-	 *         for after an Entity looks at this block.
-	 */
-	public int getViewCooldown() {
-		return 0;
-	}
-
-	/**
-	 * @return Can this TileEntity can only be activated by an PlayerEntity?
-	 */
-	public boolean activatedOnlyByPlayer() {
-		return true;
-	}
-
-	/**
-	 * @return If this TileEntity can be activated when an Entity looking at it.
-	 */
-	public boolean isActivatedByView(){
-		return viewActivated;
 	}
 
 	/**

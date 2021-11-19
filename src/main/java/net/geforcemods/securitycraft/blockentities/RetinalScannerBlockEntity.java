@@ -12,6 +12,7 @@ import com.mojang.authlib.properties.Property;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
@@ -34,15 +35,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
-public class RetinalScannerBlockEntity extends DisguisableBlockEntity {
-
+public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements IViewActivated {
+	private static GameProfileCache profileCache;
+	private static MinecraftSessionService sessionService;
+	private static Executor mainThreadExecutor;
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private GameProfile ownerProfile;
-	private static GameProfileCache profileCache;
-	private static MinecraftSessionService sessionService;
-	private static Executor mainThreadExecutor;
+	private int viewCooldown = 0;
 
 	public RetinalScannerBlockEntity(BlockPos pos, BlockState state)
 	{
@@ -50,7 +51,13 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity {
 	}
 
 	@Override
-	public void entityViewed(LivingEntity entity){
+	public void tick(Level level, BlockPos pos, BlockState state) {
+		super.tick(level, pos, state);
+		checkView(level, pos);
+	}
+
+	@Override
+	public void onEntityViewed(LivingEntity entity){
 		if(!level.isClientSide)
 		{
 			BlockState state = level.getBlockState(worldPosition);
@@ -76,8 +83,18 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity {
 	}
 
 	@Override
-	public int getViewCooldown() {
+	public int getDefaultViewCooldown() {
 		return getSignalLength() + 30;
+	}
+
+	@Override
+	public int getViewCooldown() {
+		return viewCooldown;
+	}
+
+	@Override
+	public void setViewCooldown(int viewCooldown) {
+		this.viewCooldown = viewCooldown;
 	}
 
 	@Override
