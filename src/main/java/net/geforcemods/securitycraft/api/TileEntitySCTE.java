@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +16,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
@@ -27,21 +30,16 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
  *
  * @author Geforce
  */
-public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INameable {
+public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INameSetter {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
 	private boolean attacks = false;
-	private boolean canBeNamed = false;
-
-	private String customName = "name";
-
+	private String customName = "";
 	private double attackRange = 0.0D;
-
 	private int viewCooldown = 0;
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
-
 	private Class<? extends Entity> typeToAttack = Entity.class;
 
 	@Override
@@ -186,7 +184,6 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 		tag.setBoolean("intersectsEntities", intersectsEntities);
 		tag.setBoolean("viewActivated", viewActivated);
 		tag.setBoolean("attacks", attacks);
-		tag.setBoolean("canBeNamed", canBeNamed);
 		tag.setDouble("attackRange", attackRange);
 		tag.setInteger("attackCooldown", attackCooldown);
 		tag.setInteger("ticksBetweenAttacks", ticksBetweenAttacks);
@@ -210,9 +207,6 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 
 		if (tag.hasKey("attacks"))
 			attacks = tag.getBoolean("attacks");
-
-		if (tag.hasKey("canBeNamed"))
-			canBeNamed = tag.getBoolean("canBeNamed");
 
 		if (tag.hasKey("attackRange"))
 			attackRange = tag.getDouble("attackRange");
@@ -379,14 +373,24 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 		return attacks;
 	}
 
-	public TileEntitySCTE nameable() {
-		canBeNamed = true;
-		return this;
+	@Override
+	public String getName() {
+		return customName;
 	}
 
 	@Override
-	public String getCustomName() {
-		return customName;
+	public boolean hasCustomName() {
+		return !customName.isEmpty() && !customName.equals(getDefaultName().getFormattedText());
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return hasCustomName() ? new TextComponentString(customName) : getDefaultName();
+	}
+
+	@Override
+	public ITextComponent getDefaultName() {
+		return Utils.localize(blockType.getTranslationKey() + ".name");
 	}
 
 	@Override
@@ -394,15 +398,4 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 		this.customName = customName;
 		sync();
 	}
-
-	@Override
-	public boolean hasCustomName() {
-		return (customName != null && !customName.equals("name"));
-	}
-
-	@Override
-	public boolean canBeNamed() {
-		return canBeNamed;
-	}
-
 }

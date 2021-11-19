@@ -7,7 +7,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameable;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -29,6 +29,7 @@ import net.geforcemods.securitycraft.misc.SCWorldListener;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.IEMPAffected;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
+import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -253,14 +254,15 @@ public class SCEventHandler {
 			}
 		}
 
-		if(tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG, event.getHand()) && event.getEntityPlayer().getHeldItem(event.getHand()).hasDisplayName()){
+		if(tileEntity instanceof INameSetter && (tileEntity instanceof TileEntitySecurityCamera || tileEntity instanceof TileEntityPortableRadar) && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG, event.getHand()) && event.getEntityPlayer().getHeldItem(event.getHand()).hasDisplayName()){
 			ItemStack nametag = event.getEntityPlayer().getHeldItem(event.getHand());
+			INameSetter nameable = (INameSetter)tileEntity;
 
 			event.setCanceled(true);
 			event.setCancellationResult(EnumActionResult.SUCCESS);
 
-			if(((INameable) tileEntity).getCustomName().equals(nametag.getDisplayName())) {
-				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
+			if(nameable.getName().equals(nametag.getDisplayName())) {
+				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getDisplayName()), TextFormatting.RED);
 				return;
 			}
 
@@ -268,9 +270,9 @@ public class SCEventHandler {
 				nametag.shrink(1);
 
 			if (!world.isRemote)
-				((INameable) tileEntity).setCustomName(nametag.getDisplayName());
+				nameable.setCustomName(nametag.getDisplayName());
 
-			PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomName()), TextFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:naming.named", nameable.getDisplayName()), TextFormatting.GREEN);
 			return;
 		}
 

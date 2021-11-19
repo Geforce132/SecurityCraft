@@ -55,7 +55,7 @@ public class GuiUtils{
 
 		if(te.hasCustomName())
 		{
-			String cameraName = te.getCustomName();
+			String cameraName = te.getName();
 
 			Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(cameraName, resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(cameraName) - 8, 25, 16777215);
 			timeY += 10;

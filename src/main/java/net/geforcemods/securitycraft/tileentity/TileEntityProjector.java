@@ -246,12 +246,6 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	}
 
 	@Override
-	public String getName()
-	{
-		return "Projector";
-	}
-
-	@Override
 	public void openInventory(EntityPlayer player) {}
 
 	@Override

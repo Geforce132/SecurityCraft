@@ -643,7 +643,6 @@ waila.securitycraft:equipped=Equipado con:
 waila.securitycraft:password=Contraseña:
 waila.securitycraft:password.notSet=Sin establecer
 waila.securitycraft:customName=Nombre personalizado:
-waila.securitycraft:customName.notSet=Sin establecer
 
 tooltip.securitycraft:mine=Mina
 tooltip.securitycraft:sentry=Torreta

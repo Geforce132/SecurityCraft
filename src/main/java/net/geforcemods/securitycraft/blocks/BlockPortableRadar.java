@@ -192,7 +192,7 @@ public class BlockPortableRadar extends BlockOwnable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityPortableRadar().nameable();
+		return new TileEntityPortableRadar();
 	}
 
 }

@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.api.INameable;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.BlockContainer;
@@ -41,8 +41,8 @@ public class BlockOwnable extends BlockContainer {
 		if (!world.isRemote && stack.hasDisplayName()) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if (te instanceof INameable && ((INameable)te).canBeNamed()) {
-				((INameable)te).setCustomName(stack.getDisplayName());
+			if (te instanceof INameSetter) {
+				((INameSetter)te).setCustomName(stack.getDisplayName());
 			}
 		}
 	}

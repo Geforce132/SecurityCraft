@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 
 /**
@@ -125,13 +125,8 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IModule
 	}
 
 	@Override
-	public ITextComponent getDisplayName() {
-		return new TextComponentTranslation(hasCustomName() ? getCustomName() : "Customize");
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return (getCustomName() != null && !getCustomName().equals("name"));
+	public ITextComponent getDefaultName() {
+		return new TextComponentString("Customize");
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
@@ -29,6 +30,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -36,7 +38,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable {
+public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable, INameSetter {
 
 	private InsertOnlyDoubleChestHandler insertOnlyHandler;
 	private String passcode;
@@ -101,15 +103,6 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
 	{
 		readFromNBT(pkt.getNbtCompound());
-	}
-
-	/**
-	 * Returns the name of the inventory
-	 */
-	@Override
-	public String getName()
-	{
-		return this.hasCustomName() ? this.customName : "tile.securitycraft:keypadChest.name";
 	}
 
 	@Override
@@ -378,5 +371,15 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 
 		sendMessage.setValue(value);
 		world.notifyBlockUpdate(pos, state, state, 3); //sync option change to client
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return hasCustomName() ? new TextComponentString(customName) : getDefaultName();
+	}
+
+	@Override
+	public ITextComponent getDefaultName() {
+		return Utils.localize(blockType.getTranslationKey() + ".name");
 	}
 }

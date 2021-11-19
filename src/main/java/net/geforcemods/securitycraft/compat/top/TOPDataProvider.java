@@ -14,7 +14,6 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
@@ -36,6 +35,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 
@@ -147,10 +147,10 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText()));
 				}
 
-				if(te instanceof INameable && ((INameable) te).canBeNamed()){
-					String name = ((INameable) te).getCustomName();
+				if(te instanceof IWorldNameable && ((IWorldNameable) te).hasCustomName()){
+					String name = ((IWorldNameable) te).getName();
 
-					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:customName").getFormattedText() + " " + (((INameable) te).hasCustomName() ? name : Utils.localize("waila.securitycraft:customName.notSet").getFormattedText()));
+					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:customName").getFormattedText() + " " + name);
 				}
 			}
 		});

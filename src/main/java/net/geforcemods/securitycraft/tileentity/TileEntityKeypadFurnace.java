@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
@@ -32,7 +33,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,7 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected, ITickable, IModuleInventory, ICustomizable {
+public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected, ITickable, IModuleInventory, ICustomizable, INameSetter {
 
 	private IItemHandler insertOnlyHandler;
 	private static final int[] slotsTop = {0};
@@ -129,13 +129,28 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public String getName()
 	{
-		return hasCustomName() ? furnaceCustomName : "container.furnace";
+		return furnaceCustomName;
 	}
 
 	@Override
 	public boolean hasCustomName()
 	{
-		return furnaceCustomName != null && furnaceCustomName.length() > 0;
+		return furnaceCustomName != null && !furnaceCustomName.isEmpty() && !furnaceCustomName.equals(getDefaultName().getFormattedText());
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return hasCustomName() ? new TextComponentString(furnaceCustomName) : getDefaultName();
+	}
+
+	@Override
+	public ITextComponent getDefaultName() {
+		return Utils.localize("container.furnace");
+	}
+
+	@Override
+	public void setCustomName(String customName) {
+		furnaceCustomName = customName;
 	}
 
 	@Override
@@ -476,11 +491,6 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 			insertOnlyHandler = new InsertOnlyInvWrapper(this);
 
 		return insertOnlyHandler;
-	}
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName());
 	}
 
 	@Override

@@ -660,7 +660,6 @@ waila.securitycraft:equipped=Equipped with:
 waila.securitycraft:password=Password:
 waila.securitycraft:password.notSet=Not set
 waila.securitycraft:customName=Custom name:
-waila.securitycraft:customName.notSet=Not set
 
 tooltip.securitycraft:mine=Mine
 tooltip.securitycraft:sentry=Sentry

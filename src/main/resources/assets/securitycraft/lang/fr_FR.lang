@@ -649,7 +649,6 @@ waila.securitycraft:equipped=Équipé avec:
 waila.securitycraft:password=mot de passe:
 waila.securitycraft:password.notSet=Non renseigné
 waila.securitycraft:customName=Alias:
-waila.securitycraft:customName.notSet=Non renseigné
 
 tooltip.securitycraft:mine=Mine
 tooltip.securitycraft:sentry=Sentinelle

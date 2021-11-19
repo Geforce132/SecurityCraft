@@ -228,11 +228,6 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	}
 
 	@Override
-	public boolean hasCustomName() {
-		return true;
-	}
-
-	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
@@ -401,12 +396,6 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	public ItemStack removeStackFromSlot(int index)
 	{
 		return inventoryContents.remove(index);
-	}
-
-	@Override
-	public String getName()
-	{
-		return SCContent.inventoryScanner.getLocalizedName();
 	}
 
 	@Override

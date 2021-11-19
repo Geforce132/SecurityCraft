@@ -10,7 +10,6 @@ import mcp.mobius.waila.api.IWailaEntityProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
@@ -27,6 +26,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
 
 public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvider {
@@ -99,10 +99,10 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 				body.add(Utils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText()));
 			}
 
-			if(config.getConfig(SHOW_CUSTOM_NAME) && te instanceof INameable && ((INameable) te).canBeNamed()){
-				String name = ((INameable) te).getCustomName();
+			if(config.getConfig(SHOW_CUSTOM_NAME) && te instanceof IWorldNameable && ((IWorldNameable) te).hasCustomName()){
+				String name = ((IWorldNameable) te).getName();
 
-				body.add(Utils.localize("waila.securitycraft:customName").getFormattedText() + " " + (((INameable) te).hasCustomName() ? name : Utils.localize("waila.securitycraft:customName.notSet").getFormattedText()));
+				body.add(Utils.localize("waila.securitycraft:customName").getFormattedText() + " " + name);
 			}
 		}
 

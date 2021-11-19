@@ -196,7 +196,7 @@ public class BlockSecurityCamera extends BlockOwnable{
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta){
-		return new TileEntitySecurityCamera().nameable();
+		return new TileEntitySecurityCamera();
 	}
 
 	@Override
