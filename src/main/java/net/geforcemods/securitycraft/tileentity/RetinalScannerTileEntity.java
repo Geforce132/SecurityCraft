@@ -14,6 +14,7 @@ import com.mojang.authlib.properties.Property;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
@@ -34,15 +35,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
-public class RetinalScannerTileEntity extends DisguisableTileEntity {
+public class RetinalScannerTileEntity extends DisguisableTileEntity implements IViewActivated {
 
 	private static final Logger LOGGER = LogManager.getLogger();
+	private static PlayerProfileCache profileCache;
+	private static MinecraftSessionService sessionService;
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private GameProfile ownerProfile;
-	private static PlayerProfileCache profileCache;
-	private static MinecraftSessionService sessionService;
+	private int viewCooldown = 0;
 
 	public RetinalScannerTileEntity()
 	{
@@ -50,7 +52,13 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	}
 
 	@Override
-	public void entityViewed(LivingEntity entity){
+	public void tick() {
+		super.tick();
+		checkView(world, pos);
+	}
+
+	@Override
+	public void onEntityViewed(LivingEntity entity){
 		if(!world.isRemote)
 		{
 			BlockState state = world.getBlockState(pos);
@@ -76,8 +84,18 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	}
 
 	@Override
-	public int getViewCooldown() {
+	public int getDefaultViewCooldown() {
 		return getSignalLength() + 30;
+	}
+
+	@Override
+	public int getViewCooldown() {
+		return viewCooldown;
+	}
+
+	@Override
+	public void setViewCooldown(int viewCooldown) {
+		this.viewCooldown = viewCooldown;
 	}
 
 	@Override
