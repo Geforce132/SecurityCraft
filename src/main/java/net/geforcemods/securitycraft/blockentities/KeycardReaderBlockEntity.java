@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -127,6 +126,6 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	@Override
 	public Component getDisplayName()
 	{
-		return new TranslatableComponent(SCContent.KEYCARD_READER.get().getDescriptionId());
+		return super.getDisplayName();
 	}
 }

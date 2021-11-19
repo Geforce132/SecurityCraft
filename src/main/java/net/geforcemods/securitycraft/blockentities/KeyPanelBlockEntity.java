@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -100,7 +99,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 					@Override
 					public Component getDisplayName()
 					{
-						return new TranslatableComponent(SCContent.KEY_PANEL_BLOCK.get().getDescriptionId());
+						return KeyPanelBlockEntity.super.getDisplayName();
 					}
 				}, worldPosition);
 			}
@@ -121,7 +120,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 						@Override
 						public Component getDisplayName()
 						{
-							return new TranslatableComponent(SCContent.KEY_PANEL_BLOCK.get().getDescriptionId());
+							return KeyPanelBlockEntity.super.getDisplayName();
 						}
 					}, worldPosition);
 				}

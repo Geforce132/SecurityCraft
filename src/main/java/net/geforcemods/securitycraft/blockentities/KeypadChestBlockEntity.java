@@ -27,7 +27,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
@@ -193,7 +192,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 					@Override
 					public Component getDisplayName()
 					{
-						return new TranslatableComponent(SCContent.KEYPAD_CHEST.get().getDescriptionId());
+						return KeypadChestBlockEntity.super.getDisplayName();
 					}
 				}, worldPosition);
 			}
@@ -214,7 +213,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 						@Override
 						public Component getDisplayName()
 						{
-							return new TranslatableComponent(SCContent.KEYPAD_CHEST.get().getDescriptionId());
+							return KeypadChestBlockEntity.super.getDisplayName();
 						}
 					}, worldPosition);
 				}

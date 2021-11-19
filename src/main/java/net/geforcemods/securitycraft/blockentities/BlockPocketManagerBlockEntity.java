@@ -808,7 +808,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	@Override
 	public Component getDisplayName()
 	{
-		return new TranslatableComponent(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId());
+		return super.getDisplayName();
 	}
 
 	@Override

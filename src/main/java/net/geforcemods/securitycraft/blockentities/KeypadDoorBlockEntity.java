@@ -12,7 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -74,7 +73,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 					@Override
 					public Component getDisplayName()
 					{
-						return new TranslatableComponent(SCContent.KEYPAD_DOOR.get().getDescriptionId());
+						return KeypadDoorBlockEntity.super.getDisplayName();
 					}
 				}, worldPosition);
 			}
@@ -95,7 +94,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 						@Override
 						public Component getDisplayName()
 						{
-							return new TranslatableComponent(SCContent.KEYPAD_DOOR.get().getDescriptionId());
+							return KeypadDoorBlockEntity.super.getDisplayName();
 						}
 					}, worldPosition);
 				}

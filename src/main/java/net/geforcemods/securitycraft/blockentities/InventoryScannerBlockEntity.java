@@ -16,7 +16,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -400,7 +399,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	@Override
 	public Component getDisplayName()
 	{
-		return new TranslatableComponent(SCContent.INVENTORY_SCANNER.get().getDescriptionId());
+		return super.getDisplayName();
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -192,7 +191,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	@Override
 	public Component getDisplayName()
 	{
-		return new TranslatableComponent(SCContent.PROJECTOR.get().getDescriptionId());
+		return super.getDisplayName();
 	}
 
 	@Override

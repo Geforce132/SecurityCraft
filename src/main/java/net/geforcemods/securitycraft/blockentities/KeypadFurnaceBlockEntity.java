@@ -167,7 +167,7 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 					@Override
 					public Component getDisplayName()
 					{
-						return new TranslatableComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
+						return KeypadFurnaceBlockEntity.super.getDisplayName();
 					}
 				}, worldPosition);
 			}
@@ -188,7 +188,7 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 						@Override
 						public Component getDisplayName()
 						{
-							return new TranslatableComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
+							return KeypadFurnaceBlockEntity.super.getDisplayName();
 						}
 					}, worldPosition);
 				}

@@ -16,7 +16,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.MenuProvider;
@@ -191,7 +190,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 	@Override
 	public Component getDisplayName()
 	{
-		return new TranslatableComponent(SCContent.IMS.get().getDescriptionId());
+		return super.getDisplayName();
 	}
 
 	public int getAttackInterval()

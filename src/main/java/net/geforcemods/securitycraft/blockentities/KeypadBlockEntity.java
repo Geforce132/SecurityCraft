@@ -15,7 +15,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -93,7 +92,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 					@Override
 					public Component getDisplayName()
 					{
-						return new TranslatableComponent(SCContent.KEYPAD.get().getDescriptionId());
+						return KeypadBlockEntity.super.getDisplayName();
 					}
 				}, worldPosition);
 			}
@@ -114,7 +113,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 						@Override
 						public Component getDisplayName()
 						{
-							return new TranslatableComponent(SCContent.KEYPAD.get().getDescriptionId());
+							return KeypadBlockEntity.super.getDisplayName();
 						}
 					}, worldPosition);
 				}
