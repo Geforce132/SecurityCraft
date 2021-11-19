@@ -1,13 +1,14 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityBlockPocket extends TileEntitySCTE
+public class TileEntityBlockPocket extends TileEntityOwnable implements ITickable
 {
 	private TileEntityBlockPocketManager manager;
 	private BlockPos managerPos;
@@ -32,8 +33,6 @@ public class TileEntityBlockPocket extends TileEntitySCTE
 	@Override
 	public void update()
 	{
-		super.update();
-
 		if(manager == null && managerPos != null)
 		{
 			TileEntity te = world.getTileEntity(managerPos);
@@ -44,9 +43,9 @@ public class TileEntityBlockPocket extends TileEntitySCTE
 	}
 
 	@Override
-	public void onTileEntityDestroyed()
+	public void invalidate()
 	{
-		super.onTileEntityDestroyed();
+		super.invalidate();
 
 		if(world.isBlockLoaded(pos) && manager != null)
 		{

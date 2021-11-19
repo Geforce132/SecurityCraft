@@ -691,9 +691,9 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 	}
 
 	@Override
-	public void onTileEntityDestroyed()
+	public void invalidate()
 	{
-		super.onTileEntityDestroyed();
+		super.invalidate();
 
 		if(world.isBlockLoaded(pos) && world.getBlockState(pos).getBlock() != SCContent.blockPocketManager)
 			disableMultiblock();

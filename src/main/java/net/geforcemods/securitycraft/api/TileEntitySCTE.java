@@ -221,15 +221,6 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 			customName = tag.getString("customName");
 	}
 
-	@Override
-	public void invalidate() {
-		super.invalidate();
-
-		onTileEntityDestroyed();
-	}
-
-	public void onTileEntityDestroyed() {}
-
 	/**
 	 * Automatically detects the side this method was called on, and
 	 * sends the client-side value of this TileEntity's NBTTagCompound

@@ -130,7 +130,7 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IModule
 	}
 
 	@Override
-	public void onTileEntityDestroyed() {
+	public void invalidate() {
 		if(linkable)
 			for(LinkedBlock block : linkedBlocks)
 				CustomizableSCTE.unlink(block.asTileEntity(world), this);
