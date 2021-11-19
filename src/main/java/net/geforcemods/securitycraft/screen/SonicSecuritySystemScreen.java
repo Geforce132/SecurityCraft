@@ -12,7 +12,7 @@ import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -39,20 +39,20 @@ public class SonicSecuritySystemScreen extends Screen {
 	{
 		super.init();
 
-		powerButton = addButton(new IdButton(0, width / 2 - 80, height / 2 - 59, 100, 20, getPowerString(te.isActive()), button -> {
+		powerButton = addButton(new IdButton(0, width / 2 - 75, height / 2 - 59, 150, 20, getPowerString(te.isActive()), button -> {
 			boolean toggledState = !te.isActive();
 
 			te.setActive(toggledState);
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), toggledState ? SyncSSSSettingsOnServer.DataType.POWER_ON : SyncSSSSettingsOnServer.DataType.POWER_OFF));
-			powerButton.setMessage(new StringTextComponent(getPowerString(toggledState)));
+			powerButton.setMessage(getPowerString(toggledState));
 		}));
 
-		recordingButton = addButton(new IdButton(1, width / 2 - 80, height / 2 - 32, 100, 20, getRecordingString(te.isRecording()), button -> {
+		recordingButton = addButton(new IdButton(1, width / 2 - 75, height / 2 - 32, 150, 20, getRecordingString(te.isRecording()), button -> {
 			boolean recording = !te.isRecording();
 
 			te.setRecording(recording);
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
-			recordingButton.setMessage(new StringTextComponent(getRecordingString(te.isRecording())));
+			recordingButton.setMessage(getRecordingString(te.isRecording()));
 		}));
 
 		soundButton = addButton(new TogglePictureButton(2, width / 2 - 45, height / 2 + 32, 20, 20, STREAMER_ICONS, new int[]{0, 0}, new int[]{32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
@@ -63,7 +63,7 @@ public class SonicSecuritySystemScreen extends Screen {
 		}));
 		soundButton.setCurrentIndex(!te.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
 
-		clearButton = addButton(new IdButton(3, width / 2 - 80, height / 2 - 10, 100, 20, "Clear recording", button -> {
+		clearButton = addButton(new IdButton(3, width / 2 - 75, height / 2 - 10, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear"), button -> {
 			te.clearNotes();
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
 			clearButton.active = false;
@@ -90,8 +90,8 @@ public class SonicSecuritySystemScreen extends Screen {
 		int textWidth = font.getStringPropertyWidth(text);
 		font.drawText(matrix, text, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
 
-		font.drawString(matrix, "Sound:", startX + 10, startY + 121, 4210752);
-		font.drawString(matrix, "Notes recorded: " + te.getNumberOfNotes(), startX + 13, startY + 98, 4210752);
+		font.drawText(matrix, Utils.localize("gui.securitycraft:sonic_security_system.sound"), startX + 10, startY + 121, 4210752);
+		font.drawText(matrix, Utils.localize("gui.securitycraft:sonic_security_system.recording.notes", te.getNumberOfNotes()), startX + 13, startY + 98, 4210752);
 	}
 
 	@Override
@@ -100,20 +100,14 @@ public class SonicSecuritySystemScreen extends Screen {
 		return false;
 	}
 
-	// TODO: Replace hard-coded strings with .lang translations
-	private String getRecordingString(boolean recording)
+	private ITextComponent getRecordingString(boolean recording)
 	{
-		return recording ? "Recording: on" : "Recording: off";
+		return recording ? Utils.localize("gui.securitycraft:sonic_security_system.recording.on") : Utils.localize("gui.securitycraft:sonic_security_system.recording.off");
 	}
 
-	private String getPowerString(boolean on)
+	private ITextComponent getPowerString(boolean on)
 	{
-		return on ? "Power: on" : "Power: off";
-	}
-
-	private String getSoundString(boolean emittingSound)
-	{
-		return emittingSound ? "Ping sound: enabled" : "Ping sound: disabled";
+		return on ? Utils.localize("gui.securitycraft:sonic_security_system.power.on") : Utils.localize("gui.securitycraft:sonic_security_system.power.off");
 	}
 
 }

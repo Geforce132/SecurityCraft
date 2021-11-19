@@ -685,6 +685,13 @@
 	"gui.securitycraft:keycard_reader.noSmartModule": "You need a Smart Module to control the keycard levels individually.",
 	"gui.securitycraft:keycard_reader.smartModule": "Individual keycard level control active!",
 	"gui.securitycraft:keycard_reader.level_mismatch": "The level of this keycard is not enabled in this keycard reader!",
+	"gui.securitycraft:sonic_security_system.recording.on": "Recording: on",
+	"gui.securitycraft:sonic_security_system.recording.off": "Recording: off",
+	"gui.securitycraft:sonic_security_system.recording.clear": "Clear recording",
+	"gui.securitycraft:sonic_security_system.recording.notes": "Notes recorded: %s",
+	"gui.securitycraft:sonic_security_system.power.on": "Power: on",
+	"gui.securitycraft:sonic_security_system.power.off": "Power: off",
+	"gui.securitycraft:sonic_security_system.sound": "Sound:",
 	"gui.securitycraft:customize.tooltip": "%s (%s)",
 	"gui.securitycraft:customize.currentSetting": "Currently: %s",
 
