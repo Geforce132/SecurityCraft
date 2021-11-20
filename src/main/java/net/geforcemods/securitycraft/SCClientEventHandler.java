@@ -41,7 +41,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Block;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -115,12 +114,11 @@ public class SCClientEventHandler
 		Level level = mc.level;
 		BlockPos pos = mc.cameraEntity.blockPosition();
 		Window window = mc.getWindow();
-		BlockEntity tile = level.getBlockEntity(pos);
 
 		if (mc.options.renderDebug)
 			return;
 
-		if (!(tile instanceof SecurityCameraBlockEntity te)) {
+		if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te)) {
 			LOGGER.warn("A camera was mounted but the respective BlockEntity wasn't available on the client side. This is a bug!");
 			OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, false);
 			return;
@@ -129,12 +127,15 @@ public class SCClientEventHandler
 		Font font = Minecraft.getInstance().font;
 		Options settings = Minecraft.getInstance().options;
 		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
+		BlockState state = level.getBlockState(pos);
 		Component lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyUp.getTranslatedKeyMessage(), settings.keyLeft.getTranslatedKeyMessage(), settings.keyDown.getTranslatedKeyMessage(), settings.keyRight.getTranslatedKeyMessage());
 		Component exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyShift.getTranslatedKeyMessage());
 		Component zoom = Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage());
 		Component nightVision = Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage());
 		Component redstone = Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage());
 		Component redstoneNote = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
+		String time = ClientUtils.getFormattedMinecraftTime();
+		int timeY = 25;
 
 		font.drawShadow(pose, lookAround, window.getGuiScaledWidth() - font.width(lookAround) - 8, window.getGuiScaledHeight() - 80, 16777215);
 		font.drawShadow(pose, exit, window.getGuiScaledWidth() - font.width(exit) - 8, window.getGuiScaledHeight() - 70, 16777215);
@@ -142,9 +143,6 @@ public class SCClientEventHandler
 		font.drawShadow(pose, nightVision, window.getGuiScaledWidth() - font.width(nightVision) - 8, window.getGuiScaledHeight() - 50, 16777215);
 		font.drawShadow(pose, redstone, window.getGuiScaledWidth() - font.width(redstone) - 8, window.getGuiScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
 		font.drawShadow(pose, redstoneNote, window.getGuiScaledWidth() - font.width(redstoneNote) -8, window.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
-
-		String time = ClientUtils.getFormattedMinecraftTime();
-		int timeY = 25;
 
 		if(te.hasCustomSCName())
 		{
@@ -155,7 +153,6 @@ public class SCClientEventHandler
 		}
 
 		font.drawShadow(pose, time, window.getGuiScaledWidth() - font.width(time) - 4, timeY, 16777215);
-
 		RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.blit(pose, 5, 0, 0, 0, 90, 20);
@@ -169,12 +166,12 @@ public class SCClientEventHandler
 			RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
 		}
 
-		BlockState state = level.getBlockState(pos);
-
-		if((state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) && !te.hasModule(ModuleType.REDSTONE))
-			gui.blit(pose, 12, 2, 104, 0, 12, 12);
-		else if((state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) && te.hasModule(ModuleType.REDSTONE))
-			gui.blit(pose, 12, 3, 90, 0, 12, 11);
+		if(state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
+			if(!hasRedstoneModule)
+				gui.blit(pose, 12, 2, 104, 0, 12, 12);
+			else
+				gui.blit(pose, 12, 3, 90, 0, 12, 11);
+		}
 		else
 			Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(REDSTONE, 10, 0);
 	}
