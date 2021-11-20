@@ -1,15 +1,12 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -57,20 +54,6 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 		};
 	}
 
-	public static void toggleLight(Level world, BlockPos pos, BlockState state, Owner owner, boolean isLit) {
-		if(!world.isClientSide)
-		{
-			world.setBlockAndUpdate(pos, state.setValue(LIT, isLit));
-
-			BlockEntity te = world.getBlockEntity(pos);
-
-			if(te instanceof IOwnable ownable)
-				ownable.setOwner(owner.getUUID(), owner.getName());
-
-			BlockUtils.updateAndNotify(world, pos, SCContent.MOTION_ACTIVATED_LIGHT.get(), 1, false);
-		}
-	}
-
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos){
 		Direction side = state.getValue(FACING);
@@ -104,7 +87,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new MotionActivatedLightBlockEntity(pos, state).attacks(LivingEntity.class, 5, 1);
+		return new MotionActivatedLightBlockEntity(pos, state);
 	}
 
 	@Override

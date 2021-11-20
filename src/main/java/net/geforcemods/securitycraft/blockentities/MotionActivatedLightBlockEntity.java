@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -9,14 +11,15 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity {
-
+	private static final int TICKS_BETWEEN_ATTACKS = 5;
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getBlockPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
+	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	public MotionActivatedLightBlockEntity(BlockPos pos, BlockState state)
 	{
@@ -24,34 +27,19 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
-	public boolean attackEntity(Entity entity) {
-		if(entity instanceof Player player && PlayerUtils.isPlayerMountedOnCamera(player))
-			MotionActivatedLightBlock.toggleLight(level, worldPosition, getBlockState(), getOwner(), false);
-		else if(entity instanceof LivingEntity lEntity && getBlockState().getBlock() == SCContent.MOTION_ACTIVATED_LIGHT.get())
-			MotionActivatedLightBlock.toggleLight(level, worldPosition, getBlockState(), getOwner(), !EntityUtils.isInvisible(lEntity)); //also automatically switches on/off based on if the entity turns (in-)visible
+	public void tick(Level level, BlockPos pos, BlockState state) {
+		super.tick(level, pos, state);
 
-		return false;
-	}
+		if(cooldown-- > 0)
+			return;
 
-	@Override
-	public void attackFailed() {
-		if(getBlockState().getBlock() == SCContent.MOTION_ACTIVATED_LIGHT.get() && getBlockState().getValue(MotionActivatedLightBlock.LIT))
-			MotionActivatedLightBlock.toggleLight(level, worldPosition, getBlockState(), getOwner(), false);
-	}
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(searchRadiusOption.get()), e -> !PlayerUtils.isPlayerMountedOnCamera(e) && !EntityUtils.isInvisible(e));
+		boolean shouldBeOn = !entities.isEmpty();
 
-	@Override
-	public boolean canAttack() {
-		return true;
-	}
+		if(state.getValue(MotionActivatedLightBlock.LIT) != shouldBeOn)
+			level.setBlockAndUpdate(pos, state.setValue(MotionActivatedLightBlock.LIT, shouldBeOn));
 
-	@Override
-	public boolean shouldSyncToClient() {
-		return false;
-	}
-
-	@Override
-	public double getAttackRange() {
-		return searchRadiusOption.get();
+		cooldown = TICKS_BETWEEN_ATTACKS;
 	}
 
 	@Override
@@ -63,5 +51,4 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity {
 	public Option<?>[] customOptions() {
 		return new Option<?>[] {searchRadiusOption};
 	}
-
 }

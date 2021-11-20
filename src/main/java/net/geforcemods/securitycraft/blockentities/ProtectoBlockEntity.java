@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
@@ -9,12 +11,19 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 public class ProtectoBlockEntity extends DisguisableBlockEntity {
+	private static final int ATTACK_RANGE = 10;
+	private static final int SLOW_SPEED = 200;
+	private static final int FAST_SPEED = 100;
+	private int cooldown = 0;
+	private int ticksBetweenAttacks = hasModule(ModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
 
 	public ProtectoBlockEntity(BlockPos pos, BlockState state)
 	{
@@ -22,51 +31,58 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity {
 	}
 
 	@Override
-	public boolean attackEntity(Entity entity){
-		if (entity instanceof LivingEntity lEntity && !(entity instanceof Sentry) && !EntityUtils.isInvisible(lEntity)) {
-			if (entity instanceof Player player)
-			{
-				if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
-					return false;
+	public void tick(Level level, BlockPos pos, BlockState state) {
+		super.tick(level, pos, state);
+
+		if(cooldown++ < ticksBetweenAttacks)
+			return;
+
+		if(level.isRaining() && level.canSeeSkyFromBelowWater(pos)) {
+			List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(ATTACK_RANGE));
+
+			if(!state.getValue(ProtectoBlock.ACTIVATED))
+				level.setBlockAndUpdate(pos, state.setValue(ProtectoBlock.ACTIVATED, true));
+
+			if(entities.size() != 0) {
+				boolean shouldDeactivate = false;
+
+				for(LivingEntity entity : entities) {
+					if (!(entity instanceof Sentry) && !EntityUtils.isInvisible(entity)) {
+						if (entity instanceof Player player)
+						{
+							if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
+								continue;
+						}
+
+						if(!level.isClientSide)
+							WorldUtils.spawnLightning(level, entity.position(), false);
+
+						shouldDeactivate = true;
+					}
+				}
+
+				if(shouldDeactivate)
+					level.setBlockAndUpdate(pos, state.setValue(ProtectoBlock.ACTIVATED, false));
 			}
 
-			if(!level.isClientSide)
-				WorldUtils.spawnLightning(level, entity.position(), false);
-
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, false));
-			return true;
+			cooldown = 0;
 		}
-
-		return false;
 	}
 
 	@Override
-	public boolean canAttack() {
-		boolean canAttack = (getAttackCooldown() >= getTicksBetweenAttacks() && level.canSeeSkyFromBelowWater(worldPosition) && level.isRaining());
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
+		super.onModuleInserted(stack, module);
 
-		if(canAttack && !getBlockState().getValue(ProtectoBlock.ACTIVATED))
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, true));
-		else if(!canAttack && getBlockState().getValue(ProtectoBlock.ACTIVATED))
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, false));
-
-		return canAttack;
+		if(module == ModuleType.SPEED)
+			ticksBetweenAttacks = FAST_SPEED;
 	}
 
 	@Override
-	public boolean shouldAttackEntityType(Entity entity)
-	{
-		return entity instanceof LivingEntity;
-	}
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
+		super.onModuleRemoved(stack, module);
 
-	@Override
-	public boolean shouldRefreshAttackCooldown() {
-		return false;
-	}
-
-	@Override
-	public int getTicksBetweenAttacks()
-	{
-		return hasModule(ModuleType.SPEED) ? 100 : 200;
+		if(module == ModuleType.SPEED)
+			ticksBetweenAttacks = SLOW_SPEED;
 	}
 
 	@Override

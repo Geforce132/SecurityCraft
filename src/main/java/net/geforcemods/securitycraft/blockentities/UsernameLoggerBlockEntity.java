@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.Iterator;
-import java.util.List;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Option;
@@ -17,20 +14,21 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements MenuProvider {
-
+	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private IntOption searchRadius = new IntOption(this::getBlockPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
+	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	public UsernameLoggerBlockEntity(BlockPos pos, BlockState state)
 	{
@@ -38,38 +36,27 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public boolean attackEntity(Entity entity) {
-		if (!level.isClientSide && entity instanceof Player player) {
-			addPlayer(player);
-			sendChangeToClient(false);
+	public void tick(Level level, BlockPos pos, BlockState state) {
+		super.tick(level, pos, state);
+
+		if(!level.isClientSide) {
+			if(cooldown-- > 0)
+				return;
+
+			if(level.getBestNeighborSignal(pos) > 0) {
+				level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get())).forEach(this::addPlayer);
+				syncLoggedPlayersToClient();
+			}
+
+			cooldown = TICKS_BETWEEN_ATTACKS;
 		}
-
-		return true;
 	}
 
-	@Override
-	public boolean canAttack() {
-		return level.getBestNeighborSignal(worldPosition) > 0;
-	}
-
-	public void logPlayers(){
-		int range = searchRadius.get();
-
-		AABB area = new AABB(worldPosition).inflate(range);
-		List<Player> entities = level.getEntitiesOfClass(Player.class, area);
-		Iterator<Player> iterator = entities.iterator();
-
-		while(iterator.hasNext())
-			addPlayer(iterator.next());
-
-		sendChangeToClient(false);
-	}
-
-	private void addPlayer(Player player) {
+	public void addPlayer(Player player) {
 		String playerName = player.getName().getString();
 		long timestamp = System.currentTimeMillis();
 
-		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(playerName, timestamp))
+		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp))
 		{
 			//ignore players on the allowlist
 			if(ModuleUtils.isAllowed(this, player))
@@ -87,7 +74,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		}
 	}
 
-	private boolean hasPlayerName(String username, long timestamp) {
+	private boolean wasPlayerRecentlyAdded(String username, long timestamp) {
 		for(int i = 0; i < players.length; i++)
 		{
 			if(players[i] != null && players[i].equals(username) && (timestamps[i] + 1000L) > timestamp) //was within the last second that the same player was last added
@@ -123,17 +110,16 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		}
 	}
 
-	public void sendChangeToClient(boolean clear){
-		if(!clear)
+	public void syncLoggedPlayersToClient() {
+		for(int i = 0; i < players.length; i++)
 		{
-			for(int i = 0; i < players.length; i++)
-			{
-				if(players[i] != null)
-					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), i, players[i], uuids[i], timestamps[i]));
-			}
+			if(players[i] != null)
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), i, players[i], uuids[i], timestamps[i]));
 		}
-		else
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new ClearLoggerClient(worldPosition));
+	}
+
+	public void clearLoggedPlayersOnClient() {
+		SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new ClearLoggerClient(worldPosition));
 	}
 
 	@Override

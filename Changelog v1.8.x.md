@@ -19,6 +19,7 @@
 - API: Removed INameable in favor of vanilla's Nameable
 - API: Added INameSettable to be able to easily set a block's custom name
 - API: Added IViewActivated (used by the Retinal Scanner and Scanner Door)
+- API: Removed SecurityCraftBlockEntity#activatedByView, SecurityCraftBlockEntity#attacks, SecurityCraftBlockEntity#nameable, and their related methods
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play
 - Fix: Claymore does not explode

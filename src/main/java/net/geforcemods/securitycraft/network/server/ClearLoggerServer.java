@@ -40,7 +40,7 @@ public class ClearLoggerServer
 			if(player.level.getBlockEntity(message.pos) instanceof UsernameLoggerBlockEntity te && te.getOwner().isOwner(player))
 			{
 				te.players = new String[100];
-				te.sendChangeToClient(true);
+				te.clearLoggedPlayersOnClient();
 			}
 		});
 

@@ -37,8 +37,8 @@ public abstract class CustomizableBlockEntity extends SecurityCraftBlockEntity i
 	}
 
 	@Override
-	public void tick(Level world, BlockPos pos, BlockState state) {
-		super.tick(world, pos, state);
+	public void tick(Level level, BlockPos pos, BlockState state) {
+		super.tick(level, pos, state);
 
 		if(hasLevel() && nbtTagStorage != null) {
 			readLinkedBlocks(nbtTagStorage);

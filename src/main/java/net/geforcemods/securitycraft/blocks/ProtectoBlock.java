@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -67,7 +66,7 @@ public class ProtectoBlock extends DisguisableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new ProtectoBlockEntity(pos, state).attacks(LivingEntity.class, 10, 200);
+		return new ProtectoBlockEntity(pos, state);
 	}
 
 	@Override
