@@ -30,7 +30,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
@@ -39,6 +38,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
@@ -65,6 +65,9 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.gui.ScrollPanel;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {
 
@@ -539,8 +542,9 @@ public class SCManualScreen extends Screen {
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
-	class PatronList extends ColorableScrollPanel
+	class PatronList extends ScrollPanel
 	{
+		private static final String PATRON_LIST_LINK = FMLEnvironment.production ? "https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw" : "https://gist.githubusercontent.com/bl4ckscor3/3196e6740774e386871a74a9606eaa61/raw";
 		private final int slotHeight = 12;
 		private final ExecutorService executor = Executors.newSingleThreadExecutor();
 		private Future<List<String>> patronRequestFuture;
@@ -554,7 +558,7 @@ public class SCManualScreen extends Screen {
 
 		public PatronList(Minecraft client, int width, int height, int top, int left)
 		{
-			super(client, width, height, top, left, new Color(0xC0, 0xBF, 0xBB, 0xB2), new Color(0xD0, 0xBF, 0xBB, 0xB2), new Color(0x8E, 0x82, 0x70, 0xFF), new Color(0x80, 0x70, 0x55, 0xFF), new Color(0xD1, 0xBF, 0xA1, 0xFF));
+			super(client, width, height, top, left, 4, 6, 0xC0BFBBB2, 0xD0BFBBB2, 0xFF8E8270, 0xFF807055, 0xFFD1BFA1);
 
 			fetchErrorLines = font.split(Utils.localize("gui.securitycraft:scManual.patreon.error"), width);
 			noPatronsLines = font.split(Utils.localize("advancements.empty"), width - 10);
@@ -576,7 +580,7 @@ public class SCManualScreen extends Screen {
 		{
 			if(currentPage == -1)
 			{
-				if(patronsAvailable) //code from ScrollPanel to be able to change colors
+				if(patronsAvailable)
 				{
 					super.render(matrix, mouseX, mouseY, partialTicks);
 
@@ -590,7 +594,7 @@ public class SCManualScreen extends Screen {
 						int length = font.width(patron);
 						int baseY = top + border - (int)scrollDistance;
 
-						if(length >= width - barWidth)
+						if(length >= width - 6) //6 = barWidth
 							renderTooltip(matrix, new TextComponent(patron), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
 					}
 
@@ -648,7 +652,7 @@ public class SCManualScreen extends Screen {
 			{
 				//create thread to fetch patrons. without this, and for example if the player has no internet connection, the game will hang
 				patronRequestFuture = executor.submit(() -> {
-					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw").openStream())))
+					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(PATRON_LIST_LINK).openStream())))
 					{
 						return reader.lines().collect(Collectors.toList());
 					}
@@ -661,6 +665,14 @@ public class SCManualScreen extends Screen {
 				patronsRequested = true;
 			}
 		}
+
+		@Override
+		public NarrationPriority narrationPriority() {
+			return NarrationPriority.NONE;
+		}
+
+		@Override
+		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 	}
 
 	static class ChangePageButton extends IdButton {

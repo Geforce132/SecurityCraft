@@ -15,10 +15,10 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -27,6 +27,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraftforge.client.gui.ScrollPanel;
 
 public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 
@@ -98,7 +99,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
-	class ProjectileScrollList extends ColorableScrollPanel
+	class ProjectileScrollList extends ScrollPanel
 	{
 		private final int slotHeight = 12, listLength = orderedFilterList.size();
 
@@ -177,5 +178,13 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 				i++;
 			}
 		}
+
+		@Override
+		public NarrationPriority narrationPriority() {
+			return NarrationPriority.NONE;
+		}
+
+		@Override
+		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 	}
 }

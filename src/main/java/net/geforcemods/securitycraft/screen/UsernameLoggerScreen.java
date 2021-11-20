@@ -16,16 +16,17 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
-import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraftforge.client.gui.ScrollPanel;
 
 public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>{
 
@@ -98,7 +99,7 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
-	class PlayerList extends ColorableScrollPanel
+	class PlayerList extends ScrollPanel
 	{
 		private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 		private final int slotHeight = 12, listLength = 100;
@@ -188,5 +189,13 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 					font.draw(matrix, tileEntity.players[i], left + width / 2 - font.width(tileEntity.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 			}
 		}
+
+		@Override
+		public NarrationPriority narrationPriority() {
+			return NarrationPriority.NONE;
+		}
+
+		@Override
+		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 	}
 }

@@ -30,7 +30,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 public class UniversalOwnerChangerItem extends Item
 {
@@ -99,7 +99,7 @@ public class UniversalOwnerChangerItem extends Item
 			world.getServer().getPlayerList().broadcastAll(te.getUpdatePacket());
 
 		//disable this in a development environment
-		if(FMLLoader.isProduction() && te instanceof IModuleInventory inv)
+		if(FMLEnvironment.production && te instanceof IModuleInventory inv)
 		{
 			for(ModuleType moduleType : inv.getInsertedModules())
 			{

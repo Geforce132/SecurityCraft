@@ -15,11 +15,11 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
-import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
@@ -28,6 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.gui.ScrollPanel;
 
 @OnlyIn(Dist.CLIENT)
 public class EditModuleScreen extends Screen
@@ -265,7 +266,7 @@ public class EditModuleScreen extends Screen
 		}
 	}
 
-	class PlayerList extends ColorableScrollPanel
+	class PlayerList extends ScrollPanel
 	{
 		private final int slotHeight = 12, listLength = ModuleItem.MAX_PLAYERS;
 		private int selectedIndex = -1;
@@ -360,5 +361,13 @@ public class EditModuleScreen extends Screen
 		{
 			this.selectedIndex = selectedIndex;
 		}
+
+		@Override
+		public NarrationPriority narrationPriority() {
+			return NarrationPriority.NONE;
+		}
+
+		@Override
+		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 	}
 }
