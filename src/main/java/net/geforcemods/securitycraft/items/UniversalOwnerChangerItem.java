@@ -30,7 +30,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 public class UniversalOwnerChangerItem extends Item
 {
@@ -100,7 +100,7 @@ public class UniversalOwnerChangerItem extends Item
 		if (!world.isRemote)
 			world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
 		//disable this in a development environment
-		if(FMLLoader.isProduction() && te instanceof IModuleInventory)
+		if(FMLEnvironment.production && te instanceof IModuleInventory)
 		{
 			for(ModuleType moduleType : ((IModuleInventory)te).getInsertedModules())
 			{

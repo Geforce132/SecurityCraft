@@ -60,6 +60,7 @@ import net.minecraft.util.text.event.ClickEvent.Action;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ScrollPanel;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {
@@ -570,6 +571,7 @@ public class SCManualScreen extends Screen {
 
 	class PatronList extends ScrollPanel
 	{
+		private final String patronListLink = FMLEnvironment.production ? "https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw" : "https://gist.githubusercontent.com/bl4ckscor3/3196e6740774e386871a74a9606eaa61/raw";
 		private final int slotHeight = 12;
 		private final ExecutorService executor = Executors.newSingleThreadExecutor();
 		private Future<List<String>> patronRequestFuture;
@@ -725,7 +727,7 @@ public class SCManualScreen extends Screen {
 			{
 				//create thread to fetch patrons. without this, and for example if the player has no internet connection, the game will hang
 				patronRequestFuture = executor.submit(() -> {
-					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw").openStream())))
+					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(patronListLink).openStream())))
 					{
 						return reader.lines().collect(Collectors.toList());
 					}
