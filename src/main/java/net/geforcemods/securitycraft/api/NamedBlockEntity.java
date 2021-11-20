@@ -10,8 +10,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter {
-
-	protected boolean intersectsEntities = false;
 	private Component customName = TextComponent.EMPTY;
 
 	public NamedBlockEntity(BlockPos pos, BlockState state)
