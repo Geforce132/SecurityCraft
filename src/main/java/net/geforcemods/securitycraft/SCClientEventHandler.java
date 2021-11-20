@@ -121,18 +121,7 @@ public class SCClientEventHandler
 		Component nightVision = Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage());
 		Component redstone = Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage());
 		Component redstoneNote = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
-		String time = ClientUtils.getFormattedMinecraftTime();
-		int timeY = 25;
 
-		if(te.hasCustomSCName())
-		{
-			Component cameraName = te.getCustomSCName();
-
-			font.drawShadow(pose, cameraName, window.getGuiScaledWidth() - font.width(cameraName) - 8, 25, 16777215);
-			timeY += 10;
-		}
-
-		font.drawShadow(pose, time, window.getGuiScaledWidth() - font.width(time) - 4, timeY, 16777215);
 		font.drawShadow(pose, lookAround, window.getGuiScaledWidth() - font.width(lookAround) - 8, window.getGuiScaledHeight() - 80, 16777215);
 		font.drawShadow(pose, exit, window.getGuiScaledWidth() - font.width(exit) - 8, window.getGuiScaledHeight() - 70, 16777215);
 		font.drawShadow(pose, zoom, window.getGuiScaledWidth() - font.width(zoom) - 8, window.getGuiScaledHeight() - 60, 16777215);
@@ -140,27 +129,42 @@ public class SCClientEventHandler
 		font.drawShadow(pose, redstone, window.getGuiScaledWidth() - font.width(redstone) - 8, window.getGuiScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
 		font.drawShadow(pose, redstoneNote, window.getGuiScaledWidth() - font.width(redstoneNote) -8, window.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
 
-		RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		gui.blit(pose, 5, 0, 0, 0, 90, 20);
-		gui.blit(pose, window.getGuiScaledWidth() - 70, 5, 190, 0, 65, 30);
+		if (!settings.renderDebug) {
+			String time = ClientUtils.getFormattedMinecraftTime();
+			int timeY = 25;
 
-		if(!mc.player.hasEffect(MobEffects.NIGHT_VISION))
-			gui.blit(pose, 28, 4, 90, 12, 16, 11);
-		else{
-			RenderSystem._setShaderTexture(0, NIGHT_VISION);
-			GuiComponent.blit(pose, 27, -1, 0, 0, 18, 18, 18, 18);
+			if(te.hasCustomSCName())
+			{
+				Component cameraName = te.getCustomSCName();
+
+				font.drawShadow(pose, cameraName, window.getGuiScaledWidth() - font.width(cameraName) - 8, 25, 16777215);
+				timeY += 10;
+			}
+
+			font.drawShadow(pose, time, window.getGuiScaledWidth() - font.width(time) - 4, timeY, 16777215);
+
 			RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+			gui.blit(pose, 5, 0, 0, 0, 90, 20);
+			gui.blit(pose, window.getGuiScaledWidth() - 70, 5, 190, 0, 65, 30);
+
+			if(!mc.player.hasEffect(MobEffects.NIGHT_VISION))
+				gui.blit(pose, 28, 4, 90, 12, 16, 11);
+			else{
+				RenderSystem._setShaderTexture(0, NIGHT_VISION);
+				GuiComponent.blit(pose, 27, -1, 0, 0, 18, 18, 18, 18);
+				RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
+			}
+
+			BlockState state = level.getBlockState(pos);
+
+			if((state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) && !te.hasModule(ModuleType.REDSTONE))
+				gui.blit(pose, 12, 2, 104, 0, 12, 12);
+			else if((state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) && te.hasModule(ModuleType.REDSTONE))
+				gui.blit(pose, 12, 3, 90, 0, 12, 11);
+			else
+				Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(REDSTONE, 10, 0);
 		}
-
-		BlockState state = level.getBlockState(pos);
-
-		if((state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) && !te.hasModule(ModuleType.REDSTONE))
-			gui.blit(pose, 12, 2, 104, 0, 12, 12);
-		else if((state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) && te.hasModule(ModuleType.REDSTONE))
-			gui.blit(pose, 12, 3, 90, 0, 12, 11);
-		else
-			Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(REDSTONE, 10, 0);
 	}
 
 	public static void hotbarBindOverlay(ForgeIngameGui gui, PoseStack pose, float partialTicks, int width, int height) {

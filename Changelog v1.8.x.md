@@ -32,6 +32,7 @@
 - Fix: Crash when trying to power a taser while holding redstone in the offhand
 - Fix: Anyone can insert modules into any block
 - Fix: Entity shadows do not render on block mines
+- Fix: Some elements of the Security Camera' overlay can overlap debug menu information
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: The minimum Forge version is now 37.0.85
