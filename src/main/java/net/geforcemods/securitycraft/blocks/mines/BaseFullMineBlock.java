@@ -1,16 +1,13 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,8 +19,6 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.HitResult;
@@ -32,7 +27,7 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable, IOverlayDisplay, IBlockMine {
+public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
 
 	private final Block blockDisguisedAs;
 
@@ -68,11 +63,9 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	}
 
 	@Override
-	public void onEntityIntersected(Level world, BlockPos pos, Entity entity){
-		if(entity instanceof ItemEntity)
-			return;
-		else if(entity instanceof LivingEntity lEntity && !PlayerUtils.isPlayerMountedOnCamera(lEntity) && !EntityUtils.doesEntityOwn(entity, world, pos))
-			explode(world, pos);
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity){
+		if(entity instanceof LivingEntity lEntity && !PlayerUtils.isPlayerMountedOnCamera(lEntity) && !EntityUtils.doesEntityOwn(entity, level, pos))
+			explode(level, pos);
 	}
 
 	/**
@@ -147,12 +140,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCraftBlockEntity(pos, state).intersectsEntities();
-	}
-
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeAbstract, WorldUtils::blockEntityTicker);
+		return new NamedBlockEntity(pos, state);
 	}
 
 	@Override

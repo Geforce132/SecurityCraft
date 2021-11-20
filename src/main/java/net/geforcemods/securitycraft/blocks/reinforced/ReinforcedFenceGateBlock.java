@@ -1,9 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -20,19 +18,16 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedFenceGateBlock extends FenceGateBlock implements IIntersectable, EntityBlock {
+public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBlock {
 
 	public ReinforcedFenceGateBlock(Block.Properties properties){
 		super(properties);
@@ -55,22 +50,22 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 	}
 
 	@Override
-	public void onEntityIntersected(Level world, BlockPos pos, Entity entity) {
-		if(world.getBlockState(pos).getValue(OPEN))
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if(level.getBlockState(pos).getValue(OPEN))
 			return;
 
 		if(entity instanceof ItemEntity)
 			return;
 		else if(entity instanceof Player player)
 		{
-			if(((OwnableBlockEntity)world.getBlockEntity(pos)).getOwner().isOwner(player))
+			if(((OwnableBlockEntity)level.getBlockEntity(pos)).getOwner().isOwner(player))
 				return;
 		}
-		else if(!world.isClientSide && entity instanceof Creeper creeper)
+		else if(!level.isClientSide && entity instanceof Creeper creeper)
 		{
-			LightningBolt lightning = WorldUtils.createLightning(world, Vec3.atBottomCenterOf(pos), true);
+			LightningBolt lightning = WorldUtils.createLightning(level, Vec3.atBottomCenterOf(pos), true);
 
-			creeper.thunderHit((ServerLevel)world, lightning);
+			creeper.thunderHit((ServerLevel)level, lightning);
 			return;
 		}
 
@@ -97,19 +92,14 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int par5, int par6){
-		super.triggerEvent(state, world, pos, par5, par6);
-		BlockEntity tileentity = world.getBlockEntity(pos);
+	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int par5, int par6){
+		super.triggerEvent(state, level, pos, par5, par6);
+		BlockEntity tileentity = level.getBlockEntity(pos);
 		return tileentity != null ? tileentity.triggerEvent(par5, par6) : false;
 	}
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCraftBlockEntity(pos, state).intersectsEntities();
-	}
-
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypeAbstract, WorldUtils::blockEntityTicker);
+		return new NamedBlockEntity(pos, state);
 	}
 }

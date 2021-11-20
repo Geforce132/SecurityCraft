@@ -2,15 +2,13 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
+import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -24,8 +22,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -34,7 +30,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
+public class LaserFieldBlock extends OwnableBlock {
 
 	public static final IntegerProperty BOUNDTYPE = IntegerProperty.create("boundtype", 1, 3);
 	private static final VoxelShape SHAPE_X = Block.box(0, 6.75, 6.75, 16, 9.25, 9.25);
@@ -53,28 +49,28 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 	}
 
 	@Override
-	public void onEntityIntersected(Level world, BlockPos pos, Entity entity)
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
 	{
-		if(!world.isClientSide && entity instanceof LivingEntity livingEntity && !EntityUtils.isInvisible(livingEntity))
+		if(!level.isClientSide && entity instanceof LivingEntity livingEntity && !EntityUtils.isInvisible(livingEntity))
 		{
 			for(Direction facing : Direction.values())
 			{
 				for(int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++)
 				{
 					BlockPos offsetPos = pos.relative(facing, i);
-					BlockState offsetState = world.getBlockState(offsetPos);
+					BlockState offsetState = level.getBlockState(offsetPos);
 					Block offsetBlock = offsetState.getBlock();
 
 					if(offsetBlock == SCContent.LASER_BLOCK.get() && !offsetState.getValue(LaserBlock.POWERED))
 					{
-						BlockEntity te = world.getBlockEntity(offsetPos);
+						BlockEntity te = level.getBlockEntity(offsetPos);
 
 						if(te instanceof IModuleInventory moduleInv && ModuleUtils.isAllowed(moduleInv, entity))
 							return;
 
-						world.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
-						world.updateNeighborsAt(offsetPos, SCContent.LASER_BLOCK.get());
-						world.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
+						level.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
+						level.updateNeighborsAt(offsetPos, SCContent.LASER_BLOCK.get());
+						level.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
 
 						if(te instanceof IModuleInventory moduleInv && moduleInv.hasModule(ModuleType.HARMING))
 						{
@@ -151,12 +147,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCraftBlockEntity(pos, state).intersectsEntities();
-	}
-
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeAbstract, WorldUtils::blockEntityTicker);
+		return new NamedBlockEntity(pos, state);
 	}
 
 	@Override

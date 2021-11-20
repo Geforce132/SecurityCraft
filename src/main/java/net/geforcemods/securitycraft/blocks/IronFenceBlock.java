@@ -2,10 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Map;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.Util;
@@ -30,8 +28,6 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -42,7 +38,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class IronFenceBlock extends OwnableBlock implements IIntersectable {
+public class IronFenceBlock extends OwnableBlock {
 	public static final BooleanProperty NORTH = PipeBlock.NORTH;
 	public static final BooleanProperty EAST = PipeBlock.EAST;
 	public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
@@ -207,7 +203,7 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	}
 
 	@Override
-	public void onEntityIntersected(Level world, BlockPos pos, Entity entity)
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
 	{
 		//so dropped items don't get destroyed
 		if(entity instanceof ItemEntity)
@@ -215,14 +211,14 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 		//owner check
 		else if(entity instanceof Player player)
 		{
-			if(((OwnableBlockEntity) world.getBlockEntity(pos)).getOwner().isOwner(player))
+			if(((OwnableBlockEntity) level.getBlockEntity(pos)).getOwner().isOwner(player))
 				return;
 		}
-		else if(!world.isClientSide && entity instanceof Creeper creeper)
+		else if(!level.isClientSide && entity instanceof Creeper creeper)
 		{
-			LightningBolt lightning = WorldUtils.createLightning(world, Vec3.atBottomCenterOf(pos), true);
+			LightningBolt lightning = WorldUtils.createLightning(level, Vec3.atBottomCenterOf(pos), true);
 
-			creeper.thunderHit((ServerLevel)world, lightning);
+			creeper.thunderHit((ServerLevel)level, lightning);
 			creeper.clearFire();
 			return;
 		}
@@ -241,11 +237,6 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new SecurityCraftBlockEntity(pos, state).intersectsEntities();
-	}
-
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeAbstract, WorldUtils::blockEntityTicker);
+		return new NamedBlockEntity(pos, state);
 	}
 }

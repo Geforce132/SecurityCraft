@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
@@ -41,7 +41,7 @@ public class CameraMonitorScreen extends Screen {
 	private IdButton[] cameraButtons = new IdButton[10];
 	private IdButton[] unbindButtons = new IdButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
-	private SecurityCraftBlockEntity[] cameraTEs = new SecurityCraftBlockEntity[10];
+	private SecurityCameraBlockEntity[] cameraBEs = new SecurityCameraBlockEntity[10];
 	private ResourceLocation[] cameraViewDim = new ResourceLocation[10];
 	private int xSize = 176, ySize = 166;
 	private int page = 1;
@@ -105,14 +105,14 @@ public class CameraMonitorScreen extends Screen {
 				Level world = Minecraft.getInstance().level;
 				BlockEntity tile = world.getBlockEntity(view.pos());
 
-				cameraTEs[button.id - 1] = tile instanceof SecurityCraftBlockEntity camera ? camera : null;
+				cameraBEs[button.id - 1] = tile instanceof SecurityCameraBlockEntity camera ? camera : null;
 				hoverCheckers[button.id - 1] = new HoverChecker(button);
 			}
 			else
 			{
 				button.active = false;
 				unbindButtons[button.id - 1].active = false;
-				cameraTEs[button.id - 1] = null;
+				cameraBEs[button.id - 1] = null;
 				continue;
 			}
 		}
@@ -145,8 +145,8 @@ public class CameraMonitorScreen extends Screen {
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
-				if(cameraTEs[i] != null && cameraTEs[i].hasCustomName())
-					renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomName()), 150), mouseX, mouseY);
+				if(cameraBEs[i] != null && cameraBEs[i].hasCustomName())
+					renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
 			}
 	}
 

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
+import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
@@ -762,7 +762,7 @@ public class SCContent
 	@ObjectHolder(SecurityCraft.MODID + ":ownable")
 	public static BlockEntityType<OwnableBlockEntity> beTypeOwnable;
 	@ObjectHolder(SecurityCraft.MODID + ":abstract")
-	public static BlockEntityType<SecurityCraftBlockEntity> beTypeAbstract;
+	public static BlockEntityType<NamedBlockEntity> beTypeAbstract;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad")
 	public static BlockEntityType<KeypadBlockEntity> beTypeKeypad;
 	@ObjectHolder(SecurityCraft.MODID + ":laser_block")

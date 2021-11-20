@@ -4,14 +4,12 @@ import java.util.function.BiFunction;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
+import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -27,8 +25,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -43,7 +39,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class InventoryScannerFieldBlock extends OwnableBlock implements IIntersectable {
+public class InventoryScannerFieldBlock extends OwnableBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty HORIZONTAL = BooleanProperty.create("horizontal");
@@ -90,9 +86,9 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	}
 
 	@Override
-	public void onEntityIntersected(Level world, BlockPos pos, Entity entity)
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
 	{
-		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, pos);
 
 		if(connectedScanner == null || connectedScanner.doesFieldSolidify())
 			return;
@@ -324,12 +320,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCraftBlockEntity(pos, state).intersectsEntities();
-	}
-
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeAbstract, WorldUtils::blockEntityTicker);
+		return new NamedBlockEntity(pos, state);
 	}
 
 	@Override

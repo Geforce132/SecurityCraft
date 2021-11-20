@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
@@ -15,7 +14,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,8 +32,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -45,7 +41,7 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
+public class CageTrapBlock extends DisguisableBlock {
 
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
@@ -87,16 +83,14 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 	}
 
 	@Override
-	public void onEntityIntersected(Level world, BlockPos pos, Entity entity) {
-		if(!world.isClientSide){
-			CageTrapBlockEntity tile = (CageTrapBlockEntity) world.getBlockEntity(pos);
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if(!level.isClientSide){
+			CageTrapBlockEntity tile = (CageTrapBlockEntity) level.getBlockEntity(pos);
 			boolean isPlayer = entity instanceof Player;
 
 			if(isPlayer || (entity instanceof Mob && tile.capturesMobs())){
 				if((isPlayer && tile.getOwner().isOwner((Player)entity)))
 					return;
-
-				BlockState state = world.getBlockState(pos);
 
 				if(state.getValue(DEACTIVATED))
 					return;
@@ -104,7 +98,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 				BlockPos topMiddle = pos.above(4);
 				String ownerName = tile.getOwner().getName();
 
-				BlockModifier placer = new BlockModifier(world, new BlockPos.MutableBlockPos().set(pos), tile.getOwner());
+				BlockModifier placer = new BlockModifier(level, new BlockPos.MutableBlockPos().set(pos), tile.getOwner());
 
 				placer.loop((w, p, o) -> {
 					if(w.isEmptyBlock(p))
@@ -124,8 +118,8 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 					if(te instanceof ReinforcedIronBarsBlockEntity ironBarsTe)
 						ironBarsTe.setCanDrop(false);
 				});
-				world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
-				world.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 3.0F, 1.0F);
+				level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
+				level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 3.0F, 1.0F);
 
 				if(isPlayer && PlayerUtils.isPlayerOnline(ownerName))
 					PlayerUtils.sendMessageToPlayer(ownerName, Utils.localize(SCContent.CAGE_TRAP.get().getDescriptionId()), Utils.localize("messages.securitycraft:cageTrap.captured", ((Player) entity).getName(), Utils.getFormattedCoordinates(pos)), ChatFormatting.BLACK);
@@ -187,12 +181,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new CageTrapBlockEntity(pos, state).intersectsEntities();
-	}
-
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeCageTrap, WorldUtils::blockEntityTicker);
+		return new CageTrapBlockEntity(pos, state);
 	}
 
 	public static class BlockModifier

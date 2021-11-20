@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.api.SecurityCraftBlockEntity;
+import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -20,8 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -29,7 +25,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable {
+public class BouncingBettyBlock extends ExplosiveBlock {
 
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 	private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 3, 13);
@@ -64,10 +60,10 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	}
 
 	@Override
-	public void onEntityIntersected(Level world, BlockPos pos, Entity entity) {
-		if(!EntityUtils.doesEntityOwn(entity, world, pos))
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if(!EntityUtils.doesEntityOwn(entity, level, pos))
 			if(entity instanceof LivingEntity lEntity && !PlayerUtils.isPlayerMountedOnCamera(lEntity))
-				explode(world, pos);
+				explode(level, pos);
 	}
 	@Override
 	public void attack(BlockState state, Level world, BlockPos pos, Player player){
@@ -118,7 +114,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter worldIn, BlockPos pos, BlockState state){
+	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state){
 		return new ItemStack(asItem());
 	}
 
@@ -129,8 +125,8 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	}
 
 	@Override
-	public boolean isActive(Level world, BlockPos pos) {
-		return !world.getBlockState(pos).getValue(DEACTIVATED);
+	public boolean isActive(Level level, BlockPos pos) {
+		return !level.getBlockState(pos).getValue(DEACTIVATED);
 	}
 
 	@Override
@@ -140,11 +136,6 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SecurityCraftBlockEntity(pos, state).intersectsEntities();
-	}
-
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeAbstract, WorldUtils::blockEntityTicker);
+		return new NamedBlockEntity(pos, state);
 	}
 }

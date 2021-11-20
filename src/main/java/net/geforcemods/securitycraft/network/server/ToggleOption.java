@@ -56,7 +56,7 @@ public class ToggleOption {
 				customizable.onOptionChanged(customizable.customOptions()[id]);
 
 				if(te instanceof CustomizableBlockEntity customizableTe)
-					customizableTe.sync();
+					player.level.sendBlockUpdated(pos, te.getBlockState(), te.getBlockState(), 3);
 			}
 		});
 

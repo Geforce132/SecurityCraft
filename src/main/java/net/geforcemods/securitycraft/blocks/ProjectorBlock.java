@@ -105,19 +105,14 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
 	{
-		if(!world.isClientSide)
+		if(!level.isClientSide && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be)
 		{
-			BlockEntity tile = world.getBlockEntity(pos);
-
-			if(tile instanceof ProjectorBlockEntity te)
+			if(be.isActivatedByRedstone())
 			{
-				if(te.isActivatedByRedstone())
-				{
-					te.setActive(world.hasNeighborSignal(pos));
-					te.sync();
-				}
+				be.setActive(level.hasNeighborSignal(pos));
+				level.sendBlockUpdated(pos, state, state, 3);
 			}
 		}
 	}

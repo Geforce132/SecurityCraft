@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.api;
 import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
@@ -24,7 +25,7 @@ import net.minecraftforge.common.util.Constants;
  *
  * @author Geforce
  */
-public abstract class CustomizableBlockEntity extends SecurityCraftBlockEntity implements IModuleInventory, ICustomizable
+public abstract class CustomizableBlockEntity extends NamedBlockEntity implements IModuleInventory, ICustomizable, ITickingBlockEntity
 {
 	private boolean linkable = false;
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
@@ -38,11 +39,9 @@ public abstract class CustomizableBlockEntity extends SecurityCraftBlockEntity i
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		super.tick(level, pos, state);
-
 		if(hasLevel() && nbtTagStorage != null) {
 			readLinkedBlocks(nbtTagStorage);
-			sync();
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 			nbtTagStorage = null;
 		}
 	}
@@ -262,8 +261,10 @@ public abstract class CustomizableBlockEntity extends SecurityCraftBlockEntity i
 			if(excludedTEs.contains(block.asTileEntity(level)))
 				continue;
 			else {
+				BlockState state = level.getBlockState(block.getPos());
+
 				block.asTileEntity(level).onLinkedBlockAction(action, parameters, excludedTEs);
-				block.asTileEntity(level).sync();
+				level.sendBlockUpdated(block.getPos(), state, state, 3);
 			}
 	}
 
