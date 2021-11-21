@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -42,18 +41,6 @@ public class BlockLogger extends BlockDisguisable {
 		return true;
 	}
 
-	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-	 * their own) Args: x, y, z, neighbor Block
-	 */
-	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-	{
-		if (!world.isRemote)
-			if(world.isBlockPowered(pos))
-				((TileEntityLogger)world.getTileEntity(pos)).logPlayers();
-	}
-
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
 	{
@@ -82,7 +69,7 @@ public class BlockLogger extends BlockDisguisable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityLogger().attacks(EntityPlayer.class, 3, 80);
+		return new TileEntityLogger();
 	}
 
 	@Override

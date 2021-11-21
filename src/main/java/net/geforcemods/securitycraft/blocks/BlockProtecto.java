@@ -58,7 +58,7 @@ public class BlockProtecto extends BlockDisguisable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityProtecto().attacks(EntityLivingBase.class, 10, 200);
+		return new TileEntityProtecto();
 	}
 
 }

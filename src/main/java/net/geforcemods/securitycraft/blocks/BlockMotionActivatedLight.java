@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -73,14 +71,6 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 		return state.getValue(LIT) ? 15 : 0;
 	}
 
-	public static void toggleLight(World world, BlockPos pos, IBlockState state, Owner owner, boolean isLit) {
-		if(!world.isRemote)
-		{
-			world.setBlockState(pos, state.withProperty(LIT, isLit));
-			world.notifyNeighborsOfStateChange(pos, SCContent.motionActivatedLight, false);
-		}
-	}
-
 	@Override
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
 		if(side == EnumFacing.UP || side == EnumFacing.DOWN) return false;
@@ -132,7 +122,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityMotionLight().attacks(EntityLivingBase.class, 5, 1);
+		return new TileEntityMotionLight();
 	}
 
 	@Override

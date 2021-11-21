@@ -1,62 +1,47 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import java.util.Iterator;
-import java.util.List;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityLogger extends TileEntityDisguisable {
-
+	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private OptionInt searchRadius = new OptionInt(this::getPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
+	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	@Override
-	public boolean attackEntity(Entity entity) {
-		if (!world.isRemote && entity instanceof EntityPlayer) {
-			addPlayer((EntityPlayer)entity);
-			sendChangeToClient(false);
+	public void update() {
+		super.update();
+
+		if(!world.isRemote) {
+			if(cooldown-- > 0)
+				return;
+
+			if(world.getRedstonePowerFromNeighbors(pos) > 0) {
+				world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(searchRadius.get())).forEach(this::addPlayer);
+				syncLoggedPlayersToClient();
+			}
+
+			cooldown = TICKS_BETWEEN_ATTACKS;
 		}
-
-		return true;
 	}
 
-	@Override
-	public boolean canAttack() {
-		return world.getRedstonePowerFromNeighbors(pos) > 0;
-	}
-
-	public void logPlayers(){
-		int range = searchRadius.get();
-
-		AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
-		List<?> entities = world.getEntitiesWithinAABB(EntityPlayer.class, area);
-		Iterator<?> iterator = entities.iterator();
-
-		while(iterator.hasNext())
-			addPlayer((EntityPlayer)iterator.next());
-
-		sendChangeToClient(false);
-	}
-
-	private void addPlayer(EntityPlayer player) {
+	public void addPlayer(EntityPlayer player) {
 		String playerName = player.getName();
 		long timestamp = System.currentTimeMillis();
 
-		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(playerName, timestamp))
+		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp))
 		{
 			//ignore players on the allowlist
 			if(ModuleUtils.isAllowed(this, player))
@@ -74,7 +59,7 @@ public class TileEntityLogger extends TileEntityDisguisable {
 		}
 	}
 
-	private boolean hasPlayerName(String username, long timestamp) {
+	private boolean wasPlayerRecentlyAdded(String username, long timestamp) {
 		for(int i = 0; i < players.length; i++)
 		{
 			if(players[i] != null && players[i].equals(username) && (timestamps[i] + 1000L) > timestamp) //was within the last second that the same player was last added
@@ -110,17 +95,16 @@ public class TileEntityLogger extends TileEntityDisguisable {
 		}
 	}
 
-	public void sendChangeToClient(boolean clear){
-		if(!clear)
+	public void syncLoggedPlayersToClient(){
+		for(int i = 0; i < players.length; i++)
 		{
-			for(int i = 0; i < players.length; i++)
-			{
-				if(players[i] != null)
-					SecurityCraft.network.sendToAll(new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
-			}
+			if(players[i] != null)
+				SecurityCraft.network.sendToAll(new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
 		}
-		else
-			SecurityCraft.network.sendToAll(new ClearLoggerClient(pos));
+	}
+
+	public void clearLoggedPlayersOnClient() {
+		SecurityCraft.network.sendToAll(new ClearLoggerClient(pos));
 	}
 
 	@Override

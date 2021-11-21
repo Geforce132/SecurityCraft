@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.entity.EntitySentry;
@@ -7,63 +9,73 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityProtecto extends TileEntityDisguisable {
+	private static final int ATTACK_RANGE = 10;
+	private static final int SLOW_SPEED = 200;
+	private static final int FAST_SPEED = 100;
+	private int cooldown = 0;
+	private int ticksBetweenAttacks = hasModule(EnumModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
 
 	@Override
-	public boolean attackEntity(Entity entity){
-		if (entity instanceof EntityLivingBase && !(entity instanceof EntitySentry) && !EntityUtils.isInvisible(((EntityLivingBase)entity))) {
-			if (entity instanceof EntityPlayer)
-			{
-				EntityPlayer player = (EntityPlayer)entity;
+	public void update() {
+		super.update();
 
-				if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
-					return false;
+		if(cooldown++ < ticksBetweenAttacks)
+			return;
+
+		if(world.isRaining() && world.canBlockSeeSky(pos)) {
+			List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(ATTACK_RANGE));
+			IBlockState state = world.getBlockState(pos);
+
+			if(!state.getValue(BlockProtecto.ACTIVATED))
+				world.setBlockState(pos, state.withProperty(BlockProtecto.ACTIVATED, true));
+
+			if(entities.size() != 0) {
+				boolean shouldDeactivate = false;
+
+				for(EntityLivingBase entity : entities) {
+					if (!(entity instanceof EntitySentry) && !EntityUtils.isInvisible(entity)) {
+						if (entity instanceof EntityPlayer)
+						{
+							EntityPlayer player = (EntityPlayer)entity;
+
+							if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
+								continue;
+						}
+
+						world.addWeatherEffect(new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, false));
+						shouldDeactivate = true;
+					}
+				}
+
+				if(shouldDeactivate)
+					world.setBlockState(pos, state.withProperty(BlockProtecto.ACTIVATED, false));
 			}
 
-			EntityLightningBolt lightning = new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, false);
-
-			world.addWeatherEffect(lightning);
-			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockProtecto.ACTIVATED, false));
-			return true;
+			cooldown = 0;
 		}
-
-		return false;
 	}
 
 	@Override
-	public boolean canAttack() {
-		IBlockState state = world.getBlockState(pos);
-		boolean activated = state.getValue(BlockProtecto.ACTIVATED);
-		boolean canAttack = (getAttackCooldown() == getTicksBetweenAttacks() && world.canBlockSeeSky(pos) && world.isRaining());
+	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
+		super.onModuleInserted(stack, module);
 
-		if(canAttack && !activated)
-			world.setBlockState(pos, state.withProperty(BlockProtecto.ACTIVATED, true));
-		else if(!canAttack && activated)
-			world.setBlockState(pos, state.withProperty(BlockProtecto.ACTIVATED, false));
-
-		return canAttack;
+		if(module == EnumModuleType.SPEED)
+			ticksBetweenAttacks = FAST_SPEED;
 	}
 
 	@Override
-	public boolean shouldAttackEntityType(Entity entity)
-	{
-		return entity instanceof EntityLivingBase;
-	}
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
+		super.onModuleRemoved(stack, module);
 
-	@Override
-	public boolean shouldRefreshAttackCooldown() {
-		return false;
-	}
-
-	@Override
-	public int getTicksBetweenAttacks()
-	{
-		return hasModule(EnumModuleType.SPEED) ? 100 : 200;
+		if(module == EnumModuleType.SPEED)
+			ticksBetweenAttacks = SLOW_SPEED;
 	}
 
 	@Override
