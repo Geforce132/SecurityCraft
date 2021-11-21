@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
@@ -22,7 +24,7 @@ import net.minecraftforge.common.util.Constants;
  *
  * @author Geforce
  */
-public abstract class CustomizableTileEntity extends SecurityCraftTileEntity implements IModuleInventory, ICustomizable
+public abstract class CustomizableTileEntity extends NamedTileEntity implements IModuleInventory, ICustomizable, ITickableTileEntity
 {
 	private boolean linkable = false;
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
@@ -37,11 +39,9 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 
 	@Override
 	public void tick() {
-		super.tick();
-
 		if(hasWorld() && nbtTagStorage != null) {
 			readLinkedBlocks(nbtTagStorage);
-			sync();
+			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
 			nbtTagStorage = null;
 		}
 	}
@@ -261,8 +261,10 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 			if(excludedTEs.contains(block.asTileEntity(world)))
 				continue;
 			else {
+				BlockState state = world.getBlockState(block.blockPos);
+
 				block.asTileEntity(world).onLinkedBlockAction(action, parameters, excludedTEs);
-				block.asTileEntity(world).sync();
+				world.notifyBlockUpdate(pos, state, state, 3);
 			}
 	}
 

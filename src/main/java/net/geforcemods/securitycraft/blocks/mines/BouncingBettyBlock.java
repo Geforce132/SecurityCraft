@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.NamedTileEntity;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -27,7 +26,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable {
+public class BouncingBettyBlock extends ExplosiveBlock {
 
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 	private static final VoxelShape SHAPE = Block.makeCuboidShape(3, 0, 3, 13, 3, 13);
@@ -62,7 +61,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if(!EntityUtils.doesEntityOwn(entity, world, pos))
 			if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity))
 				explode(world, pos);
@@ -140,7 +139,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new SecurityCraftTileEntity().intersectsEntities();
+		return new NamedTileEntity();
 	}
 
 }

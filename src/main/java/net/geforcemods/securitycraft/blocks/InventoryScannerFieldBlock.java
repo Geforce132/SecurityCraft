@@ -4,8 +4,7 @@ import java.util.function.BiFunction;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.NamedTileEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -39,7 +38,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class InventoryScannerFieldBlock extends OwnableBlock implements IIntersectable {
+public class InventoryScannerFieldBlock extends OwnableBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty HORIZONTAL = BooleanProperty.create("horizontal");
@@ -86,7 +85,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
 	{
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
@@ -320,7 +319,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new SecurityCraftTileEntity().intersectsEntities();
+		return new NamedTileEntity();
 	}
 
 	@Override

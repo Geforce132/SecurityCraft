@@ -65,7 +65,7 @@ public class UpdateSliderValue {
 				((ICustomizable)te).onOptionChanged(((ICustomizable)te).customOptions()[id]);
 
 				if(te instanceof CustomizableTileEntity)
-					((CustomizableTileEntity)te).sync();
+					player.world.notifyBlockUpdate(pos, te.getBlockState(), te.getBlockState(), 3);
 			}
 		});
 

@@ -2,9 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Map;
 
-import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.NamedTileEntity;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -36,7 +35,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
-public class IronFenceBlock extends OwnableBlock implements IIntersectable {
+public class IronFenceBlock extends OwnableBlock  {
 	public static final BooleanProperty NORTH = SixWayBlock.NORTH;
 	public static final BooleanProperty EAST = SixWayBlock.EAST;
 	public static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
@@ -201,7 +200,7 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
 	{
 		//so dropped items don't get destroyed
 		if(entity instanceof ItemEntity)
@@ -236,6 +235,6 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
-		return new SecurityCraftTileEntity().intersectsEntities();
+		return new NamedTileEntity();
 	}
 }
