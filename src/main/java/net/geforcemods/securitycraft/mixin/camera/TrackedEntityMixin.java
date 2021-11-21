@@ -16,7 +16,9 @@ import net.minecraft.world.entity.Entity;
  */
 @Mixin(ChunkMap.TrackedEntity.class)
 public class TrackedEntityMixin {
-	@Shadow @Final Entity entity;
+	@Shadow
+	@Final
+	Entity entity;
 
 	@ModifyVariable(method = "updatePlayer", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE))
 	public boolean modifyFlag(boolean original) {

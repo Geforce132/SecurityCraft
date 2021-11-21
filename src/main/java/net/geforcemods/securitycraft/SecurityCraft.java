@@ -1,12 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.UUID;
 
-import com.mojang.datafixers.util.Pair;
-
-import it.unimi.dsi.fastutil.longs.LongSet;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
@@ -151,9 +146,7 @@ public class SecurityCraft {
 		}
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(SecurityCraft.MODID, (level, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCamera) somewhere
-			Map<UUID, Pair<LongSet, LongSet>> entityTickers = ticketHelper.getEntityTickets();
-
-			entityTickers.forEach(((uuid, chunk) -> {
+			ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
 				if (level.getEntity(uuid) == null) {
 					ticketHelper.removeAllTickets(uuid);
 				}

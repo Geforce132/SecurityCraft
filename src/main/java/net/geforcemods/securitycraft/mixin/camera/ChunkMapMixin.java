@@ -19,10 +19,11 @@ import net.minecraft.world.level.ChunkPos;
  */
 @Mixin(ChunkMap.class)
 public abstract class ChunkMapMixin {
-	@Shadow int viewDistance;
+	@Shadow
+	int viewDistance;
 
 	@Shadow
-	protected abstract void updateChunkTracking(ServerPlayer pPlayer, ChunkPos pChunkPos, Packet<?>[] pPacketCache, boolean pWasLoaded, boolean pLoad);
+	protected abstract void updateChunkTracking(ServerPlayer player, ChunkPos chunkPos, Packet<?>[] packetCache, boolean wasLoaded, boolean load);
 
 	@Inject(method = "move", at = @At(value = "TAIL"))
 	private void trackCameraLoadedChunks(ServerPlayer player, CallbackInfo callback) {
@@ -30,11 +31,11 @@ public abstract class ChunkMapMixin {
 			SectionPos pos = SectionPos.of(player.getCamera());
 			SecurityCamera camera = ((SecurityCamera)player.getCamera());
 
-			for(int i = pos.x() - this.viewDistance; i <= pos.x() + this.viewDistance; ++i) {
-				for(int j = pos.z() - this.viewDistance; j <= pos.z() + this.viewDistance; ++j) {
+			for(int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
+				for(int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
 					ChunkPos chunkPos = new ChunkPos(i, j);
 
-					this.updateChunkTracking(player, chunkPos, new Packet[2], camera.hasLoadedChunks(), true);
+					updateChunkTracking(player, chunkPos, new Packet[2], camera.hasLoadedChunks(), true);
 				}
 			}
 

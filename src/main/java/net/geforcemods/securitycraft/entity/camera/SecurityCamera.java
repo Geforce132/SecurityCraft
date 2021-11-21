@@ -151,7 +151,8 @@ public class SecurityCamera extends Entity
 				tracker.getTickingChunks();
 			}
 		}
-		this.discard();
+
+		discard();
 	}
 
 	public void setHasLoadedChunks() {

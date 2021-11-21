@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.geforcemods.securitycraft.entity.camera.CameraController;
-import net.geforcemods.securitycraft.misc.IStorageProvider;
+import net.geforcemods.securitycraft.misc.IChunkStorageProvider;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
@@ -32,11 +32,16 @@ import net.minecraftforge.event.world.ChunkEvent;
  * These mixins aim at implementing the camera chunk storage from CameraController into all the places ClientChunkCache#storage is used
  */
 @Mixin(ClientChunkCache.class)
-public abstract class ClientChunkCacheMixin implements IStorageProvider {
-	@Shadow volatile ClientChunkCache.Storage storage;
-	@Shadow @Final ClientLevel level;
+public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
+	@Shadow
+	volatile ClientChunkCache.Storage storage;
 
-	@Shadow public abstract LevelLightEngine getLightEngine();
+	@Shadow
+	@Final
+	ClientLevel level;
+
+	@Shadow
+	public abstract LevelLightEngine getLightEngine();
 
 	/**
 	 * Initializes the camera storage
@@ -85,26 +90,26 @@ public abstract class ClientChunkCacheMixin implements IStorageProvider {
 			ChunkPos chunkPos = new ChunkPos(x, z);
 
 			if (chunk == null || chunkPos.x != x || chunkPos.z != z) {
-				chunk = new LevelChunk(this.level, chunkPos, biomeContainer);
+				chunk = new LevelChunk(level, chunkPos, biomeContainer);
 				chunk.replaceWithPacketData(biomeContainer, buffer, chunkTag, chunkSection);
 				cameraStorage.replace(index, chunk);
-			} else {
-				chunk.replaceWithPacketData(biomeContainer, buffer, chunkTag, chunkSection);
 			}
+			else
+				chunk.replaceWithPacketData(biomeContainer, buffer, chunkTag, chunkSection);
 
 			LevelChunkSection[] chunkSections = chunk.getSections();
-			LevelLightEngine lightEngine = this.getLightEngine();
+			LevelLightEngine lightEngine = getLightEngine();
 
 			lightEngine.enableLightSources(chunkPos, true);
 
 			for(int j = 0; j < chunkSections.length; ++j) {
 				LevelChunkSection levelChunkSection = chunkSections[j];
+				int sectionY = level.getSectionYFromSectionIndex(j);
 
-				int sectionY = this.level.getSectionYFromSectionIndex(j);
 				lightEngine.updateSectionStatus(SectionPos.of(x, sectionY, z), LevelChunkSection.isEmpty(levelChunkSection));
 			}
 
-			this.level.onChunkLoaded(chunkPos);
+			level.onChunkLoaded(chunkPos);
 			MinecraftForge.EVENT_BUS.post(new ChunkEvent.Load(chunk));
 			callback.setReturnValue(chunk);
 		}
