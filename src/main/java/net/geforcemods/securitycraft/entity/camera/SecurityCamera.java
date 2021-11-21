@@ -149,7 +149,7 @@ public class SecurityCamera extends Entity
 
 			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
 				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
-					ForgeChunkManager.forceChunk((ServerLevel)level, SecurityCraft.MODID, this, x, z, false, true);
+					ForgeChunkManager.forceChunk((ServerLevel)level, SecurityCraft.MODID, this, x, z, false, false);
 				}
 			}
 		}
