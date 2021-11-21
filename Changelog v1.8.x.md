@@ -35,6 +35,7 @@
 - Fix: Block Pockets get disabled when they get unloaded
 - Fix: Block Pocket deactivation message does not get sent
 - Fix: SecurityCraft Manual entries for doors are not properly showing all information
+- Fix: The Universal Block Reinforcer can be thrown out of the player's inventory while its reinforcing menu is open
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated

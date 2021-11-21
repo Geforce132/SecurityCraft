@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
@@ -196,6 +197,14 @@ public class ContainerBlockReinforcer extends Container
 		}
 
 		return merged;
+	}
+
+	@Override
+	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player) {
+		if(slot >= 0 && !player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand() && player.getHeldItemMainhand().getItem() instanceof ItemUniversalBlockReinforcer)
+			return ItemStack.EMPTY;
+
+		return super.slotClick(slot, dragType, clickType, player);
 	}
 
 	public class SlotBlockReinforcer extends Slot
