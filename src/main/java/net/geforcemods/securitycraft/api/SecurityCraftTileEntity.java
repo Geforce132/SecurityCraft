@@ -8,8 +8,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -30,12 +28,7 @@ import net.minecraft.util.text.StringTextComponent;
 public class SecurityCraftTileEntity extends OwnableTileEntity implements ITickableTileEntity, INameSetter {
 
 	protected boolean intersectsEntities = false;
-	private boolean attacks = false;
 	private ITextComponent customName = StringTextComponent.EMPTY;
-	private double attackRange = 0.0D;
-	private int ticksBetweenAttacks = 0;
-	private int attackCooldown = 0;
-	private Class<? extends Entity> typeToAttack = Entity.class;
 
 	public SecurityCraftTileEntity()
 	{
@@ -64,81 +57,12 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 				entityIntersecting(entity);
 			}
 		}
-
-		if (attacks) {
-			if (attackCooldown < getTicksBetweenAttacks()) {
-				attackCooldown++;
-				return;
-			}
-
-			if (canAttack()) {
-				AxisAlignedBB area = new AxisAlignedBB(pos).grow(getAttackRange(), getAttackRange(), getAttackRange());
-				List<?> entities = world.getEntitiesWithinAABB(entityTypeToAttack(), area);
-				Iterator<?> iterator = entities.iterator();
-
-				if(!world.isRemote){
-					boolean attacked = false;
-
-					if(!iterator.hasNext())
-						attackFailed();
-
-					while (iterator.hasNext()) {
-						Entity mobToAttack = (Entity) iterator.next();
-
-						if (mobToAttack == null || mobToAttack instanceof ItemEntity || !shouldAttackEntityType(mobToAttack))
-							continue;
-
-						if (attackEntity(mobToAttack))
-							attacked = true;
-					}
-
-					if (attacked || shouldRefreshAttackCooldown())
-						attackCooldown = 0;
-
-					if(attacked || shouldSyncToClient())
-						sync();
-				}
-			}
-		}
 	}
 
 	public void entityIntersecting(Entity entity) {
 		if(!(world.getBlockState(getPos()).getBlock() instanceof IIntersectable)) return;
 
 		((IIntersectable) world.getBlockState(getPos()).getBlock()).onEntityIntersected(getWorld(), getPos(), entity);
-	}
-
-	/**
-	 * Handle your TileEntity's attack to entities here.
-	 * ONLY RUNS ON THE SERVER SIDE (to keep the TE's client cooldown in-sync)! If you need something done on the client,
-	 * use packets.<p>
-	 *
-	 * @return True if it successfully attacked, false otherwise.
-	 */
-	public boolean attackEntity(Entity entity) {
-		return false;
-	}
-
-	/**
-	 * Is called when a {@link SecurityCraftTileEntity} is ready to attack, but cannot for some reason. <p>
-	 *
-	 * These reasons may include: <p>
-	 * - There are no Entities in this block's attack range. <p>
-	 * - Only ItemEntitys are in the attack range. <p>
-	 * - The Entities in this block's attack range are not of the type set in entityTypeToAttack().
-	 */
-	public void attackFailed() {}
-
-	/**
-	 * Check if your TileEntity is ready to attack. (i.e: block conditions, metadata, etc.) <p>
-	 * Different from {@link SecurityCraftTileEntity}.doesAttack(), which simply returns if your TileEntity <i>does</i> attack.
-	 */
-	public boolean canAttack() {
-		return false;
-	}
-
-	public boolean shouldAttackEntityType(Entity entity) {
-		return entity instanceof PlayerEntity || typeToAttack.isAssignableFrom(entity.getClass());
 	}
 
 	/**
@@ -150,10 +74,6 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 		super.write(tag);
 
 		tag.putBoolean("intersectsEntities", intersectsEntities);
-		tag.putBoolean("attacks", attacks);
-		tag.putDouble("attackRange", attackRange);
-		tag.putInt("attackCooldown", attackCooldown);
-		tag.putInt("ticksBetweenAttacks", ticksBetweenAttacks);
 		tag.putString("customName", customName.getString());
 		return tag;
 	}
@@ -168,18 +88,6 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 
 		if (tag.contains("intersectsEntities"))
 			intersectsEntities = tag.getBoolean("intersectsEntities");
-
-		if (tag.contains("attacks"))
-			attacks = tag.getBoolean("attacks");
-
-		if (tag.contains("attackRange"))
-			attackRange = tag.getDouble("attackRange");
-
-		if (tag.contains("attackCooldown"))
-			attackCooldown = tag.getInt("attackCooldown");
-
-		if (tag.contains("ticksBetweenAttacks"))
-			ticksBetweenAttacks = tag.getInt("ticksBetweenAttacks");
 
 		if (tag.contains("customName"))
 			customName = new StringTextComponent(tag.getString("customName"));
@@ -211,84 +119,6 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 
 	public boolean doesIntersectsEntities(){
 		return intersectsEntities;
-	}
-
-	/**
-	 * Sets this TileEntity able to attack.
-	 * <p>
-	 * Calls {@link SecurityCraftTileEntity}.attackEntity(Entity) when this TE's cooldown equals 0.
-	 */
-	public SecurityCraftTileEntity attacks(Class<? extends Entity> type, double range, int cooldown) {
-		attacks = true;
-		typeToAttack = type;
-		attackRange = range;
-		ticksBetweenAttacks = cooldown;
-		return this;
-	}
-
-	/**
-	 * @return The class of the entity that this TileEntity should attack.
-	 */
-	public Class<? extends Entity> entityTypeToAttack(){
-		return typeToAttack;
-	}
-
-	/**
-	 * @return The range that this TileEntity checks for attackable entities.
-	 */
-	public double getAttackRange() {
-		return attackRange;
-	}
-
-	/**
-	 * @return The number of ticks between attacks.
-	 */
-	public int getTicksBetweenAttacks() {
-		return ticksBetweenAttacks;
-	}
-
-	/**
-	 * @return Gets the number of ticks before {@link SecurityCraftTileEntity}.attackEntity(Entity) is called.
-	 */
-	public int getAttackCooldown() {
-		return attackCooldown;
-	}
-
-	/**
-	 *  Set this TileEntity's attack cooldown.
-	 */
-	public void setAttackCooldown(int cooldown) {
-		attackCooldown = cooldown;
-	}
-
-	/**
-	 *  Maxes out this TileEntity's attack cooldown, so it'll attempt to attack next tick.
-	 */
-	public void attackNextTick() {
-		attackCooldown = ticksBetweenAttacks;
-	}
-
-	/**
-	 * @return If, once this TileEntity's attack cooldown gets to the set maximum,
-	 *         it should start again automatically from 0.
-	 */
-	public boolean shouldRefreshAttackCooldown() {
-		return true;
-	}
-
-	/**
-	 * @return Should this TileEntity send an update packet
-	 *         to all clients if it attacks unsuccessfully?
-	 */
-	public boolean shouldSyncToClient() {
-		return true;
-	}
-
-	/**
-	 * @return If this TileEntity can attack.
-	 */
-	public boolean doesAttack() {
-		return attacks;
 	}
 
 	@Override

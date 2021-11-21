@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
@@ -8,11 +10,17 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 
 public class ProtectoTileEntity extends DisguisableTileEntity {
+	private static final int ATTACK_RANGE = 10;
+	private static final int SLOW_SPEED = 200;
+	private static final int FAST_SPEED = 100;
+	private int cooldown = 0;
+	private int ticksBetweenAttacks = hasModule(ModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
 
 	public ProtectoTileEntity()
 	{
@@ -20,53 +28,60 @@ public class ProtectoTileEntity extends DisguisableTileEntity {
 	}
 
 	@Override
-	public boolean attackEntity(Entity entity){
-		if (entity instanceof LivingEntity && !(entity instanceof SentryEntity) && !EntityUtils.isInvisible(((LivingEntity)entity))) {
-			if (entity instanceof PlayerEntity)
-			{
-				PlayerEntity player = (PlayerEntity)entity;
+	public void tick() {
+		super.tick();
 
-				if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
-					return false;
+		if(cooldown++ < ticksBetweenAttacks)
+			return;
+
+		if(world.isRaining() && world.canBlockSeeSky(pos)) {
+			List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(ATTACK_RANGE));
+
+			if(!getBlockState().get(ProtectoBlock.ACTIVATED))
+				world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, true));
+
+			if(entities.size() != 0) {
+				boolean shouldDeactivate = false;
+
+				for(LivingEntity entity : entities) {
+					if (!(entity instanceof SentryEntity) && !EntityUtils.isInvisible(entity)) {
+						if (entity instanceof PlayerEntity)
+						{
+							PlayerEntity player = (PlayerEntity)entity;
+
+							if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
+								continue;
+						}
+
+						if(!world.isRemote)
+							WorldUtils.spawnLightning(world, entity.getPositionVec(), false);
+
+						shouldDeactivate = true;
+					}
+				}
+
+				if(shouldDeactivate)
+					world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, false));
 			}
 
-			if(!world.isRemote)
-				WorldUtils.spawnLightning(world, entity.getPositionVec(), false);
-
-			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, false));
-			return true;
+			cooldown = 0;
 		}
-
-		return false;
 	}
 
 	@Override
-	public boolean canAttack() {
-		boolean canAttack = (getAttackCooldown() >= getTicksBetweenAttacks() && world.canBlockSeeSky(pos) && world.isRaining());
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
+		super.onModuleInserted(stack, module);
 
-		if(canAttack && !getBlockState().get(ProtectoBlock.ACTIVATED))
-			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, true));
-		else if(!canAttack && getBlockState().get(ProtectoBlock.ACTIVATED))
-			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, false));
-
-		return canAttack;
+		if(module == ModuleType.SPEED)
+			ticksBetweenAttacks = FAST_SPEED;
 	}
 
 	@Override
-	public boolean shouldAttackEntityType(Entity entity)
-	{
-		return entity instanceof LivingEntity;
-	}
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
+		super.onModuleRemoved(stack, module);
 
-	@Override
-	public boolean shouldRefreshAttackCooldown() {
-		return false;
-	}
-
-	@Override
-	public int getTicksBetweenAttacks()
-	{
-		return hasModule(ModuleType.SPEED) ? 100 : 200;
+		if(module == ModuleType.SPEED)
+			ticksBetweenAttacks = SLOW_SPEED;
 	}
 
 	@Override
