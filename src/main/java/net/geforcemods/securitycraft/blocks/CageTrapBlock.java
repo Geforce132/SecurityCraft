@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
@@ -42,7 +41,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
+public class CageTrapBlock extends DisguisableBlock {
 
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
@@ -87,7 +86,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if(!world.isRemote){
 			CageTrapTileEntity tileEntity = (CageTrapTileEntity) world.getTileEntity(pos);
 			boolean isPlayer = entity instanceof PlayerEntity;
@@ -95,8 +94,6 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 			if(isPlayer || (entity instanceof MobEntity && tileEntity.capturesMobs())){
 				if((isPlayer && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((PlayerEntity)entity)))
 					return;
-
-				BlockState state = world.getBlockState(pos);
 
 				if(state.get(DEACTIVATED))
 					return;
@@ -187,7 +184,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new CageTrapTileEntity().intersectsEntities();
+		return new CageTrapTileEntity();
 	}
 
 	public static class BlockModifier

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.NamedTileEntity;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
@@ -692,7 +692,7 @@ public class SCContent
 	@ObjectHolder(SecurityCraft.MODID + ":ownable")
 	public static TileEntityType<OwnableTileEntity> teTypeOwnable;
 	@ObjectHolder(SecurityCraft.MODID + ":abstract")
-	public static TileEntityType<SecurityCraftTileEntity> teTypeAbstract;
+	public static TileEntityType<NamedTileEntity> teTypeAbstract;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad")
 	public static TileEntityType<KeypadTileEntity> teTypeKeypad;
 	@ObjectHolder(SecurityCraft.MODID + ":laser_block")

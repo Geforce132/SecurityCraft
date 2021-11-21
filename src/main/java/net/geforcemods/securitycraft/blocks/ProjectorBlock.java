@@ -125,7 +125,7 @@ public class ProjectorBlock extends DisguisableBlock {
 				if(te.isActivatedByRedstone())
 				{
 					te.setActive(world.isBlockPowered(pos));
-					te.sync();
+					world.notifyBlockUpdate(pos, state, state, 3);
 				}
 			}
 		}
