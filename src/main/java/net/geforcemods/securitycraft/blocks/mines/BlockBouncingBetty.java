@@ -2,8 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.api.TileEntityNamed;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -27,7 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockBouncingBetty extends BlockExplosive implements IIntersectable {
+public class BlockBouncingBetty extends BlockExplosive {
 
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
@@ -71,7 +70,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(!EntityUtils.doesEntityOwn(entity, world, pos))
 			if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
 				explode(world, pos);
@@ -169,7 +168,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntitySCTE().intersectsEntities();
+		return new TileEntityNamed();
 	}
 
 }

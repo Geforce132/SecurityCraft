@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
@@ -43,7 +42,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
+public class BlockCageTrap extends BlockDisguisable {
 
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
@@ -117,7 +116,7 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(!world.isRemote){
 			if(state.getValue(DEACTIVATED))
 				return;
@@ -220,7 +219,7 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityCageTrap().intersectsEntities();
+		return new TileEntityCageTrap();
 	}
 
 	public static class BlockModifier

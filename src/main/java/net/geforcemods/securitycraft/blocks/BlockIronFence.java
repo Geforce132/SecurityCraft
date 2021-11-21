@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -9,6 +8,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityIronFence;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -28,7 +28,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockIronFence extends BlockFence implements IIntersectable {
+public class BlockIronFence extends BlockFence implements ITileEntityProvider {
 
 	public BlockIronFence(Material material)
 	{
@@ -67,15 +67,20 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity)
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
+		TileEntity te = world.getTileEntity(pos);
+
+		if(((TileEntityIronFence)te).isShutDown())
+			return;
+
 		//so dropped items don't get destroyed
 		if(entity instanceof EntityItem)
 			return;
 		//owner check
 		else if(entity instanceof EntityPlayer)
 		{
-			if(((TileEntityOwnable) world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity))
+			if(((TileEntityOwnable) te).getOwner().isOwner((EntityPlayer)entity))
 				return;
 		}
 		else if(entity instanceof EntityCreeper)
@@ -109,6 +114,6 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
-		return new TileEntityIronFence().intersectsEntities();
+		return new TileEntityIronFence();
 	}
 }

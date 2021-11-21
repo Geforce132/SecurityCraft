@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.api.TileEntityNamed;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.HoverChecker;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
@@ -35,7 +35,7 @@ public class GuiCameraMonitor extends GuiContainer {
 	private GuiButton[] cameraButtons = new GuiButton[10];
 	private GuiButton[] unbindButtons = new GuiButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
-	private TileEntitySCTE[] cameraTEs = new TileEntitySCTE[10];
+	private TileEntityNamed[] cameraTEs = new TileEntityNamed[10];
 	private int[] cameraViewDim = new int[10];
 	private int page = 1;
 

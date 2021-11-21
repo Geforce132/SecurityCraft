@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -28,7 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEntityProvider, IIntersectable {
+public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEntityProvider {
 
 	public BlockReinforcedFenceGate(){
 		super(BlockPlanks.EnumType.OAK);
@@ -55,7 +54,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(state.getValue(OPEN))
 			return;
 
@@ -108,7 +107,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityIronFence().intersectsEntities();
+		return new TileEntityIronFence();
 	}
 
 }

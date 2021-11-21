@@ -3,9 +3,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.TileEntityNamed;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
@@ -27,7 +26,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockFullMineBase extends BlockExplosive implements IIntersectable, IOverlayDisplay, IBlockMine {
+public class BlockFullMineBase extends BlockExplosive implements IOverlayDisplay, IBlockMine {
 
 	private final Block blockDisguisedAs;
 
@@ -76,10 +75,8 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity){
-		if(entity instanceof EntityItem)
-			return;
-		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity){
+		if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 
@@ -155,7 +152,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntitySCTE().intersectsEntities();
+		return new TileEntityNamed();
 	}
 
 	@Override

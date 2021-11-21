@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -22,7 +23,7 @@ import net.minecraftforge.common.util.Constants;
  *
  * @author Geforce
  */
-public abstract class CustomizableSCTE extends TileEntitySCTE implements IModuleInventory, ICustomizable{
+public abstract class CustomizableSCTE extends TileEntityNamed implements IModuleInventory, ICustomizable, ITickable {
 
 	private boolean linkable = false;
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
@@ -32,8 +33,6 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IModule
 
 	@Override
 	public void update() {
-		super.update();
-
 		if(hasWorld() && nbtTagStorage != null) {
 			readLinkedBlocks(nbtTagStorage);
 			sync();

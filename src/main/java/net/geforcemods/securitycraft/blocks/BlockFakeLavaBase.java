@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.api.TileEntityNamed;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
@@ -81,7 +81,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ITileEntityP
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntitySCTE();
+		return new TileEntityNamed();
 	}
 
 	@Override

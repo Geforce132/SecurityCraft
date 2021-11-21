@@ -7,8 +7,7 @@ import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.api.TileEntityNamed;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -42,7 +41,7 @@ import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockInventoryScannerField extends BlockContainer implements IIntersectable {
+public class BlockInventoryScannerField extends BlockContainer {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool HORIZONTAL = PropertyBool.create("horizontal");
@@ -133,7 +132,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity)
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
@@ -376,7 +375,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntitySCTE().intersectsEntities();
+		return new TileEntityNamed();
 	}
 
 	@Override

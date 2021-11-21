@@ -1,18 +1,11 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityIronFence extends TileEntitySCTE implements IEMPAffected
+public class TileEntityIronFence extends TileEntityOwnable implements IEMPAffected
 {
 	private boolean shutDown = false;
-
-	@Override
-	public void update()
-	{
-		if(!shutDown)
-			super.update();
-	}
 
 	@Override
 	public boolean isShutDown()

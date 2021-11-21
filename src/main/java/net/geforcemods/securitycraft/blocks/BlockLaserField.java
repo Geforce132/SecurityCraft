@@ -2,10 +2,9 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.api.TileEntityNamed;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -33,7 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockLaserField extends BlockContainer implements IIntersectable{
+public class BlockLaserField extends BlockContainer {
 
 	public static final PropertyInteger BOUNDTYPE = PropertyInteger.create("boundtype", 1, 3);
 	private static final AxisAlignedBB BOUNDTYPE_1_AABB, BOUNDTYPE_2_AABB, BOUNDTYPE_3_AABB;
@@ -100,7 +99,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity)
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
 		if(!world.isRemote && entity instanceof EntityLivingBase && !EntityUtils.isInvisible((EntityLivingBase)entity))
 		{
@@ -210,7 +209,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntitySCTE().intersectsEntities();
+		return new TileEntityNamed();
 	}
 
 	@Override

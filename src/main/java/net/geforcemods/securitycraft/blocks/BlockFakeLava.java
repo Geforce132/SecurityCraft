@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.api.TileEntityNamed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
@@ -305,6 +305,6 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntitySCTE();
+		return new TileEntityNamed();
 	}
 }

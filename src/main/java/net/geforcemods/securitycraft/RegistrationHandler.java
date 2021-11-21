@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.api.TileEntityNamed;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
@@ -380,7 +380,7 @@ public class RegistrationHandler
 	public static void registerTileEntities(RegistryEvent.Register<Block> event)
 	{
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, new ResourceLocation("securitycraft:ownable"));
-		GameRegistry.registerTileEntity(TileEntitySCTE.class, new ResourceLocation("securitycraft:abstract"));
+		GameRegistry.registerTileEntity(TileEntityNamed.class, new ResourceLocation("securitycraft:abstract"));
 		GameRegistry.registerTileEntity(TileEntityKeypad.class, new ResourceLocation("securitycraft:keypad"));
 		GameRegistry.registerTileEntity(TileEntityLaserBlock.class, new ResourceLocation("securitycraft:laser_block"));
 		GameRegistry.registerTileEntity(TileEntityCageTrap.class, new ResourceLocation("securitycraft:cage_trap"));
