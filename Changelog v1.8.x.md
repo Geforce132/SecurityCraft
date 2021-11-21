@@ -41,6 +41,7 @@
 - Fix: Block Pockets get disabled when they get unloaded
 - Fix: SecurityCraft Manual entries for doors are not properly showing all information
 - Fix: The Universal Block Reinforcer can be thrown out of the player's inventory while its reinforcing menu is open
+- Fix: Rail Mine loses its owner when its state changes
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: The minimum Forge version is now 37.0.110

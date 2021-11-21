@@ -90,13 +90,6 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
-	{
-		super.onRemove(state, world, pos, newState, isMoving);
-		world.removeBlockEntity(pos);
-	}
-
-	@Override
 	public void explode(Level world, BlockPos pos) {
 		BlockEntity tile = world.getBlockEntity(pos);
 
