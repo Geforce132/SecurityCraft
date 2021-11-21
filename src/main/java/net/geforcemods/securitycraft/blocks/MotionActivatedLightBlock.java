@@ -1,13 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
@@ -59,20 +55,6 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 		return state.get(LIT) ? 15 : 0;
 	}
 
-	public static void toggleLight(World world, BlockPos pos, BlockState state, Owner owner, boolean isLit) {
-		if(!world.isRemote)
-		{
-			world.setBlockState(pos, state.with(LIT, isLit));
-
-			TileEntity te = world.getTileEntity(pos);
-
-			if(te instanceof IOwnable)
-				((IOwnable) te).setOwner(owner.getUUID(), owner.getName());
-
-			BlockUtils.updateAndNotify(world, pos, SCContent.MOTION_ACTIVATED_LIGHT.get(), 1, false);
-		}
-	}
-
 	@Override
 	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
 		Direction side = state.get(FACING);
@@ -106,7 +88,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new MotionActivatedLightTileEntity().attacks(LivingEntity.class, 5, 1);
+		return new MotionActivatedLightTileEntity();
 	}
 
 	@Override

@@ -42,7 +42,7 @@ public class ClearLoggerServer
 			if(te instanceof UsernameLoggerTileEntity && ((UsernameLoggerTileEntity)te).getOwner().isOwner(player))
 			{
 				((UsernameLoggerTileEntity)te).players = new String[100];
-				((UsernameLoggerTileEntity)te).sendChangeToClient(true);
+				((UsernameLoggerTileEntity)te).clearLoggedPlayersOnClient();
 			}
 		});
 
