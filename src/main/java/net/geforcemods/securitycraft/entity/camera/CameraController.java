@@ -38,8 +38,10 @@ public class CameraController
 			{
 				Options options = Minecraft.getInstance().options;
 
-				if(options.keyShift.isDown())
+				if(options.keyShift.isDown()) {
 					dismount();
+					options.keyShift.setDown(false);
+				}
 
 				if(options.keyUp.isDown())
 					moveViewUp(cam);
