@@ -64,7 +64,7 @@ public class SecurityCamera extends Entity
 
 	public SecurityCamera(Level level, BlockPos pos, SecurityCamera oldCamera){
 		this(level, pos);
-		oldCamera.discard();
+		oldCamera.discardCamera();
 	}
 
 	private void setInitialPitchYaw(SecurityCameraBlockEntity te)
