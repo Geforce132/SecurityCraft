@@ -39,7 +39,7 @@ public abstract class ChunkMapMixin {
 				}
 			}
 
-			camera.setHasLoadedChunks();
+			camera.setHasLoadedChunks(viewDistance);
 		}
 	}
 }

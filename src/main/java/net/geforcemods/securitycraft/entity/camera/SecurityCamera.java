@@ -16,10 +16,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.world.ForgeChunkManager;
@@ -34,6 +32,7 @@ public class SecurityCamera extends Entity
 	private boolean shouldProvideNightVision = false;
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
+	private int viewDistance = -1;
 	private boolean loadedChunks = false;
 
 	public SecurityCamera(EntityType<SecurityCamera> type, Level level){
@@ -142,10 +141,10 @@ public class SecurityCamera extends Entity
 	}
 
 	//TODO: this method should effectively unload all chunks that were forceloaded by that camera, I just haven't figured out a way to do that
-	public void discardCamera(Player player) {
+	public void discardCamera() {
 		if (!level.isClientSide) {
 			SectionPos chunkPos = SectionPos.of(blockPosition());
-			int viewDistance = ((ServerPlayer)player).server.getPlayerList().getViewDistance();
+			int viewDistance = this.viewDistance <= 0 ? level.getServer().getPlayerList().getViewDistance() : this.viewDistance;
 
 			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
 				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
@@ -157,8 +156,9 @@ public class SecurityCamera extends Entity
 		discard();
 	}
 
-	public void setHasLoadedChunks() {
+	public void setHasLoadedChunks(int initialViewDistance) {
 		loadedChunks = true;
+		viewDistance = initialViewDistance;
 	}
 
 	public boolean hasLoadedChunks() {

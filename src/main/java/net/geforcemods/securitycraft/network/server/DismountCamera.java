@@ -33,7 +33,7 @@ public class DismountCamera
 					camBe.stopViewing();
 
 				player.camera = player;
-				cam.discardCamera(player);
+				cam.discardCamera();
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new SetCameraView(player));
 			}
 		});
