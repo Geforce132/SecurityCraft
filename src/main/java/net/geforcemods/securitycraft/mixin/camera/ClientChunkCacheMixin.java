@@ -89,7 +89,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 			LevelChunk chunk = cameraStorage.getChunk(index);
 			ChunkPos chunkPos = new ChunkPos(x, z);
 
-			if (chunk == null || chunkPos.x != x || chunkPos.z != z) {
+			if (chunk == null || chunk.getPos().x != x || chunk.getPos().z != z) {
 				chunk = new LevelChunk(level, chunkPos, biomeContainer);
 				chunk.replaceWithPacketData(biomeContainer, buffer, chunkTag, chunkSection);
 				cameraStorage.replace(index, chunk);
