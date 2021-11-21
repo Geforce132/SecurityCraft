@@ -37,6 +37,7 @@
 - Fix: Block Pockets get disabled when they get unloaded
 - Fix: Block Pocket deactivation message does not get sent
 - Fix: SecurityCraft Manual entries for doors are not properly showing all information
+- Fix: The Universal Block Reinforcer can be thrown out of the player's inventory while its reinforcing menu is open
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 
