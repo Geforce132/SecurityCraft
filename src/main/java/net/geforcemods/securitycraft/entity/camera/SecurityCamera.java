@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.entity.camera;
 
+import java.util.UUID;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -14,10 +16,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.ForcedChunksSavedData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.world.ForgeChunkManager;
 
 public class SecurityCamera extends Entity
 {
@@ -29,6 +34,7 @@ public class SecurityCamera extends Entity
 	private boolean shouldProvideNightVision = false;
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
+	private boolean loadedChunks = false;
 
 	public SecurityCamera(EntityType<SecurityCamera> type, Level level){
 		super(SCContent.eTypeSecurityCamera, level);
@@ -135,6 +141,27 @@ public class SecurityCamera extends Entity
 		setRot(yaw, pitch);
 	}
 
+	//TODO: this method should effectively unload all chunks that were forceloaded by that camera, I just haven't figured out a way to do that
+	public void discardCamera() {
+		if (!level.isClientSide) {
+			ForcedChunksSavedData data = ((ServerLevel)level).getDataStorage().get(ForcedChunksSavedData::load, "chunks");
+
+			if (data != null) {
+				ForgeChunkManager.TicketTracker<UUID> tracker = data.getEntityForcedChunks();
+				tracker.getTickingChunks();
+			}
+		}
+		this.discard();
+	}
+
+	public void setHasLoadedChunks() {
+		loadedChunks = true;
+	}
+
+	public boolean hasLoadedChunks() {
+		return loadedChunks;
+	}
+
 	@Override
 	protected void defineSynchedData() {}
 
@@ -148,5 +175,10 @@ public class SecurityCamera extends Entity
 	public Packet<?> getAddEntityPacket()
 	{
 		return new ClientboundAddEntityPacket(this);
+	}
+
+	@Override
+	public boolean isAlwaysTicking() {
+		return true;
 	}
 }

@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -37,6 +38,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class SecurityCameraBlock extends OwnableBlock{
@@ -120,6 +122,8 @@ public class SecurityCameraBlock extends OwnableBlock{
 		{
 			ServerPlayer serverPlayer = (ServerPlayer)player;
 			SecurityCamera dummyEntity;
+			SectionPos chunkPos = SectionPos.of(pos);
+			int viewDistance = ((ServerPlayer)player).server.getPlayerList().getViewDistance();
 
 			if(serverPlayer.getCamera() instanceof SecurityCamera cam)
 				dummyEntity = new SecurityCamera(level, pos, cam);
@@ -127,6 +131,13 @@ public class SecurityCameraBlock extends OwnableBlock{
 				dummyEntity = new SecurityCamera(level, pos);
 
 			level.addFreshEntity(dummyEntity);
+
+			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
+				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
+					ForgeChunkManager.forceChunk(serverLevel, SecurityCraft.MODID, dummyEntity, x, z, true, true);
+				}
+			}
+
 			//can't use ServerPlayer#setCamera here because it also teleports the player
 			serverPlayer.camera = dummyEntity;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));

@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.entity.camera;
 
-import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -9,14 +8,14 @@ import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
+import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,6 +25,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class CameraController
 {
 	public static CameraType previousCameraType;
+	private static ClientChunkCache.Storage cameraStorage;
 
 	@SubscribeEvent
 	public static void onClientTick(ClientTickEvent event)
@@ -79,14 +79,7 @@ public class CameraController
 
 	private static void dismount()
 	{
-		Minecraft.getInstance().setCameraEntity(null);
 		SecurityCraft.channel.sendToServer(new DismountCamera());
-		OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, true);
-		OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, false);
-		OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, true);
-
-		if(previousCameraType != null)
-			Minecraft.getInstance().options.setCameraType(previousCameraType);
 	}
 
 	public static void moveViewUp(SecurityCamera cam)
@@ -170,5 +163,23 @@ public class CameraController
 	{
 		if(cam.toggleNightVisionCooldown == 0)
 			cam.toggleNightVision();
+	}
+
+	public static ClientChunkCache.Storage getCameraStorage() {
+		return cameraStorage;
+	}
+
+	public static void setCameraStorage(ClientChunkCache.Storage cameraStorage) {
+		if (cameraStorage != null)
+			CameraController.cameraStorage = cameraStorage;
+	}
+
+	public static void setRenderPosition(Entity entity) {
+		if (entity instanceof SecurityCamera cam) {
+			SectionPos cameraPos = SectionPos.of(cam);
+
+			cameraStorage.viewCenterX = cameraPos.x();
+			cameraStorage.viewCenterZ = cameraPos.z();
+		}
 	}
 }
