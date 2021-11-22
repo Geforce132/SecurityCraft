@@ -432,6 +432,13 @@ public class SonicSecuritySystemTileEntity extends SecurityCraftTileEntity imple
 	}
 
 	/**
+	 * @return The notes that this Sonic Security System has recorded
+	 */
+	public ArrayList<NoteWrapper> getRecordedNotes() {
+		return recordedNotes;
+	}
+
+	/**
 	 * @return The number of notes that this Sonic Security System has recorded
 	 */
 	public int getNumberOfNotes()
