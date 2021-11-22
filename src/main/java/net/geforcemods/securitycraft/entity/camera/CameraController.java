@@ -26,34 +26,61 @@ public class CameraController
 {
 	public static CameraType previousCameraType;
 	private static ClientChunkCache.Storage cameraStorage;
+	private static boolean wasUpPressed;
+	private static boolean wasDownPressed;
+	private static boolean wasLeftPressed;
+	private static boolean wasRightPressed;
 
 	@SubscribeEvent
 	public static void onClientTick(ClientTickEvent event)
 	{
-		if(event.phase == Phase.END)
+		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
+
+		if(cameraEntity instanceof SecurityCamera cam)
 		{
-			Entity cameraEntity = Minecraft.getInstance().cameraEntity;
+			Options options = Minecraft.getInstance().options;
 
-			if(cameraEntity instanceof SecurityCamera cam)
+			//up/down/left/right handling is split to prevent players who are viewing a camera from moving around in a boat or on a horse
+			if(event.phase == Phase.START)
 			{
-				Options options = Minecraft.getInstance().options;
+				if(wasUpPressed = options.keyUp.isDown())
+					options.keyUp.setDown(false);
 
+				if(wasDownPressed = options.keyDown.isDown())
+					options.keyDown.setDown(false);
+
+				if(wasLeftPressed = options.keyLeft.isDown())
+					options.keyLeft.setDown(false);
+
+				if(wasRightPressed = options.keyRight.isDown())
+					options.keyRight.setDown(false);
+			}
+			else if(event.phase == Phase.END)
+			{
 				if(options.keyShift.isDown()) {
 					dismount();
 					options.keyShift.setDown(false);
 				}
 
-				if(options.keyUp.isDown())
+				if(wasUpPressed) {
 					moveViewUp(cam);
+					options.keyUp.setDown(true);
+				}
 
-				if(options.keyDown.isDown())
+				if(wasDownPressed) {
 					moveViewDown(cam);
+					options.keyDown.setDown(true);
+				}
 
-				if(options.keyLeft.isDown())
+				if(wasLeftPressed) {
 					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() - (float)cam.cameraSpeed);
+					options.keyLeft.setDown(true);
+				}
 
-				if(options.keyRight.isDown())
+				if(wasRightPressed) {
 					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() + (float)cam.cameraSpeed);
+					options.keyRight.setDown(true);
+				}
 
 				if(KeyBindings.cameraZoomIn.isDown())
 					zoomIn(cam);
