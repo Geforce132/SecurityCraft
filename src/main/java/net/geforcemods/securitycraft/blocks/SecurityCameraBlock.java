@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Iterator;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -98,23 +96,20 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
-		BlockState state = defaultBlockState().setValue(POWERED, false);
+		BlockState state = defaultBlockState().setValue(FACING, facing);
 
-		if(BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing))
-			return state.setValue(FACING, facing).setValue(POWERED, false);
-		else{
-			Iterator<?> iterator = Direction.Plane.HORIZONTAL.iterator();
-			Direction iFacing;
+		if(canSurvive(state, world, pos))
+			return state;
+		else {
+			for (Direction newFacing : Direction.Plane.HORIZONTAL) {
+				state = state.setValue(FACING, newFacing);
 
-			do{
-				if(!iterator.hasNext())
+				if (canSurvive(state, world, pos))
 					return state;
-
-				iFacing = (Direction)iterator.next();
-			}while (!BlockUtils.isSideSolid(world, pos.relative(iFacing.getOpposite()), iFacing));
-
-			return state.setValue(FACING, facing).setValue(POWERED, false);
+			}
 		}
+
+		return state;
 	}
 
 	public void mountCamera(Level level, BlockPos pos, Player player){
