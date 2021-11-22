@@ -145,10 +145,10 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	}
 
 	/**
-	 * Unlinks the second TileEntity from the first.
+	 * Unlinks the second tile entity from the first.
 	 *
-	 * @param tileEntity1 The TileEntity to unlink from
-	 * @param tileEntity2 The TileEntity to unlink
+	 * @param tileEntity1 The tile entity to unlink from
+	 * @param tileEntity2 The tile entity to unlink
 	 */
 	public static void unlink(LinkableTileEntity tileEntity1, LinkableTileEntity tileEntity2) {
 		if(tileEntity1 == null || tileEntity2 == null) return;
@@ -167,15 +167,15 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	}
 
 	/**
-	 * Calls onLinkedBlockAction() for every block this TileEntity
+	 * Calls onLinkedBlockAction() for every block this tile entity
 	 * is linked to. <p>
 	 *
 	 * <b>NOTE:</b> Never use this method in onLinkedBlockAction(),
-	 * use createLinkedBlockAction(EnumLinkedAction, Object[], ArrayList[CustomizableSCTE] instead.
+	 * use createLinkedBlockAction(EnumLinkedAction, Object[], ArrayList[LinkableTileEntity] instead.
 	 *
 	 * @param action The action that occurred
 	 * @param parameters Action-specific parameters, see comments in {@link LinkedAction}
-	 * @param excludedTE The CustomizableTileEntity which called this method, prevents infinite loops.
+	 * @param excludedTE The LinkableTileEntity which called this method, prevents infinite loops.
 	 */
 	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, LinkableTileEntity excludedTE) {
 		ArrayList<LinkableTileEntity> list = new ArrayList<>();
@@ -191,8 +191,8 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	 *
 	 * @param action The action that occurred
 	 * @param parameters Action-specific parameters, see comments in {@link LinkedAction}
-	 * @param excludedTEs CustomizableTileEntities that shouldn't have onLinkedBlockAction() called on them,
-	 *        prevents infinite loops. Always add your TileEntity to the list whenever using this method
+	 * @param excludedTEs LinkableTileEntities that shouldn't have onLinkedBlockAction() called on them,
+	 *        prevents infinite loops. Always add your tile entity to the list whenever using this method
 	 */
 	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableTileEntity> excludedTEs) {
 		for(LinkedBlock block : linkedBlocks)
@@ -208,13 +208,13 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 
 	/**
 	 * Called whenever certain actions occur in blocks
-	 * this TileEntity is linked to. See {@link LinkedAction}
+	 * this tile entity is linked to. See {@link LinkedAction}
 	 * for parameter descriptions. <p>
 	 *
 	 * @param action The {@link LinkedAction} that occurred
 	 * @param parameters Important variables related to the action
-	 * @param excludedTEs CustomizableTileEntities that aren't going to have onLinkedBlockAction() called on them,
-	 *        always add your TileEntity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple blocks (i.e: like Laser Blocks)
+	 * @param excludedTEs LinkableTileEntities that aren't going to have onLinkedBlockAction() called on them,
+	 *        always add your tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple blocks (i.e: like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableTileEntity> excludedTEs) {}
 }
