@@ -28,7 +28,6 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.IEMPAffected;
-import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -243,7 +242,7 @@ public class SCEventHandler {
 				event.setCancellationResult(EnumActionResult.SUCCESS);
 
 				if(tileEntity instanceof IOwnable && !((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-					if(!(tileEntity instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)tileEntity).getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof BlockDisguisable))
+					if(!(tileEntity.getBlockType() instanceof BlockDisguisable) || (((ItemBlock)((BlockDisguisable)tileEntity.getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof BlockDisguisable))
 						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize("item.securitycraft:universalBlockModifier.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) tileEntity).getOwner().getName())), TextFormatting.RED);
 
 					return;

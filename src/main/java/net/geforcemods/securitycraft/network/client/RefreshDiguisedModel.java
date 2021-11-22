@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -51,7 +51,7 @@ public class RefreshDiguisedModel implements IMessage
 		public IMessage onMessage(RefreshDiguisedModel message, MessageContext context)
 		{
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				TileEntityDisguisable te = (TileEntityDisguisable)Minecraft.getMinecraft().world.getTileEntity(message.pos);
+				IModuleInventory te = (IModuleInventory)Minecraft.getMinecraft().world.getTileEntity(message.pos);
 
 				if(te != null)
 				{

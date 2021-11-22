@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
-import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
@@ -41,7 +40,7 @@ public class ItemUniversalBlockRemover extends Item {
 
 		if(isOwnableBlock(block, tileEntity)) {
 			if(!((IOwnable) tileEntity).getOwner().isOwner(player)) {
-				if(!(block instanceof IBlockMine) && (!(tileEntity instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)tileEntity).getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable))) {
+				if(!(block instanceof IBlockMine) && (!(tileEntity.getBlockType() instanceof BlockDisguisable) || (((ItemBlock)((BlockDisguisable)tileEntity.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable))) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalBlockRemover.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable)tileEntity).getOwner().getName())), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}

@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockSpecialDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -69,7 +68,7 @@ public class ItemUniversalOwnerChanger extends Item
 
 		if(!owner.isOwner(player) && !isDefault)
 		{
-			if(!(block instanceof IBlockMine) && (!(te instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)te).getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable))) {
+			if(!(block instanceof IBlockMine) && (!(te.getBlockType() instanceof BlockDisguisable) || (((ItemBlock)((BlockDisguisable)te.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable))) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
