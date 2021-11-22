@@ -12,6 +12,7 @@
 	],
 	"mixins": [
 		"camera.ChunkMapMixin",
+		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
 		"camera.TrackedEntityMixin"
 	],
