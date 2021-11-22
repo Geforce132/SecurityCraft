@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -62,7 +59,6 @@ public class SCClientEventHandler
 	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
-	private static final Logger LOGGER = LogManager.getLogger();
 
 	@SubscribeEvent
 	public static void onScreenshot(ScreenshotEvent event)
