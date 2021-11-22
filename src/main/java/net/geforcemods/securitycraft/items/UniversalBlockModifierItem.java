@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -45,7 +44,7 @@ public class UniversalBlockModifierItem extends Item
 		{
 			if(te instanceof IOwnable ownable && !ownable.getOwner().isOwner(player))
 			{
-				if(!(te instanceof DisguisableBlockEntity) || (((BlockItem)((DisguisableBlock)((DisguisableBlockEntity)te).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
+				if(!(te.getBlockState().getBlock() instanceof DisguisableBlock db) || (((BlockItem)db.getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(ownable.getOwner().getName())), ChatFormatting.RED);
 
 				return InteractionResult.FAIL;

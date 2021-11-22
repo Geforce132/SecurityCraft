@@ -5,7 +5,6 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -17,7 +16,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.IModelData;
@@ -77,21 +75,16 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 	@Nonnull
 	public IModelData getModelData(BlockAndTintGetter world, BlockPos pos, BlockState state, IModelData tileData)
 	{
-		BlockEntity te = world.getBlockEntity(pos);
+		Block block = world.getBlockEntity(pos).getBlockState().getBlock();
 
-		if(te instanceof DisguisableBlockEntity)
+		if(block instanceof DisguisableBlock disguisedBlock)
 		{
-			Block block = ((DisguisableBlockEntity)te).getBlockState().getBlock();
+			BlockState disguisedState = disguisedBlock.getDisguisedBlockState(world, pos);
 
-			if(block instanceof DisguisableBlock disguisedBlock)
+			if(disguisedState != null)
 			{
-				BlockState disguisedState = disguisedBlock.getDisguisedBlockState(world, pos);
-
-				if(disguisedState != null)
-				{
-					tileData.setData(DISGUISED_BLOCK_RL, disguisedState.getBlock().getRegistryName());
-					return tileData;
-				}
+				tileData.setData(DISGUISED_BLOCK_RL, disguisedState.getBlock().getRegistryName());
+				return tileData;
 			}
 		}
 
