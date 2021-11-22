@@ -144,8 +144,8 @@ public interface IModuleInventory extends IItemHandlerModifiable
 				{
 					onModuleRemoved(stack, ((ItemModule)stack.getItem()).getModuleType());
 
-					if(te instanceof CustomizableSCTE)
-						ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, stack, (CustomizableSCTE)te);
+					if(te instanceof TileEntityLinkable)
+						ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, stack, (TileEntityLinkable)te);
 				}
 
 				return getInventory().set(slot, ItemStack.EMPTY).copy();
@@ -181,8 +181,8 @@ public interface IModuleInventory extends IItemHandlerModifiable
 				{
 					onModuleInserted(stack, ((ItemModule)stack.getItem()).getModuleType());
 
-					if(te instanceof CustomizableSCTE)
-						ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, copy, (CustomizableSCTE)te);
+					if(te instanceof TileEntityLinkable)
+						ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, copy, (TileEntityLinkable)te);
 				}
 			}
 
@@ -210,8 +210,8 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		{
 			onModuleRemoved(previous, ((ItemModule)previous.getItem()).getModuleType());
 
-			if(te instanceof CustomizableSCTE)
-				ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, previous, (CustomizableSCTE)te);
+			if(te instanceof TileEntityLinkable)
+				ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, previous, (TileEntityLinkable)te);
 		}
 
 		getInventory().set(slot, stack);
@@ -220,8 +220,8 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		{
 			onModuleInserted(stack, ((ItemModule)stack.getItem()).getModuleType());
 
-			if(te instanceof CustomizableSCTE)
-				ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, stack, (CustomizableSCTE)te);
+			if(te instanceof TileEntityLinkable)
+				ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, stack, (TileEntityLinkable)te);
 		}
 	}
 

@@ -30,12 +30,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.server.management.PlayerProfileCache;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 
-public class TileEntityRetinalScanner extends TileEntityDisguisable implements IViewActivated {
+public class TileEntityRetinalScanner extends TileEntityDisguisable implements IViewActivated, ITickable {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static PlayerProfileCache profileCache;
 	private static MinecraftSessionService sessionService;
@@ -47,7 +48,6 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 
 	@Override
 	public void update() {
-		super.update();
 		checkView(world, pos);
 	}
 

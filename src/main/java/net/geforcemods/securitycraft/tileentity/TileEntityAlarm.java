@@ -11,9 +11,10 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 
-public class TileEntityAlarm extends CustomizableSCTE {
+public class TileEntityAlarm extends CustomizableSCTE implements ITickable {
 
 	public OptionInt range = new OptionInt(this::getPos, "range", 17, 0, ConfigHandler.maxAlarmRange, 1, true);
 	private OptionInt delay = new OptionInt(this::getPos, "delay", 2, 1, 30, 1, true);
@@ -70,7 +71,6 @@ public class TileEntityAlarm extends CustomizableSCTE {
 		super.readFromNBT(tag);
 		cooldown = tag.getInteger("cooldown");
 		isPowered = tag.getBoolean("isPowered");
-
 	}
 
 	public void setCooldown(int cooldown){

@@ -49,9 +49,9 @@ public class BlockSecretSignStanding extends BlockSecretSign
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
+	public IBlockState withMirror(IBlockState state, Mirror mirror)
 	{
-		return state.withProperty(ROTATION, mirrorIn.mirrorRotation(state.getValue(ROTATION), 16));
+		return state.withProperty(ROTATION, mirror.mirrorRotation(state.getValue(ROTATION), 16));
 	}
 
 	@Override

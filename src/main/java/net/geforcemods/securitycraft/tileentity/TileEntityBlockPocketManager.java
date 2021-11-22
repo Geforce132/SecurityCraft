@@ -32,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -44,7 +45,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityBlockPocketManager extends CustomizableSCTE
+public class TileEntityBlockPocketManager extends CustomizableSCTE implements ITickable
 {
 	public static final int RENDER_DISTANCE = 100;
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
@@ -66,8 +67,6 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 	@Override
 	public void update()
 	{
-		super.update();
-
 		if(!world.isRemote && shouldPlaceBlocks)
 		{
 			EntityPlayer owner = PlayerUtils.getPlayerFromName(getOwner().getName());

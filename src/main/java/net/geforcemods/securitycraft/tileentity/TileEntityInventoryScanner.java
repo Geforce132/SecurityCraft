@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
@@ -25,7 +26,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class TileEntityInventoryScanner extends TileEntityDisguisable implements IInventory{
+public class TileEntityInventoryScanner extends TileEntityDisguisable implements IInventory, ITickable {
 
 	private OptionBoolean horizontal = new OptionBoolean("horizontal", false);
 	private OptionBoolean solidifyField = new OptionBoolean("solidifyField", false);

@@ -10,8 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 
-public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAffected {
+public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAffected, ITickable {
 
 	private final double CAMERA_SPEED = 0.0180D;
 	public double cameraRotation = 0.0D;
@@ -26,8 +27,6 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 
 	@Override
 	public void update(){
-		super.update();
-
 		if(!shutDown)
 		{
 			if(!shouldRotateOption.get())

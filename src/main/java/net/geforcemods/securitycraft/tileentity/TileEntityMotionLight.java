@@ -11,17 +11,16 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class TileEntityMotionLight extends CustomizableSCTE {
+public class TileEntityMotionLight extends CustomizableSCTE implements ITickable {
 	private static final int TICKS_BETWEEN_ATTACKS = 5;
 	private OptionDouble searchRadiusOption = new OptionDouble(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	@Override
 	public void update() {
-		super.update();
-
 		if(cooldown-- > 0)
 			return;
 

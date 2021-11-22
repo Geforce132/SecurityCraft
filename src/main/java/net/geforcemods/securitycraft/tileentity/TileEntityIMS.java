@@ -18,11 +18,12 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityIMS extends CustomizableSCTE {
+public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 
 	private OptionInt range = new OptionInt(this::getPos, "range", 12, 1, 30, 1, true);
 	/** Number of bombs remaining in storage. **/
@@ -34,8 +35,6 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 	@Override
 	public void update(){
-		super.update();
-
 		if(!world.isRemote && updateBombCount){
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockIMS.MINES, bombsRemaining));
 			updateBombCount = false;

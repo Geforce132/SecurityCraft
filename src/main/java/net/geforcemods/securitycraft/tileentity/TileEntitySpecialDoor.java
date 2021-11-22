@@ -2,11 +2,11 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.ArrayList;
 
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
-public abstract class TileEntitySpecialDoor extends CustomizableSCTE
+public abstract class TileEntitySpecialDoor extends TileEntityLinkable
 {
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
@@ -63,7 +63,7 @@ public abstract class TileEntitySpecialDoor extends CustomizableSCTE
 	}
 
 	@Override
-	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<CustomizableSCTE> excludedTEs)
+	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<TileEntityLinkable> excludedTEs)
 	{
 		if(action == EnumLinkedAction.OPTION_CHANGED)
 		{

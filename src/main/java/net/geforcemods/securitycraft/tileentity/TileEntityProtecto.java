@@ -13,9 +13,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class TileEntityProtecto extends TileEntityDisguisable {
+public class TileEntityProtecto extends TileEntityDisguisable implements ITickable {
 	private static final int ATTACK_RANGE = 10;
 	private static final int SLOW_SPEED = 200;
 	private static final int FAST_SPEED = 100;
@@ -24,8 +25,6 @@ public class TileEntityProtecto extends TileEntityDisguisable {
 
 	@Override
 	public void update() {
-		super.update();
-
 		if(cooldown++ < ticksBetweenAttacks)
 			return;
 

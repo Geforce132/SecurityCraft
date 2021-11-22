@@ -16,11 +16,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityClaymore extends CustomizableSCTE
+public class TileEntityClaymore extends CustomizableSCTE implements ITickable
 {
 	private OptionInt range = new OptionInt(this::getPos, "range", 5, 1, 10, 1, true);
 	private double entityX = -1D;

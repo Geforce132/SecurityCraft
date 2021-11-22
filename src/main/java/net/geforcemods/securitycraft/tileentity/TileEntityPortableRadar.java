@@ -18,10 +18,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
 
-public class TileEntityPortableRadar extends CustomizableSCTE {
+public class TileEntityPortableRadar extends CustomizableSCTE implements ITickable {
 
 	private OptionDouble searchRadiusOption = new OptionDouble(this::getPos, "searchRadius", 25.0D, 5.0D, 50.0D, 1.0D, true);
 	private OptionInt searchDelayOption = new OptionInt(this::getPos, "searchDelay", 4, 4, 10, 1, true);
@@ -34,8 +35,6 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	@Override
 	public void update()
 	{
-		super.update();
-
 		if(!world.isRemote && enabledOption.get() && ticksUntilNextSearch-- <= 0)
 		{
 			ticksUntilNextSearch = getSearchDelay();

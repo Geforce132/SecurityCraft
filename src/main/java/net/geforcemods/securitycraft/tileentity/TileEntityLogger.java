@@ -10,9 +10,10 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class TileEntityLogger extends TileEntityDisguisable {
+public class TileEntityLogger extends TileEntityDisguisable implements ITickable {
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private OptionInt searchRadius = new OptionInt(this::getPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
@@ -22,8 +23,6 @@ public class TileEntityLogger extends TileEntityDisguisable {
 
 	@Override
 	public void update() {
-		super.update();
-
 		if(!world.isRemote) {
 			if(cooldown-- > 0)
 				return;

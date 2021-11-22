@@ -68,7 +68,7 @@ public class BlockKeypadDoor extends BlockSpecialDoor
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
-		return new TileEntityKeypadDoor().linkable();
+		return new TileEntityKeypadDoor();
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
@@ -49,12 +49,12 @@ public class ItemSpecialDoor extends ItemBlock
 
 				if(world.getTileEntity(pos) != null)
 				{
-					CustomizableSCTE lowerTe = ((CustomizableSCTE) world.getTileEntity(pos));
-					CustomizableSCTE upperTe = ((CustomizableSCTE) world.getTileEntity(pos.up()));
+					TileEntityLinkable lowerTe = ((TileEntityLinkable) world.getTileEntity(pos));
+					TileEntityLinkable upperTe = ((TileEntityLinkable) world.getTileEntity(pos.up()));
 
 					lowerTe.setOwner(player.getGameProfile().getId().toString(), player.getName());
 					upperTe.setOwner(player.getGameProfile().getId().toString(), player.getName());
-					CustomizableSCTE.link(lowerTe, upperTe);
+					TileEntityLinkable.link(lowerTe, upperTe);
 				}
 
 				return EnumActionResult.SUCCESS;

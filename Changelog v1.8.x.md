@@ -15,6 +15,7 @@
 - API: Added IViewActivated (used by the Retinal Scanner and Scanner Door)
 - API: Renamed SecurityCraftTileEntity to NamedTileEntity and remove most of its code
 - API: Removed IIntersectable
+- API: Added TileEntityLinkable and removed relevant code from CustomizableSCTE
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Secret Signs cannot be broken (old secret signs will still not work, you will have to remove them in creative mode)
 - Fix: Alarm sound does not play
@@ -42,6 +43,7 @@
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated
 - Misc.: Renamed a few textures
+- Misc.: Performance improvements due to fewer ticking block entities
 
 --------------------------Changelog for v1.8.23.2 of SecurityCraft--------------------------
 

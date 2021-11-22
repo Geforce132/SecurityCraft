@@ -17,7 +17,7 @@ public class BlockScannerDoor extends BlockSpecialDoor
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
-		return new TileEntityScannerDoor().linkable();
+		return new TileEntityScannerDoor();
 	}
 
 	@Override

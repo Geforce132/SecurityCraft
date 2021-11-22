@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
@@ -12,6 +11,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
+import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -334,8 +334,8 @@ public class SCEventHandler {
 
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModuleType());
 
-						if(te instanceof CustomizableSCTE)
-							((CustomizableSCTE)te).createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModuleType() }, (CustomizableSCTE)te);
+						if(te instanceof TileEntityLinkable)
+							((TileEntityLinkable)te).createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModuleType() }, (TileEntityLinkable)te);
 
 						if(te instanceof TileEntitySecurityCamera)
 						{

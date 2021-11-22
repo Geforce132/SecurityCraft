@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.minecraft.block.Block;
@@ -80,7 +81,7 @@ public class BlockLaserBlock extends BlockDisguisable {
 
 					if(owner.owns(thatTe))
 					{
-						CustomizableSCTE.link(thisTe, thatTe);
+						TileEntityLinkable.link(thisTe, thatTe);
 
 						for(EnumModuleType type : thatTe.getInsertedModules())
 						{
@@ -223,6 +224,6 @@ public class BlockLaserBlock extends BlockDisguisable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityLaserBlock().linkable();
+		return new TileEntityLaserBlock();
 	}
 }
