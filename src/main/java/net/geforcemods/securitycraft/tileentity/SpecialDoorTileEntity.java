@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.ArrayList;
 
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.LinkableTileEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
@@ -16,7 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 
-public abstract class SpecialDoorTileEntity extends CustomizableTileEntity
+public abstract class SpecialDoorTileEntity extends LinkableTileEntity
 {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
@@ -69,7 +69,7 @@ public abstract class SpecialDoorTileEntity extends CustomizableTileEntity
 	}
 
 	@Override
-	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<CustomizableTileEntity> excludedTEs)
+	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableTileEntity> excludedTEs)
 	{
 		if(action == LinkedAction.OPTION_CHANGED)
 		{

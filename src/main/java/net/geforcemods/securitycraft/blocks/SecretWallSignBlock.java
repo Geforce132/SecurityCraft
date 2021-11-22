@@ -66,6 +66,6 @@ public class SecretWallSignBlock extends WallSignBlock
 
 	@Override
 	public String getTranslationKey() {
-		return Util.makeTranslationKey("block", this.getRegistryName()).replace("_wall", "");
+		return Util.makeTranslationKey("block", getRegistryName()).replace("_wall", "");
 	}
 }

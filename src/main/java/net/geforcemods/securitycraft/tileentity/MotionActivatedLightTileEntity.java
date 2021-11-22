@@ -11,9 +11,10 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
+public class MotionActivatedLightTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
 	private static final int TICKS_BETWEEN_ATTACKS = 5;
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
@@ -25,8 +26,6 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public void tick() {
-		super.tick();
-
 		if(cooldown-- > 0)
 			return;
 

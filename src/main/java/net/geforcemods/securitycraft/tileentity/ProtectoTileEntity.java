@@ -13,10 +13,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.server.ServerWorld;
 
-public class ProtectoTileEntity extends DisguisableTileEntity {
+public class ProtectoTileEntity extends DisguisableTileEntity implements ITickableTileEntity {
 	private static final int ATTACK_RANGE = 10;
 	private static final int SLOW_SPEED = 200;
 	private static final int FAST_SPEED = 100;
@@ -30,8 +31,6 @@ public class ProtectoTileEntity extends DisguisableTileEntity {
 
 	@Override
 	public void tick() {
-		super.tick();
-
 		if(cooldown++ < ticksBetweenAttacks)
 			return;
 

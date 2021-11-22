@@ -15,11 +15,12 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
+public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider, ITickableTileEntity {
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private IntOption searchRadius = new IntOption(this::getPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
@@ -34,8 +35,6 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 
 	@Override
 	public void tick() {
-		super.tick();
-
 		if(!world.isRemote) {
 			if(cooldown-- > 0)
 				return;

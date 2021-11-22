@@ -66,7 +66,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
-		return new KeypadDoorTileEntity().linkable();
+		return new KeypadDoorTileEntity();
 	}
 
 	@Override

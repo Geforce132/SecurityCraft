@@ -4,8 +4,8 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.LinkableTileEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.minecraft.block.Block;
@@ -69,7 +69,7 @@ public class LaserBlock extends DisguisableBlock {
 
 					if(thisTe.getOwner().owns(thatTe))
 					{
-						CustomizableTileEntity.link(thisTe, thatTe);
+						LinkableTileEntity.link(thisTe, thatTe);
 
 						for(ModuleType type : thatTe.getInsertedModules())
 						{
@@ -211,6 +211,6 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new LaserBlockTileEntity().linkable();
+		return new LaserBlockTileEntity();
 	}
 }

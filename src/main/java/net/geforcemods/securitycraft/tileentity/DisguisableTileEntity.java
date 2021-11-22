@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -54,14 +53,5 @@ public class DisguisableTileEntity extends CustomizableTileEntity
 	public IModelData getModelData()
 	{
 		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_BLOCK_RL, getBlockState().getBlock().getRegistryName()).build();
-	}
-
-	@Override
-	public void onLoad()
-	{
-		super.onLoad();
-
-		if(world != null && world.isRemote)
-			ClientHandler.refreshModelData(this);
 	}
 }
