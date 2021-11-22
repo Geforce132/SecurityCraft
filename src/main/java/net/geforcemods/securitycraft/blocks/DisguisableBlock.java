@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -110,9 +110,9 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	public BlockState getDisguisedBlockState(IBlockReader world, BlockPos pos)
 	{
-		if(world.getTileEntity(pos) instanceof DisguisableTileEntity)
+		if(world.getTileEntity(pos) instanceof IModuleInventory)
 		{
-			DisguisableTileEntity te = (DisguisableTileEntity) world.getTileEntity(pos);
+			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
 			ItemStack module = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if(!module.isEmpty())
@@ -129,9 +129,9 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	public ItemStack getDisguisedStack(IBlockReader world, BlockPos pos)
 	{
-		if(world != null && world.getTileEntity(pos) instanceof DisguisableTileEntity)
+		if(world != null && world.getTileEntity(pos) instanceof IModuleInventory)
 		{
-			DisguisableTileEntity te = (DisguisableTileEntity) world.getTileEntity(pos);
+			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
 			ItemStack stack = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if(!stack.isEmpty())
