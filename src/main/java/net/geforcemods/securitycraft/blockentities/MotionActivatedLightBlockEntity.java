@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity {
+public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private static final int TICKS_BETWEEN_ATTACKS = 5;
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getBlockPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
@@ -28,8 +29,6 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity {
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		super.tick(level, pos, state);
-
 		if(cooldown-- > 0)
 			return;
 

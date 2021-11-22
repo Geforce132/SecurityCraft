@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blockentities;
 import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
@@ -16,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-public abstract class SpecialDoorBlockEntity extends CustomizableBlockEntity
+public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity
 {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max

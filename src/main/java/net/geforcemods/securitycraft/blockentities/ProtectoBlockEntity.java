@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
@@ -18,7 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class ProtectoBlockEntity extends DisguisableBlockEntity {
+public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
 	private static final int ATTACK_RANGE = 10;
 	private static final int SLOW_SPEED = 200;
 	private static final int FAST_SPEED = 100;
@@ -32,8 +33,6 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity {
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		super.tick(level, pos, state);
-
 		if(cooldown++ < ticksBetweenAttacks)
 			return;
 

@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.inventory.ExtractOnlyItemStackHandler;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -32,7 +33,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider{
+public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ITickingBlockEntity {
 
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
@@ -50,8 +51,6 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	@Override
 	public void tick(Level world, BlockPos pos, BlockState state)
 	{
-		super.tick(world, pos, state);
-
 		if(cooldown > 0)
 			cooldown--;
 		else if(isProvidingPower){

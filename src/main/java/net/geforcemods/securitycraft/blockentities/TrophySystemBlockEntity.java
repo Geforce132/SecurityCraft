@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
@@ -38,7 +39,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
-public class TrophySystemBlockEntity extends DisguisableBlockEntity {
+public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
 
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
@@ -77,8 +78,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity {
 	@Override
 	public void tick(Level world, BlockPos pos, BlockState state)
 	{
-		super.tick(world, pos, state);
-
 		if (!world.isClientSide) {
 			// If the trophy does not have a target, try looking for one
 			if(entityBeingTargeted == null) {

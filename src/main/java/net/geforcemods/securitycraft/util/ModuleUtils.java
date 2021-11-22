@@ -3,12 +3,10 @@ package net.geforcemods.securitycraft.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
-import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.world.entity.Entity;
@@ -74,14 +72,11 @@ public class ModuleUtils{
 		return getPlayersFromModule(stack).contains(entity.getName().getString().toLowerCase());
 	}
 
-	public static void createLinkedAction(LinkedAction action, ItemStack stack, CustomizableBlockEntity te)
+	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableBlockEntity be)
 	{
 		if(action == LinkedAction.MODULE_INSERTED)
-			te.createLinkedBlockAction(action, new Object[] {stack, (ModuleItem)stack.getItem()}, te);
+			be.createLinkedBlockAction(action, new Object[] {stack, (ModuleItem)stack.getItem()}, be);
 		else if(action == LinkedAction.MODULE_REMOVED)
-			te.createLinkedBlockAction(action, new Object[] {stack, ((ModuleItem)stack.getItem()).getModuleType()}, te);
-
-		if(te instanceof SecurityCameraBlockEntity)
-			te.getLevel().updateNeighborsAt(te.getBlockPos().relative(te.getBlockState().getValue(SecurityCameraBlock.FACING), -1), te.getBlockState().getBlock());
+			be.createLinkedBlockAction(action, new Object[] {stack, ((ModuleItem)stack.getItem()).getModuleType()}, be);
 	}
 }

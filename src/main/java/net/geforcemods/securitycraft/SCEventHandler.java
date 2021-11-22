@@ -3,12 +3,12 @@ package net.geforcemods.securitycraft;
 import java.util.List;
 import java.util.Random;
 
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
@@ -230,25 +230,21 @@ public class SCEventHandler {
 		if(!(event.getWorld() instanceof Level level))
 			return;
 
-		if(!level.isClientSide()) {
-			BlockEntity tile = level.getBlockEntity(event.getPos());
+		if(!level.isClientSide() && level.getBlockEntity(event.getPos()) instanceof IModuleInventory be){
+			for(int i = 0; i < be.getMaxNumberOfModules(); i++)
+				if(!be.getInventory().get(i).isEmpty()){
+					ItemStack stack = be.getInventory().get(i);
+					ItemEntity item = new ItemEntity(level, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
+					WorldUtils.addScheduledTask(level, () -> level.addFreshEntity(item));
 
-			if(tile instanceof IModuleInventory te){
-				for(int i = 0; i < te.getMaxNumberOfModules(); i++)
-					if(!te.getInventory().get(i).isEmpty()){
-						ItemStack stack = te.getInventory().get(i);
-						ItemEntity item = new ItemEntity(level, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
-						WorldUtils.addScheduledTask(level, () -> level.addFreshEntity(item));
+					be.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
 
-						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
+					if(be instanceof LinkableBlockEntity lbe)
+						lbe.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModuleType() }, lbe);
 
-						if(te instanceof CustomizableBlockEntity cte)
-							cte.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModuleType() }, cte);
-
-						if(te instanceof SecurityCameraBlockEntity cam)
-							level.updateNeighborsAt(cam.getBlockPos().relative(level.getBlockState(cam.getBlockPos()).getValue(SecurityCameraBlock.FACING), -1), level.getBlockState(cam.getBlockPos()).getBlock());
-					}
-			}
+					if(be instanceof SecurityCameraBlockEntity cam)
+						level.updateNeighborsAt(cam.getBlockPos().relative(level.getBlockState(cam.getBlockPos()).getValue(SecurityCameraBlock.FACING), -1), level.getBlockState(cam.getBlockPos()).getBlock());
+				}
 		}
 
 		List<Sentry> sentries = ((Level)event.getWorld()).getEntitiesOfClass(Sentry.class, new AABB(event.getPos()));

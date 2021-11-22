@@ -22,6 +22,7 @@ import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IBlockPocket;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -55,7 +56,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity implements MenuProvider
+public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity implements MenuProvider, ITickingBlockEntity
 {
 	public static final int RENDER_DISTANCE = 100;
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
@@ -80,8 +81,6 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	@Override
 	public void tick(Level world, BlockPos pos, BlockState state)
 	{
-		super.tick(world, pos, state);
-
 		if(!world.isClientSide && shouldPlaceBlocks)
 		{
 			Player owner = PlayerUtils.getPlayerFromName(getOwner().getName());

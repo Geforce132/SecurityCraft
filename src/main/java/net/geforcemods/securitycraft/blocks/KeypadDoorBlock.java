@@ -69,7 +69,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new KeypadDoorBlockEntity(pos, state).linkable();
+		return new KeypadDoorBlockEntity(pos, state);
 	}
 
 	@Override

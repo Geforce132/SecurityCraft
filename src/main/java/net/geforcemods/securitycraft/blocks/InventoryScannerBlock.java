@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
@@ -122,8 +121,6 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			if(te instanceof IOwnable ownable)
 				ownable.setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
 		}
-
-		CustomizableBlockEntity.link(thisTe, connectedScanner);
 
 		for(ModuleType type : connectedScanner.getInsertedModules())
 		{

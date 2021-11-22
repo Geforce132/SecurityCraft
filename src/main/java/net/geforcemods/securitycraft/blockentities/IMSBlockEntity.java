@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
@@ -28,7 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvider {
+public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvider, ITickingBlockEntity {
 
 	private IntOption range = new IntOption(this::getBlockPos, "range", 12, 1, 30, 1, true);
 	/** Number of bombs remaining in storage. **/
@@ -46,8 +47,6 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 	@Override
 	public void tick(Level world, BlockPos pos, BlockState state)
 	{
-		super.tick(world, pos, state);
-
 		if(!world.isClientSide && updateBombCount){
 			int mineCount = state.getValue(IMSBlock.MINES);
 

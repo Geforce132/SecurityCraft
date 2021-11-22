@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -15,7 +16,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class AlarmBlockEntity extends CustomizableBlockEntity {
+public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 
 	private IntOption range = new IntOption(this::getBlockPos, "range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
 	private IntOption delay = new IntOption(this::getBlockPos, "delay", 2, 1, 30, 1, true);
@@ -63,7 +64,6 @@ public class AlarmBlockEntity extends CustomizableBlockEntity {
 
 		cooldown = tag.getInt("cooldown");
 		isPowered = tag.getBoolean("isPowered");
-
 	}
 
 	public void setCooldown(int cooldown){

@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -35,7 +36,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
-public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements IViewActivated {
+public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements IViewActivated, ITickingBlockEntity {
 	private static GameProfileCache profileCache;
 	private static MinecraftSessionService sessionService;
 	private static Executor mainThreadExecutor;
@@ -52,7 +53,6 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		super.tick(level, pos, state);
 		checkView(level, pos);
 	}
 

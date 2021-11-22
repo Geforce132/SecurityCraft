@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
@@ -76,12 +77,13 @@ public class UniversalBlockRemoverItem extends Item
 
 			if(block == SCContent.LASER_BLOCK.get())
 			{
-				CustomizableBlockEntity te = (CustomizableBlockEntity)world.getBlockEntity(pos);
+				CustomizableBlockEntity be = (CustomizableBlockEntity)world.getBlockEntity(pos);
+				boolean isLinkable = be instanceof LinkableBlockEntity;
 
-				for(ItemStack module : te.getInventory())
+				for(ItemStack module : be.getInventory())
 				{
-					if(!module.isEmpty())
-						te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModuleType()}, te);
+					if(isLinkable && !module.isEmpty())
+						((LinkableBlockEntity)be).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModuleType()}, be);
 				}
 
 				if (!world.isClientSide) {

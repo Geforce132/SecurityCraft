@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,7 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class ClaymoreBlockEntity extends CustomizableBlockEntity
+public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity
 {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 10, 1, true);
 	private double entityX = -1D;

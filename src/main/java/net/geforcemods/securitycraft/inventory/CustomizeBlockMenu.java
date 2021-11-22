@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
@@ -131,8 +133,10 @@ public class CustomizeBlockMenu extends AbstractContainerMenu{
 			{
 				moduleInv.onModuleRemoved(oldStack, ((ModuleItem)oldStack.getItem()).getModuleType());
 
-				if(moduleInv instanceof CustomizableBlockEntity)
-					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, (CustomizableBlockEntity)moduleInv);
+				if(moduleInv instanceof LinkableBlockEntity lbe)
+					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, lbe);
+				else if(moduleInv instanceof SecurityCameraBlockEntity cam)
+					cam.getLevel().updateNeighborsAt(cam.getBlockPos().relative(cam.getBlockState().getValue(SecurityCameraBlock.FACING), -1), cam.getBlockState().getBlock());
 			}
 		}
 	}

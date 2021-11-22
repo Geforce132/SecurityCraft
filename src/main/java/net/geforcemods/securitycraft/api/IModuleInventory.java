@@ -127,7 +127,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 				{
 					onModuleRemoved(stack, module.getModuleType());
 
-					if(tile instanceof CustomizableBlockEntity te)
+					if(tile instanceof LinkableBlockEntity te)
 						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, te);
 				}
 
@@ -164,7 +164,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 				{
 					onModuleInserted(stack, module.getModuleType());
 
-					if(tile instanceof CustomizableBlockEntity te)
+					if(tile instanceof LinkableBlockEntity te)
 						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, copy, te);
 				}
 			}
@@ -193,7 +193,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		{
 			onModuleRemoved(previous, ((ModuleItem)previous.getItem()).getModuleType());
 
-			if(tile instanceof CustomizableBlockEntity te)
+			if(tile instanceof LinkableBlockEntity te)
 				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, te);
 		}
 
@@ -203,7 +203,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		{
 			onModuleInserted(stack, module.getModuleType());
 
-			if(tile instanceof CustomizableBlockEntity te)
+			if(tile instanceof LinkableBlockEntity te)
 				ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, te);
 		}
 	}

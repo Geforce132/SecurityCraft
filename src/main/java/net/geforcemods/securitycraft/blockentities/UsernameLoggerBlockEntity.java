@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -22,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
-public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements MenuProvider {
+public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements MenuProvider, ITickingBlockEntity {
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private IntOption searchRadius = new IntOption(this::getBlockPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
@@ -37,8 +38,6 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		super.tick(level, pos, state);
-
 		if(!level.isClientSide) {
 			if(cooldown-- > 0)
 				return;

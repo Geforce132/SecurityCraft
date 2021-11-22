@@ -6,8 +6,8 @@ import com.mojang.math.Vector3f;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -75,7 +75,7 @@ public class LaserBlock extends DisguisableBlock {
 
 					if(thisTe.getOwner().owns(thatTe))
 					{
-						CustomizableBlockEntity.link(thisTe, thatTe);
+						LinkableBlockEntity.link(thisTe, thatTe);
 
 						for(ModuleType type : thatTe.getInsertedModules())
 						{
@@ -218,7 +218,7 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new LaserBlockBlockEntity(pos, state).linkable();
+		return new LaserBlockBlockEntity(pos, state);
 	}
 
 	@Override

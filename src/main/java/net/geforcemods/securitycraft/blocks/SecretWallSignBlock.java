@@ -66,6 +66,6 @@ public class SecretWallSignBlock extends WallSignBlock
 
 	@Override
 	public String getDescriptionId() {
-		return Util.makeDescriptionId("block", this.getRegistryName()).replace("_wall", "");
+		return Util.makeDescriptionId("block", getRegistryName()).replace("_wall", "");
 	}
 }

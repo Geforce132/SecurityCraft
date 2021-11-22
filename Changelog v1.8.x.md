@@ -21,6 +21,7 @@
 - API: Added IViewActivated (used by the Retinal Scanner and Scanner Door)
 - API: Renamed SecurityCraftBlockEntity to NamedBlockEntity and remove most of its code
 - API: Removed IIntersectable
+- API: Added LinkableBlockEntity and removed relevant code from CustomizableBlockEntity
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play
 - Fix: Claymore does not explode
@@ -44,6 +45,7 @@
 - Fix: Rail Mine loses its owner when its state changes
 - Removed: Unused textures
 - Misc.: Renamed a few textures
+- Misc.: Performance improvements due to fewer ticking block entities
 - Misc.: The minimum Forge version is now 37.0.110
 
 --------------------------Changelog for v1.8.23-beta5 of SecurityCraft--------------------------
