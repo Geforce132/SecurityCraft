@@ -168,20 +168,20 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	/**
-	 * Calls onLinkedBlockAction() for every block this TileEntity
+	 * Calls onLinkedBlockAction() for every block this block entity
 	 * is linked to. <p>
 	 *
 	 * <b>NOTE:</b> Never use this method in onLinkedBlockAction(),
-	 * use createLinkedBlockAction(EnumLinkedAction, Object[], ArrayList[CustomizableSCTE] instead.
+	 * use createLinkedBlockAction(EnumLinkedAction, Object[], ArrayList[LinkableBlockEntity] instead.
 	 *
 	 * @param action The action that occurred
 	 * @param parameters Action-specific parameters, see comments in {@link LinkedAction}
-	 * @param excludedTE The CustomizableSCTE which called this method, prevents infinite loops.
+	 * @param excludedBE The LinkableBlockEntity which called this method, prevents infinite loops.
 	 */
-	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, LinkableBlockEntity excludedTE) {
+	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, LinkableBlockEntity excludedBE) {
 		ArrayList<LinkableBlockEntity> list = new ArrayList<>();
 
-		list.add(excludedTE);
+		list.add(excludedBE);
 
 		createLinkedBlockAction(action, parameters, list);
 	}
@@ -192,7 +192,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *
 	 * @param action The action that occurred
 	 * @param parameters Action-specific parameters, see comments in {@link LinkedAction}
-	 * @param excludedBEs block entities that shouldn't have onLinkedBlockAction() called on them,
+	 * @param excludedBEs LinkableBlockEntities that shouldn't have onLinkedBlockAction() called on them,
 	 *        prevents infinite loops. Always add your block entity to the list whenever using this method
 	 */
 	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {
@@ -214,7 +214,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *
 	 * @param action The {@link LinkedAction} that occurred
 	 * @param parameters Important variables related to the action
-	 * @param excludedBEs block entities that aren't going to have onLinkedBlockAction() called on them,
+	 * @param excludedBEs LinkableBlockEntities that aren't going to have onLinkedBlockAction() called on them,
 	 *        always add your block entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple blocks (i.e: like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {}
