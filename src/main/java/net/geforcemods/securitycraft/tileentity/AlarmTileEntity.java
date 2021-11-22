@@ -10,10 +10,11 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.server.ServerWorld;
 
-public class AlarmTileEntity extends CustomizableTileEntity {
+public class AlarmTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
 
 	private IntOption range = new IntOption(this::getPos, "range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
 	private IntOption delay = new IntOption(this::getPos, "delay", 2, 1, 30, 1, true);
@@ -66,7 +67,6 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 
 		cooldown = tag.getInt("cooldown");
 		isPowered = tag.getBoolean("isPowered");
-
 	}
 
 	public void setCooldown(int cooldown){

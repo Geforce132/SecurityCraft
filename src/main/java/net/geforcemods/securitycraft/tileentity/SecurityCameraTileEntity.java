@@ -10,9 +10,10 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 
-public class SecurityCameraTileEntity extends CustomizableTileEntity {
+public class SecurityCameraTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
 
 	public double cameraRotation = 0.0D;
 	public boolean addToRotation = true;
@@ -30,8 +31,6 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public void tick(){
-		super.tick();
-
 		if(!downSet)
 		{
 			down = getBlockState().get(SecurityCameraBlock.FACING) == Direction.DOWN;

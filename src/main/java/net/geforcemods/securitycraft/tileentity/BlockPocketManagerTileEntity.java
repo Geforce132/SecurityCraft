@@ -37,6 +37,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
@@ -54,7 +55,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class BlockPocketManagerTileEntity extends CustomizableTileEntity implements INamedContainerProvider
+public class BlockPocketManagerTileEntity extends CustomizableTileEntity implements INamedContainerProvider, ITickableTileEntity
 {
 	public static final int RENDER_DISTANCE = 100;
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
@@ -79,8 +80,6 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	@Override
 	public void tick()
 	{
-		super.tick();
-
 		if(!world.isRemote && shouldPlaceBlocks)
 		{
 			PlayerEntity owner = PlayerUtils.getPlayerFromName(getOwner().getName());

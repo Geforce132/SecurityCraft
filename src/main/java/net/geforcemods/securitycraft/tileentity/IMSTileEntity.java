@@ -21,12 +21,13 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 
-public class IMSTileEntity extends CustomizableTileEntity implements INamedContainerProvider {
+public class IMSTileEntity extends CustomizableTileEntity implements INamedContainerProvider, ITickableTileEntity {
 
 	private IntOption range = new IntOption(this::getPos, "range", 12, 1, 30, 1, true);
 	/** Number of bombs remaining in storage. **/
@@ -43,8 +44,6 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 	@Override
 	public void tick(){
-		super.tick();
-
 		if(!world.isRemote && updateBombCount){
 			int mineCount = getBlockState().get(IMSBlock.MINES);
 

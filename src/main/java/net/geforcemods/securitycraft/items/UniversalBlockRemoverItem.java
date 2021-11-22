@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.LinkableTileEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
@@ -76,7 +76,7 @@ public class UniversalBlockRemoverItem extends Item
 
 			if(block == SCContent.LASER_BLOCK.get())
 			{
-				CustomizableTileEntity te = (CustomizableTileEntity)world.getTileEntity(pos);
+				LinkableTileEntity te = (LinkableTileEntity)world.getTileEntity(pos);
 
 				for(ItemStack module : te.getInventory())
 				{

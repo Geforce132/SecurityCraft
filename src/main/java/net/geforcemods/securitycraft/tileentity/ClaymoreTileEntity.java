@@ -14,13 +14,14 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
-public class ClaymoreTileEntity extends CustomizableTileEntity
+public class ClaymoreTileEntity extends CustomizableTileEntity implements ITickableTileEntity
 {
 	private IntOption range = new IntOption(this::getPos, "range", 5, 1, 10, 1, true);
 	private double entityX = -1D;

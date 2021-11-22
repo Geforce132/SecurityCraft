@@ -30,12 +30,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.server.management.PlayerProfileCache;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
-public class RetinalScannerTileEntity extends DisguisableTileEntity implements IViewActivated {
+public class RetinalScannerTileEntity extends DisguisableTileEntity implements IViewActivated, ITickableTileEntity {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static PlayerProfileCache profileCache;
@@ -53,7 +54,6 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 
 	@Override
 	public void tick() {
-		super.tick();
 		checkView(world, pos);
 	}
 

@@ -19,6 +19,7 @@
 - API: Added IViewActivated (used by the Retinal Scanner and Scanner Door)
 - API: Renamed SecurityCraftTileEntity to NamedTileEntity and remove most of its code
 - API: Removed IIntersectable
+- API: Added LinkableTileEntity and removed relevant code from CustomizableTileEntity
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play
 - Fix: Claymore does not explode
@@ -43,6 +44,7 @@
 - Fix: Rail Mine loses its owner when its state changes
 - Removed: Unused textures
 - Misc.: Renamed a few textures
+- Misc.: Performance improvements due to fewer ticking block entities
 
 --------------------------Changelog for v1.8.23 of SecurityCraft--------------------------
 
