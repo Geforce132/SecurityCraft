@@ -119,8 +119,6 @@ public class SCClientEventHandler
 			return;
 
 		if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te)) {
-			LOGGER.warn("A camera was mounted but the respective BlockEntity wasn't available on the client side. This is a bug!");
-			OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, false);
 			return;
 		}
 
