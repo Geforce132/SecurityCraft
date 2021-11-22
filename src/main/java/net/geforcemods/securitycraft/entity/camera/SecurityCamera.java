@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.minecraft.core.BlockPos;
@@ -16,11 +17,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.world.ForgeChunkManager;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class SecurityCamera extends Entity
 {
@@ -140,9 +143,19 @@ public class SecurityCamera extends Entity
 		setRot(yaw, pitch);
 	}
 
-	//TODO: this method should effectively unload all chunks that were forceloaded by that camera, I just haven't figured out a way to do that
+	public void dismount(ServerPlayer player) {
+		if (!level.isClientSide) {
+			discardCamera();
+			player.camera = player;
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new SetCameraView(player));
+		}
+	}
+
 	public void discardCamera() {
 		if (!level.isClientSide) {
+			if(level.getBlockEntity(blockPosition()) instanceof SecurityCameraBlockEntity camBe)
+				camBe.stopViewing();
+
 			SectionPos chunkPos = SectionPos.of(blockPosition());
 			int viewDistance = this.viewDistance <= 0 ? level.getServer().getPlayerList().getViewDistance() : this.viewDistance;
 

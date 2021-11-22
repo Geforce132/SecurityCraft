@@ -91,8 +91,11 @@ public class SCEventHandler {
 		if(event.getSource() == CustomDamageSources.ELECTRICITY)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(entity.getX(), entity.getY(), entity.getZ(), SCSounds.ELECTRIFIED.path, 0.25F, "blocks"));
 
-		if(!level.isClientSide && PlayerUtils.isPlayerMountedOnCamera(entity))
-			((ServerPlayer)entity).setCamera(entity);
+		if(!level.isClientSide && entity instanceof ServerPlayer player && PlayerUtils.isPlayerMountedOnCamera(entity)) {
+			SecurityCamera cam = (SecurityCamera)player.getCamera();
+
+			cam.dismount(player);
+		}
 	}
 
 	//disallow rightclicking doors, fixes wrenches from other mods being able to switch their state
