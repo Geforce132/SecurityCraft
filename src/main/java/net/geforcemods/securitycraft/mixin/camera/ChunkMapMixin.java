@@ -16,7 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 
 /**
- * Tracks chunks loaded by cameras to make them being sent to the client
+ * This mixin makes sure that chunks near cameras are properly sent to the player viewing it, as well as fixing block updates not getting sent to chunks loaded by cameras
  */
 @Mixin(ChunkMap.class)
 public abstract class ChunkMapMixin {
@@ -26,14 +26,20 @@ public abstract class ChunkMapMixin {
 	@Shadow
 	protected abstract void updateChunkTracking(ServerPlayer player, ChunkPos chunkPos, Packet<?>[] packetCache, boolean wasLoaded, boolean load);
 
+	/**
+	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance checking method
+	 */
 	@Redirect(method = "checkerboardDistance(Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/server/level/ServerPlayer;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"))
-	private static SectionPos redirectLastSectionPos(ServerPlayer player) {
+	private static SectionPos getCameraSectionPos(ServerPlayer player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			return SectionPos.of(player.getCamera());
 
 		return player.getLastSectionPos();
 	}
 
+	/**
+	 * Tracks chunks loaded by cameras to make sure they're being sent to the client
+	 */
 	@Inject(method = "move", at = @At(value = "TAIL"))
 	private void trackCameraLoadedChunks(ServerPlayer player, CallbackInfo callback) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
