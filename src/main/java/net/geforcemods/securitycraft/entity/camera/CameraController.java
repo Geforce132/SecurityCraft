@@ -54,14 +54,14 @@ public class CameraController
 
 				if(wasRightPressed = options.keyRight.isDown())
 					options.keyRight.setDown(false);
-			}
-			else if(event.phase == Phase.END)
-			{
+
 				if(options.keyShift.isDown()) {
 					dismount();
 					options.keyShift.setDown(false);
 				}
-
+			}
+			else if(event.phase == Phase.END)
+			{
 				if(wasUpPressed) {
 					moveViewUp(cam);
 					options.keyUp.setDown(true);
