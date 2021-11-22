@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
@@ -45,7 +44,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements ITicki
 	}
 
 	@Override
-	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<CustomizableBlockEntity> excludedTEs) {
+	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedTEs) {
 		if(action == LinkedAction.OPTION_CHANGED) {
 			Option<?> option = (Option<?>) parameters[0];
 			enabledOption.copy(option);

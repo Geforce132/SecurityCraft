@@ -178,8 +178,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * @param parameters Action-specific parameters, see comments in {@link LinkedAction}
 	 * @param excludedTE The CustomizableSCTE which called this method, prevents infinite loops.
 	 */
-	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, CustomizableBlockEntity excludedTE) {
-		ArrayList<CustomizableBlockEntity> list = new ArrayList<>();
+	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, LinkableBlockEntity excludedTE) {
+		ArrayList<LinkableBlockEntity> list = new ArrayList<>();
 
 		list.add(excludedTE);
 
@@ -195,7 +195,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * @param excludedBEs block entities that shouldn't have onLinkedBlockAction() called on them,
 	 *        prevents infinite loops. Always add your block entity to the list whenever using this method
 	 */
-	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<CustomizableBlockEntity> excludedBEs) {
+	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {
 		for(LinkedBlock block : linkedBlocks)
 			if(excludedBEs.contains(block.asBlockEntity(level)))
 				continue;
@@ -217,5 +217,5 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * @param excludedBEs block entities that aren't going to have onLinkedBlockAction() called on them,
 	 *        always add your block entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple blocks (i.e: like Laser Blocks)
 	 */
-	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<CustomizableBlockEntity> excludedBEs) {}
+	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {}
 }
