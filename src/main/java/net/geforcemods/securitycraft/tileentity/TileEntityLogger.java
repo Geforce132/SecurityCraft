@@ -28,7 +28,7 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 				return;
 
 			if(world.getRedstonePowerFromNeighbors(pos) > 0) {
-				world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(searchRadius.get())).forEach(this::addPlayer);
+				world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
 				syncLoggedPlayersToClient();
 			}
 

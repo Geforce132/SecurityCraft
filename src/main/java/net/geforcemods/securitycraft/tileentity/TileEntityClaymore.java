@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -60,7 +61,7 @@ public class TileEntityClaymore extends CustomizableSCTE implements ITickable
 			else if(dir == EnumFacing.WEST)
 				area = area.contract(range.get(), -0, -0);
 
-			List<?> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area, e -> !EntityUtils.isInvisible(e));
+			List<?> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area, e -> !EntityUtils.isInvisible(e) && (!(e instanceof EntityPlayer) || !((EntityPlayer)e).isSpectator()));
 			Iterator<?> iterator = entities.iterator();
 			EntityLivingBase entity;
 
