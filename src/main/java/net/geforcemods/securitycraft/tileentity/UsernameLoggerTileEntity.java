@@ -41,7 +41,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 				return;
 
 			if(world.getRedstonePowerFromNeighbors(pos) > 0) {
-				world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(pos).grow(searchRadius.get())).forEach(this::addPlayer);
+				world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(pos).grow(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
 				syncLoggedPlayersToClient();
 			}
 

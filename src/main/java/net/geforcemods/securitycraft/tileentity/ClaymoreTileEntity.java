@@ -63,7 +63,7 @@ public class ClaymoreTileEntity extends CustomizableTileEntity implements ITicka
 			else if(dir == Direction.WEST)
 				area = area.contract(range.get(), -0, -0);
 
-			List<?> entities = getWorld().getEntitiesWithinAABB(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e));
+			List<?> entities = getWorld().getEntitiesWithinAABB(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator());
 			Iterator<?> iterator = entities.iterator();
 			LivingEntity entity;
 
