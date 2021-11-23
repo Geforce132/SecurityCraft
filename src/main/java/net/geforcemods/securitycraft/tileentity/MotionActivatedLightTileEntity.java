@@ -29,7 +29,7 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity imple
 		if(cooldown-- > 0)
 			return;
 
-		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !PlayerUtils.isPlayerMountedOnCamera(e) && !EntityUtils.isInvisible(e));
+		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !PlayerUtils.isPlayerMountedOnCamera(e) && !EntityUtils.isInvisible(e) && !e.isSpectator());
 		boolean shouldBeOn = !entities.isEmpty();
 
 		if(getBlockState().get(MotionActivatedLightBlock.LIT) != shouldBeOn)
