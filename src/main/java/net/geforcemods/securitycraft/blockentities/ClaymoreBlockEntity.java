@@ -62,7 +62,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		else if(dir == Direction.WEST)
 			area = area.contract(range.get(), -0, -0);
 
-		List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e));
+		List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator());
 		Iterator<LivingEntity> iterator = entities.iterator();
 		LivingEntity entity;
 

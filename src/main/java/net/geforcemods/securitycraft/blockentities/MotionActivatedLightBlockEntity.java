@@ -32,7 +32,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 		if(cooldown-- > 0)
 			return;
 
-		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(searchRadiusOption.get()), e -> !PlayerUtils.isPlayerMountedOnCamera(e) && !EntityUtils.isInvisible(e));
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(searchRadiusOption.get()), e -> !PlayerUtils.isPlayerMountedOnCamera(e) && !EntityUtils.isInvisible(e) && !e.isSpectator());
 		boolean shouldBeOn = !entities.isEmpty();
 
 		if(state.getValue(MotionActivatedLightBlock.LIT) != shouldBeOn)

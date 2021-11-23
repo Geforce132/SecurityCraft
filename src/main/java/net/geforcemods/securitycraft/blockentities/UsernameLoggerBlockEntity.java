@@ -43,7 +43,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 				return;
 
 			if(level.getBestNeighborSignal(pos) > 0) {
-				level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get())).forEach(this::addPlayer);
+				level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
 				syncLoggedPlayersToClient();
 			}
 

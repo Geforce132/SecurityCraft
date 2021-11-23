@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
-import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,7 +19,7 @@ import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
-public class LaserBlockBlockEntity extends LinkableBlockEntity implements ITickingBlockEntity {
+public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 	private BooleanOption enabledOption = new BooleanOption("enabled", true) {
 		@Override
