@@ -52,7 +52,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	public SecurityCameraBlock(Block.Properties properties) {
 		super(properties);
-		stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false);
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false));
 	}
 
 	@Override
