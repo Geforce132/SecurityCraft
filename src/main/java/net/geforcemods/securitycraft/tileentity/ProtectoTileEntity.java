@@ -65,6 +65,8 @@ public class ProtectoTileEntity extends DisguisableTileEntity implements ITickab
 
 			cooldown = 0;
 		}
+		else if(getBlockState().get(ProtectoBlock.ACTIVATED))
+			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, false));
 	}
 
 	@Override
