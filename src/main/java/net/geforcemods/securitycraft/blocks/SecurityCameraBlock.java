@@ -1,19 +1,20 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Iterator;
-
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.entity.SecurityCamera;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -35,11 +36,14 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.world.ForgeChunkManager;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class SecurityCameraBlock extends OwnableBlock{
 
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != Direction.UP);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+	public static final BooleanProperty BEING_VIEWED = BooleanProperty.create("being_viewed");
 	private static final VoxelShape SHAPE_SOUTH = Shapes.create(new AABB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F));
 	private static final VoxelShape SHAPE_NORTH = Shapes.create(new AABB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F));
 	private static final VoxelShape SHAPE_WEST = Shapes.create(new AABB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F));
@@ -48,7 +52,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	public SecurityCameraBlock(Block.Properties properties) {
 		super(properties);
-		stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false);
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false));
 	}
 
 	@Override
@@ -92,45 +96,49 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
-		BlockState state = defaultBlockState().setValue(POWERED, false);
+		BlockState state = defaultBlockState().setValue(FACING, facing);
 
-		if(BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing))
-			return state.setValue(FACING, facing).setValue(POWERED, false);
-		else{
-			Iterator<?> iterator = Direction.Plane.HORIZONTAL.iterator();
-			Direction iFacing;
+		if(canSurvive(state, world, pos))
+			return state;
+		else {
+			for (Direction newFacing : Direction.Plane.HORIZONTAL) {
+				state = state.setValue(FACING, newFacing);
 
-			do{
-				if(!iterator.hasNext())
+				if (canSurvive(state, world, pos))
 					return state;
-
-				iFacing = (Direction)iterator.next();
-			}while (!BlockUtils.isSideSolid(world, pos.relative(iFacing.getOpposite()), iFacing));
-
-			return state.setValue(FACING, facing).setValue(POWERED, false);
+			}
 		}
+
+		return state;
 	}
 
-	public void mountCamera(Level level, BlockPos pos, int id, Player player){
+	public void mountCamera(Level level, BlockPos pos, Player player){
 		if(level instanceof ServerLevel serverLevel)
 		{
+			ServerPlayer serverPlayer = (ServerPlayer)player;
 			SecurityCamera dummyEntity;
+			SectionPos chunkPos = SectionPos.of(pos);
+			int viewDistance = ((ServerPlayer)player).server.getPlayerList().getViewDistance();
 
-			if(player.getVehicle() instanceof SecurityCamera cam)
-				dummyEntity = new SecurityCamera(level, pos, id, cam);
+			if(serverPlayer.getCamera() instanceof SecurityCamera cam)
+				dummyEntity = new SecurityCamera(level, pos, cam);
 			else
-				dummyEntity = new SecurityCamera(level, pos, id, player);
+				dummyEntity = new SecurityCamera(level, pos);
 
-			WorldUtils.addScheduledTask(level, () -> level.addFreshEntity(dummyEntity));
-			player.startRiding(dummyEntity);
-			player.teleportTo(dummyEntity.position().x, dummyEntity.position().y, dummyEntity.position().z);
-			serverLevel.getEntities().getAll().forEach(e -> {
-				if(e instanceof Mob mob)
-				{
-					if(mob.getTarget() == player)
-						mob.setTarget(null);
+			level.addFreshEntity(dummyEntity);
+
+			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
+				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
+					ForgeChunkManager.forceChunk(serverLevel, SecurityCraft.MODID, dummyEntity, x, z, true, false);
 				}
-			});
+			}
+
+			//can't use ServerPlayer#setCamera here because it also teleports the player
+			serverPlayer.camera = dummyEntity;
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
+
+			if(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity cam)
+				cam.startViewing();
 		}
 	}
 
@@ -171,8 +179,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
-		builder.add(FACING);
-		builder.add(POWERED);
+		builder.add(FACING, POWERED, BEING_VIEWED);
 	}
 
 	@Override

@@ -22,6 +22,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public boolean down = false, downSet = false;
 	public float lastPitch = Float.MAX_VALUE;
 	public float lastYaw = Float.MAX_VALUE;
+	private int playersViewing = 0;
 	private DoubleOption rotationSpeedOption = new DoubleOption(this::getBlockPos, "rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
 	private DoubleOption customRotationOption = new DoubleOption(this::getBlockPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
@@ -75,7 +76,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	@Override
 	public ModuleType[] acceptedModules(){
-		return new ModuleType[] { ModuleType.REDSTONE, ModuleType.SMART };
+		return new ModuleType[] { ModuleType.REDSTONE, ModuleType.ALLOWLIST };
 	}
 
 	@Override
@@ -90,5 +91,17 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 		if(module == ModuleType.REDSTONE)
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecurityCameraBlock.POWERED, false));
+	}
+
+	public void startViewing()
+	{
+		if(playersViewing++ == 0)
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecurityCameraBlock.BEING_VIEWED, true));
+	}
+
+	public void stopViewing()
+	{
+		if(--playersViewing == 0)
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecurityCameraBlock.BEING_VIEWED, false));
 	}
 }

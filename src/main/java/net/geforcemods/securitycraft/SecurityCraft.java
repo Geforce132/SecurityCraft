@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -56,7 +57,7 @@ import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
-	public static final String PROTOCOL_VERSION = "3";
+	public static final String PROTOCOL_VERSION = "4";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 	public static CreativeModeTab groupSCTechnical = new SCTechnicalGroup();
 	public static CreativeModeTab groupSCMine = new SCExplosivesGroup();
@@ -135,6 +136,14 @@ public class SecurityCraft {
 				e.printStackTrace();
 			}
 		}
+
+		ForgeChunkManager.setForcedChunkLoadingCallback(SecurityCraft.MODID, (level, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCamera) somewhere
+			ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
+				if (level.getEntity(uuid) == null) {
+					ticketHelper.removeAllTickets(uuid);
+				}
+			}));
+		});
 
 		IReinforcedCauldronInteraction.bootStrap();
 

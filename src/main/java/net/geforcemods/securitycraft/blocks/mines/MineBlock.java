@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -85,7 +84,7 @@ public class MineBlock extends ExplosiveBlock {
 			return;
 		else if(entity instanceof ItemEntity)
 			return;
-		else if(entity instanceof LivingEntity lEntity && !PlayerUtils.isPlayerMountedOnCamera(lEntity) && !EntityUtils.doesEntityOwn(entity, world, pos))
+		else if(entity instanceof LivingEntity lEntity && !EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 

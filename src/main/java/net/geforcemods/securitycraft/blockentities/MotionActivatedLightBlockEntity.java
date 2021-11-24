@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -32,7 +31,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 		if(cooldown-- > 0)
 			return;
 
-		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(searchRadiusOption.get()), e -> !PlayerUtils.isPlayerMountedOnCamera(e) && !EntityUtils.isInvisible(e) && !e.isSpectator());
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.isSpectator());
 		boolean shouldBeOn = !entities.isEmpty();
 
 		if(state.getValue(MotionActivatedLightBlock.LIT) != shouldBeOn)

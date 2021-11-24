@@ -16,6 +16,7 @@
 - Change: SecurityCraft's config values for Jade/HWYLA are now synchronized from server to client, meaning server owners can now control what Jade shows to players
 - Change: Renamed "Track Mine" to "Rail Mine" to be in line with vanilla
 - Change: Cameras can now be viewed from anywhere in the same dimension, it is no longer necessary to be close to the camera to be able to view it
+- Change: The Smart Module no longer works in the camera, the Allowlist Module is now used for better control
 - API: Removed INameable in favor of vanilla's Nameable
 - API: Added INameSettable to be able to easily set a block's custom name
 - API: Added IViewActivated (used by the Retinal Scanner and Scanner Door)
@@ -38,6 +39,7 @@
 - Fix: Crash when trying to power a taser while holding redstone in the offhand
 - Fix: Anyone can insert modules into any block
 - Fix: Entity shadows do not render on block mines
+- Fix: The security camera overlay still shows when the debug menu is open
 - Fix: Block Mine explosions can create fake blocks
 - Fix: Block Pockets get disabled when they get unloaded
 - Fix: SecurityCraft Manual entries for doors are not properly showing all information

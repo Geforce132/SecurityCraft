@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.entity.SecurityCamera;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -17,6 +17,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -170,7 +171,13 @@ public class PlayerUtils{
 	 * Is the entity mounted on to a security camera?
 	 */
 	public static boolean isPlayerMountedOnCamera(LivingEntity entity) {
-		return entity != null && entity.getVehicle() instanceof SecurityCamera;
+		if(!(entity instanceof Player player))
+			return false;
+
+		if(player.level.isClientSide)
+			return ClientHandler.isPlayerMountedOnCamera();
+		else
+			return ((ServerPlayer)player).getCamera() instanceof SecurityCamera;
 	}
 
 	/**

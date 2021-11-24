@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -31,6 +30,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 	private static final Quaternion NEGATIVE_Y_90 = Vector3f.YN.rotationDegrees(90.0F);
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/security_camera.png");
+	private static final ResourceLocation BEING_VIEWED_TEXTURE = new ResourceLocation("securitycraft:textures/block/security_camera_viewing.png");
 	private final SecurityCameraModel model;
 
 	public SecurityCameraRenderer(BlockEntityRendererProvider.Context ctx)
@@ -39,9 +39,9 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 	}
 
 	@Override
-	public void render(SecurityCameraBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int p_225616_5_, int p_225616_6_)
+	public void render(SecurityCameraBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int packedLight, int packedOverlay)
 	{
-		if(te.down || (Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getVehicle().blockPosition().equals(te.getBlockPos())))
+		if(te.down || (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(te.getBlockPos())))
 			return;
 
 		matrix.translate(0.5D, 1.5D, 0.5D);
@@ -65,6 +65,6 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 
 		matrix.mulPose(POSITIVE_X_180);
 		model.cameraRotationPoint.yRot = (float)te.cameraRotation;
-		model.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), p_225616_5_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(te.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }
