@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -89,7 +90,13 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 		super.onModuleRemoved(stack, module);
 
 		if(module == EnumModuleType.REDSTONE)
-			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockSecurityCamera.POWERED, false));
+		{
+			IBlockState newState = world.getBlockState(pos).withProperty(BlockSecurityCamera.POWERED, false);
+
+			world.setBlockState(pos, newState);
+			world.notifyNeighborsOfStateChange(pos, blockType, false);
+			world.notifyNeighborsOfStateChange(pos.offset(newState.getValue(BlockSecurityCamera.FACING).getOpposite()), blockType, false);
+		}
 	}
 
 	@Override
