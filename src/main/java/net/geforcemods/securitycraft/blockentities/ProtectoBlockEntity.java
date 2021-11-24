@@ -66,6 +66,8 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 
 			cooldown = 0;
 		}
+		else if(state.getValue(ProtectoBlock.ACTIVATED))
+			level.setBlockAndUpdate(pos, state.setValue(ProtectoBlock.ACTIVATED, false));
 	}
 
 	@Override
