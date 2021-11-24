@@ -28,9 +28,10 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 		if(cooldown++ < ticksBetweenAttacks)
 			return;
 
+		IBlockState state = world.getBlockState(pos);
+
 		if(world.isRaining() && world.canBlockSeeSky(pos)) {
 			List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(ATTACK_RANGE));
-			IBlockState state = world.getBlockState(pos);
 
 			if(!state.getValue(BlockProtecto.ACTIVATED))
 				world.setBlockState(pos, state.withProperty(BlockProtecto.ACTIVATED, true));
@@ -59,6 +60,8 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 
 			cooldown = 0;
 		}
+		else if(state.getValue(BlockProtecto.ACTIVATED))
+			world.setBlockState(pos, state.withProperty(BlockProtecto.ACTIVATED, false));
 	}
 
 	@Override
