@@ -6,6 +6,7 @@
 	"client": [
 		"camera.ClientChunkCacheMixin",
 		"camera.GameRendererMixin",
+		"camera.LevelRendererMixin",
 		"camera.MinecraftMixin",
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugScreenOverlayMixin"
