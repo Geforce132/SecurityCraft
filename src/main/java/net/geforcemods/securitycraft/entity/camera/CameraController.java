@@ -73,12 +73,12 @@ public class CameraController
 				}
 
 				if(wasLeftPressed) {
-					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() - (float)cam.cameraSpeed);
+					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() - (float)cam.cameraSpeed * cam.zoomAmount);
 					options.keyLeft.setDown(true);
 				}
 
 				if(wasRightPressed) {
-					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() + (float)cam.cameraSpeed);
+					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() + (float)cam.cameraSpeed * cam.zoomAmount);
 					options.keyRight.setDown(true);
 				}
 
@@ -113,7 +113,7 @@ public class CameraController
 
 	public static void moveViewUp(SecurityCamera cam)
 	{
-		float next = cam.getXRot() - (float)cam.cameraSpeed;
+		float next = cam.getXRot() - (float)cam.cameraSpeed * cam.zoomAmount;
 
 		if(cam.isCameraDown())
 		{
@@ -126,7 +126,7 @@ public class CameraController
 
 	public static void moveViewDown(SecurityCamera cam)
 	{
-		float next = cam.getXRot() + (float)cam.cameraSpeed;
+		float next = cam.getXRot() + (float)cam.cameraSpeed * cam.zoomAmount;
 
 		if(cam.isCameraDown())
 		{
