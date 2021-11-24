@@ -142,23 +142,20 @@ public class CameraController
 		BlockState state = cam.level.getBlockState(cam.blockPosition());
 		float checkNext = next;
 
-		if(state.hasProperty(SecurityCameraBlock.FACING))
-		{
-			if(checkNext < 0)
-				checkNext += 360;
+		if(checkNext < 0)
+			checkNext += 360;
 
-			boolean shouldSetRotation = switch(state.getValue(SecurityCameraBlock.FACING)) {
-				case NORTH -> checkNext > 90F && checkNext < 270F;
-				case SOUTH -> checkNext > 270F || checkNext < 90F;
-				case EAST -> checkNext > 180F && checkNext < 360F;
-				case WEST -> checkNext > 0F && checkNext < 180F;
-				case DOWN -> true;
-				default -> false;
-			};
+		boolean shouldSetRotation = switch(state.getValue(SecurityCameraBlock.FACING)) {
+			case NORTH -> checkNext > 90F && checkNext < 270F;
+			case SOUTH -> checkNext > 270F || checkNext < 90F;
+			case EAST -> checkNext > 180F && checkNext < 360F;
+			case WEST -> checkNext > 0F && checkNext < 180F;
+			case DOWN -> true;
+			default -> false;
+		};
 
-			if(shouldSetRotation)
-				cam.setYRot(next);
-		}
+		if(shouldSetRotation)
+			cam.setYRot(next);
 	}
 
 	public static void zoomIn(SecurityCamera cam)
