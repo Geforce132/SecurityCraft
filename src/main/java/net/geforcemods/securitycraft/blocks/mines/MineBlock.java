@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -84,7 +83,7 @@ public class MineBlock extends ExplosiveBlock {
 			return;
 		else if(entity instanceof ItemEntity)
 			return;
-		else if(entity instanceof LivingEntity lEntity && !EntityUtils.doesEntityOwn(entity, world, pos))
+		else if(!EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 

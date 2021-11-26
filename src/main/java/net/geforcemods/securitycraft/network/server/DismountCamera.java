@@ -25,7 +25,7 @@ public class DismountCamera
 
 			if(player.getCamera() instanceof SecurityCamera cam)
 			{
-				cam.dismount(player);
+				cam.stopViewing(player);
 			}
 		});
 

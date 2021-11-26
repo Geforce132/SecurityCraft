@@ -201,8 +201,8 @@ public class CameraController
 	}
 
 	public static void setRenderPosition(Entity entity) {
-		if (entity instanceof SecurityCamera cam) {
-			SectionPos cameraPos = SectionPos.of(cam);
+		if (entity instanceof SecurityCamera) {
+			SectionPos cameraPos = SectionPos.of(entity);
 
 			cameraStorage.viewCenterX = cameraPos.x();
 			cameraStorage.viewCenterZ = cameraPos.z();

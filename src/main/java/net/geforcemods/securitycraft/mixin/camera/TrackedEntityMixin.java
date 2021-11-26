@@ -19,17 +19,17 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Lets entities get sent to the client even though they're not in range of a player
+ * Lets entities get sent to the client even though they're not in range of the player
  */
 @Mixin(ChunkMap.TrackedEntity.class)
 public abstract class TrackedEntityMixin {
 	@Shadow
 	@Final
-	Entity entity;
+	ServerEntity serverEntity;
 
 	@Shadow
 	@Final
-	ServerEntity serverEntity;
+	Entity entity;
 
 	private boolean shouldBeSent = false;
 
@@ -48,7 +48,7 @@ public abstract class TrackedEntityMixin {
 	}
 
 	/**
-	 * Modifies a variable in updatePlayer to enable entities that should be sent and SecurityCameras to be sent to the client
+	 * Enables entities that should be sent as well as security camera entities to be sent to the client
 	 */
 	@ModifyVariable(method = "updatePlayer", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE))
 	public boolean modifyFlag(boolean original) {

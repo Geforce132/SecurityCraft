@@ -98,14 +98,12 @@ public class SecurityCameraBlock extends OwnableBlock{
 	{
 		BlockState state = defaultBlockState().setValue(FACING, facing);
 
-		if(canSurvive(state, world, pos))
-			return state;
-		else {
+		if(!canSurvive(state, world, pos)) {
 			for (Direction newFacing : Direction.Plane.HORIZONTAL) {
 				state = state.setValue(FACING, newFacing);
 
 				if (canSurvive(state, world, pos))
-					return state;
+					break;
 			}
 		}
 
@@ -118,7 +116,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 			ServerPlayer serverPlayer = (ServerPlayer)player;
 			SecurityCamera dummyEntity;
 			SectionPos chunkPos = SectionPos.of(pos);
-			int viewDistance = ((ServerPlayer)player).server.getPlayerList().getViewDistance();
+			int viewDistance = serverPlayer.server.getPlayerList().getViewDistance();
 
 			if(serverPlayer.getCamera() instanceof SecurityCamera cam)
 				dummyEntity = new SecurityCamera(level, pos, cam);

@@ -143,7 +143,7 @@ public class SecurityCamera extends Entity
 		setRot(yaw, pitch);
 	}
 
-	public void dismount(ServerPlayer player) {
+	public void stopViewing(ServerPlayer player) {
 		if (!level.isClientSide) {
 			discardCamera();
 			player.camera = player;
