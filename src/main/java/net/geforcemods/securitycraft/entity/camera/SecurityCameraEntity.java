@@ -47,7 +47,7 @@ public class SecurityCameraEntity extends Entity{
 	public SecurityCameraEntity(World world, BlockPos pos, PlayerEntity player){
 		this(SCContent.eTypeSecurityCamera, world);
 
-		TileEntity te = world.getTileEntity(getPosition());
+		TileEntity te = world.getTileEntity(pos);
 
 		if(!(te instanceof SecurityCameraTileEntity))
 		{
