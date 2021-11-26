@@ -18,11 +18,11 @@ import net.minecraft.client.renderer.WorldRenderer;
 public class WorldRendererMixin {
 	@Shadow
 	@Final
-	private Minecraft minecraft;
+	private Minecraft mc;
 
 	@Redirect(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewFrustum;updateChunkPositions(DD)V"))
 	public void onRepositionCamera(ViewFrustum viewFrustum, double x, double z) {
-		if (!PlayerUtils.isPlayerMountedOnCamera(minecraft.player))
+		if (!PlayerUtils.isPlayerMountedOnCamera(mc.player))
 			viewFrustum.updateChunkPositions(x, z);
 	}
 }
