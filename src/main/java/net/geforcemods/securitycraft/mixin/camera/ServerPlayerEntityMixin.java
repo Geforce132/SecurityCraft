@@ -13,7 +13,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 @Mixin(ServerPlayerEntity.class)
 public class ServerPlayerEntityMixin
 {
-	@Redirect(method="tick", at=@At(value="INVOKE", target="Lnet/minecraft/server/level/ServerPlayer;setPositionAndRotation(DDDFF)V"))
+	@Redirect(method="tick", at=@At(value="INVOKE", target="Lnet/minecraft/entity/player/ServerPlayerEntity;setPositionAndRotation(DDDFF)V"))
 	private void tick(ServerPlayerEntity player, double x, double y, double z, float yaw, float pitch)
 	{
 		if(!PlayerUtils.isPlayerMountedOnCamera(player))
