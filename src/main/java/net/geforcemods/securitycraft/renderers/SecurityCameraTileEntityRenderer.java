@@ -41,7 +41,7 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 	@Override
 	public void render(SecurityCameraTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay)
 	{
-		if(te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(te.getPos()))
+		if(te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().renderViewEntity.getPosition().equals(te.getPos()))
 			return;
 
 		matrix.translate(0.5D, 1.5D, 0.5D);

@@ -95,7 +95,7 @@ public class SCClientEventHandler
 		boolean isPlayerMountedOnCamera = PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player);
 
 		if(event.getType() == ElementType.EXPERIENCE && isPlayerMountedOnCamera)
-			drawCameraOverlay(event.getMatrixStack(), Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().getMainWindow(), Minecraft.getInstance().player, Minecraft.getInstance().world, Minecraft.getInstance().player.getRidingEntity().getPosition());
+			drawCameraOverlay(event.getMatrixStack(), Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().getMainWindow(), Minecraft.getInstance().player, Minecraft.getInstance().world, Minecraft.getInstance().renderViewEntity.getPosition());
 		else if(event.getType() == ElementType.ALL && !isPlayerMountedOnCamera)
 		{
 			Minecraft mc = Minecraft.getInstance();
