@@ -85,7 +85,7 @@ public class SecurityCamera extends Entity
 		else if(facing == Direction.EAST)
 			setYRot(270F);
 		else if(facing == Direction.DOWN)
-			setYRot(75F);
+			setXRot(75F);
 	}
 
 	@Override
