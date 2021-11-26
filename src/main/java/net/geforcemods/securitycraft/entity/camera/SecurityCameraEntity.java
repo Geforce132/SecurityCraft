@@ -88,7 +88,7 @@ public class SecurityCameraEntity extends Entity{
 		else if(facing == Direction.EAST)
 			rotationYaw = 270F;
 		else if(facing == Direction.DOWN)
-			rotationYaw = 75F;
+			rotationPitch = 75F;
 	}
 
 	@Override

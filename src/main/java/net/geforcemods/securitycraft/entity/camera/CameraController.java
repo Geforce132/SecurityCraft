@@ -131,7 +131,7 @@ public class CameraController
 
 		if(cam.isCameraDown())
 		{
-			if(next < 100F)
+			if(next < 90F)
 				cam.setRotation(cam.rotationYaw, next);
 		}
 		else if(next < 60F)
