@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.mixin;
+package net.geforcemods.securitycraft.mixin.f3;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

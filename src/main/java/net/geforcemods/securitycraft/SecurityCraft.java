@@ -32,6 +32,7 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -141,6 +142,14 @@ public class SecurityCraft {
 				e.printStackTrace();
 			}
 		}
+
+		ForgeChunkManager.setForcedChunkLoadingCallback(SecurityCraft.MODID, (world, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCameraEntity) somewhere
+			ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
+				if (world.getEntityByUuid(uuid) == null) {
+					ticketHelper.removeAllTickets(uuid);
+				}
+			}));
+		});
 	}
 
 	public void registerCommands(RegisterCommandsEvent event){
