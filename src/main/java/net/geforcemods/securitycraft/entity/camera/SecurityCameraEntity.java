@@ -42,6 +42,7 @@ public class SecurityCameraEntity extends Entity{
 	public SecurityCameraEntity(EntityType<SecurityCameraEntity> type, World world){
 		super(SCContent.eTypeSecurityCamera, world);
 		noClip = true;
+		forceSpawn = true;
 	}
 
 	public SecurityCameraEntity(World world, BlockPos pos, PlayerEntity player){
