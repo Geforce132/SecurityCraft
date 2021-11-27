@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -45,7 +44,7 @@ public class SecurityCameraEntity extends Entity{
 		forceSpawn = true;
 	}
 
-	public SecurityCameraEntity(World world, BlockPos pos, PlayerEntity player){
+	public SecurityCameraEntity(World world, BlockPos pos){
 		this(SCContent.eTypeSecurityCamera, world);
 
 		TileEntity te = world.getTileEntity(pos);
@@ -70,7 +69,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	public SecurityCameraEntity(World world, BlockPos pos, SecurityCameraEntity oldCamera){
-		this(SCContent.eTypeSecurityCamera, world);
+		this(world, pos);
 		oldCamera.discardCamera();
 	}
 

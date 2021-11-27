@@ -125,7 +125,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 			if(serverPlayer.getSpectatingEntity() instanceof SecurityCameraEntity)
 				dummyEntity = new SecurityCameraEntity(world, pos, (SecurityCameraEntity)serverPlayer.getSpectatingEntity());
 			else
-				dummyEntity = new SecurityCameraEntity(world, pos, player);
+				dummyEntity = new SecurityCameraEntity(world, pos);
 
 			world.addEntity(dummyEntity);
 
