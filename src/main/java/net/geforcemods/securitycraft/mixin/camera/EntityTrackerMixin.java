@@ -25,11 +25,11 @@ import net.minecraft.world.server.ChunkManager;
 public abstract class EntityTrackerMixin {
 	@Shadow
 	@Final
-	TrackedEntity entry;
+	private TrackedEntity entry;
 
 	@Shadow
 	@Final
-	Entity entity;
+	private Entity entity;
 
 	private boolean shouldBeSent = false;
 

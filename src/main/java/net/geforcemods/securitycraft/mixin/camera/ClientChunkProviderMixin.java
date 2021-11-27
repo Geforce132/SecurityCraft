@@ -32,11 +32,11 @@ import net.minecraftforge.event.world.ChunkEvent;
 @Mixin(ClientChunkProvider.class)
 public abstract class ClientChunkProviderMixin implements IChunkStorageProvider {
 	@Shadow
-	volatile ClientChunkProvider.ChunkArray array;
+	private volatile ClientChunkProvider.ChunkArray array;
 
 	@Shadow
 	@Final
-	ClientWorld world;
+	private ClientWorld world;
 
 	@Shadow
 	public abstract WorldLightManager getLightManager();
