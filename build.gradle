@@ -80,7 +80,7 @@ minecraft {
         server {
             workingDirectory project.file('run/server')
             property 'forge.logging.console.level', 'debug'
-            args '-nogui'
+            args '-nogui', '-mixin.config=securitycraft.mixins.json'
 
             mods {
                 securitycraft {

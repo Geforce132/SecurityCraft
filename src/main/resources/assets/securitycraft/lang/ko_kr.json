@@ -849,7 +849,6 @@
 	"module.securitycraft.retinal_scanner.whitelist_module.description": "망막 감지기에 허용목록 모듈을 추가하면 플레이어가 블록을 내려놓은 플레이어가 아닌 경우에도 감지기를 사용할 수 있습니다.",
 	"module.securitycraft.retinal_scanner.disguise_module.description": "망막 감지기에 변장 모듈을 추가하면 그 텍스처와 모델이 변장 모듈에 추가된 블록의 텍스처와 모델로 변경됩니다.",
 	"module.securitycraft.security_camera.redstone_module.description": "카메라에 레드스톤 모듈을 추가하면 카메라가 활성화된 경우 15블록 레드스톤 신호를 내보낼 수 있습니다.",
-	"module.securitycraft.security_camera.smart_module.description": "카메라에 스마트 모듈을 추가하면 누구나 카메라에 액세스할 수 있습니다. 하지만 카메라가 어디를 보고 있는지 소유자만이 제어할 수 있습니다. 다른 플레이어는 마지막으로 카메라를 떠날 때 소유자와 동일한 방향을 조사합니다.",
 	"module.securitycraft.protecto.whitelist_module.description": "프로텍토에 허용목록 모듈을 추가하면 화이트리스트를 가진 플레이어가 타겟이 되지 않고 프로텍토로 이동할 수 있습니다.",
 	"module.securitycraft.protecto.speed_module.description": "프로텍토에 속도 모듈을 추가하면 두 배 빠른 속도로 공격할 수 있습니다.",
 	"module.securitycraft.protecto.disguise_module.description": "변장 모듈을 프로텍토에 추가하면 변장 모듈의 텍스처 및 모델이 변장 모듈에 추가된 블록의 텍스처 및 모델로 변경됩니다.",

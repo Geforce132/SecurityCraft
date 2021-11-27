@@ -842,7 +842,6 @@
 	"module.securitycraft.retinal_scanner.whitelist_module.description": "L’ajout d´un module de liste d´autorisation à un scanner rétinien permettra aux joueurs d’utiliser le scanner même s’ils ne sont pas le joueur qui a placé le bloc.",
 	"module.securitycraft.retinal_scanner.disguise_module.description": "L’ajout d’un module de déguisement à un scanner rétinien entraînera la modification de la texture et du modèle de celui-ci en texture et modèle du bloc qui est ajouté au module de déguisement.",
 	"module.securitycraft.security_camera.redstone_module.description": "L’ajout d´un module redstone à une caméra permet à la caméra d’émettre un signal redstone à 15 blocs lorsqu’elle est activée.",
-	"module.securitycraft.security_camera.smart_module.description": "L’ajout du module intelligent à une caméra permet à quiconque d’accéder à la caméra.",
 	"module.securitycraft.protecto.whitelist_module.description": "L’ajout d’un module de liste d´autorisation à un protecto permettra aux joueurs inscrits sur la liste d’autorisation de pénétrer dans la portée du protecto sans être ciblés.",
 	"module.securitycraft.protecto.speed_module.description": "L’ajout d’un module de vitesse à un protecto le permettra à attaquer deux fois plus vite.",
 	"module.securitycraft.block_pocket_manager.disguise_module.description": "L’ajout d’un module de déguisement à une gestionnaire de poche bloc rendra les côtés du poche bloc opaques.",

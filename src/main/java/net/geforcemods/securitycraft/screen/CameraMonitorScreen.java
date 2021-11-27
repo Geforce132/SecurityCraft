@@ -159,7 +159,7 @@ public class CameraMonitorScreen extends Screen {
 		else if (button.id < 11){
 			int camID = button.id + ((page - 1) * 10);
 
-			SecurityCraft.channel.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getPos(), camID));
+			SecurityCraft.channel.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getPos()));
 			Minecraft.getInstance().player.closeScreen();
 		}
 		else
