@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableMap;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
+import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
@@ -79,12 +80,12 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 				else if(block instanceof ReinforcedCarpetBlock)
 					reinforcedCarpetBlock(block);
 			}
-			else if(item.getCreativeTabs().contains(SecurityCraft.groupSCMine) && block instanceof BaseFullMineBlock mine)
+			else if(item.getCreativeTabs().contains(SecurityCraft.groupSCMine) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 
 		blockMine(Blocks.ANCIENT_DEBRIS, SCContent.ANCIENT_DEBRIS_MINE.get());
-		horizontalBlock(SCContent.FURNACE_MINE.get(), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_side"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_front"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_top"));
+		horizontalBlock(SCContent.FURNACE_MINE.get(), mcLoc(ModelProvider.BLOCK_FOLDER + "/furnace_side"), mcLoc(ModelProvider.BLOCK_FOLDER + "/furnace_front"), mcLoc(ModelProvider.BLOCK_FOLDER + "/furnace_top"));
 
 		simpleBlock(SCContent.REINFORCED_GLASS.get());
 		reinforcedCarpetBlock(SCContent.REINFORCED_MOSS_CARPET.get(), "block");

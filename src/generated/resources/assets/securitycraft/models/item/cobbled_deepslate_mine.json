@@ -1,0 +1,11 @@
+{
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/cobbled_deepslate",
+    "up": "minecraft:block/cobbled_deepslate",
+    "north": "minecraft:block/cobbled_deepslate",
+    "east": "minecraft:block/cobbled_deepslate",
+    "south": "minecraft:block/cobbled_deepslate",
+    "west": "minecraft:block/cobbled_deepslate"
+  }
+}

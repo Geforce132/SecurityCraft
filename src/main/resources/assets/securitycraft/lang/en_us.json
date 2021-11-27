@@ -425,6 +425,8 @@
 	"block.securitycraft.reinforced_piston_head": "Reinforced Piston Head",
 	"block.securitycraft.reinforced_moving_piston": "Reinforced Moving Piston",
 	"block.securitycraft.copper_mine": "Copper Ore Mine",
+	"block.securitycraft.deepslate_mine": "Deepslate Mine",
+	"block.securitycraft.cobbled_deepslate_mine": "Cobbled Deepslate Mine",
 	"block.securitycraft.deepslate_copper_mine": "Deepslate Copper Ore Mine",
 	"block.securitycraft.deepslate_coal_mine": "Deepslate Coal Ore Mine",
 	"block.securitycraft.deepslate_iron_mine": "Deepslate Iron Ore Mine",

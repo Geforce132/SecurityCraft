@@ -425,6 +425,8 @@
 	"block.securitycraft.reinforced_piston_head": "Verstärkter Kolbenkopf",
 	"block.securitycraft.reinforced_moving_piston": "Verstärkter bewegter Block",
 	"block.securitycraft.copper_mine": "Kupfererzmine",
+	"block.securitycraft.deepslate_mine": "Tiefenschiefermine",
+	"block.securitycraft.cobbled_deepslate_mine": "Bruchtiefenschiefermine",
 	"block.securitycraft.deepslate_copper_mine": "Tiefenschiefer-Kupfererzmine",
 	"block.securitycraft.deepslate_coal_mine": "Tiefenschiefer-Steinkohlemine",
 	"block.securitycraft.deepslate_iron_mine": "Tiefenschiefer-Eisenerzmine",

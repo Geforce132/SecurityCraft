@@ -117,8 +117,10 @@ public class ClientHandler
 		};
 		String[] mines = {
 				"coal_ore",
-				"copper_ore",
+				"cobbled_deepslate",
 				"cobblestone",
+				"copper_ore",
+				"deepslate",
 				"deepslate_coal_ore",
 				"deepslate_copper_ore",
 				"deepslate_diamond_ore",

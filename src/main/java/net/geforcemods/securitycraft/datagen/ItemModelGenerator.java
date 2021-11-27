@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.datagen;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
+import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
@@ -46,7 +47,7 @@ public class ItemModelGenerator extends ItemModelProvider
 				else if(block instanceof ReinforcedWallBlock wall)
 					reinforcedWallInventory(block, wall.getVanillaBlock());
 			}
-			else if(item.getCreativeTabs().contains(SecurityCraft.groupSCMine) && block instanceof BaseFullMineBlock mine)
+			else if(item.getCreativeTabs().contains(SecurityCraft.groupSCMine) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 

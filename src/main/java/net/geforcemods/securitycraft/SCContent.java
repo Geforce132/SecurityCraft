@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft;
 
-import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.NamedBlockEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
@@ -68,6 +68,7 @@ import net.geforcemods.securitycraft.blocks.TrophySystemBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.BouncingBettyBlock;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
+import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FallingBlockMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
@@ -266,6 +267,8 @@ public class SCContent
 
 	//block mines
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> STONE_MINE = BLOCKS.register("stone_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 1.5F), Blocks.STONE));
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> DEEPSLATE_MINE = BLOCKS.register("deepslate_mine", () -> new DeepslateMineBlock(prop(Material.STONE, 3.0F).sound(SoundType.DEEPSLATE), Blocks.DEEPSLATE));
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> COBBLED_DEEPSLATE_MINE = BLOCKS.register("cobbled_deepslate_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.5F).sound(SoundType.DEEPSLATE), Blocks.COBBLED_DEEPSLATE));
 	@HasManualPage @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> DIRT_MINE = BLOCKS.register("dirt_mine", () -> new BaseFullMineBlock(prop(Material.DIRT, 0.5F).sound(SoundType.GRAVEL), Blocks.DIRT));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> COBBLESTONE_MINE = BLOCKS.register("cobblestone_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 2.0F), Blocks.COBBLESTONE));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> SAND_MINE = BLOCKS.register("sand_mine", () -> new FallingBlockMineBlock(prop(Material.SAND, 0.5F).sound(SoundType.SAND), Blocks.SAND));

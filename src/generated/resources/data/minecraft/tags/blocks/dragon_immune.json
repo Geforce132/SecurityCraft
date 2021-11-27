@@ -53,6 +53,8 @@
     "securitycraft:fake_water_block",
     "securitycraft:fake_lava_block",
     "securitycraft:stone_mine",
+    "securitycraft:deepslate_mine",
+    "securitycraft:cobbled_deepslate_mine",
     "securitycraft:dirt_mine",
     "securitycraft:cobblestone_mine",
     "securitycraft:sand_mine",
