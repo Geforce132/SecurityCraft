@@ -141,24 +141,27 @@ public class CameraController
 	public static void moveViewHorizontally(SecurityCameraEntity cam, float yRot, float next)
 	{
 		BlockState state = cam.world.getBlockState(cam.getPosition());
-		float checkNext = next;
 
-		if(checkNext < 0)
-			checkNext += 360;
+		if (state.hasProperty(SecurityCameraBlock.FACING)) {
+			float checkNext = next;
 
-		boolean shouldSetRotation = false;
+			if(checkNext < 0)
+				checkNext += 360;
 
-		switch(state.get(SecurityCameraBlock.FACING)) {
-			case NORTH: shouldSetRotation = checkNext > 90F && checkNext < 270F; break;
-			case SOUTH: shouldSetRotation = checkNext > 270F || checkNext < 90F; break;
-			case EAST: shouldSetRotation = checkNext > 180F && checkNext < 360F; break;
-			case WEST: shouldSetRotation = checkNext > 0F && checkNext < 180F; break;
-			case DOWN: shouldSetRotation = true; break;
-			default: shouldSetRotation = false; break;
+			boolean shouldSetRotation = false;
+
+			switch(state.get(SecurityCameraBlock.FACING)) {
+				case NORTH: shouldSetRotation = checkNext > 90F && checkNext < 270F; break;
+				case SOUTH: shouldSetRotation = checkNext > 270F || checkNext < 90F; break;
+				case EAST: shouldSetRotation = checkNext > 180F && checkNext < 360F; break;
+				case WEST: shouldSetRotation = checkNext > 0F && checkNext < 180F; break;
+				case DOWN: shouldSetRotation = true; break;
+				default: shouldSetRotation = false; break;
+			}
+
+			if(shouldSetRotation)
+				cam.rotationYaw = next;
 		}
-
-		if(shouldSetRotation)
-			cam.rotationYaw = next;
 	}
 
 	public static void zoomIn(SecurityCameraEntity cam)
