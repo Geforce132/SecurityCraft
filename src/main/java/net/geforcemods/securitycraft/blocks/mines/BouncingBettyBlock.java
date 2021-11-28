@@ -4,13 +4,11 @@ import net.geforcemods.securitycraft.api.NamedTileEntity;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -63,8 +61,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if(!EntityUtils.doesEntityOwn(entity, world, pos))
-			if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity))
-				explode(world, pos);
+			explode(world, pos);
 	}
 	@Override
 	public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity player){

@@ -67,9 +67,6 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 				if(!(entity instanceof PlayerEntity) && !activatedByEntities.get())
 					return;
 
-				if(entity instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera(entity))
-					return;
-
 				if(entity instanceof PlayerEntity && !getOwner().isOwner((PlayerEntity) entity) && !ModuleUtils.isAllowed(this, entity)) {
 					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
 					return;

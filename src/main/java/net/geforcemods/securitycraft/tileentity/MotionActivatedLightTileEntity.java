@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -29,7 +28,7 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity imple
 		if(cooldown-- > 0)
 			return;
 
-		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !PlayerUtils.isPlayerMountedOnCamera(e) && !EntityUtils.isInvisible(e) && !e.isSpectator());
+		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.isSpectator());
 		boolean shouldBeOn = !entities.isEmpty();
 
 		if(getBlockState().get(MotionActivatedLightBlock.LIT) != shouldBeOn)

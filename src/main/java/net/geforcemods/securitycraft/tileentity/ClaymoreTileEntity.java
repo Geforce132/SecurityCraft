@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -69,7 +68,7 @@ public class ClaymoreTileEntity extends CustomizableTileEntity implements ITicka
 			while(iterator.hasNext()){
 				entity = (LivingEntity) iterator.next();
 
-				if(PlayerUtils.isPlayerMountedOnCamera(entity) || EntityUtils.doesEntityOwn(entity, world, pos))
+				if(EntityUtils.doesEntityOwn(entity, world, pos))
 					continue;
 
 				entityX = entity.getPosX();

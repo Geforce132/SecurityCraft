@@ -19,6 +19,7 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity implements 
 	public boolean down = false, downSet = false;
 	public float lastPitch = Float.MAX_VALUE;
 	public float lastYaw = Float.MAX_VALUE;
+	private int playersViewing = 0;
 	private DoubleOption rotationSpeedOption = new DoubleOption(this::getPos, "rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
 	private DoubleOption customRotationOption = new DoubleOption(this::getPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
@@ -71,7 +72,7 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity implements 
 
 	@Override
 	public ModuleType[] acceptedModules(){
-		return new ModuleType[] { ModuleType.REDSTONE, ModuleType.SMART };
+		return new ModuleType[] { ModuleType.REDSTONE, ModuleType.ALLOWLIST };
 	}
 
 	@Override
@@ -86,5 +87,17 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity implements 
 
 		if(module == ModuleType.REDSTONE)
 			world.setBlockState(pos, getBlockState().with(SecurityCameraBlock.POWERED, false));
+	}
+
+	public void startViewing()
+	{
+		if(playersViewing++ == 0)
+			world.setBlockState(pos, getBlockState().with(SecurityCameraBlock.BEING_VIEWED, true));
+	}
+
+	public void stopViewing()
+	{
+		if(--playersViewing == 0)
+			world.setBlockState(pos, getBlockState().with(SecurityCameraBlock.BEING_VIEWED, false));
 	}
 }
