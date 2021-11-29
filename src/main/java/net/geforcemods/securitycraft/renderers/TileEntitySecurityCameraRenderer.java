@@ -18,10 +18,11 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 	private static final ModelSecurityCamera MODEL = new ModelSecurityCamera();
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/blocks/security_camera.png");
+	private static final ResourceLocation BEING_VIEWED_TEXTURE = new ResourceLocation("securitycraft:textures/blocks/security_camera_viewing.png");
 
 	@Override
 	public void render(TileEntitySecurityCamera te, double x, double y, double z, float par5, int par6, float alpha) {
-		if(te.down || (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().player.getRidingEntity().getPosition().equals(te.getPos())))
+		if(te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().getRenderViewEntity().getPosition().equals(te.getPos()))
 			return;
 
 		float rotation = -10000F;
@@ -39,7 +40,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
+		Minecraft.getMinecraft().renderEngine.bindTexture(te.isSomeoneViewing() ? BEING_VIEWED_TEXTURE : TEXTURE);
 		GlStateManager.pushMatrix();
 
 		if(te.hasWorld())

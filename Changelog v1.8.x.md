@@ -7,9 +7,12 @@
 - New: Config option "enableTeamOwnership". Setting this to true will allow all players in the same scoreboard team to own each other's blocks
 - New: Security Cameras can now open Reinforced Doors when a Redstone Module is installed and the signal is activated
 - New: The Reinforced Hopper can now extract from the Inventory Scanner
+- New: Players can now see themselves when viewing a camera, which also means they're now vulnerable to attacks while doing so
+- New: Indicator on security cameras that turns on when someone is viewing the camera
 - Change: SecurityCraft's config values for Jade/HWYLA are now synchronized from server to client, meaning server owners can now control what HWYLA shows to players
 - Change: Renamed "Track Mine" to "Rail Mine" to be in line with vanilla
 - Change: Cameras can now be viewed from anywhere in the same dimension, it is no longer necessary to be close to the camera to be able to view it
+- Change: The Smart Module no longer works in the camera, the Allowlist Module is now used for better control
 - API: Removed INameable in favor of vanilla's Nameable
 - API: Added INameSettable to be able to easily set a block's custom name
 - API: Added IViewActivated (used by the Retinal Scanner and Scanner Door)
@@ -40,6 +43,7 @@
 - Fix: SecurityCraft Manual entries for doors are not properly showing all information
 - Fix: The Universal Block Reinforcer can be thrown out of the player's inventory while its reinforcing menu is open
 - Fix: Claymores, Motion Activated Lights, and Username Loggers don't ignore players in spectator mode
+- Fix: The security camera overlay still shows when the debug menu is open
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated

@@ -25,6 +25,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 	private OptionDouble rotationSpeedOption = new OptionDouble(this::getPos, "rotationSpeed", CAMERA_SPEED, 0.01D, 0.025D, 0.001D, true);
 	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
 	private OptionDouble customRotationOption = new OptionDouble(this::getPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
+	private int playersViewing = 0;
 
 	@Override
 	public void update(){
@@ -72,6 +73,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 		tag.setFloat("LastPitch", lastPitch);
 		tag.setFloat("LastYaw", lastYaw);
 		tag.setBoolean("ShutDown", shutDown);
+		tag.setInteger("PlayersViewing", playersViewing);
 		return super.writeToNBT(tag);
 	}
 
@@ -82,6 +84,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 		lastPitch = tag.getFloat("LastPitch");
 		lastYaw = tag.getFloat("LastYaw");
 		shutDown = tag.getBoolean("ShutDown");
+		playersViewing = tag.getInteger("PlayersViewing");
 	}
 
 	@Override
@@ -101,7 +104,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 
 	@Override
 	public EnumModuleType[] acceptedModules(){
-		return new EnumModuleType[] { EnumModuleType.REDSTONE, EnumModuleType.SMART };
+		return new EnumModuleType[] { EnumModuleType.REDSTONE, EnumModuleType.ALLOWLIST };
 	}
 
 	@Override
@@ -116,5 +119,22 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 
 		if(world != null && world.getBlockState(pos).getBlock() instanceof BlockSecurityCamera)
 			down = world.getBlockState(pos).getValue(BlockSecurityCamera.FACING) == EnumFacing.DOWN;
+	}
+
+	public void startViewing()
+	{
+		playersViewing++;
+		sync();
+	}
+
+	public void stopViewing()
+	{
+		playersViewing--;
+		sync();
+	}
+
+	public boolean isSomeoneViewing()
+	{
+		return playersViewing > 0;
 	}
 }

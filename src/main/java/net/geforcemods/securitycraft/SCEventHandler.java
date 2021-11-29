@@ -15,13 +15,12 @@ import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -36,9 +35,11 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPortal;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -59,14 +60,11 @@ import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
@@ -84,7 +82,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 @EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
 
-	private static final String PREVIOUS_PLAYER_POS_NBT = "SecurityCraftPreviousPlayerPos";
 	public static HashMap<String, String> tipsWithLink = new HashMap<>();
 
 	static {
@@ -95,16 +92,6 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		EntityPlayer player = event.player;
-
-		if(player.getEntityData().hasKey(PREVIOUS_PLAYER_POS_NBT))
-		{
-			BlockPos pos = BlockPos.fromLong(player.getEntityData().getLong(PREVIOUS_PLAYER_POS_NBT));
-
-			player.getEntityData().removeTag(PREVIOUS_PLAYER_POS_NBT);
-			player.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
-		}
-
 		if(ConfigHandler.sayThanksMessage)
 		{
 			String tipKey = getRandomTip();
@@ -118,34 +105,41 @@ public class SCEventHandler {
 			if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
 				message.appendSibling(new TextComponentString(" ")).appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 
-			player.sendMessage(message);
+			event.player.sendMessage(message);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event)
 	{
-		EntityPlayer player = event.player;
+		EntityPlayerMP player = (EntityPlayerMP)event.player;
 
-		if(PlayerUtils.isPlayerMountedOnCamera(player))
+		if(player.getSpectatingEntity() instanceof EntitySecurityCamera)
 		{
-			BlockPos pos = new BlockPos(((EntitySecurityCamera)player.getRidingEntity()).getPreviousPlayerPos());
+			EntitySecurityCamera cam = (EntitySecurityCamera)player.getSpectatingEntity();
+			TileEntity tile = player.world.getTileEntity(cam.getPosition());
 
-			player.getRidingEntity().setDead();
-			player.getEntityData().setLong(PREVIOUS_PLAYER_POS_NBT, pos.toLong());
+			if(tile instanceof TileEntitySecurityCamera)
+				((TileEntitySecurityCamera)tile).stopViewing();
+
+			cam.setDead();
 		}
 	}
 
 	@SubscribeEvent
 	public static void onDamageTaken(LivingHurtEvent event)
 	{
-		if(event.getEntityLiving() != null && PlayerUtils.isPlayerMountedOnCamera(event.getEntityLiving())){
-			event.setCanceled(true);
-			return;
-		}
+		EntityLivingBase entity = event.getEntityLiving();
+		World world = entity.world;
 
 		if(event.getSource() == CustomDamageSources.ELECTRICITY)
-			SecurityCraft.network.sendToAll(new PlaySoundAtPos(event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, SCSounds.ELECTRIFIED.path, 0.25F, "block"));
+			SecurityCraft.network.sendToAll(new PlaySoundAtPos(entity.posX, entity.posY, entity.posZ, SCSounds.ELECTRIFIED.path, 0.25F, "block"));
+
+		if(!world.isRemote && entity instanceof EntityPlayerMP && PlayerUtils.isPlayerMountedOnCamera(entity)) {
+			EntityPlayerMP player = (EntityPlayerMP)entity;
+
+			((EntitySecurityCamera)player.getSpectatingEntity()).stopViewing(player);
+		}
 	}
 
 	@SubscribeEvent
@@ -298,21 +292,6 @@ public class SCEventHandler {
 
 		if(held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3)
 			ItemUniversalBlockReinforcer.convertBlock(stack, event.getPos(), event.getEntityPlayer());
-	}
-
-	@SubscribeEvent
-	public static void onAttackEntity(AttackEntityEvent event) {
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
-			event.setCanceled(true);
-		}
-	}
-
-	@SubscribeEvent
-	public static void onEntityInteracted(EntityInteract event) {
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
-			event.setCanceled(true);
-			event.setCancellationResult(EnumActionResult.FAIL);
-		}
 	}
 
 	@SubscribeEvent
@@ -507,12 +486,7 @@ public class SCEventHandler {
 		if(event.getEntityLiving() instanceof EntityPlayer)
 			return;
 
-		if(event.getTarget() instanceof EntityPlayer && event.getTarget() != event.getEntityLiving().getAttackingEntity())
-		{
-			if(PlayerUtils.isPlayerMountedOnCamera(event.getTarget()))
-				((EntityLiving)event.getEntityLiving()).setAttackTarget(null);
-		}
-		else if(event.getTarget() instanceof EntitySentry)
+		if(event.getTarget() instanceof EntitySentry)
 			((EntityLiving)event.getEntityLiving()).setAttackTarget(null);
 	}
 
@@ -520,22 +494,6 @@ public class SCEventHandler {
 	public static void onWorldLoad(WorldEvent.Load event)
 	{
 		event.getWorld().addEventListener(new SCWorldListener());
-	}
-
-	@SubscribeEvent
-	public static void onEntityMount(EntityMountEvent event)
-	{
-		if(event.isDismounting() && event.getEntityBeingMounted() instanceof EntitySecurityCamera && event.getEntityMounting() instanceof EntityPlayer)
-		{
-			EntityPlayer player = (EntityPlayer)event.getEntityMounting();
-			TileEntity te = event.getWorldObj().getTileEntity(event.getEntityBeingMounted().getPosition());
-
-			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)te).hasModule(EnumModuleType.SMART))
-			{
-				((TileEntitySecurityCamera)te).lastPitch = player.rotationPitch;
-				((TileEntitySecurityCamera)te).lastYaw = player.rotationYaw;
-			}
-		}
 	}
 
 	@SubscribeEvent

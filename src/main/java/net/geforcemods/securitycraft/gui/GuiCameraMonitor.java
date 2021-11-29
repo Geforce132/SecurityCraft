@@ -146,7 +146,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		else if (button.id < 11){
 			int camID = button.id + ((page - 1) * 10);
 
-			SecurityCraft.network.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getLocation(), camID));
+			SecurityCraft.network.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getLocation()));
 			Minecraft.getMinecraft().player.closeScreen();
 		}
 		else

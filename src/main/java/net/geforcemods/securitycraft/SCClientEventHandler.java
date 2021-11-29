@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -25,12 +25,10 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -48,7 +46,7 @@ public class SCClientEventHandler
 
 		if(PlayerUtils.isPlayerMountedOnCamera(player))
 		{
-			EntitySecurityCamera camera = ((EntitySecurityCamera)player.getRidingEntity());
+			EntitySecurityCamera camera = (EntitySecurityCamera)Minecraft.getMinecraft().getRenderViewEntity();
 
 			if(camera.screenshotSoundCooldown == 0)
 			{
@@ -59,25 +57,25 @@ public class SCClientEventHandler
 	}
 
 	@SubscribeEvent
-	public static void onPlayerRendered(RenderPlayerEvent.Pre event) {
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer()))
+	public static void renderHandEvent(RenderHandEvent event){
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player))
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
-	public static void onDrawBlockHighlight(DrawBlockHighlightEvent event)
-	{
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().player.getRidingEntity().getPosition().equals(event.getTarget().getBlockPos()))
+	public static void onClickInput(MouseEvent event) {
+		//TODO: 0 = left click?
+		if(event.getButton() == 0 && ClientProxy.isPlayerMountedOnCamera())
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
-		if(Minecraft.getMinecraft().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player)){
-			if(event.getType() == ElementType.EXPERIENCE && Minecraft.getMinecraft().world.getBlockState(Minecraft.getMinecraft().player.getRidingEntity().getPosition()).getBlock() instanceof BlockSecurityCamera)
-				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, Minecraft.getMinecraft().player.getRidingEntity().getPosition());
-		}
-		else if(event.getType() == ElementType.HOTBAR)
+		boolean isPlayerMountedOnCamera = PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player);
+
+		if(event.getType() == ElementType.EXPERIENCE && isPlayerMountedOnCamera)
+			GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, Minecraft.getMinecraft().getRenderViewEntity().getPosition());
+		else if(event.getType() == ElementType.HOTBAR && !isPlayerMountedOnCamera)
 		{
 			Minecraft mc = Minecraft.getMinecraft();
 			EntityPlayerSP player = mc.player;
@@ -177,18 +175,6 @@ public class SCClientEventHandler
 				}
 			}
 		}
-	}
-
-	@SubscribeEvent
-	public static void fovUpdateEvent(FOVUpdateEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntity()))
-			event.setNewfov(((EntitySecurityCamera) event.getEntity().getRidingEntity()).getZoomAmount());
-	}
-
-	@SubscribeEvent
-	public static void renderHandEvent(RenderHandEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player))
-			event.setCanceled(true);
 	}
 
 	private static void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight)

@@ -9,13 +9,13 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.api.TileEntityNamed;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
-import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockCrystalQuartzSlab;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockCustomQuartz;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCompressedBlocks;
@@ -44,20 +44,20 @@ import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
-import net.geforcemods.securitycraft.network.client.SetPlayerPositionAndRotation;
+import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
+import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
-import net.geforcemods.securitycraft.network.server.SetCameraRotation;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
@@ -464,8 +464,6 @@ public class RegistrationHandler
 		network.registerMessage(CheckPassword.Handler.class, CheckPassword.class, 13, Side.SERVER);
 		network.registerMessage(SyncTENBTTag.Handler.class, SyncTENBTTag.class, 14, Side.SERVER);
 		network.registerMessage(MountCamera.Handler.class, MountCamera.class, 15, Side.SERVER);
-		network.registerMessage(SetCameraRotation.Handler.class, SetCameraRotation.class, 16, Side.SERVER);
-		network.registerMessage(SetPlayerPositionAndRotation.Handler.class, SetPlayerPositionAndRotation.class, 17, Side.CLIENT);
 		network.registerMessage(OpenBriefcaseGui.Handler.class, OpenBriefcaseGui.class, 18, Side.SERVER);
 		network.registerMessage(ToggleOption.Handler.class, ToggleOption.class, 19, Side.SERVER);
 		network.registerMessage(UpdateSliderValue.Handler.class, UpdateSliderValue.class, 22, Side.SERVER);
@@ -482,6 +480,8 @@ public class RegistrationHandler
 		network.registerMessage(SyncTrophySystem.Handler.class, SyncTrophySystem.class, 33, Side.SERVER);
 		network.registerMessage(SetTrophySystemTarget.Handler.class, SetTrophySystemTarget.class, 34, Side.CLIENT);
 		network.registerMessage(SetKeycardUses.Handler.class, SetKeycardUses.class, 35, Side.SERVER);
+		network.registerMessage(SetCameraView.Handler.class, SetCameraView.class, 36, Side.CLIENT);
+		network.registerMessage(DismountCamera.Handler.class, DismountCamera.class, 37, Side.SERVER);
 	}
 
 	@SubscribeEvent

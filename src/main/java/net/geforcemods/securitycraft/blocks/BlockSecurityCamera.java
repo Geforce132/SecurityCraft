@@ -1,25 +1,25 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Iterator;
-
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
+import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
+import net.minecraft.util.EnumFacing.Plane;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -27,6 +27,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 public class BlockSecurityCamera extends BlockOwnable{
 
@@ -91,46 +92,65 @@ public class BlockSecurityCamera extends BlockOwnable{
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
 	{
-		IBlockState state = getDefaultState().withProperty(POWERED, false);
+		IBlockState state = getDefaultState().withProperty(FACING, facing);
 
-		if(world.isSideSolid(pos.offset(facing.getOpposite()), facing))
-			return state.withProperty(FACING, facing).withProperty(POWERED, false);
-		else{
-			Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
-			EnumFacing iFacing;
+		if(!world.isSideSolid(pos.offset(facing.getOpposite()), facing)) {
+			for (EnumFacing newFacing : Plane.HORIZONTAL) {
 
-			do{
-				if(!iterator.hasNext())
-					return state;
-
-				iFacing = (EnumFacing)iterator.next();
-			}while (!world.isSideSolid(pos.offset(iFacing.getOpposite()), iFacing));
-
-			return state.withProperty(FACING, facing).withProperty(POWERED, false);
+				if(world.isSideSolid(pos.offset(newFacing.getOpposite()), newFacing)) {
+					state = state.withProperty(FACING, newFacing);
+					break;
+				}
+			}
 		}
+
+		return state;
 	}
 
-	public void mountCamera(World world, int x, int y, int z, int id, EntityPlayer player){
+	public void mountCamera(World world, int x, int y, int z, EntityPlayer player){
 		if(!world.isRemote)
 		{
+			WorldServer serverWorld = (WorldServer)world;
+			EntityPlayerMP serverPlayer = (EntityPlayerMP)player;
 			EntitySecurityCamera dummyEntity;
+			BlockPos pos = new BlockPos(x, y, z);
+			int viewDistance = serverPlayer.server.getPlayerList().getViewDistance();
+			TileEntity te = world.getTileEntity(pos);
 
-			if(player.getRidingEntity() instanceof EntitySecurityCamera)
-				dummyEntity = new EntitySecurityCamera(world, x, y, z, id, (EntitySecurityCamera) player.getRidingEntity());
+			if(serverPlayer.getSpectatingEntity() instanceof EntitySecurityCamera)
+				dummyEntity = new EntitySecurityCamera(world, x, y, z, (EntitySecurityCamera)serverPlayer.getSpectatingEntity());
 			else
-				dummyEntity = new EntitySecurityCamera(world, x, y, z, id, player);
+				dummyEntity = new EntitySecurityCamera(world, x, y, z);
 
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
-			player.startRiding(dummyEntity);
-			player.setPositionAndUpdate(dummyEntity.getPosition().getX(), dummyEntity.getPosition().getY(), dummyEntity.getPosition().getZ());
-			world.loadedEntityList.forEach(e -> {
-				if(e instanceof EntityLiving)
-				{
-					if(((EntityLiving)e).getAttackTarget() == player)
-						((EntityLiving)e).setAttackTarget(null);
-				}
-			});
+			world.spawnEntity(dummyEntity);
+
+			//can't use ServerPlayerEntity#setSpectatingEntity here because it also teleports the player
+			serverPlayer.spectatingEntity = dummyEntity;
+			SecurityCraft.network.sendTo(new SetCameraView(dummyEntity), serverPlayer);
+
+			if(te instanceof TileEntitySecurityCamera)
+				((TileEntitySecurityCamera)te).startViewing();
 		}
+		//		if(!world.isRemote)
+		//		{
+		//			EntitySecurityCamera dummyEntity;
+		//
+		//			if(player.getRidingEntity() instanceof EntitySecurityCamera)
+		//				dummyEntity = new EntitySecurityCamera(world, x, y, z, id, (EntitySecurityCamera) player.getRidingEntity());
+		//			else
+		//				dummyEntity = new EntitySecurityCamera(world, x, y, z, id, player);
+		//
+		//			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
+		//			player.startRiding(dummyEntity);
+		//			player.setPositionAndUpdate(dummyEntity.getPosition().getX(), dummyEntity.getPosition().getY(), dummyEntity.getPosition().getZ());
+		//			world.loadedEntityList.forEach(e -> {
+		//				if(e instanceof EntityLiving)
+		//				{
+		//					if(((EntityLiving)e).getAttackTarget() == player)
+		//						((EntityLiving)e).setAttackTarget(null);
+		//				}
+		//			});
+		//		}
 	}
 
 	@Override

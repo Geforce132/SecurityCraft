@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -68,7 +67,7 @@ public class TileEntityClaymore extends CustomizableSCTE implements ITickable
 			while(iterator.hasNext()){
 				entity = (EntityLivingBase) iterator.next();
 
-				if(PlayerUtils.isPlayerMountedOnCamera(entity) || EntityUtils.doesEntityOwn(entity, world, pos))
+				if(EntityUtils.doesEntityOwn(entity, world, pos))
 					continue;
 
 				entityX = entity.posX;
