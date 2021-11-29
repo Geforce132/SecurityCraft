@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.SectionPos;
 import net.minecraft.world.server.ChunkManager;
 
@@ -27,14 +28,16 @@ public abstract class ChunkManagerMixin {
 	protected abstract void setChunkLoadedAtClient(ServerPlayerEntity player, ChunkPos chunkPos, IPacket<?>[] packetCache, boolean wasLoaded, boolean load);
 
 	/**
-	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance checking method
+	 * Fixes block updates and entities not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance checking method
 	 */
-	@Redirect(method = "func_219215_b(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getManagedSectionPos()Lnet/minecraft/util/math/SectionPos;"))
-	private static SectionPos getCameraSectionPos(ServerPlayerEntity player) {
-		if (PlayerUtils.isPlayerMountedOnCamera(player))
-			return SectionPos.from(player.getSpectatingEntity());
+	@Redirect(method = "func_219215_b(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/server/ChunkManager;getChunkDistance(Lnet/minecraft/util/math/ChunkPos;II)I"))
+	private static int getCameraChunkDistance(ChunkPos chunkPos, int x, int y, ChunkPos pos, ServerPlayerEntity player, boolean flag) {
+		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
+			x = MathHelper.floor(player.getSpectatingEntity().getPosX() / 16.0D);
+			y = MathHelper.floor(player.getSpectatingEntity().getPosZ() / 16.0D);
+		}
 
-		return player.getManagedSectionPos();
+		return getChunkDistance(chunkPos, x, y);
 	}
 
 	/**
@@ -56,5 +59,11 @@ public abstract class ChunkManagerMixin {
 
 			camera.setHasLoadedChunks(viewDistance);
 		}
+	}
+
+	private static int getChunkDistance(ChunkPos chunkPosIn, int x, int y) {
+		int i = chunkPosIn.x - x;
+		int j = chunkPosIn.z - y;
+		return Math.max(Math.abs(i), Math.abs(j));
 	}
 }
