@@ -55,7 +55,6 @@ public class SecurityCameraEntity extends Entity{
 		}
 
 		SecurityCameraTileEntity cam = (SecurityCameraTileEntity)te;
-
 		double x = pos.getX() + 0.5D;
 		double y = pos.getY() + 0.5D;
 		double z = pos.getZ() + 0.5D;

@@ -112,7 +112,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	public void mountCamera(World world, BlockPos pos, PlayerEntity player){
-		if(world instanceof ServerWorld)
+		if(!world.isRemote)
 		{
 			ServerWorld serverWorld = (ServerWorld)world;
 			ServerPlayerEntity serverPlayer = (ServerPlayerEntity)player;
