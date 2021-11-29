@@ -110,7 +110,7 @@ public class SecurityCameraEntity extends Entity{
 			if(toggleLightCooldown > 0)
 				toggleLightCooldown -= 1;
 
-			if(getPassengers().size() != 0 && shouldProvideNightVision)
+			if(shouldProvideNightVision)
 				SecurityCraft.channel.sendToServer(new GiveNightVision());
 		}
 		else if(world.getBlockState(getPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
