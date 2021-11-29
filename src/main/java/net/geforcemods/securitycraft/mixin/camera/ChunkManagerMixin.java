@@ -21,7 +21,7 @@ import net.minecraft.world.server.ChunkManager;
 @Mixin(ChunkManager.class)
 public abstract class ChunkManagerMixin {
 	@Shadow
-	int viewDistance;
+	private int viewDistance;
 
 	@Shadow
 	protected abstract void setChunkLoadedAtClient(ServerPlayerEntity player, ChunkPos chunkPos, IPacket<?>[] packetCache, boolean wasLoaded, boolean load);
