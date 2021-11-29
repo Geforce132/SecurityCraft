@@ -111,8 +111,9 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	public void mountCamera(Level level, BlockPos pos, Player player){
-		if(level instanceof ServerLevel serverLevel)
+		if(!level.isClientSide)
 		{
+			ServerLevel serverLevel = (ServerLevel)level;
 			ServerPlayer serverPlayer = (ServerPlayer)player;
 			SecurityCamera dummyEntity;
 			SectionPos chunkPos = SectionPos.of(pos);
