@@ -6,10 +6,12 @@ import java.util.List;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
+import net.geforcemods.securitycraft.network.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -160,7 +162,15 @@ public class PlayerUtils{
 	 * Args: entity.
 	 */
 	public static boolean isPlayerMountedOnCamera(EntityLivingBase entity) {
-		return entity != null && entity.getRidingEntity() instanceof EntitySecurityCamera;
+		if(!(entity instanceof EntityPlayer))
+			return false;
+
+		EntityPlayer player = (EntityPlayer)entity;
+
+		if(player.world.isRemote)
+			return ClientProxy.isPlayerMountedOnCamera();
+		else
+			return ((EntityPlayerMP)player).getSpectatingEntity() instanceof EntitySecurityCamera;
 	}
 
 	/**
