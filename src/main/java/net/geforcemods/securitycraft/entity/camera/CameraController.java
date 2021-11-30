@@ -13,6 +13,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -137,7 +138,7 @@ public class CameraController
 
 	public static void moveViewHorizontally(EntitySecurityCamera cam, float yRot, float next)
 	{
-		IBlockState state = cam.world.getBlockState(cam.getPosition());
+		IBlockState state = cam.world.getBlockState(new BlockPos(cam.posX, cam.posY, cam.posZ));
 
 		if (state.getProperties().containsKey(BlockSecurityCamera.FACING)) {
 			float checkNext = next;
@@ -164,7 +165,7 @@ public class CameraController
 	public static void zoomIn(EntitySecurityCamera cam)
 	{
 		if(!cam.zooming)
-			Minecraft.getMinecraft().world.playSound(cam.getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+			Minecraft.getMinecraft().world.playSound(new BlockPos(cam.posX, cam.posY, cam.posZ), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 
 		cam.zooming = true;
 		cam.zoomAmount = Math.max(cam.zoomAmount - 0.1F, 0.1F);
@@ -173,7 +174,7 @@ public class CameraController
 	public static void zoomOut(EntitySecurityCamera cam)
 	{
 		if(!cam.zooming)
-			Minecraft.getMinecraft().world.playSound(cam.getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+			Minecraft.getMinecraft().world.playSound(new BlockPos(cam.posX, cam.posY, cam.posZ), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 
 		cam.zooming = true;
 		cam.zoomAmount = Math.min(cam.zoomAmount + 0.1F, 1.4F);

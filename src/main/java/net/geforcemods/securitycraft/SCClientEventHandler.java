@@ -74,7 +74,8 @@ public class SCClientEventHandler
 		boolean isPlayerMountedOnCamera = PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player);
 
 		if(event.getType() == ElementType.EXPERIENCE && isPlayerMountedOnCamera)
-			GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, Minecraft.getMinecraft().getRenderViewEntity().getPosition());
+			//calling down() on the render view entity's position because the camera entity sits at y+0.5 by default and getPosition increases y by 0.5 again
+			GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, Minecraft.getMinecraft().getRenderViewEntity().getPosition().down());
 		else if(event.getType() == ElementType.HOTBAR && !isPlayerMountedOnCamera)
 		{
 			Minecraft mc = Minecraft.getMinecraft();

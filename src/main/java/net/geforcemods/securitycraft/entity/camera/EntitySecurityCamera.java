@@ -107,12 +107,12 @@ public class EntitySecurityCamera extends Entity{
 			if(shouldProvideNightVision)
 				SecurityCraft.network.sendToServer(new GiveNightVision());
 		}
-		else if(world.getBlockState(getPosition()).getBlock() != SCContent.securityCamera)
+		else if(world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock() != SCContent.securityCamera)
 			setDead();
 	}
 
 	public void toggleRedstonePower() {
-		BlockPos pos = getPosition();
+		BlockPos pos = new BlockPos(posX, posY, posZ);
 
 		if(((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
 			SecurityCraft.network.sendToServer(new SetCameraPowered(pos, !world.getBlockState(pos).getValue(BlockSecurityCamera.POWERED)));
@@ -129,7 +129,9 @@ public class EntitySecurityCamera extends Entity{
 
 	public boolean isCameraDown()
 	{
-		return world.getTileEntity(getPosition()) instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)world.getTileEntity(getPosition())).down;
+		BlockPos pos = new BlockPos(posX, posY, posZ);
+
+		return world.getTileEntity(pos) instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)world.getTileEntity(pos)).down;
 	}
 
 	//here to make this method accessible to CameraController
@@ -148,7 +150,7 @@ public class EntitySecurityCamera extends Entity{
 
 	public void discardCamera() {
 		if (!world.isRemote) {
-			TileEntity te = world.getTileEntity(getPosition());
+			TileEntity te = world.getTileEntity(new BlockPos(posX, posY, posZ));
 
 			if(te instanceof TileEntitySecurityCamera)
 				((TileEntitySecurityCamera)te).stopViewing();

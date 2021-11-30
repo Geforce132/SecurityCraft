@@ -22,7 +22,8 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 	@Override
 	public void render(TileEntitySecurityCamera te, double x, double y, double z, float par5, int par6, float alpha) {
-		if(te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().getRenderViewEntity().getPosition().equals(te.getPos()))
+		//calling down() on the render view entity's position because the camera entity sits at y+0.5 by default and getPosition increases y by 0.5 again
+		if(te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().getRenderViewEntity().getPosition().down().equals(te.getPos()))
 			return;
 
 		float rotation = -10000F;

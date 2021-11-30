@@ -16,7 +16,6 @@ public class MixinEntityPlayerMP
 	@Redirect(method="onUpdate", at=@At(value="INVOKE", target="Lnet/minecraft/entity/player/EntityPlayerMP;setPositionAndRotation(DDDFF)V"))
 	private void onUpdate(EntityPlayerMP player, double x, double y, double z, float yaw, float pitch)
 	{
-		System.out.println(PlayerUtils.isPlayerMountedOnCamera(player));
 		if(!PlayerUtils.isPlayerMountedOnCamera(player))
 			player.setPositionAndRotation(x, y, z, yaw, pitch);
 	}

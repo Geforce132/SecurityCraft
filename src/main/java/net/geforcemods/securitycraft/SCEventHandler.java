@@ -117,7 +117,7 @@ public class SCEventHandler {
 		if(player.getSpectatingEntity() instanceof EntitySecurityCamera)
 		{
 			EntitySecurityCamera cam = (EntitySecurityCamera)player.getSpectatingEntity();
-			TileEntity tile = player.world.getTileEntity(cam.getPosition());
+			TileEntity tile = player.world.getTileEntity(new BlockPos(cam.posX, cam.posY, cam.posZ));
 
 			if(tile instanceof TileEntitySecurityCamera)
 				((TileEntitySecurityCamera)tile).stopViewing();
