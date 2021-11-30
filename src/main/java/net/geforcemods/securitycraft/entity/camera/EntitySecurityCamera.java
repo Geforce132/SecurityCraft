@@ -40,7 +40,7 @@ public class EntitySecurityCamera extends Entity{
 	public EntitySecurityCamera(World world, double x, double y, double z){
 		this(world);
 
-		TileEntity te = world.getTileEntity(getPosition());
+		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 
 		if(!(te instanceof TileEntitySecurityCamera))
 		{
@@ -70,7 +70,7 @@ public class EntitySecurityCamera extends Entity{
 	{
 		rotationPitch = 30F;
 
-		EnumFacing facing = world.getBlockState(getPosition()).getValue(BlockSecurityCamera.FACING);
+		EnumFacing facing = world.getBlockState(new BlockPos(posX, posY, posZ)).getValue(BlockSecurityCamera.FACING);
 
 		if(facing == EnumFacing.NORTH)
 			rotationYaw = 180F;
