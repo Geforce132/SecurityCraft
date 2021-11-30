@@ -51,7 +51,7 @@
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: Performance improvements due to fewer ticking block entities
-- Misc.: The minimum Forge version is now 37.0.110
+- Misc.: The minimum Forge version is now 37.1.0
 
 --------------------------Changelog for v1.8.23-beta5 of SecurityCraft--------------------------
 
