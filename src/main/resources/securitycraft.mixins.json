@@ -6,6 +6,7 @@
 	"client": [
 	],
 	"mixins": [
+		"camera.MixinEntityPlayerMP"
 	],
 	"minVersion": "0.8"
 }
