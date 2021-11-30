@@ -9,11 +9,11 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.Constants;
 
 public abstract class LinkableBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
@@ -40,11 +40,11 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 		if (tag.contains("linkedBlocks"))
 		{
 			if(!hasLevel()) {
-				nbtTagStorage = tag.getList("linkedBlocks", Constants.NBT.TAG_COMPOUND);
+				nbtTagStorage = tag.getList("linkedBlocks", Tag.TAG_COMPOUND);
 				return;
 			}
 
-			readLinkedBlocks(tag.getList("linkedBlocks", Constants.NBT.TAG_COMPOUND));
+			readLinkedBlocks(tag.getList("linkedBlocks", Tag.TAG_COMPOUND));
 		}
 	}
 

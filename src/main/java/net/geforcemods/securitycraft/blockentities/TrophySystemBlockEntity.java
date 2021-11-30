@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
@@ -36,7 +37,6 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
@@ -141,7 +141,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		if (tag.contains("projectiles", NBT.TAG_COMPOUND)) {
+		if (tag.contains("projectiles", Tag.TAG_COMPOUND)) {
 			CompoundTag projectilesNBT = tag.getCompound("projectiles");
 			int i = 0;
 

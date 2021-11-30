@@ -8,9 +8,9 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 /**
@@ -377,7 +377,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 */
 	public default NonNullList<ItemStack> readModuleInventory(CompoundTag tag)
 	{
-		ListTag list = tag.getList("Modules", Constants.NBT.TAG_COMPOUND);
+		ListTag list = tag.getList("Modules", Tag.TAG_COMPOUND);
 		NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
 		for(int i = 0; i < list.size(); ++i)

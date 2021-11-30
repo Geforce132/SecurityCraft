@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -33,7 +34,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class ModuleItem extends Item{
@@ -144,7 +144,7 @@ public class ModuleItem extends Item{
 		if(tag == null)
 			return null;
 
-		ListTag items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		ListTag items = tag.getList("ItemInventory", Tag.TAG_COMPOUND);
 
 		if(items != null && !items.isEmpty())
 		{

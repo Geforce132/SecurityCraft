@@ -4,10 +4,10 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.Constants;
 
 public class ModuleItemContainer implements Container {
 
@@ -41,7 +41,7 @@ public class ModuleItemContainer implements Container {
 	}
 
 	public void readFromNBT(CompoundTag tag) {
-		ListTag items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		ListTag items = tag.getList("ItemInventory", Tag.TAG_COMPOUND);
 
 		for(int i = 0; i < items.size(); i++) {
 			CompoundTag item = items.getCompound(i);

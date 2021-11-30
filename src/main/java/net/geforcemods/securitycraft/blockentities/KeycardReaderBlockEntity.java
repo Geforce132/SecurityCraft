@@ -8,13 +8,13 @@ import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.Constants.NBT;
 
 public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements MenuProvider {
 
@@ -64,7 +64,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		}
 
 		//don't try to load this data if it doesn't exist, otherwise everything will be "false"
-		if(tag.contains("acceptedLevels", NBT.TAG_COMPOUND))
+		if(tag.contains("acceptedLevels", Tag.TAG_COMPOUND))
 		{
 			CompoundTag acceptedLevelsTag = tag.getCompound("acceptedLevels");
 

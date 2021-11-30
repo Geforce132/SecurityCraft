@@ -14,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +38,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Constants.NBT;
 
 public class InventoryScannerFieldBlock extends OwnableBlock {
 
@@ -186,7 +186,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
 		if(item != null) {
 			if(!item.isEmpty() && item.getTag() != null && Block.byItem(item.getItem()) instanceof ShulkerBoxBlock) {
-				ListTag list = item.getTag().getCompound("BlockEntityTag").getList("Items", NBT.TAG_COMPOUND);
+				ListTag list = item.getTag().getCompound("BlockEntityTag").getList("Items", Tag.TAG_COMPOUND);
 
 				for(int i = 0; i < list.size(); i++) {
 					ItemStack itemInChest = ItemStack.of(list.getCompound(i));
