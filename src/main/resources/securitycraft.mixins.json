@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "net.geforcemods.securitycraft.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "securitycraft.refmap.json",
+	"client": [
+	],
+	"mixins": [
+	],
+	"minVersion": "0.8"
+}

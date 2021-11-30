@@ -124,33 +124,13 @@ public class BlockSecurityCamera extends BlockOwnable{
 
 			world.spawnEntity(dummyEntity);
 
-			//can't use ServerPlayerEntity#setSpectatingEntity here because it also teleports the player
+			//can't use EntityPlayerMP#setSpectatingEntity here because it also teleports the player
 			serverPlayer.spectatingEntity = dummyEntity;
 			SecurityCraft.network.sendTo(new SetCameraView(dummyEntity), serverPlayer);
 
 			if(te instanceof TileEntitySecurityCamera)
 				((TileEntitySecurityCamera)te).startViewing();
 		}
-		//		if(!world.isRemote)
-		//		{
-		//			EntitySecurityCamera dummyEntity;
-		//
-		//			if(player.getRidingEntity() instanceof EntitySecurityCamera)
-		//				dummyEntity = new EntitySecurityCamera(world, x, y, z, id, (EntitySecurityCamera) player.getRidingEntity());
-		//			else
-		//				dummyEntity = new EntitySecurityCamera(world, x, y, z, id, player);
-		//
-		//			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
-		//			player.startRiding(dummyEntity);
-		//			player.setPositionAndUpdate(dummyEntity.getPosition().getX(), dummyEntity.getPosition().getY(), dummyEntity.getPosition().getZ());
-		//			world.loadedEntityList.forEach(e -> {
-		//				if(e instanceof EntityLiving)
-		//				{
-		//					if(((EntityLiving)e).getAttackTarget() == player)
-		//						((EntityLiving)e).setAttackTarget(null);
-		//				}
-		//			});
-		//		}
 	}
 
 	@Override
