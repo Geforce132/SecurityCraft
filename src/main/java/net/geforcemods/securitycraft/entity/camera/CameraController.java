@@ -39,47 +39,24 @@ public class CameraController
 			EntitySecurityCamera cam = (EntitySecurityCamera)renderViewEntity;
 			GameSettings options = Minecraft.getMinecraft().gameSettings;
 
-			//up/down/left/right handling is split to prevent players who are viewing a camera from moving around in a boat or on a horse
-			if(event.phase == Phase.START)
+			if(event.phase == Phase.START && options.keyBindSneak.isKeyDown())
 			{
-				if(wasUpPressed = options.keyBindForward.isKeyDown())
-					KeyBinding.setKeyBindState(options.keyBindForward.getKeyCode(), false);
-
-				if(wasDownPressed = options.keyBindBack.isKeyDown())
-					KeyBinding.setKeyBindState(options.keyBindBack.getKeyCode(), false);
-
-				if(wasLeftPressed = options.keyBindLeft.isKeyDown())
-					KeyBinding.setKeyBindState(options.keyBindLeft.getKeyCode(), false);
-
-				if(wasRightPressed = options.keyBindRight.isKeyDown())
-					KeyBinding.setKeyBindState(options.keyBindRight.getKeyCode(), false);
-
-				if(options.keyBindSneak.isKeyDown()) {
-					dismount();
-					KeyBinding.setKeyBindState(options.keyBindSneak.getKeyCode(), false);
-				}
+				dismount();
+				KeyBinding.setKeyBindState(options.keyBindSneak.getKeyCode(), false);
 			}
 			else if(event.phase == Phase.END)
 			{
-				if(wasUpPressed) {
+				if(options.keyBindForward.isKeyDown())
 					moveViewUp(cam);
-					KeyBinding.setKeyBindState(options.keyBindForward.getKeyCode(), false);
-				}
 
-				if(wasDownPressed) {
+				if(options.keyBindBack.isKeyDown())
 					moveViewDown(cam);
-					KeyBinding.setKeyBindState(options.keyBindBack.getKeyCode(), false);
-				}
 
-				if(wasLeftPressed) {
+				if(options.keyBindLeft.isKeyDown())
 					moveViewHorizontally(cam, cam.rotationYaw, cam.rotationYaw - cam.cameraSpeed * cam.zoomAmount);
-					KeyBinding.setKeyBindState(options.keyBindLeft.getKeyCode(), false);
-				}
 
-				if(wasRightPressed) {
+				if(options.keyBindRight.isKeyDown())
 					moveViewHorizontally(cam, cam.rotationYaw, cam.rotationYaw + cam.cameraSpeed * cam.zoomAmount);
-					KeyBinding.setKeyBindState(options.keyBindRight.getKeyCode(), false);
-				}
 
 				if(KeyBindings.cameraZoomIn.isKeyDown())
 					zoomIn(cam);
