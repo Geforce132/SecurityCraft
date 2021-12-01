@@ -64,7 +64,6 @@ public class SCClientEventHandler
 
 	@SubscribeEvent
 	public static void onClickInput(MouseEvent event) {
-		//TODO: 0 = left click?
 		if(event.getButton() == 0 && ClientProxy.isPlayerMountedOnCamera())
 			event.setCanceled(true);
 	}
