@@ -25,9 +25,12 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.common.ForgeChunkManager.Type;
 
 public class BlockSecurityCamera extends BlockOwnable{
 
@@ -110,17 +113,27 @@ public class BlockSecurityCamera extends BlockOwnable{
 	public void mountCamera(World world, int x, int y, int z, EntityPlayer player){
 		if(!world.isRemote)
 		{
-			WorldServer serverWorld = (WorldServer)world;
 			EntityPlayerMP serverPlayer = (EntityPlayerMP)player;
 			EntitySecurityCamera dummyEntity;
 			BlockPos pos = new BlockPos(x, y, z);
+			ChunkPos chunkPos = new ChunkPos(pos);
 			int viewDistance = serverPlayer.server.getPlayerList().getViewDistance();
 			TileEntity te = world.getTileEntity(pos);
+			Ticket ticket = ForgeChunkManager.requestTicket(SecurityCraft.instance, world, Type.ENTITY);
 
 			if(serverPlayer.getSpectatingEntity() instanceof EntitySecurityCamera)
 				dummyEntity = new EntitySecurityCamera(world, x, y, z, (EntitySecurityCamera)serverPlayer.getSpectatingEntity());
 			else
 				dummyEntity = new EntitySecurityCamera(world, x, y, z);
+
+			ticket.bindEntity(dummyEntity);
+			dummyEntity.setChunkTicket(ticket);
+
+			for (int cx = chunkPos.x - viewDistance; cx <= chunkPos.x + viewDistance; cx++) {
+				for (int cz = chunkPos.z - viewDistance; cz <= chunkPos.z + viewDistance; cz++) {
+					ForgeChunkManager.forceChunk(ticket, chunkPos);
+				}
+			}
 
 			world.spawnEntity(dummyEntity);
 

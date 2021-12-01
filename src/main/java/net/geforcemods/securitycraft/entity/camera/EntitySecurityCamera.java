@@ -1,5 +1,8 @@
 package net.geforcemods.securitycraft.entity.camera;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -17,9 +20,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
 public class EntitySecurityCamera extends Entity{
 
+	public final List<Ticket> activeChunkTickets = new ArrayList<>();
 	protected final float cameraSpeed = ConfigHandler.cameraSpeed;
 	public int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
@@ -28,6 +34,7 @@ public class EntitySecurityCamera extends Entity{
 	protected boolean shouldProvideNightVision = false;
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
+	private Ticket chunkTicket;
 
 	public EntitySecurityCamera(World world){
 		super(world);
@@ -154,9 +161,18 @@ public class EntitySecurityCamera extends Entity{
 
 			if(te instanceof TileEntitySecurityCamera)
 				((TileEntitySecurityCamera)te).stopViewing();
+
+			if(chunkTicket != null) {
+				ForgeChunkManager.releaseTicket(chunkTicket);
+				chunkTicket = null;
+			}
 		}
 
 		setDead();
+	}
+
+	public void setChunkTicket(Ticket chunkTicket) {
+		this.chunkTicket = chunkTicket;
 	}
 
 	@Override

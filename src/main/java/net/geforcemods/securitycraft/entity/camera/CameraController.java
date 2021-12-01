@@ -24,10 +24,6 @@ import net.minecraftforge.fml.relauncher.Side;
 public class CameraController
 {
 	public static int previousCameraType;
-	private static boolean wasUpPressed;
-	private static boolean wasDownPressed;
-	private static boolean wasLeftPressed;
-	private static boolean wasRightPressed;
 
 	@SubscribeEvent
 	public static void onClientTick(ClientTickEvent event)
