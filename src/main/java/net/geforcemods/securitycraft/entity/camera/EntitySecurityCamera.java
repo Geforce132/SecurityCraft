@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.entity.camera;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -25,7 +22,6 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
 public class EntitySecurityCamera extends Entity{
 
-	public final List<Ticket> activeChunkTickets = new ArrayList<>();
 	protected final float cameraSpeed = ConfigHandler.cameraSpeed;
 	public int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
