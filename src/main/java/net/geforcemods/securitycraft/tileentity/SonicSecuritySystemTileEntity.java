@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
 import net.geforcemods.securitycraft.network.client.SyncSSSSettingsOnClient;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,35 +30,51 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SonicSecuritySystemTileEntity extends SecurityCraftTileEntity implements INamedContainerProvider {
 
-	// The delay between each ping sound in ticks
+	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
+
+	/** The delay allowed between note block sounds while listening to a note sequence.
+	 *  Notes played within this many ticks of each other will be considered as part of
+	 *  the same "combination." Notes played after the delay has elapsed will start a new
+	 *  combination */
 	private static final int LISTEN_DELAY = 60;
 
-	// How far away can this SSS reach (possibly a config option?)
+	/** The listening and recording range of Sonic Security Systems (perhaps a config option?) */
 	public static final int MAX_RANGE = 30;
 
-	// How many blocks can be linked to a SSS (another config option?)
+	/** The maximum number of blocks that a Sonic Security System can be linked to at once (perhaps a config option?) */
 	public static final int MAX_LINKED_BLOCKS = 30;
 
-	// Whether the ping sound should be emitted or not
+	/** Whether the ping sound should be emitted or not */
 	private boolean emitsPings = true;
 
 	private int pingCooldown = PING_DELAY;
+
+	/** Used to control the number of ticks that Sonic Security Systems emit redstone power for */
 	private int powerCooldown = 40;
 	public float radarRotationDegrees = 0;
 
-	// A list containing all of the blocks that this SSS is linked to
-	public Set<BlockPos> linkedBlocks = new HashSet<>();
+	/** A list containing all of the blocks that this SSS is linked to */
+	private Set<BlockPos> linkedBlocks = new HashSet<>();
 
+	/** Whether or not this Sonic Security System is on or off */
 	private boolean isActive = true;
 
+	/** Whether or not this Sonic Security System is currently recording a new note combination */
 	private boolean isRecording = false;
 	private ArrayList<NoteWrapper> recordedNotes = new ArrayList<>();
 	public boolean shouldEmitPower = false;
 
+	/** Whether or not this Sonic Security System is currently listening to notes */
 	private boolean isListening = false;
 	private int listeningTimer = LISTEN_DELAY;
+
+	/** This variable keeps track of the number of correct notes that have been listened to in order.
+	 *  If this number matches the size of the recordedNotes array, then the correct combination has
+	 *  been played */
 	private int listenPos = 0;
+
+	private boolean tracked = false;
 
 	public SonicSecuritySystemTileEntity()
 	{
@@ -67,6 +84,12 @@ public class SonicSecuritySystemTileEntity extends SecurityCraftTileEntity imple
 	@Override
 	public void tick()
 	{
+		// Add this SSS to the global tracker if it has not already been added
+		if(!tracked) {
+			SonicSecuritySystemTracker.track(this);
+			tracked = true;
+		}
+
 		if(!world.isRemote)
 		{
 			if(!isActive())
@@ -152,6 +175,15 @@ public class SonicSecuritySystemTileEntity extends SecurityCraftTileEntity imple
 					radarRotationDegrees = 0;
 			}
 		}
+	}
+
+	@Override
+	public void remove()
+	{
+		super.remove();
+
+		// Stop tracking SSSs when they are removed from the world
+		SonicSecuritySystemTracker.stopTracking(this);
 	}
 
 	@Override
@@ -249,6 +281,7 @@ public class SonicSecuritySystemTileEntity extends SecurityCraftTileEntity imple
 
 	/**
 	 * Copies the positions over from the SSS item's tag into this TileEntity.
+	 * @param itemTag The CompoundNBT tag of the Sonic Security System item to transfer over
 	 */
 	public void transferPositionsFromItem(CompoundNBT itemTag)
 	{
@@ -282,6 +315,7 @@ public class SonicSecuritySystemTileEntity extends SecurityCraftTileEntity imple
 
 	/**
 	 * @return If this Sonic Security System is linked to a block at a specific position
+	 * @param linkedBlockPos the position of the block to check
 	 */
 	public boolean isLinkedToBlock(BlockPos linkedBlockPos)
 	{
@@ -322,11 +356,18 @@ public class SonicSecuritySystemTileEntity extends SecurityCraftTileEntity imple
 		return linkedBlocks.size();
 	}
 
+	/**
+	 * @return If this Sonic Security System is emitting ping sounds
+	 */
 	public boolean pings()
 	{
 		return emitsPings;
 	}
 
+	/**
+	 * Toggles the ping emission sound on or off
+	 * @param pings true if the periodic ping sounds should play, false if not
+	 */
 	public void setPings(boolean pings)
 	{
 		emitsPings = pings;
@@ -480,6 +521,12 @@ public class SonicSecuritySystemTileEntity extends SecurityCraftTileEntity imple
 			this.instrumentName = instrument;
 		}
 
+		/**
+		 * Checks to see if a passed note ID and instrument matches the info of this note
+		 * @param note the note ID to check
+		 * @param instrument the instrument name of the note
+		 * @return
+		 */
 		public boolean isSameNote(int note, String instrument)
 		{
 			return noteID == note && instrumentName.equals(instrument);

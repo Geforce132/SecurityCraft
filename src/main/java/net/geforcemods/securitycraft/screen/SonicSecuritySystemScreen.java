@@ -37,6 +37,8 @@ public class SonicSecuritySystemScreen extends Screen {
 
 	/** If a recording is currently being played back **/
 	private boolean playback = false;
+
+	/** The number of ticks that has elapsed since the last note played **/
 	private int tickCount = PLAYBACK_DELAY;
 	private int currentNote = 0;
 	private int numNotes;

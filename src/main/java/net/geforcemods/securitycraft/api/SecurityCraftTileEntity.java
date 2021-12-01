@@ -2,11 +2,10 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -16,7 +15,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
@@ -443,24 +441,11 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 		if(!canBeLocked())
 			return false;
 
-		/* 
-		 * TODO Possibly too resource-intensive for wide search areas if the SSS's range
-		 * is able to be changed through a config option?
-		 */
-		AxisAlignedBB searchBox = new AxisAlignedBB(pos);
-		searchBox = searchBox.grow(SonicSecuritySystemTileEntity.MAX_RANGE, SonicSecuritySystemTileEntity.MAX_RANGE, SonicSecuritySystemTileEntity.MAX_RANGE); //TODO double-check to be sure this is the correct function to use and not expand()
+		List<SonicSecuritySystemTileEntity> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange(getWorld(), pos);
 
-		List<BlockPos> blocksToSearch = BlockPos.getAllInBox(searchBox).map(BlockPos::toImmutable).collect(Collectors.toList());
-
-		for(BlockPos searchingPos : blocksToSearch) 
-		{
-			if(world.getBlockState(searchingPos).getBlock() == SCContent.SONIC_SECURITY_SYSTEM.get()) 
-			{
-				SonicSecuritySystemTileEntity te = ((SonicSecuritySystemTileEntity) world.getTileEntity(searchingPos));
-
-				// If the found SSS is within range, linked to this block, and active, return true
-				if(te.isActive() && te.isLinkedToBlock(pos) && BlockUtils.getDistanceBetweenBlocks(searchingPos, pos) <= SonicSecuritySystemTileEntity.MAX_RANGE)
-					return true;
+		for(SonicSecuritySystemTileEntity te : sonicSecuritySystems) {
+			if(te.isActive() && te.isLinkedToBlock(pos)) {
+				return true;
 			}
 		}
 

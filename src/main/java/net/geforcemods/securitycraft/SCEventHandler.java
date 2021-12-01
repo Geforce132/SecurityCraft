@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -23,6 +22,7 @@ import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
@@ -327,33 +327,25 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onNoteBlockPlayed(NoteBlockEvent.Play event)
 	{
-		AxisAlignedBB searchBox = new AxisAlignedBB(event.getPos());
-		searchBox = searchBox.grow(SonicSecuritySystemTileEntity.MAX_RANGE, SonicSecuritySystemTileEntity.MAX_RANGE, SonicSecuritySystemTileEntity.MAX_RANGE); //TODO double-check to be sure this is the correct function to use and not expand()
+		List<SonicSecuritySystemTileEntity> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange((World) event.getWorld(), event.getPos());
 
-		List<BlockPos> blocksToSearch = BlockPos.getAllInBox(searchBox).map(BlockPos::toImmutable).collect(Collectors.toList());
+		for(SonicSecuritySystemTileEntity te : sonicSecuritySystems) {
 
-		for(BlockPos searchingPos : blocksToSearch)
-		{
-			if(event.getWorld().getBlockState(searchingPos).getBlock() == SCContent.SONIC_SECURITY_SYSTEM.get())
+			// If the SSS is disabled, don't listen to any notes
+			if(!te.isActive())
+				continue;
+
+			// If the SSS is recording, record the note being played
+			if(te.isRecording())
 			{
-				SonicSecuritySystemTileEntity te = ((SonicSecuritySystemTileEntity) event.getWorld().getTileEntity(searchingPos));
-
-				// If the SSS is disabled, don't listen to any notes
-				if(!te.isActive())
-					continue;
-
-				// If the SSS is recording, record the note being played
-				if(te.isRecording())
-				{
-					te.recordNote(event.getVanillaNoteId(), event.getInstrument().getString());
-				}
-				// If the SSS is active, check to see if the note being played matches the saved combination.
-				// If so, toggle its redstone power output on
-				else if(te.isActive() && !te.isRecording() && te.listenToNote(event.getVanillaNoteId(), event.getInstrument().getString()))
-				{
-					te.shouldEmitPower = true;
-					event.getWorld().updateBlock(searchingPos, SCContent.SONIC_SECURITY_SYSTEM.get());
-				}
+				te.recordNote(event.getVanillaNoteId(), event.getInstrument().getString());
+			}
+			// If the SSS is active, check to see if the note being played matches the saved combination.
+			// If so, toggle its redstone power output on
+			else if(te.isActive() && !te.isRecording() && te.listenToNote(event.getVanillaNoteId(), event.getInstrument().getString()))
+			{
+				te.shouldEmitPower = true;
+				event.getWorld().updateBlock(te.getPos(), SCContent.SONIC_SECURITY_SYSTEM.get());
 			}
 		}
 	}
