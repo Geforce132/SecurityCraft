@@ -37,12 +37,19 @@ public abstract class ChunkManagerMixin {
 	 */
 	@Redirect(method = "func_219215_b(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/server/ChunkManager;getChunkDistance(Lnet/minecraft/util/math/ChunkPos;II)I"))
 	private static int getCameraChunkDistance(ChunkPos chunkPos, int x, int y, ChunkPos pos, ServerPlayerEntity player, boolean flag) {
+		int playerChunkDistance = getChunkDistance(chunkPos, x, y);
+
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			x = MathHelper.floor(player.getSpectatingEntity().getPosX() / 16.0D);
 			y = MathHelper.floor(player.getSpectatingEntity().getPosZ() / 16.0D);
+
+			int cameraChunkDistance = getChunkDistance(chunkPos, x, y);
+
+			if (cameraChunkDistance < playerChunkDistance)
+				playerChunkDistance = cameraChunkDistance; //only return the camera chunk distance if the camera is closer to the chunk than the player
 		}
 
-		return getChunkDistance(chunkPos, x, y);
+		return playerChunkDistance;
 	}
 
 	/**
