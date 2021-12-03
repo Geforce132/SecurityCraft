@@ -52,7 +52,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	/**
 	 * Updates the camera storage with the new view radius
 	 */
-	@Inject(method = "setViewDistance", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/multiplayer/ClientChunkProvider$ChunkArray;<init>(Lnet/minecraft/client/multiplayer/ClientChunkProvider;I)V"))
+	@Inject(method = "setViewDistance", at = @At(value = "FIELD", target = "Lnet/minecraft/client/multiplayer/ClientChunkProvider;array:Lnet/minecraft/client/multiplayer/ClientChunkProvider$ChunkArray;", ordinal = 1))
 	public void onSetViewDistance(int viewDistance, CallbackInfo ci) {
 		CameraController.setCameraStorage(newStorage(Math.max(2, viewDistance) + 3));
 	}

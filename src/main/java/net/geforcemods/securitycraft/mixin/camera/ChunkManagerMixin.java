@@ -27,6 +27,11 @@ public abstract class ChunkManagerMixin {
 	@Shadow
 	protected abstract void setChunkLoadedAtClient(ServerPlayerEntity player, ChunkPos chunkPos, IPacket<?>[] packetCache, boolean wasLoaded, boolean load);
 
+	@Shadow
+	private static int getChunkDistance(ChunkPos chunkPos, int x, int y) {
+		throw new IllegalStateException("Shadowing getChunkDistance failed!");
+	}
+
 	/**
 	 * Fixes block updates and entities not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance checking method
 	 */
@@ -59,11 +64,5 @@ public abstract class ChunkManagerMixin {
 
 			camera.setHasLoadedChunks(viewDistance);
 		}
-	}
-
-	private static int getChunkDistance(ChunkPos chunkPosIn, int x, int y) {
-		int i = chunkPosIn.x - x;
-		int j = chunkPosIn.z - y;
-		return Math.max(Math.abs(i), Math.abs(j));
 	}
 }

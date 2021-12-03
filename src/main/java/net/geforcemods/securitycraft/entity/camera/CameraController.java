@@ -13,7 +13,9 @@ import net.minecraft.client.multiplayer.ClientChunkProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPlayerPacket;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.SectionPos;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -201,8 +203,28 @@ public class CameraController
 	}
 
 	public static void setCameraStorage(ClientChunkProvider.ChunkArray cameraStorage) {
-		if (cameraStorage != null)
+		if (CameraController.cameraStorage == null) {
 			CameraController.cameraStorage = cameraStorage;
+		}
+
+		if (cameraStorage != null) {
+			cameraStorage.centerX = CameraController.cameraStorage.centerX;
+			cameraStorage.centerZ = CameraController.cameraStorage.centerZ;
+
+			for(int k = 0; k < CameraController.cameraStorage.chunks.length(); ++k) {
+				Chunk chunk = CameraController.cameraStorage.chunks.get(k);
+
+				if (chunk != null) {
+					ChunkPos pos = chunk.getPos();
+
+					if (cameraStorage.inView(pos.x, pos.z)) {
+						cameraStorage.replace(cameraStorage.getIndex(pos.x, pos.z), chunk);
+					}
+				}
+			}
+
+			CameraController.cameraStorage = cameraStorage;
+		}
 	}
 
 	public static void setRenderPosition(Entity entity) {
