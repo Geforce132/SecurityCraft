@@ -16,7 +16,7 @@ import net.minecraft.entity.Entity;
  */
 @Mixin(RenderPlayer.class)
 public class MixinRenderPlayer {
-	@Redirect(method = "doRender", at = @At(value = "FIELD", target = "renderViewEntity:Lnet/minecraft/entity/Entity;", opcode = Opcodes.GETFIELD))
+	@Redirect(method = "doRender(Lnet/minecraft/client/entity/AbstractClientPlayer;DDDFF)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/entity/RenderManager;renderViewEntity:Lnet/minecraft/entity/Entity;", opcode = Opcodes.GETFIELD))
 	private Entity checkForCamera(RenderManager renderManager, AbstractClientPlayer entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		return ClientProxy.isPlayerMountedOnCamera() ? entity : renderManager.renderViewEntity;
 	}
