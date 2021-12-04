@@ -4,12 +4,12 @@
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "securitycraft.refmap.json",
 	"client": [
-	],
-	"mixins": [
-		"camera.MixinEntityPlayerMP",
 		"camera.MixinEntityRenderer",
 		"camera.MixinMinecraft",
 		"camera.MixinRenderPlayer"
+	],
+	"mixins": [
+		"camera.MixinEntityPlayerMP"
 	],
 	"minVersion": "0.8"
 }
