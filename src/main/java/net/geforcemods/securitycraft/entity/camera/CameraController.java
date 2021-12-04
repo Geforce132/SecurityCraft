@@ -24,6 +24,10 @@ import net.minecraftforge.fml.relauncher.Side;
 public class CameraController
 {
 	public static int previousCameraType;
+	private static boolean wasUpPressed;
+	private static boolean wasDownPressed;
+	private static boolean wasLeftPressed;
+	private static boolean wasRightPressed;
 
 	@SubscribeEvent
 	public static void onClientTick(ClientTickEvent event)
@@ -33,25 +37,19 @@ public class CameraController
 		if(renderViewEntity instanceof EntitySecurityCamera)
 		{
 			EntitySecurityCamera cam = (EntitySecurityCamera)renderViewEntity;
-			GameSettings options = Minecraft.getMinecraft().gameSettings;
 
-			if(event.phase == Phase.START && options.keyBindSneak.isKeyDown())
+			if(event.phase == Phase.END)
 			{
-				dismount();
-				KeyBinding.setKeyBindState(options.keyBindSneak.getKeyCode(), false);
-			}
-			else if(event.phase == Phase.END)
-			{
-				if(options.keyBindForward.isKeyDown())
+				if(wasUpPressed)
 					moveViewUp(cam);
 
-				if(options.keyBindBack.isKeyDown())
+				if(wasDownPressed)
 					moveViewDown(cam);
 
-				if(options.keyBindLeft.isKeyDown())
+				if(wasLeftPressed)
 					moveViewHorizontally(cam, cam.rotationYaw, cam.rotationYaw - cam.cameraSpeed * cam.zoomAmount);
 
-				if(options.keyBindRight.isKeyDown())
+				if(wasRightPressed)
 					moveViewHorizontally(cam, cam.rotationYaw, cam.rotationYaw + cam.cameraSpeed * cam.zoomAmount);
 
 				if(KeyBindings.cameraZoomIn.isKeyDown())
@@ -75,6 +73,27 @@ public class CameraController
 				if(yRotChange != 0.0D || xRotChange != 0.0D)
 					player.connection.sendPacket(new CPacketPlayer.Rotation(player.rotationYaw, player.rotationPitch, player.onGround));
 			}
+		}
+	}
+
+	public static void handleKeybinds() {
+		GameSettings options = Minecraft.getMinecraft().gameSettings;
+
+		if(wasUpPressed = options.keyBindForward.isKeyDown())
+			KeyBinding.setKeyBindState(options.keyBindForward.getKeyCode(), false);
+
+		if(wasDownPressed = options.keyBindBack.isKeyDown())
+			KeyBinding.setKeyBindState(options.keyBindBack.getKeyCode(), false);
+
+		if(wasLeftPressed = options.keyBindLeft.isKeyDown())
+			KeyBinding.setKeyBindState(options.keyBindLeft.getKeyCode(), false);
+
+		if(wasRightPressed = options.keyBindRight.isKeyDown())
+			KeyBinding.setKeyBindState(options.keyBindRight.getKeyCode(), false);
+
+		if(options.keyBindSneak.isKeyDown()) {
+			dismount();
+			KeyBinding.setKeyBindState(options.keyBindSneak.getKeyCode(), false);
 		}
 	}
 
