@@ -89,69 +89,46 @@ public class SCClientEventHandler
 	}
 
 	@SubscribeEvent
+	public static void renderGameOverlay(RenderGameOverlayEvent.Pre event) {
+		if((event.getType() == ElementType.EXPERIENCE || event.getType() == ElementType.JUMPBAR) && ClientHandler.isPlayerMountedOnCamera())
+			event.setCanceled(true);
+	}
+
+	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
-		boolean isPlayerMountedOnCamera = PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player);
+		if(event.getType() == ElementType.ALL) {
+			if(ClientHandler.isPlayerMountedOnCamera())
+				drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().getMainWindow(), Minecraft.getInstance().player, Minecraft.getInstance().world, Minecraft.getInstance().renderViewEntity.getPosition());
+			else
+			{
+				Minecraft mc = Minecraft.getInstance();
+				ClientPlayerEntity player = mc.player;
+				World world = player.getEntityWorld();
 
-		if(event.getType() == ElementType.EXPERIENCE && isPlayerMountedOnCamera){
-			drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().getMainWindow(), Minecraft.getInstance().player, Minecraft.getInstance().world, Minecraft.getInstance().renderViewEntity.getPosition());
-		}
-		else if(event.getType() == ElementType.ALL && !isPlayerMountedOnCamera)
-		{
-			Minecraft mc = Minecraft.getInstance();
-			ClientPlayerEntity player = mc.player;
-			World world = player.getEntityWorld();
+				for (Hand hand : Hand.values()) {
+					int uCoord = 0;
+					ItemStack stack = player.getHeldItem(hand);
 
-			for (Hand hand : Hand.values()) {
-				int uCoord = 0;
-				ItemStack stack = player.getHeldItem(hand);
-
-				if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
-				{
-					double eyeHeight = player.getEyeHeight();
-					Vec3d lookVec = new Vec3d((player.getPosX() + (player.getLookVec().x * 5)), ((eyeHeight + player.getPosY()) + (player.getLookVec().y * 5)), (player.getPosZ() + (player.getLookVec().z * 5)));
-					RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
-
-					if(mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(((BlockRayTraceResult)mop).getPos()) instanceof SecurityCameraTileEntity)
+					if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
 					{
-						CompoundNBT cameras = stack.getTag();
-						uCoord = 110;
+						double eyeHeight = player.getEyeHeight();
+						Vec3d lookVec = new Vec3d((player.getPosX() + (player.getLookVec().x * 5)), ((eyeHeight + player.getPosY()) + (player.getLookVec().y * 5)), (player.getPosZ() + (player.getLookVec().z * 5)));
+						RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
 
-						if(cameras != null) {
-							for(int i = 1; i < 31; i++)
-							{
-								if(!cameras.contains("Camera" + i))
-									continue;
+						if(mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(((BlockRayTraceResult)mop).getPos()) instanceof SecurityCameraTileEntity)
+						{
+							CompoundNBT cameras = stack.getTag();
+							uCoord = 110;
 
-								String[] coords = cameras.getString("Camera" + i).split(" ");
-
-								if(Integer.parseInt(coords[0]) == ((BlockRayTraceResult)mop).getPos().getX() && Integer.parseInt(coords[1]) == ((BlockRayTraceResult)mop).getPos().getY() && Integer.parseInt(coords[2]) == ((BlockRayTraceResult)mop).getPos().getZ())
+							if(cameras != null) {
+								for(int i = 1; i < 31; i++)
 								{
-									uCoord = 88;
-									break;
-								}
-							}
-						}
-					}
-				}
-				else if(stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get())
-				{
-					double eyeHeight = player.getEyeHeight();
-					Vec3d lookVec = new Vec3d((player.getPosX() + (player.getLookVec().x * 5)), ((eyeHeight + player.getPosY()) + (player.getLookVec().y * 5)), (player.getPosZ() + (player.getLookVec().z * 5)));
-					RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
+									if(!cameras.contains("Camera" + i))
+										continue;
 
-					if(mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockRayTraceResult)mop).getPos()).getBlock() instanceof IExplosive)
-					{
-						uCoord = 110;
-						CompoundNBT mines = stack.getTag();
+									String[] coords = cameras.getString("Camera" + i).split(" ");
 
-						if(mines != null) {
-							for(int i = 1; i <= 6; i++)
-							{
-								if(stack.getTag().getIntArray("mine" + i).length > 0)
-								{
-									int[] coords = mines.getIntArray("mine" + i);
-
-									if(coords[0] == ((BlockRayTraceResult)mop).getPos().getX() && coords[1] == ((BlockRayTraceResult)mop).getPos().getY() && coords[2] == ((BlockRayTraceResult)mop).getPos().getZ())
+									if(Integer.parseInt(coords[0]) == ((BlockRayTraceResult)mop).getPos().getX() && Integer.parseInt(coords[1]) == ((BlockRayTraceResult)mop).getPos().getY() && Integer.parseInt(coords[2]) == ((BlockRayTraceResult)mop).getPos().getZ())
 									{
 										uCoord = 88;
 										break;
@@ -160,38 +137,66 @@ public class SCClientEventHandler
 							}
 						}
 					}
-				}
-				else if(stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get())
-				{
-					Entity hitEntity = Minecraft.getInstance().pointedEntity;
-
-					if(hitEntity instanceof SentryEntity)
+					else if(stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get())
 					{
-						uCoord = 110;
-						CompoundNBT sentries = stack.getTag();
+						double eyeHeight = player.getEyeHeight();
+						Vec3d lookVec = new Vec3d((player.getPosX() + (player.getLookVec().x * 5)), ((eyeHeight + player.getPosY()) + (player.getLookVec().y * 5)), (player.getPosZ() + (player.getLookVec().z * 5)));
+						RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
 
-						if(sentries != null) {
-							for(int i = 1; i <= 12; i++)
-							{
-								if(stack.getTag().getIntArray("sentry" + i).length > 0)
+						if(mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockRayTraceResult)mop).getPos()).getBlock() instanceof IExplosive)
+						{
+							uCoord = 110;
+							CompoundNBT mines = stack.getTag();
+
+							if(mines != null) {
+								for(int i = 1; i <= 6; i++)
 								{
-									int[] coords = sentries.getIntArray("sentry" + i);
-									if(coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ())
+									if(stack.getTag().getIntArray("mine" + i).length > 0)
 									{
-										uCoord = 88;
-										break;
+										int[] coords = mines.getIntArray("mine" + i);
+
+										if(coords[0] == ((BlockRayTraceResult)mop).getPos().getX() && coords[1] == ((BlockRayTraceResult)mop).getPos().getY() && coords[2] == ((BlockRayTraceResult)mop).getPos().getZ())
+										{
+											uCoord = 88;
+											break;
+										}
 									}
 								}
 							}
 						}
 					}
-				}
+					else if(stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get())
+					{
+						Entity hitEntity = Minecraft.getInstance().pointedEntity;
 
-				if (uCoord != 0) {
-					RenderSystem.enableAlphaTest();
-					Minecraft.getInstance().textureManager.bindTexture(BEACON_GUI);
-					AbstractGui.blit(Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + (hand == Hand.MAIN_HAND ? player.inventory.currentItem * 20 : -29), Minecraft.getInstance().getMainWindow().getScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
-					RenderSystem.disableAlphaTest();
+						if(hitEntity instanceof SentryEntity)
+						{
+							uCoord = 110;
+							CompoundNBT sentries = stack.getTag();
+
+							if(sentries != null) {
+								for(int i = 1; i <= 12; i++)
+								{
+									if(stack.getTag().getIntArray("sentry" + i).length > 0)
+									{
+										int[] coords = sentries.getIntArray("sentry" + i);
+										if(coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ())
+										{
+											uCoord = 88;
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+
+					if (uCoord != 0) {
+						RenderSystem.enableAlphaTest();
+						Minecraft.getInstance().textureManager.bindTexture(BEACON_GUI);
+						AbstractGui.blit(Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + (hand == Hand.MAIN_HAND ? player.inventory.currentItem * 20 : -29), Minecraft.getInstance().getMainWindow().getScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+						RenderSystem.disableAlphaTest();
+					}
 				}
 			}
 		}
