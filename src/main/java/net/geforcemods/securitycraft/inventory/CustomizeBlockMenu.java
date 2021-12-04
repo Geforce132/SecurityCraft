@@ -111,7 +111,7 @@ public class CustomizeBlockMenu extends AbstractContainerMenu{
 
 	@Override
 	public boolean stillValid(Player player) {
-		return stillValid(worldPosCallable, player, moduleInv.getTileEntity().getBlockState().getBlock());
+		return stillValid(worldPosCallable, player, moduleInv.getBlockEntity().getBlockState().getBlock());
 	}
 
 	private class CustomSlotItemHandler extends SlotItemHandler

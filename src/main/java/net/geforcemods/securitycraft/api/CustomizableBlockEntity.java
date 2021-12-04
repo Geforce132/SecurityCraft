@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -40,12 +39,6 @@ public abstract class CustomizableBlockEntity extends NamedBlockEntity implement
 		writeModuleInventory(tag);
 		writeOptions(tag);
 		return tag;
-	}
-
-	@Override
-	public BlockEntity getTileEntity()
-	{
-		return this;
 	}
 
 	@Override

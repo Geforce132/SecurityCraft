@@ -52,7 +52,7 @@ public class ModuleUtils{
 
 		if(stack.hasTag() && stack.getTag().getBoolean("affectEveryone"))
 		{
-			if(inv.getTileEntity() instanceof IOwnable ownable)
+			if(inv.getBlockEntity() instanceof IOwnable ownable)
 			{
 				//only deny players that are not the owner
 				if(entity instanceof Player player)

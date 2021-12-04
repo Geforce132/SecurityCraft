@@ -36,7 +36,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -235,12 +234,6 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 	protected Component getDefaultName()
 	{
 		return new TranslatableComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
-	}
-
-	@Override
-	public BlockEntity getTileEntity()
-	{
-		return this;
 	}
 
 	@Override

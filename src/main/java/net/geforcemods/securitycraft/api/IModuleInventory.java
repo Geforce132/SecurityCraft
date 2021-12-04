@@ -32,7 +32,9 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	/**
 	 * @return The TileEntity this inventory is for
 	 */
-	public BlockEntity getTileEntity();
+	public default BlockEntity getBlockEntity() {
+		return (BlockEntity)this;
+	}
 
 	/**
 	 * @return The amount of modules that can be inserted
@@ -50,7 +52,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 */
 	public default void onModuleInserted(ItemStack stack, ModuleType module)
 	{
-		BlockEntity te = getTileEntity();
+		BlockEntity te = getBlockEntity();
 
 		if(!te.getLevel().isClientSide)
 			te.getLevel().sendBlockUpdated(te.getBlockPos(), te.getBlockState(), te.getBlockState(), 3);
@@ -64,7 +66,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 */
 	public default void onModuleRemoved(ItemStack stack, ModuleType module)
 	{
-		BlockEntity te = getTileEntity();
+		BlockEntity te = getBlockEntity();
 
 		if(!te.getLevel().isClientSide)
 			te.getLevel().sendBlockUpdated(te.getBlockPos(), te.getBlockState(), te.getBlockState(), 3);
@@ -121,7 +123,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		{
 			if(!simulate)
 			{
-				BlockEntity tile = getTileEntity();
+				BlockEntity tile = getBlockEntity();
 
 				if(stack.getItem() instanceof ModuleItem module)
 				{
@@ -155,7 +157,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 			if(!simulate)
 			{
 				ItemStack copy = stack.copy();
-				BlockEntity tile = getTileEntity();
+				BlockEntity tile = getBlockEntity();
 
 				copy.setCount(1);
 				getInventory().set(slot, copy);
@@ -185,7 +187,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	{
 		slot = fixSlotId(slot);
 
-		BlockEntity tile = getTileEntity();
+		BlockEntity tile = getBlockEntity();
 		ItemStack previous = getModuleInSlot(slot);
 
 		//call the correct methods, should there have been a module in the slot previously

@@ -11,7 +11,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -113,11 +112,5 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	public NonNullList<ItemStack> getInventory()
 	{
 		return modules;
-	}
-
-	@Override
-	public BlockEntity getTileEntity()
-	{
-		return this;
 	}
 }

@@ -55,7 +55,7 @@ public class RefreshDisguisableModel
 				else
 					te.removeModule(ModuleType.DISGUISE);
 
-				ClientHandler.refreshModelData(te.getTileEntity());
+				ClientHandler.refreshModelData(te.getBlockEntity());
 			}
 		});
 
