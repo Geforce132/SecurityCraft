@@ -7,11 +7,9 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
@@ -66,7 +64,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity){
-		if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
+		if(!EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 

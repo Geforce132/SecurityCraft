@@ -30,6 +30,7 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
 	private static final SecurityCameraModel MODEL = new SecurityCameraModel();
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/security_camera.png");
+	private static final ResourceLocation BEING_VIEWED_TEXTURE = new ResourceLocation("securitycraft:textures/block/security_camera_viewing.png");
 
 	public SecurityCameraTileEntityRenderer(TileEntityRendererDispatcher terd)
 	{
@@ -38,9 +39,9 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 
 
 	@Override
-	public void render(SecurityCameraTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_)
+	public void render(SecurityCameraTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay)
 	{
-		if(te.down || (Minecraft.getInstance().gameSettings.thirdPersonView == 0 && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(te.getPos())))
+		if(te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().renderViewEntity.getPosition().equals(te.getPos()))
 			return;
 
 		matrix.translate(0.5D, 1.5D, 0.5D);
@@ -64,6 +65,6 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 
 		matrix.rotate(POSITIVE_X_180);
 		MODEL.cameraRotationPoint.rotateAngleY = (float)te.cameraRotation;
-		MODEL.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(TEXTURE)), p_225616_5_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		MODEL.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(te.getBlockState().get(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

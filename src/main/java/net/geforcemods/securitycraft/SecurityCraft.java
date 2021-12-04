@@ -139,6 +139,14 @@ public class SecurityCraft {
 				e.printStackTrace();
 			}
 		}
+		//TODO: is this needed in any way?
+		//		ForgeChunkManager.setForcedChunkLoadingCallback(SecurityCraft.MODID, (world, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCameraEntity) somewhere
+		//			ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
+		//				if (world.getEntityByUuid(uuid) == null) {
+		//					ticketHelper.removeAllTickets(uuid);
+		//				}
+		//			}));
+		//		});
 	}
 
 	public void serverStarting(FMLServerStartingEvent event){

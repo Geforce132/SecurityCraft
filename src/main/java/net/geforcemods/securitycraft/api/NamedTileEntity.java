@@ -49,7 +49,7 @@ public class NamedTileEntity extends OwnableTileEntity implements INameSetter {
 	public boolean hasCustomName() {
 		ITextComponent name = getCustomName();
 
-		return name != null && !getDefaultName().equals(name);
+		return name != null && !name.getFormattedText().isEmpty() && !getDefaultName().equals(name);
 	}
 
 	@Override

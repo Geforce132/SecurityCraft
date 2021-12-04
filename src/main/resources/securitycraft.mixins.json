@@ -4,7 +4,17 @@
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "securitycraft.refmap.json",
 	"client": [
-		"DebugOverlayGuiMixin"
+		"camera.ClientChunkProviderMixin",
+		"camera.GameRendererMixin",
+		"camera.MinecraftMixin",
+		"camera.WorldRendererMixin",
+		"f3.DebugOverlayGuiMixin"
+	],
+	"mixins": [
+		"camera.ChunkManagerMixin",
+		"camera.EntityTrackerMixin",
+		"camera.PlayerListMixin",
+		"camera.ServerPlayerEntityMixin"
 	],
 	"minVersion": "0.8"
 }
