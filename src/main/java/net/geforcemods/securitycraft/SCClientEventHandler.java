@@ -69,69 +69,47 @@ public class SCClientEventHandler
 	}
 
 	@SubscribeEvent
+	public static void renderGameOverlay(RenderGameOverlayEvent.Pre event) {
+		if((event.getType() == ElementType.EXPERIENCE || event.getType() == ElementType.JUMPBAR) && ClientProxy.isPlayerMountedOnCamera())
+			event.setCanceled(true);
+	}
+
+	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
-		boolean isPlayerMountedOnCamera = PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player);
+		if(event.getType() == ElementType.ALL) {
+			if(ClientProxy.isPlayerMountedOnCamera())
+				//calling down() on the render view entity's position because the camera entity sits at y+0.5 by default and getPosition increases y by 0.5 again
+				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, Minecraft.getMinecraft().getRenderViewEntity().getPosition().down());
+			else
+			{
+				Minecraft mc = Minecraft.getMinecraft();
+				EntityPlayerSP player = mc.player;
+				World world = player.getEntityWorld();
 
-		if(event.getType() == ElementType.EXPERIENCE && isPlayerMountedOnCamera)
-			//calling down() on the render view entity's position because the camera entity sits at y+0.5 by default and getPosition increases y by 0.5 again
-			GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, Minecraft.getMinecraft().getRenderViewEntity().getPosition().down());
-		else if(event.getType() == ElementType.HOTBAR && !isPlayerMountedOnCamera)
-		{
-			Minecraft mc = Minecraft.getMinecraft();
-			EntityPlayerSP player = mc.player;
-			World world = player.getEntityWorld();
+				for (EnumHand hand : EnumHand.values()) {
+					ItemStack stack = player.getHeldItem(hand);
+					int uCoord = 0;
 
-			for (EnumHand hand : EnumHand.values()) {
-				ItemStack stack = player.getHeldItem(hand);
-				int uCoord = 0;
-
-				if(stack.getItem() == SCContent.cameraMonitor)
-				{
-					double eyeHeight = player.getEyeHeight();
-					Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
-					RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
-
-					if(mop != null && mop.typeOfHit == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
+					if(stack.getItem() == SCContent.cameraMonitor)
 					{
-						uCoord = 110;
-						NBTTagCompound cameras = stack.getTagCompound();
+						double eyeHeight = player.getEyeHeight();
+						Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
+						RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
 
-						if(cameras != null) {
-							for(int i = 1; i < 31; i++)
-							{
-								if(!cameras.hasKey("Camera" + i))
-									continue;
+						if(mop != null && mop.typeOfHit == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
+						{
+							uCoord = 110;
+							NBTTagCompound cameras = stack.getTagCompound();
 
-								String[] coords = cameras.getString("Camera" + i).split(" ");
-
-								if(Integer.parseInt(coords[0]) == mop.getBlockPos().getX() && Integer.parseInt(coords[1]) == mop.getBlockPos().getY() && Integer.parseInt(coords[2]) == mop.getBlockPos().getZ())
+							if(cameras != null) {
+								for(int i = 1; i < 31; i++)
 								{
-									uCoord = 88;
-									break;
-								}
-							}
-						}
-					}
-				}
-				else if(stack.getItem() == SCContent.remoteAccessMine)
-				{
-					double eyeHeight = player.getEyeHeight();
-					Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
-					RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
+									if(!cameras.hasKey("Camera" + i))
+										continue;
 
-					if(mop != null && mop.typeOfHit == Type.BLOCK && world.getBlockState(mop.getBlockPos()).getBlock() instanceof IExplosive)
-					{
-						uCoord = 110;
-						NBTTagCompound mines = stack.getTagCompound();
+									String[] coords = cameras.getString("Camera" + i).split(" ");
 
-						if(mines != null) {
-							for(int i = 1; i <= 6; i++)
-							{
-								if(stack.getTagCompound().getIntArray("mine" + i).length > 0)
-								{
-									int[] coords = mines.getIntArray("mine" + i);
-
-									if(coords[0] == mop.getBlockPos().getX() && coords[1] == mop.getBlockPos().getY() && coords[2] == mop.getBlockPos().getZ())
+									if(Integer.parseInt(coords[0]) == mop.getBlockPos().getX() && Integer.parseInt(coords[1]) == mop.getBlockPos().getY() && Integer.parseInt(coords[2]) == mop.getBlockPos().getZ())
 									{
 										uCoord = 88;
 										break;
@@ -140,38 +118,66 @@ public class SCClientEventHandler
 							}
 						}
 					}
-				}
-				else if(stack.getItem() == SCContent.remoteAccessSentry)
-				{
-					Entity hitEntity = Minecraft.getMinecraft().pointedEntity;
-
-					if(hitEntity instanceof EntitySentry)
+					else if(stack.getItem() == SCContent.remoteAccessMine)
 					{
-						uCoord = 110;
-						NBTTagCompound sentries = stack.getTagCompound();
+						double eyeHeight = player.getEyeHeight();
+						Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
+						RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
 
-						if(sentries != null) {
-							for(int i = 1; i <= 12; i++)
-							{
-								if(stack.getTagCompound().getIntArray("sentry" + i).length > 0)
+						if(mop != null && mop.typeOfHit == Type.BLOCK && world.getBlockState(mop.getBlockPos()).getBlock() instanceof IExplosive)
+						{
+							uCoord = 110;
+							NBTTagCompound mines = stack.getTagCompound();
+
+							if(mines != null) {
+								for(int i = 1; i <= 6; i++)
 								{
-									int[] coords = sentries.getIntArray("sentry" + i);
-									if(coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ())
+									if(stack.getTagCompound().getIntArray("mine" + i).length > 0)
 									{
-										uCoord = 88;
-										break;
+										int[] coords = mines.getIntArray("mine" + i);
+
+										if(coords[0] == mop.getBlockPos().getX() && coords[1] == mop.getBlockPos().getY() && coords[2] == mop.getBlockPos().getZ())
+										{
+											uCoord = 88;
+											break;
+										}
 									}
 								}
 							}
 						}
 					}
-				}
+					else if(stack.getItem() == SCContent.remoteAccessSentry)
+					{
+						Entity hitEntity = Minecraft.getMinecraft().pointedEntity;
 
-				if (uCoord != 0) {
-					GlStateManager.enableAlpha();
-					Minecraft.getMinecraft().renderEngine.bindTexture(BEACON_GUI);
-					drawNonStandardTexturedRect(event.getResolution().getScaledWidth() / 2 - 90 + (hand == EnumHand.MAIN_HAND ? player.inventory.currentItem * 20 : -29), event.getResolution().getScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
-					GlStateManager.disableAlpha();
+						if(hitEntity instanceof EntitySentry)
+						{
+							uCoord = 110;
+							NBTTagCompound sentries = stack.getTagCompound();
+
+							if(sentries != null) {
+								for(int i = 1; i <= 12; i++)
+								{
+									if(stack.getTagCompound().getIntArray("sentry" + i).length > 0)
+									{
+										int[] coords = sentries.getIntArray("sentry" + i);
+										if(coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ())
+										{
+											uCoord = 88;
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+
+					if (uCoord != 0) {
+						GlStateManager.enableAlpha();
+						Minecraft.getMinecraft().renderEngine.bindTexture(BEACON_GUI);
+						drawNonStandardTexturedRect(event.getResolution().getScaledWidth() / 2 - 90 + (hand == EnumHand.MAIN_HAND ? player.inventory.currentItem * 20 : -29), event.getResolution().getScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+						GlStateManager.disableAlpha();
+					}
 				}
 			}
 		}
