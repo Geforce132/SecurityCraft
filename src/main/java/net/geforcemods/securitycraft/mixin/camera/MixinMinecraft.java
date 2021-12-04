@@ -30,9 +30,9 @@ public class MixinMinecraft
 	}
 
 	/**
-	 * Injects directly after the method that updates key bindings to run a method in CameraController that handles camera movement/dismounting a camera
+	 * Updates keybinds after they get set, but before they get used (in World#updateEntities) for proper handling
 	 */
-	@Inject(method = "runTick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/Minecraft;runTickKeyboard()V"))
+	@Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;runTickKeyboard()V", shift = At.Shift.AFTER))
 	private void updateCameraKeyBindings(CallbackInfo callback) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			CameraController.handleKeybinds();

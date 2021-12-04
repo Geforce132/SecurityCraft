@@ -37,20 +37,29 @@ public class CameraController
 		if(renderViewEntity instanceof EntitySecurityCamera)
 		{
 			EntitySecurityCamera cam = (EntitySecurityCamera)renderViewEntity;
+			GameSettings options = Minecraft.getMinecraft().gameSettings;
 
 			if(event.phase == Phase.END)
 			{
-				if(wasUpPressed)
+				if(wasUpPressed) {
 					moveViewUp(cam);
+					KeyBinding.setKeyBindState(options.keyBindForward.getKeyCode(), true);
+				}
 
-				if(wasDownPressed)
+				if(wasDownPressed) {
 					moveViewDown(cam);
+					KeyBinding.setKeyBindState(options.keyBindBack.getKeyCode(), true);
+				}
 
-				if(wasLeftPressed)
+				if(wasLeftPressed) {
 					moveViewHorizontally(cam, cam.rotationYaw, cam.rotationYaw - cam.cameraSpeed * cam.zoomAmount);
+					KeyBinding.setKeyBindState(options.keyBindLeft.getKeyCode(), true);
+				}
 
-				if(wasRightPressed)
+				if(wasRightPressed) {
 					moveViewHorizontally(cam, cam.rotationYaw, cam.rotationYaw + cam.cameraSpeed * cam.zoomAmount);
+					KeyBinding.setKeyBindState(options.keyBindRight.getKeyCode(), true);
+				}
 
 				if(KeyBindings.cameraZoomIn.isKeyDown())
 					zoomIn(cam);
