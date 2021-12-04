@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.Iterator;
-import java.util.List;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -35,7 +32,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	}
 
 	@Override
-	public void tick(Level world, BlockPos pos, BlockState state) {  //server only as per ClaymoreBlock
+	public void tick(Level level, BlockPos pos, BlockState state) { //server only as per ClaymoreBlock
 		if(state.getValue(ClaymoreBlock.DEACTIVATED))
 			return;
 
@@ -45,39 +42,29 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		}
 
 		if(cooldown == 0){
-			((ClaymoreBlock)state.getBlock()).explode(world, pos);
+			((ClaymoreBlock)state.getBlock()).explode(level, pos);
 			return;
 		}
 
 		Direction dir = state.getValue(ClaymoreBlock.FACING);
 		AABB area = new AABB(pos);
 
-		if(dir == Direction.NORTH)
-			area = area.contract(-0, -0, range.get());
-		else if(dir == Direction.SOUTH)
-			area = area.contract(-0, -0, -range.get());
-		else if(dir == Direction.EAST)
-			area = area.contract(-range.get(), -0, -0);
-		else if(dir == Direction.WEST)
-			area = area.contract(range.get(), -0, -0);
+		area = switch(dir) {
+			case NORTH -> area.contract(0, 0, range.get());
+			case SOUTH -> area.contract(0, 0, -range.get());
+			case EAST -> area.contract(-range.get(), 0, 0);
+			case WEST -> area.contract(range.get(), 0, 0);
+			default -> area;
+		};
 
-		List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator());
-		Iterator<LivingEntity> iterator = entities.iterator();
-		LivingEntity entity;
-
-		while(iterator.hasNext()){
-			entity = iterator.next();
-
-			if(EntityUtils.doesEntityOwn(entity, world, pos))
-				continue;
-
+		level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !EntityUtils.doesEntityOwn(e, level, pos))
+		.stream().findFirst().ifPresent(entity -> {
 			entityX = entity.getX();
 			entityY = entity.getY();
 			entityZ = entity.getZ();
 			cooldown = 20;
-			world.playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
-			break;
-		}
+			level.playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
+		});
 	}
 
 	/**
