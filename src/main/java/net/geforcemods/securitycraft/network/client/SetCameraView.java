@@ -61,6 +61,7 @@ public class SetCameraView
 
 				mc.levelRenderer.allChanged();
 				OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, !isCamera);
+				OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, !isCamera);
 				OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, isCamera);
 				OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, !isCamera);
 			}

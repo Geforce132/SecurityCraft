@@ -102,6 +102,8 @@ public class SCClientEventHandler
 		{
 			OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, false);
 			OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, true);
+			OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, true);
+			OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, true);
 		}
 	}
 
