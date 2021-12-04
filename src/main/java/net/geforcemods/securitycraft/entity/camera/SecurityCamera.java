@@ -31,7 +31,6 @@ public class SecurityCamera extends Entity
 	public int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
 	protected int toggleNightVisionCooldown = 0;
-	private int toggleLightCooldown = 0;
 	private boolean shouldProvideNightVision = false;
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
@@ -105,16 +104,11 @@ public class SecurityCamera extends Entity
 			if(toggleNightVisionCooldown > 0)
 				toggleNightVisionCooldown--;
 
-			if(toggleLightCooldown > 0)
-				toggleLightCooldown--;
-
 			if(shouldProvideNightVision)
 				SecurityCraft.channel.sendToServer(new GiveNightVision());
 		}
-		else if(level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get()){
+		else if(level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
 			discard();
-			return;
-		}
 	}
 
 	public void toggleRedstonePower() {
