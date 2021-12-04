@@ -4,8 +4,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -22,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class TaserItem extends Item {
 
@@ -48,7 +47,7 @@ public class TaserItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand){
 		ItemStack stack = player.getItemInHand(hand);
 
 		if(!stack.isDamaged()){
@@ -101,8 +100,7 @@ public class TaserItem extends Item {
 			AABB boundingBox = player.getBoundingBox().expandTowards(lookVec).inflate(1, 1, 1);
 			EntityHitResult entityRayTraceResult = ProjectileUtil.getEntityHitResult(player, startVec, endVec, boundingBox, s -> s instanceof LivingEntity, range * range);
 
-			if (!world.isClientSide)
-				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(player.getX(), player.getY(), player.getZ(), SCSounds.TASERFIRED.path, 1.0F, "players"));
+			level.playSound(player, player.blockPosition(), SCSounds.TASERFIRED.event, SoundSource.PLAYERS, 1.0F, 1.0F);
 
 			if (entityRayTraceResult != null)
 			{

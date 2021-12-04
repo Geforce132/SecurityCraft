@@ -1,12 +1,11 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -15,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class KeyPanelItem extends BlockItem {
 
@@ -40,8 +38,7 @@ public class KeyPanelItem extends BlockItem {
 					if(!player.isCreative())
 						stack.shrink(1);
 
-					if (!level.isClientSide)
-						SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SCSounds.LOCK.location.toString(), 1.0F, "blocks"));
+					level.playSound(player, pos, SCSounds.LOCK.event, SoundSource.BLOCKS, 1.0F, 1.0F);
 
 					return InteractionResult.SUCCESS;
 				}
