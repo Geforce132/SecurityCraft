@@ -65,9 +65,6 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 			BlockState state = level.getBlockState(worldPosition);
 
 			if(!state.getValue(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)){
-				if(!(entity instanceof Player) && !activatedByEntities.get())
-					return;
-
 				String name = entity.getName().getString();
 
 				if(entity instanceof Player player) {
@@ -79,6 +76,8 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 						return;
 					}
 				}
+				else if(activatedOnlyByPlayer())
+					return;
 
 				level.setBlockAndUpdate(worldPosition, state.setValue(RetinalScannerBlock.POWERED, true));
 				level.getBlockTicks().scheduleTick(new BlockPos(worldPosition), SCContent.RETINAL_SCANNER.get(), getSignalLength());
