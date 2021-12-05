@@ -79,6 +79,8 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 						return;
 					}
 				}
+				else if(activatedOnlyByPlayer())
+					return;
 
 				world.setBlockState(pos, state.with(RetinalScannerBlock.POWERED, true));
 				world.getPendingBlockTicks().scheduleTick(new BlockPos(pos), SCContent.RETINAL_SCANNER.get(), getSignalLength());
