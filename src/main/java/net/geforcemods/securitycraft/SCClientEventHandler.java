@@ -96,7 +96,6 @@ public class SCClientEventHandler
 			event.setCanceled(true);
 	}
 
-
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
 		if(event.getType() == ElementType.ALL) {
