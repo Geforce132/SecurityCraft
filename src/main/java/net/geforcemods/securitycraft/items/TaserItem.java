@@ -102,7 +102,7 @@ public class TaserItem extends Item {
 			AxisAlignedBB boundingBox = player.getBoundingBox().expand(lookVec).grow(1, 1, 1);
 			EntityRayTraceResult entityRayTraceResult = rayTraceEntities(player, startVec, endVec, boundingBox, s -> s instanceof LivingEntity, range * range);
 
-			world.playSound(player, player.getPosition(), SCSounds.TASERFIRED.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			world.playSound(player, player.getPosition(), SCSounds.TASERFIRED.event, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 			if (entityRayTraceResult != null)
 			{
