@@ -140,7 +140,7 @@ public class ConfigHandler {
 					.define("disable_thanks_message", false);
 
 			trickScannersWithPlayerHeads = builder
-					.comment("Set this to false if you don't want players wearing a different player's skull to be able to trick their retinal scanners and scanner doors into activating.")
+					.comment("Set this to true if you want players wearing a different player's skull to be able to trick their retinal scanners and scanner doors into activating.")
 					.define("trick_scanners_with_player_heads", false);
 		}
 	}
