@@ -30,8 +30,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.server.players.GameProfileCache;
 import net.minecraft.util.StringUtil;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
@@ -61,20 +63,28 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		if(!level.isClientSide)
 		{
 			BlockState state = level.getBlockState(worldPosition);
+
 			if(!state.getValue(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)){
 				if(!(entity instanceof Player) && !activatedByEntities.get())
 					return;
 
-				if(entity instanceof Player player && !getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, entity)) {
-					PlayerUtils.sendMessageToPlayer((Player) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), ChatFormatting.RED);
-					return;
+				String name = entity.getName().getString();
+
+				if(entity instanceof Player player) {
+					if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.PLAYER_HEAD)
+						name = PlayerUtils.getNameOfSkull(player);
+
+					if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), ChatFormatting.RED);
+						return;
+					}
 				}
 
 				level.setBlockAndUpdate(worldPosition, state.setValue(RetinalScannerBlock.POWERED, true));
 				level.getBlockTicks().scheduleTick(new BlockPos(worldPosition), SCContent.RETINAL_SCANNER.get(), getSignalLength());
 
 				if(entity instanceof Player player && sendMessage.get())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", entity.getName()), ChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), ChatFormatting.GREEN);
 			}
 		}
 	}

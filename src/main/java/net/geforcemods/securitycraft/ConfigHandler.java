@@ -65,6 +65,7 @@ public class ConfigHandler {
 		public BooleanValue retinalScannerFace;
 		public BooleanValue enableTeamOwnership;
 		public BooleanValue disableThanksMessage;
+		public BooleanValue trickScannersWithPlayerHeads;
 
 		Server(ForgeConfigSpec.Builder builder)
 		{
@@ -137,6 +138,10 @@ public class ConfigHandler {
 					.comment("Set this to true to disable sending the message that SecurityCraft shows when a player joins.",
 							"Note, that this stops showing the message for every player, even those that want to see them.")
 					.define("disable_thanks_message", false);
+
+			trickScannersWithPlayerHeads = builder
+					.comment("Set this to false if you don't want players wearing a different player's skull to be able to trick their retinal scanners and scanner doors into activating.")
+					.define("trick_scanners_with_player_heads", false);
 		}
 	}
 }

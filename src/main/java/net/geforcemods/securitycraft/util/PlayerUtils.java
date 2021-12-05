@@ -12,6 +12,8 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.commands.CommandSource;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -19,11 +21,14 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PlayerHeadItem;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.LogicalSide;
@@ -227,5 +232,29 @@ public class PlayerUtils{
 		}
 
 		return new TextComponent(ownerName);
+	}
+
+	/**
+	 * Retrieves the name of the player head the given player may be wearing
+	 * @param player The player to check
+	 * @return The name of the skull owner, null if the player is not wearing a player head or the skull owner is faulty
+	 */
+	public static String getNameOfSkull(Player player) {
+		ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
+
+		if (stack.getItem() == Items.PLAYER_HEAD && stack.hasTag()) {
+			CompoundTag stackTag = stack.getTag();
+
+			if (stackTag.contains(PlayerHeadItem.TAG_SKULL_OWNER, Tag.TAG_STRING))
+				return stackTag.getString(PlayerHeadItem.TAG_SKULL_OWNER);
+			else if (stackTag.contains(PlayerHeadItem.TAG_SKULL_OWNER, Tag.TAG_COMPOUND)) {
+				CompoundTag skullOwnerTag = stackTag.getCompound(PlayerHeadItem.TAG_SKULL_OWNER);
+
+				if (skullOwnerTag.contains("Name", Tag.TAG_STRING))
+					return skullOwnerTag.getString("Name");
+			}
+		}
+
+		return null;
 	}
 }

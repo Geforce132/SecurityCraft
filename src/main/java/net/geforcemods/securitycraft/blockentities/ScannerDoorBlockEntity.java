@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -10,8 +11,10 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,10 +45,16 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 			if(!(entity instanceof Player player))
 				return;
 
-			if(!getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, player))
-			{
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), ChatFormatting.RED);
-				return;
+			String name = player.getName().getString();
+
+			if(!getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, player)) {
+				if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.PLAYER_HEAD)
+					name = PlayerUtils.getNameOfSkull(player);
+
+				if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), ChatFormatting.RED);
+					return;
+				}
 			}
 
 			boolean open = !lowerState.getValue(DoorBlock.OPEN);
@@ -59,7 +68,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 				level.getBlockTicks().scheduleTick(worldPosition, SCContent.SCANNER_DOOR.get(), length);
 
 			if(open && sendsMessages())
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", player.getName()), ChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), ChatFormatting.GREEN);
 		}
 	}
 

@@ -36,16 +36,12 @@ public interface IViewActivated {
 		{
 			double eyeHeight = entity.getEyeHeight();
 			Vec3 lookVec = new Vec3(entity.getX() + (entity.getLookAngle().x * 5), (eyeHeight + entity.getY()) + (entity.getLookAngle().y * 5), entity.getZ() + (entity.getLookAngle().z * 5));
-
 			BlockHitResult mop = level.clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, Block.COLLIDER, Fluid.NONE, entity));
 
-			if(mop != null)
+			if(mop != null && mop.getBlockPos().getX() == pos.getX() && mop.getBlockPos().getY() == pos.getY() && mop.getBlockPos().getZ() == pos.getZ())
 			{
-				if(mop.getBlockPos().getX() == pos.getX() && mop.getBlockPos().getY() == pos.getY() && mop.getBlockPos().getZ() == pos.getZ())
-				{
-					onEntityViewed(entity);
-					setViewCooldown(getDefaultViewCooldown());
-				}
+				onEntityViewed(entity);
+				setViewCooldown(getDefaultViewCooldown());
 			}
 		}
 	}
