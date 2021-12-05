@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import java.util.Iterator;
-import java.util.List;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -23,9 +20,6 @@ import net.minecraft.util.math.BlockPos;
 public class ClaymoreTileEntity extends CustomizableTileEntity implements ITickableTileEntity
 {
 	private IntOption range = new IntOption(this::getPos, "range", 5, 1, 10, 1, true);
-	private double entityX = -1D;
-	private double entityY = -1D;
-	private double entityZ = -1D;
 	private int cooldown = -1;
 
 	public ClaymoreTileEntity()
@@ -62,46 +56,24 @@ public class ClaymoreTileEntity extends CustomizableTileEntity implements ITicka
 			else if(dir == Direction.WEST)
 				area = area.contract(range.get(), -0, -0);
 
-			List<?> entities = getWorld().getEntitiesWithinAABB(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator());
-			Iterator<?> iterator = entities.iterator();
-			LivingEntity entity;
-
-			while(iterator.hasNext()){
-				entity = (LivingEntity) iterator.next();
-
-				if(EntityUtils.doesEntityOwn(entity, world, pos))
-					continue;
-
-				entityX = entity.getPosX();
-				entityY = entity.getPosY();
-				entityZ = entity.getPosZ();
+			getWorld().getEntitiesWithinAABB(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !EntityUtils.doesEntityOwn(e, world, pos))
+			.stream().findFirst().ifPresent(entity -> {
 				cooldown = 20;
 				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-				break;
-			}
+			});
 		}
 
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
 	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
 		writeOptions(tag);
 		tag.putInt("cooldown", cooldown);
-		tag.putDouble("entityX", entityX);
-		tag.putDouble("entityY", entityY);
-		tag.putDouble("entityZ", entityZ);
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void read(BlockState state, CompoundNBT tag)
 	{
@@ -109,9 +81,6 @@ public class ClaymoreTileEntity extends CustomizableTileEntity implements ITicka
 
 		readOptions(tag);
 		cooldown = tag.getInt("cooldown");
-		entityX = tag.getDouble("entityX");
-		entityY = tag.getDouble("entityY");
-		entityZ = tag.getDouble("entityZ");
 	}
 
 	@Override
