@@ -2,19 +2,14 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
-import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.IBlockMine;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -25,43 +20,28 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.Explosion;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
+public class FurnaceMineBlock extends BaseFullMineBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	public FurnaceMineBlock(Block.Properties properties) {
-		super(properties);
+		super(properties, Blocks.FURNACE);
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
 
 	@Override
-	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion) {
-		if (!world.isRemote)
-		{
-			if(pos.equals(new BlockPos(explosion.getPosition())))
-				return;
-
-			explode(world, pos);
-		}
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+		return VoxelShapes.fullCube();
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid){
-		if(!world.isRemote)
-			if(player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
-				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
-			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
-				explode(world, pos);
-				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
-			}
-
-		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
-	}
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {}
 
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
@@ -86,18 +66,6 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	}
 
 	@Override
-	public boolean activateMine(World world, BlockPos pos)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean defuseMine(World world, BlockPos pos)
-	{
-		return false;
-	}
-
-	@Override
 	public void explode(World world, BlockPos pos) {
 		if(world.isRemote)
 			return;
@@ -107,14 +75,6 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 
 	}
 
-	/**
-	 * Return whether this block can drop from an explosion.
-	 */
-	@Override
-	public boolean canDropFromExplosion(Explosion explosion) {
-		return false;
-	}
-
 	@Override
 	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
@@ -122,35 +82,8 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	}
 
 	@Override
-	public boolean isActive(World world, BlockPos pos) {
+	public boolean explodesWhenInteractedWith() {
 		return true;
-	}
-
-	@Override
-	public boolean isDefusable() {
-		return false;
-	}
-
-	@Override
-	public ItemStack getDisplayStack(World world, BlockState state, BlockPos pos) {
-		return new ItemStack(Blocks.FURNACE);
-	}
-
-	@Override
-	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos) {
-		return false;
-	}
-
-	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		if (world.getTileEntity(pos) instanceof OwnableTileEntity) {
-			OwnableTileEntity te = ((OwnableTileEntity)world.getTileEntity(pos));
-
-			if (player.isCreative() || te.getOwner().isOwner(player))
-				return super.getPickBlock(state, target, world, pos, player);
-		}
-
-		return new ItemStack(Blocks.FURNACE);
 	}
 
 	@Override
