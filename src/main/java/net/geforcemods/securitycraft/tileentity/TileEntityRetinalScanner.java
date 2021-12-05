@@ -74,6 +74,8 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 						return;
 					}
 				}
+				else if(activatedOnlyByPlayer())
+					return;
 
 				world.setBlockState(pos, state.withProperty(BlockRetinalScanner.POWERED, true));
 				world.scheduleUpdate(pos, SCContent.retinalScanner, getSignalLength());
