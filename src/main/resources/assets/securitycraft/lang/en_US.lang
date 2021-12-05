@@ -798,6 +798,8 @@ config.securitycraft:mineExplosionsBreakBlocks=Do mines' explosions break blocks
 config.securitycraft:mineExplosionsBreakBlocks.tooltip=Set this to false if you want mines to not break blocks when they explode.
 config.securitycraft:enableTeamOwnership=Enable team ownership?
 config.securitycraft:enableTeamOwnership.tooltip=Set this to true to enable every player on a scoreboard team to own the blocks of every other player on the same team. This enables players on the same team to break each other's reinforced blocks, change options, add/remove modules, and have access to all other owner-restricted things.
+config.securitycraft:trickScannersWithPlayerHeads=Should retinal scanners and scanner doors be tricked by players wearing someone else's head?
+config.securitycraft:trickScannersWithPlayerHeads.tooltip=Set this to true if you want players wearing a different player's skull to be able to trick their retinal scanners and scanner doors into activating.
 
 option.securitycraft:portableRadar.searchRadius=Search radius: #
 option.securitycraft:portableRadar.searchRadius.description=The radius the radar searches in.

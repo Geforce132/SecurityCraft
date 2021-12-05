@@ -796,6 +796,8 @@ config.securitycraft:mineExplosionsBreakBlocks=Zerstören Minenexplosionen Blöc
 config.securitycraft:mineExplosionsBreakBlocks.tooltip=Setze diese Option auf false wenn Du möchtest, dass Minen keine Blöcke zerstören wenn sie explodieren.
 config.securitycraft:enableTeamOwnership=Ist das Besitzen von Blöcken innerhalb von Teams aktiviert?
 config.securitycraft:enableTeamOwnership.tooltip=Setze diese Option auf true, damit jeder Spieler in einem Scoreboard-Team die Blöcke aller anderen Spieler in dem selben Team bestitzt. Das macht es Spielern möglich, die verstärkten Blöcke aller anderen Spieler im selben Team zu zerbrechen, Optionen zu ändern, Module hinzufügen oder entfernen, und Zugriff auf alle anderen besitzergebundenen Sachen zu haben.
+config.securitycraft:trickScannersWithPlayerHeads=Sollen Augenscanner und Scannertüren von Spielern die einen Spielerkopf tragen reingelegt werden können?
+config.securitycraft:trickScannersWithPlayerHeads.tooltip=Setze diese Option auf true, wenn du möchtest, dass Spieler die einen Spielerkopf tragen, Augenscanner und Scannertüren dieses Spielers öffnen können.
 
 option.securitycraft:portableRadar.searchRadius=Suchradius: #
 option.securitycraft:portableRadar.searchRadius.description=Der Radius, in dem der Radar sucht.

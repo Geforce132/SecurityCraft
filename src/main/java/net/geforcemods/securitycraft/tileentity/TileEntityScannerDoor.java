@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -10,6 +11,8 @@ import net.minecraft.block.BlockDoor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IViewActivated
@@ -38,9 +41,14 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 			if(PlayerUtils.isPlayerMountedOnCamera(player))
 				return;
 
-			if(!getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, player))
-			{
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:scannerDoorItem.name"), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
+			String name = entity.getName();
+
+
+			if (ConfigHandler.trickScannersWithPlayerHeads && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.SKULL)
+				name = PlayerUtils.getNameOfSkull(player);
+
+			if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.retinalScanner.getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
 				return;
 			}
 
@@ -56,7 +64,7 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 				world.scheduleUpdate(pos, SCContent.scannerDoor, length);
 
 			if(open && sendsMessages())
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:scannerDoorItem.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", player.getName()), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:scannerDoorItem.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
 		}
 	}
 

@@ -11,8 +11,11 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumHand;
@@ -21,6 +24,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -210,5 +214,29 @@ public class PlayerUtils{
 		}
 
 		return new TextComponentString(ownerName);
+	}
+
+	/**
+	 * Retrieves the name of the player head the given player may be wearing
+	 * @param player The player to check
+	 * @return The name of the skull owner, null if the player is not wearing a player head or the skull owner is faulty
+	 */
+	public static String getNameOfSkull(EntityPlayer player) {
+		ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+
+		if (stack.getItem() == Items.SKULL && stack.hasTagCompound()) {
+			NBTTagCompound stackTag = stack.getTagCompound();
+
+			if (stackTag.hasKey("SkullOwner", Constants.NBT.TAG_STRING))
+				return stackTag.getString("SkullOwner");
+			else if (stackTag.hasKey("SkullOwner", Constants.NBT.TAG_COMPOUND)) {
+				NBTTagCompound skullOwnerTag = stackTag.getCompoundTag("SkullOwner");
+
+				if (skullOwnerTag.hasKey("Name", Constants.NBT.TAG_STRING))
+					return skullOwnerTag.getString("Name");
+			}
+		}
+
+		return null;
 	}
 }

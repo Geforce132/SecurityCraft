@@ -117,4 +117,8 @@ public class ConfigHandler
 	@Name("Enable team ownership?")
 	@LangKey("config.securitycraft:enableTeamOwnership")
 	public static boolean enableTeamOwnership = false;
+
+	@Name("Trick scanners with player heads?")
+	@LangKey("config.securitycraft:trickScannersWithPlayerHeads")
+	public static boolean trickScannersWithPlayerHeads = false;
 }
