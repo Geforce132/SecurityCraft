@@ -109,10 +109,8 @@ public class SecurityCameraEntity extends Entity{
 			if(shouldProvideNightVision)
 				SecurityCraft.channel.sendToServer(new GiveNightVision());
 		}
-		else if(world.getBlockState(getPosition()).getBlock() != SCContent.SECURITY_CAMERA.get()){
+		else if(world.getBlockState(getPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
 			remove();
-			return;
-		}
 	}
 
 	public void toggleRedstonePower() {
