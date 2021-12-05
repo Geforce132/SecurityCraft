@@ -21,9 +21,6 @@ import net.minecraft.world.phys.AABB;
 public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity
 {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 10, 1, true);
-	private double entityX = -1D;
-	private double entityY = -1D;
-	private double entityZ = -1D;
 	private int cooldown = -1;
 
 	public ClaymoreBlockEntity(BlockPos pos, BlockState state)
@@ -59,33 +56,20 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 
 		level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !EntityUtils.doesEntityOwn(e, level, pos))
 		.stream().findFirst().ifPresent(entity -> {
-			entityX = entity.getX();
-			entityY = entity.getY();
-			entityZ = entity.getZ();
 			cooldown = 20;
 			level.playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
 		});
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
 	public CompoundTag save(CompoundTag tag)
 	{
 		super.save(tag);
 		writeOptions(tag);
 		tag.putInt("cooldown", cooldown);
-		tag.putDouble("entityX", entityX);
-		tag.putDouble("entityY", entityY);
-		tag.putDouble("entityZ", entityZ);
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void load(CompoundTag tag)
 	{
@@ -93,9 +77,6 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 
 		readOptions(tag);
 		cooldown = tag.getInt("cooldown");
-		entityX = tag.getDouble("entityX");
-		entityY = tag.getDouble("entityY");
-		entityZ = tag.getDouble("entityZ");
 	}
 
 	@Override
