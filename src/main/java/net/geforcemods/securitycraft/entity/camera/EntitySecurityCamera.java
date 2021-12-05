@@ -26,7 +26,6 @@ public class EntitySecurityCamera extends Entity{
 	public int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
 	protected int toggleNightVisionCooldown = 0;
-	private int toggleLightCooldown = 0;
 	protected boolean shouldProvideNightVision = false;
 	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
@@ -103,9 +102,6 @@ public class EntitySecurityCamera extends Entity{
 
 			if(toggleNightVisionCooldown > 0)
 				toggleNightVisionCooldown -= 1;
-
-			if(toggleLightCooldown > 0)
-				toggleLightCooldown -= 1;
 
 			if(shouldProvideNightVision)
 				SecurityCraft.network.sendToServer(new GiveNightVision());
