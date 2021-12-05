@@ -9,8 +9,8 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.api.TileEntityNamed;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
@@ -42,7 +42,6 @@ import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
-import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.network.client.SetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
@@ -457,7 +456,6 @@ public class RegistrationHandler
 		network.registerMessage(UpdateLogger.Handler.class, UpdateLogger.class, 4, Side.CLIENT);
 		network.registerMessage(UpdateNBTTagOnClient.Handler.class, UpdateNBTTagOnClient.class, 5, Side.CLIENT);
 		network.registerMessage(UpdateNBTTagOnServer.Handler.class, UpdateNBTTagOnServer.class, 6, Side.SERVER);
-		network.registerMessage(PlaySoundAtPos.Handler.class, PlaySoundAtPos.class, 7, Side.CLIENT);
 		network.registerMessage(RemoteControlMine.Handler.class, RemoteControlMine.class, 8, Side.SERVER);
 		network.registerMessage(GiveNightVision.Handler.class, GiveNightVision.class, 9, Side.SERVER);
 		network.registerMessage(SetPassword.Handler.class, SetPassword.class, 12, Side.SERVER);
