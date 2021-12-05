@@ -38,11 +38,12 @@ public interface IViewActivated {
 		{
 			double eyeHeight = entity.getEyeHeight();
 			Vec3d lookVec = new Vec3d(entity.getPosX() + (entity.getLookVec().x * 5), (eyeHeight + entity.getPosY()) + (entity.getLookVec().y * 5), entity.getPosZ() + (entity.getLookVec().z * 5));
+			RayTraceResult rtr = world.rayTraceBlocks(new RayTraceContext(new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
 
-			RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
+			if(rtr != null && rtr.getType() == Type.BLOCK) {
+				BlockRayTraceResult brtr = (BlockRayTraceResult)rtr;
 
-			if(mop != null && mop.getType() == Type.BLOCK) {
-				if(((BlockRayTraceResult)mop).getPos().getX() == pos.getX() && ((BlockRayTraceResult)mop).getPos().getY() == pos.getY() && ((BlockRayTraceResult)mop).getPos().getZ() == pos.getZ()) {
+				if(brtr.getPos().getX() == pos.getX() && brtr.getPos().getY() == pos.getY() && brtr.getPos().getZ() == pos.getZ()) {
 					onEntityViewed(entity);
 					setViewCooldown(getDefaultViewCooldown());
 				}
