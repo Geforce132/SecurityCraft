@@ -31,14 +31,14 @@ public class MixinEntityTrackerEntry {
 
 	@Redirect(method = "updatePlayerEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityTrackerEntry;isVisibleTo(Lnet/minecraft/entity/player/EntityPlayerMP;)Z"))
 	private boolean shouldUpdate(EntityTrackerEntry entry, EntityPlayerMP player) {
-		if(entry.getTrackedEntity() instanceof EntitySecurityCamera)
+		if (entry.getTrackedEntity() instanceof EntitySecurityCamera)
 			return true;
 
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			EntitySecurityCamera cam = (EntitySecurityCamera)player.getSpectatingEntity();
 			double relativeX = cam.posX - encodedPosX / 4096.0D;
 			double relativeZ = cam.posZ - encodedPosZ / 4096.0D;
-			int range = Math.min(this.range, maxRange);
+			int range = Math.min(range, maxRange);
 
 			return relativeX >= -range && relativeX <= range && relativeZ >= -range && relativeZ <= range;
 		}

@@ -26,4 +26,3 @@ public class MixinRenderGlobal {
 			viewFrustum.updateChunkPositions(x, z);
 	}
 }
-

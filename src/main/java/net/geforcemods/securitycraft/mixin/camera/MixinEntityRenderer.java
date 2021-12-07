@@ -12,13 +12,12 @@ import net.minecraft.client.renderer.EntityRenderer;
  * Makes sure the camera zooming works, because the fov is only updated when the camera entity is the player itself
  */
 @Mixin(EntityRenderer.class)
-public class MixinEntityRenderer
-{
-	@ModifyConstant(method="updateFovModifierHand", constant=@Constant(floatValue=1.0F))
-	private float modifyInitialFValue(float f)
-	{
-		if(Minecraft.getMinecraft().getRenderViewEntity() instanceof EntitySecurityCamera)
+public class MixinEntityRenderer {
+	@ModifyConstant(method = "updateFovModifierHand", constant = @Constant(floatValue = 1.0F))
+	private float modifyInitialFValue(float f) {
+		if (Minecraft.getMinecraft().getRenderViewEntity() instanceof EntitySecurityCamera)
 			return ((EntitySecurityCamera)Minecraft.getMinecraft().getRenderViewEntity()).getZoomAmount();
-		else return f;
+		else
+			return f;
 	}
 }
