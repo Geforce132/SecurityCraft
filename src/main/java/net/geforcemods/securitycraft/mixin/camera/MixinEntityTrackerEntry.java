@@ -38,7 +38,7 @@ public class MixinEntityTrackerEntry {
 			EntitySecurityCamera cam = (EntitySecurityCamera)player.getSpectatingEntity();
 			double relativeX = cam.posX - encodedPosX / 4096.0D;
 			double relativeZ = cam.posZ - encodedPosZ / 4096.0D;
-			int range = Math.min(range, maxRange);
+			int range = Math.min(this.range, maxRange);
 
 			return relativeX >= -range && relativeX <= range && relativeZ >= -range && relativeZ <= range;
 		}
