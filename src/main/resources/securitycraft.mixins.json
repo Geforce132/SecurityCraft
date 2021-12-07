@@ -6,6 +6,7 @@
 	"client": [
 		"camera.MixinEntityRenderer",
 		"camera.MixinMinecraft",
+		"camera.MixinRenderGlobal",
 		"camera.MixinRenderPlayer"
 	],
 	"mixins": [
