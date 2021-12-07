@@ -120,9 +120,11 @@ public class SonicSecuritySystemScreen extends Screen {
 		}));
 		soundButton.setCurrentIndex(!te.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
 
-		// Disable the "clear notes" button if no notes are recorded
-		if(te.getNumberOfNotes() == 0)
+		// Disable the "play recording" and "clear notes" buttons if no notes are recorded
+		if(te.getNumberOfNotes() == 0) {
+			playButton.active = false;
 			clearButton.active = false;
+		}
 	}
 
 	@Override
@@ -142,7 +144,6 @@ public class SonicSecuritySystemScreen extends Screen {
 		font.drawText(matrix, text, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
 
 		font.drawText(matrix, Utils.localize("gui.securitycraft:sonic_security_system.sound"), startX + 10, startY + 141, 4210752);
-		font.drawText(matrix, Utils.localize("gui.securitycraft:sonic_security_system.recording.notes", te.getNumberOfNotes()), startX + 14, startY + 120, 4210752);
 	}
 
 	@Override
