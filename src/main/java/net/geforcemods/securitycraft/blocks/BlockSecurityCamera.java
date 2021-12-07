@@ -136,7 +136,7 @@ public class BlockSecurityCamera extends BlockOwnable{
 			//two loops to prevent ConcurrentModificationException
 			for (int cx = chunkPos.x - viewDistance; cx <= chunkPos.x + viewDistance; cx++) {
 				for (int cz = chunkPos.z - viewDistance; cz <= chunkPos.z + viewDistance; cz++) {
-					ForgeChunkManager.forceChunk(ticket, chunkPos);
+					ForgeChunkManager.forceChunk(ticket, new ChunkPos(cx, cz));
 				}
 			}
 
