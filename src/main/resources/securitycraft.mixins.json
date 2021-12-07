@@ -11,7 +11,8 @@
 	],
 	"mixins": [
 		"camera.MixinEntityPlayerMP",
-		"camera.MixinEntityTrackerEntry"
+		"camera.MixinEntityTrackerEntry",
+		"camera.MixinPlayerList"
 	],
 	"minVersion": "0.8"
 }
