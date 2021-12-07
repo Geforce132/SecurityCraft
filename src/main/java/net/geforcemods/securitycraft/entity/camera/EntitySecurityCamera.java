@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
@@ -143,10 +144,19 @@ public class EntitySecurityCamera extends Entity{
 
 	public void stopViewing(EntityPlayerMP player) {
 		if (!world.isRemote) {
-			for (ChunkPos chunkPos : chunkTicket.getChunkList()) {
-				((WorldServer)world).getPlayerChunkMap().getOrCreateEntry(chunkPos.x, chunkPos.z).removePlayer(player);
+			WorldServer serverWorld = (WorldServer)world;
+			BlockPos pos = new BlockPos(posX, posY, posZ);
+			Chunk chunk = serverWorld.getChunk(pos);
+			ChunkPos chunkPos = chunk.getPos();
+			int viewDistance = player.server.getPlayerList().getViewDistance();
+
+			for (int cx = chunkPos.x - viewDistance; cx <= chunkPos.x + viewDistance; cx++) {
+				for (int cz = chunkPos.z - viewDistance; cz <= chunkPos.z + viewDistance; cz++) {
+					serverWorld.getPlayerChunkMap().getOrCreateEntry(cx, cz).removePlayer(player);
+				}
 			}
 
+			serverWorld.getPlayerChunkMap().addPlayer(player);
 			discardCamera();
 			player.spectatingEntity = player;
 			SecurityCraft.network.sendTo(new SetCameraView(player), player);
