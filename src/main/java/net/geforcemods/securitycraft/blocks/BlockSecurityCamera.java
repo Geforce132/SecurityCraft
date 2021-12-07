@@ -28,6 +28,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
@@ -114,9 +116,11 @@ public class BlockSecurityCamera extends BlockOwnable{
 		if(!world.isRemote)
 		{
 			EntityPlayerMP serverPlayer = (EntityPlayerMP)player;
+			WorldServer serverWorld = (WorldServer)world;
 			EntitySecurityCamera dummyEntity;
 			BlockPos pos = new BlockPos(x, y, z);
-			ChunkPos chunkPos = new ChunkPos(pos);
+			Chunk chunk = serverWorld.getChunk(pos);
+			ChunkPos chunkPos = chunk.getPos();
 			int viewDistance = serverPlayer.server.getPlayerList().getViewDistance();
 			TileEntity te = world.getTileEntity(pos);
 			Ticket ticket = ForgeChunkManager.requestTicket(SecurityCraft.instance, world, Type.ENTITY);
@@ -129,9 +133,17 @@ public class BlockSecurityCamera extends BlockOwnable{
 			ticket.bindEntity(dummyEntity);
 			dummyEntity.setChunkTicket(ticket);
 
+			//two loops to prevent ConcurrentModificationException
 			for (int cx = chunkPos.x - viewDistance; cx <= chunkPos.x + viewDistance; cx++) {
 				for (int cz = chunkPos.z - viewDistance; cz <= chunkPos.z + viewDistance; cz++) {
 					ForgeChunkManager.forceChunk(ticket, chunkPos);
+				}
+			}
+
+			//let the player track the chunks the camera can see
+			for (int cx = chunkPos.x - viewDistance; cx <= chunkPos.x + viewDistance; cx++) {
+				for (int cz = chunkPos.z - viewDistance; cz <= chunkPos.z + viewDistance; cz++) {
+					serverWorld.getPlayerChunkMap().getOrCreateEntry(cx, cz).addPlayer(serverPlayer);
 				}
 			}
 

@@ -16,7 +16,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
@@ -141,6 +143,10 @@ public class EntitySecurityCamera extends Entity{
 
 	public void stopViewing(EntityPlayerMP player) {
 		if (!world.isRemote) {
+			for (ChunkPos chunkPos : chunkTicket.getChunkList()) {
+				((WorldServer)world).getPlayerChunkMap().getOrCreateEntry(chunkPos.x, chunkPos.z).removePlayer(player);
+			}
+
 			discardCamera();
 			player.spectatingEntity = player;
 			SecurityCraft.network.sendTo(new SetCameraView(player), player);
