@@ -16,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.play.server.SPacketChunkData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -158,6 +159,8 @@ public class BlockSecurityCamera extends BlockOwnable{
 			//can't use EntityPlayerMP#setSpectatingEntity here because it also teleports the player
 			serverPlayer.spectatingEntity = dummyEntity;
 			SecurityCraft.network.sendTo(new SetCameraView(dummyEntity), serverPlayer);
+
+			((EntityPlayerMP)player).connection.sendPacket(new SPacketChunkData(chunk, 65535));
 
 			if(te instanceof TileEntitySecurityCamera)
 				((TileEntitySecurityCamera)te).startViewing();
