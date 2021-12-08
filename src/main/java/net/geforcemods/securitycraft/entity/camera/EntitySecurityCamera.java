@@ -159,15 +159,15 @@ public class EntitySecurityCamera extends Entity{
 				}
 			}
 
+			serverWorld.getPlayerChunkMap().addPlayer(player);
+			player.spectatingEntity = player;
+			SecurityCraft.network.sendTo(new SetCameraView(player), player);
+
 			//update which entities the player is tracking to allow for the correct ones to show up
 			for (EntityTrackerEntry entry : serverWorld.getEntityTracker().entries) {
 				if (entry.getTrackedEntity() != player)
 					entry.updatePlayerEntity(player);
 			}
-
-			serverWorld.getPlayerChunkMap().addPlayer(player);
-			player.spectatingEntity = player;
-			SecurityCraft.network.sendTo(new SetCameraView(player), player);
 		}
 	}
 
