@@ -44,6 +44,7 @@
 - Fix: The Universal Block Reinforcer can be thrown out of the player's inventory while its reinforcing menu is open
 - Fix: Claymores, Motion Activated Lights, and Username Loggers don't ignore players in spectator mode
 - Fix: The security camera overlay still shows when the debug menu is open
+- Fix: Fences, panes, and walls connect to Security Cameras
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated
