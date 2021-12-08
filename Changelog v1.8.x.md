@@ -1,4 +1,4 @@
---------------------------Changelog for v1.8.24 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9 of SecurityCraft--------------------------
 
 - New: Reinforced Blocks: Deepslate, Cobbled Deepslate, Polished Deepslate, Calcite, Tuff, Dripstone Block, Rooted Dirt, Block of Raw Iron, Block of Raw Copper, Block of Raw Gold, Block of Amethyst, Block of Copper, Exposed Copper, Weathered Copper, Oxidized Copper, Cut Copper, Exposed Cut Copper, Weathered Cut Copper, Oxidized Cut Copper, Cut Copper Stairs, Exposed Cut Copper Stairs, Weathered Cut Copper Stairs, Oxidized Cut Copper Stairs, Cut Copper Slab, Exposed Cut Copper Slab, Weathered Cut Copper Slab, Oxidized Cut Copper Slab, Tinted Glass, Smooth Basalt, Deepslate Bricks, Cracked Deepslate Bricks, Deepslate Tiles, Cracked Deepslate Tiles, Chiseled Deepslate, Cobbled Deepslate Stairs, Polished Deepslate Stairs, Deepslate Brick Stairs, Deepslate Tile Stairs, Cobbled Deepslate Slab, Polished Deepslate Slab, Deepslate Brick Slab, Deepslate Tile Slab, Moss Carpet, Moss Block, Cobbled Deepslate Wall, Polished Deepslate Wall, Deepslate Brick Wall, Deepslate Tile Wall
 - New: Completely overhauled the overwhelming majority of SecurityCraft's textures. Direct feedback @ChainmailPickaxe in #sc-talk on our Discord server
@@ -49,6 +49,7 @@
 - Fix: The Universal Block Reinforcer can be thrown out of the player's inventory while its reinforcing menu is open
 - Fix: Rail Mine loses its owner when its state changes
 - Fix: Claymores, Motion Activated Lights, and Username Loggers don't ignore players in spectator mode
+- Fix: Electrified Iron Fence Gate has wooden open/close sounds
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: Performance improvements due to fewer ticking block entities
