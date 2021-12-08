@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityTrackerEntry;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -156,6 +157,12 @@ public class EntitySecurityCamera extends Entity{
 				for (int cz = chunkPos.z - viewDistance; cz <= chunkPos.z + viewDistance; cz++) {
 					serverWorld.getPlayerChunkMap().getOrCreateEntry(cx, cz).removePlayer(player);
 				}
+			}
+
+			//update which entities the player is tracking to allow for the correct ones to show up
+			for (EntityTrackerEntry entry : serverWorld.getEntityTracker().entries) {
+				if (entry.getTrackedEntity() != player)
+					entry.updatePlayerEntity(player);
 			}
 
 			serverWorld.getPlayerChunkMap().addPlayer(player);
