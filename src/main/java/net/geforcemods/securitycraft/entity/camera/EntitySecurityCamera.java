@@ -150,6 +150,8 @@ public class EntitySecurityCamera extends Entity{
 			ChunkPos chunkPos = chunk.getPos();
 			int viewDistance = player.server.getPlayerList().getViewDistance();
 
+			discardCamera();
+
 			for (int cx = chunkPos.x - viewDistance; cx <= chunkPos.x + viewDistance; cx++) {
 				for (int cz = chunkPos.z - viewDistance; cz <= chunkPos.z + viewDistance; cz++) {
 					serverWorld.getPlayerChunkMap().getOrCreateEntry(cx, cz).removePlayer(player);
@@ -157,7 +159,6 @@ public class EntitySecurityCamera extends Entity{
 			}
 
 			serverWorld.getPlayerChunkMap().addPlayer(player);
-			discardCamera();
 			player.spectatingEntity = player;
 			SecurityCraft.network.sendTo(new SetCameraView(player), player);
 		}
