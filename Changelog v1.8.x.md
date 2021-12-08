@@ -1,4 +1,4 @@
---------------------------Changelog for v1.8.24 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9 of SecurityCraft--------------------------
 
 - New: Reinforced Pistons
 - New: The Reinforced Redstone Block and the Reinforced Observer can now be used to open doors, activate pistons, etc.
@@ -41,6 +41,7 @@
 - Fix: SecurityCraft Manual entries for doors are not properly showing all information
 - Fix: The Universal Block Reinforcer can be thrown out of the player's inventory while its reinforcing menu is open
 - Fix: Claymores, Motion Activated Lights, and Username Loggers don't ignore players in spectator mode
+- Fix: Electrified Iron Fence Gate has wooden open/close sounds
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated

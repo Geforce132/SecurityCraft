@@ -25,6 +25,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEntityProvider {
@@ -87,11 +88,11 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 			if (isPoweredSCBlock || block.getDefaultState().canProvidePower())
 				if (isPoweredSCBlock && !state.getValue(OPEN) && !state.getValue(POWERED)) {
 					world.setBlockState(pos, state.withProperty(OPEN, true).withProperty(POWERED, true), 2);
-					world.playEvent(null, 1008, pos, 0);
+					world.playEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
 				}
 				else if (!isPoweredSCBlock && state.getValue(OPEN) && state.getValue(POWERED)) {
 					world.setBlockState(pos, state.withProperty(OPEN, false).withProperty(POWERED, false), 2);
-					world.playEvent(null, 1014, pos, 0);
+					world.playEvent(null, Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, pos, 0);
 				}
 				else if (isPoweredSCBlock != state.getValue(POWERED))
 					world.setBlockState(pos, state.withProperty(POWERED, isPoweredSCBlock), 2);
