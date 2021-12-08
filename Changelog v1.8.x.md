@@ -1,4 +1,4 @@
---------------------------Changelog for v1.8.24 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9 of SecurityCraft--------------------------
 
 - New: Completely overhauled the overwhelming majority of SecurityCraft's textures. Direct feedback @ChainmailPickaxe in #sc-talk on our Discord server
 - New: Reinforced Pistons
@@ -48,6 +48,7 @@
 - Fix: Rail Mine loses its owner when its state changes
 - Fix: Claymores, Motion Activated Lights, and Username Loggers don't ignore players in spectator mode
 - Fix: The security camera overlay still shows when the debug menu is open
+- Fix: Electrified Iron Fence Gate has wooden open/close sounds
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: Performance improvements due to fewer ticking block entities

@@ -26,6 +26,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 
 public class ReinforcedFenceGateBlock extends FenceGateBlock {
 
@@ -83,11 +84,11 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 			if (isPoweredSCBlock || block.getDefaultState().canProvidePower())
 				if (isPoweredSCBlock && !state.get(OPEN) && !state.get(POWERED)) {
 					world.setBlockState(pos, state.with(OPEN, true).with(POWERED, true), 2);
-					world.playEvent(null, 1008, pos, 0);
+					world.playEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
 				}
 				else if (!isPoweredSCBlock && state.get(OPEN) && state.get(POWERED)) {
 					world.setBlockState(pos, state.with(OPEN, false).with(POWERED, false), 2);
-					world.playEvent(null, 1014, pos, 0);
+					world.playEvent(null, Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, pos, 0);
 				}
 				else if (isPoweredSCBlock != state.get(POWERED))
 					world.setBlockState(pos, state.with(POWERED, isPoweredSCBlock), 2);
