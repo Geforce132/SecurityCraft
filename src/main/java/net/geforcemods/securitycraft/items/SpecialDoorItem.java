@@ -1,12 +1,13 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.LinkableTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,11 +20,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class SpecialDoorItem extends Item
+public class SpecialDoorItem extends BlockItem
 {
-	public SpecialDoorItem(Item.Properties properties)
+	public SpecialDoorItem(Block block, Item.Properties properties)
 	{
-		super(properties);
+		super(block, properties);
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public abstract class SpecialDoorItem extends Item
 			int offsetZ = angleFacing.getZOffset();
 			boolean flag = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;
 
-			if(!placeDoor(world, pos, angleFacing, getDoorBlock(), flag, ctx))
+			if(!placeDoor(world, pos, angleFacing, getBlock(), flag, ctx))
 				return ActionResultType.FAIL;
 
 			SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
@@ -59,12 +60,12 @@ public abstract class SpecialDoorItem extends Item
 
 			if(world.getTileEntity(pos) != null)
 			{
-				CustomizableTileEntity lowerTe = ((CustomizableTileEntity) world.getTileEntity(pos));
-				CustomizableTileEntity upperTe = ((CustomizableTileEntity) world.getTileEntity(pos.up()));
+				LinkableTileEntity lowerTe = ((LinkableTileEntity) world.getTileEntity(pos));
+				LinkableTileEntity upperTe = ((LinkableTileEntity) world.getTileEntity(pos.up()));
 
 				lowerTe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				upperTe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
-				CustomizableTileEntity.link(lowerTe, upperTe);
+				LinkableTileEntity.link(lowerTe, upperTe);
 			}
 
 			return ActionResultType.SUCCESS;
@@ -103,6 +104,4 @@ public abstract class SpecialDoorItem extends Item
 		world.notifyNeighborsOfStateChange(posAbove, door);
 		return true;
 	}
-
-	public abstract Block getDoorBlock();
 }

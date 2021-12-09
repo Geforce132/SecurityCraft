@@ -31,7 +31,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class TrophySystemBlock extends OwnableBlock {
+public class TrophySystemBlock extends DisguisableBlock {
 
 	private static final VoxelShape SHAPE = Stream.of(
 			Block.makeCuboidShape(6.5, 0, 12, 9.5, 1.5, 15),
@@ -84,9 +84,13 @@ public class TrophySystemBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext context)
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
-		return SHAPE;
+		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+
+		if(disguisedState.getBlock() != this)
+			return disguisedState.getShape(world, pos, ctx);
+		else return SHAPE;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -19,11 +20,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
-public class PortableRadarTileEntity extends CustomizableTileEntity {
+public class PortableRadarTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
 
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getPos, "searchRadius", 25.0D, 5.0D, 50.0D, 1.0D, true);
 	private IntOption searchDelayOption = new IntOption(this::getPos, "searchDelay", 4, 4, 10, 1, true);
@@ -41,8 +43,6 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	@Override
 	public void tick()
 	{
-		super.tick();
-
 		if(!world.isRemote && enabledOption.get() && ticksUntilNextSearch-- <= 0)
 		{
 			ticksUntilNextSearch = getSearchDelay();
@@ -70,8 +70,8 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 						IFormattableTextComponent attackedName = e.getName().copyRaw().mergeStyle(TextFormatting.ITALIC);
 						IFormattableTextComponent text;
 
-						if(hasCustomSCName())
-							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().copyRaw().mergeStyle(TextFormatting.ITALIC));
+						if(hasCustomName())
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomName().copyRaw().mergeStyle(TextFormatting.ITALIC));
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
 
@@ -117,7 +117,9 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 			lastPlayerName = player.getName().getString();
 		}
 
-		return (shouldSendNewMessage || repeatMessageOption.get()) && !player.getName().getString().equals(getOwner().getName());
+		boolean lastPlayerOwns = ConfigHandler.SERVER.enableTeamOwnership.get() ? PlayerUtils.areOnSameTeam(lastPlayerName, getOwner().getName()) : lastPlayerName.equals(getOwner().getName());
+
+		return (shouldSendNewMessage || repeatMessageOption.get()) && !lastPlayerOwns;
 	}
 
 	public void setSentMessage() {

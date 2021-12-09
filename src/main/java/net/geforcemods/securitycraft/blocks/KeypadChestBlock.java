@@ -103,15 +103,13 @@ public class KeypadChestBlock extends ChestBlock {
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-				return ActionResultType.FAIL;
 			}
 			else if(ModuleUtils.isAllowed(te, player))
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(world, pos, player);
+				activate(state, world, pos, player);
 			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				te.openPasswordGUI(player);
@@ -120,13 +118,13 @@ public class KeypadChestBlock extends ChestBlock {
 		return ActionResultType.SUCCESS;
 	}
 
-	public static void activate(World world, BlockPos pos, PlayerEntity player){
+	public void activate(BlockState state, World world, BlockPos pos, PlayerEntity player){
 		if(!world.isRemote) {
-			BlockState state = world.getBlockState(pos);
 			ChestBlock block = (ChestBlock)state.getBlock();
-			INamedContainerProvider inamedcontainerprovider = block.getContainer(state, world, pos);
-			if (inamedcontainerprovider != null) {
-				player.openContainer(inamedcontainerprovider);
+			INamedContainerProvider containerProvider = block.getContainer(state, world, pos);
+
+			if (containerProvider != null) {
+				player.openContainer(containerProvider);
 				player.addStat(Stats.CUSTOM.get(Stats.OPEN_CHEST));
 			}
 		}
@@ -256,8 +254,10 @@ public class KeypadChestBlock extends ChestBlock {
 		private void convertChest(PlayerEntity player, World world, BlockPos pos, Direction facing, ChestType type)
 		{
 			ChestTileEntity chest = (ChestTileEntity)world.getTileEntity(pos);
-			CompoundNBT tag = chest.write(new CompoundNBT());
+			CompoundNBT tag;
 
+			chest.fillWithLoot(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated
+			tag = chest.write(new CompoundNBT());
 			chest.clear();
 			world.setBlockState(pos, SCContent.KEYPAD_CHEST.get().getDefaultState().with(FACING, facing).with(TYPE, type));
 			((ChestTileEntity)world.getTileEntity(pos)).read(world.getBlockState(pos), tag);

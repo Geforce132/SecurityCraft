@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
@@ -17,15 +18,12 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class KeypadTileEntity extends DisguisableTileEntity implements IPasswordProtected {
+public class KeypadTileEntity extends DisguisableTileEntity implements IPasswordProtected, ILockable {
 
 	private String passcode;
 
@@ -75,7 +73,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	@Override
 	public void activate(PlayerEntity player) {
 		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadBlock)
-			KeypadBlock.activate(world, pos, signalLength.get());
+			((KeypadBlock)getBlockState().getBlock()).activate(getBlockState(), world, pos, signalLength.get());
 	}
 
 	@Override
@@ -94,7 +92,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEYPAD.get().getTranslationKey());
+						return KeypadTileEntity.super.getDisplayName();
 					}
 				}, pos);
 			}
@@ -115,7 +113,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEYPAD.get().getTranslationKey());
+							return KeypadTileEntity.super.getDisplayName();
 						}
 					}, pos);
 				}
@@ -145,11 +143,6 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 		passcode = password;
 	}
 
-	@Override
-	public boolean onRightClickWhenLocked(World world, BlockPos pos, PlayerEntity player)
-	{
-		return true;
-	}
 
 	@Override
 	public ModuleType[] acceptedModules() {

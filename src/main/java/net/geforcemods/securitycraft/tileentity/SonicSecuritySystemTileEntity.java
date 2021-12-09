@@ -8,7 +8,7 @@ import java.util.Set;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.NamedTileEntity;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
@@ -21,6 +21,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -28,7 +29,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class SonicSecuritySystemTileEntity extends SecurityCraftTileEntity implements INamedContainerProvider {
+public class SonicSecuritySystemTileEntity extends NamedTileEntity implements INamedContainerProvider, ITickableTileEntity {
 
 	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
@@ -139,7 +140,7 @@ public class SonicSecuritySystemTileEntity extends SecurityCraftTileEntity imple
 			{
 				// TODO: should the SSS automatically forget the positions of linked blocks
 				// if they are broken?
-				ArrayList<BlockPos> blocksToRemove = new ArrayList<BlockPos>();
+				ArrayList<BlockPos> blocksToRemove = new ArrayList<>();
 				Iterator<BlockPos> iterator = linkedBlocks.iterator();
 
 				while(iterator.hasNext())
@@ -505,6 +506,10 @@ public class SonicSecuritySystemTileEntity extends SecurityCraftTileEntity imple
 	public ITextComponent getDisplayName()
 	{
 		return new TranslationTextComponent(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey());
+	}
+
+	private void sync() {
+		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
 	}
 
 	/**

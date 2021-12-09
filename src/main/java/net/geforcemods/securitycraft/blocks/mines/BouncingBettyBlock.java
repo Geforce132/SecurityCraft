@@ -1,17 +1,13 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.NamedTileEntity;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -27,7 +23,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable {
+public class BouncingBettyBlock extends ExplosiveBlock {
 
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 	private static final VoxelShape SHAPE = Block.makeCuboidShape(3, 0, 3, 13, 3, 13);
@@ -45,7 +41,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
-		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
+		if (!world.getBlockState(pos.down()).isAir())
 			return;
 		else if (world.getBlockState(pos).get(DEACTIVATED))
 			world.destroyBlock(pos, true);
@@ -62,10 +58,9 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if(!EntityUtils.doesEntityOwn(entity, world, pos))
-			if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity))
-				explode(world, pos);
+			explode(world, pos);
 	}
 	@Override
 	public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity player){
@@ -140,7 +135,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new SecurityCraftTileEntity().intersectsEntities();
+		return new NamedTileEntity();
 	}
 
 }

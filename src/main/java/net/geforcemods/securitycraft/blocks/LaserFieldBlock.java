@@ -2,10 +2,9 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.NamedTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -31,7 +30,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
-public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
+public class LaserFieldBlock extends OwnableBlock {
 
 	public static final IntegerProperty BOUNDTYPE = IntegerProperty.create("boundtype", 1, 3);
 	private static final VoxelShape SHAPE_X = Block.makeCuboidShape(0, 6.75, 6.75, 16, 9.25, 9.25);
@@ -50,7 +49,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
 	{
 		if(!world.isRemote && entity instanceof LivingEntity && !EntityUtils.isInvisible((LivingEntity)entity))
 		{
@@ -155,7 +154,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new SecurityCraftTileEntity().intersectsEntities();
+		return new NamedTileEntity();
 	}
 
 	@Override

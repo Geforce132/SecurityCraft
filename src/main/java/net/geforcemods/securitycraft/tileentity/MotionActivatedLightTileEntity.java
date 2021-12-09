@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -7,14 +9,14 @@ import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 
-public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
-
+public class MotionActivatedLightTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
+	private static final int TICKS_BETWEEN_ATTACKS = 5;
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
+	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	public MotionActivatedLightTileEntity()
 	{
@@ -22,34 +24,17 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public boolean attackEntity(Entity entity) {
-		if(entity instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera((PlayerEntity)entity))
-			MotionActivatedLightBlock.toggleLight(world, pos, getBlockState(), getOwner(), false);
-		else if(entity instanceof LivingEntity && getBlockState().getBlock() == SCContent.MOTION_ACTIVATED_LIGHT.get())
-			MotionActivatedLightBlock.toggleLight(world, pos, getBlockState(), getOwner(), !EntityUtils.isInvisible((LivingEntity)entity)); //also automatically switches on/off based on if the entity turns (in-)visible
+	public void tick() {
+		if(cooldown-- > 0)
+			return;
 
-		return false;
-	}
+		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.isSpectator());
+		boolean shouldBeOn = !entities.isEmpty();
 
-	@Override
-	public void attackFailed() {
-		if(getBlockState().getBlock() == SCContent.MOTION_ACTIVATED_LIGHT.get() && getBlockState().get(MotionActivatedLightBlock.LIT))
-			MotionActivatedLightBlock.toggleLight(world, pos, getBlockState(), getOwner(), false);
-	}
+		if(getBlockState().get(MotionActivatedLightBlock.LIT) != shouldBeOn)
+			world.setBlockState(pos, getBlockState().with(MotionActivatedLightBlock.LIT, shouldBeOn));
 
-	@Override
-	public boolean canAttack() {
-		return true;
-	}
-
-	@Override
-	public boolean shouldSyncToClient() {
-		return false;
-	}
-
-	@Override
-	public double getAttackRange() {
-		return searchRadiusOption.get();
+		cooldown = TICKS_BETWEEN_ATTACKS;
 	}
 
 	@Override
@@ -61,5 +46,4 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 	public Option<?>[] customOptions() {
 		return new Option<?>[] {searchRadiusOption};
 	}
-
 }

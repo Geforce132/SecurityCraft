@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
@@ -19,7 +18,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class ProtectoBlock extends OwnableBlock {
+public class ProtectoBlock extends DisguisableBlock {
 
 	public static final BooleanProperty ACTIVATED = BlockStateProperties.ENABLED;
 	public static final VoxelShape SHAPE = VoxelShapes.or(Block.makeCuboidShape(0, 0, 5, 16, 16, 11), Block.makeCuboidShape(5, 0, 0, 11, 16, 16));
@@ -32,7 +31,11 @@ public class ProtectoBlock extends OwnableBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
-		return SHAPE;
+		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+
+		if(disguisedState.getBlock() != this)
+			return disguisedState.getShape(world, pos, ctx);
+		else return SHAPE;
 	}
 
 	@Override
@@ -59,7 +62,7 @@ public class ProtectoBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new ProtectoTileEntity().attacks(LivingEntity.class, 10, 200);
+		return new ProtectoTileEntity();
 	}
 
 }

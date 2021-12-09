@@ -55,28 +55,25 @@ public class KeypadBlock extends DisguisableBlock {
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-				return ActionResultType.FAIL;
 			}
-
-			if(ModuleUtils.isAllowed(te, player))
+			else if(ModuleUtils.isAllowed(te, player))
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(world, pos, te.getSignalLength());
+				activate(state, world, pos, te.getSignalLength());
 			}
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand) && !PlayerUtils.isHoldingItem(player, SCContent.KEY_PANEL, hand))
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				te.openPasswordGUI(player);
 		}
 
 		return ActionResultType.SUCCESS;
 	}
 
-	public static void activate(World world, BlockPos pos, int signalLength){
+	public void activate(BlockState state, World world, BlockPos pos, int signalLength){
 		world.setBlockState(pos, world.getBlockState(pos).with(POWERED, true));
-		world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
-		world.getPendingBlockTicks().scheduleTick(pos, SCContent.KEYPAD.get(), signalLength);
+		world.notifyNeighborsOfStateChange(pos, this);
+		world.getPendingBlockTicks().scheduleTick(pos, this, signalLength);
 	}
 
 	@Override
@@ -150,7 +147,7 @@ public class KeypadBlock extends DisguisableBlock {
 	 */
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new KeypadTileEntity().lockable();
+		return new KeypadTileEntity();
 	}
 
 	@Override

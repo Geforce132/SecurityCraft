@@ -14,6 +14,8 @@ import com.mojang.authlib.properties.Property;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILockable;
+import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
@@ -26,23 +28,27 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.server.management.PlayerProfileCache;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
-public class RetinalScannerTileEntity extends DisguisableTileEntity {
+public class RetinalScannerTileEntity extends DisguisableTileEntity implements IViewActivated, ITickableTileEntity, ILockable {
 
 	private static final Logger LOGGER = LogManager.getLogger();
+	private static PlayerProfileCache profileCache;
+	private static MinecraftSessionService sessionService;
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private GameProfile ownerProfile;
-	private static PlayerProfileCache profileCache;
-	private static MinecraftSessionService sessionService;
+	private int viewCooldown = 0;
 
 	public RetinalScannerTileEntity()
 	{
@@ -50,34 +56,55 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	}
 
 	@Override
-	public void entityViewed(LivingEntity entity){
+	public void tick() {
+		checkView(world, pos);
+	}
+
+	@Override
+	public void onEntityViewed(LivingEntity entity){
 		if(!world.isRemote)
 		{
 			BlockState state = world.getBlockState(pos);
+
 			if(!state.get(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)){
-				if(!(entity instanceof PlayerEntity) && !activatedByEntities.get())
-					return;
+				String name = entity.getName().getString();
 
-				if(entity instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera(entity))
-					return;
+				if(entity instanceof PlayerEntity) {
+					PlayerEntity player = (PlayerEntity)entity;
 
-				if(entity instanceof PlayerEntity && !getOwner().isOwner((PlayerEntity) entity) && !ModuleUtils.isAllowed(this, entity)) {
-					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
-					return;
+					if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == Items.PLAYER_HEAD)
+						name = PlayerUtils.getNameOfSkull(player);
+
+					if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
+						return;
+					}
 				}
+				else if(activatedOnlyByPlayer())
+					return;
 
 				world.setBlockState(pos, state.with(RetinalScannerBlock.POWERED, true));
 				world.getPendingBlockTicks().scheduleTick(new BlockPos(pos), SCContent.RETINAL_SCANNER.get(), getSignalLength());
 
 				if(entity instanceof PlayerEntity && sendMessage.get())
-					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.hello", entity.getName()), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
 			}
 		}
 	}
 
 	@Override
-	public int getViewCooldown() {
+	public int getDefaultViewCooldown() {
 		return getSignalLength() + 30;
+	}
+
+	@Override
+	public int getViewCooldown() {
+		return viewCooldown;
+	}
+
+	@Override
+	public void setViewCooldown(int viewCooldown) {
+		this.viewCooldown = viewCooldown;
 	}
 
 	@Override

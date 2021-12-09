@@ -3,28 +3,28 @@ package net.geforcemods.securitycraft;
 import java.util.List;
 import java.util.Random;
 
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.INameable;
+import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.LinkableTileEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
-import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
-import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.network.client.SendTip;
+import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -32,10 +32,10 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -43,73 +43,87 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.NoteBlockEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
-	private static final String PREVIOUS_PLAYER_POS_NBT = "SecurityCraftPreviousPlayerPos";
-
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		PlayerEntity player = event.getPlayer();
-
-		if(player.getPersistentData().contains(PREVIOUS_PLAYER_POS_NBT))
-		{
-			BlockPos pos = BlockPos.fromLong(player.getPersistentData().getLong(PREVIOUS_PLAYER_POS_NBT));
-
-			player.getPersistentData().remove(PREVIOUS_PLAYER_POS_NBT);
-			player.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
-		}
-
-		SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new SendTip());
+		if(!ConfigHandler.SERVER.disableThanksMessage.get())
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)event.getPlayer()), new SendTip());
 	}
 
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event)
 	{
-		PlayerEntity player = event.getPlayer();
+		ServerPlayerEntity player = (ServerPlayerEntity)event.getPlayer();
 
-		if(PlayerUtils.isPlayerMountedOnCamera(player))
+		if(player.getSpectatingEntity() instanceof SecurityCameraEntity)
 		{
-			BlockPos pos = new BlockPos(((SecurityCameraEntity)player.getRidingEntity()).getPreviousPlayerPos());
+			SecurityCameraEntity cam = (SecurityCameraEntity)player.getSpectatingEntity();
+			TileEntity tile = player.world.getTileEntity(cam.getPosition());
 
-			player.getRidingEntity().remove();
-			player.getPersistentData().putLong(PREVIOUS_PLAYER_POS_NBT, pos.toLong());
+			if(tile instanceof SecurityCameraTileEntity)
+				((SecurityCameraTileEntity)tile).stopViewing();
+
+			cam.remove();
 		}
 	}
 
 	@SubscribeEvent
 	public static void onDamageTaken(LivingHurtEvent event)
 	{
-		if(event.getEntity() != null && PlayerUtils.isPlayerMountedOnCamera(event.getEntityLiving())){
-			event.setCanceled(true);
-			return;
-		}
+		LivingEntity entity = event.getEntityLiving();
+		World world = entity.world;
 
 		if(event.getSource() == CustomDamageSources.ELECTRICITY)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(event.getEntity().getPosX(), event.getEntity().getPosY(), event.getEntity().getPosZ(), SCSounds.ELECTRIFIED.path, 0.25F, "blocks"));
+			world.playSound(null, entity.getPosition(), SCSounds.ELECTRIFIED.event, SoundCategory.BLOCKS, 0.25F, 1.0F);
+
+		if(!world.isRemote && entity instanceof ServerPlayerEntity && PlayerUtils.isPlayerMountedOnCamera(entity)) {
+			ServerPlayerEntity player = (ServerPlayerEntity)entity;
+
+			((SecurityCameraEntity)player.getSpectatingEntity()).stopViewing(player);
+		}
+	}
+
+	//disallow rightclicking doors, fixes wrenches from other mods being able to switch their state
+	//side effect for keypad door: it is now only openable with an empty hand
+	@SubscribeEvent(priority=EventPriority.HIGHEST)
+	public static void highestPriorityOnRightClickBlock(PlayerInteractEvent.RightClickBlock event)
+	{
+		ItemStack stack = event.getItemStack();
+		Item item = stack.getItem();
+
+		if(!stack.isEmpty() && item != SCContent.UNIVERSAL_BLOCK_REMOVER.get() && item != SCContent.UNIVERSAL_BLOCK_MODIFIER.get() && item != SCContent.UNIVERSAL_OWNER_CHANGER.get())
+		{
+			if(!(item instanceof BlockItem))
+			{
+				Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
+
+				if(block == SCContent.KEYPAD_DOOR.get() || block == SCContent.REINFORCED_DOOR.get() || block == SCContent.REINFORCED_IRON_TRAPDOOR.get() || block == SCContent.SCANNER_DOOR.get())
+					event.setCanceled(true);
+			}
+		}
 	}
 
 	@SubscribeEvent
@@ -123,7 +137,7 @@ public class SCEventHandler {
 		World world = event.getWorld();
 
 		if(!world.isRemote){
-			TileEntity tileEntity = world.getTileEntity(event.getPos());
+			TileEntity te = world.getTileEntity(event.getPos());
 			BlockState state  = world.getBlockState(event.getPos());
 			Block block = state.getBlock();
 
@@ -141,7 +155,7 @@ public class SCEventHandler {
 				return;
 			}
 
-			if(tileEntity instanceof ILockable && ((ILockable) tileEntity).isLocked() && ((ILockable) tileEntity).onRightClickWhenLocked(world, event.getPos(), event.getPlayer()))
+			if(te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).onRightClickWhenLocked(world, event.getPos(), event.getPlayer()))
 			{
 				event.setCanceled(true);
 				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block.getTranslationKey())), TextFormatting.DARK_RED);
@@ -153,22 +167,23 @@ public class SCEventHandler {
 				return;
 			}
 
-			if(tileEntity instanceof INameable && ((INameable)tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getHeldItem(event.getHand()).hasDisplayName()){
+			if(te instanceof INameSetter && (te instanceof SecurityCameraTileEntity || te instanceof PortableRadarTileEntity) && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getHeldItem(event.getHand()).hasDisplayName()){
 				ItemStack nametag = event.getPlayer().getHeldItem(event.getHand());
+				INameSetter nameable = (INameSetter)te;
 
 				event.setCanceled(true);
 				event.setCancellationResult(ActionResultType.SUCCESS);
 
-				if(((INameable) tileEntity).getCustomSCName().equals(nametag.getDisplayName())) {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable)tileEntity).getCustomSCName()), TextFormatting.RED);
+				if(nameable.getCustomName().equals(nametag.getDisplayName())) {
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(te.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getCustomName()), TextFormatting.RED);
 					return;
 				}
 
 				if(!event.getPlayer().isCreative())
 					nametag.shrink(1);
 
-				((INameable) tileEntity).setCustomSCName(nametag.getDisplayName());
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomSCName()), TextFormatting.RED);
+				nameable.setCustomName(nametag.getDisplayName());
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(te.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomName()), TextFormatting.RED);
 				return;
 			}
 		}
@@ -185,21 +200,16 @@ public class SCEventHandler {
 	public static void onLeftClickBlock(LeftClickBlock event) {
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
 			event.setCanceled(true);
+			return;
 		}
-	}
 
-	@SubscribeEvent
-	public static void onAttackEntity(AttackEntityEvent event) {
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
-			event.setCanceled(true);
-		}
-	}
+		ItemStack stack = event.getPlayer().getHeldItemMainhand();
+		Item held = stack.getItem();
+		World world = event.getWorld();
+		BlockPos pos = event.getPos();
 
-	@SubscribeEvent
-	public static void onEntityInteracted(EntityInteract event) {
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
-			event.setCanceled(true);
-		}
+		if(held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
+			UniversalBlockReinforcerItem.convertBlock(world.getBlockState(pos), world, stack, pos, event.getPlayer());
 	}
 
 	@SubscribeEvent
@@ -220,8 +230,8 @@ public class SCEventHandler {
 
 						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
 
-						if(te instanceof CustomizableTileEntity)
-							((CustomizableTileEntity)te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModuleType() }, (CustomizableTileEntity)te);
+						if(te instanceof LinkableTileEntity)
+							((LinkableTileEntity)te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModuleType() }, (LinkableTileEntity)te);
 
 						if(te instanceof SecurityCameraTileEntity)
 						{
@@ -239,13 +249,10 @@ public class SCEventHandler {
 		if(!sentries.isEmpty() && !sentries.get(0).getDisguiseModule().isEmpty())
 		{
 			ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
-			List<Block> blocks = ((ModuleItem)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTag());
+			Block block = ((ModuleItem)disguiseModule.getItem()).getBlockAddon(disguiseModule.getTag());
 
-			if(blocks.size() > 0)
-			{
-				if(blocks.get(0) == event.getWorld().getBlockState(event.getPos()).getBlock())
-					event.setCanceled(true);
-			}
+			if(block == event.getWorld().getBlockState(event.getPos()).getBlock())
+				event.setCanceled(true);
 		}
 	}
 
@@ -265,47 +272,14 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
-		if((event.getTarget() instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera(event.getTarget())) || event.getTarget() instanceof SentryEntity)
+		if(event.getTarget() instanceof SentryEntity)
 			((MobEntity)event.getEntity()).setAttackTarget(null);
-	}
-
-	@SubscribeEvent
-	public static void onBreakSpeed(BreakSpeed event)
-	{
-		if(event.getPlayer() != null)
-		{
-			Item held = event.getPlayer().getHeldItemMainhand().getItem();
-
-			if(held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
-			{
-				Block block = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(event.getState().getBlock());
-
-				if(block != null)
-					event.setNewSpeed(10000.0F);
-			}
-		}
 	}
 
 	@SubscribeEvent
 	public static void onLivingDestroyEvent(LivingDestroyBlockEvent event)
 	{
 		event.setCanceled(event.getEntity() instanceof WitherEntity && event.getState().getBlock() instanceof IReinforcedBlock);
-	}
-
-	@SubscribeEvent
-	public void onEntityMount(EntityMountEvent event)
-	{
-		if(event.isDismounting() && event.getEntityBeingMounted() instanceof SecurityCameraEntity && event.getEntityMounting() instanceof PlayerEntity)
-		{
-			PlayerEntity player = (PlayerEntity)event.getEntityMounting();
-			TileEntity te = event.getWorldObj().getTileEntity(event.getEntityBeingMounted().getPosition());
-
-			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART))
-			{
-				((SecurityCameraTileEntity)te).lastPitch = player.rotationPitch;
-				((SecurityCameraTileEntity)te).lastYaw = player.rotationYaw;
-			}
-		}
 	}
 
 	@SubscribeEvent

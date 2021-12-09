@@ -1,10 +1,8 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import java.util.Iterator;
-import java.util.List;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
@@ -14,23 +12,23 @@ import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
-
+public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider, ITickableTileEntity, ILockable {
+	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private IntOption searchRadius = new IntOption(this::getPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
+	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	public UsernameLoggerTileEntity()
 	{
@@ -38,38 +36,25 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public boolean attackEntity(Entity entity) {
-		if (!world.isRemote && entity instanceof PlayerEntity) {
-			addPlayer((PlayerEntity)entity);
-			sendChangeToClient(false);
+	public void tick() {
+		if(!world.isRemote) {
+			if(cooldown-- > 0)
+				return;
+
+			if(world.getRedstonePowerFromNeighbors(pos) > 0) {
+				world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(pos).grow(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
+				syncLoggedPlayersToClient();
+			}
+
+			cooldown = TICKS_BETWEEN_ATTACKS;
 		}
-
-		return true;
 	}
 
-	@Override
-	public boolean canAttack() {
-		return world.getRedstonePowerFromNeighbors(pos) > 0;
-	}
-
-	public void logPlayers(){
-		int range = searchRadius.get();
-
-		AxisAlignedBB area = new AxisAlignedBB(pos).grow(range);
-		List<?> entities = world.getEntitiesWithinAABB(PlayerEntity.class, area);
-		Iterator<?> iterator = entities.iterator();
-
-		while(iterator.hasNext())
-			addPlayer((PlayerEntity)iterator.next());
-
-		sendChangeToClient(false);
-	}
-
-	private void addPlayer(PlayerEntity player) {
+	public void addPlayer(PlayerEntity player) {
 		String playerName = player.getName().getString();
 		long timestamp = System.currentTimeMillis();
 
-		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(playerName, timestamp))
+		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp))
 		{
 			//ignore players on the allowlist
 			if(ModuleUtils.isAllowed(this, player))
@@ -87,7 +72,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 		}
 	}
 
-	private boolean hasPlayerName(String username, long timestamp) {
+	private boolean wasPlayerRecentlyAdded(String username, long timestamp) {
 		for(int i = 0; i < players.length; i++)
 		{
 			if(players[i] != null && players[i].equals(username) && (timestamps[i] + 1000L) > timestamp) //was within the last second that the same player was last added
@@ -123,17 +108,16 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 		}
 	}
 
-	public void sendChangeToClient(boolean clear){
-		if(!clear)
+	public void syncLoggedPlayersToClient(){
+		for(int i = 0; i < players.length; i++)
 		{
-			for(int i = 0; i < players.length; i++)
-			{
-				if(players[i] != null)
-					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
-			}
+			if(players[i] != null)
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
 		}
-		else
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new ClearLoggerClient(pos));
+	}
+
+	public void clearLoggedPlayersOnClient() {
+		SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new ClearLoggerClient(pos));
 	}
 
 	@Override
@@ -145,7 +129,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.USERNAME_LOGGER.get().getTranslationKey());
+		return super.getDisplayName();
 	}
 
 	@Override

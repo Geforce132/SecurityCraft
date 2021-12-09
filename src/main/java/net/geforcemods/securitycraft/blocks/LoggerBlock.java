@@ -45,18 +45,6 @@ public class LoggerBlock extends DisguisableBlock {
 		return ActionResultType.SUCCESS;
 	}
 
-	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-	 * their own) Args: x, y, z, neighbor Block
-	 */
-	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
-	{
-		if (!world.isRemote)
-			if(world.isBlockPowered(pos))
-				((UsernameLoggerTileEntity)world.getTileEntity(pos)).logPlayers();
-	}
-
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
@@ -76,7 +64,7 @@ public class LoggerBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new UsernameLoggerTileEntity().attacks(PlayerEntity.class, 3, 80).lockable();
+		return new UsernameLoggerTileEntity();
 	}
 
 	@Override

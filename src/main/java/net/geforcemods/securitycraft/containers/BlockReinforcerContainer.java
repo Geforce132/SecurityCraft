@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -204,6 +205,14 @@ public class BlockReinforcerContainer extends Container
 		}
 
 		return merged;
+	}
+
+	@Override
+	public ItemStack slotClick(int slot, int dragType, ClickType clickType, PlayerEntity player) {
+		if(slot >= 0 && !player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand() && player.getHeldItemMainhand().getItem() instanceof UniversalBlockReinforcerItem)
+			return ItemStack.EMPTY;
+
+		return super.slotClick(slot, dragType, clickType, player);
 	}
 
 	public class SlotBlockReinforcer extends Slot

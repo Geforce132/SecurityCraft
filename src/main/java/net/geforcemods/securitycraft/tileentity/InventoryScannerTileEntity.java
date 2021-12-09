@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
+import net.geforcemods.securitycraft.inventory.ExtractOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -20,22 +21,23 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class InventoryScannerTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider{
+public class InventoryScannerTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider, ITickableTileEntity {
 
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
-	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
+	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
+	private LazyOptional<IItemHandler> storageHandler;
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
 	private int cooldown;
@@ -212,13 +214,24 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
 		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return EMPTY_INVENTORY.cast();
+			return BlockUtils.getProtectedCapability(side, this, () -> getExtractionHandler(), () -> EMPTY_INVENTORY).cast(); //disallow inserting
 		else return super.getCapability(cap, side);
 	}
 
-	@Override
-	public boolean hasCustomSCName() {
-		return true;
+	public LazyOptional<IItemHandler> getExtractionHandler()
+	{
+		if(storageHandler == null)
+		{
+			storageHandler = LazyOptional.of(() -> new ExtractOnlyItemStackHandler(inventoryContents) {
+				@Override
+				public ItemStack extractItem(int slot, int amount, boolean simulate)
+				{
+					return slot < 10 ? ItemStack.EMPTY : super.extractItem(slot, amount, simulate); //don't allow extracting from the prohibited item slots
+				}
+			});
+		}
+
+		return storageHandler;
 	}
 
 	@Override
@@ -377,7 +390,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.INVENTORY_SCANNER.get().getTranslationKey());
+		return super.getDisplayName();
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public class ScannerDoorBlock extends SpecialDoorBlock
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
-		return new ScannerDoorTileEntity().linkable().activatedByView();
+		return new ScannerDoorTileEntity();
 	}
 
 	@Override

@@ -78,13 +78,6 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-	{
-		super.onReplaced(state, world, pos, newState, isMoving);
-		world.removeTileEntity(pos);
-	}
-
-	@Override
 	public boolean eventReceived(BlockState state, World world, BlockPos pos, int id, int param){
 		super.eventReceived(state, world, pos, id, param);
 		TileEntity tileentity = world.getTileEntity(pos);

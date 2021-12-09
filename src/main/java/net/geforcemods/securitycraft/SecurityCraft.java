@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.lycanitesmobs.LycanitesMobsCompat;
 import net.geforcemods.securitycraft.compat.quark.QuarkCompat;
@@ -27,9 +28,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.loot.conditions.LootConditionManager;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -85,6 +88,7 @@ public class SecurityCraft {
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadFurnaceBlock.Convertible::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, CommonDoorActivator::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, InventoryScannerBlock.DoorActivator::new);
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, ReinforcedRedstoneBlock.DoorActivator::new);
 
 		if(ModList.get().isLoaded("theoneprobe")) //fix crash without top installed
 			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
@@ -114,25 +118,15 @@ public class SecurityCraft {
 				{
 					Object o = ((RegistryObject<?>)field.get(null)).get();
 					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
-					boolean isBlock = true;
-					Item item;
-					String key;
-
-					if(o instanceof Block)
-						item = ((Block)o).asItem();
-					else
-					{
-						item = (Item)o;
-						isBlock = false;
-					}
+					Item item = ((IItemProvider)o).asItem();
+					String key = "help.";
 
 					if(hmp.specialInfoKey().isEmpty())
-						key = (isBlock ? "help" : "help.") + item.getTranslationKey().substring(5) + ".info";
+						key += item.getTranslationKey().substring(5) + ".info";
 					else
-						key = hmp.specialInfoKey();
+						key += hmp.specialInfoKey();
 
-
-					SCManualPage page = new SCManualPage(item, new TranslationTextComponent(key));
+					SCManualPage page = new SCManualPage(item, new TranslationTextComponent(key.replace("..", ".")));
 
 					if(!hmp.designedBy().isEmpty())
 						page.setDesignedBy(hmp.designedBy());
@@ -148,6 +142,14 @@ public class SecurityCraft {
 				e.printStackTrace();
 			}
 		}
+
+		ForgeChunkManager.setForcedChunkLoadingCallback(SecurityCraft.MODID, (world, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCameraEntity) somewhere
+			ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
+				if (world.getEntityByUuid(uuid) == null) {
+					ticketHelper.removeAllTickets(uuid);
+				}
+			}));
+		});
 	}
 
 	public void registerCommands(RegisterCommandsEvent event){

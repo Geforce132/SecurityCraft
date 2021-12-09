@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.NamedTileEntity;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.IronFenceBlock;
+import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
@@ -63,10 +64,13 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronBarsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLanternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMovingPistonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedNyliumBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObserverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObsidianBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonHeadBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneLampBlock;
@@ -92,8 +96,8 @@ import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
-import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
 import net.geforcemods.securitycraft.fluids.FakeLavaFluid;
 import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
 import net.geforcemods.securitycraft.items.AdminToolItem;
@@ -103,15 +107,14 @@ import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.FakeLiquidBucketItem;
 import net.geforcemods.securitycraft.items.KeyPanelItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
-import net.geforcemods.securitycraft.items.KeypadDoorItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.ReinforcedDoorItem;
 import net.geforcemods.securitycraft.items.SCManualItem;
-import net.geforcemods.securitycraft.items.ScannerDoorItem;
 import net.geforcemods.securitycraft.items.SecretSignItem;
 import net.geforcemods.securitycraft.items.SentryItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
+import net.geforcemods.securitycraft.items.SpecialDoorItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.items.TaserItem;
 import net.geforcemods.securitycraft.items.UniversalBlockModifierItem;
@@ -129,6 +132,7 @@ import net.geforcemods.securitycraft.tileentity.CageTrapTileEntity;
 import net.geforcemods.securitycraft.tileentity.ClaymoreTileEntity;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
+import net.geforcemods.securitycraft.tileentity.KeyPanelTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadDoorTileEntity;
@@ -142,6 +146,7 @@ import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedCauldronTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedIronBarsTileEntity;
+import net.geforcemods.securitycraft.tileentity.ReinforcedPistonTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
@@ -150,6 +155,7 @@ import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
+import net.geforcemods.securitycraft.tileentity.ValidationOwnableTileEntity;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableTE;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
@@ -157,6 +163,7 @@ import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.PistonBlock;
 import net.minecraft.block.PressurePlateBlock.Sensitivity;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.SlabBlock;
@@ -208,6 +215,7 @@ public class SCContent
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> INVENTORY_SCANNER = BLOCKS.register("inventory_scanner", () -> new InventoryScannerBlock(propDisguisable()));
 	public static final RegistryObject<Block> INVENTORY_SCANNER_FIELD = BLOCKS.register("inventory_scanner_field", () -> new InventoryScannerFieldBlock(prop(Material.GLASS)));
 	@HasManualPage @RegisterItemBlock(SCItemGroup.DECORATION) public static final RegistryObject<Block> IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new IronFenceBlock(prop(Material.IRON, MaterialColor.IRON).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> KEY_PANEL_BLOCK = BLOCKS.register("key_panel", () -> new KeyPanelBlock(prop(Material.IRON)));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> KEYCARD_READER = BLOCKS.register("keycard_reader", () -> new KeycardReaderBlock(propDisguisable(Material.IRON).sound(SoundType.METAL)));
 	@HasManualPage(hasRecipeDescription=true) @RegisterItemBlock public static final RegistryObject<Block> KEYPAD = BLOCKS.register("keypad", () -> new KeypadBlock(propDisguisable(Material.IRON)));
 	@HasManualPage(hasRecipeDescription=true) public static final RegistryObject<Block> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(prop(Material.WOOD).sound(SoundType.WOOD)));
@@ -219,7 +227,7 @@ public class SCContent
 	@HasManualPage @OwnableTE @RegisterItemBlock public static final RegistryObject<Block> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(false, prop().setLightLevel(state -> state.get(PanicButtonBlock.POWERED) ? 4 : 0)));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> PORTABLE_RADAR = BLOCKS.register("portable_radar", () -> new PortableRadarBlock(prop(Material.MISCELLANEOUS)));
 	@HasManualPage @OwnableTE @RegisterItemBlock public static final RegistryObject<Block> PROJECTOR = BLOCKS.register("projector", () -> new ProjectorBlock(propDisguisable(Material.IRON).sound(SoundType.METAL).tickRandomly()));
-	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> PROTECTO = BLOCKS.register("protecto", () -> new ProtectoBlock(prop(Material.IRON).sound(SoundType.METAL).setLightLevel(state -> 7)));
+	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> PROTECTO = BLOCKS.register("protecto", () -> new ProtectoBlock(propDisguisable(Material.IRON).sound(SoundType.METAL).setLightLevel(state -> 7)));
 	@OwnableTE public static final RegistryObject<Block> REINFORCED_DOOR = BLOCKS.register("iron_door_reinforced", () -> new ReinforcedDoorBlock(prop(Material.IRON).sound(SoundType.METAL).notSolid()));
 	@HasManualPage @RegisterItemBlock(SCItemGroup.DECORATION) public static final RegistryObject<Block> REINFORCED_FENCEGATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Material.IRON).sound(SoundType.METAL)));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable(Material.IRON).sound(SoundType.METAL)));
@@ -244,7 +252,7 @@ public class SCContent
 	public static final RegistryObject<Block> SONIC_SECURITY_SYSTEM = BLOCKS.register("sonic_security_system", () -> new SonicSecuritySystemBlock(prop(Material.IRON).setOpaque(SonicSecuritySystemBlock::isNormalCube).doesNotBlockMovement()));
 	@RegisterItemBlock(SCItemGroup.DECORATION) public static final RegistryObject<Block> STAIRS_CRYSTAL_QUARTZ = BLOCKS.register("crystal_quartz_stairs", () -> new StairsBlock(() -> CRYSTAL_QUARTZ.get().getDefaultState(), Block.Properties.from(CRYSTAL_QUARTZ.get())));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> TRACK_MINE = BLOCKS.register("track_mine", () -> new TrackMineBlock(prop(Material.IRON, 0.7F).doesNotBlockMovement().sound(SoundType.METAL)));
-	@HasManualPage @RegisterItemBlock(SCItemGroup.TECHNICAL) public static final RegistryObject<Block> TROPHY_SYSTEM = BLOCKS.register("trophy_system", () -> new TrophySystemBlock(prop(Material.IRON).sound(SoundType.METAL)));
+	@HasManualPage @RegisterItemBlock(SCItemGroup.TECHNICAL) public static final RegistryObject<Block> TROPHY_SYSTEM = BLOCKS.register("trophy_system", () -> new TrophySystemBlock(propDisguisable(Material.IRON).sound(SoundType.METAL)));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> USERNAME_LOGGER = BLOCKS.register("username_logger", () -> new LoggerBlock(propDisguisable()));
 	@HasManualPage @OwnableTE @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(Material.MISCELLANEOUS, 1.0F)));
 	public static final RegistryObject<Block> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock(prop(Material.WATER).doesNotBlockMovement(), FAKE_WATER));
@@ -270,7 +278,7 @@ public class SCContent
 	@HasManualPage @OwnableTE @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> FURNACE_MINE = BLOCKS.register("furnace_mine", () -> new FurnaceMineBlock(prop(Material.ROCK, 3.5F)));
 
 	//reinforced blocks (ordered by vanilla building blocks creative tab order)
-	@HasManualPage(specialInfoKey="help.securitycraft:reinforced.info") @OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_STONE = BLOCKS.register("reinforced_stone", () -> new BaseReinforcedBlock(prop(), Blocks.STONE));
+	@HasManualPage(specialInfoKey="securitycraft:reinforced.info") @OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_STONE = BLOCKS.register("reinforced_stone", () -> new BaseReinforcedBlock(prop(), Blocks.STONE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_GRANITE = BLOCKS.register("reinforced_granite", () -> new BaseReinforcedBlock(prop(), Blocks.GRANITE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_POLISHED_GRANITE = BLOCKS.register("reinforced_polished_granite", () -> new BaseReinforcedBlock(prop(), Blocks.POLISHED_GRANITE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DIORITE = BLOCKS.register("reinforced_diorite", () -> new BaseReinforcedBlock(prop(), Blocks.DIORITE));
@@ -588,6 +596,8 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_SHROOMLIGHT = BLOCKS.register("reinforced_shroomlight", () -> new BaseReinforcedBlock(prop(Material.ORGANIC).sound(SoundType.SHROOMLIGHT).setLightLevel(state -> 15), Blocks.SHROOMLIGHT));
 
 	//ordered by vanilla redstone tab order
+	@Reinforced public static final RegistryObject<Block> REINFORCED_STICKY_PISTON = BLOCKS.register("reinforced_sticky_piston", () -> new ReinforcedPistonBlock(true, prop(Material.PISTON).setOpaque((s, w, p) -> false).setSuffocates((s, w, p) -> !s.get(PistonBlock.EXTENDED)).setBlocksVision((s, w, p) -> !s.get(PistonBlock.EXTENDED))));
+	@Reinforced public static final RegistryObject<Block> REINFORCED_PISTON = BLOCKS.register("reinforced_piston", () -> new ReinforcedPistonBlock(false, prop(Material.PISTON).setOpaque((s, w, p) -> false).setSuffocates((s, w, p) -> !s.get(PistonBlock.EXTENDED)).setBlocksVision((s, w, p) -> !s.get(PistonBlock.EXTENDED))));
 	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(Material.WOOD).doesNotBlockMovement().sound(SoundType.WOOD)));
 	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_STONE_PRESSURE_PLATE = BLOCKS.register("reinforced_stone_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().doesNotBlockMovement(), Blocks.STONE_PRESSURE_PLATE));
 	@Reinforced public static final RegistryObject<Block> REINFORCED_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_oak_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD).doesNotBlockMovement().sound(SoundType.WOOD), Blocks.OAK_PRESSURE_PLATE));
@@ -626,6 +636,8 @@ public class SCContent
 	@Reinforced(customTint=0x15B3A2) public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(), SCContent.STAIRS_CRYSTAL_QUARTZ));
 	@OwnableTE public static final RegistryObject<Block> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(prop(Material.IRON).sound(SoundType.METAL), Blocks.IRON_BLOCK));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_GRASS_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedGrassPathBlock(prop(Material.EARTH).sound(SoundType.PLANT), Blocks.GRASS_PATH));
+	public static final RegistryObject<Block> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop(Material.PISTON).variableOpacity().noDrops().notSolid().setOpaque((s, w, p) -> false).setSuffocates((s, w, p) -> false).setBlocksVision((s, w, p) -> false)));
+	@Reinforced(registerBlockItem=false) public static final RegistryObject<Block> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop(Material.PISTON).noDrops()));
 
 	//items
 	@HasManualPage(hasRecipeDescription=true) public static final RegistryObject<Item> ADMIN_TOOL = ITEMS.register("admin_tool", () -> new AdminToolItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1).maxStackSize(1)));
@@ -643,12 +655,12 @@ public class SCContent
 	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 4));
 	@HasManualPage public static final RegistryObject<Item> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem(itemProp(SecurityCraft.groupSCTechnical)));
 	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new BlockItem(SCContent.KEYPAD_CHEST.get(), itemProp(SecurityCraft.groupSCTechnical).setISTER(() -> ItemKeypadChestRenderer::new))); //keep this as a method reference or else the server will crash
-	@HasManualPage public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new KeypadDoorItem(itemProp(SecurityCraft.groupSCDecoration)));
+	@HasManualPage public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new SpecialDoorItem(KEYPAD_DOOR.get(), itemProp(SecurityCraft.groupSCDecoration)));
 	@HasManualPage public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), -1));
-	@HasManualPage public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new ReinforcedDoorItem(itemProp(SecurityCraft.groupSCDecoration)));
+	@HasManualPage public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new ReinforcedDoorItem(REINFORCED_DOOR.get(), itemProp(SecurityCraft.groupSCDecoration)));
 	@HasManualPage public static final RegistryObject<Item> REMOTE_ACCESS_MINE = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1)));
 	@HasManualPage public static final RegistryObject<Item> REMOTE_ACCESS_SENTRY = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1)));
-	@HasManualPage public static final RegistryObject<Item> SCANNER_DOOR_ITEM = ITEMS.register("scanner_door_item", () -> new ScannerDoorItem(itemProp(SecurityCraft.groupSCDecoration)));
+	@HasManualPage public static final RegistryObject<Item> SCANNER_DOOR_ITEM = ITEMS.register("scanner_door_item", () -> new SpecialDoorItem(SCANNER_DOOR.get(), itemProp(SecurityCraft.groupSCDecoration)));
 	@HasManualPage public static final RegistryObject<Item> SC_MANUAL = ITEMS.register("sc_manual", () -> new SCManualItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1)));
 	@HasManualPage public static final RegistryObject<Item> SECRET_OAK_SIGN_ITEM = ITEMS.register("secret_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.groupSCDecoration).maxStackSize(16), SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), "item.securitycraft.secret_sign_item"));
 	public static final RegistryObject<Item> SECRET_SPRUCE_SIGN_ITEM = ITEMS.register("secret_spruce_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.groupSCDecoration).maxStackSize(16), SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get(), "item.securitycraft.secret_spruce_sign_item"));
@@ -673,7 +685,7 @@ public class SCContent
 
 	//modules
 	@HasManualPage public static final RegistryObject<ModuleItem> DENYLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.DENYLIST, true, true));
-	@HasManualPage public static final RegistryObject<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.DISGUISE, false, true, 0, 1));
+	@HasManualPage public static final RegistryObject<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.DISGUISE, false, true));
 	@HasManualPage public static final RegistryObject<ModuleItem> HARMING_MODULE = ITEMS.register("harming_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.HARMING, false));
 	@HasManualPage public static final RegistryObject<ModuleItem> REDSTONE_MODULE = ITEMS.register("redstone_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.REDSTONE, false));
 	@HasManualPage public static final RegistryObject<ModuleItem> SMART_MODULE = ITEMS.register("smart_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.SMART, false));
@@ -685,7 +697,7 @@ public class SCContent
 	@ObjectHolder(SecurityCraft.MODID + ":ownable")
 	public static TileEntityType<OwnableTileEntity> teTypeOwnable;
 	@ObjectHolder(SecurityCraft.MODID + ":abstract")
-	public static TileEntityType<SecurityCraftTileEntity> teTypeAbstract;
+	public static TileEntityType<NamedTileEntity> teTypeAbstract;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad")
 	public static TileEntityType<KeypadTileEntity> teTypeKeypad;
 	@ObjectHolder(SecurityCraft.MODID + ":laser_block")
@@ -742,6 +754,12 @@ public class SCContent
 	public static TileEntityType<ReinforcedIronBarsTileEntity> teTypeReinforcedIronBars;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_cauldron")
 	public static TileEntityType<ReinforcedCauldronTileEntity> teTypeReinforcedCauldron;
+	@ObjectHolder(SecurityCraft.MODID + ":reinforced_piston")
+	public static TileEntityType<ReinforcedPistonTileEntity> teTypeReinforcedPiston;
+	@ObjectHolder(SecurityCraft.MODID + ":validation_ownable")
+	public static TileEntityType<ValidationOwnableTileEntity> teTypeValidationOwnable;
+	@ObjectHolder(SecurityCraft.MODID + ":key_panel")
+	public static TileEntityType<KeyPanelTileEntity> teTypeKeyPanel;
 	@ObjectHolder(SecurityCraft.MODID + ":sonic_security_system")
 	public static TileEntityType<SonicSecuritySystemTileEntity> teTypeSonicSecuritySystem;
 

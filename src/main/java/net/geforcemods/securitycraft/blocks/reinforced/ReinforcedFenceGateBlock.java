@@ -1,8 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.NamedTileEntity;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -27,8 +26,9 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 
-public class ReinforcedFenceGateBlock extends FenceGateBlock implements IIntersectable {
+public class ReinforcedFenceGateBlock extends FenceGateBlock {
 
 	public ReinforcedFenceGateBlock(Block.Properties properties){
 		super(properties);
@@ -51,7 +51,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if(world.getBlockState(pos).get(OPEN))
 			return;
 
@@ -84,11 +84,11 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 			if (isPoweredSCBlock || block.getDefaultState().canProvidePower())
 				if (isPoweredSCBlock && !state.get(OPEN) && !state.get(POWERED)) {
 					world.setBlockState(pos, state.with(OPEN, true).with(POWERED, true), 2);
-					world.playEvent(null, 1008, pos, 0);
+					world.playEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
 				}
 				else if (!isPoweredSCBlock && state.get(OPEN) && state.get(POWERED)) {
 					world.setBlockState(pos, state.with(OPEN, false).with(POWERED, false), 2);
-					world.playEvent(null, 1014, pos, 0);
+					world.playEvent(null, Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, pos, 0);
 				}
 				else if (isPoweredSCBlock != state.get(POWERED))
 					world.setBlockState(pos, state.with(POWERED, isPoweredSCBlock), 2);
@@ -110,7 +110,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new SecurityCraftTileEntity().intersectsEntities();
+		return new NamedTileEntity();
 	}
 
 }

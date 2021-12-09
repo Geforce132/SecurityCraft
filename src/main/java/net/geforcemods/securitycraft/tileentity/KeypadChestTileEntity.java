@@ -39,7 +39,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -74,10 +73,8 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		if(passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
-		if(owner != null){
-			tag.putString("owner", owner.getName());
-			tag.putString("ownerUUID", owner.getUUID());
-		}
+		if(owner != null)
+			owner.write(tag, false);
 
 		return tag;
 	}
@@ -93,8 +90,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		modules = readModuleInventory(tag);
 		readOptions(tag);
 		passcode = tag.getString("passcode");
-		owner.setOwnerName(tag.getString("owner"));
-		owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.read(tag);
 	}
 
 	@Override
@@ -173,7 +169,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	@Override
 	public void activate(PlayerEntity player) {
 		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadChestBlock && !isBlocked())
-			KeypadChestBlock.activate(world, pos, player);
+			((KeypadChestBlock)getBlockState().getBlock()).activate(getBlockState(), world, pos, player);
 	}
 
 	@Override
@@ -195,7 +191,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEYPAD_CHEST.get().getTranslationKey());
+						return KeypadChestTileEntity.super.getDisplayName();
 					}
 				}, pos);
 			}
@@ -216,7 +212,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEYPAD_CHEST.get().getTranslationKey());
+							return KeypadChestTileEntity.super.getDisplayName();
 						}
 					}, pos);
 				}

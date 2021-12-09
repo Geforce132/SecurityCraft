@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
@@ -13,10 +14,9 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class KeycardReaderTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
+public class KeycardReaderTileEntity extends DisguisableTileEntity implements INamedContainerProvider, ILockable {
 
 	private boolean[] acceptedLevels = {true, false, false, false, false};
 	private int signature = 0;
@@ -126,6 +126,6 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IN
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.KEYCARD_READER.get().getTranslationKey());
+		return super.getDisplayName();
 	}
 }

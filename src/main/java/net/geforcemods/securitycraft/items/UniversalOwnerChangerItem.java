@@ -10,11 +10,11 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SpecialDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -29,7 +29,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 public class UniversalOwnerChangerItem extends Item
 {
@@ -50,7 +50,8 @@ public class UniversalOwnerChangerItem extends Item
 		if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get())
 			return handleBriefcase(player, stack).getType();
 
-		Block block = world.getBlockState(pos).getBlock();
+		BlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
 		TileEntity te = world.getTileEntity(pos);
 		String newOwner = stack.getDisplayName().getString();
 
@@ -65,7 +66,7 @@ public class UniversalOwnerChangerItem extends Item
 
 		if(!owner.isOwner(player) && !isDefault)
 		{
-			if(!(block instanceof IBlockMine) && (!(te instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)te).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))) {
+			if(!(block instanceof IBlockMine) && (!(te.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem)((DisguisableBlock)te.getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}
@@ -90,23 +91,16 @@ public class UniversalOwnerChangerItem extends Item
 			}
 		}
 
-		if(block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock)
-		{
+		if(te instanceof IOwnable) {
 			((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-
-			//check if the above block is a door, and if not (tryUpdateBlock returned false), try the same thing with the block below
-			if(!tryUpdateBlock(world, pos.up(), newOwner))
-				tryUpdateBlock(world, pos.down(), newOwner);
+			((IOwnable)te).onOwnerChanged(state, world, pos, player);
 		}
-
-		if(te instanceof IOwnable)
-			((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 		if (!world.isRemote)
 			world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
 
 		//disable this in a development environment
-		if(FMLLoader.isProduction() && te instanceof IModuleInventory)
+		if(FMLEnvironment.production && te instanceof IModuleInventory)
 		{
 			for(ModuleType moduleType : ((IModuleInventory)te).getInsertedModules())
 			{
@@ -137,7 +131,7 @@ public class UniversalOwnerChangerItem extends Item
 		return ActionResult.resultPass(ownerChanger);
 	}
 
-	private boolean tryUpdateBlock(World world, BlockPos pos, String newOwner)
+	public static boolean tryUpdateBlock(World world, BlockPos pos, Owner newOwner)
 	{
 		Block block = world.getBlockState(pos).getBlock();
 
@@ -145,7 +139,7 @@ public class UniversalOwnerChangerItem extends Item
 		{
 			OwnableTileEntity te = (OwnableTileEntity)world.getTileEntity(pos);
 
-			te.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+			te.setOwner(newOwner.getName(), newOwner.getUUID());
 
 			if(!world.isRemote)
 				world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());

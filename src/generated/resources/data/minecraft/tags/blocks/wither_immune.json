@@ -12,6 +12,7 @@
     "securitycraft:inventory_scanner",
     "securitycraft:inventory_scanner_field",
     "securitycraft:electrified_iron_fence",
+    "securitycraft:key_panel",
     "securitycraft:keycard_reader",
     "securitycraft:keypad",
     "securitycraft:keypad_chest",
@@ -383,6 +384,8 @@
     "securitycraft:reinforced_lantern",
     "securitycraft:reinforced_soul_lantern",
     "securitycraft:reinforced_shroomlight",
+    "securitycraft:reinforced_sticky_piston",
+    "securitycraft:reinforced_piston",
     "securitycraft:reinforced_lever",
     "securitycraft:reinforced_stone_pressure_plate",
     "securitycraft:reinforced_oak_pressure_plate",
@@ -416,6 +419,8 @@
     "securitycraft:reinforced_crystal_quartz_slab",
     "securitycraft:reinforced_crystal_quartz_stairs",
     "securitycraft:horizontal_reinforced_iron_bars",
-    "securitycraft:reinforced_grass_path"
+    "securitycraft:reinforced_grass_path",
+    "securitycraft:reinforced_moving_piston",
+    "securitycraft:reinforced_piston_head"
   ]
 }

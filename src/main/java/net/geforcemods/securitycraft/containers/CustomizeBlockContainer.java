@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.LinkableTileEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -128,8 +128,8 @@ public class CustomizeBlockContainer extends Container{
 			{
 				moduleInv.onModuleRemoved(oldStack, ((ModuleItem)oldStack.getItem()).getModuleType());
 
-				if(moduleInv instanceof CustomizableTileEntity)
-					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, (CustomizableTileEntity)moduleInv);
+				if(moduleInv instanceof LinkableTileEntity)
+					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, (LinkableTileEntity)moduleInv);
 			}
 		}
 	}

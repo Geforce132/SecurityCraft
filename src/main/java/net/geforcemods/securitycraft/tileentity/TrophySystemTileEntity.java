@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.BulletEntity;
@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -35,7 +36,7 @@ import net.minecraft.world.Explosion;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class TrophySystemTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
+public class TrophySystemTileEntity extends DisguisableTileEntity implements ITickableTileEntity {
 
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
@@ -82,8 +83,12 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 					Entity shooter = target.getShooter();
 
 					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if(!(shooter != null && ((shooter.getUniqueID() != null && shooter.getUniqueID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
+					if(!(shooter != null &&
+							((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(shooter.getName().getString(), getOwner().getName()))
+									|| (shooter.getUniqueID() != null && shooter.getUniqueID().toString().equals(getOwner().getUUID()))
+									|| ModuleUtils.isAllowed(this, shooter.getName().getString())))) {
 						setTarget(target);
+					}
 				}
 			}
 		}
@@ -211,7 +216,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		else if(projectile.getShooter() instanceof SentryEntity)
 			owner = ((SentryEntity)projectile.getShooter()).getOwner();
 
-		return owner == null || (!owner.equals(getOwner()) && !ModuleUtils.isAllowed(this, owner.getName()));
+		return owner == null || (!owner.owns(this) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}
 
 	public void toggleFilter(EntityType<?> projectileType) {
@@ -251,7 +256,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.SMART, ModuleType.SPEED, ModuleType.ALLOWLIST};
+		return new ModuleType[]{ModuleType.SMART, ModuleType.SPEED, ModuleType.ALLOWLIST, ModuleType.DISGUISE};
 	}
 
 	@Override

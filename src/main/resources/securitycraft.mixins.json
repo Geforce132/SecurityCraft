@@ -1,0 +1,21 @@
+{
+	"required": true,
+	"package": "net.geforcemods.securitycraft.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "securitycraft.refmap.json",
+	"client": [
+		"camera.ClientChunkProviderMixin",
+		"camera.GameRendererMixin",
+		"camera.MinecraftMixin",
+		"camera.WorldRendererMixin",
+		"f3.BetterF3TargetModuleMixin",
+		"f3.DebugOverlayGuiMixin"
+	],
+	"mixins": [
+		"camera.ChunkManagerMixin",
+		"camera.EntityTrackerMixin",
+		"camera.PlayerListMixin",
+		"camera.ServerPlayerEntityMixin"
+	],
+	"minVersion": "0.8"
+}

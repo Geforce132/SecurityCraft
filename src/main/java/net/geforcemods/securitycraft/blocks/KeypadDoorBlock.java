@@ -37,25 +37,22 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-				return ActionResultType.FAIL;
 			}
-
-			if(ModuleUtils.isAllowed(te, player))
+			else if(ModuleUtils.isAllowed(te, player))
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(world, pos, state, te.getSignalLength());
+				activate(state, world, pos, te.getSignalLength());
 			}
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand) && !PlayerUtils.isHoldingItem(player, SCContent.KEY_PANEL, hand))
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				te.openPasswordGUI(player);
 		}
 
 		return ActionResultType.SUCCESS;
 	}
 
-	public static void activate(World world, BlockPos pos, BlockState state, int signalLength){
+	public void activate(BlockState state, World world, BlockPos pos, int signalLength){
 		boolean open = !state.get(OPEN);
 
 		world.playEvent(null, open ? 1005 : 1011, pos, 0);
@@ -69,7 +66,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
-		return new KeypadDoorTileEntity().linkable();
+		return new KeypadDoorTileEntity();
 	}
 
 	@Override

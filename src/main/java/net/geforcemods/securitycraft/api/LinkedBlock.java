@@ -13,7 +13,7 @@ public class LinkedBlock {
 		blockPos = pos;
 	}
 
-	public LinkedBlock(CustomizableTileEntity tileEntity) {
+	public LinkedBlock(LinkableTileEntity tileEntity) {
 		blockName = tileEntity.getBlockState().getBlock().getTranslationKey();
 		blockPos = tileEntity.getPos();
 	}
@@ -22,10 +22,10 @@ public class LinkedBlock {
 		return !(world == null || (world.isAirBlock(blockPos) || !world.getBlockState(blockPos).getBlock().getTranslationKey().equals(blockName)));
 	}
 
-	public CustomizableTileEntity asTileEntity(World world) {
+	public LinkableTileEntity asTileEntity(World world) {
 		if(!validate(world)) return null;
 
-		return (CustomizableTileEntity) world.getTileEntity(blockPos);
+		return (LinkableTileEntity) world.getTileEntity(blockPos);
 	}
 
 	public String getBlockName() {

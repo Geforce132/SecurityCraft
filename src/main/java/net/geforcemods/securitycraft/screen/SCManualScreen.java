@@ -25,8 +25,8 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
@@ -66,6 +66,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.fml.client.gui.GuiUtils;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {
@@ -182,7 +183,7 @@ public class SCManualScreen extends Screen {
 					if(te instanceof IPasswordProtected)
 						blit(matrix, startX + 55, 118, 18, 1, 17, 16);
 
-					if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
+					if(te instanceof IViewActivated)
 						blit(matrix, startX + 81, 118, 36, 1, 17, 16);
 
 					if(te instanceof ICustomizable)
@@ -447,7 +448,7 @@ public class SCManualScreen extends Screen {
 				if(te instanceof IPasswordProtected)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passwordProtectedBlock")));
 
-				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
+				if(te instanceof IViewActivated)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
 				if(te instanceof ICustomizable)
@@ -556,6 +557,7 @@ public class SCManualScreen extends Screen {
 
 	class PatronList extends ScrollPanel
 	{
+		private final String patronListLink = FMLEnvironment.production ? "https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw" : "https://gist.githubusercontent.com/bl4ckscor3/3196e6740774e386871a74a9606eaa61/raw";
 		private final int slotHeight = 12;
 		private final ExecutorService executor = Executors.newSingleThreadExecutor();
 		private Future<List<String>> patronRequestFuture;
@@ -711,7 +713,7 @@ public class SCManualScreen extends Screen {
 			{
 				//create thread to fetch patrons. without this, and for example if the player has no internet connection, the game will hang
 				patronRequestFuture = executor.submit(() -> {
-					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw").openStream())))
+					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(patronListLink).openStream())))
 					{
 						return reader.lines().collect(Collectors.toList());
 					}

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.models;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -25,7 +25,7 @@ public class SecurityCameraModel extends EntityModel<SecurityCameraEntity> {
 	public ModelRenderer cameraLensTop;
 
 	public SecurityCameraModel() {
-		textureWidth = 128;
+		textureWidth = 64;
 		textureHeight = 64;
 		cameraRotationPoint = new ModelRenderer(this, 0, 25);
 		cameraRotationPoint.setRotationPoint(0.0F, 14.0F, 3.0F);
