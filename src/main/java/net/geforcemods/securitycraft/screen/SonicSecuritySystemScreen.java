@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
 import net.geforcemods.securitycraft.screen.components.IdButton;
@@ -26,7 +25,7 @@ public class SonicSecuritySystemScreen extends Screen {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private static final ResourceLocation STREAMER_ICONS = new ResourceLocation("textures/gui/stream_indicator.png");
-
+	private static final TranslationTextComponent SOUND_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.sound");
 	/** The number of ticks between each note when playing back a recording **/
 	private static final int PLAYBACK_DELAY = 15;
 
@@ -118,7 +117,7 @@ public class SonicSecuritySystemScreen extends Screen {
 			clearButton.active = false;
 		}));
 
-		soundButton = addButton(new TogglePictureButton(4, width / 2 - 45, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[]{0, 0}, new int[]{32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
+		soundButton = addButton(new TogglePictureButton(4, width / 2 + 55, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[]{0, 0}, new int[]{32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
 			boolean toggledPing = !te.pings();
 
 			te.setPings(toggledPing);
@@ -137,17 +136,16 @@ public class SonicSecuritySystemScreen extends Screen {
 	{
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
+		int textWidth = font.getStringPropertyWidth(title);
+		int soundTextLength = font.getStringPropertyWidth(SOUND_TEXT);
 
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
-		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
+		blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-
-		int textWidth = font.getStringPropertyWidth(title);
 		font.drawText(matrix, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
-
-		font.drawText(matrix, Utils.localize("gui.securitycraft:sonic_security_system.sound"), startX + 10, startY + 141, 4210752);
+		font.drawText(matrix, SOUND_TEXT, width / 2 + 50 - soundTextLength, startY + 141, 4210752);
 	}
 
 	@Override
