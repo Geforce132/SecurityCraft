@@ -46,7 +46,7 @@ public class SonicSecuritySystemTracker {
 	 * Gets all Sonic Security Systems that have the given block position in their range in the given world
 	 * @param world The world
 	 * @param pos The block position
-	 * @return A list of all ploppers that have the given block position in their range
+	 * @return A list of all sonic security systems that have the given block position in their range
 	 */
 	public static List<SonicSecuritySystemTileEntity> getSonicSecuritySystemsInRange(World world, BlockPos pos) {
 		return getSonicSecuritySystemsInRange(world, pos, SonicSecuritySystemTileEntity.MAX_RANGE);
@@ -57,25 +57,25 @@ public class SonicSecuritySystemTracker {
 	 * @param world The world
 	 * @param pos The block position
 	 * @param range The range to search within (in number of blocks)
-	 * @return A list of all ploppers that have the given block position in their range
+	 * @return A list of all sonic security systems that have the given block position in their range
 	 */
 	public static List<SonicSecuritySystemTileEntity> getSonicSecuritySystemsInRange(World world, BlockPos pos, int range)
 	{
-		final Collection<BlockPos> ploppers = getTrackedSonicSecuritySystems(world);
+		final Collection<BlockPos> sonicSecuritySystems = getTrackedSonicSecuritySystems(world);
 		List<SonicSecuritySystemTileEntity> returnValue = new ArrayList<>();
 
-		for(Iterator<BlockPos> it = ploppers.iterator(); it.hasNext(); )
+		for(Iterator<BlockPos> it = sonicSecuritySystems.iterator(); it.hasNext(); )
 		{
-			BlockPos plopperPos = it.next();
+			BlockPos sonicSecuritySystemPos = it.next();
 
-			if(plopperPos != null)
+			if(sonicSecuritySystemPos != null)
 			{
-				TileEntity potentialPlopper = world.getTileEntity(plopperPos);
+				TileEntity potentialSonicSecuritySystem = world.getTileEntity(sonicSecuritySystemPos);
 
-				if(potentialPlopper instanceof SonicSecuritySystemTileEntity)
+				if(potentialSonicSecuritySystem instanceof SonicSecuritySystemTileEntity)
 				{
-					if(canSonicSecuritySystemReach((SonicSecuritySystemTileEntity)potentialPlopper, pos))
-						returnValue.add((SonicSecuritySystemTileEntity)potentialPlopper);
+					if(canSonicSecuritySystemReach((SonicSecuritySystemTileEntity)potentialSonicSecuritySystem, pos))
+						returnValue.add((SonicSecuritySystemTileEntity)potentialSonicSecuritySystem);
 
 					continue;
 				}
