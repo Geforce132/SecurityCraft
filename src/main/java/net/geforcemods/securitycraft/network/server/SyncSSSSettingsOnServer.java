@@ -41,7 +41,6 @@ public class SyncSSSSettingsOnServer {
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
-
 			World world = ctx.get().getSender().world;
 			TileEntity te = world.getTileEntity(pos);
 
@@ -56,6 +55,9 @@ public class SyncSSSSettingsOnServer {
 						break;
 					case POWER_OFF:
 						sss.setActive(false);
+
+						if(sss.isRecording())
+							sss.setRecording(false);
 						break;
 					case SOUND_ON:
 						sss.setPings(true);

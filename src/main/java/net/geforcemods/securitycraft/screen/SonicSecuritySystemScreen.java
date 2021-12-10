@@ -90,6 +90,9 @@ public class SonicSecuritySystemScreen extends Screen {
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), toggledState ? SyncSSSSettingsOnServer.DataType.POWER_ON : SyncSSSSettingsOnServer.DataType.POWER_OFF));
 			powerButton.setMessage(getPowerString(toggledState));
 
+			if(!toggledState)
+				recordingButton.setMessage(getRecordingString(false));
+
 			// Disable the recording-related buttons when the SSS is powered off
 			recordingButton.active = toggledState;
 			soundButton.active = toggledState;
