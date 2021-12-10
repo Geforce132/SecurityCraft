@@ -1021,5 +1021,6 @@
 	"securitycraft.subtitle.camerasnap": "Camera shutter",
 	"securitycraft.subtitle.taserfire": "Taser firing",
 	"securitycraft.subtitle.lock": "Container locking",
-	"securitycraft.subtitle.get_item": "Item gotten!"
+	"securitycraft.subtitle.get_item": "Item gotten!",
+	"securitycraft.subtitle.ping": "Sonic Security System pings"
 }
