@@ -45,7 +45,7 @@ public class SonicSecuritySystemScreen extends Screen {
 
 	public SonicSecuritySystemScreen(SonicSecuritySystemTileEntity te)
 	{
-		super(new TranslationTextComponent("sign.edit"));
+		super(te.getName());
 		this.te = te;
 		numNotes = te.getNumberOfNotes();
 	}
@@ -144,9 +144,8 @@ public class SonicSecuritySystemScreen extends Screen {
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		TranslationTextComponent text = Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey());
-		int textWidth = font.getStringPropertyWidth(text);
-		font.drawText(matrix, text, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
+		int textWidth = font.getStringPropertyWidth(title);
+		font.drawText(matrix, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
 
 		font.drawText(matrix, Utils.localize("gui.securitycraft:sonic_security_system.sound"), startX + 10, startY + 141, 4210752);
 	}
