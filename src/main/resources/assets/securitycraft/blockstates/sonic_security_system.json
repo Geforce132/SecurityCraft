@@ -1,8 +1,5 @@
 {
     "variants": {
-        "facing=north": { "model": "securitycraft:block/sonic_security_system" },
-        "facing=south": { "model": "securitycraft:block/sonic_security_system", "y": 180 },
-        "facing=west":  { "model": "securitycraft:block/sonic_security_system", "y": 270 },
-        "facing=east":  { "model": "securitycraft:block/sonic_security_system", "y": 90 }
+        "": { "model": "securitycraft:block/sonic_security_system" }
     }
 }

@@ -9,18 +9,20 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -34,7 +36,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
-public class SonicSecuritySystemBlock extends OwnableBlock {
+public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLoggable {
 
 	private static final VoxelShape SHAPE = Stream.of(
 			Block.makeCuboidShape(5.5, 11, 5.5, 10.5, 16, 10.5),
@@ -44,13 +46,13 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 			Block.makeCuboidShape(6.5, 0, 6.5, 9.5, 1, 9.5)
 			).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
 
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	public SonicSecuritySystemBlock(Properties properties)
 	{
 		super(properties);
 
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+		setDefaultState(stateContainer.getBaseState().with(WATERLOGGED, false));
 	}
 
 	public static boolean isNormalCube(BlockState state, IBlockReader reader, BlockPos pos) {
@@ -59,6 +61,9 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 
 	@Override
 	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+		if(state.get(WATERLOGGED))
+			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+
 		return facing == Direction.DOWN && !isValidPosition(state, world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
@@ -96,9 +101,10 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 		return 0;
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext context)
 	{
-		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
+		return getDefaultState().with(WATERLOGGED, context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER);
 	}
 
 	@Override
@@ -116,19 +122,13 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 	@Override
 	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
-		builder.add(FACING);
+		builder.add(WATERLOGGED);
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
+	public FluidState getFluidState(BlockState state)
 	{
-		return state.with(FACING, rot.rotate(state.get(FACING)));
-	}
-
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
-		return state.rotate(mirror.toRotation(state.get(FACING)));
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
 	@Override

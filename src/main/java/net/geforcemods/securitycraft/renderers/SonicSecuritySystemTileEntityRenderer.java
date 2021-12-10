@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.renderers;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
@@ -14,7 +13,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Quaternion;
@@ -26,9 +24,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<SonicSecuritySystemTileEntity> {
 
-	private static final Quaternion POSITIVE_Y_180 = Vector3f.YP.rotationDegrees(180.0F);
-	private static final Quaternion POSITIVE_Y_90 = Vector3f.YP.rotationDegrees(90.0F);
-	private static final Quaternion NEGATIVE_Y_90 = Vector3f.YN.rotationDegrees(90.0F);
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
 	private static final SonicSecuritySystemModel MODEL = new SonicSecuritySystemModel();
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/sonic_security_system.png");
@@ -43,7 +38,6 @@ public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<So
 	@Override
 	public void render(SonicSecuritySystemTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay)
 	{
-		Direction side = te.getBlockState().get(SonicSecuritySystemBlock.FACING);
 		boolean recording = te.isRecording();
 
 		matrix.translate(0.5D, 1.5D, 0.5D);
@@ -66,13 +60,6 @@ public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<So
 			fontRenderer.func_243247_a(text, halfWidth, 0, -1, false, positionMatrix, buffer, false, 0, packedLight);
 			matrix.pop();
 		}
-
-		if(side == Direction.NORTH)
-			matrix.rotate(POSITIVE_Y_180);
-		else if(side == Direction.EAST)
-			matrix.rotate(POSITIVE_Y_90);
-		else if(side == Direction.WEST)
-			matrix.rotate(NEGATIVE_Y_90);
 
 		matrix.rotate(POSITIVE_X_180);
 
