@@ -80,8 +80,12 @@ public class SonicSecuritySystemScreen extends Screen {
 	{
 		super.init();
 
+		boolean isActive = te.isActive();
+		boolean hasNotes = te.getNumberOfNotes() > 0;
+
 		powerButton = addButton(new IdButton(0, width / 2 - 75, height / 2 - 59, 150, 20, getPowerString(te.isActive()), button -> {
 			boolean toggledState = !te.isActive();
+			boolean containsNotes = te.getNumberOfNotes() > 0;
 
 			te.setActive(toggledState);
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), toggledState ? SyncSSSSettingsOnServer.DataType.POWER_ON : SyncSSSSettingsOnServer.DataType.POWER_OFF));
@@ -90,8 +94,8 @@ public class SonicSecuritySystemScreen extends Screen {
 			// Disable the recording-related buttons when the SSS is powered off
 			recordingButton.active = toggledState;
 			soundButton.active = toggledState;
-			clearButton.active = toggledState;
-			playButton.active = toggledState;
+			playButton.active = toggledState && containsNotes;
+			clearButton.active = toggledState && containsNotes;
 		}));
 
 		recordingButton = addButton(new IdButton(1, width / 2 - 75, height / 2 - 32, 150, 20, getRecordingString(te.isRecording()), button -> {
@@ -103,12 +107,14 @@ public class SonicSecuritySystemScreen extends Screen {
 
 		playButton = addButton(new IdButton(2, width / 2 - 75, height / 2 - 10, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play"), button -> {
 			// Start playing back any notes that have been recorded
-			playback = true;
+			if(te.getNumberOfNotes() > 0)
+				playback = true;
 		}));
 
 		clearButton = addButton(new IdButton(3, width / 2 - 75, height / 2 + 12, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear"), button -> {
 			te.clearNotes();
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
+			playButton.active = false;
 			clearButton.active = false;
 		}));
 
@@ -120,11 +126,10 @@ public class SonicSecuritySystemScreen extends Screen {
 		}));
 		soundButton.setCurrentIndex(!te.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
 
-		// Disable the "play recording" and "clear notes" buttons if no notes are recorded
-		if(te.getNumberOfNotes() == 0) {
-			playButton.active = false;
-			clearButton.active = false;
-		}
+		recordingButton.active = isActive;
+		soundButton.active = isActive;
+		playButton.active = isActive && hasNotes;
+		clearButton.active = isActive && hasNotes;
 	}
 
 	@Override
