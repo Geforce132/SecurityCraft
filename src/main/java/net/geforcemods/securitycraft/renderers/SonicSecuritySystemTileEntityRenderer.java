@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -29,21 +30,42 @@ public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<So
 	private static final Quaternion POSITIVE_Y_90 = Vector3f.YP.rotationDegrees(90.0F);
 	private static final Quaternion NEGATIVE_Y_90 = Vector3f.YN.rotationDegrees(90.0F);
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
+	private static final SonicSecuritySystemModel MODEL = new SonicSecuritySystemModel();
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/sonic_security_system.png");
 
 	public SonicSecuritySystemTileEntityRenderer(TileEntityRendererDispatcher terd)
 	{
 		super(terd);
 	}
 
-	private static final SonicSecuritySystemModel modelSonicSecuritySystem = new SonicSecuritySystemModel();
-	private static final ResourceLocation sonicSecuritySystemTexture = new ResourceLocation("securitycraft:textures/block/sonic_security_system.png");
-
 	@Override
-	public void render(SonicSecuritySystemTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_)
+	public void render(SonicSecuritySystemTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay)
 	{
+		Direction side = te.getBlockState().get(SonicSecuritySystemBlock.FACING);
+		boolean active = te.isActive();
+		boolean recording = te.isRecording();
+		boolean listening = te.isListening();
+
 		matrix.translate(0.5D, 1.5D, 0.5D);
 
-		Direction side = te.getBlockState().get(SonicSecuritySystemBlock.FACING);
+		if(recording || listening)
+		{
+			TranslationTextComponent text = Utils.localize(recording ? "Recording..." : "Listening...");
+			float f1 = Minecraft.getInstance().gameSettings.getTextBackgroundOpacity(0.25F);
+			int j = (int)(f1 * 255.0F) << 24;
+			FontRenderer fontRenderer = renderDispatcher.getFontRenderer();
+			float halfWidth = -fontRenderer.getStringPropertyWidth(text) / 2;
+			Matrix4f positionMatrix;
+
+			matrix.push();
+			matrix.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
+			matrix.scale(-0.025F, -0.025F, 0.025F);
+			positionMatrix = matrix.getLast().getMatrix();
+			RenderSystem.disableCull();
+			fontRenderer.func_243247_a(text, halfWidth, 0, 16777215, false, positionMatrix, buffer, true, j, packedLight);
+			fontRenderer.func_243247_a(text, halfWidth, 0, -1, false, positionMatrix, buffer, false, 0, packedLight);
+			matrix.pop();
+		}
 
 		if(side == Direction.NORTH)
 			matrix.rotate(POSITIVE_Y_180);
@@ -54,32 +76,9 @@ public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<So
 
 		matrix.rotate(POSITIVE_X_180);
 
-		boolean active = te.isActive();
-		boolean recording = te.isRecording();
-		boolean listening = te.isListening();
 		if(active || recording)
-			modelSonicSecuritySystem.radar.rotateAngleY = te.radarRotationDegrees;
+			MODEL.radar.rotateAngleY = te.radarRotationDegrees;
 
-		modelSonicSecuritySystem.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(sonicSecuritySystemTexture)), p_225616_5_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-
-		if(recording || listening)
-		{
-			String s = recording ? "Recording..." : "Listening...";
-			TranslationTextComponent text = Utils.localize(s);
-
-			matrix.push();
-			matrix.rotate(Vector3f.YP.rotationDegrees(te.radarRotationDegrees * 32));
-			matrix.translate(0D, 0.5D, 0.0D);
-			matrix.scale(0.025F, 0.025F, 0.025F);
-			RenderSystem.disableCull();
-			float f1 = Minecraft.getInstance().gameSettings.getTextBackgroundOpacity(0.25F);
-			int j = (int)(f1 * 255.0F) << 24;
-			FontRenderer fontRenderer = this.renderDispatcher.getFontRenderer();
-			float halfWidth = -fontRenderer.getStringPropertyWidth(text) / 2;
-
-			fontRenderer.func_243247_a(text, halfWidth, -20, 16777215, false, matrix.getLast().getMatrix(), buffer, true, j, p_225616_5_);
-			fontRenderer.func_243247_a(text, halfWidth, -20, -1, false, matrix.getLast().getMatrix(), buffer, false, 0, p_225616_5_);
-			matrix.pop();
-		}
+		MODEL.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }
