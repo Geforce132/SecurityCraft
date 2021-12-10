@@ -15,7 +15,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
@@ -34,11 +34,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class SonicSecuritySystemItem extends Item {
+public class SonicSecuritySystemItem extends BlockItem {
 
 	public SonicSecuritySystemItem(Properties properties)
 	{
-		super(properties);
+		super(SCContent.SONIC_SECURITY_SYSTEM.get(), properties);
 	}
 
 	@Override
