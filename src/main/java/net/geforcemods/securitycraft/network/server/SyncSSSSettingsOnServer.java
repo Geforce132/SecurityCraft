@@ -51,33 +51,33 @@ public class SyncSSSSettingsOnServer {
 
 				switch(message.dataType)
 				{
-				case POWER_ON:
-					sss.setActive(true);
-					break;
-				case POWER_OFF:
-					sss.setActive(false);
-					break;
-				case SOUND_ON:
-					sss.setPings(true);
-					break;
-				case SOUND_OFF:
-					sss.setPings(false);
-					break;
-				case RECORDING_ON:
-					sss.setRecording(true);
-					break;
-				case RECORDING_OFF:
-					sss.setRecording(false);
-					break;
-				case LISTENING_ON:
-					sss.setListening(true);
-					break;
-				case LISTENING_OFF:
-					sss.setListening(false);
-					break;
-				case CLEAR_NOTES:
-					sss.clearNotes();
-					break;
+					case POWER_ON:
+						sss.setActive(true);
+						break;
+					case POWER_OFF:
+						sss.setActive(false);
+						break;
+					case SOUND_ON:
+						sss.setPings(true);
+						break;
+					case SOUND_OFF:
+						sss.setPings(false);
+						break;
+					case RECORDING_ON:
+						sss.setRecording(true);
+						break;
+					case RECORDING_OFF:
+						sss.setRecording(false);
+						break;
+					case LISTENING_ON:
+						sss.startListening();
+						break;
+					case LISTENING_OFF:
+						sss.stopListening();
+						break;
+					case CLEAR_NOTES:
+						sss.clearNotes();
+						break;
 				}
 			}
 		});

@@ -316,9 +316,10 @@ public class SCEventHandler {
 			}
 			// If the SSS is active, check to see if the note being played matches the saved combination.
 			// If so, toggle its redstone power output on
-			else if(te.isActive() && !te.isRecording() && te.listenToNote(event.getVanillaNoteId(), event.getInstrument().getString()))
+			else if(te.listenToNote(event.getVanillaNoteId(), event.getInstrument().getString()))
 			{
 				te.shouldEmitPower = true;
+				te.stopListening();
 				event.getWorld().updateBlock(te.getPos(), SCContent.SONIC_SECURITY_SYSTEM.get());
 			}
 		}

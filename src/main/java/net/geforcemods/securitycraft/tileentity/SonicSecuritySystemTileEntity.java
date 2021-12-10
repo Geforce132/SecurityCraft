@@ -118,13 +118,7 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 					return;
 				}
 				else
-				{
-					listeningTimer = LISTEN_DELAY;
-					listenPos = 0;
-					isListening = false;
-					world.updateBlock(pos, SCContent.SONIC_SECURITY_SYSTEM.get());
-					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new SyncSSSSettingsOnClient(pos, SyncSSSSettingsOnClient.DataType.LISTENING_OFF));
-				}
+					stopListening();
 			}
 
 			// If this SSS isn't linked to any blocks, return as no sound should
@@ -419,12 +413,31 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 	}
 
 	/**
-	 * Toggle the listening state of the Sonic Security System
-	 * @param listening true if the SSS should be listening, false if not
+	 * Toggle the listening state of the Sonic Security System on
 	 */
-	public void setListening(boolean listening)
+	public void startListening()
 	{
-		isListening = listening;
+		isListening = true;
+	}
+
+	/**
+	 * Toggle the listening state of the Sonic Security System off and properly reset everything
+	 */
+	public void stopListening() {
+		resetListeningTimer();
+		listenPos = 0;
+		isListening = false;
+		world.updateBlock(pos, SCContent.SONIC_SECURITY_SYSTEM.get());
+
+		if(!world.isRemote)
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new SyncSSSSettingsOnClient(pos, SyncSSSSettingsOnClient.DataType.LISTENING_OFF));
+	}
+
+	/**
+	 * Resets the delay before the SSS stops listening to new notes for the same tune
+	 */
+	public void resetListeningTimer() {
+		listeningTimer = LISTEN_DELAY;
 	}
 
 	/**
@@ -455,21 +468,13 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 
 		if(recordedNotes.get(listenPos++).isSameNote(noteID, instrumentName))
 		{
-			// Played the entire tune correctly
-			if(listenPos >= recordedNotes.size())
-			{
-				listenPos = 0;
-				return true;
-			}
-			// Played part of the tune correctly but more notes are needed
-			else
-			{
-				return false;
-			}
+			resetListeningTimer();
+			// true if the entire tune was correctly played, false if it was only partly played but more notes are needed
+			return listenPos >= recordedNotes.size();
 		}
 
 		// An incorrect note was played
-		listenPos = 0;
+		stopListening();
 		return false;
 	}
 
