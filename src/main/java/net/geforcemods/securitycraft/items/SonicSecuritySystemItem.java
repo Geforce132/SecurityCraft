@@ -55,10 +55,8 @@ public class SonicSecuritySystemItem extends Item {
 			if(player.isSneaking())
 			{
 				TileEntity te = world.getTileEntity(pos);
-				boolean isOwner = te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner(player);
-				boolean isLockable = te instanceof ILockable && ((ILockable) te).canBeLocked();
 
-				if(isLockable && isOwner)
+				if((!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player)) && te instanceof ILockable)
 				{
 					if(stack.getTag() == null)
 						stack.setTag(new CompoundNBT());
