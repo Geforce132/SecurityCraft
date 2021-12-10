@@ -693,6 +693,8 @@
 	"gui.securitycraft:sonic_security_system.power.on": "Power: on",
 	"gui.securitycraft:sonic_security_system.power.off": "Power: off",
 	"gui.securitycraft:sonic_security_system.sound": "Sound:",
+	"gui.securitycraft:sonic_security_system.recording": "Recording...",
+	"gui.securitycraft:sonic_security_system.listening": "Listening...",
 	"gui.securitycraft:customize.tooltip": "%s (%s)",
 	"gui.securitycraft:customize.currentSetting": "Currently: %s",
 

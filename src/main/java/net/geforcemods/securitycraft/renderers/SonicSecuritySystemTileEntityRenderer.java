@@ -32,6 +32,8 @@ public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<So
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
 	private static final SonicSecuritySystemModel MODEL = new SonicSecuritySystemModel();
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/sonic_security_system.png");
+	private static final TranslationTextComponent RECORDING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.recording");
+	private static final TranslationTextComponent LISTENING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.listening");
 
 	public SonicSecuritySystemTileEntityRenderer(TileEntityRendererDispatcher terd)
 	{
@@ -42,15 +44,13 @@ public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<So
 	public void render(SonicSecuritySystemTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay)
 	{
 		Direction side = te.getBlockState().get(SonicSecuritySystemBlock.FACING);
-		boolean active = te.isActive();
 		boolean recording = te.isRecording();
-		boolean listening = te.isListening();
 
 		matrix.translate(0.5D, 1.5D, 0.5D);
 
-		if(recording || listening)
+		if(recording || te.isListening())
 		{
-			TranslationTextComponent text = Utils.localize(recording ? "Recording..." : "Listening...");
+			TranslationTextComponent text = recording ? RECORDING_TEXT : LISTENING_TEXT;
 			float f1 = Minecraft.getInstance().gameSettings.getTextBackgroundOpacity(0.25F);
 			int j = (int)(f1 * 255.0F) << 24;
 			FontRenderer fontRenderer = renderDispatcher.getFontRenderer();
@@ -76,7 +76,7 @@ public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<So
 
 		matrix.rotate(POSITIVE_X_180);
 
-		if(active || recording)
+		if(te.isActive() || recording)
 			MODEL.radar.rotateAngleY = te.radarRotationDegrees;
 
 		MODEL.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
