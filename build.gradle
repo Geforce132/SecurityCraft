@@ -115,7 +115,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.2.55'
+    minecraft 'net.minecraftforge:forge:1.15.2-31.2.56'
     annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
     
 	implementation fg.deobf("curse.maven:hwyla-253449:2880071") //only the api jar because the normal one is incompatible with the forge version SecurityCraft is using
