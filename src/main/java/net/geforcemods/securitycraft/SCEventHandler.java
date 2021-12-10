@@ -43,6 +43,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -135,12 +136,20 @@ public class SCEventHandler {
 		}
 
 		World world = event.getWorld();
+		TileEntity te = world.getTileEntity(event.getPos());
+		BlockState state  = world.getBlockState(event.getPos());
+		Block block = state.getBlock();
+
+		if(te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).onRightClickWhenLocked(world, event.getPos(), event.getPlayer()))
+		{
+			if(event.getHand() == Hand.MAIN_HAND)
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block.getTranslationKey())), TextFormatting.DARK_RED, false);
+
+			event.setCanceled(true);
+			return;
+		}
 
 		if(!world.isRemote){
-			TileEntity te = world.getTileEntity(event.getPos());
-			BlockState state  = world.getBlockState(event.getPos());
-			Block block = state.getBlock();
-
 			if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.KEY_PANEL, event.getHand()))
 			{
 				for(IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles())
@@ -152,13 +161,6 @@ public class SCEventHandler {
 					}
 				}
 
-				return;
-			}
-
-			if(te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).onRightClickWhenLocked(world, event.getPos(), event.getPlayer()))
-			{
-				event.setCanceled(true);
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block.getTranslationKey())), TextFormatting.DARK_RED);
 				return;
 			}
 

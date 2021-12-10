@@ -6,12 +6,10 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.SoundType;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -24,7 +22,6 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -42,17 +39,17 @@ public class SonicSecuritySystemItem extends BlockItem {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx)
+	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z);
+		return onItemUseFirst(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), stack, ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z);
 	}
 
-	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ)
+	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ)
 	{
 		if(!world.isRemote)
 		{
-			// If the player is sneaking, add/remove positions from the item when right-clicking a lockable block
-			if(player.isSneaking())
+			// If the player is not sneaking, add/remove positions from the item when right-clicking a lockable block
+			if(!player.isSneaking())
 			{
 				TileEntity te = world.getTileEntity(pos);
 
@@ -69,58 +66,37 @@ public class SonicSecuritySystemItem extends BlockItem {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
 						return ActionResultType.SUCCESS;
 					}
-					else
+					else if(addLinkedBlock(stack.getTag(), pos, player))
 					{
-						if(addLinkedBlock(stack.getTag(), pos, player))
-						{
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
-						}
-						else
-						{
-							return ActionResultType.FAIL;
-						}
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
+						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
+						return ActionResultType.SUCCESS;
 					}
-
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
-
-					return ActionResultType.SUCCESS;
-				}
-			}
-			// Place down the SSS if this item has at least one linked block saved
-			else
-			{
-				if(stack.hasTag() && hasLinkedBlock(stack.getTag()))
-				{
-					pos = pos.offset(facing);
-
-					if(!world.isAirBlock(pos))
-					{
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blocked"), TextFormatting.DARK_RED);
-					}
-					else
-					{
-						// Set up a new TileEntity and add it to the block once it's placed
-						world.setBlockState(pos, SCContent.SONIC_SECURITY_SYSTEM.get().getDefaultState().with(SonicSecuritySystemBlock.FACING, player.getHorizontalFacing().getOpposite()));
-
-						((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getString());
-						((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).transferPositionsFromItem(stack.getTag());
-						world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
-
-						world.playSound(null, pos, SoundType.METAL.getPlaceSound(), SoundCategory.BLOCKS, SoundType.METAL.volume, SoundType.METAL.pitch);
-
-						if(!player.isCreative())
-							stack.shrink(1);
-					}
-				}
-				else
-				{
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.notLinked"), TextFormatting.DARK_RED);
-					return ActionResultType.FAIL;
 				}
 			}
 		}
 
-		return ActionResultType.SUCCESS;
+		//don't place down the SSS if it has at least one linked block
+		//placing is handled by minecraft otherwise
+		if(!stack.hasTag() || !hasLinkedBlock(stack.getTag()))
+		{
+			if(!world.isRemote)
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.notLinked"), TextFormatting.DARK_RED);
+
+			return ActionResultType.FAIL;
+		}
+
+		return ActionResultType.PASS;
+	}
+
+	@Override
+	public ActionResultType onItemUse(ItemUseContext ctx) {
+		ActionResultType returnValue = super.onItemUse(ctx);
+
+		if(returnValue.isSuccessOrConsume())
+			((SonicSecuritySystemTileEntity) ctx.getWorld().getTileEntity(ctx.getPos().offset(ctx.getFace()))).transferPositionsFromItem(ctx.getItem().getTag());
+
+		return returnValue;
 	}
 
 	@Override
