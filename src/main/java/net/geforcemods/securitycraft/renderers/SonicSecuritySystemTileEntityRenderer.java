@@ -62,10 +62,7 @@ public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<So
 		}
 
 		matrix.rotate(POSITIVE_X_180);
-
-		if(te.isActive() || recording)
-			MODEL.radar.rotateAngleY = te.radarRotationDegrees;
-
+		MODEL.setRadarRotation(te.radarRotationDegrees);
 		MODEL.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }
