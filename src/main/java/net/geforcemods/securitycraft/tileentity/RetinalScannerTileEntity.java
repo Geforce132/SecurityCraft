@@ -37,6 +37,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class RetinalScannerTileEntity extends DisguisableTileEntity implements IViewActivated, ITickableTileEntity, ILockable {
@@ -64,30 +65,37 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 	public void onEntityViewed(LivingEntity entity){
 		if(!world.isRemote)
 		{
-			BlockState state = world.getBlockState(pos);
+			if (!isLocked()) {
+				BlockState state = world.getBlockState(pos);
 
-			if(!state.get(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)){
-				String name = entity.getName().getString();
+				if(!state.get(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)){
+					String name = entity.getName().getString();
 
-				if(entity instanceof PlayerEntity) {
-					PlayerEntity player = (PlayerEntity)entity;
+					if(entity instanceof PlayerEntity) {
+						PlayerEntity player = (PlayerEntity)entity;
 
-					if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == Items.PLAYER_HEAD)
-						name = PlayerUtils.getNameOfSkull(player);
+						if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == Items.PLAYER_HEAD)
+							name = PlayerUtils.getNameOfSkull(player);
 
-					if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
-						return;
+						if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
+							return;
+						}
 					}
+					else if(activatedOnlyByPlayer())
+						return;
+
+					world.setBlockState(pos, state.with(RetinalScannerBlock.POWERED, true));
+					world.getPendingBlockTicks().scheduleTick(new BlockPos(pos), SCContent.RETINAL_SCANNER.get(), getSignalLength());
+
+					if(entity instanceof PlayerEntity && sendMessage.get())
+						PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
 				}
-				else if(activatedOnlyByPlayer())
-					return;
+			}
+			else if (entity instanceof PlayerEntity && sendMessage.get()) {
+				TranslationTextComponent blockName = Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey());
 
-				world.setBlockState(pos, state.with(RetinalScannerBlock.POWERED, true));
-				world.getPendingBlockTicks().scheduleTick(new BlockPos(pos), SCContent.RETINAL_SCANNER.get(), getSignalLength());
-
-				if(entity instanceof PlayerEntity && sendMessage.get())
-					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer((PlayerEntity)entity, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), TextFormatting.DARK_RED, false);
 			}
 		}
 	}
