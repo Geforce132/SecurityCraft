@@ -39,6 +39,8 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 	 *  the same "combination." Notes played after the delay has elapsed will start a new
 	 *  combination */
 	private static final int LISTEN_DELAY = 60;
+	/** The number of ticks the sonic security system emits redstone power for after the correct tune has been played */
+	private static final int REDSTONE_LENGTH = 40;
 
 	/** The listening and recording range of Sonic Security Systems (perhaps a config option?) */
 	public static final int MAX_RANGE = 30;
@@ -52,7 +54,7 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 	private int pingCooldown = PING_DELAY;
 
 	/** Used to control the number of ticks that Sonic Security Systems emit redstone power for */
-	private int powerCooldown = 40;
+	private int powerCooldown = REDSTONE_LENGTH;
 	public float radarRotationDegrees = 0;
 
 	/** A list containing all of the blocks that this SSS is linked to */
@@ -102,7 +104,7 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 					powerCooldown--;
 				else
 				{
-					powerCooldown = 40;
+					powerCooldown = REDSTONE_LENGTH;
 					shouldEmitPower = false;
 					world.updateBlock(pos, SCContent.SONIC_SECURITY_SYSTEM.get());
 				}

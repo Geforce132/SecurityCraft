@@ -140,7 +140,7 @@ public class SCEventHandler {
 		BlockState state  = world.getBlockState(event.getPos());
 		Block block = state.getBlock();
 
-		if(te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).onRightClickWhenLocked(world, event.getPos(), event.getPlayer()))
+		if(te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).disableInteractionWhenLocked(world, event.getPos(), event.getPlayer()))
 		{
 			if(event.getHand() == Hand.MAIN_HAND)
 				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block.getTranslationKey())), TextFormatting.DARK_RED, false);

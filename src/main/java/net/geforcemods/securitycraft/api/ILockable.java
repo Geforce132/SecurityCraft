@@ -34,7 +34,7 @@ public interface ILockable {
 
 		for(SonicSecuritySystemTileEntity te : sonicSecuritySystems) {
 			if(te.isActive() && te.isLinkedToBlock(thisTe.getPos())) {
-				return true;
+				return !te.shouldEmitPower; //if the SSS is emitting power, the correct tune has been played and as such the block should not be locked
 			}
 		}
 
@@ -47,7 +47,7 @@ public interface ILockable {
 	 * @param pos The position of the block that was clicked.
 	 * @return Return true if you want the player's interaction with the block to be stopped, false otherwise.
 	 */
-	public default boolean onRightClickWhenLocked(World world, BlockPos pos, PlayerEntity player)
+	public default boolean disableInteractionWhenLocked(World world, BlockPos pos, PlayerEntity player)
 	{
 		return true;
 	}
