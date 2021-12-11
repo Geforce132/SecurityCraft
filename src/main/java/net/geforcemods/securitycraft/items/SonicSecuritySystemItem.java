@@ -53,23 +53,29 @@ public class SonicSecuritySystemItem extends BlockItem {
 			{
 				TileEntity te = world.getTileEntity(pos);
 
-				if((!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player)) && te instanceof ILockable)
-				{
-					if(stack.getTag() == null)
-						stack.setTag(new CompoundNBT());
+				if (te instanceof ILockable) {
+					if((!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player)))
+					{
+						if(stack.getTag() == null)
+							stack.setTag(new CompoundNBT());
 
-					// Remove a block from the tag if it was already linked to.
-					// If not, link to it
-					if(isAdded(stack.getTag(), pos))
-					{
-						removeLinkedBlock(stack.getTag(), pos);
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
-						return ActionResultType.SUCCESS;
+						// Remove a block from the tag if it was already linked to.
+						// If not, link to it
+						if(isAdded(stack.getTag(), pos))
+						{
+							removeLinkedBlock(stack.getTag(), pos);
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
+							return ActionResultType.SUCCESS;
+						}
+						else if(addLinkedBlock(stack.getTag(), pos, player))
+						{
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
+							SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
+							return ActionResultType.SUCCESS;
+						}
 					}
-					else if(addLinkedBlock(stack.getTag(), pos, player))
-					{
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
-						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
+					else {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
 						return ActionResultType.SUCCESS;
 					}
 				}
