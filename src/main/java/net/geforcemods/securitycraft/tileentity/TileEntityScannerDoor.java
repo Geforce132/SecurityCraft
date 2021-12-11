@@ -37,12 +37,7 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 				return;
 
 			EntityPlayer player = (EntityPlayer)entity;
-
-			if(PlayerUtils.isPlayerMountedOnCamera(player))
-				return;
-
 			String name = entity.getName();
-
 
 			if (ConfigHandler.trickScannersWithPlayerHeads && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.SKULL)
 				name = PlayerUtils.getNameOfSkull(player);

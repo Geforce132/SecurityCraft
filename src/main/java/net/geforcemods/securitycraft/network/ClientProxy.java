@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
 import net.geforcemods.securitycraft.items.ItemBriefcase;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.ModelBlockMine;
@@ -446,5 +447,10 @@ public class ClientProxy implements IProxy {
 	public EntityPlayer getClientPlayer()
 	{
 		return Minecraft.getMinecraft().player;
+	}
+
+	public static boolean isPlayerMountedOnCamera()
+	{
+		return Minecraft.getMinecraft().getRenderViewEntity() instanceof EntitySecurityCamera;
 	}
 }

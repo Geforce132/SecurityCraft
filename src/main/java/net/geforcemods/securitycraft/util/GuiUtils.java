@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -24,6 +25,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -48,26 +50,37 @@ public class GuiUtils{
 	private static final ResourceLocation SUGAR_TEXTURE = new ResourceLocation("textures/items/sugar.png");
 
 	public static void drawCameraOverlay(Minecraft mc, Gui gui, ScaledResolution resolution, EntityPlayer player, World world, BlockPos pos) {
-		TileEntitySecurityCamera te = (TileEntitySecurityCamera)world.getTileEntity(pos);
-		int timeY = 25;
+		if (mc.gameSettings.showDebugInfo)
+			return;
+
+		TileEntity tile = world.getTileEntity(pos);
+
+		if (!(tile instanceof TileEntitySecurityCamera))
+			return;
+
+		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+		TileEntitySecurityCamera te = (TileEntitySecurityCamera)tile;
+		boolean hasRedstoneModule = te.hasModule(EnumModuleType.REDSTONE);
 		GameSettings settings = Minecraft.getMinecraft().gameSettings;
+		IBlockState state = world.getBlockState(pos);
 		String lookAround = GameSettings.getKeyDisplayString(settings.keyBindForward.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindLeft.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindBack.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindRight.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.lookAround").getFormattedText();
+		int timeY = 25;
 
 		if(te.hasCustomName())
 		{
 			String cameraName = te.getName();
 
-			Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(cameraName, resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(cameraName) - 8, 25, 16777215);
+			font.drawStringWithShadow(cameraName, resolution.getScaledWidth() - font.getStringWidth(cameraName) - 8, 25, 16777215);
 			timeY += 10;
 		}
 
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(ClientUtils.getFormattedMinecraftTime()) - 4, timeY, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(lookAround, resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(lookAround) - 8, resolution.getScaledHeight() - 80, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(settings.keyBindSneak.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText(), resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(settings.keyBindSneak.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText()) - 8, resolution.getScaledHeight() - 70, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText(), resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText()) - 8, resolution.getScaledHeight() - 60, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.activateNightVision").getFormattedText(), resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.activateNightVision").getFormattedText()) - 8, resolution.getScaledHeight() - 50, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText(), resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText()) - 8, resolution.getScaledHeight() - 40, te.hasModule(EnumModuleType.REDSTONE) ? 16777215 : 16724855);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(Utils.localize("gui.securitycraft:camera.toggleRedstoneNote").getFormattedText(), resolution.getScaledWidth() - Minecraft.getMinecraft().fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:camera.toggleRedstoneNote").getFormattedText()) - 8, resolution.getScaledHeight() - 30, te.hasModule(EnumModuleType.REDSTONE) ? 16777215 : 16724855);
+		font.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() - font.getStringWidth(ClientUtils.getFormattedMinecraftTime()) - 4, timeY, 16777215);
+		font.drawStringWithShadow(lookAround, resolution.getScaledWidth() - font.getStringWidth(lookAround) - 8, resolution.getScaledHeight() - 80, 16777215);
+		font.drawStringWithShadow(GameSettings.getKeyDisplayString(settings.keyBindSneak.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(settings.keyBindSneak.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText()) - 8, resolution.getScaledHeight() - 70, 16777215);
+		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText()) - 8, resolution.getScaledHeight() - 60, 16777215);
+		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.activateNightVision").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.activateNightVision").getFormattedText()) - 8, resolution.getScaledHeight() - 50, 16777215);
+		font.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText()) - 8, resolution.getScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
+		font.drawStringWithShadow(Utils.localize("gui.securitycraft:camera.toggleRedstoneNote").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(Utils.localize("gui.securitycraft:camera.toggleRedstoneNote").getFormattedText()) - 8, resolution.getScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
 
 		mc.getTextureManager().bindTexture(cameraDashboard);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -82,11 +95,9 @@ public class GuiUtils{
 			mc.getTextureManager().bindTexture(cameraDashboard);
 		}
 
-		IBlockState state = world.getBlockState(pos);
-
 		if(state.getWeakPower(world, pos, state.getValue(BlockSecurityCamera.FACING)) == 0)
 		{
-			if(!te.hasModule(EnumModuleType.REDSTONE))
+			if(!hasRedstoneModule)
 				gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
 			else
 				gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);

@@ -1,0 +1,18 @@
+{
+	"required": true,
+	"package": "net.geforcemods.securitycraft.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "securitycraft.refmap.json",
+	"client": [
+		"camera.MixinEntityRenderer",
+		"camera.MixinMinecraft",
+		"camera.MixinRenderGlobal",
+		"camera.MixinRenderPlayer"
+	],
+	"mixins": [
+		"camera.MixinEntityPlayerMP",
+		"camera.MixinEntityTrackerEntry",
+		"camera.MixinPlayerList"
+	],
+	"minVersion": "0.8"
+}

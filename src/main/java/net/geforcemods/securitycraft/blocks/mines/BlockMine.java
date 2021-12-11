@@ -7,14 +7,12 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -103,7 +101,7 @@ public class BlockMine extends BlockExplosive {
 			return;
 		else if(entity instanceof EntityItem)
 			return;
-		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
+		else if(!EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 

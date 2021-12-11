@@ -29,6 +29,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.datafix.FixTypes;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
@@ -136,6 +139,13 @@ public class SecurityCraft {
 				e.printStackTrace();
 			}
 		}
+
+		ForgeChunkManager.setForcedChunkLoadingCallback(instance, (tickets, world) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCameraEntity) somewhere
+			tickets.forEach(ticket -> {
+				if(ticket.getType() == Type.ENTITY && ((WorldServer)ticket.world).getEntityFromUuid(ticket.getEntity().getPersistentID()) == null)
+					ForgeChunkManager.releaseTicket(ticket);
+			});
+		});
 	}
 
 	public static String getVersion()

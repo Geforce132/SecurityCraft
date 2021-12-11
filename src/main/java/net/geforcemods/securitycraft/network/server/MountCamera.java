@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -21,28 +21,24 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class MountCamera implements IMessage
 {
 	private BlockPos pos;
-	private int id;
 
 	public MountCamera() {}
 
-	public MountCamera(BlockPos pos, int id)
+	public MountCamera(BlockPos pos)
 	{
 		this.pos = pos;
-		this.id = id;
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
 		buf.writeLong(pos.toLong());
-		buf.writeInt(id);
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
 		pos = BlockPos.fromLong(buf.readLong());
-		id = buf.readInt();
 	}
 
 	public static class Handler implements IMessageHandler<MountCamera, IMessage>
@@ -51,7 +47,6 @@ public class MountCamera implements IMessage
 		public IMessage onMessage(MountCamera message, MessageContext context) {
 			WorldUtils.addScheduledTask(context.getServerHandler().player.world, (() -> {
 				BlockPos pos = message.pos;
-				int id = message.id;
 				EntityPlayerMP player = context.getServerHandler().player;
 				World world = player.world;
 				IBlockState state = world.getBlockState(pos);
@@ -62,16 +57,18 @@ public class MountCamera implements IMessage
 
 					if(te instanceof TileEntitySecurityCamera)
 					{
-						if(((TileEntitySecurityCamera)te).getOwner().isOwner(player) || ((TileEntitySecurityCamera)te).hasModule(EnumModuleType.SMART))
-							((BlockSecurityCamera)state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), id, player);
+						TileEntitySecurityCamera cam = (TileEntitySecurityCamera)te;
+
+						if(cam.getOwner().isOwner(player) || ModuleUtils.isAllowed(cam, player))
+							((BlockSecurityCamera)state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), player);
+						else
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.cameraMonitor.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:notOwned", cam.getOwner().getName()), TextFormatting.RED);
 					}
-					else
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.cameraMonitor.getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", pos), TextFormatting.RED);
 
 					return;
 				}
 
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.cameraMonitor.getTranslationKey()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", pos), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.cameraMonitor.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", pos), TextFormatting.RED);
 			}));
 
 			return null;

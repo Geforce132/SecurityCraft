@@ -2,9 +2,13 @@ buildscript {
     repositories {
         jcenter()
         maven { url = "http://maven.minecraftforge.net" }
+        maven { url = 'https://repo.spongepowered.org/maven' }
+        maven { url = 'https://plugins.gradle.org/m2' }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
     }
 }
 
@@ -12,6 +16,8 @@ import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 version = 'v1.8.23.2'
 group = 'net.geforcemods.securitycraft'
@@ -25,6 +31,7 @@ compileJava {
 minecraft {
     version = "1.12.2-14.23.5.2826"
     runDir = "run"
+    coreMod = 'net.geforcemods.securitycraft.SecurityCraftLoadingPlugin'
     mappings = "stable_39"
 }
 
@@ -49,6 +56,10 @@ repositories {
     name = "CurseMaven"
     url = 'https://cursemaven.com/'
   }
+  maven {
+    name = "Sponge Maven"
+    url = 'https://repo.spongepowered.org/maven'
+  }
 }
 
 dependencies {
@@ -57,8 +68,30 @@ dependencies {
     compileOnly "curse.maven:cyclic-239286:2883487"
     compileOnly "curse.maven:icbm-classic-244451:2918052"
     compileOnly "curse.maven:lycanites-mobs-224770:2935745"
+	compile 'org.spongepowered:mixin:0.8.3'
     runtime 'mezz.jei:jei_1.12.2:4.16.1.302'
     deobfProvided 'mezz.jei:jei_1.12.2:4.16.1.302:api'
+}
+
+mixin {
+    add sourceSets.main, 'mixins.securitycraft.refmap.json'
+}
+
+shadowJar {
+	dependencies {
+		include(dependency('org.spongepowered:mixin:0.8.3-SNAPSHOT'))
+	}
+
+	exclude 'dummyThing'
+	classifier = ''
+}
+build.dependsOn(shadowJar)
+
+reobf {
+    shadowJar {
+        mappingType = 'SEARGE'
+        classpath = sourceSets.main.compileClasspath
+    }
 }
 
 processResources
@@ -83,8 +116,10 @@ processResources
     }
 }
 
-jar {
-    manifest {
-        attributes 'FMLAT': 'securitycraft_at.cfg'
-    }
-}
+jar.manifest.attributes(
+  'FMLCorePluginContainsFMLMod': true,
+  'FMLCorePlugin': 'net.geforcemods.securitycraft.SecurityCraftLoadingPlugin',
+  'ForceLoadAsMod': true,
+  'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+  'FMLAT': 'securitycraft_at.cfg'
+)
