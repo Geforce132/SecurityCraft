@@ -75,10 +75,14 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(world.isRemote)
-			ClientHandler.displaySonicSecuritySystemGui((SonicSecuritySystemTileEntity) world.getTileEntity(pos));
+		if (player.getHeldItem(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
+			if (world.isRemote)
+				ClientHandler.displaySonicSecuritySystemGui((SonicSecuritySystemTileEntity) world.getTileEntity(pos));
 
-		return ActionResultType.SUCCESS;
+			return ActionResultType.SUCCESS;
+		}
+		else
+			return ActionResultType.PASS;
 	}
 
 	@Override

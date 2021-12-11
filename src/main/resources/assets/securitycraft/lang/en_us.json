@@ -467,6 +467,7 @@
 	"item.securitycraft.crystal_quartz_item": "Crystal Quartz",
 	"item.securitycraft.keypad_door_item": "Keypad Door",
 	"item.securitycraft.speed_module": "Speed Module",
+	"item.securitycraft.portable_tune_player": "Portable Tune Player",
 
 	"entity.securitycraft.imsbomb": "I.M.S. Bomb",
 	"entity.securitycraft.sentry": "Sentry",
@@ -530,7 +531,7 @@
 	"help.securitycraft.scanner_door.info": "The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top to open it.",
 	"help.securitycraft.keypad_door.info": "The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.",
 	"help.securitycraft.key_panel.info": "The key panel can be placed down for a smaller, waterloggable version of the keypad. It is also used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.",
-	"help.securitycraft.sonic_security_system.info": "The Sonic Security System, inspired by the similarly-named device in the game \"Metroid Prime 2: Echoes\", is able to lock certain SecurityCraft blocks and prevent them from being used or interacted with. Right-clicking a block will bind it to the Sonic Security System. Once the System is placed down, right-clicking it will open a GUI where you can enable, disable, or reset the Sonic Security System. In addition, it can also emit a redstone signal after hearing a set combination of nearby note block sounds. To do so, toggle note recording on in the Sonic Security System's GUI then play the note combination that you want using note blocks. Toggle the recording off once you are finished. Any time that combination of notes is played, a redstone signal will be emitted.",
+	"help.securitycraft.sonic_security_system.info": "The Sonic Security System, inspired by the similarly-named device in the game \"Metroid Prime 2: Echoes\", is able to lock certain SecurityCraft blocks and prevent them from being used or interacted with. Right-clicking a supported block will bind it to the Sonic Security System. Once it is placed down, right-clicking it will open a GUI where you can enable, disable, or reset the Sonic Security System. In addition, it can also emit a redstone signal after hearing a set combination of nearby note block sounds. To set such a tune, toggle note recording on in the Sonic Security System's GUI then play the tune that you want using note blocks played nearby. Toggle the recording off once you are finished. Any time that tune is played, a redstone signal will be emitted and locked blocks will become accessible.",
 	
 	"help.securitycraft.codebreaker.info": "The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)",
 	"help.securitycraft.universal_block_remover.info": "The universal block remover is used to destroy \"reinforced\" blocks by rightclicking it. Only the person who placed the block down can destroy it.",
@@ -567,6 +568,7 @@
 	"help.securitycraft.sentry.info": "The Sentry has three modes that can be switched by rightclicking it. Idle (it will never attack), Camouflage (it will only attack enemy players in its range) and Aggressive (it will attack hostile mobs and enemy players). Rightclicking it with a Disguise Module containing a full and opaque block (e.g. stone, but not glass or stairs) will make the Sentry disguise itself. The module can be switched directly, or extracted by rightclicking with a Universal Block Modifier. To remove the sentry, sneak-rightclick it.",
 	"help.securitycraft.crystal_quartz_item.info": "Crystal Quartz is used to craft Crystal Quartz blocks.",
 	"help.securitycraft.speed_module.info": "The speed module allows some of SecurityCraft's blocks to operate faster than usual.",
+	"help.securitycraft.portable_tune_player.info": "The portable tune player can play a tune that was previously saved to it. To save a tune, rightclick a Sonic Security System that has already recorded a tune. To play the tune, rightclick the portable tune player.",
 
 	"gui.securitycraft:scManual.disabled": "Disabled",
 	"gui.securitycraft:scManual.recipe.keycard_lv1": "Disabled",
@@ -807,6 +809,8 @@
 	"messages.securitycraft:sonic_security_system.blockUnlinked": "Unlinked from the %1$s at %2$s.",
 	"messages.securitycraft:sonic_security_system.linkMaxReached": "You cannot link to additional blocks. Each Sonic Security System can be linked to a maximum of %s blocks.",
 	"messages.securitycraft:sonic_security_system.locked": "This %s is being locked by a Sonic Security System!",
+	"messages.securitycraft:portable_tune_player.tune_saved": "Tune saved.",
+	"messages.securitycraft:portable_tune_player.no_tune": "No tune available.",
 	"messages.securitycraft:sc_help": "%s: %s + %s",
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",
 

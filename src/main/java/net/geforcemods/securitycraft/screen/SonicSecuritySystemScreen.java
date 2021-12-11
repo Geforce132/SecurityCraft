@@ -27,7 +27,7 @@ public class SonicSecuritySystemScreen extends Screen {
 	private static final ResourceLocation STREAMER_ICONS = new ResourceLocation("textures/gui/stream_indicator.png");
 	private static final TranslationTextComponent SOUND_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.sound");
 	/** The number of ticks between each note when playing back a recording **/
-	private static final int PLAYBACK_DELAY = 15;
+	private static final int PLAYBACK_DELAY = 10;
 
 	private final SonicSecuritySystemTileEntity te;
 	private int xSize = 176, ySize = 166;
@@ -58,12 +58,12 @@ public class SonicSecuritySystemScreen extends Screen {
 
 			// Only emit the note sound after a certain delay and if there are still notes to play
 			if(tickCount >= PLAYBACK_DELAY && currentNote < numNotes) {
-				tickCount = 0;
-
 				NoteWrapper note = te.getRecordedNotes().get(currentNote++);
-				SoundEvent se = NoteBlockInstrument.valueOf(note.instrumentName.toUpperCase()).getSound();
-				float f = (float)Math.pow(2.0D, (note.noteID - 12) / 12.0D);
-				minecraft.world.playSound(minecraft.player, te.getPos().getX(), te.getPos().getY(), te.getPos().getZ(), se, SoundCategory.RECORDS, 3.0f, f);
+				SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName.toUpperCase()).getSound();
+				float pitch = (float)Math.pow(2.0D, (note.noteID - 12) / 12.0D);
+
+				tickCount = 0;
+				minecraft.world.playSound(minecraft.player, te.getPos(), sound, SoundCategory.RECORDS, 3.0F, pitch);
 
 				// Reset the counters when we are finished playing the final note
 				if(currentNote == numNotes) {

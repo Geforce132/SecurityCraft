@@ -109,6 +109,7 @@ import net.geforcemods.securitycraft.items.KeyPanelItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
 import net.geforcemods.securitycraft.items.ReinforcedDoorItem;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.items.SecretSignItem;
@@ -657,6 +658,7 @@ public class SCContent
 	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new BlockItem(SCContent.KEYPAD_CHEST.get(), itemProp(SecurityCraft.groupSCTechnical).setISTER(() -> ItemKeypadChestRenderer::new))); //keep this as a method reference or else the server will crash
 	@HasManualPage public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new SpecialDoorItem(KEYPAD_DOOR.get(), itemProp(SecurityCraft.groupSCDecoration)));
 	@HasManualPage public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), -1));
+	@HasManualPage public static final RegistryObject<Item> PORTABLE_TUNE_PLAYER = ITEMS.register("portable_tune_player", () -> new PortableTunePlayerItem(itemProp(SecurityCraft.groupSCTechnical)));
 	@HasManualPage public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new ReinforcedDoorItem(REINFORCED_DOOR.get(), itemProp(SecurityCraft.groupSCDecoration)));
 	@HasManualPage public static final RegistryObject<Item> REMOTE_ACCESS_MINE = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1)));
 	@HasManualPage public static final RegistryObject<Item> REMOTE_ACCESS_SENTRY = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1)));

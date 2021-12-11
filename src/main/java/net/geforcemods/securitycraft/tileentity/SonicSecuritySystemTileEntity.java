@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -205,20 +206,7 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 				linkedBlocks.add(blockToSave);
 		}
 
-		for(Iterator<NoteWrapper> notes = recordedNotes.iterator(); notes.hasNext(); )
-		{
-			NoteWrapper note = notes.next();
-
-			if(!tag.contains("Notes"))
-				tag.put("Notes", new ListNBT());
-
-			CompoundNBT nbt = new CompoundNBT();
-			nbt.putInt("noteID", note.noteID);
-			nbt.putString("instrument", note.instrumentName);
-
-			tag.getList("Notes", Constants.NBT.TAG_COMPOUND).add(nbt);
-		}
-
+		saveNotes(tag);
 		tag.putBoolean("emitsPings", emitsPings);
 		tag.putBoolean("isActive", isActive);
 		tag.putBoolean("isRecording", isRecording);
@@ -247,17 +235,8 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 			}
 		}
 
-		if(tag.contains("Notes"))
-		{
-			ListNBT list = tag.getList("Notes", Constants.NBT.TAG_COMPOUND);
-
-			for(int i = 0; i < list.size(); i++)
-			{
-				CompoundNBT note = list.getCompound(i);
-
-				recordedNotes.add(new NoteWrapper(note.getInt("noteID"), note.getString("instrument")));
-			}
-		}
+		recordedNotes.clear();
+		loadNotes(tag, recordedNotes);
 
 		if(tag.contains("emitsPings"))
 			emitsPings = tag.getBoolean("emitsPings");
@@ -273,6 +252,41 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 
 		if(tag.contains("listenPos"))
 			listenPos = tag.getInt("listenPos");
+	}
+
+	/**
+	 * Saves this tile entity's notes to a tag
+	 * @param tag The tag to save the notes to
+	 */
+	public void saveNotes(CompoundNBT tag) {
+		ListNBT notes = new ListNBT();
+
+		for (NoteWrapper note : recordedNotes) {
+			CompoundNBT noteNbt = new CompoundNBT();
+
+			noteNbt.putInt("noteID", note.noteID);
+			noteNbt.putString("instrument", note.instrumentName);
+			notes.add(noteNbt);
+		}
+
+		tag.put("Notes", notes);
+	}
+
+	/**
+	 * Loads notes saved on a tag to a collection
+	 * @param tag The tag containing the notes
+	 * @param recordedNotes The collection to save the notes to
+	 */
+	public static <T extends Collection<NoteWrapper>> void loadNotes(CompoundNBT tag, T recordedNotes) {
+		if (tag.contains("Notes")) {
+			ListNBT list = tag.getList("Notes", Constants.NBT.TAG_COMPOUND);
+
+			for (int i = 0; i < list.size(); i++) {
+				CompoundNBT note = list.getCompound(i);
+
+				recordedNotes.add(new NoteWrapper(note.getInt("noteID"), note.getString("instrument")));
+			}
+		}
 	}
 
 	/**
@@ -464,8 +478,10 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 		if(getNumberOfNotes() == 0)
 			return false;
 
-		if(!isListening)
+		if(!isListening) {
 			isListening = true;
+			sync();
+		}
 
 		if(recordedNotes.get(listenPos++).isSameNote(noteID, instrumentName))
 		{

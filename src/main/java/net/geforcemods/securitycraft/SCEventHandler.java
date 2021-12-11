@@ -1,7 +1,14 @@
 package net.geforcemods.securitycraft;
 
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
+
+import org.apache.commons.lang3.tuple.MutablePair;
 
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -27,6 +34,7 @@ import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
+import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity.NoteWrapper;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -36,20 +44,25 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.state.properties.NoteBlockInstrument;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -68,6 +81,45 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
+	public static final Integer NOTE_DELAY = 10;
+	public static final Map<PlayerEntity,MutablePair<Integer,Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
+
+	@SubscribeEvent
+	public static void onServerTick(ServerTickEvent event) {
+		if (event.phase == Phase.END) {
+			PLAYING_TUNES.forEach((player, pair) -> {
+				int ticksRemaining = pair.getLeft();
+
+				if (ticksRemaining == 0) {
+					NoteWrapper note = pair.getRight().poll();
+
+					if (note != null) {
+						SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName.toUpperCase()).getSound();
+						float pitch = (float)Math.pow(2.0D, (note.noteID - 12) / 12.0D);
+
+						player.world.playSound(null, player.getPosition(), sound, SoundCategory.RECORDS, 3.0F, pitch);
+						handlePlayedNote(player.world, player.getPosition(), note.noteID, note.instrumentName);
+						pair.setLeft(NOTE_DELAY);
+					}
+					else
+						pair.setLeft(-1);
+				}
+				else
+					pair.setLeft(ticksRemaining - 1);
+			});
+
+			//remove finished tunes
+			if (PLAYING_TUNES.size() > 0) {
+				Iterator<Entry<PlayerEntity,MutablePair<Integer,Deque<NoteWrapper>>>> entries = PLAYING_TUNES.entrySet().iterator();
+
+				while (entries.hasNext()) {
+					if (entries.next().getValue().left == -1)
+						entries.remove();
+				}
+			}
+		}
+	}
+
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
 		if(!ConfigHandler.SERVER.disableThanksMessage.get())
@@ -306,7 +358,11 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onNoteBlockPlayed(NoteBlockEvent.Play event)
 	{
-		List<SonicSecuritySystemTileEntity> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange((World) event.getWorld(), event.getPos());
+		handlePlayedNote((World)event.getWorld(), event.getPos(), event.getVanillaNoteId(), event.getInstrument().getString());
+	}
+
+	private static void handlePlayedNote(World world, BlockPos pos, int vanillaNoteId, String instrumentName) {
+		List<SonicSecuritySystemTileEntity> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange(world, pos);
 
 		for(SonicSecuritySystemTileEntity te : sonicSecuritySystems) {
 
@@ -317,15 +373,15 @@ public class SCEventHandler {
 			// If the SSS is recording, record the note being played
 			if(te.isRecording())
 			{
-				te.recordNote(event.getVanillaNoteId(), event.getInstrument().getString());
+				te.recordNote(vanillaNoteId, instrumentName);
 			}
 			// If the SSS is active, check to see if the note being played matches the saved combination.
 			// If so, toggle its redstone power output on
-			else if(te.listenToNote(event.getVanillaNoteId(), event.getInstrument().getString()))
+			else if(te.listenToNote(vanillaNoteId, instrumentName))
 			{
 				te.shouldEmitPower = true;
 				te.stopListening();
-				event.getWorld().updateBlock(te.getPos(), SCContent.SONIC_SECURITY_SYSTEM.get());
+				world.updateBlock(te.getPos(), SCContent.SONIC_SECURITY_SYSTEM.get());
 			}
 		}
 	}

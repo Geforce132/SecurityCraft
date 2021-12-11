@@ -291,6 +291,13 @@ public class RecipeGenerator extends RecipeProvider
 		.key('R', Tags.Items.DUSTS_REDSTONE)
 		.addCriterion("has_redstone", hasItem(Tags.Items.DUSTS_REDSTONE))
 		.build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.PORTABLE_TUNE_PLAYER.get())
+		.patternLine("IRN")
+		.key('I', Tags.Items.INGOTS_IRON)
+		.key('R', Tags.Items.DUSTS_REDSTONE)
+		.key('N', Blocks.NOTE_BLOCK)
+		.addCriterion("has_redstone", hasItem(Tags.Items.DUSTS_REDSTONE))
+		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.PROJECTOR.get())
 		.patternLine("III")
 		.patternLine("BLP")
