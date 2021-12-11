@@ -41,14 +41,12 @@ public class SonicSecuritySystemScreen extends Screen {
 	/** The number of ticks that has elapsed since the last note played **/
 	private int tickCount = PLAYBACK_DELAY;
 	private int currentNote = 0;
-	private int numNotes;
 	private boolean isOwner;
 
 	public SonicSecuritySystemScreen(SonicSecuritySystemTileEntity te)
 	{
 		super(te.getName());
 		this.te = te;
-		numNotes = te.getNumberOfNotes();
 		isOwner = te.getOwner().isOwner(Minecraft.getInstance().player);
 	}
 
@@ -60,16 +58,17 @@ public class SonicSecuritySystemScreen extends Screen {
 			tickCount++;
 
 			// Only emit the note sound after a certain delay and if there are still notes to play
-			if(tickCount >= PLAYBACK_DELAY && currentNote < numNotes) {
-				NoteWrapper note = te.getRecordedNotes().get(currentNote++);
-				SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName.toUpperCase()).getSound();
-				float pitch = (float)Math.pow(2.0D, (note.noteID - 12) / 12.0D);
+			if(tickCount >= PLAYBACK_DELAY) {
+				if(currentNote < te.getNumberOfNotes()) {
+					NoteWrapper note = te.getRecordedNotes().get(currentNote++);
+					SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName.toUpperCase()).getSound();
+					float pitch = (float)Math.pow(2.0D, (note.noteID - 12) / 12.0D);
 
-				tickCount = 0;
-				minecraft.world.playSound(minecraft.player, te.getPos(), sound, SoundCategory.RECORDS, 3.0F, pitch);
-
+					tickCount = 0;
+					minecraft.world.playSound(minecraft.player, te.getPos(), sound, SoundCategory.RECORDS, 3.0F, pitch);
+				}
 				// Reset the counters when we are finished playing the final note
-				if(currentNote == numNotes) {
+				else if(currentNote >= te.getNumberOfNotes()) {
 					currentNote = 0;
 					playback = false;
 				}
