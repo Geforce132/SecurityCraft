@@ -114,9 +114,13 @@ public class SonicSecuritySystemItem extends BlockItem {
 	}
 
 	/**
-	 * Adds the given position to the item's NBT tag
+	 * Adds a position to a tag
+	 * @param tag The tag to add the position to
+	 * @param pos The position to add to the tag
+	 * @param player The player who tries to link a block
+	 * @return true if the position was added, false otherwise
 	 */
-	private boolean addLinkedBlock(CompoundNBT tag, BlockPos pos, PlayerEntity player)
+	public static boolean addLinkedBlock(CompoundNBT tag, BlockPos pos, PlayerEntity player)
 	{
 		// If the position was already added, return
 		if(isAdded(tag, pos))
@@ -134,14 +138,15 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 		list.add(nbt);
 		tag.put("LinkedBlocks", list);
-
 		return true;
 	}
 
 	/**
-	 * Removes the given position from the item's NBT tag
+	 * Removes a position from a tag
+	 * @param tag The tag to remove the position from
+	 * @param pos The position to remove from the tag
 	 */
-	private void removeLinkedBlock(CompoundNBT tag, BlockPos pos)
+	public static void removeLinkedBlock(CompoundNBT tag, BlockPos pos)
 	{
 		if(!tag.contains("LinkedBlocks"))
 			return;
@@ -159,9 +164,12 @@ public class SonicSecuritySystemItem extends BlockItem {
 	}
 
 	/**
-	 * If a position has already been added to this item's tag
+	 * Checks whether a position is added to a tag
+	 * @param tag The tag to check
+	 * @param pos The position to check
+	 * @return true if the position is added, false otherwise
 	 */
-	private boolean isAdded(CompoundNBT tag, BlockPos pos)
+	public static boolean isAdded(CompoundNBT tag, BlockPos pos)
 	{
 		if(!tag.contains("LinkedBlocks"))
 			return false;
@@ -180,9 +188,9 @@ public class SonicSecuritySystemItem extends BlockItem {
 	}
 
 	/**
-	 * If this item is linked to at least one block
+	 * @return true if the tag contains at least one position, false otherwise
 	 */
-	private boolean hasLinkedBlock(CompoundNBT tag)
+	public static boolean hasLinkedBlock(CompoundNBT tag)
 	{
 		if(!tag.contains("LinkedBlocks"))
 			return false;
