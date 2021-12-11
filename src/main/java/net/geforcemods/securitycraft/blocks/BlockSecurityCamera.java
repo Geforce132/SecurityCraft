@@ -17,7 +17,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityTrackerEntry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.play.server.SPacketChunkData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -159,12 +158,10 @@ public class BlockSecurityCamera extends BlockOwnable{
 			//can't use EntityPlayerMP#setSpectatingEntity here because it also teleports the player
 			serverPlayer.spectatingEntity = dummyEntity;
 			SecurityCraft.network.sendTo(new SetCameraView(dummyEntity), serverPlayer);
-			serverPlayer.connection.sendPacket(new SPacketChunkData(chunk, 65535));
 
 			//update which entities the player is tracking to allow for the correct ones to show up
 			for (EntityTrackerEntry entry : serverWorld.getEntityTracker().entries) {
-				if (entry.getTrackedEntity() != serverPlayer)
-					entry.updatePlayerEntity(serverPlayer);
+				entry.updatePlayerEntity(serverPlayer);
 			}
 
 			if(te instanceof TileEntitySecurityCamera)
