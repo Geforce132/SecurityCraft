@@ -6,13 +6,11 @@ import java.util.Iterator;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.NamedTileEntity;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
-import net.geforcemods.securitycraft.network.client.SyncSSSSettingsOnClient;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -27,7 +25,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SonicSecuritySystemTileEntity extends NamedTileEntity implements INamedContainerProvider, ITickableTileEntity {
 
@@ -200,7 +197,6 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 		while(iterator.hasNext())
 		{
 			BlockPos blockToSave = iterator.next();
-
 			CompoundNBT nbt = NBTUtil.writeBlockPos(blockToSave);
 
 			tag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND).add(nbt);
@@ -226,8 +222,8 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 		tag.putBoolean("emitsPings", emitsPings);
 		tag.putBoolean("isActive", isActive);
 		tag.putBoolean("isRecording", isRecording);
+		tag.putBoolean("isListening", isListening);
 		tag.putInt("listenPos", listenPos);
-
 		return tag;
 	}
 
@@ -271,6 +267,9 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 
 		if(tag.contains("isRecording"))
 			isRecording = tag.getBoolean("isRecording");
+
+		if (tag.contains("isListening"))
+			isListening = tag.getBoolean("isListening");
 
 		if(tag.contains("listenPos"))
 			listenPos = tag.getInt("listenPos");
@@ -432,7 +431,7 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 		world.updateBlock(pos, SCContent.SONIC_SECURITY_SYSTEM.get());
 
 		if(!world.isRemote)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new SyncSSSSettingsOnClient(pos, SyncSSSSettingsOnClient.DataType.LISTENING_OFF));
+			sync();
 	}
 
 	/**

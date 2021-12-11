@@ -34,7 +34,6 @@ import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
-import net.geforcemods.securitycraft.network.client.SyncSSSSettingsOnClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
@@ -297,7 +296,6 @@ public class RegistrationHandler
 		SecurityCraft.channel.registerMessage(index++, SetTrophySystemTarget.class, SetTrophySystemTarget::encode, SetTrophySystemTarget::decode, SetTrophySystemTarget::onMessage);
 		SecurityCraft.channel.registerMessage(index++, UpdateLogger.class, UpdateLogger::encode, UpdateLogger::decode, UpdateLogger::onMessage);
 		SecurityCraft.channel.registerMessage(index++, UpdateNBTTagOnClient.class, UpdateNBTTagOnClient::encode, UpdateNBTTagOnClient::decode, UpdateNBTTagOnClient::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SyncSSSSettingsOnClient.class, SyncSSSSettingsOnClient::encode, SyncSSSSettingsOnClient::decode, SyncSSSSettingsOnClient::onMessage);
 
 		//server
 		SecurityCraft.channel.registerMessage(index++, AssembleBlockPocket.class, AssembleBlockPocket::encode, AssembleBlockPocket::decode, AssembleBlockPocket::onMessage);
