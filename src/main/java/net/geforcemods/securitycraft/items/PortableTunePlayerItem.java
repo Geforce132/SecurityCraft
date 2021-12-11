@@ -62,7 +62,7 @@ public class PortableTunePlayerItem extends Item {
 				Deque<NoteWrapper> notes = new ArrayDeque<>();
 
 				SonicSecuritySystemTileEntity.loadNotes(stack.getTag(), notes);
-				SCEventHandler.PLAYING_TUNES.put(player, MutablePair.of(SCEventHandler.NOTE_DELAY, notes));
+				SCEventHandler.PLAYING_TUNES.put(player, MutablePair.of(0, notes));
 				return ActionResult.resultSuccess(stack);
 			}
 		}
