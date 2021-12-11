@@ -210,10 +210,10 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 
 			if(!stack.isEmpty())
 			{
-				Block block = ((ItemModule) stack.getItem()).getBlockAddon(stack.getTagCompound());
+				ItemStack disguisedStack = ((ItemModule) stack.getItem()).getAddonAsStack(stack.getTagCompound());
 
-				if(block != null)
-					return new ItemStack(block);
+				if(!disguisedStack.isEmpty())
+					return disguisedStack.copy();
 			}
 		}
 

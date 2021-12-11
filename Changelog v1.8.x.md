@@ -48,6 +48,7 @@
 - Fix: The security camera overlay still shows when the debug menu is open
 - Fix: Fences, panes, and walls connect to Security Cameras
 - Fix: Electrified Iron Fence Gate has wooden open/close sounds
+- Fix: WAILA/TOP display shows an incorrect block sometimes
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated
