@@ -2,6 +2,7 @@
 
 - New: Reinforced Pistons
 - New: The Reinforced Redstone Block and the Reinforced Observer can now be used to open doors, activate pistons, etc.
+- New: The debug menu now hides block mines, disguised blocks, and fake fluids
 - New: The Protecto and Trophy System now support the Disguise Module
 - New: Key Panel Block. A waterloggable, smaller version of the keypad. Place it by rightclicking a Key Panel
 - New: Config option "enableTeamOwnership". Setting this to true will allow all players in the same scoreboard team to own each other's blocks

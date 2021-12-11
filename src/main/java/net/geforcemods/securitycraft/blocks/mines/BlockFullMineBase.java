@@ -174,4 +174,9 @@ public class BlockFullMineBase extends BlockExplosive implements IOverlayDisplay
 
 		return new ItemStack(blockDisguisedAs);
 	}
+
+	public Block getBlockDisguisedAs()
+	{
+		return blockDisguisedAs;
+	}
 }

@@ -7,7 +7,8 @@
 		"camera.MixinEntityRenderer",
 		"camera.MixinMinecraft",
 		"camera.MixinRenderGlobal",
-		"camera.MixinRenderPlayer"
+		"camera.MixinRenderPlayer",
+		"f3.MixinGuiOverlayDebug"
 	],
 	"mixins": [
 		"camera.MixinEntityPlayerMP",
