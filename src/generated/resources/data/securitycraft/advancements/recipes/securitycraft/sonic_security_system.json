@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:sonic_security_system_item"
+      "securitycraft:sonic_security_system"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:sonic_security_system_item"
+        "recipe": "securitycraft:sonic_security_system"
       }
     }
   },
