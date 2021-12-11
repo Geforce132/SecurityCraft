@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity.NoteWrapper;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.state.properties.NoteBlockInstrument;
 import net.minecraft.util.ResourceLocation;
@@ -41,12 +42,14 @@ public class SonicSecuritySystemScreen extends Screen {
 	private int tickCount = PLAYBACK_DELAY;
 	private int currentNote = 0;
 	private int numNotes;
+	private boolean isOwner;
 
 	public SonicSecuritySystemScreen(SonicSecuritySystemTileEntity te)
 	{
 		super(te.getName());
 		this.te = te;
 		numNotes = te.getNumberOfNotes();
+		isOwner = te.getOwner().isOwner(Minecraft.getInstance().player);
 	}
 
 	@Override
@@ -128,10 +131,11 @@ public class SonicSecuritySystemScreen extends Screen {
 		}));
 		soundButton.setCurrentIndex(!te.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
 
-		recordingButton.active = isActive;
-		soundButton.active = isActive;
+		powerButton.active = isOwner;
+		recordingButton.active = isActive && isOwner;
+		soundButton.active = isActive && isOwner;
 		playButton.active = isActive && hasNotes;
-		clearButton.active = isActive && hasNotes;
+		clearButton.active = isActive && hasNotes && isOwner;
 	}
 
 	@Override

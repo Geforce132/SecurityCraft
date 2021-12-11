@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -76,8 +77,10 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if (player.getHeldItem(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
-			if (world.isRemote)
-				ClientHandler.displaySonicSecuritySystemGui((SonicSecuritySystemTileEntity) world.getTileEntity(pos));
+			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity)world.getTileEntity(pos);
+
+			if (world.isRemote && (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)))
+				ClientHandler.displaySonicSecuritySystemGui(te);
 
 			return ActionResultType.SUCCESS;
 		}

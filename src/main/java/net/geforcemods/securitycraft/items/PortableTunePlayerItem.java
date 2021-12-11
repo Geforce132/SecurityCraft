@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCEventHandler;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity.NoteWrapper;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -33,15 +34,18 @@ public class PortableTunePlayerItem extends Item {
 
 		if (world.getBlockState(pos).getBlock() == SCContent.SONIC_SECURITY_SYSTEM.get()) {
 			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity)world.getTileEntity(pos);
+			PlayerEntity player = ctx.getPlayer();
 
-			if (te.getNumberOfNotes() > 0) {
-				te.saveNotes(ctx.getItem().getOrCreateTag());
-				ctx.getPlayer().sendStatusMessage(Utils.localize("messages.securitycraft:portable_tune_player.tune_saved"), true);
+			if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)) {
+				if (te.getNumberOfNotes() > 0) {
+					te.saveNotes(ctx.getItem().getOrCreateTag());
+					player.sendStatusMessage(Utils.localize("messages.securitycraft:portable_tune_player.tune_saved"), true);
+				}
+				else
+					player.sendStatusMessage(Utils.localize("messages.securitycraft:portable_tune_player.no_tune"), true);
+
+				return ActionResultType.SUCCESS;
 			}
-			else
-				ctx.getPlayer().sendStatusMessage(Utils.localize("messages.securitycraft:portable_tune_player.no_tune"), true);
-
-			return ActionResultType.SUCCESS;
 		}
 
 		return ActionResultType.PASS;

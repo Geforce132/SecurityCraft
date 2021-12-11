@@ -7,9 +7,11 @@ import java.util.Iterator;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.NamedTileEntity;
+import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
 import net.minecraft.block.BlockState;
@@ -27,7 +29,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 
-public class SonicSecuritySystemTileEntity extends NamedTileEntity implements INamedContainerProvider, ITickableTileEntity {
+public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implements INamedContainerProvider, ITickableTileEntity {
 
 	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
@@ -558,5 +560,15 @@ public class SonicSecuritySystemTileEntity extends NamedTileEntity implements IN
 		{
 			return noteID == note && instrumentName.equals(instrument);
 		}
+	}
+
+	@Override
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {ModuleType.ALLOWLIST};
+	}
+
+	@Override
+	public Option<?>[] customOptions() {
+		return null;
 	}
 }
