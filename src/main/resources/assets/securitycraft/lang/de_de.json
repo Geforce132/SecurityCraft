@@ -422,6 +422,7 @@
 	"block.securitycraft.reinforced_piston_head": "Verstärkter Kolbenkopf",
 	"block.securitycraft.reinforced_moving_piston": "Verstärkter bewegter Block",
 	"block.securitycraft.key_panel": "Nummernfeld",
+	"block.securitycraft.sonic_security_system": "Schallsicherheitssystem",
 
 	"item.securitycraft.codebreaker": "Codebrecher",
 	"item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",
@@ -471,6 +472,7 @@
 	"item.securitycraft.crystal_quartz_item": "Kristallquartz",
 	"item.securitycraft.keypad_door_item": "Nummernschloss-Tür",
 	"item.securitycraft.speed_module": "Schnelligkeits-Modul",
+	"item.securitycraft.portable_tune_player": "Tragbarer Melodienspieler",
 
 	"entity.securitycraft.imsbomb": "I.M.S.-Bombe",
 	"entity.securitycraft.sentry": "Geschütz",
@@ -534,6 +536,7 @@
 	"help.securitycraft.scanner_door.info": "Die Scannertür verhält sich wie der Augenscanner. Sie öffnet sich von selbst, wenn man den oberen Teil anschaut.",
 	"help.securitycraft.keypad_door.info": "Die Nummernschloss-Tür verhält sich wie ein Nummernschloss. Um die Tür zu öffnen, muss man den korrekten Code eingeben.",
 	"help.securitycraft.key_panel.info": "Das Nummernfeld kann in der Welt platziert werden (auch unter Wasser), und ist eine kleine Version des Nummernschlosses. Es wird außerdem in der Herstellung von Nummernschlössern, passwortgesicherten Truhe und passwortgesicherten Öfen verwendet.",
+	"help.securitycraft.sonic_security_system.info": "Das Schallsicherheitssystem, inspiriert vom \"Sonic Security System\" im Spiel \"Metroid Prime 2: Echoes\", kann bestimmte SecurityCraft Blöcke sperren, und somit Spieler daran hindern sie zu nutzen. Rechtsklicke einen solchen Block, um ihn mit dem Schallsicherheitssystem zu verbinden. Wenn das Schallsicherheitssystem platziert ist, kann via Rechtsklick ein GUI geöffnet werden, dass ermöglicht, es zu aktivieren, deaktivieren, oder zurückzusetzen. Die Blöcke lassen sich kurzzeitig entsperren, indem eine bestimmte Melodie entweder mit einem tragbaren Musikspieler oder Notenblöcken in der Nähe abgespielt wird. Um die Melodie zu bestimmen, starte die Aufnahme im GUI des Schallsicherheitssystems, und spiele eine Tonfolge in der Nähe. Sobald du fertig bist, stoppe die Aufnahme. Nun werden jedes Mal, wenn in der Nähe des Schallsicherheitssystemdiese diese Tonfolge gespielt wird, die durch dieses Schallsicherheitssystem gesperrten Blöcke kurzzeitig entsperrt.",
 
 	"help.securitycraft.codebreaker.info": "Der Codebrecher kann jedes Nummernschloss, jede passwortgesicherte Truhe und jeden passwortgesicherten Ofen durch einen Rechtsklick knacken. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)",
 	"help.securitycraft.universal_block_remover.info": "Der Universelle Blockentferner wird benutzt, um verstärkte Blöcke durch einen Rechtsklick zu entfernen. Nur der Spieler, der den Block platziert hat, kann ihn auch entfernen.",
@@ -570,6 +573,7 @@
 	"help.securitycraft.sentry.info": "Das Geschütz hat drei Modi, die mit einem Rechtsklick auf das Geschütz gewechselt werden können. Untätig (es wird niemals angreifen), Tarnen (es wird nur feindliche Spieler in seiner Nähe attackieren) und Aggressiv (es wird Mobs und feindliche Spieler attackieren). Rechtsklicke es mit einem Tarnmodul welches einen normalen, undurchsichtigen Block hat (z.B. Stein, aber nicht Glas oder Stufen), und das Geschütz wird sich tarnen. Das Modul kann direkt ausgewechselt, oder per Rechtsklick mit einem Universellen Block Modifizierer entfernt werden. Um das Geschütz zu entfernen, ducke Dich und rechtsklicke es.",
 	"help.securitycraft.crystal_quartz_item.info": "Kristallquartz wird benutzt, um Kristallquartz-Blöcke herzustellen.",
 	"help.securitycraft.speed_module.info": "Das Schnelligkeits-Modul erlaubt einigen von SecurityCrafts Blöcken, schneller zu arbeiten.",
+	"help.securitycraft.portable_tune_player.info": "Der tragbare Melodienspieler kann eine Melodie, welche zuvor mit einem Schallsicherheitssystem aufgenommen wurde, abspielen. Um eine Melodie auf dem tragbaren Melodiespieler zu speichern, rechtsklicke ein Schallsicherheitssystem welches schon eine Melodie aufgenommen hat. Um die Melodie abzuspielen, rechtsklicke den tragbaren Melodiespieler. Um das Abspielen abzubrechen, rechtsklicke ihn erneut, oder nimm ihn aus der Hand.",
 
 	"gui.securitycraft:scManual.disabled": "Deaktiviert",
 	"gui.securitycraft:scManual.recipe.keycard_lv1": "Deaktiviert",
@@ -586,6 +590,7 @@
 	"gui.securitycraft:scManual.viewActivatedBlock": "Sichtfeldaktivierung: Dieser Block wird aktiviert, indem du ihn mit deinem Fadenkreuz anschaust.",
 	"gui.securitycraft:scManual.explosiveBlock": "Explosiv: Dieser Block kann in der Kabellosen Minensteuerungseinheit registriert werden.",
 	"gui.securitycraft:scManual.customizableBlock": "Anpassbar: Bei diesem Block kannst du den Universellen Blockmodifizierer verwenden, um die Funktionen des Blockes anzupassen.",
+	"gui.securitycraft:scManual.lockable": "Sperrbar: Dieser Block kann durch ein Schallsicherheitssystem gesperrt werden.",
 	"gui.securitycraft:scManual.options": "Verfügbare Einstellungen:",
 	"gui.securitycraft:scManual.modules": "Verfügbare Module:",
 	"gui.securitycraft:scManual.recipe.keypad": "Platziere einen Rahmen und rechtsklicke ihn mit einem Nummernfeld.",
@@ -688,6 +693,16 @@
 	"gui.securitycraft:keycard_reader.noSmartModule": "Du musst ein schlaues Modul installieren, um die Schlüsselkarten-Level individuell zu kontrollieren.",
 	"gui.securitycraft:keycard_reader.smartModule": "Individuelle Kontrolle von Schlüsselkarten-Level aktiv!",
 	"gui.securitycraft:keycard_reader.level_mismatch": "Der Level dieser Schlüsselkarte ist in diesem Schlüsselkarten-Leser nicht aktiviert!",
+	"gui.securitycraft:sonic_security_system.start_recording": "Aufnahme starten",
+	"gui.securitycraft:sonic_security_system.stop_recording": "Aufnahme stoppen",
+	"gui.securitycraft:sonic_security_system.recording.clear": "Aufnahme löschen",
+	"gui.securitycraft:sonic_security_system.recording.notes": "Aufgenommene Noten: %s",
+	"gui.securitycraft:sonic_security_system.recording.play": "Aufnahme abspielen",
+	"gui.securitycraft:sonic_security_system.power.on": "Angeschaltet: Ja",
+	"gui.securitycraft:sonic_security_system.power.off": "Angeschaltet: Nein",
+	"gui.securitycraft:sonic_security_system.sound": "Geräusche:",
+	"gui.securitycraft:sonic_security_system.recording": "Aufnahme läuft...",
+	"gui.securitycraft:sonic_security_system.listening": "Höre zu...",
 	"gui.securitycraft:customize.currentSetting": "Momentan: %s",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
@@ -794,6 +809,13 @@
 	"messages.securitycraft:blockpocket.assemblyFailed": "Die Blocktasche konnte nicht aufgebaut werden. Inkorrekter Block \"%2$s\" %1$s dem Blocktaschenverwalter.",
 	"messages.securitycraft:ownable.validate": "Der Besitzer dieses Blocks wurde erfolgreich verifiziert.",
 	"messages.securitycraft:ownable.ownerNotValidated": "Der Besitzer dieses Blocks wurde von einem Universellen Besitzeränderer geändert und muss deshalb vom neuen Besitzer verifiziert werden, um wieder zu funktionieren. Um einen Block zu verifizieren, muss der neue Besitzer des Blocks den Block rechtsklicken.",
+	"messages.securitycraft:sonic_security_system.notLinked": "Mit noch keinem Block verbunden. Rechtsklicke erst einen unterstützten SecurityCraft Block mit diesem Item.",
+	"messages.securitycraft:sonic_security_system.blockLinked": "Verbunden mit \"%1$s\" an Position %2$s.",
+	"messages.securitycraft:sonic_security_system.blockUnlinked": "Verbindung mit \"%1$s\" an Position %2$s aufgehoben.",
+	"messages.securitycraft:sonic_security_system.linkMaxReached": "Du kannst dieses Schallsicherheitssystem mit keinen weiteren Blöcken verbinden. Es sind maximal %s Blöcke erlaubt.",
+	"messages.securitycraft:sonic_security_system.locked": "\"%s\" ist durch ein Schallsicherheitssystem gesperrt!",
+	"messages.securitycraft:portable_tune_player.tune_saved": "Melodie gespeichert.",
+	"messages.securitycraft:portable_tune_player.no_tune": "Keine Melodie vorhanden.",
 
 	"jei.securitycraft.category.reinforcing": "Blöcke verstärken",
 	"jei.securitycraft.category.unreinforcing": "Verstärkung entfernen",
@@ -823,6 +845,8 @@
 	"tooltip.securitycraft:keycard.reader_owner": "Funktioniert bei Schlüsselkarten-Lesern von: %s",
 	"tooltip.securitycraft:keycard.link_info": "Lege diese Karte in einen Schlüsselkarten-Leser um sie damit zu verbinden.",
 	"tooltip.securitycraft:keycard.limited_info": "Verbinde diese Karte in einer Werkbank mit einer begrenzt nutzbaren Schlüsselkarte, um zu kontrollieren, wie oft sie verwendet werden darf.",
+	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "Anzahl an verbundenen Blöcken: %s",
+	"tooltip.securitycraft:portableTunePlayer.noteCount": "Melodie mit %s Note(n) gespeichert.",
 
 	"itemGroup.securitycraft.decoration": "SecurityCraft: Dekoration",
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Sprengstoffe",
@@ -886,7 +910,6 @@
 	"module.securitycraft.keypad_chest.redstone_module.description": "Ein Redstone-Modul in einer passwortgesicherten Truhe lässt die Truhe ein Redstonesignal aussenden, während sie geöffnet ist. Die Stärke dieses Signals hängt von der Anzahl der Spieler ab, die gleichzeitig in die Truhe hineinschauen.",
 	"module.securitycraft.keypad_furnace.whitelist_module.description": "Ein Zulassungslisten-Modul in einem passwortgesicherten Ofen erlaubt zugelassenen Spielern, ihn zu öffnen, ohne den Code zu kennen. Zusätzlich kann ein verstärkter Trichter eines zugelassenen Spielers Items aus dem Ofen ziehen.",
 	"module.securitycraft.keypad_furnace.blacklist_module.description": "Ein Sperrlisten-Modul in einem passwortgesicherten Ofen verhindert, dass gesperrte Spieler mit dem Schloss interagieren können.",
-	"module.securitycraft.trophy_system.disguise_module.description": "Wenn ein Tarnmodul zu einem Trophy-System hinzugefügt wird, ändert es seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
 	"module.securitycraft.projector.redstone_module.description": "Ein Redstone-Modul in einem Projektor erlaubt es dir, den Projektor mithilfe von Redstone manuell an- und auszuschalten.",
 	"module.securitycraft.projector.disguise_module.description": "Wenn ein Tarnmodul zu einem Projektor hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
 	"module.securitycraft.secret_sign.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Geheimen Schild erlaubt es zugelassenen Spielern, dessen Text zu sehen und mit dem Schild zu interagieren.",
@@ -909,6 +932,8 @@
 	"module.securitycraft.reinforced_cauldron.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.",
 	"module.securitycraft.key_panel.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Nummernfeld erlaubt zugelassenen Spielern, es zu aktivieren, ohne den Code zu kennen.",
 	"module.securitycraft.key_panel.blacklist_module.description": "Ein Sperrlisten-Modul in einem Nummernfeld verhindert, dass gesperrte Spieler mit ihm interagieren können.",
+	"module.securitycraft.sonic_security_system.whitelist_module.description": "Ein Zulassungslisten-Module in einem Schallsicherheitssystem erlaubt zugelassenen Spielern die gespeicherte Melodie im GUI abzuspielen, oder sie auf einen tragbaren Melodiespieler zu übertragen.",
+	"module.securitycraft.sonic_security_system.redstone_module.description": "Ein Redstone-Module in einem Schallsicherheitssystem führt dazu, dass ein Redstonesignal abgegeben wird, sobald die korrekte Melodie gespielt wird.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Suchradius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "Der Radius, in dem der Radar sucht.",
@@ -994,6 +1019,8 @@
 	"option.securitycraft.key_panel.sendMessage.description": "Sendet dieses Nummernfeld eine Nachricht, wenn es aktiviert wird (bei Nutzung von Zulassungslisten/Sperrlisten-Modulen)?",
 	"option.securitycraft.key_panel.signalLength": "Signallänge: %s",
 	"option.securitycraft.key_panel.signalLength.description": "Wie lange soll das Redstonesignal bei erfolgreicher Aktivierung sein? (In Ticks, 20 Ticks = 1 Sekunde)",
+	"option.securitycraft.sonic_security_system.signalLength": "Zeit aktiv: %s",
+	"option.securitycraft.sonic_security_system.signalLength.description": "Wie lange soll das Schallsicherheitssystem Blöcke entsperren/ein Redstonesignal ausgeben, nachdem die korrekte Melodie gespielt wurde? (In Ticks, 20 ticks = 1 Sekunde)",
 
 	"securitycraft.subtitle.alarm": "Alarm geht los",
 	"securitycraft.subtitle.electrified": "Stromschlag",
@@ -1001,5 +1028,6 @@
 	"securitycraft.subtitle.camerasnap": "Kamerablende",
 	"securitycraft.subtitle.taserfire": "Taser wird gefeuert",
 	"securitycraft.subtitle.lock": "Behälter wird verschlossen",
-	"securitycraft.subtitle.get_item": "Item bekommen!"
+	"securitycraft.subtitle.get_item": "Item bekommen!",
+	"securitycraft.subtitle.ping": "Schallsicherheitssystem pingt"
 }

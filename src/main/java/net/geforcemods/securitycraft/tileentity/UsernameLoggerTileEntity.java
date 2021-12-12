@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
@@ -21,7 +22,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider, ITickableTileEntity {
+public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider, ITickableTileEntity, ILockable {
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private IntOption searchRadius = new IntOption(this::getPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];

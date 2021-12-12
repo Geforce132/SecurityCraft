@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "LinkedBlocks",
+                  "target": "LinkedBlocks",
+                  "op": "replace"
+                }
+              ]
+            }
+          ],
+          "name": "securitycraft:sonic_security_system"
+        }
+      ]
+    }
+  ]
+}

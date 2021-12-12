@@ -33,6 +33,7 @@ import net.minecraft.loot.conditions.BlockStateProperty;
 import net.minecraft.loot.conditions.EntityHasProperty;
 import net.minecraft.loot.conditions.Inverted;
 import net.minecraft.loot.conditions.SurvivesExplosion;
+import net.minecraft.loot.functions.CopyNbt;
 import net.minecraft.loot.functions.ExplosionDecay;
 import net.minecraft.loot.functions.SetCount;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -118,6 +119,13 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.SECRET_WARPED_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECURITY_CAMERA);
 		putStandardBlockLootTable(SCContent.STAIRS_CRYSTAL_QUARTZ);
+		lootTables.put(SCContent.SONIC_SECURITY_SYSTEM, LootTable.builder()
+				.addLootPool(LootPool.builder()
+						.rolls(ConstantRange.of(1))
+						.addEntry(ItemLootEntry.builder(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
+						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
+								.replaceOperation("LinkedBlocks", "LinkedBlocks")))));
+
 	}
 
 	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> drop)

@@ -14,6 +14,8 @@
 - New: Players can now see themselves when viewing a camera, which also means they're now vulnerable to attacks while doing so
 - New: Indicator on security cameras that turns on when someone is viewing the camera
 - New: Config option "trickScannersWithPlayerHeads" to allow players to wear a player's head to trick that player's retinal scanner or scanner door into activating
+- New: Sonic Security System. Lock your blocks behind a note block tune of your choice
+- New: Portable Tune Player. Can play back tunes saved to sonic security systems
 - Change: SecurityCraft's config values for Jade/HWYLA are now synchronized from server to client, meaning server owners can now control what Jade shows to players
 - Change: Renamed "Track Mine" to "Rail Mine" to be in line with vanilla
 - Change: Cameras can now be viewed from anywhere in the same dimension, it is no longer necessary to be close to the camera to be able to view it
@@ -52,6 +54,7 @@
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: Performance improvements due to fewer ticking block entities
+- Misc.: The minimum Forge version is now 36.2.20
 
 --------------------------Changelog for v1.8.23 of SecurityCraft--------------------------
 

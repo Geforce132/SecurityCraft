@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.renderers.RetinalScannerTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
+import net.geforcemods.securitycraft.renderers.SonicSecuritySystemTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.TrophySystemTileEntityRenderer;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
@@ -46,9 +47,11 @@ import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
+import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
 import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
+import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -263,6 +266,7 @@ public class ClientHandler
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeTrophySystem, TrophySystemTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeProjector, ProjectorTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeReinforcedPiston, ReinforcedPistonTileEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSonicSecuritySystem, SonicSecuritySystemTileEntityRenderer::new);
 		ScreenManager.registerFactory(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
@@ -454,6 +458,11 @@ public class ClientHandler
 	public static void displayEditSecretSignGui(SecretSignTileEntity te)
 	{
 		Minecraft.getInstance().displayGuiScreen(new EditSignScreen(te));
+	}
+
+	public static void displaySonicSecuritySystemGui(SonicSecuritySystemTileEntity te)
+	{
+		Minecraft.getInstance().displayGuiScreen(new SonicSecuritySystemScreen(te));
 	}
 
 	public static void refreshModelData(TileEntity te)

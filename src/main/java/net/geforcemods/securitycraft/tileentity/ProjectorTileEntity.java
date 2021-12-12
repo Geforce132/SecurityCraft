@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -16,7 +17,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 
-public class ProjectorTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider {
+public class ProjectorTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider, ILockable {
 
 	public static final int MIN_WIDTH = 1; //also for height
 	public static final int MAX_WIDTH = 10; //also for height
