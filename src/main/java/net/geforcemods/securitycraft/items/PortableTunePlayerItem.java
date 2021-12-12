@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -11,6 +12,7 @@ import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity.NoteWrapper;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +22,12 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Constants;
 
 public class PortableTunePlayerItem extends Item {
 	public PortableTunePlayerItem(Properties properties) {
@@ -73,5 +80,18 @@ public class PortableTunePlayerItem extends Item {
 		}
 
 		return ActionResult.resultPass(stack);
+	}
+
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void addInformation(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+		if(!stack.hasTag())
+			return;
+
+		// If a tune is stored in this item, show the number of notes in this tune in the tooltip
+		int notesCount = stack.getTag().getList("Notes", Constants.NBT.TAG_COMPOUND).size();
+
+		if(notesCount > 0)
+			tooltip.add(Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).mergeStyle(TextFormatting.GRAY));
 	}
 }

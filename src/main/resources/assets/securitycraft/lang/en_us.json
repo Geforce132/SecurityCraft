@@ -843,6 +843,7 @@
 	"tooltip.securitycraft:keycard.link_info": "Put this card into a Keycard Reader to link it.",
 	"tooltip.securitycraft:keycard.limited_info": "Combine this card with a Limited Use Keycard in a crafting table to control how often it can be used.",
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "Linked to %s block(s).",
+	"tooltip.securitycraft:portableTunePlayer.noteCount": "Tune with %s note(s) saved.",
 
 	"itemGroup.securitycraft.decoration": "SecurityCraft: Decoration",
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Explosives",
