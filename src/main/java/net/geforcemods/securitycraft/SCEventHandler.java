@@ -382,7 +382,6 @@ public class SCEventHandler {
 			else if(te.listenToNote(vanillaNoteId, instrumentName))
 			{
 				te.correctTuneWasPlayed = true;
-				te.stopListening();
 
 				if (te.hasModule(ModuleType.REDSTONE)) {
 					world.setBlockState(te.getPos(), te.getWorld().getBlockState(te.getPos()).with(SonicSecuritySystemBlock.POWERED, true));

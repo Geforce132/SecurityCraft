@@ -507,7 +507,6 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 		}
 
 		// An incorrect note was played
-		stopListening();
 		return false;
 	}
 
