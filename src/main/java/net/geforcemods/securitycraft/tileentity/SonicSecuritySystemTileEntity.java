@@ -12,15 +12,10 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -32,7 +27,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 
-public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implements INamedContainerProvider, ITickableTileEntity {
+public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
 	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
 	/**
@@ -523,12 +518,6 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	public void clearNotes()
 	{
 		recordedNotes.clear();
-	}
-
-	@Override
-	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-	{
-		return new GenericTEContainer(SCContent.cTypeSonicSecuritySystem, windowId, world, pos);
 	}
 
 	@Override
