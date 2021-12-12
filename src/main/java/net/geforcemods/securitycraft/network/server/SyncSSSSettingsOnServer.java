@@ -67,12 +67,6 @@ public class SyncSSSSettingsOnServer {
 					case RECORDING_OFF:
 						sss.setRecording(false);
 						break;
-					case LISTENING_ON:
-						sss.startListening();
-						break;
-					case LISTENING_OFF:
-						sss.stopListening();
-						break;
 					case CLEAR_NOTES:
 						sss.clearNotes();
 						break;
@@ -85,6 +79,6 @@ public class SyncSSSSettingsOnServer {
 
 	public enum DataType
 	{
-		POWER_ON, POWER_OFF, SOUND_ON, SOUND_OFF, RECORDING_ON, RECORDING_OFF, LISTENING_ON, LISTENING_OFF, CLEAR_NOTES;
+		POWER_ON, POWER_OFF, SOUND_ON, SOUND_OFF, RECORDING_ON, RECORDING_OFF, CLEAR_NOTES;
 	}
 }
