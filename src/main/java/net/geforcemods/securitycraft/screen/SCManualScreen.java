@@ -21,6 +21,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -200,6 +201,9 @@ public class SCManualScreen extends Screen {
 						if(((IModuleInventory)te).acceptedModules() != null && ((IModuleInventory)te).acceptedModules().length > 0)
 							blit(startX + 163, 118, 105, 1, 16, 16);
 					}
+
+					if (te instanceof ILockable)
+						blit(startX + 189, 118, 154, 1, 16, 16);
 				}
 			}
 
@@ -494,6 +498,9 @@ public class SCManualScreen extends Screen {
 						hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, display));
 					}
 				}
+
+				if (te instanceof ILockable)
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable").getFormattedText()));
 			}
 		}
 

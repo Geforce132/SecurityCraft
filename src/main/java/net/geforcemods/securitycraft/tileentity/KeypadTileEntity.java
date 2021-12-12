@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
@@ -22,7 +23,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class KeypadTileEntity extends DisguisableTileEntity implements IPasswordProtected {
+public class KeypadTileEntity extends DisguisableTileEntity implements IPasswordProtected, ILockable {
 
 	private String passcode;
 
@@ -141,6 +142,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	public void setPassword(String password) {
 		passcode = password;
 	}
+
 
 	@Override
 	public ModuleType[] acceptedModules() {

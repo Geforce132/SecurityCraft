@@ -291,6 +291,13 @@ public class RecipeGenerator extends RecipeProvider
 		.key('R', Tags.Items.DUSTS_REDSTONE)
 		.addCriterion("has_redstone", hasItem(Tags.Items.DUSTS_REDSTONE))
 		.build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.PORTABLE_TUNE_PLAYER.get())
+		.patternLine("IRN")
+		.key('I', Tags.Items.INGOTS_IRON)
+		.key('R', Tags.Items.DUSTS_REDSTONE)
+		.key('N', Blocks.NOTE_BLOCK)
+		.addCriterion("has_redstone", hasItem(Tags.Items.DUSTS_REDSTONE))
+		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.PROJECTOR.get())
 		.patternLine("III")
 		.patternLine("BLP")
@@ -531,6 +538,16 @@ public class RecipeGenerator extends RecipeProvider
 		.patternLine("GGG")
 		.key('G', SCContent.REINFORCED_GLASS.get())
 		.addCriterion("has_glass", hasItem(Tags.Items.GLASS))
+		.build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
+		.patternLine(" RD")
+		.patternLine(" S ")
+		.patternLine(" I ")
+		.key('R', SCContent.PORTABLE_RADAR.get())
+		.key('D', Items.BOWL)
+		.key('S', Items.STICK)
+		.key('I', Blocks.IRON_BLOCK)
+		.addCriterion("has_stick", hasItem(Tags.Items.RODS_WOODEN))
 		.build(consumer);
 
 		//shapeless recipes

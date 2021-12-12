@@ -5,5 +5,6 @@
     "taserfire": {"category": "player","sounds":["securitycraft:taserfire"], "subtitle": "securitycraft.subtitle.taserfire"},
     "electrified": {"category": "block","sounds":["securitycraft:electrified"], "subtitle": "securitycraft.subtitle.electrified"},
     "lock": {"category": "block","sounds":["securitycraft:lock"], "subtitle": "securitycraft.subtitle.lock"},
+    "ping": {"category": "block","sounds":["securitycraft:ping"], "subtitle": "securitycraft.subtitle.ping"},
     "get_item": {"category": "block","sounds":["securitycraft:get_item"], "subtitle": "securitycraft.subtitle.get_item"}
 }

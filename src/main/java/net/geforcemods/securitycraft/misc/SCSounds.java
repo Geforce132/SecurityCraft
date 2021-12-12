@@ -11,6 +11,7 @@ public enum SCSounds {
 	TASERFIRED("securitycraft:taserfire"),
 	ELECTRIFIED("securitycraft:electrified"),
 	LOCK("securitycraft:lock"),
+	PING("securitycraft:ping"),
 	GET_ITEM("securitycraft:get_item");
 
 	public final String path;

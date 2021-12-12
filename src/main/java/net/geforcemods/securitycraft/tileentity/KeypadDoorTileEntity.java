@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
@@ -22,7 +23,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPasswordProtected
+public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPasswordProtected, ILockable
 {
 	private String passcode;
 

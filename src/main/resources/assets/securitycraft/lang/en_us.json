@@ -369,6 +369,7 @@
 	"block.securitycraft.reinforced_piston_head": "Reinforced Piston Head",
 	"block.securitycraft.reinforced_moving_piston": "Reinforced Moving Piston",
 	"block.securitycraft.key_panel": "Key Panel",
+	"block.securitycraft.sonic_security_system": "Sonic Security System",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",
@@ -416,6 +417,7 @@
 	"item.securitycraft.crystal_quartz_item": "Crystal Quartz",
 	"item.securitycraft.keypad_door_item": "Keypad Door",
 	"item.securitycraft.speed_module": "Speed Module",
+	"item.securitycraft.portable_tune_player": "Portable Tune Player",
 
 	"entity.securitycraft.imsbomb": "I.M.S. Bomb",
 	"entity.securitycraft.sentry": "Sentry",
@@ -479,6 +481,7 @@
 	"help.securitycraft.scanner_door.info": "The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top to open it.",
 	"help.securitycraft.keypad_door.info": "The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.",
 	"help.securitycraft.key_panel.info": "The key panel can be placed down for a smaller, waterloggable version of the keypad. It is also used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.",
+	"help.securitycraft.sonic_security_system.info": "The Sonic Security System, inspired by the similarly-named device in the game \"Metroid Prime 2: Echoes\", is able to lock certain SecurityCraft blocks and prevent them from being used or interacted with. Right-clicking a supported block will bind it to the Sonic Security System. Once it is placed down, right-clicking it will open a GUI where you can enable, disable, or reset the Sonic Security System. The blocks can be unlocked by playing a tune nearby, either via the Portable Tune Player, or note blocks. To set such a tune, toggle note recording on in the Sonic Security System's GUI then play the tune that you want using note blocks played nearby. Toggle the recording off once you are finished. Any time that tune is played nearby the Sonic Security System, blocks locked by it will become accessible for a short while.",
 	
 	"help.securitycraft.codebreaker.info": "The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)",
 	"help.securitycraft.universal_block_remover.info": "The universal block remover is used to destroy \"reinforced\" blocks by rightclicking it. Only the person who placed the block down can destroy it.",
@@ -515,6 +518,7 @@
 	"help.securitycraft.sentry.info": "The Sentry has three modes that can be switched by rightclicking it. Idle (it will never attack), Camouflage (it will only attack enemy players in its range) and Aggressive (it will attack hostile mobs and enemy players). Rightclicking it with a Disguise Module containing a full and opaque block (e.g. stone, but not glass or stairs) will make the Sentry disguise itself. The module can be switched directly, or extracted by rightclicking with a Universal Block Modifier. To remove the sentry, sneak-rightclick it.",
 	"help.securitycraft.crystal_quartz_item.info": "Crystal Quartz is used to craft Crystal Quartz blocks.",
 	"help.securitycraft.speed_module.info": "The speed module allows some of SecurityCraft's blocks to operate faster than usual.",
+	"help.securitycraft.portable_tune_player.info": "The portable tune player can play a tune that was previously saved to it. To save a tune, rightclick a Sonic Security System that has already recorded a tune. To play the tune, rightclick the portable tune player. To cancel the playback, simply rightclick the portable tune player again or stop holding it.",
 
 	"gui.securitycraft:scManual.disabled": "Disabled",
 	"gui.securitycraft:scManual.recipe.keycard_lv1": "Disabled",
@@ -530,6 +534,7 @@
 	"gui.securitycraft:scManual.viewActivatedBlock": "View activated: This block can be activated by hovering over it with your cursor while in block-breaking range.",
 	"gui.securitycraft:scManual.explosiveBlock": "Explosive: This block is able to be remotely detonated, and may be able to be activated/deactivated, using the Mine Remote Access Tool.",
 	"gui.securitycraft:scManual.customizableBlock": "Customizable: You may use the Universal Block Modifier and the various modules added by SecurityCraft to customize the functions of this block.",
+	"gui.securitycraft:scManual.lockable": "Lockable: This block can be locked with a Sonic Security System.",
 	"gui.securitycraft:scManual.options": "Available options:",
 	"gui.securitycraft:scManual.modules": "Available modules:",
 	"gui.securitycraft:scManual.recipe.keypad": "Place down a Frame and rightclick it with a Key Panel.",
@@ -632,6 +637,16 @@
 	"gui.securitycraft:keycard_reader.noSmartModule": "You need a Smart Module to control the keycard levels individually.",
 	"gui.securitycraft:keycard_reader.smartModule": "Individual keycard level control active!",
 	"gui.securitycraft:keycard_reader.level_mismatch": "The level of this keycard is not enabled in this keycard reader!",
+	"gui.securitycraft:sonic_security_system.start_recording": "Start recording",
+	"gui.securitycraft:sonic_security_system.stop_recording": "Stop recording",
+	"gui.securitycraft:sonic_security_system.recording.clear": "Clear recording",
+	"gui.securitycraft:sonic_security_system.recording.notes": "Notes recorded: %s",
+	"gui.securitycraft:sonic_security_system.recording.play": "Play recording",
+	"gui.securitycraft:sonic_security_system.power.on": "Power: on",
+	"gui.securitycraft:sonic_security_system.power.off": "Power: off",
+	"gui.securitycraft:sonic_security_system.sound": "Sound:",
+	"gui.securitycraft:sonic_security_system.recording": "Recording...",
+	"gui.securitycraft:sonic_security_system.listening": "Listening...",
 	"gui.securitycraft:customize.tooltip": "%s (%s)",
 	"gui.securitycraft:customize.currentSetting": "Currently: %s",
 
@@ -739,6 +754,13 @@
 	"messages.securitycraft:blockpocket.assemblyFailed": "Assembling the Block Pocket has failed %1$s the Block Pocket Manager. (Incorrect Block: %2$s)",
 	"messages.securitycraft:ownable.validate": "The owner of this block has been successfully validated.",
 	"messages.securitycraft:ownable.ownerNotValidated": "This block's owner has been changed by the Universal Owner Changer and thus needs to be validated by the new owner to work again. To validate a block, the new owner of the block has to rightclick it.",
+	"messages.securitycraft:sonic_security_system.notLinked": "Not linked with a block yet. Please right-click a compatible SecurityCraft block with this item in your hand first.",
+	"messages.securitycraft:sonic_security_system.blockLinked": "Linked with the %1$s at %2$s.",
+	"messages.securitycraft:sonic_security_system.blockUnlinked": "Unlinked from the %1$s at %2$s.",
+	"messages.securitycraft:sonic_security_system.linkMaxReached": "You cannot link to additional blocks. Each Sonic Security System can be linked to a maximum of %s blocks.",
+	"messages.securitycraft:sonic_security_system.locked": "This %s is being locked by a Sonic Security System!",
+	"messages.securitycraft:portable_tune_player.tune_saved": "Tune saved.",
+	"messages.securitycraft:portable_tune_player.no_tune": "No tune available.",
 	"messages.securitycraft:sc_help": "%s: %s + %s",
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",
 
@@ -770,6 +792,8 @@
 	"tooltip.securitycraft:keycard.reader_owner": "Works on Keycard Readers owned by: %s",
 	"tooltip.securitycraft:keycard.link_info": "Put this card into a Keycard Reader to link it.",
 	"tooltip.securitycraft:keycard.limited_info": "Combine this card with a Limited Use Keycard in a crafting table to control how often it can be used.",
+	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "Linked to %s block(s).",
+	"tooltip.securitycraft:portableTunePlayer.noteCount": "Tune with %s note(s) saved.",
 
 	"itemGroup.securitycraft.decoration": "SecurityCraft: Decoration",
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Explosives",
@@ -847,6 +871,8 @@
 	"module.securitycraft.reinforced_cauldron.whitelist_module.description": "Adding an allowlist module to a Reinforced Cauldron will allow listed players to interact with the Reinforced Cauldron.",
 	"module.securitycraft.key_panel.whitelist_module.description": "Adding an allowlist module to a key panel  will allow listed players to use the block without knowing the code.",
 	"module.securitycraft.key_panel.blacklist_module.description": "Adding a denylist module to a key panel will ban listed players from interacting with the block.",
+	"module.securitycraft.sonic_security_system.whitelist_module.description": "Adding an allowlist module to a sonic security system will allow listed players to save the system's tune onto a portable tune player, as well as listen to the tune in the system's GUI.",
+	"module.securitycraft.sonic_security_system.redstone_module.description": "Adding a redstone module to a sonic security system lets the system emit a redstone signal when the correct tune was played.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: #",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",
@@ -928,6 +954,8 @@
 	"option.securitycraft.key_panel.sendMessage.description": "Does this key panel send a message upon activation (when using allowlist/denylist modules)?",
 	"option.securitycraft.key_panel.signalLength": "Signal length: #",
 	"option.securitycraft.key_panel.signalLength.description": "How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)",
+	"option.securitycraft.sonic_security_system.signalLength": "Time active: #",
+	"option.securitycraft.sonic_security_system.signalLength.description": "How long should the sonic security system unlock blocks/give off a redstone signal after hearing the correct tune? (In ticks, 20 ticks = 1 second)",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",
@@ -935,5 +963,6 @@
 	"securitycraft.subtitle.camerasnap": "Camera shutter",
 	"securitycraft.subtitle.taserfire": "Taser firing",
 	"securitycraft.subtitle.lock": "Container locking",
-	"securitycraft.subtitle.get_item": "Item gotten!"
+	"securitycraft.subtitle.get_item": "Item gotten!",
+	"securitycraft.subtitle.ping": "Sonic Security System pings"
 }

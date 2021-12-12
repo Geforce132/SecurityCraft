@@ -38,6 +38,7 @@ import net.minecraft.world.storage.loot.conditions.BlockStateProperty;
 import net.minecraft.world.storage.loot.conditions.EntityHasProperty;
 import net.minecraft.world.storage.loot.conditions.Inverted;
 import net.minecraft.world.storage.loot.conditions.SurvivesExplosion;
+import net.minecraft.world.storage.loot.functions.CopyNbt;
 import net.minecraft.world.storage.loot.functions.ExplosionDecay;
 import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraftforge.fml.RegistryObject;
@@ -67,7 +68,7 @@ public class BlockLootTableGenerator implements IDataProvider
 				putStandardBlockLootTable(obj);
 		}
 
-        lootTables.remove(SCContent.REINFORCED_PISTON_HEAD);
+		lootTables.remove(SCContent.REINFORCED_PISTON_HEAD);
 		putSlabLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
 
 		StandaloneLootEntry.Builder<?> imsLootEntryBuilder = ItemLootEntry.builder(SCContent.BOUNCING_BETTY.get());
@@ -111,6 +112,12 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.SECRET_OAK_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_WALL_SIGN);
+		lootTables.put(SCContent.SONIC_SECURITY_SYSTEM, LootTable.builder()
+				.addLootPool(LootPool.builder()
+						.rolls(ConstantRange.of(1))
+						.addEntry(ItemLootEntry.builder(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
+								.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
+										.replaceOperation("LinkedBlocks", "LinkedBlocks")))));
 	}
 
 	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> drop)

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
@@ -14,7 +15,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class KeycardReaderTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
+public class KeycardReaderTileEntity extends DisguisableTileEntity implements INamedContainerProvider, ILockable {
 
 	private boolean[] acceptedLevels = {true, false, false, false, false};
 	private int signature = 0;
