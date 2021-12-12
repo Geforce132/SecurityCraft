@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -19,6 +20,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
@@ -66,7 +68,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	/** Whether or not this Sonic Security System is currently recording a new note combination */
 	private boolean isRecording = false;
 	private ArrayList<NoteWrapper> recordedNotes = new ArrayList<>();
-	public boolean shouldEmitPower = false;
+	public boolean correctTuneWasPlayed = false;
 
 	/** Whether or not this Sonic Security System is currently listening to notes */
 	private boolean isListening = false;
@@ -98,14 +100,15 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 			if(!isActive())
 				return;
 
-			if(shouldEmitPower)
+			if(correctTuneWasPlayed)
 			{
 				if(powerCooldown > 0)
 					powerCooldown--;
 				else
 				{
 					powerCooldown = REDSTONE_LENGTH;
-					shouldEmitPower = false;
+					correctTuneWasPlayed = false;
+					world.setBlockState(pos, world.getBlockState(pos).with(SonicSecuritySystemBlock.POWERED, false));
 					world.updateBlock(pos, SCContent.SONIC_SECURITY_SYSTEM.get());
 				}
 			}
@@ -181,6 +184,17 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 
 		// Stop tracking SSSs when they are removed from the world
 		SonicSecuritySystemTracker.stopTracking(this);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
+
+		if(module == ModuleType.REDSTONE) {
+			world.setBlockState(pos, world.getBlockState(pos).with(SonicSecuritySystemBlock.POWERED, false));
+			world.updateBlock(pos, SCContent.SONIC_SECURITY_SYSTEM.get());
+		}
+
+		super.onModuleRemoved(stack, module);
 	}
 
 	@Override
@@ -564,7 +578,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[] {ModuleType.ALLOWLIST};
+		return new ModuleType[] {ModuleType.ALLOWLIST, ModuleType.REDSTONE};
 	}
 
 	@Override

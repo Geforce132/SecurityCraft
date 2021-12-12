@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.api.LinkableTileEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.entity.SentryEntity;
@@ -27,6 +28,7 @@ import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
@@ -379,9 +381,13 @@ public class SCEventHandler {
 			// If so, toggle its redstone power output on
 			else if(te.listenToNote(vanillaNoteId, instrumentName))
 			{
-				te.shouldEmitPower = true;
+				te.correctTuneWasPlayed = true;
 				te.stopListening();
-				world.updateBlock(te.getPos(), SCContent.SONIC_SECURITY_SYSTEM.get());
+
+				if (te.hasModule(ModuleType.REDSTONE)) {
+					world.setBlockState(te.getPos(), te.getWorld().getBlockState(te.getPos()).with(SonicSecuritySystemBlock.POWERED, true));
+					world.updateBlock(te.getPos(), SCContent.SONIC_SECURITY_SYSTEM.get());
+				}
 			}
 		}
 	}

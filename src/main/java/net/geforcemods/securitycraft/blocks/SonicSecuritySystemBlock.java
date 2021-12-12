@@ -47,13 +47,14 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 			Block.makeCuboidShape(6.5, 0, 6.5, 9.5, 1, 9.5)
 			).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
 
+	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	public SonicSecuritySystemBlock(Properties properties)
 	{
 		super(properties);
 
-		setDefaultState(stateContainer.getBaseState().with(WATERLOGGED, false));
+		setDefaultState(stateContainer.getBaseState().with(POWERED, false).with(WATERLOGGED, false));
 	}
 
 	public static boolean isNormalCube(BlockState state, IBlockReader reader, BlockPos pos) {
@@ -90,22 +91,12 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 
 	@Override
 	public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side){
-		TileEntity te = world.getTileEntity(pos);
-
-		if(te instanceof SonicSecuritySystemTileEntity)
-			return ((SonicSecuritySystemTileEntity)te).shouldEmitPower ? 15 : 0;
-
-		return 0;
+		return state.get(POWERED) ? 15 : 0;
 	}
 
 	@Override
 	public int getStrongPower(BlockState state, IBlockReader world, BlockPos pos, Direction side){
-		TileEntity te = world.getTileEntity(pos);
-
-		if(te instanceof SonicSecuritySystemTileEntity)
-			return ((SonicSecuritySystemTileEntity)te).shouldEmitPower ? 15 : 0;
-
-		return 0;
+		return state.get(POWERED) ? 15 : 0;
 	}
 
 	@Override
@@ -129,7 +120,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	@Override
 	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
-		builder.add(WATERLOGGED);
+		builder.add(POWERED, WATERLOGGED);
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public interface ILockable {
 
 		for(SonicSecuritySystemTileEntity te : sonicSecuritySystems) {
 			if(te.isActive() && te.isLinkedToBlock(thisTe.getPos())) {
-				return !te.shouldEmitPower; //if the SSS is emitting power, the correct tune has been played and as such the block should not be locked
+				return !te.correctTuneWasPlayed; //if the correct tune was recently played, the block should not be locked
 			}
 		}
 

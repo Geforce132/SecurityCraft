@@ -929,6 +929,7 @@
 	"module.securitycraft.key_panel.whitelist_module.description": "Adding an allowlist module to a key panel  will allow listed players to use the block without knowing the code.",
 	"module.securitycraft.key_panel.blacklist_module.description": "Adding a denylist module to a key panel will ban listed players from interacting with the block.",
 	"module.securitycraft.sonic_security_system.whitelist_module.description": "Adding an allowlist module to a sonic security system will allow listed players to save the system's tune onto a portable tune player, as well as listen to the tune in the system's GUI.",
+	"module.securitycraft.sonic_security_system.redstone_module.description": "Adding a redstone module to a sonic security system lets the system emit a redstone signal when the correct tune was played.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",
