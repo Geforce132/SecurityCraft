@@ -1015,6 +1015,8 @@
 	"option.securitycraft.key_panel.sendMessage.description": "Does this key panel send a message upon activation (when using allowlist/denylist modules)?",
 	"option.securitycraft.key_panel.signalLength": "Signal length: %s",
 	"option.securitycraft.key_panel.signalLength.description": "How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)",
+	"option.securitycraft.sonic_security_system.signalLength": "Time active: %s",
+	"option.securitycraft.sonic_security_system.signalLength.description": "How long should the sonic security system stay active after hearing the correct tune? (In ticks, 20 ticks = 1 second)",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",

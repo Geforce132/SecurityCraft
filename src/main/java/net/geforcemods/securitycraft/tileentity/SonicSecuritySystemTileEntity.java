@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -32,53 +33,43 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 
 public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implements INamedContainerProvider, ITickableTileEntity {
-
 	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
-
-	/** The delay allowed between note block sounds while listening to a note sequence.
-	 *  Notes played within this many ticks of each other will be considered as part of
-	 *  the same "combination." Notes played after the delay has elapsed will start a new
-	 *  combination */
+	/**
+	 * The delay allowed between note block sounds while listening to a note sequence.
+	 * Notes played within this many ticks of each other will be considered as part of
+	 * the same "combination." Notes played after the delay has elapsed will start a new
+	 * combination
+	 */
 	private static final int LISTEN_DELAY = 60;
-	/** The number of ticks the sonic security system emits redstone power for after the correct tune has been played */
-	private static final int REDSTONE_LENGTH = 40;
-
 	/** The listening and recording range of Sonic Security Systems (perhaps a config option?) */
 	public static final int MAX_RANGE = 30;
-
 	/** The maximum number of blocks that a Sonic Security System can be linked to at once (perhaps a config option?) */
 	public static final int MAX_LINKED_BLOCKS = 30;
-
 	/** Whether the ping sound should be emitted or not */
 	private boolean emitsPings = true;
-
 	private int pingCooldown = PING_DELAY;
-
+	public IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	/** Used to control the number of ticks that Sonic Security Systems emit redstone power for */
-	private int powerCooldown = REDSTONE_LENGTH;
+	public int powerCooldown = 0;
 	public float radarRotationDegrees = 0;
-
 	/** A list containing all of the blocks that this SSS is linked to */
 	private Set<BlockPos> linkedBlocks = new HashSet<>();
-
 	/** Whether or not this Sonic Security System is on or off */
 	private boolean isActive = true;
-
 	/** Whether or not this Sonic Security System is currently recording a new note combination */
 	private boolean isRecording = false;
 	private ArrayList<NoteWrapper> recordedNotes = new ArrayList<>();
 	public boolean correctTuneWasPlayed = false;
-
 	/** Whether or not this Sonic Security System is currently listening to notes */
 	private boolean isListening = false;
 	private int listeningTimer = LISTEN_DELAY;
-
-	/** This variable keeps track of the number of correct notes that have been listened to in order.
-	 *  If this number matches the size of the recordedNotes array, then the correct combination has
-	 *  been played */
+	/**
+	 * This field keeps track of the number of correct notes that have been listened to in order.
+	 * If this number matches the size of the recordedNotes array, then the correct combination has
+	 * been played
+	 */
 	private int listenPos = 0;
-
 	private boolean tracked = false;
 
 	public SonicSecuritySystemTileEntity()
@@ -106,7 +97,6 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 					powerCooldown--;
 				else
 				{
-					powerCooldown = REDSTONE_LENGTH;
 					correctTuneWasPlayed = false;
 					world.setBlockState(pos, world.getBlockState(pos).with(SonicSecuritySystemBlock.POWERED, false));
 					world.updateBlock(pos, SCContent.SONIC_SECURITY_SYSTEM.get());
@@ -582,6 +572,6 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[] {signalLength};
 	}
 }
