@@ -162,7 +162,7 @@ public class SonicSecuritySystemScreen extends Screen {
 
 	private ITextComponent getRecordingString(boolean recording)
 	{
-		return recording ? Utils.localize("gui.securitycraft:sonic_security_system.recording.on") : Utils.localize("gui.securitycraft:sonic_security_system.recording.off");
+		return recording ? Utils.localize("gui.securitycraft:sonic_security_system.stop_recording") : Utils.localize("gui.securitycraft:sonic_security_system.start_recording");
 	}
 
 	private ITextComponent getPowerString(boolean on)
