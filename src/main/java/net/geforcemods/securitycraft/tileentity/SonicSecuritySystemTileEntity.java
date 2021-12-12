@@ -468,6 +468,9 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	public void recordNote(int noteID, String instrumentName)
 	{
 		recordedNotes.add(new NoteWrapper(noteID, instrumentName));
+
+		if(!world.isRemote)
+			sync();
 	}
 
 	/**
