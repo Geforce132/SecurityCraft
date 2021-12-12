@@ -22,6 +22,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -195,6 +196,9 @@ public class SCManualScreen extends Screen {
 						if(customizable.customOptions() != null && customizable.customOptions().length > 0)
 							blit(matrix, startX + 136, 118, 88, 1, 16, 16);
 					}
+
+					if (te instanceof ILockable)
+						blit(matrix, startX + 189, 118, 154, 1, 16, 16);
 
 					if(te instanceof IModuleInventory inv)
 					{
@@ -483,6 +487,9 @@ public class SCManualScreen extends Screen {
 						hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, display));
 					}
 				}
+
+				if (te instanceof ILockable)
+					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable")));
 			}
 		}
 

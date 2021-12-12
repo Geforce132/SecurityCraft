@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.Bullet;
@@ -39,7 +40,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
-public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
+public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable {
 
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;

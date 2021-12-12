@@ -5,10 +5,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -189,22 +191,20 @@ public class SCClientEventHandler
 
 				if(mop instanceof BlockHitResult bhr && world.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity)
 				{
-					CompoundTag cameras = stack.getTag();
+					CompoundTag cameras = stack.getOrCreateTag();
 					uCoord = 110;
 
-					if(cameras != null) {
-						for(int i = 1; i < 31; i++)
+					for(int i = 1; i < 31; i++)
+					{
+						if(!cameras.contains("Camera" + i))
+							continue;
+
+						String[] coords = cameras.getString("Camera" + i).split(" ");
+
+						if(Integer.parseInt(coords[0]) == bhr.getBlockPos().getX() && Integer.parseInt(coords[1]) == bhr.getBlockPos().getY() && Integer.parseInt(coords[2]) == bhr.getBlockPos().getZ())
 						{
-							if(!cameras.contains("Camera" + i))
-								continue;
-
-							String[] coords = cameras.getString("Camera" + i).split(" ");
-
-							if(Integer.parseInt(coords[0]) == bhr.getBlockPos().getX() && Integer.parseInt(coords[1]) == bhr.getBlockPos().getY() && Integer.parseInt(coords[2]) == bhr.getBlockPos().getZ())
-							{
-								uCoord = 88;
-								break;
-							}
+							uCoord = 88;
+							break;
 						}
 					}
 				}
@@ -218,20 +218,18 @@ public class SCClientEventHandler
 				if(mop instanceof BlockHitResult bhr && world.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive)
 				{
 					uCoord = 110;
-					CompoundTag mines = stack.getTag();
+					CompoundTag mines = stack.getOrCreateTag();
 
-					if(mines != null) {
-						for(int i = 1; i <= 6; i++)
+					for(int i = 1; i <= 6; i++)
+					{
+						if(stack.getTag().getIntArray("mine" + i).length > 0)
 						{
-							if(stack.getTag().getIntArray("mine" + i).length > 0)
-							{
-								int[] coords = mines.getIntArray("mine" + i);
+							int[] coords = mines.getIntArray("mine" + i);
 
-								if(coords[0] == bhr.getBlockPos().getX() && coords[1] == bhr.getBlockPos().getY() && coords[2] == bhr.getBlockPos().getZ())
-								{
-									uCoord = 88;
-									break;
-								}
+							if(coords[0] == bhr.getBlockPos().getX() && coords[1] == bhr.getBlockPos().getY() && coords[2] == bhr.getBlockPos().getZ())
+							{
+								uCoord = 88;
+								break;
 							}
 						}
 					}
@@ -244,22 +242,34 @@ public class SCClientEventHandler
 				if(hitEntity instanceof Sentry)
 				{
 					uCoord = 110;
-					CompoundTag sentries = stack.getTag();
+					CompoundTag sentries = stack.getOrCreateTag();
 
-					if(sentries != null) {
-						for(int i = 1; i <= 12; i++)
+					for(int i = 1; i <= 12; i++)
+					{
+						if(stack.getTag().getIntArray("sentry" + i).length > 0)
 						{
-							if(stack.getTag().getIntArray("sentry" + i).length > 0)
+							int[] coords = sentries.getIntArray("sentry" + i);
+							if(coords[0] == hitEntity.blockPosition().getX() && coords[1] == hitEntity.blockPosition().getY() && coords[2] == hitEntity.blockPosition().getZ())
 							{
-								int[] coords = sentries.getIntArray("sentry" + i);
-								if(coords[0] == hitEntity.blockPosition().getX() && coords[1] == hitEntity.blockPosition().getY() && coords[2] == hitEntity.blockPosition().getZ())
-								{
-									uCoord = 88;
-									break;
-								}
+								uCoord = 88;
+								break;
 							}
 						}
 					}
+				}
+			}
+			else if(stack.getItem() == SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
+			{
+				double eyeHeight = player.getEyeHeight();
+				Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
+				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
+
+				if(mop instanceof BlockHitResult bhr && world.getBlockEntity(bhr.getBlockPos()) instanceof ILockable)
+				{
+					uCoord = 110;
+
+					if(SonicSecuritySystemItem.isAdded(stack.getOrCreateTag(), bhr.getBlockPos()))
+						uCoord = 88;
 				}
 			}
 

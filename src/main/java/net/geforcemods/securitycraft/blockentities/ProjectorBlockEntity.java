@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -17,7 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class ProjectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider {
+public class ProjectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable {
 
 	public static final int MIN_WIDTH = 1; //also for height
 	public static final int MAX_WIDTH = 10; //also for height

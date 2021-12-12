@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -18,6 +19,7 @@ import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.models.IMSBombModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.models.SentryModel;
+import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
@@ -29,6 +31,7 @@ import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
+import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
 import net.geforcemods.securitycraft.renderers.TrophySystemRenderer;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
@@ -50,6 +53,7 @@ import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
+import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
 import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.Reinforced;
@@ -96,6 +100,7 @@ public class ClientHandler
 	public static final ModelLayerLocation IMS_BOMB_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "ims_bomb"), "main");
 	public static final ModelLayerLocation SENTRY_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "sentry"), "main");
 	public static final ModelLayerLocation SECURITY_CAMERA_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "security_camera"), "main");
+	public static final ModelLayerLocation SONIC_SECURITY_SYSTEM_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "sonic_security_system"), "main");
 	public static IIngameOverlay cameraOverlay;
 	public static IIngameOverlay hotbarBindOverlay;
 
@@ -333,6 +338,7 @@ public class ClientHandler
 		event.registerBlockEntityRenderer(SCContent.beTypeTrophySystem, TrophySystemRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeProjector, ProjectorRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeReinforcedPiston, ReinforcedPistonHeadRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeSonicSecuritySystem, SonicSecuritySystemRenderer::new);
 	}
 
 	@SubscribeEvent
@@ -342,6 +348,7 @@ public class ClientHandler
 		event.registerLayerDefinition(IMS_BOMB_LOCATION, IMSBombModel::createLayer);
 		event.registerLayerDefinition(SENTRY_LOCATION, SentryModel::createLayer);
 		event.registerLayerDefinition(SECURITY_CAMERA_LOCATION, SecurityCameraModel::createLayer);
+		event.registerLayerDefinition(SONIC_SECURITY_SYSTEM_LOCATION, SonicSecuritySystemModel::createLayer);
 	}
 
 	private static void tint()
@@ -512,6 +519,11 @@ public class ClientHandler
 	public static void displayEditSecretSignGui(SecretSignBlockEntity te)
 	{
 		Minecraft.getInstance().setScreen(new SignEditScreen(te, Minecraft.getInstance().isTextFilteringEnabled()));
+	}
+
+	public static void displaySonicSecuritySystemGui(SonicSecuritySystemBlockEntity te)
+	{
+		Minecraft.getInstance().setScreen(new SonicSecuritySystemScreen(te));
 	}
 
 	public static void refreshModelData(BlockEntity te)

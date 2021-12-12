@@ -123,6 +123,11 @@ public abstract class Option<T> {
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		return (value) + "";
+	}
+
 	/**
 	 * A subclass of {@link Option}, already setup to handle booleans.
 	 */
@@ -151,15 +156,10 @@ public abstract class Option<T> {
 		{
 			tag.putBoolean(getName(), value);
 		}
-
-		@Override
-		public String toString() {
-			return (value) + "";
-		}
 	}
 
 	/**
-	 * A subclass of {@link Option}, already setup to handle integers.
+	 * A subclass of {@link Option}, set up to handle integers.
 	 */
 	public static class IntOption extends Option<Integer> implements ISlider{
 		private boolean slider;
@@ -210,11 +210,6 @@ public abstract class Option<T> {
 		public void writeToNBT(CompoundTag tag)
 		{
 			tag.putInt(getName(), value);
-		}
-
-		@Override
-		public String toString() {
-			return (value) + "";
 		}
 
 		@Override

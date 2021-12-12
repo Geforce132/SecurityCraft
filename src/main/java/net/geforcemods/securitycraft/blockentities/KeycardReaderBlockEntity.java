@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
@@ -16,7 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements MenuProvider {
+public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements MenuProvider, ILockable {
 
 	private boolean[] acceptedLevels = {true, false, false, false, false};
 	private int signature = 0;

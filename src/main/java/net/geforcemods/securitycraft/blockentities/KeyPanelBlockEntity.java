@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
@@ -24,7 +25,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPasswordProtected
+public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPasswordProtected, ILockable
 {
 	private String passcode;
 	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {

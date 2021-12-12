@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.inventory.GenericTEMenu;
@@ -23,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected
+public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected, ILockable
 {
 	private String passcode;
 
