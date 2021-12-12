@@ -64,18 +64,18 @@ public class SonicSecuritySystemItem extends BlockItem {
 						if(isAdded(stack.getTag(), pos))
 						{
 							removeLinkedBlock(stack.getTag(), pos);
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(world.getBlockState(pos).getBlock().getTranslationKey()), pos), TextFormatting.GREEN);
 							return ActionResultType.SUCCESS;
 						}
 						else if(addLinkedBlock(stack.getTag(), pos, player))
 						{
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(world.getBlockState(pos).getBlock().getTranslationKey()), pos), TextFormatting.GREEN);
 							SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 							return ActionResultType.SUCCESS;
 						}
 					}
 					else {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", Utils.localize(world.getBlockState(pos).getBlock().getTranslationKey()), pos), TextFormatting.GREEN);
 						return ActionResultType.SUCCESS;
 					}
 				}
