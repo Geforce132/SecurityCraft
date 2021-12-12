@@ -568,7 +568,7 @@
 	"help.securitycraft.sentry.info": "The Sentry has three modes that can be switched by rightclicking it. Idle (it will never attack), Camouflage (it will only attack enemy players in its range) and Aggressive (it will attack hostile mobs and enemy players). Rightclicking it with a Disguise Module containing a full and opaque block (e.g. stone, but not glass or stairs) will make the Sentry disguise itself. The module can be switched directly, or extracted by rightclicking with a Universal Block Modifier. To remove the sentry, sneak-rightclick it.",
 	"help.securitycraft.crystal_quartz_item.info": "Crystal Quartz is used to craft Crystal Quartz blocks.",
 	"help.securitycraft.speed_module.info": "The speed module allows some of SecurityCraft's blocks to operate faster than usual.",
-	"help.securitycraft.portable_tune_player.info": "The portable tune player can play a tune that was previously saved to it. To save a tune, rightclick a Sonic Security System that has already recorded a tune. To play the tune, rightclick the portable tune player.",
+	"help.securitycraft.portable_tune_player.info": "The portable tune player can play a tune that was previously saved to it. To save a tune, rightclick a Sonic Security System that has already recorded a tune. To play the tune, rightclick the portable tune player. To cancel the playback, simply rightclick the portable tune player again or stop holding it.",
 
 	"gui.securitycraft:scManual.disabled": "Disabled",
 	"gui.securitycraft:scManual.recipe.keycard_lv1": "Disabled",

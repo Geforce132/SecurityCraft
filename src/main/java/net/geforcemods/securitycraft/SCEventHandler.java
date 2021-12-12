@@ -93,6 +93,11 @@ public class SCEventHandler {
 				int ticksRemaining = pair.getLeft();
 
 				if (ticksRemaining == 0) {
+					if (PlayerUtils.getSelectedItemStack(player, SCContent.PORTABLE_TUNE_PLAYER.get()).isEmpty()) {
+						pair.setLeft(-1);
+						return;
+					}
+
 					NoteWrapper note = pair.getRight().poll();
 
 					if (note != null) {

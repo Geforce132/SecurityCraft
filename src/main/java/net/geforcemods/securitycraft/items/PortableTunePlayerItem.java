@@ -57,12 +57,17 @@ public class PortableTunePlayerItem extends Item {
 
 		if (!world.isRemote) {
 			CompoundNBT tag = stack.getOrCreateTag();
+			boolean isTunePlaying = SCEventHandler.PLAYING_TUNES.containsKey(player);
 
-			if (tag.contains("Notes") && !SCEventHandler.PLAYING_TUNES.containsKey(player)) {
+			if (!isTunePlaying && tag.contains("Notes")) {
 				Deque<NoteWrapper> notes = new ArrayDeque<>();
 
 				SonicSecuritySystemTileEntity.loadNotes(stack.getTag(), notes);
 				SCEventHandler.PLAYING_TUNES.put(player, MutablePair.of(0, notes));
+				return ActionResult.resultSuccess(stack);
+			}
+			else if (isTunePlaying) {
+				SCEventHandler.PLAYING_TUNES.remove(player);
 				return ActionResult.resultSuccess(stack);
 			}
 		}
