@@ -41,19 +41,6 @@ public class BlockUtils{
 		return new int[]{pos.getX(), pos.getY(), pos.getZ()};
 	}
 
-	/**
-	 * Returns the number of blocks between two positions<br>
-	 * Credit to https://zonide.angelfire.com/minecraftbdc.shtml for the formula
-	 */
-	public static int getDistanceBetweenBlocks(BlockPos pos1, BlockPos pos2)
-	{
-		int xAdjusted = (int) Math.pow((pos1.getX() - pos2.getX()), 2);
-		int yAdjusted = (int) Math.pow((pos1.getY() - pos2.getY()), 2);
-		int zAdjusted = (int) Math.pow((pos1.getZ() - pos2.getZ()), 2);
-
-		return (int) Math.sqrt(xAdjusted + yAdjusted + zAdjusted);
-	}
-
 	public static Mode getExplosionMode()
 	{
 		return ConfigHandler.SERVER.mineExplosionsBreakBlocks.get() ? Mode.BREAK : Mode.NONE;
