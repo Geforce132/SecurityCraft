@@ -748,8 +748,6 @@ public class SCContent
 	public static ContainerType<GenericTEContainer> cTypeTrophySystem;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
 	public static ContainerType<BlockPocketManagerContainer> cTypeBlockPocketManager;
-	@ObjectHolder(SecurityCraft.MODID + ":sonic_security_system")
-	public static ContainerType<GenericTEContainer> cTypeSonicSecuritySystem;
 
 	private static final Block.Properties prop()
 	{
