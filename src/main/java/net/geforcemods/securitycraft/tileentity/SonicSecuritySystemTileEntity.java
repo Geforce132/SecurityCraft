@@ -218,6 +218,8 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 		tag.putBoolean("isRecording", isRecording);
 		tag.putBoolean("isListening", isListening);
 		tag.putInt("listenPos", listenPos);
+		tag.putBoolean("correctTuneWasPlayed", correctTuneWasPlayed);
+		tag.putInt("powerCooldown", powerCooldown);
 		return tag;
 	}
 
@@ -250,14 +252,11 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 		if(tag.contains("isActive"))
 			isActive = tag.getBoolean("isActive");
 
-		if(tag.contains("isRecording"))
-			isRecording = tag.getBoolean("isRecording");
-
-		if (tag.contains("isListening"))
-			isListening = tag.getBoolean("isListening");
-
-		if(tag.contains("listenPos"))
-			listenPos = tag.getInt("listenPos");
+		isRecording = tag.getBoolean("isRecording");
+		isListening = tag.getBoolean("isListening");
+		listenPos = tag.getInt("listenPos");
+		correctTuneWasPlayed = tag.getBoolean("correctTuneWasPlayed");
+		powerCooldown = tag.getInt("powerCooldown");
 	}
 
 	/**
