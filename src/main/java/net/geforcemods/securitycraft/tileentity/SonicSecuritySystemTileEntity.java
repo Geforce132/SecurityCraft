@@ -481,7 +481,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	public boolean listenToNote(int noteID, String instrumentName)
 	{
 		// No notes
-		if(getNumberOfNotes() == 0)
+		if(getNumberOfNotes() == 0 || listenPos >= getNumberOfNotes())
 			return false;
 
 		if(!isListening) {
