@@ -24,7 +24,6 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -33,8 +32,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SonicSecuritySystemItem extends BlockItem {
-	public static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
-
 	public SonicSecuritySystemItem(Properties properties)
 	{
 		super(SCContent.SONIC_SECURITY_SYSTEM.get(), properties);
@@ -117,7 +114,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 		int numOfLinkedBlocks = stack.getTag().getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND).size();
 
 		if(numOfLinkedBlocks > 0)
-			tooltip.add(Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).setStyle(GRAY_STYLE));
+			tooltip.add(Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).mergeStyle(TextFormatting.GRAY));
 	}
 
 	/**
