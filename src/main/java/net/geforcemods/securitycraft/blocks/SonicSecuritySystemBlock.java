@@ -2,8 +2,9 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.stream.Stream;
 
-import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.network.client.OpenSSSScreen;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
@@ -12,6 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
@@ -36,6 +38,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLoggable {
 
@@ -81,8 +84,8 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 		if (player.getHeldItem(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
 			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity)world.getTileEntity(pos);
 
-			if (world.isRemote && (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)))
-				ClientHandler.displaySonicSecuritySystemGui(te);
+			if (!world.isRemote && (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)))
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new OpenSSSScreen(pos)); //watch out for the creeper
 
 			return ActionResultType.SUCCESS;
 		}
