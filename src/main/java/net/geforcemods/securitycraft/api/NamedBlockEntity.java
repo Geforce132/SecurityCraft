@@ -35,8 +35,12 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 	{
 		super.load(tag);
 
-		if (tag.contains("customName"))
-			customName = new TextComponent(tag.getString("customName"));
+		if (tag.contains("customName")) {
+			String name = tag.getString("customName");
+
+			if(!name.equals("name"))
+				customName = new TextComponent(name);
+		}
 	}
 
 	@Override
