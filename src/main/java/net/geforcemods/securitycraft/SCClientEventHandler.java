@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
 import net.geforcemods.securitycraft.items.ItemSonicSecuritySystem;
@@ -10,6 +12,7 @@ import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -20,9 +23,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
@@ -178,15 +183,26 @@ public class SCClientEventHandler
 						double eyeHeight = player.getEyeHeight();
 						Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
 						RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
+						TileEntity te = world.getTileEntity(mop.getBlockPos());
 
-						if(mop != null && mop.typeOfHit == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof ILockable)
+						if(mop != null && mop.typeOfHit == Type.BLOCK && te instanceof ILockable)
 						{
+							BlockPos pos = mop.getBlockPos();
+
+							//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
+							if (!(te instanceof IOwnable) || !((IOwnable)te).getOwner().isOwner(player)) {
+								Block block = te.getBlockType();
+
+								if (block instanceof BlockDisguisable && ((BlockDisguisable)block).getDisguisedBlockState(world, pos) != null)
+									return;
+							}
+
 							uCoord = 110;
 
 							if(!stack.hasTagCompound())
 								stack.setTagCompound(new NBTTagCompound());
 
-							if(ItemSonicSecuritySystem.isAdded(stack.getTagCompound(), mop.getBlockPos()))
+							if(ItemSonicSecuritySystem.isAdded(stack.getTagCompound(), pos))
 								uCoord = 88;
 						}
 					}
