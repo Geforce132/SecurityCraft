@@ -52,6 +52,7 @@
 - Fix: Rail Mine loses its owner when its state changes
 - Fix: Claymores, Motion Activated Lights, and Username Loggers don't ignore players in spectator mode
 - Fix: Electrified Iron Fence Gate has wooden open/close sounds
+- Fix: Offhand hotbar indicator for Camera Monitor/SRAT/MRAT shows incorrectly when the main hand is set to left
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: Performance improvements due to fewer ticking block entities
