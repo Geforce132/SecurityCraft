@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -46,28 +47,35 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 			if(!(entity instanceof Player player))
 				return;
 
-			String name = player.getName().getString();
+			if (!isLocked()) {
+				String name = player.getName().getString();
 
-			if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.PLAYER_HEAD)
-				name = PlayerUtils.getNameOfSkull(player);
+				if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.PLAYER_HEAD)
+					name = PlayerUtils.getNameOfSkull(player);
 
-			if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), ChatFormatting.RED);
-				return;
+				if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), ChatFormatting.RED);
+					return;
+				}
+
+				boolean open = !lowerState.getValue(DoorBlock.OPEN);
+				int length = getSignalLength();
+
+				level.setBlock(worldPosition, upperState.setValue(DoorBlock.OPEN, !upperState.getValue(DoorBlock.OPEN)), 3);
+				level.setBlock(worldPosition.below(), lowerState.setValue(DoorBlock.OPEN, !lowerState.getValue(DoorBlock.OPEN)), 3);
+				level.levelEvent(null, open ? 1005 : 1011, worldPosition, 0);
+
+				if(open && length > 0)
+					level.getBlockTicks().scheduleTick(worldPosition, SCContent.SCANNER_DOOR.get(), length);
+
+				if(open && sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), ChatFormatting.GREEN);
 			}
+			else if (sendsMessages()) {
+				TranslatableComponent blockName = Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId());
 
-			boolean open = !lowerState.getValue(DoorBlock.OPEN);
-			int length = getSignalLength();
-
-			level.setBlock(worldPosition, upperState.setValue(DoorBlock.OPEN, !upperState.getValue(DoorBlock.OPEN)), 3);
-			level.setBlock(worldPosition.below(), lowerState.setValue(DoorBlock.OPEN, !lowerState.getValue(DoorBlock.OPEN)), 3);
-			level.levelEvent(null, open ? 1005 : 1011, worldPosition, 0);
-
-			if(open && length > 0)
-				level.getBlockTicks().scheduleTick(worldPosition, SCContent.SCANNER_DOOR.get(), length);
-
-			if(open && sendsMessages())
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), ChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
+			}
 		}
 	}
 
