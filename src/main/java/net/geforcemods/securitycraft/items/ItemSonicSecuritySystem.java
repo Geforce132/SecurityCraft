@@ -98,8 +98,13 @@ public class ItemSonicSecuritySystem extends ItemBlock {
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		EnumActionResult returnValue = super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
 
-		if(returnValue == EnumActionResult.SUCCESS)
-			((TileEntitySonicSecuritySystem) world.getTileEntity(pos.offset(facing))).transferPositionsFromItem(player.getHeldItem(hand).getTagCompound());
+		if(returnValue == EnumActionResult.SUCCESS) {
+			ItemStack stack = player.getHeldItem(hand);
+			TileEntitySonicSecuritySystem te = (TileEntitySonicSecuritySystem) world.getTileEntity(pos.offset(facing));
+
+			te.transferPositionsFromItem(stack.getTagCompound());
+			te.setCustomName(stack.getDisplayName());
+		}
 
 		return returnValue;
 	}

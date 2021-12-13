@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.blocks.BlockSonicSecuritySystem;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -23,7 +22,6 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
 
 public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements ITickable {
@@ -511,12 +509,6 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	public void clearNotes()
 	{
 		recordedNotes.clear();
-	}
-
-	@Override
-	public ITextComponent getDisplayName()
-	{
-		return Utils.localize(SCContent.sonicSecuritySystem);
 	}
 
 	/**
