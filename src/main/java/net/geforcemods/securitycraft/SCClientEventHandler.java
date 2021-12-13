@@ -5,6 +5,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
@@ -16,6 +18,7 @@ import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.MainWindow;
@@ -193,12 +196,23 @@ public class SCClientEventHandler
 						double eyeHeight = player.getEyeHeight();
 						Vector3d lookVec = new Vector3d((player.getPosX() + (player.getLookVec().x * 5)), ((eyeHeight + player.getPosY()) + (player.getLookVec().y * 5)), (player.getPosZ() + (player.getLookVec().z * 5)));
 						RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vector3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
+						TileEntity te = world.getTileEntity(((BlockRayTraceResult)mop).getPos());
 
-						if(mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(((BlockRayTraceResult)mop).getPos()) instanceof ILockable)
+						if(mop != null && mop.getType() == Type.BLOCK && te instanceof ILockable)
 						{
+							BlockPos pos = ((BlockRayTraceResult)mop).getPos();
+
+							//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
+							if (!(te instanceof IOwnable) || !((IOwnable)te).getOwner().isOwner(player)) {
+								Block block = te.getBlockState().getBlock();
+
+								if (block instanceof DisguisableBlock && ((DisguisableBlock)block).getDisguisedBlockState(world, pos) != null)
+									return;
+							}
+
 							uCoord = 110;
 
-							if(SonicSecuritySystemItem.isAdded(stack.getOrCreateTag(), ((BlockRayTraceResult)mop).getPos()))
+							if(SonicSecuritySystemItem.isAdded(stack.getOrCreateTag(), pos))
 								uCoord = 88;
 						}
 					}

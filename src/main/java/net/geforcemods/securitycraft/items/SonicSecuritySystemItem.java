@@ -6,10 +6,12 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -54,8 +56,12 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 				if (te instanceof ILockable) {
 					if(te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player)){
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable)te).getOwner().getName(), pos), TextFormatting.GREEN);
-						return ActionResultType.SUCCESS;
+						Block block = te.getBlockState().getBlock();
+
+						if (!(block instanceof DisguisableBlock) || ((DisguisableBlock)block).getDisguisedBlockState(world, pos) == null) {
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable)te).getOwner().getName(), pos), TextFormatting.GREEN);
+							return ActionResultType.SUCCESS;
+						}
 					}
 					else
 					{
