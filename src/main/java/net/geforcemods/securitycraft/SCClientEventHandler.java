@@ -184,27 +184,30 @@ public class SCClientEventHandler
 						double eyeHeight = player.getEyeHeight();
 						Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
 						RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
-						TileEntity te = world.getTileEntity(mop.getBlockPos());
 
-						if(mop != null && mop.typeOfHit == Type.BLOCK && te instanceof ILockable)
+						if(mop != null && mop.typeOfHit == Type.BLOCK)
 						{
-							BlockPos pos = mop.getBlockPos();
+							TileEntity te = world.getTileEntity(mop.getBlockPos());
 
-							//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
-							if (!(te instanceof IOwnable) || !((IOwnable)te).getOwner().isOwner(player)) {
-								Block block = te.getBlockType();
+							if (te instanceof ILockable) {
+								BlockPos pos = mop.getBlockPos();
 
-								if (block instanceof BlockDisguisable && ((BlockDisguisable)block).getDisguisedBlockState(world, pos) != null)
-									return;
+								//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
+								if (!(te instanceof IOwnable) || !((IOwnable)te).getOwner().isOwner(player)) {
+									Block block = te.getBlockType();
+
+									if (block instanceof BlockDisguisable && ((BlockDisguisable)block).getDisguisedBlockState(world, pos) != null)
+										return;
+								}
+
+								uCoord = 110;
+
+								if(!stack.hasTagCompound())
+									stack.setTagCompound(new NBTTagCompound());
+
+								if(ItemSonicSecuritySystem.isAdded(stack.getTagCompound(), pos))
+									uCoord = 88;
 							}
-
-							uCoord = 110;
-
-							if(!stack.hasTagCompound())
-								stack.setTagCompound(new NBTTagCompound());
-
-							if(ItemSonicSecuritySystem.isAdded(stack.getTagCompound(), pos))
-								uCoord = 88;
 						}
 					}
 

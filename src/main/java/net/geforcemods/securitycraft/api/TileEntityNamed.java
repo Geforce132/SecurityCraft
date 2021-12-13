@@ -24,8 +24,12 @@ public class TileEntityNamed extends TileEntityOwnable implements INameSetter {
 	{
 		super.readFromNBT(tag);
 
-		if (tag.hasKey("customName"))
-			customName = tag.getString("customName");
+		if (tag.hasKey("customName")) {
+			String name = tag.getString("customName");
+
+			if(!name.equals("name"))
+				customName = name;
+		}
 	}
 
 	public void sync() {
