@@ -23,8 +23,6 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 
 public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
@@ -518,12 +516,6 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	public void clearNotes()
 	{
 		recordedNotes.clear();
-	}
-
-	@Override
-	public ITextComponent getDisplayName()
-	{
-		return new TranslationTextComponent(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey());
 	}
 
 	private void sync() {
