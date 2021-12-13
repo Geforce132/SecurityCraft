@@ -53,7 +53,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 				TileEntity te = world.getTileEntity(pos);
 
 				if (te instanceof ILockable) {
-					if(te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner(player)){
+					if(te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player)){
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable)te).getOwner().getName(), pos), TextFormatting.GREEN);
 						return ActionResultType.SUCCESS;
 					}
