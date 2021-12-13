@@ -2,15 +2,17 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.stream.Stream;
 
-import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.network.client.OpenSSSScreen;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -39,6 +41,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
@@ -83,8 +86,8 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 		if (player.getItemInHand(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
 			SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity)level.getBlockEntity(pos);
 
-			if (level.isClientSide && (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)))
-				ClientHandler.displaySonicSecuritySystemGui(be);
+			if (!level.isClientSide && (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)))
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new OpenSSSScreen(pos)); //watch out for the creeper
 
 			return InteractionResult.SUCCESS;
 		}
