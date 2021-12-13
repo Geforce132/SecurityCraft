@@ -33,6 +33,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -218,7 +219,7 @@ public class SCClientEventHandler
 					if (uCoord != 0) {
 						RenderSystem.enableAlphaTest();
 						Minecraft.getInstance().textureManager.bindTexture(BEACON_GUI);
-						AbstractGui.blit(Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + (hand == Hand.MAIN_HAND ? player.inventory.currentItem * 20 : -29), Minecraft.getInstance().getMainWindow().getScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+						AbstractGui.blit(Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + (hand == Hand.MAIN_HAND ? player.inventory.currentItem * 20 : (mc.gameSettings.mainHand == HandSide.LEFT ? 189 : -29)), Minecraft.getInstance().getMainWindow().getScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
 						RenderSystem.disableAlphaTest();
 					}
 				}
