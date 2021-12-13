@@ -34,8 +34,12 @@ public class NamedTileEntity extends OwnableTileEntity implements INameSetter {
 	{
 		super.read(state, tag);
 
-		if (tag.contains("customName"))
-			customName = new StringTextComponent(tag.getString("customName"));
+		if (tag.contains("customName")) {
+			String name = tag.getString("customName");
+
+			if(!name.equals("name"))
+				customName = new StringTextComponent(name);
+		}
 	}
 
 	@Override
