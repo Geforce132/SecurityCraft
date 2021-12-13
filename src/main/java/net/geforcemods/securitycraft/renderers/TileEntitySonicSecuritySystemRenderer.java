@@ -24,6 +24,8 @@ public class TileEntitySonicSecuritySystemRenderer extends TileEntitySpecialRend
 	@Override
 	public void render(TileEntitySonicSecuritySystem te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
 	{
+		GlStateManager.pushMatrix();
+
 		boolean recording = te.isRecording();
 
 		if(recording || te.isListening())
@@ -40,5 +42,6 @@ public class TileEntitySonicSecuritySystemRenderer extends TileEntitySpecialRend
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 		MODEL.setRadarRotation(te.radarRotationDegrees);
 		MODEL.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+		GlStateManager.popMatrix();
 	}
 }
