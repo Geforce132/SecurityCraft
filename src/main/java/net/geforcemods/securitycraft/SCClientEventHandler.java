@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -210,7 +211,7 @@ public class SCClientEventHandler
 					if (uCoord != 0) {
 						GlStateManager.enableAlpha();
 						Minecraft.getMinecraft().renderEngine.bindTexture(BEACON_GUI);
-						drawNonStandardTexturedRect(event.getResolution().getScaledWidth() / 2 - 90 + (hand == EnumHand.MAIN_HAND ? player.inventory.currentItem * 20 : -29), event.getResolution().getScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+						drawNonStandardTexturedRect(event.getResolution().getScaledWidth() / 2 - 90 + (hand == EnumHand.MAIN_HAND ? player.inventory.currentItem * 20 : (mc.gameSettings.mainHand == EnumHandSide.LEFT ? 189 : -29)), event.getResolution().getScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
 						GlStateManager.disableAlpha();
 					}
 				}
