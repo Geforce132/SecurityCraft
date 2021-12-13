@@ -6,7 +6,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -264,11 +266,19 @@ public class SCClientEventHandler
 				Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
 				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
-				if(mop instanceof BlockHitResult bhr && world.getBlockEntity(bhr.getBlockPos()) instanceof ILockable)
+				if(mop instanceof BlockHitResult bhr && world.getBlockEntity(bhr.getBlockPos()) instanceof ILockable lockable)
 				{
+					BlockPos pos = bhr.getBlockPos();
+
+					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
+					if (!(lockable instanceof IOwnable ownable) || !ownable.getOwner().isOwner(player)) {
+						if (lockable.getThisBlockEntity().getBlockState().getBlock() instanceof DisguisableBlock disguisable && disguisable.getDisguisedBlockState(world, pos) != null)
+							return;
+					}
+
 					uCoord = 110;
 
-					if(SonicSecuritySystemItem.isAdded(stack.getOrCreateTag(), bhr.getBlockPos()))
+					if(SonicSecuritySystemItem.isAdded(stack.getOrCreateTag(), pos))
 						uCoord = 88;
 				}
 			}
