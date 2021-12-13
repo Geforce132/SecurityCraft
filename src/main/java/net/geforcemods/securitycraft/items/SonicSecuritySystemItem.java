@@ -53,7 +53,11 @@ public class SonicSecuritySystemItem extends BlockItem {
 				BlockEntity be = world.getBlockEntity(pos);
 
 				if (be instanceof ILockable) {
-					if((!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player)))
+					if(be instanceof IOwnable ownable && ownable.getOwner().isOwner(player)) {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ownable.getOwner().getName()), ChatFormatting.GREEN);
+						return InteractionResult.SUCCESS;
+					}
+					else
 					{
 						if(stack.getTag() == null)
 							stack.setTag(new CompoundTag());
@@ -72,10 +76,6 @@ public class SonicSecuritySystemItem extends BlockItem {
 							SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new UpdateNBTTagOnClient(stack));
 							return InteractionResult.SUCCESS;
 						}
-					}
-					else {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", Utils.localize(world.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
-						return InteractionResult.SUCCESS;
 					}
 				}
 			}
