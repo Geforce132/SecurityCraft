@@ -51,6 +51,7 @@
 - Fix: The security camera overlay still shows when the debug menu is open
 - Fix: Electrified Iron Fence Gate has wooden open/close sounds
 - Fix: Offhand hotbar indicator for Camera Monitor/SRAT/MRAT shows incorrectly when the main hand is set to left
+- Change: Reinforced Carpets can no longer be used as fuel
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: Performance improvements due to fewer ticking block entities
