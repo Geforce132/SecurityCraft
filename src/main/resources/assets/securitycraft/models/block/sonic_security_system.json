@@ -1,0 +1,6 @@
+{
+	"parent": "builtin/entity",
+	"textures": {
+        "particle": "securitycraft:blocks/sonic_security_system"
+    }
+}

@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
+import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,6 +56,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int MODULES = 104;
 	public static final int BLOCK_POCKET_MANAGER = 105;
 	public static final int PROJECTOR = 106;
+	public static final int SONIC_SECURITY_SYSTEM = 107;
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -117,6 +119,10 @@ public class GuiHandler implements IGuiHandler {
 			case PROJECTOR:
 				if(te instanceof TileEntityProjector)
 					return new ContainerProjector(player.inventory, (TileEntityProjector)te);
+				return null;
+			case SONIC_SECURITY_SYSTEM:
+				if(te instanceof TileEntitySonicSecuritySystem)
+					return new ContainerGeneric(player.inventory, te);
 				return null;
 			default:
 				return null;
@@ -194,6 +200,10 @@ public class GuiHandler implements IGuiHandler {
 			case PROJECTOR:
 				if(te instanceof TileEntityProjector)
 					return new GuiProjector(player.inventory, (TileEntityProjector)te);
+				return null;
+			case SONIC_SECURITY_SYSTEM:
+				if(te instanceof TileEntitySonicSecuritySystem)
+					return new GuiSonicSecuritySystem(player.inventory, (TileEntitySonicSecuritySystem)te);
 				return null;
 			default:
 				return null;

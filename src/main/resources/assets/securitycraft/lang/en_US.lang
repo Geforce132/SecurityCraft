@@ -288,6 +288,7 @@ tile.securitycraft:reinforced_sticky_piston.name=Reinforced Sticky Piston
 tile.securitycraft:reinforced_piston_head.name=Reinforced Piston Head
 tile.securitycraft:reinforced_moving_piston.name=Reinforced Moving Piston
 tile.securitycraft:key_panel.name=Key Panel
+tile.securitycraft:sonic_security_system.name=Sonic Security System
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -329,6 +330,7 @@ item.securitycraft:sentry.name=Sentry
 item.securitycraft:crystalQuartzItem.name=Crystal Quartz
 item.securitycraft:keypad_door_item.name=Keypad Door
 item.securitycraft:speed_module.name=Speed Module
+item.securitycraft:portable_tune_player.name=Portable Tune Player
 
 entity.IMSBomb.name=I.M.S. Bomb
 entity.Sentry.name=Sentry
@@ -389,6 +391,7 @@ help.securitycraft:projector.info=The Projector projects holographic versions of
 help.securitycraft:ironDoorReinforced.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.
 help.securitycraft:scannerDoor.info=The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top to open it.
 help.securitycraft:keypad_door.info=The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.
+help.securitycraft:sonic_security_system.info=The Sonic Security System, inspired by the similarly-named device in the game "Metroid Prime 2: Echoes", is able to lock certain SecurityCraft blocks and prevent them from being used or interacted with. Right-clicking a supported block will bind it to the Sonic Security System. Once it is placed down, right-clicking it will open a GUI where you can enable, disable, or reset the Sonic Security System. The blocks can be unlocked by playing a tune nearby, either via the Portable Tune Player, or note blocks. To set such a tune, toggle note recording on in the Sonic Security System's GUI then play the tune that you want using note blocks played nearby. Toggle the recording off once you are finished. Any time that tune is played nearby the Sonic Security System, blocks locked by it will become accessible for a short while.
 
 help.securitycraft:codebreaker.info=The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)
 help.securitycraft:universalBlockRemover.info=The universal block remover is used to destroy "reinforced" blocks by rightclicking it. Only the person who placed the block down can destroy it.
@@ -426,6 +429,7 @@ help.securitycraft:secretSignItem.info=The Secret Sign works like a vanilla sign
 help.securitycraft:sentry.info=The Sentry has three modes that can be switched by rightclicking it. Idle (it will never attack), Camouflage (it will only attack enemy players in its range) and Aggressive (it will attack hostile mobs and enemy players). Rightclicking it with a Disguise Module containing a full and opaque block (e.g. stone, but not glass or stairs) will make the Sentry disguise itself. The module can be switched directly, or extracted by rightclicking with a Universal Block Modifier. To remove the sentry, sneak-rightclick it.
 help.securitycraft:crystalQuartzItem.info=Crystal Quartz is used to craft Crystal Quartz blocks.
 help.securitycraft:speed_module.info=The speed module allows some of SecurityCraft's blocks to operate faster than usual.
+help.securitycraft:portable_tune_player.info=The portable tune player can play a tune that was previously saved to it. To save a tune, rightclick a Sonic Security System that has already recorded a tune. To play the tune, rightclick the portable tune player. To cancel the playback, simply rightclick the portable tune player again or stop holding it.
 
 gui.securitycraft:scManual.disabled=Disabled
 gui.securitycraft:scManual.intro.1=Getting started with SecurityCraft
@@ -435,6 +439,7 @@ gui.securitycraft:scManual.passwordProtectedBlock=Password protected: This block
 gui.securitycraft:scManual.viewActivatedBlock=View activated: This block can be activated by hovering over it with your cursor while in block-breaking range.
 gui.securitycraft:scManual.explosiveBlock=Explosive: This block is able to be remotely detonated, and may be able to be activated/deactivated, using the Mine Remote Access Tool.
 gui.securitycraft:scManual.customizableBlock=Customizable: You may use the Universal Block Modifier and the various modules added by SecurityCraft to customize the functions of this block.
+gui.securitycraft:scManual.lockable=Lockable: This block can be locked with a Sonic Security System.
 gui.securitycraft:scManual.options=Available options:
 gui.securitycraft:scManual.modules=Available modules:
 gui.securitycraft:scManual.recipe.reinforced_crystal_quartz=Made from regular Crystal Quartz Blocks in a Universal Block Reinforcer.
@@ -539,6 +544,16 @@ gui.securitycraft:keycard_reader.noSmartModule=You need a Smart Module to contro
 gui.securitycraft:keycard_reader.smartModule=Individual keycard level control active!
 gui.securitycraft:keycard_reader.level_mismatch=The level of this keycard is not enabled in this keycard reader!
 gui.securitycraft:customize.tooltip=%s (%s)
+gui.securitycraft:sonic_security_system.start_recording=Start recording
+gui.securitycraft:sonic_security_system.stop_recording=Stop recording
+gui.securitycraft:sonic_security_system.recording.clear=Clear recording
+gui.securitycraft:sonic_security_system.recording.notes=Notes recorded: %s
+gui.securitycraft:sonic_security_system.recording.play=Play recording
+gui.securitycraft:sonic_security_system.power.on=Power: on
+gui.securitycraft:sonic_security_system.power.off=Power: off
+gui.securitycraft:sonic_security_system.sound=Sound:
+gui.securitycraft:sonic_security_system.recording=Recording...
+gui.securitycraft:sonic_security_system.listening=Listening...
 gui.securitycraft:customize.currentSetting=Currently: %s
 
 messages.securitycraft:bugReport=Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please
@@ -630,7 +645,7 @@ messages.securitycraft:blockpocket.alreadyAssembled=The Block Pocket has already
 messages.securitycraft:blockpocket.invalidBlock.rotation=The pillar %1$s the Block Pocket Manager is rotated incorrectly!
 messages.securitycraft:blockpocket.invalidBlock=Invalid block "%2$s" %1$s the Block Pocket Manager! (Expected: "%3$s")
 messages.securitycraft:blockpocket.blockInWay="%2$s" is blocking the space %1$s the Block Pocket Manager!
-messages.securitycraft:blockpocket.unowned=You do not own the block \"%2$s\" %1$s of the Block Pocket Manager!
+messages.securitycraft:blockpocket.unowned=You do not own the block "%2$s" %1$s of the Block Pocket Manager!
 messages.securitycraft:blockpocket.position.1=%s
 messages.securitycraft:blockpocket.position.2=%1$s and %2$s
 messages.securitycraft:blockpocket.position.3=%1$s, %2$s and %3$s
@@ -647,6 +662,13 @@ messages.securitycraft:blockpocket.assemblyFailed=Assembling the Block Pocket ha
 messages.securitycraft:ownable.validate=The owner of this block has been successfully validated.
 messages.securitycraft:ownable.ownerNotValidated=This block's owner has been changed by the Universal Owner Changer and thus needs to be validated by the new owner to work again. To validate a block, the new owner of the block has to rightclick it.
 messages.securitycraft:formattedCoordinates=X: %1$s Y: %2$s Z: %3$s
+messages.securitycraft:sonic_security_system.notLinked=Not linked with a block yet. Please right-click a compatible SecurityCraft block with this item in your hand first.
+messages.securitycraft:sonic_security_system.blockLinked=Linked with the %1$s at %2$s.
+messages.securitycraft:sonic_security_system.blockUnlinked=Unlinked from the %1$s at %2$s.
+messages.securitycraft:sonic_security_system.linkMaxReached=You cannot link to additional blocks. Each Sonic Security System can be linked to a maximum of %s blocks.
+messages.securitycraft:sonic_security_system.locked=This %s is being locked by a Sonic Security System!
+messages.securitycraft:portable_tune_player.tune_saved=Tune saved.
+messages.securitycraft:portable_tune_player.no_tune=No tune available.
 
 jei.securitycraft.category.reinforcing=Block Reinforcing
 jei.securitycraft.category.unreinforcing=Removing Reinforcement
@@ -675,6 +697,8 @@ tooltip.securitycraft:keycard.signature=Signature: %s
 tooltip.securitycraft:keycard.reader_owner=Works on Keycard Readers owned by: %s
 tooltip.securitycraft:keycard.link_info=Put this card into a Keycard Reader to link it.
 tooltip.securitycraft:keycard.limited_info=Combine this card with a Limited Use Keycard in a crafting table to control how often it can be used.
+tooltip.securitycraft:sonicSecuritySystem.linkedTo=Linked to %s block(s).
+tooltip.securitycraft:portableTunePlayer.noteCount=Tune with %s note(s) saved.
 
 itemGroup.tabSecurityCraft.decoration=SecurityCraft: Decoration
 itemGroup.tabSecurityCraft.explosives=SecurityCraft: Explosives
@@ -737,6 +761,8 @@ module.securitycraft:trophy_system.disguiseModule.description=Adding a disguise 
 module.securitycraft:reinforced_cauldron.whitelistModule.description=Adding an allowlist module to a Reinforced Cauldron will allow listed playerss to interact with the Reinforced Cauldron.
 module.securitycraft:key_panel.whitelistModule.description=Adding an allowlist module to a key panel  will allow listed players to use the block without knowing the code.
 module.securitycraft:key_panel.blacklistModule.description=Adding a denylist module to a key panel will ban listed players from interacting with the block.
+module.securitycraft:sonic_security_system.whitelistModule.description=Adding an allowlist module to a sonic security system will allow listed players to save the system's tune onto a portable tune player, as well as listen to the tune in the system's GUI.
+module.securitycraft:sonic_security_system.redstoneModule.description=Adding a redstone module to a sonic security system lets the system emit a redstone signal when the correct tune was played.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
 config.securitycraft:isCodebreakerAllowed.tooltip=Can the codebreaker be used?
@@ -877,6 +903,8 @@ option.securitycraft:key_panel.sendMessage=Message: #
 option.securitycraft:key_panel.sendMessage.description=Does this key panel send a message upon activation (when using allowlist/denylist modules)?
 option.securitycraft:key_panel.signalLength=Signal length: #
 option.securitycraft:key_panel.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)
+option.securitycraft.sonic_security_system.signalLength=Time active: #
+option.securitycraft.sonic_security_system.signalLength.description=How long should the sonic security system unlock blocks/give off a redstone signal after hearing the correct tune? (In ticks, 20 ticks = 1 second)
 
 securitycraft.subtitle.alarm=Alarm sounding
 securitycraft.subtitle.electrified=Entity electrocuted
@@ -885,3 +913,4 @@ securitycraft.subtitle.cameraSnap=Camera shutter
 securitycraft.subtitle.taserFire=Taser firing
 securitycraft.subtitle.lock=Container locking
 securitycraft.subtitle.get_item=Item gotten
+securitycraft.subtitle.ping=Sonic Security System ping

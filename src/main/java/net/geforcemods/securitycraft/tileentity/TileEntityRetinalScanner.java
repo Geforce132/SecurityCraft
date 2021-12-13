@@ -14,6 +14,7 @@ import com.mojang.authlib.properties.Property;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
@@ -37,8 +38,7 @@ import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-
-public class TileEntityRetinalScanner extends TileEntityDisguisable implements IViewActivated, ITickable {
+public class TileEntityRetinalScanner extends TileEntityDisguisable implements IViewActivated, ITickable, ILockable {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static PlayerProfileCache profileCache;
 	private static MinecraftSessionService sessionService;
@@ -57,32 +57,36 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 	public void onEntityViewed(EntityLivingBase entity){
 		if(!world.isRemote)
 		{
-			IBlockState state = world.getBlockState(pos);
+			if (!isLocked()) {
+				IBlockState state = world.getBlockState(pos);
 
-			if(!state.getValue(BlockRetinalScanner.POWERED) && !EntityUtils.isInvisible(entity))
-			{
-				String name = entity.getName();
+				if(!state.getValue(BlockRetinalScanner.POWERED) && !EntityUtils.isInvisible(entity))
+				{
+					String name = entity.getName();
 
-				if(entity instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer)entity;
+					if(entity instanceof EntityPlayer) {
+						EntityPlayer player = (EntityPlayer)entity;
 
-					if (ConfigHandler.trickScannersWithPlayerHeads && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.SKULL)
-						name = PlayerUtils.getNameOfSkull(player);
+						if (ConfigHandler.trickScannersWithPlayerHeads && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.SKULL)
+							name = PlayerUtils.getNameOfSkull(player);
 
-					if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.retinalScanner.getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
-						return;
+						if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.retinalScanner.getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
+							return;
+						}
 					}
+					else if(activatedOnlyByPlayer())
+						return;
+
+					world.setBlockState(pos, state.withProperty(BlockRetinalScanner.POWERED, true));
+					world.scheduleUpdate(pos, SCContent.retinalScanner, getSignalLength());
+
+					if(entity instanceof EntityPlayer && sendMessage.get())
+						PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize("tile.securitycraft:retinalScanner.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
 				}
-				else if(activatedOnlyByPlayer())
-					return;
-
-				world.setBlockState(pos, state.withProperty(BlockRetinalScanner.POWERED, true));
-				world.scheduleUpdate(pos, SCContent.retinalScanner, getSignalLength());
-
-				if(entity instanceof EntityPlayer && sendMessage.get())
-					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize("tile.securitycraft:retinalScanner.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
 			}
+			else if (entity instanceof EntityPlayer && sendMessage.get())
+				PlayerUtils.sendMessageToPlayer((EntityPlayer)entity, Utils.localize(SCContent.retinalScanner), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(SCContent.retinalScanner)), TextFormatting.DARK_RED, false);
 		}
 	}
 

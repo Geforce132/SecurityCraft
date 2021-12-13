@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockKeypadDoor;
@@ -16,7 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
-public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPasswordProtected
+public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPasswordProtected, ILockable
 {
 	private String passcode;
 

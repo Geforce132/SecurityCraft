@@ -151,6 +151,7 @@ public class SCContent
 	public static Block secretSignStanding;
 	public static Block secretSignWall;
 	public static Block securityCamera;
+	public static Block sonicSecuritySystem;
 	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false) public static Block stairsCrystalQuartz;
 	public static Block stoneMine;
 	public static Block trackMine;
@@ -177,6 +178,7 @@ public class SCContent
 	public static Item keypadDoorItem;
 	public static Item keyPanel;
 	public static Item limitedUseKeycard;
+	public static Item portableTunePlayer;
 	public static Item reinforcedDoorItem;
 	public static Item remoteAccessMine;
 	public static Item remoteAccessSentry;
@@ -184,6 +186,7 @@ public class SCContent
 	public static Item scManual;
 	public static Item secretSignItem;
 	public static Item sentry;
+	public static Item sonicSecuritySystemItem;
 	public static Item taser;
 	public static Item taserPowered;
 	public static Item universalBlockModifier;

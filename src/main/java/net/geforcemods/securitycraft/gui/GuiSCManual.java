@@ -17,6 +17,7 @@ import org.lwjgl.input.Mouse;
 
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -169,6 +170,9 @@ public class GuiSCManual extends GuiScreen {
 						if(scte.customOptions() != null && scte.customOptions().length > 0)
 							drawTexturedModalRect(startX + 136, 118, 88, 1, 16, 16);
 					}
+
+					if (te instanceof ILockable)
+						drawTexturedModalRect(startX + 189, 118, 154, 1, 16, 16);
 
 					if(te instanceof IModuleInventory)
 					{
@@ -500,6 +504,9 @@ public class GuiSCManual extends GuiScreen {
 						hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, display));
 					}
 				}
+
+				if (te instanceof ILockable)
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable").getFormattedText()));
 			}
 		}
 

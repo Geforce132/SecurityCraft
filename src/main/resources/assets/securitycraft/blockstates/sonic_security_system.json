@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "powered=true": { "model": "securitycraft:sonic_security_system" },
+        "powered=false":  { "model": "securitycraft:sonic_security_system" }
+    }
+}

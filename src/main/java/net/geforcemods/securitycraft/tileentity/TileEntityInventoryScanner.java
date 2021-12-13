@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
@@ -26,7 +27,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class TileEntityInventoryScanner extends TileEntityDisguisable implements IInventory, ITickable {
+public class TileEntityInventoryScanner extends TileEntityDisguisable implements IInventory, ITickable, ILockable {
 
 	private OptionBoolean horizontal = new OptionBoolean("horizontal", false);
 	private OptionBoolean solidifyField = new OptionBoolean("solidifyField", false);

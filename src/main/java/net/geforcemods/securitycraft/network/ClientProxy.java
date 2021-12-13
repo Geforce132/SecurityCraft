@@ -29,6 +29,7 @@ import net.geforcemods.securitycraft.renderers.TileEntityReinforcedPistonRendere
 import net.geforcemods.securitycraft.renderers.TileEntityRetinalScannerRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
+import net.geforcemods.securitycraft.renderers.TileEntitySonicSecuritySystemRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityTrophySystemRenderer;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
@@ -37,6 +38,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPiston;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.util.Tinted;
 import net.minecraft.block.Block;
@@ -362,6 +364,7 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlockPocketManager.class, new TileEntityBlockPocketManagerRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityProjector.class, new TileEntityProjectorRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReinforcedPiston.class, new TileEntityReinforcedPistonRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySonicSecuritySystem.class, new TileEntitySonicSecuritySystemRenderer());
 
 		Item.getItemFromBlock(SCContent.keypadChest).setTileEntityItemStackRenderer(new ItemKeypadChestRenderer());
 

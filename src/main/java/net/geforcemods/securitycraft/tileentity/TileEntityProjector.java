@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.containers.ContainerProjector;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -11,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class TileEntityProjector extends TileEntityDisguisable implements IInventory {
+public class TileEntityProjector extends TileEntityDisguisable implements IInventory, ILockable {
 
 	public static final int MIN_WIDTH = 1; //also for height
 	public static final int MAX_WIDTH = 10; //also for height

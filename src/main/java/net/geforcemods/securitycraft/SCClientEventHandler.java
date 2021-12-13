@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
+import net.geforcemods.securitycraft.items.ItemSonicSecuritySystem;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
@@ -169,6 +171,23 @@ public class SCClientEventHandler
 									}
 								}
 							}
+						}
+					}
+					else if(stack.getItem() == SCContent.sonicSecuritySystemItem)
+					{
+						double eyeHeight = player.getEyeHeight();
+						Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
+						RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
+
+						if(mop != null && mop.typeOfHit == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof ILockable)
+						{
+							uCoord = 110;
+
+							if(!stack.hasTagCompound())
+								stack.setTagCompound(new NBTTagCompound());
+
+							if(ItemSonicSecuritySystem.isAdded(stack.getTagCompound(), mop.getBlockPos()))
+								uCoord = 88;
 						}
 					}
 

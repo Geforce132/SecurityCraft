@@ -36,6 +36,7 @@ import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.blocks.BlockSonicSecuritySystem;
 import net.geforcemods.securitycraft.blocks.BlockTrophySystem;
 import net.geforcemods.securitycraft.blocks.BlockWallKeyPanel;
 import net.geforcemods.securitycraft.blocks.mines.BlockBouncingBetty;
@@ -112,11 +113,13 @@ import net.geforcemods.securitycraft.items.ItemKeycard;
 import net.geforcemods.securitycraft.items.ItemMineRemoteAccessTool;
 import net.geforcemods.securitycraft.items.ItemModifiedBucket;
 import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.items.ItemPortableTunePlayer;
 import net.geforcemods.securitycraft.items.ItemReinforcedDoor;
 import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.items.ItemSecretSign;
 import net.geforcemods.securitycraft.items.ItemSentry;
 import net.geforcemods.securitycraft.items.ItemSentryRemoteAccessTool;
+import net.geforcemods.securitycraft.items.ItemSonicSecuritySystem;
 import net.geforcemods.securitycraft.items.ItemSpecialDoor;
 import net.geforcemods.securitycraft.items.ItemTaser;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
@@ -263,6 +266,7 @@ public class SetupHandler
 		SCContent.reinforcedCauldron = new BlockReinforcedCauldron().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_cauldron").setTranslationKey("securitycraft:reinforced_cauldron");
 		SCContent.keyPanelFloorCeilingBlock = new BlockFloorCeilingKeyPanel(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("floor_ceiling_key_panel").setTranslationKey("securitycraft:key_panel");
 		SCContent.keyPanelWallBlock = new BlockWallKeyPanel(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("wall_key_panel").setTranslationKey("securitycraft:key_panel");
+		SCContent.sonicSecuritySystem = new BlockSonicSecuritySystem(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("sonic_security_system").setTranslationKey("securitycraft:sonic_security_system");
 	}
 
 	public static void setupMines()
@@ -331,5 +335,7 @@ public class SetupHandler
 		SCContent.sentry = new ItemSentry().setRegistryName("sentry").setTranslationKey("securitycraft:sentry").setCreativeTab(SecurityCraft.tabSCTechnical);
 		SCContent.crystalQuartzItem = new Item().setRegistryName("crystal_quartz_item").setTranslationKey("securitycraft:crystalQuartzItem").setCreativeTab(SecurityCraft.tabSCDecoration);
 		SCContent.keypadDoorItem = new ItemSpecialDoor(SCContent.keypadDoor).setRegistryName("keypad_door_item").setTranslationKey("securitycraft:keypad_door_item").setCreativeTab(SecurityCraft.tabSCDecoration);
+		SCContent.sonicSecuritySystemItem = new ItemSonicSecuritySystem().setTranslationKey("securitycraft:sonic_security_system").setCreativeTab(SecurityCraft.tabSCTechnical);
+		SCContent.portableTunePlayer = new ItemPortableTunePlayer().setRegistryName("portable_tune_player").setTranslationKey("securitycraft:portable_tune_player").setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 }

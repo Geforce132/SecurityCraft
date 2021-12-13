@@ -123,8 +123,13 @@ public abstract class Option<T> {
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		return (value) + "";
+	}
+
 	/**
-	 * A subclass of {@link Option}, already setup to handle booleans.
+	 * A subclass of {@link Option}, set up to handle booleans.
 	 */
 	public static class OptionBoolean extends Option<Boolean>{
 
@@ -151,15 +156,10 @@ public abstract class Option<T> {
 		{
 			tag.setBoolean(getName(), value);
 		}
-
-		@Override
-		public String toString() {
-			return (value) + "";
-		}
 	}
 
 	/**
-	 * A subclass of {@link Option}, already setup to handle integers.
+	 * A subclass of {@link Option}, set up to handle integers.
 	 */
 	public static class OptionInt extends Option<Integer> implements ISlider{
 		private boolean slider;
@@ -215,11 +215,6 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String toString() {
-			return (value) + "";
-		}
-
-		@Override
 		public boolean isSlider()
 		{
 			return slider;
@@ -243,7 +238,7 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * A subclass of {@link Option}, already setup to handle doubles.
+	 * A subclass of {@link Option}, set up to handle doubles.
 	 */
 	public static class OptionDouble extends Option<Double> implements ISlider{
 		private boolean slider;
@@ -327,7 +322,7 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * A subclass of {@link Option}, already setup to handle floats.
+	 * A subclass of {@link Option}, set up to handle floats.
 	 */
 	public static class OptionFloat extends Option<Float>{
 

@@ -1,10 +1,17 @@
 package net.geforcemods.securitycraft;
 
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
+import org.apache.commons.lang3.tuple.MutablePair;
+
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -14,6 +21,7 @@ import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.blocks.BlockSonicSecuritySystem;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
@@ -21,17 +29,22 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
+import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
 import net.geforcemods.securitycraft.tileentity.IEMPAffected;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
+import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem.NoteWrapper;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockNote;
 import net.minecraft.block.BlockPortal;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -47,7 +60,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -69,6 +84,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
+import net.minecraftforge.event.world.NoteBlockEvent;
+import net.minecraftforge.event.world.NoteBlockEvent.Instrument;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -78,16 +95,61 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
 
 	public static HashMap<String, String> tipsWithLink = new HashMap<>();
+	public static final Integer NOTE_DELAY = 10;
+	public static final Map<EntityPlayer,MutablePair<Integer,Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
 
 	static {
 		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
 		tipsWithLink.put("discord", "https://discord.gg/U8DvBAW");
 		tipsWithLink.put("outdated", "https://www.curseforge.com/minecraft/mc-mods/security-craft/files/all");
+	}
+
+	@SubscribeEvent
+	public static void onServerTick(ServerTickEvent event) {
+		if (event.phase == Phase.END) {
+			PLAYING_TUNES.forEach((player, pair) -> {
+				int ticksRemaining = pair.getLeft();
+
+				if (ticksRemaining == 0) {
+					if (PlayerUtils.getSelectedItemStack(player, SCContent.portableTunePlayer).isEmpty()) {
+						pair.setLeft(-1);
+						return;
+					}
+
+					NoteWrapper note = pair.getRight().poll();
+
+					if (note != null) {
+						SoundEvent sound = ((BlockNote)Blocks.NOTEBLOCK).getInstrument(Instrument.valueOf(note.instrumentName.toUpperCase()).ordinal());
+						float pitch = (float)Math.pow(2.0D, (note.noteID - 12) / 12.0D);
+
+						player.world.playSound(null, player.getPosition(), sound, SoundCategory.RECORDS, 3.0F, pitch);
+						handlePlayedNote(player.world, player.getPosition(), note.noteID, note.instrumentName);
+						pair.setLeft(NOTE_DELAY);
+					}
+					else
+						pair.setLeft(-1);
+				}
+				else
+					pair.setLeft(ticksRemaining - 1);
+			});
+
+			//remove finished tunes
+			if (PLAYING_TUNES.size() > 0) {
+				Iterator<Entry<EntityPlayer,MutablePair<Integer,Deque<NoteWrapper>>>> entries = PLAYING_TUNES.entrySet().iterator();
+
+				while (entries.hasNext()) {
+					if (entries.next().getValue().left == -1)
+						entries.remove();
+				}
+			}
+		}
 	}
 
 	@SubscribeEvent
@@ -193,11 +255,21 @@ public class SCEventHandler {
 		}
 
 		World world = event.getWorld();
-		TileEntity tileEntity = world.getTileEntity(event.getPos());
+		TileEntity te = world.getTileEntity(event.getPos());
+		Block block = world.getBlockState(event.getPos()).getBlock();
 
-		if(event.getItemStack().getItem() == Items.REDSTONE && tileEntity instanceof IEMPAffected && ((IEMPAffected)tileEntity).isShutDown())
+		if(te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).disableInteractionWhenLocked(world, event.getPos(), event.getEntityPlayer()))
 		{
-			((IEMPAffected)tileEntity).reactivate();
+			if(event.getHand() == EnumHand.MAIN_HAND)
+				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block)), TextFormatting.DARK_RED, false);
+
+			event.setCanceled(true);
+			return;
+		}
+
+		if(event.getItemStack().getItem() == Items.REDSTONE && te instanceof IEMPAffected && ((IEMPAffected)te).isShutDown())
+		{
+			((IEMPAffected)te).reactivate();
 
 			if(!event.getEntityPlayer().isCreative())
 				event.getItemStack().shrink(1);
@@ -207,8 +279,6 @@ public class SCEventHandler {
 			event.setCancellationResult(EnumActionResult.SUCCESS);
 			return;
 		}
-
-		Block block = world.getBlockState(event.getPos()).getBlock();
 
 		if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.keyPanel, event.getHand()))
 		{
@@ -231,13 +301,13 @@ public class SCEventHandler {
 		}
 
 		if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockModifier, event.getHand())){
-			if(tileEntity instanceof IModuleInventory) {
+			if(te instanceof IModuleInventory) {
 				event.setCanceled(true);
 				event.setCancellationResult(EnumActionResult.SUCCESS);
 
-				if(tileEntity instanceof IOwnable && !((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-					if(!(tileEntity.getBlockType() instanceof BlockDisguisable) || (((ItemBlock)((BlockDisguisable)tileEntity.getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof BlockDisguisable))
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize("item.securitycraft:universalBlockModifier.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) tileEntity).getOwner().getName())), TextFormatting.RED);
+				if(te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(event.getEntityPlayer())){
+					if(!(te.getBlockType() instanceof BlockDisguisable) || (((ItemBlock)((BlockDisguisable)te.getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof BlockDisguisable))
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize("item.securitycraft:universalBlockModifier.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner().getName())), TextFormatting.RED);
 
 					return;
 				}
@@ -247,9 +317,9 @@ public class SCEventHandler {
 			}
 		}
 
-		if(tileEntity instanceof INameSetter && (tileEntity instanceof TileEntitySecurityCamera || tileEntity instanceof TileEntityPortableRadar) && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG, event.getHand()) && event.getEntityPlayer().getHeldItem(event.getHand()).hasDisplayName()){
+		if(te instanceof INameSetter && (te instanceof TileEntitySecurityCamera || te instanceof TileEntityPortableRadar) && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG, event.getHand()) && event.getEntityPlayer().getHeldItem(event.getHand()).hasDisplayName()){
 			ItemStack nametag = event.getEntityPlayer().getHeldItem(event.getHand());
-			INameSetter nameable = (INameSetter)tileEntity;
+			INameSetter nameable = (INameSetter)te;
 
 			event.setCanceled(true);
 			event.setCancellationResult(EnumActionResult.SUCCESS);
@@ -507,6 +577,41 @@ public class SCEventHandler {
 	public static void onLivingDestroyEvent(LivingDestroyBlockEvent event)
 	{
 		event.setCanceled(event.getEntity() instanceof EntityWither && event.getState().getBlock() instanceof IReinforcedBlock);
+	}
+
+	@SubscribeEvent
+	public static void onNoteBlockPlayed(NoteBlockEvent.Play event)
+	{
+		handlePlayedNote(event.getWorld(), event.getPos(), event.getVanillaNoteId(), event.getInstrument().name());
+	}
+
+	private static void handlePlayedNote(World world, BlockPos pos, int vanillaNoteId, String instrumentName) {
+		List<TileEntitySonicSecuritySystem> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange(world, pos);
+
+		for(TileEntitySonicSecuritySystem te : sonicSecuritySystems) {
+
+			// If the SSS is disabled, don't listen to any notes
+			if(!te.isActive())
+				continue;
+
+			// If the SSS is recording, record the note being played
+			if(te.isRecording())
+			{
+				te.recordNote(vanillaNoteId, instrumentName);
+			}
+			// If the SSS is active, check to see if the note being played matches the saved combination.
+			// If so, toggle its redstone power output on
+			else if(te.listenToNote(vanillaNoteId, instrumentName))
+			{
+				te.correctTuneWasPlayed = true;
+				te.powerCooldown = te.signalLength.get();
+
+				if (te.hasModule(EnumModuleType.REDSTONE)) {
+					world.setBlockState(te.getPos(), te.getWorld().getBlockState(te.getPos()).withProperty(BlockSonicSecuritySystem.POWERED, true));
+					world.notifyNeighborsOfStateChange(te.getPos(), SCContent.sonicSecuritySystem, false);
+				}
+			}
+		}
 	}
 
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {

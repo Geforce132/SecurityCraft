@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -13,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class TileEntityLogger extends TileEntityDisguisable implements ITickable {
+public class TileEntityLogger extends TileEntityDisguisable implements ITickable, ILockable {
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private OptionInt searchRadius = new OptionInt(this::getPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];

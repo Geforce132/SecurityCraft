@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockBlockPocketManager;
@@ -45,7 +46,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityBlockPocketManager extends CustomizableSCTE implements ITickable
+public class TileEntityBlockPocketManager extends CustomizableSCTE implements ITickable, ILockable
 {
 	public static final int RENDER_DISTANCE = 100;
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;

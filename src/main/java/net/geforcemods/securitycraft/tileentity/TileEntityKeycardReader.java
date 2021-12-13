@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
@@ -7,7 +8,7 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class TileEntityKeycardReader extends TileEntityDisguisable {
+public class TileEntityKeycardReader extends TileEntityDisguisable implements ILockable {
 
 	private boolean[] acceptedLevels = {true, false, false, false, false};
 	private int signature = 0;

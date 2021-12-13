@@ -63,6 +63,7 @@ import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
+import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
@@ -98,6 +99,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.tileentity.TileEntityValidationOwnable;
@@ -284,6 +286,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedCauldron, false);
 		event.getRegistry().register(SCContent.keyPanelFloorCeilingBlock);
 		event.getRegistry().register(SCContent.keyPanelWallBlock);
+		registerBlock(event, SCContent.sonicSecuritySystem, (ItemBlock)SCContent.sonicSecuritySystemItem, true);
 
 		//block mines
 		registerBlock(event, SCContent.stoneMine, false);
@@ -367,6 +370,7 @@ public class RegistrationHandler
 		registerItem(event, SCContent.sentry, "Henzoid");
 		registerItem(event, SCContent.crystalQuartzItem);
 		registerItem(event, SCContent.keypadDoorItem);
+		registerItem(event, SCContent.portableTunePlayer);
 
 		SecurityCraft.proxy.registerVariants();
 		//clear unused memory
@@ -413,6 +417,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityReinforcedPiston.class, new ResourceLocation("securitycraft:reinforced_piston"));
 		GameRegistry.registerTileEntity(TileEntityValidationOwnable.class, new ResourceLocation("securitycraft:validation_ownable"));
 		GameRegistry.registerTileEntity(TileEntityKeyPanel.class, new ResourceLocation("securitycraft:key_panel"));
+		GameRegistry.registerTileEntity(TileEntitySonicSecuritySystem.class, new ResourceLocation("securitycraft:sonic_security_system"));
 	}
 
 	@SubscribeEvent
@@ -480,6 +485,7 @@ public class RegistrationHandler
 		network.registerMessage(SetKeycardUses.Handler.class, SetKeycardUses.class, 35, Side.SERVER);
 		network.registerMessage(SetCameraView.Handler.class, SetCameraView.class, 36, Side.CLIENT);
 		network.registerMessage(DismountCamera.Handler.class, DismountCamera.class, 37, Side.SERVER);
+		network.registerMessage(SyncSSSSettingsOnServer.Handler.class, SyncSSSSettingsOnServer.class, 38, Side.SERVER);
 	}
 
 	@SubscribeEvent
@@ -835,6 +841,8 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(SCContent.sentry, 0, new ModelResourceLocation("securitycraft:sentry", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.crystalQuartzItem, 0, new ModelResourceLocation("securitycraft:crystal_quartz_item", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.keypadDoorItem, 0, new ModelResourceLocation("securitycraft:keypad_door_item", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.sonicSecuritySystemItem, 0, new ModelResourceLocation("securitycraft:sonic_security_system", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.portableTunePlayer, 0, new ModelResourceLocation("securitycraft:portable_tune_player", "inventory"));
 
 		//mines
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));
