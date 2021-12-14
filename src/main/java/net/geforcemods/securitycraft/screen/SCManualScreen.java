@@ -86,6 +86,8 @@ public class SCManualScreen extends Screen {
 	private List<String> intro2;
 	private PatronList patronList;
 	private Button patreonLinkButton;
+	private boolean explosive, ownable, passwordProtected, viewActivated, customizable, lockable, moduleInventory;
+	private ItemStack pageStack;
 
 	public SCManualScreen() {
 		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getTranslationKey()));
@@ -135,11 +137,6 @@ public class SCManualScreen extends Screen {
 
 		blit(startX, 5, 0, 0, 256, 250);
 
-		if(currentPage > -1){
-		}else{
-
-		}
-
 		for(int i = 0; i < buttons.size(); i++)
 		{
 			buttons.get(i).render(mouseX, mouseY, partialTicks);
@@ -147,7 +144,6 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage > -1)
 		{
-			Item item = SCManualItem.PAGES.get(currentPage).getItem();
 			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 			String designedBy = SCManualItem.PAGES.get(currentPage).getDesignedBy();
 
@@ -164,48 +160,32 @@ public class SCManualScreen extends Screen {
 
 			font.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			font.drawString(pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
-			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(new ItemStack(item), startX + 19, 22);
+			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(pageStack, startX + 19, 22);
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
 
-			if(item instanceof BlockItem){
-				Block block = ((BlockItem) item).getBlock();
+			if(ownable)
+				blit(startX + 29, 118, 1, 1, 16, 16);
 
-				if(block instanceof IExplosive)
-					blit(startX + 107, 117, 54, 1, 18, 18);
+			if(passwordProtected)
+				blit(startX + 55, 118, 18, 1, 17, 16);
 
-				if(block.hasTileEntity(block.getDefaultState()))
-				{
-					TileEntity te = block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world);
+			if(viewActivated)
+				blit(startX + 81, 118, 36, 1, 17, 16);
 
-					if(te instanceof IOwnable)
-						blit(startX + 29, 118, 1, 1, 16, 16);
+			if(explosive)
+				blit(startX + 107, 117, 54, 1, 18, 18);
 
-					if(te instanceof IPasswordProtected)
-						blit(startX + 55, 118, 18, 1, 17, 16);
+			if(customizable)
+				blit(startX + 136, 118, 88, 1, 16, 16);
 
-					if(te instanceof IViewActivated)
-						blit(startX + 81, 118, 36, 1, 17, 16);
+			if(moduleInventory)
+				blit(startX + 163, 118, 105, 1, 16, 16);
 
-					if(te instanceof ICustomizable)
-					{
-						ICustomizable scte = (ICustomizable)te;
+			if (lockable)
+				blit(startX + 189, 118, 154, 1, 16, 16);
 
-						blit(startX + 213, 118, 72, 1, 16, 16);
-
-						if(scte.customOptions() != null && scte.customOptions().length > 0)
-							blit(startX + 136, 118, 88, 1, 16, 16);
-					}
-
-					if(te instanceof IModuleInventory)
-					{
-						if(((IModuleInventory)te).acceptedModules() != null && ((IModuleInventory)te).acceptedModules().length > 0)
-							blit(startX + 163, 118, 105, 1, 16, 16);
-					}
-
-					if (te instanceof ILockable)
-						blit(startX + 189, 118, 154, 1, 16, 16);
-				}
-			}
+			if (customizable || moduleInventory)
+				blit(startX + 213, 118, 72, 1, 16, 16);
 
 			for(IngredientDisplay display : displays)
 			{
@@ -434,35 +414,37 @@ public class SCManualScreen extends Screen {
 
 		Item item = page.getItem();
 
+		pageStack = new ItemStack(item);
+		resetTileEntityInfo();
+
 		if(item instanceof BlockItem){
 			Block block = ((BlockItem) item).getBlock();
 
-			if(block instanceof IExplosive)
+			if(explosive = block instanceof IExplosive)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock").getFormattedText()));
 
 			if(block.hasTileEntity(block.getDefaultState()))
 			{
 				TileEntity te = block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world);
 
-				if(te instanceof IOwnable)
+				if(ownable = te instanceof IOwnable)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock").getFormattedText()));
 
-				if(te instanceof IPasswordProtected)
+				if(passwordProtected = te instanceof IPasswordProtected)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passwordProtectedBlock").getFormattedText()));
 
-				if(te instanceof IViewActivated)
+				if(viewActivated = te instanceof IViewActivated)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock").getFormattedText()));
 
 				if(te instanceof ICustomizable)
 				{
 					ICustomizable scte = (ICustomizable)te;
 
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock").getFormattedText()));
-
 					if(scte.customOptions() != null && scte.customOptions().length > 0)
 					{
 						List<String> display = new ArrayList<>();
 
+						customizable = true;
 						display.add(Utils.localize("gui.securitycraft:scManual.options").getFormattedText());
 						display.add("---");
 
@@ -485,6 +467,7 @@ public class SCManualScreen extends Screen {
 					{
 						List<String> display = new ArrayList<>();
 
+						moduleInventory = true;
 						display.add(Utils.localize("gui.securitycraft:scManual.modules").getFormattedText());
 						display.add("---");
 
@@ -499,8 +482,11 @@ public class SCManualScreen extends Screen {
 					}
 				}
 
-				if (te instanceof ILockable)
+				if (lockable = te instanceof ILockable)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable").getFormattedText()));
+
+				if(customizable || moduleInventory)
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock").getFormattedText()));
 			}
 		}
 
@@ -547,6 +533,16 @@ public class SCManualScreen extends Screen {
 		subpages.add(helpInfo);
 		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
 		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
+	}
+
+	private void resetTileEntityInfo() {
+		explosive = false;
+		ownable = false;
+		passwordProtected = false;
+		viewActivated = false;
+		customizable = false;
+		lockable = false;
+		moduleInventory = false;
 	}
 
 	@Override
