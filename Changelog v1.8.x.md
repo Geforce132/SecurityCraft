@@ -26,6 +26,7 @@
 - API: Renamed SecurityCraftTileEntity to NamedTileEntity and remove most of its code
 - API: Removed IIntersectable
 - API: Added LinkableTileEntity and removed relevant code from CustomizableTileEntity
+- API: Added ILockable which enables a block to be locked with the Sonic Security System
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Alarm sound does not play
 - Fix: Claymore does not explode
