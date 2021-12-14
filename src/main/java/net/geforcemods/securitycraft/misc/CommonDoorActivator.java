@@ -29,7 +29,8 @@ public class CommonDoorActivator implements Function<Object,IDoorActivator>, IDo
 			SCContent.reinforcedObserver,
 			SCContent.keyPanelFloorCeilingBlock,
 			SCContent.keyPanelWallBlock,
-			SCContent.securityCamera
+			SCContent.securityCamera,
+			SCContent.sonicSecuritySystem
 	});
 
 	@Override
