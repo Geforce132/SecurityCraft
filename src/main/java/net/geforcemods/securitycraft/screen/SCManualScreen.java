@@ -94,6 +94,8 @@ public class SCManualScreen extends Screen {
 	private Button patreonLinkButton;
 	private Button nextSubpage;
 	private Button previousSubpage;
+	private boolean explosive, ownable, passwordProtected, viewActivated, customizable, lockable, moduleInventory;
+	private ItemStack pageStack;
 
 	public SCManualScreen() {
 		super(new TranslatableComponent(SCContent.SC_MANUAL.get().getDescriptionId()));
@@ -150,7 +152,6 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage > -1)
 		{
-			Item item = SCManualItem.PAGES.get(currentPage).item();
 			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 			String designedBy = SCManualItem.PAGES.get(currentPage).designedBy();
 
@@ -167,46 +168,32 @@ public class SCManualScreen extends Screen {
 
 			font.drawWordWrap(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			font.draw(matrix, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
-			minecraft.getItemRenderer().renderAndDecorateItem(new ItemStack(item), startX + 19, 22);
+			minecraft.getItemRenderer().renderAndDecorateItem(pageStack, startX + 19, 22);
 			RenderSystem._setShaderTexture(0, infoBookIcons);
 
-			if(item instanceof BlockItem blockItem){
-				Block block = blockItem.getBlock();
+			if(ownable)
+				blit(matrix, startX + 29, 118, 1, 1, 16, 16);
 
-				if(block instanceof IExplosive)
-					blit(matrix, startX + 107, 117, 54, 1, 18, 18);
+			if(passwordProtected)
+				blit(matrix, startX + 55, 118, 18, 1, 17, 16);
 
-				if(block.defaultBlockState().hasBlockEntity())
-				{
-					BlockEntity te = ((EntityBlock)block).newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
+			if(viewActivated)
+				blit(matrix, startX + 81, 118, 36, 1, 17, 16);
 
-					if(te instanceof IOwnable)
-						blit(matrix, startX + 29, 118, 1, 1, 16, 16);
+			if(explosive)
+				blit(matrix, startX + 107, 117, 54, 1, 18, 18);
 
-					if(te instanceof IPasswordProtected)
-						blit(matrix, startX + 55, 118, 18, 1, 17, 16);
+			if(customizable)
+				blit(matrix, startX + 136, 118, 88, 1, 16, 16);
 
-					if(te instanceof IViewActivated)
-						blit(matrix, startX + 81, 118, 36, 1, 17, 16);
+			if(moduleInventory)
+				blit(matrix, startX + 163, 118, 105, 1, 16, 16);
 
-					if(te instanceof ICustomizable customizable)
-					{
-						blit(matrix, startX + 213, 118, 72, 1, 16, 16);
+			if (lockable)
+				blit(matrix, startX + 189, 118, 154, 1, 16, 16);
 
-						if(customizable.customOptions() != null && customizable.customOptions().length > 0)
-							blit(matrix, startX + 136, 118, 88, 1, 16, 16);
-					}
-
-					if (te instanceof ILockable)
-						blit(matrix, startX + 189, 118, 154, 1, 16, 16);
-
-					if(te instanceof IModuleInventory inv)
-					{
-						if(inv.acceptedModules() != null && inv.acceptedModules().length > 0)
-							blit(matrix, startX + 163, 118, 105, 1, 16, 16);
-					}
-				}
-			}
+			if(customizable || moduleInventory)
+				blit(matrix, startX + 213, 118, 72, 1, 16, 16);
 
 			for(IngredientDisplay display : displays)
 			{
@@ -427,68 +414,66 @@ public class SCManualScreen extends Screen {
 
 		Item item = page.item();
 
+		pageStack = new ItemStack(item);
+		resetBlockEntityInfo();
+
 		if(item instanceof BlockItem){
 			Block block = ((BlockItem) item).getBlock();
 
-			if(block instanceof IExplosive)
+			if(explosive = block instanceof IExplosive)
 				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
 			if(block.defaultBlockState().hasBlockEntity())
 			{
 				BlockEntity te = ((EntityBlock)block).newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
 
-				if(te instanceof IOwnable)
+				if(ownable = te instanceof IOwnable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock")));
 
-				if(te instanceof IPasswordProtected)
+				if(passwordProtected = te instanceof IPasswordProtected)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passwordProtectedBlock")));
 
-				if(te instanceof IViewActivated)
+				if(viewActivated = te instanceof IViewActivated)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
-				if(te instanceof ICustomizable customizable)
+				if(te instanceof ICustomizable customizableBe && customizableBe.customOptions() != null && customizableBe.customOptions().length > 0)
 				{
+					List<Component> display = new ArrayList<>();
+
+					customizable = true;
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock")));
+					display.add(Utils.localize("gui.securitycraft:scManual.options"));
+					display.add(new TextComponent("---"));
 
-					if(customizable.customOptions() != null && customizable.customOptions().length > 0)
+					for(Option<?> option : customizableBe.customOptions())
 					{
-						List<Component> display = new ArrayList<>();
-
-						display.add(Utils.localize("gui.securitycraft:scManual.options"));
-						display.add(new TextComponent("---"));
-
-						for(Option<?> option : customizable.customOptions())
-						{
-							display.add(new TextComponent("- ").append(Utils.localize("option" + block.getDescriptionId().substring(5) + "." + option.getName() + ".description")));
-							display.add(TextComponent.EMPTY);
-						}
-
-						display.remove(display.size() - 1);
-						hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, display));
+						display.add(new TextComponent("- ").append(Utils.localize("option" + block.getDescriptionId().substring(5) + "." + option.getName() + ".description")));
+						display.add(TextComponent.EMPTY);
 					}
+
+					display.remove(display.size() - 1);
+					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, display));
 				}
 
-				if(te instanceof IModuleInventory moduleInv)
+				if(te instanceof IModuleInventory moduleInv && moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0)
 				{
-					if(moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0)
+					List<Component> display = new ArrayList<>();
+
+					moduleInventory = true;
+					display.add(Utils.localize("gui.securitycraft:scManual.modules"));
+					display.add(new TextComponent("---"));
+
+					for(ModuleType module : moduleInv.acceptedModules())
 					{
-						List<Component> display = new ArrayList<>();
-
-						display.add(Utils.localize("gui.securitycraft:scManual.modules"));
-						display.add(new TextComponent("---"));
-
-						for(ModuleType module : moduleInv.acceptedModules())
-						{
-							display.add(new TextComponent("- ").append(Utils.localize("module" + block.getDescriptionId().substring(5) + "." + module.getItem().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description")));
-							display.add(TextComponent.EMPTY);
-						}
-
-						display.remove(display.size() - 1);
-						hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, display));
+						display.add(new TextComponent("- ").append(Utils.localize("module" + block.getDescriptionId().substring(5) + "." + module.getItem().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description")));
+						display.add(TextComponent.EMPTY);
 					}
+
+					display.remove(display.size() - 1);
+					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, display));
 				}
 
-				if (te instanceof ILockable)
+				if (lockable = te instanceof ILockable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable")));
 			}
 		}
@@ -520,6 +505,16 @@ public class SCManualScreen extends Screen {
 		subpages = font.getSplitter().splitLines(helpInfo, subpageLength, Style.EMPTY);
 		nextSubpage.visible = currentPage != -1 && subpages.size() > 1;
 		previousSubpage.visible = currentPage != -1 && subpages.size() > 1;
+	}
+
+	private void resetBlockEntityInfo() {
+		explosive = false;
+		ownable = false;
+		passwordProtected = false;
+		viewActivated = false;
+		customizable = false;
+		lockable = false;
+		moduleInventory = false;
 	}
 
 	@Override
