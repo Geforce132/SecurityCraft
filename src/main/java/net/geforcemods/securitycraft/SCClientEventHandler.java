@@ -181,6 +181,7 @@ public class SCClientEventHandler
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
 		Level world = player.getCommandSenderWorld();
+		double reachDistance = mc.gameMode.getPickRange();
 
 		for (InteractionHand hand : InteractionHand.values()) {
 			int uCoord = 0;
@@ -189,7 +190,7 @@ public class SCClientEventHandler
 			if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
 			{
 				double eyeHeight = player.getEyeHeight();
-				Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
+				Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
 				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
 				if(mop instanceof BlockHitResult bhr && world.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity)
@@ -215,7 +216,7 @@ public class SCClientEventHandler
 			else if(stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get())
 			{
 				double eyeHeight = player.getEyeHeight();
-				Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
+				Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
 				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
 				if(mop instanceof BlockHitResult bhr && world.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive)
@@ -264,7 +265,7 @@ public class SCClientEventHandler
 			else if(stack.getItem() == SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
 			{
 				double eyeHeight = player.getEyeHeight();
-				Vec3 lookVec = new Vec3((player.getX() + (player.getLookAngle().x * 5)), ((eyeHeight + player.getY()) + (player.getLookAngle().y * 5)), (player.getZ() + (player.getLookAngle().z * 5)));
+				Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
 				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
 				if(mop instanceof BlockHitResult bhr && world.getBlockEntity(bhr.getBlockPos()) instanceof ILockable lockable)
