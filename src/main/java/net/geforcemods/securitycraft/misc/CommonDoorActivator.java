@@ -42,11 +42,12 @@ public class CommonDoorActivator implements IDoorActivator
 			SCContent.REINFORCED_LEVER.get(),
 			SCContent.REINFORCED_OBSERVER.get(),
 			SCContent.KEY_PANEL_BLOCK.get(),
-			SCContent.SECURITY_CAMERA.get()
+			SCContent.SECURITY_CAMERA.get(),
+			SCContent.SONIC_SECURITY_SYSTEM.get()
 	});
 
 	@Override
-	public boolean isPowering(Level world, BlockPos pos, BlockState state, BlockEntity te)
+	public boolean isPowering(Level level, BlockPos pos, BlockState state, BlockEntity be)
 	{
 		return state.getValue(BlockStateProperties.POWERED);
 	}
