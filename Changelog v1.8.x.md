@@ -6,6 +6,7 @@
 - New: The Protecto and Trophy System now support the Disguise Module
 - New: Key Panel Block. A waterloggable, smaller version of the keypad. Place it by rightclicking a Key Panel
 - New: Config option "enableTeamOwnership". Setting this to true will allow all players in the same scoreboard team to own each other's blocks
+- New: The Allowlist and Denylist Module can now be set to affect every player instead of just those added to the list
 - New: Security Cameras can now open Reinforced Doors when a Redstone Module is installed and the signal is activated
 - New: The Reinforced Hopper can now extract from the Inventory Scanner
 - New: Players can now see themselves when viewing a camera, which also means they're now vulnerable to attacks while doing so
@@ -23,6 +24,7 @@
 - API: Renamed SecurityCraftTileEntity to NamedTileEntity and remove most of its code
 - API: Removed IIntersectable
 - API: Added TileEntityLinkable and removed relevant code from CustomizableSCTE
+- API: Added ILockable which enables a block to be locked with the Sonic Security System
 - Fix: Reinforced Doors cannot be opened in some cases (for example when a reinforced pressure plate is present on both sides)
 - Fix: Secret Signs cannot be broken (old secret signs will still not work, you will have to remove them in creative mode)
 - Fix: Alarm sound does not play
