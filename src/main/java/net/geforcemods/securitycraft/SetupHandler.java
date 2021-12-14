@@ -264,7 +264,7 @@ public class SetupHandler
 		SCContent.projector = new BlockProjector().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("projector").setTranslationKey("securitycraft:projector");
 		SCContent.keypadDoor = new BlockKeypadDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("keypad_door").setTranslationKey("securitycraft:keypad_door");
 		SCContent.reinforcedCauldron = new BlockReinforcedCauldron().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_cauldron").setTranslationKey("securitycraft:reinforced_cauldron");
-		SCContent.keyPanelFloorCeilingBlock = new BlockFloorCeilingKeyPanel(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("floor_ceiling_key_panel").setTranslationKey("securitycraft:key_panel");
+		SCContent.keyPanelFloorCeilingBlock = new BlockFloorCeilingKeyPanel(Material.IRON).setCreativeTab(SecurityCraft.tabSCTechnical).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("floor_ceiling_key_panel").setTranslationKey("securitycraft:key_panel");
 		SCContent.keyPanelWallBlock = new BlockWallKeyPanel(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("wall_key_panel").setTranslationKey("securitycraft:key_panel");
 		SCContent.sonicSecuritySystem = new BlockSonicSecuritySystem(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("sonic_security_system").setTranslationKey("securitycraft:sonic_security_system");
 	}
@@ -318,7 +318,7 @@ public class SetupHandler
 		SCContent.disguiseModule = (ItemModule) new ItemModule(EnumModuleType.DISGUISE, false, true, GuiHandler.DISGUISE_MODULE).setRegistryName("disguise_module").setTranslationKey("securitycraft:disguiseModule");
 		SCContent.speedModule = (ItemModule) new ItemModule(EnumModuleType.SPEED, false).setRegistryName("speed_module").setTranslationKey("securitycraft:speed_module");
 		SCContent.wireCutters = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("wire_cutters").setTranslationKey("securitycraft:wireCutters");
-		SCContent.keyPanel = new ItemKeyPanel().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad_item").setTranslationKey("securitycraft:keypadItem");
+		SCContent.keyPanel = new ItemKeyPanel().setRegistryName("keypad_item");
 		SCContent.adminTool = new ItemAdminTool().setMaxStackSize(1).setRegistryName("admin_tool").setTranslationKey("securitycraft:adminTool");
 		SCContent.cameraMonitor = new ItemCameraMonitor().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("camera_monitor").setTranslationKey("securitycraft:cameraMonitor");
 		SCContent.scManual = new ItemSCManual().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("sc_manual").setTranslationKey("securitycraft:scManual");
