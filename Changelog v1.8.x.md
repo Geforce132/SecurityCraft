@@ -52,6 +52,7 @@
 - Fix: Electrified Iron Fence Gate has wooden open/close sounds
 - Fix: WAILA/TOP display shows an incorrect block sometimes
 - Fix: Offhand hotbar indicator for Camera Monitor/SRAT/MRAT shows incorrectly when the main hand is set to left
+- Fix: Hotbar indicator for Camera Monitor/MRAT does not respect the player's reach distance
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated

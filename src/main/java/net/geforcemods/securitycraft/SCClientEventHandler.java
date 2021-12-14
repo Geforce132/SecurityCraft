@@ -93,6 +93,7 @@ public class SCClientEventHandler
 				Minecraft mc = Minecraft.getMinecraft();
 				EntityPlayerSP player = mc.player;
 				World world = player.getEntityWorld();
+				float reachDistance = mc.playerController.getBlockReachDistance();
 
 				for (EnumHand hand : EnumHand.values()) {
 					ItemStack stack = player.getHeldItem(hand);
@@ -101,7 +102,7 @@ public class SCClientEventHandler
 					if(stack.getItem() == SCContent.cameraMonitor)
 					{
 						double eyeHeight = player.getEyeHeight();
-						Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
+						Vec3d lookVec = new Vec3d(player.posX + player.getLookVec().x * reachDistance, eyeHeight + player.posY + player.getLookVec().y * reachDistance, player.posZ + player.getLookVec().z * reachDistance);
 						RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
 
 						if(mop != null && mop.typeOfHit == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
@@ -129,7 +130,7 @@ public class SCClientEventHandler
 					else if(stack.getItem() == SCContent.remoteAccessMine)
 					{
 						double eyeHeight = player.getEyeHeight();
-						Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
+						Vec3d lookVec = new Vec3d(player.posX + player.getLookVec().x * reachDistance, eyeHeight + player.posY + player.getLookVec().y * reachDistance, player.posZ + player.getLookVec().z * reachDistance);
 						RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
 
 						if(mop != null && mop.typeOfHit == Type.BLOCK && world.getBlockState(mop.getBlockPos()).getBlock() instanceof IExplosive)
@@ -182,7 +183,7 @@ public class SCClientEventHandler
 					else if(stack.getItem() == SCContent.sonicSecuritySystemItem)
 					{
 						double eyeHeight = player.getEyeHeight();
-						Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
+						Vec3d lookVec = new Vec3d(player.posX + player.getLookVec().x * reachDistance, eyeHeight + player.posY + player.getLookVec().y * reachDistance, player.posZ + player.getLookVec().z * reachDistance);
 						RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
 
 						if(mop != null && mop.typeOfHit == Type.BLOCK)
