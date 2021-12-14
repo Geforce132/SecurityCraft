@@ -77,6 +77,8 @@ public class GuiSCManual extends GuiScreen {
 	private List<String> intro2;
 	private PatronList patronList;
 	private GuiButton patreonLinkButton;
+	private boolean explosive, ownable, passwordProtected, viewActivated, customizable, lockable, moduleInventory;
+	private ItemStack pageStack;
 
 	@Override
 	public void initGui(){
@@ -120,8 +122,6 @@ public class GuiSCManual extends GuiScreen {
 
 		if(currentPage > -1)
 		{
-			Item item = ItemSCManual.PAGES.get(currentPage).getItem();
-			boolean isItemBlock = item instanceof ItemBlock;
 			String pageNumberText = (currentPage + 2) + "/" + (ItemSCManual.PAGES.size() + 1); //+1 because the "welcome" page is not included
 			String designedBy = ItemSCManual.PAGES.get(currentPage).getDesignedBy();
 
@@ -137,50 +137,34 @@ public class GuiSCManual extends GuiScreen {
 				fontRenderer.drawSplitString(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy).getFormattedText(), startX + 18, 150, 75, 0);
 
 			fontRenderer.drawString(pageNumberText, startX + 240 - fontRenderer.getStringWidth(pageNumberText), 182, 0x8E8270);
-			GuiUtils.drawItemStackToGui(new ItemStack(item), startX + 19, 22, !isItemBlock);
+			GuiUtils.drawItemStackToGui(pageStack, startX + 19, 22, !(pageStack.getItem() instanceof ItemBlock));
 			fontRenderer.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			mc.getTextureManager().bindTexture(infoBookIcons);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-			if(isItemBlock){
-				Block block = ((ItemBlock)item).getBlock();
+			if(explosive)
+				drawTexturedModalRect(startX + 107, 117, 54, 1, 18, 18);
 
-				if(block instanceof IExplosive)
-					drawTexturedModalRect(startX + 107, 117, 54, 1, 18, 18);
+			if(ownable)
+				drawTexturedModalRect(startX + 29, 118, 1, 1, 16, 16);
 
-				if(block.hasTileEntity(block.getDefaultState()))
-				{
-					TileEntity te = block.createTileEntity(Minecraft.getMinecraft().world, block.getDefaultState());
+			if(passwordProtected)
+				drawTexturedModalRect(startX + 55, 118, 18, 1, 17, 16);
 
-					if(te instanceof IOwnable)
-						drawTexturedModalRect(startX + 29, 118, 1, 1, 16, 16);
+			if(viewActivated)
+				drawTexturedModalRect(startX + 81, 118, 36, 1, 17, 16);
 
-					if(te instanceof IPasswordProtected)
-						drawTexturedModalRect(startX + 55, 118, 18, 1, 17, 16);
+			if(customizable)
+				drawTexturedModalRect(startX + 136, 118, 88, 1, 16, 16);
 
-					if(te instanceof IViewActivated)
-						drawTexturedModalRect(startX + 81, 118, 36, 1, 17, 16);
+			if(moduleInventory)
+				drawTexturedModalRect(startX + 163, 118, 105, 1, 16, 16);
 
-					if(te instanceof ICustomizable)
-					{
-						ICustomizable scte = (ICustomizable)te;
+			if (lockable)
+				drawTexturedModalRect(startX + 189, 118, 154, 1, 16, 16);
 
-						drawTexturedModalRect(startX + 213, 118, 72, 1, 16, 16);
-
-						if(scte.customOptions() != null && scte.customOptions().length > 0)
-							drawTexturedModalRect(startX + 136, 118, 88, 1, 16, 16);
-					}
-
-					if (te instanceof ILockable)
-						drawTexturedModalRect(startX + 189, 118, 154, 1, 16, 16);
-
-					if(te instanceof IModuleInventory)
-					{
-						if(((IModuleInventory)te).acceptedModules() != null && ((IModuleInventory)te).acceptedModules().length > 0)
-							drawTexturedModalRect(startX + 163, 118, 105, 1, 16, 16);
-					}
-				}
-			}
+			if(customizable || moduleInventory)
+				drawTexturedModalRect(startX + 213, 118, 72, 1, 16, 16);
 
 			if(recipe != null)
 			{
@@ -440,35 +424,37 @@ public class GuiSCManual extends GuiScreen {
 
 		Item item = page.getItem();
 
+		pageStack = new ItemStack(item);
+		resetTileEntityInfo();
+
 		if(item instanceof ItemBlock){
 			Block block = ((ItemBlock) item).getBlock();
 
-			if(block instanceof IExplosive)
+			if(explosive = block instanceof IExplosive)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock").getFormattedText()));
 
 			if(block.hasTileEntity(block.getDefaultState()))
 			{
 				TileEntity te = block.createTileEntity(Minecraft.getMinecraft().world, block.getDefaultState());
 
-				if(te instanceof IOwnable)
+				if(ownable = te instanceof IOwnable)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock").getFormattedText()));
 
-				if(te instanceof IPasswordProtected)
+				if(passwordProtected = te instanceof IPasswordProtected)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passwordProtectedBlock").getFormattedText()));
 
-				if(te instanceof IViewActivated)
+				if(viewActivated = te instanceof IViewActivated)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock").getFormattedText()));
 
 				if(te instanceof ICustomizable)
 				{
 					ICustomizable scte = (ICustomizable)te;
 
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock").getFormattedText()));
-
 					if(scte.customOptions() != null && scte.customOptions().length > 0)
 					{
 						List<String> display = new ArrayList<>();
 
+						customizable = true;
 						display.add(Utils.localize("gui.securitycraft:scManual.options").getFormattedText());
 						display.add("---");
 
@@ -491,6 +477,7 @@ public class GuiSCManual extends GuiScreen {
 					{
 						List<String> display = new ArrayList<>();
 
+						moduleInventory = true;
 						display.add(Utils.localize("gui.securitycraft:scManual.modules").getFormattedText());
 						display.add("---");
 
@@ -505,8 +492,11 @@ public class GuiSCManual extends GuiScreen {
 					}
 				}
 
-				if (te instanceof ILockable)
+				if (lockable = te instanceof ILockable)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable").getFormattedText()));
+
+				if (customizable || moduleInventory)
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock").getFormattedText()));
 			}
 		}
 
@@ -526,6 +516,16 @@ public class GuiSCManual extends GuiScreen {
 		}
 
 		subpages.add(helpInfo);
+	}
+
+	private void resetTileEntityInfo() {
+		explosive = false;
+		ownable = false;
+		passwordProtected = false;
+		viewActivated = false;
+		customizable = false;
+		lockable = false;
+		moduleInventory = false;
 	}
 
 	class PatronList extends PatronScrollList
