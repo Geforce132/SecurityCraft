@@ -441,7 +441,6 @@ public class SCManualScreen extends Screen {
 					List<Component> display = new ArrayList<>();
 
 					customizable = true;
-					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock")));
 					display.add(Utils.localize("gui.securitycraft:scManual.options"));
 					display.add(new TextComponent("---"));
 
@@ -475,6 +474,9 @@ public class SCManualScreen extends Screen {
 
 				if (lockable = te instanceof ILockable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable")));
+
+				if(customizable || moduleInventory)
+					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock")));
 			}
 		}
 
