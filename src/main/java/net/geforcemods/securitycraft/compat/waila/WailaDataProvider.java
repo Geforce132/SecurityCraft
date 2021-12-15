@@ -10,11 +10,13 @@ import mcp.mobius.waila.api.IWailaPlugin;
 import mcp.mobius.waila.api.TooltipPosition;
 import mcp.mobius.waila.api.WailaPlugin;
 import mcp.mobius.waila.api.config.IPluginConfig;
+import mcp.mobius.waila.api.event.WailaRenderEvent;
 import mcp.mobius.waila.api.ui.IElement;
 import mcp.mobius.waila.api.ui.IElement.Align;
 import mcp.mobius.waila.impl.Tooltip;
 import mcp.mobius.waila.impl.ui.ItemStackElement;
 import mcp.mobius.waila.impl.ui.TextElement;
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -209,5 +211,10 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				tooltip.add(modeDescription);
 			}
 		}
+	}
+
+	public static void onWailaRender(WailaRenderEvent.Pre event) {
+		if(ClientHandler.isPlayerMountedOnCamera())
+			event.setCanceled(true);
 	}
 }
