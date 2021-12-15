@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -15,6 +16,8 @@ import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
+import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -38,9 +41,12 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -252,13 +258,37 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	@Override
 	public ModuleType[] acceptedModules()
 	{
-		return new ModuleType[] {ModuleType.ALLOWLIST, ModuleType.DENYLIST};
+		return new ModuleType[] {ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE};
 	}
 
 	@Override
 	public Option<?>[] customOptions()
 	{
 		return new Option[]{sendMessage};
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module)
+	{
+		IModuleInventory.super.onModuleInserted(stack, module);
+
+		if(!world.isRemote && module == ModuleType.DISGUISE)
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, true, stack));
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
+	{
+		IModuleInventory.super.onModuleRemoved(stack, module);
+
+		if(!world.isRemote && module == ModuleType.DISGUISE)
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, false, stack));
+	}
+
+	@Override
+	public IModelData getModelData()
+	{
+		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_BLOCK_RL, getBlockState().getBlock().getRegistryName()).build();
 	}
 
 	public boolean sendsMessages()

@@ -109,6 +109,8 @@ public class ClientHandler
 				new ResourceLocation(SecurityCraft.MODID, "laser_block")
 		};
 		String[] mines = {"coal_ore", "cobblestone", "diamond_ore", "dirt", "emerald_ore", "gravel", "gold_ore", "gilded_blackstone", "furnace", "iron_ore", "lapis_ore", "nether_gold_ore", "redstone_ore", "sand", "stone"};
+		ResourceLocation invScanRL = new ResourceLocation(SecurityCraft.MODID, "inventory_scanner");
+		ResourceLocation ppfRL = new ResourceLocation(SecurityCraft.MODID, "keypad_furnace");
 
 		for(String facing : facings)
 		{
@@ -122,6 +124,13 @@ public class ClientHandler
 			{
 				registerDisguisedModel(event, facingBlock, "facing=" + facing);
 			}
+
+			registerDisguisedModel(event, ppfRL, "facing=" + facing + ",lit=false,open=false");
+			registerDisguisedModel(event, ppfRL, "facing=" + facing + ",lit=false,open=true");
+			registerDisguisedModel(event, ppfRL, "facing=" + facing + ",lit=true,open=false");
+			registerDisguisedModel(event, ppfRL, "facing=" + facing + ",lit=true,open=true");
+			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=true");
+			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=false");
 		}
 
 		for(ResourceLocation poweredBlock : poweredBlocks)
@@ -131,7 +140,6 @@ public class ClientHandler
 		}
 
 		ResourceLocation cageTrapRl = new ResourceLocation(SecurityCraft.MODID, "cage_trap");
-		ResourceLocation invScanRL = new ResourceLocation(SecurityCraft.MODID, "inventory_scanner");
 		ResourceLocation protectoRl = new ResourceLocation(SecurityCraft.MODID, "protecto");
 
 		registerDisguisedModel(event, cageTrapRl, "deactivated=true");
@@ -139,12 +147,6 @@ public class ClientHandler
 		registerDisguisedModel(event, protectoRl, "enabled=true");
 		registerDisguisedModel(event, protectoRl, "enabled=false");
 		registerDisguisedModel(event, new ResourceLocation(SecurityCraft.MODID, "trophy_system"), "");
-
-		for(String facing : facings)
-		{
-			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=true");
-			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=false");
-		}
 
 		for(String mine : mines)
 		{
@@ -203,6 +205,7 @@ public class ClientHandler
 		RenderTypeLookup.setRenderLayer(SCContent.KEYCARD_READER.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD_DOOR.get(), cutout);
+		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD_FURNACE.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.LASER_BLOCK.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.LASER_FIELD.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), translucent);
@@ -389,6 +392,7 @@ public class ClientHandler
 				SCContent.INVENTORY_SCANNER.get(),
 				SCContent.KEYCARD_READER.get(),
 				SCContent.KEYPAD.get(),
+				SCContent.KEYPAD_FURNACE.get(),
 				SCContent.LASER_BLOCK.get(),
 				SCContent.PROJECTOR.get(),
 				SCContent.PROTECTO.get(),

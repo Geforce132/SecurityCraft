@@ -16,6 +16,7 @@
 - New: Config option "trickScannersWithPlayerHeads" to allow players to wear a player's head to trick that player's retinal scanner or scanner door into activating
 - New: Sonic Security System. Lock your blocks behind a note block tune of your choice
 - New: Portable Tune Player. Can play back tunes saved to sonic security systems
+- New: The Password-protected Furnace is now disguisable with the Disguise Module
 - Change: SecurityCraft's config values for Jade/HWYLA are now synchronized from server to client, meaning server owners can now control what Jade shows to players
 - Change: Renamed "Track Mine" to "Rail Mine" to be in line with vanilla
 - Change: Cameras can now be viewed from anywhere in the same dimension, it is no longer necessary to be close to the camera to be able to view it
