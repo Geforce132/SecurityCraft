@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.api.NamedTileEntity;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -107,7 +107,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new NamedTileEntity();
+		return new OwnableTileEntity(SCContent.teTypeAbstract);
 	}
 
 }
