@@ -4,11 +4,11 @@
 - New: Reinforced Pistons
 - New: The Reinforced Redstone Block and the Reinforced Observer can now be used to open doors, activate pistons, etc.
 - New: The debug menu now hides block mines, disguised blocks, and fake fluids
-- New: The Protecto and Trophy System now support the Disguise Module
+- New: The Protecto, Trophy System, and Password-protected Furnace now support the Disguise Module
 - New: Key Panel Block. A waterloggable, smaller version of the keypad. Place it by rightclicking a Key Panel
 - New: Config option "enableTeamOwnership". Setting this to true will allow all players in the same scoreboard team to own each other's blocks
 - New: The Allowlist and Denylist Module can now be set to affect every player instead of just those added to the list
-- New: Security Cameras can now open Reinforced Doors when a Redstone Module is installed and the signal is activated
+- New: Security Cameras and Portable Radars can now open Reinforced Doors when a Redstone Module is installed and the signal is activated
 - New: The Reinforced Hopper can now extract from the Inventory Scanner
 - New: The message SecurityCraft sends when joining a world can now be turned off by server owners
 - New: Players can now see themselves when viewing a camera, which also means they're now vulnerable to attacks while doing so
@@ -16,7 +16,6 @@
 - New: Config option "trickScannersWithPlayerHeads" to allow players to wear a player's head to trick that player's retinal scanner or scanner door into activating
 - New: Sonic Security System. Lock your blocks behind a note block tune of your choice
 - New: Portable Tune Player. Can play back tunes saved to sonic security systems
-- New: The Password-protected Furnace is now disguisable with the Disguise Module
 - Change: SecurityCraft's config values for Jade/HWYLA are now synchronized from server to client, meaning server owners can now control what Jade shows to players
 - Change: Renamed "Track Mine" to "Rail Mine" to be in line with vanilla
 - Change: Cameras can now be viewed from anywhere in the same dimension, it is no longer necessary to be close to the camera to be able to view it
