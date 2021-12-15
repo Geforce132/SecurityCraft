@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGrass;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedWall;
+import net.geforcemods.securitycraft.compat.waila.WailaDataProvider;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
@@ -59,8 +60,10 @@ import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -81,6 +84,9 @@ public class ClientProxy implements IProxy {
 
 		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "diamond_mine"), new ResourceLocation("diamond_ore"));
 		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "quartz_mine"), new ResourceLocation("nether_quartz_ore"));
+
+		if(Loader.isModLoaded("waila"))
+			MinecraftForge.EVENT_BUS.register(WailaDataProvider.class);
 	}
 
 	private static void registerBlockMineModel(ModelBakeEvent event, ResourceLocation mineRl, ResourceLocation realBlockRl)

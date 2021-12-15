@@ -8,6 +8,7 @@ import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
 import mcp.mobius.waila.api.IWailaEntityProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.api.event.WailaRenderEvent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -17,6 +18,7 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -28,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvider {
 
@@ -147,5 +150,11 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 		}
 
 		return body;
+	}
+
+	@SubscribeEvent
+	public static void onWailaRender(WailaRenderEvent.Pre event) {
+		if(ClientProxy.isPlayerMountedOnCamera())
+			event.setCanceled(true);
 	}
 }
