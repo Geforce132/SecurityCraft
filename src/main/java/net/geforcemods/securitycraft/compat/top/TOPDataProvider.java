@@ -43,6 +43,11 @@ import net.minecraftforge.fml.ModList;
 
 public class TOPDataProvider implements Function<ITheOneProbe, Void>
 {
+	private static final MutableComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(Utils.GRAY_STYLE);
+	private static final MutableComponent ALLOWLIST_MODULE = new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.ALLOWLIST.getTranslationKey()));
+	private static final MutableComponent DISGUISE_MODULE = new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.DISGUISE.getTranslationKey()));
+	private static final MutableComponent SPEED_MODULE = new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.SPEED.getTranslationKey()));
+
 	@Nullable
 	@Override
 	public Void apply(ITheOneProbe theOneProbe)
@@ -104,7 +109,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				{
 					if(!inv.getInsertedModules().isEmpty())
 					{
-						probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getString()));
+						probeInfo.text(EQUIPPED.getString());
 
 						for(ModuleType module : inv.getInsertedModules())
 							probeInfo.text(new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(module.getTranslationKey())));
@@ -151,16 +156,16 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 
 					if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())
 					{
-						probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getString()));
+						probeInfo.text(EQUIPPED.getString());
 
 						if(!sentry.getAllowlistModule().isEmpty())
-							probeInfo.text(new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.ALLOWLIST.getTranslationKey())));
+							probeInfo.text(ALLOWLIST_MODULE);
 
 						if(!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.DISGUISE.getTranslationKey())));
+							probeInfo.text(DISGUISE_MODULE);
 
 						if(sentry.hasSpeedModule())
-							probeInfo.text(new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.SPEED.getTranslationKey())));
+							probeInfo.text(SPEED_MODULE);
 					}
 
 					MutableComponent modeDescription = Utils.localize(mode.getModeKey());

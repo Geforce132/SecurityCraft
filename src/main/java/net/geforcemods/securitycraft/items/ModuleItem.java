@@ -9,12 +9,11 @@ import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -37,8 +36,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class ModuleItem extends Item{
-
-	public static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
+	private static final MutableComponent MODIFIABLE = new TranslatableComponent("tooltip.securitycraft:module.modifiable").setStyle(Utils.GRAY_STYLE);
+	private static final MutableComponent NOT_MODIFIABLE = new TranslatableComponent("tooltip.securitycraft:module.notModifiable").setStyle(Utils.GRAY_STYLE);
 	public static final int MAX_PLAYERS = 50;
 	private final ModuleType module;
 	private final boolean containsCustomData;
@@ -124,15 +123,15 @@ public class ModuleItem extends Item{
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, Level world, List<Component> list, TooltipFlag flag) {
 		if(containsCustomData || canBeCustomized())
-			list.add(new TranslatableComponent("tooltip.securitycraft:module.modifiable").setStyle(GRAY_STYLE));
+			list.add(MODIFIABLE);
 		else
-			list.add(new TranslatableComponent("tooltip.securitycraft:module.notModifiable").setStyle(GRAY_STYLE));
+			list.add(NOT_MODIFIABLE);
 
 		if(canBeCustomized()) {
 			Block addon = getBlockAddon(stack.getTag());
 
 			if(addon != null)
-				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getDescriptionId())).setStyle(GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getDescriptionId())).setStyle(Utils.GRAY_STYLE));
 		}
 	}
 

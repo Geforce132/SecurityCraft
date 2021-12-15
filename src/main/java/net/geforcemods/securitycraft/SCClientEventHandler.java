@@ -64,6 +64,7 @@ public class SCClientEventHandler
 	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
+	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 
 	@SubscribeEvent
 	public static void onScreenshot(ScreenshotEvent event)
@@ -134,7 +135,6 @@ public class SCClientEventHandler
 		Component zoom = Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage());
 		Component nightVision = Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage());
 		Component redstone = Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage());
-		Component redstoneNote = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 		String time = ClientUtils.getFormattedMinecraftTime();
 		int timeY = 25;
 
@@ -152,7 +152,7 @@ public class SCClientEventHandler
 		font.drawShadow(pose, zoom, window.getGuiScaledWidth() - font.width(zoom) - 8, window.getGuiScaledHeight() - 60, 16777215);
 		font.drawShadow(pose, nightVision, window.getGuiScaledWidth() - font.width(nightVision) - 8, window.getGuiScaledHeight() - 50, 16777215);
 		font.drawShadow(pose, redstone, window.getGuiScaledWidth() - font.width(redstone) - 8, window.getGuiScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
-		font.drawShadow(pose, redstoneNote, window.getGuiScaledWidth() - font.width(redstoneNote) -8, window.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
+		font.drawShadow(pose, REDSTONE_NOTE, window.getGuiScaledWidth() - font.width(REDSTONE_NOTE) -8, window.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
 
 		RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

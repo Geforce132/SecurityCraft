@@ -47,7 +47,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 		NonNullList<ItemStack> inv = menu.getItems();
 
 		font.draw(matrix, ubr, (imageWidth - font.width(ubr)) / 2, 5, 4210752);
-		font.draw(matrix, Utils.localize("container.inventory"), 8, imageHeight - 96 + 2, 4210752);
+		font.draw(matrix, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
 
 		if(!inv.get(36).isEmpty())
 		{

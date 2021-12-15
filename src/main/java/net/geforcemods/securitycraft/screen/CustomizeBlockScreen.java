@@ -146,7 +146,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	{
 		TranslatableComponent s = Utils.localize(moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId());
 		font.draw(matrix, s, imageWidth / 2 - font.width(s) / 2, 6, 4210752);
-		font.draw(matrix, Utils.localize("container.inventory"), 8, imageHeight - 96 + 2, 4210752);
+		font.draw(matrix, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
 	}
 
 	@Override

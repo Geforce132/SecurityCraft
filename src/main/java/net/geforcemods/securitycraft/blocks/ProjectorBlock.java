@@ -5,12 +5,12 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
+import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -41,8 +41,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class ProjectorBlock extends DisguisableBlock {
-
-	private static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
+	private static final MutableComponent TOOLTIP = new TranslatableComponent("tooltip.securitycraft:projector").setStyle(Utils.GRAY_STYLE);
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	private static final VoxelShape NORTH = Stream.of(Block.box(3, 5, 0.9, 6, 8, 1.9), Block.box(0, 3, 1, 16, 10, 16), Block.box(2, 8, 0.5, 7, 9, 1), Block.box(2, 4, 0.5, 7, 5, 1), Block.box(6, 5, 0.5, 7, 8, 1), Block.box(2, 5, 0.5, 3, 8, 1), Block.box(0, 0, 1, 2, 3, 3), Block.box(14, 0, 1, 16, 3, 3), Block.box(14, 0, 14, 16, 3, 16), Block.box(0, 0, 14, 2, 3, 16)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElse(Shapes.block());
 	private static final VoxelShape SOUTH = Stream.of(Block.box(0, 3, 0, 16, 10, 15), Block.box(10, 5, 14.1, 13, 8, 15.100000000000001), Block.box(9, 8, 15, 14, 9, 15.5), Block.box(9, 4, 15, 14, 5, 15.5), Block.box(9, 5, 15, 10, 8, 15.5), Block.box(13, 5, 15, 14, 8, 15.5), Block.box(14, 0, 13, 16, 3, 15), Block.box(0, 0, 13, 2, 3, 15), Block.box(0, 0, 0, 2, 3, 2), Block.box(14, 0, 0, 16, 3, 2)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElse(Shapes.block());
@@ -167,6 +166,6 @@ public class ProjectorBlock extends DisguisableBlock {
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, BlockGetter world, List<Component> tooltip, TooltipFlag flag)
 	{
-		tooltip.add(new TranslatableComponent("tooltip.securitycraft:projector").setStyle(GRAY_STYLE));
+		tooltip.add(TOOLTIP);
 	}
 }

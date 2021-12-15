@@ -118,7 +118,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 		int numOfLinkedBlocks = stack.getTag().getList("LinkedBlocks", Tag.TAG_COMPOUND).size();
 
 		if(numOfLinkedBlocks > 0)
-			tooltip.add(Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).withStyle(ChatFormatting.GRAY));
+			tooltip.add(Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).withStyle(Utils.GRAY_STYLE));
 	}
 
 	/**

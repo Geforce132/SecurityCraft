@@ -15,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 
 public class VanillaToSecurityCraftCategory extends BaseCategory
 {
+	private static final Component TITLE = Utils.localize("jei.securitycraft.category.reinforcing");
+
 	public VanillaToSecurityCraftCategory(IGuiHelper helper)
 	{
 		super(helper);
@@ -29,7 +31,7 @@ public class VanillaToSecurityCraftCategory extends BaseCategory
 	@Override
 	public Component getTitle()
 	{
-		return Utils.localize("jei.securitycraft.category.reinforcing");
+		return TITLE;
 	}
 
 	@Override

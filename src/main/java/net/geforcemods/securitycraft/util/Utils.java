@@ -2,13 +2,18 @@ package net.geforcemods.securitycraft.util;
 
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class Utils {
+	public static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
+	public static final Component INVENTORY_TEXT = Utils.localize("container.inventory");
 
 	/**
 	 * Removes the last character in the given String. <p>

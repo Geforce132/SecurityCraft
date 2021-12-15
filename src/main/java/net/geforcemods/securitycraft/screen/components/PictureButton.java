@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,8 +21,8 @@ import net.minecraftforge.fmlclient.gui.GuiUtils;
 public class PictureButton extends IdButton{
 
 	private final ItemRenderer itemRenderer;
-	private Block blockToRender;
-	private Item itemToRender;
+	private ItemStack blockToRender = ItemStack.EMPTY;
+	private ItemStack itemToRender = ItemStack.EMPTY;
 	private ResourceLocation textureLocation;
 	private int u;
 	private int v;
@@ -42,10 +41,11 @@ public class PictureButton extends IdButton{
 		super(id, xPos, yPos, width, height, "", onClick);
 		itemRenderer = par7;
 
-		if(!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
-			blockToRender = Block.byItem(itemToRender.getItem());
+		if(!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem) {
+			blockToRender = new ItemStack(Block.byItem(itemToRender.getItem()));
+		}
 		else
-			this.itemToRender = itemToRender.getItem();
+			this.itemToRender = new ItemStack(itemToRender.getItem());
 	}
 
 	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, Consumer<IdButton> onClick)
@@ -80,12 +80,12 @@ public class PictureButton extends IdButton{
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			GuiUtils.drawContinuousTexturedBox(matrix, WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHovered()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 
-			if(blockToRender != null){
-				itemRenderer.renderAndDecorateItem(new ItemStack(blockToRender), x + 2, y + 3);
-				itemRenderer.renderGuiItemDecorations(font, new ItemStack(blockToRender), x + 2, y + 3, "");
-			}else if(itemToRender != null){
-				itemRenderer.renderAndDecorateItem(new ItemStack(itemToRender), x + 2, y + 2);
-				itemRenderer.renderGuiItemDecorations(font, new ItemStack(itemToRender), x + 2, y + 2, "");
+			if(!blockToRender.isEmpty()){
+				itemRenderer.renderAndDecorateItem(blockToRender, x + 2, y + 3);
+				itemRenderer.renderGuiItemDecorations(font, blockToRender, x + 2, y + 3, "");
+			}else if(!itemToRender.isEmpty()){
+				itemRenderer.renderAndDecorateItem(itemToRender, x + 2, y + 2);
+				itemRenderer.renderGuiItemDecorations(font, itemToRender, x + 2, y + 2, "");
 			}
 			else if(getTextureLocation() != null)
 			{
@@ -101,7 +101,7 @@ public class PictureButton extends IdButton{
 		return textureLocation;
 	}
 
-	public Item getItemStack() {
-		return (blockToRender != null ? blockToRender.asItem() : itemToRender);
+	public ItemStack getItemStack() {
+		return !blockToRender.isEmpty() ? blockToRender : itemToRender;
 	}
 }

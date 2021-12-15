@@ -29,6 +29,10 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	private static final Style UNDERLINE = Style.EMPTY.applyFormat(ChatFormatting.UNDERLINE);
 	private final Component redstoneModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.REDSTONE_MODULE.get().getDescriptionId()));
 	private final Component storageModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.STORAGE_MODULE.get().getDescriptionId()));
+	private final Component prohibitedItems =  Utils.localize("gui.securitycraft:invScan.prohibitedItems");
+	private final Component adminMode = Utils.localize("gui.securitycraft:invScan.mode.admin").setStyle(UNDERLINE);
+	private final Component viewMode = Utils.localize("gui.securitycraft:invScan.mode.view").setStyle(UNDERLINE);
+	private final Component storage = Utils.localize("gui.securitycraft:invScan.storage");
 
 	public InventoryScannerScreen(InventoryScannerMenu container, Inventory inv, Component name){
 		super(container, inv, name);
@@ -75,13 +79,13 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	@Override
 	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY)
 	{
-		font.draw(matrix, Utils.localize("gui.securitycraft:invScan.prohibitedItems"), 8, 6, 4210752);
-		font.draw(matrix, Utils.localize("gui.securitycraft:invScan.mode." + (tileEntity.getOwner().isOwner(minecraft.player) ? "admin" : "view")).setStyle(UNDERLINE), 112, 6, 4210752);
+		font.draw(matrix, prohibitedItems, 8, 6, 4210752);
+		font.draw(matrix, tileEntity.getOwner().isOwner(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
-			font.draw(matrix, Utils.localize("gui.securitycraft:invScan.storage"), 188, 18, 4210752);
+			font.draw(matrix, storage, 188, 18, 4210752);
 
-		font.draw(matrix, Utils.localize("container.inventory"), 15, imageHeight - 93, 4210752);
+		font.draw(matrix, Utils.INVENTORY_TEXT, 15, imageHeight - 93, 4210752);
 	}
 
 	@Override

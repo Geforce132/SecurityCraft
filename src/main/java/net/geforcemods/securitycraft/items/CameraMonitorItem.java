@@ -19,7 +19,6 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -38,9 +37,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class CameraMonitorItem extends Item {
-
-	private static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
-
 	public CameraMonitorItem(Item.Properties properties) {
 		super(properties);
 	}
@@ -108,7 +104,7 @@ public class CameraMonitorItem extends Item {
 		if(stack.getTag() == null)
 			return;
 
-		tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor").append(new TextComponent(" " + getNumberOfCamerasBound(stack.getTag()) + "/30")).setStyle(GRAY_STYLE));
+		tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor").append(new TextComponent(" " + getNumberOfCamerasBound(stack.getTag()) + "/30")).setStyle(Utils.GRAY_STYLE));
 	}
 
 	public static String getTagNameFromPosition(CompoundTag tag, GlobalPos view) {

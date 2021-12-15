@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -33,9 +32,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class MineRemoteAccessToolItem extends Item {
-
-	private static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
-
 	public MineRemoteAccessToolItem(Item.Properties properties) {
 		super(properties);
 	}
@@ -107,7 +103,7 @@ public class MineRemoteAccessToolItem extends Item {
 					continue;
 				}
 				else
-					list.add(Utils.localize("tooltip.securitycraft:mine").append(new TextComponent(" " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2])).setStyle(GRAY_STYLE));
+					list.add(Utils.localize("tooltip.securitycraft:mine").append(new TextComponent(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
 			}
 			else
 				list.add(new TextComponent(ChatFormatting.GRAY + "---"));

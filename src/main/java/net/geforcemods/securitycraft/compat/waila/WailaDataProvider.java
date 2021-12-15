@@ -57,6 +57,10 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
 	private static final Style MOD_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.BLUE).withItalic(true);
 	private static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.WHITE);
+	private static final MutableComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(Utils.GRAY_STYLE);
+	private static final MutableComponent ALLOWLIST_MODULE = new TextComponent("- ").append(new TranslatableComponent(ModuleType.ALLOWLIST.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
+	private static final MutableComponent DISGUISE_MODULE = new TextComponent("- ").append(new TranslatableComponent(ModuleType.DISGUISE.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
+	private static final MutableComponent SPEED_MODULE = new TextComponent("- ").append(new TranslatableComponent(ModuleType.SPEED.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
 
 	@Override
 	public void register(IRegistrar registrar)
@@ -140,7 +144,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 					//if the te is ownable, show modules only when it's owned, otherwise always show
 					if(config.get(SHOW_MODULES) && te instanceof IModuleInventory inv && (!(te instanceof IOwnable ownable) || ownable.getOwner().isOwner(data.getPlayer()))){
 						if(!inv.getInsertedModules().isEmpty())
-							tooltip.add(Utils.localize("waila.securitycraft:equipped"));
+							tooltip.add(EQUIPPED);
 
 						for(ModuleType module : inv.getInsertedModules())
 							tooltip.add(new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())));
@@ -184,16 +188,16 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 					if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())
 					{
-						tooltip.add(Utils.localize("waila.securitycraft:equipped"));
+						tooltip.add(EQUIPPED);
 
 						if(!sentry.getAllowlistModule().isEmpty())
-							tooltip.add(new TextComponent("- ").append(new TranslatableComponent(ModuleType.ALLOWLIST.getTranslationKey())));
+							tooltip.add(ALLOWLIST_MODULE);
 
 						if(!sentry.getDisguiseModule().isEmpty())
-							tooltip.add(new TextComponent("- ").append(new TranslatableComponent(ModuleType.DISGUISE.getTranslationKey())));
+							tooltip.add(DISGUISE_MODULE);
 
 						if(sentry.hasSpeedModule())
-							tooltip.add(new TextComponent("- ").append(new TranslatableComponent(ModuleType.SPEED.getTranslationKey())));
+							tooltip.add(SPEED_MODULE);
 					}
 				}
 

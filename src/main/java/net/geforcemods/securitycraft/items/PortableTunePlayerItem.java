@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -92,6 +91,6 @@ public class PortableTunePlayerItem extends Item {
 		int notesCount = stack.getTag().getList("Notes", Tag.TAG_COMPOUND).size();
 
 		if(notesCount > 0)
-			tooltip.add(Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).withStyle(ChatFormatting.GRAY));
+			tooltip.add(Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).withStyle(Utils.GRAY_STYLE));
 	}
 }

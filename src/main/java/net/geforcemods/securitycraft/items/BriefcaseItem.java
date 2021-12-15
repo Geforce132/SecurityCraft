@@ -7,12 +7,10 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -27,9 +25,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BriefcaseItem extends Item implements DyeableLeatherItem {
-
-	public static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
-
 	public BriefcaseItem(Item.Properties properties)
 	{
 		super(properties);
@@ -75,7 +70,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 		String ownerName = getOwnerName(briefcase);
 
 		if(!ownerName.isEmpty())
-			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(GRAY_STYLE));
+			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(Utils.GRAY_STYLE));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, Player player) {
