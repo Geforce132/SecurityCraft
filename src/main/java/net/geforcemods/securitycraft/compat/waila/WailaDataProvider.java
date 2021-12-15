@@ -11,6 +11,8 @@ import mcp.mobius.waila.api.IRegistrar;
 import mcp.mobius.waila.api.IWailaPlugin;
 import mcp.mobius.waila.api.TooltipPosition;
 import mcp.mobius.waila.api.WailaPlugin;
+import mcp.mobius.waila.api.event.WailaRenderEvent;
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -141,5 +143,10 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 			body.add(new StringTextComponent(TextFormatting.GRAY + modeDescription));
 		}
+	}
+
+	public static void onWailaRender(WailaRenderEvent.Pre event) {
+		if(ClientHandler.isPlayerMountedOnCamera())
+			event.setCanceled(true);
 	}
 }
