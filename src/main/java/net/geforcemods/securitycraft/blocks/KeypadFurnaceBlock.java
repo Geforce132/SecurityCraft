@@ -45,7 +45,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class KeypadFurnaceBlock extends OwnableBlock {
+public class KeypadFurnaceBlock extends DisguisableBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
@@ -67,6 +67,11 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
+		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+
+		if(disguisedState.getBlock() != this)
+			return disguisedState.getShape(world, pos, ctx);
+
 		switch(state.get(FACING))
 		{
 			case NORTH:
@@ -166,7 +171,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	@Override
 	public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
 	{
-		if(state.get(OPEN) && state.get(LIT))
+		if(state.get(OPEN) && state.get(LIT) && getDisguisedStateOrDefault(state, world, pos).getBlock() != this)
 		{
 			double x = pos.getX() + 0.5D;
 			double y = pos.getY();
