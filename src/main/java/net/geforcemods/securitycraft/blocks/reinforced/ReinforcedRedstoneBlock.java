@@ -36,8 +36,8 @@ public class ReinforcedRedstoneBlock extends BaseReinforcedBlock
 		private final List<Block> blocks = Arrays.asList(SCContent.REINFORCED_REDSTONE_BLOCK.get());
 
 		@Override
-		public boolean isPowering(Level world, BlockPos pos, BlockState state, BlockEntity te) {
-			return true;
+		public boolean isPowering(Level world, BlockPos pos, BlockState state, BlockEntity te, Direction direction, int distance) {
+			return distance == 1;
 		}
 
 		@Override

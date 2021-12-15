@@ -9,15 +9,12 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.AttachFace;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
@@ -62,7 +59,7 @@ public class BlockUtils{
 			{
 				BlockEntity offsetTe = world.getBlockEntity(offsetPos);
 
-				if(activator.isPowering(world, offsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable ownable) || ownable.getOwner().owns((IOwnable)te)))
+				if(activator.isPowering(world, offsetPos, offsetState, offsetTe, dir, 1) && (!(offsetTe instanceof IOwnable ownable) || ownable.getOwner().owns((IOwnable)te)))
 					return true;
 			}
 
@@ -79,29 +76,9 @@ public class BlockUtils{
 
 					if(activator.getBlocks().contains(offsetState.getBlock()))
 					{
-						//checking that e.g. a lever/button is correctly attached to the block
-						if(offsetState.hasProperty(BlockStateProperties.ATTACH_FACE) && offsetState.hasProperty(BlockStateProperties.HORIZONTAL_FACING))
-						{
-							Axis offsetAxis = dirOffset.getAxis();
-							Direction offsetFacing = offsetState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-							AttachFace offsetAttachFace = offsetState.getValue(BlockStateProperties.ATTACH_FACE);
-
-							switch(offsetAxis)
-							{
-								case X: case Z:
-									if(offsetAttachFace != AttachFace.WALL || dirOffset != offsetFacing)
-										continue;
-									break;
-								case Y:
-									if((dirOffset == Direction.UP && offsetAttachFace != AttachFace.FLOOR) || (dirOffset == Direction.DOWN && offsetAttachFace != AttachFace.CEILING))
-										continue;
-									break;
-							}
-						}
-
 						BlockEntity offsetTe = world.getBlockEntity(newOffsetPos);
 
-						if(activator.isPowering(world, newOffsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable ownable) || ownable.getOwner().owns((IOwnable)te)))
+						if(activator.isPowering(world, newOffsetPos, offsetState, offsetTe, dirOffset, 2) && (!(offsetTe instanceof IOwnable ownable) || ownable.getOwner().owns((IOwnable)te)))
 							return true;
 					}
 				}
