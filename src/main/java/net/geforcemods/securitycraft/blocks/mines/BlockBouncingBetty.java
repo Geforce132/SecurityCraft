@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.api.TileEntityNamed;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -165,7 +165,7 @@ public class BlockBouncingBetty extends BlockExplosive {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityNamed();
+		return new TileEntityOwnable();
 	}
 
 }

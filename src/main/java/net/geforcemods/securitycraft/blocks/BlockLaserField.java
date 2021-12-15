@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.TileEntityNamed;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -209,7 +209,7 @@ public class BlockLaserField extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityNamed();
+		return new TileEntityOwnable();
 	}
 
 	@Override

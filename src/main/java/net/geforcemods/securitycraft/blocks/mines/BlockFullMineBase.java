@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks.mines;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.api.TileEntityNamed;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -150,7 +149,7 @@ public class BlockFullMineBase extends BlockExplosive implements IOverlayDisplay
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityNamed();
+		return new TileEntityOwnable();
 	}
 
 	@Override

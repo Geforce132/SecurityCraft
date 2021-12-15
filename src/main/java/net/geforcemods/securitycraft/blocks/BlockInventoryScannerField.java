@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.TileEntityNamed;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -375,7 +375,7 @@ public class BlockInventoryScannerField extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityNamed();
+		return new TileEntityOwnable();
 	}
 
 	@Override
