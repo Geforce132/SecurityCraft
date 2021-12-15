@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
@@ -69,7 +70,7 @@ public class LaserFieldBlock extends OwnableBlock {
 							return;
 
 						level.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
-						level.updateNeighborsAt(offsetPos, SCContent.LASER_BLOCK.get());
+						BlockUtils.updateIndirectNeighbors(level, offsetPos, SCContent.LASER_BLOCK.get());
 						level.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
 
 						if(te instanceof IModuleInventory moduleInv && moduleInv.hasModule(ModuleType.HARMING))

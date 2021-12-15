@@ -15,8 +15,10 @@ import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -93,7 +95,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 				{
 					correctTuneWasPlayed = false;
 					level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(SonicSecuritySystemBlock.POWERED, false));
-					level.blockUpdated(worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get());
+					BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
 				}
 			}
 
@@ -175,7 +177,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 		if(module == ModuleType.REDSTONE) {
 			level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(SonicSecuritySystemBlock.POWERED, false));
-			level.blockUpdated(worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get());
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
 		}
 
 		super.onModuleRemoved(stack, module);

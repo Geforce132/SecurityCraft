@@ -123,8 +123,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		super.signalOpenCount(level, pos, state, i, j);
 
 		if(hasModule(ModuleType.REDSTONE)) {
-			level.updateNeighborsAt(pos, state.getBlock());
-			level.updateNeighborsAt(worldPosition.below(), state.getBlock());
+			BlockUtils.updateIndirectNeighbors(level, pos, state.getBlock(), Direction.DOWN);
 		}
 	}
 

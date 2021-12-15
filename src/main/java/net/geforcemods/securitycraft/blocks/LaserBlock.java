@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -183,8 +184,10 @@ public class LaserBlock extends DisguisableBlock {
 	@Override
 	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random)
 	{
-		if (!world.isClientSide && state.getValue(POWERED))
+		if (!world.isClientSide && state.getValue(POWERED)) {
 			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.LASER_BLOCK.get());
+		}
 	}
 
 	@Override

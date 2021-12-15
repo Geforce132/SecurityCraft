@@ -81,15 +81,15 @@ public class PortableRadarBlock extends OwnableBlock {
 			world.destroyBlock(pos, true);
 	}
 
-	public static void togglePowerOutput(Level world, BlockPos pos, boolean par5) {
+	public static void togglePowerOutput(Level world, BlockPos pos, boolean shouldPower) {
 		BlockState state = world.getBlockState(pos);
 
-		if(par5 && !state.getValue(POWERED)){
+		if(shouldPower && !state.getValue(POWERED)){
 			world.setBlockAndUpdate(pos, state.setValue(POWERED, true));
-			BlockUtils.updateAndNotify(world, pos, SCContent.PORTABLE_RADAR.get(), 1, false);
-		}else if(!par5 && state.getValue(POWERED)){
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
+		}else if(!shouldPower && state.getValue(POWERED)){
 			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-			BlockUtils.updateAndNotify(world, pos, SCContent.PORTABLE_RADAR.get(), 1, false);
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
 		}
 	}
 

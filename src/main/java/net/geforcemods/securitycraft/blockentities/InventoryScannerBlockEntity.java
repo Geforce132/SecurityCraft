@@ -57,6 +57,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		else if(isProvidingPower){
 			isProvidingPower = false;
 			BlockUtils.updateAndNotify(world, pos, state.getBlock(), 1, true);
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.INVENTORY_SCANNER.get());
 		}
 	}
 

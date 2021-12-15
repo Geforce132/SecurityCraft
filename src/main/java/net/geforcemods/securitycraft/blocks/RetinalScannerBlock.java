@@ -5,6 +5,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -62,8 +63,10 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	@Override
 	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random)
 	{
-		if (!world.isClientSide && state.getValue(POWERED))
+		if (!world.isClientSide && state.getValue(POWERED)) {
 			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.RETINAL_SCANNER.get());
+		}
 	}
 
 	/**

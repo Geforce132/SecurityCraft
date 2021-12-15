@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -126,7 +127,7 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
 	{
 		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-		updateNeighbours(state, level, pos);
+		BlockUtils.updateIndirectNeighbors(level, pos, this, getConnectedDirection(state).getOpposite());
 	}
 
 	@Override
@@ -217,14 +218,8 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	public void activate(BlockState state, Level level, BlockPos pos, int signalLength)
 	{
 		level.setBlockAndUpdate(pos, state.setValue(POWERED, true));
-		updateNeighbours(state, level, pos);
+		BlockUtils.updateIndirectNeighbors(level, pos, this, getConnectedDirection(state).getOpposite());
 		level.getBlockTicks().scheduleTick(pos, this, signalLength);
-	}
-
-	private void updateNeighbours(BlockState state, Level level, BlockPos pos)
-	{
-		level.updateNeighborsAt(pos, this);
-		level.updateNeighborsAt(pos.relative(getConnectedDirection(state).getOpposite()), this);
 	}
 
 	protected static Direction getConnectedDirection(BlockState state)

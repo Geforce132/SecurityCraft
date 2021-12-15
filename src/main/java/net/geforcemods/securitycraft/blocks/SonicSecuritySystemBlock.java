@@ -107,7 +107,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 
 	@Override
 	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side){
-		return state.getValue(POWERED) ? 15 : 0;
+		return state.getValue(POWERED) && side == Direction.UP ? 15 : 0;
 	}
 
 	@Override

@@ -58,6 +58,7 @@
 - Fix: Hotbar indicator for Camera Monitor/MRAT does not respect the player's reach distance
 - Fix: Reinforced doors/trapdoors/etc. can be activated by anyone in some circumstances
 - Fix: Portable Radar cannot open Reinforced Doors/Trapdoors/etc.
+- Fix: Some SecurityCraft blocks do not update their surrounding blocks correctly when powering/unpowering
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: Performance improvements due to fewer ticking block entities
