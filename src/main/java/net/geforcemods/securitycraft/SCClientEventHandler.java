@@ -78,7 +78,7 @@ public class SCClientEventHandler
 
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent.Pre event) {
-		if((event.getType() == ElementType.EXPERIENCE || event.getType() == ElementType.JUMPBAR) && ClientProxy.isPlayerMountedOnCamera())
+		if((event.getType() == ElementType.EXPERIENCE || event.getType() == ElementType.JUMPBAR || event.getType() == ElementType.POTION_ICONS) && ClientProxy.isPlayerMountedOnCamera())
 			event.setCanceled(true);
 	}
 
