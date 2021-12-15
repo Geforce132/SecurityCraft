@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.api.NamedTileEntity;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -140,7 +140,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new NamedTileEntity();
+		return new OwnableTileEntity(SCContent.teTypeAbstract);
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Map;
 
-import net.geforcemods.securitycraft.api.NamedTileEntity;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -238,6 +238,6 @@ public class IronFenceBlock extends OwnableBlock  {
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
-		return new NamedTileEntity();
+		return new OwnableTileEntity(SCContent.teTypeAbstract);
 	}
 }
