@@ -46,7 +46,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-public class KeypadFurnaceBlock extends OwnableBlock {
+public class KeypadFurnaceBlock extends DisguisableBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
@@ -68,13 +68,18 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
 	{
-		return switch(state.getValue(FACING)) {
-			case NORTH -> state.getValue(OPEN) ? NORTH_OPEN : NORTH_CLOSED;
-			case EAST -> state.getValue(OPEN) ? EAST_OPEN : EAST_CLOSED;
-			case SOUTH -> state.getValue(OPEN) ? SOUTH_OPEN : SOUTH_CLOSED;
-			case WEST -> state.getValue(OPEN) ? WEST_OPEN : WEST_CLOSED;
-			default -> Shapes.block();
-		};
+		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+
+		if(disguisedState.getBlock() != this)
+			return disguisedState.getShape(world, pos, ctx);
+		else
+			return switch(state.getValue(FACING)) {
+				case NORTH -> state.getValue(OPEN) ? NORTH_OPEN : NORTH_CLOSED;
+				case EAST -> state.getValue(OPEN) ? EAST_OPEN : EAST_CLOSED;
+				case SOUTH -> state.getValue(OPEN) ? SOUTH_OPEN : SOUTH_CLOSED;
+				case WEST -> state.getValue(OPEN) ? WEST_OPEN : WEST_CLOSED;
+				default -> Shapes.block();
+			};
 	}
 
 	@Override
@@ -145,7 +150,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	@Override
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
 	{
-		if(state.getValue(OPEN) && state.getValue(LIT))
+		if(state.getValue(OPEN) && state.getValue(LIT) && getDisguisedStateOrDefault(state, world, pos).getBlock() != this)
 		{
 			double x = pos.getX() + 0.5D;
 			double y = pos.getY();

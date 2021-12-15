@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class CommonDoorActivator implements IDoorActivator
 {
-	private List<Block> blocks = Arrays.asList(new Block[] {
+	private List<Block> blocks = Arrays.asList(
 			SCContent.LASER_BLOCK.get(),
 			SCContent.RETINAL_SCANNER.get(),
 			SCContent.KEYPAD.get(),
@@ -43,8 +43,7 @@ public class CommonDoorActivator implements IDoorActivator
 			SCContent.REINFORCED_OBSERVER.get(),
 			SCContent.KEY_PANEL_BLOCK.get(),
 			SCContent.SECURITY_CAMERA.get(),
-			SCContent.SONIC_SECURITY_SYSTEM.get()
-	});
+			SCContent.SONIC_SECURITY_SYSTEM.get());
 
 	@Override
 	public boolean isPowering(Level level, BlockPos pos, BlockState state, BlockEntity be)
