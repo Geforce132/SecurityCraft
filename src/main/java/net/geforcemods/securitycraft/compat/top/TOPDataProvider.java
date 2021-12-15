@@ -43,7 +43,7 @@ import net.minecraftforge.fml.ModList;
 
 public class TOPDataProvider implements Function<ITheOneProbe, Void>
 {
-	private static final MutableComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(Utils.GRAY_STYLE);
+	private static final MutableComponent EQUIPPED = new TextComponent("" + ChatFormatting.GRAY).append(Utils.localize("waila.securitycraft:equipped"));
 	private static final MutableComponent ALLOWLIST_MODULE = new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.ALLOWLIST.getTranslationKey()));
 	private static final MutableComponent DISGUISE_MODULE = new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.DISGUISE.getTranslationKey()));
 	private static final MutableComponent SPEED_MODULE = new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.SPEED.getTranslationKey()));
@@ -109,7 +109,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				{
 					if(!inv.getInsertedModules().isEmpty())
 					{
-						probeInfo.text(EQUIPPED.getString());
+						probeInfo.text(EQUIPPED);
 
 						for(ModuleType module : inv.getInsertedModules())
 							probeInfo.text(new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(module.getTranslationKey())));
@@ -156,7 +156,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 
 					if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())
 					{
-						probeInfo.text(EQUIPPED.getString());
+						probeInfo.text(EQUIPPED);
 
 						if(!sentry.getAllowlistModule().isEmpty())
 							probeInfo.text(ALLOWLIST_MODULE);
