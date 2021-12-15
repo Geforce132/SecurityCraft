@@ -29,6 +29,10 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	private static final Style UNDERLINE = Style.EMPTY.applyFormatting(TextFormatting.UNDERLINE);
 	private final ITextComponent redstoneModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.REDSTONE_MODULE.get().getTranslationKey()));
 	private final ITextComponent storageModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.STORAGE_MODULE.get().getTranslationKey()));
+	private final ITextComponent prohibitedItems =  Utils.localize("gui.securitycraft:invScan.prohibitedItems");
+	private final ITextComponent adminMode = Utils.localize("gui.securitycraft:invScan.mode.admin").setStyle(UNDERLINE);
+	private final ITextComponent viewMode = Utils.localize("gui.securitycraft:invScan.mode.view").setStyle(UNDERLINE);
+	private final ITextComponent storage = Utils.localize("gui.securitycraft:invScan.storage");
 
 	public InventoryScannerScreen(InventoryScannerContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
@@ -76,13 +80,13 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.drawText(matrix, Utils.localize("gui.securitycraft:invScan.prohibitedItems"), 8, 6, 4210752);
-		font.drawText(matrix, Utils.localize("gui.securitycraft:invScan.mode." + (tileEntity.getOwner().isOwner(minecraft.player) ? "admin" : "view")).setStyle(UNDERLINE), 112, 6, 4210752);
+		font.drawText(matrix, prohibitedItems, 8, 6, 4210752);
+		font.drawText(matrix, tileEntity.getOwner().isOwner(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
-			font.drawText(matrix, Utils.localize("gui.securitycraft:invScan.storage"), 188, 18, 4210752);
+			font.drawText(matrix, storage, 188, 18, 4210752);
 
-		font.drawText(matrix, Utils.localize("container.inventory"), 15, ySize - 93, 4210752);
+		font.drawText(matrix, Utils.INVENTORY_TEXT, 15, ySize - 93, 4210752);
 	}
 
 	@Override

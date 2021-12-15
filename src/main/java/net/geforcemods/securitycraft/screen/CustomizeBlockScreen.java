@@ -148,7 +148,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	{
 		TranslationTextComponent s = Utils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
 		font.drawText(matrix, s, xSize / 2 - font.getStringPropertyWidth(s) / 2, 6, 4210752);
-		font.drawText(matrix, Utils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		font.drawText(matrix, Utils.INVENTORY_TEXT, 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override

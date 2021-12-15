@@ -46,6 +46,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -63,6 +64,7 @@ public class SCClientEventHandler
 	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
+	private static final TranslationTextComponent REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 
 	@SubscribeEvent
 	public static void onScreenshot(ScreenshotEvent event)
@@ -249,7 +251,6 @@ public class SCClientEventHandler
 		ITextComponent zoom = Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.func_238171_j_(), KeyBindings.cameraZoomOut.func_238171_j_());
 		ITextComponent nightVision = Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.func_238171_j_());
 		ITextComponent redstone = Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.func_238171_j_());
-		ITextComponent redstoneNote = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 		String time = ClientUtils.getFormattedMinecraftTime();
 		int timeY = 25;
 
@@ -267,7 +268,7 @@ public class SCClientEventHandler
 		font.drawTextWithShadow(matrix, zoom, resolution.getScaledWidth() - font.getStringPropertyWidth(zoom) - 8, resolution.getScaledHeight() - 60, 16777215);
 		font.drawTextWithShadow(matrix, nightVision, resolution.getScaledWidth() - font.getStringPropertyWidth(nightVision) - 8, resolution.getScaledHeight() - 50, 16777215);
 		font.drawTextWithShadow(matrix, redstone, resolution.getScaledWidth() - font.getStringPropertyWidth(redstone) - 8, resolution.getScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
-		font.drawTextWithShadow(matrix, redstoneNote, resolution.getScaledWidth() - font.getStringPropertyWidth(redstoneNote) -8, resolution.getScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
+		font.drawTextWithShadow(matrix, REDSTONE_NOTE, resolution.getScaledWidth() - font.getStringPropertyWidth(REDSTONE_NOTE) -8, resolution.getScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
 
 		mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);

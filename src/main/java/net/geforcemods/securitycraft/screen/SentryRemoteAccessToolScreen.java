@@ -27,7 +27,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class SentryRemoteAccessToolScreen extends Screen {
@@ -44,6 +43,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering SentryEntity
 	private int viewDistance;
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
+	private final TranslationTextComponent notBound = Utils.localize("gui.securitycraft:srat.notBound");
+	private final ITextComponent[] lines = new ITextComponent[12];
+	private final int[] lengths = new int[12];
 
 	public SentryRemoteAccessToolScreen(ItemStack item, int viewDistance) {
 		super(new TranslationTextComponent(item.getTranslationKey()));
@@ -146,6 +148,15 @@ public class SentryRemoteAccessToolScreen extends Screen {
 					hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind")));
 				}
 			}
+
+			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
+				lines[i] = notBound;
+			else if(names[i] != null)
+				lines[i] = names[i];
+			else
+				lines[i] = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
+
+			lengths[i] = font.getStringPropertyWidth(lines[i]);
 		}
 
 		//Add buttons for global operation (all sentries), large id
@@ -177,17 +188,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		font.drawText(matrix, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 12; i++) {
-			int[] coords = getSentryCoordinates(i);
-			ITextComponent line;
-
-			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-				line = Utils.localize("gui.securitycraft:srat.notBound");
-			else if(names[i] != null)
-				line = new StringTextComponent(names[i].getString());
-			else
-				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
-
-			font.drawText(matrix, line, startX + xSize / 4 - font.getStringPropertyWidth(line) + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
+			font.drawText(matrix, lines[i], startX + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
 		}
 
 		font.drawText(matrix, modifyAll, startX + xSize / 2 - font.getStringPropertyWidth(modifyAll) + 25, startY + 194, 4210752);

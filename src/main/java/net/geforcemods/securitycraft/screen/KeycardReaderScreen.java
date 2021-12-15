@@ -49,7 +49,6 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	private static final ITextComponent EQUALS = new StringTextComponent("=");
 	private static final ITextComponent GREATER_THAN_EQUALS = new StringTextComponent(">=");
 	private final ITextComponent blockName = Utils.localize(SCContent.KEYCARD_READER.get().getTranslationKey());
-	private final ITextComponent inventoryText = Utils.localize("container.inventory");
 	private final ITextComponent keycardLevelsText = Utils.localize("gui.securitycraft:keycard_reader.keycard_levels");
 	private final ITextComponent linkText = Utils.localize("gui.securitycraft:keycard_reader.link");
 	private final ITextComponent noSmartModule = Utils.localize("gui.securitycraft:keycard_reader.noSmartModule");
@@ -235,7 +234,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 			font.drawString(matrix, "" + i, 91, 55 + 17 * i, 4210752);
 		}
 
-		font.drawText(matrix, inventoryText, 8, ySize - 93, 4210752);
+		font.drawText(matrix, Utils.INVENTORY_TEXT, 8, ySize - 93, 4210752);
 	}
 
 	@Override

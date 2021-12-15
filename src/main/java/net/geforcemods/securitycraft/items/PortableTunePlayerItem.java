@@ -23,7 +23,6 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -92,6 +91,6 @@ public class PortableTunePlayerItem extends Item {
 		int notesCount = stack.getTag().getList("Notes", Constants.NBT.TAG_COMPOUND).size();
 
 		if(notesCount > 0)
-			tooltip.add(Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).mergeStyle(TextFormatting.GRAY));
+			tooltip.add(Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).mergeStyle(Utils.GRAY_STYLE));
 	}
 }

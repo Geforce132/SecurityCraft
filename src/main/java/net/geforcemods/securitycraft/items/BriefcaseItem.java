@@ -21,16 +21,11 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BriefcaseItem extends Item implements IDyeableArmorItem {
-
-	public static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
-
 	public BriefcaseItem(Item.Properties properties)
 	{
 		super(properties);
@@ -79,7 +74,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 		String ownerName = getOwnerName(briefcase);
 
 		if(!ownerName.isEmpty())
-			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(GRAY_STYLE));
+			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(Utils.GRAY_STYLE));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, PlayerEntity player) {

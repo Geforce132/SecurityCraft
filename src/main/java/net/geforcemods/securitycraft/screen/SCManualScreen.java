@@ -94,6 +94,8 @@ public class SCManualScreen extends Screen {
 	private Button patreonLinkButton;
 	private boolean explosive, ownable, passwordProtected, viewActivated, customizable, lockable, moduleInventory;
 	private ItemStack pageStack;
+	private final TranslationTextComponent reinforcedText = Utils.localize("gui.securitycraft:scManual.reinforced");
+	private TranslationTextComponent pageTitle, designedBy;
 
 	public SCManualScreen() {
 		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getTranslationKey()));
@@ -151,19 +153,14 @@ public class SCManualScreen extends Screen {
 		if(currentPage > -1)
 		{
 			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
-			String designedBy = SCManualItem.PAGES.get(currentPage).getDesignedBy();
 
 			if(subpages.size() > 1)
 				font.drawString(matrix, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
-			if(designedBy != null && !designedBy.isEmpty())
-				font.func_238418_a_(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 150, 75, 0);
+			if(designedBy != null)
+				font.func_238418_a_(designedBy, startX + 18, 150, 75, 0);
 
-			if(SCManualItem.PAGES.get(currentPage).getHelpInfo().getKey().equals("help.securitycraft:reinforced.info"))
-				font.drawText(matrix, Utils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
-			else
-				font.drawText(matrix, Utils.localize(SCManualItem.PAGES.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
-
+			font.drawText(matrix, pageTitle, startX + 39, 27, 0);
 			font.func_238418_a_(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			font.drawString(matrix, pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(pageStack, startX + 19, 22);
@@ -353,6 +350,12 @@ public class SCManualScreen extends Screen {
 		}
 
 		SCManualPage page = SCManualItem.PAGES.get(currentPage);
+		String designedBy = page.getDesignedBy();
+
+		if(designedBy != null && !designedBy.isEmpty())
+			this.designedBy = Utils.localize("gui.securitycraft:scManual.designedBy", designedBy);
+		else
+			this.designedBy = null;
 
 		recipe = null;
 
@@ -420,6 +423,11 @@ public class SCManualScreen extends Screen {
 			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.disabled")));
 
 		Item item = page.getItem();
+
+		if(page.getHelpInfo().getKey().equals("help.securitycraft:reinforced.info"))
+			pageTitle = reinforcedText;
+		else
+			pageTitle = Utils.localize(item.getTranslationKey());
 
 		pageStack = new ItemStack(item);
 		resetTileEntityInfo();

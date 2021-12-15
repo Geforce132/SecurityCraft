@@ -26,9 +26,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -37,8 +36,8 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ModuleItem extends Item{
-
-	public static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
+	private static final IFormattableTextComponent MODIFIABLE = new TranslationTextComponent("tooltip.securitycraft:module.modifiable").setStyle(Utils.GRAY_STYLE);
+	private static final IFormattableTextComponent NOT_MODIFIABLE = new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").setStyle(Utils.GRAY_STYLE);
 	public static final int MAX_PLAYERS = 50;
 	private final ModuleType module;
 	private final boolean containsCustomData;
@@ -125,15 +124,15 @@ public class ModuleItem extends Item{
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 		if(containsCustomData || canBeCustomized())
-			list.add(new TranslationTextComponent("tooltip.securitycraft:module.modifiable").setStyle(GRAY_STYLE));
+			list.add(MODIFIABLE);
 		else
-			list.add(new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").setStyle(GRAY_STYLE));
+			list.add(NOT_MODIFIABLE);
 
 		if(canBeCustomized()) {
 			Block addon = getBlockAddon(stack.getTag());
 
 			if(addon != null)
-				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getTranslationKey())).setStyle(GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getTranslationKey())).setStyle(Utils.GRAY_STYLE));
 		}
 	}
 

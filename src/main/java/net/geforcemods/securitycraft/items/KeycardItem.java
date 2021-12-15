@@ -5,13 +5,12 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,9 +18,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class KeycardItem extends Item
 {
-	private static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
-	private static final ITextComponent LINK_INFO = new TranslationTextComponent("tooltip.securitycraft:keycard.link_info").setStyle(GRAY_STYLE);
-	public static final ITextComponent LIMITED_INFO = new TranslationTextComponent("tooltip.securitycraft:keycard.limited_info").setStyle(GRAY_STYLE);
+	private static final ITextComponent LINK_INFO = new TranslationTextComponent("tooltip.securitycraft:keycard.link_info").setStyle(Utils.GRAY_STYLE);
+	public static final ITextComponent LIMITED_INFO = new TranslationTextComponent("tooltip.securitycraft:keycard.limited_info").setStyle(Utils.GRAY_STYLE);
 	private final int level; //0-indexed
 
 	public KeycardItem(Item.Properties properties, int level)
@@ -49,14 +47,14 @@ public class KeycardItem extends Item
 
 		if(tag.getBoolean("linked"))
 		{
-			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + tag.getInt("signature"), 5, "0")).setStyle(GRAY_STYLE));
-			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.reader_owner", tag.getString("ownerName")).setStyle(GRAY_STYLE));
+			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + tag.getInt("signature"), 5, "0")).setStyle(Utils.GRAY_STYLE));
+			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.reader_owner", tag.getString("ownerName")).setStyle(Utils.GRAY_STYLE));
 		}
 		else
 			list.add(LINK_INFO);
 
 		if(tag.getBoolean("limited"))
-			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.uses", tag.getInt("uses")).setStyle(GRAY_STYLE));
+			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.uses", tag.getInt("uses")).setStyle(Utils.GRAY_STYLE));
 		else
 			list.add(LIMITED_INFO);
 	}

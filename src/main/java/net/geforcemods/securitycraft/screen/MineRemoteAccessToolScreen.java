@@ -38,6 +38,9 @@ public class MineRemoteAccessToolScreen extends Screen{
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 	private int xSize = 256, ySize = 184;
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
+	private final TranslationTextComponent notBound = Utils.localize("gui.securitycraft:mrat.notBound");
+	private final TranslationTextComponent[] lines = new TranslationTextComponent[6];
+	private final int[] lengths = new int[6];
 
 	public MineRemoteAccessToolScreen(ItemStack item) {
 		super(new TranslationTextComponent(item.getTranslationKey()));
@@ -128,6 +131,13 @@ public class MineRemoteAccessToolScreen extends Screen{
 					hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind")));
 				}
 			}
+
+			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
+				lines[i] = notBound;
+			else
+				lines[i] = Utils.localize("gui.securitycraft:mrat.mineLocations", new BlockPos(coords[0], coords[1], coords[2]));
+
+			lengths[i] = font.getStringPropertyWidth(lines[i]);
 		}
 	}
 
@@ -145,15 +155,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 
 		for(int i = 0; i < 6; i++)
 		{
-			int[] coords = getMineCoordinates(i);
-			TranslationTextComponent line;
-
-			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-				line = Utils.localize("gui.securitycraft:mrat.notBound");
-			else
-				line = Utils.localize("gui.securitycraft:mrat.mineLocations", new BlockPos(coords[0], coords[1], coords[2]));
-
-			font.drawText(matrix, line, startX + xSize / 2 - font.getStringPropertyWidth(line) + 25, startY + i * 30 + 13, 4210752);
+			font.drawText(matrix, lines[i], startX + xSize / 2 - lengths[i] + 25, startY + i * 30 + 13, 4210752);
 		}
 
 		for(TextHoverChecker chc : hoverCheckers)

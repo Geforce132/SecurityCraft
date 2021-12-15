@@ -11,9 +11,12 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 
 public class VanillaToSecurityCraftCategory extends BaseCategory
 {
+	private static final ITextComponent TITLE = Utils.localize("jei.securitycraft.category.reinforcing");
+
 	public VanillaToSecurityCraftCategory(IGuiHelper helper)
 	{
 		super(helper);
@@ -28,7 +31,7 @@ public class VanillaToSecurityCraftCategory extends BaseCategory
 	@Override
 	public String getTitle()
 	{
-		return Utils.localize("jei.securitycraft.category.reinforcing").getString();
+		return TITLE.getString();
 	}
 
 	@Override

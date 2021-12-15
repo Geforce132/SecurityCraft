@@ -1,5 +1,5 @@
 --------------------------Changelog for v1.9 of SecurityCraft--------------------------
-
+ 
 - New: Completely overhauled the overwhelming majority of SecurityCraft's textures. Direct feedback @ChainmailPickaxe in #sc-talk on our Discord server
 - New: Reinforced Pistons
 - New: The Reinforced Redstone Block and the Reinforced Observer can now be used to open doors, activate pistons, etc.

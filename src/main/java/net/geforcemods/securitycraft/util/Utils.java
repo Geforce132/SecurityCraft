@@ -5,10 +5,15 @@ import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class Utils {
+	public static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
+	public static final ITextComponent INVENTORY_TEXT = Utils.localize("container.inventory");
 
 	/**
 	 * Removes the last character in the given String. <p>
