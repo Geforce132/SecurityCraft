@@ -108,6 +108,11 @@ public class PortableRadarBlock extends OwnableBlock {
 	}
 
 	@Override
+	public int getDirectSignal(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
+		return state.getValue(POWERED) && ((IModuleInventory)world.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE) && state.getValue(FACING) == side ? 15 : 0;
+	}
+
+	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
 		builder.add(POWERED, FACING);

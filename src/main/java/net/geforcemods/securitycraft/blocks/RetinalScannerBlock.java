@@ -95,6 +95,15 @@ public class RetinalScannerBlock extends DisguisableBlock {
 			return 0;
 	}
 
+	/**
+	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
+	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
+	 */
+	@Override
+	public int getDirectSignal(BlockState state, BlockGetter world, BlockPos pos, Direction side){
+		return state.getValue(POWERED) ? 15 : 0;
+	}
+
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{

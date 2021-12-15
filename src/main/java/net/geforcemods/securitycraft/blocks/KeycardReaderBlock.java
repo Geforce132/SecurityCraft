@@ -193,6 +193,15 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	}
 
 	/**
+	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
+	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
+	 */
+	@Override
+	public int getDirectSignal(BlockState state, BlockGetter world, BlockPos pos, Direction side){
+		return state.getValue(POWERED) ? 15 : 0;
+	}
+
+	/**
 	 * Can this block provide power. Only wire currently seems to have this change based on its state.
 	 */
 	@Override
