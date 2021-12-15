@@ -4,7 +4,7 @@ import java.util.function.BiFunction;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.NamedBlockEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -320,7 +320,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new NamedBlockEntity(pos, state);
+		return new OwnableBlockEntity(SCContent.beTypeAbstract, pos, state);
 	}
 
 	@Override

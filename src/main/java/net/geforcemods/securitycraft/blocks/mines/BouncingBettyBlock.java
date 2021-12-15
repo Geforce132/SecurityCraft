@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.api.NamedBlockEntity;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -133,6 +134,6 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new NamedBlockEntity(pos, state);
+		return new OwnableBlockEntity(SCContent.beTypeAbstract, pos, state);
 	}
 }
