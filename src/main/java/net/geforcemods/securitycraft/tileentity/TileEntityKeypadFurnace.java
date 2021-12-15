@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
-import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
@@ -41,7 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected, ITickable, IModuleInventory, ICustomizable, INameSetter, ILockable {
+public class TileEntityKeypadFurnace extends TileEntityDisguisable implements ISidedInventory, IPasswordProtected, ITickable, IModuleInventory, ICustomizable, INameSetter, ILockable {
 
 	private IItemHandler insertOnlyHandler;
 	private static final int[] slotsTop = {0};
@@ -538,7 +537,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public EnumModuleType[] acceptedModules()
 	{
-		return new EnumModuleType[] {EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST};
+		return new EnumModuleType[] {EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.DISGUISE};
 	}
 
 	@Override
