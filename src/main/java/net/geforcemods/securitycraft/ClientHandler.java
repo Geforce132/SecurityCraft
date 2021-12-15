@@ -8,6 +8,7 @@ import java.util.Set;
 
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
+import net.geforcemods.securitycraft.compat.waila.WailaDataProvider;
 import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -78,7 +79,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelDataManager;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -286,6 +289,9 @@ public class ClientHandler
 		ScreenManager.registerFactory(SCContent.cTypeTrophySystem, TrophySystemScreen::new);
 		KeyBindings.init();
 		tint();
+
+		if(ModList.get().isLoaded("waila"))
+			MinecraftForge.EVENT_BUS.addListener(WailaDataProvider::onWailaRender);
 	}
 
 	public static void tint()
