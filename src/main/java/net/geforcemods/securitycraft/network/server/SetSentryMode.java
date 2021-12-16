@@ -42,7 +42,6 @@ public class SetSentryMode
 	{
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
-
 			List<Sentry> sentries = player.level.<Sentry>getEntitiesOfClass(Sentry.class, new AABB(message.pos));
 
 			if(!sentries.isEmpty() && sentries.get(0).getOwner().isOwner(player))

@@ -31,28 +31,28 @@ public class SecretStandingSignBlock extends StandingSignBlock
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
 	{
 		return Shapes.empty();
 	}
 
 	@Override
-	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
-		if(!world.isClientSide && player.getItemInHand(hand).getItem() == SCContent.ADMIN_TOOL.get())
+		if(!level.isClientSide && player.getItemInHand(hand).getItem() == SCContent.ADMIN_TOOL.get())
 			return SCContent.ADMIN_TOOL.get().useOn(new UseOnContext(player, hand, hit));
 
-		SecretSignBlockEntity te = (SecretSignBlockEntity)world.getBlockEntity(pos);
+		SecretSignBlockEntity te = (SecretSignBlockEntity)level.getBlockEntity(pos);
 
 		if (te != null && te.isPlayerAllowedToSeeText(player))
-			return super.use(state, world, pos, player, hand, hit);
+			return super.use(state, level, pos, player, hand, hit);
 
 		return InteractionResult.FAIL;
 	}

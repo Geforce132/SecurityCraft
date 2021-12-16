@@ -30,7 +30,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmlclient.gui.widget.Slider;
@@ -52,12 +51,14 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private Button[] optionButtons = new Button[5];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private final String blockName;
+	private final TranslatableComponent name;
 
-	public CustomizeBlockScreen(CustomizeBlockMenu container, Inventory inv, Component name)
+	public CustomizeBlockScreen(CustomizeBlockMenu menu, Inventory inv, Component title)
 	{
-		super(container, inv, name);
-		moduleInv = container.moduleInv;
-		blockName = container.moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId().substring(5);
+		super(menu, inv, title);
+		moduleInv = menu.moduleInv;
+		blockName = menu.moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId().substring(5);
+		name = Utils.localize(moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId());
 	}
 
 	@Override
@@ -73,9 +74,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 
-		BlockEntity te = moduleInv.getBlockEntity();
-
-		if(te instanceof ICustomizable customizable && customizable.customOptions() != null)
+		if(moduleInv.getBlockEntity() instanceof ICustomizable customizable && customizable.customOptions() != null)
 		{
 			for(int i = 0; i < customizable.customOptions().length; i++){
 				Option<?> option = customizable.customOptions()[i];
@@ -124,44 +123,42 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks){
-		super.render(matrix, mouseX, mouseY, partialTicks);
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks){
+		super.render(pose, mouseX, mouseY, partialTicks);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
+			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
 				if(i < moduleInv.getMaxNumberOfModules())
-					renderTooltip(matrix, minecraft.font.split(getModuleDescription(i), 150), mouseX, mouseY);
+					renderTooltip(pose, minecraft.font.split(getModuleDescription(i), 150), mouseX, mouseY);
 				else
-					renderTooltip(matrix, minecraft.font.split(getOptionDescription(i), 150), mouseX, mouseY);
-	}
-
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
-	@Override
-	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY)
-	{
-		TranslatableComponent s = Utils.localize(moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId());
-		font.draw(matrix, s, imageWidth / 2 - font.width(s) / 2, 6, 4210752);
-		font.draw(matrix, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
+					renderTooltip(pose, minecraft.font.split(getOptionDescription(i), 150), mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY)
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY)
 	{
-		renderBackground(matrix);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem._setShaderTexture(0, TEXTURES[moduleInv.getMaxNumberOfModules()]);
+		font.draw(pose, name, imageWidth / 2 - font.width(name) / 2, 6, 4210752);
+		font.draw(pose, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
+	}
+
+	@Override
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY)
+	{
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
-		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
+
+		renderBackground(pose);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem._setShaderTexture(0, TEXTURES[moduleInv.getMaxNumberOfModules()]);
+		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
 	protected void actionPerformed(IdButton button) {
 		Option<?> tempOption = ((ICustomizable)moduleInv.getBlockEntity()).customOptions()[button.id]; //safe cast, as this method is only called when it can be casted
+
 		tempOption.toggle();
 		button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 		button.setMessage(getOptionButtonTitle(tempOption));

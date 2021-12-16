@@ -29,28 +29,28 @@ public class SentryItem extends Item
 		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
 	}
 
-	public InteractionResult onItemUse(Player player, Level world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ)
+	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ)
 	{
-		boolean replacesTargetedBlock = world.getBlockState(pos).getMaterial().isReplaceable();
+		boolean replacesTargetedBlock = level.getBlockState(pos).getMaterial().isReplaceable();
 
 		if (!replacesTargetedBlock) {
 			pos = pos.relative(facing); //if the block is not replaceable, place sentry next to targeted block
 		}
 
-		if(!world.isEmptyBlock(pos) && !replacesTargetedBlock)
+		if(!level.isEmptyBlock(pos) && !replacesTargetedBlock)
 			return InteractionResult.PASS;
 		else
 		{
 			BlockPos downPos = pos.below();
 
-			if(world.isEmptyBlock(downPos) || world.noCollision(new AABB(downPos)))
+			if(level.isEmptyBlock(downPos) || level.noCollision(new AABB(downPos)))
 			{
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), ChatFormatting.DARK_RED);
 				return InteractionResult.FAIL;
 			}
 		}
 
-		Sentry entity = SCContent.eTypeSentry.create(world);
+		Sentry entity = SCContent.eTypeSentry.create(level);
 
 		entity.setupSentry(player);
 		entity.setPos(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
@@ -59,10 +59,10 @@ public class SentryItem extends Item
 			entity.setCustomName(stack.getHoverName());
 
 		if (replacesTargetedBlock) {
-			world.removeBlock(pos, false);
+			level.removeBlock(pos, false);
 		}
 
-		world.addFreshEntity(entity);
+		level.addFreshEntity(entity);
 		player.displayClientMessage(Utils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).append(Utils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
 
 		if(!player.isCreative())

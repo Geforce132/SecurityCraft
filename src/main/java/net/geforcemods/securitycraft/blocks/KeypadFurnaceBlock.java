@@ -66,12 +66,12 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
 	{
-		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
 		if(disguisedState.getBlock() != this)
-			return disguisedState.getShape(world, pos, ctx);
+			return disguisedState.getShape(level, pos, ctx);
 		else
 			return switch(state.getValue(FACING)) {
 				case NORTH -> state.getValue(OPEN) ? NORTH_OPEN : NORTH_CLOSED;
@@ -83,55 +83,53 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		if(!(newState.getBlock() instanceof KeypadFurnaceBlock))
 		{
-			BlockEntity te = world.getBlockEntity(pos);
-
-			if (te instanceof Container container)
+			if (level.getBlockEntity(pos) instanceof Container container)
 			{
-				Containers.dropContents(world, pos, container);
-				world.updateNeighbourForOutputSignal(pos, this);
+				Containers.dropContents(level, pos, container);
+				level.updateNeighbourForOutputSignal(pos, this);
 			}
 
-			super.onRemove(state, world, pos, newState, isMoving);
+			super.onRemove(state, level, pos, newState, isMoving);
 		}
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
-		if(!world.isClientSide)
+		if(!level.isClientSide)
 		{
-			KeypadFurnaceBlockEntity te = (KeypadFurnaceBlockEntity)world.getBlockEntity(pos);
+			KeypadFurnaceBlockEntity be = (KeypadFurnaceBlockEntity)level.getBlockEntity(pos);
 
-			if(ModuleUtils.isDenied(te, player))
+			if(ModuleUtils.isDenied(be, player))
 			{
-				if(te.sendsMessages())
+				if(be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}
-			else if(ModuleUtils.isAllowed(te, player))
+			else if(ModuleUtils.isAllowed(be, player))
 			{
-				if(te.sendsMessages())
+				if(be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
-				activate(te, state, world, pos, player);
+				activate(be, state, level, pos, player);
 			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				te.openPasswordGUI(player);
+				be.openPasswordGUI(player);
 		}
 
 		return InteractionResult.SUCCESS;
 	}
 
-	public void activate(KeypadFurnaceBlockEntity be, BlockState state, Level world, BlockPos pos, Player player){
+	public void activate(KeypadFurnaceBlockEntity be, BlockState state, Level level, BlockPos pos, Player player){
 		if(!state.getValue(KeypadFurnaceBlock.OPEN))
-			world.setBlockAndUpdate(pos, state.setValue(KeypadFurnaceBlock.OPEN, true));
+			level.setBlockAndUpdate(pos, state.setValue(KeypadFurnaceBlock.OPEN, true));
 
 		if(player instanceof ServerPlayer serverPlayer)
 		{
-			world.levelEvent((Player)null, 1006, pos, 0);
+			level.levelEvent((Player)null, 1006, pos, 0);
 			NetworkHooks.openGui(serverPlayer, be, pos);
 		}
 	}
@@ -148,16 +146,16 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
 	{
-		if(state.getValue(OPEN) && state.getValue(LIT) && getDisguisedStateOrDefault(state, world, pos).getBlock() != this)
+		if(state.getValue(OPEN) && state.getValue(LIT) && getDisguisedStateOrDefault(state, level, pos).getBlock() != this)
 		{
 			double x = pos.getX() + 0.5D;
 			double y = pos.getY();
 			double z = pos.getZ() + 0.5D;
 
 			if(rand.nextDouble() < 0.1D)
-				world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+				level.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 
 			Direction direction = state.getValue(FACING);
 			Axis axis = direction.getAxis();
@@ -166,8 +164,8 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 			double yOffset = rand.nextDouble() * 6.0D / 16.0D;
 			double zOffset = axis == Axis.Z ? direction.getStepZ() * 0.52D : randomNumber;
 
-			world.addParticle(ParticleTypes.SMOKE, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
-			world.addParticle(ParticleTypes.FLAME, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.SMOKE, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.FLAME, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -183,8 +181,8 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return world.isClientSide ? null : createTickerHelper(type, SCContent.beTypeKeypadFurnace, KeypadFurnaceBlockEntity::serverTick);
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return level.isClientSide ? null : createTickerHelper(type, SCContent.beTypeKeypadFurnace, KeypadFurnaceBlockEntity::serverTick);
 	}
 
 	@Override
@@ -208,18 +206,18 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 		}
 
 		@Override
-		public boolean convert(Player player, Level world, BlockPos pos)
+		public boolean convert(Player player, Level level, BlockPos pos)
 		{
-			BlockState state = world.getBlockState(pos);
+			BlockState state = level.getBlockState(pos);
 			Direction facing = state.getValue(FACING);
 			boolean lit = state.getValue(LIT);
-			FurnaceBlockEntity furnace = (FurnaceBlockEntity)world.getBlockEntity(pos);
+			FurnaceBlockEntity furnace = (FurnaceBlockEntity)level.getBlockEntity(pos);
 			CompoundTag tag = furnace.save(new CompoundTag());
 
 			furnace.clearContent();
-			world.setBlockAndUpdate(pos, SCContent.KEYPAD_FURNACE.get().defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(LIT, lit));
-			((KeypadFurnaceBlockEntity)world.getBlockEntity(pos)).load(tag);
-			((IOwnable) world.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
+			level.setBlockAndUpdate(pos, SCContent.KEYPAD_FURNACE.get().defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(LIT, lit));
+			((KeypadFurnaceBlockEntity)level.getBlockEntity(pos)).load(tag);
+			((IOwnable) level.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
 			return true;
 		}
 	}

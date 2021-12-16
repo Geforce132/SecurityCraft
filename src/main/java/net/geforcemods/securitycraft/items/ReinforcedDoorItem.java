@@ -33,35 +33,35 @@ public class ReinforcedDoorItem extends BlockItem
 		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx);
 	}
 
-	public InteractionResult onItemUse(Player player, Level world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, UseOnContext ctx)
+	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, UseOnContext ctx)
 	{
-		BlockState state = world.getBlockState(pos);
+		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (!block.canBeReplaced(world.getBlockState(pos), new BlockPlaceContext(ctx)))
+		if (!block.canBeReplaced(state, new BlockPlaceContext(ctx)))
 			pos = pos.relative(facing);
 
-		if (player.mayUseItemAt(pos, facing, stack) && BlockUtils.isSideSolid(world, pos.below(), Direction.UP))
+		if (player.mayUseItemAt(pos, facing, stack) && BlockUtils.isSideSolid(level, pos.below(), Direction.UP))
 		{
 			Direction angleFacing = Direction.fromYRot(player.getYRot());
 			int offsetX = angleFacing.getStepX();
 			int offsetZ = angleFacing.getStepZ();
 			boolean flag = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;
 
-			if(!placeDoor(world, pos, angleFacing, getBlock(), flag, ctx))
+			if(!placeDoor(level, pos, angleFacing, getBlock(), flag, ctx))
 				return InteractionResult.FAIL;
 
-			SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
+			SoundType soundType = block.getSoundType(level.getBlockState(pos), level, pos, player);
 
-			world.playSound(null, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+			level.playSound(null, pos, soundType.getPlaceSound(), SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
 
 			if(!player.isCreative())
 				stack.shrink(1);
 
-			if(world.getBlockEntity(pos) instanceof OwnableBlockEntity te)
+			if(level.getBlockEntity(pos) instanceof OwnableBlockEntity be)
 			{
-				te.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
-				((OwnableBlockEntity) world.getBlockEntity(pos.above())).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				be.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				((OwnableBlockEntity) level.getBlockEntity(pos.above())).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 			}
 
 			return InteractionResult.SUCCESS;
@@ -70,19 +70,19 @@ public class ReinforcedDoorItem extends BlockItem
 			return InteractionResult.FAIL;
 	}
 
-	public boolean placeDoor(Level world, BlockPos pos, Direction facing, Block door, boolean isRightHinge, UseOnContext ctx) //naming might not be entirely correct, but it's giving a rough idea
+	public boolean placeDoor(Level level, BlockPos pos, Direction facing, Block door, boolean isRightHinge, UseOnContext ctx) //naming might not be entirely correct, but it's giving a rough idea
 	{
 		BlockPos posAbove = pos.above();
 
-		if(!world.getBlockState(posAbove).canBeReplaced(new BlockPlaceContext(ctx)))
+		if(!level.getBlockState(posAbove).canBeReplaced(new BlockPlaceContext(ctx)))
 			return false;
 
 		BlockPos left = pos.relative(facing.getClockWise());
 		BlockPos right = pos.relative(facing.getCounterClockWise());
-		int rightNormalCubeAmount = (world.getBlockState(right).isRedstoneConductor(world, pos) ? 1 : 0) + (world.getBlockState(right.above()).isRedstoneConductor(world, pos) ? 1 : 0);
-		int leftNormalCubeAmount = (world.getBlockState(left).isRedstoneConductor(world, pos) ? 1 : 0) + (world.getBlockState(left.above()).isRedstoneConductor(world, pos) ? 1 : 0);
-		boolean isRightDoor = world.getBlockState(right).getBlock() == door || world.getBlockState(right.above()).getBlock() == door;
-		boolean isLeftDoor = world.getBlockState(left).getBlock() == door || world.getBlockState(left.above()).getBlock() == door;
+		int rightNormalCubeAmount = (level.getBlockState(right).isRedstoneConductor(level, pos) ? 1 : 0) + (level.getBlockState(right.above()).isRedstoneConductor(level, pos) ? 1 : 0);
+		int leftNormalCubeAmount = (level.getBlockState(left).isRedstoneConductor(level, pos) ? 1 : 0) + (level.getBlockState(left.above()).isRedstoneConductor(level, pos) ? 1 : 0);
+		boolean isRightDoor = level.getBlockState(right).getBlock() == door || level.getBlockState(right.above()).getBlock() == door;
+		boolean isLeftDoor = level.getBlockState(left).getBlock() == door || level.getBlockState(left.above()).getBlock() == door;
 
 		if ((!isRightDoor || isLeftDoor) && leftNormalCubeAmount <= rightNormalCubeAmount)
 		{
@@ -92,13 +92,13 @@ public class ReinforcedDoorItem extends BlockItem
 		else
 			isRightHinge = true;
 
-		boolean isAnyPowered = BlockUtils.hasActiveSCBlockNextTo(world, pos) || BlockUtils.hasActiveSCBlockNextTo(world, posAbove);
+		boolean isAnyPowered = BlockUtils.hasActiveSCBlockNextTo(level, pos) || BlockUtils.hasActiveSCBlockNextTo(level, posAbove);
 		BlockState state = door.defaultBlockState().setValue(ReinforcedDoorBlock.FACING, facing).setValue(ReinforcedDoorBlock.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT).setValue(ReinforcedDoorBlock.OPEN, isAnyPowered);
 
-		world.setBlock(pos, state.setValue(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER), 2);
-		world.setBlock(posAbove, state.setValue(ReinforcedDoorBlock.HALF, DoubleBlockHalf.UPPER), 2);
-		world.updateNeighborsAt(pos, door);
-		world.updateNeighborsAt(posAbove, door);
+		level.setBlock(pos, state.setValue(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER), 2);
+		level.setBlock(posAbove, state.setValue(ReinforcedDoorBlock.HALF, DoubleBlockHalf.UPPER), 2);
+		level.updateNeighborsAt(pos, door);
+		level.updateNeighborsAt(posAbove, door);
 		return true;
 	}
 }

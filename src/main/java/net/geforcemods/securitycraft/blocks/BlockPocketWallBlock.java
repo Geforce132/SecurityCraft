@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
@@ -39,25 +39,23 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket
 		registerDefaultState(stateDefinition.any().setValue(SEE_THROUGH, true).setValue(SOLID, false));
 	}
 
-	public static boolean causesSuffocation(BlockState state, BlockGetter world, BlockPos pos)
+	public static boolean causesSuffocation(BlockState state, BlockGetter level, BlockPos pos)
 	{
 		return state.getValue(SOLID);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext collisionContext)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext)
 	{
 		if(!state.getValue(SOLID) && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent() && ctx.getEntity().get() instanceof Player player)
 		{
-			BlockEntity tile = world.getBlockEntity(pos);
-
-			if(tile instanceof BlockPocketBlockEntity te)
+			if(level.getBlockEntity(pos) instanceof BlockPocketBlockEntity be)
 			{
-				if(te.getManager() == null)
+				if(be.getManager() == null)
 					return Shapes.empty();
-				else if(ModuleUtils.isAllowed(te.getManager(), player))
+				else if(ModuleUtils.isAllowed(be.getManager(), player))
 					return Shapes.empty();
-				else if(!te.getOwner().isOwner(player))
+				else if(!be.getOwner().isOwner(player))
 					return Shapes.block();
 				else
 					return Shapes.empty();
@@ -68,7 +66,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket
 	}
 
 	@Override
-	public boolean canCreatureSpawn(BlockState state, BlockGetter world, BlockPos pos, Type type, EntityType<?> entityType)
+	public boolean canCreatureSpawn(BlockState state, BlockGetter level, BlockPos pos, Type type, EntityType<?> entityType)
 	{
 		return false;
 	}
@@ -99,7 +97,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeBlockPocket, WorldUtils::blockEntityTicker);
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, SCContent.beTypeBlockPocket, LevelUtils::blockEntityTicker);
 	}
 }

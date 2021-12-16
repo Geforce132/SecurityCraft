@@ -33,8 +33,8 @@ public class BriefcaseSetupScreen extends AbstractContainerScreen<GenericMenu> {
 	private EditBox keycodeTextbox;
 	private Button saveAndContinueButton;
 
-	public BriefcaseSetupScreen(GenericMenu container, Inventory inv, Component text) {
-		super(container, inv, text);
+	public BriefcaseSetupScreen(GenericMenu menu, Inventory inv, Component title) {
+		super(menu, inv, title);
 	}
 
 	@Override
@@ -58,24 +58,25 @@ public class BriefcaseSetupScreen extends AbstractContainerScreen<GenericMenu> {
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrix, mouseX, mouseY, partialTicks);
-		drawString(matrix, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+		super.render(pose, mouseX, mouseY, partialTicks);
+		drawString(pose, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, setupTitle, imageWidth / 2 - font.width(setupTitle) / 2, 6, 4210752);
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
+		font.draw(pose, setupTitle, imageWidth / 2 - font.width(setupTitle) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem._setShaderTexture(0, TEXTURE);
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
-		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
+
+		renderBackground(pose);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem._setShaderTexture(0, TEXTURE);
+		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
 	protected void actionPerformed(IdButton button) {

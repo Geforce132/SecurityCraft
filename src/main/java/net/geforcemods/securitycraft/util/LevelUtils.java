@@ -13,28 +13,28 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
-public class WorldUtils{
+public class LevelUtils{
 
 	/**
 	 * Correctly schedules a task for execution on the main thread depending on if the
-	 * provided world is client- or serverside
+	 * provided level is client- or serverside
 	 */
-	public static void addScheduledTask(LevelAccessor w, Runnable r)
+	public static void addScheduledTask(LevelAccessor level, Runnable runnable)
 	{
-		if(w.isClientSide()) //clientside
-			Minecraft.getInstance().execute(r);
+		if(level.isClientSide()) //clientside
+			Minecraft.getInstance().execute(runnable);
 		else //serverside
-			ServerLifecycleHooks.getCurrentServer().execute(r);
+			ServerLifecycleHooks.getCurrentServer().execute(runnable);
 	}
 
-	public static void spawnLightning(Level world, Vec3 pos, boolean effectOnly)
+	public static void spawnLightning(Level level, Vec3 pos, boolean effectOnly)
 	{
-		world.addFreshEntity(createLightning(world, pos, effectOnly));
+		level.addFreshEntity(createLightning(level, pos, effectOnly));
 	}
 
-	public static LightningBolt createLightning(Level world, Vec3 pos, boolean effectOnly)
+	public static LightningBolt createLightning(Level level, Vec3 pos, boolean effectOnly)
 	{
-		LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(world);
+		LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level);
 
 		lightning.moveTo(pos);
 		lightning.setVisualOnly(effectOnly);
@@ -45,8 +45,8 @@ public class WorldUtils{
 	 * Checks to see if the given coordinates are the same as the given GlobalPos' coordinates.
 	 *
 	 * @param pos The GlobalPos to check against
-	 * @param coordinates a String[] which contains the x, y, and z coordinates, and the dimension ID of the view
-	 * @return true if the x, y, z and dimension match, false otherwise
+	 * @param coordinates a String[] which contains the x, y, and z coordinates, as well as the dimension ID of the view
+	 * @return true if the two are the same, false otherwise
 	 */
 	public static boolean checkCoordinates(GlobalPos pos, String[] coordinates)
 	{

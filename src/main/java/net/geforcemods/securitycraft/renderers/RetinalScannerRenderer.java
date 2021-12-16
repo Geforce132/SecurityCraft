@@ -39,44 +39,44 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 	public RetinalScannerRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(RetinalScannerBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+	public void render(RetinalScannerBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
 	{
-		Direction direction = te.getBlockState().getValue(RetinalScannerBlock.FACING);
+		Direction direction = be.getBlockState().getValue(RetinalScannerBlock.FACING);
 
-		if(!te.hasModule(ModuleType.DISGUISE) && direction != null)
+		if(!be.hasModule(ModuleType.DISGUISE) && direction != null)
 		{
-			matrix.pushPose();
+			pose.pushPose();
 
 			switch(direction)
 			{
 				case NORTH:
-					matrix.translate(0.25F, 1.0F / 16.0F, 0.0F);
+					pose.translate(0.25F, 1.0F / 16.0F, 0.0F);
 					break;
 				case SOUTH:
-					matrix.translate(0.75F, 1.0F / 16.0F, 1.0F);
-					matrix.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+					pose.translate(0.75F, 1.0F / 16.0F, 1.0F);
+					pose.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 					break;
 				case WEST:
-					matrix.translate(0.0F, 1.0F / 16.0F, 0.75F);
-					matrix.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+					pose.translate(0.0F, 1.0F / 16.0F, 0.75F);
+					pose.mulPose(Vector3f.YP.rotationDegrees(90.0F));
 					break;
 				case EAST:
-					matrix.translate(1.0F, 1.0F / 16.0F, 0.25F);
-					matrix.mulPose(Vector3f.YP.rotationDegrees(270.0F));
+					pose.translate(1.0F, 1.0F / 16.0F, 0.25F);
+					pose.mulPose(Vector3f.YP.rotationDegrees(270.0F));
 					break;
 				default:
 					break;
 			}
 
-			matrix.scale(-1.0F, -1.0F, 1.0F);
+			pose.scale(-1.0F, -1.0F, 1.0F);
 
-			VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.entityCutout(getSkinTexture(te.getPlayerProfile())));
-			Matrix4f positionMatrix = matrix.last().pose();
-			Matrix3f normalMatrix = matrix.last().normal();
+			VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.entityCutout(getSkinTexture(be.getPlayerProfile())));
+			Matrix4f positionMatrix = pose.last().pose();
+			Matrix3f normalMatrix = pose.last().normal();
 			Vec3i normalVector = direction.getNormal();
-			BlockPos offsetPos = te.getBlockPos().relative(direction);
+			BlockPos offsetPos = be.getBlockPos().relative(direction);
 
-			combinedLight = LightTexture.pack(te.getLevel().getBrightness(LightLayer.BLOCK, offsetPos), te.getLevel().getBrightness(LightLayer.SKY, offsetPos));
+			combinedLight = LightTexture.pack(be.getLevel().getBrightness(LightLayer.BLOCK, offsetPos), be.getLevel().getBrightness(LightLayer.SKY, offsetPos));
 
 			// face
 			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.125F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
@@ -90,7 +90,7 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).color(255, 255, 255, 255).uv(0.75F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
 			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.75F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
 
-			matrix.popPose();
+			pose.popPose();
 		}
 	}
 

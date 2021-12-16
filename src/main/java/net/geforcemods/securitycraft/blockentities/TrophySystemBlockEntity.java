@@ -77,12 +77,12 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	@Override
-	public void tick(Level world, BlockPos pos, BlockState state)
+	public void tick(Level level, BlockPos pos, BlockState state)
 	{
-		if (!world.isClientSide) {
+		if (!level.isClientSide) {
 			// If the trophy does not have a target, try looking for one
 			if(entityBeingTargeted == null) {
-				Projectile target = getPotentialTarget(world, pos);
+				Projectile target = getPotentialTarget(level, pos);
 
 				if(target != null) {
 					Entity shooter = target.getOwner();
@@ -154,7 +154,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	public void setTarget(Projectile target) {
-		this.entityBeingTargeted = target;
+		entityBeingTargeted = target;
 
 		if (!level.isClientSide) {
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new SetTrophySystemTarget(worldPosition, target.getId()));
@@ -185,12 +185,11 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	 * Randomly returns a new Entity target from the list of all entities
 	 * within range of the trophy
 	 */
-	private Projectile getPotentialTarget(Level world, BlockPos pos) {
+	private Projectile getPotentialTarget(Level level, BlockPos pos) {
 		List<Projectile> potentialTargets = new ArrayList<>();
 		AABB area = new AABB(pos).inflate(RANGE);
 
-		potentialTargets.addAll(world.getEntitiesOfClass(Projectile.class, area, this::isAllowedToTarget));
-
+		potentialTargets.addAll(level.getEntitiesOfClass(Projectile.class, area, this::isAllowedToTarget));
 		//remove bullets shot by sentries/IMSs of this trophy system's owner or players on the allowlist
 		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
 

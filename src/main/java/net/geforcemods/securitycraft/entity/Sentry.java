@@ -83,9 +83,9 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
 
-	public Sentry(EntityType<Sentry> type, Level world)
+	public Sentry(EntityType<Sentry> type, Level level)
 	{
-		super(SCContent.eTypeSentry, world);
+		super(SCContent.eTypeSentry, level);
 	}
 
 	public void setupSentry(Player owner)
@@ -369,16 +369,16 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 		if(distanceToSqr(target) > MAX_TARGET_DISTANCE * MAX_TARGET_DISTANCE)
 			return;
 
-		BlockEntity tile = level.getBlockEntity(blockPosition().below());
+		BlockEntity blockEntity = level.getBlockEntity(blockPosition().below());
 		Projectile throwableEntity = null;
 		SoundEvent shootSound = SoundEvents.ARROW_SHOOT;
 		AbstractProjectileDispenseBehavior pdb = null;
 		LazyOptional<IItemHandler> optional = LazyOptional.empty();
 
-		if(tile instanceof KeypadChestBlockEntity te)
-			optional = te.getHandlerForSentry(this);
-		else if(tile != null)
-			optional = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
+		if(blockEntity instanceof KeypadChestBlockEntity be)
+			optional = be.getHandlerForSentry(this);
+		else if(blockEntity != null)
+			optional = blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
 
 		if(optional.isPresent())
 		{
@@ -607,7 +607,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	//end: disallow sentry to take damage
 
 	@Override
-	public boolean checkSpawnRules(LevelAccessor world, MobSpawnType reason)
+	public boolean checkSpawnRules(LevelAccessor level, MobSpawnType reason)
 	{
 		return false;
 	}

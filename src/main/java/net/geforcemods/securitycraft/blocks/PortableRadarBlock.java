@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -47,7 +47,7 @@ public class PortableRadarBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
 	{
 		return switch(state.getValue(FACING)) {
 			case EAST -> SHAPE_EAST;
@@ -69,27 +69,27 @@ public class PortableRadarBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos){
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos){
 		Direction facing = state.getValue(FACING);
 
-		return BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing);
+		return BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (!canSurvive(state, world, pos))
-			world.destroyBlock(pos, true);
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+		if (!canSurvive(state, level, pos))
+			level.destroyBlock(pos, true);
 	}
 
-	public static void togglePowerOutput(Level world, BlockPos pos, boolean shouldPower) {
-		BlockState state = world.getBlockState(pos);
+	public static void togglePowerOutput(Level level, BlockPos pos, boolean shouldPower) {
+		BlockState state = level.getBlockState(pos);
 
 		if(shouldPower && !state.getValue(POWERED)){
-			world.setBlockAndUpdate(pos, state.setValue(POWERED, true));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, true));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
 		}else if(!shouldPower && state.getValue(POWERED)){
-			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
 		}
 	}
 
@@ -100,16 +100,16 @@ public class PortableRadarBlock extends OwnableBlock {
 	}
 
 	@Override
-	public int getSignal(BlockState blockState, BlockGetter world, BlockPos pos, Direction side){
-		if(blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
+	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side){
+		if(state.getValue(POWERED) && ((IModuleInventory) level.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getDirectSignal(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
-		return state.getValue(POWERED) && ((IModuleInventory)world.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE) && state.getValue(FACING) == side ? 15 : 0;
+	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
+		return state.getValue(POWERED) && ((IModuleInventory)level.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE) && state.getValue(FACING) == side ? 15 : 0;
 	}
 
 	@Override
@@ -124,8 +124,8 @@ public class PortableRadarBlock extends OwnableBlock {
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypePortableRadar, WorldUtils::blockEntityTicker);
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return !level.isClientSide ? BaseEntityBlock.createTickerHelper(type, SCContent.beTypePortableRadar, LevelUtils::blockEntityTicker) : null;
 	}
 
 	@Override

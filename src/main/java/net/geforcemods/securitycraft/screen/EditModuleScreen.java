@@ -127,14 +127,15 @@ public class EditModuleScreen extends Screen
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks){
-		renderBackground(matrix);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem._setShaderTexture(0, TEXTURE);
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks){
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		blit(matrix, startX, startY, 0, 0, xSize, ySize);
-		super.render(matrix, mouseX, mouseY, partialTicks);
+
+		renderBackground(pose);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem._setShaderTexture(0, TEXTURE);
+		blit(pose, startX, startY, 0, 0, xSize, ySize);
+		super.render(pose, mouseX, mouseY, partialTicks);
 		font.drawWordWrap(editModule, startX + xSize / 2 - font.width(editModule) / 2, startY + 6, width, 4210752);
 	}
 
@@ -305,7 +306,7 @@ public class EditModuleScreen extends Screen
 		}
 
 		@Override
-		protected void drawPanel(PoseStack matrix, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY)
+		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY)
 		{
 			if(module.hasTag())
 			{
@@ -331,7 +332,7 @@ public class EditModuleScreen extends Screen
 						String name = tag.getString("Player" + (i + 1));
 
 						if(!name.isEmpty())
-							font.draw(matrix, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
+							font.draw(pose, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 					}
 				}
 			}

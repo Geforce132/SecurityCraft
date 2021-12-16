@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SyncKeycardSettings
@@ -63,25 +62,20 @@ public class SyncKeycardSettings
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
 
-			if(player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity te)
+			if(player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be)
 			{
-				boolean isOwner = te.getOwner().isOwner(player);
+				boolean isOwner = be.getOwner().isOwner(player);
 
-				if(isOwner || ModuleUtils.isAllowed(te, player))
+				if(isOwner || ModuleUtils.isAllowed(be, player))
 				{
 					if(isOwner)
 					{
-						te.setAcceptedLevels(message.acceptedLevels);
-						te.setSignature(message.signature);
+						be.setAcceptedLevels(message.acceptedLevels);
+						be.setSignature(message.signature);
 					}
 
-					if(message.link)
-					{
-						AbstractContainerMenu container = player.containerMenu;
-
-						if(container instanceof KeycardReaderMenu keycardReaderContainer)
-							keycardReaderContainer.link();
-					}
+					if(message.link && player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
+						keycardReaderContainer.link();
 				}
 			}
 		});

@@ -29,14 +29,14 @@ public class Bullet extends AbstractArrow
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Bullet.class, Owner.getSerializer());
 	private Collection<MobEffectInstance> potionEffects = Sets.newHashSet();
 
-	public Bullet(EntityType<Bullet> type, Level world)
+	public Bullet(EntityType<Bullet> type, Level level)
 	{
-		super(SCContent.eTypeBullet, world);
+		super(SCContent.eTypeBullet, level);
 	}
 
-	public Bullet(Level world, Sentry shooter)
+	public Bullet(Level level, Sentry shooter)
 	{
-		super(SCContent.eTypeBullet, shooter, world);
+		super(SCContent.eTypeBullet, shooter, level);
 
 		Owner owner =  shooter.getOwner();
 
@@ -60,26 +60,26 @@ public class Bullet extends AbstractArrow
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
+	public void addAdditionalSaveData(CompoundTag tag) {
+		super.addAdditionalSaveData(tag);
 
-		if (!this.potionEffects.isEmpty()) {
+		if (!potionEffects.isEmpty()) {
 			ListTag list = new ListTag();
 
-			for(MobEffectInstance effect : this.potionEffects) {
+			for(MobEffectInstance effect : potionEffects) {
 				list.add(effect.save(new CompoundTag()));
 			}
 
-			compound.put("PotionEffects", list);
+			tag.put("PotionEffects", list);
 		}
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
 
-		if (compound.contains("PotionEffects", 9)) {
-			ListTag potionList = compound.getList("PotionEffects", 10);
+		if (tag.contains("PotionEffects", 9)) {
+			ListTag potionList = tag.getList("PotionEffects", 10);
 
 			if (!potionList.isEmpty()) {
 				for (int i = 0; i < potionList.size(); ++i) {
@@ -113,7 +113,7 @@ public class Bullet extends AbstractArrow
 	}
 
 	@Override
-	protected void onHitBlock(BlockHitResult raytraceResult) //onBlockHit
+	protected void onHitBlock(BlockHitResult raytraceResult)
 	{
 		discard();
 	}

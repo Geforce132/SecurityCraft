@@ -44,18 +44,18 @@ public class UniversalOwnerChangerItem extends Item
 		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getHand());
 	}
 
-	public InteractionResult onItemUseFirst(Player player, Level world, BlockPos pos, ItemStack stack, Direction side, InteractionHand hand)
+	public InteractionResult onItemUseFirst(Player player, Level level, BlockPos pos, ItemStack stack, Direction side, InteractionHand hand)
 	{
 		//prioritize handling the briefcase
 		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get())
 			return handleBriefcase(player, stack).getResult();
 
-		BlockState state = world.getBlockState(pos);
+		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity be = level.getBlockEntity(pos);
 		String newOwner = stack.getHoverName().getString();
 
-		if(!(te instanceof IOwnable ownable))
+		if(!(be instanceof IOwnable ownable))
 		{
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), ChatFormatting.RED);
 			return InteractionResult.FAIL;
@@ -66,7 +66,7 @@ public class UniversalOwnerChangerItem extends Item
 
 		if(!owner.isOwner(player) && !isDefault)
 		{
-			if(!(block instanceof IBlockMine) && (!(te.getBlockState().getBlock() instanceof DisguisableBlock db) || (((BlockItem)db.getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))) {
+			if(!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof DisguisableBlock db) || (((BlockItem)db.getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock))) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), ChatFormatting.RED);
 				return InteractionResult.FAIL;
 			}
@@ -92,13 +92,13 @@ public class UniversalOwnerChangerItem extends Item
 		}
 
 		ownable.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
-		ownable.onOwnerChanged(state, world, pos, player);
+		ownable.onOwnerChanged(state, level, pos, player);
 
-		if (!world.isClientSide)
-			world.getServer().getPlayerList().broadcastAll(te.getUpdatePacket());
+		if (!level.isClientSide)
+			level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
 
 		//disable this in a development environment
-		if(FMLEnvironment.production && te instanceof IModuleInventory inv)
+		if(FMLEnvironment.production && be instanceof IModuleInventory inv)
 		{
 			for(ModuleType moduleType : inv.getInsertedModules())
 			{
@@ -106,7 +106,7 @@ public class UniversalOwnerChangerItem extends Item
 
 				inv.removeModule(moduleType);
 				inv.onModuleRemoved(moduleStack, moduleType);
-				Block.popResource(world, pos, moduleStack);
+				Block.popResource(level, pos, moduleStack);
 			}
 		}
 
@@ -115,7 +115,7 @@ public class UniversalOwnerChangerItem extends Item
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack ownerChanger = player.getItemInHand(hand);
 
 		if (!ownerChanger.hasCustomHoverName()) {
@@ -129,18 +129,18 @@ public class UniversalOwnerChangerItem extends Item
 		return InteractionResultHolder.pass(ownerChanger);
 	}
 
-	public static boolean tryUpdateBlock(Level world, BlockPos pos, Owner newOwner)
+	public static boolean tryUpdateBlock(Level level, BlockPos pos, Owner newOwner)
 	{
-		Block block = world.getBlockState(pos).getBlock();
+		Block block = level.getBlockState(pos).getBlock();
 
 		if(block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock)
 		{
-			OwnableBlockEntity te = (OwnableBlockEntity)world.getBlockEntity(pos);
+			OwnableBlockEntity be = (OwnableBlockEntity)level.getBlockEntity(pos);
 
-			te.setOwner(newOwner.getUUID(), newOwner.getName());
+			be.setOwner(newOwner.getUUID(), newOwner.getName());
 
-			if(!world.isClientSide)
-				world.getServer().getPlayerList().broadcastAll(te.getUpdatePacket());
+			if(!level.isClientSide)
+				level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
 
 			return true;
 		}

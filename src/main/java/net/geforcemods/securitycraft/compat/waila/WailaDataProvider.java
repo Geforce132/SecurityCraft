@@ -132,19 +132,19 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				if(block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(data.getLevel(), data.getBlockState(), data.getPosition()))
 					return;
 
-				BlockEntity te = data.getBlockEntity();
+				BlockEntity be = data.getBlockEntity();
 
-				if(te != null)
+				if(be != null)
 				{
 					//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
-					if(config.get(SHOW_OWNER) && te instanceof IOwnable ownable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
+					if(config.get(SHOW_OWNER) && be instanceof IOwnable ownable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
 						tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner().getName())));
 
 					if(disguised)
 						return;
 
 					//if the te is ownable, show modules only when it's owned, otherwise always show
-					if(config.get(SHOW_MODULES) && te instanceof IModuleInventory inv && (!(te instanceof IOwnable ownable) || ownable.getOwner().isOwner(data.getPlayer()))){
+					if(config.get(SHOW_MODULES) && be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(data.getPlayer()))){
 						if(!inv.getInsertedModules().isEmpty())
 							tooltip.add(EQUIPPED);
 
@@ -152,7 +152,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 							tooltip.add(new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())));
 					}
 
-					if(config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected ipp && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
+					if(config.get(SHOW_PASSWORDS) && be instanceof IPasswordProtected ipp && ((IOwnable) be).getOwner().isOwner(data.getPlayer())){
 						String password = ipp.getPassword();
 
 						tooltip.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));

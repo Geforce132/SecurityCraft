@@ -17,12 +17,12 @@ public class BouncingBetty extends Entity {
 	/** How long the fuse is */
 	public int fuse;
 
-	public BouncingBetty(EntityType<BouncingBetty> type, Level world){
-		super(SCContent.eTypeBouncingBetty, world);
+	public BouncingBetty(EntityType<BouncingBetty> type, Level level){
+		super(SCContent.eTypeBouncingBetty, level);
 	}
 
-	public BouncingBetty(Level world, double x, double y, double z){
-		this(SCContent.eTypeBouncingBetty, world);
+	public BouncingBetty(Level level, double x, double y, double z){
+		this(SCContent.eTypeBouncingBetty, level);
 		setPos(x, y, z);
 		float f = (float)(Math.random() * Math.PI * 2.0D);
 		setDeltaMovement(-((float)Math.sin(f)) * 0.02F, 0.20000000298023224D, -((float)Math.cos(f)) * 0.02F);
@@ -41,18 +41,12 @@ public class BouncingBetty extends Entity {
 		return MovementEmission.NONE;
 	}
 
-	/**
-	 * Returns true if other Entities should be prevented from moving through this Entity.
-	 */
 	@Override
 	public boolean isPickable()
 	{
 		return !isRemoved();
 	}
 
-	/**
-	 * Called to update the entity's position/logic.
-	 */
 	@Override
 	public void tick()
 	{
@@ -80,18 +74,12 @@ public class BouncingBetty extends Entity {
 		level.explode(this, getX(), getY(), getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 	}
 
-	/**
-	 * (abstract) Protected helper method to write subclass entity data to NBT.
-	 */
 	@Override
 	protected void addAdditionalSaveData(CompoundTag tag)
 	{
 		tag.putByte("Fuse", (byte)fuse);
 	}
 
-	/**
-	 * (abstract) Protected helper method to read subclass entity data from NBT.
-	 */
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag)
 	{

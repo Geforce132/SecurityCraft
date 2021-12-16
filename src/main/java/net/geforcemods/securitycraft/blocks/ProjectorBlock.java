@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.util.Utils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -54,12 +54,12 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
 	{
-		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
 		if(disguisedState.getBlock() != this)
-			return disguisedState.getShape(world, pos, ctx);
+			return disguisedState.getShape(level, pos, ctx);
 		else return switch(state.getValue(FACING)) {
 			case NORTH -> SOUTH;
 			case EAST -> WEST;
@@ -70,34 +70,30 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
-		BlockEntity tile = world.getBlockEntity(pos);
-
-		if(!(tile instanceof ProjectorBlockEntity te))
+		if(!(level.getBlockEntity(pos) instanceof ProjectorBlockEntity be))
 			return InteractionResult.FAIL;
 
-		boolean isOwner = te.getOwner().isOwner(player);
+		boolean isOwner = be.getOwner().isOwner(player);
 
-		if(!world.isClientSide && isOwner)
-			NetworkHooks.openGui((ServerPlayer)player, te, pos);
+		if(!level.isClientSide && isOwner)
+			NetworkHooks.openGui((ServerPlayer)player, be, pos);
 
 		return isOwner ? InteractionResult.SUCCESS : InteractionResult.FAIL;
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
 	{
-		BlockEntity tile = world.getBlockEntity(pos);
-
-		if(tile instanceof ProjectorBlockEntity te)
+		if(level.getBlockEntity(pos) instanceof ProjectorBlockEntity be)
 		{
 			// Drop the block being projected
-			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), te.getStackInSlot(36));
-			WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
+			ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), be.getStackInSlot(36));
+			LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(item));
 		}
 
-		super.onRemove(state, world, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
@@ -114,17 +110,12 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
 	{
-		if(!world.hasNeighborSignal(pos))
+		if(!level.hasNeighborSignal(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be)
 		{
-			BlockEntity tile = world.getBlockEntity(pos);
-
-			if(tile instanceof ProjectorBlockEntity te)
-			{
-				if(te.isActivatedByRedstone())
-					te.setActive(false);
-			}
+			if(be.isActivatedByRedstone())
+				be.setActive(false);
 		}
 	}
 
@@ -134,7 +125,7 @@ public class ProjectorBlock extends DisguisableBlock {
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
+	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
 		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
 	}
@@ -164,7 +155,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, BlockGetter world, List<Component> tooltip, TooltipFlag flag)
+	public void appendHoverText(ItemStack stack, BlockGetter level, List<Component> tooltip, TooltipFlag flag)
 	{
 		tooltip.add(TOOLTIP);
 	}

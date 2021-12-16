@@ -28,12 +28,12 @@ public class IMSBomb extends Fireball {
 	private boolean launching = true;
 	private boolean isFast;
 
-	public IMSBomb(EntityType<IMSBomb> type, Level world){
-		super(SCContent.eTypeImsBomb, world);
+	public IMSBomb(EntityType<IMSBomb> type, Level level){
+		super(SCContent.eTypeImsBomb, level);
 	}
 
-	public IMSBomb(Level world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSBlockEntity te){
-		super(SCContent.eTypeImsBomb, x, y, z, accelerationX, accelerationY, accelerationZ, world);
+	public IMSBomb(Level level, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSBlockEntity te){
+		super(SCContent.eTypeImsBomb, x, y, z, accelerationX, accelerationY, accelerationZ, level);
 		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
 
 		Owner owner = te.getOwner();

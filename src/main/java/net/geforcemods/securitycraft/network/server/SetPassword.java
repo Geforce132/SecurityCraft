@@ -55,14 +55,13 @@ public class SetPassword {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			String password = message.password;
 			Player player = ctx.get().getSender();
-			Level world = player.level;
-			BlockEntity tile = world.getBlockEntity(pos);
+			Level level = player.level;
 
-			if(tile instanceof IPasswordProtected te && (!(tile instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))){
-				te.setPassword(password);
+			if(level.getBlockEntity(pos) instanceof IPasswordProtected be && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))){
+				be.setPassword(password);
 
-				if(te instanceof KeypadChestBlockEntity chestTe)
-					checkAndUpdateAdjacentChest(chestTe, world, pos, password, player);
+				if(be instanceof KeypadChestBlockEntity chestTe)
+					checkAndUpdateAdjacentChest(chestTe, level, pos, password, player);
 			}
 		});
 

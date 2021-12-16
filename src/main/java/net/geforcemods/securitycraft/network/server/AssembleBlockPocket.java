@@ -38,10 +38,10 @@ public class AssembleBlockPocket
 	public static void onMessage(AssembleBlockPocket message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			if(ctx.get().getSender().level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity te && te.getOwner().isOwner(ctx.get().getSender()))
+			if(ctx.get().getSender().level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity be && be.getOwner().isOwner(ctx.get().getSender()))
 			{
-				te.size = message.size;
-				te.autoAssembleMultiblock();
+				be.size = message.size;
+				be.autoAssembleMultiblock();
 			}
 		});
 		ctx.get().setPacketHandled(true);

@@ -50,22 +50,22 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void tick(Level world, BlockPos pos, BlockState state)
+	public void tick(Level level, BlockPos pos, BlockState state)
 	{
 		if(cooldown > 0)
 			cooldown--;
 		else if(isProvidingPower){
 			isProvidingPower = false;
-			BlockUtils.updateAndNotify(world, pos, state.getBlock(), 1, true);
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.INVENTORY_SCANNER.get());
+			BlockUtils.updateAndNotify(level, pos, state.getBlock(), 1, true);
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.INVENTORY_SCANNER.get());
 		}
 	}
 
 	@Override
 	public void load(CompoundTag tag){
-		super.load(tag);
-
 		ListTag list = tag.getList("Items", 10);
+
+		super.load(tag);
 		inventoryContents = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i)
@@ -90,6 +90,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			if (!inventoryContents.get(i).isEmpty())
 			{
 				CompoundTag stackTag = new CompoundTag();
+
 				stackTag.putByte("Slot", (byte)i);
 				inventoryContents.get(i).save(stackTag);
 				list.add(stackTag);
@@ -261,7 +262,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	public void stopOpen(Player player) {}
 
 	@Override
-	public boolean canPlaceItem(int var1, ItemStack var2) {
+	public boolean canPlaceItem(int index, ItemStack stack) {
 		return true;
 	}
 
@@ -333,7 +334,6 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	{
 		if(option.getName().equals("horizontal")) {
 			BooleanOption bo = (BooleanOption)option;
-
 			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
 			if (connectedScanner != null) {

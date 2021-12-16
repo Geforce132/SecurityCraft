@@ -13,7 +13,7 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
-import net.geforcemods.securitycraft.misc.conditions.TileEntityNBTCondition;
+import net.geforcemods.securitycraft.misc.conditions.BlockEntityNBTCondition;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -99,7 +99,7 @@ public class BlockLootTableGenerator implements DataProvider
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(SCContent.REINFORCED_IRON_BARS.get())
-								.when(TileEntityNBTCondition.builder().equals("canDrop", true)))
+								.when(BlockEntityNBTCondition.builder().equals("canDrop", true)))
 						.when(ExplosionCondition.survivesExplosion())));
 		lootTables.put(SCContent.REINFORCED_LAVA_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON));
 		lootTables.put(SCContent.REINFORCED_POWDER_SNOW_CAULDRON, createStandardBlockLootTable(SCContent.REINFORCED_CAULDRON));

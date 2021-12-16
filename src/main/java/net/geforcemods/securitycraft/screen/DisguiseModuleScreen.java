@@ -19,32 +19,33 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 	private static final ResourceLocation TEXTURE  = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
 	private final TranslatableComponent disguiseModuleName = Utils.localize(SCContent.DISGUISE_MODULE.get().getDescriptionId());
 
-	public DisguiseModuleScreen(DisguiseModuleMenu container, Inventory inv, Component name) {
-		super(container, inv, name);
+	public DisguiseModuleScreen(DisguiseModuleMenu menu, Inventory inv, Component title) {
+		super(menu, inv, title);
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
 	{
-		super.render(matrix, mouseX, mouseY, partialTicks);
+		super.render(pose, mouseX, mouseY, partialTicks);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
+			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, disguiseModuleName, imageWidth / 2 - font.width(disguiseModuleName) / 2, 6, 4210752);
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
+		font.draw(pose, disguiseModuleName, imageWidth / 2 - font.width(disguiseModuleName) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem._setShaderTexture(0, TEXTURE);
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
-		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
+
+		renderBackground(pose);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem._setShaderTexture(0, TEXTURE);
+		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
 }

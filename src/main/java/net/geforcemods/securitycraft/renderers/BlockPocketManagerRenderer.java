@@ -20,18 +20,18 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 	public BlockPocketManagerRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(BlockPocketManagerBlockEntity te, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+	public void render(BlockPocketManagerBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
 	{
 		// The code below draws the outline border of a block pocket.
 
-		if(!te.showOutline)
+		if(!be.showOutline)
 			return;
 
-		Matrix4f positionMatrix = matrix.last().pose();
-		Direction facing = te.getBlockState().getValue(BlockPocketManagerBlock.FACING);
+		Matrix4f positionMatrix = pose.last().pose();
+		Direction facing = be.getBlockState().getValue(BlockPocketManagerBlock.FACING);
 		VertexConsumer builder = buffer.getBuffer(RenderType.lines());
-		int offset = facing == Direction.NORTH || facing == Direction.EAST ? -te.autoBuildOffset : te.autoBuildOffset; //keep negative values moving the offset to the left consistent
-		int size = te.size;
+		int offset = facing == Direction.NORTH || facing == Direction.EAST ? -be.autoBuildOffset : be.autoBuildOffset; //keep negative values moving the offset to the left consistent
+		int size = be.size;
 		int half = (size - 1) / 2;
 		int leftX = -half + offset;
 		int rightX = half + 1 + offset;
@@ -76,8 +76,8 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(BlockPocketManagerBlockEntity te)
+	public boolean shouldRenderOffScreen(BlockPocketManagerBlockEntity be)
 	{
-		return te.showOutline;
+		return be.showOutline;
 	}
 }

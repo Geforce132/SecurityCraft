@@ -49,14 +49,14 @@ public class ToggleOption {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			int id = message.id;
 			Player player = ctx.get().getSender();
-			BlockEntity te = player.level.getBlockEntity(pos);
+			BlockEntity be = player.level.getBlockEntity(pos);
 
-			if(te instanceof ICustomizable customizable && (!(te instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
+			if(be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
 				customizable.customOptions()[id].toggle();
 				customizable.onOptionChanged(customizable.customOptions()[id]);
 
-				if(te instanceof CustomizableBlockEntity customizableTe)
-					player.level.sendBlockUpdated(pos, te.getBlockState(), te.getBlockState(), 3);
+				if(be instanceof CustomizableBlockEntity)
+					player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 			}
 		});
 

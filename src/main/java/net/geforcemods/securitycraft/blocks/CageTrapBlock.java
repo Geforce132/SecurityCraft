@@ -51,54 +51,52 @@ public class CageTrapBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext collisionContext){
-		BlockEntity tile = world.getBlockEntity(pos);
-
-		if(tile instanceof CageTrapBlockEntity te)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext){
+		if(level.getBlockEntity(pos) instanceof CageTrapBlockEntity be)
 		{
 			if(collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent())
 			{
 				Entity entity = ctx.getEntity().get();
 
-				if(entity instanceof Player player && (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)))
-					return getCorrectShape(state, world, pos, collisionContext, te);
+				if(entity instanceof Player player && (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)))
+					return getCorrectShape(state, level, pos, collisionContext, be);
 				if(entity instanceof Mob && !state.getValue(DEACTIVATED))
-					return te.capturesMobs() ? Shapes.empty() : getCorrectShape(state, world, pos, collisionContext, te);
+					return be.capturesMobs() ? Shapes.empty() : getCorrectShape(state, level, pos, collisionContext, be);
 				else if(entity instanceof ItemEntity)
-					return getCorrectShape(state, world, pos, collisionContext, te);
+					return getCorrectShape(state, level, pos, collisionContext, be);
 			}
 
-			return state.getValue(DEACTIVATED) ? getCorrectShape(state, world, pos, collisionContext, te) : Shapes.empty();
+			return state.getValue(DEACTIVATED) ? getCorrectShape(state, level, pos, collisionContext, be) : Shapes.empty();
 		}
 		else return Shapes.empty(); //shouldn't happen
 	}
 
-	private VoxelShape getCorrectShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx, DisguisableBlockEntity disguisableTe)
+	private VoxelShape getCorrectShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx, DisguisableBlockEntity disguisableTe)
 	{
 		ItemStack moduleStack = disguisableTe.getModule(ModuleType.DISGUISE);
 
 		if(!moduleStack.isEmpty() && (((ModuleItem)moduleStack.getItem()).getBlockAddon(moduleStack.getTag()) != null))
-			return super.getCollisionShape(state, world, pos, ctx);
+			return super.getCollisionShape(state, level, pos, ctx);
 		else return Shapes.block();
 	}
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if(!level.isClientSide){
-			CageTrapBlockEntity tile = (CageTrapBlockEntity) level.getBlockEntity(pos);
+			CageTrapBlockEntity cageTrap = (CageTrapBlockEntity) level.getBlockEntity(pos);
 			boolean isPlayer = entity instanceof Player;
 
-			if(isPlayer || (entity instanceof Mob && tile.capturesMobs())){
-				if((isPlayer && tile.getOwner().isOwner((Player)entity)))
+			if(isPlayer || (entity instanceof Mob && cageTrap.capturesMobs())){
+				if((isPlayer && cageTrap.getOwner().isOwner((Player)entity)))
 					return;
 
 				if(state.getValue(DEACTIVATED))
 					return;
 
 				BlockPos topMiddle = pos.above(4);
-				String ownerName = tile.getOwner().getName();
+				String ownerName = cageTrap.getOwner().getName();
 
-				BlockModifier placer = new BlockModifier(level, new BlockPos.MutableBlockPos().set(pos), tile.getOwner());
+				BlockModifier placer = new BlockModifier(level, new BlockPos.MutableBlockPos().set(pos), cageTrap.getOwner());
 
 				placer.loop((w, p, o) -> {
 					if(w.isEmptyBlock(p))
@@ -128,7 +126,7 @@ public class CageTrapBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		ItemStack stack = player.getItemInHand(hand);
 
@@ -136,12 +134,12 @@ public class CageTrapBlock extends DisguisableBlock {
 		{
 			if(!state.getValue(DEACTIVATED))
 			{
-				world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
+				level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 
 				if(!player.isCreative())
 					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				world.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
+				level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
 				return InteractionResult.SUCCESS;
 			}
 		}
@@ -149,12 +147,12 @@ public class CageTrapBlock extends DisguisableBlock {
 		{
 			if(state.getValue(DEACTIVATED))
 			{
-				world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
+				level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
 
 				if(!player.isCreative())
 					stack.shrink(1);
 
-				world.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
+				level.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
 				return InteractionResult.SUCCESS;
 			}
 		}
@@ -168,7 +166,7 @@ public class CageTrapBlock extends DisguisableBlock {
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player player)
+	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player player)
 	{
 		return defaultBlockState().setValue(DEACTIVATED, false);
 	}
@@ -191,9 +189,9 @@ public class CageTrapBlock extends DisguisableBlock {
 		private BlockPos origin;
 		private Owner owner;
 
-		public BlockModifier(Level world, BlockPos.MutableBlockPos origin, Owner owner)
+		public BlockModifier(Level level, BlockPos.MutableBlockPos origin, Owner owner)
 		{
-			this.world = world;
+			this.world = level;
 			pos = origin.move(-1, 1, -1);
 			this.origin = origin.immutable();
 			this.owner = owner;

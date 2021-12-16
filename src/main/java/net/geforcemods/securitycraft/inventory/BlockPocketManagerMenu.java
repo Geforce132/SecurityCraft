@@ -11,28 +11,25 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class BlockPocketManagerMenu extends AbstractContainerMenu
 {
-	public BlockPocketManagerBlockEntity te;
+	public BlockPocketManagerBlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 	public final boolean storage;
 	public final boolean isOwner;
 
-	public BlockPocketManagerMenu(int windowId, Level world, BlockPos pos, Inventory inventory)
+	public BlockPocketManagerMenu(int windowId, Level level, BlockPos pos, Inventory inventory)
 	{
 		super(SCContent.mTypeBlockPocketManager, windowId);
 
-		BlockEntity tile = world.getBlockEntity(pos);
+		if(level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be)
+			this.be = be;
 
-		if(tile instanceof BlockPocketManagerBlockEntity te)
-			this.te = te;
-
-		worldPosCallable = ContainerLevelAccess.create(world, pos);
-		isOwner = te.getOwner().isOwner(inventory.player);
-		storage = te != null && te.hasModule(ModuleType.STORAGE) && isOwner;
+		worldPosCallable = ContainerLevelAccess.create(level, pos);
+		isOwner = be.getOwner().isOwner(inventory.player);
+		storage = be != null && be.hasModule(ModuleType.STORAGE) && isOwner;
 
 		if(storage)
 		{
@@ -49,7 +46,7 @@ public class BlockPocketManagerMenu extends AbstractContainerMenu
 				addSlot(new Slot(inventory, x, 8 + x * 18, 142 + 74));
 			}
 
-			te.getStorageHandler().ifPresent(storage -> {
+			be.getStorageHandler().ifPresent(storage -> {
 				int slotId = 0;
 
 				for(int y = 0; y < 8; y++)

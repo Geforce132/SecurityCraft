@@ -44,19 +44,19 @@ public class SonicSecuritySystemItem extends BlockItem {
 		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
 	}
 
-	public InteractionResult onItemUseFirst(Player player, Level world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ)
+	public InteractionResult onItemUseFirst(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ)
 	{
-		if(!world.isClientSide)
+		if(!level.isClientSide)
 		{
 			// If the player is not sneaking, add/remove positions from the item when right-clicking a lockable block
 			if(!player.isShiftKeyDown())
 			{
-				BlockEntity be = world.getBlockEntity(pos);
+				BlockEntity be = level.getBlockEntity(pos);
 
 				if (be instanceof ILockable) {
 					if(be instanceof IOwnable ownable && !ownable.getOwner().isOwner(player)) {
 						//only send message when the block is not disguised
-						if (!(be.getBlockState().getBlock() instanceof DisguisableBlock disguisable) || disguisable.getDisguisedBlockState(world, pos) == null) {
+						if (!(be.getBlockState().getBlock() instanceof DisguisableBlock disguisable) || disguisable.getDisguisedBlockState(level, pos) == null) {
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ownable.getOwner().getName()), ChatFormatting.GREEN);
 							return InteractionResult.SUCCESS;
 						}
@@ -71,12 +71,12 @@ public class SonicSecuritySystemItem extends BlockItem {
 						if(isAdded(stack.getTag(), pos))
 						{
 							removeLinkedBlock(stack.getTag(), pos);
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(world.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
 							return InteractionResult.SUCCESS;
 						}
 						else if(addLinkedBlock(stack.getTag(), pos, player))
 						{
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(world.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
 							SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new UpdateNBTTagOnClient(stack));
 							return InteractionResult.SUCCESS;
 						}
@@ -89,7 +89,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 		//placing is handled by minecraft otherwise
 		if(!stack.hasTag() || !hasLinkedBlock(stack.getTag()))
 		{
-			if(!world.isClientSide)
+			if(!level.isClientSide)
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.notLinked"), ChatFormatting.DARK_RED);
 
 			return InteractionResult.FAIL;
@@ -110,7 +110,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 		if(!stack.hasTag())
 			return;
 

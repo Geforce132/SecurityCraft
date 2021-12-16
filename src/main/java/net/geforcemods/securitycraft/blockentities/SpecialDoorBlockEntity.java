@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -54,20 +53,18 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity
 
 		if(other.getValue(DoorBlock.HALF) != myHalf)
 		{
-			BlockEntity otherTe = level.getBlockEntity(otherPos);
-
-			if(otherTe instanceof SpecialDoorBlockEntity otherDoorTe)
+			if(level.getBlockEntity(otherPos) instanceof SpecialDoorBlockEntity otherDoorBe)
 			{
-				if(!removed && !otherDoorTe.hasModule(module))
-					otherDoorTe.insertModule(stack);
-				else if(removed && otherDoorTe.hasModule(module))
-					otherDoorTe.removeModule(module);
+				if(!removed && !otherDoorBe.hasModule(module))
+					otherDoorBe.insertModule(stack);
+				else if(removed && otherDoorBe.hasModule(module))
+					otherDoorBe.removeModule(module);
 			}
 		}
 	}
 
 	@Override
-	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedTEs)
+	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs)
 	{
 		if(action == LinkedAction.OPTION_CHANGED)
 		{

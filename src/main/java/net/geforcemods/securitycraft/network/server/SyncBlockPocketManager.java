@@ -51,16 +51,16 @@ public class SyncBlockPocketManager
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
-			Level world = player.level;
+			Level level = player.level;
 
-			if(world.isLoaded(pos) && world.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity bpm && bpm.getOwner().isOwner(player))
+			if(level.isLoaded(pos) && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity bpm && bpm.getOwner().isOwner(player))
 			{
-				BlockState state = world.getBlockState(pos);
+				BlockState state = level.getBlockState(pos);
 
 				bpm.size = message.size;
 				bpm.showOutline = message.showOutline;
 				bpm.autoBuildOffset = message.autoBuildOffset;
-				world.sendBlockUpdated(pos, state, state, 2);
+				level.sendBlockUpdated(pos, state, state, 2);
 			}
 		});
 

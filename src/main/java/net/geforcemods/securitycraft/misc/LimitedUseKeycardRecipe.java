@@ -25,7 +25,7 @@ public class LimitedUseKeycardRecipe extends CustomRecipe
 	}
 
 	@Override
-	public boolean matches(CraftingContainer inv, Level world)
+	public boolean matches(CraftingContainer inv, Level level)
 	{
 		boolean hasNormalKeycard = false;
 		boolean hasLimitedUseKeycard = false;

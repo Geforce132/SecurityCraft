@@ -46,16 +46,16 @@ public class RefreshDisguisableModel
 	public static void onMessage(RefreshDisguisableModel message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			IModuleInventory te = (IModuleInventory)Minecraft.getInstance().level.getBlockEntity(message.pos);
+			IModuleInventory be = (IModuleInventory)Minecraft.getInstance().level.getBlockEntity(message.pos);
 
-			if(te != null)
+			if(be != null)
 			{
 				if(message.insert)
-					te.insertModule(message.stack);
+					be.insertModule(message.stack);
 				else
-					te.removeModule(ModuleType.DISGUISE);
+					be.removeModule(ModuleType.DISGUISE);
 
-				ClientHandler.refreshModelData(te.getBlockEntity());
+				ClientHandler.refreshModelData(be.getBlockEntity());
 			}
 		});
 

@@ -15,25 +15,23 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class KeycardReaderMenu extends AbstractContainerMenu
 {
 	private final SimpleContainer itemInventory = new SimpleContainer(1);
 	public final Slot keycardSlot;
-	public KeycardReaderBlockEntity te;
+	public KeycardReaderBlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 
-	public KeycardReaderMenu(int windowId, Inventory inventory, Level world, BlockPos pos)
+	public KeycardReaderMenu(int windowId, Inventory inventory, Level level, BlockPos pos)
 	{
 		super(SCContent.mTypeKeycardReader, windowId);
 
-		BlockEntity tile = world.getBlockEntity(pos);
 
-		if(tile instanceof KeycardReaderBlockEntity te)
-			this.te = te;
+		if(level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be)
+			this.be = be;
 
-		worldPosCallable = ContainerLevelAccess.create(world, pos);
+		worldPosCallable = ContainerLevelAccess.create(level, pos);
 
 		//main player inventory
 		for(int i = 0; i < 3; i++)
@@ -61,7 +59,7 @@ public class KeycardReaderMenu extends AbstractContainerMenu
 				String keycardOwnerName = tag.getString("ownerName");
 
 				//only allow keycards that have been linked to a keycard reader with the same owner as this keycard reader
-				return keycardOwnerUUID.isEmpty() || ((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(te.getOwner().getName(), keycardOwnerName)) || keycardOwnerUUID.equals(te.getOwner().getUUID()));
+				return keycardOwnerUUID.isEmpty() || ((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(be.getOwner().getName(), keycardOwnerName)) || keycardOwnerUUID.equals(be.getOwner().getUUID()));
 			}
 		});
 	}
@@ -75,9 +73,9 @@ public class KeycardReaderMenu extends AbstractContainerMenu
 			CompoundTag tag = keycard.getOrCreateTag();
 
 			tag.putBoolean("linked", true);
-			tag.putInt("signature", te.getSignature());
-			tag.putString("ownerName", te.getOwner().getName());
-			tag.putString("ownerUUID", te.getOwner().getUUID());
+			tag.putInt("signature", be.getSignature());
+			tag.putString("ownerName", be.getOwner().getName());
+			tag.putString("ownerUUID", be.getOwner().getUUID());
 		}
 	}
 

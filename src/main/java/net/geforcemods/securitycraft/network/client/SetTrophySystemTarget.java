@@ -37,10 +37,10 @@ public class SetTrophySystemTarget {
 
 	public static void onMessage(SetTrophySystemTarget message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			BlockEntity tile = Minecraft.getInstance().level.getBlockEntity(message.trophyPos);
+			BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(message.trophyPos);
 
-			if(tile instanceof TrophySystemBlockEntity te && Minecraft.getInstance().level.getEntity(message.targetID) instanceof Projectile projectile)
-				te.setTarget(projectile);
+			if(blockEntity instanceof TrophySystemBlockEntity be && Minecraft.getInstance().level.getEntity(message.targetID) instanceof Projectile projectile)
+				be.setTarget(projectile);
 		});
 
 		ctx.get().setPacketHandled(true);

@@ -49,12 +49,12 @@ public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEn
 	}
 
 	@Override
-	public void render(SecretSignBlockEntity te, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+	public void render(SecretSignBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
 	{
-		BlockState state = te.getBlockState();
-		WoodType woodtype = SignRenderer.getWoodType(state.getBlock());
-		SignModel model = signModels.get(woodtype);
-		Material material = Sheets.getSignMaterial(woodtype);
+		BlockState state = be.getBlockState();
+		WoodType woodType = SignRenderer.getWoodType(state.getBlock());
+		SignModel model = signModels.get(woodType);
+		Material material = Sheets.getSignMaterial(woodType);
 		VertexConsumer builder;
 
 		pose.pushPose();
@@ -81,21 +81,21 @@ public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEn
 		pose.translate(0.0D, 0.33333334F, 0.046666667F);
 		pose.scale(0.010416667F, -0.010416667F, 0.010416667F);
 
-		if(te.isPlayerAllowedToSeeText(Minecraft.getInstance().player))
+		if(be.isPlayerAllowedToSeeText(Minecraft.getInstance().player))
 		{
 			int textColor;
 			boolean drawOutline;
-			int darkColor = getDarkColor(te);
+			int darkColor = getDarkColor(be);
 			int packedLightCoords;
-			FormattedCharSequence[] text = te.getRenderMessages(Minecraft.getInstance().isTextFilteringEnabled(), line -> {
+			FormattedCharSequence[] text = be.getRenderMessages(Minecraft.getInstance().isTextFilteringEnabled(), line -> {
 				List<FormattedCharSequence> list = font.split(line, 90);
 				return list.isEmpty() ? FormattedCharSequence.EMPTY : list.get(0);
 			});
 
-			if(te.hasGlowingText())
+			if(be.hasGlowingText())
 			{
-				textColor = te.getColor().getTextColor();
-				drawOutline = isOutlineVisible(te, textColor);
+				textColor = be.getColor().getTextColor();
+				drawOutline = isOutlineVisible(be, textColor);
 				packedLightCoords = 15728880;
 			}
 			else
@@ -108,8 +108,7 @@ public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEn
 			for(int lineIndex = 0; lineIndex < 4; ++lineIndex)
 			{
 				FormattedCharSequence line = text[lineIndex];
-
-				float xPos = -this.font.width(line) / 2;
+				float xPos = -font.width(line) / 2;
 
 				if(drawOutline)
 					font.drawInBatch8xOutline(line, xPos, lineIndex * LINE_HEIGHT - 20, textColor, darkColor, pose.last().pose(), buffer, packedLightCoords);
@@ -122,7 +121,7 @@ public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEn
 		pose.popPose();
 	}
 
-	private static boolean isOutlineVisible(SecretSignBlockEntity te, int textColor)
+	private static boolean isOutlineVisible(SecretSignBlockEntity be, int textColor)
 	{
 		if(textColor == DyeColor.BLACK.getTextColor())
 			return true;
@@ -137,18 +136,18 @@ public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEn
 			{
 				Entity entity = mc.getCameraEntity();
 
-				return entity != null && entity.distanceToSqr(Vec3.atCenterOf(te.getBlockPos())) < OUTLINE_RENDER_DISTANCE;
+				return entity != null && entity.distanceToSqr(Vec3.atCenterOf(be.getBlockPos())) < OUTLINE_RENDER_DISTANCE;
 			}
 		}
 	}
 
-	private static int getDarkColor(SecretSignBlockEntity te)
+	private static int getDarkColor(SecretSignBlockEntity be)
 	{
-		int textColor = te.getColor().getTextColor();
+		int textColor = be.getColor().getTextColor();
 		int r = (int)(NativeImage.getR(textColor) * 0.4D);
 		int g = (int)(NativeImage.getG(textColor) * 0.4D);
 		int b = (int)(NativeImage.getB(textColor) * 0.4D);
 
-		return textColor == DyeColor.BLACK.getTextColor() && te.hasGlowingText() ? BLACK_TEXT_OUTLINE_COLOR : NativeImage.combine(0, b, g, r);
+		return textColor == DyeColor.BLACK.getTextColor() && be.hasGlowingText() ? BLACK_TEXT_OUTLINE_COLOR : NativeImage.combine(0, b, g, r);
 	}
 }

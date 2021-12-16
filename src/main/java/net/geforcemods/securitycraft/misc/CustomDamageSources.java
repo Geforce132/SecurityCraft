@@ -2,11 +2,6 @@ package net.geforcemods.securitycraft.misc;
 
 import net.minecraft.world.damagesource.DamageSource;
 
-/**
- * SecurityCraft's custom damage source handler.
- *
- * @author Geforce
- */
 public class CustomDamageSources
 {
 	public static final DamageSource LASER = new DamageSource("securitycraft.laser");

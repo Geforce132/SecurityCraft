@@ -43,15 +43,15 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	}
 
 	@Override
-	public void tick(Level world, BlockPos pos, BlockState state)
+	public void tick(Level level, BlockPos pos, BlockState state)
 	{
-		if(!world.isClientSide && enabledOption.get() && ticksUntilNextSearch-- <= 0)
+		if(enabledOption.get() && ticksUntilNextSearch-- <= 0)
 		{
 			ticksUntilNextSearch = getSearchDelay();
 
-			ServerPlayer owner = world.getServer().getPlayerList().getPlayerByName(getOwner().getName());
+			ServerPlayer owner = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
 			AABB area = new AABB(pos).inflate(getSearchRadius());
-			List<Player> entities = world.getEntitiesOfClass(Player.class, area, e -> {
+			List<Player> entities = level.getEntitiesOfClass(Player.class, area, e -> {
 				boolean isNotAllowed = true;
 
 				if(hasModule(ModuleType.ALLOWLIST))
@@ -61,7 +61,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			});
 
 			if(hasModule(ModuleType.REDSTONE))
-				PortableRadarBlock.togglePowerOutput(world, pos, !entities.isEmpty());
+				PortableRadarBlock.togglePowerOutput(level, pos, !entities.isEmpty());
 
 			if(owner != null)
 			{

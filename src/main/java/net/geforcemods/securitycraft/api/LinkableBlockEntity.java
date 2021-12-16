@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -56,7 +56,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 		if(hasLevel() && linkedBlocks.size() > 0) {
 			ListTag tagList = new ListTag();
 
-			WorldUtils.addScheduledTask(level, () -> {
+			LevelUtils.addScheduledTask(level, () -> {
 				for(int i = linkedBlocks.size() - 1; i >= 0; i--)
 				{
 					LinkedBlock block = linkedBlocks.get(i);
@@ -115,8 +115,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 			int x = list.getCompound(i).getInt("blockX");
 			int y = list.getCompound(i).getInt("blockY");
 			int z = list.getCompound(i).getInt("blockZ");
-
 			LinkedBlock block = new LinkedBlock(name, new BlockPos(x, y, z));
+
 			if(hasLevel() && !block.validate(level)) {
 				list.remove(i);
 				continue;
@@ -163,8 +163,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	/**
 	 * @return Are the two blocks linked together?
 	 */
-	public static boolean isLinkedWith(LinkableBlockEntity tileEntity1, LinkableBlockEntity tileEntity2) {
-		return tileEntity1.linkedBlocks.contains(new LinkedBlock(tileEntity2)) && tileEntity2.linkedBlocks.contains(new LinkedBlock(tileEntity1));
+	public static boolean isLinkedWith(LinkableBlockEntity blockEntity1, LinkableBlockEntity blockEntity2) {
+		return blockEntity1.linkedBlocks.contains(new LinkedBlock(blockEntity2)) && blockEntity2.linkedBlocks.contains(new LinkedBlock(blockEntity1));
 	}
 
 	/**

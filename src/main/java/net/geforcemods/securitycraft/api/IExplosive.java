@@ -13,36 +13,36 @@ public interface IExplosive {
 	/**
 	 * Handle your explosive's explosion here.
 	 *
-	 * @param world The world your block is in.
+	 * @param level The level your block is in.
 	 * @param pos Your block's position.
 	 */
-	public void explode(Level world, BlockPos pos);
+	public void explode(Level level, BlockPos pos);
 
 	/**
 	 * Re-activate your defused mine.
 	 *
-	 * @param world The world your block is in.
+	 * @param level The level your block is in.
 	 * @param pos Your block's position.
 	 * @return true if the mine was activated, false otherwise
 	 */
-	public boolean activateMine(Level world, BlockPos pos);
+	public boolean activateMine(Level level, BlockPos pos);
 
 	/**
 	 * Defuse your active mine.
 	 *
-	 * @param world The world your block is in.
+	 * @param level The level your block is in.
 	 * @param pos Your block's position.
 	 * @return true if the mine was defused, false otherwise
 	 */
-	public boolean defuseMine(Level world, BlockPos pos);
+	public boolean defuseMine(Level level, BlockPos pos);
 
 	/**
-	 * Is your mine currently active?
+	 * Whether the mine is currently active, aka if it can explode
 	 *
-	 * @param world
-	 * @param pos
+	 * @param level The level the block is in
+	 * @param pos true if the mine is active, false otherwise
 	 */
-	public boolean isActive(Level world, BlockPos pos);
+	public boolean isActive(Level level, BlockPos pos);
 
 	/**
 	 * @return Is your mine defusable?

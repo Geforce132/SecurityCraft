@@ -32,9 +32,9 @@ public class UniversalBlockReinforcerItem extends Item
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand)
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
 	{
-		if(!world.isClientSide && player instanceof ServerPlayer)
+		if(!level.isClientSide && player instanceof ServerPlayer)
 		{
 			NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 				@Override
@@ -54,7 +54,7 @@ public class UniversalBlockReinforcerItem extends Item
 		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}
 
-	public static boolean convertBlock(BlockState vanillaState, Level world, ItemStack stack, BlockPos pos, Player player) //gets rid of the stuttering experienced with onBlockStartBreak
+	public static boolean convertBlock(BlockState vanillaState, Level level, ItemStack stack, BlockPos pos, Player player) //gets rid of the stuttering experienced with onBlockStartBreak
 	{
 		if(!player.isCreative())
 		{
@@ -64,25 +64,25 @@ public class UniversalBlockReinforcerItem extends Item
 			if(rb != null)
 			{
 				BlockState convertedState = ((IReinforcedBlock)rb).getConvertedState(vanillaState);
-				BlockEntity te = world.getBlockEntity(pos);
+				BlockEntity be = level.getBlockEntity(pos);
 				CompoundTag tag = null;
 
-				if(te != null)
+				if(be != null)
 				{
-					tag = te.save(new CompoundTag());
+					tag = be.save(new CompoundTag());
 
-					if(te instanceof Container container)
+					if(be instanceof Container container)
 						container.clearContent();
 				}
 
-				world.setBlockAndUpdate(pos, convertedState);
-				te = world.getBlockEntity(pos);
+				level.setBlockAndUpdate(pos, convertedState);
+				be = level.getBlockEntity(pos);
 
-				if (te != null) { //in case the converted state gets removed immediately after it is placed down
+				if (be != null) { //in case the converted state gets removed immediately after it is placed down
 					if (tag != null)
-						te.load(tag);
+						be.load(tag);
 
-					((IOwnable)te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+					((IOwnable)be).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				}
 
 				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));

@@ -35,38 +35,38 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock
 	}
 
 	@Override
-	public void attack(BlockState state, Level world, BlockPos pos, Player player)
+	public void attack(BlockState state, Level level, BlockPos pos, Player player)
 	{
-		activate(state, world, pos);
-		super.attack(state, world, pos, player);
+		activate(state, level, pos);
+		super.attack(state, level, pos, player);
 	}
 
 	@Override
-	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity)
+	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
 	{
-		activate(state, world, pos);
-		super.stepOn(world, pos, state, entity);
+		activate(state, level, pos);
+		super.stepOn(level, pos, state, entity);
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		ItemStack stack = player.getItemInHand(hand);
 
-		if(world.isClientSide)
-			spawnParticles(world, pos);
+		if(level.isClientSide)
+			spawnParticles(level, pos);
 		else
-			activate(state, world, pos);
+			activate(state, level, pos);
 
 		return stack.getItem() instanceof BlockItem && (new BlockPlaceContext(player, hand, stack, hit)).canPlace() ? InteractionResult.PASS : InteractionResult.SUCCESS;
 	}
 
-	private static void activate(BlockState state, Level world, BlockPos pos)
+	private static void activate(BlockState state, Level level, BlockPos pos)
 	{
-		spawnParticles(world, pos);
+		spawnParticles(level, pos);
 
 		if(!state.getValue(LIT))
-			world.setBlock(pos, state.setValue(LIT, true), 3);
+			level.setBlock(pos, state.setValue(LIT, true), 3);
 	}
 
 	@Override
@@ -76,36 +76,36 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
 	{
 		if(state.getValue(LIT))
-			world.setBlock(pos, state.setValue(LIT, false), 3);
+			level.setBlock(pos, state.setValue(LIT, false), 3);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
 	{
 		if(state.getValue(LIT))
-			spawnParticles(world, pos);
+			spawnParticles(level, pos);
 	}
 
-	private static void spawnParticles(Level world, BlockPos pos)
+	private static void spawnParticles(Level level, BlockPos pos)
 	{
-		Random random = world.random;
+		Random random = level.random;
 
 		for(Direction direction : Direction.values())
 		{
 			BlockPos offsetPos = pos.relative(direction);
 
-			if(!world.getBlockState(offsetPos).isSolidRender(world, offsetPos))
+			if(!level.getBlockState(offsetPos).isSolidRender(level, offsetPos))
 			{
 				Direction.Axis axis = direction.getAxis();
 				double d1 = axis == Direction.Axis.X ? 0.5D + 0.5625D * direction.getStepX() : (double)random.nextFloat();
 				double d2 = axis == Direction.Axis.Y ? 0.5D + 0.5625D * direction.getStepY() : (double)random.nextFloat();
 				double d3 = axis == Direction.Axis.Z ? 0.5D + 0.5625D * direction.getStepZ() : (double)random.nextFloat();
 
-				world.addParticle(DustParticleOptions.REDSTONE, pos.getX() + d1, pos.getY() + d2, pos.getZ() + d3, 0.0D, 0.0D, 0.0D);
+				level.addParticle(DustParticleOptions.REDSTONE, pos.getX() + d1, pos.getY() + d2, pos.getZ() + d3, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}

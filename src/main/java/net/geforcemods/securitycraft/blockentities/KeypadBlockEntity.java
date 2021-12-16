@@ -45,10 +45,6 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 		super(SCContent.beTypeKeypad, pos, state);
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
 	public CompoundTag save(CompoundTag tag)
 	{
@@ -60,9 +56,6 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void load(CompoundTag tag)
 	{

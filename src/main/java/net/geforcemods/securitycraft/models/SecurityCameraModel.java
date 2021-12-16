@@ -50,9 +50,9 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack matrix, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+	public void renderToBuffer(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
 	{
-		partList.forEach(part -> part.render(matrix, builder, packedLight, packedOverlay));
+		partList.forEach(part -> part.render(pose, builder, packedLight, packedOverlay));
 	}
 
 	public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {

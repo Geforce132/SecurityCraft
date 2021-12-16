@@ -27,15 +27,15 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if(isAllowedToPress(world, pos, (AllowlistOnlyBlockEntity)world.getBlockEntity(pos), player))
-			return super.use(state, world, pos, player, hand, result);
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+		if(isAllowedToPress(level, pos, (AllowlistOnlyBlockEntity)level.getBlockEntity(pos), player))
+			return super.use(state, level, pos, player, hand, result);
 		return InteractionResult.FAIL;
 	}
 
-	public boolean isAllowedToPress(Level world, BlockPos pos, AllowlistOnlyBlockEntity te, Player entity)
+	public boolean isAllowedToPress(Level level, BlockPos pos, AllowlistOnlyBlockEntity be, Player entity)
 	{
-		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
+		return be.getOwner().isOwner(entity) || ModuleUtils.isAllowed(be, entity);
 	}
 
 	@Override
@@ -51,10 +51,10 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	}
 
 	@Override
-	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override

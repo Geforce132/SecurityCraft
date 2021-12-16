@@ -36,12 +36,12 @@ public class BlockMineModel implements BakedModel
 	}
 
 	@Override
-	public BakedModel handlePerspective(TransformType cameraTransformType, PoseStack matrix)
+	public BakedModel handlePerspective(TransformType cameraTransformType, PoseStack pose)
 	{
 		if(cameraTransformType == TransformType.GUI)
-			return ForgeHooksClient.handlePerspective(guiModel, cameraTransformType, matrix);
+			return ForgeHooksClient.handlePerspective(guiModel, cameraTransformType, pose);
 		else
-			return ForgeHooksClient.handlePerspective(defaultModel, cameraTransformType, matrix);
+			return ForgeHooksClient.handlePerspective(defaultModel, cameraTransformType, pose);
 	}
 
 	@Override

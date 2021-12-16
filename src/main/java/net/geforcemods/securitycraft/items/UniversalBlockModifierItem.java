@@ -35,16 +35,16 @@ public class UniversalBlockModifierItem extends Item
 	@Override
 	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx)
 	{
-		Level world = ctx.getLevel();
+		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity be = level.getBlockEntity(pos);
 		Player player = ctx.getPlayer();
 
-		if(te instanceof IModuleInventory)
+		if(be instanceof IModuleInventory)
 		{
-			if(te instanceof IOwnable ownable && !ownable.getOwner().isOwner(player))
+			if(be instanceof IOwnable ownable && !ownable.getOwner().isOwner(player))
 			{
-				if(!(te.getBlockState().getBlock() instanceof DisguisableBlock db) || (((BlockItem)db.getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
+				if(!(be.getBlockState().getBlock() instanceof DisguisableBlock db) || (((BlockItem)db.getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(ownable.getOwner().getName())), ChatFormatting.RED);
 
 				return InteractionResult.FAIL;
@@ -55,13 +55,13 @@ public class UniversalBlockModifierItem extends Item
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 					{
-						return new CustomizeBlockMenu(windowId, world, pos, inv);
+						return new CustomizeBlockMenu(windowId, level, pos, inv);
 					}
 
 					@Override
 					public Component getDisplayName()
 					{
-						return new TranslatableComponent(te.getBlockState().getBlock().getDescriptionId());
+						return new TranslatableComponent(be.getBlockState().getBlock().getDescriptionId());
 					}
 				}, pos);
 			}

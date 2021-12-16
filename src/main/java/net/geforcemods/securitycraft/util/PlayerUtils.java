@@ -47,6 +47,7 @@ public class PlayerUtils{
 
 			while(iterator.hasNext()){
 				Player tempPlayer = (Player) iterator.next();
+
 				if(tempPlayer.getName().getString().equals(name))
 					return tempPlayer;
 			}
@@ -58,6 +59,7 @@ public class PlayerUtils{
 
 			while(iterator.hasNext()){
 				Player tempPlayer = (Player) iterator.next();
+
 				if(tempPlayer.getName().getString().equals(name))
 					return tempPlayer;
 			}

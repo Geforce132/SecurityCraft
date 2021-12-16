@@ -16,13 +16,13 @@ import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.lycanitesmobs.LycanitesMobsCompat;
 import net.geforcemods.securitycraft.compat.quark.QuarkCompat;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
-import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
-import net.geforcemods.securitycraft.itemgroups.SCExplosivesGroup;
-import net.geforcemods.securitycraft.itemgroups.SCTechnicalGroup;
+import net.geforcemods.securitycraft.itemgroups.SCDecorationTab;
+import net.geforcemods.securitycraft.itemgroups.SCExplosivesTab;
+import net.geforcemods.securitycraft.itemgroups.SCTechnicalTab;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.misc.conditions.TileEntityNBTCondition;
+import net.geforcemods.securitycraft.misc.conditions.BlockEntityNBTCondition;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -59,10 +59,10 @@ public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	public static final String PROTOCOL_VERSION = "4";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-	public static CreativeModeTab groupSCTechnical = new SCTechnicalGroup();
-	public static CreativeModeTab groupSCMine = new SCExplosivesGroup();
-	public static CreativeModeTab groupSCDecoration = new SCDecorationGroup();
-	public static final LootItemConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootItemConditions.register(SecurityCraft.MODID + ":tile_entity_nbt", new TileEntityNBTCondition.ConditionSerializer());
+	public static CreativeModeTab technicalTab = new SCTechnicalTab();
+	public static CreativeModeTab mineTab = new SCExplosivesTab();
+	public static CreativeModeTab decorationTab = new SCDecorationTab();
+	public static final LootItemConditionType BLOCK_ENTITY_NBT_LOOT_CONDITION = LootItemConditions.register(SecurityCraft.MODID + ":tile_entity_nbt", new BlockEntityNBTCondition.ConditionSerializer());
 
 	public SecurityCraft()
 	{
@@ -113,6 +113,7 @@ public class SecurityCraft {
 				{
 					Block block = ((RegistryObject<Block>)field.get(null)).get();
 					IReinforcedBlock rb = (IReinforcedBlock)block;
+
 					IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.put(rb.getVanillaBlock(), block);
 					IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.put(block, rb.getVanillaBlock());
 				}

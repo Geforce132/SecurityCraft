@@ -33,12 +33,12 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent logged = Utils.localize("gui.securitycraft:logger.logged");
 	private final TranslatableComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
-	private UsernameLoggerBlockEntity tileEntity;
+	private UsernameLoggerBlockEntity be;
 	private PlayerList playerList;
 
-	public UsernameLoggerScreen(GenericTEMenu container, Inventory inv, Component name) {
-		super(container, inv, name);
-		tileEntity = (UsernameLoggerBlockEntity)container.te;
+	public UsernameLoggerScreen(GenericTEMenu menu, Inventory inv, Component title) {
+		super(menu, inv, title);
+		be = (UsernameLoggerBlockEntity)menu.be;
 	}
 
 	@Override
@@ -47,29 +47,30 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 		super.init();
 
 		addRenderableWidget(new IdButton(0, leftPos + 4, topPos + 4, 8, 8, "x", b -> {
-			tileEntity.players = new String[100];
-			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getBlockPos()));
-		})).active = tileEntity.getOwner().isOwner(minecraft.player);
+			be.players = new String[100];
+			SecurityCraft.channel.sendToServer(new ClearLoggerServer(be.getBlockPos()));
+		})).active = be.getOwner().isOwner(minecraft.player);
 		addRenderableWidget(playerList = new PlayerList(minecraft, imageWidth - 24, imageHeight - 40, topPos + 20, leftPos + 12));
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY)
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY)
 	{
-		font.draw(matrix, logged, imageWidth / 2 - font.width(logged) / 2, 6, 4210752);
+		font.draw(pose, logged, imageWidth / 2 - font.width(logged) / 2, 6, 4210752);
 
 		if(mouseX >= leftPos + 4 && mouseY >= topPos + 4 && mouseX < leftPos + 4 + 8 && mouseY < topPos + 4 + 8)
-			renderTooltip(matrix, clear, mouseX - leftPos, mouseY - topPos);
+			renderTooltip(pose, clear, mouseX - leftPos, mouseY - topPos);
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem._setShaderTexture(0, TEXTURE);
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
-		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
+
+		renderBackground(pose);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem._setShaderTexture(0, TEXTURE);
+		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -112,7 +113,7 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 		@Override
 		protected int getContentHeight()
 		{
-			int height = 50 + (tileEntity.players.length * font.lineHeight);
+			int height = 50 + (be.players.length * font.lineHeight);
 
 			if(height < bottom - top - 8)
 				height = bottom - top - 8;
@@ -121,32 +122,32 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 		}
 
 		@Override
-		public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
+		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
 		{
-			super.render(matrix, mouseX, mouseY, partialTicks);
+			super.render(pose, mouseX, mouseY, partialTicks);
 
-			if(tileEntity.getOwner().isOwner(minecraft.player))
+			if(be.getOwner().isOwner(minecraft.player))
 			{
 				int mouseListY = (int)(mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / slotHeight;
 
 				if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
 				{
-					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
+					if(be.players[slotIndex] != null  && !be.players[slotIndex].isEmpty())
 					{
-						TranslatableComponent localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
+						TranslatableComponent localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(be.timestamps[slotIndex])));
 
-						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
-							renderTooltip(matrix, new TextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);
+						if(be.uuids[slotIndex] != null && !be.uuids[slotIndex].isEmpty())
+							renderTooltip(pose, new TextComponent(be.uuids[slotIndex]), mouseX, mouseY);
 
-						font.draw(matrix, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752);
+						font.draw(pose, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752);
 					}
 				}
 			}
 		}
 
 		@Override
-		protected void drawPanel(PoseStack matrix, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
+		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
 		{
 			int baseY = top + border - (int)scrollDistance;
 			int slotBuffer = slotHeight - 4;
@@ -156,7 +157,7 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 			//highlight hovered slot
 			if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
 			{
-				if(tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty())
+				if(be.players[slotIndex] != null && !be.players[slotIndex].isEmpty())
 				{
 					int min = left;
 					int max = entryRight - 6; //6 is the width of the scrollbar
@@ -183,10 +184,10 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 			}
 
 			//draw entry strings
-			for(int i = 0; i < tileEntity.players.length; i++)
+			for(int i = 0; i < be.players.length; i++)
 			{
-				if(tileEntity.players[i] != null && !tileEntity.players[i].equals(""))
-					font.draw(matrix, tileEntity.players[i], left + width / 2 - font.width(tileEntity.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
+				if(be.players[i] != null && !be.players[i].equals(""))
+					font.draw(pose, be.players[i], left + width / 2 - font.width(be.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 			}
 		}
 

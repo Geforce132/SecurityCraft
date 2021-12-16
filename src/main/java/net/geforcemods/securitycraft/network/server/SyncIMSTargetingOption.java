@@ -43,8 +43,8 @@ public class SyncIMSTargetingOption
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
 
-			if(player.level.getBlockEntity(pos) instanceof IMSBlockEntity te && te.getOwner().isOwner(player))
-				te.setTargetingMode(message.targetingMode);
+			if(player.level.getBlockEntity(pos) instanceof IMSBlockEntity be && be.getOwner().isOwner(player))
+				be.setTargetingMode(message.targetingMode);
 		});
 
 		ctx.get().setPacketHandled(true);

@@ -21,7 +21,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
@@ -45,9 +44,7 @@ public class SecurityCamera extends Entity
 	public SecurityCamera(Level level, BlockPos pos){
 		this(SCContent.eTypeSecurityCamera, level);
 
-		BlockEntity be = level.getBlockEntity(pos);
-
-		if(!(be instanceof SecurityCameraBlockEntity cam))
+		if(!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity cam))
 		{
 			discard();
 			return;

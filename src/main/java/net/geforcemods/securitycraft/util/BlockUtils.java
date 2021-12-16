@@ -22,16 +22,16 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 public class BlockUtils{
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
 
-	public static boolean isSideSolid(LevelReader world, BlockPos pos, Direction side)
+	public static boolean isSideSolid(LevelReader level, BlockPos pos, Direction side)
 	{
-		return world.getBlockState(pos).isFaceSturdy(world, pos, side);
+		return level.getBlockState(pos).isFaceSturdy(level, pos, side);
 	}
 
-	public static void updateAndNotify(Level world, BlockPos pos, Block block, int delay, boolean shouldUpdate){
+	public static void updateAndNotify(Level level, BlockPos pos, Block block, int delay, boolean shouldUpdate){
 		if(shouldUpdate)
-			world.getBlockTicks().scheduleTick(pos, block, delay);
+			level.getBlockTicks().scheduleTick(pos, block, delay);
 
-		world.updateNeighborsAt(pos, block);
+		level.updateNeighborsAt(pos, block);
 	}
 
 	public static int[] posToIntArray(BlockPos pos){
@@ -43,27 +43,27 @@ public class BlockUtils{
 		return ConfigHandler.SERVER.mineExplosionsBreakBlocks.get() ? BlockInteraction.BREAK : BlockInteraction.NONE;
 	}
 
-	public static boolean hasActiveSCBlockNextTo(Level world, BlockPos pos)
+	public static boolean hasActiveSCBlockNextTo(Level level, BlockPos pos)
 	{
-		return SecurityCraftAPI.getRegisteredDoorActivators().stream().anyMatch(activator -> hasActiveSCBlockNextTo(world, pos, world.getBlockEntity(pos), activator));
+		return SecurityCraftAPI.getRegisteredDoorActivators().stream().anyMatch(activator -> hasActiveSCBlockNextTo(level, pos, level.getBlockEntity(pos), activator));
 	}
 
-	private static boolean hasActiveSCBlockNextTo(Level world, BlockPos pos, BlockEntity te, IDoorActivator activator)
+	private static boolean hasActiveSCBlockNextTo(Level level, BlockPos pos, BlockEntity be, IDoorActivator activator)
 	{
 		for(Direction dir : Direction.values())
 		{
 			BlockPos offsetPos = pos.relative(dir);
-			BlockState offsetState = world.getBlockState(offsetPos);
+			BlockState offsetState = level.getBlockState(offsetPos);
 
 			if(activator.getBlocks().contains(offsetState.getBlock()))
 			{
-				BlockEntity offsetTe = world.getBlockEntity(offsetPos);
+				BlockEntity offsetBe = level.getBlockEntity(offsetPos);
 
-				if(activator.isPowering(world, offsetPos, offsetState, offsetTe, dir, 1) && (!(offsetTe instanceof IOwnable ownable) || ownable.getOwner().owns((IOwnable)te)))
+				if(activator.isPowering(level, offsetPos, offsetState, offsetBe, dir, 1) && (!(offsetBe instanceof IOwnable ownable) || ownable.getOwner().owns((IOwnable)be)))
 					return true;
 			}
 
-			if(world.getSignal(offsetPos, dir) == 15 && !offsetState.isSignalSource())
+			if(level.getSignal(offsetPos, dir) == 15 && !offsetState.isSignalSource())
 			{
 				for(Direction dirOffset : Direction.values())
 				{
@@ -72,13 +72,13 @@ public class BlockUtils{
 
 					BlockPos newOffsetPos = offsetPos.relative(dirOffset);
 
-					offsetState = world.getBlockState(newOffsetPos);
+					offsetState = level.getBlockState(newOffsetPos);
 
 					if(activator.getBlocks().contains(offsetState.getBlock()))
 					{
-						BlockEntity offsetTe = world.getBlockEntity(newOffsetPos);
+						BlockEntity offsetBe = level.getBlockEntity(newOffsetPos);
 
-						if(activator.isPowering(world, newOffsetPos, offsetState, offsetTe, dirOffset, 2) && (!(offsetTe instanceof IOwnable ownable) || ownable.getOwner().owns((IOwnable)te)))
+						if(activator.isPowering(level, newOffsetPos, offsetState, offsetBe, dirOffset, 2) && (!(offsetBe instanceof IOwnable ownable) || ownable.getOwner().owns((IOwnable)be)))
 							return true;
 					}
 				}
@@ -88,19 +88,19 @@ public class BlockUtils{
 		return false;
 	}
 
-	public static LazyOptional<?> getProtectedCapability(Direction side, BlockEntity te, Supplier<LazyOptional<?>> extractionPermittedHandler, Supplier<LazyOptional<?>> insertOnlyHandler)
+	public static LazyOptional<?> getProtectedCapability(Direction side, BlockEntity be, Supplier<LazyOptional<?>> extractionPermittedHandler, Supplier<LazyOptional<?>> insertOnlyHandler)
 	{
 		if(side == null)
 			return EMPTY_INVENTORY;
 
-		BlockPos offsetPos = te.getBlockPos().relative(side);
-		BlockState offsetState = te.getLevel().getBlockState(offsetPos);
+		BlockPos offsetPos = be.getBlockPos().relative(side);
+		BlockState offsetState = be.getLevel().getBlockState(offsetPos);
 
 		for(IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks())
 		{
 			if(offsetState.getBlock() == extractionBlock.getBlock())
 			{
-				if(!extractionBlock.canExtract((IOwnable)te, te.getLevel(), offsetPos, offsetState))
+				if(!extractionBlock.canExtract((IOwnable)be, be.getLevel(), offsetPos, offsetState))
 					return EMPTY_INVENTORY;
 				else return extractionPermittedHandler.get();
 			}

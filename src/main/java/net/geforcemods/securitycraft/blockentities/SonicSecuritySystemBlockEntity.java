@@ -123,8 +123,6 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 			}
 			else
 			{
-				// TODO: should the SSS automatically forget the positions of linked blocks
-				// if they are broken?
 				ArrayList<BlockPos> blocksToRemove = new ArrayList<>();
 				Iterator<BlockPos> iterator = linkedBlocks.iterator();
 
@@ -256,7 +254,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	/**
-	 * Saves this tile entity's notes to a tag
+	 * Saves this block entity's notes to a tag
 	 * @param tag The tag to save the notes to
 	 */
 	public void saveNotes(CompoundTag tag) {
@@ -291,8 +289,8 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	/**
-	 * Copies the positions over from the SSS item's tag into this TileEntity.
-	 * @param itemTag The CompoundNBT tag of the Sonic Security System item to transfer over
+	 * Copies the positions over from the SSS item's tag into this block entity.
+	 * @param itemTag The CompoundTag of the Sonic Security System item to transfer over
 	 */
 	public void transferPositionsFromItem(CompoundTag itemTag)
 	{
@@ -528,17 +526,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	/**
 	 * A simple wrapper that makes it slightly easier to store and compare notes with
 	 */
-	public static class NoteWrapper {
-
-		public final int noteID;
-		public final String instrumentName;
-
-		public NoteWrapper(int note, String instrument)
-		{
-			this.noteID = note;
-			this.instrumentName = instrument;
-		}
-
+	public static record NoteWrapper(int noteID, String instrumentName) {
 		/**
 		 * Checks to see if a passed note ID and instrument matches the info of this note
 		 * @param note the note ID to check

@@ -96,28 +96,28 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		if(state.getValue(POWERED))
 			return InteractionResult.PASS;
 		else
 		{
-			KeyPanelBlockEntity te = (KeyPanelBlockEntity)world.getBlockEntity(pos);
+			KeyPanelBlockEntity be = (KeyPanelBlockEntity)level.getBlockEntity(pos);
 
-			if(ModuleUtils.isDenied(te, player))
+			if(ModuleUtils.isDenied(be, player))
 			{
-				if(te.sendsMessages())
+				if(be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}
-			else if(ModuleUtils.isAllowed(te, player))
+			else if(ModuleUtils.isAllowed(be, player))
 			{
-				if(te.sendsMessages())
+				if(be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
-				activate(state, world, pos, te.getSignalLength());
+				activate(state, level, pos, be.getSignalLength());
 			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				te.openPasswordGUI(player);
+				be.openPasswordGUI(player);
 		}
 
 		return InteractionResult.SUCCESS;

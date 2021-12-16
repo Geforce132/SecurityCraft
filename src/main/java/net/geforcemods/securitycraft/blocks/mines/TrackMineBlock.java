@@ -12,7 +12,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -35,28 +34,28 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if(PlayerUtils.isHoldingItem(player, SCContent.REMOTE_ACCESS_MINE, hand))
 			return InteractionResult.SUCCESS;
 
-		if(isActive(world, pos) && isDefusable() && player.getItemInHand(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
-			if(defuseMine(world, pos))
+		if(isActive(level, pos) && isDefusable() && player.getItemInHand(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
+			if(defuseMine(level, pos))
 			{
 				if(!player.isCreative())
 					player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				world.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
+				level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
 				return InteractionResult.SUCCESS;
 			}
 		}
 
-		if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
-			if(activateMine(world, pos))
+		if(!isActive(level, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
+			if(activateMine(level, pos))
 			{
 				if(!player.isCreative())
 					player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				world.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
+				level.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
 				return InteractionResult.SUCCESS;
 			}
 		}
@@ -65,73 +64,63 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	}
 
 	@Override
-	public float getDestroyProgress(BlockState state, Player player, BlockGetter world, BlockPos pos)
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos)
 	{
-		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getDestroyProgress(state, player, world, pos);
+		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getDestroyProgress(state, player, level, pos);
 	}
 
 	@Override
-	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override
-	public void onMinecartPass(BlockState state, Level world, BlockPos pos, AbstractMinecart cart){
-		BlockEntity tile = world.getBlockEntity(pos);
-
-		if(tile instanceof TrackMineBlockEntity te && te.isActive())
+	public void onMinecartPass(BlockState state, Level level, BlockPos pos, AbstractMinecart cart){
+		if(level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && be.isActive())
 		{
-			world.destroyBlock(pos, false);
-			world.explode(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+			level.destroyBlock(pos, false);
+			level.explode(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 			cart.kill();
 		}
 	}
 
 	@Override
-	public void explode(Level world, BlockPos pos) {
-		BlockEntity tile = world.getBlockEntity(pos);
-
-		if(tile instanceof TrackMineBlockEntity te && te.isActive())
+	public void explode(Level level, BlockPos pos) {
+		if(level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && be.isActive())
 		{
-			world.destroyBlock(pos, false);
-			world.explode((Entity) null, pos.getX(), pos.above().getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+			level.destroyBlock(pos, false);
+			level.explode(null, pos.getX(), pos.above().getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 		}
 	}
 
 	@Override
-	public boolean activateMine(Level world, BlockPos pos)
+	public boolean activateMine(Level level, BlockPos pos)
 	{
-		BlockEntity tile = world.getBlockEntity(pos);
-
-		if(tile instanceof TrackMineBlockEntity te && !te.isActive())
+		if(level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && !be.isActive())
 		{
-			te.activate();
+			be.activate();
 			return true;
 		}
 		else return false;
 	}
 
 	@Override
-	public boolean defuseMine(Level world, BlockPos pos)
+	public boolean defuseMine(Level level, BlockPos pos)
 	{
-		BlockEntity tile = world.getBlockEntity(pos);
-
-		if(tile instanceof TrackMineBlockEntity te && te.isActive())
+		if(level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && be.isActive())
 		{
-			te.deactivate();
+			be.deactivate();
 			return true;
 		}
 		else return false;
 	}
 
 	@Override
-	public boolean isActive(Level world, BlockPos pos)
+	public boolean isActive(Level level, BlockPos pos)
 	{
-		BlockEntity tile = world.getBlockEntity(pos);
-
-		return tile instanceof TrackMineBlockEntity te && te.isActive();
+		return level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && be.isActive();
 	}
 
 	@Override

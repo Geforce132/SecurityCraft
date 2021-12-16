@@ -39,15 +39,15 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 	private final TranslatableComponent moddedProjectiles = Utils.localize("gui.securitycraft:trophy_system.moddedProjectiles");
 	private final boolean isSmart;
 	private final List<EntityType<?>> orderedFilterList;
-	private TrophySystemBlockEntity tileEntity;
+	private TrophySystemBlockEntity be;
 	private ProjectileScrollList projectileList;
 
-	public TrophySystemScreen(GenericTEMenu container, Inventory inv, Component name) {
-		super(container, inv, name);
+	public TrophySystemScreen(GenericTEMenu menu, Inventory inv, Component title) {
+		super(menu, inv, title);
 
-		this.tileEntity = (TrophySystemBlockEntity)container.te;
-		isSmart = tileEntity.hasModule(ModuleType.SMART);
-		orderedFilterList = new ArrayList<>(tileEntity.getFilters().keySet());
+		be = (TrophySystemBlockEntity)menu.be;
+		isSmart = be.hasModule(ModuleType.SMART);
+		orderedFilterList = new ArrayList<>(be.getFilters().keySet());
 		orderedFilterList.sort((e1, e2) -> {
 			//the entry for modded projectiles always shows at the bottom of the list
 			if(e1 == EntityType.PIG)
@@ -66,28 +66,28 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, title, imageWidth / 2 - font.width(title) / 2, titleLabelY, 4210752);
-		font.draw(matrix, projectiles, imageWidth / 2 - font.width(projectiles) / 2, titleLabelY + 25, 4210752);
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
+		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, titleLabelY, 4210752);
+		font.draw(pose, projectiles, imageWidth / 2 - font.width(projectiles) / 2, titleLabelY + 25, 4210752);
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
 	{
-		super.render(matrix, mouseX, mouseY, partialTicks);
+		super.render(pose, mouseX, mouseY, partialTicks);
 
-		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, toggle, moduleRequired, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, toggle, moduleRequired, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
 
-		renderBackground(matrix);
+		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, GUI_TEXTURE);
-		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
+		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 			int slotIndex = (int)(mouseY + (border / 2)) / slotHeight;
 
 			if(isSmart && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
-				tileEntity.toggleFilter(orderedFilterList.get(slotIndex));
+				be.toggleFilter(orderedFilterList.get(slotIndex));
 				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 				return true;
 			}
@@ -133,7 +133,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 		}
 
 		@Override
-		protected void drawPanel(PoseStack matrix, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
+		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
 		{
 			int baseY = top + border - (int)scrollDistance;
 			int slotBuffer = slotHeight - 4;
@@ -172,9 +172,9 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 				Component projectileName = projectileType == EntityType.PIG ? moddedProjectiles : projectileType.getDescription();
 				int yStart = relativeY + (slotHeight * i);
 
-				font.draw(matrix, projectileName, left + width / 2 - font.width(projectileName) / 2, yStart, 0xC6C6C6);
+				font.draw(pose, projectileName, left + width / 2 - font.width(projectileName) / 2, yStart, 0xC6C6C6);
 				RenderSystem._setShaderTexture(0, BEACON_GUI);
-				blit(matrix, left, yStart - 3, 14, 14, tileEntity.getFilter(projectileType) ? 88 : 110, 219, 21, 22, 256, 256);
+				blit(pose, left, yStart - 3, 14, 14, be.getFilter(projectileType) ? 88 : 110, 219, 21, 22, 256, 256);
 				i++;
 			}
 		}

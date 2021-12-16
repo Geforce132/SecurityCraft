@@ -37,7 +37,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
@@ -60,10 +59,6 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		super(SCContent.beTypeKeypadChest, pos, state);
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
 	public CompoundTag save(CompoundTag tag)
 	{
@@ -82,9 +77,6 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void load(CompoundTag tag)
 	{
@@ -224,7 +216,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, Player player) {
+	public boolean onCodebreakerUsed(BlockState state, Player player) {
 		activate(player);
 		return true;
 	}
@@ -289,10 +281,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 				if(offsetType != ChestType.SINGLE && type != offsetType && state.getValue(KeypadChestBlock.FACING) == offsetState.getValue(KeypadChestBlock.FACING))
 				{
-					BlockEntity offsetTe = level.getBlockEntity(offsetPos);
-
-					if(offsetTe instanceof KeypadChestBlockEntity te)
-						return te;
+					if(level.getBlockEntity(offsetPos) instanceof KeypadChestBlockEntity be)
+						return be;
 				}
 			}
 		}

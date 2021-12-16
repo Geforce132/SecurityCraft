@@ -35,7 +35,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext collisionContext)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext)
 	{
 		if(collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent())
 		{
@@ -45,9 +45,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 				return Shapes.block();
 			else if(entity instanceof Player player)
 			{
-				BlockEntity te = world.getBlockEntity(pos);
-
-				if(te instanceof OwnableBlockEntity ownableTe)
+				if(level.getBlockEntity(pos) instanceof OwnableBlockEntity ownableTe)
 				{
 					if(ownableTe.getOwner().isOwner(player))
 						return Shapes.block();
@@ -66,63 +64,57 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 			explode(level, pos);
 	}
 
-	/**
-	 * Called upon the block being destroyed by an explosion
-	 */
 	@Override
-	public void wasExploded(Level world, BlockPos pos, Explosion explosion){
-		if (!world.isClientSide)
+	public void wasExploded(Level level, BlockPos pos, Explosion explosion){
+		if (!level.isClientSide)
 		{
 			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
-			explode(world, pos);
+			explode(level, pos);
 		}
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid){
-		if(!world.isClientSide)
+	public boolean removedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid){
+		if(!level.isClientSide)
 			if(player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
-				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
-			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
-				explode(world, pos);
-				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+			else if(!EntityUtils.doesPlayerOwn(player, level, pos)){
+				explode(level, pos);
+				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
 			}
 
-		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+		return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
 	}
 
 	@Override
-	public boolean activateMine(Level world, BlockPos pos)
+	public boolean activateMine(Level level, BlockPos pos)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean defuseMine(Level world, BlockPos pos)
+	public boolean defuseMine(Level level, BlockPos pos)
 	{
 		return false;
 	}
 
 	@Override
-	public void explode(Level world, BlockPos pos) {
-		if (!world.isClientSide) {
-			world.destroyBlock(pos, false);
-			world.explode((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+	public void explode(Level level, BlockPos pos) {
+		if (!level.isClientSide) {
+			level.destroyBlock(pos, false);
+			level.explode(null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 		}
 	}
 
-	/**
-	 * Return whether this block can drop from an explosion.
-	 */
 	@Override
 	public boolean dropFromExplosion(Explosion explosion){
 		return false;
 	}
 
 	@Override
-	public boolean isActive(Level world, BlockPos pos) {
+	public boolean isActive(Level level, BlockPos pos) {
 		return true;
 	}
 
@@ -142,19 +134,19 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	}
 
 	@Override
-	public ItemStack getDisplayStack(Level world, BlockState state, BlockPos pos) {
+	public ItemStack getDisplayStack(Level level, BlockState state, BlockPos pos) {
 		return new ItemStack(blockDisguisedAs);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(Level world, BlockState state, BlockPos pos) {
+	public boolean shouldShowSCInfo(Level level, BlockState state, BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
-		if (player.isCreative() || (world.getBlockEntity(pos) instanceof OwnableBlockEntity te && te.getOwner().isOwner(player)))
-			return super.getPickBlock(state, target, world, pos, player);
+	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+		if (player.isCreative() || (level.getBlockEntity(pos) instanceof OwnableBlockEntity te && te.getOwner().isOwner(player)))
+			return super.getPickBlock(state, target, level, pos, player);
 
 		return new ItemStack(blockDisguisedAs);
 	}

@@ -44,14 +44,12 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		}
 
 		Direction dir = state.getValue(ClaymoreBlock.FACING);
-		AABB area = new AABB(pos);
-
-		area = switch(dir) {
-			case NORTH -> area.contract(0, 0, range.get());
-			case SOUTH -> area.contract(0, 0, -range.get());
-			case EAST -> area.contract(-range.get(), 0, 0);
-			case WEST -> area.contract(range.get(), 0, 0);
-			default -> area;
+		AABB area = switch(dir) {
+			case NORTH -> new AABB(pos).contract(0, 0, range.get());
+			case SOUTH -> new AABB(pos).contract(0, 0, -range.get());
+			case EAST -> new AABB(pos).contract(-range.get(), 0, 0);
+			case WEST -> new AABB(pos).contract(range.get(), 0, 0);
+			default -> new AABB(pos);
 		};
 
 		level.getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !EntityUtils.doesEntityOwn(e, level, pos))

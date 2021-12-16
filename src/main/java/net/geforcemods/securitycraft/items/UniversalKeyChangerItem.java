@@ -40,23 +40,23 @@ public class UniversalKeyChangerItem extends Item {
 		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getItemInHand(), ctx.getHand());
 	}
 
-	public InteractionResult onItemUseFirst(Player player, Level world, BlockPos pos, Direction side, ItemStack stack, InteractionHand hand) {
+	public InteractionResult onItemUseFirst(Player player, Level level, BlockPos pos, Direction side, ItemStack stack, InteractionHand hand) {
 		InteractionResult briefcaseResult = handleBriefcase(player, hand).getResult();
 
 		if(briefcaseResult != InteractionResult.PASS)
 			return briefcaseResult;
 
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockEntity be = level.getBlockEntity(pos);
 
-		if(te instanceof IPasswordProtected) {
-			if(((IOwnable) te).getOwner().isOwner(player))
+		if(be instanceof IPasswordProtected) {
+			if(((IOwnable) be).getOwner().isOwner(player))
 			{
-				if(!world.isClientSide)
+				if(!level.isClientSide)
 					NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
 						{
-							return new GenericTEMenu(SCContent.mTypeKeyChanger, windowId, world, pos);
+							return new GenericTEMenu(SCContent.mTypeKeyChanger, windowId, level, pos);
 						}
 
 						@Override
@@ -68,8 +68,8 @@ public class UniversalKeyChangerItem extends Item {
 
 				return InteractionResult.SUCCESS;
 			}
-			else if(!(te.getBlockState().getBlock() instanceof DisguisableBlock db) || (((BlockItem)db.getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable)world.getBlockEntity(pos)).getOwner().getName())), ChatFormatting.RED);
+			else if(!(be.getBlockState().getBlock() instanceof DisguisableBlock db) || (((BlockItem)db.getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock)) {
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable)level.getBlockEntity(pos)).getOwner().getName())), ChatFormatting.RED);
 				return InteractionResult.FAIL;
 			}
 		}
@@ -78,7 +78,7 @@ public class UniversalKeyChangerItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		return handleBriefcase(player, hand);
 	}
 

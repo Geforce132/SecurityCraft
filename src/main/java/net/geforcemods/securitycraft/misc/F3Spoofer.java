@@ -21,9 +21,9 @@ public class F3Spoofer
 	{
 		Block originalBlock = originalState.getBlock();
 
-		if(originalBlock instanceof DisguisableBlock)
+		if(originalBlock instanceof DisguisableBlock disguisableBlock)
 		{
-			BlockState disguisedState = ((DisguisableBlock)originalBlock).getDisguisedBlockState(Minecraft.getInstance().level, pos);
+			BlockState disguisedState = disguisableBlock.getDisguisedBlockState(Minecraft.getInstance().level, pos);
 
 			return disguisedState != null ? disguisedState : originalState;
 		}

@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class CheckPassword {
@@ -49,12 +48,12 @@ public class CheckPassword {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			String password = message.password;
-			Player player = ctx.get().getSender();
+			ServerPlayer player = ctx.get().getSender();
 
-			if(player.level.getBlockEntity(pos) instanceof IPasswordProtected te && te.getPassword().equals(password))
+			if(player.level.getBlockEntity(pos) instanceof IPasswordProtected be && be.getPassword().equals(password))
 			{
-				((ServerPlayer) player).closeContainer();
-				te.activate(player);
+				player.closeContainer();
+				be.activate(player);
 			}
 		});
 

@@ -22,7 +22,7 @@ public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements
 	}
 
 	@Override
-	public float[] getBeaconColorMultiplier(BlockState state, LevelReader world, BlockPos pos, BlockPos beaconPos)
+	public float[] getBeaconColorMultiplier(BlockState state, LevelReader level, BlockPos pos, BlockPos beaconPos)
 	{
 		return color.getTextureDiffuseColors();
 	}
@@ -40,7 +40,7 @@ public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements
 	}
 
 	@Override
-	public float getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos)
+	public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
 	{
 		return 1.0F;
 	}

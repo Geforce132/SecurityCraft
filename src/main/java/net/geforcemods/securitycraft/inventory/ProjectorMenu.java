@@ -15,17 +15,17 @@ import net.minecraft.world.level.Level;
 public class ProjectorMenu extends AbstractContainerMenu {
 
 	public static final int SIZE = 1;
-	public ProjectorBlockEntity te;
+	public ProjectorBlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 
-	public ProjectorMenu(int windowId, Level world, BlockPos pos, Inventory inventory)
+	public ProjectorMenu(int windowId, Level level, BlockPos pos, Inventory inventory)
 	{
 		super(SCContent.mTypeProjector, windowId);
 
-		if(world.getBlockEntity(pos) instanceof ProjectorBlockEntity tile)
-			te = tile;
+		if(level.getBlockEntity(pos) instanceof ProjectorBlockEntity be)
+			this.be = be;
 
-		worldPosCallable = ContainerLevelAccess.create(world, pos);
+		worldPosCallable = ContainerLevelAccess.create(level, pos);
 
 		for(int y = 0; y < 3; y++)
 			for(int x = 0; x < 9; ++x)
@@ -35,7 +35,7 @@ public class ProjectorMenu extends AbstractContainerMenu {
 			addSlot(new Slot(inventory, x, 8 + x * 18, 142 + 59));
 
 		// A custom slot that prevents non-Block items from being inserted into the projector
-		addSlot(new Slot(te, 36, 79, 23)
+		addSlot(new Slot(be, 36, 79, 23)
 		{
 			@Override
 			public boolean mayPlace(ItemStack stack)

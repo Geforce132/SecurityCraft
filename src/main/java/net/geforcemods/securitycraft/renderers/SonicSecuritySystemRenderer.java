@@ -36,11 +36,11 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 	}
 
 	@Override
-	public void render(SonicSecuritySystemBlockEntity be, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int packedLight, int packedOverlay)
+	public void render(SonicSecuritySystemBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay)
 	{
 		boolean recording = be.isRecording();
 
-		matrix.translate(0.5D, 1.5D, 0.5D);
+		pose.translate(0.5D, 1.5D, 0.5D);
 
 		if(recording || be.isListening())
 		{
@@ -51,18 +51,18 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 			float halfWidth = -fontRenderer.width(text) / 2;
 			Matrix4f positionMatrix;
 
-			matrix.pushPose();
-			matrix.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
-			matrix.scale(-0.025F, -0.025F, 0.025F);
-			positionMatrix = matrix.last().pose();
+			pose.pushPose();
+			pose.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+			pose.scale(-0.025F, -0.025F, 0.025F);
+			positionMatrix = pose.last().pose();
 			RenderSystem.disableCull();
 			fontRenderer.drawInBatch(text, halfWidth, 0, 16777215, false, positionMatrix, buffer, true, j, packedLight);
 			fontRenderer.drawInBatch(text, halfWidth, 0, -1, false, positionMatrix, buffer, false, 0, packedLight);
-			matrix.popPose();
+			pose.popPose();
 		}
 
-		matrix.mulPose(POSITIVE_X_180);
+		pose.mulPose(POSITIVE_X_180);
 		model.setRadarRotation(be.radarRotationDegrees);
-		model.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

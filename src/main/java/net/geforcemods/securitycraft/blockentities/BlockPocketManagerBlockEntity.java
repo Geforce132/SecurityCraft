@@ -80,13 +80,13 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	@Override
-	public void tick(Level world, BlockPos pos, BlockState state)
+	public void tick(Level level, BlockPos pos, BlockState state)
 	{
-		if(!world.isClientSide && shouldPlaceBlocks)
+		if(shouldPlaceBlocks)
 		{
 			Player owner = PlayerUtils.getPlayerFromName(getOwner().getName());
 			boolean isCreative = owner.isCreative();
-			boolean placed4 = true;
+			boolean placed4Blocks = true;
 
 			//place 4 blocks per tick
 			//only place the next block if the previous one was placed
@@ -94,13 +94,13 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			placeLoop: for(int i = 0; i < BLOCK_PLACEMENTS_PER_TICK; i++)
 			{
 				Pair<BlockPos,BlockState> toPlace;
-				BlockState stateInWorld;
+				BlockState stateInLevel;
 
 				do
 				{
 					if(placeQueue.isEmpty())
 					{
-						placed4 = false;
+						placed4Blocks = false;
 						break placeLoop;
 					}
 
@@ -110,14 +110,14 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 						throw new IllegalStateException(String.format("Tried to automatically place non-block pocket block \"%s\"! This mustn't happen!", toPlace.getRight().getBlock().getDescriptionId()));
 				}
 				//reach the next block that is missing for the block pocket
-				while((stateInWorld = world.getBlockState(toPlace.getLeft())) == toPlace.getRight());
+				while((stateInLevel = level.getBlockState(toPlace.getLeft())) == toPlace.getRight());
 
-				if(stateInWorld.getMaterial().isReplaceable())
+				if(stateInLevel.getMaterial().isReplaceable())
 				{
 					BlockPos placeLocation = toPlace.getLeft();
 					BlockState stateToPlace = toPlace.getRight();
 					SoundType soundType = stateToPlace.getSoundType();
-					BlockEntity placedTe;
+					BlockEntity placedBe;
 
 					if(!isCreative) //queue blocks for removal from the inventory
 					{
@@ -134,24 +134,24 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 						}
 					}
 
-					world.setBlockAndUpdate(placeLocation, stateToPlace);
-					world.playSound(null, placeLocation, soundType.getPlaceSound(), SoundSource.BLOCKS, soundType.getVolume(), soundType.getPitch());
-					placedTe = world.getBlockEntity(placeLocation);
+					level.setBlockAndUpdate(placeLocation, stateToPlace);
+					level.playSound(null, placeLocation, soundType.getPlaceSound(), SoundSource.BLOCKS, soundType.getVolume(), soundType.getPitch());
+					placedBe = level.getBlockEntity(placeLocation);
 
 					//assigning the owner
-					if(placedTe instanceof OwnableBlockEntity ownable)
+					if(placedBe instanceof OwnableBlockEntity ownable)
 						ownable.setOwner(getOwner().getUUID(), getOwner().getName());
 
 					continue;
 				}
 
 				//when an invalid block is in the way
-				PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslatableComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), state.getValue(BlockPocketManagerBlock.FACING)), new TranslatableComponent(stateInWorld.getBlock().getDescriptionId())), ChatFormatting.DARK_AQUA);
-				placed4 = false;
+				PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslatableComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), state.getValue(BlockPocketManagerBlock.FACING)), new TranslatableComponent(stateInLevel.getBlock().getDescriptionId())), ChatFormatting.DARK_AQUA);
+				placed4Blocks = false;
 				break placeLoop;
 			}
 
-			if(!placed4)
+			if(!placed4Blocks)
 			{
 				//there are still blocks left to place, so a different block is blocking (heh) a space
 				if(!placeQueue.isEmpty())
@@ -305,9 +305,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 							}
 						}
 
-						OwnableBlockEntity te = (OwnableBlockEntity)level.getBlockEntity(currentPos);
-
-						if(!getOwner().owns(te))
+						if(!getOwner().owns((OwnableBlockEntity)level.getBlockEntity(currentPos)))
 							return new TranslatableComponent("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
 						else
 							blocks.add(currentPos);
@@ -329,12 +327,12 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			this.walls = sides;
 			this.floor = floor;
 			enabled = true;
-			this.autoBuildOffset = -offset + (size / 2);
+			autoBuildOffset = -offset + (size / 2);
 
 			for(BlockPos blockPos : blocks)
 			{
-				if(level.getBlockEntity(blockPos) instanceof BlockPocketBlockEntity te)
-					te.setManager(this);
+				if(level.getBlockEntity(blockPos) instanceof BlockPocketBlockEntity be)
+					be.setManager(this);
 			}
 
 			for(BlockPos blockPos : floor)
@@ -474,9 +472,9 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 							}
 						}
 
-						if(level.getBlockEntity(currentPos) instanceof OwnableBlockEntity te)
+						if(level.getBlockEntity(currentPos) instanceof OwnableBlockEntity be)
 						{
-							if(!getOwner().owns(te))
+							if(!getOwner().owns(be))
 								return new TranslatableComponent("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslatableComponent(currentState.getBlock().asItem().getDescriptionId()));
 						}
 
@@ -593,8 +591,8 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 			for(BlockPos pos : blocks)
 			{
-				if(level.getBlockEntity(pos) instanceof BlockPocketBlockEntity te)
-					te.removeManager();
+				if(level.getBlockEntity(pos) instanceof BlockPocketBlockEntity be)
+					be.removeManager();
 			}
 
 			for(BlockPos pos : floor)

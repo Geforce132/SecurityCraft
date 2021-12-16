@@ -108,7 +108,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context)
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
 	{
 		return (state.getValue(HALF) == Half.TOP ? SLAB_TOP_SHAPES : SLAB_BOTTOM_SHAPES)[SHAPE_BY_STATE[getShapeIndex(state)]];
 	}
@@ -120,62 +120,62 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, Level world, BlockPos pos, Random rand)
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
 	{
-		modelBlock.animateTick(stateIn, world, pos, rand);
+		modelBlock.animateTick(state, level, pos, rand);
 	}
 
 	@Override
-	public void attack(BlockState state, Level world, BlockPos pos, Player player)
+	public void attack(BlockState state, Level level, BlockPos pos, Player player)
 	{
-		modelState.attack(world, pos, player);
+		modelState.attack(level, pos, player);
 	}
 
 	@Override
-	public void destroy(LevelAccessor world, BlockPos pos, BlockState state)
+	public void destroy(LevelAccessor level, BlockPos pos, BlockState state)
 	{
-		modelBlock.destroy(world, pos, state);
+		modelBlock.destroy(level, pos, state);
 	}
 
 	@Override
-	public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean isMoving)
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving)
 	{
 		if(state.getBlock() != oldState.getBlock())
 		{
-			modelState.neighborChanged(world, pos, Blocks.AIR, pos, false);
-			modelBlock.onPlace(modelState, world, pos, oldState, false);
+			modelState.neighborChanged(level, pos, Blocks.AIR, pos, false);
+			modelBlock.onPlace(modelState, level, pos, oldState, false);
 		}
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		if(state.getBlock() != newState.getBlock())
-			modelState.onRemove(world, pos, newState, isMoving);
+			modelState.onRemove(level, pos, newState, isMoving);
 	}
 
 	@Override
-	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity)
+	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
 	{
-		modelBlock.stepOn(world, pos, state, entity);
+		modelBlock.stepOn(level, pos, state, entity);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random)
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
 	{
-		modelState.tick(world, pos, random);
+		modelState.tick(level, pos, random);
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
-		return modelState.use(world, player, hand, hit);
+		return modelState.use(level, player, hand, hit);
 	}
 
 	@Override
-	public void wasExploded(Level world, BlockPos pos, Explosion explosion)
+	public void wasExploded(Level level, BlockPos pos, Explosion explosion)
 	{
-		modelBlock.wasExploded(world, pos, explosion);
+		modelBlock.wasExploded(level, pos, explosion);
 	}
 
 	@Override
@@ -190,24 +190,24 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
 	{
 		if(state.getValue(WATERLOGGED))
-			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
-		return facing.getAxis().isHorizontal() ? state.setValue(SHAPE, getShapeProperty(state, world, currentPos)) : super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+		return facing.getAxis().isHorizontal() ? state.setValue(SHAPE, getShapeProperty(state, level, currentPos)) : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
-	private static StairsShape getShapeProperty(BlockState state, BlockGetter world, BlockPos pos)
+	private static StairsShape getShapeProperty(BlockState state, BlockGetter level, BlockPos pos)
 	{
 		Direction dir = state.getValue(FACING);
-		BlockState offsetState = world.getBlockState(pos.relative(dir));
+		BlockState offsetState = level.getBlockState(pos.relative(dir));
 
 		if(isBlockStairs(offsetState) && state.getValue(HALF) == offsetState.getValue(HALF))
 		{
 			Direction offsetDir = offsetState.getValue(FACING);
 
-			if(offsetDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, world, pos, offsetDir.getOpposite()))
+			if(offsetDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, level, pos, offsetDir.getOpposite()))
 			{
 				if(offsetDir == dir.getCounterClockWise())
 					return StairsShape.OUTER_LEFT;
@@ -215,13 +215,13 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 			}
 		}
 
-		BlockState offsetOppositeState = world.getBlockState(pos.relative(dir.getOpposite()));
+		BlockState offsetOppositeState = level.getBlockState(pos.relative(dir.getOpposite()));
 
 		if (isBlockStairs(offsetOppositeState) && state.getValue(HALF) == offsetOppositeState.getValue(HALF))
 		{
 			Direction offsetOppositeDir = offsetOppositeState.getValue(FACING);
 
-			if(offsetOppositeDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, world, pos, offsetOppositeDir))
+			if(offsetOppositeDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, level, pos, offsetOppositeDir))
 			{
 				if(offsetOppositeDir == dir.getCounterClockWise())
 					return StairsShape.INNER_LEFT;
@@ -232,9 +232,9 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 		return StairsShape.STRAIGHT;
 	}
 
-	private static boolean isDifferentStairs(BlockState state, BlockGetter world, BlockPos pos, Direction face)
+	private static boolean isDifferentStairs(BlockState state, BlockGetter level, BlockPos pos, Direction face)
 	{
-		BlockState offsetState = world.getBlockState(pos.relative(face));
+		BlockState offsetState = level.getBlockState(pos.relative(face));
 
 		return !isBlockStairs(offsetState) || offsetState.getValue(FACING) != state.getValue(FACING) || offsetState.getValue(HALF) != state.getValue(HALF);
 	}

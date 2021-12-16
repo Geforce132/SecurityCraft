@@ -39,7 +39,6 @@ public class ClientUtils{
 	 */
 	public static String getFormattedMinecraftTime(){
 		Long time = Minecraft.getInstance().level.getDayTime();
-
 		int hours24 = (int) ((float) time.longValue() / 1000L + 6L) % 24;
 		int hours = hours24 % 12;
 		int minutes = (int) (time.longValue() / 16.666666F % 60.0F);
@@ -54,13 +53,13 @@ public class ClientUtils{
 		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(item));
 	}
 
-	public static void renderModuleInfo(PoseStack matrix, ModuleType module, Component moduleTooltip, Component noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY)
+	public static void renderModuleInfo(PoseStack pose, ModuleType module, Component moduleTooltip, Component noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY)
 	{
 		Minecraft mc = Minecraft.getInstance();
 		float alpha = isModuleInstalled ? 1.0F : 0.5F;
 		int moduleRight = moduleLeft + 16;
 		int moduleBottom = moduleTop + 16;
-		Matrix4f m4f = matrix.last().pose();
+		Matrix4f m4f = pose.last().pose();
 		BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
 
 		RenderSystem.enableBlend();
@@ -87,7 +86,7 @@ public class ClientUtils{
 			Component text = isModuleInstalled ? moduleTooltip : noModuleTooltip;
 
 			if(text != null && mc.screen != null)
-				mc.screen.renderComponentTooltip(matrix, Arrays.asList(text), mouseX, mouseY);
+				mc.screen.renderComponentTooltip(pose, Arrays.asList(text), mouseX, mouseY);
 		}
 	}
 

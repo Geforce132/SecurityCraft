@@ -9,9 +9,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-/**
- * Used to give this tile entity an owner
- */
 public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 
 	private Owner owner = new Owner();
@@ -26,10 +23,6 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 		super(type, pos, state);
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
 	public CompoundTag save(CompoundTag tag)
 	{
@@ -42,9 +35,6 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void load(CompoundTag tag)
 	{

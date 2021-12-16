@@ -34,11 +34,11 @@ public class KeyChangerScreen extends AbstractContainerScreen<GenericTEMenu> {
 	private EditBox textboxNewPasscode;
 	private EditBox textboxConfirmPasscode;
 	private IdButton confirmButton;
-	private BlockEntity tileEntity;
+	private BlockEntity be;
 
-	public KeyChangerScreen(GenericTEMenu container, Inventory inv, Component name) {
-		super(container, inv, name);
-		tileEntity = container.te;
+	public KeyChangerScreen(GenericTEMenu menu, Inventory inv, Component text) {
+		super(menu, inv, text);
+		be = menu.be;
 	}
 
 	@Override
@@ -67,20 +67,21 @@ public class KeyChangerScreen extends AbstractContainerScreen<GenericTEMenu> {
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY){
-		font.draw(matrix, ukcName, imageWidth / 2 - font.width(ukcName) / 2, 6, 4210752);
-		font.draw(matrix, enterPasscode, imageWidth / 2 - font.width(enterPasscode) / 2, 25, 4210752);
-		font.draw(matrix, confirmPasscode, imageWidth / 2 - font.width(confirmPasscode) / 2, 65, 4210752);
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY){
+		font.draw(pose, ukcName, imageWidth / 2 - font.width(ukcName) / 2, 6, 4210752);
+		font.draw(pose, enterPasscode, imageWidth / 2 - font.width(enterPasscode) / 2, 25, 4210752);
+		font.draw(pose, confirmPasscode, imageWidth / 2 - font.width(confirmPasscode) / 2, 65, 4210752);
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY){
-		renderBackground(matrix);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem._setShaderTexture(0, TEXTURE);
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY){
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
-		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
+
+		renderBackground(pose);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem._setShaderTexture(0, TEXTURE);
+		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
 	private void updateConfirmButtonState() {
@@ -91,9 +92,8 @@ public class KeyChangerScreen extends AbstractContainerScreen<GenericTEMenu> {
 	}
 
 	protected void actionPerformed(IdButton button){
-		((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getValue());
-		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), textboxNewPasscode.getValue()));
-
+		((IPasswordProtected) be).setPassword(textboxNewPasscode.getValue());
+		SecurityCraft.channel.sendToServer(new SetPassword(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), textboxNewPasscode.getValue()));
 		Minecraft.getInstance().player.closeContainer();
 		PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), ChatFormatting.GREEN, true);
 	}

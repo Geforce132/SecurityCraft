@@ -7,11 +7,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class SCTechnicalGroup extends CreativeModeTab
+public class SCDecorationTab extends CreativeModeTab
 {
-	public SCTechnicalGroup()
+	public SCDecorationTab()
 	{
-		super(SecurityCraft.MODID + ".technical");
+		super(SecurityCraft.MODID + ".decoration");
 		setRecipeFolderName(SecurityCraft.MODID);
 	}
 
@@ -19,6 +19,6 @@ public class SCTechnicalGroup extends CreativeModeTab
 	@OnlyIn(Dist.CLIENT)
 	public ItemStack makeIcon()
 	{
-		return new ItemStack(SCContent.USERNAME_LOGGER.get().asItem());
+		return new ItemStack(SCContent.REINFORCED_OAK_STAIRS.get().asItem());
 	}
 }

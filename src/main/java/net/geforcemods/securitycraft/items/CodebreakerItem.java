@@ -34,7 +34,7 @@ public class CodebreakerItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack codebreaker = player.getItemInHand(hand);
 
 		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
@@ -45,7 +45,7 @@ public class CodebreakerItem extends Item {
 			else {
 				codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				if (!world.isClientSide && new Random().nextInt(3) == 1) {
+				if (!level.isClientSide && new Random().nextInt(3) == 1) {
 					ItemStack briefcase = player.getOffhandItem();
 
 					NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {

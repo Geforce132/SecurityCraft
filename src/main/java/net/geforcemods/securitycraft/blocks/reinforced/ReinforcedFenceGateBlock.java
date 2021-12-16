@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -34,20 +34,17 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 		super(properties);
 	}
 
-	/**
-	 * Called upon block activation (right click on the block.)
-	 */
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		return InteractionResult.FAIL;
 	}
 
 	@Override
-	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player)placer));
 	}
 
 	@Override
@@ -64,7 +61,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 		}
 		else if(!level.isClientSide && entity instanceof Creeper creeper)
 		{
-			LightningBolt lightning = WorldUtils.createLightning(level, Vec3.atBottomCenterOf(pos), true);
+			LightningBolt lightning = LevelUtils.createLightning(level, Vec3.atBottomCenterOf(pos), true);
 
 			creeper.thunderHit((ServerLevel)level, lightning);
 			return;
@@ -74,29 +71,29 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if(!world.isClientSide) {
-			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		if(!level.isClientSide) {
+			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos);
 
 			if (isPoweredSCBlock || block.defaultBlockState().isSignalSource())
 				if (isPoweredSCBlock && !state.getValue(OPEN) && !state.getValue(POWERED)) {
-					world.setBlock(pos, state.setValue(OPEN, true).setValue(POWERED, true), 2);
-					world.levelEvent(null, LevelEvent.SOUND_OPEN_IRON_DOOR, pos, 0);
+					level.setBlock(pos, state.setValue(OPEN, true).setValue(POWERED, true), 2);
+					level.levelEvent(null, LevelEvent.SOUND_OPEN_IRON_DOOR, pos, 0);
 				}
 				else if (!isPoweredSCBlock && state.getValue(OPEN) && state.getValue(POWERED)) {
-					world.setBlock(pos, state.setValue(OPEN, false).setValue(POWERED, false), 2);
-					world.levelEvent(null, LevelEvent.SOUND_CLOSE_IRON_DOOR, pos, 0);
+					level.setBlock(pos, state.setValue(OPEN, false).setValue(POWERED, false), 2);
+					level.levelEvent(null, LevelEvent.SOUND_CLOSE_IRON_DOOR, pos, 0);
 				}
 				else if (isPoweredSCBlock != state.getValue(POWERED))
-					world.setBlock(pos, state.setValue(POWERED, isPoweredSCBlock), 2);
+					level.setBlock(pos, state.setValue(POWERED, isPoweredSCBlock), 2);
 		}
 	}
 
 	@Override
 	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int par5, int par6){
 		super.triggerEvent(state, level, pos, par5, par6);
-		BlockEntity tileentity = level.getBlockEntity(pos);
-		return tileentity != null ? tileentity.triggerEvent(par5, par6) : false;
+		BlockEntity blockEntity = level.getBlockEntity(pos);
+		return blockEntity != null ? blockEntity.triggerEvent(par5, par6) : false;
 	}
 
 	@Override

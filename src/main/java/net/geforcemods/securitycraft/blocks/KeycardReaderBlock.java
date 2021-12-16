@@ -54,15 +54,15 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
-		if(!world.isClientSide)
+		if(!level.isClientSide)
 		{
-			KeycardReaderBlockEntity te = (KeycardReaderBlockEntity)world.getBlockEntity(pos);
+			KeycardReaderBlockEntity be = (KeycardReaderBlockEntity)level.getBlockEntity(pos);
 
-			if(ModuleUtils.isDenied(te, player))
+			if(ModuleUtils.isDenied(be, player))
 			{
-				if(te.sendsMessages())
+				if(be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}
 			else
@@ -75,8 +75,8 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 				if((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker)
 				{
 					//only allow the owner and players on the allowlist to open the gui
-					if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
-						NetworkHooks.openGui((ServerPlayer)player, te, pos);
+					if(be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player))
+						NetworkHooks.openGui((ServerPlayer)player, be, pos);
 				}
 				else if(item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
 				{
@@ -86,11 +86,11 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 							stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
 						if(new Random().nextInt(3) == 1)
-							activate(world, pos, te.getSignalLength());
+							activate(level, pos, be.getSignalLength());
 					}
 					else
 					{
-						MutableComponent feedback = insertCard(world, pos, te, stack, player);
+						MutableComponent feedback = insertCard(level, pos, be, stack, player);
 
 						if(feedback != null)
 							PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(getDescriptionId()), feedback, ChatFormatting.RED);
@@ -102,7 +102,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		return InteractionResult.SUCCESS;
 	}
 
-	public MutableComponent insertCard(Level world, BlockPos pos, KeycardReaderBlockEntity te, ItemStack stack, Player player)
+	public MutableComponent insertCard(Level level, BlockPos pos, KeycardReaderBlockEntity te, ItemStack stack, Player player)
 	{
 		CompoundTag tag = stack.getTag();
 
@@ -114,13 +114,13 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		if(te.getSignature() != tag.getInt("signature"))
 			return new TranslatableComponent("messages.securitycraft:keycardReader.wrongSignature");
 
-		int level = ((KeycardItem)stack.getItem()).getLevel();
+		int keycardLevel = ((KeycardItem)stack.getItem()).getLevel();
 
 		//the keycard's level
-		if(!te.getAcceptedLevels()[level]) //both are 0 indexed, so it's ok
-			return new TranslatableComponent("messages.securitycraft:keycardReader.wrongLevel", level + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
+		if(!te.getAcceptedLevels()[keycardLevel]) //both are 0 indexed, so it's ok
+			return new TranslatableComponent("messages.securitycraft:keycardReader.wrongLevel", keycardLevel + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
 
-		boolean powered = world.getBlockState(pos).getValue(POWERED);
+		boolean powered = level.getBlockState(pos).getValue(POWERED);
 
 		if(tag.getBoolean("limited"))
 		{
@@ -134,32 +134,27 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		}
 
 		if(!powered)
-			activate(world, pos, te.getSignalLength());
+			activate(level, pos, te.getSignalLength());
 
 		return null;
 	}
 
-	public void activate(Level world, BlockPos pos, int signalLength){
-		world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(POWERED, true));
-		BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYCARD_READER.get());
-		world.getBlockTicks().scheduleTick(pos, SCContent.KEYCARD_READER.get(), signalLength);
+	public void activate(Level level, BlockPos pos, int signalLength){
+		level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(POWERED, true));
+		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYCARD_READER.get());
+		level.getBlockTicks().scheduleTick(pos, SCContent.KEYCARD_READER.get(), signalLength);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random)
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
 	{
-		if(!world.isClientSide){
-			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYCARD_READER.get());
-		}
+		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYCARD_READER.get());
 	}
 
-	/**
-	 * A randomly called display update to be able to add ParticleTypes or other items for display
-	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand){
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand){
 		if((state.getValue(POWERED))){
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
@@ -171,40 +166,25 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 			float b = Math.max(0.0F, 0.6F - 0.7F);
 			Vector3f vec = new Vector3f(r, g, b);
 
-			world.addParticle(new DustParticleOptions(vec, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new DustParticleOptions(vec, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new DustParticleOptions(vec, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new DustParticleOptions(vec, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new DustParticleOptions(vec, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(vec, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(vec, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(vec, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(vec, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(vec, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
-	/**
-	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
-	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
-	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-	 */
 	@Override
-	public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
+	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side)
 	{
-		if((blockState.getValue(POWERED)))
-			return 15;
-		else
-			return 0;
-	}
-
-	/**
-	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
-	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-	 */
-	@Override
-	public int getDirectSignal(BlockState state, BlockGetter world, BlockPos pos, Direction side){
 		return state.getValue(POWERED) ? 15 : 0;
 	}
 
-	/**
-	 * Can this block provide power. Only wire currently seems to have this change based on its state.
-	 */
+	@Override
+	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side){
+		return state.getValue(POWERED) ? 15 : 0;
+	}
+
 	@Override
 	public boolean isSignalSource(BlockState state)
 	{
@@ -217,7 +197,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
+	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
 		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()).setValue(POWERED, false);
 	}
@@ -225,8 +205,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
-		builder.add(FACING);
-		builder.add(POWERED);
+		builder.add(FACING, POWERED);
 	}
 
 	@Override

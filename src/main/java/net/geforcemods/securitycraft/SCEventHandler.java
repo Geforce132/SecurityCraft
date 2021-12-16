@@ -40,7 +40,7 @@ import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -104,11 +104,11 @@ public class SCEventHandler {
 					NoteWrapper note = pair.getRight().poll();
 
 					if (note != null) {
-						SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName.toUpperCase()).getSoundEvent();
-						float pitch = (float)Math.pow(2.0D, (note.noteID - 12) / 12.0D);
+						SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase()).getSoundEvent();
+						float pitch = (float)Math.pow(2.0D, (note.noteID() - 12) / 12.0D);
 
 						player.level.playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
-						handlePlayedNote(player.level, player.blockPosition(), note.noteID, note.instrumentName);
+						handlePlayedNote(player.level, player.blockPosition(), note.noteID(), note.instrumentName());
 						pair.setLeft(NOTE_DELAY);
 					}
 					else
@@ -283,8 +283,8 @@ public class SCEventHandler {
 				if(!be.getInventory().get(i).isEmpty()){
 					ItemStack stack = be.getInventory().get(i);
 					ItemEntity item = new ItemEntity(level, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
-					WorldUtils.addScheduledTask(level, () -> level.addFreshEntity(item));
 
+					LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(item));
 					be.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
 
 					if(be instanceof LinkableBlockEntity lbe)
@@ -311,9 +311,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onOwnership(OwnershipEvent event)
 	{
-		BlockEntity te = event.getWorld().getBlockEntity(event.getPos());
-
-		if(te instanceof IOwnable ownable) {
+		if(event.getLevel().getBlockEntity(event.getPos()) instanceof IOwnable ownable) {
 			String name = event.getPlayer().getName().getString();
 			String uuid = event.getPlayer().getGameProfile().getId().toString();
 
@@ -361,9 +359,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onFurnaceFuelBurnTime(FurnaceFuelBurnTimeEvent event)
 	{
-		Item item = event.getItemStack().getItem();
-
-		if(item instanceof BlockItem blockItem && blockItem.getBlock() instanceof ReinforcedCarpetBlock)
+		if(event.getItemStack().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ReinforcedCarpetBlock)
 			event.setBurnTime(0);
 	}
 
@@ -403,10 +399,9 @@ public class SCEventHandler {
 	}
 
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
-		Level world = event.getPlayer().level;
-		BlockEntity tile = world.getBlockEntity(event.getPos());
+		Level level = event.getPlayer().level;
 
-		if(tile instanceof IPasswordProtected passwordProtected && passwordProtected.isCodebreakable())
+		if(level.getBlockEntity(event.getPos()) instanceof IPasswordProtected passwordProtected && passwordProtected.isCodebreakable())
 		{
 			if(ConfigHandler.SERVER.allowCodebreakerItem.get())
 			{
@@ -414,14 +409,14 @@ public class SCEventHandler {
 					event.getPlayer().getItemInHand(event.getHand()).hurtAndBreak(1, event.getPlayer(), p -> p.broadcastBreakEvent(event.getHand()));
 
 				if(event.getPlayer().isCreative() || new Random().nextInt(3) == 1)
-					return passwordProtected.onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer());
+					return passwordProtected.onCodebreakerUsed(level.getBlockState(event.getPos()), event.getPlayer());
 				else {
 					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
 					return true;
 				}
 			}
 			else {
-				Block block = world.getBlockState(event.getPos()).getBlock();
+				Block block = level.getBlockState(event.getPos()).getBlock();
 
 				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
 			}

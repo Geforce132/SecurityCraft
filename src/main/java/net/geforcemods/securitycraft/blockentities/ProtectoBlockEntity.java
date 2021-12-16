@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -54,7 +54,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 						}
 
 						if(!level.isClientSide)
-							WorldUtils.spawnLightning(level, entity.position(), false);
+							LevelUtils.spawnLightning(level, entity.position(), false);
 
 						shouldDeactivate = true;
 					}

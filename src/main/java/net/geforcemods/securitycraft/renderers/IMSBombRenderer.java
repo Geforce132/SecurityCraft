@@ -28,12 +28,12 @@ public class IMSBombRenderer extends EntityRenderer<IMSBomb> {
 	}
 
 	@Override
-	public void render(IMSBomb imsBomb, float p_225623_2_, float partialTicks, PoseStack matrix, MultiBufferSource buffer, int p_225623_6_)
+	public void render(IMSBomb imsBomb, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight)
 	{
-		matrix.translate(-0.1D, 0, 0.1D);
-		matrix.scale(1.4F, 1.4F, 1.4F);
+		pose.translate(-0.1D, 0, 0.1D);
+		pose.scale(1.4F, 1.4F, 1.4F);
 		RenderSystem._setShaderTexture(0, getTextureLocation(imsBomb));
-		model.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(imsBomb))), p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(imsBomb))), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override

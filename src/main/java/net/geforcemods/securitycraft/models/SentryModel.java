@@ -57,15 +57,15 @@ public class SentryModel extends EntityModel<Sentry>
 		return LayerDefinition.create(meshDefinition, 64, 64);
 	}
 
-	public void renderBase(PoseStack matrix, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+	public void renderBase(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
 	{
-		base.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
+		base.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack matrix, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+	public void renderToBuffer(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
 	{
-		headPartList.forEach(part -> part.render(matrix, builder, packedLight, packedOverlay));
+		headPartList.forEach(part -> part.render(pose, builder, packedLight, packedOverlay));
 	}
 
 	@Override

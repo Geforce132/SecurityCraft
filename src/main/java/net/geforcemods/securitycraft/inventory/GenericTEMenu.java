@@ -9,19 +9,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class GenericTEMenu extends AbstractContainerMenu {
-	public final BlockEntity te;
+	public final BlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 
-	public GenericTEMenu(MenuType<GenericTEMenu> type, int windowId, Level world, BlockPos pos)
+	public GenericTEMenu(MenuType<GenericTEMenu> type, int windowId, Level level, BlockPos pos)
 	{
 		super(type, windowId);
 
-		te = world.getBlockEntity(pos);
-		worldPosCallable = ContainerLevelAccess.create(world, pos);
+		be = level.getBlockEntity(pos);
+		worldPosCallable = ContainerLevelAccess.create(level, pos);
 	}
 
 	@Override
 	public boolean stillValid(Player player) {
-		return stillValid(worldPosCallable, player, te.getBlockState().getBlock());
+		return stillValid(worldPosCallable, player, be.getBlockState().getBlock());
 	}
 }

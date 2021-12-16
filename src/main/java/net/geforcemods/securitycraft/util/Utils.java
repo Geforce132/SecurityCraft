@@ -29,9 +29,9 @@ public class Utils {
 		return new TranslatableComponent("messages.securitycraft:formattedCoordinates", pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	public static void setISinTEAppropriately(Level world, BlockPos pos, NonNullList<ItemStack> contents)
+	public static void setISinTEAppropriately(Level level, BlockPos pos, NonNullList<ItemStack> contents)
 	{
-		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, pos);
 
 		if(connectedScanner == null)
 			return;

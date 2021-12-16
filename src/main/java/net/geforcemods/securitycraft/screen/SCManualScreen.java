@@ -134,8 +134,8 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks){
-		renderBackground(matrix);
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks){
+		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		if(currentPage == -1)
@@ -145,11 +145,11 @@ public class SCManualScreen extends Screen {
 		else
 			RenderSystem._setShaderTexture(0, infoBookTextureSpecial);
 
-		blit(matrix, startX, 5, 0, 0, 256, 250);
+		blit(pose, startX, 5, 0, 0, 256, 250);
 
 		for(Widget widget : renderables)
 		{
-			widget.render(matrix, mouseX, mouseY, partialTicks);
+			widget.render(pose, mouseX, mouseY, partialTicks);
 		}
 
 		if(currentPage > -1)
@@ -157,40 +157,40 @@ public class SCManualScreen extends Screen {
 			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
 			if(subpages.size() > 1)
-				font.draw(matrix, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
+				font.draw(pose, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
 			if(designedBy != null)
 				font.drawWordWrap(designedBy, startX + 18, 150, 75, 0);
 
-			font.draw(matrix, pageTitle, startX + 39, 27, 0);
+			font.draw(pose, pageTitle, startX + 39, 27, 0);
 			font.drawWordWrap(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
-			font.draw(matrix, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
+			font.draw(pose, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
 			minecraft.getItemRenderer().renderAndDecorateItem(pageStack, startX + 19, 22);
 			RenderSystem._setShaderTexture(0, infoBookIcons);
 
 			if(ownable)
-				blit(matrix, startX + 29, 118, 1, 1, 16, 16);
+				blit(pose, startX + 29, 118, 1, 1, 16, 16);
 
 			if(passwordProtected)
-				blit(matrix, startX + 55, 118, 18, 1, 17, 16);
+				blit(pose, startX + 55, 118, 18, 1, 17, 16);
 
 			if(viewActivated)
-				blit(matrix, startX + 81, 118, 36, 1, 17, 16);
+				blit(pose, startX + 81, 118, 36, 1, 17, 16);
 
 			if(explosive)
-				blit(matrix, startX + 107, 117, 54, 1, 18, 18);
+				blit(pose, startX + 107, 117, 54, 1, 18, 18);
 
 			if(customizable)
-				blit(matrix, startX + 136, 118, 88, 1, 16, 16);
+				blit(pose, startX + 136, 118, 88, 1, 16, 16);
 
 			if(moduleInventory)
-				blit(matrix, startX + 163, 118, 105, 1, 16, 16);
+				blit(pose, startX + 163, 118, 105, 1, 16, 16);
 
 			if (lockable)
-				blit(matrix, startX + 189, 118, 154, 1, 16, 16);
+				blit(pose, startX + 189, 118, 154, 1, 16, 16);
 
 			if(customizable || moduleInventory)
-				blit(matrix, startX + 213, 118, 72, 1, 16, 16);
+				blit(pose, startX + 213, 118, 72, 1, 16, 16);
 
 			for(IngredientDisplay display : displays)
 			{
@@ -204,9 +204,9 @@ public class SCManualScreen extends Screen {
 				if(chc != null && chc.checkHover(mouseX, mouseY))
 				{
 					if(chc instanceof TextHoverChecker thc && thc.getName() != null)
-						renderComponentTooltip(matrix, thc.getLines(), mouseX, mouseY);
+						renderComponentTooltip(pose, thc.getLines(), mouseX, mouseY);
 					else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
-						renderTooltip(matrix, displays[i].getCurrentStack(), mouseX, mouseY);
+						renderTooltip(pose, displays[i].getCurrentStack(), mouseX, mouseY);
 				}
 			}
 		}
@@ -214,24 +214,24 @@ public class SCManualScreen extends Screen {
 		{
 			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
-			font.draw(matrix, intro1, width / 2 - font.width(intro1) / 2, 22, 0);
+			font.draw(pose, intro1, width / 2 - font.width(intro1) / 2, 22, 0);
 
 			for(int i = 0; i < intro2.size(); i++)
 			{
 				FormattedCharSequence text = intro2.get(i);
 
-				font.draw(matrix, text, width / 2 - font.width(text) / 2, 150 + 10 * i, 0);
+				font.draw(pose, text, width / 2 - font.width(text) / 2, 150 + 10 * i, 0);
 			}
 
 			for(int i = 0; i < author.size(); i++)
 			{
 				FormattedCharSequence text = author.get(i);
 
-				font.draw(matrix, text, width / 2 - font.width(text) / 2, 180 + 10 * i, 0);
+				font.draw(pose, text, width / 2 - font.width(text) / 2, 180 + 10 * i, 0);
 			}
 
-			font.draw(matrix, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
-			font.draw(matrix, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, 0);
+			font.draw(pose, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
+			font.draw(pose, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, 0);
 		}
 	}
 
@@ -588,13 +588,13 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
+		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
 		{
 			if(currentPage == -1)
 			{
 				if(patronsAvailable)
 				{
-					super.render(matrix, mouseX, mouseY, partialTicks);
+					super.render(pose, mouseX, mouseY, partialTicks);
 
 					//draw tooltip for long patron names
 					int mouseListY = (int)(mouseY - top + scrollDistance - border);
@@ -607,14 +607,14 @@ public class SCManualScreen extends Screen {
 						int baseY = top + border - (int)scrollDistance;
 
 						if(length >= width - 6) //6 = barWidth
-							renderTooltip(matrix, new TextComponent(patron), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
+							renderTooltip(pose, new TextComponent(patron), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
 					}
 
 					if (patrons.isEmpty()) {
 						for(int i = 0; i < noPatronsLines.size(); i++) {
 							FormattedCharSequence line = noPatronsLines.get(i);
 
-							font.draw(matrix, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFF333333);
+							font.draw(pose, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFF333333);
 						}
 					}
 				}
@@ -624,7 +624,7 @@ public class SCManualScreen extends Screen {
 					{
 						FormattedCharSequence line = fetchErrorLines.get(i);
 
-						font.draw(matrix, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFFB00101);
+						font.draw(pose, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFFB00101);
 					}
 				}
 				else if(patronRequestFuture != null && patronRequestFuture.isDone())
@@ -641,12 +641,12 @@ public class SCManualScreen extends Screen {
 					}
 				}
 				else
-					font.draw(matrix, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, 0);
+					font.draw(pose, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, 0);
 			}
 		}
 
 		@Override
-		protected void drawPanel(PoseStack matrix, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY)
+		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY)
 		{
 			//draw entry strings
 			for(int i = 0; i < patrons.size(); i++)
@@ -654,7 +654,7 @@ public class SCManualScreen extends Screen {
 				String patron = patrons.get(i);
 
 				if(patron != null && !patron.isEmpty())
-					font.draw(matrix, patron, left + 2, relativeY + (slotHeight * i), 0);
+					font.draw(pose, patron, left + 2, relativeY + (slotHeight * i), 0);
 			}
 		}
 
@@ -695,17 +695,14 @@ public class SCManualScreen extends Screen {
 			textureY = forward ? 192 : 205;
 		}
 
-		/**
-		 * Draws this button to the screen.
-		 */
 		@Override
-		public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks){
+		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks){
 			if(visible){
 				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 				RenderSystem._setShaderTexture(0, bookGuiTextures);
-				blit(matrix, x, y, isHovering ? 23 : 0, textureY, 23, 13);
+				blit(pose, x, y, isHovering ? 23 : 0, textureY, 23, 13);
 			}
 		}
 	}
@@ -718,15 +715,15 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		public void renderButton(PoseStack matrix, int mouseX, int mouseY, float partial)
+		public void renderButton(PoseStack pose, int mouseX, int mouseY, float partial)
 		{
 			RenderSystem._setShaderTexture(0, infoBookIcons);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 			if(isHovered)
-				blit(matrix, x, y, 138, 1, 16, 16);
+				blit(pose, x, y, 138, 1, 16, 16);
 			else
-				blit(matrix, x, y, 122, 1, 16, 16);
+				blit(pose, x, y, 122, 1, 16, 16);
 		}
 	}
 

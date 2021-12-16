@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class InventoryScannerScreen extends AbstractContainerScreen<InventoryScannerMenu> {
 	private static final ResourceLocation REGULAR_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_gui.png");
 	private static final ResourceLocation ENHANCED_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
-	private InventoryScannerBlockEntity tileEntity;
+	private InventoryScannerBlockEntity be;
 	private boolean owns = false;
 	private boolean hasRedstoneModule = false, hasStorageModule = false;
 	private Component infoStringRedstone, infoStringStorage;
@@ -34,12 +34,12 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	private final Component viewMode = Utils.localize("gui.securitycraft:invScan.mode.view").setStyle(UNDERLINE);
 	private final Component storage = Utils.localize("gui.securitycraft:invScan.storage");
 
-	public InventoryScannerScreen(InventoryScannerMenu container, Inventory inv, Component name){
-		super(container, inv, name);
-		tileEntity = container.te;
-		owns = tileEntity.getOwner().isOwner(inv.player);
-		hasRedstoneModule = tileEntity.hasModule(ModuleType.REDSTONE);
-		hasStorageModule = tileEntity.hasModule(ModuleType.STORAGE);
+	public InventoryScannerScreen(InventoryScannerMenu menu, Inventory inv, Component title){
+		super(menu, inv, title);
+		be = menu.be;
+		owns = be.getOwner().isOwner(inv.player);
+		hasRedstoneModule = be.hasModule(ModuleType.REDSTONE);
+		hasStorageModule = be.hasModule(ModuleType.STORAGE);
 		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no")));
 		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")));
 
@@ -58,16 +58,16 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks){
-		super.render(matrix, mouseX, mouseY, partialTicks);
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks){
+		super.render(pose, mouseX, mouseY, partialTicks);
 
 		font.drawWordWrap(infoStringRedstone, leftPos + 28, topPos + 45, 150, 4210752);
 		font.drawWordWrap(infoStringStorage, leftPos + 28, topPos + 75, 150, 4210752);
-		ClientUtils.renderModuleInfo(matrix, ModuleType.REDSTONE, null, redstoneModuleNotInstalled, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
-		ClientUtils.renderModuleInfo(matrix, ModuleType.STORAGE, null, storageModuleNotInstalled, hasStorageModule, leftPos + 8, topPos + 75, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(pose, ModuleType.REDSTONE, null, redstoneModuleNotInstalled, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(pose, ModuleType.STORAGE, null, storageModuleNotInstalled, hasStorageModule, leftPos + 8, topPos + 75, width, height, mouseX, mouseY);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
+			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
 	}
 
 	@Override
@@ -77,22 +77,22 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY)
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY)
 	{
-		font.draw(matrix, prohibitedItems, 8, 6, 4210752);
-		font.draw(matrix, tileEntity.getOwner().isOwner(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752);
+		font.draw(pose, prohibitedItems, 8, 6, 4210752);
+		font.draw(pose, be.getOwner().isOwner(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
-			font.draw(matrix, storage, 188, 18, 4210752);
+			font.draw(pose, storage, 188, 18, 4210752);
 
-		font.draw(matrix, Utils.INVENTORY_TEXT, 15, imageHeight - 93, 4210752);
+		font.draw(pose, Utils.INVENTORY_TEXT, 15, imageHeight - 93, 4210752);
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
+		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
-		blit(matrix, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, imageWidth, imageHeight + 30);
+		blit(pose, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, imageWidth, imageHeight + 30);
 	}
 }

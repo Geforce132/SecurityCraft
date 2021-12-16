@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -40,38 +40,27 @@ public class RetinalScannerBlock extends DisguisableBlock {
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
 	}
 
-	/**
-	 * Called when the block is placed in the world.
-	 */
 	@Override
-	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack)
 	{
 		if(entity instanceof Player player)
 		{
-			BlockEntity tile = world.getBlockEntity(pos);
+			if(level.getBlockEntity(pos) instanceof RetinalScannerBlockEntity be)
+				be.setPlayerProfile(player.getGameProfile());
 
-			if(tile instanceof RetinalScannerBlockEntity te)
-				te.setPlayerProfile(player.getGameProfile());
-
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 		}
 	}
 
-	/**
-	 * Ticks the block if it's been scheduled
-	 */
 	@Override
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random)
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
 	{
-		if (!world.isClientSide && state.getValue(POWERED)) {
-			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.RETINAL_SCANNER.get());
+		if (state.getValue(POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.RETINAL_SCANNER.get());
 		}
 	}
 
-	/**
-	 * Can this block provide power. Only wire currently seems to have this change based on its state.
-	 */
 	@Override
 	public boolean isSignalSource(BlockState state)
 	{
@@ -79,31 +68,19 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean shouldCheckWeakPower(BlockState state, LevelReader world, BlockPos pos, Direction side)
+	public boolean shouldCheckWeakPower(BlockState state, LevelReader level, BlockPos pos, Direction side)
 	{
 		return false;
 	}
 
-	/**
-	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
-	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
-	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-	 */
 	@Override
-	public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
+	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side)
 	{
-		if(blockState.getValue(POWERED))
-			return 15;
-		else
-			return 0;
+		return state.getValue(POWERED) ? 15 : 0;
 	}
 
-	/**
-	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
-	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-	 */
 	@Override
-	public int getDirectSignal(BlockState state, BlockGetter world, BlockPos pos, Direction side){
+	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side){
 		return state.getValue(POWERED) ? 15 : 0;
 	}
 
@@ -113,7 +90,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
+	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
 		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()).setValue(POWERED, false);
 	}
@@ -121,8 +98,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
-		builder.add(FACING);
-		builder.add(POWERED);
+		builder.add(FACING, POWERED);
 	}
 
 	@Override
@@ -131,8 +107,8 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeRetinalScanner, WorldUtils::blockEntityTicker);
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, SCContent.beTypeRetinalScanner, LevelUtils::blockEntityTicker);
 	}
 
 	@Override

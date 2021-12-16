@@ -29,15 +29,12 @@ public class SonicSecuritySystemScreen extends Screen {
 	private static final TranslatableComponent SOUND_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.sound");
 	/** The number of ticks between each note when playing back a recording **/
 	private static final int PLAYBACK_DELAY = 10;
-
 	private final SonicSecuritySystemBlockEntity be;
 	private int xSize = 176, ySize = 166;
 	private IdButton recordingButton, clearButton, powerButton, playButton;
 	private TogglePictureButton soundButton;
-
 	/** If a recording is currently being played back **/
 	private boolean playback = false;
-
 	/** The number of ticks that has elapsed since the last note played **/
 	private int tickCount = PLAYBACK_DELAY;
 	private int currentNote = 0;
@@ -61,8 +58,8 @@ public class SonicSecuritySystemScreen extends Screen {
 			if(tickCount >= PLAYBACK_DELAY) {
 				if(currentNote < be.getNumberOfNotes()) {
 					NoteWrapper note = be.getRecordedNotes().get(currentNote++);
-					SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName.toUpperCase()).getSoundEvent();
-					float pitch = (float)Math.pow(2.0D, (note.noteID - 12) / 12.0D);
+					SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase()).getSoundEvent();
+					float pitch = (float)Math.pow(2.0D, (note.noteID() - 12) / 12.0D);
 
 					tickCount = 0;
 					minecraft.level.playSound(minecraft.player, be.getBlockPos(), sound, SoundSource.RECORDS, 3.0F, pitch);
@@ -138,20 +135,20 @@ public class SonicSecuritySystemScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
 	{
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		int textWidth = font.width(title);
 		int soundTextLength = font.width(SOUND_TEXT);
 
-		renderBackground(matrix);
+		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(matrix, startX, startY, 0, 0, xSize, ySize);
-		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.draw(matrix, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
-		font.draw(matrix, SOUND_TEXT, width / 2 + 50 - soundTextLength, startY + 141, 4210752);
+		blit(pose, startX, startY, 0, 0, xSize, ySize);
+		super.render(pose, mouseX, mouseY, partialTicks);
+		font.draw(pose, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
+		font.draw(pose, SOUND_TEXT, width / 2 + 50 - soundTextLength, startY + 141, 4210752);
 	}
 
 	@Override

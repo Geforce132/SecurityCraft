@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -35,27 +35,24 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
 	{
 		return SHAPE;
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
-		if (!world.getBlockState(pos.below()).isAir())
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
+		if (!level.getBlockState(pos.below()).isAir())
 			return;
-		else if (world.getBlockState(pos).getValue(DEACTIVATED))
-			world.destroyBlock(pos, true);
+		else if (level.getBlockState(pos).getValue(DEACTIVATED))
+			level.destroyBlock(pos, true);
 		else
-			explode(world, pos);
+			explode(level, pos);
 	}
 
-	/**
-	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-	 */
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos){
-		return BlockUtils.isSideSolid(world, pos.below(), Direction.UP);
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos){
+		return BlockUtils.isSideSolid(level, pos.below(), Direction.UP);
 	}
 
 	@Override
@@ -64,18 +61,18 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 			explode(level, pos);
 	}
 	@Override
-	public void attack(BlockState state, Level world, BlockPos pos, Player player){
-		if(!player.isCreative() && !EntityUtils.doesPlayerOwn(player, world, pos))
-			explode(world, pos);
+	public void attack(BlockState state, Level level, BlockPos pos, Player player){
+		if(!player.isCreative() && !EntityUtils.doesPlayerOwn(player, level, pos))
+			explode(level, pos);
 	}
 
 	@Override
-	public boolean activateMine(Level world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	public boolean activateMine(Level level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 
 		if(state.getValue(DEACTIVATED))
 		{
-			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
+			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
 			return true;
 		}
 
@@ -83,12 +80,12 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean defuseMine(Level world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	public boolean defuseMine(Level level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 
 		if(!state.getValue(DEACTIVATED))
 		{
-			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
+			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 			return true;
 		}
 
@@ -96,21 +93,19 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void explode(Level world, BlockPos pos){
-		if(world.isClientSide || world.getBlockState(pos).getValue(DEACTIVATED))
+	public void explode(Level level, BlockPos pos){
+		if(level.isClientSide || level.getBlockState(pos).getValue(DEACTIVATED))
 			return;
 
-		world.destroyBlock(pos, false);
-		BouncingBetty bouncingBettyEntity = new BouncingBetty(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
+		BouncingBetty bouncingBettyEntity = new BouncingBetty(level, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
+
+		level.destroyBlock(pos, false);
 		bouncingBettyEntity.fuse = 15;
 		bouncingBettyEntity.setDeltaMovement(bouncingBettyEntity.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
-		WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(bouncingBettyEntity));
+		LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(bouncingBettyEntity));
 		bouncingBettyEntity.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.tnt.primed")), 1.0F, 1.0F);
 	}
 
-	/**
-	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-	 */
 	@Override
 	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state){
 		return new ItemStack(asItem());

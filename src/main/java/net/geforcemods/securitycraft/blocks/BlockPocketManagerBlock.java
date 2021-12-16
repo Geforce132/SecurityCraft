@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -34,38 +34,31 @@ public class BlockPocketManagerBlock extends OwnableBlock
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
-		if(!world.isClientSide)
-		{
-			BlockEntity tile = world.getBlockEntity(pos);
-
-			if(tile instanceof BlockPocketManagerBlockEntity te && !te.isPlacingBlocks())
-				NetworkHooks.openGui((ServerPlayer)player, te, pos);
-		}
+		if(!level.isClientSide && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && !be.isPlacingBlocks())
+			NetworkHooks.openGui((ServerPlayer)player, be, pos);
 
 		return InteractionResult.SUCCESS;
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
 	{
-		if(world.isClientSide || state.getBlock() == newState.getBlock())
+		if(level.isClientSide || state.getBlock() == newState.getBlock())
 			return;
 
-		BlockEntity tile = world.getBlockEntity(pos);
-
-		if(tile instanceof BlockPocketManagerBlockEntity te)
+		if(level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be)
 		{
-			te.getStorageHandler().ifPresent(handler -> {
+			be.getStorageHandler().ifPresent(handler -> {
 				for(int i = 0; i < handler.getSlots(); i++)
 				{
-					Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
+					Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
 				}
 			});
 		}
 
-		super.onRemove(state, world, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
@@ -87,8 +80,8 @@ public class BlockPocketManagerBlock extends OwnableBlock
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeBlockPocketManager, WorldUtils::blockEntityTicker);
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return !level.isClientSide ? createTickerHelper(type, SCContent.beTypeBlockPocketManager, LevelUtils::blockEntityTicker) : null;
 	}
 
 	@Override

@@ -23,8 +23,6 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -102,10 +100,7 @@ public class CameraMonitorScreen extends Screen {
 					cameraViewDim[button.id - 1] = view.dimension().location();
 				}
 
-				Level world = Minecraft.getInstance().level;
-				BlockEntity tile = world.getBlockEntity(view.pos());
-
-				cameraBEs[button.id - 1] = tile instanceof SecurityCameraBlockEntity camera ? camera : null;
+				cameraBEs[button.id - 1] = Minecraft.getInstance().level.getBlockEntity(view.pos()) instanceof SecurityCameraBlockEntity camera ? camera : null;
 				hoverCheckers[button.id - 1] = new HoverChecker(button);
 			}
 			else
@@ -132,21 +127,21 @@ public class CameraMonitorScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(matrix);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem._setShaderTexture(0, TEXTURE);
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 
-		blit(matrix, startX, startY, 0, 0, xSize, ySize);
-		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.draw(matrix, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
+		renderBackground(pose);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem._setShaderTexture(0, TEXTURE);
+		blit(pose, startX, startY, 0, 0, xSize, ySize);
+		super.render(pose, mouseX, mouseY, partialTicks);
+		font.draw(pose, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraBEs[i] != null && cameraBEs[i].hasCustomName())
-					renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
+					renderTooltip(pose, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
 			}
 	}
 

@@ -59,14 +59,13 @@ public class UpdateLogger {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			int i = message.i;
+			UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level.getBlockEntity(pos);
 
-			UsernameLoggerBlockEntity te = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level.getBlockEntity(pos);
-
-			if(te != null)
+			if(be != null)
 			{
-				te.players[i] = message.username;
-				te.uuids[i] = message.uuid;
-				te.timestamps[i] = message.timestamp;
+				be.players[i] = message.username;
+				be.uuids[i] = message.uuid;
+				be.timestamps[i] = message.timestamp;
 			}
 		});
 

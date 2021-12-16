@@ -16,17 +16,17 @@ import net.minecraft.world.level.Level;
 
 public class KeypadFurnaceMenu extends AbstractFurnaceMenu{
 
-	public KeypadFurnaceBlockEntity te;
+	public KeypadFurnaceBlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 
-	public KeypadFurnaceMenu(int windowId, Level world, BlockPos pos, Inventory inventory) {
-		this(windowId, world, pos, inventory, (KeypadFurnaceBlockEntity)world.getBlockEntity(pos), ((KeypadFurnaceBlockEntity)world.getBlockEntity(pos)).getFurnaceData());
+	public KeypadFurnaceMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
+		this(windowId, level, pos, inventory, (KeypadFurnaceBlockEntity)level.getBlockEntity(pos), ((KeypadFurnaceBlockEntity)level.getBlockEntity(pos)).getFurnaceData());
 	}
 
-	public KeypadFurnaceMenu(int windowId, Level world, BlockPos pos, Inventory inventory, Container furnaceInv, ContainerData furnaceData) {
+	public KeypadFurnaceMenu(int windowId, Level level, BlockPos pos, Inventory inventory, Container furnaceInv, ContainerData furnaceData) {
 		super(SCContent.mTypeKeypadFurnace, RecipeType.SMELTING, RecipeBookType.FURNACE, windowId, inventory, furnaceInv, furnaceData);
-		this.te = (KeypadFurnaceBlockEntity)world.getBlockEntity(pos);
-		worldPosCallable = ContainerLevelAccess.create(world, pos);
+		this.be = (KeypadFurnaceBlockEntity)level.getBlockEntity(pos);
+		worldPosCallable = ContainerLevelAccess.create(level, pos);
 	}
 
 	@Override
@@ -37,6 +37,6 @@ public class KeypadFurnaceMenu extends AbstractFurnaceMenu{
 	@Override
 	public void removed(Player player)
 	{
-		te.getLevel().setBlockAndUpdate(te.getBlockPos(), te.getBlockState().setValue(KeypadFurnaceBlock.OPEN, false));
+		be.getLevel().setBlockAndUpdate(be.getBlockPos(), be.getBlockState().setValue(KeypadFurnaceBlock.OPEN, false));
 	}
 }

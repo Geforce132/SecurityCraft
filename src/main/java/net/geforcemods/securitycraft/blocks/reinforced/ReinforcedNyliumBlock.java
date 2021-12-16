@@ -25,43 +25,43 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements Boneme
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
-		if (!hasLightAbove(state, world, pos)) {
-			world.setBlockAndUpdate(pos, Blocks.NETHERRACK.defaultBlockState());
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+		if (!hasLightAbove(state, level, pos)) {
+			level.setBlockAndUpdate(pos, Blocks.NETHERRACK.defaultBlockState());
 		}
 	}
 
-	private static boolean hasLightAbove(BlockState state, LevelReader world, BlockPos pos) {
+	private static boolean hasLightAbove(BlockState state, LevelReader level, BlockPos pos) {
 		BlockPos upperPos = pos.above();
-		BlockState upperState = world.getBlockState(upperPos);
-		int lightLevel = LayerLightEngine.getLightBlockInto(world, state, pos, upperState, upperPos, Direction.UP, upperState.getLightBlock(world, upperPos));
-		return lightLevel < world.getMaxLightLevel();
+		BlockState upperState = level.getBlockState(upperPos);
+		int lightLevel = LayerLightEngine.getLightBlockInto(level, state, pos, upperState, upperPos, Direction.UP, upperState.getLightBlock(level, upperPos));
+		return lightLevel < level.getMaxLightLevel();
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(BlockGetter world, BlockPos pos, BlockState state, boolean flag) {
-		return world.getBlockState(pos.above()).isAir();
+	public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean flag) {
+		return level.getBlockState(pos.above()).isAir();
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level world, Random random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level level, Random random, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel world, Random random, BlockPos pos, BlockState blockState) {
-		BlockState state = world.getBlockState(pos);
+	public void performBonemeal(ServerLevel level, Random random, BlockPos pos, BlockState blockState) {
+		BlockState state = level.getBlockState(pos);
 		BlockPos upperPos = pos.above();
 
 		if (state.is(SCContent.REINFORCED_CRIMSON_NYLIUM.get())) {
-			NetherForestVegetationFeature.place(world, random, upperPos, Features.Configs.CRIMSON_FOREST_CONFIG, 3, 1);
+			NetherForestVegetationFeature.place(level, random, upperPos, Features.Configs.CRIMSON_FOREST_CONFIG, 3, 1);
 		}
 		else if (state.is(SCContent.REINFORCED_WARPED_NYLIUM.get())) {
-			NetherForestVegetationFeature.place(world, random, upperPos, Features.Configs.WARPED_FOREST_CONFIG, 3, 1);
-			NetherForestVegetationFeature.place(world, random, upperPos, Features.Configs.NETHER_SPROUTS_CONFIG, 3, 1);
+			NetherForestVegetationFeature.place(level, random, upperPos, Features.Configs.WARPED_FOREST_CONFIG, 3, 1);
+			NetherForestVegetationFeature.place(level, random, upperPos, Features.Configs.NETHER_SPROUTS_CONFIG, 3, 1);
 
 			if (random.nextInt(8) == 0) {
-				TwistingVinesFeature.place(world, random, upperPos, 3, 1, 2);
+				TwistingVinesFeature.place(level, random, upperPos, 3, 1, 2);
 			}
 		}
 	}

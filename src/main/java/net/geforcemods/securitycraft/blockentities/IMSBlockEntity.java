@@ -44,13 +44,13 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 	}
 
 	@Override
-	public void tick(Level world, BlockPos pos, BlockState state)
+	public void tick(Level level, BlockPos pos, BlockState state)
 	{
-		if(!world.isClientSide && updateBombCount){
+		if(!level.isClientSide && updateBombCount){
 			int mineCount = state.getValue(IMSBlock.MINES);
 
 			if(!(mineCount - 1 < 0 || mineCount > 4))
-				world.setBlockAndUpdate(pos, state.setValue(IMSBlock.MINES, mineCount - 1));
+				level.setBlockAndUpdate(pos, state.setValue(IMSBlock.MINES, mineCount - 1));
 
 			updateBombCount = false;
 		}
@@ -58,21 +58,21 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 		if(attackTime-- == 0)
 		{
 			attackTime = getAttackInterval();
-			launchMine(world, pos);
+			launchMine(level, pos);
 		}
 	}
 
 	/**
 	 * Create a bounding box around the IMS, and fire a mine if a mob or player is found.
 	 */
-	private void launchMine(Level world, BlockPos pos) {
+	private void launchMine(Level level, BlockPos pos) {
 		if(bombsRemaining > 0){
 			AABB area = new AABB(pos).inflate(range.get());
 			LivingEntity target = null;
 
 			if(targetingMode == IMSTargetingMode.MOBS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS)
 			{
-				List<Monster> mobs = world.getEntitiesOfClass(Monster.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
+				List<Monster> mobs = level.getEntitiesOfClass(Monster.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if(!mobs.isEmpty())
 					target = mobs.get(0);
@@ -80,7 +80,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 
 			if(target == null && (targetingMode == IMSTargetingMode.PLAYERS  || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS))
 			{
-				List<Player> players = world.getEntitiesOfClass(Player.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
+				List<Player> players = level.getEntitiesOfClass(Player.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if(!players.isEmpty())
 					target = players.get(0);
@@ -94,10 +94,10 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 				double accelerationY = target.getBoundingBox().minY + target.getBbHeight() / 2.0F - pos.getY() - launchHeight;
 				double accelerationZ = target.getZ() - pos.getZ();
 
-				world.addFreshEntity(new IMSBomb(world, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
+				level.addFreshEntity(new IMSBomb(level, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
 
-				if (!world.isClientSide)
-					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F);
+				if (!level.isClientSide)
+					level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F);
 
 				bombsRemaining--;
 				updateBombCount = true;
@@ -131,10 +131,6 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 		return height;
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
 	public CompoundTag save(CompoundTag tag){
 		super.save(tag);
@@ -145,9 +141,6 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void load(CompoundTag tag){
 		super.load(tag);

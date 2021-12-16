@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public interface IOverlayDisplay {
 
-	public ItemStack getDisplayStack(Level world, BlockState state, BlockPos pos);
+	public ItemStack getDisplayStack(Level level, BlockState state, BlockPos pos);
 
-	public boolean shouldShowSCInfo(Level world, BlockState state, BlockPos pos);
+	public boolean shouldShowSCInfo(Level level, BlockState state, BlockPos pos);
 }

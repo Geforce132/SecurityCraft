@@ -32,17 +32,17 @@ public class SentryRenderer extends EntityRenderer<Sentry>
 	}
 
 	@Override
-	public void render(Sentry entity, float partialTicks, float p_225623_3_, PoseStack stack, MultiBufferSource buffer, int p_225623_6_)
+	public void render(Sentry entity, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight)
 	{
 		VertexConsumer builder = buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity)));
 
-		stack.translate(0.0D, 1.5D, 0.0D);
-		stack.scale(-1, -1, 1); //rotate model rightside up
+		pose.translate(0.0D, 1.5D, 0.0D);
+		pose.scale(-1, -1, 1); //rotate model rightside up
 		RenderSystem._setShaderTexture(0, getTextureLocation(entity));
-		model.renderBase(stack, builder, p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.mulPose(Vector3f.YP.rotationDegrees(entity.getEntityData().get(Sentry.HEAD_ROTATION)));
-		stack.translate(0.0F, entity.getHeadYTranslation(), 0.0F);
-		model.renderToBuffer(stack, builder, p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderBase(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		pose.mulPose(Vector3f.YP.rotationDegrees(entity.getEntityData().get(Sentry.HEAD_ROTATION)));
+		pose.translate(0.0F, entity.getHeadYTranslation(), 0.0F);
+		model.renderToBuffer(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override

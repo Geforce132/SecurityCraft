@@ -43,12 +43,12 @@ public class SetCameraPowered
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
-			Level world = player.level;
+			Level level = player.level;
 
-			if(world.getBlockEntity(pos) instanceof IOwnable te && te.getOwner().isOwner(player))
+			if(level.getBlockEntity(pos) instanceof IOwnable be && be.getOwner().isOwner(player))
 			{
-				world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(SecurityCameraBlock.POWERED, message.powered));
-				world.updateNeighborsAt(pos.relative(world.getBlockState(pos).getValue(SecurityCameraBlock.FACING), -1), world.getBlockState(pos).getBlock());
+				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(SecurityCameraBlock.POWERED, message.powered));
+				level.updateNeighborsAt(pos.relative(level.getBlockState(pos).getValue(SecurityCameraBlock.FACING), -1), level.getBlockState(pos).getBlock());
 			}
 		});
 		ctx.get().setPacketHandled(true);

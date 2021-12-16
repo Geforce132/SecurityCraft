@@ -29,10 +29,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class FrameBlock extends OwnableBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	private static final VoxelShape SHAPE_NORTH = Block.box(2, 2, 0, 14, 14, 1);
-	private static final VoxelShape SHAPE_EAST = Block.box(15, 2, 2, 16, 14, 14);
-	private static final VoxelShape SHAPE_SOUTH = Block.box(2, 2, 15, 14, 14, 16);
-	private static final VoxelShape SHAPE_WEST = Block.box(0, 2, 2, 1, 14, 14);
+	private static final VoxelShape SHAPE_NORTH = Shapes.joinUnoptimized(Shapes.block(), Block.box(2, 2, 0, 14, 14, 1), BooleanOp.ONLY_FIRST);
+	private static final VoxelShape SHAPE_EAST = Shapes.joinUnoptimized(Shapes.block(), Block.box(15, 2, 2, 16, 14, 14), BooleanOp.ONLY_FIRST);
+	private static final VoxelShape SHAPE_SOUTH = Shapes.joinUnoptimized(Shapes.block(), Block.box(2, 2, 15, 14, 14, 16), BooleanOp.ONLY_FIRST);
+	private static final VoxelShape SHAPE_WEST = Shapes.joinUnoptimized(Shapes.block(), Block.box(0, 2, 2, 1, 14, 14), BooleanOp.ONLY_FIRST);
 
 	public FrameBlock(Block.Properties properties){
 		super(properties);
@@ -40,21 +40,19 @@ public class FrameBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
 	{
-		VoxelShape shape = switch(state.getValue(FACING)) {
+		return switch(state.getValue(FACING)) {
 			case NORTH -> SHAPE_NORTH;
 			case EAST -> SHAPE_EAST;
 			case SOUTH -> SHAPE_SOUTH;
 			case WEST -> SHAPE_WEST;
 			default -> Shapes.empty();
 		};
-
-		return Shapes.joinUnoptimized(Shapes.block(), shape, BooleanOp.ONLY_FIRST); //subtract
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		ItemStack stack = player.getItemInHand(hand);
 
@@ -72,7 +70,7 @@ public class FrameBlock extends OwnableBlock {
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
+	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
 		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
 	}

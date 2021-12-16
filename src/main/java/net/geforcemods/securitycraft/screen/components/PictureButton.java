@@ -64,11 +64,8 @@ public class PictureButton extends IdButton{
 		this.drawHeight = drawHeight;
 	}
 
-	/**
-	 * Draws this button to the screen.
-	 */
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
 	{
 		if (visible)
 		{
@@ -78,7 +75,7 @@ public class PictureButton extends IdButton{
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-			GuiUtils.drawContinuousTexturedBox(matrix, WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHovered()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
+			GuiUtils.drawContinuousTexturedBox(pose, WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHovered()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 
 			if(!blockToRender.isEmpty()){
 				itemRenderer.renderAndDecorateItem(blockToRender, x + 2, y + 3);
@@ -91,7 +88,7 @@ public class PictureButton extends IdButton{
 			{
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 				RenderSystem._setShaderTexture(0, getTextureLocation());
-				blit(matrix, x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
+				blit(pose, x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
 			}
 		}
 	}

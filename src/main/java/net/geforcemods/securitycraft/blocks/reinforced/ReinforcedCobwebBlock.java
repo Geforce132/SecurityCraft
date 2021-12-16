@@ -7,7 +7,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -22,21 +21,19 @@ public class ReinforcedCobwebBlock extends BaseReinforcedBlock
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext ctx)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
 	{
 		return Shapes.empty();
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity)
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
 	{
 		if(entity instanceof Player player)
 		{
-			BlockEntity tile = world.getBlockEntity(pos);
-
-			if(tile instanceof OwnableBlockEntity te)
+			if(level.getBlockEntity(pos) instanceof OwnableBlockEntity be)
 			{
-				if(te.getOwner().isOwner(player))
+				if(be.getOwner().isOwner(player))
 					return;
 			}
 		}

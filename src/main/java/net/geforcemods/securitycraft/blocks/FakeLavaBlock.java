@@ -23,15 +23,15 @@ public class FakeLavaBlock extends LiquidBlock
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity)
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
 	{
-		super.entityInside(state, world, pos, entity);
+		super.entityInside(state, level, pos, entity);
 
 		if(entity instanceof LivingEntity lEntity)
 		{
 			lEntity.clearFire();
 
-			if(!world.isClientSide)
+			if(!level.isClientSide)
 			{
 				lEntity.addEffect(SHORT_FIRE_RESISTANCE);
 

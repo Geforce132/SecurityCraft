@@ -10,20 +10,20 @@ import net.minecraftforge.eventbus.api.Event;
  */
 public class OwnershipEvent extends Event
 {
-	private Level world;
+	private Level level;
 	private BlockPos pos;
 	private Player player;
 
-	public OwnershipEvent(Level world, BlockPos pos, Player player)
+	public OwnershipEvent(Level level, BlockPos pos, Player player)
 	{
-		this.world = world;
+		this.level = level;
 		this.pos = pos;
 		this.player = player;
 	}
 
-	public Level getWorld()
+	public Level getLevel()
 	{
-		return world;
+		return level;
 	}
 
 	public BlockPos getPos()

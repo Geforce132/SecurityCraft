@@ -37,8 +37,8 @@ public class MineRemoteAccessToolItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
-		if(world.isClientSide)
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand){
+		if(level.isClientSide)
 			ClientHandler.displayMRATGui(player.getItemInHand(hand));
 
 		return InteractionResultHolder.consume(player.getItemInHand(hand));
@@ -50,8 +50,8 @@ public class MineRemoteAccessToolItem extends Item {
 		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
 	}
 
-	public InteractionResult onItemUseFirst(Player player, Level world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
-		if(world.getBlockState(pos).getBlock() instanceof IExplosive){
+	public InteractionResult onItemUseFirst(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
+		if(level.getBlockState(pos).getBlock() instanceof IExplosive){
 			if(!isMineAdded(stack, pos)){
 				int availSlot = getNextAvaliableSlot(stack);
 
@@ -60,9 +60,9 @@ public class MineRemoteAccessToolItem extends Item {
 					return InteractionResult.FAIL;
 				}
 
-				if(world.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.getOwner().isOwner(player))
+				if(level.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.getOwner().isOwner(player))
 				{
-					if(world.isClientSide)
+					if(level.isClientSide)
 						ClientHandler.displayMRATGui(stack);
 
 					return InteractionResult.SUCCESS;
@@ -73,7 +73,7 @@ public class MineRemoteAccessToolItem extends Item {
 
 				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.posToIntArray(pos));
 
-				if (!world.isClientSide)
+				if (!level.isClientSide)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new UpdateNBTTagOnClient(stack));
 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
@@ -90,7 +90,7 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, Level world, List<Component> list, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Level level, List<Component> list, TooltipFlag flag) {
 		if(stack.getTag() == null)
 			return;
 

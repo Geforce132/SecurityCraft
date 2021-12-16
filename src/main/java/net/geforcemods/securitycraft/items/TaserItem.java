@@ -36,7 +36,7 @@ public class TaserItem extends Item {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items)
 	{
-		if((group == SecurityCraft.groupSCTechnical || group == CreativeModeTab.TAB_SEARCH) && !powered)
+		if((group == SecurityCraft.technicalTab || group == CreativeModeTab.TAB_SEARCH) && !powered)
 			items.add(new ItemStack(this));
 	}
 
@@ -98,13 +98,13 @@ public class TaserItem extends Item {
 			Vec3 lookVec = player.getViewVector(1.0F).scale(range);
 			Vec3 endVec = startVec.add(lookVec);
 			AABB boundingBox = player.getBoundingBox().expandTowards(lookVec).inflate(1, 1, 1);
-			EntityHitResult entityRayTraceResult = ProjectileUtil.getEntityHitResult(player, startVec, endVec, boundingBox, s -> s instanceof LivingEntity, range * range);
+			EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(player, startVec, endVec, boundingBox, s -> s instanceof LivingEntity, range * range);
 
 			level.playSound(player, player.blockPosition(), SCSounds.TASERFIRED.event, SoundSource.PLAYERS, 1.0F, 1.0F);
 
-			if (entityRayTraceResult != null)
+			if (hitResult != null)
 			{
-				LivingEntity entity = (LivingEntity)entityRayTraceResult.getEntity();
+				LivingEntity entity = (LivingEntity)hitResult.getEntity();
 
 				if(!entity.isBlocking() && entity.hurt(CustomDamageSources.TASER, powered ? 2.0F : 1.0F))
 				{
@@ -137,8 +137,8 @@ public class TaserItem extends Item {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slotIndex, boolean isSelected){
-		if(!world.isClientSide && stack.getDamageValue() >= 1)
+	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotIndex, boolean isSelected){
+		if(!level.isClientSide && stack.getDamageValue() >= 1)
 			stack.setDamageValue(stack.getDamageValue() - 1);
 	}
 

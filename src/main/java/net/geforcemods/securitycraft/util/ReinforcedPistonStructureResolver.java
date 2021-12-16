@@ -116,7 +116,7 @@ public class ReinforcedPistonStructureResolver { //this class doesn't extend Pis
 					int j = toPush.indexOf(offsetPos);
 
 					if (j > -1) {
-						this.reorderListAtCollision(l, j);
+						reorderListAtCollision(l, j);
 
 						for(int k = 0; k <= j + l; ++k) {
 							BlockPos posToPush = toPush.get(k);

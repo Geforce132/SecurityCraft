@@ -35,11 +35,11 @@ public class PortableTunePlayerItem extends Item {
 
 	@Override
 	public InteractionResult useOn(UseOnContext ctx) {
-		Level world = ctx.getLevel();
+		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 
-		if (world.getBlockState(pos).getBlock() == SCContent.SONIC_SECURITY_SYSTEM.get()) {
-			SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity)world.getBlockEntity(pos);
+		if (level.getBlockState(pos).getBlock() == SCContent.SONIC_SECURITY_SYSTEM.get()) {
+			SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity)level.getBlockEntity(pos);
 			Player player = ctx.getPlayer();
 
 			if (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)) {
@@ -58,10 +58,10 @@ public class PortableTunePlayerItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (!world.isClientSide) {
+		if (!level.isClientSide) {
 			CompoundTag tag = stack.getOrCreateTag();
 			boolean isTunePlaying = SCEventHandler.PLAYING_TUNES.containsKey(player);
 
@@ -83,7 +83,7 @@ public class PortableTunePlayerItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 		if(!stack.hasTag())
 			return;
 

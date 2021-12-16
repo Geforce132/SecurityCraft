@@ -52,13 +52,13 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 	@Override
 	public Void apply(ITheOneProbe theOneProbe)
 	{
-		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, world, blockState, data) -> {
+		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, level, blockState, data) -> {
 			ItemStack disguisedAs = ItemStack.EMPTY;
 
 			if(blockState.getBlock() instanceof DisguisableBlock disguisedBlock)
-				disguisedAs = disguisedBlock.getDisguisedStack(world, data.getPos());
+				disguisedAs = disguisedBlock.getDisguisedStack(level, data.getPos());
 			else if(blockState.getBlock() instanceof IOverlayDisplay display)
-				disguisedAs = display.getDisplayStack(world, blockState, data.getPos());
+				disguisedAs = display.getDisplayStack(level, blockState, data.getPos());
 
 			if(!disguisedAs.isEmpty())
 			{
@@ -80,16 +80,16 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 			}
 
 			@Override
-			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, Player player, Level world, BlockState blockState, IProbeHitData data)
+			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData data)
 			{
 				Block block = blockState.getBlock();
 
-				if(block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(world, blockState, data.getPos()))
+				if(block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(level, blockState, data.getPos()))
 					return;
 
-				BlockEntity te = world.getBlockEntity(data.getPos());
+				BlockEntity be = level.getBlockEntity(data.getPos());
 
-				if(te instanceof IOwnable ownable)
+				if(be instanceof IOwnable ownable)
 				{
 					String ownerName = ownable.getOwner().getName();
 
@@ -105,7 +105,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				}
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
-				if(te instanceof IModuleInventory inv && (!(te instanceof IOwnable ownable) || ownable.getOwner().isOwner(player)))
+				if(be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player)))
 				{
 					if(!inv.getInsertedModules().isEmpty())
 					{
@@ -116,14 +116,14 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					}
 				}
 
-				if(te instanceof IPasswordProtected passwordProtected && !(te instanceof KeycardReaderBlockEntity) && ((IOwnable)te).getOwner().isOwner(player))
+				if(be instanceof IPasswordProtected passwordProtected && !(be instanceof KeycardReaderBlockEntity) && ((IOwnable)be).getOwner().isOwner(player))
 				{
 					String password = passwordProtected.getPassword();
 
 					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).getString()));
 				}
 
-				if(te instanceof Nameable nameable && nameable.hasCustomName()){
+				if(be instanceof Nameable nameable && nameable.hasCustomName()){
 					Component text = nameable.getCustomName();
 					Component name = text == null ? TextComponent.EMPTY : text;
 
@@ -138,7 +138,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 			}
 
 			@Override
-			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level world, Entity entity, IProbeHitEntityData data) {
+			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, Entity entity, IProbeHitEntityData data) {
 				if (entity instanceof Sentry sentry)
 				{
 					SentryMode mode = sentry.getMode();

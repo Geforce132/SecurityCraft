@@ -24,15 +24,15 @@ public class SCManualItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-		if(world.isClientSide)
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+		if(level.isClientSide)
 			ClientHandler.displaySCManualGui();
 
 		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level world, Entity entity, int slotIndex, boolean isSelected){
+	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotIndex, boolean isSelected){
 		if(stack.getTag() == null){
 			ListTag bookPages = new ListTag();
 

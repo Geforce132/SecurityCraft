@@ -106,8 +106,8 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, Player player) {
-		if(!blockState.getValue(DoorBlock.OPEN)) {
+	public boolean onCodebreakerUsed(BlockState state, Player player) {
+		if(!state.getValue(DoorBlock.OPEN)) {
 			activate(player);
 			return true;
 		}
@@ -122,16 +122,16 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	@Override
 	public void setPassword(String password) {
-		BlockEntity te = null;
+		BlockEntity be = null;
 
 		passcode = password;
 
 		if(getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
-			te = level.getBlockEntity(worldPosition.above());
+			be = level.getBlockEntity(worldPosition.above());
 		else if(getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
-			te = level.getBlockEntity(worldPosition.below());
+			be = level.getBlockEntity(worldPosition.below());
 
-		if(te instanceof KeypadDoorBlockEntity doorTe)
+		if(be instanceof KeypadDoorBlockEntity doorTe)
 			doorTe.setPasswordExclusively(password);
 	}
 

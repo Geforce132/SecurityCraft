@@ -52,9 +52,9 @@ public class UpdateSliderValue {
 			int id = message.id;
 			double value = message.value;
 			Player player = ctx.get().getSender();
-			BlockEntity te = player.level.getBlockEntity(pos);
+			BlockEntity be = player.level.getBlockEntity(pos);
 
-			if(te instanceof ICustomizable customizable && (!(te instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
+			if(be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
 				Option<?> option =customizable.customOptions()[id];
 
 				if(option instanceof DoubleOption o)
@@ -64,8 +64,8 @@ public class UpdateSliderValue {
 
 				customizable.onOptionChanged(customizable.customOptions()[id]);
 
-				if(te instanceof CustomizableBlockEntity customizableTe)
-					player.level.sendBlockUpdated(pos, te.getBlockState(), te.getBlockState(), 3);
+				if(be instanceof CustomizableBlockEntity)
+					player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 			}
 		});
 

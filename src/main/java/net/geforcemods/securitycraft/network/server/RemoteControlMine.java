@@ -50,20 +50,20 @@ public class RemoteControlMine{
 	{
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
-			Level world = player.level;
+			Level level = player.level;
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
-			BlockState state = world.getBlockState(pos);
+			BlockState state = level.getBlockState(pos);
 
 			if(state.getBlock() instanceof IExplosive explosive)
 			{
-				if(world.getBlockEntity(pos) instanceof IOwnable te && te.getOwner().isOwner(player))
+				if(level.getBlockEntity(pos) instanceof IOwnable be && be.getOwner().isOwner(player))
 				{
 					if(message.state.equalsIgnoreCase("activate"))
-						explosive.activateMine(world,pos);
+						explosive.activateMine(level,pos);
 					else if(message.state.equalsIgnoreCase("defuse"))
-						explosive.defuseMine(world, pos);
+						explosive.defuseMine(level, pos);
 					else if(message.state.equalsIgnoreCase("detonate"))
-						explosive.explode(world, pos);
+						explosive.explode(level, pos);
 				}
 			}
 		});

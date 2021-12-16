@@ -11,16 +11,16 @@ import net.minecraft.world.level.Level;
 
 public class EntityUtils{
 
-	public static boolean doesEntityOwn(Entity entity, Level world, BlockPos pos)
+	public static boolean doesEntityOwn(Entity entity, Level level, BlockPos pos)
 	{
 		if(entity instanceof Player player)
-			return doesPlayerOwn(player, world, pos);
+			return doesPlayerOwn(player, level, pos);
 		else return false;
 	}
 
-	public static boolean doesPlayerOwn(Player player, Level world, BlockPos pos)
+	public static boolean doesPlayerOwn(Player player, Level level, BlockPos pos)
 	{
-		return world.getBlockEntity(pos) instanceof IOwnable ownable && ownable.getOwner().isOwner(player);
+		return level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.getOwner().isOwner(player);
 	}
 
 	public static boolean isInvisible(LivingEntity entity)

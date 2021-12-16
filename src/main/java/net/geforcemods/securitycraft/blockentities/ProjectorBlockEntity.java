@@ -243,7 +243,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	}
 
 	@Override
-	public boolean stillValid(Player arg0)
+	public boolean stillValid(Player player)
 	{
 		return true;
 	}

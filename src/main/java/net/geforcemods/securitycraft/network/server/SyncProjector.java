@@ -55,33 +55,33 @@ public class SyncProjector {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
-			Level world = player.level;
+			Level level = player.level;
 
-			if(world.isLoaded(pos) && world.getBlockEntity(pos) instanceof ProjectorBlockEntity te && te.getOwner().isOwner(player))
+			if(level.isLoaded(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.getOwner().isOwner(player))
 			{
-				BlockState state = world.getBlockState(pos);
+				BlockState state = level.getBlockState(pos);
 
 				switch(message.dataType)
 				{
 					case WIDTH:
-						te.setProjectionWidth(message.data);
+						be.setProjectionWidth(message.data);
 						break;
 					case HEIGHT:
-						te.setProjectionHeight(message.data);
+						be.setProjectionHeight(message.data);
 						break;
 					case RANGE:
-						te.setProjectionRange(message.data);
+						be.setProjectionRange(message.data);
 						break;
 					case OFFSET:
-						te.setProjectionOffset(message.data);
+						be.setProjectionOffset(message.data);
 						break;
 					case HORIZONTAL:
-						te.setHorizontal(message.data == 1);
+						be.setHorizontal(message.data == 1);
 						break;
 					case INVALID: break;
 				}
 
-				world.sendBlockUpdated(pos, state, state, 2);
+				level.sendBlockUpdated(pos, state, state, 2);
 			}
 		});
 

@@ -64,7 +64,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context)
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
 	{
 		return switch(state.getValue(TYPE)) {
 			case DOUBLE -> Shapes.block();
@@ -77,14 +77,14 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 	@Nullable
 	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{
-		Level world = ctx.getLevel();
+		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
-		BlockState state = world.getBlockState(pos);
-		BlockEntity te = world.getBlockEntity(pos);
+		BlockState state = level.getBlockState(pos);
+		BlockEntity be = level.getBlockEntity(pos);
 
 		if(state.getBlock() == this)
 		{
-			if(te instanceof IOwnable ownable && !ownable.getOwner().isOwner(ctx.getPlayer()))
+			if(be instanceof IOwnable ownable && !ownable.getOwner().isOwner(ctx.getPlayer()))
 			{
 				PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), ChatFormatting.RED);
 
@@ -135,32 +135,32 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 	}
 
 	@Override
-	public boolean placeLiquid(LevelAccessor world, BlockPos pos, BlockState state, FluidState fluidState)
+	public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState)
 	{
-		return state.getValue(TYPE) != SlabType.DOUBLE ? SimpleWaterloggedBlock.super.placeLiquid(world, pos, state, fluidState) : false;
+		return state.getValue(TYPE) != SlabType.DOUBLE ? SimpleWaterloggedBlock.super.placeLiquid(level, pos, state, fluidState) : false;
 	}
 
 	@Override
-	public boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid)
+	public boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid)
 	{
-		return state.getValue(TYPE) != SlabType.DOUBLE ? SimpleWaterloggedBlock.super.canPlaceLiquid(world, pos, state, fluid) : false;
+		return state.getValue(TYPE) != SlabType.DOUBLE ? SimpleWaterloggedBlock.super.canPlaceLiquid(level, pos, state, fluid) : false;
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
 	{
 		if(state.getValue(WATERLOGGED))
-			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
-		return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type)
+	public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
 	{
 		return switch(type) {
 			case LAND -> false;
-			case WATER -> world.getFluidState(pos).is(FluidTags.WATER);
+			case WATER -> level.getFluidState(pos).is(FluidTags.WATER);
 			case AIR -> false;
 			default -> false;
 		};

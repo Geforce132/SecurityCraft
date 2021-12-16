@@ -35,7 +35,7 @@ public class AdminToolItem extends Item {
 
 	@Override
 	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx) {
-		Level world = ctx.getLevel();
+		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		Player player = ctx.getPlayer();
 		MutableComponent adminToolName = Utils.localize(getDescriptionId());
@@ -52,23 +52,23 @@ public class AdminToolItem extends Item {
 			if(briefcaseResult != InteractionResult.PASS)
 				return briefcaseResult;
 
-			BlockEntity te = world.getBlockEntity(pos);
+			BlockEntity be = level.getBlockEntity(pos);
 
-			if(te != null) {
+			if(be != null) {
 				boolean hasInfo = false;
 
-				if(te instanceof IOwnable ownable) {
+				if(be instanceof IOwnable ownable) {
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", (ownable.getOwner().getName() == null ? "????" : ownable.getOwner().getName())), ChatFormatting.DARK_PURPLE);
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", (ownable.getOwner().getUUID() == null ? "????" : ownable.getOwner().getUUID())), ChatFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
-				if(te instanceof IPasswordProtected passwordProtected) {
+				if(be instanceof IPasswordProtected passwordProtected) {
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.password", (passwordProtected.getPassword() == null ? "????" : passwordProtected.getPassword())), ChatFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
-				if(te instanceof IModuleInventory inv) {
+				if(be instanceof IModuleInventory inv) {
 					List<ModuleType> modules = inv.getInsertedModules();
 
 					if(!modules.isEmpty()) {
@@ -81,7 +81,7 @@ public class AdminToolItem extends Item {
 					}
 				}
 
-				if(te instanceof SecretSignBlockEntity signTe)
+				if(be instanceof SecretSignBlockEntity signTe)
 				{
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, new TextComponent(""), ChatFormatting.DARK_PURPLE); //EMPTY
 
@@ -112,7 +112,7 @@ public class AdminToolItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		if(!player.isCreative())
 		{
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:adminTool.needCreative"), ChatFormatting.DARK_PURPLE);

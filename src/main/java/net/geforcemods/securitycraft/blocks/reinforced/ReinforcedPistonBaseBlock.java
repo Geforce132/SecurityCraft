@@ -86,12 +86,12 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 		Direction direction = state.getValue(FACING);
 		boolean hasSignal = getNeighborSignal(level, pos, direction);
 
-		if (level.getBlockEntity(pos) instanceof OwnableBlockEntity te && !te.getOwner().isValidated()) {
+		if (level.getBlockEntity(pos) instanceof OwnableBlockEntity be && !be.getOwner().isValidated()) {
 			return;
 		}
 
 		if (hasSignal && !state.getValue(EXTENDED)) {
-			if ((new ReinforcedPistonStructureResolver(level, pos, direction, true)).resolve()) {
+			if (new ReinforcedPistonStructureResolver(level, pos, direction, true).resolve()) {
 				level.blockEvent(pos, this, 0, direction.get3DDataValue());
 			}
 		} else if (!hasSignal && state.getValue(EXTENDED)) {
@@ -251,7 +251,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 
 	private boolean moveBlocks(Level level, BlockPos pos, Direction facing, boolean extending) {
 		BlockPos frontPos = pos.relative(facing);
-		BlockEntity pistonTe = level.getBlockEntity(pos);
+		BlockEntity pistonBe = level.getBlockEntity(pos);
 
 		if (!extending && level.getBlockState(frontPos).is(SCContent.REINFORCED_PISTON_HEAD.get())) {
 			level.setBlock(frontPos, Blocks.AIR.defaultBlockState(), 20);
@@ -322,15 +322,15 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				PistonType type = isSticky ? PistonType.STICKY : PistonType.DEFAULT;
 				BlockState pistonHead = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.FACING, facing).setValue(PistonHeadBlock.TYPE, type);
 				BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(MovingPistonBlock.FACING, facing).setValue(MovingPistonBlock.TYPE, isSticky ? PistonType.STICKY : PistonType.DEFAULT);
-				OwnableBlockEntity headTe = new OwnableBlockEntity(frontPos, movingPiston);
+				OwnableBlockEntity headBe = new OwnableBlockEntity(frontPos, movingPiston);
 
-				if (pistonTe instanceof OwnableBlockEntity) { //synchronize owner to the piston head
-					headTe.setOwner(((OwnableBlockEntity)pistonTe).getOwner().getUUID(), ((OwnableBlockEntity)pistonTe).getOwner().getName());
+				if (pistonBe instanceof OwnableBlockEntity) { //synchronize owner to the piston head
+					headBe.setOwner(((OwnableBlockEntity)pistonBe).getOwner().getUUID(), ((OwnableBlockEntity)pistonBe).getOwner().getName());
 				}
 
 				stateToPosMap.remove(frontPos);
 				level.setBlock(frontPos, movingPiston, 68);
-				level.setBlockEntity(ReinforcedMovingPistonBlock.newMovingBlockEntity(frontPos, movingPiston, pistonHead, headTe.getUpdateTag(), facing, true, true));
+				level.setBlockEntity(ReinforcedMovingPistonBlock.newMovingBlockEntity(frontPos, movingPiston, pistonHead, headBe.getUpdateTag(), facing, true, true));
 			}
 
 			BlockState air = Blocks.AIR.defaultBlockState();
@@ -385,13 +385,12 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 		return defaultBlockState().setValue(FACING, vanillaState.getValue(FACING)).setValue(EXTENDED, vanillaState.getValue(EXTENDED));
 	}
 
-	private static boolean isSameOwner(BlockPos blockPos, BlockPos pistonPos, Level world) {
-		BlockEntity pistonBe = world.getBlockEntity(pistonPos);
-		IOwnable blockBe = (IOwnable)world.getBlockEntity(blockPos);
+	private static boolean isSameOwner(BlockPos blockPos, BlockPos pistonPos, Level level) {
+		BlockEntity pistonBe = level.getBlockEntity(pistonPos);
+		IOwnable blockBe = (IOwnable)level.getBlockEntity(blockPos);
 
-		if (pistonBe instanceof IOwnable){
-			return blockBe.getOwner().owns(((IOwnable)pistonBe));
-		}
+		if (pistonBe instanceof IOwnable ownable)
+			return blockBe.getOwner().owns(ownable);
 
 		return false;
 	}

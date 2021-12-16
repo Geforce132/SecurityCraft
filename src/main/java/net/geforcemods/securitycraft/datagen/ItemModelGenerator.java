@@ -38,7 +38,7 @@ public class ItemModelGenerator extends ItemModelProvider
 			Block block = obj.get();
 			Item item = block.asItem();
 
-			if(item.getCreativeTabs().contains(SecurityCraft.groupSCDecoration))
+			if(item.getCreativeTabs().contains(SecurityCraft.decorationTab))
 			{
 				if(block instanceof ReinforcedCarpetBlock || block instanceof ReinforcedSlabBlock || block instanceof ReinforcedStainedGlassBlock || block instanceof ReinforcedStairsBlock)
 					simpleParent(block);
@@ -47,7 +47,7 @@ public class ItemModelGenerator extends ItemModelProvider
 				else if(block instanceof ReinforcedWallBlock wall)
 					reinforcedWallInventory(block, wall.getVanillaBlock());
 			}
-			else if(item.getCreativeTabs().contains(SecurityCraft.groupSCMine) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
+			else if(item.getCreativeTabs().contains(SecurityCraft.mineTab) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 

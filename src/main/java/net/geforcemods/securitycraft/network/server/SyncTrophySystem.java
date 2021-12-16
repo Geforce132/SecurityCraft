@@ -49,15 +49,15 @@ public class SyncTrophySystem {
 
 			if(projectileType != null)
 			{
-				Level world = ctx.get().getSender().level;
+				Level level = ctx.get().getSender().level;
 				BlockPos pos = message.pos;
 				boolean allowed = message.allowed;
 
-				if(world.getBlockEntity(pos) instanceof TrophySystemBlockEntity te && te.getOwner().isOwner(ctx.get().getSender())) {
-					BlockState state = world.getBlockState(pos);
+				if(level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.getOwner().isOwner(ctx.get().getSender())) {
+					BlockState state = level.getBlockState(pos);
 
-					te.setFilter(projectileType, allowed);
-					world.sendBlockUpdated(pos, state, state, 2);
+					be.setFilter(projectileType, allowed);
+					level.sendBlockUpdated(pos, state, state, 2);
 				}
 			}
 		});

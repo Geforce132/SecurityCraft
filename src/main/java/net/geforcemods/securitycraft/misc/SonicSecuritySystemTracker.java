@@ -33,7 +33,7 @@ public class SonicSecuritySystemTracker {
 	}
 
 	/**
-	 * Stops tracking the given Sonic Security System. Use when e.g. removing the tile entity from the world
+	 * Stops tracking the given Sonic Security System. Use when e.g. removing the block entity from the level
 	 * @param be The Sonic Security System to stop tracking
 	 */
 	public static void stopTracking(SonicSecuritySystemBlockEntity be)
@@ -42,7 +42,7 @@ public class SonicSecuritySystemTracker {
 	}
 
 	/**
-	 * Gets all Sonic Security Systems that have the given block position in their range in the given world
+	 * Gets all Sonic Security Systems that have the given block position in their range in the given level
 	 * @param level The level
 	 * @param pos The block position
 	 * @return A list of all sonic security systems that have the given block position in their range

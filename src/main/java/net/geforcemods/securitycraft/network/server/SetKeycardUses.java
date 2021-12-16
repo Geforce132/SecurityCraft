@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SetKeycardUses
@@ -45,13 +44,11 @@ public class SetKeycardUses
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
 
-			if(player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity te)
+			if(player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be)
 			{
-				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
+				if(be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player))
 				{
-					AbstractContainerMenu container = player.containerMenu;
-
-					if(container instanceof KeycardReaderMenu keycardReaderContainer)
+					if(player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
 						keycardReaderContainer.setKeycardUses(message.uses);
 				}
 			}

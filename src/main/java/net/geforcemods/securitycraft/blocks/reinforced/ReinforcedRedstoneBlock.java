@@ -27,7 +27,7 @@ public class ReinforcedRedstoneBlock extends BaseReinforcedBlock
 	}
 
 	@Override
-	public int getSignal(BlockState state, BlockGetter world, BlockPos pos, Direction side)
+	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side)
 	{
 		return 15;
 	}
@@ -36,7 +36,7 @@ public class ReinforcedRedstoneBlock extends BaseReinforcedBlock
 		private final List<Block> blocks = Arrays.asList(SCContent.REINFORCED_REDSTONE_BLOCK.get());
 
 		@Override
-		public boolean isPowering(Level world, BlockPos pos, BlockState state, BlockEntity te, Direction direction, int distance) {
+		public boolean isPowering(Level level, BlockPos pos, BlockState state, BlockEntity be, Direction direction, int distance) {
 			return distance == 1;
 		}
 

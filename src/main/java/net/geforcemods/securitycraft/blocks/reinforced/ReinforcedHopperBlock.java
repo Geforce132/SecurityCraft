@@ -34,32 +34,28 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (Player)placer));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player)placer));
 
 		if(stack.hasCustomHoverName())
 		{
-			BlockEntity tile = world.getBlockEntity(pos);
-
-			if(tile instanceof ReinforcedHopperBlockEntity te)
-				te.setCustomName(stack.getHoverName());
+			if(level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be)
+				be.setCustomName(stack.getHoverName());
 		}
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
-		if(!world.isClientSide)
+		if(!level.isClientSide)
 		{
-			BlockEntity tile = world.getBlockEntity(pos);
-
-			if(tile instanceof ReinforcedHopperBlockEntity te)
+			if(level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be)
 			{
 				//only allow the owner or players on the allowlist to access a reinforced hopper
-				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
-					player.openMenu(te);
+				if(be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player))
+					player.openMenu(be);
 			}
 		}
 
@@ -67,29 +63,25 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		if(state.getBlock() != newState.getBlock())
 		{
-			BlockEntity tile = world.getBlockEntity(pos);
-
-			if(tile instanceof ReinforcedHopperBlockEntity te)
+			if(level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be)
 			{
-				Containers.dropContents(world, pos, te);
-				world.updateNeighbourForOutputSignal(pos, this);
+				Containers.dropContents(level, pos, be);
+				level.updateNeighbourForOutputSignal(pos, this);
 			}
 
-			super.onRemove(state, world, pos, newState, isMoving);
+			super.onRemove(state, level, pos, newState, isMoving);
 		}
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity)
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
 	{
-		BlockEntity tile = world.getBlockEntity(pos);
-
-		if(tile instanceof ReinforcedHopperBlockEntity te)
-			ReinforcedHopperBlockEntity.entityInside(world, pos, state, entity, te);
+		if(level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be)
+			ReinforcedHopperBlockEntity.entityInside(level, pos, state, entity, be);
 	}
 
 	@Override
@@ -99,8 +91,8 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return world.isClientSide ? null : createTickerHelper(type, SCContent.beTypeReinforcedHopper, ReinforcedHopperBlockEntity::pushItemsTick);
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return level.isClientSide ? null : createTickerHelper(type, SCContent.beTypeReinforcedHopper, ReinforcedHopperBlockEntity::pushItemsTick);
 	}
 
 	@Override
@@ -118,19 +110,19 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	public static class ExtractionBlock implements IExtractionBlock
 	{
 		@Override
-		public boolean canExtract(IOwnable te, Level world, BlockPos pos, BlockState state)
+		public boolean canExtract(IOwnable be, Level level, BlockPos pos, BlockState state)
 		{
-			ReinforcedHopperBlockEntity hopperTe = (ReinforcedHopperBlockEntity)world.getBlockEntity(pos);
+			ReinforcedHopperBlockEntity hopperBe = (ReinforcedHopperBlockEntity)level.getBlockEntity(pos);
 
-			if(!te.getOwner().owns(hopperTe))
+			if(!be.getOwner().owns(hopperBe))
 			{
-				if(te instanceof IModuleInventory inv)
+				if(be instanceof IModuleInventory inv)
 				{
 					//hoppers can extract out of e.g. chests if the hopper's owner is on the chest's allowlist module
-					if(ModuleUtils.isAllowed(inv, hopperTe.getOwner().getName()))
+					if(ModuleUtils.isAllowed(inv, hopperBe.getOwner().getName()))
 						return true;
 					//hoppers can extract out of e.g. chests whose owner is on the hopper's allowlist module
-					else if(ModuleUtils.isAllowed(hopperTe, te.getOwner().getName()))
+					else if(ModuleUtils.isAllowed(hopperBe, be.getOwner().getName()))
 						return true;
 				}
 

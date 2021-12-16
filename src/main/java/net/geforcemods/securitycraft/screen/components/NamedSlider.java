@@ -40,14 +40,14 @@ public class NamedSlider extends Slider
 	}
 
 	@Override
-	public void renderButton(PoseStack matrix, int mouseX, int mouseY, float partial)
+	public void renderButton(PoseStack pose, int mouseX, int mouseY, float partial)
 	{
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		super.renderButton(matrix, mouseX, mouseY, partial);
+		super.renderButton(pose, mouseX, mouseY, partial);
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrix, Minecraft mc, int mouseX, int mouseY)
+	protected void renderBg(PoseStack pose, Minecraft mc, int mouseX, int mouseY)
 	{
 		if(visible)
 		{
@@ -61,8 +61,8 @@ public class NamedSlider extends Slider
 
 			RenderSystem._setShaderTexture(0, WIDGETS_LOCATION);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			blit(matrix, x + (int)(sliderValue * (width - 8)), y, 0, 46 + offset, 4, 20);
-			blit(matrix, x + (int)(sliderValue * (width - 8)) + 4, y, 196, 46 + offset, 4, 20);
+			blit(pose, x + (int)(sliderValue * (width - 8)), y, 0, 46 + offset, 4, 20);
+			blit(pose, x + (int)(sliderValue * (width - 8)) + 4, y, 196, 46 + offset, 4, 20);
 		}
 	}
 

@@ -37,11 +37,11 @@ public class BlockPocketBlockEntity extends OwnableBlockEntity implements ITicki
 	}
 
 	@Override
-	public void tick(Level world, BlockPos pos, BlockState state)
+	public void tick(Level level, BlockPos pos, BlockState state)
 	{
 		if(manager == null && managerPos != null)
 		{
-			if(world.getBlockEntity(managerPos) instanceof BlockPocketManagerBlockEntity manager)
+			if(level.getBlockEntity(managerPos) instanceof BlockPocketManagerBlockEntity manager)
 				this.manager = manager;
 		}
 	}

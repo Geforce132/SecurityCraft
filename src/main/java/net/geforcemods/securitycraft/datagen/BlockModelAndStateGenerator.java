@@ -65,7 +65,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 			Block block = obj.get();
 			Item item = block.asItem();
 
-			if(item.getCreativeTabs().contains(SecurityCraft.groupSCDecoration))
+			if(item.getCreativeTabs().contains(SecurityCraft.decorationTab))
 			{
 				if(block instanceof ReinforcedSlabBlock)
 					reinforcedSlabBlock(block);
@@ -80,7 +80,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 				else if(block instanceof ReinforcedCarpetBlock)
 					reinforcedCarpetBlock(block);
 			}
-			else if(item.getCreativeTabs().contains(SecurityCraft.groupSCMine) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
+			else if(item.getCreativeTabs().contains(SecurityCraft.mineTab) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock))
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 

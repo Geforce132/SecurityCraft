@@ -36,8 +36,8 @@ public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericMenu
 	private IdButton continueButton;
 	private int[] digits = {0, 0, 0, 0};
 
-	public BriefcasePasswordScreen(GenericMenu container, Inventory inv, Component text) {
-		super(container, inv, text);
+	public BriefcasePasswordScreen(GenericMenu menu, Inventory inv, Component title) {
+		super(menu, inv, title);
 	}
 
 	@Override
@@ -63,26 +63,27 @@ public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericMenu
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrix, mouseX, mouseY, partialTicks);
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+		super.render(pose, mouseX, mouseY, partialTicks);
 
 		for(EditBox textfield : keycodeTextboxes)
-			textfield.render(matrix, mouseX, mouseY, partialTicks);
+			textfield.render(pose, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, enterPasscode, imageWidth / 2 - font.width(enterPasscode) / 2, 6, 4210752);
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
+		font.draw(pose, enterPasscode, imageWidth / 2 - font.width(enterPasscode) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem._setShaderTexture(0, TEXTURE);
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
-		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
+
+		renderBackground(pose);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem._setShaderTexture(0, TEXTURE);
+		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
 	protected void actionPerformed(IdButton button) {

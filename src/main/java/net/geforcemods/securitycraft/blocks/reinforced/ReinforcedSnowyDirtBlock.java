@@ -40,10 +40,10 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
 	{
 		if(facing != Direction.UP)
-			return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+			return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 		else
 		{
 			return state.setValue(SNOWY, isSnowySetting(facingState));
@@ -61,32 +61,32 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
 	{
 		if(this == SCContent.REINFORCED_MYCELIUM.get())
 		{
-			super.animateTick(state, world, pos, rand);
+			super.animateTick(state, level, pos, rand);
 
 			if(rand.nextInt(10) == 0)
-				world.addParticle(ParticleTypes.MYCELIUM, (double) pos.getX() + (double) rand.nextFloat(), pos.getY() + 1.1D, (double) pos.getZ() + (double) rand.nextFloat(), 0.0D, 0.0D, 0.0D);
+				level.addParticle(ParticleTypes.MYCELIUM, (double) pos.getX() + (double) rand.nextFloat(), pos.getY() + 1.1D, (double) pos.getZ() + (double) rand.nextFloat(), 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(BlockGetter world, BlockPos pos, BlockState state, boolean isClient)
+	public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient)
 	{
-		return this == SCContent.REINFORCED_GRASS_BLOCK.get() && world.getBlockState(pos.above()).isAir();
+		return this == SCContent.REINFORCED_GRASS_BLOCK.get() && level.getBlockState(pos.above()).isAir();
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level world, Random rand, BlockPos pos, BlockState state)
+	public boolean isBonemealSuccess(Level level, Random rand, BlockPos pos, BlockState state)
 	{
 		return this == SCContent.REINFORCED_GRASS_BLOCK.get();
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void performBonemeal(ServerLevel world, Random rand, BlockPos pos, BlockState state) {
+	public void performBonemeal(ServerLevel level, Random rand, BlockPos pos, BlockState state) {
 		BlockPos posAbove = pos.above();
 		BlockState grass = Blocks.GRASS.defaultBlockState();
 
@@ -99,10 +99,10 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 			{
 				if(j >= i / 16)
 				{
-					BlockState tempState = world.getBlockState(tempPos);
+					BlockState tempState = level.getBlockState(tempPos);
 
 					if(tempState.getBlock() == grass.getBlock() && rand.nextInt(10) == 0)
-						((BonemealableBlock)grass.getBlock()).performBonemeal(world, rand, tempPos, tempState);
+						((BonemealableBlock)grass.getBlock()).performBonemeal(level, rand, tempPos, tempState);
 
 					if(!tempState.isAir())
 						break;
@@ -111,7 +111,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 
 					if(rand.nextInt(8) == 0)
 					{
-						List<ConfiguredFeature<?, ?>> flowers = world.getBiome(tempPos).getGenerationSettings().getFlowerFeatures();
+						List<ConfiguredFeature<?, ?>> flowers = level.getBiome(tempPos).getGenerationSettings().getFlowerFeatures();
 
 						if(flowers.isEmpty())
 							break;
@@ -124,15 +124,15 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 					else
 						placeState = grass;
 
-					if(placeState.canSurvive(world, tempPos))
-						world.setBlock(tempPos, placeState, 3);
+					if(placeState.canSurvive(level, tempPos))
+						level.setBlock(tempPos, placeState, 3);
 
 					break;
 				}
 
 				tempPos = tempPos.offset(rand.nextInt(3) - 1, (rand.nextInt(3) - 1) * rand.nextInt(3) / 2, rand.nextInt(3) - 1);
 
-				if(world.getBlockState(tempPos.below()).getBlock() != this || world.getBlockState(tempPos).isCollisionShapeFullBlock(world, tempPos))
+				if(level.getBlockState(tempPos.below()).getBlock() != this || level.getBlockState(tempPos).isCollisionShapeFullBlock(level, tempPos))
 					break;
 
 				++j;
@@ -153,10 +153,10 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	}
 
 	@Override
-	public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, player));
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override

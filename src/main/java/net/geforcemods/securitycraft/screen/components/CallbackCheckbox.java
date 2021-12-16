@@ -43,6 +43,7 @@ public class CallbackCheckbox extends AbstractButton
 	public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTicks)
 	{
 		Minecraft minecraft = Minecraft.getInstance();
+
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.enableDepthTest();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);

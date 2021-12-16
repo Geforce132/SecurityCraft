@@ -38,7 +38,7 @@ public class KeycardItem extends Item
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, Level world, List<Component> list, TooltipFlag flag)
+	public void appendHoverText(ItemStack stack, Level level, List<Component> list, TooltipFlag flag)
 	{
 		if(this == SCContent.LIMITED_USE_KEYCARD.get())
 			return;

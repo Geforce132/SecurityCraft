@@ -34,7 +34,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -123,13 +122,13 @@ public class SCClientEventHandler
 		if (mc.options.renderDebug)
 			return;
 
-		if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te)) {
+		if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be)) {
 			return;
 		}
 
 		Font font = Minecraft.getInstance().font;
 		Options settings = Minecraft.getInstance().options;
-		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
+		boolean hasRedstoneModule = be.hasModule(ModuleType.REDSTONE);
 		BlockState state = level.getBlockState(pos);
 		Component lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyUp.getTranslatedKeyMessage(), settings.keyLeft.getTranslatedKeyMessage(), settings.keyDown.getTranslatedKeyMessage(), settings.keyRight.getTranslatedKeyMessage());
 		Component exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyShift.getTranslatedKeyMessage());
@@ -139,9 +138,9 @@ public class SCClientEventHandler
 		String time = ClientUtils.getFormattedMinecraftTime();
 		int timeY = 25;
 
-		if(te.hasCustomName())
+		if(be.hasCustomName())
 		{
-			Component cameraName = te.getCustomName();
+			Component cameraName = be.getCustomName();
 
 			font.drawShadow(pose, cameraName, window.getGuiScaledWidth() - font.width(cameraName) - 8, 25, 16777215);
 			timeY += 10;
@@ -181,7 +180,7 @@ public class SCClientEventHandler
 	public static void hotbarBindOverlay(ForgeIngameGui gui, PoseStack pose, float partialTicks, int width, int height) {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
-		Level world = player.getCommandSenderWorld();
+		Level level = player.getCommandSenderWorld();
 		double reachDistance = mc.gameMode.getPickRange();
 
 		for (InteractionHand hand : InteractionHand.values()) {
@@ -192,9 +191,9 @@ public class SCClientEventHandler
 			{
 				double eyeHeight = player.getEyeHeight();
 				Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
-				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
+				HitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
-				if(mop instanceof BlockHitResult bhr && world.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity)
+				if(hitResult instanceof BlockHitResult bhr && level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity)
 				{
 					CompoundTag cameras = stack.getOrCreateTag();
 					uCoord = 110;
@@ -218,9 +217,9 @@ public class SCClientEventHandler
 			{
 				double eyeHeight = player.getEyeHeight();
 				Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
-				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
+				HitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
-				if(mop instanceof BlockHitResult bhr && world.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive)
+				if(hitResult instanceof BlockHitResult bhr && level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive)
 				{
 					uCoord = 110;
 					CompoundTag mines = stack.getOrCreateTag();
@@ -242,19 +241,19 @@ public class SCClientEventHandler
 			}
 			else if(stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get())
 			{
-				Entity hitEntity = Minecraft.getInstance().crosshairPickEntity;
-
-				if(hitEntity instanceof Sentry)
+				if(Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry)
 				{
-					uCoord = 110;
 					CompoundTag sentries = stack.getOrCreateTag();
+
+					uCoord = 110;
 
 					for(int i = 1; i <= 12; i++)
 					{
 						if(stack.getTag().getIntArray("sentry" + i).length > 0)
 						{
 							int[] coords = sentries.getIntArray("sentry" + i);
-							if(coords[0] == hitEntity.blockPosition().getX() && coords[1] == hitEntity.blockPosition().getY() && coords[2] == hitEntity.blockPosition().getZ())
+
+							if(coords[0] == sentry.blockPosition().getX() && coords[1] == sentry.blockPosition().getY() && coords[2] == sentry.blockPosition().getZ())
 							{
 								uCoord = 88;
 								break;
@@ -267,15 +266,15 @@ public class SCClientEventHandler
 			{
 				double eyeHeight = player.getEyeHeight();
 				Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
-				HitResult mop = world.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
+				HitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, Block.OUTLINE, Fluid.NONE, player));
 
-				if(mop instanceof BlockHitResult bhr && world.getBlockEntity(bhr.getBlockPos()) instanceof ILockable lockable)
+				if(hitResult instanceof BlockHitResult bhr && level.getBlockEntity(bhr.getBlockPos()) instanceof ILockable lockable)
 				{
 					BlockPos pos = bhr.getBlockPos();
 
 					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 					if (!(lockable instanceof IOwnable ownable) || !ownable.getOwner().isOwner(player)) {
-						if (lockable.getThisBlockEntity().getBlockState().getBlock() instanceof DisguisableBlock disguisable && disguisable.getDisguisedBlockState(world, pos) != null)
+						if (lockable.getThisBlockEntity().getBlockState().getBlock() instanceof DisguisableBlock disguisable && disguisable.getDisguisedBlockState(level, pos) != null)
 							return;
 					}
 

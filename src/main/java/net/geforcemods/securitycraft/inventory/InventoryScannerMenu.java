@@ -17,24 +17,24 @@ import net.minecraft.world.level.Level;
 public class InventoryScannerMenu extends AbstractContainerMenu {
 
 	private final int numRows;
-	public final InventoryScannerBlockEntity te;
+	public final InventoryScannerBlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 
-	public InventoryScannerMenu(int windowId, Level world, BlockPos pos, Inventory inventory){
+	public InventoryScannerMenu(int windowId, Level level, BlockPos pos, Inventory inventory){
 		super(SCContent.mTypeInventoryScanner, windowId);
-		te = (InventoryScannerBlockEntity)world.getBlockEntity(pos);
-		numRows = te.getContainerSize() / 9;
-		worldPosCallable = ContainerLevelAccess.create(world, pos);
+		be = (InventoryScannerBlockEntity)level.getBlockEntity(pos);
+		numRows = be.getContainerSize() / 9;
+		worldPosCallable = ContainerLevelAccess.create(level, pos);
 
 		//prohibited items
 		for(int i = 0; i < 10; i++)
-			addSlot(new OwnerRestrictedSlot(te, te, i, (6 + (i * 18)), 16, true));
+			addSlot(new OwnerRestrictedSlot(be, be, i, (6 + (i * 18)), 16, true));
 
 		//inventory scanner storage
-		if(te.getOwner().isOwner(inventory.player) && te.hasModule(ModuleType.STORAGE))
+		if(be.getOwner().isOwner(inventory.player) && be.hasModule(ModuleType.STORAGE))
 			for(int i = 0; i < 9; i++)
 				for(int j = 0; j < 3; j++)
-					addSlot(new Slot(te, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));
+					addSlot(new Slot(be, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));
 
 		//inventory
 		for(int i = 0; i < 3; i++)
@@ -46,9 +46,6 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 			addSlot(new Slot(inventory, i, 15 + i * 18, 173));
 	}
 
-	/**
-	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
-	 */
 	@Override
 	public ItemStack quickMoveStack(Player player, int index)
 	{
@@ -77,15 +74,12 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 		return slotStackCopy;
 	}
 
-	/**
-	 * Called when the container is closed.
-	 */
 	@Override
 	public void removed(Player player)
 	{
 		super.removed(player);
 
-		Utils.setISinTEAppropriately(te.getLevel(), te.getBlockPos(), te.getContents());
+		Utils.setISinTEAppropriately(be.getLevel(), be.getBlockPos(), be.getContents());
 	}
 
 	@Override
@@ -98,12 +92,12 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 	{
 		if(slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof OwnerRestrictedSlot slot && slot.isGhostSlot())
 		{
-			if(te.getOwner().isOwner(player))
+			if(be.getOwner().isOwner(player))
 			{
 				ItemStack pickedUpStack = getCarried().copy();
 
 				pickedUpStack.setCount(1);
-				te.getContents().set(slotId, pickedUpStack);
+				be.getContents().set(slotId, pickedUpStack);
 			}
 
 			return;

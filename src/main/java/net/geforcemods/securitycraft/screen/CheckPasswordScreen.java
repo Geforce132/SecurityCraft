@@ -27,17 +27,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private BlockEntity tileEntity;
+	private BlockEntity be;
 	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u001B'}; //0-9, backspace and escape
 	private TranslatableComponent blockName;
 	private EditBox keycodeTextbox;
 	private String currentString = "";
 	private static final int MAX_CHARS = 20;
 
-	public CheckPasswordScreen(GenericTEMenu container, Inventory inv, Component name){
-		super(container, inv, name);
-		this.tileEntity = container.te;
-		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getDescriptionId());
+	public CheckPasswordScreen(GenericTEMenu menu, Inventory inv, Component title){
+		super(menu, inv, title);
+		this.be = menu.be;
+		blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
 	}
 
 	@Override
@@ -70,18 +70,19 @@ public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEMenu> 
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY){
-		font.draw(matrix, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY){
+		font.draw(pose, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY){
-		renderBackground(matrix);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem._setShaderTexture(0, TEXTURE);
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY){
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
-		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
+
+		renderBackground(pose);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem._setShaderTexture(0, TEXTURE);
+		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -146,6 +147,6 @@ public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEMenu> 
 	}
 
 	public void checkCode(String code) {
-		SecurityCraft.channel.sendToServer(new CheckPassword(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), code));
+		SecurityCraft.channel.sendToServer(new CheckPassword(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), code));
 	}
 }

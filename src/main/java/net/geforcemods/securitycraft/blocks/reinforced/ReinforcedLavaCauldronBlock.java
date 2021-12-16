@@ -24,14 +24,14 @@ public class ReinforcedLavaCauldronBlock extends ReinforcedCauldronBlock {
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
-		if (this.isEntityInsideContent(state, pos, entity)) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if (isEntityInsideContent(state, pos, entity)) {
 			entity.lavaHurt();
 		}
 	}
 
 	@Override
-	public int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos) {
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
 		return 3;
 	}
 

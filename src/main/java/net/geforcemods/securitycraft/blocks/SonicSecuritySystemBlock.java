@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenSSSScreen;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -63,7 +63,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
 
-	public static boolean isNormalCube(BlockState state, BlockGetter reader, BlockPos pos) {
+	public static boolean isNormalCube(BlockState state, BlockGetter level, BlockPos pos) {
 		return false;
 	}
 
@@ -76,8 +76,8 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-		return canSupportCenter(world, pos.below(), Direction.UP);
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+		return canSupportCenter(level, pos.below(), Direction.UP);
 	}
 
 	@Override
@@ -166,6 +166,6 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeSonicSecuritySystem, WorldUtils::blockEntityTicker);
+		return createTickerHelper(type, SCContent.beTypeSonicSecuritySystem, LevelUtils::blockEntityTicker);
 	}
 }

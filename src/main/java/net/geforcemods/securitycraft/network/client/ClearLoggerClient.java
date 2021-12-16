@@ -35,10 +35,10 @@ public class ClearLoggerClient
 	public static void onMessage(ClearLoggerClient message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			UsernameLoggerBlockEntity te = (UsernameLoggerBlockEntity)Minecraft.getInstance().level.getBlockEntity(message.pos);
+			UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity)Minecraft.getInstance().level.getBlockEntity(message.pos);
 
-			if(te != null)
-				te.players = new String[100];
+			if(be != null)
+				be.players = new String[100];
 		});
 
 		ctx.get().setPacketHandled(true);

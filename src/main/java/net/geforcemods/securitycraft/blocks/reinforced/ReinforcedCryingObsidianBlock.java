@@ -20,7 +20,7 @@ public class ReinforcedCryingObsidianBlock extends BaseReinforcedBlock
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
 	{
 		if(rand.nextInt(5) == 0)
 		{
@@ -29,15 +29,15 @@ public class ReinforcedCryingObsidianBlock extends BaseReinforcedBlock
 			if(direction != Direction.UP)
 			{
 				BlockPos offsetPos = pos.relative(direction);
-				BlockState offsetState = world.getBlockState(offsetPos);
+				BlockState offsetState = level.getBlockState(offsetPos);
 
-				if(!state.canOcclude() || !offsetState.isFaceSturdy(world, offsetPos, direction.getOpposite()))
+				if(!state.canOcclude() || !offsetState.isFaceSturdy(level, offsetPos, direction.getOpposite()))
 				{
 					double xOffset = direction.getStepX() == 0 ? rand.nextDouble() : 0.5D + direction.getStepX() * 0.6D;
 					double yOffset = direction.getStepY() == 0 ? rand.nextDouble() : 0.5D + direction.getStepY() * 0.6D;
 					double zOffset = direction.getStepZ() == 0 ? rand.nextDouble() : 0.5D + direction.getStepZ() * 0.6D;
 
-					world.addParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0.0D, 0.0D, 0.0D);
+					level.addParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0.0D, 0.0D, 0.0D);
 				}
 			}
 		}

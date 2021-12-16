@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 /**
- * Let your TileEntity implement this to be able to add modules to it
+ * Let your block entity  implement this to be able to add modules to it
  * @author bl4ckscor3
  */
 public interface IModuleInventory extends IItemHandlerModifiable
@@ -30,7 +30,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	public ModuleType[] acceptedModules();
 
 	/**
-	 * @return The TileEntity this inventory is for
+	 * @return The block entity this inventory is for
 	 */
 	public default BlockEntity getBlockEntity() {
 		return (BlockEntity)this;
@@ -52,10 +52,10 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 */
 	public default void onModuleInserted(ItemStack stack, ModuleType module)
 	{
-		BlockEntity te = getBlockEntity();
+		BlockEntity be = getBlockEntity();
 
-		if(!te.getLevel().isClientSide)
-			te.getLevel().sendBlockUpdated(te.getBlockPos(), te.getBlockState(), te.getBlockState(), 3);
+		if(!be.getLevel().isClientSide)
+			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 	}
 
 	/**
@@ -66,10 +66,10 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 */
 	public default void onModuleRemoved(ItemStack stack, ModuleType module)
 	{
-		BlockEntity te = getBlockEntity();
+		BlockEntity be = getBlockEntity();
 
-		if(!te.getLevel().isClientSide)
-			te.getLevel().sendBlockUpdated(te.getBlockPos(), te.getBlockState(), te.getBlockState(), 3);
+		if(!be.getLevel().isClientSide)
+			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 	}
 
 	/**
@@ -123,14 +123,12 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		{
 			if(!simulate)
 			{
-				BlockEntity tile = getBlockEntity();
-
 				if(stack.getItem() instanceof ModuleItem module)
 				{
 					onModuleRemoved(stack, module.getModuleType());
 
-					if(tile instanceof LinkableBlockEntity te)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, te);
+					if(getBlockEntity() instanceof LinkableBlockEntity be)
+						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, be);
 				}
 
 				return getInventory().set(slot, ItemStack.EMPTY).copy();
@@ -157,7 +155,6 @@ public interface IModuleInventory extends IItemHandlerModifiable
 			if(!simulate)
 			{
 				ItemStack copy = stack.copy();
-				BlockEntity tile = getBlockEntity();
 
 				copy.setCount(1);
 				getInventory().set(slot, copy);
@@ -166,8 +163,8 @@ public interface IModuleInventory extends IItemHandlerModifiable
 				{
 					onModuleInserted(stack, module.getModuleType());
 
-					if(tile instanceof LinkableBlockEntity te)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, copy, te);
+					if(getBlockEntity() instanceof LinkableBlockEntity be)
+						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, copy, be);
 				}
 			}
 
@@ -187,7 +184,6 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	{
 		slot = fixSlotId(slot);
 
-		BlockEntity tile = getBlockEntity();
 		ItemStack previous = getModuleInSlot(slot);
 
 		//call the correct methods, should there have been a module in the slot previously
@@ -195,8 +191,8 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		{
 			onModuleRemoved(previous, ((ModuleItem)previous.getItem()).getModuleType());
 
-			if(tile instanceof LinkableBlockEntity te)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, te);
+			if(getBlockEntity() instanceof LinkableBlockEntity be)
+				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, be);
 		}
 
 		getInventory().set(slot, stack);
@@ -205,8 +201,8 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		{
 			onModuleInserted(stack, module.getModuleType());
 
-			if(tile instanceof LinkableBlockEntity te)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, te);
+			if(getBlockEntity() instanceof LinkableBlockEntity be)
+				ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, be);
 		}
 	}
 

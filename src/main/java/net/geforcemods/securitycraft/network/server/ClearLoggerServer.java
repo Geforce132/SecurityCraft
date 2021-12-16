@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class ClearLoggerServer
@@ -35,12 +35,12 @@ public class ClearLoggerServer
 	public static void onMessage(ClearLoggerServer message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			Player player = ctx.get().getSender();
+			ServerPlayer player = ctx.get().getSender();
 
-			if(player.level.getBlockEntity(message.pos) instanceof UsernameLoggerBlockEntity te && te.getOwner().isOwner(player))
+			if(player.level.getBlockEntity(message.pos) instanceof UsernameLoggerBlockEntity be && be.getOwner().isOwner(player))
 			{
-				te.players = new String[100];
-				te.clearLoggedPlayersOnClient();
+				be.players = new String[100];
+				be.clearLoggedPlayersOnClient();
 			}
 		});
 

@@ -29,41 +29,41 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 	public ProjectorRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(ProjectorBlockEntity te, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int combinedOverlay)
+	public void render(ProjectorBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int combinedOverlay)
 	{
-		if(te.isActive() && !te.isEmpty())
+		if(be.isActive() && !be.isEmpty())
 		{
 			Random random = new Random();
-			BlockState state = te.getProjectedBlock().defaultBlockState();
+			BlockState state = be.getProjectedBlock().defaultBlockState();
 			BlockPos pos;
 
 			RenderSystem.disableCull();
 
-			for(int x = 0; x < te.getProjectionWidth(); x++) {
-				for(int y = 0; y < te.getProjectionHeight(); y++) {
+			for(int x = 0; x < be.getProjectionWidth(); x++) {
+				for(int y = 0; y < be.getProjectionHeight(); y++) {
 					pose.pushPose();
 
-					if(!te.isHorizontal())
-						pos = translateProjection(te.getBlockPos(), pose, te.getBlockState().getValue(ProjectorBlock.FACING), x, y, te.getProjectionRange(), te.getProjectionOffset());
+					if(!be.isHorizontal())
+						pos = translateProjection(be.getBlockPos(), pose, be.getBlockState().getValue(ProjectorBlock.FACING), x, y, be.getProjectionRange(), be.getProjectionOffset());
 					else
-						pos = translateProjection(te.getBlockPos(), pose, te.getBlockState().getValue(ProjectorBlock.FACING), x, te.getProjectionRange() - 16, y + 1, te.getProjectionOffset());
+						pos = translateProjection(be.getBlockPos(), pose, be.getBlockState().getValue(ProjectorBlock.FACING), x, be.getProjectionRange() - 16, y + 1, be.getProjectionOffset());
 
-					if(pos != null && te.getLevel().isEmptyBlock(pos))
+					if(pos != null && be.getLevel().isEmptyBlock(pos))
 					{
 
 						switch (state.getRenderShape()) {
 							case MODEL:
-								for (RenderType rendertype : RenderType.chunkBufferLayers()) {
-									if (ItemBlockRenderTypes.canRenderInLayer(state, rendertype)) {
-										Minecraft.getInstance().getBlockRenderer().renderBatched(state, pos, te.getLevel(), pose, buffer.getBuffer(rendertype), true, random);
+								for (RenderType renderType : RenderType.chunkBufferLayers()) {
+									if (ItemBlockRenderTypes.canRenderInLayer(state, renderType)) {
+										Minecraft.getInstance().getBlockRenderer().renderBatched(state, pos, be.getLevel(), pose, buffer.getBuffer(renderType), true, random);
 									}
 								}
 
 								break;
 							case ENTITYBLOCK_ANIMATED:
-								ItemStack tileEntityStack = new ItemStack(state.getBlock());
+								ItemStack blockEntityStack = new ItemStack(state.getBlock());
 
-								RenderProperties.get(tileEntityStack).getItemStackRenderer().renderByItem(tileEntityStack, ItemTransforms.TransformType.NONE, pose, buffer, packedLight, OverlayTexture.NO_OVERLAY);
+								RenderProperties.get(blockEntityStack).getItemStackRenderer().renderByItem(blockEntityStack, ItemTransforms.TransformType.NONE, pose, buffer, packedLight, OverlayTexture.NO_OVERLAY);
 								break;
 							default:
 								break;
@@ -81,7 +81,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 	/**
 	 * Shifts the projection depending on the offset and range set in the projector
 	 *
-	 * @param tePos The position of the projector which draws the fake block
+	 * @param bePos The position of the projector which draws the fake block
 	 * @param pose the MatrixStack of the current render context
 	 * @param direction The direction the projector is facing
 	 * @param x The offset from the projectors position on the x axis of the position at which to draw the fake block
@@ -91,24 +91,24 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 	 *
 	 * @return The BlockPos of the fake block to be drawn, null if an invalid direction was given
 	 */
-	private BlockPos translateProjection(BlockPos tePos, PoseStack pose, Direction direction, int x, int y, double distance, double offset)
+	private BlockPos translateProjection(BlockPos bePos, PoseStack pose, Direction direction, int x, int y, double distance, double offset)
 	{
 		BlockPos pos = null;
 
 		if(direction == Direction.NORTH) {
-			pos = new BlockPos(tePos.getX() + x + offset, tePos.getY() + y, tePos.getZ() + distance);
+			pos = new BlockPos(bePos.getX() + x + offset, bePos.getY() + y, bePos.getZ() + distance);
 			pose.translate(0.0D + x + offset, 0.0D + y, distance);
 		}
 		else if(direction == Direction.SOUTH) {
-			pos = new BlockPos(tePos.getX() + x + offset, tePos.getY() + y, tePos.getZ() + -distance);
+			pos = new BlockPos(bePos.getX() + x + offset, bePos.getY() + y, bePos.getZ() + -distance);
 			pose.translate(0.0D + x + offset, 0.0D + y, -distance);
 		}
 		else if(direction == Direction.WEST) {
-			pos = new BlockPos(tePos.getX() + distance, tePos.getY() + y, tePos.getZ() + x + offset);
+			pos = new BlockPos(bePos.getX() + distance, bePos.getY() + y, bePos.getZ() + x + offset);
 			pose.translate(distance, 0.0D + y, 0.0D + x + offset);
 		}
 		else if(direction == Direction.EAST) {
-			pos = new BlockPos(tePos.getX() + -distance, tePos.getY() + y, tePos.getZ() + x + offset);
+			pos = new BlockPos(bePos.getX() + -distance, bePos.getY() + y, bePos.getZ() + x + offset);
 			pose.translate(-distance, 0.0D + y, 0.0D + x + offset);
 		}
 
@@ -116,7 +116,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(ProjectorBlockEntity te)
+	public boolean shouldRenderOffScreen(ProjectorBlockEntity be)
 	{
 		return true;
 	}

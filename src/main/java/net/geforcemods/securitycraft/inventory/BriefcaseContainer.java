@@ -118,7 +118,7 @@ public class BriefcaseContainer implements Container {
 	public void stopOpen(Player player) {}
 
 	@Override
-	public boolean canPlaceItem(int index, ItemStack itemStack) {
+	public boolean canPlaceItem(int index, ItemStack stack) {
 		return true;
 	}
 

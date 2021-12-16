@@ -25,57 +25,57 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	private final TranslatableComponent output = Utils.localize("gui.securitycraft:blockReinforcer.output");
 	private final boolean isLvl1;
 
-	public BlockReinforcerScreen(BlockReinforcerMenu container, Inventory inv, Component name)
+	public BlockReinforcerScreen(BlockReinforcerMenu menu, Inventory inv, Component title)
 	{
-		super(container, inv, name);
+		super(menu, inv, title);
 
-		this.isLvl1 = container.isLvl1;
+		this.isLvl1 = menu.isLvl1;
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
 	{
-		super.render(matrix, mouseX, mouseY, partialTicks);
+		super.render(pose, mouseX, mouseY, partialTicks);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
-			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
+			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrix, int mouseX, int mouseY)
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY)
 	{
 		NonNullList<ItemStack> inv = menu.getItems();
 
-		font.draw(matrix, ubr, (imageWidth - font.width(ubr)) / 2, 5, 4210752);
-		font.draw(matrix, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
+		font.draw(pose, ubr, (imageWidth - font.width(ubr)) / 2, 5, 4210752);
+		font.draw(pose, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
 
 		if(!inv.get(36).isEmpty())
 		{
-			font.draw(matrix, output, 50, 25, 4210752);
+			font.draw(pose, output, 50, 25, 4210752);
 			minecraft.getItemRenderer().renderAndDecorateItem(menu.reinforcingSlot.getOutput(), 116, 20);
 			minecraft.getItemRenderer().renderGuiItemDecorations(minecraft.font, menu.reinforcingSlot.getOutput(), 116, 20, null);
 
 			if(mouseX >= leftPos + 114 && mouseX < leftPos + 134 && mouseY >= topPos + 17 && mouseY < topPos + 39)
-				renderTooltip(matrix, menu.reinforcingSlot.getOutput(), mouseX - leftPos, mouseY - topPos);
+				renderTooltip(pose, menu.reinforcingSlot.getOutput(), mouseX - leftPos, mouseY - topPos);
 		}
 
 		if(!isLvl1 && !inv.get(37).isEmpty())
 		{
-			font.draw(matrix, output, 50, 50, 4210752);
+			font.draw(pose, output, 50, 50, 4210752);
 			minecraft.getItemRenderer().renderAndDecorateItem(menu.unreinforcingSlot.getOutput(), 116, 46);
 			minecraft.getItemRenderer().renderGuiItemDecorations(minecraft.font, menu.unreinforcingSlot.getOutput(), 116, 46, null);
 
 			if(mouseX >= leftPos + 114 && mouseX < leftPos + 134 && mouseY >= topPos + 43 && mouseY < topPos + 64)
-				renderTooltip(matrix, menu.unreinforcingSlot.getOutput(), mouseX - leftPos, mouseY - topPos);
+				renderTooltip(pose, menu.unreinforcingSlot.getOutput(), mouseX - leftPos, mouseY - topPos);
 		}
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY)
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY)
 	{
-		renderBackground(matrix);
+		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, isLvl1 ? TEXTURE_LVL1 : TEXTURE);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 }

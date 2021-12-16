@@ -29,10 +29,10 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	}
 
 	@Override
-	public void tick(Level world, BlockPos pos, BlockState state){ //server only as per AlarmBlock
+	public void tick(Level level, BlockPos pos, BlockState state){ //server only as per AlarmBlock
 		if(isPowered && --cooldown <= 0)
 		{
-			for(ServerPlayer player : ((ServerLevel)world).getPlayers(p -> p.blockPosition().distSqr(pos) <= Math.pow(range.get(), 2)))
+			for(ServerPlayer player : ((ServerLevel)level).getPlayers(p -> p.blockPosition().distSqr(pos) <= Math.pow(range.get(), 2)))
 			{
 				player.playNotifySound(SCSounds.ALARM.event, SoundSource.BLOCKS, 0.3F, 1.0F);
 			}
@@ -41,10 +41,6 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 		}
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
 	public CompoundTag save(CompoundTag tag)
 	{
@@ -54,9 +50,6 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void load(CompoundTag tag)
 	{

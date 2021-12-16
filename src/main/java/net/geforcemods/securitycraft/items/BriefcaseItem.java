@@ -36,22 +36,22 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getHand());
 	}
 
-	public InteractionResult onItemUse(Player player, Level world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, InteractionHand hand) {
-		handle(stack, world, player, hand);
+	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, InteractionHand hand) {
+		handle(stack, level, player, hand);
 		return InteractionResult.CONSUME;
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		handle(stack, world, player, hand);
+		handle(stack, level, player, hand);
 		return InteractionResultHolder.consume(stack);
 	}
 
-	private void handle(ItemStack stack, Level world, Player player, InteractionHand hand)
+	private void handle(ItemStack stack, Level level, Player player, InteractionHand hand)
 	{
-		if(world.isClientSide) {
+		if(level.isClientSide) {
 			if(!stack.hasTag()) {
 				stack.setTag(new CompoundTag());
 				ClientUtils.syncItemNBT(stack);
@@ -66,7 +66,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack briefcase, Level world, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack briefcase, Level level, List<Component> tooltip, TooltipFlag flag) {
 		String ownerName = getOwnerName(briefcase);
 
 		if(!ownerName.isEmpty())

@@ -36,7 +36,7 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, SCContent.beTypeReinforcedPiston, ReinforcedPistonMovingBlockEntity::tick);
 	}
 
@@ -67,9 +67,9 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		if(world.getBlockEntity(pos) instanceof ReinforcedPistonMovingBlockEntity be)
-			return be.getCollisionShape(world, pos);
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		if(level.getBlockEntity(pos) instanceof ReinforcedPistonMovingBlockEntity be)
+			return be.getCollisionShape(level, pos);
 		else return Shapes.empty();
 	}
 }

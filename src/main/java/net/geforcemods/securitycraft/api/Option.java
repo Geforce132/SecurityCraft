@@ -14,7 +14,7 @@ import net.minecraftforge.fmlclient.gui.widget.Slider.ISlider;
 
 /**
  * A class that allows blocks that have
- * {@link CustomizableBlockEntity}s to have custom, "per-block"
+ * {@link ICustomizable} block entities to have custom, per-block
  * options that are separate from the main SecurityCraft
  * configuration options.
  *
@@ -49,9 +49,6 @@ public abstract class Option<T> {
 	/**
 	 * Called when this option's button in {@link CustomizeBlockScreen} is pressed.
 	 * Update the option's value here. <p>
-	 *
-	 * NOTE: This gets called on the server side, not on the client!
-	 * Use TileEntitySCTE.sync() to update values on the client-side.
 	 */
 	public abstract void toggle();
 
@@ -129,7 +126,7 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * A subclass of {@link Option}, already setup to handle booleans.
+	 * A subclass of {@link Option}, set up to handle booleans.
 	 */
 	public static class BooleanOption extends Option<Boolean>{
 
@@ -231,7 +228,7 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * A subclass of {@link Option}, already setup to handle doubles.
+	 * A subclass of {@link Option}, set up to handle doubles.
 	 */
 	public static class DoubleOption extends Option<Double> implements ISlider{
 		private boolean slider;
@@ -310,7 +307,7 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * A subclass of {@link Option}, already setup to handle floats.
+	 * A subclass of {@link Option}, set up to handle floats.
 	 */
 	public static class FloatOption extends Option<Float>{
 

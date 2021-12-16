@@ -27,7 +27,7 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return switch(state.getValue(AXIS)) {
 			case X -> X_AXIS_SHAPE;
 			case Y -> Y_AXIS_SHAPE;
@@ -38,18 +38,18 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-		boolean isWater = fluidstate.getType() == Fluids.WATER;
+		FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+		boolean isWater = fluidState.getType() == Fluids.WATER;
 		return super.getStateForPlacement(context).setValue(WATERLOGGED, isWater);
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED)) {
-			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 
-		return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	@Override

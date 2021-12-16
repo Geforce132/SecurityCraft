@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -47,11 +47,11 @@ public class CameraMonitorItem extends Item {
 		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
 	}
 
-	public InteractionResult onItemUse(Player player, Level world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
-		if(world.getBlockState(pos).getBlock() == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)){
-			SecurityCameraBlockEntity te = (SecurityCameraBlockEntity)world.getBlockEntity(pos);
+	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
+		if(level.getBlockState(pos).getBlock() == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)){
+			SecurityCameraBlockEntity be = (SecurityCameraBlockEntity)level.getBlockEntity(pos);
 
-			if(!te.getOwner().isOwner(player) && !ModuleUtils.isAllowed(te, player)){
+			if(!be.getOwner().isOwner(player) && !ModuleUtils.isAllowed(be, player)){
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), ChatFormatting.RED);
 				return InteractionResult.FAIL;
 			}
@@ -69,12 +69,12 @@ public class CameraMonitorItem extends Item {
 
 			for(int i = 1; i <= 30; i++)
 				if (!stack.getTag().contains("Camera" + i)){
-					stack.getTag().putString("Camera" + i, WorldUtils.toNBTString(view));
+					stack.getTag().putString("Camera" + i, LevelUtils.toNBTString(view));
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 					break;
 				}
 
-			if (!world.isClientSide)
+			if (!level.isClientSide)
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new UpdateNBTTagOnClient(stack));
 
 			return InteractionResult.SUCCESS;
@@ -84,7 +84,7 @@ public class CameraMonitorItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if(!stack.hasTag() || !hasCameraAdded(stack.getTag())) {
@@ -92,7 +92,7 @@ public class CameraMonitorItem extends Item {
 			return InteractionResultHolder.pass(stack);
 		}
 
-		if(stack.getItem() == SCContent.CAMERA_MONITOR.get() && world.isClientSide)
+		if(stack.getItem() == SCContent.CAMERA_MONITOR.get() && level.isClientSide)
 			ClientHandler.displayCameraMonitorGui(player.getInventory(), (CameraMonitorItem) stack.getItem(), stack.getTag());
 
 		return InteractionResultHolder.consume(stack);
@@ -100,7 +100,7 @@ public class CameraMonitorItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 		if(stack.getTag() == null)
 			return;
 
@@ -112,7 +112,7 @@ public class CameraMonitorItem extends Item {
 			if(tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
-				if(WorldUtils.checkCoordinates(view, coords))
+				if(LevelUtils.checkCoordinates(view, coords))
 					return "Camera" + i;
 			}
 
@@ -134,7 +134,7 @@ public class CameraMonitorItem extends Item {
 			if(tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
-				if(WorldUtils.checkCoordinates(view, coords))
+				if(LevelUtils.checkCoordinates(view, coords))
 					return true;
 			}
 

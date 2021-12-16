@@ -45,14 +45,14 @@ public class ToggleBlockPocketManager
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
 
-			if(player.level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity te && te.getOwner().isOwner(player))
+			if(player.level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity be && be.getOwner().isOwner(player))
 			{
-				te.size = message.size;
+				be.size = message.size;
 
 				if(message.enabling)
-					te.enableMultiblock();
+					be.enableMultiblock();
 				else
-					te.disableMultiblock();
+					be.disableMultiblock();
 			}
 		});
 

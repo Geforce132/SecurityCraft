@@ -175,28 +175,28 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
 	{
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 
-		renderBackground(matrix);
+		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(matrix, startX, startY, 0, 0, xSize, ySize, 512, 256);
-		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.draw(matrix, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getDescriptionId()), startX + 5, startY - 25 + 13, 0xFF0000);
+		blit(pose, startX, startY, 0, 0, xSize, ySize, 512, 256);
+		super.render(pose, mouseX, mouseY, partialTicks);
+		font.draw(pose, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getDescriptionId()), startX + 5, startY - 25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 12; i++) {
-			font.draw(matrix, lines[i], startX + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
+			font.draw(pose, lines[i], startX + xSize / 4 - lengths[i] + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
 		}
 
-		font.draw(matrix, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752);
+		font.draw(pose, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752);
 
 		for(TextHoverChecker chc : hoverCheckers)
 		{
 			if(chc != null && chc.checkHover(mouseX, mouseY))
-				renderTooltip(matrix, chc.getName(), mouseX, mouseY);
+				renderTooltip(pose, chc.getName(), mouseX, mouseY);
 		}
 	}
 
@@ -250,9 +250,6 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		}
 	}
 
-	/**
-	 * Action to perform when a button is clicked
-	 */
 	protected void actionPerformed(IdButton button) {
 		int sentry = button.id / 3;
 		int type = button.id % 3;
@@ -316,10 +313,11 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	// Based on ChunkManager$EntityTrackerEntry#updateTrackingState
 	private boolean isSentryVisibleToPlayer(BlockPos sentryPos){
 		Player player = Minecraft.getInstance().player;
-		double d0 = player.getX() - sentryPos.getX();
-		double d1 = player.getZ() - sentryPos.getZ();
-		int i = Math.min(SENTRY_TRACKING_RANGE, viewDistance) - 1;
-		return d0 >= (-i) && d0 <= i && d1 >= (-i) && d1 <= i;
+		double xDistance = player.getX() - sentryPos.getX();
+		double zDistance = player.getZ() - sentryPos.getZ();
+		int trackingRange = Math.min(SENTRY_TRACKING_RANGE, viewDistance) - 1;
+
+		return xDistance >= -trackingRange && xDistance <= trackingRange && zDistance >= -trackingRange && zDistance <= trackingRange;
 	}
 
 	@Override
@@ -328,11 +326,11 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	@Override
-	public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
-		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(p_keyPressed_1_, p_keyPressed_2_))) {
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
 			removed();
 			return true;
 		}
-		return super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 }

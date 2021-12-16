@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -53,25 +53,25 @@ public class TrophySystemBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos){
-		return BlockUtils.isSideSolid(world, pos.below(), Direction.UP);
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos){
+		return BlockUtils.isSideSolid(level, pos.below(), Direction.UP);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if(!canSurvive(state, world, pos)) {
-			world.destroyBlock(pos, true);
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		if(!canSurvive(state, level, pos)) {
+			level.destroyBlock(pos, true);
 		}
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (((IOwnable) world.getBlockEntity(pos)).getOwner().isOwner(player)) {
-			if (!world.isClientSide)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (((IOwnable) level.getBlockEntity(pos)).getOwner().isOwner(player)) {
+			if (!level.isClientSide)
 				NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-						return new GenericTEMenu(SCContent.mTypeTrophySystem, windowId, world, pos);
+						return new GenericTEMenu(SCContent.mTypeTrophySystem, windowId, level, pos);
 					}
 
 					@Override
@@ -102,7 +102,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeTrophySystem, WorldUtils::blockEntityTicker);
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, SCContent.beTypeTrophySystem, LevelUtils::blockEntityTicker);
 	}
 }

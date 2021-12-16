@@ -24,16 +24,16 @@ public class TextHoverChecker extends HoverChecker
 		button = null;
 	}
 
-	public TextHoverChecker(AbstractWidget button, Component line)
+	public TextHoverChecker(AbstractWidget widget, Component line)
 	{
-		this(button, Arrays.asList(line));
+		this(widget, Arrays.asList(line));
 	}
 
-	public TextHoverChecker(AbstractWidget button, List<Component> lines)
+	public TextHoverChecker(AbstractWidget widget, List<Component> lines)
 	{
-		super(button);
+		super(widget);
 		this.lines = lines;
-		this.button = button instanceof TogglePictureButton tpb ? tpb : null;
+		this.button = widget instanceof TogglePictureButton tpb ? tpb : null;
 	}
 
 	public Component getName()

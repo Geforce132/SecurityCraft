@@ -52,9 +52,9 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 	public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 
 	@Override
-	public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
-		radar.render(matrixStack, buffer, packedLight, packedOverlay);
-		bb_main.render(matrixStack, buffer, packedLight, packedOverlay);
+	public void renderToBuffer(PoseStack pose, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+		radar.render(pose, buffer, packedLight, packedOverlay);
+		bb_main.render(pose, buffer, packedLight, packedOverlay);
 	}
 
 	public void setRadarRotation(float rotation) {

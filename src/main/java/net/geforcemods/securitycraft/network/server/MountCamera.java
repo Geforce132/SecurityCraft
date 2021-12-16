@@ -45,13 +45,13 @@ public class MountCamera
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			ServerPlayer player = ctx.get().getSender();
-			Level world = player.level;
-			BlockState state = world.getBlockState(pos);
+			Level level = player.level;
+			BlockState state = level.getBlockState(pos);
 
-			if(world.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && world.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te)
+			if(level.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te)
 			{
 				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
-					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos, player);
+					((SecurityCameraBlock)state.getBlock()).mountCamera(level, pos, player);
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", te.getOwner().getName()), ChatFormatting.RED);
 			}

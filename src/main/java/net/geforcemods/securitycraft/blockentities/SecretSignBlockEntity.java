@@ -37,10 +37,6 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 		return SCContent.beTypeSecretSign;
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
 	public CompoundTag save(CompoundTag tag)
 	{
@@ -56,9 +52,6 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void load(CompoundTag tag)
 	{

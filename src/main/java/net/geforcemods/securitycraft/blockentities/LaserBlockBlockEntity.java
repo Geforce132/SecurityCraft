@@ -43,30 +43,28 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
-	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedTEs) {
+	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {
 		if(action == LinkedAction.OPTION_CHANGED) {
 			Option<?> option = (Option<?>) parameters[0];
+
 			enabledOption.copy(option);
 			toggleLaser((BooleanOption) option);
-
-			excludedTEs.add(this);
-			createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[]{ option }, excludedTEs);
+			excludedBEs.add(this);
+			createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[]{ option }, excludedBEs);
 		}
 		else if(action == LinkedAction.MODULE_INSERTED) {
 			ItemStack module = (ItemStack) parameters[0];
 
 			insertModule(module);
-
-			excludedTEs.add(this);
-			createLinkedBlockAction(LinkedAction.MODULE_INSERTED, parameters, excludedTEs);
+			excludedBEs.add(this);
+			createLinkedBlockAction(LinkedAction.MODULE_INSERTED, parameters, excludedBEs);
 		}
 		else if(action == LinkedAction.MODULE_REMOVED) {
 			ModuleType module = (ModuleType) parameters[1];
 
 			removeModule(module);
-
-			excludedTEs.add(this);
-			createLinkedBlockAction(LinkedAction.MODULE_REMOVED, parameters, excludedTEs);
+			excludedBEs.add(this);
+			createLinkedBlockAction(LinkedAction.MODULE_REMOVED, parameters, excludedBEs);
 		}
 	}
 

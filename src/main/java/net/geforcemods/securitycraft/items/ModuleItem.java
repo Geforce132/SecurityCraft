@@ -30,7 +30,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
@@ -57,14 +56,12 @@ public class ModuleItem extends Item{
 	@Override
 	public InteractionResult useOn(UseOnContext ctx)
 	{
-		BlockEntity te = ctx.getLevel().getBlockEntity(ctx.getClickedPos());
-		ItemStack stack = ctx.getItemInHand();
-
-		if(te instanceof IModuleInventory inv)
+		if(ctx.getLevel().getBlockEntity(ctx.getClickedPos()) instanceof IModuleInventory inv)
 		{
+			ItemStack stack = ctx.getItemInHand();
 			ModuleType type = ((ModuleItem)stack.getItem()).getModuleType();
 
-			if(te instanceof IOwnable ownable && !ownable.getOwner().isOwner(ctx.getPlayer()))
+			if(inv instanceof IOwnable ownable && !ownable.getOwner().isOwner(ctx.getPlayer()))
 				return InteractionResult.PASS;
 
 			if(inv.getAcceptedModules().contains(type) && !inv.hasModule(type))
@@ -83,20 +80,20 @@ public class ModuleItem extends Item{
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if(canBeCustomized())
 		{
 			if(module == ModuleType.ALLOWLIST || module == ModuleType.DENYLIST) {
-				if(world.isClientSide)
+				if(level.isClientSide)
 					ClientHandler.displayEditModuleGui(stack);
 
 				return InteractionResultHolder.consume(stack);
 			}
 			else if(module == ModuleType.DISGUISE)
 			{
-				if (!world.isClientSide) {
+				if (!level.isClientSide) {
 					NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
@@ -121,7 +118,7 @@ public class ModuleItem extends Item{
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void appendHoverText(ItemStack stack, Level world, List<Component> list, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Level level, List<Component> list, TooltipFlag flag) {
 		if(containsCustomData || canBeCustomized())
 			list.add(MODIFIABLE);
 		else

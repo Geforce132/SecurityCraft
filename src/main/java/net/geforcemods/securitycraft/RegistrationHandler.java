@@ -92,7 +92,7 @@ import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
-import net.geforcemods.securitycraft.util.OwnableTE;
+import net.geforcemods.securitycraft.util.OwnableBE;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
@@ -135,14 +135,14 @@ public class RegistrationHandler
 				{
 					Block block = ((RegistryObject<Block>)field.get(null)).get();
 
-					event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(SecurityCraft.groupSCDecoration).fireResistant()).setRegistryName(block.getRegistryName()));
+					event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(SecurityCraft.decorationTab).fireResistant()).setRegistryName(block.getRegistryName()));
 				}
 				else if(field.isAnnotationPresent(RegisterItemBlock.class))
 				{
 					int tab = field.getAnnotation(RegisterItemBlock.class).value().ordinal();
 					RegistryObject<Block> block = (RegistryObject<Block>)field.get(null);
 
-					event.getRegistry().register(new BlockItem(block.get(), new Item.Properties().tab(tab == 0 ? SecurityCraft.groupSCTechnical : (tab == 1 ? SecurityCraft.groupSCMine : SecurityCraft.groupSCDecoration))).setRegistryName(block.get().getRegistryName()));
+					event.getRegistry().register(new BlockItem(block.get(), new Item.Properties().tab(tab == 0 ? SecurityCraft.technicalTab : (tab == 1 ? SecurityCraft.mineTab : SecurityCraft.decorationTab))).setRegistryName(block.get().getRegistryName()));
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
@@ -155,15 +155,15 @@ public class RegistrationHandler
 	@SubscribeEvent
 	public static void registerBlockEntities(RegistryEvent.Register<BlockEntityType<?>> event)
 	{
-		List<Block> teOwnableBlocks = new ArrayList<>();
+		List<Block> beOwnableBlocks = new ArrayList<>();
 
 		//find all blocks whose tile entity is TileEntityOwnable
 		for(Field field : SCContent.class.getFields())
 		{
 			try
 			{
-				if(field.isAnnotationPresent(OwnableTE.class))
-					teOwnableBlocks.add(((RegistryObject<Block>)field.get(null)).get());
+				if(field.isAnnotationPresent(OwnableBE.class))
+					beOwnableBlocks.add(((RegistryObject<Block>)field.get(null)).get());
 
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
@@ -172,7 +172,7 @@ public class RegistrationHandler
 			}
 		}
 
-		event.getRegistry().register(BlockEntityType.Builder.of(OwnableBlockEntity::new, teOwnableBlocks.toArray(new Block[teOwnableBlocks.size()])).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ownable")));
+		event.getRegistry().register(BlockEntityType.Builder.of(OwnableBlockEntity::new, beOwnableBlocks.toArray(new Block[beOwnableBlocks.size()])).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ownable")));
 		event.getRegistry().register(BlockEntityType.Builder.of(NamedBlockEntity::new, SCContent.LASER_FIELD.get(), SCContent.INVENTORY_SCANNER_FIELD.get(), SCContent.IRON_FENCE.get(), SCContent.COBBLESTONE_MINE.get(), SCContent.DIAMOND_ORE_MINE.get(), SCContent.DIRT_MINE.get(), SCContent.FURNACE_MINE.get(), SCContent.GRAVEL_MINE.get(), SCContent.SAND_MINE.get(), SCContent.STONE_MINE.get(), SCContent.BOUNCING_BETTY.get(), SCContent.REINFORCED_FENCEGATE.get(), SCContent.ANCIENT_DEBRIS_MINE.get(), SCContent.COAL_ORE_MINE.get(), SCContent.EMERALD_ORE_MINE.get(), SCContent.GOLD_ORE_MINE.get(), SCContent.GILDED_BLACKSTONE_MINE.get(), SCContent.IRON_ORE_MINE.get(), SCContent.LAPIS_ORE_MINE.get(), SCContent.NETHER_GOLD_ORE_MINE.get(), SCContent.QUARTZ_ORE_MINE.get(), SCContent.REDSTONE_ORE_MINE.get(), SCContent.DEEPSLATE_COAL_ORE_MINE.get(), SCContent.DEEPSLATE_COPPER_ORE_MINE.get(), SCContent.DEEPSLATE_DIAMOND_ORE_MINE.get(), SCContent.DEEPSLATE_EMERALD_ORE_MINE.get(), SCContent.DEEPSLATE_GOLD_ORE_MINE.get(), SCContent.DEEPSLATE_IRON_ORE_MINE.get(), SCContent.DEEPSLATE_LAPIS_ORE_MINE.get(), SCContent.DEEPSLATE_REDSTONE_ORE_MINE.get(), SCContent.COPPER_ORE_MINE.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "abstract")));
 		event.getRegistry().register(BlockEntityType.Builder.of(KeypadBlockEntity::new, SCContent.KEYPAD.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad")));
 		event.getRegistry().register(BlockEntityType.Builder.of(LaserBlockBlockEntity::new, SCContent.LASER_BLOCK.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "laser_block")));

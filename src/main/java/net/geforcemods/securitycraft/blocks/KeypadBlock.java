@@ -44,44 +44,44 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
 	{
 		if(state.getValue(POWERED))
 			return InteractionResult.PASS;
 		else
 		{
-			KeypadBlockEntity te = (KeypadBlockEntity)world.getBlockEntity(pos);
+			KeypadBlockEntity be = (KeypadBlockEntity)level.getBlockEntity(pos);
 
-			if(ModuleUtils.isDenied(te, player))
+			if(ModuleUtils.isDenied(be, player))
 			{
-				if(te.sendsMessages())
+				if(be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}
-			else if(ModuleUtils.isAllowed(te, player))
+			else if(ModuleUtils.isAllowed(be, player))
 			{
-				if(te.sendsMessages())
+				if(be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
-				activate(state, world, pos, te.getSignalLength());
+				activate(state, level, pos, be.getSignalLength());
 			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				te.openPasswordGUI(player);
+				be.openPasswordGUI(player);
 		}
 
 		return InteractionResult.SUCCESS;
 	}
 
-	public void activate(BlockState state, Level world, BlockPos pos, int signalLength){
-		world.setBlockAndUpdate(pos, state.setValue(POWERED, true));
-		BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYPAD.get());
-		world.getBlockTicks().scheduleTick(pos, this, signalLength);
+	public void activate(BlockState state, Level level, BlockPos pos, int signalLength){
+		level.setBlockAndUpdate(pos, state.setValue(POWERED, true));
+		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYPAD.get());
+		level.getBlockTicks().scheduleTick(pos, this, signalLength);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random)
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
 	{
-		world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-		BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYPAD.get());
+		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
+		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYPAD.get());
 	}
 
 	@Override
@@ -90,34 +90,19 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean shouldCheckWeakPower(BlockState state, LevelReader world, BlockPos pos, Direction side)
+	public boolean shouldCheckWeakPower(BlockState state, LevelReader level, BlockPos pos, Direction side)
 	{
 		return false;
 	}
 
-	/**
-	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
-	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
-	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-	 */
 	@Override
-	public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side){
-		if(blockState.getValue(POWERED))
-			return 15;
-		else
-			return 0;
+	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side){
+		return state.getValue(POWERED) ? 15 : 0;
 	}
 
-	/**
-	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
-	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-	 */
 	@Override
-	public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side){
-		if(blockState.getValue(POWERED))
-			return 15;
-		else
-			return 0;
+	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side){
+		return state.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
@@ -126,21 +111,20 @@ public class KeypadBlock extends DisguisableBlock {
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(Level world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
+	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
 	{
 		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()).setValue(POWERED, false);
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter world, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
-		builder.add(FACING);
-		builder.add(POWERED);
+		builder.add(FACING, POWERED);
 	}
 
 	@Override
@@ -169,10 +153,10 @@ public class KeypadBlock extends DisguisableBlock {
 		}
 
 		@Override
-		public boolean convert(Player player, Level world, BlockPos pos)
+		public boolean convert(Player player, Level level, BlockPos pos)
 		{
-			world.setBlockAndUpdate(pos, SCContent.KEYPAD.get().defaultBlockState().setValue(KeypadBlock.FACING, world.getBlockState(pos).getValue(FrameBlock.FACING)).setValue(KeypadBlock.POWERED, false));
-			((IOwnable) world.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
+			level.setBlockAndUpdate(pos, SCContent.KEYPAD.get().defaultBlockState().setValue(KeypadBlock.FACING, level.getBlockState(pos).getValue(FrameBlock.FACING)).setValue(KeypadBlock.POWERED, false));
+			((IOwnable) level.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
 			return true;
 		}
 	}

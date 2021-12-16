@@ -33,67 +33,57 @@ public class MineBlock extends ExplosiveBlock {
 		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false));
 	}
 
-	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-	 * their own) Args: x, y, z, neighbor blockID
-	 */
 	@Override
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
-		if (!world.getBlockState(pos.below()).isAir())
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag){
+		if (!level.getBlockState(pos.below()).isAir())
 			return;
-		else if (world.getBlockState(pos).getValue(DEACTIVATED))
-			world.destroyBlock(pos, true);
+		else if (level.getBlockState(pos).getValue(DEACTIVATED))
+			level.destroyBlock(pos, true);
 		else
-			explode(world, pos);
-	}
-
-	/**
-	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, pos
-	 */
-	@Override
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos){
-		return BlockUtils.isSideSolid(world, pos.below(), Direction.UP);
+			explode(level, pos);
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid){
-		if(!world.isClientSide)
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos){
+		return BlockUtils.isSideSolid(level, pos.below(), Direction.UP);
+	}
+
+	@Override
+	public boolean removedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid){
+		if(!level.isClientSide)
 			if(player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
-				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
-			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
-				explode(world, pos);
-				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+			else if(!EntityUtils.doesPlayerOwn(player, level, pos)){
+				explode(level, pos);
+				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
 			}
 
-		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+		return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
 	{
 		return SHAPE;
 	}
 
-	/**
-	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-	 */
 	@Override
-	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity){
-		if(world.isClientSide)
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity){
+		if(level.isClientSide)
 			return;
 		else if(entity instanceof ItemEntity)
 			return;
-		else if(!EntityUtils.doesEntityOwn(entity, world, pos))
-			explode(world, pos);
+		else if(!EntityUtils.doesEntityOwn(entity, level, pos))
+			explode(level, pos);
 	}
 
 	@Override
-	public boolean activateMine(Level world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	public boolean activateMine(Level level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 
 		if(state.getValue(DEACTIVATED))
 		{
-			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
+			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
 			return true;
 		}
 
@@ -101,12 +91,12 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean defuseMine(Level world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	public boolean defuseMine(Level level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 
 		if(!state.getValue(DEACTIVATED))
 		{
-			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
+			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 			return true;
 		}
 
@@ -114,18 +104,15 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void explode(Level world, BlockPos pos) {
-		if(!world.isClientSide && !world.getBlockState(pos).getValue(DEACTIVATED)){
-			world.destroyBlock(pos, false);
-			world.explode((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.0F : 3.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+	public void explode(Level level, BlockPos pos) {
+		if(!level.isClientSide && !level.getBlockState(pos).getValue(DEACTIVATED)){
+			level.destroyBlock(pos, false);
+			level.explode(null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.0F : 3.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 		}
 	}
 
-	/**
-	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-	 */
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter worldIn, BlockPos pos, BlockState state){
+	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state){
 		return new ItemStack(SCContent.MINE.get().asItem());
 	}
 
@@ -136,8 +123,8 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean isActive(Level world, BlockPos pos) {
-		return !world.getBlockState(pos).getValue(DEACTIVATED);
+	public boolean isActive(Level level, BlockPos pos) {
+		return !level.getBlockState(pos).getValue(DEACTIVATED);
 	}
 
 	@Override

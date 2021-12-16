@@ -44,7 +44,7 @@ public class LaserFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState blockState, BlockGetter world, BlockPos pos, CollisionContext ctx)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
 	{
 		return Shapes.empty();
 	}
@@ -84,13 +84,10 @@ public class LaserFieldBlock extends OwnableBlock {
 		}
 	}
 
-	/**
-	 * Called right before the block is destroyed by a player.  Args: world, pos, state
-	 */
 	@Override
-	public void destroy(LevelAccessor world, BlockPos pos, BlockState state)
+	public void destroy(LevelAccessor level, BlockPos pos, BlockState state)
 	{
-		if(!world.isClientSide())
+		if(!level.isClientSide())
 		{
 			Direction[] facingArray = {Direction.from3DDataValue((state.getValue(LaserFieldBlock.BOUNDTYPE) - 1) * 2), Direction.from3DDataValue((state.getValue(LaserFieldBlock.BOUNDTYPE) - 1) * 2).getOpposite()};
 
@@ -98,11 +95,11 @@ public class LaserFieldBlock extends OwnableBlock {
 			{
 				for(int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++)
 				{
-					if(world.getBlockState(pos.relative(facing, i)).getBlock() == SCContent.LASER_BLOCK.get())
+					if(level.getBlockState(pos.relative(facing, i)).getBlock() == SCContent.LASER_BLOCK.get())
 					{
 						for(int j = 1; j < i; j++)
 						{
-							world.destroyBlock(pos.relative(facing, j), false);
+							level.destroyBlock(pos.relative(facing, j), false);
 						}
 
 						break;
@@ -113,7 +110,7 @@ public class LaserFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter source, BlockPos pos, CollisionContext ctx)
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
 	{
 		return switch(state.getValue(BOUNDTYPE)) {
 			case 1 -> SHAPE_Y;
@@ -141,7 +138,7 @@ public class LaserFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
+	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
 	{
 		return ItemStack.EMPTY;
 	}

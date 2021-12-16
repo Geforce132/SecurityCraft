@@ -39,6 +39,7 @@ public class UpdateNBTTagOnServer {
 	{
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
+
 			if(PlayerUtils.isHoldingItem(player, message.stack.getItem(), null)) {
 				ItemStack stack = PlayerUtils.getSelectedItemStack(player, message.stack.getItem());
 

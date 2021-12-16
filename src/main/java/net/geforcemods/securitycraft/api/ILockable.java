@@ -31,11 +31,11 @@ public interface ILockable {
 	 */
 	public default boolean isLocked()
 	{
-		BlockEntity thisTe = getThisBlockEntity();
-		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange(thisTe.getLevel(), thisTe.getBlockPos());
+		BlockEntity thisBe = getThisBlockEntity();
+		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange(thisBe.getLevel(), thisBe.getBlockPos());
 
 		for(SonicSecuritySystemBlockEntity te : sonicSecuritySystems) {
-			if(te.isActive() && te.isLinkedToBlock(thisTe.getBlockPos())) {
+			if(te.isActive() && te.isLinkedToBlock(thisBe.getBlockPos())) {
 				return !te.correctTuneWasPlayed; //if the correct tune was recently played, the block should not be locked
 			}
 		}

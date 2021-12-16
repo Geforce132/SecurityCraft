@@ -28,48 +28,47 @@ public class FallingBlockMineBlock extends BaseFullMineBlock
 	}
 
 	@Override
-	public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean flag)
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean flag)
 	{
-		world.getBlockTicks().scheduleTick(pos, this, 2);
+		level.getBlockTicks().scheduleTick(pos, this, 2);
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
 	{
-		world.getBlockTicks().scheduleTick(currentPos, this, 2);
-		return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
+		level.getBlockTicks().scheduleTick(currentPos, this, 2);
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random)
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
 	{
-		if(!world.isClientSide)
+		//TODO: 1.18 check this
+		if((level.isEmptyBlock(pos.below()) || canFallThrough(level.getBlockState(pos.below()))) && pos.getY() >= 0)
 		{
-			if((world.isEmptyBlock(pos.below()) || canFallThrough(world.getBlockState(pos.below()))) && pos.getY() >= 0)
+			if(level.hasChunksAt(pos.offset(-32, -32, -32), pos.offset(32, 32, 32)))
 			{
-				if(world.hasChunksAt(pos.offset(-32, -32, -32), pos.offset(32, 32, 32)))
+				BlockEntity be = level.getBlockEntity(pos);
+
+				if(!level.isClientSide && be instanceof IOwnable)
 				{
-					BlockEntity te = world.getBlockEntity(pos);
+					FallingBlockEntity entity = new FallingBlockEntity(level, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, level.getBlockState(pos));
 
-					if(!world.isClientSide && te instanceof IOwnable)
-					{
-						FallingBlockEntity entity = new FallingBlockEntity(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos));
-
-						entity.blockData = te.save(new CompoundTag());
-						world.addFreshEntity(entity);
-					}
+					entity.blockData = be.save(new CompoundTag());
+					level.addFreshEntity(entity);
 				}
-				else
-				{
-					BlockPos blockpos;
+			}
+			else
+			{
+				BlockPos landedPos;
 
-					world.destroyBlock(pos, false);
+				level.destroyBlock(pos, false);
 
-					for(blockpos = pos.below(); (world.isEmptyBlock(blockpos) || canFallThrough(world.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.below()) {}
+				//TODO: 1.18 check this
+				for(landedPos = pos.below(); (level.isEmptyBlock(landedPos) || canFallThrough(level.getBlockState(landedPos))) && landedPos.getY() > 0; landedPos = landedPos.below()) {}
 
-					if(blockpos.getY() > 0)
-						world.setBlockAndUpdate(blockpos.above(), state); //Forge: Fix loss of state information during world gen.
-				}
+				if(landedPos.getY() > 0)
+					level.setBlockAndUpdate(landedPos.above(), state); //Forge: Fix loss of state information during world gen.
 			}
 		}
 	}
@@ -82,24 +81,19 @@ public class FallingBlockMineBlock extends BaseFullMineBlock
 		return block == Blocks.FIRE || state.isAir() || material == Material.WATER || material == Material.LAVA;
 	}
 
-	/**
-	 * Called periodically clientside on blocks near the player to show effects (like furnace fire ParticleTypes). Note that
-	 * this method is unrelated to {@link randomTick} and {@link #needsRandomTick}, and will always be called regardless
-	 * of whether the block can receive random update ticks
-	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
 	{
 		if(rand.nextInt(16) == 0)
 		{
-			if(canFallThrough(world.getBlockState(pos.below())))
+			if(canFallThrough(level.getBlockState(pos.below())))
 			{
 				double particleX = pos.getX() + rand.nextFloat();
 				double particleY = pos.getY() - 0.05D;
 				double particleZ = pos.getZ() + rand.nextFloat();
 
-				world.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), false, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
+				level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), false, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
