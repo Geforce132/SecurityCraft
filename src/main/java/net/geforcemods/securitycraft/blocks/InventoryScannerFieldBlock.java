@@ -216,30 +216,6 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 
 	private static void updateInventoryScannerPower(InventoryScannerTileEntity te)
 	{
-		if(!te.shouldProvidePower())
-			te.setShouldProvidePower(true);
-
-		te.setCooldown(60);
-		checkAndUpdateTEAppropriately(te);
-		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()).getBlock(), 1, true);
-		BlockUtils.updateIndirectNeighbors(te.getWorld(), te.getPos(), SCContent.INVENTORY_SCANNER.get());
-	}
-
-	/**
-	 * See {@link ItemStack#areItemStacksEqual(ItemStack, ItemStack)} but without size restriction
-	 */
-	public static boolean areItemStacksEqual(ItemStack stack1, ItemStack stack2)
-	{
-		ItemStack s1 = stack1.copy();
-		ItemStack s2 = stack2.copy();
-
-		s1.setCount(1);
-		s2.setCount(1);
-		return ItemStack.areItemStacksEqual(s1, s2);
-	}
-
-	private static void checkAndUpdateTEAppropriately(InventoryScannerTileEntity te)
-	{
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(te.getWorld(), te.getPos());
 
 		if(connectedScanner == null)
@@ -254,6 +230,19 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		te.setCooldown(60);
 		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getBlockState().getBlock(), 1, true);
 		BlockUtils.updateIndirectNeighbors(te.getWorld(), te.getPos(), SCContent.INVENTORY_SCANNER.get());
+	}
+
+	/**
+	 * See {@link ItemStack#areItemStacksEqual(ItemStack, ItemStack)} but without size restriction
+	 */
+	public static boolean areItemStacksEqual(ItemStack stack1, ItemStack stack2)
+	{
+		ItemStack s1 = stack1.copy();
+		ItemStack s2 = stack2.copy();
+
+		s1.setCount(1);
+		s2.setCount(1);
+		return ItemStack.areItemStacksEqual(s1, s2);
 	}
 
 	@Override
