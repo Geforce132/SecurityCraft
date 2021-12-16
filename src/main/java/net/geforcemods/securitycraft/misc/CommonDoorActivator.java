@@ -22,6 +22,7 @@ public class CommonDoorActivator implements IDoorActivator
 			SCContent.RETINAL_SCANNER.get(),
 			SCContent.KEYPAD.get(),
 			SCContent.KEYCARD_READER.get(),
+			SCContent.PORTABLE_RADAR.get(),
 			SCContent.REINFORCED_STONE_BUTTON.get(),
 			SCContent.REINFORCED_OAK_BUTTON.get(),
 			SCContent.REINFORCED_SPRUCE_BUTTON.get(),
