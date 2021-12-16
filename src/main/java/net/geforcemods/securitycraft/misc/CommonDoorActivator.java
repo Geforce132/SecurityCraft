@@ -5,30 +5,23 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDoorActivator;
+import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class CommonDoorActivator implements IDoorActivator
 {
-	private List<Block> blocks = Arrays.asList(new Block[] {
+	private List<Block> blocks = Arrays.asList(
 			SCContent.LASER_BLOCK.get(),
 			SCContent.RETINAL_SCANNER.get(),
 			SCContent.KEYPAD.get(),
 			SCContent.KEYCARD_READER.get(),
-			SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_STONE_BUTTON.get(),
 			SCContent.REINFORCED_OAK_BUTTON.get(),
 			SCContent.REINFORCED_SPRUCE_BUTTON.get(),
@@ -43,13 +36,40 @@ public class CommonDoorActivator implements IDoorActivator
 			SCContent.REINFORCED_OBSERVER.get(),
 			SCContent.KEY_PANEL_BLOCK.get(),
 			SCContent.SECURITY_CAMERA.get(),
-			SCContent.SONIC_SECURITY_SYSTEM.get()
-	});
+			SCContent.SONIC_SECURITY_SYSTEM.get());
 
 	@Override
-	public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te)
-	{
-		return state.get(BlockStateProperties.POWERED);
+	public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te, Direction direction, int distance) {
+		if (state.get(BlockStateProperties.POWERED)) {
+			if (distance == 2) {
+				//checking that e.g. a lever/button is correctly attached to the block
+				if(state.hasProperty(BlockStateProperties.FACE) && state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+					Direction.Axis offsetAxis = direction.getAxis();
+					Direction facing = state.get(BlockStateProperties.HORIZONTAL_FACING);
+					AttachFace attachFace = state.get(BlockStateProperties.FACE);
+
+					switch(offsetAxis) {
+						case X:
+						case Z:
+							if(attachFace != AttachFace.WALL || direction != facing)
+								return false;
+							break;
+						case Y:
+							if((direction == Direction.UP && attachFace != AttachFace.FLOOR) || (direction == Direction.DOWN && attachFace != AttachFace.CEILING))
+								return false;
+							break;
+					}
+				}
+				else if(state.hasProperty(BlockStateProperties.FACING))
+					return state.get(BlockStateProperties.FACING) == direction;
+				else if(state.hasProperty(SecurityCameraBlock.FACING))
+					return state.get(SecurityCameraBlock.FACING) == direction;
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override

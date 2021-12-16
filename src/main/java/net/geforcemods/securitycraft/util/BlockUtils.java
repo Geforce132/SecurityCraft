@@ -9,11 +9,8 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.state.properties.AttachFace;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IWorldReader;
@@ -62,7 +59,7 @@ public class BlockUtils{
 			{
 				TileEntity offsetTe = world.getTileEntity(offsetPos);
 
-				if(activator.isPowering(world, offsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te)))
+				if(activator.isPowering(world, offsetPos, offsetState, offsetTe, dir, 1) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te)))
 					return true;
 			}
 
@@ -79,29 +76,9 @@ public class BlockUtils{
 
 					if(activator.getBlocks().contains(offsetState.getBlock()))
 					{
-						//checking that e.g. a lever/button is correctly attached to the block
-						if(offsetState.hasProperty(BlockStateProperties.FACE) && offsetState.hasProperty(BlockStateProperties.HORIZONTAL_FACING))
-						{
-							Axis offsetAxis = dirOffset.getAxis();
-							Direction offsetFacing = offsetState.get(BlockStateProperties.HORIZONTAL_FACING);
-							AttachFace offsetAttachFace = offsetState.get(BlockStateProperties.FACE);
-
-							switch(offsetAxis)
-							{
-								case X: case Z:
-									if(offsetAttachFace != AttachFace.WALL || dirOffset != offsetFacing)
-										continue;
-									break;
-								case Y:
-									if((dirOffset == Direction.UP && offsetAttachFace != AttachFace.FLOOR) || (dirOffset == Direction.DOWN && offsetAttachFace != AttachFace.CEILING))
-										continue;
-									break;
-							}
-						}
-
 						TileEntity offsetTe = world.getTileEntity(newOffsetPos);
 
-						if(activator.isPowering(world, newOffsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te)))
+						if(activator.isPowering(world, newOffsetPos, offsetState, offsetTe, dirOffset, 2) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te)))
 							return true;
 					}
 				}

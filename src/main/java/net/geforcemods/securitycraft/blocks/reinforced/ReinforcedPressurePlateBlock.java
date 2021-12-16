@@ -1,7 +1,10 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -13,6 +16,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -106,5 +110,29 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
 		return new AllowlistOnlyTileEntity();
+	}
+
+	public static class DoorActivator implements IDoorActivator {
+		private final List<Block> blocks = Arrays.asList(
+				SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get());
+
+		@Override
+		public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te, Direction direction, int distance) {
+			return state.get(POWERED) && (distance < 2 || direction == Direction.UP);
+		}
+
+		@Override
+		public List<Block> getBlocks() {
+			return blocks;
+		}
 	}
 }
