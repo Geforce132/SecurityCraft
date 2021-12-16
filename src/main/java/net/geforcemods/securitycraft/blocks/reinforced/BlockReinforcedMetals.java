@@ -185,8 +185,8 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 		}
 
 		@Override
-		public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te) {
-			return state.getValue(VARIANT) == EnumType.REDSTONE;
+		public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te, EnumFacing direction, int distance) {
+			return state.getValue(VARIANT) == EnumType.REDSTONE && distance == 1;
 		}
 
 		@Override

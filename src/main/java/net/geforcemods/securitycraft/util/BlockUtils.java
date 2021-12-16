@@ -57,7 +57,7 @@ public class BlockUtils{
 			{
 				TileEntity offsetTe = world.getTileEntity(offsetPos);
 
-				if(activator.isPowering(world, offsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te)))
+				if(activator.isPowering(world, offsetPos, offsetState, offsetTe, facing, 1) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te)))
 					return true;
 			}
 
@@ -74,20 +74,9 @@ public class BlockUtils{
 
 					if(activator.getBlocks().contains(offsetState.getBlock()))
 					{
-						if(offsetState.getPropertyKeys().contains(BlockLever.FACING))
-						{
-							if(dirOffset != offsetState.getValue(BlockLever.FACING).getFacing())
-								continue;
-						}
-						else if(offsetState.getPropertyKeys().contains(BlockDirectional.FACING))
-						{
-							if(dirOffset != offsetState.getValue(BlockDirectional.FACING))
-								continue;
-						}
-
 						TileEntity offsetTe = world.getTileEntity(newOffsetPos);
 
-						if(activator.isPowering(world, newOffsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te)))
+						if(activator.isPowering(world, newOffsetPos, offsetState, offsetTe, dirOffset, 2) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te)))
 							return true;
 					}
 				}

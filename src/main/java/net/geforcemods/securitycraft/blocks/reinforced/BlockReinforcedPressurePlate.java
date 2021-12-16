@@ -3,6 +3,10 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Arrays;
 import java.util.List;
 
+import com.sun.javafx.scene.traversal.Direction;
+
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityAllowlistOnly;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -16,6 +20,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -109,5 +114,21 @@ public class BlockReinforcedPressurePlate extends BlockPressurePlate implements 
 	public TileEntity createTileEntity(World world, IBlockState state)
 	{
 		return new TileEntityAllowlistOnly();
+	}
+
+	public static class DoorActivator implements IDoorActivator {
+		private final List<Block> blocks = Arrays.asList(
+				SCContent.reinforcedStonePressurePlate,
+				SCContent.reinforcedWoodenPressurePlate);
+
+		@Override
+		public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te, EnumFacing direction, int distance) {
+			return state.getValue(POWERED) && (distance < 2 || direction == EnumFacing.UP);
+		}
+
+		@Override
+		public List<Block> getBlocks() {
+			return blocks;
+		}
 	}
 }

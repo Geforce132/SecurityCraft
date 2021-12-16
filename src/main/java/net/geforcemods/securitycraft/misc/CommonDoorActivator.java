@@ -6,23 +6,25 @@ import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDoorActivator;
+import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockLever;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class CommonDoorActivator implements Function<Object,IDoorActivator>, IDoorActivator
 {
 	private final PropertyBool poweredProperty = PropertyBool.create("powered");
-	private List<Block> blocks = Arrays.asList(new Block[] {
+	private List<Block> blocks = Arrays.asList(
 			SCContent.laserBlock,
 			SCContent.retinalScanner,
 			SCContent.keypad,
 			SCContent.keycardReader,
-			SCContent.reinforcedStonePressurePlate,
-			SCContent.reinforcedWoodenPressurePlate,
 			SCContent.reinforcedStoneButton,
 			SCContent.reinforcedWoodenButton,
 			SCContent.reinforcedLever,
@@ -30,8 +32,7 @@ public class CommonDoorActivator implements Function<Object,IDoorActivator>, IDo
 			SCContent.keyPanelFloorCeilingBlock,
 			SCContent.keyPanelWallBlock,
 			SCContent.securityCamera,
-			SCContent.sonicSecuritySystem
-	});
+			SCContent.sonicSecuritySystem);
 
 	@Override
 	public IDoorActivator apply(Object o)
@@ -40,9 +41,20 @@ public class CommonDoorActivator implements Function<Object,IDoorActivator>, IDo
 	}
 
 	@Override
-	public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te)
+	public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te, EnumFacing direction, int distance)
 	{
-		return state.getValue(poweredProperty);
+		if (state.getValue(poweredProperty)) {
+			if(state.getPropertyKeys().contains(BlockLever.FACING)) {
+				return direction == state.getValue(BlockLever.FACING).getFacing();
+			}
+			else if(state.getPropertyKeys().contains(BlockDirectional.FACING)) {
+				return direction == state.getValue(BlockDirectional.FACING);
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override

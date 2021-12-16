@@ -350,7 +350,7 @@ public class BlockInventoryScanner extends BlockDisguisable {
 		}
 
 		@Override
-		public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te)
+		public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te, EnumFacing direction, int distance)
 		{
 			return ((TileEntityInventoryScanner)te).hasModule(EnumModuleType.REDSTONE) && ((TileEntityInventoryScanner)te).shouldProvidePower();
 		}
