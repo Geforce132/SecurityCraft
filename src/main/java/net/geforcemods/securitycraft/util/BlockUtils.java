@@ -108,4 +108,16 @@ public class BlockUtils{
 
 		return insertOnlyHandler.get();
 	}
+
+	public static void updateIndirectNeighbors(World world, BlockPos pos, Block block) {
+		updateIndirectNeighbors(world, pos, block, Direction.values());
+	}
+
+	public static void updateIndirectNeighbors(World world, BlockPos pos, Block block, Direction... directions) {
+		world.notifyNeighborsOfStateChange(pos, block);
+
+		for (Direction dir : directions) {
+			world.notifyNeighborsOfStateChange(pos.offset(dir), block);
+		}
+	}
 }

@@ -105,7 +105,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 
 	@Override
 	public int getStrongPower(BlockState state, IBlockReader world, BlockPos pos, Direction side){
-		return state.get(POWERED) ? 15 : 0;
+		return state.get(POWERED) && side == Direction.UP ? 15 : 0;
 	}
 
 	@Override
