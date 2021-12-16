@@ -100,7 +100,7 @@ public class BlockSonicSecuritySystem extends BlockOwnable {
 
 	@Override
 	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return state.getValue(POWERED) ? 15 : 0;
+		return state.getValue(POWERED) && side == EnumFacing.UP  ? 15 : 0;
 	}
 
 	@Override

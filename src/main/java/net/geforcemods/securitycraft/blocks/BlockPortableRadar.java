@@ -119,6 +119,11 @@ public class BlockPortableRadar extends BlockOwnable {
 	}
 
 	@Override
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side){
+		return state.getValue(POWERED) && ((IModuleInventory)world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE) && state.getValue(FACING) == side ? 15 : 0;
+	}
+
+	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
 		boolean powered = meta % 2 == 1;

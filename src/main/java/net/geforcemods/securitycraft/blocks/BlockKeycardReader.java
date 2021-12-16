@@ -214,6 +214,11 @@ public class BlockKeycardReader extends BlockDisguisable  {
 			return 0;
 	}
 
+	@Override
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side){
+		return state.getValue(POWERED) ? 15 : 0;
+	}
+
 	/**
 	 * Can this block provide power. Only wire currently seems to have this change based on its state.
 	 */
