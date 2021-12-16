@@ -43,7 +43,7 @@ public class BlockSecurityCamera extends BlockOwnable{
 
 	public BlockSecurityCamera(Material material) {
 		super(material);
-		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.DOWN).withProperty(POWERED, false));
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false));
 	}
 
 	@Override
