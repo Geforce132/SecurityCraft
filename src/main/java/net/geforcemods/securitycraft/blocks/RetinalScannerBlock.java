@@ -92,6 +92,11 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public int getStrongPower(BlockState state, IBlockReader world, BlockPos pos, Direction side){
+		return state.get(POWERED) ? 15 : 0;
+	}
+
+	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
 		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());

@@ -166,7 +166,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	@Override
 	public int getStrongPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side){
-		if(blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE))
+		if(blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE) && blockState.get(FACING) == side)
 			return 15;
 		else
 			return 0;

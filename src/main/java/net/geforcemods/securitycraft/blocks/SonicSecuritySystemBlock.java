@@ -93,6 +93,11 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	}
 
 	@Override
+	public boolean canProvidePower(BlockState state) {
+		return true;
+	}
+
+	@Override
 	public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side){
 		return state.get(POWERED) ? 15 : 0;
 	}
