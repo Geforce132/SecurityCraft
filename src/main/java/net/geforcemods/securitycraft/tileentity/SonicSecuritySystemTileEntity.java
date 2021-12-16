@@ -15,12 +15,14 @@ import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
@@ -92,7 +94,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 				{
 					correctTuneWasPlayed = false;
 					world.setBlockState(pos, world.getBlockState(pos).with(SonicSecuritySystemBlock.POWERED, false));
-					world.updateBlock(pos, SCContent.SONIC_SECURITY_SYSTEM.get());
+					BlockUtils.updateIndirectNeighbors(world, pos, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
 				}
 			}
 
@@ -174,7 +176,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 
 		if(module == ModuleType.REDSTONE) {
 			world.setBlockState(pos, world.getBlockState(pos).with(SonicSecuritySystemBlock.POWERED, false));
-			world.updateBlock(pos, SCContent.SONIC_SECURITY_SYSTEM.get());
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
 		}
 
 		super.onModuleRemoved(stack, module);

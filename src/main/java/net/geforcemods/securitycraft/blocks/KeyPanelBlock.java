@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.KeyPanelTileEntity;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -131,7 +132,7 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
 		world.setBlockState(pos, state.with(POWERED, false));
-		updateNeighbours(state, world, pos);
+		BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
 	}
 
 	@Override
@@ -222,14 +223,8 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable
 	public void activate(BlockState state, World world, BlockPos pos, int signalLength)
 	{
 		world.setBlockState(pos, state.with(POWERED, true));
-		updateNeighbours(state, world, pos);
+		BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
 		world.getPendingBlockTicks().scheduleTick(pos, this, signalLength);
-	}
-
-	private void updateNeighbours(BlockState state, World world, BlockPos pos)
-	{
-		world.notifyNeighborsOfStateChange(pos, this);
-		world.notifyNeighborsOfStateChange(pos.offset(getConnectedDirection(state).getOpposite()), this);
 	}
 
 	protected static Direction getConnectedDirection(BlockState state)

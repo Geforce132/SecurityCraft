@@ -37,6 +37,7 @@ import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity.NoteWrapper;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -55,6 +56,7 @@ import net.minecraft.item.Items;
 import net.minecraft.state.properties.NoteBlockInstrument;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -391,7 +393,7 @@ public class SCEventHandler {
 
 				if (te.hasModule(ModuleType.REDSTONE)) {
 					world.setBlockState(te.getPos(), te.getWorld().getBlockState(te.getPos()).with(SonicSecuritySystemBlock.POWERED, true));
-					world.updateBlock(te.getPos(), SCContent.SONIC_SECURITY_SYSTEM.get());
+					BlockUtils.updateIndirectNeighbors(te.getWorld(), te.getPos(), SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
 				}
 			}
 		}

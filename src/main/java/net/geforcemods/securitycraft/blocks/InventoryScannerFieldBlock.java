@@ -222,6 +222,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		te.setCooldown(60);
 		checkAndUpdateTEAppropriately(te);
 		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()).getBlock(), 1, true);
+		BlockUtils.updateIndirectNeighbors(te.getWorld(), te.getPos(), SCContent.INVENTORY_SCANNER.get());
 	}
 
 	/**
@@ -247,9 +248,11 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		te.setShouldProvidePower(true);
 		te.setCooldown(60);
 		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getBlockState().getBlock(), 1, true);
+		BlockUtils.updateIndirectNeighbors(te.getWorld(), te.getPos(), SCContent.INVENTORY_SCANNER.get());
 		connectedScanner.setShouldProvidePower(true);
 		connectedScanner.setCooldown(60);
 		BlockUtils.updateAndNotify(connectedScanner.getWorld(), connectedScanner.getPos(), connectedScanner.getBlockState().getBlock(), 1, true);
+		BlockUtils.updateIndirectNeighbors(te.getWorld(), te.getPos(), SCContent.INVENTORY_SCANNER.get());
 	}
 
 	@Override

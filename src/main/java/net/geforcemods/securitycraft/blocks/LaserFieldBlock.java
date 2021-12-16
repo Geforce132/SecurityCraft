@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
@@ -69,7 +70,7 @@ public class LaserFieldBlock extends OwnableBlock {
 							return;
 
 						world.setBlockState(offsetPos, offsetState.with(LaserBlock.POWERED, true));
-						world.notifyNeighborsOfStateChange(offsetPos, SCContent.LASER_BLOCK.get());
+						BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.LASER_BLOCK.get());
 						world.getPendingBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
 
 						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(ModuleType.HARMING))

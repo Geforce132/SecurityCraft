@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -86,6 +87,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 						return;
 
 					world.setBlockState(pos, state.with(RetinalScannerBlock.POWERED, true));
+					BlockUtils.updateIndirectNeighbors(world, pos, SCContent.RETINAL_SCANNER.get());
 					world.getPendingBlockTicks().scheduleTick(new BlockPos(pos), SCContent.RETINAL_SCANNER.get(), getSignalLength());
 
 					if(entity instanceof PlayerEntity && sendMessage.get())

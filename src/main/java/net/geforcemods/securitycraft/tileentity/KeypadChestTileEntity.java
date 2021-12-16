@@ -124,7 +124,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		super.onOpenOrClose();
 
 		if (hasModule(ModuleType.REDSTONE))
-			this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockState().getBlock());
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYPAD_CHEST.get(), Direction.DOWN);
 	}
 
 	public int getNumPlayersUsing() {
