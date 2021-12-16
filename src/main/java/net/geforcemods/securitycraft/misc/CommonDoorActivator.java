@@ -25,6 +25,7 @@ public class CommonDoorActivator implements Function<Object,IDoorActivator>, IDo
 			SCContent.retinalScanner,
 			SCContent.keypad,
 			SCContent.keycardReader,
+			SCContent.portableRadar,
 			SCContent.reinforcedStoneButton,
 			SCContent.reinforcedWoodenButton,
 			SCContent.reinforcedLever,
