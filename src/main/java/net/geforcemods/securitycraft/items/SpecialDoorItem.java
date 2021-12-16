@@ -51,7 +51,10 @@ public class SpecialDoorItem extends BlockItem
 			if(!placeDoor(level, pos, angleFacing, getBlock(), flag, ctx))
 				return InteractionResult.FAIL;
 
-			SoundType soundType = block.getSoundType(level.getBlockState(pos), level, pos, player);
+			state = level.getBlockState(pos);
+			block = state.getBlock();
+
+			SoundType soundType = block.getSoundType(state, level, pos, player);
 
 			level.playSound(null, pos, soundType.getPlaceSound(), SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
 
