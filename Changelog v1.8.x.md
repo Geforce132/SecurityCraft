@@ -20,6 +20,7 @@
 - Change: Renamed "Track Mine" to "Rail Mine" to be in line with vanilla
 - Change: Cameras can now be viewed from anywhere in the same dimension, it is no longer necessary to be close to the camera to be able to view it
 - Change: The Smart Module no longer works in the camera, the Allowlist Module is now used for better control
+- Change: Reinforced Carpets can no longer be used as fuel
 - API: Removed INameable in favor of vanilla's Nameable
 - API: Added INameSettable to be able to easily set a block's custom name
 - API: Added IViewActivated (used by the Retinal Scanner and Scanner Door)
@@ -53,7 +54,7 @@
 - Fix: Electrified Iron Fence Gate has wooden open/close sounds
 - Fix: Offhand hotbar indicator for Camera Monitor/SRAT/MRAT shows incorrectly when the main hand is set to left
 - Fix: Hotbar indicator for Camera Monitor/MRAT does not respect the player's reach distance
-- Change: Reinforced Carpets can no longer be used as fuel
+- Fix: Reinforced doors/trapdoors/etc. can be activated by anyone in some circumstances
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: Performance improvements due to fewer ticking block entities

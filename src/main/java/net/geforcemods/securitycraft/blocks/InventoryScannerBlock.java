@@ -303,7 +303,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		private List<Block> blocks = Arrays.asList(SCContent.INVENTORY_SCANNER.get());
 
 		@Override
-		public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te)
+		public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te, Direction direction, int distance)
 		{
 			return ((InventoryScannerTileEntity)te).hasModule(ModuleType.REDSTONE) && ((InventoryScannerTileEntity)te).shouldProvidePower();
 		}
