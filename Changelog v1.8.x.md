@@ -56,6 +56,7 @@
 - Fix: Offhand hotbar indicator for Camera Monitor/SRAT/MRAT shows incorrectly when the main hand is set to left
 - Fix: Hotbar indicator for Camera Monitor/MRAT does not respect the player's reach distance
 - Fix: Reinforced doors/trapdoors/etc. can be activated by anyone in some circumstances
+- Fix: Some SecurityCraft blocks do not update their surrounding blocks correctly when powering/unpowering
 - Potential Fix: Exiting a camera does not work when the sneak keybind is bound to a mouse button
 - Removed: Unused textures
 - Removed: Portuguese and Russian translations due to being severely outdated

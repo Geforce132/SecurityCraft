@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -94,14 +96,18 @@ public class BlockPortableRadar extends BlockOwnable {
 			world.destroyBlock(pos, true);
 	}
 
-	public static void togglePowerOutput(World world, BlockPos pos, boolean par5) {
+	public static void togglePowerOutput(World world, BlockPos pos, boolean shouldPower) {
 		IBlockState state = world.getBlockState(pos);
 		boolean powered = state.getValue(POWERED);
 
-		if(par5 && !powered)
+		if(shouldPower && !powered) {
 			world.setBlockState(pos, state.withProperty(POWERED, true));
-		else if(!par5 && powered)
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.portableRadar, state.getValue(BlockPortableRadar.FACING));
+		}
+		else if(!shouldPower && powered) {
 			world.setBlockState(pos, state.withProperty(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.portableRadar, state.getValue(BlockPortableRadar.FACING));
+		}
 	}
 
 	@Override

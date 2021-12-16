@@ -111,4 +111,16 @@ public class BlockUtils{
 	{
 		return world.getBlockState(pos).getBlock() == block && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
 	}
+
+	public static void updateIndirectNeighbors(World world, BlockPos pos, Block block) {
+		updateIndirectNeighbors(world, pos, block, EnumFacing.values());
+	}
+
+	public static void updateIndirectNeighbors(World world, BlockPos pos, Block block, EnumFacing... directions) {
+		world.notifyNeighborsOfStateChange(pos, block, false);
+
+		for (EnumFacing dir : directions) {
+			world.notifyNeighborsOfStateChange(pos.offset(dir), block, false);
+		}
+	}
 }

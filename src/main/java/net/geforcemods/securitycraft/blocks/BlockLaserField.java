@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
@@ -119,6 +120,7 @@ public class BlockLaserField extends BlockContainer {
 							return;
 
 						world.setBlockState(offsetPos, offsetState.withProperty(BlockLaserBlock.POWERED, true));
+						BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.laserBlock);
 						world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
 
 						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(EnumModuleType.HARMING))

@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -72,14 +73,14 @@ public class BlockKeypad extends BlockDisguisable {
 
 	public void activate(IBlockState state, World world, BlockPos pos, int signalLength){
 		world.setBlockState(pos, state.withProperty(POWERED, true));
-		world.notifyNeighborsOfStateChange(pos, this, false);
+		BlockUtils.updateIndirectNeighbors(world, pos, SCContent.keypad);
 		world.scheduleUpdate(pos, this, signalLength);
 	}
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
 		world.setBlockState(pos, state.withProperty(POWERED, false));
-		world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
+		BlockUtils.updateIndirectNeighbors(world, pos, SCContent.keypad);
 	}
 
 	/**

@@ -2,7 +2,10 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import javafx.scene.chart.ScatterChart;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -77,8 +80,10 @@ public class BlockRetinalScanner extends BlockDisguisable {
 	 */
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
-		if (!world.isRemote && state.getValue(POWERED))
+		if (!world.isRemote && state.getValue(POWERED)) {
 			world.setBlockState(pos, state.withProperty(POWERED, false));
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.retinalScanner);
+		}
 	}
 
 	/**

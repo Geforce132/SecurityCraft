@@ -40,6 +40,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem.NoteWrapper;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -608,7 +609,7 @@ public class SCEventHandler {
 
 				if (te.hasModule(EnumModuleType.REDSTONE)) {
 					world.setBlockState(te.getPos(), te.getWorld().getBlockState(te.getPos()).withProperty(BlockSonicSecuritySystem.POWERED, true));
-					world.notifyNeighborsOfStateChange(te.getPos(), SCContent.sonicSecuritySystem, false);
+					BlockUtils.updateIndirectNeighbors(world, te.getPos(), SCContent.sonicSecuritySystem, EnumFacing.DOWN);
 				}
 			}
 		}

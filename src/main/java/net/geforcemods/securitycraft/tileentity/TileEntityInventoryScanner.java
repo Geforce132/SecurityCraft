@@ -43,6 +43,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		else if(isProvidingPower){
 			isProvidingPower = false;
 			BlockUtils.updateAndNotify(getWorld(), pos, getWorld().getBlockState(pos).getBlock(), 1, true);
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.inventoryScanner);
 		}
 	}
 

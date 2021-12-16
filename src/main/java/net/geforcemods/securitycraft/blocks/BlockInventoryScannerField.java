@@ -262,12 +262,20 @@ public class BlockInventoryScannerField extends BlockContainer {
 
 	private static void updateInventoryScannerPower(TileEntityInventoryScanner te)
 	{
-		if(!te.shouldProvidePower())
-			te.setShouldProvidePower(true);
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(te.getWorld(), te.getPos());
 
+		if(connectedScanner == null)
+			return;
+
+		updateInvScanner(te);
+		updateInvScanner(connectedScanner);
+	}
+
+	private static void updateInvScanner(TileEntityInventoryScanner te) {
+		te.setShouldProvidePower(true);
 		te.setCooldown(60);
-		checkAndUpdateTEAppropriately(te);
-		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()).getBlock(), 1, true);
+		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), SCContent.inventoryScanner, 1, true);
+		BlockUtils.updateIndirectNeighbors(te.getWorld(), te.getPos(), SCContent.inventoryScanner);
 	}
 
 	/**
@@ -281,21 +289,6 @@ public class BlockInventoryScannerField extends BlockContainer {
 		s1.setCount(1);
 		s2.setCount(1);
 		return ItemStack.areItemStacksEqual(s1, s2);
-	}
-
-	private static void checkAndUpdateTEAppropriately(TileEntityInventoryScanner te)
-	{
-		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(te.getWorld(), te.getPos());
-
-		if(connectedScanner == null)
-			return;
-
-		te.setShouldProvidePower(true);
-		te.setCooldown(60);
-		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getBlockType(), 1, true);
-		connectedScanner.setShouldProvidePower(true);
-		connectedScanner.setCooldown(60);
-		BlockUtils.updateAndNotify(connectedScanner.getWorld(), connectedScanner.getPos(), connectedScanner.getBlockType(), 1, true);
 	}
 
 	@Override

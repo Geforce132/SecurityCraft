@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -181,8 +182,10 @@ public class BlockLaserBlock extends BlockDisguisable {
 	 */
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
-		if (!world.isRemote && state.getValue(POWERED))
+		if (!world.isRemote && state.getValue(POWERED)) {
 			world.setBlockState(pos, state.withProperty(BlockLaserBlock.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.laserBlock);
+		}
 	}
 
 	@SideOnly(Side.CLIENT)

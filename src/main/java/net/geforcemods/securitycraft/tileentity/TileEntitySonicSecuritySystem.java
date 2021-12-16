@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.sun.javafx.scene.traversal.Direction;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -15,10 +17,12 @@ import net.geforcemods.securitycraft.blocks.BlockSonicSecuritySystem;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -86,7 +90,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 				{
 					correctTuneWasPlayed = false;
 					world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockSonicSecuritySystem.POWERED, false));
-					world.notifyNeighborsOfStateChange(pos, SCContent.sonicSecuritySystem, false);
+					BlockUtils.updateIndirectNeighbors(world, pos, SCContent.sonicSecuritySystem, EnumFacing.DOWN);
 				}
 			}
 
@@ -168,7 +172,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 
 		if(module == EnumModuleType.REDSTONE) {
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockSonicSecuritySystem.POWERED, false));
-			world.notifyNeighborsOfStateChange(pos, SCContent.sonicSecuritySystem, false);
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.sonicSecuritySystem, EnumFacing.DOWN);
 		}
 
 		super.onModuleRemoved(stack, module);

@@ -6,6 +6,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeyPanel;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -100,20 +101,14 @@ public abstract class BlockKeyPanel extends BlockOwnable
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
 	{
 		world.setBlockState(pos, state.withProperty(POWERED, false));
-		updateNeighbours(state, world, pos);
+		BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
 	}
 
 	public void activate(IBlockState state, World world, BlockPos pos, int signalLength)
 	{
 		world.setBlockState(pos, state.withProperty(POWERED, true));
-		updateNeighbours(state, world, pos);
+		BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
 		world.scheduleUpdate(pos, this, signalLength);
-	}
-
-	private void updateNeighbours(IBlockState state, World world, BlockPos pos)
-	{
-		world.notifyNeighborsOfStateChange(pos, this, false);
-		world.notifyNeighborsOfStateChange(pos.offset(getConnectedDirection(state).getOpposite()), this, false);
 	}
 
 	protected abstract EnumFacing getConnectedDirection(IBlockState state);

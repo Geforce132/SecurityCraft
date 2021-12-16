@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemKeycard;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -164,9 +165,9 @@ public class BlockKeycardReader extends BlockDisguisable  {
 		return null;
 	}
 
-	public static void activate(World world, BlockPos pos, IBlockState state, int signalLength){
+	public void activate(World world, BlockPos pos, IBlockState state, int signalLength){
 		world.setBlockState(pos, state.withProperty(POWERED, true));
-		world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader, false);
+		BlockUtils.updateIndirectNeighbors(world, pos, SCContent.keycardReader);
 		world.scheduleUpdate(pos, SCContent.keycardReader, signalLength);
 	}
 
@@ -174,7 +175,7 @@ public class BlockKeycardReader extends BlockDisguisable  {
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
 		if(!world.isRemote){
 			world.setBlockState(pos, state.withProperty(POWERED, false));
-			world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader, false);
+			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.keycardReader);
 		}
 	}
 
