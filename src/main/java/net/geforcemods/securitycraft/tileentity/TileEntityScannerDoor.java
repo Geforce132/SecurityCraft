@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
+import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -14,6 +15,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IViewActivated, ILockable
@@ -27,15 +30,16 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 	}
 
 	@Override
-	public void onEntityViewed(EntityLivingBase entity)
+	public boolean onEntityViewed(EntityLivingBase entity, RayTraceResult rayTraceResult)
 	{
 		IBlockState upperState = world.getBlockState(pos);
 		IBlockState lowerState = world.getBlockState(pos.down());
+		EnumFacing.Axis facingAxis = BlockScannerDoor.getFacingAxis(upperState);
 
-		if(!world.isRemote && upperState.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER && !EntityUtils.isInvisible(entity))
+		if(upperState.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER && !EntityUtils.isInvisible(entity))
 		{
-			if(!(entity instanceof EntityPlayer))
-				return;
+			if(!(entity instanceof EntityPlayer) || facingAxis != rayTraceResult.sideHit.getAxis())
+				return false;
 
 			EntityPlayer player = (EntityPlayer)entity;
 
@@ -47,7 +51,7 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 
 				if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.retinalScanner.getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
-					return;
+					return true;
 				}
 
 				boolean open = !lowerState.getValue(BlockDoor.OPEN);
@@ -63,10 +67,16 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 
 				if(open && sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:scannerDoorItem.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
+
+				return true;
 			}
-			else if (entity instanceof EntityPlayer && sendsMessages())
+			else if (sendsMessages()) {
 				PlayerUtils.sendMessageToPlayer((EntityPlayer)entity, Utils.localize(SCContent.scannerDoor), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(SCContent.scannerDoor)), TextFormatting.DARK_RED, false);
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	@Override
