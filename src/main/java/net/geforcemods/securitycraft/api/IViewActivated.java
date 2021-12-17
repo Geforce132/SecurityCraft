@@ -11,8 +11,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.util.math.RayTraceContext.FluidMode;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
@@ -27,25 +25,23 @@ public interface IViewActivated {
 	 * @param pos The position of the tile entity
 	 */
 	default void checkView(World world, BlockPos pos) {
-		if(getViewCooldown() > 0){
-			setViewCooldown(getViewCooldown() - 1);
-			return;
-		}
+		if (!world.isRemote) {
+			if(getViewCooldown() > 0) {
+				setViewCooldown(getViewCooldown() - 1);
+				return;
+			}
 
-		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(5), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof PlayerEntity));
+			List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(5), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof PlayerEntity));
 
-		for (LivingEntity entity : entities)
-		{
-			double eyeHeight = entity.getEyeHeight();
-			Vector3d lookVec = new Vector3d(entity.getPosX() + (entity.getLookVec().x * 5), (eyeHeight + entity.getPosY()) + (entity.getLookVec().y * 5), entity.getPosZ() + (entity.getLookVec().z * 5));
-			RayTraceResult rtr = world.rayTraceBlocks(new RayTraceContext(new Vector3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
+			for (LivingEntity entity : entities)
+			{
+				double eyeHeight = entity.getEyeHeight();
+				Vector3d lookVec = new Vector3d(entity.getPosX() + (entity.getLookVec().x * 5), (eyeHeight + entity.getPosY()) + (entity.getLookVec().y * 5), entity.getPosZ() + (entity.getLookVec().z * 5));
+				BlockRayTraceResult rtr = world.rayTraceBlocks(new RayTraceContext(new Vector3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
 
-			if(rtr != null && rtr.getType() == Type.BLOCK) {
-				BlockRayTraceResult brtr = (BlockRayTraceResult)rtr;
-
-				if(brtr.getPos().getX() == pos.getX() && brtr.getPos().getY() == pos.getY() && brtr.getPos().getZ() == pos.getZ()) {
-					onEntityViewed(entity);
-					setViewCooldown(getDefaultViewCooldown());
+				if(rtr != null && rtr.getPos().getX() == pos.getX() && rtr.getPos().getY() == pos.getY() && rtr.getPos().getZ() == pos.getZ()) {
+					if(onEntityViewed(entity, rtr))
+						setViewCooldown(getDefaultViewCooldown());
 				}
 			}
 		}
@@ -74,8 +70,10 @@ public interface IViewActivated {
 	 * Called when a view check is successful, aka when an entity is looking at this block entity
 	 *
 	 * @param entity The entity that is looking at this block entity
+	 * @param rayTraceResult The context with which the entity is looking at this block entity
+	 * @return true if the block entity's view cooldown should be updated
 	 */
-	public void onEntityViewed(LivingEntity entity);
+	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult rayTraceResult);
 
 	/**
 	 * @return true if the view check should only pass if a player is looking at this block entity, false otherwise
