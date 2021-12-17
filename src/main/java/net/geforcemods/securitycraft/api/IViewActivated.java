@@ -19,7 +19,7 @@ import net.minecraft.world.phys.Vec3;
  */
 public interface IViewActivated {
 	/**
-	 * Performs checks to determine whether an entity is looking at the block entity
+	 * Performs checks to determine whether an entity is looking at the block entity. Serverside only.
 	 *
 	 * @param level The level of the block entity
 	 * @param pos The position of the block entity
@@ -38,8 +38,8 @@ public interface IViewActivated {
 			BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, Block.COLLIDER, Fluid.NONE, entity));
 
 			if (hitResult != null && hitResult.getBlockPos().getX() == pos.getX() && hitResult.getBlockPos().getY() == pos.getY() && hitResult.getBlockPos().getZ() == pos.getZ()) {
-				onEntityViewed(entity);
-				setViewCooldown(getDefaultViewCooldown());
+				if (onEntityViewed(entity, hitResult))
+					setViewCooldown(getDefaultViewCooldown());
 			}
 		}
 	}
@@ -67,8 +67,10 @@ public interface IViewActivated {
 	 * Called when a view check is successful, aka when an entity is looking at this block entity
 	 *
 	 * @param entity The entity that is looking at this block entity
+	 * @param hitResult The context with which the entity is looking at this block entity
+	 * @return true if the block entity's view cooldown should be updated
 	 */
-	public void onEntityViewed(LivingEntity entity);
+	public boolean onEntityViewed(LivingEntity entity, BlockHitResult hitResult);
 
 	/**
 	 * @return true if the view check should only pass if a player is looking at this block entity, false otherwise

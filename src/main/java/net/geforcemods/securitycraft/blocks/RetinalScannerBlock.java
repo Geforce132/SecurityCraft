@@ -98,7 +98,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeRetinalScanner, LevelUtils::blockEntityTicker);
+		return level.isClientSide ? null : createTickerHelper(type, SCContent.beTypeRetinalScanner, LevelUtils::blockEntityTicker);
 	}
 
 	@Override

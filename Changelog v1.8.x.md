@@ -57,6 +57,7 @@
 - Fix: Hotbar indicator for Camera Monitor/MRAT does not respect the player's reach distance
 - Fix: Reinforced doors/trapdoors/etc. can be activated by anyone in some circumstances
 - Fix: Some SecurityCraft blocks do not update their surrounding blocks correctly when powering/unpowering
+- Fix: Retinal Scanners and Scanner Doors can be activated by looking at any of the block's sides
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: Performance improvements due to fewer ticking block entities

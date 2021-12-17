@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
+import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
@@ -12,6 +13,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.phys.BlockHitResult;
 
 public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated, ITickingBlockEntity, ILockable {
 	private int viewCooldown = 0;
@@ -35,13 +38,14 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	}
 
 	@Override
-	public void onEntityViewed(LivingEntity entity) {
+	public boolean onEntityViewed(LivingEntity entity, BlockHitResult hitResult) {
 		BlockState upperState = level.getBlockState(worldPosition);
 		BlockState lowerState = level.getBlockState(worldPosition.below());
+		Direction.Axis facingAxis = ScannerDoorBlock.getFacingAxis(upperState);
 
-		if (!level.isClientSide && upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity)) {
-			if (!(entity instanceof Player player))
-				return;
+		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity)) {
+			if (!(entity instanceof Player player) || facingAxis != hitResult.getDirection().getAxis())
+				return false;
 
 			if (!isLocked()) {
 				String name = player.getName().getString();
@@ -51,7 +55,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 
 				if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), ChatFormatting.RED);
-					return;
+					return true;
 				}
 
 				boolean open = !lowerState.getValue(DoorBlock.OPEN);
@@ -66,13 +70,18 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 
 				if (open && sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), ChatFormatting.GREEN);
+
+				return true;
 			}
 			else if (sendsMessages()) {
 				TranslatableComponent blockName = Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId());
 
 				PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
+				return true;
 			}
 		}
+
+		return false;
 	}
 
 	@Override
