@@ -22,6 +22,7 @@
 - Change: Renamed "Track Mine" to "Rail Mine" to be in line with vanilla
 - Change: Cameras can now be viewed from anywhere in the same dimension, it is no longer necessary to be close to the camera to be able to view it
 - Change: The Smart Module no longer works in the camera, the Allowlist Module is now used for better control
+- Change: Retinal Scanners and Scanner Doors now only get activated by looking at one of the sides that contain the actual scanner
 - API: Removed INameable in favor of vanilla's Nameable
 - API: Added INameSettable to be able to easily set a block's custom name
 - API: Added IViewActivated (used by the Retinal Scanner and Scanner Door)
@@ -57,7 +58,6 @@
 - Fix: Hotbar indicator for Camera Monitor/MRAT does not respect the player's reach distance
 - Fix: Reinforced doors/trapdoors/etc. can be activated by anyone in some circumstances
 - Fix: Some SecurityCraft blocks do not update their surrounding blocks correctly when powering/unpowering
-- Fix: Retinal Scanners and Scanner Doors can be activated by looking at any of the block's sides
 - Removed: Unused textures
 - Misc.: Renamed a few textures
 - Misc.: Performance improvements due to fewer ticking block entities
