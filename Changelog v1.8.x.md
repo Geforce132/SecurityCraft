@@ -21,6 +21,7 @@
 - Change: Cameras can now be viewed from anywhere in the same dimension, it is no longer necessary to be close to the camera to be able to view it
 - Change: The Smart Module no longer works in the camera, the Allowlist Module is now used for better control
 - Change: Reinforced Carpets can no longer be used as fuel
+- Change: Retinal Scanners and Scanner Doors now only get activated by looking at one of the sides that contain the actual scanner
 - API: Removed INameable in favor of vanilla's Nameable
 - API: Added INameSettable to be able to easily set a block's custom name
 - API: Added IViewActivated (used by the Retinal Scanner and Scanner Door)
