@@ -142,7 +142,7 @@ public class SetupHandler
 		SCContent.laserField = new BlockLaserField(Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("laser");
 		SCContent.keypad = new BlockKeypad(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad").setTranslationKey("securitycraft:keypad");
 		SCContent.retinalScanner = new BlockRetinalScanner(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("retinal_scanner").setTranslationKey("securitycraft:retinalScanner");
-		SCContent.reinforcedDoor = new BlockReinforcedDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("iron_door_reinforced").setTranslationKey("securitycraft:ironDoorReinforced");
+		SCContent.reinforcedDoor = new BlockReinforcedDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("iron_door_reinforced").setTranslationKey("securitycraft:ironDoorReinforced");
 		SCContent.fakeLava = (BlockStaticLiquid) new BlockFakeLavaBase(Material.LAVA).setHardness(100.0F).setLightLevel(1.0F).setRegistryName("bogus_lava").setTranslationKey("securitycraft:bogusLava");
 		SCContent.bogusLavaFlowing = new BlockFakeLava(Material.LAVA).setHardness(0.0F).setLightLevel(1.0F).setRegistryName("bogus_lava_flowing").setTranslationKey("securitycraft:bogusLavaFlowing");
 		SCContent.fakeWater = (BlockStaticLiquid) new BlockFakeWaterBase(Material.WATER).setHardness(100.0F).setRegistryName("bogus_water").setTranslationKey("securitycraft:bogusWater");
@@ -185,7 +185,7 @@ public class SetupHandler
 		SCContent.reinforcedStoneSlabs = new BlockReinforcedSlabs(false, Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_slabs").setTranslationKey("securitycraft:reinforcedStoneSlabs");
 		SCContent.reinforcedDoubleStoneSlabs = new BlockReinforcedSlabs(true, Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_double_stone_slabs").setTranslationKey("securitycraft:reinforcedDoubleStoneSlabs");
 		SCContent.protecto = new BlockProtecto(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setLightLevel(0.5F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("protecto").setTranslationKey("securitycraft:protecto");
-		SCContent.scannerDoor = new BlockScannerDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("scanner_door").setTranslationKey("securitycraft:scannerDoor");
+		SCContent.scannerDoor = new BlockScannerDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("scanner_door").setTranslationKey("securitycraft:scannerDoor");
 		SCContent.reinforcedStoneBrick = new BlockReinforcedStoneBrick().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_brick").setTranslationKey("securitycraft:reinforcedStoneBrick");
 		SCContent.reinforcedStairsStoneBrick= new BlockReinforcedStairs(SCContent.reinforcedStoneBrick, 0, Blocks.STONE_BRICK_STAIRS).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_stone_brick").setTranslationKey("securitycraft:reinforcedStairsStoneBrick");
 		SCContent.reinforcedMossyCobblestone = new BlockReinforcedBase(Material.ROCK, 1, Blocks.MOSSY_COBBLESTONE).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_mossy_cobblestone").setTranslationKey("securitycraft:reinforcedMossyCobblestone");
@@ -262,11 +262,11 @@ public class SetupHandler
 		SCContent.reinforcedLever = new BlockReinforcedLever().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_lever").setTranslationKey("securitycraft:reinforced_lever");
 		SCContent.reinforcedHopper = new BlockReinforcedHopper().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_hopper").setTranslationKey("securitycraft:reinforced_hopper");
 		SCContent.projector = new BlockProjector().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("projector").setTranslationKey("securitycraft:projector");
-		SCContent.keypadDoor = new BlockKeypadDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("keypad_door").setTranslationKey("securitycraft:keypad_door");
+		SCContent.keypadDoor = new BlockKeypadDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("keypad_door").setTranslationKey("securitycraft:keypad_door");
 		SCContent.reinforcedCauldron = new BlockReinforcedCauldron().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_cauldron").setTranslationKey("securitycraft:reinforced_cauldron");
 		SCContent.keyPanelFloorCeilingBlock = new BlockFloorCeilingKeyPanel(Material.IRON).setCreativeTab(SecurityCraft.tabSCTechnical).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("floor_ceiling_key_panel").setTranslationKey("securitycraft:key_panel");
 		SCContent.keyPanelWallBlock = new BlockWallKeyPanel(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("wall_key_panel").setTranslationKey("securitycraft:key_panel");
-		SCContent.sonicSecuritySystem = new BlockSonicSecuritySystem(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("sonic_security_system").setTranslationKey("securitycraft:sonic_security_system");
+		SCContent.sonicSecuritySystem = new BlockSonicSecuritySystem(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("sonic_security_system").setTranslationKey("securitycraft:sonic_security_system");
 	}
 
 	public static void setupMines()
