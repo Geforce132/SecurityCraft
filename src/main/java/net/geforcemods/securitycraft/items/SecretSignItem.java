@@ -13,41 +13,35 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class SecretSignItem extends StandingAndWallBlockItem
-{
+public class SecretSignItem extends StandingAndWallBlockItem {
 	private final String translationKey;
 
-	public SecretSignItem(Item.Properties properties, Block floor, Block wall, String translationKey)
-	{
+	public SecretSignItem(Item.Properties properties, Block floor, Block wall, String translationKey) {
 		super(floor, wall, properties);
 
 		this.translationKey = translationKey;
 	}
 
 	@Override
-	public String getDescriptionId()
-	{
+	public String getDescriptionId() {
 		return translationKey;
 	}
 
 	@Override
-	public String getDescriptionId(ItemStack stack)
-	{
+	public String getDescriptionId(ItemStack stack) {
 		return getDescriptionId();
 	}
 
 	@Override
-	public boolean updateCustomBlockEntityTag(BlockPos pos, Level level, @Nullable Player player, ItemStack stack, BlockState state)
-	{
+	public boolean updateCustomBlockEntityTag(BlockPos pos, Level level, @Nullable Player player, ItemStack stack, BlockState state) {
 		boolean flag = super.updateCustomBlockEntityTag(pos, level, player, stack, state);
 
-		if(!flag && player != null)
-		{
-			SecretSignBlockEntity be = (SecretSignBlockEntity)level.getBlockEntity(pos);
+		if (!flag && player != null) {
+			SecretSignBlockEntity be = (SecretSignBlockEntity) level.getBlockEntity(pos);
 
 			be.setAllowedPlayerEditor(player.getUUID());
 
-			if(level.isClientSide)
+			if (level.isClientSide)
 				ClientHandler.displayEditSecretSignGui(be);
 		}
 

@@ -32,10 +32,9 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
 	/**
-	 * The delay allowed between note block sounds while listening to a note sequence.
-	 * Notes played within this many ticks of each other will be considered as part of
-	 * the same "combination." Notes played after the delay has elapsed will start a new
-	 * combination
+	 * The delay allowed between note block sounds while listening to a note sequence. Notes played within this many ticks of
+	 * each other will be considered as part of the same "combination." Notes played after the delay has elapsed will start a
+	 * new combination
 	 */
 	private static final int LISTEN_DELAY = 60;
 	/** The listening and recording range of Sonic Security Systems (perhaps a config option?) */
@@ -61,38 +60,32 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	private boolean isListening = false;
 	private int listeningTimer = LISTEN_DELAY;
 	/**
-	 * This field keeps track of the number of correct notes that have been listened to in order.
-	 * If this number matches the size of the recordedNotes array, then the correct combination has
-	 * been played
+	 * This field keeps track of the number of correct notes that have been listened to in order. If this number matches the
+	 * size of the recordedNotes array, then the correct combination has been played
 	 */
 	private int listenPos = 0;
 	private boolean tracked = false;
 
-	public SonicSecuritySystemBlockEntity(BlockPos pos, BlockState state)
-	{
+	public SonicSecuritySystemBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeSonicSecuritySystem, pos, state);
 	}
 
 	@Override
-	public void tick(Level level, BlockPos pos, BlockState state)
-	{
+	public void tick(Level level, BlockPos pos, BlockState state) {
 		// Add this SSS to the global tracker if it has not already been added
-		if(!tracked) {
+		if (!tracked) {
 			SonicSecuritySystemTracker.track(this);
 			tracked = true;
 		}
 
-		if(!level.isClientSide)
-		{
-			if(!isActive())
+		if (!level.isClientSide) {
+			if (!isActive())
 				return;
 
-			if(correctTuneWasPlayed)
-			{
-				if(powerCooldown > 0)
+			if (correctTuneWasPlayed) {
+				if (powerCooldown > 0)
 					powerCooldown--;
-				else
-				{
+				else {
 					correctTuneWasPlayed = false;
 					level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(SonicSecuritySystemBlock.POWERED, false));
 					BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
@@ -101,10 +94,8 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 			// If the SSS is currently listening to a note, check to see
 			// if the timer has run out and needs to be reset
-			if(isListening)
-			{
-				if(listeningTimer > 0)
-				{
+			if (isListening) {
+				if (listeningTimer > 0) {
 					listeningTimer--;
 					return;
 				}
@@ -114,56 +105,48 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 			// If this SSS isn't linked to any blocks, return as no sound should
 			// be emitted and no blocks need to be removed
-			if(!isLinkedToBlock())
+			if (!isLinkedToBlock())
 				return;
 
-			if(pingCooldown > 0)
-			{
+			if (pingCooldown > 0)
 				pingCooldown--;
-			}
-			else
-			{
+			else {
 				ArrayList<BlockPos> blocksToRemove = new ArrayList<>();
 				Iterator<BlockPos> iterator = linkedBlocks.iterator();
 
-				while(iterator.hasNext())
-				{
+				while (iterator.hasNext()) {
 					BlockPos blockPos = iterator.next();
 
-					if(!(level.getBlockEntity(blockPos) instanceof ILockable))
+					if (!(level.getBlockEntity(blockPos) instanceof ILockable))
 						blocksToRemove.add(blockPos);
 				}
 
 				// This delinking part is in a separate loop to prevent a ConcurrentModificationException
-				for(BlockPos posToRemove : blocksToRemove)
-				{
+				for (BlockPos posToRemove : blocksToRemove) {
 					delink(posToRemove, false);
 					sync();
 				}
 
 				// Play the ping sound if it was not disabled
-				if(emitsPings && !isRecording)
+				if (emitsPings && !isRecording)
 					level.playSound(null, worldPosition, SCSounds.PING.event, SoundSource.BLOCKS, 0.3F, 1.0F);
 
 				pingCooldown = PING_DELAY;
 			}
 		}
-		else
-		{
-			if(isActive() || isRecording())
-			{
+		else {
+			if (isActive() || isRecording()) {
 				// Turn the radar dish slightly
 				radarRotationDegrees += 0.15;
 
-				if(radarRotationDegrees >= 360)
+				if (radarRotationDegrees >= 360)
 					radarRotationDegrees = 0;
 			}
 		}
 	}
 
 	@Override
-	public void setRemoved()
-	{
+	public void setRemoved() {
 		super.setRemoved();
 
 		// Stop tracking SSSs when they are removed from the world
@@ -172,8 +155,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-
-		if(module == ModuleType.REDSTONE) {
+		if (module == ModuleType.REDSTONE) {
 			level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(SonicSecuritySystemBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
 		}
@@ -182,27 +164,23 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag)
-	{
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 
 		// If there are blocks to save but the tag doesn't have a CompoundNBT
 		// to store them in, create one (shouldn't be needed)
-		if(linkedBlocks.size() > 0 && !tag.contains("LinkedBlocks"))
-		{
+		if (linkedBlocks.size() > 0 && !tag.contains("LinkedBlocks"))
 			tag.put("LinkedBlocks", new ListTag());
-		}
 
 		Iterator<BlockPos> iterator = linkedBlocks.iterator();
 
-		while(iterator.hasNext())
-		{
+		while (iterator.hasNext()) {
 			BlockPos blockToSave = iterator.next();
 			CompoundTag nbt = NbtUtils.writeBlockPos(blockToSave);
 
 			tag.getList("LinkedBlocks", Tag.TAG_COMPOUND).add(nbt);
 
-			if(!linkedBlocks.contains(blockToSave))
+			if (!linkedBlocks.contains(blockToSave))
 				linkedBlocks.add(blockToSave);
 		}
 
@@ -218,19 +196,15 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	@Override
-	public void load(CompoundTag tag)
-	{
+	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		if(tag.contains("LinkedBlocks"))
-		{
+		if (tag.contains("LinkedBlocks")) {
 			ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
 
 			// Read each saved position and add it to the linkedBlocks list
-			for(int i = 0; i < list.size(); i++)
-			{
+			for (int i = 0; i < list.size(); i++) {
 				CompoundTag linkedBlock = list.getCompound(i);
-
 				BlockPos linkedBlockPos = NbtUtils.readBlockPos(linkedBlock);
 
 				linkedBlocks.add(linkedBlockPos);
@@ -240,10 +214,10 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		recordedNotes.clear();
 		loadNotes(tag, recordedNotes);
 
-		if(tag.contains("emitsPings"))
+		if (tag.contains("emitsPings"))
 			emitsPings = tag.getBoolean("emitsPings");
 
-		if(tag.contains("isActive"))
+		if (tag.contains("isActive"))
 			isActive = tag.getBoolean("isActive");
 
 		isRecording = tag.getBoolean("isRecording");
@@ -255,6 +229,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 	/**
 	 * Saves this block entity's notes to a tag
+	 *
 	 * @param tag The tag to save the notes to
 	 */
 	public void saveNotes(CompoundTag tag) {
@@ -273,6 +248,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 	/**
 	 * Loads notes saved on a tag to a collection
+	 *
 	 * @param tag The tag containing the notes
 	 * @param recordedNotes The collection to save the notes to
 	 */
@@ -290,25 +266,22 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 	/**
 	 * Copies the positions over from the SSS item's tag into this block entity.
+	 *
 	 * @param itemTag The CompoundTag of the Sonic Security System item to transfer over
 	 */
-	public void transferPositionsFromItem(CompoundTag itemTag)
-	{
-		if(itemTag == null || !itemTag.contains("LinkedBlocks"))
+	public void transferPositionsFromItem(CompoundTag itemTag) {
+		if (itemTag == null || !itemTag.contains("LinkedBlocks"))
 			return;
 
 		ListTag blocks = itemTag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
 
-		for(int i = 0; i < blocks.size(); i++)
-		{
+		for (int i = 0; i < blocks.size(); i++) {
 			CompoundTag linkedBlock = blocks.getCompound(i);
 			BlockPos linkedBlockPos = NbtUtils.readBlockPos(linkedBlock);
 
 			// If the block has not already been linked with, add it to the list
-			if(!isLinkedToBlock(linkedBlockPos))
-			{
+			if (!isLinkedToBlock(linkedBlockPos))
 				linkedBlocks.add(linkedBlockPos);
-			}
 		}
 
 		sync();
@@ -317,8 +290,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	/**
 	 * @return If this Sonic Security System is linked to another block
 	 */
-	public boolean isLinkedToBlock()
-	{
+	public boolean isLinkedToBlock() {
 		return !linkedBlocks.isEmpty();
 	}
 
@@ -326,9 +298,8 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 * @return If this Sonic Security System is linked to a block at a specific position
 	 * @param linkedBlockPos the position of the block to check
 	 */
-	public boolean isLinkedToBlock(BlockPos linkedBlockPos)
-	{
-		if(linkedBlocks.isEmpty())
+	public boolean isLinkedToBlock(BlockPos linkedBlockPos) {
+		if (linkedBlocks.isEmpty())
 			return false;
 
 		return linkedBlocks.contains(linkedBlockPos);
@@ -337,22 +308,20 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	/**
 	 * Delinks this Sonic Security System from the given block
 	 */
-	public void delink(BlockPos linkedBlockPos, boolean shouldSync)
-	{
-		if(linkedBlocks.isEmpty())
+	public void delink(BlockPos linkedBlockPos, boolean shouldSync) {
+		if (linkedBlocks.isEmpty())
 			return;
 
 		linkedBlocks.remove(linkedBlockPos);
 
-		if(shouldSync)
+		if (shouldSync)
 			sync();
 	}
 
 	/**
 	 * Delinks this Sonic Security System from all other blocks
 	 */
-	public void delinkAll()
-	{
+	public void delinkAll() {
 		linkedBlocks.clear();
 		sync();
 	}
@@ -360,77 +329,69 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	/**
 	 * @return Returns the number of blocks that this Sonic Security System is linked to
 	 */
-	public int getNumberOfLinkedBlocks()
-	{
+	public int getNumberOfLinkedBlocks() {
 		return linkedBlocks.size();
 	}
 
 	/**
 	 * @return If this Sonic Security System is emitting ping sounds
 	 */
-	public boolean pings()
-	{
+	public boolean pings() {
 		return emitsPings;
 	}
 
 	/**
 	 * Toggles the ping emission sound on or off
+	 *
 	 * @param pings true if the periodic ping sounds should play, false if not
 	 */
-	public void setPings(boolean pings)
-	{
+	public void setPings(boolean pings) {
 		emitsPings = pings;
 	}
 
 	/**
 	 * @return Whether or not this Sonic Security System is actively running
 	 */
-	public boolean isActive()
-	{
+	public boolean isActive() {
 		return isActive;
 	}
 
 	/**
 	 * Toggle the Sonic Security System on or off
+	 *
 	 * @param active true if the SSS should be powered on, false if not
 	 */
-	public void setActive(boolean active)
-	{
+	public void setActive(boolean active) {
 		isActive = active;
 	}
 
 	/**
-	 * @return True if this Sonic Security System is currently recording notes produced by Note Blocks,
-	 * 		   false otherwise
+	 * @return True if this Sonic Security System is currently recording notes produced by Note Blocks, false otherwise
 	 */
-	public boolean isRecording()
-	{
+	public boolean isRecording() {
 		return isRecording;
 	}
 
 	/**
 	 * Toggle the recording state of the Sonic Security System
+	 *
 	 * @param recording true if the SSS should be recording, false if not
 	 */
-	public void setRecording(boolean recording)
-	{
+	public void setRecording(boolean recording) {
 		isRecording = recording;
 	}
 
 	/**
-	 * @return True if this Sonic Security System if listening to notes currently being played,
-	 * 		   false otherwise
+	 * @return True if this Sonic Security System if listening to notes currently being played, false otherwise
 	 */
-	public boolean isListening()
-	{
+	public boolean isListening() {
 		return isListening;
 	}
 
 	/**
 	 * Toggle the listening state of the Sonic Security System on
 	 */
-	public void startListening()
-	{
+	public void startListening() {
 		isListening = true;
 	}
 
@@ -443,7 +404,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		isListening = false;
 		level.blockUpdated(worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get());
 
-		if(!level.isClientSide)
+		if (!level.isClientSide)
 			sync();
 	}
 
@@ -456,37 +417,34 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 	/**
 	 * Record a note to use in the audio "passcode"
-	 * @param noteID the ID of the note that was played
-	 * @param instrumentName the name of the instrument that played the note
-	 */
-	public void recordNote(int noteID, String instrumentName)
-	{
-		recordedNotes.add(new NoteWrapper(noteID, instrumentName));
-
-		if(!level.isClientSide)
-			sync();
-	}
-
-	/**
-	 * Listen to a note and check whether or not it is the next correct note
-	 * that was recorded by the Sonic Security System
 	 *
 	 * @param noteID the ID of the note that was played
 	 * @param instrumentName the name of the instrument that played the note
 	 */
-	public boolean listenToNote(int noteID, String instrumentName)
-	{
+	public void recordNote(int noteID, String instrumentName) {
+		recordedNotes.add(new NoteWrapper(noteID, instrumentName));
+
+		if (!level.isClientSide)
+			sync();
+	}
+
+	/**
+	 * Listen to a note and check whether or not it is the next correct note that was recorded by the Sonic Security System
+	 *
+	 * @param noteID the ID of the note that was played
+	 * @param instrumentName the name of the instrument that played the note
+	 */
+	public boolean listenToNote(int noteID, String instrumentName) {
 		// No notes
-		if(getNumberOfNotes() == 0 || listenPos >= getNumberOfNotes())
+		if (getNumberOfNotes() == 0 || listenPos >= getNumberOfNotes())
 			return false;
 
-		if(!isListening) {
+		if (!isListening) {
 			isListening = true;
 			sync();
 		}
 
-		if(recordedNotes.get(listenPos++).isSameNote(noteID, instrumentName))
-		{
+		if (recordedNotes.get(listenPos++).isSameNote(noteID, instrumentName)) {
 			resetListeningTimer();
 			// true if the entire tune was correctly played, false if it was only partly played but more notes are needed
 			return listenPos >= recordedNotes.size();
@@ -506,16 +464,14 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	/**
 	 * @return The number of notes that this Sonic Security System has recorded
 	 */
-	public int getNumberOfNotes()
-	{
+	public int getNumberOfNotes() {
 		return recordedNotes.size();
 	}
 
 	/**
 	 * Clears all recorded notes
 	 */
-	public void clearNotes()
-	{
+	public void clearNotes() {
 		recordedNotes.clear();
 	}
 
@@ -529,23 +485,27 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	public static record NoteWrapper(int noteID, String instrumentName) {
 		/**
 		 * Checks to see if a passed note ID and instrument matches the info of this note
+		 *
 		 * @param note the note ID to check
 		 * @param instrument the instrument name of the note
 		 * @return
 		 */
-		public boolean isSameNote(int note, String instrument)
-		{
+		public boolean isSameNote(int note, String instrument) {
 			return noteID == note && instrumentName.equals(instrument);
 		}
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[] {ModuleType.ALLOWLIST, ModuleType.REDSTONE};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.REDSTONE
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[] {signalLength};
+		return new Option[] {
+				signalLength
+		};
 	}
 }

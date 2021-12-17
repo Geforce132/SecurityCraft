@@ -18,71 +18,60 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ForgeHooksClient;
 
-public class BlockMineModel implements BakedModel
-{
+public class BlockMineModel implements BakedModel {
 	private final BakedModel defaultModel;
 	private final BakedModel guiModel;
 
-	public BlockMineModel(BakedModel defaultModel, BakedModel guiModel)
-	{
+	public BlockMineModel(BakedModel defaultModel, BakedModel guiModel) {
 		this.defaultModel = defaultModel;
 		this.guiModel = guiModel;
 	}
 
 	@Override
-	public boolean doesHandlePerspectives()
-	{
+	public boolean doesHandlePerspectives() {
 		return true;
 	}
 
 	@Override
-	public BakedModel handlePerspective(TransformType cameraTransformType, PoseStack pose)
-	{
-		if(cameraTransformType == TransformType.GUI)
+	public BakedModel handlePerspective(TransformType cameraTransformType, PoseStack pose) {
+		if (cameraTransformType == TransformType.GUI)
 			return ForgeHooksClient.handlePerspective(guiModel, cameraTransformType, pose);
 		else
 			return ForgeHooksClient.handlePerspective(defaultModel, cameraTransformType, pose);
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand)
-	{
+	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
 		return defaultModel == null ? new ArrayList<>() : defaultModel.getQuads(state, side, rand);
 	}
 
 	@Override
-	public boolean useAmbientOcclusion()
-	{
+	public boolean useAmbientOcclusion() {
 		return defaultModel == null ? true : defaultModel.useAmbientOcclusion();
 	}
 
 	@Override
-	public boolean isGui3d()
-	{
+	public boolean isGui3d() {
 		return defaultModel == null ? false : defaultModel.isGui3d();
 	}
 
 	@Override
-	public boolean usesBlockLight()
-	{
+	public boolean usesBlockLight() {
 		return defaultModel.usesBlockLight();
 	}
 
 	@Override
-	public boolean isCustomRenderer()
-	{
+	public boolean isCustomRenderer() {
 		return defaultModel == null ? false : defaultModel.isCustomRenderer();
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleIcon()
-	{
+	public TextureAtlasSprite getParticleIcon() {
 		return defaultModel == null ? Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(MissingTextureAtlasSprite.getLocation()) : defaultModel.getParticleIcon();
 	}
 
 	@Override
-	public ItemOverrides getOverrides()
-	{
+	public ItemOverrides getOverrides() {
 		return defaultModel == null ? ItemOverrides.EMPTY : defaultModel.getOverrides();
 	}
 }

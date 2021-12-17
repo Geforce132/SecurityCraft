@@ -18,22 +18,21 @@ public class Utils {
 	/**
 	 * Removes the last character in the given String. <p>
 	 */
-	public static String removeLastChar(String line){
-		if(line == null || line.isEmpty())
+	public static String removeLastChar(String line) {
+		if (line == null || line.isEmpty())
 			return "";
 
 		return line.substring(0, line.length() - 1);
 	}
 
-	public static TranslatableComponent getFormattedCoordinates(BlockPos pos){
+	public static TranslatableComponent getFormattedCoordinates(BlockPos pos) {
 		return new TranslatableComponent("messages.securitycraft:formattedCoordinates", pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	public static void setISinTEAppropriately(Level level, BlockPos pos, NonNullList<ItemStack> contents)
-	{
+	public static void setISinTEAppropriately(Level level, BlockPos pos, NonNullList<ItemStack> contents) {
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, pos);
 
-		if(connectedScanner == null)
+		if (connectedScanner == null)
 			return;
 
 		connectedScanner.setContents(contents);
@@ -41,17 +40,16 @@ public class Utils {
 
 	/**
 	 * Localizes a String with the given format
+	 *
 	 * @param key The string to localize (aka the identifier in the .lang file)
 	 * @param params The parameters to insert into the String ala String.format
 	 * @return The localized String
 	 */
-	public static TranslatableComponent localize(String key, Object... params)
-	{
-		for(int i = 0; i < params.length; i++)
-		{
-			if(params[i] instanceof TranslatableComponent component)
+	public static TranslatableComponent localize(String key, Object... params) {
+		for (int i = 0; i < params.length; i++) {
+			if (params[i] instanceof TranslatableComponent component)
 				params[i] = localize(component.getKey(), component.getArgs());
-			else if(params[i] instanceof BlockPos pos)
+			else if (params[i] instanceof BlockPos pos)
 				params[i] = getFormattedCoordinates(pos);
 		}
 

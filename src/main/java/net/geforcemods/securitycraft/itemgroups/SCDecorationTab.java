@@ -7,18 +7,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class SCDecorationTab extends CreativeModeTab
-{
-	public SCDecorationTab()
-	{
+public class SCDecorationTab extends CreativeModeTab {
+	public SCDecorationTab() {
 		super(SecurityCraft.MODID + ".decoration");
 		setRecipeFolderName(SecurityCraft.MODID);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public ItemStack makeIcon()
-	{
+	public ItemStack makeIcon() {
 		return new ItemStack(SCContent.REINFORCED_OAK_STAIRS.get().asItem());
 	}
 }

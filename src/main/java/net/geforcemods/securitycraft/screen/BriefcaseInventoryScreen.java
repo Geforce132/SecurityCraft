@@ -13,7 +13,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BriefcaseInventoryScreen extends AbstractContainerScreen<BriefcaseMenu> {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
 	private final String formattedTitle;
 
@@ -24,11 +23,10 @@ public class BriefcaseInventoryScreen extends AbstractContainerScreen<BriefcaseM
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
-	{
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
 
-		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
+		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
 			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
 	}
 
@@ -47,5 +45,4 @@ public class BriefcaseInventoryScreen extends AbstractContainerScreen<BriefcaseM
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
-
 }

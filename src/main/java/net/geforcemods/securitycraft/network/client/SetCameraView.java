@@ -15,39 +15,33 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-public class SetCameraView
-{
+public class SetCameraView {
 	private int id;
 
 	public SetCameraView() {}
 
-	public SetCameraView(Entity camera)
-	{
+	public SetCameraView(Entity camera) {
 		id = camera.getId();
 	}
 
-	public static void encode(SetCameraView message, FriendlyByteBuf buf)
-	{
+	public static void encode(SetCameraView message, FriendlyByteBuf buf) {
 		buf.writeVarInt(message.id);
 	}
 
-	public static SetCameraView decode(FriendlyByteBuf buf)
-	{
+	public static SetCameraView decode(FriendlyByteBuf buf) {
 		SetCameraView message = new SetCameraView();
 
 		message.id = buf.readVarInt();
 		return message;
 	}
 
-	public static void onMessage(SetCameraView message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(SetCameraView message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			Minecraft mc = Minecraft.getInstance();
 			Entity entity = mc.level.getEntity(message.id);
 			boolean isCamera = entity instanceof SecurityCamera;
 
-			if(isCamera || entity instanceof Player)
-			{
+			if (isCamera || entity instanceof Player) {
 				mc.setCameraEntity(entity);
 
 				if (isCamera) {
@@ -56,7 +50,7 @@ public class SetCameraView
 					mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
 					CameraController.setRenderPosition(entity);
 				}
-				else if(CameraController.previousCameraType != null)
+				else if (CameraController.previousCameraType != null)
 					mc.options.setCameraType(CameraController.previousCameraType);
 
 				mc.levelRenderer.allChanged();

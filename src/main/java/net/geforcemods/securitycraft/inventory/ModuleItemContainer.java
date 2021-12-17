@@ -10,16 +10,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class ModuleItemContainer implements Container {
-
 	public final int size = 1;
 	private final ItemStack module;
-
 	public NonNullList<ItemStack> moduleInventory;
 
 	public ModuleItemContainer(ItemStack moduleStack) {
 		module = moduleStack;
 
-		if(!(moduleStack.getItem() instanceof ModuleItem moduleItem))
+		if (!(moduleStack.getItem() instanceof ModuleItem moduleItem))
 			return;
 
 		moduleInventory = NonNullList.withSize(size, ItemStack.EMPTY);
@@ -43,11 +41,11 @@ public class ModuleItemContainer implements Container {
 	public void readFromNBT(CompoundTag tag) {
 		ListTag items = tag.getList("ItemInventory", Tag.TAG_COMPOUND);
 
-		for(int i = 0; i < items.size(); i++) {
+		for (int i = 0; i < items.size(); i++) {
 			CompoundTag item = items.getCompound(i);
 			int slot = item.getInt("Slot");
 
-			if(slot < getContainerSize())
+			if (slot < getContainerSize())
 				moduleInventory.set(slot, ItemStack.of(item));
 		}
 	}
@@ -55,8 +53,8 @@ public class ModuleItemContainer implements Container {
 	public void writeToNBT(CompoundTag tag) {
 		ListTag items = new ListTag();
 
-		for(int i = 0; i < getContainerSize(); i++)
-			if(!getItem(i).isEmpty()) {
+		for (int i = 0; i < getContainerSize(); i++)
+			if (!getItem(i).isEmpty()) {
 				CompoundTag item = new CompoundTag();
 				item.putInt("Slot", i);
 				getItem(i).save(item);
@@ -71,13 +69,14 @@ public class ModuleItemContainer implements Container {
 	public ItemStack removeItem(int index, int size) {
 		ItemStack stack = getItem(index);
 
-		if(!stack.isEmpty())
-			if(stack.getCount() > size) {
+		if (!stack.isEmpty()) {
+			if (stack.getCount() > size) {
 				stack = stack.split(size);
 				setChanged();
 			}
 			else
 				setItem(index, ItemStack.EMPTY);
+		}
 
 		return stack;
 	}
@@ -93,7 +92,7 @@ public class ModuleItemContainer implements Container {
 	public void setItem(int index, ItemStack stack) {
 		moduleInventory.set(index, stack);
 
-		if(!stack.isEmpty() && stack.getCount() > getMaxStackSize())
+		if (!stack.isEmpty() && stack.getCount() > getMaxStackSize())
 			stack.setCount(getMaxStackSize());
 
 		setChanged();
@@ -106,9 +105,10 @@ public class ModuleItemContainer implements Container {
 
 	@Override
 	public void setChanged() {
-		for(int i = 0; i < getContainerSize(); i++)
-			if(!getItem(i).isEmpty() && getItem(i).getCount() == 0)
+		for (int i = 0; i < getContainerSize(); i++) {
+			if (!getItem(i).isEmpty() && getItem(i).getCount() == 0)
 				moduleInventory.set(i, ItemStack.EMPTY);
+		}
 
 		writeToNBT(module.getTag());
 	}
@@ -133,11 +133,11 @@ public class ModuleItemContainer implements Container {
 	public void clearContent() {}
 
 	@Override
-	public boolean isEmpty()
-	{
-		for(ItemStack stack : moduleInventory)
-			if(!stack.isEmpty())
+	public boolean isEmpty() {
+		for (ItemStack stack : moduleInventory) {
+			if (!stack.isEmpty())
 				return false;
+		}
 
 		return true;
 	}

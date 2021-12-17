@@ -13,10 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.material.Fluid;
 
-public class FakeLiquidBucketItem extends BucketItem
-{
-	public FakeLiquidBucketItem(Supplier<? extends Fluid> supplier, Properties builder)
-	{
+public class FakeLiquidBucketItem extends BucketItem {
+	public FakeLiquidBucketItem(Supplier<? extends Fluid> supplier, Properties builder) {
 		super(supplier, builder);
 
 		DispenserBlock.registerBehavior(this, new DefaultDispenseItemBehavior() {
@@ -24,16 +22,16 @@ public class FakeLiquidBucketItem extends BucketItem
 
 			@Override
 			public ItemStack execute(BlockSource source, ItemStack stack) {
-				DispensibleContainerItem bucket = (DispensibleContainerItem)stack.getItem();
+				DispensibleContainerItem bucket = (DispensibleContainerItem) stack.getItem();
 				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
 				Level level = source.getLevel();
 
-				if(bucket.emptyContents(null, level, pos, null))
-				{
+				if (bucket.emptyContents(null, level, pos, null)) {
 					bucket.checkExtraContent(null, level, stack, pos);
 					return new ItemStack(Items.BUCKET);
 				}
-				else return instance.dispense(source, stack);
+				else
+					return instance.dispense(source, stack);
 			}
 		});
 	}

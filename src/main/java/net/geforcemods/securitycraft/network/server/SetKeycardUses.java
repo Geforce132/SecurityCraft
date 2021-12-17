@@ -10,27 +10,23 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-public class SetKeycardUses
-{
+public class SetKeycardUses {
 	private BlockPos pos;
 	private int uses;
 
 	public SetKeycardUses() {}
 
-	public SetKeycardUses(BlockPos pos, int uses)
-	{
+	public SetKeycardUses(BlockPos pos, int uses) {
 		this.pos = pos;
 		this.uses = uses;
 	}
 
-	public static void encode(SetKeycardUses message, FriendlyByteBuf buf)
-	{
+	public static void encode(SetKeycardUses message, FriendlyByteBuf buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeVarInt(message.uses);
 	}
 
-	public static SetKeycardUses decode(FriendlyByteBuf buf)
-	{
+	public static SetKeycardUses decode(FriendlyByteBuf buf) {
 		SetKeycardUses message = new SetKeycardUses();
 
 		message.pos = buf.readBlockPos();
@@ -38,17 +34,14 @@ public class SetKeycardUses
 		return message;
 	}
 
-	public static void onMessage(SetKeycardUses message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(SetKeycardUses message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
 
-			if(player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be)
-			{
-				if(be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player))
-				{
-					if(player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
+			if (player.level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be) {
+				if (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)) {
+					if (player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
 						keycardReaderContainer.setKeycardUses(message.uses);
 				}
 			}

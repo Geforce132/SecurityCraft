@@ -15,28 +15,25 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class UpdateSliderValue {
-
 	private BlockPos pos;
 	private int id;
 	private double value;
 
-	public UpdateSliderValue(){ }
+	public UpdateSliderValue() {}
 
-	public UpdateSliderValue(BlockPos pos, int id, double v){
+	public UpdateSliderValue(BlockPos pos, int id, double v) {
 		this.pos = pos;
 		this.id = id;
 		value = v;
 	}
 
-	public static void encode(UpdateSliderValue message, FriendlyByteBuf buf)
-	{
+	public static void encode(UpdateSliderValue message, FriendlyByteBuf buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeInt(message.id);
 		buf.writeDouble(message.value);
 	}
 
-	public static UpdateSliderValue decode(FriendlyByteBuf buf)
-	{
+	public static UpdateSliderValue decode(FriendlyByteBuf buf) {
 		UpdateSliderValue message = new UpdateSliderValue();
 
 		message.pos = buf.readBlockPos();
@@ -45,8 +42,7 @@ public class UpdateSliderValue {
 		return message;
 	}
 
-	public static void onMessage(UpdateSliderValue message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(UpdateSliderValue message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			int id = message.id;
@@ -54,17 +50,17 @@ public class UpdateSliderValue {
 			Player player = ctx.get().getSender();
 			BlockEntity be = player.level.getBlockEntity(pos);
 
-			if(be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
-				Option<?> option =customizable.customOptions()[id];
+			if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
+				Option<?> option = customizable.customOptions()[id];
 
-				if(option instanceof DoubleOption o)
+				if (option instanceof DoubleOption o)
 					o.setValue(value);
-				else if(option instanceof IntOption o)
-					o.setValue((int)value);
+				else if (option instanceof IntOption o)
+					o.setValue((int) value);
 
 				customizable.onOptionChanged(customizable.customOptions()[id]);
 
-				if(be instanceof CustomizableBlockEntity)
+				if (be instanceof CustomizableBlockEntity)
 					player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 			}
 		});

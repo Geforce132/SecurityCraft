@@ -41,8 +41,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.fml.ModList;
 
-public class TOPDataProvider implements Function<ITheOneProbe, Void>
-{
+public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 	private static final MutableComponent EQUIPPED = new TextComponent("" + ChatFormatting.GRAY).append(Utils.localize("waila.securitycraft:equipped"));
 	private static final MutableComponent ALLOWLIST_MODULE = new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.ALLOWLIST.getTranslationKey()));
 	private static final MutableComponent DISGUISE_MODULE = new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(ModuleType.DISGUISE.getTranslationKey()));
@@ -50,54 +49,50 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 
 	@Nullable
 	@Override
-	public Void apply(ITheOneProbe theOneProbe)
-	{
+	public Void apply(ITheOneProbe theOneProbe) {
 		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, level, blockState, data) -> {
 			ItemStack disguisedAs = ItemStack.EMPTY;
 
-			if(blockState.getBlock() instanceof DisguisableBlock disguisedBlock)
+			if (blockState.getBlock() instanceof DisguisableBlock disguisedBlock)
 				disguisedAs = disguisedBlock.getDisguisedStack(level, data.getPos());
-			else if(blockState.getBlock() instanceof IOverlayDisplay display)
+			else if (blockState.getBlock() instanceof IOverlayDisplay display)
 				disguisedAs = display.getDisplayStack(level, blockState, data.getPos());
 
-			if(!disguisedAs.isEmpty())
-			{
+			if (!disguisedAs.isEmpty()) {
+				//@formatter:off
 				probeInfo.horizontal()
 				.item(disguisedAs)
 				.vertical()
 				.itemLabel(disguisedAs)
 				.text(new TextComponent("" + ChatFormatting.BLUE + ChatFormatting.ITALIC + ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()));
 				return true;
+				//@formatter:on
 			}
 
 			return false;
 		});
 		theOneProbe.registerProvider(new IProbeInfoProvider() {
 			@Override
-			public ResourceLocation getID()
-			{
+			public ResourceLocation getID() {
 				return new ResourceLocation(SecurityCraft.MODID, SecurityCraft.MODID);
 			}
 
 			@Override
-			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData data)
-			{
+			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, Player player, Level level, BlockState blockState, IProbeHitData data) {
 				Block block = blockState.getBlock();
 
-				if(block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(level, blockState, data.getPos()))
+				if (block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(level, blockState, data.getPos()))
 					return;
 
 				BlockEntity be = level.getBlockEntity(data.getPos());
 
-				if(be instanceof IOwnable ownable)
-				{
+				if (be instanceof IOwnable ownable) {
 					String ownerName = ownable.getOwner().getName();
 
-					if(ConfigHandler.SERVER.enableTeamOwnership.get())
-					{
+					if (ConfigHandler.SERVER.enableTeamOwnership.get()) {
 						PlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
 
-						if(team != null)
+						if (team != null)
 							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName().getString() + ChatFormatting.GRAY).getString(); //TOP does not work with normal component formatting
 					}
 
@@ -105,25 +100,23 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				}
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
-				if(be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player)))
-				{
-					if(!inv.getInsertedModules().isEmpty())
-					{
+				if (be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
+					if (!inv.getInsertedModules().isEmpty()) {
 						probeInfo.text(EQUIPPED);
 
-						for(ModuleType module : inv.getInsertedModules())
+						for (ModuleType module : inv.getInsertedModules()) {
 							probeInfo.text(new TextComponent(ChatFormatting.GRAY + "- ").append(new TranslatableComponent(module.getTranslationKey())));
+						}
 					}
 				}
 
-				if(be instanceof IPasswordProtected passwordProtected && !(be instanceof KeycardReaderBlockEntity) && ((IOwnable)be).getOwner().isOwner(player))
-				{
+				if (be instanceof IPasswordProtected passwordProtected && !(be instanceof KeycardReaderBlockEntity) && ((IOwnable) be).getOwner().isOwner(player)) {
 					String password = passwordProtected.getPassword();
 
 					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).getString()));
 				}
 
-				if(be instanceof Nameable nameable && nameable.hasCustomName()){
+				if (be instanceof Nameable nameable && nameable.hasCustomName()) {
 					Component text = nameable.getCustomName();
 					Component name = text == null ? TextComponent.EMPTY : text;
 
@@ -139,38 +132,35 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 
 			@Override
 			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, Player player, Level level, Entity entity, IProbeHitEntityData data) {
-				if (entity instanceof Sentry sentry)
-				{
+				if (entity instanceof Sentry sentry) {
 					SentryMode mode = sentry.getMode();
 					String ownerName = sentry.getOwner().getName();
 
-					if(ConfigHandler.SERVER.enableTeamOwnership.get())
-					{
+					if (ConfigHandler.SERVER.enableTeamOwnership.get()) {
 						PlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
 
-						if(team != null)
+						if (team != null)
 							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName().getString() + ChatFormatting.GRAY).getString(); //TOP does not work with normal component formatting
 					}
 
 					probeInfo.text(new TextComponent(ChatFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getString()));
 
-					if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())
-					{
+					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
 						probeInfo.text(EQUIPPED);
 
-						if(!sentry.getAllowlistModule().isEmpty())
+						if (!sentry.getAllowlistModule().isEmpty())
 							probeInfo.text(ALLOWLIST_MODULE);
 
-						if(!sentry.getDisguiseModule().isEmpty())
+						if (!sentry.getDisguiseModule().isEmpty())
 							probeInfo.text(DISGUISE_MODULE);
 
-						if(sentry.hasSpeedModule())
+						if (sentry.hasSpeedModule())
 							probeInfo.text(SPEED_MODULE);
 					}
 
 					MutableComponent modeDescription = Utils.localize(mode.getModeKey());
 
-					if(mode != SentryMode.IDLE)
+					if (mode != SentryMode.IDLE)
 						modeDescription.append("- ").append(Utils.localize(mode.getTargetKey()));
 
 					probeInfo.text(new TextComponent(ChatFormatting.GRAY + modeDescription.getString()));

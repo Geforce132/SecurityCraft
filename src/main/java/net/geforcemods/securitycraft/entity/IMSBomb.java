@@ -21,44 +21,40 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 
 public class IMSBomb extends Fireball {
-
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.defineId(IMSBomb.class, Owner.getSerializer());
 	private int ticksFlying = 0;
 	private int launchTime;
 	private boolean launching = true;
 	private boolean isFast;
 
-	public IMSBomb(EntityType<IMSBomb> type, Level level){
+	public IMSBomb(EntityType<IMSBomb> type, Level level) {
 		super(SCContent.eTypeImsBomb, level);
 	}
 
-	public IMSBomb(Level level, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSBlockEntity te){
+	public IMSBomb(Level level, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSBlockEntity be) {
 		super(SCContent.eTypeImsBomb, x, y, z, accelerationX, accelerationY, accelerationZ, level);
+
+		Owner owner = be.getOwner();
+
 		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
-
-		Owner owner = te.getOwner();
-
 		entityData.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
-		isFast = te.hasModule(ModuleType.SPEED);
+		isFast = be.hasModule(ModuleType.SPEED);
 	}
 
 	@Override
-	public void tick(){
-		if(!launching)
+	public void tick() {
+		if (!launching)
 			super.tick();
-		else
-		{
-			if(ticksFlying == 0)
+		else {
+			if (ticksFlying == 0)
 				setDeltaMovement(getDeltaMovement().x, isFast ? 0.66F : 0.33F, getDeltaMovement().z);
 
 			//move up before homing onto target
-			if(ticksFlying < launchTime)
-			{
+			if (ticksFlying < launchTime) {
 				ticksFlying += isFast ? 2 : 1;
 				move(MoverType.SELF, getDeltaMovement());
 			}
-			else
-			{
+			else {
 				setDeltaMovement(0.0D, 0.0D, 0.0D);
 				launching = false;
 			}
@@ -66,9 +62,9 @@ public class IMSBomb extends Fireball {
 	}
 
 	@Override
-	protected void onHit(HitResult result){
-		if(!level.isClientSide && result.getType() == Type.BLOCK && level.getBlockState(((BlockHitResult)result).getBlockPos()).getBlock() != SCContent.IMS.get()){
-			BlockPos impactPos = ((BlockHitResult)result).getBlockPos();
+	protected void onHit(HitResult result) {
+		if (!level.isClientSide && result.getType() == Type.BLOCK && level.getBlockState(((BlockHitResult) result).getBlockPos()).getBlock() != SCContent.IMS.get()) {
+			BlockPos impactPos = ((BlockHitResult) result).getBlockPos();
 
 			level.explode(this, impactPos.getX(), impactPos.getY() + 1D, impactPos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.5F : 7F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 			discard();
@@ -76,8 +72,7 @@ public class IMSBomb extends Fireball {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag tag)
-	{
+	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putInt("launchTime", launchTime);
 		tag.putInt("ticksFlying", ticksFlying);
@@ -86,8 +81,7 @@ public class IMSBomb extends Fireball {
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag tag)
-	{
+	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		launchTime = tag.getInt("launchTime");
 		ticksFlying = tag.getInt("ticksFlying");
@@ -98,41 +92,38 @@ public class IMSBomb extends Fireball {
 	/**
 	 * @return The owner of the IMS which shot this bullet
 	 */
-	public Owner getSCOwner()
-	{
+	public Owner getSCOwner() {
 		return entityData.get(OWNER);
 	}
 
 	@Override
-	protected void defineSynchedData()
-	{
+	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(OWNER, new Owner());
 	}
 
 	@Override
-	protected float getInertia(){
+	protected float getInertia() {
 		return isFast ? 1.5F : 1.0F;
 	}
 
 	@Override
-	protected MovementEmission getMovementEmission(){
+	protected MovementEmission getMovementEmission() {
 		return MovementEmission.NONE;
 	}
 
 	@Override
-	public boolean isPickable(){
+	public boolean isPickable() {
 		return false;
 	}
 
 	@Override
-	public float getPickRadius(){
+	public float getPickRadius() {
 		return 0.3F;
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket()
-	{
+	public Packet<?> getAddEntityPacket() {
 		return new ClientboundAddEntityPacket(this);
 	}
 }

@@ -9,8 +9,8 @@ import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -26,47 +26,45 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	private int cooldown = 0;
 	private int ticksBetweenAttacks = hasModule(ModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
 
-	public ProtectoBlockEntity(BlockPos pos, BlockState state)
-	{
+	public ProtectoBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeProtecto, pos, state);
 	}
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if(cooldown++ < ticksBetweenAttacks)
+		if (cooldown++ < ticksBetweenAttacks)
 			return;
 
-		if(level.isRaining() && level.canSeeSkyFromBelowWater(pos)) {
+		if (level.isRaining() && level.canSeeSkyFromBelowWater(pos)) {
 			List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(ATTACK_RANGE));
 
-			if(!state.getValue(ProtectoBlock.ACTIVATED))
+			if (!state.getValue(ProtectoBlock.ACTIVATED))
 				level.setBlockAndUpdate(pos, state.setValue(ProtectoBlock.ACTIVATED, true));
 
-			if(entities.size() != 0) {
+			if (entities.size() != 0) {
 				boolean shouldDeactivate = false;
 
-				for(LivingEntity entity : entities) {
+				for (LivingEntity entity : entities) {
 					if (!(entity instanceof Sentry) && !EntityUtils.isInvisible(entity)) {
-						if (entity instanceof Player player)
-						{
-							if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
+						if (entity instanceof Player player) {
+							if (player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
 								continue;
 						}
 
-						if(!level.isClientSide)
+						if (!level.isClientSide)
 							LevelUtils.spawnLightning(level, entity.position(), false);
 
 						shouldDeactivate = true;
 					}
 				}
 
-				if(shouldDeactivate)
+				if (shouldDeactivate)
 					level.setBlockAndUpdate(pos, state.setValue(ProtectoBlock.ACTIVATED, false));
 			}
 
 			cooldown = 0;
 		}
-		else if(state.getValue(ProtectoBlock.ACTIVATED))
+		else if (state.getValue(ProtectoBlock.ACTIVATED))
 			level.setBlockAndUpdate(pos, state.setValue(ProtectoBlock.ACTIVATED, false));
 	}
 
@@ -74,7 +72,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		super.onModuleInserted(stack, module);
 
-		if(module == ModuleType.SPEED)
+		if (module == ModuleType.SPEED)
 			ticksBetweenAttacks = FAST_SPEED;
 	}
 
@@ -82,13 +80,15 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		super.onModuleRemoved(stack, module);
 
-		if(module == ModuleType.SPEED)
+		if (module == ModuleType.SPEED)
 			ticksBetweenAttacks = SLOW_SPEED;
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.SPEED, ModuleType.DISGUISE};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.SPEED, ModuleType.DISGUISE
+		};
 	}
 
 	@Override

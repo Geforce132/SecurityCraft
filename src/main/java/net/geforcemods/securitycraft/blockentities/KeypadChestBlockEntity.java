@@ -47,39 +47,34 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable, ILockable {
-
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private String passcode;
 	private Owner owner = new Owner();
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
-	public KeypadChestBlockEntity(BlockPos pos, BlockState state)
-	{
+	public KeypadChestBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeKeypadChest, pos, state);
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag)
-	{
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
 
-		if(passcode != null && !passcode.isEmpty())
+		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
-		if(owner != null){
+		if (owner != null)
 			owner.save(tag, false);
-		}
 
 		return tag;
 	}
 
 	@Override
-	public void load(CompoundTag tag)
-	{
+	public void load(CompoundTag tag) {
 		super.load(tag);
 
 		modules = readModuleInventory(tag);
@@ -89,8 +84,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
-	public CompoundTag getUpdateTag()
-	{
+	public CompoundTag getUpdateTag() {
 		return save(new CompoundTag());
 	}
 
@@ -105,8 +99,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
-	public Component getDefaultName()
-	{
+	public Component getDefaultName() {
 		return Utils.localize("block.securitycraft.keypad_chest");
 	}
 
@@ -114,9 +107,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	protected void signalOpenCount(Level level, BlockPos pos, BlockState state, int i, int j) {
 		super.signalOpenCount(level, pos, state, i, j);
 
-		if(hasModule(ModuleType.REDSTONE)) {
+		if (hasModule(ModuleType.REDSTONE))
 			BlockUtils.updateIndirectNeighbors(level, pos, state.getBlock(), Direction.DOWN);
-		}
 	}
 
 	public int getNumPlayersUsing() {
@@ -124,94 +116,82 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
-	{
-		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), () -> getInsertOnlyHandler()).cast();
-		else return super.getCapability(cap, side);
+		else
+			return super.getCapability(cap, side);
 	}
 
-	private LazyOptional<IItemHandler> getInsertOnlyHandler()
-	{
-		if(insertOnlyHandler == null)
+	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
+		if (insertOnlyHandler == null)
 			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(KeypadChestBlockEntity.this));
 
 		return insertOnlyHandler;
 	}
 
-	public LazyOptional<IItemHandler> getHandlerForSentry(Sentry entity)
-	{
-		if(entity.getOwner().owns(this))
+	public LazyOptional<IItemHandler> getHandlerForSentry(Sentry entity) {
+		if (entity.getOwner().owns(this))
 			return super.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
 		else
 			return LazyOptional.empty();
 	}
 
 	@Override
-	public boolean enableHack()
-	{
+	public boolean enableHack() {
 		return true;
 	}
 
 	@Override
-	public ItemStack getItem(int slot)
-	{
+	public ItemStack getItem(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : super.getItem(slot);
 	}
 
 	@Override
 	public void activate(Player player) {
-		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadChestBlock block && !isBlocked())
+		if (!level.isClientSide && getBlockState().getBlock() instanceof KeypadChestBlock block && !isBlocked())
 			block.activate(getBlockState(), level, worldPosition, player);
 	}
 
 	@Override
 	public void openPasswordGUI(Player player) {
-		if(isBlocked())
+		if (isBlocked())
 			return;
 
-		if(getPassword() != null)
-		{
-			if(player instanceof ServerPlayer)
-			{
-				NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+		if (getPassword() != null) {
+			if (player instanceof ServerPlayer) {
+				NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
 					@Override
-					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
-					{
+					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 						return new GenericTEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
-					public Component getDisplayName()
-					{
+					public Component getDisplayName() {
 						return KeypadChestBlockEntity.super.getDisplayName();
 					}
 				}, worldPosition);
 			}
 		}
-		else
-		{
-			if(getOwner().isOwner(player))
-			{
-				if(player instanceof ServerPlayer)
-				{
-					NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+		else {
+			if (getOwner().isOwner(player)) {
+				if (player instanceof ServerPlayer) {
+					NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
 						@Override
-						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
-						{
+						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 							return new GenericTEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override
-						public Component getDisplayName()
-						{
+						public Component getDisplayName() {
 							return KeypadChestBlockEntity.super.getDisplayName();
 						}
 					}, worldPosition);
 				}
 			}
-			else
+			else {
 				PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
+			}
 		}
 	}
 
@@ -222,66 +202,56 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module)
-	{
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		IModuleInventory.super.onModuleInserted(stack, module);
 
 		addOrRemoveModuleFromAttached(stack, false);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module)
-	{
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		IModuleInventory.super.onModuleRemoved(stack, module);
 
 		addOrRemoveModuleFromAttached(stack, true);
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> o)
-	{
-		if(o instanceof BooleanOption option)
-		{
+	public void onOptionChanged(Option<?> o) {
+		if (o instanceof BooleanOption option) {
 			KeypadChestBlockEntity offsetTe = findOther();
 
-			if(offsetTe != null)
+			if (offsetTe != null)
 				offsetTe.setSendsMessages(option.get());
 		}
 	}
 
-	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove)
-	{
-		if(module.isEmpty() || !(module.getItem() instanceof ModuleItem moduleItem))
+	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove) {
+		if (module.isEmpty() || !(module.getItem() instanceof ModuleItem moduleItem))
 			return;
 
 		KeypadChestBlockEntity offsetTe = findOther();
 
-		if(offsetTe != null)
-		{
-			if(remove)
+		if (offsetTe != null) {
+			if (remove)
 				offsetTe.removeModule(moduleItem.getModuleType());
 			else
 				offsetTe.insertModule(module);
 		}
 	}
 
-	public KeypadChestBlockEntity findOther()
-	{
+	public KeypadChestBlockEntity findOther() {
 		BlockState state = getBlockState();
 		ChestType type = state.getValue(KeypadChestBlock.TYPE);
 
-		if(type != ChestType.SINGLE)
-		{
+		if (type != ChestType.SINGLE) {
 			BlockPos offsetPos = worldPosition.relative(ChestBlock.getConnectedDirection(state));
 			BlockState offsetState = level.getBlockState(offsetPos);
 
-			if(state.getBlock() == offsetState.getBlock())
-			{
+			if (state.getBlock() == offsetState.getBlock()) {
 				ChestType offsetType = offsetState.getValue(KeypadChestBlock.TYPE);
 
-				if(offsetType != ChestType.SINGLE && type != offsetType && state.getValue(KeypadChestBlock.FACING) == offsetState.getValue(KeypadChestBlock.FACING))
-				{
-					if(level.getBlockEntity(offsetPos) instanceof KeypadChestBlockEntity be)
+				if (offsetType != ChestType.SINGLE && type != offsetType && state.getValue(KeypadChestBlock.FACING) == offsetState.getValue(KeypadChestBlock.FACING)) {
+					if (level.getBlockEntity(offsetPos) instanceof KeypadChestBlockEntity be)
 						return be;
 				}
 			}
@@ -301,7 +271,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
-	public Owner getOwner(){
+	public Owner getOwner() {
 		return owner;
 	}
 
@@ -310,49 +280,45 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		owner.set(uuid, name);
 	}
 
-	public boolean isBlocked()
-	{
-		for(Direction dir : Direction.Plane.HORIZONTAL.stream().collect(Collectors.toList()))
-		{
+	public boolean isBlocked() {
+		for (Direction dir : Direction.Plane.HORIZONTAL.stream().collect(Collectors.toList())) {
 			BlockPos pos = getBlockPos().relative(dir);
 
-			if(level.getBlockState(pos).getBlock() instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(level, pos))
+			if (level.getBlockState(pos).getBlock() instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(level, pos))
 				return true;
 		}
 
 		return isSingleBlocked();
 	}
 
-	public boolean isSingleBlocked()
-	{
+	public boolean isSingleBlocked() {
 		return KeypadChestBlock.isBlocked(getLevel(), getBlockPos());
 	}
 
 	@Override
-	public NonNullList<ItemStack> getInventory()
-	{
+	public NonNullList<ItemStack> getInventory() {
 		return modules;
 	}
 
 	@Override
-	public ModuleType[] acceptedModules()
-	{
-		return new ModuleType[] {ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE
+		};
 	}
 
 	@Override
-	public Option<?>[] customOptions()
-	{
-		return new Option[]{sendMessage};
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				sendMessage
+		};
 	}
 
-	public boolean sendsMessages()
-	{
+	public boolean sendsMessages() {
 		return sendMessage.get();
 	}
 
-	public void setSendsMessages(boolean value)
-	{
+	public void setSendsMessages(boolean value) {
 		sendMessage.setValue(value);
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
 	}

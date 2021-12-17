@@ -24,7 +24,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSecuritySystemBlockEntity> {
-
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/sonic_security_system.png");
 	private static final TranslatableComponent RECORDING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.recording");
@@ -36,17 +35,15 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 	}
 
 	@Override
-	public void render(SonicSecuritySystemBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay)
-	{
+	public void render(SonicSecuritySystemBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 		boolean recording = be.isRecording();
 
 		pose.translate(0.5D, 1.5D, 0.5D);
 
-		if(recording || be.isListening())
-		{
+		if (recording || be.isListening()) {
 			TranslatableComponent text = recording ? RECORDING_TEXT : LISTENING_TEXT;
 			float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
-			int j = (int)(f1 * 255.0F) << 24;
+			int j = (int) (f1 * 255.0F) << 24;
 			Font fontRenderer = Minecraft.getInstance().font;
 			float halfWidth = -fontRenderer.width(text) / 2;
 			Matrix4f positionMatrix;

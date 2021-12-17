@@ -23,43 +23,37 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.MinecraftForge;
 
-public class SecretStandingSignBlock extends StandingSignBlock
-{
-	public SecretStandingSignBlock(Block.Properties properties, WoodType woodType)
-	{
+public class SecretStandingSignBlock extends StandingSignBlock {
+	public SecretStandingSignBlock(Block.Properties properties, WoodType woodType) {
 		super(properties, woodType);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
-	{
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return Shapes.empty();
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof Player player)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
-	{
-		if(!level.isClientSide && player.getItemInHand(hand).getItem() == SCContent.ADMIN_TOOL.get())
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!level.isClientSide && player.getItemInHand(hand).getItem() == SCContent.ADMIN_TOOL.get())
 			return SCContent.ADMIN_TOOL.get().useOn(new UseOnContext(player, hand, hit));
 
-		SecretSignBlockEntity te = (SecretSignBlockEntity)level.getBlockEntity(pos);
+		SecretSignBlockEntity be = (SecretSignBlockEntity) level.getBlockEntity(pos);
 
-		if (te != null && te.isPlayerAllowedToSeeText(player))
+		if (be != null && be.isPlayerAllowedToSeeText(player))
 			return super.use(state, level, pos, player, hand, hit);
 
 		return InteractionResult.FAIL;
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new SecretSignBlockEntity(pos, state);
 	}
 

@@ -15,16 +15,13 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BlockPocketBlock extends BaseReinforcedBlock implements IBlockPocket
-{
-	public BlockPocketBlock(Block.Properties properties, Supplier<Block> vB)
-	{
+public class BlockPocketBlock extends BaseReinforcedBlock implements IBlockPocket {
+	public BlockPocketBlock(Block.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new BlockPocketBlockEntity(pos, state);
 	}
 

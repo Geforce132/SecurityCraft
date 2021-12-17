@@ -41,8 +41,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ReinforcedStairsBlock extends BaseReinforcedBlock implements SimpleWaterloggedBlock
-{
+public class ReinforcedStairsBlock extends BaseReinforcedBlock implements SimpleWaterloggedBlock {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 	public static final EnumProperty<Half> HALF = BlockStateProperties.HALF;
 	public static final EnumProperty<StairsShape> SHAPE = BlockStateProperties.STAIRS_SHAPE;
@@ -59,17 +58,17 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	protected static final VoxelShape SEU_CORNER = Block.box(8.0D, 8.0D, 8.0D, 16.0D, 16.0D, 16.0D);
 	protected static final VoxelShape[] SLAB_TOP_SHAPES = makeShapes(AABB_SLAB_TOP, NWD_CORNER, NED_CORNER, SWD_CORNER, SED_CORNER);
 	protected static final VoxelShape[] SLAB_BOTTOM_SHAPES = makeShapes(AABB_SLAB_BOTTOM, NWU_CORNER, NEU_CORNER, SWU_CORNER, SEU_CORNER);
-	private static final int[] SHAPE_BY_STATE = {12, 5, 3, 10, 14, 13, 7, 11, 13, 7, 11, 14, 8, 4, 1, 2, 4, 1, 2, 8};
+	private static final int[] SHAPE_BY_STATE = {
+			12, 5, 3, 10, 14, 13, 7, 11, 13, 7, 11, 14, 8, 4, 1, 2, 4, 1, 2, 8
+	};
 	private final Block modelBlock;
 	private final BlockState modelState;
 
-	public ReinforcedStairsBlock(Block.Properties properties, Block vB)
-	{
+	public ReinforcedStairsBlock(Block.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedStairsBlock(Block.Properties properties, Supplier<Block> vB)
-	{
+	public ReinforcedStairsBlock(Block.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, Half.BOTTOM).setValue(SHAPE, StairsShape.STRAIGHT).setValue(WATERLOGGED, false));
@@ -77,110 +76,94 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 		modelState = modelBlock.defaultBlockState();
 	}
 
-	private static VoxelShape[] makeShapes(VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner)
-	{
+	private static VoxelShape[] makeShapes(VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner) {
 		return IntStream.range(0, 16).mapToObj(shape -> combineShapes(shape, slabShape, nwCorner, neCorner, swCorner, seCorner)).toArray(size -> new VoxelShape[size]);
 	}
 
-	private static VoxelShape combineShapes(int bitfield, VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner)
-	{
+	private static VoxelShape combineShapes(int bitfield, VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner) {
 		VoxelShape shape = slabShape;
 
-		if((bitfield & 1) != 0)
+		if ((bitfield & 1) != 0)
 			shape = Shapes.or(slabShape, nwCorner);
 
-		if((bitfield & 2) != 0)
+		if ((bitfield & 2) != 0)
 			shape = Shapes.or(shape, neCorner);
 
-		if((bitfield & 4) != 0)
+		if ((bitfield & 4) != 0)
 			shape = Shapes.or(shape, swCorner);
 
-		if((bitfield & 8) != 0)
+		if ((bitfield & 8) != 0)
 			shape = Shapes.or(shape, seCorner);
 
 		return shape;
 	}
 
 	@Override
-	public boolean useShapeForLightOcclusion(BlockState state)
-	{
+	public boolean useShapeForLightOcclusion(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
-	{
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return (state.getValue(HALF) == Half.TOP ? SLAB_TOP_SHAPES : SLAB_BOTTOM_SHAPES)[SHAPE_BY_STATE[getShapeIndex(state)]];
 	}
 
-	private int getShapeIndex(BlockState state)
-	{
+	private int getShapeIndex(BlockState state) {
 		return state.getValue(SHAPE).ordinal() * 4 + state.getValue(FACING).get2DDataValue();
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
-	{
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
 		modelBlock.animateTick(state, level, pos, rand);
 	}
 
 	@Override
-	public void attack(BlockState state, Level level, BlockPos pos, Player player)
-	{
+	public void attack(BlockState state, Level level, BlockPos pos, Player player) {
 		modelState.attack(level, pos, player);
 	}
 
 	@Override
-	public void destroy(LevelAccessor level, BlockPos pos, BlockState state)
-	{
+	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
 		modelBlock.destroy(level, pos, state);
 	}
 
 	@Override
-	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving)
-	{
-		if(state.getBlock() != oldState.getBlock())
-		{
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+		if (state.getBlock() != oldState.getBlock()) {
 			modelState.neighborChanged(level, pos, Blocks.AIR, pos, false);
 			modelBlock.onPlace(modelState, level, pos, oldState, false);
 		}
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
-	{
-		if(state.getBlock() != newState.getBlock())
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (state.getBlock() != newState.getBlock())
 			modelState.onRemove(level, pos, newState, isMoving);
 	}
 
 	@Override
-	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
-	{
+	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
 		modelBlock.stepOn(level, pos, state, entity);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
-	{
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
 		modelState.tick(level, pos, random);
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
-	{
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		return modelState.use(level, player, hand, hit);
 	}
 
 	@Override
-	public void wasExploded(Level level, BlockPos pos, Explosion explosion)
-	{
+	public void wasExploded(Level level, BlockPos pos, Explosion explosion) {
 		modelBlock.wasExploded(level, pos, explosion);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		Direction dir = ctx.getClickedFace();
 		BlockPos pos = ctx.getClickedPos();
 		FluidState fluidState = ctx.getLevel().getFluidState(pos);
@@ -190,79 +173,68 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
-	{
-		if(state.getValue(WATERLOGGED))
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
 			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
 		return facing.getAxis().isHorizontal() ? state.setValue(SHAPE, getShapeProperty(state, level, currentPos)) : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
-	private static StairsShape getShapeProperty(BlockState state, BlockGetter level, BlockPos pos)
-	{
+	private static StairsShape getShapeProperty(BlockState state, BlockGetter level, BlockPos pos) {
 		Direction dir = state.getValue(FACING);
 		BlockState offsetState = level.getBlockState(pos.relative(dir));
 
-		if(isBlockStairs(offsetState) && state.getValue(HALF) == offsetState.getValue(HALF))
-		{
+		if (isBlockStairs(offsetState) && state.getValue(HALF) == offsetState.getValue(HALF)) {
 			Direction offsetDir = offsetState.getValue(FACING);
 
-			if(offsetDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, level, pos, offsetDir.getOpposite()))
-			{
-				if(offsetDir == dir.getCounterClockWise())
+			if (offsetDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, level, pos, offsetDir.getOpposite())) {
+				if (offsetDir == dir.getCounterClockWise())
 					return StairsShape.OUTER_LEFT;
-				else return StairsShape.OUTER_RIGHT;
+				else
+					return StairsShape.OUTER_RIGHT;
 			}
 		}
 
 		BlockState offsetOppositeState = level.getBlockState(pos.relative(dir.getOpposite()));
 
-		if (isBlockStairs(offsetOppositeState) && state.getValue(HALF) == offsetOppositeState.getValue(HALF))
-		{
+		if (isBlockStairs(offsetOppositeState) && state.getValue(HALF) == offsetOppositeState.getValue(HALF)) {
 			Direction offsetOppositeDir = offsetOppositeState.getValue(FACING);
 
-			if(offsetOppositeDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, level, pos, offsetOppositeDir))
-			{
-				if(offsetOppositeDir == dir.getCounterClockWise())
+			if (offsetOppositeDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, level, pos, offsetOppositeDir)) {
+				if (offsetOppositeDir == dir.getCounterClockWise())
 					return StairsShape.INNER_LEFT;
-				else return StairsShape.INNER_RIGHT;
+				else
+					return StairsShape.INNER_RIGHT;
 			}
 		}
 
 		return StairsShape.STRAIGHT;
 	}
 
-	private static boolean isDifferentStairs(BlockState state, BlockGetter level, BlockPos pos, Direction face)
-	{
+	private static boolean isDifferentStairs(BlockState state, BlockGetter level, BlockPos pos, Direction face) {
 		BlockState offsetState = level.getBlockState(pos.relative(face));
 
 		return !isBlockStairs(offsetState) || offsetState.getValue(FACING) != state.getValue(FACING) || offsetState.getValue(HALF) != state.getValue(HALF);
 	}
 
-	public static boolean isBlockStairs(BlockState state)
-	{
+	public static boolean isBlockStairs(BlockState state) {
 		return state.getBlock() instanceof ReinforcedStairsBlock || state.getBlock() instanceof StairBlock;
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		Direction direction = state.getValue(FACING);
 		StairsShape shape = state.getValue(SHAPE);
 
-		switch(mirror)
-		{
+		switch (mirror) {
 			case LEFT_RIGHT:
-				if (direction.getAxis() == Direction.Axis.Z)
-				{
-					switch(shape)
-					{
+				if (direction.getAxis() == Direction.Axis.Z) {
+					switch (shape) {
 						case INNER_LEFT:
 							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
 						case INNER_RIGHT:
@@ -277,10 +249,8 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 				}
 				break;
 			case FRONT_BACK:
-				if (direction.getAxis() == Direction.Axis.X)
-				{
-					switch(shape)
-					{
+				if (direction.getAxis() == Direction.Axis.X) {
+					switch (shape) {
 						case INNER_LEFT:
 							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
 						case INNER_RIGHT:
@@ -302,8 +272,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
-	{
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, HALF, SHAPE, WATERLOGGED);
 	}
 
@@ -313,14 +282,12 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type)
-	{
+	public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type) {
 		return false;
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return defaultBlockState().setValue(SHAPE, vanillaState.getValue(SHAPE)).setValue(FACING, vanillaState.getValue(FACING)).setValue(HALF, vanillaState.getValue(HALF)).setValue(WATERLOGGED, vanillaState.getValue(WATERLOGGED));
 	}
 }

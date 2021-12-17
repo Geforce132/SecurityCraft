@@ -25,21 +25,19 @@ public interface IViewActivated {
 	 * @param pos The position of the block entity
 	 */
 	default void checkView(Level level, BlockPos pos) {
-		if(getViewCooldown() > 0){
+		if (getViewCooldown() > 0) {
 			setViewCooldown(getViewCooldown() - 1);
 			return;
 		}
 
 		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(5), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof Player));
 
-		for (LivingEntity entity : entities)
-		{
+		for (LivingEntity entity : entities) {
 			double eyeHeight = entity.getEyeHeight();
 			Vec3 lookVec = new Vec3(entity.getX() + (entity.getLookAngle().x * 5), (eyeHeight + entity.getY()) + (entity.getLookAngle().y * 5), entity.getZ() + (entity.getLookAngle().z * 5));
 			BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, Block.COLLIDER, Fluid.NONE, entity));
 
-			if(hitResult != null && hitResult.getBlockPos().getX() == pos.getX() && hitResult.getBlockPos().getY() == pos.getY() && hitResult.getBlockPos().getZ() == pos.getZ())
-			{
+			if (hitResult != null && hitResult.getBlockPos().getX() == pos.getX() && hitResult.getBlockPos().getY() == pos.getY() && hitResult.getBlockPos().getZ() == pos.getZ()) {
 				onEntityViewed(entity);
 				setViewCooldown(getDefaultViewCooldown());
 			}

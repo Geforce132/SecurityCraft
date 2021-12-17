@@ -24,35 +24,29 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-public class BlockPocketManagerBlock extends OwnableBlock
-{
+public class BlockPocketManagerBlock extends OwnableBlock {
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-	public BlockPocketManagerBlock(Block.Properties properties)
-	{
+	public BlockPocketManagerBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
-	{
-		if(!level.isClientSide && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && !be.isPlacingBlocks())
-			NetworkHooks.openGui((ServerPlayer)player, be, pos);
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!level.isClientSide && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && !be.isPlacingBlocks())
+			NetworkHooks.openGui((ServerPlayer) player, be, pos);
 
 		return InteractionResult.SUCCESS;
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
-	{
-		if(level.isClientSide || state.getBlock() == newState.getBlock())
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (level.isClientSide || state.getBlock() == newState.getBlock())
 			return;
 
-		if(level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be)
-		{
+		if (level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be) {
 			be.getStorageHandler().ifPresent(handler -> {
-				for(int i = 0; i < handler.getSlots(); i++)
-				{
+				for (int i = 0; i < handler.getSlots(); i++) {
 					Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
 				}
 			});
@@ -62,20 +56,17 @@ public class BlockPocketManagerBlock extends OwnableBlock
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext context)
-	{
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
 	}
 
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
-	{
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new BlockPocketManagerBlockEntity(pos, state);
 	}
 
@@ -85,14 +76,12 @@ public class BlockPocketManagerBlock extends OwnableBlock
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 }

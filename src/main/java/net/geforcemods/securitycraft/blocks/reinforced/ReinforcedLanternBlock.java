@@ -19,7 +19,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ReinforcedLanternBlock extends BaseReinforcedBlock{
+public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 	public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape STANDING_SHAPE = Shapes.or(Block.box(5.0D, 0.0D, 5.0D, 11.0D, 7.0D, 11.0D), Block.box(6.0D, 7.0D, 6.0D, 10.0D, 9.0D, 10.0D));
@@ -34,13 +34,12 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock{
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
 
-		for(Direction direction : context.getNearestLookingDirections()) {
+		for (Direction direction : context.getNearestLookingDirections()) {
 			if (direction.getAxis() == Direction.Axis.Y) {
 				BlockState state = defaultBlockState().setValue(HANGING, direction == Direction.UP);
 
-				if (state.canSurvive(context.getLevel(), context.getClickedPos())) {
+				if (state.canSurvive(context.getLevel(), context.getClickedPos()))
 					return state.setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
-				}
 			}
 		}
 
@@ -69,9 +68,8 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock{
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) {
+		if (state.getValue(WATERLOGGED))
 			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-		}
 
 		return getBlockConnected(state).getOpposite() == facing && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}

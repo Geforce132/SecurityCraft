@@ -35,32 +35,32 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
-public class PlayerUtils{
-
+public class PlayerUtils {
 	/**
 	 * Gets the PlayerEntity instance of a player (if they're online) using their name. <p>
 	 */
-	public static Player getPlayerFromName(String name){
-		if(EffectiveSide.get() == LogicalSide.CLIENT){
+	public static Player getPlayerFromName(String name) {
+		if (EffectiveSide.get() == LogicalSide.CLIENT) {
 			List<AbstractClientPlayer> players = Minecraft.getInstance().level.players();
 			Iterator<?> iterator = players.iterator();
 
-			while(iterator.hasNext()){
+			while (iterator.hasNext()) {
 				Player tempPlayer = (Player) iterator.next();
 
-				if(tempPlayer.getName().getString().equals(name))
+				if (tempPlayer.getName().getString().equals(name))
 					return tempPlayer;
 			}
 
 			return null;
-		}else{
+		}
+		else {
 			List<?> players = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers();
 			Iterator<?> iterator = players.iterator();
 
-			while(iterator.hasNext()){
+			while (iterator.hasNext()) {
 				Player tempPlayer = (Player) iterator.next();
 
-				if(tempPlayer.getName().getString().equals(name))
+				if (tempPlayer.getName().getString().equals(name))
 					return tempPlayer;
 			}
 
@@ -72,9 +72,9 @@ public class PlayerUtils{
 	 * Returns true if a player with the given name is in the world.
 	 */
 	public static boolean isPlayerOnline(String name) {
-		if(EffectiveSide.get() == LogicalSide.CLIENT){
-			for(AbstractClientPlayer player : Minecraft.getInstance().level.players()){
-				if(player != null && player.getName().getString().equals(name))
+		if (EffectiveSide.get() == LogicalSide.CLIENT) {
+			for (AbstractClientPlayer player : Minecraft.getInstance().level.players()) {
+				if (player != null && player.getName().getString().equals(name))
 					return true;
 			}
 
@@ -84,7 +84,7 @@ public class PlayerUtils{
 			return (ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByName(name) != null);
 	}
 
-	public static void sendMessageToPlayer(String playerName, MutableComponent prefix, MutableComponent text, ChatFormatting color){
+	public static void sendMessageToPlayer(String playerName, MutableComponent prefix, MutableComponent text, ChatFormatting color) {
 		Player player = getPlayerFromName(playerName);
 
 		if (player != null)
@@ -95,42 +95,47 @@ public class PlayerUtils{
 		sendMessageToPlayer(player, prefix, text, color, false);
 	}
 
-	public static void sendMessageToPlayer(Player player, MutableComponent prefix, MutableComponent text, ChatFormatting color, boolean shouldSendFromClient){
+	public static void sendMessageToPlayer(Player player, MutableComponent prefix, MutableComponent text, ChatFormatting color, boolean shouldSendFromClient) {
 		if (player.level.isClientSide == shouldSendFromClient) {
+			//@formatter:off
 			player.sendMessage(new TextComponent("[")
 					.append(prefix.setStyle(Style.EMPTY.withColor(color)))
 					.append(new TextComponent("] ")).setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE))
 					.append(text), Util.NIL_UUID); //appendSibling
+			//@formatter:on
 		}
 	}
 
 	/**
 	 * Sends the given {@link ICommandSource} a chat message, followed by a link prefixed with a colon. <p>
 	 */
-	public static void sendMessageEndingWithLink(CommandSource sender, MutableComponent prefix, MutableComponent text, String link, ChatFormatting color){
+	public static void sendMessageEndingWithLink(CommandSource sender, MutableComponent prefix, MutableComponent text, String link, ChatFormatting color) {
+		//@formatter:off
 		sender.sendMessage(new TextComponent("[")
 				.append(prefix.setStyle(Style.EMPTY.withColor(color)))
 				.append(new TextComponent("] ")).setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE))
 				.append(text)
 				.append(new TextComponent(": "))
 				.append(ForgeHooks.newChatWithLinks(link)), Util.NIL_UUID); //appendSibling
+		//@formatter:on
 	}
 
 	/**
 	 * Returns true if the player is holding the given item.
 	 */
-	public static boolean isHoldingItem(Player player, Supplier<Item> item, InteractionHand hand){
+	public static boolean isHoldingItem(Player player, Supplier<Item> item, InteractionHand hand) {
 		return isHoldingItem(player, item.get(), hand);
 	}
 
 	/**
 	 * Returns true if the player is holding the given item.
+	 *
 	 * @param player The player that is checked for the item
 	 * @param item The item that is checked
 	 * @param hand The hand in which the item should be; if hand is null, both hands are checked
 	 * @return true if the item was found in the mainhand or offhand, or if no item was found and item was null
 	 */
-	public static boolean isHoldingItem(Player player, Item item, InteractionHand hand){
+	public static boolean isHoldingItem(Player player, Item item, InteractionHand hand) {
 		if (hand != InteractionHand.OFF_HAND && !player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
 			if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == item)
 				return true;
@@ -146,6 +151,7 @@ public class PlayerUtils{
 
 	/**
 	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
+	 *
 	 * @param player The player holding the item
 	 * @param item The item type that should be searched for
 	 * @return The item stack if it has been found, ItemStack.EMPTY if not
@@ -156,6 +162,7 @@ public class PlayerUtils{
 
 	/**
 	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
+	 *
 	 * @param inventory The inventory that contains the item
 	 * @param item The item type that should be searched for
 	 * @return The respective item stack if it has been found, ItemStack.EMPTY if not
@@ -178,24 +185,24 @@ public class PlayerUtils{
 	 * Is the entity mounted on to a security camera?
 	 */
 	public static boolean isPlayerMountedOnCamera(LivingEntity entity) {
-		if(!(entity instanceof Player player))
+		if (!(entity instanceof Player player))
 			return false;
 
-		if(player.level.isClientSide)
+		if (player.level.isClientSide)
 			return ClientHandler.isPlayerMountedOnCamera();
 		else
-			return ((ServerPlayer)player).getCamera() instanceof SecurityCamera;
+			return ((ServerPlayer) player).getCamera() instanceof SecurityCamera;
 	}
 
 	/**
 	 * Checks if two given players are on the same scoreboard team
+	 *
 	 * @param name1 The name of the first player
 	 * @param name2 The name of the second player
 	 * @return true if both players are on the same team, false otherwise
 	 */
-	public static boolean areOnSameTeam(String name1, String name2)
-	{
-		if(name1.equals(name2))
+	public static boolean areOnSameTeam(String name1, String name2) {
+		if (name1.equals(name2))
 			return true;
 
 		PlayerTeam team = getPlayersTeam(name1);
@@ -205,31 +212,31 @@ public class PlayerUtils{
 
 	/**
 	 * Gets the scoreboard team the given player is on
+	 *
 	 * @param playerName The player whose team to get
 	 * @return The team the given player is on. null if the player is not part of a team
 	 */
-	public static PlayerTeam getPlayersTeam(String playerName)
-	{
+	public static PlayerTeam getPlayersTeam(String playerName) {
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 
-		if(server != null)
+		if (server != null)
 			return server.getScoreboard().getPlayersTeam(playerName);
 		else
 			return ClientHandler.getClientPlayer().getScoreboard().getPlayersTeam(playerName);
 	}
 
 	/**
-	 * Gets the component to use for displaying a block's owner. If team ownership is enabled and the given player is on a team, this will return the colored team name.
+	 * Gets the component to use for displaying a block's owner. If team ownership is enabled and the given player is on a
+	 * team, this will return the colored team name.
+	 *
 	 * @param ownerName The player who owns the block
 	 * @return The component to display
 	 */
-	public static Component getOwnerComponent(String ownerName)
-	{
-		if(ConfigHandler.SERVER.enableTeamOwnership.get())
-		{
+	public static Component getOwnerComponent(String ownerName) {
+		if (ConfigHandler.SERVER.enableTeamOwnership.get()) {
 			PlayerTeam team = getPlayersTeam(ownerName);
 
-			if(team != null)
+			if (team != null)
 				return Utils.localize("messages.securitycraft:teamOwner", new TextComponent("").append(team.getDisplayName()).withStyle(team.getColor()));
 		}
 
@@ -238,6 +245,7 @@ public class PlayerUtils{
 
 	/**
 	 * Retrieves the name of the player head the given player may be wearing
+	 *
 	 * @param player The player to check
 	 * @return The name of the skull owner, null if the player is not wearing a player head or the skull owner is faulty
 	 */

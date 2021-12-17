@@ -41,21 +41,19 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable {
-
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
-
-	/* The number of blocks away from the trophy system you can be for
-	 * the laser beam between itself and the projectile to be rendered */
+	/*
+	 * The number of blocks away from the trophy system you can be for the laser beam between itself and the projectile to be
+	 * rendered
+	 */
 	public static final int RENDER_DISTANCE = 50;
-
 	private final Map<EntityType<?>, Boolean> projectileFilter = new LinkedHashMap<>();
 	public Projectile entityBeingTargeted = null;
 	public int cooldown = getCooldownTime();
 	private final Random random = new Random();
 
-	public TrophySystemBlockEntity(BlockPos pos, BlockState state)
-	{
+	public TrophySystemBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeTrophySystem, pos, state);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
 		//ordering is done in TrophySystemScreen based on the user's current language
@@ -77,39 +75,33 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	@Override
-	public void tick(Level level, BlockPos pos, BlockState state)
-	{
+	public void tick(Level level, BlockPos pos, BlockState state) {
 		if (!level.isClientSide) {
 			// If the trophy does not have a target, try looking for one
-			if(entityBeingTargeted == null) {
+			if (entityBeingTargeted == null) {
 				Projectile target = getPotentialTarget(level, pos);
 
-				if(target != null) {
+				if (target != null) {
 					Entity shooter = target.getOwner();
 
 					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if(!(shooter != null &&
-							((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(shooter.getName().getString(), getOwner().getName()))
-									|| (shooter.getUUID() != null && shooter.getUUID().toString().equals(getOwner().getUUID()))
-									|| ModuleUtils.isAllowed(this, shooter.getName().getString())))) {
+					if (!(shooter != null && ((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(shooter.getName().getString(), getOwner().getName())) || (shooter.getUUID() != null && shooter.getUUID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
 						setTarget(target);
-					}
 				}
 			}
 		}
 
 		// If there are no entities to target, return
-		if(entityBeingTargeted == null)
+		if (entityBeingTargeted == null)
 			return;
 
-		if(!entityBeingTargeted.isAlive())
-		{
+		if (!entityBeingTargeted.isAlive()) {
 			resetTarget();
 			return;
 		}
 
 		// If the cooldown hasn't finished yet, don't destroy any projectiles
-		if(cooldown > 0) {
+		if (cooldown > 0) {
 			cooldown--;
 			return;
 		}
@@ -156,9 +148,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	public void setTarget(Projectile target) {
 		entityBeingTargeted = target;
 
-		if (!level.isClientSide) {
+		if (!level.isClientSide)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new SetTrophySystemTarget(worldPosition, target.getId()));
-		}
 	}
 
 	/**
@@ -167,7 +158,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	private void destroyTarget() {
 		entityBeingTargeted.remove(RemovalReason.KILLED);
 
-		if(!level.isClientSide)
+		if (!level.isClientSide)
 			level.explode(null, entityBeingTargeted.getX(), entityBeingTargeted.getY(), entityBeingTargeted.getZ(), 0.1F, Explosion.BlockInteraction.NONE);
 
 		resetTarget();
@@ -182,8 +173,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	/**
-	 * Randomly returns a new Entity target from the list of all entities
-	 * within range of the trophy
+	 * Randomly returns a new Entity target from the list of all entities within range of the trophy
 	 */
 	private Projectile getPotentialTarget(Level level, BlockPos pos) {
 		List<Projectile> potentialTargets = new ArrayList<>();
@@ -194,7 +184,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
 
 		// If there are no projectiles, return
-		if(potentialTargets.size() <= 0) return null;
+		if (potentialTargets.size() <= 0)
+			return null;
 
 		// Return a random entity to target from the list of all possible targets
 		int target = random.nextInt(potentialTargets.size());
@@ -213,11 +204,11 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	private boolean filterSCProjectiles(Projectile projectile) {
 		Owner owner = null;
 
-		if(projectile instanceof Bullet bullet)
+		if (projectile instanceof Bullet bullet)
 			owner = bullet.getSCOwner();
-		else if(projectile instanceof IMSBomb imsBomb)
+		else if (projectile instanceof IMSBomb imsBomb)
 			owner = imsBomb.getSCOwner();
-		else if(projectile.getOwner() instanceof Sentry sentry)
+		else if (projectile.getOwner() instanceof Sentry sentry)
 			owner = sentry.getOwner();
 
 		return owner == null || (!owner.owns(this) && !ModuleUtils.isAllowed(this, owner.getName()));
@@ -228,13 +219,11 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	public void setFilter(EntityType<?> projectileType, boolean allowed) {
-		if(projectileFilter.containsKey(projectileType))
-		{
+		if (projectileFilter.containsKey(projectileType)) {
 			projectileFilter.put(projectileType, allowed);
 
-			if (level.isClientSide) {
+			if (level.isClientSide)
 				SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncTrophySystem(worldPosition, projectileType, allowed));
-			}
 		}
 	}
 
@@ -242,8 +231,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		return projectileFilter.get(projectileType);
 	}
 
-	public Map<EntityType<?>,Boolean> getFilters()
-	{
+	public Map<EntityType<?>, Boolean> getFilters() {
 		return projectileFilter;
 	}
 
@@ -260,7 +248,9 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.SMART, ModuleType.SPEED, ModuleType.ALLOWLIST, ModuleType.DISGUISE};
+		return new ModuleType[] {
+				ModuleType.SMART, ModuleType.SPEED, ModuleType.ALLOWLIST, ModuleType.DISGUISE
+		};
 	}
 
 	@Override
@@ -268,11 +258,10 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		return null;
 	}
 
-	/*
-	 * @return The number of ticks that the trophy takes to "charge"
+	/**
+	 * @return The number of ticks that the trophy takes to charge
 	 */
-	public int getCooldownTime()
-	{
+	public int getCooldownTime() {
 		return hasModule(ModuleType.SPEED) ? 4 : 8;
 	}
 }

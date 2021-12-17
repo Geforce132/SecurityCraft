@@ -15,17 +15,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BulletModel extends EntityModel<Bullet>
-{
+public class BulletModel extends EntityModel<Bullet> {
 	public ModelPart bullet;
 
-	public BulletModel(ModelPart modelPart)
-	{
+	public BulletModel(ModelPart modelPart) {
 		bullet = modelPart.getChild("bullet");
 	}
 
-	public static LayerDefinition createLayer()
-	{
+	public static LayerDefinition createLayer() {
 		MeshDefinition meshDefinition = new MeshDefinition();
 		PartDefinition partDefinition = meshDefinition.getRoot();
 
@@ -34,8 +31,7 @@ public class BulletModel extends EntityModel<Bullet>
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack oose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
-	{
+	public void renderToBuffer(PoseStack oose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		bullet.render(oose, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 

@@ -11,38 +11,35 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SyncProjector {
-
 	private BlockPos pos;
 	private int data;
 	private DataType dataType;
 
 	public SyncProjector() {}
 
-	public SyncProjector(BlockPos pos, int data, DataType dataType){
+	public SyncProjector(BlockPos pos, int data, DataType dataType) {
 		this.pos = pos;
 		this.data = data;
 		this.dataType = dataType;
 	}
 
-	public static void encode(SyncProjector message, FriendlyByteBuf buf)
-	{
+	public static void encode(SyncProjector message, FriendlyByteBuf buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeEnum(message.dataType);
 
-		if(message.dataType == DataType.HORIZONTAL)
+		if (message.dataType == DataType.HORIZONTAL)
 			buf.writeBoolean(message.data == 1);
 		else
 			buf.writeVarInt(message.data);
 	}
 
-	public static SyncProjector decode(FriendlyByteBuf buf)
-	{
+	public static SyncProjector decode(FriendlyByteBuf buf) {
 		SyncProjector message = new SyncProjector();
 
 		message.pos = buf.readBlockPos();
 		message.dataType = buf.readEnum(DataType.class);
 
-		if(message.dataType == DataType.HORIZONTAL)
+		if (message.dataType == DataType.HORIZONTAL)
 			message.data = buf.readBoolean() ? 1 : 0;
 		else
 			message.data = buf.readVarInt();
@@ -50,19 +47,16 @@ public class SyncProjector {
 		return message;
 	}
 
-	public static void onMessage(SyncProjector message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(SyncProjector message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
 			Level level = player.level;
 
-			if(level.isLoaded(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.getOwner().isOwner(player))
-			{
+			if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.getOwner().isOwner(player)) {
 				BlockState state = level.getBlockState(pos);
 
-				switch(message.dataType)
-				{
+				switch (message.dataType) {
 					case WIDTH:
 						be.setProjectionWidth(message.data);
 						break;
@@ -78,7 +72,8 @@ public class SyncProjector {
 					case HORIZONTAL:
 						be.setHorizontal(message.data == 1);
 						break;
-					case INVALID: break;
+					case INVALID:
+						break;
 				}
 
 				level.sendBlockUpdated(pos, state, state, 2);
@@ -88,8 +83,12 @@ public class SyncProjector {
 		ctx.get().setPacketHandled(true);
 	}
 
-	public enum DataType
-	{
-		WIDTH, HEIGHT, RANGE, OFFSET, HORIZONTAL, INVALID;
+	public enum DataType {
+		WIDTH,
+		HEIGHT,
+		RANGE,
+		OFFSET,
+		HORIZONTAL,
+		INVALID;
 	}
 }

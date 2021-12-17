@@ -3,11 +3,9 @@ package net.geforcemods.securitycraft.compat.lycanitesmobs;
 import net.geforcemods.securitycraft.api.IAttackTargetCheck;
 import net.minecraft.world.entity.Entity;
 
-public class LycanitesMobsCompat implements IAttackTargetCheck
-{
+public class LycanitesMobsCompat implements IAttackTargetCheck {
 	@Override
-	public boolean canAttack(Entity potentialTarget)
-	{
+	public boolean canAttack(Entity potentialTarget) {
 		return false;//potentialTarget instanceof BaseCreatureEntity bce && bce.isAggressive();
 	}
 }

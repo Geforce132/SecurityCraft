@@ -1,4 +1,4 @@
 package net.geforcemods.securitycraft.util;
 
-//marker
+// marker
 public interface IBlockPocket {}

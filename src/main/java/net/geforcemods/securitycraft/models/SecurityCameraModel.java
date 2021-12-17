@@ -22,8 +22,7 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 	public ModelPart cameraRotationPoint;
 	private final ImmutableList<ModelPart> partList;
 
-	public SecurityCameraModel(ModelPart modelPart)
-	{
+	public SecurityCameraModel(ModelPart modelPart) {
 		shape1 = modelPart.getChild("shape1");
 		shape2 = modelPart.getChild("shape2");
 		setRotateAngle(shape2, -0.5235987755982988F, 0.0F, 0.0F);
@@ -33,8 +32,7 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 		partList = ImmutableList.of(cameraRotationPoint, shape1, shape2);
 	}
 
-	public static LayerDefinition createLayer()
-	{
+	public static LayerDefinition createLayer() {
 		MeshDefinition meshDefinition = new MeshDefinition();
 		PartDefinition rootDefinition = meshDefinition.getRoot();
 		PartDefinition shape2Definition = rootDefinition.addOrReplaceChild("shape2", CubeListBuilder.create().texOffs(2, 12).addBox(0.0F, 0.0F, 0.0F, 2.0F, 1.0F, 6.0F), PartPose.offset(-1.0F, 13.75F, 2.25F));
@@ -50,8 +48,7 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
-	{
+	public void renderToBuffer(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		partList.forEach(part -> part.render(pose, builder, packedLight, packedOverlay));
 	}
 

@@ -21,20 +21,19 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getBlockPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
-	public MotionActivatedLightBlockEntity(BlockPos pos, BlockState state)
-	{
+	public MotionActivatedLightBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeMotionLight, pos, state);
 	}
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if(cooldown-- > 0)
+		if (cooldown-- > 0)
 			return;
 
 		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.isSpectator());
 		boolean shouldBeOn = !entities.isEmpty();
 
-		if(state.getValue(MotionActivatedLightBlock.LIT) != shouldBeOn)
+		if (state.getValue(MotionActivatedLightBlock.LIT) != shouldBeOn)
 			level.setBlockAndUpdate(pos, state.setValue(MotionActivatedLightBlock.LIT, shouldBeOn));
 
 		cooldown = TICKS_BETWEEN_ATTACKS;
@@ -47,6 +46,8 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option<?>[] {searchRadiusOption};
+		return new Option<?>[] {
+			searchRadiusOption
+		};
 	}
 }

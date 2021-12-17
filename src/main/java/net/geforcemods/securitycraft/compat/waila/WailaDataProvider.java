@@ -50,8 +50,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fmllegacy.RegistryObject;
 
 @WailaPlugin(SecurityCraft.MODID)
-public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider
-{
+public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider {
 	public static final WailaDataProvider INSTANCE = new WailaDataProvider();
 	public static final ResourceLocation SHOW_OWNER = new ResourceLocation(SecurityCraft.MODID, "showowner");
 	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
@@ -65,18 +64,16 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	private static final MutableComponent SPEED_MODULE = new TextComponent("- ").append(new TranslatableComponent(ModuleType.SPEED.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
 
 	@Override
-	public void register(IRegistrar registrar)
-	{
+	public void register(IRegistrar registrar) {
 		registrar.addSyncedConfig(SHOW_OWNER, true);
 		registrar.addSyncedConfig(SHOW_MODULES, true);
 		registrar.addSyncedConfig(SHOW_PASSWORDS, true);
 		registrar.addSyncedConfig(SHOW_CUSTOM_NAME, true);
 
-		for(RegistryObject<Block> registryObject : SCContent.BLOCKS.getEntries())
-		{
+		for (RegistryObject<Block> registryObject : SCContent.BLOCKS.getEntries()) {
 			Block block = registryObject.get();
 
-			if(!(block instanceof OwnableBlock) && !block.getRegistryName().getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock)) //don't register unreinforced Crystal Quartz, Reinforced Cauldrons and Reinforced Glass Panes here, this prevents our component provider from being registered multiple times for certain blocks
+			if (!(block instanceof OwnableBlock) && !block.getRegistryName().getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock))
 				registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
 
 			if (block instanceof IOverlayDisplay)
@@ -98,7 +95,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 	@Override
 	public IElement getIcon(BlockAccessor data, IPluginConfig config, IElement currentIcon) {
-		if(data.getBlock() instanceof IOverlayDisplay display)
+		if (data.getBlock() instanceof IOverlayDisplay display)
 			return ItemStackElement.of(display.getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition()));
 
 		return ItemStackElement.EMPTY;
@@ -106,11 +103,10 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 	@Override
 	public void appendTooltip(ITooltip tooltip, BlockAccessor data, IPluginConfig config) {
-		switch(data.getTooltipPosition())
-		{
+		switch (data.getTooltipPosition()) {
 			case HEAD: {
-				if(tooltip instanceof Tooltip head)
-					head.lines.get(0).getAlignedElements(Align.LEFT).set(0, new TextElement(new TranslatableComponent(((IOverlayDisplay)data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition()).getDescriptionId()).setStyle(ITEM_NAME_STYLE)));
+				if (tooltip instanceof Tooltip head)
+					head.lines.get(0).getAlignedElements(Align.LEFT).set(0, new TextElement(new TranslatableComponent(((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition()).getDescriptionId()).setStyle(ITEM_NAME_STYLE)));
 
 				break;
 			}
@@ -118,41 +114,39 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				Block block = data.getBlock();
 				boolean disguised = false;
 
-				if(block instanceof DisguisableBlock disguisedBlock)
-				{
+				if (block instanceof DisguisableBlock disguisedBlock) {
 					BlockState disguisedBlockState = disguisedBlock.getDisguisedBlockState(data.getLevel(), data.getPosition());
 
-					if(disguisedBlockState != null)
-					{
+					if (disguisedBlockState != null) {
 						disguised = true;
 						block = disguisedBlockState.getBlock();
 					}
 				}
 
-				if(block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(data.getLevel(), data.getBlockState(), data.getPosition()))
+				if (block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(data.getLevel(), data.getBlockState(), data.getPosition()))
 					return;
 
 				BlockEntity be = data.getBlockEntity();
 
-				if(be != null)
-				{
+				if (be != null) {
 					//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
-					if(config.get(SHOW_OWNER) && be instanceof IOwnable ownable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
+					if (config.get(SHOW_OWNER) && be instanceof IOwnable ownable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
 						tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner().getName())));
 
-					if(disguised)
+					if (disguised)
 						return;
 
 					//if the te is ownable, show modules only when it's owned, otherwise always show
-					if(config.get(SHOW_MODULES) && be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(data.getPlayer()))){
-						if(!inv.getInsertedModules().isEmpty())
+					if (config.get(SHOW_MODULES) && be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(data.getPlayer()))) {
+						if (!inv.getInsertedModules().isEmpty())
 							tooltip.add(EQUIPPED);
 
-						for(ModuleType module : inv.getInsertedModules())
+						for (ModuleType module : inv.getInsertedModules()) {
 							tooltip.add(new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())));
+						}
 					}
 
-					if(config.get(SHOW_PASSWORDS) && be instanceof IPasswordProtected ipp && ((IOwnable) be).getOwner().isOwner(data.getPlayer())){
+					if (config.get(SHOW_PASSWORDS) && be instanceof IPasswordProtected ipp && ((IOwnable) be).getOwner().isOwner(data.getPlayer())) {
 						String password = ipp.getPassword();
 
 						tooltip.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
@@ -162,9 +156,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				break;
 			}
 			case TAIL: {
-				if(tooltip instanceof Tooltip tail)
-				{
-					ItemStack disguisedAs = ((IOverlayDisplay)data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition());
+				if (tooltip instanceof Tooltip tail) {
+					ItemStack disguisedAs = ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition());
 					Component modName = new TextComponent(ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()).setStyle(MOD_NAME_STYLE);
 
 					tail.lines.get(tail.lines.size() - 1).getAlignedElements(Align.LEFT).set(0, new TextElement(modName));
@@ -175,37 +168,33 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 	@Override
 	public void appendTooltip(ITooltip tooltip, EntityAccessor data, IPluginConfig config) {
-		if(data.getTooltipPosition() == TooltipPosition.BODY)
-		{
+		if (data.getTooltipPosition() == TooltipPosition.BODY) {
 			Entity entity = data.getEntity();
 
-			if(entity instanceof Sentry sentry)
-			{
+			if (entity instanceof Sentry sentry) {
 				SentryMode mode = sentry.getMode();
 
-				if(config.get(SHOW_OWNER))
+				if (config.get(SHOW_OWNER))
 					tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())));
 
-				if(config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())){
-
-					if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())
-					{
+				if (config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())) {
+					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
 						tooltip.add(EQUIPPED);
 
-						if(!sentry.getAllowlistModule().isEmpty())
+						if (!sentry.getAllowlistModule().isEmpty())
 							tooltip.add(ALLOWLIST_MODULE);
 
-						if(!sentry.getDisguiseModule().isEmpty())
+						if (!sentry.getDisguiseModule().isEmpty())
 							tooltip.add(DISGUISE_MODULE);
 
-						if(sentry.hasSpeedModule())
+						if (sentry.hasSpeedModule())
 							tooltip.add(SPEED_MODULE);
 					}
 				}
 
 				MutableComponent modeDescription = Utils.localize(mode.getModeKey());
 
-				if(mode != SentryMode.IDLE)
+				if (mode != SentryMode.IDLE)
 					modeDescription.append("- ").append(Utils.localize(mode.getTargetKey()));
 
 				tooltip.add(modeDescription);
@@ -214,7 +203,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	}
 
 	public static void onWailaRender(WailaRenderEvent.Pre event) {
-		if(ClientHandler.isPlayerMountedOnCamera())
+		if (ClientHandler.isPlayerMountedOnCamera())
 			event.setCanceled(true);
 	}
 }

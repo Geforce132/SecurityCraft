@@ -16,24 +16,23 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class SCManualItem extends Item {
-
 	public static final List<SCManualPage> PAGES = new ArrayList<>();
 
-	public SCManualItem(Item.Properties properties){
+	public SCManualItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		if(level.isClientSide)
+		if (level.isClientSide)
 			ClientHandler.displaySCManualGui();
 
 		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotIndex, boolean isSelected){
-		if(stack.getTag() == null){
+	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotIndex, boolean isSelected) {
+		if (stack.getTag() == null) {
 			ListTag bookPages = new ListTag();
 
 			stack.addTagElement("pages", bookPages);
@@ -41,5 +40,4 @@ public class SCManualItem extends Item {
 			stack.addTagElement("title", StringTag.valueOf("SecurityCraft"));
 		}
 	}
-
 }

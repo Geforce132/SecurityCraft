@@ -34,7 +34,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IOwnable { //this class doesn't extend PistonBlockEntity because almost all of that class' content is private
-
 	private BlockState movedState;
 	private CompoundTag movedBlockEntityTag;
 	private Direction direction;
@@ -83,9 +82,8 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	 * @return interpolated progress value (between lastProgress and progress) given the partialTicks
 	 */
 	public float getProgress(float ticks) {
-		if (ticks > 1.0F) {
+		if (ticks > 1.0F)
 			ticks = 1.0F;
-		}
 
 		return Mth.lerp(ticks, lastProgress, progress);
 	}
@@ -124,19 +122,17 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 				boolean isSlimeBlock = be.movedState.isSlimeBlock();
 				Iterator<Entity> entities = list.iterator();
 
-				while(true) {
+				while (true) {
 					Entity entity;
 
-					while(true) {
-						if (!entities.hasNext()) {
+					while (true) {
+						if (!entities.hasNext())
 							return;
-						}
 
 						entity = entities.next();
 						if (entity.getPistonPushReaction() != PushReaction.IGNORE) {
-							if (!isSlimeBlock) {
+							if (!isSlimeBlock)
 								break;
-							}
 
 							if (!(entity instanceof ServerPlayer)) {
 								Vec3 vec3 = entity.getDeltaMovement();
@@ -158,15 +154,14 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 
 					double d4 = 0.0D;
 
-					for(AABB aabb : boundingBoxes) {
+					for (AABB aabb : boundingBoxes) {
 						AABB movementArea = PistonMath.getMovementArea(moveByPositionAndProgress(pos, aabb, be), direction, progressChange);
 						AABB entityCollision = entity.getBoundingBox();
 
 						if (movementArea.intersects(entityCollision)) {
 							d4 = Math.max(d4, getMovement(movementArea, direction, entityCollision));
-							if (d4 >= progressChange) {
+							if (d4 >= progressChange)
 								break;
-							}
 						}
 					}
 
@@ -174,9 +169,8 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 						d4 = Math.min(d4, progressChange) + 0.01D;
 						moveEntityByPiston(direction, entity, d4, direction);
 
-						if (!be.extending && be.isSourcePiston) {
+						if (!be.extending && be.isSourcePiston)
 							fixEntityWithinPistonBase(pos, entity, direction, progressChange);
-						}
 					}
 				}
 			}
@@ -198,10 +192,9 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 				AABB aabb = moveByPositionAndProgress(pos, new AABB(0.0D, collisionShapeTop, 0.0D, 1.0D, 1.5000000999999998D, 1.0D), be);
 				double progressChange = progress - be.progress;
 
-				for(Entity entity : level.getEntities((Entity)null, aabb, entity -> matchesStickyCriteria(aabb, entity))) {
+				for (Entity entity : level.getEntities((Entity) null, aabb, entity -> matchesStickyCriteria(aabb, entity))) {
 					moveEntityByPiston(direction, entity, progressChange, direction);
 				}
-
 			}
 		}
 	}
@@ -267,16 +260,15 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 			if (level.getBlockState(worldPosition).is(SCContent.REINFORCED_MOVING_PISTON.get())) {
 				BlockState pushedState;
 
-				if (isSourcePiston) {
+				if (isSourcePiston)
 					pushedState = Blocks.AIR.defaultBlockState();
-				} else {
+				else
 					pushedState = Block.updateFromNeighbourShapes(movedState, level, worldPosition);
-				}
 
-				if (movedBlockEntityTag != null){
-					BlockEntity te = pushedState.hasBlockEntity() ? ((EntityBlock)pushedState.getBlock()).newBlockEntity(worldPosition, pushedState) : null;
+				if (movedBlockEntityTag != null) {
+					BlockEntity te = pushedState.hasBlockEntity() ? ((EntityBlock) pushedState.getBlock()).newBlockEntity(worldPosition, pushedState) : null;
 
-					if (te != null){
+					if (te != null) {
 						te.load(movedBlockEntityTag);
 						level.setBlockEntity(te);
 					}
@@ -293,9 +285,9 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		be.lastProgress = be.progress;
 
 		if (be.lastProgress >= 1.0F) {
-			if (level.isClientSide && be.deathTicks < 5) {
+			if (level.isClientSide && be.deathTicks < 5)
 				++be.deathTicks;
-			} else {
+			else {
 				level.removeBlockEntity(pos);
 				be.setRemoved();
 
@@ -305,15 +297,15 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 					if (pushedState.isAir()) {
 						level.setBlock(pos, be.movedState, 84);
 						Block.updateOrDestroy(be.movedState, pushedState, level, pos, 3);
-					} else {
-						if (pushedState.hasProperty(BlockStateProperties.WATERLOGGED) && pushedState.getValue(BlockStateProperties.WATERLOGGED)) {
+					}
+					else {
+						if (pushedState.hasProperty(BlockStateProperties.WATERLOGGED) && pushedState.getValue(BlockStateProperties.WATERLOGGED))
 							pushedState = pushedState.setValue(BlockStateProperties.WATERLOGGED, false);
-						}
 
-						if (be.movedBlockEntityTag != null){
-							BlockEntity storedBe = pushedState.hasBlockEntity() ? ((EntityBlock)pushedState.getBlock()).newBlockEntity(be.worldPosition, pushedState) : null;
+						if (be.movedBlockEntityTag != null) {
+							BlockEntity storedBe = pushedState.hasBlockEntity() ? ((EntityBlock) pushedState.getBlock()).newBlockEntity(be.worldPosition, pushedState) : null;
 
-							if (storedBe != null){
+							if (storedBe != null) {
 								storedBe.load(be.movedBlockEntityTag);
 								level.setBlockEntity(storedBe);
 							}
@@ -324,16 +316,16 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			float f = be.progress + 0.5F;
 
 			moveCollidedEntities(level, pos, f, be);
 			moveStuckEntities(level, pos, f, be);
 			be.progress = f;
 
-			if (be.progress >= 1.0F) {
+			if (be.progress >= 1.0F)
 				be.progress = 1.0F;
-			}
 		}
 	}
 
@@ -346,7 +338,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		lastProgress = progress;
 		extending = tag.getBoolean("extending");
 		isSourcePiston = tag.getBoolean("source");
-		movedBlockEntityTag = (CompoundTag)tag.get("movedBlockEntityTag");
+		movedBlockEntityTag = (CompoundTag) tag.get("movedBlockEntityTag");
 		owner.load(tag);
 	}
 
@@ -362,9 +354,8 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		if (movedBlockEntityTag != null)
 			tag.put("movedBlockEntityTag", movedBlockEntityTag);
 
-		if(owner != null){
+		if (owner != null)
 			owner.save(movedBlockEntityTag, false);
-		}
 
 		return tag;
 	}
@@ -372,22 +363,20 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	public VoxelShape getCollisionShape(BlockGetter level, BlockPos pos) {
 		VoxelShape shape;
 
-		if (!extending && isSourcePiston) {
+		if (!extending && isSourcePiston)
 			shape = movedState.setValue(PistonBaseBlock.EXTENDED, true).getCollisionShape(level, pos);
-		} else {
+		else
 			shape = Shapes.empty();
-		}
 
-		if (progress < 1.0D && NOCLIP.get() == getMovementDirection()) {
+		if (progress < 1.0D && NOCLIP.get() == getMovementDirection())
 			return shape;
-		} else {
+		else {
 			BlockState state;
 
-			if (isSourcePiston()) {
+			if (isSourcePiston())
 				state = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.FACING, direction).setValue(PistonHeadBlock.SHORT, extending != 1.0F - progress < 4.0F);
-			} else {
+			else
 				state = movedState;
-			}
 
 			float progress = getExtendedProgress(this.progress);
 			double x = direction.getStepX() * progress;
@@ -399,7 +388,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	}
 
 	@Override
-	public Owner getOwner(){
+	public Owner getOwner() {
 		return owner;
 	}
 

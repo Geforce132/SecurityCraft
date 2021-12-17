@@ -24,11 +24,11 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 		bb_main = modelPart.getChild("bb_main");
 	}
 
-	public static LayerDefinition createLayer()
-	{
+	public static LayerDefinition createLayer() {
 		MeshDefinition meshDefinition = new MeshDefinition();
 		PartDefinition partDefinition = meshDefinition.getRoot();
 
+		//@formatter:off
 		partDefinition.addOrReplaceChild("radar", CubeListBuilder.create()
 				.texOffs(15, 0).addBox(-0.5F, -0.5F, -0.5F, 1.0F, 1.0F, 2.0F)
 				.texOffs(15, 3).addBox(-1.5F, -1.5F, 1.0F, 3.0F, 1.0F, 1.0F)
@@ -45,6 +45,7 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 				.texOffs(0, 25).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 1.0F, 2.0F)
 				.texOffs(12, 20).addBox(-0.5F, -13.0F, -0.5F, 1.0F, 11.0F, 1.0F),
 				PartPose.offset(0.0F, 24.0F, 0.0F));
+		//@formatter:on
 		return LayerDefinition.create(meshDefinition, 32, 32);
 	}
 
@@ -52,7 +53,7 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 	public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 
 	@Override
-	public void renderToBuffer(PoseStack pose, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+	public void renderToBuffer(PoseStack pose, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		radar.render(pose, buffer, packedLight, packedOverlay);
 		bb_main.render(pose, buffer, packedLight, packedOverlay);
 	}

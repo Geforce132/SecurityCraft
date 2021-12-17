@@ -30,147 +30,125 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidAttributes;
 
-public abstract class FakeWaterFluid extends FlowingFluid
-{
+public abstract class FakeWaterFluid extends FlowingFluid {
 	@Override
-	public Fluid getFlowing()
-	{
+	public Fluid getFlowing() {
 		return SCContent.FLOWING_FAKE_WATER.get();
 	}
 
 	@Override
-	public Fluid getSource()
-	{
+	public Fluid getSource() {
 		return SCContent.FAKE_WATER.get();
 	}
 
 	@Override
-	public Item getBucket()
-	{
+	public Item getBucket() {
 		return SCContent.FAKE_WATER_BUCKET.get();
 	}
 
 	@Override
-	protected FluidAttributes createAttributes()
-	{
+	protected FluidAttributes createAttributes() {
+		//@formatter:off
 		return FluidAttributes.Water.builder(
 				new ResourceLocation("block/water_still"),
 				new ResourceLocation("block/water_flow"))
 				.overlay(new ResourceLocation("block/water_overlay"))
 				.translationKey("block.minecraft.water")
 				.color(0xFF3F76E4).build(this);
+		//@formatter:on
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(Level level, BlockPos pos, FluidState state, Random random)
-	{
-		if(!state.isSource() && !state.getValue(FALLING))
-		{
-			if(random.nextInt(64) == 0)
+	public void animateTick(Level level, BlockPos pos, FluidState state, Random random) {
+		if (!state.isSource() && !state.getValue(FALLING)) {
+			if (random.nextInt(64) == 0)
 				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, random.nextFloat() * 0.25F + 0.75F, random.nextFloat() + 0.5F, false);
 		}
-		else if(random.nextInt(10) == 0)
+		else if (random.nextInt(10) == 0)
 			level.addParticle(ParticleTypes.UNDERWATER, pos.getX() + random.nextFloat(), pos.getY() + random.nextFloat(), pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
 	}
 
 	@Nullable
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public ParticleOptions getDripParticle()
-	{
+	public ParticleOptions getDripParticle() {
 		return ParticleTypes.DRIPPING_WATER;
 	}
 
 	@Override
-	protected boolean canConvertToSource()
-	{
+	protected boolean canConvertToSource() {
 		return true;
 	}
 
 	@Override
-	protected void beforeDestroyingBlock(LevelAccessor level, BlockPos pos, BlockState state)
-	{
+	protected void beforeDestroyingBlock(LevelAccessor level, BlockPos pos, BlockState state) {
 		BlockEntity be = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
 
 		Block.dropResources(state, level, pos, be);
 	}
 
 	@Override
-	public int getSlopeFindDistance(LevelReader level)
-	{
+	public int getSlopeFindDistance(LevelReader level) {
 		return 4;
 	}
 
 	@Override
-	public BlockState createLegacyBlock(FluidState state)
-	{
+	public BlockState createLegacyBlock(FluidState state) {
 		return SCContent.FAKE_WATER_BLOCK.get().defaultBlockState().setValue(LiquidBlock.LEVEL, getLegacyLevel(state));
 	}
 
 	@Override
-	public boolean isSame(Fluid fluid)
-	{
+	public boolean isSame(Fluid fluid) {
 		return fluid == SCContent.FAKE_WATER.get() || fluid == SCContent.FLOWING_FAKE_WATER.get();
 	}
 
 	@Override
-	public int getDropOff(LevelReader level)
-	{
+	public int getDropOff(LevelReader level) {
 		return 1;
 	}
 
 	@Override
-	public int getTickDelay(LevelReader level)
-	{
+	public int getTickDelay(LevelReader level) {
 		return 5;
 	}
 
 	@Override
-	public boolean canBeReplacedWith(FluidState fluidState, BlockGetter level, BlockPos pos, Fluid fluid, Direction dir)
-	{
+	public boolean canBeReplacedWith(FluidState fluidState, BlockGetter level, BlockPos pos, Fluid fluid, Direction dir) {
 		return dir == Direction.DOWN && !fluid.is(FluidTags.WATER);
 	}
 
 	@Override
-	protected float getExplosionResistance()
-	{
+	protected float getExplosionResistance() {
 		return 100.0F;
 	}
 
-	public static class Flowing extends FakeWaterFluid
-	{
+	public static class Flowing extends FakeWaterFluid {
 		@Override
-		protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder)
-		{
+		protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
 			super.createFluidStateDefinition(builder);
 			builder.add(LEVEL);
 		}
 
 		@Override
-		public int getAmount(FluidState state)
-		{
+		public int getAmount(FluidState state) {
 			return state.getValue(LEVEL);
 		}
 
 		@Override
-		public boolean isSource(FluidState state)
-		{
+		public boolean isSource(FluidState state) {
 			return false;
 		}
 	}
 
-	public static class Source extends FakeWaterFluid
-	{
+	public static class Source extends FakeWaterFluid {
 		@Override
-		public int getAmount(FluidState state)
-		{
+		public int getAmount(FluidState state) {
 			return 8;
 		}
 
 		@Override
-		public boolean isSource(FluidState state)
-		{
+		public boolean isSource(FluidState state) {
 			return true;
 		}
 	}

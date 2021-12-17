@@ -19,12 +19,10 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedPaneBlock extends IronBarsBlock implements IReinforcedBlock, EntityBlock
-{
+public class ReinforcedPaneBlock extends IronBarsBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
 
-	public ReinforcedPaneBlock(Block.Properties properties, Block vB)
-	{
+	public ReinforcedPaneBlock(Block.Properties properties, Block vB) {
 		super(properties);
 
 		vanillaBlock = vB;
@@ -35,8 +33,7 @@ public class ReinforcedPaneBlock extends IronBarsBlock implements IReinforcedBlo
 		return getStateForPlacement(context.getLevel(), context.getClickedPos());
 	}
 
-	public BlockState getStateForPlacement(BlockGetter level, BlockPos pos)
-	{
+	public BlockState getStateForPlacement(BlockGetter level, BlockPos pos) {
 		FluidState fluidState = level.getFluidState(pos);
 		BlockPos northPos = pos.north();
 		BlockPos southPos = pos.south();
@@ -50,27 +47,23 @@ public class ReinforcedPaneBlock extends IronBarsBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return vanillaBlock;
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return defaultBlockState().setValue(NORTH, vanillaState.getValue(IronBarsBlock.NORTH)).setValue(EAST, vanillaState.getValue(IronBarsBlock.EAST)).setValue(WEST, vanillaState.getValue(IronBarsBlock.WEST)).setValue(SOUTH, vanillaState.getValue(IronBarsBlock.SOUTH)).setValue(WATERLOGGED, vanillaState.getValue(IronBarsBlock.WATERLOGGED));
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof Player player)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new OwnableBlockEntity(pos, state);
 	}
 }

@@ -19,21 +19,18 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SentryRenderer extends EntityRenderer<Sentry>
-{
+public class SentryRenderer extends EntityRenderer<Sentry> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/sentry.png");
 	private final SentryModel model;
 
-	public SentryRenderer(EntityRendererProvider.Context ctx)
-	{
+	public SentryRenderer(EntityRendererProvider.Context ctx) {
 		super(ctx);
 
 		model = new SentryModel(ctx.bakeLayer(ClientHandler.SENTRY_LOCATION));
 	}
 
 	@Override
-	public void render(Sentry entity, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight)
-	{
+	public void render(Sentry entity, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight) {
 		VertexConsumer builder = buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity)));
 
 		pose.translate(0.0D, 1.5D, 0.0D);
@@ -46,8 +43,7 @@ public class SentryRenderer extends EntityRenderer<Sentry>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(Sentry entity)
-	{
+	public ResourceLocation getTextureLocation(Sentry entity) {
 		return TEXTURE;
 	}
 }

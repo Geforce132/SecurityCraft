@@ -20,26 +20,22 @@ import net.minecraft.world.entity.player.Player;
 /**
  * Attacks any player who is not the owner, or any mob
  */
-public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<LivingEntity>
-{
+public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<LivingEntity> {
 	private Sentry sentry;
 
-	public TargetNearestPlayerOrMobGoal(Sentry sentry)
-	{
+	public TargetNearestPlayerOrMobGoal(Sentry sentry) {
 		super(sentry, LivingEntity.class, true);
 
 		this.sentry = sentry;
 	}
 
 	@Override
-	public boolean canUse()
-	{
-		List<LivingEntity> list = mob.level.<LivingEntity>getEntitiesOfClass(targetType, getTargetSearchArea(getFollowDistance()), e -> !EntityUtils.isInvisible(e));
+	public boolean canUse() {
+		List<LivingEntity> list = mob.level.<LivingEntity> getEntitiesOfClass(targetType, getTargetSearchArea(getFollowDistance()), e -> !EntityUtils.isInvisible(e));
 
-		if(list.isEmpty())
+		if (list.isEmpty())
 			return false;
-		else
-		{
+		else {
 			SentryMode mode = sentry.getMode();
 			int i;
 
@@ -47,38 +43,39 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 				double distTo1 = mob.distanceToSqr(e1);
 				double distTo2 = mob.distanceToSqr(e2);
 
-				if(distTo1 < distTo2)
+				if (distTo1 < distTo2)
 					return -1;
-				else return distTo1 > distTo2 ? 1 : 0;
+				else
+					return distTo1 > distTo2 ? 1 : 0;
 			});
 
 			//get the nearest target that is either a mob or a player
-			for(i = 0; i < list.size(); i++)
-			{
+			for (i = 0; i < list.size(); i++) {
 				LivingEntity potentialTarget = list.get(i);
 
-				if(potentialTarget.isInvulnerable())
+				if (potentialTarget.isInvulnerable())
 					continue;
 
-				if(mode.attacksPlayers())
-				{
-					if(potentialTarget instanceof Player player
+				if (mode.attacksPlayers()) {
+					//@formatter:off
+					if (potentialTarget instanceof Player player
 							&& !player.isSpectator()
 							&& !player.isCreative()
-							&& !((Sentry)mob).getOwner().isOwner(player)
+							&& !((Sentry) mob).getOwner().isOwner(player)
 							&& !sentry.isTargetingAllowedPlayer(potentialTarget)
-							&& !EntityUtils.isInvisible(potentialTarget))
+							&& !EntityUtils.isInvisible(potentialTarget)) {
 						break;
+					}
+					//@formatter:on
 				}
 
-				if(mode.attacksHostile() && isSupportedTarget(potentialTarget))
+				if (mode.attacksHostile() && isSupportedTarget(potentialTarget)) {
 					break;
+				}
 			}
 
-			if(i < list.size())
-			{
-				if(isCloseEnough(list.get(i)))
-				{
+			if (i < list.size()) {
+				if (isCloseEnough(list.get(i))) {
 					target = list.get(i);
 					mob.setTarget(target);
 					return true;
@@ -90,18 +87,16 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 	}
 
 	@Override
-	public boolean canContinueToUse()
-	{
+	public boolean canContinueToUse() {
 		return (isSupportedTarget(target) || target instanceof Player) && isCloseEnough(target) && canUse() && !sentry.isTargetingAllowedPlayer(targetMob) && super.canContinueToUse();
 	}
 
-	public boolean isCloseEnough(Entity entity)
-	{
+	public boolean isCloseEnough(Entity entity) {
 		return entity != null && mob.distanceToSqr(entity) <= getFollowDistance() * getFollowDistance();
 	}
 
-	public boolean isSupportedTarget(LivingEntity potentialTarget)
-	{
+	public boolean isSupportedTarget(LivingEntity potentialTarget) {
+		//@formatter:off
 		return potentialTarget.deathTime == 0 &&
 				(potentialTarget instanceof Monster ||
 						potentialTarget instanceof FlyingMob ||
@@ -109,11 +104,11 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 						potentialTarget instanceof Shulker ||
 						potentialTarget instanceof EnderDragon ||
 						SecurityCraftAPI.getRegisteredSentryAttackTargetChecks().stream().anyMatch(check -> check.canAttack(potentialTarget)));
+		//@formatter:on
 	}
 
 	@Override
-	protected double getFollowDistance()
-	{
+	protected double getFollowDistance() {
 		return Sentry.MAX_TARGET_DISTANCE;
 	}
 }

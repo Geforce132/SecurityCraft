@@ -14,47 +14,40 @@ import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ObjectHolder;
 
-public class LimitedUseKeycardRecipe extends CustomRecipe
-{
+public class LimitedUseKeycardRecipe extends CustomRecipe {
 	@ObjectHolder(SecurityCraft.MODID + ":limited_use_keycard_recipe")
 	public static SimpleRecipeSerializer<LimitedUseKeycardRecipe> serializer = null;
 
-	public LimitedUseKeycardRecipe(ResourceLocation id)
-	{
+	public LimitedUseKeycardRecipe(ResourceLocation id) {
 		super(id);
 	}
 
 	@Override
-	public boolean matches(CraftingContainer inv, Level level)
-	{
+	public boolean matches(CraftingContainer inv, Level level) {
 		boolean hasNormalKeycard = false;
 		boolean hasLimitedUseKeycard = false;
 
-		for(int i = 0; i < inv.getContainerSize(); ++i)
-		{
+		for (int i = 0; i < inv.getContainerSize(); ++i) {
 			ItemStack stack = inv.getItem(i);
 			Item item = stack.getItem();
 
-			if(item instanceof KeycardItem)
-			{
-				if(item != SCContent.LIMITED_USE_KEYCARD.get())
-				{
-					if(hasNormalKeycard || stack.getOrCreateTag().getBoolean("limited"))
+			if (item instanceof KeycardItem) {
+				if (item != SCContent.LIMITED_USE_KEYCARD.get()) {
+					if (hasNormalKeycard || stack.getOrCreateTag().getBoolean("limited"))
 						return false;
 
 					hasNormalKeycard = true;
 					continue;
 				}
-				else //item is SCContent.LIMITED_USE_KEYCARD.get()
-				{
-					if(hasLimitedUseKeycard)
+				else {//item is SCContent.LIMITED_USE_KEYCARD.get()
+					if (hasLimitedUseKeycard)
 						return false;
 
 					hasLimitedUseKeycard = true;
 					continue;
 				}
 			}
-			else if(!stack.isEmpty())
+			else if (!stack.isEmpty())
 				return false;
 		}
 
@@ -62,23 +55,20 @@ public class LimitedUseKeycardRecipe extends CustomRecipe
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer inv)
-	{
+	public ItemStack assemble(CraftingContainer inv) {
 		ItemStack keycard = ItemStack.EMPTY;
 
-		for(int i = 0; i < inv.getContainerSize(); ++i)
-		{
+		for (int i = 0; i < inv.getContainerSize(); ++i) {
 			ItemStack stack = inv.getItem(i);
 			Item item = stack.getItem();
 
-			if(item instanceof KeycardItem && item != SCContent.LIMITED_USE_KEYCARD.get())
-			{
+			if (item instanceof KeycardItem && item != SCContent.LIMITED_USE_KEYCARD.get()) {
 				keycard = stack.copy();
 				break;
 			}
 		}
 
-		if(keycard.isEmpty())
+		if (keycard.isEmpty())
 			return ItemStack.EMPTY;
 
 		CompoundTag tag = keycard.getOrCreateTag();
@@ -90,14 +80,12 @@ public class LimitedUseKeycardRecipe extends CustomRecipe
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int width, int height)
-	{
+	public boolean canCraftInDimensions(int width, int height) {
 		return width * height >= 2;
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer()
-	{
+	public RecipeSerializer<?> getSerializer() {
 		return serializer;
 	}
 }

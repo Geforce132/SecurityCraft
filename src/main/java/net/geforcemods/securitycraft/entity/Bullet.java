@@ -24,37 +24,32 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
-public class Bullet extends AbstractArrow
-{
-	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Bullet.class, Owner.getSerializer());
+public class Bullet extends AbstractArrow {
+	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner> defineId(Bullet.class, Owner.getSerializer());
 	private Collection<MobEffectInstance> potionEffects = Sets.newHashSet();
 
-	public Bullet(EntityType<Bullet> type, Level level)
-	{
+	public Bullet(EntityType<Bullet> type, Level level) {
 		super(SCContent.eTypeBullet, level);
 	}
 
-	public Bullet(Level level, Sentry shooter)
-	{
+	public Bullet(Level level, Sentry shooter) {
 		super(SCContent.eTypeBullet, shooter, level);
 
-		Owner owner =  shooter.getOwner();
+		Owner owner = shooter.getOwner();
 
-		this.potionEffects = shooter.getActiveEffects();
+		potionEffects = shooter.getActiveEffects();
 		entityData.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
 	}
 
 	/**
 	 * @return The owner of the sentry which shot this bullet
 	 */
-	public Owner getSCOwner()
-	{
+	public Owner getSCOwner() {
 		return entityData.get(OWNER);
 	}
 
 	@Override
-	protected void defineSynchedData()
-	{
+	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(OWNER, new Owner());
 	}
@@ -66,7 +61,7 @@ public class Bullet extends AbstractArrow
 		if (!potionEffects.isEmpty()) {
 			ListTag list = new ListTag();
 
-			for(MobEffectInstance effect : potionEffects) {
+			for (MobEffectInstance effect : potionEffects) {
 				list.add(effect.save(new CompoundTag()));
 			}
 
@@ -85,21 +80,18 @@ public class Bullet extends AbstractArrow
 				for (int i = 0; i < potionList.size(); ++i) {
 					MobEffectInstance effect = MobEffectInstance.load(potionList.getCompound(i));
 
-					if (effect != null) {
+					if (effect != null)
 						potionEffects.add(effect);
-					}
 				}
 			}
 		}
 	}
 
 	@Override
-	protected void onHitEntity(EntityHitResult raytraceResult)
-	{
+	protected void onHitEntity(EntityHitResult raytraceResult) {
 		Entity target = raytraceResult.getEntity();
 
-		if(!(target instanceof Sentry))
-		{
+		if (!(target instanceof Sentry)) {
 			target.hurt(DamageSource.arrow(this, getOwner()), Mth.ceil(getDeltaMovement().length()));
 
 			if (target instanceof LivingEntity lEntity && !potionEffects.isEmpty()) {
@@ -113,20 +105,17 @@ public class Bullet extends AbstractArrow
 	}
 
 	@Override
-	protected void onHitBlock(BlockHitResult raytraceResult)
-	{
+	protected void onHitBlock(BlockHitResult raytraceResult) {
 		discard();
 	}
 
 	@Override
-	protected ItemStack getPickupItem()
-	{
+	protected ItemStack getPickupItem() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket()
-	{
+	public Packet<?> getAddEntityPacket() {
 		return new ClientboundAddEntityPacket(this);
 	}
 }

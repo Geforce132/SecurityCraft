@@ -35,7 +35,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class LaserBlock extends DisguisableBlock {
-
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public LaserBlock(Block.Properties properties) {
@@ -47,53 +46,44 @@ public class LaserBlock extends DisguisableBlock {
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack){
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, entity, stack);
 
-		if(!level.isClientSide)
+		if (!level.isClientSide)
 			setLaser(level, pos);
 	}
 
-	public void setLaser(Level level, BlockPos pos)
-	{
-		LaserBlockBlockEntity thisBe = (LaserBlockBlockEntity)level.getBlockEntity(pos);
+	public void setLaser(Level level, BlockPos pos) {
+		LaserBlockBlockEntity thisBe = (LaserBlockBlockEntity) level.getBlockEntity(pos);
 
-		for(Direction facing : Direction.values())
-		{
+		for (Direction facing : Direction.values()) {
 			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
 
-			inner: for(int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++)
-			{
+			inner: for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
 				BlockPos offsetPos = pos.relative(facing, i);
 				BlockState offsetState = level.getBlockState(offsetPos);
 				Block offsetBlock = offsetState.getBlock();
 
-				if(!offsetState.isAir() && offsetBlock != SCContent.LASER_BLOCK.get())
+				if (!offsetState.isAir() && offsetBlock != SCContent.LASER_BLOCK.get())
 					break inner;
-				else if(offsetBlock == SCContent.LASER_BLOCK.get())
-				{
-					LaserBlockBlockEntity thatBe = (LaserBlockBlockEntity)level.getBlockEntity(offsetPos);
+				else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
+					LaserBlockBlockEntity thatBe = (LaserBlockBlockEntity) level.getBlockEntity(offsetPos);
 
-					if(thisBe.getOwner().owns(thatBe))
-					{
+					if (thisBe.getOwner().owns(thatBe)) {
 						LinkableBlockEntity.link(thisBe, thatBe);
 
-						for(ModuleType type : thatBe.getInsertedModules())
-						{
+						for (ModuleType type : thatBe.getInsertedModules()) {
 							thisBe.insertModule(thatBe.getModule(type));
 						}
 
-						if (thisBe.isEnabled() && thatBe.isEnabled())
-						{
-							for(int j = 1; j < i; j++)
-							{
+						if (thisBe.isEnabled() && thatBe.isEnabled()) {
+							for (int j = 1; j < i; j++) {
 								offsetPos = pos.relative(facing, j);
 
-								if(level.getBlockState(offsetPos).isAir())
-								{
+								if (level.getBlockState(offsetPos).isAir()) {
 									level.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
 
-									if(level.getBlockEntity(offsetPos) instanceof IOwnable ownable)
+									if (level.getBlockEntity(offsetPos) instanceof IOwnable ownable)
 										ownable.setOwner(thisBe.getOwner().getUUID(), thisBe.getOwner().getName());
 								}
 							}
@@ -108,59 +98,53 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
-		if(!level.isClientSide())
+		if (!level.isClientSide())
 			destroyAdjacentLasers(level, pos);
 	}
 
-	public static void destroyAdjacentLasers(LevelAccessor level, BlockPos pos)
-	{
-		for(Direction facing : Direction.values())
-		{
+	public static void destroyAdjacentLasers(LevelAccessor level, BlockPos pos) {
+		for (Direction facing : Direction.values()) {
 			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
 
-			for(int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++)
-			{
+			for (int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++) {
 				BlockPos offsetPos = pos.relative(facing, i);
 				BlockState state = level.getBlockState(offsetPos);
 
-				if(state.getBlock() == SCContent.LASER_BLOCK.get())
+				if (state.getBlock() == SCContent.LASER_BLOCK.get())
 					break;
-				else if(state.getBlock() == SCContent.LASER_FIELD.get() && state.getValue(LaserFieldBlock.BOUNDTYPE) == boundType)
+				else if (state.getBlock() == SCContent.LASER_FIELD.get() && state.getValue(LaserFieldBlock.BOUNDTYPE) == boundType)
 					level.destroyBlock(offsetPos, false);
 			}
 		}
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
-	{
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
 		setLaser(level, pos);
 	}
 
 	@Override
-	public boolean isSignalSource(BlockState state){
+	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public boolean shouldCheckWeakPower(BlockState state, LevelReader level, BlockPos pos, Direction side)
-	{
+	public boolean shouldCheckWeakPower(BlockState state, LevelReader level, BlockPos pos, Direction side) {
 		return false;
 	}
 
 	@Override
-	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side){
+	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
 		return state.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side){
+	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
 		return state.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
-	{
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
 		if (!level.isClientSide && state.getValue(POWERED)) {
 			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.LASER_BLOCK.get());
@@ -169,8 +153,8 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand){
-		if((state.getValue(POWERED))){
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+		if ((state.getValue(POWERED))) {
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
@@ -187,12 +171,10 @@ public class LaserBlock extends DisguisableBlock {
 			level.addParticle(new DustParticleOptions(vec, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
 			level.addParticle(new DustParticleOptions(vec, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
 		}
-
 	}
 
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
-	{
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(POWERED);
 	}
 

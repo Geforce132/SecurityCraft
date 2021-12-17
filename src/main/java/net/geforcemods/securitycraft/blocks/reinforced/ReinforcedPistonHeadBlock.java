@@ -21,14 +21,13 @@ import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements EntityBlock, IReinforcedBlock {
-
 	public ReinforcedPistonHeadBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if(placer instanceof Player player)
+		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 
 		super.setPlacedBy(level, pos, state, placer, stack);

@@ -35,26 +35,23 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ITickingBlockEntity, ILockable {
-
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
 	private LazyOptional<IItemHandler> storageHandler;
-	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
+	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack> withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
 	private int cooldown;
 
-	public InventoryScannerBlockEntity(BlockPos pos, BlockState state)
-	{
+	public InventoryScannerBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeInventoryScanner, pos, state);
 	}
 
 	@Override
-	public void tick(Level level, BlockPos pos, BlockState state)
-	{
-		if(cooldown > 0)
+	public void tick(Level level, BlockPos pos, BlockState state) {
+		if (cooldown > 0)
 			cooldown--;
-		else if(isProvidingPower){
+		else if (isProvidingPower) {
 			isProvidingPower = false;
 			BlockUtils.updateAndNotify(level, pos, state.getBlock(), 1, true);
 			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.INVENTORY_SCANNER.get());
@@ -62,14 +59,13 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void load(CompoundTag tag){
+	public void load(CompoundTag tag) {
 		ListTag list = tag.getList("Items", 10);
 
 		super.load(tag);
-		inventoryContents = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
+		inventoryContents = NonNullList.<ItemStack> withSize(getContainerSize(), ItemStack.EMPTY);
 
-		for (int i = 0; i < list.size(); ++i)
-		{
+		for (int i = 0; i < list.size(); ++i) {
 			CompoundTag stackTag = list.getCompound(i);
 			int slot = stackTag.getByte("Slot") & 255;
 
@@ -81,17 +77,16 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag){
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 
 		ListTag list = new ListTag();
 
 		for (int i = 0; i < inventoryContents.size(); ++i)
-			if (!inventoryContents.get(i).isEmpty())
-			{
+			if (!inventoryContents.get(i).isEmpty()) {
 				CompoundTag stackTag = new CompoundTag();
 
-				stackTag.putByte("Slot", (byte)i);
+				stackTag.putByte("Slot", (byte) i);
 				inventoryContents.get(i).save(stackTag);
 				list.add(stackTag);
 			}
@@ -107,21 +102,17 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public ItemStack removeItem(int index, int count)
-	{
-		if (!inventoryContents.get(index).isEmpty())
-		{
+	public ItemStack removeItem(int index, int count) {
+		if (!inventoryContents.get(index).isEmpty()) {
 			ItemStack stack;
 
-			if (inventoryContents.get(index).getCount() <= count)
-			{
+			if (inventoryContents.get(index).getCount() <= count) {
 				stack = inventoryContents.get(index);
 				inventoryContents.set(index, ItemStack.EMPTY);
 				setChanged();
 				return stack;
 			}
-			else
-			{
+			else {
 				stack = inventoryContents.get(index).split(count);
 
 				if (inventoryContents.get(index).getCount() == 0)
@@ -136,20 +127,17 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public boolean enableHack()
-	{
+	public boolean enableHack() {
 		return true;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot)
-	{
+	public ItemStack getStackInSlot(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : inventoryContents.get(slot);
 	}
 
 	@Override
-	public ItemStack getItem(int slot)
-	{
+	public ItemStack getItem(int slot) {
 		return getStackInSlot(slot);
 	}
 
@@ -173,43 +161,37 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	/**
 	 * Adds the given stack to the inventory. Will void any excess.
+	 *
 	 * @param stack The stack to add
 	 */
-	public void addItemToStorage(ItemStack stack)
-	{
+	public void addItemToStorage(ItemStack stack) {
 		ItemStack remainder = stack;
 
-		for(int i = 10; i < getContents().size(); i++)
-		{
+		for (int i = 10; i < getContents().size(); i++) {
 			remainder = insertItem(i, remainder);
 
-			if(remainder.isEmpty())
+			if (remainder.isEmpty())
 				break;
 		}
 	}
 
-	public ItemStack insertItem(int slot, ItemStack stackToInsert)
-	{
-		if(stackToInsert.isEmpty() || slot < 0 || slot >= getContents().size())
+	public ItemStack insertItem(int slot, ItemStack stackToInsert) {
+		if (stackToInsert.isEmpty() || slot < 0 || slot >= getContents().size())
 			return stackToInsert;
 
 		ItemStack slotStack = getStackInSlot(slot);
 		int limit = stackToInsert.getItem().getItemStackLimit(stackToInsert);
 
-		if(slotStack.isEmpty())
-		{
+		if (slotStack.isEmpty()) {
 			setItem(slot, stackToInsert);
 			return ItemStack.EMPTY;
 		}
-		else if(InventoryScannerFieldBlock.areItemStacksEqual(slotStack, stackToInsert) && slotStack.getCount() < limit)
-		{
-			if(limit - slotStack.getCount() >= stackToInsert.getCount())
-			{
+		else if (InventoryScannerFieldBlock.areItemStacksEqual(slotStack, stackToInsert) && slotStack.getCount() < limit) {
+			if (limit - slotStack.getCount() >= stackToInsert.getCount()) {
 				slotStack.setCount(slotStack.getCount() + stackToInsert.getCount());
 				return ItemStack.EMPTY;
 			}
-			else
-			{
+			else {
 				ItemStack toInsert = stackToInsert.copy();
 				ItemStack toReturn = toInsert.split((slotStack.getCount() + stackToInsert.getCount()) - limit); //this is the remaining stack that could not be inserted
 
@@ -222,21 +204,18 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
-	{
-		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			return BlockUtils.getProtectedCapability(side, this, () -> getExtractionHandler(), () -> EMPTY_INVENTORY).cast(); //disallow inserting
-		else return super.getCapability(cap, side);
+		else
+			return super.getCapability(cap, side);
 	}
 
-	public LazyOptional<IItemHandler> getExtractionHandler()
-	{
-		if(storageHandler == null)
-		{
+	public LazyOptional<IItemHandler> getExtractionHandler() {
+		if (storageHandler == null) {
 			storageHandler = LazyOptional.of(() -> new ExtractOnlyItemStackHandler(inventoryContents) {
 				@Override
-				public ItemStack extractItem(int slot, int amount, boolean simulate)
-				{
+				public ItemStack extractItem(int slot, int amount, boolean simulate) {
 					return slot < 10 ? ItemStack.EMPTY : super.extractItem(slot, amount, simulate); //don't allow extracting from the prohibited item slots
 				}
 			});
@@ -278,46 +257,41 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		this.cooldown = cooldown;
 	}
 
-	public NonNullList<ItemStack> getContents(){
+	public NonNullList<ItemStack> getContents() {
 		return inventoryContents;
 	}
 
-	public void setContents(NonNullList<ItemStack> contents){
+	public void setContents(NonNullList<ItemStack> contents) {
 		inventoryContents = contents;
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module)
-	{
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		super.onModuleInserted(stack, module);
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-		if(connectedScanner != null && !connectedScanner.hasModule(module))
+		if (connectedScanner != null && !connectedScanner.hasModule(module))
 			connectedScanner.insertModule(stack);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module)
-	{
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		super.onModuleRemoved(stack, module);
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-		if(connectedScanner != null && connectedScanner.hasModule(module))
+		if (connectedScanner != null && connectedScanner.hasModule(module))
 			connectedScanner.removeModule(module);
 
-		if(module == ModuleType.STORAGE)
-		{
-			for(int i = 10; i < getContainerSize(); i++) //first 10 slots (0-9) are the prohibited slots
-			{
+		if (module == ModuleType.STORAGE) {
+			//first 10 slots (0-9) are the prohibited slots
+			for (int i = 10; i < getContainerSize(); i++) {
 				Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), getContents().get(i));
 			}
 
-			if(connectedScanner != null)
-			{
-				for(int i = 0; i < connectedScanner.getContents().size(); i++)
-				{
+			if (connectedScanner != null) {
+				for (int i = 0; i < connectedScanner.getContents().size(); i++) {
 					connectedScanner.getContents().set(i, ItemStack.EMPTY);
 				}
 			}
@@ -326,14 +300,15 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.SMART, ModuleType.STORAGE, ModuleType.DISGUISE, ModuleType.REDSTONE};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.SMART, ModuleType.STORAGE, ModuleType.DISGUISE, ModuleType.REDSTONE
+		};
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option)
-	{
-		if(option.getName().equals("horizontal")) {
-			BooleanOption bo = (BooleanOption)option;
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals("horizontal")) {
+			BooleanOption bo = (BooleanOption) option;
 			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
 			if (connectedScanner != null) {
@@ -358,21 +333,19 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, bo.get()));
 		}
 		else if (option.getName().equals("solidifyField")) {
-			BooleanOption bo = (BooleanOption)option;
+			BooleanOption bo = (BooleanOption) option;
 			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
 			connectedScanner.setSolidifyField(bo.get());
 		}
 	}
 
-	public void setHorizontal(boolean isHorizontal)
-	{
+	public void setHorizontal(boolean isHorizontal) {
 		horizontal.setValue(isHorizontal);
 		level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, isHorizontal));
 	}
 
-	public boolean isHorizontal()
-	{
+	public boolean isHorizontal() {
 		return horizontal.get();
 	}
 
@@ -386,38 +359,34 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public Option<?>[] customOptions()
-	{
-		return new Option[] {horizontal, solidifyField};
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				horizontal, solidifyField
+		};
 	}
 
 	@Override
-	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
-	{
+	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 		return new InventoryScannerMenu(windowId, level, worldPosition, inv);
 	}
 
 	@Override
-	public Component getDisplayName()
-	{
+	public Component getDisplayName() {
 		return super.getDisplayName();
 	}
 
 	@Override
-	public void clearContent()
-	{
+	public void clearContent() {
 		inventoryContents.clear();
 	}
 
 	@Override
-	public boolean isEmpty()
-	{
+	public boolean isEmpty() {
 		return inventoryContents.isEmpty();
 	}
 
 	@Override
-	public ItemStack removeItemNoUpdate(int index)
-	{
+	public ItemStack removeItemNoUpdate(int index) {
 		return inventoryContents.remove(index);
 	}
 }

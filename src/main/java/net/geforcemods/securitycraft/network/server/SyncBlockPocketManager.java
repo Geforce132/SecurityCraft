@@ -10,8 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-public class SyncBlockPocketManager
-{
+public class SyncBlockPocketManager {
 	private BlockPos pos;
 	private int size;
 	private boolean showOutline;
@@ -19,24 +18,21 @@ public class SyncBlockPocketManager
 
 	public SyncBlockPocketManager() {}
 
-	public SyncBlockPocketManager(BlockPos pos, int size, boolean showOutline, int autoBuildOffset)
-	{
+	public SyncBlockPocketManager(BlockPos pos, int size, boolean showOutline, int autoBuildOffset) {
 		this.pos = pos;
 		this.size = size;
 		this.showOutline = showOutline;
 		this.autoBuildOffset = autoBuildOffset;
 	}
 
-	public static void encode(SyncBlockPocketManager message, FriendlyByteBuf buf)
-	{
+	public static void encode(SyncBlockPocketManager message, FriendlyByteBuf buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeVarInt(message.size);
 		buf.writeBoolean(message.showOutline);
 		buf.writeVarInt(message.autoBuildOffset);
 	}
 
-	public static SyncBlockPocketManager decode(FriendlyByteBuf buf)
-	{
+	public static SyncBlockPocketManager decode(FriendlyByteBuf buf) {
 		SyncBlockPocketManager message = new SyncBlockPocketManager();
 
 		message.pos = buf.readBlockPos();
@@ -46,15 +42,13 @@ public class SyncBlockPocketManager
 		return message;
 	}
 
-	public static void onMessage(SyncBlockPocketManager message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(SyncBlockPocketManager message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
 			Level level = player.level;
 
-			if(level.isLoaded(pos) && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity bpm && bpm.getOwner().isOwner(player))
-			{
+			if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity bpm && bpm.getOwner().isOwner(player)) {
 				BlockState state = level.getBlockState(pos);
 
 				bpm.size = message.size;

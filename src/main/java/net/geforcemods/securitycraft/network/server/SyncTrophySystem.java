@@ -13,13 +13,11 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class SyncTrophySystem {
-
 	private BlockPos pos;
 	private ResourceLocation projectileType;
 	private boolean allowed;
 
 	public SyncTrophySystem() {
-
 	}
 
 	public SyncTrophySystem(BlockPos pos, EntityType<?> projectileType, boolean allowed) {
@@ -47,13 +45,12 @@ public class SyncTrophySystem {
 		ctx.get().enqueueWork(() -> {
 			EntityType<?> projectileType = ForgeRegistries.ENTITIES.getValue(message.projectileType);
 
-			if(projectileType != null)
-			{
+			if (projectileType != null) {
 				Level level = ctx.get().getSender().level;
 				BlockPos pos = message.pos;
 				boolean allowed = message.allowed;
 
-				if(level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.getOwner().isOwner(ctx.get().getSender())) {
+				if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.getOwner().isOwner(ctx.get().getSender())) {
 					BlockState state = level.getBlockState(pos);
 
 					be.setFilter(projectileType, allowed);

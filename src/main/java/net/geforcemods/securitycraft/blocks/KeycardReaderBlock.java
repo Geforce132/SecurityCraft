@@ -43,8 +43,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-public class KeycardReaderBlock extends DisguisableBlock  {
-
+public class KeycardReaderBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
@@ -54,45 +53,38 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
-	{
-		if(!level.isClientSide)
-		{
-			KeycardReaderBlockEntity be = (KeycardReaderBlockEntity)level.getBlockEntity(pos);
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!level.isClientSide) {
+			KeycardReaderBlockEntity be = (KeycardReaderBlockEntity) level.getBlockEntity(pos);
 
-			if(ModuleUtils.isDenied(be, player))
-			{
-				if(be.sendsMessages())
+			if (ModuleUtils.isDenied(be, player)) {
+				if (be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}
-			else
-			{
+			else {
 				ItemStack stack = player.getItemInHand(hand);
 				Item item = stack.getItem();
 				boolean isCodebreaker = item == SCContent.CODEBREAKER.get();
 
 				//either no keycard, or an unlinked keycard, or an admin tool
-				if((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker)
-				{
+				if ((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker) {
 					//only allow the owner and players on the allowlist to open the gui
-					if(be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player))
-						NetworkHooks.openGui((ServerPlayer)player, be, pos);
+					if (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player))
+						NetworkHooks.openGui((ServerPlayer) player, be, pos);
 				}
-				else if(item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
+				else if (item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
 				{
-					if(isCodebreaker)
-					{
-						if(!player.isCreative())
+					if (isCodebreaker) {
+						if (!player.isCreative())
 							stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-						if(new Random().nextInt(3) == 1)
+						if (new Random().nextInt(3) == 1)
 							activate(level, pos, be.getSignalLength());
 					}
-					else
-					{
+					else {
 						MutableComponent feedback = insertCard(level, pos, be, stack, player);
 
-						if(feedback != null)
+						if (feedback != null)
 							PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(getDescriptionId()), feedback, ChatFormatting.RED);
 					}
 				}
@@ -102,60 +94,57 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		return InteractionResult.SUCCESS;
 	}
 
-	public MutableComponent insertCard(Level level, BlockPos pos, KeycardReaderBlockEntity te, ItemStack stack, Player player)
-	{
+	public MutableComponent insertCard(Level level, BlockPos pos, KeycardReaderBlockEntity te, ItemStack stack, Player player) {
 		CompoundTag tag = stack.getTag();
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
-		if((ConfigHandler.SERVER.enableTeamOwnership.get() && !PlayerUtils.areOnSameTeam(te.getOwner().getName(), tag.getString("ownerName"))) || !te.getOwner().getUUID().equals(tag.getString("ownerUUID")))
+		if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !PlayerUtils.areOnSameTeam(te.getOwner().getName(), tag.getString("ownerName"))) || !te.getOwner().getUUID().equals(tag.getString("ownerUUID")))
 			return new TranslatableComponent("messages.securitycraft:keycardReader.differentOwner");
 
 		//the keycard's signature does not match this keycard reader's
-		if(te.getSignature() != tag.getInt("signature"))
+		if (te.getSignature() != tag.getInt("signature"))
 			return new TranslatableComponent("messages.securitycraft:keycardReader.wrongSignature");
 
-		int keycardLevel = ((KeycardItem)stack.getItem()).getLevel();
+		int keycardLevel = ((KeycardItem) stack.getItem()).getLevel();
 
 		//the keycard's level
-		if(!te.getAcceptedLevels()[keycardLevel]) //both are 0 indexed, so it's ok
+		if (!te.getAcceptedLevels()[keycardLevel]) //both are 0 indexed, so it's ok
 			return new TranslatableComponent("messages.securitycraft:keycardReader.wrongLevel", keycardLevel + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
 
 		boolean powered = level.getBlockState(pos).getValue(POWERED);
 
-		if(tag.getBoolean("limited"))
-		{
+		if (tag.getBoolean("limited")) {
 			int uses = tag.getInt("uses");
 
-			if(uses <= 0)
+			if (uses <= 0)
 				return new TranslatableComponent("messages.securitycraft:keycardReader.noUses");
 
-			if(!player.isCreative() && !powered) //only remove uses when the keycard reader is not already active
+			if (!player.isCreative() && !powered)
 				tag.putInt("uses", --uses);
 		}
 
-		if(!powered)
+		if (!powered)
 			activate(level, pos, te.getSignalLength());
 
 		return null;
 	}
 
-	public void activate(Level level, BlockPos pos, int signalLength){
+	public void activate(Level level, BlockPos pos, int signalLength) {
 		level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(POWERED, true));
 		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYCARD_READER.get());
 		level.getBlockTicks().scheduleTick(pos, SCContent.KEYCARD_READER.get(), signalLength);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
-	{
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
 		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
 		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYCARD_READER.get());
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand){
-		if((state.getValue(POWERED))){
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+		if ((state.getValue(POWERED))) {
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
@@ -175,36 +164,31 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	}
 
 	@Override
-	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side)
-	{
+	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
 		return state.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side){
+	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
 		return state.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public boolean isSignalSource(BlockState state)
-	{
+	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
-	{
+	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer) {
 		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()).setValue(POWERED, false);
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
-	{
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWERED);
 	}
 
@@ -214,14 +198,12 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 }

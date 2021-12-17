@@ -15,16 +15,14 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-//copy from vanilla's Checkbox to be able to change the text color and remove the shadow
-public class CallbackCheckbox extends AbstractButton
-{
+// copy from vanilla's Checkbox to be able to change the text color and remove the shadow
+public class CallbackCheckbox extends AbstractButton {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/checkbox.png");
 	private boolean selected;
 	private final Consumer<Boolean> onChange;
 	private final int textColor;
 
-	public CallbackCheckbox(int x, int y, int width, int height, Component message, boolean selected, Consumer<Boolean> onChange, int textColor)
-	{
+	public CallbackCheckbox(int x, int y, int width, int height, Component message, boolean selected, Consumer<Boolean> onChange, int textColor) {
 		super(x, y, width, height, message);
 
 		this.selected = selected;
@@ -33,15 +31,13 @@ public class CallbackCheckbox extends AbstractButton
 	}
 
 	@Override
-	public void onPress()
-	{
+	public void onPress() {
 		selected = !selected;
 		onChange.accept(selected);
 	}
 
 	@Override
-	public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTicks)
-	{
+	public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		Minecraft minecraft = Minecraft.getInstance();
 
 		RenderSystem.setShaderTexture(0, TEXTURE);
@@ -56,21 +52,18 @@ public class CallbackCheckbox extends AbstractButton
 	}
 
 	@Override
-	public void updateNarration(NarrationElementOutput narrationElementOutput)
-	{
+	public void updateNarration(NarrationElementOutput narrationElementOutput) {
 		narrationElementOutput.add(NarratedElementType.TITLE, createNarrationMessage());
 
-		if(active)
-		{
-			if(isFocused())
+		if (active) {
+			if (isFocused())
 				narrationElementOutput.add(NarratedElementType.USAGE, new TranslatableComponent("narration.checkbox.usage.focused"));
 			else
 				narrationElementOutput.add(NarratedElementType.USAGE, new TranslatableComponent("narration.checkbox.usage.hovered"));
 		}
 	}
 
-	public boolean selected()
-	{
+	public boolean selected() {
 		return selected;
 	}
 }

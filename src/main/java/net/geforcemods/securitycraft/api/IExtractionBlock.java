@@ -7,13 +7,17 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Defines a block that can extract from a Password-protected Chest, Password-protected Furnace, and Block Pocket Manager.
- * Call <pre>InterModComms.sendTo("securitycraft", SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, ClassThatImplementsIExtractionBlock::new);</pre>
+ * Call
+ * 
+ * <pre>
+ * InterModComms.sendTo("securitycraft", SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, ClassThatImplementsIExtractionBlock::new);
+ * </pre>
+ * 
  * during InterModEnqueueEvent to register this with SecurityCraft.
  *
  * @author bl4ckscor3
  */
-public interface IExtractionBlock
-{
+public interface IExtractionBlock {
 	/**
 	 * The protected block uses this to check if this block can extract items
 	 *

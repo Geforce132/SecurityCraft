@@ -23,7 +23,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SonicSecuritySystemScreen extends Screen {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private static final ResourceLocation STREAMER_ICONS = new ResourceLocation("textures/gui/stream_indicator.png");
 	private static final TranslatableComponent SOUND_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.sound");
@@ -40,8 +39,7 @@ public class SonicSecuritySystemScreen extends Screen {
 	private int currentNote = 0;
 	private boolean isOwner;
 
-	public SonicSecuritySystemScreen(SonicSecuritySystemBlockEntity be)
-	{
+	public SonicSecuritySystemScreen(SonicSecuritySystemBlockEntity be) {
 		super(be.getName());
 		this.be = be;
 		isOwner = be.getOwner().isOwner(Minecraft.getInstance().player);
@@ -49,23 +47,22 @@ public class SonicSecuritySystemScreen extends Screen {
 
 	@Override
 	public void tick() {
-
 		// Play the note combination of this SSS when the player clicks on the play button
-		if(playback) {
+		if (playback) {
 			tickCount++;
 
 			// Only emit the note sound after a certain delay and if there are still notes to play
-			if(tickCount >= PLAYBACK_DELAY) {
-				if(currentNote < be.getNumberOfNotes()) {
+			if (tickCount >= PLAYBACK_DELAY) {
+				if (currentNote < be.getNumberOfNotes()) {
 					NoteWrapper note = be.getRecordedNotes().get(currentNote++);
 					SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase()).getSoundEvent();
-					float pitch = (float)Math.pow(2.0D, (note.noteID() - 12) / 12.0D);
+					float pitch = (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D);
 
 					tickCount = 0;
 					minecraft.level.playSound(minecraft.player, be.getBlockPos(), sound, SoundSource.RECORDS, 3.0F, pitch);
 				}
 				// Reset the counters when we are finished playing the final note
-				else if(currentNote >= be.getNumberOfNotes()) {
+				else if (currentNote >= be.getNumberOfNotes()) {
 					currentNote = 0;
 					playback = false;
 				}
@@ -74,8 +71,7 @@ public class SonicSecuritySystemScreen extends Screen {
 	}
 
 	@Override
-	public void init()
-	{
+	public void init() {
 		super.init();
 
 		boolean isActive = be.isActive();
@@ -89,7 +85,7 @@ public class SonicSecuritySystemScreen extends Screen {
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), toggledState ? SyncSSSSettingsOnServer.DataType.POWER_ON : SyncSSSSettingsOnServer.DataType.POWER_OFF));
 			powerButton.setMessage(getPowerString(toggledState));
 
-			if(!toggledState)
+			if (!toggledState)
 				recordingButton.setMessage(getRecordingString(false));
 
 			// Disable the recording-related buttons when the SSS is powered off
@@ -108,7 +104,7 @@ public class SonicSecuritySystemScreen extends Screen {
 
 		playButton = addRenderableWidget(new IdButton(2, width / 2 - 75, height / 2 - 10, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play"), button -> {
 			// Start playing back any notes that have been recorded
-			if(be.getNumberOfNotes() > 0)
+			if (be.getNumberOfNotes() > 0)
 				playback = true;
 		}));
 
@@ -118,8 +114,9 @@ public class SonicSecuritySystemScreen extends Screen {
 			playButton.active = false;
 			clearButton.active = false;
 		}));
-
+		//@formatter:off
 		soundButton = addRenderableWidget(new TogglePictureButton(4, width / 2 + 55, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[]{0, 0}, new int[]{32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
+			//@formatter:on
 			boolean toggledPing = !be.pings();
 
 			be.setPings(toggledPing);
@@ -135,8 +132,7 @@ public class SonicSecuritySystemScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
-	{
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		int textWidth = font.width(title);
@@ -152,18 +148,15 @@ public class SonicSecuritySystemScreen extends Screen {
 	}
 
 	@Override
-	public boolean isPauseScreen()
-	{
+	public boolean isPauseScreen() {
 		return false;
 	}
 
-	private Component getRecordingString(boolean recording)
-	{
+	private Component getRecordingString(boolean recording) {
 		return recording ? Utils.localize("gui.securitycraft:sonic_security_system.stop_recording") : Utils.localize("gui.securitycraft:sonic_security_system.start_recording");
 	}
 
-	private Component getPowerString(boolean on)
-	{
+	private Component getPowerString(boolean on) {
 		return on ? Utils.localize("gui.securitycraft:sonic_security_system.power.on") : Utils.localize("gui.securitycraft:sonic_security_system.power.off");
 	}
 }

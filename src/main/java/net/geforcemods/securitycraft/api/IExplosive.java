@@ -9,7 +9,6 @@ import net.minecraft.world.level.Level;
  * @author Geforce
  */
 public interface IExplosive {
-
 	/**
 	 * Handle your explosive's explosion here.
 	 *
@@ -48,5 +47,4 @@ public interface IExplosive {
 	 * @return Is your mine defusable?
 	 */
 	public boolean isDefusable();
-
 }

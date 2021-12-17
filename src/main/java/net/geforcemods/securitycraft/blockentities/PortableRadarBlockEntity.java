@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class PortableRadarBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
-
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getBlockPos, "searchRadius", 25.0D, 5.0D, 50.0D, 1.0D, true);
 	private IntOption searchDelayOption = new IntOption(this::getBlockPos, "searchDelay", 4, 4, 10, 1, true);
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
@@ -37,16 +36,13 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	private String lastPlayerName = "";
 	private int ticksUntilNextSearch = getSearchDelay();
 
-	public PortableRadarBlockEntity(BlockPos pos, BlockState state)
-	{
+	public PortableRadarBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypePortableRadar, pos, state);
 	}
 
 	@Override
-	public void tick(Level level, BlockPos pos, BlockState state)
-	{
-		if(enabledOption.get() && ticksUntilNextSearch-- <= 0)
-		{
+	public void tick(Level level, BlockPos pos, BlockState state) {
+		if (enabledOption.get() && ticksUntilNextSearch-- <= 0) {
 			ticksUntilNextSearch = getSearchDelay();
 
 			ServerPlayer owner = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
@@ -54,25 +50,22 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			List<Player> entities = level.getEntitiesOfClass(Player.class, area, e -> {
 				boolean isNotAllowed = true;
 
-				if(hasModule(ModuleType.ALLOWLIST))
+				if (hasModule(ModuleType.ALLOWLIST))
 					isNotAllowed = !ModuleUtils.isAllowed(this, e);
 
 				return e != owner && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
-			if(hasModule(ModuleType.REDSTONE))
+			if (hasModule(ModuleType.REDSTONE))
 				PortableRadarBlock.togglePowerOutput(level, pos, !entities.isEmpty());
 
-			if(owner != null)
-			{
-				for(Player e : entities)
-				{
-					if(shouldSendMessage(e))
-					{
+			if (owner != null) {
+				for (Player e : entities) {
+					if (shouldSendMessage(e)) {
 						MutableComponent attackedName = e.getName().plainCopy().withStyle(ChatFormatting.ITALIC);
 						MutableComponent text;
 
-						if(hasCustomName())
+						if (hasCustomName())
 							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomName().plainCopy().withStyle(ChatFormatting.ITALIC));
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
@@ -86,17 +79,15 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module)
-	{
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		super.onModuleRemoved(stack, module);
 
-		if(module == ModuleType.REDSTONE)
+		if (module == ModuleType.REDSTONE)
 			PortableRadarBlock.togglePowerOutput(level, worldPosition, false);
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag)
-	{
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 
 		tag.putBoolean("shouldSendNewMessage", shouldSendNewMessage);
@@ -105,8 +96,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	}
 
 	@Override
-	public void load(CompoundTag tag)
-	{
+	public void load(CompoundTag tag) {
 		super.load(tag);
 
 		shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
@@ -114,7 +104,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	}
 
 	public boolean shouldSendMessage(Player player) {
-		if(!player.getName().getString().equals(lastPlayerName)) {
+		if (!player.getName().getString().equals(lastPlayerName)) {
 			shouldSendNewMessage = true;
 			lastPlayerName = player.getName().getString();
 		}
@@ -138,12 +128,15 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.REDSTONE, ModuleType.ALLOWLIST};
+		return new ModuleType[] {
+				ModuleType.REDSTONE, ModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ searchRadiusOption, searchDelayOption, repeatMessageOption, enabledOption };
+		return new Option[] {
+				searchRadiusOption, searchDelayOption, repeatMessageOption, enabledOption
+		};
 	}
-
 }

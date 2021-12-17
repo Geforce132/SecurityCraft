@@ -10,12 +10,10 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
-@EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
-public class DataGenRegistrar
-{
+@EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
+public class DataGenRegistrar {
 	@SubscribeEvent
-	public static void onGatherData(GatherDataEvent event)
-	{
+	public static void onGatherData(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
 		ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.EMPTY_LIST, Collections.EMPTY_SET, false, null, null);
 		BlockTagGenerator blockTagGenerator = new BlockTagGenerator(generator, existingFileHelper);

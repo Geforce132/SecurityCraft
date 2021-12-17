@@ -14,12 +14,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
-public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock
-{
+public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
 
-	public ReinforcedRedstoneLampBlock(Block.Properties properties, Block vB)
-	{
+	public ReinforcedRedstoneLampBlock(Block.Properties properties, Block vB) {
 		super(properties, vB);
 
 		registerDefaultState(defaultBlockState().setValue(LIT, false));
@@ -27,39 +25,32 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock
 
 	@Override
 	@Nullable
-	public BlockState getStateForPlacement(BlockPlaceContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		return defaultBlockState().setValue(LIT, ctx.getLevel().hasNeighborSignal(ctx.getClickedPos()));
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
-	{
-		if(!level.isClientSide)
-		{
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		if (!level.isClientSide) {
 			boolean isLit = state.getValue(LIT);
 
-			if(isLit != level.hasNeighborSignal(pos))
-			{
-				if(isLit)
+			if (isLit != level.hasNeighborSignal(pos)) {
+				if (isLit)
 					level.getBlockTicks().scheduleTick(pos, this, 4);
 				else
 					level.setBlock(pos, state.cycle(LIT), 2);
 			}
-
 		}
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
-	{
-		if(state.getValue(LIT) && !level.hasNeighborSignal(pos))
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {
+		if (state.getValue(LIT) && !level.hasNeighborSignal(pos))
 			level.setBlock(pos, state.cycle(LIT), 2);
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
-	{
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(LIT);
 	}
 }

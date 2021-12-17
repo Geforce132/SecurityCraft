@@ -18,28 +18,24 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BulletRenderer extends EntityRenderer<Bullet>
-{
+public class BulletRenderer extends EntityRenderer<Bullet> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/bullet.png");
 	private final BulletModel model;
 
-	public BulletRenderer(EntityRendererProvider.Context ctx)
-	{
+	public BulletRenderer(EntityRendererProvider.Context ctx) {
 		super(ctx);
 
 		model = new BulletModel(ctx.bakeLayer(ClientHandler.BULLET_LOCATION));
 	}
 
 	@Override
-	public void render(Bullet entity, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight)
-	{
+	public void render(Bullet entity, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight) {
 		pose.mulPose(new Quaternion(Vector3f.YP, entity.getYRot(), true));
 		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity))), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(Bullet entity)
-	{
+	public ResourceLocation getTextureLocation(Bullet entity) {
 		return TEXTURE;
 	}
 }

@@ -37,48 +37,47 @@ public class MineRemoteAccessToolItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand){
-		if(level.isClientSide)
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+		if (level.isClientSide)
 			ClientHandler.displayMRATGui(player.getItemInHand(hand));
 
 		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}
 
 	@Override
-	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx)
-	{
+	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx) {
 		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
 	}
 
-	public InteractionResult onItemUseFirst(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
-		if(level.getBlockState(pos).getBlock() instanceof IExplosive){
-			if(!isMineAdded(stack, pos)){
-				int availSlot = getNextAvaliableSlot(stack);
+	public InteractionResult onItemUseFirst(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
+		if (level.getBlockState(pos).getBlock() instanceof IExplosive) {
+			if (!isMineAdded(stack, pos)) {
+				int availSlot = getNextAvailableSlot(stack);
 
-				if(availSlot == 0){
+				if (availSlot == 0) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.noSlots"), ChatFormatting.RED);
 					return InteractionResult.FAIL;
 				}
 
-				if(level.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.getOwner().isOwner(player))
-				{
-					if(level.isClientSide)
+				if (level.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.getOwner().isOwner(player)) {
+					if (level.isClientSide)
 						ClientHandler.displayMRATGui(stack);
 
 					return InteractionResult.SUCCESS;
 				}
 
-				if(stack.getTag() == null)
+				if (stack.getTag() == null)
 					stack.setTag(new CompoundTag());
 
 				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.posToIntArray(pos));
 
 				if (!level.isClientSide)
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new UpdateNBTTagOnClient(stack));
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), ChatFormatting.GREEN);
 				return InteractionResult.SUCCESS;
-			}else{
+			}
+			else {
 				removeTagFromItemAndUpdate(stack, pos, player);
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
 				return InteractionResult.SUCCESS;
@@ -91,70 +90,71 @@ public class MineRemoteAccessToolItem extends Item {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, Level level, List<Component> list, TooltipFlag flag) {
-		if(stack.getTag() == null)
+		if (stack.getTag() == null)
 			return;
 
-		for(int i = 1; i <= 6; i++)
-			if(stack.getTag().getIntArray("mine" + i).length > 0){
+		for (int i = 1; i <= 6; i++) {
+			if (stack.getTag().getIntArray("mine" + i).length > 0) {
 				int[] coords = stack.getTag().getIntArray("mine" + i);
 
-				if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0){
+				if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 					list.add(new TextComponent(ChatFormatting.GRAY + "---"));
-					continue;
-				}
 				else
 					list.add(Utils.localize("tooltip.securitycraft:mine").append(new TextComponent(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
 			}
 			else
 				list.add(new TextComponent(ChatFormatting.GRAY + "---"));
+		}
 	}
 
 	private void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, Player player) {
-		if(stack.getTag() == null)
+		if (stack.getTag() == null)
 			return;
 
-		for(int i = 1; i <= 6; i++)
-			if(stack.getTag().getIntArray("mine" + i).length > 0){
+		for (int i = 1; i <= 6; i++) {
+			if (stack.getTag().getIntArray("mine" + i).length > 0) {
 				int[] coords = stack.getTag().getIntArray("mine" + i);
 
-				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
-					stack.getTag().putIntArray("mine" + i, new int[]{0, 0, 0});
+				if (coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
+					stack.getTag().putIntArray("mine" + i, new int[] {
+							0, 0, 0
+					});
+
 					if (!player.level.isClientSide)
-						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer)player), new UpdateNBTTagOnClient(stack));
+						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+
 					return;
 				}
 			}
-			else
-				continue;
+		}
 
 		return;
 	}
 
 	private boolean isMineAdded(ItemStack stack, BlockPos pos) {
-		if(stack.getTag() == null)
+		if (stack.getTag() == null)
 			return false;
 
-		for(int i = 1; i <= 6; i++)
-			if(stack.getTag().getIntArray("mine" + i).length > 0){
+		for (int i = 1; i <= 6; i++) {
+			if (stack.getTag().getIntArray("mine" + i).length > 0) {
 				int[] coords = stack.getTag().getIntArray("mine" + i);
 
-				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
+				if (coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
 					return true;
 			}
-			else
-				continue;
+		}
 
 		return false;
 	}
 
-	private int getNextAvaliableSlot(ItemStack stack){
-		for(int i = 1; i <= 6; i++)
-			if(stack.getTag() == null)
-				return 1;
-			else if(stack.getTag().getIntArray("mine" + i).length == 0 || (stack.getTag().getIntArray("mine" + i)[0] == 0 && stack.getTag().getIntArray("mine" + i)[1] == 0 && stack.getTag().getIntArray("mine" + i)[2] == 0))
+	private int getNextAvailableSlot(ItemStack stack) {
+		if (stack.getTag() == null)
+			return 1;
+
+		for (int i = 1; i <= 6; i++) {
+			if (stack.getTag().getIntArray("mine" + i).length == 0 || (stack.getTag().getIntArray("mine" + i)[0] == 0 && stack.getTag().getIntArray("mine" + i)[1] == 0 && stack.getTag().getIntArray("mine" + i)[2] == 0))
 				return i;
-			else
-				continue;
+		}
 
 		return 0;
 	}

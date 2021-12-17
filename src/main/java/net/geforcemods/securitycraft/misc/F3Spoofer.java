@@ -15,37 +15,33 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
-public class F3Spoofer
-{
-	public static BlockState spoofBlockState(BlockState originalState, BlockPos pos)
-	{
+public class F3Spoofer {
+	public static BlockState spoofBlockState(BlockState originalState, BlockPos pos) {
 		Block originalBlock = originalState.getBlock();
 
-		if(originalBlock instanceof DisguisableBlock disguisableBlock)
-		{
+		if (originalBlock instanceof DisguisableBlock disguisableBlock) {
 			BlockState disguisedState = disguisableBlock.getDisguisedBlockState(Minecraft.getInstance().level, pos);
 
 			return disguisedState != null ? disguisedState : originalState;
 		}
-		else if(originalBlock instanceof BaseFullMineBlock)
-			return ((BaseFullMineBlock)originalBlock).getBlockDisguisedAs().defaultBlockState();
-		else if(originalBlock instanceof FurnaceMineBlock)
+		else if (originalBlock instanceof BaseFullMineBlock)
+			return ((BaseFullMineBlock) originalBlock).getBlockDisguisedAs().defaultBlockState();
+		else if (originalBlock instanceof FurnaceMineBlock)
 			return Blocks.FURNACE.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, originalState.getValue(BlockStateProperties.HORIZONTAL_FACING));
 
 		return originalState;
 	}
 
-	public static FluidState spoofFluidState(FluidState originalState)
-	{
+	public static FluidState spoofFluidState(FluidState originalState) {
 		Fluid originalFluid = originalState.getType();
 
-		if(originalFluid == SCContent.FAKE_WATER.get())
+		if (originalFluid == SCContent.FAKE_WATER.get())
 			return Fluids.WATER.defaultFluidState().setValue(FlowingFluid.FALLING, originalState.getValue(FlowingFluid.FALLING));
-		else if(originalFluid == SCContent.FLOWING_FAKE_WATER.get())
+		else if (originalFluid == SCContent.FLOWING_FAKE_WATER.get())
 			return Fluids.FLOWING_WATER.defaultFluidState().setValue(FlowingFluid.FALLING, originalState.getValue(FlowingFluid.FALLING)).setValue(FlowingFluid.LEVEL, originalState.getValue(FlowingFluid.LEVEL));
-		else if(originalFluid == SCContent.FAKE_LAVA.get())
+		else if (originalFluid == SCContent.FAKE_LAVA.get())
 			return Fluids.LAVA.defaultFluidState().setValue(FlowingFluid.FALLING, originalState.getValue(FlowingFluid.FALLING));
-		else if(originalFluid == SCContent.FLOWING_FAKE_LAVA.get())
+		else if (originalFluid == SCContent.FLOWING_FAKE_LAVA.get())
 			return Fluids.FLOWING_LAVA.defaultFluidState().setValue(FlowingFluid.FALLING, originalState.getValue(FlowingFluid.FALLING)).setValue(FlowingFluid.LEVEL, originalState.getValue(FlowingFluid.LEVEL));
 
 		return originalState;

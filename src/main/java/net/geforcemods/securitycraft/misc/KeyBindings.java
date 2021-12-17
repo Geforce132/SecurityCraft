@@ -13,13 +13,12 @@ import net.minecraftforge.fmlclient.registry.ClientRegistry;
  * @author Geforce
  */
 public class KeyBindings {
-
 	public static KeyMapping cameraZoomIn;
 	public static KeyMapping cameraZoomOut;
 	public static KeyMapping cameraEmitRedstone;
 	public static KeyMapping cameraActivateNightVision;
 
-	public static void init(){
+	public static void init() {
 		cameraZoomIn = new KeyMapping("key.securitycraft.cameraZoomIn", GLFW.GLFW_KEY_EQUAL, "key.categories.securitycraft");
 		cameraZoomOut = new KeyMapping("key.securitycraft.cameraZoomOut", GLFW.GLFW_KEY_MINUS, "key.categories.securitycraft");
 		cameraEmitRedstone = new KeyMapping("key.securitycraft.cameraEmitRedstone", GLFW.GLFW_KEY_R, "key.categories.securitycraft");

@@ -15,50 +15,53 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class InventoryScannerMenu extends AbstractContainerMenu {
-
 	private final int numRows;
 	public final InventoryScannerBlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 
-	public InventoryScannerMenu(int windowId, Level level, BlockPos pos, Inventory inventory){
+	public InventoryScannerMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.mTypeInventoryScanner, windowId);
-		be = (InventoryScannerBlockEntity)level.getBlockEntity(pos);
+		be = (InventoryScannerBlockEntity) level.getBlockEntity(pos);
 		numRows = be.getContainerSize() / 9;
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 
 		//prohibited items
-		for(int i = 0; i < 10; i++)
+		for (int i = 0; i < 10; i++) {
 			addSlot(new OwnerRestrictedSlot(be, be, i, (6 + (i * 18)), 16, true));
+		}
 
 		//inventory scanner storage
-		if(be.getOwner().isOwner(inventory.player) && be.hasModule(ModuleType.STORAGE))
-			for(int i = 0; i < 9; i++)
-				for(int j = 0; j < 3; j++)
+		if (be.getOwner().isOwner(inventory.player) && be.hasModule(ModuleType.STORAGE)) {
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 3; j++) {
 					addSlot(new Slot(be, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));
+				}
+			}
+		}
 
 		//inventory
-		for(int i = 0; i < 3; i++)
-			for(int j = 0; j < 9; j++)
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
 				addSlot(new Slot(inventory, j + i * 9 + 9, 15 + j * 18, 115 + i * 18));
+			}
+		}
 
 		//hotbar
-		for(int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; i++) {
 			addSlot(new Slot(inventory, i, 15 + i * 18, 173));
+		}
 	}
 
 	@Override
-	public ItemStack quickMoveStack(Player player, int index)
-	{
+	public ItemStack quickMoveStack(Player player, int index) {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
-		if (slot != null && slot.hasItem())
-		{
+		if (slot != null && slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
-			if (index < numRows * 9)
-			{
+			if (index < numRows * 9) {
 				if (!moveItemStackTo(slotStack, numRows * 9, slots.size(), true))
 					return ItemStack.EMPTY;
 			}
@@ -75,8 +78,7 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 	}
 
 	@Override
-	public void removed(Player player)
-	{
+	public void removed(Player player) {
 		super.removed(player);
 
 		Utils.setISinTEAppropriately(be.getLevel(), be.getBlockPos(), be.getContents());
@@ -88,12 +90,9 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 	}
 
 	@Override
-	public void clicked(int slotId, int dragType, ClickType clickType, Player player)
-	{
-		if(slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof OwnerRestrictedSlot slot && slot.isGhostSlot())
-		{
-			if(be.getOwner().isOwner(player))
-			{
+	public void clicked(int slotId, int dragType, ClickType clickType, Player player) {
+		if (slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof OwnerRestrictedSlot slot && slot.isGhostSlot()) {
+			if (be.getOwner().isOwner(player)) {
 				ItemStack pickedUpStack = getCarried().copy();
 
 				pickedUpStack.setCount(1);

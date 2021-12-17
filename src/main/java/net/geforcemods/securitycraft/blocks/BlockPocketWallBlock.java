@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
@@ -27,35 +27,29 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket
-{
+public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 	public static final BooleanProperty SEE_THROUGH = BooleanProperty.create("see_through");
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
 
-	public BlockPocketWallBlock(Block.Properties properties)
-	{
+	public BlockPocketWallBlock(Block.Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(SEE_THROUGH, true).setValue(SOLID, false));
 	}
 
-	public static boolean causesSuffocation(BlockState state, BlockGetter level, BlockPos pos)
-	{
+	public static boolean causesSuffocation(BlockState state, BlockGetter level, BlockPos pos) {
 		return state.getValue(SOLID);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext)
-	{
-		if(!state.getValue(SOLID) && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent() && ctx.getEntity().get() instanceof Player player)
-		{
-			if(level.getBlockEntity(pos) instanceof BlockPocketBlockEntity be)
-			{
-				if(be.getManager() == null)
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
+		if (!state.getValue(SOLID) && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent() && ctx.getEntity().get() instanceof Player player) {
+			if (level.getBlockEntity(pos) instanceof BlockPocketBlockEntity be) {
+				if (be.getManager() == null)
 					return Shapes.empty();
-				else if(ModuleUtils.isAllowed(be.getManager(), player))
+				else if (ModuleUtils.isAllowed(be.getManager(), player))
 					return Shapes.empty();
-				else if(!be.getOwner().isOwner(player))
+				else if (!be.getOwner().isOwner(player))
 					return Shapes.block();
 				else
 					return Shapes.empty();
@@ -66,33 +60,28 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket
 	}
 
 	@Override
-	public boolean canCreatureSpawn(BlockState state, BlockGetter level, BlockPos pos, Type type, EntityType<?> entityType)
-	{
+	public boolean canCreatureSpawn(BlockState state, BlockGetter level, BlockPos pos, Type type, EntityType<?> entityType) {
 		return false;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side)
-	{
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return state.getValue(SEE_THROUGH) && adjacentBlockState.getBlock() == SCContent.BLOCK_POCKET_WALL.get();
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext context)
-	{
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return super.getStateForPlacement(context).setValue(SEE_THROUGH, true);
 	}
 
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
-	{
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(SEE_THROUGH, SOLID);
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new BlockPocketBlockEntity(pos, state);
 	}
 

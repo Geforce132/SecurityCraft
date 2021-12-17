@@ -24,54 +24,47 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class TaserItem extends Item {
-
 	public boolean powered;
 
-	public TaserItem(Item.Properties properties, boolean isPowered){
+	public TaserItem(Item.Properties properties, boolean isPowered) {
 		super(properties);
 
 		powered = isPowered;
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items)
-	{
-		if((group == SecurityCraft.technicalTab || group == CreativeModeTab.TAB_SEARCH) && !powered)
+	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+		if ((group == SecurityCraft.technicalTab || group == CreativeModeTab.TAB_SEARCH) && !powered)
 			items.add(new ItemStack(this));
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged)
-	{
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged || ((oldStack.getItem() == SCContent.TASER.get() && newStack.getItem() == SCContent.TASER_POWERED.get()) || (oldStack.getItem() == SCContent.TASER_POWERED.get() && newStack.getItem() == SCContent.TASER.get()));
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand){
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if(!stack.isDamaged()){
-			if(player.isCrouching() && (player.isCreative() || !powered))
-			{
+		if (!stack.isDamaged()) {
+			if (player.isCrouching() && (player.isCreative() || !powered)) {
 				ItemStack oneRedstone = new ItemStack(Items.REDSTONE, 1);
 
-				if(player.isCreative())
-				{
-					if(player.getItemInHand(hand).getItem() == SCContent.TASER.get())
+				if (player.isCreative()) {
+					if (player.getItemInHand(hand).getItem() == SCContent.TASER.get())
 						player.setItemInHand(hand, new ItemStack(SCContent.TASER_POWERED.get(), 1));
 					else
 						player.setItemInHand(hand, new ItemStack(SCContent.TASER.get(), 1));
 
 					return InteractionResultHolder.success(stack);
 				}
-				else if(player.getInventory().contains(oneRedstone))
-				{
+				else if (player.getInventory().contains(oneRedstone)) {
 					int redstoneSlot = player.getInventory().findSlotMatchingUnusedItem(oneRedstone);
 					ItemStack redstoneStack;
 
-					if(redstoneSlot == -1)
-					{
-						if(player.getOffhandItem().getItem() == Items.REDSTONE)
+					if (redstoneSlot == -1) {
+						if (player.getOffhandItem().getItem() == Items.REDSTONE)
 							redstoneStack = player.getOffhandItem();
 						else
 							return InteractionResultHolder.pass(stack);
@@ -81,7 +74,7 @@ public class TaserItem extends Item {
 
 					redstoneStack.setCount(redstoneStack.getCount() - 1);
 
-					if(redstoneSlot == -1)
+					if (redstoneSlot == -1)
 						player.getInventory().offhand.set(0, redstoneStack);
 					else
 						player.getInventory().setItem(redstoneSlot, redstoneStack);
@@ -102,12 +95,10 @@ public class TaserItem extends Item {
 
 			level.playSound(player, player.blockPosition(), SCSounds.TASERFIRED.event, SoundSource.PLAYERS, 1.0F, 1.0F);
 
-			if (hitResult != null)
-			{
-				LivingEntity entity = (LivingEntity)hitResult.getEntity();
+			if (hitResult != null) {
+				LivingEntity entity = (LivingEntity) hitResult.getEntity();
 
-				if(!entity.isBlocking() && entity.hurt(CustomDamageSources.TASER, powered ? 2.0F : 1.0F))
-				{
+				if (!entity.isBlocking() && entity.hurt(CustomDamageSources.TASER, powered ? 2.0F : 1.0F)) {
 					int strength = powered ? 4 : 1;
 					int length = powered ? 400 : 200;
 
@@ -117,10 +108,8 @@ public class TaserItem extends Item {
 				}
 			}
 
-			if(!player.isCreative())
-			{
-				if(powered)
-				{
+			if (!player.isCreative()) {
+				if (powered) {
 					ItemStack taser = new ItemStack(SCContent.TASER.get(), 1);
 
 					taser.hurtAndBreak(150, player, p -> p.broadcastBreakEvent(hand));
@@ -137,14 +126,13 @@ public class TaserItem extends Item {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotIndex, boolean isSelected){
-		if(!level.isClientSide && stack.getDamageValue() >= 1)
+	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotIndex, boolean isSelected) {
+		if (!level.isClientSide && stack.getDamageValue() >= 1)
 			stack.setDamageValue(stack.getDamageValue() - 1);
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack stack)
-	{
+	public boolean isEnchantable(ItemStack stack) {
 		return false;
 	}
 }

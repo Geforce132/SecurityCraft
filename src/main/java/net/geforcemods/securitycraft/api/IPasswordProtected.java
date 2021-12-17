@@ -6,16 +6,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Implementing this interface designates a block entity as being password-protected.
- * Implementing this allows you to use {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set your block's password.
+ * Implementing this interface designates a block entity as being password-protected. Implementing this allows you to use
+ * {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set your block's password.
  *
  * @author Geforce
  */
 public interface IPasswordProtected {
-
 	/**
-	 * Called whenever a player correctly enters this block's password
-	 * in the password GUI.<p>
+	 * Called whenever a player correctly enters this block's password in the password GUI.<p>
 	 *
 	 * @param player The player who entered the password.
 	 */
@@ -47,8 +45,7 @@ public interface IPasswordProtected {
 	public boolean onCodebreakerUsed(BlockState state, Player player);
 
 	/**
-	 * Return your block entity's password variable here.
-	 * If the password is empty or not set yet, return null.
+	 * Return your block entity's password variable here. If the password is empty or not set yet, return null.
 	 *
 	 * @return The password.
 	 */
@@ -60,5 +57,4 @@ public interface IPasswordProtected {
 	 * @param password The new password to be saved.
 	 */
 	public void setPassword(String password);
-
 }

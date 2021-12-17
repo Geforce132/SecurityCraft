@@ -8,30 +8,26 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-public class ToggleBlockPocketManager
-{
+public class ToggleBlockPocketManager {
 	private BlockPos pos;
 	private int size;
 	private boolean enabling;
 
 	public ToggleBlockPocketManager() {}
 
-	public ToggleBlockPocketManager(BlockPocketManagerBlockEntity te, boolean enabling, int size)
-	{
+	public ToggleBlockPocketManager(BlockPocketManagerBlockEntity te, boolean enabling, int size) {
 		pos = te.getBlockPos();
 		this.enabling = enabling;
 		this.size = size;
 	}
 
-	public static void encode(ToggleBlockPocketManager message, FriendlyByteBuf buf)
-	{
+	public static void encode(ToggleBlockPocketManager message, FriendlyByteBuf buf) {
 		buf.writeLong(message.pos.asLong());
 		buf.writeBoolean(message.enabling);
 		buf.writeInt(message.size);
 	}
 
-	public static ToggleBlockPocketManager decode(FriendlyByteBuf buf)
-	{
+	public static ToggleBlockPocketManager decode(FriendlyByteBuf buf) {
 		ToggleBlockPocketManager message = new ToggleBlockPocketManager();
 
 		message.pos = BlockPos.of(buf.readLong());
@@ -40,16 +36,14 @@ public class ToggleBlockPocketManager
 		return message;
 	}
 
-	public static void onMessage(ToggleBlockPocketManager message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(ToggleBlockPocketManager message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			Player player = ctx.get().getSender();
 
-			if(player.level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity be && be.getOwner().isOwner(player))
-			{
+			if (player.level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity be && be.getOwner().isOwner(player)) {
 				be.size = message.size;
 
-				if(message.enabling)
+				if (message.enabling)
 					be.enableMultiblock();
 				else
 					be.disableMultiblock();

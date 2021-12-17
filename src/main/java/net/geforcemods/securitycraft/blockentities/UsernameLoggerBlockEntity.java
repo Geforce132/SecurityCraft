@@ -32,17 +32,16 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	public long[] timestamps = new long[100];
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
-	public UsernameLoggerBlockEntity(BlockPos pos, BlockState state)
-	{
+	public UsernameLoggerBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeUsernameLogger, pos, state);
 	}
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if(cooldown-- > 0)
+		if (cooldown-- > 0)
 			return;
 
-		if(level.getBestNeighborSignal(pos) > 0) {
+		if (level.getBestNeighborSignal(pos) > 0) {
 			level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
 			syncLoggedPlayersToClient();
 		}
@@ -54,15 +53,13 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		String playerName = player.getName().getString();
 		long timestamp = System.currentTimeMillis();
 
-		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp))
-		{
+		if (!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
 			//ignore players on the allowlist
-			if(ModuleUtils.isAllowed(this, player))
+			if (ModuleUtils.isAllowed(this, player))
 				return;
 
-			for(int i = 0; i < players.length; i++)
-			{
-				if(players[i] == null || players[i].equals("")){
+			for (int i = 0; i < players.length; i++) {
+				if (players[i] == null || players[i].equals("")) {
 					players[i] = player.getName().getString();
 					uuids[i] = player.getGameProfile().getId().toString();
 					timestamps[i] = timestamp;
@@ -73,9 +70,8 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	private boolean wasPlayerRecentlyAdded(String username, long timestamp) {
-		for(int i = 0; i < players.length; i++)
-		{
-			if(players[i] != null && players[i].equals(username) && (timestamps[i] + 1000L) > timestamp) //was within the last second that the same player was last added
+		for (int i = 0; i < players.length; i++) {
+			if (players[i] != null && players[i].equals(username) && (timestamps[i] + 1000L) > timestamp) //was within the last second that the same player was last added
 				return true;
 		}
 
@@ -83,11 +79,10 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag){
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 
-		for(int i = 0; i < players.length; i++)
-		{
+		for (int i = 0; i < players.length; i++) {
 			tag.putString("player" + i, players[i] == null ? "" : players[i]);
 			tag.putString("uuid" + i, uuids[i] == null ? "" : uuids[i]);
 			tag.putLong("timestamp" + i, timestamps[i]);
@@ -97,11 +92,10 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void load(CompoundTag tag){
+	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		for(int i = 0; i < players.length; i++)
-		{
+		for (int i = 0; i < players.length; i++) {
 			players[i] = tag.getString("player" + i);
 			uuids[i] = tag.getString("uuid" + i);
 			timestamps[i] = tag.getLong("timestamp" + i);
@@ -109,9 +103,8 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	public void syncLoggedPlayersToClient() {
-		for(int i = 0; i < players.length; i++)
-		{
-			if(players[i] != null)
+		for (int i = 0; i < players.length; i++) {
+			if (players[i] != null)
 				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), i, players[i], uuids[i], timestamps[i]));
 		}
 	}
@@ -121,26 +114,26 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
-	{
+	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 		return new GenericTEMenu(SCContent.mTypeUsernameLogger, windowId, level, worldPosition);
 	}
 
 	@Override
-	public Component getDisplayName()
-	{
+	public Component getDisplayName() {
 		return super.getDisplayName();
 	}
 
 	@Override
-	public ModuleType[] acceptedModules()
-	{
-		return new ModuleType[]{ModuleType.DISGUISE, ModuleType.ALLOWLIST};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.DISGUISE, ModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
-	public Option<?>[] customOptions()
-	{
-		return new Option[]{searchRadius};
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				searchRadius
+		};
 	}
 }

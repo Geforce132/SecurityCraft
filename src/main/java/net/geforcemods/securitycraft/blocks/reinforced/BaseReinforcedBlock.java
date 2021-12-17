@@ -27,32 +27,28 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
-public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock
-{
+public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
 
-	public BaseReinforcedBlock(Block.Properties properties, Block vB)
-	{
+	public BaseReinforcedBlock(Block.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public BaseReinforcedBlock(Block.Properties properties, Supplier<Block> vB)
-	{
+	public BaseReinforcedBlock(Block.Properties properties, Supplier<Block> vB) {
 		super(properties);
 
 		vanillaBlockSupplier = vB;
 	}
 
 	@Override
-	public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, IPlantable plantable)
-	{
+	public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, IPlantable plantable) {
 		BlockState plant = plantable.getPlant(level, pos.relative(facing));
 		PlantType type = plantable.getPlantType(level, pos.relative(facing));
 
 		if (super.canSustainPlant(state, level, pos, facing, plantable))
 			return true;
 
-		if(plant.getBlock() == Blocks.CACTUS)
+		if (plant.getBlock() == Blocks.CACTUS)
 			return state.is(SCTags.Blocks.REINFORCED_SAND);
 
 		if (plantable instanceof BushBlock) { //a nasty workaround because BaseReinforcedBlock can't use BushBlock#mayPlaceOn because it is protected
@@ -68,9 +64,9 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 				return state.is(SCTags.Blocks.REINFORCED_SAND) || state.is(SCContent.REINFORCED_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_WHITE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_ORANGE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_MAGENTA_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_YELLOW_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIME_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_PINK_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_GRAY_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_CYAN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_PURPLE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BLUE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BROWN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_GREEN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_RED_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BLACK_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_DIRT.get()) || state.is(SCContent.REINFORCED_COARSE_DIRT.get()) || state.is(SCContent.REINFORCED_PODZOL.get());
 		}
 
-		if(PlantType.DESERT.equals(type)) {
+		if (PlantType.DESERT.equals(type))
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_TERRACOTTA.get();
-		} else if (PlantType.BEACH.equals(type)) {
+		else if (PlantType.BEACH.equals(type)) {
 			boolean isBeach = state.is(SCTags.Blocks.REINFORCED_SAND);
 			boolean hasWater = false;
 			for (Direction face : Direction.Plane.HORIZONTAL) {
@@ -79,6 +75,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 				hasWater |= blockState.is(Blocks.FROSTED_ICE);
 				hasWater |= fluidState.is(FluidTags.WATER);
+
 				if (hasWater)
 					break; //No point continuing.
 			}
@@ -88,8 +85,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public boolean isConduitFrame(BlockState state, LevelReader level, BlockPos pos, BlockPos conduit)
-	{
+	public boolean isConduitFrame(BlockState state, LevelReader level, BlockPos pos, BlockPos conduit) {
 		return this == SCContent.REINFORCED_PRISMARINE.get() || this == SCContent.REINFORCED_PRISMARINE_BRICKS.get() || this == SCContent.REINFORCED_SEA_LANTERN.get() || this == SCContent.REINFORCED_DARK_PRISMARINE.get();
 	}
 
@@ -101,14 +97,12 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return vanillaBlockSupplier.get();
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return defaultBlockState();
 	}
 }

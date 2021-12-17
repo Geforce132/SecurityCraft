@@ -11,28 +11,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ReinforcedCryingObsidianBlock extends BaseReinforcedBlock
-{
-	public ReinforcedCryingObsidianBlock(Properties properties, Block vB)
-	{
+public class ReinforcedCryingObsidianBlock extends BaseReinforcedBlock {
+	public ReinforcedCryingObsidianBlock(Properties properties, Block vB) {
 		super(properties, vB);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
-	{
-		if(rand.nextInt(5) == 0)
-		{
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+		if (rand.nextInt(5) == 0) {
 			Direction direction = Direction.getRandom(rand);
 
-			if(direction != Direction.UP)
-			{
+			if (direction != Direction.UP) {
 				BlockPos offsetPos = pos.relative(direction);
 				BlockState offsetState = level.getBlockState(offsetPos);
 
-				if(!state.canOcclude() || !offsetState.isFaceSturdy(level, offsetPos, direction.getOpposite()))
-				{
+				if (!state.canOcclude() || !offsetState.isFaceSturdy(level, offsetPos, direction.getOpposite())) {
 					double xOffset = direction.getStepX() == 0 ? rand.nextDouble() : 0.5D + direction.getStepX() * 0.6D;
 					double yOffset = direction.getStepY() == 0 ? rand.nextDouble() : 0.5D + direction.getStepY() * 0.6D;
 					double zOffset = direction.getStepZ() == 0 ? rand.nextDouble() : 0.5D + direction.getStepZ() * 0.6D;

@@ -25,7 +25,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
 	private static final TranslatableComponent SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block");
 	private ProjectorBlockEntity be;
@@ -39,8 +38,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 	private TogglePictureButton toggleButton;
 	private int sliderWidth = 120;
 
-	public ProjectorScreen(ProjectorMenu menu, Inventory inv, Component text)
-	{
+	public ProjectorScreen(ProjectorMenu menu, Inventory inv, Component text) {
 		super(menu, inv, text);
 		this.be = menu.be;
 		blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
@@ -48,8 +46,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 	}
 
 	@Override
-	public void init()
-	{
+	public void init() {
 		super.init();
 		int id = 0;
 		int left = leftPos + ((imageWidth - sliderWidth) / 2);
@@ -64,8 +61,8 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 
 		projectionRangeSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.range", be.getProjectionRange()), blockName, id, left, topPos + 89, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", ""), "", ProjectorBlockEntity.MIN_RANGE, ProjectorBlockEntity.MAX_RANGE, be.getProjectionRange(), false, true, slider -> {
 			//show a different number so it makes sense within the world
-			if(be.isHorizontal())
-				slider.setMessage(new TextComponent("").append(slider.dispString).append(Integer.toString((int)Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
+			if (be.isHorizontal())
+				slider.setMessage(new TextComponent("").append(slider.dispString).append(Integer.toString((int) Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
 		}, this::sliderReleased));
 		projectionRangeSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionRangeSlider, Utils.localize("gui.securitycraft:projector.range.description"));
@@ -73,8 +70,9 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 		projectionOffsetSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", be.getProjectionOffset()), blockName, id, left, topPos + 110, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", ProjectorBlockEntity.MIN_OFFSET, ProjectorBlockEntity.MAX_OFFSET, be.getProjectionOffset(), false, true, null, this::sliderReleased));
 		projectionOffsetSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionOffsetSlider, Utils.localize("gui.securitycraft:projector.offset.description"));
-
+		//@formatter:off
 		toggleButton = addRenderableWidget(new TogglePictureButton(id, left, topPos + 26, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, b -> {
+			//@formatter:on
 			be.setHorizontal(!be.isHorizontal());
 			projectionRangeSlider.updateSlider();
 			SecurityCraft.channel.sendToServer(new SyncProjector(be.getBlockPos(), be.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
@@ -87,31 +85,27 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
-	{
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
 
 		renderTooltip(pose, mouseX, mouseY);
 
-		for(TextHoverChecker thc : hoverCheckers)
-		{
-			if(thc.checkHover(mouseX, mouseY))
+		for (TextHoverChecker thc : hoverCheckers) {
+			if (thc.checkHover(mouseX, mouseY))
 				renderTooltip(pose, thc.getName(), mouseX, mouseY);
 		}
 
-		if(slotHoverChecker.checkHover(mouseX, mouseY) && menu.be.isEmpty())
+		if (slotHoverChecker.checkHover(mouseX, mouseY) && menu.be.isEmpty())
 			renderTooltip(pose, slotHoverChecker.getName(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY)
-	{
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		font.draw(pose, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY)
-	{
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
 
@@ -122,45 +116,39 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button)
-	{
-		if(projectionWidthSlider.dragging)
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		if (projectionWidthSlider.dragging)
 			projectionWidthSlider.mouseReleased(mouseX, mouseY, button);
 
-		if(projectionHeightSlider.dragging)
+		if (projectionHeightSlider.dragging)
 			projectionWidthSlider.mouseReleased(mouseX, mouseY, button);
 
-		if(projectionRangeSlider.dragging)
+		if (projectionRangeSlider.dragging)
 			projectionRangeSlider.mouseReleased(mouseX, mouseY, button);
 
-		if(projectionOffsetSlider.dragging)
+		if (projectionOffsetSlider.dragging)
 			projectionOffsetSlider.mouseReleased(mouseX, mouseY, button);
 
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
-	public void sliderReleased(NamedSlider slider)
-	{
+	public void sliderReleased(NamedSlider slider) {
 		int data = 0;
 		DataType dataType = DataType.INVALID;
 
-		if(slider.id == projectionWidthSlider.id)
-		{
+		if (slider.id == projectionWidthSlider.id) {
 			be.setProjectionWidth(data = slider.getValueInt());
 			dataType = DataType.WIDTH;
 		}
-		else if(slider.id == projectionHeightSlider.id)
-		{
+		else if (slider.id == projectionHeightSlider.id) {
 			be.setProjectionHeight(data = slider.getValueInt());
 			dataType = DataType.HEIGHT;
 		}
-		else if(slider.id == projectionRangeSlider.id)
-		{
+		else if (slider.id == projectionRangeSlider.id) {
 			be.setProjectionRange(data = slider.getValueInt());
 			dataType = DataType.RANGE;
 		}
-		else if(slider.id == projectionOffsetSlider.id)
-		{
+		else if (slider.id == projectionOffsetSlider.id) {
 			be.setProjectionOffset(data = slider.getValueInt());
 			dataType = DataType.OFFSET;
 		}

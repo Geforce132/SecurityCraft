@@ -13,29 +13,24 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 
-public class FakeLavaBlock extends LiquidBlock
-{
+public class FakeLavaBlock extends LiquidBlock {
 	private static final MobEffectInstance SHORT_FIRE_RESISTANCE = new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 1);
 
-	public FakeLavaBlock(Block.Properties properties, Supplier<? extends FlowingFluid> fluid)
-	{
+	public FakeLavaBlock(Block.Properties properties, Supplier<? extends FlowingFluid> fluid) {
 		super(fluid, properties);
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
-	{
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		super.entityInside(state, level, pos, entity);
 
-		if(entity instanceof LivingEntity lEntity)
-		{
+		if (entity instanceof LivingEntity lEntity) {
 			lEntity.clearFire();
 
-			if(!level.isClientSide)
-			{
+			if (!level.isClientSide) {
 				lEntity.addEffect(SHORT_FIRE_RESISTANCE);
 
-				if(!lEntity.hasEffect(MobEffects.REGENERATION))
+				if (!lEntity.hasEffect(MobEffects.REGENERATION))
 					lEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20, 2));
 			}
 		}

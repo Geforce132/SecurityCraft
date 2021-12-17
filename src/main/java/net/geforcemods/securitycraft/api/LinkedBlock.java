@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
 public class LinkedBlock {
-
 	public String blockName;
 	public BlockPos blockPos = null;
 
@@ -18,14 +17,15 @@ public class LinkedBlock {
 		blockPos = blockEntity.getBlockPos();
 	}
 
-	public boolean validate(Level world) {
-		return !(world == null || (world.isEmptyBlock(blockPos) || !world.getBlockState(blockPos).getBlock().getDescriptionId().equals(blockName)));
+	public boolean validate(Level level) {
+		return !(level == null || (level.isEmptyBlock(blockPos) || !level.getBlockState(blockPos).getBlock().getDescriptionId().equals(blockName)));
 	}
 
-	public LinkableBlockEntity asBlockEntity(Level world) {
-		if(!validate(world)) return null;
+	public LinkableBlockEntity asBlockEntity(Level level) {
+		if (!validate(level))
+			return null;
 
-		return (LinkableBlockEntity) world.getBlockEntity(blockPos);
+		return (LinkableBlockEntity) level.getBlockEntity(blockPos);
 	}
 
 	public String getBlockName() {
@@ -58,9 +58,8 @@ public class LinkedBlock {
 
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof LinkedBlock block) {
+		if (o instanceof LinkedBlock block)
 			return (block.getPos().getX() == blockPos.getX() && block.getPos().getY() == blockPos.getY() && block.getPos().getZ() == blockPos.getZ());
-		}
 
 		return false;
 	}
@@ -72,7 +71,6 @@ public class LinkedBlock {
 
 	@Override
 	public String toString() {
-		return (blockName + " | " + blockPos.getX() + " " + blockPos.getY() + " " + blockPos.getZ());
+		return blockName + " | " + blockPos.getX() + " " + blockPos.getY() + " " + blockPos.getZ();
 	}
-
 }

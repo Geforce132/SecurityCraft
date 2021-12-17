@@ -17,44 +17,49 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class CustomizeBlockMenu extends AbstractContainerMenu{
-
+public class CustomizeBlockMenu extends AbstractContainerMenu {
 	public IModuleInventory moduleInv;
 	private ContainerLevelAccess worldPosCallable;
 	private final int maxSlots;
 
 	public CustomizeBlockMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.mTypeCustomizeBlock, windowId);
-		this.moduleInv = (IModuleInventory)level.getBlockEntity(pos);
+		this.moduleInv = (IModuleInventory) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 
 		int slotId = 0;
 
-		for(int i = 0; i < 3; i++)
-			for(int j = 0; j < 9; ++j)
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; ++j) {
 				addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+			}
+		}
 
-		for(int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; i++) {
 			addSlot(new Slot(inventory, i, 8 + i * 18, 142));
+		}
 
-		if(moduleInv.enableHack())
+		if (moduleInv.enableHack())
 			slotId = 100;
 
-		if(moduleInv.getMaxNumberOfModules() == 1)
+		if (moduleInv.getMaxNumberOfModules() == 1)
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId, 79, 20));
-		else if(moduleInv.getMaxNumberOfModules() == 2){
+		else if (moduleInv.getMaxNumberOfModules() == 2) {
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
-		}else if(moduleInv.getMaxNumberOfModules() == 3){
+		}
+		else if (moduleInv.getMaxNumberOfModules() == 3) {
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 61, 20));
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 79, 20));
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 97, 20));
-		}else if(moduleInv.getMaxNumberOfModules() == 4){
+		}
+		else if (moduleInv.getMaxNumberOfModules() == 4) {
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 52, 20));
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 106, 20));
-		}else if(moduleInv.getMaxNumberOfModules() == 5){
+		}
+		else if (moduleInv.getMaxNumberOfModules() == 5) {
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 34, 20));
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 52, 20));
 			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
@@ -66,41 +71,36 @@ public class CustomizeBlockMenu extends AbstractContainerMenu{
 	}
 
 	@Override
-	public ItemStack quickMoveStack(Player player, int index)
-	{
+	public ItemStack quickMoveStack(Player player, int index) {
 		ItemStack copy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
 
-		if(slot != null && slot.hasItem())
-		{
+		if (slot != null && slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
 			boolean isModule = slotStack.getItem() instanceof ModuleItem;
 
 			copy = slotStack.copy();
 
-			if(index >= 36 && index <= maxSlots) //module slots
-			{
-				if(!moveItemStackTo(slotStack, 0, 36, true)) //main inventory + hotbar
+			if (index >= 36 && index <= maxSlots) { //module slots
+				if (!moveItemStackTo(slotStack, 0, 36, true)) //main inventory + hotbar
 					return ItemStack.EMPTY;
 			}
-			else if(index >= 27 && index <= 35) //hotbar
-			{
-				if(isModule && !moveItemStackTo(slotStack, 36, maxSlots, false)) //module slots
+			else if (index >= 27 && index <= 35) { //hotbar
+				if (isModule && !moveItemStackTo(slotStack, 36, maxSlots, false)) //module slots
 					return ItemStack.EMPTY;
-				else if(!moveItemStackTo(slotStack, 0, 27, false)) //main inventory
+				else if (!moveItemStackTo(slotStack, 0, 27, false)) //main inventory
 					return ItemStack.EMPTY;
 			}
-			else if(index <= 26) //main inventory
-			{
-				if(isModule && !moveItemStackTo(slotStack, 36, maxSlots, false)) //module slots
+			else if (index <= 26) { //main inventory
+				if (isModule && !moveItemStackTo(slotStack, 36, maxSlots, false)) //module slots
 					return ItemStack.EMPTY;
-				else if(!moveItemStackTo(slotStack, 27, 36, false)) //hotbar
+				else if (!moveItemStackTo(slotStack, 27, 36, false)) //hotbar
 					return ItemStack.EMPTY;
 			}
 
 			slot.onQuickCraft(slotStack, copy);
 
-			if(slotStack.isEmpty())
+			if (slotStack.isEmpty())
 				slot.set(ItemStack.EMPTY);
 			else
 				slot.setChanged();
@@ -114,24 +114,20 @@ public class CustomizeBlockMenu extends AbstractContainerMenu{
 		return stillValid(worldPosCallable, player, moduleInv.getBlockEntity().getBlockState().getBlock());
 	}
 
-	private class CustomSlotItemHandler extends SlotItemHandler
-	{
+	private class CustomSlotItemHandler extends SlotItemHandler {
 		private final int index;
 
-		public CustomSlotItemHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition)
-		{
+		public CustomSlotItemHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
 			super(itemHandler, index, xPosition, yPosition);
 			this.index = index;
 		}
 
 		@Override
-		public void onQuickCraft(ItemStack newStack, ItemStack oldStack)
-		{
-			if((index >= 36 || index < maxSlots) && oldStack.getItem() instanceof ModuleItem)
-			{
-				moduleInv.onModuleRemoved(oldStack, ((ModuleItem)oldStack.getItem()).getModuleType());
+		public void onQuickCraft(ItemStack newStack, ItemStack oldStack) {
+			if ((index >= 36 || index < maxSlots) && oldStack.getItem() instanceof ModuleItem) {
+				moduleInv.onModuleRemoved(oldStack, ((ModuleItem) oldStack.getItem()).getModuleType());
 
-				if(moduleInv instanceof LinkableBlockEntity lbe)
+				if (moduleInv instanceof LinkableBlockEntity lbe)
 					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, lbe);
 			}
 		}

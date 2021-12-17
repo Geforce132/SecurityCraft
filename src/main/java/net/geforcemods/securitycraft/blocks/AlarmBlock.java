@@ -32,7 +32,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class AlarmBlock extends OwnableBlock {
-
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 	private static final VoxelShape SHAPE_EAST = Block.box(0, 4, 4, 8, 12, 12);
@@ -49,40 +48,36 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos){
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		Direction facing = state.getValue(FACING);
 
 		return facing == Direction.UP && BlockUtils.isSideSolid(level, pos.below(), Direction.UP) ? true : BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
-	{
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
 		if (!canSurvive(state, level, pos))
 			level.destroyBlock(pos, true);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
-	{
+	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer) {
 		return BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing) : null;
 	}
 
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean flag) {
-		if(!level.isClientSide)
+		if (!level.isClientSide)
 			level.getBlockTicks().scheduleTick(pos, state.getBlock(), 5);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
-	{
-		if(!level.isClientSide){
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+		if (!level.isClientSide) {
 			playSoundAndUpdate(level, pos);
 
 			level.getBlockTicks().scheduleTick(pos, state.getBlock(), 5);
@@ -90,8 +85,8 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onNeighborChange(BlockState state, LevelReader levelReader, BlockPos pos, BlockPos neighbor){
-		if(levelReader.isClientSide() || !(levelReader instanceof Level level))
+	public void onNeighborChange(BlockState state, LevelReader levelReader, BlockPos pos, BlockPos neighbor) {
+		if (levelReader.isClientSide() || !(levelReader instanceof Level level))
 			return;
 
 		playSoundAndUpdate(level, pos);
@@ -103,9 +98,8 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
-	{
-		return switch(state.getValue(FACING)){
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+		return switch (state.getValue(FACING)) {
 			case EAST -> SHAPE_EAST;
 			case WEST -> SHAPE_WEST;
 			case NORTH -> SHAPE_NORTH;
@@ -116,26 +110,25 @@ public class AlarmBlock extends OwnableBlock {
 		};
 	}
 
-	private void playSoundAndUpdate(Level level, BlockPos pos){
+	private void playSoundAndUpdate(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
 
-		if(state.getBlock() != SCContent.ALARM.get())
+		if (state.getBlock() != SCContent.ALARM.get())
 			return;
 
-		if(level.getBlockEntity(pos) instanceof AlarmBlockEntity be)
-		{
-			if(level.getBestNeighborSignal(pos) > 0){
+		if (level.getBlockEntity(pos) instanceof AlarmBlockEntity be) {
+			if (level.getBestNeighborSignal(pos) > 0) {
 				boolean isPowered = be.isPowered();
 
-				if(!isPowered){
+				if (!isPowered) {
 					level.setBlockAndUpdate(pos, state.setValue(LIT, true));
 					be.setPowered(true);
 				}
-
-			}else{
+			}
+			else {
 				boolean isPowered = be.isPowered();
 
-				if(isPowered){
+				if (isPowered) {
 					level.setBlockAndUpdate(pos, state.setValue(LIT, false));
 					be.setPowered(false);
 				}
@@ -144,13 +137,12 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state)
-	{
+	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
 		return new ItemStack(SCContent.ALARM.get().asItem());
 	}
 
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> builder){
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, LIT);
 	}
 
@@ -165,27 +157,25 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		Direction facing = state.getValue(FACING);
 
-		switch(mirror)
-		{
+		switch (mirror) {
 			case LEFT_RIGHT:
-				if(facing.getAxis() == Axis.Z)
+				if (facing.getAxis() == Axis.Z)
 					return state.setValue(FACING, facing.getOpposite());
 				break;
 			case FRONT_BACK:
-				if(facing.getAxis() == Axis.X)
+				if (facing.getAxis() == Axis.X)
 					return state.setValue(FACING, facing.getOpposite());
 				break;
-			case NONE: break;
+			case NONE:
+				break;
 		}
 
 		return state;

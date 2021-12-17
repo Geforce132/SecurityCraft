@@ -14,24 +14,20 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 /**
- * This interface marks a {@link BlockEntity} as "ownable". Any block entity
- * that implements this interface is able to be destroyed by the
- * Universal Block Remover, and can only be broken or modified by
- * the person who placed it down. <p>
+ * This interface marks a {@link BlockEntity} as "ownable". Any block entity that implements this interface is able to be
+ * destroyed by the Universal Block Remover, and can only be broken or modified by the person who placed it down. <p>
  *
  * @author Geforce
  */
 public interface IOwnable {
-
 	/**
 	 * @return An Owner object containing the player's name and UUID
 	 */
 	public Owner getOwner();
 
 	/**
-	 * Save a new owner to your Owner object here. <p>
-	 * The easiest way is to use Owner.set(UUID, name), this method is
-	 * here mainly for convenience.
+	 * Save a new owner to your Owner object here. <p> The easiest way is to use Owner.set(UUID, name), this method is here
+	 * mainly for convenience.
 	 *
 	 * @param uuid The UUID of the new player.
 	 * @param name The name of the new player.
@@ -39,7 +35,6 @@ public interface IOwnable {
 	public void setOwner(String uuid, String name);
 
 	/**
-	 *
 	 * @return true if the owner of this IOwnable should be invalidated when changed by the Universal Owner Changer
 	 */
 	default boolean needsValidation() {
@@ -47,7 +42,8 @@ public interface IOwnable {
 	}
 
 	/**
-	 * Executes actions after the owner has been changed, for example making sure the owner of both halves of SecurityCraft's doors get changed, and marks IOwnables that need validation as invalidated
+	 * Executes actions after the owner has been changed, for example making sure the owner of both halves of SecurityCraft's
+	 * doors get changed, and marks IOwnables that need validation as invalidated
 	 *
 	 * @param level The current level
 	 * @param state The IOwnable's state
@@ -55,7 +51,7 @@ public interface IOwnable {
 	 * @param player The player that changed the owner of the IOwnable
 	 */
 	default void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {
-		if(state.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF))
+		if (state.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF))
 			UniversalOwnerChangerItem.tryUpdateBlock(level, state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.above() : pos.below(), getOwner());
 
 		if (needsValidation()) {

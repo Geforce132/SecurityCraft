@@ -30,7 +30,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class PortableRadarBlock extends OwnableBlock {
-
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 	private static final VoxelShape SHAPE_UP = Block.box(5, 0, 5, 11, 7, 11);
@@ -47,9 +46,8 @@ public class PortableRadarBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
-	{
-		return switch(state.getValue(FACING)) {
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+		return switch (state.getValue(FACING)) {
 			case EAST -> SHAPE_EAST;
 			case WEST -> SHAPE_WEST;
 			case NORTH -> SHAPE_NORTH;
@@ -61,15 +59,14 @@ public class PortableRadarBlock extends OwnableBlock {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		Direction facing = ctx.getClickedFace();
 
 		return BlockUtils.isSideSolid(ctx.getLevel(), ctx.getClickedPos().relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing) : null;
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos){
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		Direction facing = state.getValue(FACING);
 
 		return BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing);
@@ -84,24 +81,24 @@ public class PortableRadarBlock extends OwnableBlock {
 	public static void togglePowerOutput(Level level, BlockPos pos, boolean shouldPower) {
 		BlockState state = level.getBlockState(pos);
 
-		if(shouldPower && !state.getValue(POWERED)){
+		if (shouldPower && !state.getValue(POWERED)) {
 			level.setBlockAndUpdate(pos, state.setValue(POWERED, true));
 			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
-		}else if(!shouldPower && state.getValue(POWERED)){
+		}
+		else if (!shouldPower && state.getValue(POWERED)) {
 			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.PORTABLE_RADAR.get(), state.getValue(PortableRadarBlock.FACING));
 		}
 	}
 
 	@Override
-	public boolean isSignalSource(BlockState state)
-	{
+	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side){
-		if(state.getValue(POWERED) && ((IModuleInventory) level.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
+	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
+		if (state.getValue(POWERED) && ((IModuleInventory) level.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
@@ -109,12 +106,11 @@ public class PortableRadarBlock extends OwnableBlock {
 
 	@Override
 	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
-		return state.getValue(POWERED) && ((IModuleInventory)level.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE) && state.getValue(FACING) == side ? 15 : 0;
+		return state.getValue(POWERED) && ((IModuleInventory) level.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE) && state.getValue(FACING) == side ? 15 : 0;
 	}
 
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
-	{
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(POWERED, FACING);
 	}
 
@@ -129,27 +125,25 @@ public class PortableRadarBlock extends OwnableBlock {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		Direction facing = state.getValue(FACING);
 
-		switch(mirror)
-		{
+		switch (mirror) {
 			case LEFT_RIGHT:
-				if(facing.getAxis() == Axis.Z)
+				if (facing.getAxis() == Axis.Z)
 					return state.setValue(FACING, facing.getOpposite());
 				break;
 			case FRONT_BACK:
-				if(facing.getAxis() == Axis.X)
+				if (facing.getAxis() == Axis.X)
 					return state.setValue(FACING, facing.getOpposite());
 				break;
-			case NONE: break;
+			case NONE:
+				break;
 		}
 
 		return state;

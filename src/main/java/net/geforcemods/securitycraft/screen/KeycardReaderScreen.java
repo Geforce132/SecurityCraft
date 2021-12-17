@@ -36,8 +36,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmlclient.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMenu>
-{
+public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
@@ -73,8 +72,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	//fixes link and set uses buttons being on for a split second when opening the container
 	private boolean firstTick = true;
 
-	public KeycardReaderScreen(KeycardReaderMenu menu, Inventory inv, Component text)
-	{
+	public KeycardReaderScreen(KeycardReaderMenu menu, Inventory inv, Component text) {
 		super(menu, inv, text);
 
 		be = menu.be;
@@ -87,8 +85,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	@Override
-	public void init()
-	{
+	public void init() {
 		super.init();
 
 		int buttonHeight = 13;
@@ -97,17 +94,16 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		int firstActiveButton = -1;
 
 		//keycard level buttons
-		for(int i = 0; i < 5; i++)
-		{
+		for (int i = 0; i < 5; i++) {
+			//@formatter:off
 			toggleButtons[i] = addRenderableWidget(new TogglePictureButton(i, leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[]{110, 88}, new int[]{219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
+				//@formatter:on
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
-				if(!isSmart)
-				{
-					for(int otherButtonId = 0; otherButtonId < 5; otherButtonId++)
-					{
+				if (!isSmart) {
+					for (int otherButtonId = 0; otherButtonId < 5; otherButtonId++) {
 						boolean active;
 
-						if(isExactLevel)
+						if (isExactLevel)
 							active = (otherButtonId == thisButton.id);
 						else
 							active = (otherButtonId >= thisButton.id);
@@ -122,11 +118,9 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
 			toggleButtons[i].active = isOwner;
 
-			if(!isSmart)
-			{
-				if(acceptedLevels[i])
-				{
-					if(firstActiveButton == -1)
+			if (!isSmart) {
+				if (acceptedLevels[i]) {
+					if (firstActiveButton == -1)
 						firstActiveButton = i;
 
 					activeButtons++;
@@ -139,8 +133,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		minusOne = addRenderableWidget(new ExtendedButton(leftPos + 68, buttonY, 12, buttonHeight, new TextComponent("-"), b -> changeSignature(signature - 1)));
 		reset = addRenderableWidget(new PictureButton(-1, leftPos + 82, buttonY, 12, buttonHeight, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(previousSignature)) {
 			@Override
-			public ResourceLocation getTextureLocation()
-			{
+			public ResourceLocation getTextureLocation() {
 				return active ? RESET_TEXTURE : RESET_INACTIVE_TEXTURE;
 			}
 		});
@@ -155,15 +148,14 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			changeSignature(signature);
 			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, true));
 
-			if(menu.keycardSlot.getItem().getHoverName().getString().equalsIgnoreCase("Zelda"))
+			if (menu.keycardSlot.getItem().getHoverName().getString().equalsIgnoreCase("Zelda"))
 				minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SCSounds.GET_ITEM.event, 1.0F, 1.25F));
 		}));
 		linkButton.active = false;
 		//button for saving the amount of limited uses onto the keycard
 		setUsesButton = addRenderableWidget(new PictureButton(-1, leftPos + 62, topPos + 106, 16, 17, RETURN_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(be.getBlockPos(), Integer.parseInt(usesTextField.getValue())))) {
 			@Override
-			public ResourceLocation getTextureLocation()
-			{
+			public ResourceLocation getTextureLocation() {
 				return active ? RETURN_TEXTURE : RETURN_INACTIVE_TEXTURE;
 			}
 		});
@@ -176,25 +168,21 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		usesHoverChecker = new TextHoverChecker(topPos + 107, topPos + 122, leftPos + 28, leftPos + 58, limitedInfo);
 
 		//add =/>= button and handle it being set to the correct state, as well as changing keycard level buttons' states if a smart module was removed
-		if(!isSmart)
-		{
-			if(activeButtons == 1)
+		if (!isSmart) {
+			if (activeButtons == 1)
 				isExactLevel = true;
-			else if(activeButtons == 0) //probably won't happen but just in case
-			{
+			else if (activeButtons == 0) {//probably won't happen but just in case
 				isExactLevel = true;
 				changeLevelState(0, true);
 			}
-			else
-			{
+			else {
 				boolean active = false;
 
 				isExactLevel = false;
 
 				//set all buttons prior to the first active button to false, and >= firstActiveButton to true
-				for(int i = 0; i < 5; i++)
-				{
-					if(i == firstActiveButton)
+				for (int i = 0; i < 5; i++) {
+					if (i == firstActiveButton)
 						active = true;
 
 					changeLevelState(i, active);
@@ -207,9 +195,8 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 				isExactLevel = !isExactLevel;
 
 				//change keycard level buttons' states based on the =/>= button's state
-				for(int i = 0; i < 5; i++)
-				{
-					if(change)
+				for (int i = 0; i < 5; i++) {
+					if (change)
 						changeLevelState(i, !isExactLevel);
 					else
 						change = acceptedLevels[i];
@@ -221,15 +208,13 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY)
-	{
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		font.draw(pose, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
 		font.draw(pose, signatureText, imageWidth / 2 - font.width(signatureText) / 2, 23, 4210752);
 		font.draw(pose, keycardLevelsText, 170 - font.width(keycardLevelsText), 56, 4210752);
 
 		//numbers infront of keycard levels buttons
-		for(int i = 1; i <= 5; i++)
-		{
+		for (int i = 1; i <= 5; i++) {
 			font.draw(pose, "" + i, 91, 55 + 17 * i, 4210752);
 		}
 
@@ -237,8 +222,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	@Override
-	public void containerTick()
-	{
+	public void containerTick() {
 		super.containerTick();
 
 		ItemStack stack = menu.keycardSlot.getItem();
@@ -252,20 +236,18 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		usesTextField.active = enabled;
 
 		//set the text of the text field to the amount of uses on the keycard
-		if(!wasActive && enabled)
+		if (!wasActive && enabled)
 			usesTextField.setValue("" + stack.getTag().getInt("uses"));
-		else if(wasActive && !enabled)
+		else if (wasActive && !enabled)
 			usesTextField.setValue("");
 
 		//fixes the buttons being active for a brief moment right after opening the screen
-		if(firstTick)
-		{
+		if (firstTick) {
 			setUsesButton.active = false;
 			linkButton.active = false;
 			firstTick = false;
 		}
-		else
-		{
+		else {
 			//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
 			setUsesButton.active = enabled && usesTextField.getValue() != null && !usesTextField.getValue().isEmpty() && !("" + stack.getTag().getInt("uses")).equals(usesTextField.getValue());
 			linkButton.active = !isEmpty && cardSignature != signature;
@@ -273,26 +255,24 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
-	{
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
 
 		ItemStack stack = menu.keycardSlot.getItem();
 
 		//if the level of the keycard currently in the slot is not enabled in the keycard reader, show a warning
-		if(!stack.isEmpty() && !acceptedLevels[((KeycardItem)stack.getItem()).getLevel()])
-		{
+		if (!stack.isEmpty() && !acceptedLevels[((KeycardItem) stack.getItem()).getLevel()]) {
 			int left = leftPos + 40;
 			int top = topPos + 60;
 
 			RenderSystem._setShaderTexture(0, WORLD_SELECTION_ICONS);
 			blit(pose, left, top, 22, 22, 70, 37, 22, 22, 256, 256);
 
-			if(mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
+			if (mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
 				renderComponentTooltip(pose, Arrays.asList(levelMismatchInfo), mouseX, mouseY);
 		}
 
-		if(!usesTextField.active && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
+		if (!usesTextField.active && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
 			renderComponentTooltip(pose, usesHoverChecker.getLines(), mouseX, mouseY);
 
 		renderTooltip(pose, mouseX, mouseY);
@@ -300,8 +280,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY)
-	{
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
@@ -309,21 +288,18 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double delta)
-	{
-		if(isOwner && mouseX >= leftPos + signatureTextStartX && mouseY >= topPos + 23 && mouseX <= leftPos + signatureTextStartX + signatureTextLength && mouseY <= topPos + 43)
-			changeSignature(signature + (int)Math.signum(delta));
+	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+		if (isOwner && mouseX >= leftPos + signatureTextStartX && mouseY >= topPos + 23 && mouseX <= leftPos + signatureTextStartX + signatureTextLength && mouseY <= topPos + 43)
+			changeSignature(signature + (int) Math.signum(delta));
 
 		return super.mouseScrolled(mouseX, mouseY, delta);
 	}
 
 	@Override
-	public void removed()
-	{
+	public void removed() {
 		super.removed();
 
-		if(isOwner)
-		{
+		if (isOwner) {
 			//write new data to client te and send that data to the server, which verifies and updates it on its side
 			be.setAcceptedLevels(acceptedLevels);
 			be.setSignature(signature);
@@ -331,12 +307,11 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		}
 	}
 
-	public void changeSignature(int newSignature)
-	{
+	public void changeSignature(int newSignature) {
 		boolean enablePlusButtons;
 		boolean enableMinusButtons;
 
-		if(isOwner)
+		if (isOwner)
 			signature = Math.max(0, Math.min(newSignature, Short.MAX_VALUE)); //keep between 0 and 32767 (disallow negative numbers)
 
 		signatureText = new TranslatableComponent("gui.securitycraft:keycard_reader.signature", StringUtils.leftPad("" + signature, 5, "0"));
@@ -353,12 +328,10 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		plusThree.active = enablePlusButtons;
 	}
 
-	public void changeLevelState(int i, boolean active)
-	{
-		if(isOwner)
-		{
+	public void changeLevelState(int i, boolean active) {
+		if (isOwner)
 			toggleButtons[i].setCurrentIndex(active ? 1 : 0);
-			acceptedLevels[i] = active;
-		}
+
+		acceptedLevels[i] = active;
 	}
 }

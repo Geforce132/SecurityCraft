@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SetTrophySystemTarget {
-
 	private BlockPos trophyPos;
 	private int targetID;
 
@@ -39,7 +38,7 @@ public class SetTrophySystemTarget {
 		ctx.get().enqueueWork(() -> {
 			BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(message.trophyPos);
 
-			if(blockEntity instanceof TrophySystemBlockEntity be && Minecraft.getInstance().level.getEntity(message.targetID) instanceof Projectile projectile)
+			if (blockEntity instanceof TrophySystemBlockEntity be && Minecraft.getInstance().level.getEntity(message.targetID) instanceof Projectile projectile)
 				be.setTarget(projectile);
 		});
 

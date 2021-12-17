@@ -16,18 +16,19 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 
 /**
- * This mixin makes sure that chunks near cameras are properly sent to the player viewing it, as well as fixing block updates not getting sent to chunks loaded by cameras
+ * This mixin makes sure that chunks near cameras are properly sent to the player viewing it, as well as fixing block updates
+ * not getting sent to chunks loaded by cameras
  */
 @Mixin(ChunkMap.class)
 public abstract class ChunkMapMixin {
 	@Shadow
 	int viewDistance;
-
 	@Shadow
 	protected abstract void updateChunkTracking(ServerPlayer player, ChunkPos chunkPos, Packet<?>[] packetCache, boolean wasLoaded, boolean load);
 
 	/**
-	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance checking method
+	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance
+	 * checking method
 	 */
 	@Redirect(method = "checkerboardDistance(Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/server/level/ServerPlayer;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"))
 	private static SectionPos getCameraSectionPos(ServerPlayer player) {
@@ -44,10 +45,10 @@ public abstract class ChunkMapMixin {
 	private void trackCameraLoadedChunks(ServerPlayer player, CallbackInfo callback) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SectionPos pos = SectionPos.of(player.getCamera());
-			SecurityCamera camera = ((SecurityCamera)player.getCamera());
+			SecurityCamera camera = ((SecurityCamera) player.getCamera());
 
-			for(int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
-				for(int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
+			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
+				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
 					ChunkPos chunkPos = new ChunkPos(i, j);
 
 					updateChunkTracking(player, chunkPos, new Packet[2], camera.hasLoadedChunks(), true);

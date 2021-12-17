@@ -9,31 +9,27 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class CheckPassword {
-
 	private String password;
 	private int x, y, z;
 
-	public CheckPassword(){
-
+	public CheckPassword() {
 	}
 
-	public CheckPassword(int x, int y, int z, String code){
+	public CheckPassword(int x, int y, int z, String code) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		password = code;
 	}
 
-	public static void encode(CheckPassword message, FriendlyByteBuf buf)
-	{
+	public static void encode(CheckPassword message, FriendlyByteBuf buf) {
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
 		buf.writeInt(message.z);
 		buf.writeUtf(message.password);
 	}
 
-	public static CheckPassword decode(FriendlyByteBuf buf)
-	{
+	public static CheckPassword decode(FriendlyByteBuf buf) {
 		CheckPassword message = new CheckPassword();
 
 		message.x = buf.readInt();
@@ -43,15 +39,13 @@ public class CheckPassword {
 		return message;
 	}
 
-	public static void onMessage(CheckPassword message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(CheckPassword message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			String password = message.password;
 			ServerPlayer player = ctx.get().getSender();
 
-			if(player.level.getBlockEntity(pos) instanceof IPasswordProtected be && be.getPassword().equals(password))
-			{
+			if (player.level.getBlockEntity(pos) instanceof IPasswordProtected be && be.getPassword().equals(password)) {
 				player.closeContainer();
 				be.activate(player);
 			}

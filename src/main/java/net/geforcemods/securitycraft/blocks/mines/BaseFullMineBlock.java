@@ -26,7 +26,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
-
 	private final Block blockDisguisedAs;
 
 	public BaseFullMineBlock(Block.Properties properties, Block disguisedBlock) {
@@ -35,19 +34,15 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext)
-	{
-		if(collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent())
-		{
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
+		if (collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent()) {
 			Entity entity = ctx.getEntity().get();
 
-			if(entity instanceof ItemEntity)
+			if (entity instanceof ItemEntity)
 				return Shapes.block();
-			else if(entity instanceof Player player)
-			{
-				if(level.getBlockEntity(pos) instanceof OwnableBlockEntity ownableTe)
-				{
-					if(ownableTe.getOwner().isOwner(player))
+			else if (entity instanceof Player player) {
+				if (level.getBlockEntity(pos) instanceof OwnableBlockEntity ownableTe) {
+					if (ownableTe.getOwner().isOwner(player))
 						return Shapes.block();
 				}
 			}
@@ -59,16 +54,15 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity){
-		if(!EntityUtils.doesEntityOwn(entity, level, pos))
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if (!EntityUtils.doesEntityOwn(entity, level, pos))
 			explode(level, pos);
 	}
 
 	@Override
-	public void wasExploded(Level level, BlockPos pos, Explosion explosion){
-		if (!level.isClientSide)
-		{
-			if(pos.equals(new BlockPos(explosion.getPosition())))
+	public void wasExploded(Level level, BlockPos pos, Explosion explosion) {
+		if (!level.isClientSide) {
+			if (pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
 			explode(level, pos);
@@ -76,11 +70,11 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid){
-		if(!level.isClientSide)
-			if(player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
+	public boolean removedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+		if (!level.isClientSide)
+			if (player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
-			else if(!EntityUtils.doesPlayerOwn(player, level, pos)){
+			else if (!EntityUtils.doesPlayerOwn(player, level, pos)) {
 				explode(level, pos);
 				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
 			}
@@ -89,14 +83,12 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	}
 
 	@Override
-	public boolean activateMine(Level level, BlockPos pos)
-	{
+	public boolean activateMine(Level level, BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean defuseMine(Level level, BlockPos pos)
-	{
+	public boolean defuseMine(Level level, BlockPos pos) {
 		return false;
 	}
 
@@ -109,7 +101,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	}
 
 	@Override
-	public boolean dropFromExplosion(Explosion explosion){
+	public boolean dropFromExplosion(Explosion explosion) {
 		return false;
 	}
 
@@ -151,8 +143,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 		return new ItemStack(blockDisguisedAs);
 	}
 
-	public Block getBlockDisguisedAs()
-	{
+	public Block getBlockDisguisedAs() {
 		return blockDisguisedAs;
 	}
 }

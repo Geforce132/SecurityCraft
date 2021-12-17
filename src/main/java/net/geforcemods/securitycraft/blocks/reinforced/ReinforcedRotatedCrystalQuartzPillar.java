@@ -14,16 +14,13 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ReinforcedRotatedCrystalQuartzPillar extends ReinforcedRotatedPillarBlock implements IBlockPocket
-{
-	public ReinforcedRotatedCrystalQuartzPillar(Block.Properties properties, Supplier<Block> vB)
-	{
+public class ReinforcedRotatedCrystalQuartzPillar extends ReinforcedRotatedPillarBlock implements IBlockPocket {
+	public ReinforcedRotatedCrystalQuartzPillar(Block.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new BlockPocketBlockEntity(pos, state);
 	}
 

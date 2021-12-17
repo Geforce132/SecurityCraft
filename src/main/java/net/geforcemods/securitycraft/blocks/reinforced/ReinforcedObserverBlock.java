@@ -17,41 +17,34 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock, EntityBlock
-{
-	public ReinforcedObserverBlock(Block.Properties properties)
-	{
+public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock, EntityBlock {
+	public ReinforcedObserverBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, Direction side)
-	{
+	public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
 		return side == state.getValue(ObserverBlock.FACING);
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return Blocks.OBSERVER;
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return defaultBlockState().setValue(FACING, vanillaState.getValue(FACING)).setValue(POWERED, vanillaState.getValue(POWERED));
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof Player player)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new OwnableBlockEntity(pos, state);
 	}
 }

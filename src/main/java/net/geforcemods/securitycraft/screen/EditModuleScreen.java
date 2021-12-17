@@ -31,8 +31,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ScrollPanel;
 
 @OnlyIn(Dist.CLIENT)
-public class EditModuleScreen extends Screen
-{
+public class EditModuleScreen extends Screen {
 	private static CompoundTag savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
 	private final TranslatableComponent editModule = Utils.localize("gui.securitycraft:editModule");
@@ -43,22 +42,20 @@ public class EditModuleScreen extends Screen
 	private PlayerList playerList;
 	private int guiLeft;
 
-	public EditModuleScreen(ItemStack item)
-	{
+	public EditModuleScreen(ItemStack item) {
 		super(new TranslatableComponent(item.getDescriptionId()));
 
 		module = item;
 	}
 
 	@Override
-	public void init()
-	{
+	public void init() {
 		super.init();
 
 		guiLeft = (width - xSize) / 2;
 
 		int guiTop = (height - ySize) / 2;
-		int controlsStartX = (int)(guiLeft + xSize * (3.0F / 4.0F)) - 43;
+		int controlsStartX = (int) (guiLeft + xSize * (3.0F / 4.0F)) - 43;
 		TranslatableComponent checkboxText = Utils.localize("gui.securitycraft:editModule.affectEveryone");
 		int length = font.width(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
 
@@ -91,16 +88,12 @@ public class EditModuleScreen extends Screen
 		inputField.setMaxLength(16);
 		inputField.setFilter(s -> !s.contains(" "));
 		inputField.setResponder(s -> {
-			if(s.isEmpty())
+			if (s.isEmpty())
 				addButton.active = false;
-			else
-			{
-				if(module.hasTag())
-				{
-					for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
-					{
-						if(s.equals(module.getTag().getString("Player" + i)))
-						{
+			else {
+				if (module.hasTag()) {
+					for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
+						if (s.equals(module.getTag().getString("Player" + i))) {
 							addButton.active = false;
 							removeButton.active = true;
 							playerList.setSelectedIndex(i - 1);
@@ -119,15 +112,15 @@ public class EditModuleScreen extends Screen
 	}
 
 	@Override
-	public void removed(){
+	public void removed() {
 		super.removed();
 
-		if(minecraft != null)
+		if (minecraft != null)
 			minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks){
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 
@@ -140,45 +133,39 @@ public class EditModuleScreen extends Screen
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button)
-	{
-		if(playerList != null)
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (playerList != null)
 			playerList.mouseClicked(mouseX, mouseY, button);
 
 		return super.mouseClicked(mouseX, mouseY, button);
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button)
-	{
-		if(playerList != null)
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		if (playerList != null)
 			playerList.mouseReleased(mouseX, mouseY, button);
 
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY)
-	{
-		if(playerList != null)
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+		if (playerList != null)
 			playerList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
-	protected void actionPerformed(IdButton button){
-		if(button.id == addButton.id)
-		{
-			if(inputField.getValue().isEmpty())
+	protected void actionPerformed(IdButton button) {
+		if (button.id == addButton.id) {
+			if (inputField.getValue().isEmpty())
 				return;
 
-			if(module.getTag() == null)
+			if (module.getTag() == null)
 				module.setTag(new CompoundTag());
 
-			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
-			{
-				if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getValue()))
-				{
+			for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
+				if (module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getValue())) {
 					if (i == 9)
 						addButton.active = false;
 
@@ -188,23 +175,20 @@ public class EditModuleScreen extends Screen
 
 			module.getTag().putString("Player" + getNextFreeSlot(module.getTag()), inputField.getValue());
 
-			if(module.getTag() != null && module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS))
+			if (module.getTag() != null && module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS))
 				addButton.active = false;
 
 			inputField.setValue("");
 		}
-		else if(button.id == removeButton.id)
-		{
-			if(inputField.getValue().isEmpty())
+		else if (button.id == removeButton.id) {
+			if (inputField.getValue().isEmpty())
 				return;
 
-			if(module.getTag() == null)
+			if (module.getTag() == null)
 				module.setTag(new CompoundTag());
 
-			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
-			{
-				if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getValue()))
-				{
+			for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
+				if (module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getValue())) {
 					module.getTag().remove("Player" + i);
 					defragmentTag(module.getTag());
 				}
@@ -212,22 +196,21 @@ public class EditModuleScreen extends Screen
 
 			inputField.setValue("");
 		}
-		else if(button.id == copyButton.id)
-		{
+		else if (button.id == copyButton.id) {
 			savedModule = module.getTag().copy();
 			copyButton.active = false;
 			return;
 		}
-		else if(button.id == pasteButton.id)
+		else if (button.id == pasteButton.id)
 			module.setTag(savedModule.copy());
-		else if(button.id == clearButton.id)
-		{
+		else if (button.id == clearButton.id) {
 			module.setTag(new CompoundTag());
 			inputField.setValue("");
 		}
-		else return;
+		else
+			return;
 
-		if(module.getTag() != null)
+		if (module.getTag() != null)
 			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 
 		addButton.active = module.getTag() != null && !module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getValue().isEmpty();
@@ -238,25 +221,21 @@ public class EditModuleScreen extends Screen
 	}
 
 	private int getNextFreeSlot(CompoundTag tag) {
-		for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
-		{
-			if(!tag.contains("Player" + i) || tag.getString("Player" + i).isEmpty())
+		for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
+			if (!tag.contains("Player" + i) || tag.getString("Player" + i).isEmpty())
 				return i;
 		}
 
 		return 0;
 	}
 
-	private void defragmentTag(CompoundTag tag)
-	{
+	private void defragmentTag(CompoundTag tag) {
 		Deque<Integer> freeIndices = new ArrayDeque<>();
 
-		for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
-		{
-			if(!tag.contains("Player" + i) || tag.getString("Player" + i).isEmpty())
+		for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
+			if (!tag.contains("Player" + i) || tag.getString("Player" + i).isEmpty())
 				freeIndices.add(i);
-			else if(!freeIndices.isEmpty())
-			{
+			else if (!freeIndices.isEmpty()) {
 				String player = tag.getString("Player" + i);
 				int nextFreeIndex = freeIndices.poll();
 
@@ -267,36 +246,30 @@ public class EditModuleScreen extends Screen
 		}
 	}
 
-	class PlayerList extends ScrollPanel
-	{
+	class PlayerList extends ScrollPanel {
 		private final int slotHeight = 12, listLength = ModuleItem.MAX_PLAYERS;
 		private int selectedIndex = -1;
 
-		public PlayerList(Minecraft client, int width, int height, int top, int left)
-		{
+		public PlayerList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left);
 		}
 
 		@Override
-		protected int getContentHeight()
-		{
+		protected int getContentHeight() {
 			int height = 50 + (listLength * font.lineHeight);
 
-			if(height < bottom - top - 8)
+			if (height < bottom - top - 8)
 				height = bottom - top - 8;
 
 			return height;
 		}
 
 		@Override
-		public boolean mouseClicked(double mouseX, double mouseY, int button)
-		{
-			if(isMouseOver(mouseX, mouseY) && mouseX < left + width - 6)
-			{
-				int clickedIndex = ((int)(mouseY - top + scrollDistance - border)) / slotHeight;
+		public boolean mouseClicked(double mouseX, double mouseY, int button) {
+			if (isMouseOver(mouseX, mouseY) && mouseX < left + width - 6) {
+				int clickedIndex = ((int) (mouseY - top + scrollDistance - border)) / slotHeight;
 
-				if(module.hasTag() && module.getTag().contains("Player" + (clickedIndex + 1)))
-				{
+				if (module.hasTag() && module.getTag().contains("Player" + (clickedIndex + 1))) {
 					selectedIndex = clickedIndex;
 					inputField.setValue(module.getTag().getString("Player" + (clickedIndex + 1)));
 				}
@@ -306,40 +279,35 @@ public class EditModuleScreen extends Screen
 		}
 
 		@Override
-		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY)
-		{
-			if(module.hasTag())
-			{
+		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
+			if (module.hasTag()) {
 				CompoundTag tag = module.getTag();
-				int baseY = top + border - (int)scrollDistance;
-				int mouseListY = (int)(mouseY - top + scrollDistance - border);
+				int baseY = top + border - (int) scrollDistance;
+				int mouseListY = (int) (mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / slotHeight;
 
 				//highlight hovered slot
-				if(slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
-				{
-					if(tag.contains("Player" + (slotIndex + 1)) && !tag.getString("Player" + (slotIndex + 1)).isEmpty())
+				if (slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+					if (tag.contains("Player" + (slotIndex + 1)) && !tag.getString("Player" + (slotIndex + 1)).isEmpty())
 						renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + slotIndex * slotHeight, slotHeight - 4, 0x80);
 				}
-				if(selectedIndex >= 0)
+
+				if (selectedIndex >= 0)
 					renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + selectedIndex * slotHeight, slotHeight - 4, 0xFF);
 
 				//draw entry strings
-				for(int i = 0; i < ModuleItem.MAX_PLAYERS; i++)
-				{
-					if(tag.contains("Player" + (i + 1)))
-					{
+				for (int i = 0; i < ModuleItem.MAX_PLAYERS; i++) {
+					if (tag.contains("Player" + (i + 1))) {
 						String name = tag.getString("Player" + (i + 1));
 
-						if(!name.isEmpty())
+						if (!name.isEmpty())
 							font.draw(pose, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 					}
 				}
 			}
 		}
 
-		private void renderBox(BufferBuilder bufferBuilder, int min, int max, int slotTop, int slotBuffer, int borderColor)
-		{
+		private void renderBox(BufferBuilder bufferBuilder, int min, int max, int slotTop, int slotBuffer, int borderColor) {
 			RenderSystem.enableBlend();
 			RenderSystem.disableTexture();
 			RenderSystem.defaultBlendFunc();
@@ -358,8 +326,7 @@ public class EditModuleScreen extends Screen
 			RenderSystem.disableBlend();
 		}
 
-		public void setSelectedIndex(int selectedIndex)
-		{
+		public void setSelectedIndex(int selectedIndex) {
 			this.selectedIndex = selectedIndex;
 		}
 

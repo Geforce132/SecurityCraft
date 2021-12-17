@@ -15,25 +15,21 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IOwnable, IModuleInventory
-{
+public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IOwnable, IModuleInventory {
 	private NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
 
-	public ReinforcedHopperBlockEntity(BlockPos pos, BlockState state)
-	{
+	public ReinforcedHopperBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);
 	}
 
 	@Override
-	public BlockEntityType<?> getType()
-	{
+	public BlockEntityType<?> getType() {
 		return SCContent.beTypeReinforcedHopper;
 	}
 
 	@Override
-	public void load(CompoundTag tag)
-	{
+	public void load(CompoundTag tag) {
 		super.load(tag);
 
 		owner.load(tag);
@@ -41,76 +37,65 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag)
-	{
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 
-		if(owner != null)
-		{
+		if (owner != null)
 			owner.save(tag, false);
-		}
 
 		writeModuleInventory(tag);
 		return tag;
 	}
 
 	@Override
-	public CompoundTag getUpdateTag()
-	{
+	public CompoundTag getUpdateTag() {
 		return save(new CompoundTag());
 	}
 
 	@Override
-	public ClientboundBlockEntityDataPacket getUpdatePacket()
-	{
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
 		return new ClientboundBlockEntityDataPacket(worldPosition, 1, getUpdateTag());
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet)
-	{
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
 		load(packet.getTag());
 	}
 
 	@Override
-	public Owner getOwner()
-	{
+	public Owner getOwner() {
 		return owner;
 	}
 
 	@Override
-	public void setOwner(String uuid, String name)
-	{
+	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
 	}
 
 	@Override
-	public boolean enableHack()
-	{
+	public boolean enableHack() {
 		return true;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot)
-	{
+	public ItemStack getStackInSlot(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : super.getItem(slot);
 	}
 
 	@Override
-	public ItemStack getItem(int slot)
-	{
+	public ItemStack getItem(int slot) {
 		return getStackInSlot(slot);
 	}
 
 	@Override
-	public ModuleType[] acceptedModules()
-	{
-		return new ModuleType[] {ModuleType.ALLOWLIST};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
-	public NonNullList<ItemStack> getInventory()
-	{
+	public NonNullList<ItemStack> getInventory() {
 		return modules;
 	}
 }

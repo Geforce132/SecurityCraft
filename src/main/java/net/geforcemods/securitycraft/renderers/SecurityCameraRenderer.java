@@ -24,7 +24,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCameraBlockEntity> {
-
 	private static final Quaternion POSITIVE_Y_180 = Vector3f.YP.rotationDegrees(180.0F);
 	private static final Quaternion POSITIVE_Y_90 = Vector3f.YP.rotationDegrees(90.0F);
 	private static final Quaternion NEGATIVE_Y_90 = Vector3f.YN.rotationDegrees(90.0F);
@@ -33,38 +32,34 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 	private static final ResourceLocation BEING_VIEWED_TEXTURE = new ResourceLocation("securitycraft:textures/block/security_camera_viewing.png");
 	private final SecurityCameraModel model;
 
-	public SecurityCameraRenderer(BlockEntityRendererProvider.Context ctx)
-	{
+	public SecurityCameraRenderer(BlockEntityRendererProvider.Context ctx) {
 		model = new SecurityCameraModel(ctx.bakeLayer(ClientHandler.SECURITY_CAMERA_LOCATION));
 	}
 
 	@Override
-	public void render(SecurityCameraBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay)
-	{
-		if(be.down || (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos())))
+	public void render(SecurityCameraBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+		if (be.down || (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos())))
 			return;
 
 		pose.translate(0.5D, 1.5D, 0.5D);
 
-		if(be.hasLevel())
-		{
+		if (be.hasLevel()) {
 			BlockState state = be.getLevel().getBlockState(be.getBlockPos());
 
-			if(state.getBlock() == SCContent.SECURITY_CAMERA.get())
-			{
+			if (state.getBlock() == SCContent.SECURITY_CAMERA.get()) {
 				Direction side = state.getValue(SecurityCameraBlock.FACING);
 
-				if(side == Direction.NORTH)
+				if (side == Direction.NORTH)
 					pose.mulPose(POSITIVE_Y_180);
-				else if(side == Direction.EAST)
+				else if (side == Direction.EAST)
 					pose.mulPose(POSITIVE_Y_90);
-				else if(side == Direction.WEST)
+				else if (side == Direction.WEST)
 					pose.mulPose(NEGATIVE_Y_90);
 			}
 		}
 
 		pose.mulPose(POSITIVE_X_180);
-		model.cameraRotationPoint.yRot = (float)be.cameraRotation;
+		model.cameraRotationPoint.yRot = (float) be.cameraRotation;
 		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

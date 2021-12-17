@@ -30,7 +30,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.client.gui.ScrollPanel;
 
 public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
-
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	private final TranslatableComponent projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
@@ -45,16 +44,17 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 	public TrophySystemScreen(GenericTEMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 
-		be = (TrophySystemBlockEntity)menu.be;
+		be = (TrophySystemBlockEntity) menu.be;
 		isSmart = be.hasModule(ModuleType.SMART);
 		orderedFilterList = new ArrayList<>(be.getFilters().keySet());
 		orderedFilterList.sort((e1, e2) -> {
 			//the entry for modded projectiles always shows at the bottom of the list
-			if(e1 == EntityType.PIG)
+			if (e1 == EntityType.PIG)
 				return 1;
-			else if(e2 == EntityType.PIG)
+			else if (e2 == EntityType.PIG)
 				return -1;
-			else return e1.getDescription().getString().compareTo(e2.getDescription().getString());
+			else
+				return e1.getDescription().getString().compareTo(e2.getDescription().getString());
 		});
 	}
 
@@ -72,8 +72,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
-	{
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
 
 		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, toggle, moduleRequired, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
@@ -91,29 +90,25 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY)
-	{
-		if(projectileList != null)
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+		if (projectileList != null)
 			projectileList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
-	class ProjectileScrollList extends ScrollPanel
-	{
+	class ProjectileScrollList extends ScrollPanel {
 		private final int slotHeight = 12, listLength = orderedFilterList.size();
 
-		public ProjectileScrollList(Minecraft client, int width, int height, int top, int left)
-		{
+		public ProjectileScrollList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left);
 		}
 
 		@Override
-		protected int getContentHeight()
-		{
+		protected int getContentHeight() {
 			int height = 50 + (listLength * font.lineHeight);
 
-			if(height < bottom - top - 8)
+			if (height < bottom - top - 8)
 				height = bottom - top - 8;
 
 			return height;
@@ -121,9 +116,9 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 
 		@Override
 		protected boolean clickPanel(double mouseX, double mouseY, int button) {
-			int slotIndex = (int)(mouseY + (border / 2)) / slotHeight;
+			int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
 
-			if(isSmart && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
+			if (isSmart && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
 				be.toggleFilter(orderedFilterList.get(slotIndex));
 				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 				return true;
@@ -133,15 +128,14 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 		}
 
 		@Override
-		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
-		{
-			int baseY = top + border - (int)scrollDistance;
+		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
+			int baseY = top + border - (int) scrollDistance;
 			int slotBuffer = slotHeight - 4;
-			int mouseListY = (int)(mouseY - top + scrollDistance - (border / 2));
+			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
 			int slotIndex = mouseListY / slotHeight;
 
 			//highlight hovered slot
-			if(isSmart && mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+			if (isSmart && mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
 				int min = left;
 				int max = entryRight - 6; //6 is the width of the scrollbar
 				int slotTop = baseY + slotIndex * slotHeight;
@@ -168,7 +162,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericTEMenu> {
 			int i = 0;
 
 			//draw entry strings and indicators whether the filter is enabled
-			for(EntityType<?> projectileType : orderedFilterList) {
+			for (EntityType<?> projectileType : orderedFilterList) {
 				Component projectileName = projectileType == EntityType.PIG ? moddedProjectiles : projectileType.getDescription();
 				int yStart = relativeY + (slotHeight * i);
 

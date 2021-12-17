@@ -25,14 +25,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BriefcaseItem extends Item implements DyeableLeatherItem {
-	public BriefcaseItem(Item.Properties properties)
-	{
+	public BriefcaseItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public InteractionResult useOn(UseOnContext ctx)
-	{
+	public InteractionResult useOn(UseOnContext ctx) {
 		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getHand());
 	}
 
@@ -49,15 +47,14 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 		return InteractionResultHolder.consume(stack);
 	}
 
-	private void handle(ItemStack stack, Level level, Player player, InteractionHand hand)
-	{
-		if(level.isClientSide) {
-			if(!stack.hasTag()) {
+	private void handle(ItemStack stack, Level level, Player player, InteractionHand hand) {
+		if (level.isClientSide) {
+			if (!stack.hasTag()) {
 				stack.setTag(new CompoundTag());
 				ClientUtils.syncItemNBT(stack);
 			}
 
-			if(!stack.getTag().contains("passcode"))
+			if (!stack.getTag().contains("passcode"))
 				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcaseSetup.getRegistryName(), stack.getHoverName()));
 			else
 				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcase.getRegistryName(), stack.getHoverName()));
@@ -69,12 +66,12 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	public void appendHoverText(ItemStack briefcase, Level level, List<Component> tooltip, TooltipFlag flag) {
 		String ownerName = getOwnerName(briefcase);
 
-		if(!ownerName.isEmpty())
+		if (!ownerName.isEmpty())
 			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(Utils.GRAY_STYLE));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, Player player) {
-		if(!briefcase.hasTag())
+		if (!briefcase.hasTag())
 			return true;
 
 		String ownerName = getOwnerName(briefcase);
@@ -83,13 +80,11 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 		return ownerName.isEmpty() || ownerUUID.equals(player.getUUID().toString()) || (ownerUUID.equals("ownerUUID") && ownerName.equals(player.getName().getString()));
 	}
 
-	public static String getOwnerName(ItemStack briefcase)
-	{
+	public static String getOwnerName(ItemStack briefcase) {
 		return briefcase.hasTag() ? briefcase.getTag().getString("owner") : "";
 	}
 
-	public static String getOwnerUUID(ItemStack briefcase)
-	{
+	public static String getOwnerUUID(ItemStack briefcase) {
 		return briefcase.hasTag() ? briefcase.getTag().getString("ownerUUID") : "";
 	}
 }

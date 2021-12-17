@@ -25,27 +25,23 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinforcedBlock, EntityBlock {
-
 	public ReinforcedIronTrapDoorBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighbor, boolean flag)
-	{
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighbor, boolean flag) {
 		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos);
 
-		if(hasActiveSCBlock != state.getValue(OPEN))
-		{
+		if (hasActiveSCBlock != state.getValue(OPEN)) {
 			level.setBlock(pos, state.setValue(OPEN, hasActiveSCBlock), 2);
-			playSound((Player)null, level, pos, hasActiveSCBlock);
+			playSound((Player) null, level, pos, hasActiveSCBlock);
 		}
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof Player player)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
@@ -55,37 +51,32 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinf
 		FluidState fluidState = ctx.getLevel().getFluidState(ctx.getClickedPos());
 		Direction direction = ctx.getClickedFace();
 
-		if (!ctx.replacingClickedOnBlock() && direction.getAxis().isHorizontal()) {
+		if (!ctx.replacingClickedOnBlock() && direction.getAxis().isHorizontal())
 			state = state.setValue(FACING, direction).setValue(HALF, ctx.getClickLocation().y - ctx.getClickedPos().getY() > 0.5D ? Half.TOP : Half.BOTTOM);
-		} else {
+		else
 			state = state.setValue(FACING, ctx.getHorizontalDirection().getOpposite()).setValue(HALF, direction == Direction.UP ? Half.BOTTOM : Half.TOP);
-		}
 
-		if (BlockUtils.hasActiveSCBlockNextTo(ctx.getLevel(), ctx.getClickedPos())) {
+		if (BlockUtils.hasActiveSCBlockNextTo(ctx.getLevel(), ctx.getClickedPos()))
 			state = state.setValue(OPEN, true).setValue(POWERED, true);
-		}
 
 		return state.setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
-	{
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		return InteractionResult.FAIL;
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
-	{
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		super.onRemove(state, level, pos, newState, isMoving);
 
-		if(!(newState.getBlock() instanceof ReinforcedIronTrapDoorBlock))
+		if (!(newState.getBlock() instanceof ReinforcedIronTrapDoorBlock))
 			level.removeBlockEntity(pos);
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param)
-	{
+	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
 		super.triggerEvent(state, level, pos, id, param);
 		BlockEntity blockEntity = level.getBlockEntity(pos);
 		return blockEntity == null ? false : blockEntity.triggerEvent(id, param);
@@ -97,14 +88,12 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinf
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return Blocks.IRON_TRAPDOOR;
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return defaultBlockState().setValue(FACING, vanillaState.getValue(FACING)).setValue(OPEN, false).setValue(HALF, vanillaState.getValue(HALF)).setValue(POWERED, false).setValue(WATERLOGGED, vanillaState.getValue(WATERLOGGED));
 	}
 }

@@ -11,44 +11,37 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements BeaconBeamBlock
-{
+public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements BeaconBeamBlock {
 	private final DyeColor color;
 
-	public ReinforcedStainedGlassBlock(Block.Properties properties, DyeColor color, Block vB)
-	{
+	public ReinforcedStainedGlassBlock(Block.Properties properties, DyeColor color, Block vB) {
 		super(properties, vB);
 		this.color = color;
 	}
 
 	@Override
-	public float[] getBeaconColorMultiplier(BlockState state, LevelReader level, BlockPos pos, BlockPos beaconPos)
-	{
+	public float[] getBeaconColorMultiplier(BlockState state, LevelReader level, BlockPos pos, BlockPos beaconPos) {
 		return color.getTextureDiffuseColors();
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos)
-	{
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public DyeColor getColor()
-	{
+	public DyeColor getColor() {
 		return color;
 	}
 
 	@Override
-	public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
-	{
+	public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
 		return 1.0F;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side)
-	{
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 	}
 }

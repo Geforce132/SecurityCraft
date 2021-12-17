@@ -18,17 +18,15 @@ import net.minecraft.world.level.levelgen.feature.NetherForestVegetationFeature;
 import net.minecraft.world.level.levelgen.feature.TwistingVinesFeature;
 import net.minecraft.world.level.lighting.LayerLightEngine;
 
-public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements BonemealableBlock
-{
+public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements BonemealableBlock {
 	public ReinforcedNyliumBlock(Block.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
-		if (!hasLightAbove(state, level, pos)) {
+		if (!hasLightAbove(state, level, pos))
 			level.setBlockAndUpdate(pos, Blocks.NETHERRACK.defaultBlockState());
-		}
 	}
 
 	private static boolean hasLightAbove(BlockState state, LevelReader level, BlockPos pos) {
@@ -53,16 +51,14 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements Boneme
 		BlockState state = level.getBlockState(pos);
 		BlockPos upperPos = pos.above();
 
-		if (state.is(SCContent.REINFORCED_CRIMSON_NYLIUM.get())) {
+		if (state.is(SCContent.REINFORCED_CRIMSON_NYLIUM.get()))
 			NetherForestVegetationFeature.place(level, random, upperPos, Features.Configs.CRIMSON_FOREST_CONFIG, 3, 1);
-		}
 		else if (state.is(SCContent.REINFORCED_WARPED_NYLIUM.get())) {
 			NetherForestVegetationFeature.place(level, random, upperPos, Features.Configs.WARPED_FOREST_CONFIG, 3, 1);
 			NetherForestVegetationFeature.place(level, random, upperPos, Features.Configs.NETHER_SPROUTS_CONFIG, 3, 1);
 
-			if (random.nextInt(8) == 0) {
+			if (random.nextInt(8) == 0)
 				TwistingVinesFeature.place(level, random, upperPos, 3, 1, 2);
-			}
 		}
 	}
 }

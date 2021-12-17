@@ -13,12 +13,10 @@ import net.minecraft.client.Options;
  * Disallows players from pressing F5 (by default) to change to third person while viewing a camera
  */
 @Mixin(Minecraft.class)
-public class MinecraftMixin
-{
-	@Redirect(method="handleKeybinds", at=@At(value="INVOKE", target="Lnet/minecraft/client/Options;setCameraType(Lnet/minecraft/client/CameraType;)V"))
-	private void handleKeybinds(Options options, CameraType newType)
-	{
-		if(!ClientHandler.isPlayerMountedOnCamera())
+public class MinecraftMixin {
+	@Redirect(method = "handleKeybinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Options;setCameraType(Lnet/minecraft/client/CameraType;)V"))
+	private void handleKeybinds(Options options, CameraType newType) {
+		if (!ClientHandler.isPlayerMountedOnCamera())
 			options.setCameraType(newType);
 	}
 }

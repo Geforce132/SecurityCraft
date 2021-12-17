@@ -62,7 +62,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		boolean isNotOpen = !state.getValue(OPEN);
 		boolean isHingeRight = state.getValue(HINGE) == DoorHingeSide.RIGHT;
 
-		switch(facing) {
+		switch (facing) {
 			case EAST:
 			default:
 				return isNotOpen ? EAST_AABB : (isHingeRight ? NORTH_AABB : SOUTH_AABB);
@@ -79,11 +79,10 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
 		DoubleBlockHalf doorHalf = state.getValue(HALF);
 
-		if (facing.getAxis() == Direction.Axis.Y && doorHalf == DoubleBlockHalf.LOWER == (facing == Direction.UP)) {
+		if (facing.getAxis() == Direction.Axis.Y && doorHalf == DoubleBlockHalf.LOWER == (facing == Direction.UP))
 			return facingState.getBlock() == this && facingState.getValue(HALF) != doorHalf ? state.setValue(FACING, facingState.getValue(FACING)).setValue(OPEN, facingState.getValue(OPEN)).setValue(HINGE, facingState.getValue(HINGE)) : Blocks.AIR.defaultBlockState();
-		} else {
+		else
 			return doorHalf == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
-		}
 	}
 
 	@Override
@@ -112,7 +111,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 	@Override
 	public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
-		return switch(type) {
+		return switch (type) {
 			case LAND -> state.getValue(OPEN);
 			case AIR -> state.getValue(OPEN);
 			default -> false;
@@ -129,18 +128,17 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			boolean hasNeighborSignal = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
 			return defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(HINGE, getHingeSide(context)).setValue(OPEN, hasNeighborSignal).setValue(HALF, DoubleBlockHalf.LOWER);
 		}
-		else return null;
+		else
+			return null;
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
-	{
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
 		onNeighborChanged(level, pos, fromPos);
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, placer, stack);
 		level.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 3);
 	}
@@ -172,133 +170,116 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 				double d0 = vec3d.x - clickedPos.getX();
 				double d1 = vec3d.z - clickedPos.getZ();
 				return (j >= 0 || !(d1 < 0.5D)) && (j <= 0 || !(d1 > 0.5D)) && (k >= 0 || !(d0 > 0.5D)) && (k <= 0 || !(d0 < 0.5D)) ? DoorHingeSide.LEFT : DoorHingeSide.RIGHT;
-			} else {
-				return DoorHingeSide.LEFT;
 			}
-		} else {
-			return DoorHingeSide.RIGHT;
+			else
+				return DoorHingeSide.LEFT;
 		}
+		else
+			return DoorHingeSide.RIGHT;
 	}
 
 	/**
 	 * Old method, renamed because I am lazy. Called by neighborChanged
+	 *
 	 * @param world The world the change occured in
 	 * @param pos The position of this block
 	 * @param neighbor The position of the changed block
 	 */
-	public void onNeighborChanged(Level world, BlockPos pos, BlockPos neighbor)
-	{
+	public void onNeighborChanged(Level world, BlockPos pos, BlockPos neighbor) {
 		BlockState state = world.getBlockState(pos);
 		Block neighborBlock = world.getBlockState(neighbor).getBlock();
 		Owner previousOwner = null;
 
-		if(world.getBlockEntity(pos) instanceof OwnableBlockEntity)
-			previousOwner = ((OwnableBlockEntity)world.getBlockEntity(pos)).getOwner();
+		if (world.getBlockEntity(pos) instanceof OwnableBlockEntity)
+			previousOwner = ((OwnableBlockEntity) world.getBlockEntity(pos)).getOwner();
 
-		if(state.getValue(HALF) == DoubleBlockHalf.UPPER)
-		{
+		if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
 			BlockPos blockBelow = pos.below();
 			BlockState stateBelow = world.getBlockState(blockBelow);
 
-			if(stateBelow.getBlock() != this)
+			if (stateBelow.getBlock() != this)
 				world.destroyBlock(pos, false);
-			else if(neighborBlock != this)
+			else if (neighborBlock != this)
 				onNeighborChanged(world, blockBelow, neighbor);
 		}
-		else
-		{
+		else {
 			boolean drop = false;
 			BlockPos blockAbove = pos.above();
 			BlockState stateAbove = world.getBlockState(blockAbove);
 
-			if(stateAbove.getBlock() != this)
-			{
+			if (stateAbove.getBlock() != this) {
 				world.destroyBlock(pos, false);
 				drop = true;
 			}
 
-			if(!BlockUtils.isSideSolid(world, pos.below(), Direction.UP))
-			{
+			if (!BlockUtils.isSideSolid(world, pos.below(), Direction.UP)) {
 				world.destroyBlock(pos, false);
 				drop = true;
 
-				if(stateAbove.getBlock() == this)
+				if (stateAbove.getBlock() == this)
 					world.destroyBlock(pos, false);
 			}
 
-			if(drop)
-			{
-				if(!world.isClientSide)
-				{
+			if (drop) {
+				if (!world.isClientSide) {
 					world.destroyBlock(pos, false);
 					Block.popResource(world, pos, new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()));
 				}
 			}
-			else
-			{
+			else {
 				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos) || BlockUtils.hasActiveSCBlockNextTo(world, pos.above());
 
-				if(neighborBlock != this && hasActiveSCBlock != stateAbove.getValue(OPEN))
-				{
-					if(hasActiveSCBlock != state.getValue(OPEN))
-					{
+				if (neighborBlock != this && hasActiveSCBlock != stateAbove.getValue(OPEN)) {
+					if (hasActiveSCBlock != state.getValue(OPEN)) {
 						world.setBlock(pos, state.setValue(OPEN, hasActiveSCBlock), 2);
 
 						BlockState secondDoorState;
 
-						if(state.getValue(FACING) == Direction.WEST)
-						{
+						if (state.getValue(FACING) == Direction.WEST) {
 							secondDoorState = world.getBlockState(pos.north());
 
-							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
+							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 								world.setBlock(pos.north(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							else
-							{
+							else {
 								secondDoorState = world.getBlockState(pos.south());
 
-								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
+								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 									world.setBlock(pos.south(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
 							}
 						}
-						else if(state.getValue(FACING) == Direction.NORTH)
-						{
+						else if (state.getValue(FACING) == Direction.NORTH) {
 							secondDoorState = world.getBlockState(pos.east());
 
-							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
+							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 								world.setBlock(pos.east(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							else
-							{
+							else {
 								secondDoorState = world.getBlockState(pos.west());
 
-								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
+								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 									world.setBlock(pos.west(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
 							}
 						}
-						else if(state.getValue(FACING) == Direction.EAST)
-						{
+						else if (state.getValue(FACING) == Direction.EAST) {
 							secondDoorState = world.getBlockState(pos.south());
 
-							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
+							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 								world.setBlock(pos.south(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							else
-							{
+							else {
 								secondDoorState = world.getBlockState(pos.north());
 
-								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
+								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 									world.setBlock(pos.north(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
 							}
 						}
-						else if(state.getValue(FACING) == Direction.SOUTH)
-						{
+						else if (state.getValue(FACING) == Direction.SOUTH) {
 							secondDoorState = world.getBlockState(pos.west());
 
-							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
+							if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 								world.setBlock(pos.west(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
-							else
-							{
+							else {
 								secondDoorState = world.getBlockState(pos.east());
 
-								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
+								if (secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 									world.setBlock(pos.east(), secondDoorState.setValue(OPEN, hasActiveSCBlock), 2);
 							}
 						}
@@ -309,8 +290,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			}
 		}
 
-		if(previousOwner != null && world.getBlockEntity(pos) instanceof OwnableBlockEntity thisBe && world.getBlockEntity(pos.above()) instanceof OwnableBlockEntity aboveBe)
-		{
+		if (previousOwner != null && world.getBlockEntity(pos) instanceof OwnableBlockEntity thisBe && world.getBlockEntity(pos.above()) instanceof OwnableBlockEntity aboveBe) {
 			thisBe.setOwner(previousOwner.getUUID(), previousOwner.getName());
 			aboveBe.setOwner(previousOwner.getUUID(), previousOwner.getName());
 		}
@@ -320,9 +300,10 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		BlockPos posBelow = pos.below();
 
-		if(state.getValue(HALF) == DoubleBlockHalf.LOWER)
+		if (state.getValue(HALF) == DoubleBlockHalf.LOWER)
 			return state.isFaceSturdy(level, posBelow, Direction.UP);
-		else return state.getBlock() == this;
+		else
+			return state.getBlock() == this;
 	}
 
 	@Override
@@ -347,24 +328,22 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
-	{
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		super.onRemove(state, level, pos, newState, isMoving);
 
-		if(state.getBlock() != newState.getBlock())
+		if (state.getBlock() != newState.getBlock())
 			level.removeBlockEntity(pos);
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param)
-	{
+	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
 		super.triggerEvent(state, level, pos, id, param);
 		BlockEntity blockEntity = level.getBlockEntity(pos);
 		return blockEntity == null ? false : blockEntity.triggerEvent(id, param);
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state){
+	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
 		return new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get());
 	}
 
@@ -374,8 +353,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
-	{
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(HALF, FACING, OPEN, HINGE);
 	}
 }

@@ -13,27 +13,21 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ReinforcedCobwebBlock extends BaseReinforcedBlock
-{
-	public ReinforcedCobwebBlock(Properties properties, Block vB)
-	{
+public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
+	public ReinforcedCobwebBlock(Properties properties, Block vB) {
 		super(properties, vB);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
-	{
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		return Shapes.empty();
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
-	{
-		if(entity instanceof Player player)
-		{
-			if(level.getBlockEntity(pos) instanceof OwnableBlockEntity be)
-			{
-				if(be.getOwner().isOwner(player))
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if (entity instanceof Player player) {
+			if (level.getBlockEntity(pos) instanceof OwnableBlockEntity be) {
+				if (be.getOwner().isOwner(player))
 					return;
 			}
 		}

@@ -47,25 +47,19 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IReinforcedBlock, EntityBlock
-{
-	public ReinforcedCauldronBlock(Properties properties, Map<Item, CauldronInteraction> interactions)
-	{
+public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IReinforcedBlock, EntityBlock {
+	public ReinforcedCauldronBlock(Properties properties, Map<Item, CauldronInteraction> interactions) {
 		super(properties, interactions);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext)
-	{
-		if(collisionContext instanceof EntityCollisionContext ctx)
-		{
-			if(ctx.getEntity().isPresent())
-			{
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
+		if (collisionContext instanceof EntityCollisionContext ctx) {
+			if (ctx.getEntity().isPresent()) {
 				Entity entity = ctx.getEntity().get();
 
-				if(entity instanceof Player player)
-				{
-					if(level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
+				if (entity instanceof Player player) {
+					if (level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
 						return SHAPE;
 					else
 						return Shapes.block();
@@ -77,9 +71,8 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
-	{
-		if(level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
 			return super.use(state, level, pos, player, hand, hit);
 
 		return InteractionResult.PASS;
@@ -107,12 +100,12 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				level.setBlockAndUpdate(pos, SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState());
 				level.setBlockEntity(be);
 				level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
-			} else if (precipitation == Precipitation.SNOW) {
+			}
+			else if (precipitation == Precipitation.SNOW) {
 				level.setBlockAndUpdate(pos, SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get().defaultBlockState());
 				level.setBlockEntity(be);
 				level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
 			}
-
 		}
 	}
 
@@ -130,37 +123,33 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			level.setBlockEntity(be);
 			level.levelEvent(LevelEvent.SOUND_DRIP_WATER_INTO_CAULDRON, pos, 0);
 			level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
-		} else if (fluid == Fluids.LAVA) {
+		}
+		else if (fluid == Fluids.LAVA) {
 			level.setBlockAndUpdate(pos, SCContent.REINFORCED_LAVA_CAULDRON.get().defaultBlockState());
 			level.setBlockEntity(be);
 			level.levelEvent(LevelEvent.SOUND_DRIP_LAVA_INTO_CAULDRON, pos, 0);
 			level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
 		}
-
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return Blocks.CAULDRON;
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return defaultBlockState();
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof Player player)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ReinforcedCauldronBlockEntity(pos, state);
 	}
 
@@ -175,15 +164,14 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		CauldronInteraction SHULKER_BOX = (state, level, pos, player, hand, stack) -> {
 			Block block = Block.byItem(stack.getItem());
 
-			if (!(block instanceof ShulkerBoxBlock)) {
+			if (!(block instanceof ShulkerBoxBlock))
 				return InteractionResult.PASS;
-			} else {
+			else {
 				if (!level.isClientSide) {
 					ItemStack shulker = new ItemStack(Blocks.SHULKER_BOX);
 
-					if (stack.hasTag()) {
+					if (stack.hasTag())
 						shulker.setTag(stack.getTag().copy());
-					}
 
 					player.setItemInHand(hand, shulker);
 					player.awardStat(Stats.CLEAN_SHULKER_BOX);
@@ -194,26 +182,24 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			}
 		};
 		CauldronInteraction BANNER = (state, level, pos, player, hand, stack) -> {
-			if (BannerBlockEntity.getPatternCount(stack) <= 0) {
+			if (BannerBlockEntity.getPatternCount(stack) <= 0)
 				return InteractionResult.PASS;
-			} else {
+			else {
 				if (!level.isClientSide) {
 					ItemStack banner = stack.copy();
 
 					banner.setCount(1);
 					BannerBlockEntity.removeLastPattern(banner);
 
-					if (!player.getAbilities().instabuild) {
+					if (!player.getAbilities().instabuild)
 						stack.shrink(1);
-					}
 
-					if (stack.isEmpty()) {
+					if (stack.isEmpty())
 						player.setItemInHand(hand, banner);
-					} else if (player.getInventory().add(banner)) {
+					else if (player.getInventory().add(banner))
 						player.inventoryMenu.sendAllDataToRemote();
-					} else {
+					else
 						player.drop(banner, false);
-					}
 
 					player.awardStat(Stats.CLEAN_BANNER);
 					ReinforcedLayeredCauldronBlock.lowerFillLevel(state, level, pos);
@@ -225,12 +211,12 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		CauldronInteraction DYED_ITEM = (state, level, pos, player, hand, stack) -> {
 			Item item = stack.getItem();
 
-			if (!(item instanceof DyeableLeatherItem leatherItem)) {
+			if (!(item instanceof DyeableLeatherItem leatherItem))
 				return InteractionResult.PASS;
-			} else {
-				if (!leatherItem.hasCustomColor(stack)) {
+			else {
+				if (!leatherItem.hasCustomColor(stack))
 					return InteractionResult.PASS;
-				} else {
+				else {
 					if (!level.isClientSide) {
 						leatherItem.clearColor(stack);
 						player.awardStat(Stats.CLEAN_ARMOR);
@@ -245,9 +231,9 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		static void bootStrap() {
 			addDefaultInteractions(EMPTY);
 			EMPTY.put(Items.POTION, (state, level, pos, player, hand, stack) -> {
-				if (PotionUtils.getPotion(stack) != Potions.WATER) {
+				if (PotionUtils.getPotion(stack) != Potions.WATER)
 					return InteractionResult.PASS;
-				} else {
+				else {
 					if (!level.isClientSide) {
 						Item item = stack.getItem();
 						BlockEntity be = level.getBlockEntity(pos);
@@ -292,9 +278,9 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 					}
 
 					return InteractionResult.sidedSuccess(level.isClientSide);
-				} else {
-					return InteractionResult.PASS;
 				}
+				else
+					return InteractionResult.PASS;
 			});
 			WATER.put(Items.LEATHER_BOOTS, DYED_ITEM);
 			WATER.put(Items.LEATHER_LEGGINGS, DYED_ITEM);
@@ -350,9 +336,9 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		}
 
 		static InteractionResult fillBucket(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, ItemStack bucket, Predicate<BlockState> fillPredicate, SoundEvent sound) {
-			if (!fillPredicate.test(state)) {
+			if (!fillPredicate.test(state))
 				return InteractionResult.PASS;
-			} else {
+			else {
 				if (!level.isClientSide) {
 					Item item = stack.getItem();
 					BlockEntity be = level.getBlockEntity(pos);

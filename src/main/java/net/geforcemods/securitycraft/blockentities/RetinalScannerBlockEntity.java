@@ -51,8 +51,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	private GameProfile ownerProfile;
 	private int viewCooldown = 0;
 
-	public RetinalScannerBlockEntity(BlockPos pos, BlockState state)
-	{
+	public RetinalScannerBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeRetinalScanner, pos, state);
 	}
 
@@ -62,16 +61,15 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void onEntityViewed(LivingEntity entity){
-		if(!level.isClientSide)
-		{
+	public void onEntityViewed(LivingEntity entity) {
+		if (!level.isClientSide) {
 			if (!isLocked()) {
 				BlockState state = level.getBlockState(worldPosition);
 
-				if(!state.getValue(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)){
+				if (!state.getValue(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)) {
 					String name = entity.getName().getString();
 
-					if(entity instanceof Player player) {
+					if (entity instanceof Player player) {
 						if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.PLAYER_HEAD)
 							name = PlayerUtils.getNameOfSkull(player);
 
@@ -80,14 +78,14 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 							return;
 						}
 					}
-					else if(activatedOnlyByPlayer())
+					else if (activatedOnlyByPlayer())
 						return;
 
 					level.setBlockAndUpdate(worldPosition, state.setValue(RetinalScannerBlock.POWERED, true));
 					BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.RETINAL_SCANNER.get());
 					level.getBlockTicks().scheduleTick(new BlockPos(worldPosition), SCContent.RETINAL_SCANNER.get(), getSignalLength());
 
-					if(entity instanceof Player player && sendMessage.get())
+					if (entity instanceof Player player && sendMessage.get())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), ChatFormatting.GREEN);
 				}
 			}
@@ -119,19 +117,22 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		return !activatedByEntities.get();
 	}
 
-	public int getSignalLength()
-	{
+	public int getSignalLength() {
 		return signalLength.get();
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.DISGUISE};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.DISGUISE
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ activatedByEntities, sendMessage, signalLength };
+		return new Option[] {
+				activatedByEntities, sendMessage, signalLength
+		};
 	}
 
 	public static void setProfileCache(GameProfileCache profileCacheIn) {
@@ -150,8 +151,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 
-		if(!StringUtil.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")) && ownerProfile != null)
-		{
+		if (!StringUtil.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")) && ownerProfile != null) {
 			CompoundTag ownerProfileTag = new CompoundTag();
 			NbtUtils.writeGameProfile(ownerProfileTag, ownerProfile);
 			tag.put("ownerProfile", ownerProfileTag);
@@ -164,9 +164,8 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		if (tag.contains("ownerProfile", 10)) {
+		if (tag.contains("ownerProfile", 10))
 			setPlayerProfile(NbtUtils.readGameProfile(tag.getCompound("ownerProfile")));
-		}
 	}
 
 	@Override
@@ -189,16 +188,20 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	public void updatePlayerProfile() {
-		if (profileCache == null && ServerLifecycleHooks.getCurrentServer() != null)
-			setProfileCache(ServerLifecycleHooks.getCurrentServer().getProfileCache());
-		if(sessionService == null && ServerLifecycleHooks.getCurrentServer() != null)
-			setSessionService(ServerLifecycleHooks.getCurrentServer().getSessionService());
-		if(mainThreadExecutor == null && ServerLifecycleHooks.getCurrentServer() != null)
-			setMainThreadExecutor(ServerLifecycleHooks.getCurrentServer());
+		if (ServerLifecycleHooks.getCurrentServer() != null) {
+			if (profileCache == null)
+				setProfileCache(ServerLifecycleHooks.getCurrentServer().getProfileCache());
+
+			if (sessionService == null)
+				setSessionService(ServerLifecycleHooks.getCurrentServer().getSessionService());
+
+			if (mainThreadExecutor == null)
+				setMainThreadExecutor(ServerLifecycleHooks.getCurrentServer());
+		}
 
 		updateGameProfile(ownerProfile, profile -> {
-			this.ownerProfile = profile;
-			this.setChanged();
+			ownerProfile = profile;
+			setChanged();
 		});
 	}
 
@@ -206,13 +209,13 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		if (ConfigHandler.SERVER.retinalScannerFace.get() && input != null && !StringUtil.isNullOrEmpty(input.getName()) && (!input.isComplete() || !input.getProperties().containsKey("textures")) && profileCache != null && sessionService != null) {
 			profileCache.getAsync(input.getName(), result -> Util.backgroundExecutor().execute(() -> {
 				Util.ifElse(result, gameProfile -> {
-					Property textures = (Property)Iterables.getFirst(gameProfile.getProperties().get("textures"), (Object)null);
+					Property textures = (Property) Iterables.getFirst(gameProfile.getProperties().get("textures"), (Object) null);
 
-					if (textures == null) {
+					if (textures == null)
 						gameProfile = sessionService.fillProfileProperties(gameProfile, true);
-					}
 
 					GameProfile profile = gameProfile;
+
 					mainThreadExecutor.execute(() -> {
 						profileCache.add(profile);
 						onChanged.accept(profile);

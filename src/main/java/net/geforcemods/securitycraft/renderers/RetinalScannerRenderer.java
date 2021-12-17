@@ -32,23 +32,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LightLayer;
 
-public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScannerBlockEntity>
-{
+public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScannerBlockEntity> {
 	private static final float CORRECT_FACTOR = 1 / 550F;
 
 	public RetinalScannerRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(RetinalScannerBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
-	{
+	public void render(RetinalScannerBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 		Direction direction = be.getBlockState().getValue(RetinalScannerBlock.FACING);
 
-		if(!be.hasModule(ModuleType.DISGUISE) && direction != null)
-		{
+		if (!be.hasModule(ModuleType.DISGUISE) && direction != null) {
 			pose.pushPose();
 
-			switch(direction)
-			{
+			switch (direction) {
 				case NORTH:
 					pose.translate(0.25F, 1.0F / 16.0F, 0.0F);
 					break;
@@ -94,10 +90,8 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 		}
 	}
 
-	private static ResourceLocation getSkinTexture(@Nullable GameProfile profile)
-	{
-		if(ConfigHandler.SERVER.retinalScannerFace.get() && profile != null)
-		{
+	private static ResourceLocation getSkinTexture(@Nullable GameProfile profile) {
+		if (ConfigHandler.SERVER.retinalScannerFace.get() && profile != null) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().getInsecureSkinInformation(profile);
 			return map.containsKey(Type.SKIN) ? minecraft.getSkinManager().registerTexture(map.get(Type.SKIN), Type.SKIN) : DefaultPlayerSkin.getDefaultSkin(Player.createPlayerUUID(profile));

@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedCauldronBlockEntity extends CustomizableBlockEntity {
-
 	private final BooleanOption isPublic = new BooleanOption("isPublic", false);
 
 	public ReinforcedCauldronBlockEntity(BlockPos pos, BlockState state) {
@@ -24,11 +23,15 @@ public class ReinforcedCauldronBlockEntity extends CustomizableBlockEntity {
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{isPublic};
+		return new Option[] {
+				isPublic
+		};
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST
+		};
 	}
 }

@@ -18,25 +18,24 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements MenuProvider, ILockable {
-
-	private boolean[] acceptedLevels = {true, false, false, false, false};
+	private boolean[] acceptedLevels = {
+			true, false, false, false, false
+	};
 	private int signature = 0;
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
-	public KeycardReaderBlockEntity(BlockPos pos, BlockState state)
-	{
+	public KeycardReaderBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeKeycardReader, pos, state);
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag){
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 
 		CompoundTag acceptedLevelsTag = new CompoundTag();
 
-		for(int i = 1; i <= 5; i++)
-		{
+		for (int i = 1; i <= 5; i++) {
 			acceptedLevelsTag.putBoolean("lvl" + i, acceptedLevels[i - 1]);
 		}
 
@@ -46,31 +45,27 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	}
 
 	@Override
-	public void load(CompoundTag tag){
+	public void load(CompoundTag tag) {
 		super.load(tag);
 
 		//carry over old data
-		if(tag.contains("passLV"))
-		{
+		if (tag.contains("passLV")) {
 			boolean oldRequiresExactKeycard = false;
 			int oldPassLV = tag.getInt("passLV") - 1; //old data was 1-indexed, new one is 0-indexed
 
-			if(tag.contains("requiresExactKeycard"))
+			if (tag.contains("requiresExactKeycard"))
 				oldRequiresExactKeycard = tag.getBoolean("requiresExactKeycard");
 
-			for(int i = 0; i < 5; i++)
-			{
+			for (int i = 0; i < 5; i++) {
 				acceptedLevels[i] = oldRequiresExactKeycard ? i == oldPassLV : i >= oldPassLV;
 			}
 		}
 
 		//don't try to load this data if it doesn't exist, otherwise everything will be "false"
-		if(tag.contains("acceptedLevels", Tag.TAG_COMPOUND))
-		{
+		if (tag.contains("acceptedLevels", Tag.TAG_COMPOUND)) {
 			CompoundTag acceptedLevelsTag = tag.getCompound("acceptedLevels");
 
-			for(int i = 1; i <= 5; i++)
-			{
+			for (int i = 1; i <= 5; i++) {
 				acceptedLevels[i - 1] = acceptedLevelsTag.getBoolean("lvl" + i);
 			}
 		}
@@ -78,55 +73,51 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		signature = tag.getInt("signature");
 	}
 
-	public void setAcceptedLevels(boolean[] acceptedLevels)
-	{
+	public void setAcceptedLevels(boolean[] acceptedLevels) {
 		this.acceptedLevels = acceptedLevels;
 	}
 
-	public boolean[] getAcceptedLevels()
-	{
+	public boolean[] getAcceptedLevels() {
 		return acceptedLevels;
 	}
 
-	public void setSignature(int signature)
-	{
+	public void setSignature(int signature) {
 		this.signature = signature;
 	}
 
-	public int getSignature()
-	{
+	public int getSignature() {
 		return signature;
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE, ModuleType.SMART};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE, ModuleType.SMART
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ sendMessage, signalLength };
+		return new Option[] {
+				sendMessage, signalLength
+		};
 	}
 
-	public boolean sendsMessages()
-	{
+	public boolean sendsMessages() {
 		return sendMessage.get();
 	}
 
-	public int getSignalLength()
-	{
+	public int getSignalLength() {
 		return signalLength.get();
 	}
 
 	@Override
-	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
-	{
+	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 		return new KeycardReaderMenu(windowId, inv, level, worldPosition);
 	}
 
 	@Override
-	public Component getDisplayName()
-	{
+	public Component getDisplayName() {
 		return super.getDisplayName();
 	}
 }

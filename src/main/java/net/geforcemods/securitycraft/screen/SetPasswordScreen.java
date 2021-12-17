@@ -24,7 +24,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SetPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private BlockEntity be;
 	private TranslatableComponent blockName;
@@ -33,7 +32,7 @@ public class SetPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
 	private EditBox keycodeTextbox;
 	private IdButton saveAndContinueButton;
 
-	public SetPasswordScreen(GenericTEMenu menu, Inventory inv, Component title){
+	public SetPasswordScreen(GenericTEMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		be = menu.be;
 		blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
@@ -42,7 +41,7 @@ public class SetPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
 	}
 
 	@Override
-	public void init(){
+	public void init() {
 		super.init();
 
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
@@ -57,30 +56,29 @@ public class SetPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
 	}
 
 	@Override
-	public void removed(){
+	public void removed() {
 		super.removed();
 		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks){
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
 		drawString(pose, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY){
-		if(font.width(combined) < imageWidth - 10)
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
+		if (font.width(combined) < imageWidth - 10)
 			font.draw(pose, combined, imageWidth / 2 - font.width(combined) / 2, 6, 4210752);
-		else
-		{
+		else {
 			font.draw(pose, blockName, imageWidth / 2 - font.width(blockName) / 2, 6.0F, 4210752);
 			font.draw(pose, setup, imageWidth / 2 - font.width(setup) / 2, 16, 4210752);
 		}
 	}
 
 	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY){
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
 
@@ -90,7 +88,7 @@ public class SetPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
 		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
-	protected void actionPerformed(IdButton button){
+	protected void actionPerformed(IdButton button) {
 		((IPasswordProtected) be).setPassword(keycodeTextbox.getValue());
 		SecurityCraft.channel.sendToServer(new SetPassword(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), keycodeTextbox.getValue()));
 		Minecraft.getInstance().player.closeContainer();

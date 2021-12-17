@@ -33,40 +33,34 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWaterloggedBlock
-{
+public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWaterloggedBlock {
 	public static final EnumProperty<SlabType> TYPE = BlockStateProperties.SLAB_TYPE;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape BOTTOM_SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
 	protected static final VoxelShape TOP_SHAPE = Block.box(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
-	public ReinforcedSlabBlock(Block.Properties properties, Block vB)
-	{
+	public ReinforcedSlabBlock(Block.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedSlabBlock(Block.Properties properties, Supplier<Block> vB)
-	{
+	public ReinforcedSlabBlock(Block.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 		registerDefaultState(stateDefinition.any().setValue(TYPE, SlabType.BOTTOM).setValue(WATERLOGGED, false));
 	}
 
 	@Override
-	public boolean useShapeForLightOcclusion(BlockState state)
-	{
+	public boolean useShapeForLightOcclusion(BlockState state) {
 		return state.getValue(TYPE) != SlabType.DOUBLE;
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
-	{
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(TYPE, WATERLOGGED);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
-	{
-		return switch(state.getValue(TYPE)) {
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return switch (state.getValue(TYPE)) {
 			case DOUBLE -> Shapes.block();
 			case TOP -> TOP_SHAPE;
 			default -> BOTTOM_SHAPE;
@@ -75,17 +69,14 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 
 	@Override
 	@Nullable
-	public BlockState getStateForPlacement(BlockPlaceContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		BlockState state = level.getBlockState(pos);
 		BlockEntity be = level.getBlockEntity(pos);
 
-		if(state.getBlock() == this)
-		{
-			if(be instanceof IOwnable ownable && !ownable.getOwner().isOwner(ctx.getPlayer()))
-			{
+		if (state.getBlock() == this) {
+			if (be instanceof IOwnable ownable && !ownable.getOwner().isOwner(ctx.getPlayer())) {
 				PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), ChatFormatting.RED);
 
 				return state;
@@ -93,8 +84,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 
 			return state.setValue(TYPE, SlabType.DOUBLE).setValue(WATERLOGGED, false);
 		}
-		else
-		{
+		else {
 			FluidState fluidState = ctx.getLevel().getFluidState(pos);
 			BlockState stateToSet = defaultBlockState().setValue(TYPE, SlabType.BOTTOM).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 			Direction dir = ctx.getClickedFace();
@@ -104,61 +94,53 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 	}
 
 	@Override
-	public boolean canBeReplaced(BlockState state, BlockPlaceContext ctx)
-	{
+	public boolean canBeReplaced(BlockState state, BlockPlaceContext ctx) {
 		ItemStack stack = ctx.getItemInHand();
 		SlabType type = state.getValue(TYPE);
 
-		if(type != SlabType.DOUBLE && stack.getItem() == asItem())
-		{
-			if(ctx.replacingClickedOnBlock())
-			{
+		if (type != SlabType.DOUBLE && stack.getItem() == asItem()) {
+			if (ctx.replacingClickedOnBlock()) {
 				boolean clickedUpperHalf = ctx.getClickLocation().y - ctx.getClickedPos().getY() > 0.5D;
 				Direction dir = ctx.getClickedFace();
 
-				if(type == SlabType.BOTTOM)
+				if (type == SlabType.BOTTOM)
 					return dir == Direction.UP || clickedUpperHalf && dir.getAxis().isHorizontal();
 				else
 					return dir == Direction.DOWN || !clickedUpperHalf && dir.getAxis().isHorizontal();
-
 			}
-			else return true;
+			else
+				return true;
 		}
-		else return false;
-
+		else
+			return false;
 	}
 
 	@Override
-	public FluidState getFluidState(BlockState state)
-	{
+	public FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState)
-	{
+	public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState) {
 		return state.getValue(TYPE) != SlabType.DOUBLE ? SimpleWaterloggedBlock.super.placeLiquid(level, pos, state, fluidState) : false;
 	}
 
 	@Override
-	public boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid)
-	{
+	public boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
 		return state.getValue(TYPE) != SlabType.DOUBLE ? SimpleWaterloggedBlock.super.canPlaceLiquid(level, pos, state, fluid) : false;
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
-	{
-		if(state.getValue(WATERLOGGED))
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
 			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
 		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
-	{
-		return switch(type) {
+	public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+		return switch (type) {
 			case LAND -> false;
 			case WATER -> level.getFluidState(pos).is(FluidTags.WATER);
 			case AIR -> false;
@@ -167,8 +149,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return defaultBlockState().setValue(TYPE, vanillaState.getValue(TYPE)).setValue(WATERLOGGED, vanillaState.getValue(WATERLOGGED));
 	}
 }

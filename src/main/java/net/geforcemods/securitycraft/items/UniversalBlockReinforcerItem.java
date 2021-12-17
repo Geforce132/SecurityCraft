@@ -24,28 +24,22 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-public class UniversalBlockReinforcerItem extends Item
-{
-	public UniversalBlockReinforcerItem(Item.Properties properties)
-	{
+public class UniversalBlockReinforcerItem extends Item {
+	public UniversalBlockReinforcerItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
-	{
-		if(!level.isClientSide && player instanceof ServerPlayer)
-		{
-			NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+		if (!level.isClientSide && player instanceof ServerPlayer) {
+			NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
 				@Override
-				public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
-				{
+				public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 					return new BlockReinforcerMenu(windowId, inv, UniversalBlockReinforcerItem.this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
 				}
 
 				@Override
-				public Component getDisplayName()
-				{
+				public Component getDisplayName() {
 					return new TranslatableComponent(getDescriptionId());
 				}
 			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
@@ -56,22 +50,19 @@ public class UniversalBlockReinforcerItem extends Item
 
 	public static boolean convertBlock(BlockState vanillaState, Level level, ItemStack stack, BlockPos pos, Player player) //gets rid of the stuttering experienced with onBlockStartBreak
 	{
-		if(!player.isCreative())
-		{
+		if (!player.isCreative()) {
 			Block block = vanillaState.getBlock();
 			Block rb = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(block);
 
-			if(rb != null)
-			{
-				BlockState convertedState = ((IReinforcedBlock)rb).getConvertedState(vanillaState);
+			if (rb != null) {
+				BlockState convertedState = ((IReinforcedBlock) rb).getConvertedState(vanillaState);
 				BlockEntity be = level.getBlockEntity(pos);
 				CompoundTag tag = null;
 
-				if(be != null)
-				{
+				if (be != null) {
 					tag = be.save(new CompoundTag());
 
-					if(be instanceof Container container)
+					if (be instanceof Container container)
 						container.clearContent();
 				}
 
@@ -82,7 +73,7 @@ public class UniversalBlockReinforcerItem extends Item
 					if (tag != null)
 						be.load(tag);
 
-					((IOwnable)be).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+					((IOwnable) be).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				}
 
 				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));

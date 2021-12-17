@@ -12,28 +12,25 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class ToggleOption {
-
 	private int x, y, z, id;
 
-	public ToggleOption(){ }
+	public ToggleOption() {}
 
-	public ToggleOption(int x, int y, int z, int id){
+	public ToggleOption(int x, int y, int z, int id) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.id = id;
 	}
 
-	public static void encode(ToggleOption message, FriendlyByteBuf buf)
-	{
+	public static void encode(ToggleOption message, FriendlyByteBuf buf) {
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
 		buf.writeInt(message.z);
 		buf.writeInt(message.id);
 	}
 
-	public static ToggleOption decode(FriendlyByteBuf buf)
-	{
+	public static ToggleOption decode(FriendlyByteBuf buf) {
 		ToggleOption message = new ToggleOption();
 
 		message.x = buf.readInt();
@@ -43,19 +40,18 @@ public class ToggleOption {
 		return message;
 	}
 
-	public static void onMessage(ToggleOption message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(ToggleOption message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			int id = message.id;
 			Player player = ctx.get().getSender();
 			BlockEntity be = player.level.getBlockEntity(pos);
 
-			if(be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
+			if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
 				customizable.customOptions()[id].toggle();
 				customizable.onOptionChanged(customizable.customOptions()[id]);
 
-				if(be instanceof CustomizableBlockEntity)
+				if (be instanceof CustomizableBlockEntity)
 					player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 			}
 		});

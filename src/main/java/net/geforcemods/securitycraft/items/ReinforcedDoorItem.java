@@ -20,35 +20,30 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-public class ReinforcedDoorItem extends BlockItem
-{
-	public ReinforcedDoorItem(Block block, Item.Properties properties)
-	{
+public class ReinforcedDoorItem extends BlockItem {
+	public ReinforcedDoorItem(Block block, Item.Properties properties) {
 		super(block, properties);
 	}
 
 	@Override
-	public InteractionResult useOn(UseOnContext ctx)
-	{
+	public InteractionResult useOn(UseOnContext ctx) {
 		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx);
 	}
 
-	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, UseOnContext ctx)
-	{
+	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, UseOnContext ctx) {
 		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
 
 		if (!block.canBeReplaced(state, new BlockPlaceContext(ctx)))
 			pos = pos.relative(facing);
 
-		if (player.mayUseItemAt(pos, facing, stack) && BlockUtils.isSideSolid(level, pos.below(), Direction.UP))
-		{
+		if (player.mayUseItemAt(pos, facing, stack) && BlockUtils.isSideSolid(level, pos.below(), Direction.UP)) {
 			Direction angleFacing = Direction.fromYRot(player.getYRot());
 			int offsetX = angleFacing.getStepX();
 			int offsetZ = angleFacing.getStepZ();
 			boolean flag = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;
 
-			if(!placeDoor(level, pos, angleFacing, getBlock(), flag, ctx))
+			if (!placeDoor(level, pos, angleFacing, getBlock(), flag, ctx))
 				return InteractionResult.FAIL;
 
 			state = level.getBlockState(pos);
@@ -58,11 +53,10 @@ public class ReinforcedDoorItem extends BlockItem
 
 			level.playSound(null, pos, soundType.getPlaceSound(), SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
 
-			if(!player.isCreative())
+			if (!player.isCreative())
 				stack.shrink(1);
 
-			if(level.getBlockEntity(pos) instanceof OwnableBlockEntity be)
-			{
+			if (level.getBlockEntity(pos) instanceof OwnableBlockEntity be) {
 				be.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				((OwnableBlockEntity) level.getBlockEntity(pos.above())).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 			}
@@ -77,7 +71,7 @@ public class ReinforcedDoorItem extends BlockItem
 	{
 		BlockPos posAbove = pos.above();
 
-		if(!level.getBlockState(posAbove).canBeReplaced(new BlockPlaceContext(ctx)))
+		if (!level.getBlockState(posAbove).canBeReplaced(new BlockPlaceContext(ctx)))
 			return false;
 
 		BlockPos left = pos.relative(facing.getClockWise());
@@ -87,8 +81,7 @@ public class ReinforcedDoorItem extends BlockItem
 		boolean isRightDoor = level.getBlockState(right).getBlock() == door || level.getBlockState(right.above()).getBlock() == door;
 		boolean isLeftDoor = level.getBlockState(left).getBlock() == door || level.getBlockState(left.above()).getBlock() == door;
 
-		if ((!isRightDoor || isLeftDoor) && leftNormalCubeAmount <= rightNormalCubeAmount)
-		{
+		if ((!isRightDoor || isLeftDoor) && leftNormalCubeAmount <= rightNormalCubeAmount) {
 			if (isLeftDoor && !isRightDoor || leftNormalCubeAmount < rightNormalCubeAmount)
 				isRightHinge = false;
 		}

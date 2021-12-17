@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -25,7 +25,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if(hasLevel() && nbtTagStorage != null) {
+		if (hasLevel() && nbtTagStorage != null) {
 			readLinkedBlocks(nbtTagStorage);
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 			nbtTagStorage = null;
@@ -33,13 +33,11 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	@Override
-	public void load(CompoundTag tag)
-	{
+	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		if (tag.contains("linkedBlocks"))
-		{
-			if(!hasLevel()) {
+		if (tag.contains("linkedBlocks")) {
+			if (!hasLevel()) {
 				nbtTagStorage = tag.getList("linkedBlocks", Tag.TAG_COMPOUND);
 				return;
 			}
@@ -49,21 +47,19 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag)
-	{
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 
-		if(hasLevel() && linkedBlocks.size() > 0) {
+		if (hasLevel() && linkedBlocks.size() > 0) {
 			ListTag tagList = new ListTag();
 
 			LevelUtils.addScheduledTask(level, () -> {
-				for(int i = linkedBlocks.size() - 1; i >= 0; i--)
-				{
+				for (int i = linkedBlocks.size() - 1; i >= 0; i--) {
 					LinkedBlock block = linkedBlocks.get(i);
 					CompoundTag toAppend = new CompoundTag();
 
-					if(block != null) {
-						if(!block.validate(level)) {
+					if (block != null) {
+						if (!block.validate(level)) {
 							linkedBlocks.remove(i);
 							continue;
 						}
@@ -86,62 +82,62 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	@Override
 	public void setRemoved() {
-		for(LinkedBlock block : linkedBlocks)
+		for (LinkedBlock block : linkedBlocks) {
 			LinkableBlockEntity.unlink(block.asBlockEntity(level), this);
+		}
 	}
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[]{ option }, this);
+		createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[] {
+				option
+		}, this);
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module)
-	{
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		super.onModuleInserted(stack, module);
 		ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, this);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module)
-	{
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		super.onModuleRemoved(stack, module);
 		ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, this);
 	}
 
 	private void readLinkedBlocks(ListTag list) {
-		for(int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			String name = list.getCompound(i).getString("blockName");
 			int x = list.getCompound(i).getInt("blockX");
 			int y = list.getCompound(i).getInt("blockY");
 			int z = list.getCompound(i).getInt("blockZ");
 			LinkedBlock block = new LinkedBlock(name, new BlockPos(x, y, z));
 
-			if(hasLevel() && !block.validate(level)) {
+			if (hasLevel() && !block.validate(level)) {
 				list.remove(i);
 				continue;
 			}
 
-			if(!linkedBlocks.contains(block))
+			if (!linkedBlocks.contains(block))
 				link(this, block.asBlockEntity(level));
 		}
 	}
 
 	/**
-	 * Links two blocks together. Calls onLinkedBlockAction()
-	 * whenever certain events (found in {@link LinkedAction}) occur.
+	 * Links two blocks together. Calls onLinkedBlockAction() whenever certain events (found in {@link LinkedAction}) occur.
 	 */
 	public static void link(LinkableBlockEntity blockEntity1, LinkableBlockEntity blockEntity2) {
-		if(isLinkedWith(blockEntity1, blockEntity2))
+		if (isLinkedWith(blockEntity1, blockEntity2))
 			return;
 
 		LinkedBlock block1 = new LinkedBlock(blockEntity1);
 		LinkedBlock block2 = new LinkedBlock(blockEntity2);
 
-		if(!blockEntity1.linkedBlocks.contains(block2))
+		if (!blockEntity1.linkedBlocks.contains(block2))
 			blockEntity1.linkedBlocks.add(block2);
 
-		if(!blockEntity2.linkedBlocks.contains(block1))
+		if (!blockEntity2.linkedBlocks.contains(block1))
 			blockEntity2.linkedBlocks.add(block1);
 	}
 
@@ -152,11 +148,12 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * @param blockEntity2 The block entity to unlink
 	 */
 	public static void unlink(LinkableBlockEntity blockEntity1, LinkableBlockEntity blockEntity2) {
-		if(blockEntity1 == null || blockEntity2 == null) return;
+		if (blockEntity1 == null || blockEntity2 == null)
+			return;
 
 		LinkedBlock block = new LinkedBlock(blockEntity2);
 
-		if(blockEntity1.linkedBlocks.contains(block))
+		if (blockEntity1.linkedBlocks.contains(block))
 			blockEntity1.linkedBlocks.remove(block);
 	}
 
@@ -168,11 +165,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	/**
-	 * Calls onLinkedBlockAction() for every block this block entity
-	 * is linked to. <p>
-	 *
-	 * <b>NOTE:</b> Never use this method in onLinkedBlockAction(),
-	 * use createLinkedBlockAction(EnumLinkedAction, Object[], ArrayList[LinkableBlockEntity] instead.
+	 * Calls onLinkedBlockAction() for every block this block entity is linked to. <p> <b>NOTE:</b> Never use this method in
+	 * onLinkedBlockAction(), use createLinkedBlockAction(EnumLinkedAction, Object[], ArrayList[LinkableBlockEntity] instead.
 	 *
 	 * @param action The action that occurred
 	 * @param parameters Action-specific parameters, see comments in {@link LinkedAction}
@@ -182,22 +176,20 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 		ArrayList<LinkableBlockEntity> list = new ArrayList<>();
 
 		list.add(excludedBE);
-
 		createLinkedBlockAction(action, parameters, list);
 	}
 
 	/**
-	 * Calls onLinkedBlockAction() for every block this block entity
-	 * is linked to.
+	 * Calls onLinkedBlockAction() for every block this block entity is linked to.
 	 *
 	 * @param action The action that occurred
 	 * @param parameters Action-specific parameters, see comments in {@link LinkedAction}
-	 * @param excludedBEs LinkableBlockEntities that shouldn't have onLinkedBlockAction() called on them,
-	 *        prevents infinite loops. Always add your block entity to the list whenever using this method
+	 * @param excludedBEs LinkableBlockEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite
+	 *            loops. Always add your block entity to the list whenever using this method
 	 */
 	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {
-		for(LinkedBlock block : linkedBlocks)
-			if(excludedBEs.contains(block.asBlockEntity(level)))
+		for (LinkedBlock block : linkedBlocks)
+			if (excludedBEs.contains(block.asBlockEntity(level)))
 				continue;
 			else {
 				BlockState state = level.getBlockState(block.getPos());
@@ -208,14 +200,14 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	/**
-	 * Called whenever certain actions occur in blocks
-	 * this block entity is linked to. See {@link LinkedAction}
-	 * for parameter descriptions. <p>
+	 * Called whenever certain actions occur in blocks this block entity is linked to. See {@link LinkedAction} for parameter
+	 * descriptions. <p>
 	 *
 	 * @param action The {@link LinkedAction} that occurred
 	 * @param parameters Important variables related to the action
-	 * @param excludedBEs LinkableBlockEntities that aren't going to have onLinkedBlockAction() called on them,
-	 *        always add your block entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple blocks (i.e: like Laser Blocks)
+	 * @param excludedBEs LinkableBlockEntities that aren't going to have onLinkedBlockAction() called on them, always add
+	 *            your block entity to the list if you're going to call createLinkedBlockAction() in this method to
+	 *            chain-link multiple blocks (i.e: like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {}
 }

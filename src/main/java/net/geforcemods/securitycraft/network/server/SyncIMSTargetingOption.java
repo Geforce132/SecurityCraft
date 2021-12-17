@@ -9,27 +9,23 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-public class SyncIMSTargetingOption
-{
+public class SyncIMSTargetingOption {
 	private BlockPos pos;
 	private IMSTargetingMode targetingMode;
 
 	public SyncIMSTargetingOption() {}
 
-	public SyncIMSTargetingOption(BlockPos pos, IMSTargetingMode targetingMode)
-	{
+	public SyncIMSTargetingOption(BlockPos pos, IMSTargetingMode targetingMode) {
 		this.pos = pos;
 		this.targetingMode = targetingMode;
 	}
 
-	public static void encode(SyncIMSTargetingOption message, FriendlyByteBuf buf)
-	{
+	public static void encode(SyncIMSTargetingOption message, FriendlyByteBuf buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeEnum(message.targetingMode);
 	}
 
-	public static SyncIMSTargetingOption decode(FriendlyByteBuf buf)
-	{
+	public static SyncIMSTargetingOption decode(FriendlyByteBuf buf) {
 		SyncIMSTargetingOption message = new SyncIMSTargetingOption();
 
 		message.pos = buf.readBlockPos();
@@ -37,17 +33,15 @@ public class SyncIMSTargetingOption
 		return message;
 	}
 
-	public static void onMessage(SyncIMSTargetingOption message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(SyncIMSTargetingOption message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			Player player = ctx.get().getSender();
 
-			if(player.level.getBlockEntity(pos) instanceof IMSBlockEntity be && be.getOwner().isOwner(player))
+			if (player.level.getBlockEntity(pos) instanceof IMSBlockEntity be && be.getOwner().isOwner(player))
 				be.setTargetingMode(message.targetingMode);
 		});
 
 		ctx.get().setPacketHandled(true);
 	}
-
 }

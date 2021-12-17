@@ -20,7 +20,6 @@ import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class LaserBlockBlockEntity extends LinkableBlockEntity {
-
 	private BooleanOption enabledOption = new BooleanOption("enabled", true) {
 		@Override
 		public void toggle() {
@@ -30,36 +29,37 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		}
 	};
 
-	public LaserBlockBlockEntity(BlockPos pos, BlockState state)
-	{
+	public LaserBlockBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeLaserBlock, pos, state);
 	}
 
 	private void toggleLaser(BooleanOption option) {
-		if(option.get())
-			((LaserBlock)getBlockState().getBlock()).setLaser(level, worldPosition);
+		if (option.get())
+			((LaserBlock) getBlockState().getBlock()).setLaser(level, worldPosition);
 		else
 			LaserBlock.destroyAdjacentLasers(level, worldPosition);
 	}
 
 	@Override
 	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {
-		if(action == LinkedAction.OPTION_CHANGED) {
+		if (action == LinkedAction.OPTION_CHANGED) {
 			Option<?> option = (Option<?>) parameters[0];
 
 			enabledOption.copy(option);
 			toggleLaser((BooleanOption) option);
 			excludedBEs.add(this);
-			createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[]{ option }, excludedBEs);
+			createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[] {
+					option
+			}, excludedBEs);
 		}
-		else if(action == LinkedAction.MODULE_INSERTED) {
+		else if (action == LinkedAction.MODULE_INSERTED) {
 			ItemStack module = (ItemStack) parameters[0];
 
 			insertModule(module);
 			excludedBEs.add(this);
 			createLinkedBlockAction(LinkedAction.MODULE_INSERTED, parameters, excludedBEs);
 		}
-		else if(action == LinkedAction.MODULE_REMOVED) {
+		else if (action == LinkedAction.MODULE_REMOVED) {
 			ModuleType module = (ModuleType) parameters[1];
 
 			removeModule(module);
@@ -69,41 +69,41 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module)
-	{
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		super.onModuleInserted(stack, module);
 
-		if(!level.isClientSide && module == ModuleType.DISGUISE)
+		if (!level.isClientSide && module == ModuleType.DISGUISE)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack));
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module)
-	{
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		super.onModuleRemoved(stack, module);
 
-		if(!level.isClientSide && module == ModuleType.DISGUISE)
+		if (!level.isClientSide && module == ModuleType.DISGUISE)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack));
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.HARMING, ModuleType.ALLOWLIST, ModuleType.DISGUISE};
+		return new ModuleType[] {
+				ModuleType.HARMING, ModuleType.ALLOWLIST, ModuleType.DISGUISE
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ enabledOption };
+		return new Option[] {
+				enabledOption
+		};
 	}
 
 	@Override
-	public IModelData getModelData()
-	{
+	public IModelData getModelData() {
 		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_BLOCK_RL, getBlockState().getBlock().getRegistryName()).build();
 	}
 
-	public boolean isEnabled()
-	{
+	public boolean isEnabled() {
 		return enabledOption.get();
 	}
 }

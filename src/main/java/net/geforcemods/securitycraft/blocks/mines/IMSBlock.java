@@ -36,7 +36,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class IMSBlock extends OwnableBlock {
-
 	public static final IntegerProperty MINES = IntegerProperty.create("mines", 0, 4);
 	private static final VoxelShape SHAPE = Block.box(4, 0, 5, 12, 7, 11);
 	private static final VoxelShape SHAPE_1_MINE = Shapes.or(SHAPE, Block.box(0, 0, 0, 5, 5, 5));
@@ -50,15 +49,13 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos)
-	{
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
 		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getDestroyProgress(state, player, level, pos);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
-	{
-		return switch(state.getValue(MINES)) {
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+		return switch (state.getValue(MINES)) {
 			case 4 -> SHAPE_4_MINES;
 			case 3 -> SHAPE_3_MINES;
 			case 2 -> SHAPE_2_MINES;
@@ -69,34 +66,30 @@ public class IMSBlock extends OwnableBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (level.getBlockState(pos.below()).isAir())
+		if (level.getBlockState(pos.below()).isAir()) {
 			level.destroyBlock(pos, true);
+		}
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
-	{
-		if(!level.isClientSide)
-		{
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!level.isClientSide) {
 			BlockEntity be = level.getBlockEntity(pos);
 
-			if(((IOwnable)be).getOwner().isOwner(player))
-			{
+			if (((IOwnable) be).getOwner().isOwner(player)) {
 				ItemStack held = player.getItemInHand(hand);
 				int mines = state.getValue(MINES);
 
-				if(held.getItem() == SCContent.BOUNCING_BETTY.get().asItem() && mines < 4)
-				{
-					if(!player.isCreative())
+				if (held.getItem() == SCContent.BOUNCING_BETTY.get().asItem() && mines < 4) {
+					if (!player.isCreative())
 						held.shrink(1);
 
 					level.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
-					((IMSBlockEntity)be).setBombsRemaining(mines + 1);
+					((IMSBlockEntity) be).setBombsRemaining(mines + 1);
 				}
-				else if(player instanceof ServerPlayer)
-				{
-					if(be instanceof MenuProvider menuProvider)
-						NetworkHooks.openGui((ServerPlayer)player, menuProvider, pos);
+				else if (player instanceof ServerPlayer) {
+					if (be instanceof MenuProvider menuProvider)
+						NetworkHooks.openGui((ServerPlayer) player, menuProvider, pos);
 				}
 			}
 		}
@@ -106,8 +99,8 @@ public class IMSBlock extends OwnableBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random random){
-		if(state.getValue(MINES) == 0){
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
+		if (state.getValue(MINES) == 0) {
 			double x = pos.getX() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.4F + (random.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
@@ -125,19 +118,16 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer)
-	{
+	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer) {
 		return defaultBlockState().setValue(MINES, 4);
 	}
 
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
-	{
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(MINES);
 	}
 

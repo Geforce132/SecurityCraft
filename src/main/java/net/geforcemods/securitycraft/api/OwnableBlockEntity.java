@@ -10,42 +10,35 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class OwnableBlockEntity extends BlockEntity implements IOwnable {
-
 	private Owner owner = new Owner();
 
-	public OwnableBlockEntity(BlockPos pos, BlockState state)
-	{
+	public OwnableBlockEntity(BlockPos pos, BlockState state) {
 		this(SCContent.beTypeOwnable, pos, state);
 	}
 
-	public OwnableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
-	{
+	public OwnableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag)
-	{
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 
-		if(owner != null){
+		if (owner != null)
 			owner.save(tag, needsValidation());
-		}
 
 		return tag;
 	}
 
 	@Override
-	public void load(CompoundTag tag)
-	{
+	public void load(CompoundTag tag) {
 		super.load(tag);
 
 		owner.load(tag);
 	}
 
 	@Override
-	public CompoundTag getUpdateTag()
-	{
+	public CompoundTag getUpdateTag() {
 		return save(new CompoundTag());
 	}
 
@@ -60,7 +53,7 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 	}
 
 	@Override
-	public Owner getOwner(){
+	public Owner getOwner() {
 		return owner;
 	}
 

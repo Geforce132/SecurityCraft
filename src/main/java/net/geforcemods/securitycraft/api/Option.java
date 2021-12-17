@@ -13,17 +13,13 @@ import net.minecraftforge.fmlclient.gui.widget.Slider;
 import net.minecraftforge.fmlclient.gui.widget.Slider.ISlider;
 
 /**
- * A class that allows blocks that have
- * {@link ICustomizable} block entities to have custom, per-block
- * options that are separate from the main SecurityCraft
- * configuration options.
+ * A class that allows blocks that have {@link ICustomizable} block entities to have custom, per-block options that are
+ * separate from the main SecurityCraft configuration options.
  *
  * @author Geforce
- *
  * @param <T> The Class of the type of value this option should use
  */
 public abstract class Option<T> {
-
 	private String name;
 	protected T value;
 	private T defaultValue;
@@ -47,8 +43,7 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * Called when this option's button in {@link CustomizeBlockScreen} is pressed.
-	 * Update the option's value here. <p>
+	 * Called when this option's button in {@link CustomizeBlockScreen} is pressed. Update the option's value here. <p>
 	 */
 	public abstract void toggle();
 
@@ -91,9 +86,8 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * @return If this option is some kind of number (integer, float, etc.),
-	 *         return the amount the number should increase/decrease every time
-	 *         the option is toggled in {@link CustomizeBlockScreen}.
+	 * @return If this option is some kind of number (integer, float, etc.), return the amount the number should
+	 *         increase/decrease every time the option is toggled in {@link CustomizeBlockScreen}.
 	 */
 	public T getIncrement() {
 		return increment;
@@ -128,8 +122,7 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle booleans.
 	 */
-	public static class BooleanOption extends Option<Boolean>{
-
+	public static class BooleanOption extends Option<Boolean> {
 		public BooleanOption(String optionName, Boolean value) {
 			super(optionName, value);
 		}
@@ -140,17 +133,15 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(CompoundTag tag)
-		{
-			if(tag.contains(getName()))
+		public void readFromNBT(CompoundTag tag) {
+			if (tag.contains(getName()))
 				value = tag.getBoolean(getName());
 			else
 				value = getDefaultValue();
 		}
 
 		@Override
-		public void writeToNBT(CompoundTag tag)
-		{
+		public void writeToNBT(CompoundTag tag) {
 			tag.putBoolean(getName(), value);
 		}
 	}
@@ -158,7 +149,7 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle integers.
 	 */
-	public static class IntOption extends Option<Integer> implements ISlider{
+	public static class IntOption extends Option<Integer> implements ISlider {
 		private boolean slider;
 		private Supplier<BlockPos> pos;
 
@@ -178,15 +169,15 @@ public abstract class Option<T> {
 
 		@Override
 		public void toggle() {
-			if(isSlider())
+			if (isSlider())
 				return;
 
-			if(get() >= getMax()) {
+			if (get() >= getMax()) {
 				setValue(getMin());
 				return;
 			}
 
-			if((get() + getIncrement()) >= getMax()) {
+			if ((get() + getIncrement()) >= getMax()) {
 				setValue(getMax());
 				return;
 			}
@@ -195,33 +186,29 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(CompoundTag tag)
-		{
-			if(tag.contains(getName()))
+		public void readFromNBT(CompoundTag tag) {
+			if (tag.contains(getName()))
 				value = tag.getInt(getName());
 			else
 				value = getDefaultValue();
 		}
 
 		@Override
-		public void writeToNBT(CompoundTag tag)
-		{
+		public void writeToNBT(CompoundTag tag) {
 			tag.putInt(getName(), value);
 		}
 
 		@Override
-		public boolean isSlider()
-		{
+		public boolean isSlider() {
 			return slider;
 		}
 
 		@Override
-		public void onChangeSliderValue(Slider slider)
-		{
-			if(!isSlider() || !(slider instanceof NamedSlider namedSlider))
+		public void onChangeSliderValue(Slider slider) {
+			if (!isSlider() || !(slider instanceof NamedSlider namedSlider))
 				return;
 
-			setValue((int)slider.getValue());
+			setValue((int) slider.getValue());
 			slider.setMessage(Utils.localize("option" + namedSlider.getBlockName() + "." + getName(), toString()));
 			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), namedSlider.id, get()));
 		}
@@ -230,7 +217,7 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle doubles.
 	 */
-	public static class DoubleOption extends Option<Double> implements ISlider{
+	public static class DoubleOption extends Option<Double> implements ISlider {
 		private boolean slider;
 		private Supplier<BlockPos> pos;
 
@@ -252,15 +239,15 @@ public abstract class Option<T> {
 
 		@Override
 		public void toggle() {
-			if(isSlider())
+			if (isSlider())
 				return;
 
-			if(get() >= getMax()) {
+			if (get() >= getMax()) {
 				setValue(getMin());
 				return;
 			}
 
-			if((get() + getIncrement()) >= getMax()) {
+			if ((get() + getIncrement()) >= getMax()) {
 				setValue(getMax());
 				return;
 			}
@@ -269,17 +256,15 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(CompoundTag tag)
-		{
-			if(tag.contains(getName()))
+		public void readFromNBT(CompoundTag tag) {
+			if (tag.contains(getName()))
 				value = tag.getDouble(getName());
 			else
 				value = getDefaultValue();
 		}
 
 		@Override
-		public void writeToNBT(CompoundTag tag)
-		{
+		public void writeToNBT(CompoundTag tag) {
 			tag.putDouble(getName(), value);
 		}
 
@@ -289,15 +274,13 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public boolean isSlider()
-		{
+		public boolean isSlider() {
 			return slider;
 		}
 
 		@Override
-		public void onChangeSliderValue(Slider slider)
-		{
-			if(!isSlider() || !(slider instanceof NamedSlider namedSlider))
+		public void onChangeSliderValue(Slider slider) {
+			if (!isSlider() || !(slider instanceof NamedSlider namedSlider))
 				return;
 
 			setValue(slider.getValue());
@@ -309,8 +292,7 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle floats.
 	 */
-	public static class FloatOption extends Option<Float>{
-
+	public static class FloatOption extends Option<Float> {
 		public FloatOption(String optionName, Float value) {
 			super(optionName, value);
 		}
@@ -321,12 +303,12 @@ public abstract class Option<T> {
 
 		@Override
 		public void toggle() {
-			if(get() >= getMax()) {
+			if (get() >= getMax()) {
 				setValue(getMin());
 				return;
 			}
 
-			if((get() + getIncrement()) >= getMax()) {
+			if ((get() + getIncrement()) >= getMax()) {
 				setValue(getMax());
 				return;
 			}
@@ -335,17 +317,15 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(CompoundTag tag)
-		{
-			if(tag.contains(getName()))
+		public void readFromNBT(CompoundTag tag) {
+			if (tag.contains(getName()))
 				value = tag.getFloat(getName());
 			else
 				value = getDefaultValue();
 		}
 
 		@Override
-		public void writeToNBT(CompoundTag tag)
-		{
+		public void writeToNBT(CompoundTag tag) {
 			tag.putFloat(getName(), value);
 		}
 

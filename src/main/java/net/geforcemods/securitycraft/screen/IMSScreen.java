@@ -21,8 +21,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class IMSScreen extends AbstractContainerScreen<GenericTEMenu>{
-
+public class IMSScreen extends AbstractContainerScreen<GenericTEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent imsName = Utils.localize(SCContent.IMS.get().getDescriptionId());
 	private final TranslatableComponent target = Utils.localize("gui.securitycraft:ims.target");
@@ -31,19 +30,19 @@ public class IMSScreen extends AbstractContainerScreen<GenericTEMenu>{
 
 	public IMSScreen(GenericTEMenu menu, Inventory inv, Component text) {
 		super(menu, inv, text);
-		be = (IMSBlockEntity)menu.be;
+		be = (IMSBlockEntity) menu.be;
 		targetMode = be.getTargetingMode();
 	}
 
 	@Override
-	public void init(){
+	public void init() {
 		super.init();
 
 		addRenderableWidget(new ToggleComponentButton(0, width / 2 - 75, height / 2 - 38, 150, 20, this::updateButtonText, targetMode.ordinal(), 3, this::actionPerformed));
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY){
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		font.draw(pose, imsName, imageWidth / 2 - font.width(imsName) / 2, 6, 4210752);
 		font.draw(pose, target, imageWidth / 2 - font.width(target) / 2, 30, 4210752);
 	}
@@ -59,8 +58,8 @@ public class IMSScreen extends AbstractContainerScreen<GenericTEMenu>{
 		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
-	protected void actionPerformed(IdButton button){
-		targetMode = IMSTargetingMode.values()[((ToggleComponentButton)button).getCurrentIndex()];
+	protected void actionPerformed(IdButton button) {
+		targetMode = IMSTargetingMode.values()[((ToggleComponentButton) button).getCurrentIndex()];
 		be.setTargetingMode(targetMode);
 		SecurityCraft.channel.sendToServer(new SyncIMSTargetingOption(be.getBlockPos(), be.getTargetingMode()));
 	}
@@ -68,5 +67,4 @@ public class IMSScreen extends AbstractContainerScreen<GenericTEMenu>{
 	private Component updateButtonText(int index) {
 		return Utils.localize("gui.securitycraft:srat.targets" + ((index + 2) % 3 + 1));
 	}
-
 }

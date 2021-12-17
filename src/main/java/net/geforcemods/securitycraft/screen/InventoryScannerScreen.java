@@ -29,12 +29,12 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	private static final Style UNDERLINE = Style.EMPTY.applyFormat(ChatFormatting.UNDERLINE);
 	private final Component redstoneModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.REDSTONE_MODULE.get().getDescriptionId()));
 	private final Component storageModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.STORAGE_MODULE.get().getDescriptionId()));
-	private final Component prohibitedItems =  Utils.localize("gui.securitycraft:invScan.prohibitedItems");
+	private final Component prohibitedItems = Utils.localize("gui.securitycraft:invScan.prohibitedItems");
 	private final Component adminMode = Utils.localize("gui.securitycraft:invScan.mode.admin").setStyle(UNDERLINE);
 	private final Component viewMode = Utils.localize("gui.securitycraft:invScan.mode.view").setStyle(UNDERLINE);
 	private final Component storage = Utils.localize("gui.securitycraft:invScan.storage");
 
-	public InventoryScannerScreen(InventoryScannerMenu menu, Inventory inv, Component title){
+	public InventoryScannerScreen(InventoryScannerMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		be = menu.be;
 		owns = be.getOwner().isOwner(inv.player);
@@ -43,7 +43,7 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no")));
 		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")));
 
-		if(hasStorageModule)
+		if (hasStorageModule)
 			imageWidth = 246;
 		else
 			imageWidth = 190;
@@ -52,13 +52,13 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	}
 
 	@Override
-	public void init(){
+	public void init() {
 		super.init();
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks){
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
 
 		font.drawWordWrap(infoStringRedstone, leftPos + 28, topPos + 45, 150, 4210752);
@@ -66,23 +66,22 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 		ClientUtils.renderModuleInfo(pose, ModuleType.REDSTONE, null, redstoneModuleNotInstalled, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
 		ClientUtils.renderModuleInfo(pose, ModuleType.STORAGE, null, storageModuleNotInstalled, hasStorageModule, leftPos + 8, topPos + 75, width, height, mouseX, mouseY);
 
-		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
+		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
 			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
 	}
 
 	@Override
-	public void removed(){
+	public void removed() {
 		super.removed();
 		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY)
-	{
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		font.draw(pose, prohibitedItems, 8, 6, 4210752);
 		font.draw(pose, be.getOwner().isOwner(minecraft.player) ? adminMode : viewMode, 112, 6, 4210752);
 
-		if(hasStorageModule && owns)
+		if (hasStorageModule && owns)
 			font.draw(pose, storage, 188, 18, 4210752);
 
 		font.draw(pose, Utils.INVENTORY_TEXT, 15, imageHeight - 93, 4210752);

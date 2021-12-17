@@ -25,38 +25,32 @@ import net.minecraftforge.client.RenderProperties;
 
 @OnlyIn(Dist.CLIENT)
 public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEntity> {
-
 	public ProjectorRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(ProjectorBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int combinedOverlay)
-	{
-		if(be.isActive() && !be.isEmpty())
-		{
+	public void render(ProjectorBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int combinedOverlay) {
+		if (be.isActive() && !be.isEmpty()) {
 			Random random = new Random();
 			BlockState state = be.getProjectedBlock().defaultBlockState();
 			BlockPos pos;
 
 			RenderSystem.disableCull();
 
-			for(int x = 0; x < be.getProjectionWidth(); x++) {
-				for(int y = 0; y < be.getProjectionHeight(); y++) {
+			for (int x = 0; x < be.getProjectionWidth(); x++) {
+				for (int y = 0; y < be.getProjectionHeight(); y++) {
 					pose.pushPose();
 
-					if(!be.isHorizontal())
+					if (!be.isHorizontal())
 						pos = translateProjection(be.getBlockPos(), pose, be.getBlockState().getValue(ProjectorBlock.FACING), x, y, be.getProjectionRange(), be.getProjectionOffset());
 					else
 						pos = translateProjection(be.getBlockPos(), pose, be.getBlockState().getValue(ProjectorBlock.FACING), x, be.getProjectionRange() - 16, y + 1, be.getProjectionOffset());
 
-					if(pos != null && be.getLevel().isEmptyBlock(pos))
-					{
-
+					if (pos != null && be.getLevel().isEmptyBlock(pos)) {
 						switch (state.getRenderShape()) {
 							case MODEL:
 								for (RenderType renderType : RenderType.chunkBufferLayers()) {
-									if (ItemBlockRenderTypes.canRenderInLayer(state, renderType)) {
+									if (ItemBlockRenderTypes.canRenderInLayer(state, renderType))
 										Minecraft.getInstance().getBlockRenderer().renderBatched(state, pos, be.getLevel(), pose, buffer.getBuffer(renderType), true, random);
-									}
 								}
 
 								break;
@@ -88,26 +82,24 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 	 * @param y The offset from the projectors position on the y axis of the position at which to draw the fake block
 	 * @param distance The distance in blocks that the fake block is away from the projector (set by player)
 	 * @param offset The offset in blocks that the fake block is moved to the side from the projector (set by player)
-	 *
 	 * @return The BlockPos of the fake block to be drawn, null if an invalid direction was given
 	 */
-	private BlockPos translateProjection(BlockPos bePos, PoseStack pose, Direction direction, int x, int y, double distance, double offset)
-	{
+	private BlockPos translateProjection(BlockPos bePos, PoseStack pose, Direction direction, int x, int y, double distance, double offset) {
 		BlockPos pos = null;
 
-		if(direction == Direction.NORTH) {
+		if (direction == Direction.NORTH) {
 			pos = new BlockPos(bePos.getX() + x + offset, bePos.getY() + y, bePos.getZ() + distance);
 			pose.translate(0.0D + x + offset, 0.0D + y, distance);
 		}
-		else if(direction == Direction.SOUTH) {
+		else if (direction == Direction.SOUTH) {
 			pos = new BlockPos(bePos.getX() + x + offset, bePos.getY() + y, bePos.getZ() + -distance);
 			pose.translate(0.0D + x + offset, 0.0D + y, -distance);
 		}
-		else if(direction == Direction.WEST) {
+		else if (direction == Direction.WEST) {
 			pos = new BlockPos(bePos.getX() + distance, bePos.getY() + y, bePos.getZ() + x + offset);
 			pose.translate(distance, 0.0D + y, 0.0D + x + offset);
 		}
-		else if(direction == Direction.EAST) {
+		else if (direction == Direction.EAST) {
 			pos = new BlockPos(bePos.getX() + -distance, bePos.getY() + y, bePos.getZ() + x + offset);
 			pose.translate(-distance, 0.0D + y, 0.0D + x + offset);
 		}
@@ -116,8 +108,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(ProjectorBlockEntity be)
-	{
+	public boolean shouldRenderOffScreen(ProjectorBlockEntity be) {
 		return true;
 	}
 }

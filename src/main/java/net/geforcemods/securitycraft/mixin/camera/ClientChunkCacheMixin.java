@@ -29,17 +29,16 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
 
 /**
- * These mixins aim at implementing the camera chunk storage from CameraController into all the places ClientChunkCache#storage is used
+ * These mixins aim at implementing the camera chunk storage from CameraController into all the places
+ * ClientChunkCache#storage is used
  */
 @Mixin(ClientChunkCache.class)
 public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	@Shadow
 	volatile ClientChunkCache.Storage storage;
-
 	@Shadow
 	@Final
 	ClientLevel level;
-
 	@Shadow
 	public abstract LevelLightEngine getLightEngine();
 
@@ -78,7 +77,8 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	}
 
 	/**
-	 * Handles chunks that get sent to the client which are in range of the camera storage, i.e. place them into the storage for them to be acquired afterwards
+	 * Handles chunks that get sent to the client which are in range of the camera storage, i.e. place them into the storage
+	 * for them to be acquired afterwards
 	 */
 	@Inject(method = "replaceWithPacketData", at = @At(value = "HEAD"), cancellable = true)
 	private void onReplace(int x, int z, ChunkBiomeContainer biomeContainer, FriendlyByteBuf buffer, CompoundTag chunkTag, BitSet chunkSection, CallbackInfoReturnable<LevelChunk> callback) {
@@ -102,7 +102,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 
 			lightEngine.enableLightSources(chunkPos, true);
 
-			for(int j = 0; j < chunkSections.length; ++j) {
+			for (int j = 0; j < chunkSections.length; ++j) {
 				LevelChunkSection levelChunkSection = chunkSections[j];
 				int sectionY = level.getSectionYFromSectionIndex(j);
 
@@ -123,9 +123,8 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && !storage.inRange(x, z) && CameraController.getCameraStorage().inRange(x, z)) {
 			LevelChunk chunk = CameraController.getCameraStorage().getChunk(CameraController.getCameraStorage().getIndex(x, z));
 
-			if (chunk != null && chunk.getPos().x == x && chunk.getPos().z == z) {
+			if (chunk != null && chunk.getPos().x == x && chunk.getPos().z == z)
 				callback.setReturnValue(chunk);
-			}
 		}
 	}
 }

@@ -48,60 +48,56 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player)placer));
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof Player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player) placer));
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
-	{
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		boolean newPowered = !state.getValue(POWERED);
 
 		level.setBlockAndUpdate(pos, state.setValue(POWERED, newPowered));
 		playSound(player, level, pos, newPowered);
 
-		if(state.getValue(FACE) == AttachFace.WALL)
+		if (state.getValue(FACE) == AttachFace.WALL)
 			notifyNeighbors(level, pos, state.getValue(FACING));
-		else if(state.getValue(FACE) == AttachFace.CEILING)
+		else if (state.getValue(FACE) == AttachFace.CEILING)
 			notifyNeighbors(level, pos, Direction.DOWN);
-		else if(state.getValue(FACE) == AttachFace.FLOOR)
+		else if (state.getValue(FACE) == AttachFace.FLOOR)
 			notifyNeighbors(level, pos, Direction.UP);
 
 		return InteractionResult.SUCCESS;
 	}
 
-	private void notifyNeighbors(Level level, BlockPos pos, Direction facing)
-	{
+	private void notifyNeighbors(Level level, BlockPos pos, Direction facing) {
 		level.updateNeighborsAt(pos, this);
 		level.updateNeighborsAt(pos.relative(facing.getOpposite()), this);
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param){
+	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
 		super.triggerEvent(state, level, pos, id, param);
 		BlockEntity blockEntity = level.getBlockEntity(pos);
 		return blockEntity == null ? false : blockEntity.triggerEvent(id, param);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
-	{
-		return switch(state.getValue(FACE)) {
-			case FLOOR -> switch(state.getValue(FACING)) {
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+		return switch (state.getValue(FACE)) {
+			case FLOOR -> switch (state.getValue(FACING)) {
 				case NORTH, SOUTH -> state.getValue(POWERED) ? FLOOR_NS_POWERED : FLOOR_NS_UNPOWERED;
 				case EAST, WEST -> state.getValue(POWERED) ? FLOOR_EW_POWERED : FLOOR_EW_UNPOWERED;
 				default -> Shapes.block();
 			};
-			case WALL -> switch(state.getValue(FACING)) {
+			case WALL -> switch (state.getValue(FACING)) {
 				case NORTH -> state.getValue(POWERED) ? WALL_N_POWERED : WALL_N_UNPOWERED;
 				case SOUTH -> state.getValue(POWERED) ? WALL_S_POWERED : WALL_S_UNPOWERED;
 				case EAST -> state.getValue(POWERED) ? WALL_E_POWERED : WALL_E_UNPOWERED;
 				case WEST -> state.getValue(POWERED) ? WALL_W_POWERED : WALL_W_UNPOWERED;
 				default -> Shapes.block();
 			};
-			case CEILING -> switch(state.getValue(FACING)) {
+			case CEILING -> switch (state.getValue(FACING)) {
 				case NORTH, SOUTH -> state.getValue(POWERED) ? CEILING_NS_POWERED : CEILING_NS_UNPOWERED;
 				case EAST, WEST -> state.getValue(POWERED) ? CEILING_EW_POWERED : CEILING_EW_UNPOWERED;
 				default -> Shapes.block();
@@ -111,8 +107,7 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
-	{
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		return Shapes.empty();
 	}
 
@@ -122,8 +117,7 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock {
 	}
 
 	@Override
-	protected SoundEvent getSound(boolean turningOn)
-	{
+	protected SoundEvent getSound(boolean turningOn) {
 		return turningOn ? SoundEvents.STONE_BUTTON_CLICK_ON : SoundEvents.STONE_BUTTON_CLICK_OFF;
 	}
 }

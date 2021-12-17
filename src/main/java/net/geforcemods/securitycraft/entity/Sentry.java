@@ -68,12 +68,12 @@ import net.minecraftforge.items.IItemHandler;
 
 public class Sentry extends PathfinderMob implements RangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
 {
-	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Sentry.class, Owner.getSerializer());
-	private static final EntityDataAccessor<CompoundTag> DISGUISE_MODULE = SynchedEntityData.<CompoundTag>defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
-	private static final EntityDataAccessor<CompoundTag> ALLOWLIST = SynchedEntityData.<CompoundTag>defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
-	private static final EntityDataAccessor<Boolean> HAS_SPEED_MODULE = SynchedEntityData.<Boolean>defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Integer> MODE = SynchedEntityData.<Integer>defineId(Sentry.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Float> HEAD_ROTATION = SynchedEntityData.<Float>defineId(Sentry.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner> defineId(Sentry.class, Owner.getSerializer());
+	private static final EntityDataAccessor<CompoundTag> DISGUISE_MODULE = SynchedEntityData.<CompoundTag> defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
+	private static final EntityDataAccessor<CompoundTag> ALLOWLIST = SynchedEntityData.<CompoundTag> defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
+	private static final EntityDataAccessor<Boolean> HAS_SPEED_MODULE = SynchedEntityData.<Boolean> defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Integer> MODE = SynchedEntityData.<Integer> defineId(Sentry.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Float> HEAD_ROTATION = SynchedEntityData.<Float> defineId(Sentry.class, EntityDataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
 	private static final float ANIMATION_STEP_SIZE = 0.025F;
 	private static final float UPWARDS_ANIMATION_LIMIT = 0.025F;
@@ -83,13 +83,11 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
 
-	public Sentry(EntityType<Sentry> type, Level level)
-	{
+	public Sentry(EntityType<Sentry> type, Level level) {
 		super(SCContent.eTypeSentry, level);
 	}
 
-	public void setupSentry(Player owner)
-	{
+	public void setupSentry(Player owner) {
 		entityData.set(OWNER, new Owner(owner.getName().getString(), Player.createPlayerUUID(owner.getGameProfile()).toString()));
 		entityData.set(DISGUISE_MODULE, new CompoundTag());
 		entityData.set(ALLOWLIST, new CompoundTag());
@@ -99,8 +97,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	}
 
 	@Override
-	protected void defineSynchedData()
-	{
+	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(OWNER, new Owner());
 		entityData.define(DISGUISE_MODULE, new CompoundTag());
@@ -111,50 +108,41 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	}
 
 	@Override
-	protected void registerGoals()
-	{
+	protected void registerGoals() {
 		goalSelector.addGoal(1, new AttackRangedIfEnabledGoal(this, this::getShootingSpeed, 10.0F));
 		targetSelector.addGoal(1, new TargetNearestPlayerOrMobGoal(this));
 	}
 
 	@Override
-	public void tick()
-	{
+	public void tick() {
 		super.tick();
 
-		if(!level.isClientSide)
-		{
+		if (!level.isClientSide) {
 			BlockPos downPos = getBlockPosBelowThatAffectsMyMovement();
 
-			if(level.getBlockState(downPos).isAir() || level.noCollision(new AABB(downPos)))
+			if (level.getBlockState(downPos).isAir() || level.noCollision(new AABB(downPos)))
 				discard();
 		}
-		else
-		{
-			if(!animate && headYTranslation > 0.0F && getMode().isAggressive())
-			{
+		else {
+			if (!animate && headYTranslation > 0.0F && getMode().isAggressive()) {
 				animateUpwards = true;
 				animate = true;
 			}
 
-			if(animate) //no else if because animate can be changed in the above if statement
+			if (animate) //no else if because animate can be changed in the above if statement
 			{
-				if(animateUpwards && headYTranslation > UPWARDS_ANIMATION_LIMIT)
-				{
+				if (animateUpwards && headYTranslation > UPWARDS_ANIMATION_LIMIT) {
 					headYTranslation -= ANIMATION_STEP_SIZE;
 
-					if(headYTranslation <= UPWARDS_ANIMATION_LIMIT)
-					{
+					if (headYTranslation <= UPWARDS_ANIMATION_LIMIT) {
 						animateUpwards = false;
 						animate = false;
 					}
 				}
-				else if(!animateUpwards && headYTranslation < DOWNWARDS_ANIMATION_LIMIT)
-				{
+				else if (!animateUpwards && headYTranslation < DOWNWARDS_ANIMATION_LIMIT) {
 					headYTranslation += ANIMATION_STEP_SIZE;
 
-					if(headYTranslation >= DOWNWARDS_ANIMATION_LIMIT)
-					{
+					if (headYTranslation >= DOWNWARDS_ANIMATION_LIMIT) {
 						animateUpwards = true;
 						animate = false;
 					}
@@ -164,101 +152,89 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	}
 
 	@Override
-	public ItemStack getPickedResult(HitResult target)
-	{
+	public ItemStack getPickedResult(HitResult target) {
 		return new ItemStack(SCContent.SENTRY.get());
 	}
 
 	@Override
-	public InteractionResult mobInteract(Player player, InteractionHand hand)
-	{
+	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		BlockPos pos = blockPosition();
 
-		if(getOwner().isOwner(player) && hand == InteractionHand.MAIN_HAND)
-		{
+		if (getOwner().isOwner(player) && hand == InteractionHand.MAIN_HAND) {
 			Item item = player.getMainHandItem().getItem();
 
 			player.closeContainer();
 
-			if(player.isCrouching())
+			if (player.isCrouching())
 				discard();
-			else if(item == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
-			{
+			else if (item == SCContent.UNIVERSAL_BLOCK_REMOVER.get()) {
 				kill();
 
-				if(!player.isCreative())
+				if (!player.isCreative())
 					player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 			}
-			else if(item == SCContent.DISGUISE_MODULE.get())
-			{
+			else if (item == SCContent.DISGUISE_MODULE.get()) {
 				ItemStack module = getDisguiseModule();
 
-				if(!module.isEmpty()) //drop the old module as to not override it with the new one
-				{
+				//drop the old module as to not override it with the new one
+				if (!module.isEmpty()) {
 					Block.popResource(level, pos, module);
 
-					Block block = ((ModuleItem)module.getItem()).getBlockAddon(module.getTag());
+					Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
 
-					if(block == level.getBlockState(pos).getBlock())
+					if (block == level.getBlockState(pos).getBlock())
 						level.removeBlock(pos, false);
 				}
 
 				setDisguiseModule(player.getMainHandItem());
 
-				if(!player.isCreative())
+				if (!player.isCreative())
 					player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			}
-			else if(item == SCContent.ALLOWLIST_MODULE.get())
-			{
+			else if (item == SCContent.ALLOWLIST_MODULE.get()) {
 				ItemStack module = getAllowlistModule();
 
-				if(!module.isEmpty()) //drop the old module as to not override it with the new one
+				if (!module.isEmpty())
 					Block.popResource(level, pos, module);
 
 				setAllowlistModule(player.getMainHandItem());
 
-				if(!player.isCreative())
+				if (!player.isCreative())
 					player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			}
-			else if(item == SCContent.SPEED_MODULE.get())
-			{
-				if(!hasSpeedModule())
-				{
+			else if (item == SCContent.SPEED_MODULE.get()) {
+				if (!hasSpeedModule()) {
 					setHasSpeedModule(true);
 
-					if(!player.isCreative())
+					if (!player.isCreative())
 						player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 				}
 			}
-			else if(item == SCContent.UNIVERSAL_BLOCK_MODIFIER.get())
-			{
-				if (!getDisguiseModule().isEmpty())
-				{
-					Block block = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTag());
+			else if (item == SCContent.UNIVERSAL_BLOCK_MODIFIER.get()) {
+				if (!getDisguiseModule().isEmpty()) {
+					Block block = ((ModuleItem) getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTag());
 
-					if(block == level.getBlockState(pos).getBlock())
+					if (block == level.getBlockState(pos).getBlock())
 						level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 				}
 
 				Block.popResource(level, pos, getDisguiseModule());
 				Block.popResource(level, pos, getAllowlistModule());
 
-				if(hasSpeedModule())
+				if (hasSpeedModule())
 					Block.popResource(level, pos, new ItemStack(SCContent.SPEED_MODULE.get()));
 
 				entityData.set(DISGUISE_MODULE, new CompoundTag());
 				entityData.set(ALLOWLIST, new CompoundTag());
 				entityData.set(HAS_SPEED_MODULE, false);
 			}
-			else if(item == SCContent.REMOTE_ACCESS_SENTRY.get()) //bind/unbind sentry to remote control
+			else if (item == SCContent.REMOTE_ACCESS_SENTRY.get())
 				item.useOn(new UseOnContext(player, hand, new BlockHitResult(new Vec3(0.0D, 0.0D, 0.0D), Direction.NORTH, pos, false)));
-			else if(item == Items.NAME_TAG)
-			{
+			else if (item == Items.NAME_TAG) {
 				setCustomName(player.getMainHandItem().getHoverName());
 				player.getMainHandItem().shrink(1);
 			}
-			else if(item == SCContent.UNIVERSAL_OWNER_CHANGER.get())
-			{
+			else if (item == SCContent.UNIVERSAL_OWNER_CHANGER.get()) {
 				String newOwner = player.getMainHandItem().getHoverName().getString();
 
 				entityData.set(OWNER, new Owner(newOwner, PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID"));
@@ -270,9 +246,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 			player.swing(InteractionHand.MAIN_HAND);
 			return InteractionResult.SUCCESS;
 		}
-		else if(!getOwner().isOwner(player) && hand == InteractionHand.MAIN_HAND && player.isCreative())
-		{
-			if(player.isCrouching() || player.getMainHandItem().getItem() == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
+		else if (!getOwner().isOwner(player) && hand == InteractionHand.MAIN_HAND && player.isCreative()) {
+			if (player.isCrouching() || player.getMainHandItem().getItem() == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
 				kill();
 		}
 
@@ -283,15 +258,13 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	 * Cleanly removes this sentry from the world, dropping the module and removing the block the sentry is disguised with
 	 */
 	@Override
-	public void remove(RemovalReason reason)
-	{
+	public void remove(RemovalReason reason) {
 		BlockPos pos = blockPosition();
 
-		if (!getDisguiseModule().isEmpty())
-		{
-			Block block = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTag());
+		if (!getDisguiseModule().isEmpty()) {
+			Block block = ((ModuleItem) getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTag());
 
-			if(block == level.getBlockState(pos).getBlock())
+			if (block == level.getBlockState(pos).getBlock())
 				level.removeBlock(pos, false);
 		}
 
@@ -300,49 +273,47 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 		Block.popResource(level, pos, getDisguiseModule()); //if there is none, nothing will drop
 		Block.popResource(level, pos, getAllowlistModule()); //if there is none, nothing will drop
 
-		if(hasSpeedModule())
+		if (hasSpeedModule())
 			Block.popResource(level, pos, new ItemStack(SCContent.SPEED_MODULE.get()));
 	}
 
 	@Override
-	public void kill()
-	{
+	public void kill() {
 		remove(RemovalReason.KILLED);
 	}
 
 	/**
 	 * Sets this sentry's mode to the next one and sends the player a message about the switch
+	 *
 	 * @param player The player to send the message to
 	 */
-	public void toggleMode(Player player)
-	{
+	public void toggleMode(Player player) {
 		toggleMode(player, entityData.get(MODE) + 1, true);
 	}
 
 	/**
-	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message about the switch if wanted
+	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message
+	 * about the switch if wanted
+	 *
 	 * @param player The player to send the message to
 	 * @param mode The mode (int) to switch to (instead of sequentially toggling)
 	 */
-	public void toggleMode(Player player, int mode, boolean sendMessage)
-	{
-		if(mode < 0 || mode >= SentryMode.values().length) //bigger than the amount of possible values in case a player sets the value manually by command
+	public void toggleMode(Player player, int mode, boolean sendMessage) {
+		if (mode < 0 || mode >= SentryMode.values().length)
 			mode = 0;
 
 		entityData.set(MODE, mode);
 
-		if(sendMessage)
+		if (sendMessage)
 			player.displayClientMessage(Utils.localize(SentryMode.values()[mode].getModeKey()).append(Utils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
 
-		if(!player.level.isClientSide)
+		if (!player.level.isClientSide)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(blockPosition(), true, SentryMode.values()[mode].isAggressive()));
 	}
 
 	@Override
-	public void setTarget(LivingEntity target)
-	{
-		if(!getMode().isAggressive() && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getId())))
-		{
+	public void setTarget(LivingEntity target) {
+		if (!getMode().isAggressive() && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getId()))) {
 			animateUpwards = getMode().isCamouflage() && target != null;
 			animate = true;
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(blockPosition(), animate, animateUpwards));
@@ -359,14 +330,13 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	}
 
 	@Override
-	public void performRangedAttack(LivingEntity target, float distanceFactor)
-	{
+	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		//don't shoot if somehow a non player is a target, or if the player is in spectator or creative mode
-		if(target instanceof Player player && (player.isSpectator() || player.isCreative()))
+		if (target instanceof Player player && (player.isSpectator() || player.isCreative()))
 			return;
 
 		//also don't shoot if the target is too far away
-		if(distanceToSqr(target) > MAX_TARGET_DISTANCE * MAX_TARGET_DISTANCE)
+		if (distanceToSqr(target) > MAX_TARGET_DISTANCE * MAX_TARGET_DISTANCE)
 			return;
 
 		BlockEntity blockEntity = level.getBlockEntity(blockPosition().below());
@@ -375,25 +345,21 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 		AbstractProjectileDispenseBehavior pdb = null;
 		LazyOptional<IItemHandler> optional = LazyOptional.empty();
 
-		if(blockEntity instanceof KeypadChestBlockEntity be)
+		if (blockEntity instanceof KeypadChestBlockEntity be)
 			optional = be.getHandlerForSentry(this);
-		else if(blockEntity != null)
+		else if (blockEntity != null)
 			optional = blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
 
-		if(optional.isPresent())
-		{
+		if (optional.isPresent()) {
 			IItemHandler handler = optional.orElse(null); //this is safe, because the presence was checked beforehand
 
-			for(int i = 0; i < handler.getSlots(); i++)
-			{
+			for (int i = 0; i < handler.getSlots(); i++) {
 				ItemStack stack = handler.getStackInSlot(i);
 
-				if(!stack.isEmpty())
-				{
-					DispenseItemBehavior dispenseBehavior = ((DispenserBlock)Blocks.DISPENSER).getDispenseMethod(stack);
+				if (!stack.isEmpty()) {
+					DispenseItemBehavior dispenseBehavior = ((DispenserBlock) Blocks.DISPENSER).getDispenseMethod(stack);
 
-					if(dispenseBehavior instanceof AbstractProjectileDispenseBehavior projectileDispenseBehavior)
-					{
+					if (dispenseBehavior instanceof AbstractProjectileDispenseBehavior projectileDispenseBehavior) {
 						ItemStack extracted = handler.extractItem(i, 1, false);
 
 						pdb = projectileDispenseBehavior;
@@ -406,22 +372,21 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 			}
 		}
 
-		if(throwableEntity == null)
+		if (throwableEntity == null)
 			throwableEntity = new Bullet(level, this);
 
 		double baseY = target.getY() + target.getEyeHeight() - 1.100000023841858D;
 		double x = target.getX() - getX();
 		double y = baseY - throwableEntity.getY();
 		double z = target.getZ() - getZ();
-		float yOffset = Mth.sqrt((float)(x * x + z * z)) * 0.2F;
+		float yOffset = Mth.sqrt((float) (x * x + z * z)) * 0.2F;
 
-		entityData.set(HEAD_ROTATION, (float)(Mth.atan2(x, -z) * (180D / Math.PI)));
+		entityData.set(HEAD_ROTATION, (float) (Mth.atan2(x, -z) * (180D / Math.PI)));
 		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 
-		if(shootSound == null)
-		{
-			if(!level.isClientSide)
-				pdb.playSound(new BlockSourceImpl((ServerLevel)level, blockPosition()));
+		if (shootSound == null) {
+			if (!level.isClientSide)
+				pdb.playSound(new BlockSourceImpl((ServerLevel) level, blockPosition()));
 		}
 		else
 			playSound(shootSound, 1.0F, 1.0F / (getRandom().nextFloat() * 0.4F + 0.8F));
@@ -430,8 +395,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag tag)
-	{
+	public void addAdditionalSaveData(CompoundTag tag) {
 		tag.put("TileEntityData", getOwnerTag());
 		tag.put("InstalledModule", getDisguiseModule().save(new CompoundTag()));
 		tag.put("InstalledWhitelist", getAllowlistModule().save(new CompoundTag()));
@@ -441,8 +405,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 		super.addAdditionalSaveData(tag);
 	}
 
-	private CompoundTag getOwnerTag()
-	{
+	private CompoundTag getOwnerTag() {
 		CompoundTag tag = new CompoundTag();
 		Owner owner = entityData.get(OWNER);
 
@@ -451,8 +414,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag tag)
-	{
+	public void readAdditionalSaveData(CompoundTag tag) {
 		CompoundTag teTag = tag.getCompound("TileEntityData");
 		Owner owner = Owner.fromCompound(teTag);
 
@@ -468,21 +430,19 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	/**
 	 * @return The owner of this sentry
 	 */
-	public Owner getOwner()
-	{
+	public Owner getOwner() {
 		return entityData.get(OWNER);
 	}
 
 	/**
 	 * Sets the sentry's disguise module and places a block if possible
+	 *
 	 * @param module The module to set
 	 */
-	public void setDisguiseModule(ItemStack module)
-	{
-		Block block = ((ModuleItem)module.getItem()).getBlockAddon(module.getTag());
+	public void setDisguiseModule(ItemStack module) {
+		Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
 
-		if(block != null)
-		{
+		if (block != null) {
 			BlockState state = block.defaultBlockState();
 
 			if (level.getBlockState(blockPosition()).isAir())
@@ -494,30 +454,29 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 
 	/**
 	 * Sets the sentry's allowlist module
+	 *
 	 * @param module The module to set
 	 */
-	public void setAllowlistModule(ItemStack module)
-	{
+	public void setAllowlistModule(ItemStack module) {
 		entityData.set(ALLOWLIST, module.save(new CompoundTag()));
 	}
 
 	/**
 	 * Sets whether this sentry has a speed module installed
+	 *
 	 * @param hasSpeedModule true to set that this sentry has a speed module, false otherwise
 	 */
-	public void setHasSpeedModule(boolean hasSpeedModule)
-	{
+	public void setHasSpeedModule(boolean hasSpeedModule) {
 		entityData.set(HAS_SPEED_MODULE, hasSpeedModule);
 	}
 
 	/**
 	 * @return The disguise module that is added to this sentry. ItemStack.EMPTY if none available
 	 */
-	public ItemStack getDisguiseModule()
-	{
+	public ItemStack getDisguiseModule() {
 		CompoundTag tag = entityData.get(DISGUISE_MODULE);
 
-		if(tag == null || tag.isEmpty())
+		if (tag == null || tag.isEmpty())
 			return ItemStack.EMPTY;
 		else
 			return ItemStack.of(tag);
@@ -526,26 +485,24 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	/**
 	 * @return The allowlist module that is added to this sentry. ItemStack.EMPTY if none available
 	 */
-	public ItemStack getAllowlistModule()
-	{
+	public ItemStack getAllowlistModule() {
 		CompoundTag tag = entityData.get(ALLOWLIST);
 
-		if(tag == null || tag.isEmpty())
+		if (tag == null || tag.isEmpty())
 			return ItemStack.EMPTY;
 		else
 			return ItemStack.of(tag);
 	}
 
-	public boolean hasSpeedModule()
-	{
+	public boolean hasSpeedModule() {
 		return entityData.get(HAS_SPEED_MODULE);
 	}
 
 	/**
-	 * @return The mode in which the sentry is currently in, CAMOUFLAGE_HP as a fallback if the saved mode is not a valid mode
+	 * @return The mode in which the sentry is currently in, CAMOUFLAGE_HP as a fallback if the saved mode is not a valid
+	 *         mode
 	 */
-	public SentryMode getMode()
-	{
+	public SentryMode getMode() {
 		int mode = entityData.get(MODE);
 
 		return mode < 0 || mode >= SentryMode.values().length ? SentryMode.CAMOUFLAGE_HP : SentryMode.values()[mode];
@@ -554,20 +511,16 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	/**
 	 * @return The amount of y translation from the head's default position, used for animation
 	 */
-	public float getHeadYTranslation()
-	{
+	public float getHeadYTranslation() {
 		return headYTranslation;
 	}
 
-	public boolean isTargetingAllowedPlayer(LivingEntity potentialTarget)
-	{
-		if(potentialTarget != null)
-		{
+	public boolean isTargetingAllowedPlayer(LivingEntity potentialTarget) {
+		if (potentialTarget != null) {
 			List<String> players = ModuleUtils.getPlayersFromModule(getAllowlistModule());
 
-			for(String s : players)
-			{
-				if(potentialTarget.getName().getContents().equalsIgnoreCase(s))
+			for (String s : players) {
+				if (potentialTarget.getName().getContents().equalsIgnoreCase(s))
 					return true;
 			}
 		}
@@ -575,40 +528,34 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 		return false;
 	}
 
-	public int getShootingSpeed()
-	{
+	public int getShootingSpeed() {
 		return hasSpeedModule() ? 5 : 10;
 	}
 
 	//start: disallow sentry to take damage
 	@Override
-	public boolean doHurtTarget(Entity entity)
-	{
+	public boolean doHurtTarget(Entity entity) {
 		return false;
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount)
-	{
+	public boolean hurt(DamageSource source, float amount) {
 		return false;
 	}
 
 	@Override
-	public boolean isAttackable()
-	{
+	public boolean isAttackable() {
 		return false;
 	}
 
 	@Override
-	public boolean attackable()
-	{
+	public boolean attackable() {
 		return false;
 	}
 	//end: disallow sentry to take damage
 
 	@Override
-	public boolean checkSpawnRules(LevelAccessor level, MobSpawnType reason)
-	{
+	public boolean checkSpawnRules(LevelAccessor level, MobSpawnType reason) {
 		return false;
 	}
 
@@ -616,8 +563,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	public void jumpFromGround() {} //sentries don't jump!
 
 	@Override
-	public boolean isPathFinding()
-	{
+	public boolean isPathFinding() {
 		return false;
 	}
 
@@ -625,8 +571,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	public void checkDespawn() {} //sentries don't despawn
 
 	@Override
-	public boolean removeWhenFarAway(double distanceClosestToPlayer)
-	{
+	public boolean removeWhenFarAway(double distanceClosestToPlayer) {
 		return false; //sentries don't despawn
 	}
 
@@ -644,26 +589,22 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	protected void pushEntities() {}
 
 	@Override
-	public boolean ignoreExplosion()
-	{
+	public boolean ignoreExplosion() {
 		return true; //does not get pushed around by explosions
 	}
 
 	@Override
-	public boolean isPickable()
-	{
+	public boolean isPickable() {
 		return true; //needs to stay true so blocks can't be broken through the sentry
 	}
 
 	@Override
-	public boolean isPushable()
-	{
+	public boolean isPushable() {
 		return false;
 	}
 
 	@Override
-	public PushReaction getPistonPushReaction()
-	{
+	public PushReaction getPistonPushReaction() {
 		return PushReaction.IGNORE;
 	}
 
@@ -672,79 +613,72 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 
 	//this last code is here so the ai task gets executed, which it doesn't for some weird reason
 	@Override
-	public Random getRandom()
-	{
+	public Random getRandom() {
 		return notRandom;
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket()
-	{
+	public Packet<?> getAddEntityPacket() {
 		return new ClientboundAddEntityPacket(this);
 	}
 
 	private static Random notRandom = new NotRandom();
 
-	private static class NotRandom extends Random
-	{
+	private static class NotRandom extends Random {
 		@Override
-		public int nextInt(int bound)
-		{
+		public int nextInt(int bound) {
 			return 0;
 		}
 	}
 
-	public static enum SentryMode
-	{
-		CAMOUFLAGE_HP(1, 0, 1), CAMOUFLAGE_H(1, 1, 3), CAMOUFLAGE_P(1, 2, 5), AGGRESSIVE_HP(0, 0, 0), AGGRESSIVE_H(0, 1, 2), AGGRESSIVE_P(0, 2, 4), IDLE(-1, -1, 6);
+	public static enum SentryMode {
+		CAMOUFLAGE_HP(1, 0, 1),
+		CAMOUFLAGE_H(1, 1, 3),
+		CAMOUFLAGE_P(1, 2, 5),
+		AGGRESSIVE_HP(0, 0, 0),
+		AGGRESSIVE_H(0, 1, 2),
+		AGGRESSIVE_P(0, 2, 4),
+		IDLE(-1, -1, 6);
 
 		private final int type;
 		private final int attack;
 		private final int descriptionKeyIndex;
 
-		SentryMode(int type, int attack, int descriptionKeyIndex)
-		{
+		SentryMode(int type, int attack, int descriptionKeyIndex) {
 			this.type = type;
 			this.attack = attack;
 			this.descriptionKeyIndex = descriptionKeyIndex;
 		}
 
-		public boolean isAggressive()
-		{
+		public boolean isAggressive() {
 			return type == 0;
 		}
 
-		public boolean isCamouflage()
-		{
+		public boolean isCamouflage() {
 			return type == 1;
 		}
 
-		public boolean attacksHostile()
-		{
+		public boolean attacksHostile() {
 			return attack == 0 || attack == 1;
 		}
 
-		public boolean attacksPlayers()
-		{
+		public boolean attacksPlayers() {
 			return attack == 0 || attack == 2;
 		}
 
-		public String getModeKey()
-		{
+		public String getModeKey() {
 			String key = "messages.securitycraft:sentry.mode";
 
 			return isAggressive() ? key + "0" : (isCamouflage() ? key + "1" : key + "2");
 		}
 
-		public String getTargetKey()
-		{
+		public String getTargetKey() {
 			String key = "gui.securitycraft:srat.targets";
 
 			return attacksHostile() && attacksPlayers() ? key + "1" : (attacksHostile() ? key + "2" : (attacksPlayers() ? key + "3" : ""));
 		}
 
-		public String getDescriptionKey()
-		{
+		public String getDescriptionKey() {
 			return "messages.securitycraft:sentry.descriptionMode" + descriptionKeyIndex;
 		}
 	}

@@ -23,53 +23,44 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.MinecraftForge;
 
-public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock
-{
-	public SpecialDoorBlock(Block.Properties properties)
-	{
+public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock {
+	public SpecialDoorBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighbor, boolean flag)
-	{
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighbor, boolean flag) {
 		Block neighborBlock = level.getBlockState(neighbor).getBlock();
 
-		if(state.getValue(HALF) == DoubleBlockHalf.UPPER)
-		{
+		if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
 			BlockPos posBelow = pos.below();
 			BlockState stateBelow = level.getBlockState(posBelow);
 
-			if(stateBelow.getBlock() != this)
+			if (stateBelow.getBlock() != this)
 				level.destroyBlock(pos, false);
 			else if (neighborBlock != this)
 				neighborChanged(stateBelow, level, posBelow, block, pos, flag);
 		}
-		else
-		{
+		else {
 			boolean drop = false;
 			BlockPos blockBelow = pos.above();
 			BlockState stateBelow = level.getBlockState(blockBelow);
 
-			if(stateBelow.getBlock() != this)
-			{
+			if (stateBelow.getBlock() != this) {
 				level.destroyBlock(pos, false);
 				drop = true;
 			}
 
-			if(!level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP))
-			{
+			if (!level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP)) {
 				level.destroyBlock(pos, false);
 				drop = true;
 
-				if(stateBelow.getBlock() == this)
+				if (stateBelow.getBlock() == this)
 					level.destroyBlock(blockBelow, false);
 			}
 
-			if(drop)
-			{
-				if(!level.isClientSide)
-				{
+			if (drop) {
+				if (!level.isClientSide) {
 					level.destroyBlock(pos, false);
 					Block.popResource(level, pos, new ItemStack(getDoorItem()));
 				}
@@ -78,26 +69,23 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof Player player)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 
 		super.setPlacedBy(level, pos, state, placer, stack);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
-	{
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {
 		BlockState upperState = level.getBlockState(pos);
 
-		if(!upperState.getValue(DoorBlock.OPEN))
+		if (!upperState.getValue(DoorBlock.OPEN))
 			return;
 
 		BlockState lowerState;
 
-		if(upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
-		{
+		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
 			lowerState = upperState;
 			pos = pos.above();
 			upperState = level.getBlockState(pos);
@@ -111,33 +99,29 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
-	{
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		super.onRemove(state, level, pos, newState, isMoving);
 
-		if(state.getBlock() != newState.getBlock())
+		if (state.getBlock() != newState.getBlock())
 			level.removeBlockEntity(pos);
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int id, int param)
-	{
-		super.triggerEvent(state, world, pos, id, param);
+	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
+		super.triggerEvent(state, level, pos, id, param);
 
-		BlockEntity blockEntity = world.getBlockEntity(pos);
+		BlockEntity blockEntity = level.getBlockEntity(pos);
 
 		return blockEntity == null ? false : blockEntity.triggerEvent(id, param);
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
-	{
+	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
 		return new ItemStack(getDoorItem());
 	}
 
 	@Override
-	public PushReaction getPistonPushReaction(BlockState state)
-	{
+	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.BLOCK;
 	}
 

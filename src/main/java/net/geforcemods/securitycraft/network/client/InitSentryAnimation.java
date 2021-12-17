@@ -10,29 +10,25 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-public class InitSentryAnimation
-{
+public class InitSentryAnimation {
 	private BlockPos pos;
 	private boolean animate, animateUpwards;
 
 	public InitSentryAnimation() {}
 
-	public InitSentryAnimation(BlockPos sentryPos, boolean animate, boolean animateUpwards)
-	{
+	public InitSentryAnimation(BlockPos sentryPos, boolean animate, boolean animateUpwards) {
 		pos = sentryPos;
 		this.animate = animate;
 		this.animateUpwards = animateUpwards;
 	}
 
-	public static void encode(InitSentryAnimation message, FriendlyByteBuf buf)
-	{
+	public static void encode(InitSentryAnimation message, FriendlyByteBuf buf) {
 		buf.writeLong(message.pos.asLong());
 		buf.writeBoolean(message.animate);
 		buf.writeBoolean(message.animateUpwards);
 	}
 
-	public static InitSentryAnimation decode(FriendlyByteBuf buf)
-	{
+	public static InitSentryAnimation decode(FriendlyByteBuf buf) {
 		InitSentryAnimation message = new InitSentryAnimation();
 
 		message.pos = BlockPos.of(buf.readLong());
@@ -41,13 +37,11 @@ public class InitSentryAnimation
 		return message;
 	}
 
-	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			List<Sentry> sentries = Minecraft.getInstance().level.<Sentry>getEntitiesOfClass(Sentry.class, new AABB(message.pos));
+			List<Sentry> sentries = Minecraft.getInstance().level.<Sentry> getEntitiesOfClass(Sentry.class, new AABB(message.pos));
 
-			if(!sentries.isEmpty())
-			{
+			if (!sentries.isEmpty()) {
 				sentries.get(0).animateUpwards = message.animateUpwards;
 				sentries.get(0).animate = message.animate;
 			}

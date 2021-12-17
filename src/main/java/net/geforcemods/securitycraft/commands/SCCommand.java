@@ -18,18 +18,17 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.ForgeHooks;
 
+//@formatter:off
 public class SCCommand {
-	public static void register(CommandDispatcher<CommandSourceStack> dispatcher)
-	{
-		dispatcher.register(LiteralArgumentBuilder.<CommandSourceStack>literal("sc")
+	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+		dispatcher.register(LiteralArgumentBuilder.<CommandSourceStack> literal("sc")
 				.requires(Predicates.alwaysTrue())
 				.then(connect())
 				.then(help())
 				.then(bug()));
 	}
 
-	private static ArgumentBuilder<CommandSourceStack, ?> connect()
-	{
+	private static ArgumentBuilder<CommandSourceStack, ?> connect() {
 		return Commands.literal("connect").executes(ctx -> {
 			ctx.getSource().getPlayerOrException().sendMessage(new TextComponent("[")
 					.append(new TextComponent("IRC").withStyle(ChatFormatting.GREEN))
@@ -41,8 +40,7 @@ public class SCCommand {
 		});
 	}
 
-	private static ArgumentBuilder<CommandSourceStack, ?> help()
-	{
+	private static ArgumentBuilder<CommandSourceStack, ?> help() {
 		return Commands.literal("help").executes(ctx -> {
 			ctx.getSource().getPlayerOrException().sendMessage(new TranslatableComponent("messages.securitycraft:sc_help",
 					new TranslatableComponent(Blocks.CRAFTING_TABLE.getDescriptionId()),
@@ -52,8 +50,7 @@ public class SCCommand {
 		});
 	}
 
-	private static ArgumentBuilder<CommandSourceStack, ?> bug()
-	{
+	private static ArgumentBuilder<CommandSourceStack, ?> bug() {
 		return Commands.literal("bug").executes(ctx -> {
 			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), SendTip.tipsWithLink.get("discord"), ChatFormatting.GOLD);
 			return 0;

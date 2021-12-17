@@ -5,9 +5,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 
 public class GenericMenu extends AbstractContainerMenu {
-
-	public GenericMenu(MenuType<GenericMenu> type, int windowId)
-	{
+	public GenericMenu(MenuType<GenericMenu> type, int windowId) {
 		super(type, windowId);
 	}
 

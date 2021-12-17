@@ -26,7 +26,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
-
 	public ReinforcedMovingPistonBlock(Block.Properties properties) {
 		super(properties);
 	}
@@ -43,9 +42,8 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			if (level.getBlockEntity(pos) instanceof ReinforcedPistonMovingBlockEntity pistonBlockEntity) {
+			if (level.getBlockEntity(pos) instanceof ReinforcedPistonMovingBlockEntity pistonBlockEntity)
 				pistonBlockEntity.finalTick();
-			}
 		}
 	}
 
@@ -54,22 +52,23 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 		BlockPos oppositePos = pos.relative(state.getValue(FACING).getOpposite());
 		BlockState oppositeState = level.getBlockState(oppositePos);
 
-		if (oppositeState.getBlock() instanceof ReinforcedPistonBaseBlock && oppositeState.getValue(PistonBaseBlock.EXTENDED)) {
+		if (oppositeState.getBlock() instanceof ReinforcedPistonBaseBlock && oppositeState.getValue(PistonBaseBlock.EXTENDED))
 			level.removeBlock(oppositePos, false);
-		}
 	}
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		if(builder.getLevel().getBlockEntity(new BlockPos(builder.getParameter(LootContextParams.ORIGIN))) instanceof ReinforcedPistonMovingBlockEntity be)
+		if (builder.getLevel().getBlockEntity(new BlockPos(builder.getParameter(LootContextParams.ORIGIN))) instanceof ReinforcedPistonMovingBlockEntity be)
 			return be.getMovedState().getDrops(builder);
-		else return Collections.emptyList();
+		else
+			return Collections.emptyList();
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		if(level.getBlockEntity(pos) instanceof ReinforcedPistonMovingBlockEntity be)
+		if (level.getBlockEntity(pos) instanceof ReinforcedPistonMovingBlockEntity be)
 			return be.getCollisionShape(level, pos);
-		else return Shapes.empty();
+		else
+			return Shapes.empty();
 	}
 }

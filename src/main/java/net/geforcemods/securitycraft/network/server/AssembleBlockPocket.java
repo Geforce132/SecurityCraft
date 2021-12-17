@@ -7,27 +7,23 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-public class AssembleBlockPocket
-{
+public class AssembleBlockPocket {
 	private BlockPos pos;
 	private int size;
 
 	public AssembleBlockPocket() {}
 
-	public AssembleBlockPocket(BlockPocketManagerBlockEntity te, int size)
-	{
+	public AssembleBlockPocket(BlockPocketManagerBlockEntity te, int size) {
 		pos = te.getBlockPos();
 		this.size = size;
 	}
 
-	public static void encode(AssembleBlockPocket message, FriendlyByteBuf buf)
-	{
+	public static void encode(AssembleBlockPocket message, FriendlyByteBuf buf) {
 		buf.writeLong(message.pos.asLong());
 		buf.writeInt(message.size);
 	}
 
-	public static AssembleBlockPocket decode(FriendlyByteBuf buf)
-	{
+	public static AssembleBlockPocket decode(FriendlyByteBuf buf) {
 		AssembleBlockPocket message = new AssembleBlockPocket();
 
 		message.pos = BlockPos.of(buf.readLong());
@@ -35,11 +31,9 @@ public class AssembleBlockPocket
 		return message;
 	}
 
-	public static void onMessage(AssembleBlockPocket message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(AssembleBlockPocket message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			if(ctx.get().getSender().level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity be && be.getOwner().isOwner(ctx.get().getSender()))
-			{
+			if (ctx.get().getSender().level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity be && be.getOwner().isOwner(ctx.get().getSender())) {
 				be.size = message.size;
 				be.autoAssembleMultiblock();
 			}

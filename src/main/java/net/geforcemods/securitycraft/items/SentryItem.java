@@ -16,35 +16,28 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-public class SentryItem extends Item
-{
-	public SentryItem(Item.Properties properties)
-	{
+public class SentryItem extends Item {
+	public SentryItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public InteractionResult useOn(UseOnContext ctx)
-	{
+	public InteractionResult useOn(UseOnContext ctx) {
 		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
 	}
 
-	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ)
-	{
+	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
 		boolean replacesTargetedBlock = level.getBlockState(pos).getMaterial().isReplaceable();
 
-		if (!replacesTargetedBlock) {
+		if (!replacesTargetedBlock)
 			pos = pos.relative(facing); //if the block is not replaceable, place sentry next to targeted block
-		}
 
-		if(!level.isEmptyBlock(pos) && !replacesTargetedBlock)
+		if (!level.isEmptyBlock(pos) && !replacesTargetedBlock)
 			return InteractionResult.PASS;
-		else
-		{
+		else {
 			BlockPos downPos = pos.below();
 
-			if(level.isEmptyBlock(downPos) || level.noCollision(new AABB(downPos)))
-			{
+			if (level.isEmptyBlock(downPos) || level.noCollision(new AABB(downPos))) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), ChatFormatting.DARK_RED);
 				return InteractionResult.FAIL;
 			}
@@ -58,14 +51,13 @@ public class SentryItem extends Item
 		if (stack.hasCustomHoverName())
 			entity.setCustomName(stack.getHoverName());
 
-		if (replacesTargetedBlock) {
+		if (replacesTargetedBlock)
 			level.removeBlock(pos, false);
-		}
 
 		level.addFreshEntity(entity);
 		player.displayClientMessage(Utils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).append(Utils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
 
-		if(!player.isCreative())
+		if (!player.isCreative())
 			stack.shrink(1);
 
 		return InteractionResult.SUCCESS;

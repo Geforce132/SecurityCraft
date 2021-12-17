@@ -12,7 +12,8 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.ViewArea;
 
 /**
- * This mixin fixes camera chunks disappearing when the player entity moves while viewing a camera (e.g. while being in a minecart or falling)
+ * This mixin fixes camera chunks disappearing when the player entity moves while viewing a camera (e.g. while being in a
+ * minecart or falling)
  */
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {

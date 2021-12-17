@@ -16,8 +16,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SentryModel extends EntityModel<Sentry>
-{
+public class SentryModel extends EntityModel<Sentry> {
 	public ModelPart base;
 	public ModelPart body;
 	public ModelPart neck;
@@ -28,8 +27,7 @@ public class SentryModel extends EntityModel<Sentry>
 	public ModelPart nose;
 	private final ImmutableList<ModelPart> headPartList;
 
-	public SentryModel(ModelPart modelPart)
-	{
+	public SentryModel(ModelPart modelPart) {
 		base = modelPart.getChild("base");
 		body = modelPart.getChild("body");
 		neck = modelPart.getChild("neck");
@@ -41,8 +39,7 @@ public class SentryModel extends EntityModel<Sentry>
 		headPartList = ImmutableList.of(head, neck, rightEye, body, nose, leftEye, hair);
 	}
 
-	public static LayerDefinition createLayer()
-	{
+	public static LayerDefinition createLayer() {
 		MeshDefinition meshDefinition = new MeshDefinition();
 		PartDefinition partDefinition = meshDefinition.getRoot();
 
@@ -57,14 +54,12 @@ public class SentryModel extends EntityModel<Sentry>
 		return LayerDefinition.create(meshDefinition, 64, 64);
 	}
 
-	public void renderBase(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
-	{
+	public void renderBase(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		base.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
-	{
+	public void renderToBuffer(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		headPartList.forEach(part -> part.render(pose, builder, packedLight, packedOverlay));
 	}
 

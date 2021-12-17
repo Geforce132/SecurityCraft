@@ -26,7 +26,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class KeyChangerScreen extends AbstractContainerScreen<GenericTEMenu> {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId());
 	private final TranslatableComponent enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode");
@@ -42,7 +41,7 @@ public class KeyChangerScreen extends AbstractContainerScreen<GenericTEMenu> {
 	}
 
 	@Override
-	public void init(){
+	public void init() {
 		super.init();
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addRenderableWidget(confirmButton = new IdButton(0, width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::actionPerformed));
@@ -61,20 +60,20 @@ public class KeyChangerScreen extends AbstractContainerScreen<GenericTEMenu> {
 	}
 
 	@Override
-	public void removed(){
+	public void removed() {
 		super.removed();
 		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY){
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		font.draw(pose, ukcName, imageWidth / 2 - font.width(ukcName) / 2, 6, 4210752);
 		font.draw(pose, enterPasscode, imageWidth / 2 - font.width(enterPasscode) / 2, 25, 4210752);
 		font.draw(pose, confirmPasscode, imageWidth / 2 - font.width(confirmPasscode) / 2, 65, 4210752);
 	}
 
 	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY){
+	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		int startX = (width - imageWidth) / 2;
 		int startY = (height - imageHeight) / 2;
 
@@ -91,7 +90,7 @@ public class KeyChangerScreen extends AbstractContainerScreen<GenericTEMenu> {
 		confirmButton.active = confirmPasscode != null && newPasscode != null && !confirmPasscode.isEmpty() && !newPasscode.isEmpty() && newPasscode.equals(confirmPasscode);
 	}
 
-	protected void actionPerformed(IdButton button){
+	protected void actionPerformed(IdButton button) {
 		((IPasswordProtected) be).setPassword(textboxNewPasscode.getValue());
 		SecurityCraft.channel.sendToServer(new SetPassword(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), textboxNewPasscode.getValue()));
 		Minecraft.getInstance().player.closeContainer();

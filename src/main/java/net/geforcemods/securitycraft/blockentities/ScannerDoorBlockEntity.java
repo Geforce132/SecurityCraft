@@ -22,12 +22,10 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated, ITickingBlockEntity, ILockable
-{
+public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated, ITickingBlockEntity, ILockable {
 	private int viewCooldown = 0;
 
-	public ScannerDoorBlockEntity(BlockPos pos, BlockState state)
-	{
+	public ScannerDoorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeScannerDoor, pos, state);
 	}
 
@@ -37,14 +35,12 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	}
 
 	@Override
-	public void onEntityViewed(LivingEntity entity)
-	{
+	public void onEntityViewed(LivingEntity entity) {
 		BlockState upperState = level.getBlockState(worldPosition);
 		BlockState lowerState = level.getBlockState(worldPosition.below());
 
-		if(!level.isClientSide && upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity))
-		{
-			if(!(entity instanceof Player player))
+		if (!level.isClientSide && upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity)) {
+			if (!(entity instanceof Player player))
 				return;
 
 			if (!isLocked()) {
@@ -65,10 +61,10 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 				level.setBlock(worldPosition.below(), lowerState.setValue(DoorBlock.OPEN, !lowerState.getValue(DoorBlock.OPEN)), 3);
 				level.levelEvent(null, open ? 1005 : 1011, worldPosition, 0);
 
-				if(open && length > 0)
+				if (open && length > 0)
 					level.getBlockTicks().scheduleTick(worldPosition, SCContent.SCANNER_DOOR.get(), length);
 
-				if(open && sendsMessages())
+				if (open && sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), ChatFormatting.GREEN);
 			}
 			else if (sendsMessages()) {
@@ -90,14 +86,14 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	}
 
 	@Override
-	public ModuleType[] acceptedModules()
-	{
-		return new ModuleType[]{ModuleType.ALLOWLIST};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
-	public int defaultSignalLength()
-	{
+	public int defaultSignalLength() {
 		return 0;
 	}
 }

@@ -16,45 +16,33 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock, EntityBlock
-{
+public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock, EntityBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
 
-	public ReinforcedWallBlock(Block.Properties properties, Block vanillaBlock)
-	{
+	public ReinforcedWallBlock(Block.Properties properties, Block vanillaBlock) {
 		super(properties);
 
 		this.vanillaBlockSupplier = () -> vanillaBlock;
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return vanillaBlockSupplier.get();
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
-		return defaultBlockState()
-				.setValue(UP, vanillaState.getValue(UP))
-				.setValue(NORTH_WALL, vanillaState.getValue(NORTH_WALL))
-				.setValue(EAST_WALL, vanillaState.getValue(EAST_WALL))
-				.setValue(SOUTH_WALL, vanillaState.getValue(SOUTH_WALL))
-				.setValue(WEST_WALL, vanillaState.getValue(WEST_WALL))
-				.setValue(WATERLOGGED, vanillaState.getValue(WATERLOGGED));
+	public BlockState getConvertedState(BlockState vanillaState) {
+		return defaultBlockState().setValue(UP, vanillaState.getValue(UP)).setValue(NORTH_WALL, vanillaState.getValue(NORTH_WALL)).setValue(EAST_WALL, vanillaState.getValue(EAST_WALL)).setValue(SOUTH_WALL, vanillaState.getValue(SOUTH_WALL)).setValue(WEST_WALL, vanillaState.getValue(WEST_WALL)).setValue(WATERLOGGED, vanillaState.getValue(WATERLOGGED));
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof Player player)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new OwnableBlockEntity(pos, state);
 	}
 }

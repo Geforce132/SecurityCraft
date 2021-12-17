@@ -12,40 +12,35 @@ import net.minecraft.world.level.block.state.BlockState;
 public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter {
 	private Component customName = TextComponent.EMPTY;
 
-	public NamedBlockEntity(BlockPos pos, BlockState state)
-	{
+	public NamedBlockEntity(BlockPos pos, BlockState state) {
 		this(SCContent.beTypeAbstract, pos, state);
 	}
 
-	public NamedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
-	{
+	public NamedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag)
-	{
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 		tag.putString("customName", customName.getString());
 		return tag;
 	}
 
 	@Override
-	public void load(CompoundTag tag)
-	{
+	public void load(CompoundTag tag) {
 		super.load(tag);
 
 		if (tag.contains("customName")) {
 			String name = tag.getString("customName");
 
-			if(!name.equals("name"))
+			if (!name.equals("name"))
 				customName = new TextComponent(name);
 		}
 	}
 
 	@Override
-	public Component getName()
-	{
+	public Component getName() {
 		return hasCustomName() ? customName : getDefaultName();
 	}
 

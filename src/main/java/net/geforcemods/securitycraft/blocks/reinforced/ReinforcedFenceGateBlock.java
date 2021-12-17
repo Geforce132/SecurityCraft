@@ -29,41 +29,36 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBlock {
-
-	public ReinforcedFenceGateBlock(Block.Properties properties){
+	public ReinforcedFenceGateBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
-	{
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		return InteractionResult.FAIL;
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof Player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player)placer));
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof Player)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, (Player) placer));
 	}
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if(level.getBlockState(pos).getValue(OPEN))
+		if (level.getBlockState(pos).getValue(OPEN))
 			return;
 
-		if(entity instanceof ItemEntity)
+		if (entity instanceof ItemEntity)
 			return;
-		else if(entity instanceof Player player)
-		{
-			if(((OwnableBlockEntity)level.getBlockEntity(pos)).getOwner().isOwner(player))
+		else if (entity instanceof Player player) {
+			if (((OwnableBlockEntity) level.getBlockEntity(pos)).getOwner().isOwner(player))
 				return;
 		}
-		else if(!level.isClientSide && entity instanceof Creeper creeper)
-		{
+		else if (!level.isClientSide && entity instanceof Creeper creeper) {
 			LightningBolt lightning = LevelUtils.createLightning(level, Vec3.atBottomCenterOf(pos), true);
 
-			creeper.thunderHit((ServerLevel)level, lightning);
+			creeper.thunderHit((ServerLevel) level, lightning);
 			return;
 		}
 
@@ -72,7 +67,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if(!level.isClientSide) {
+		if (!level.isClientSide) {
 			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos);
 
 			if (isPoweredSCBlock || block.defaultBlockState().isSignalSource())
@@ -90,10 +85,10 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 	}
 
 	@Override
-	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int par5, int par6){
-		super.triggerEvent(state, level, pos, par5, par6);
+	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
+		super.triggerEvent(state, level, pos, id, param);
 		BlockEntity blockEntity = level.getBlockEntity(pos);
-		return blockEntity != null ? blockEntity.triggerEvent(par5, par6) : false;
+		return blockEntity != null ? blockEntity.triggerEvent(id, param) : false;
 	}
 
 	@Override

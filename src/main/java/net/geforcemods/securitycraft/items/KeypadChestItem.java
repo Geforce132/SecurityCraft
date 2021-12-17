@@ -8,22 +8,18 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.IItemRenderProperties;
 
-public class KeypadChestItem extends BlockItem
-{
-	public KeypadChestItem(Block block, Properties properties)
-	{
+public class KeypadChestItem extends BlockItem {
+	public KeypadChestItem(Block block, Properties properties) {
 		super(block, properties);
 	}
 
 	@Override
-	public void initializeClient(Consumer<IItemRenderProperties> consumer)
-	{
+	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 		consumer.accept(new IItemRenderProperties() {
 			BlockEntityWithoutLevelRenderer renderer = new ItemKeypadChestRenderer();
 
 			@Override
-			public BlockEntityWithoutLevelRenderer getItemStackRenderer()
-			{
+			public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
 				return renderer;
 			}
 		});

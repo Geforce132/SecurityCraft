@@ -6,48 +6,39 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TrackMineBlockEntity extends OwnableBlockEntity
-{
+public class TrackMineBlockEntity extends OwnableBlockEntity {
 	private boolean active = true;
 
-	public TrackMineBlockEntity(BlockPos pos, BlockState state)
-	{
+	public TrackMineBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeTrackMine, pos, state);
 	}
 
-	public void activate()
-	{
-		if(!active)
-		{
+	public void activate() {
+		if (!active) {
 			active = true;
 			setChanged();
 		}
 	}
 
-	public void deactivate()
-	{
-		if(active)
-		{
+	public void deactivate() {
+		if (active) {
 			active = false;
 			setChanged();
 		}
 	}
 
-	public boolean isActive()
-	{
+	public boolean isActive() {
 		return active;
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag)
-	{
+	public CompoundTag save(CompoundTag tag) {
 		tag.putBoolean("TrackMineEnabled", active);
 		return super.save(tag);
 	}
 
 	@Override
-	public void load(CompoundTag tag)
-	{
+	public void load(CompoundTag tag) {
 		super.load(tag);
 		active = tag.getBoolean("TrackMineEnabled");
 	}

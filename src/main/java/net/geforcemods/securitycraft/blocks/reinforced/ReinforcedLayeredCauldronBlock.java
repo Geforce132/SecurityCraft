@@ -36,12 +36,12 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
-		if(collisionContext instanceof EntityCollisionContext ctx) {
-			if(ctx.getEntity().isPresent()) {
+		if (collisionContext instanceof EntityCollisionContext ctx) {
+			if (ctx.getEntity().isPresent()) {
 				Entity entity = ctx.getEntity().get();
 
-				if(entity instanceof Player player) {
-					if(level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
+				if (entity instanceof Player player) {
+					if (level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
 						return SHAPE;
 					else
 						return Shapes.block();
@@ -54,7 +54,7 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if(level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
+		if (level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))
 			return super.use(state, level, pos, player, hand, hit);
 
 		return InteractionResult.PASS;

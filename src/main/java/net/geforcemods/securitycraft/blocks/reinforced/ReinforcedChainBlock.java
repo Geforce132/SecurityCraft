@@ -15,7 +15,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
+public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape X_AXIS_SHAPE = Block.box(0.0D, 6.5D, 6.5D, 16.0D, 9.5D, 9.5D);
 	protected static final VoxelShape Y_AXIS_SHAPE = Block.box(6.5D, 0.0D, 6.5D, 9.5D, 16.0D, 9.5D);
@@ -28,7 +28,7 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return switch(state.getValue(AXIS)) {
+		return switch (state.getValue(AXIS)) {
 			case X -> X_AXIS_SHAPE;
 			case Y -> Y_AXIS_SHAPE;
 			case Z -> Z_AXIS_SHAPE;
@@ -45,9 +45,8 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) {
+		if (state.getValue(WATERLOGGED))
 			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-		}
 
 		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}

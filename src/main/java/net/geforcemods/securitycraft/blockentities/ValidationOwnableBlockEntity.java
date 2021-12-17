@@ -6,9 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ValidationOwnableBlockEntity extends OwnableBlockEntity {
-
 	public ValidationOwnableBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeValidationOwnable,  pos, state);
+		super(SCContent.beTypeValidationOwnable, pos, state);
 	}
 
 	@Override

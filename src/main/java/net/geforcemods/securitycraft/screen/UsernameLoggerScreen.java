@@ -28,8 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.client.gui.ScrollPanel;
 
-public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>{
-
+public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent logged = Utils.localize("gui.securitycraft:logger.logged");
 	private final TranslatableComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
@@ -38,12 +37,11 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 
 	public UsernameLoggerScreen(GenericTEMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
-		be = (UsernameLoggerBlockEntity)menu.be;
+		be = (UsernameLoggerBlockEntity) menu.be;
 	}
 
 	@Override
-	protected void init()
-	{
+	protected void init() {
 		super.init();
 
 		addRenderableWidget(new IdButton(0, leftPos + 4, topPos + 4, 8, 8, "x", b -> {
@@ -54,11 +52,10 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY)
-	{
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		font.draw(pose, logged, imageWidth / 2 - font.width(logged) / 2, 6, 4210752);
 
-		if(mouseX >= leftPos + 4 && mouseY >= topPos + 4 && mouseX < leftPos + 4 + 8 && mouseY < topPos + 4 + 8)
+		if (mouseX >= leftPos + 4 && mouseY >= topPos + 4 && mouseX < leftPos + 4 + 8 && mouseY < topPos + 4 + 8)
 			renderTooltip(pose, clear, mouseX - leftPos, mouseY - topPos);
 	}
 
@@ -74,70 +71,60 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button)
-	{
-		if(playerList != null)
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (playerList != null)
 			playerList.mouseClicked(mouseX, mouseY, button);
 
 		return super.mouseClicked(mouseX, mouseY, button);
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button)
-	{
-		if(playerList != null)
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		if (playerList != null)
 			playerList.mouseReleased(mouseX, mouseY, button);
 
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY)
-	{
-		if(playerList != null)
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+		if (playerList != null)
 			playerList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
-	class PlayerList extends ScrollPanel
-	{
+	class PlayerList extends ScrollPanel {
 		private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 		private final int slotHeight = 12, listLength = 100;
 
-		public PlayerList(Minecraft client, int width, int height, int top, int left)
-		{
+		public PlayerList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left);
 		}
 
 		@Override
-		protected int getContentHeight()
-		{
+		protected int getContentHeight() {
 			int height = 50 + (be.players.length * font.lineHeight);
 
-			if(height < bottom - top - 8)
+			if (height < bottom - top - 8)
 				height = bottom - top - 8;
 
 			return height;
 		}
 
 		@Override
-		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
-		{
+		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 			super.render(pose, mouseX, mouseY, partialTicks);
 
-			if(be.getOwner().isOwner(minecraft.player))
-			{
-				int mouseListY = (int)(mouseY - top + scrollDistance - border);
+			if (be.getOwner().isOwner(minecraft.player)) {
+				int mouseListY = (int) (mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / slotHeight;
 
-				if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
-				{
-					if(be.players[slotIndex] != null  && !be.players[slotIndex].isEmpty())
-					{
+				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+					if (be.players[slotIndex] != null && !be.players[slotIndex].isEmpty()) {
 						TranslatableComponent localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(be.timestamps[slotIndex])));
 
-						if(be.uuids[slotIndex] != null && !be.uuids[slotIndex].isEmpty())
+						if (be.uuids[slotIndex] != null && !be.uuids[slotIndex].isEmpty())
 							renderTooltip(pose, new TextComponent(be.uuids[slotIndex]), mouseX, mouseY);
 
 						font.draw(pose, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752);
@@ -147,18 +134,15 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 		}
 
 		@Override
-		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY)
-		{
-			int baseY = top + border - (int)scrollDistance;
+		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
+			int baseY = top + border - (int) scrollDistance;
 			int slotBuffer = slotHeight - 4;
-			int mouseListY = (int)(mouseY - top + scrollDistance - border);
+			int mouseListY = (int) (mouseY - top + scrollDistance - border);
 			int slotIndex = mouseListY / slotHeight;
 
 			//highlight hovered slot
-			if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
-			{
-				if(be.players[slotIndex] != null && !be.players[slotIndex].isEmpty())
-				{
+			if (mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+				if (be.players[slotIndex] != null && !be.players[slotIndex].isEmpty()) {
 					int min = left;
 					int max = entryRight - 6; //6 is the width of the scrollbar
 					int slotTop = baseY + slotIndex * slotHeight;
@@ -184,9 +168,8 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 			}
 
 			//draw entry strings
-			for(int i = 0; i < be.players.length; i++)
-			{
-				if(be.players[i] != null && !be.players[i].equals(""))
+			for (int i = 0; i < be.players.length; i++) {
+				if (be.players[i] != null && !be.players[i].equals(""))
 					font.draw(pose, be.players[i], left + width / 2 - font.width(be.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 			}
 		}

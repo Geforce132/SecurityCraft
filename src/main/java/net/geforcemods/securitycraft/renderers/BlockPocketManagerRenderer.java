@@ -15,16 +15,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPocketManagerBlockEntity>
-{
+public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPocketManagerBlockEntity> {
 	public BlockPocketManagerRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(BlockPocketManagerBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
-	{
+	public void render(BlockPocketManagerBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 		// The code below draws the outline border of a block pocket.
 
-		if(!be.showOutline)
+		if (!be.showOutline)
 			return;
 
 		Matrix4f positionMatrix = pose.last().pose();
@@ -38,8 +36,8 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 		int frontZ = facing == Direction.NORTH || facing == Direction.WEST ? 0 : 1;
 		int backZ = facing == Direction.NORTH || facing == Direction.WEST ? size : 1 - size;
 
-		if(facing == Direction.EAST || facing == Direction.WEST) //x- and z-values get switched when the manager's direction is west or east
-		{
+		//x- and z-values get switched when the manager's direction is west or east
+		if (facing == Direction.EAST || facing == Direction.WEST) {
 			leftX = frontZ;
 			rightX = backZ;
 			frontZ = -half + offset;
@@ -76,8 +74,7 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(BlockPocketManagerBlockEntity be)
-	{
+	public boolean shouldRenderOffScreen(BlockPocketManagerBlockEntity be) {
 		return be.showOutline;
 	}
 }

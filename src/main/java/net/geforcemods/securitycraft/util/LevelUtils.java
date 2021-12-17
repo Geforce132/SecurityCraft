@@ -13,27 +13,23 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 
-public class LevelUtils{
-
+public class LevelUtils {
 	/**
-	 * Correctly schedules a task for execution on the main thread depending on if the
-	 * provided level is client- or serverside
+	 * Correctly schedules a task for execution on the main thread depending on if the provided level is client- or
+	 * serverside
 	 */
-	public static void addScheduledTask(LevelAccessor level, Runnable runnable)
-	{
-		if(level.isClientSide()) //clientside
+	public static void addScheduledTask(LevelAccessor level, Runnable runnable) {
+		if (level.isClientSide())
 			Minecraft.getInstance().execute(runnable);
-		else //serverside
+		else
 			ServerLifecycleHooks.getCurrentServer().execute(runnable);
 	}
 
-	public static void spawnLightning(Level level, Vec3 pos, boolean effectOnly)
-	{
+	public static void spawnLightning(Level level, Vec3 pos, boolean effectOnly) {
 		level.addFreshEntity(createLightning(level, pos, effectOnly));
 	}
 
-	public static LightningBolt createLightning(Level level, Vec3 pos, boolean effectOnly)
-	{
+	public static LightningBolt createLightning(Level level, Vec3 pos, boolean effectOnly) {
 		LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level);
 
 		lightning.moveTo(pos);
@@ -48,8 +44,7 @@ public class LevelUtils{
 	 * @param coordinates a String[] which contains the x, y, and z coordinates, as well as the dimension ID of the view
 	 * @return true if the two are the same, false otherwise
 	 */
-	public static boolean checkCoordinates(GlobalPos pos, String[] coordinates)
-	{
+	public static boolean checkCoordinates(GlobalPos pos, String[] coordinates) {
 		int xPos = Integer.parseInt(coordinates[0]);
 		int yPos = Integer.parseInt(coordinates[1]);
 		int zPos = Integer.parseInt(coordinates[2]);
@@ -62,13 +57,11 @@ public class LevelUtils{
 	 * @param pos The GlobalPos to use
 	 * @return A formatted string of the GlobalPos' location. Format: "*X* *Y* *Z* *dimension ID*"
 	 */
-	public static String toNBTString(GlobalPos pos)
-	{
+	public static String toNBTString(GlobalPos pos) {
 		return pos.pos().getX() + " " + pos.pos().getY() + " " + pos.pos().getZ() + " " + pos.dimension().location();
 	}
 
-	public static void blockEntityTicker(Level level, BlockPos pos, BlockState state, BlockEntity blockEntity)
-	{
-		((ITickingBlockEntity)blockEntity).tick(level, pos, state);
+	public static void blockEntityTicker(Level level, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+		((ITickingBlockEntity) blockEntity).tick(level, pos, state);
 	}
 }

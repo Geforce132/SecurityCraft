@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedLavaCauldronBlock extends ReinforcedCauldronBlock {
-
 	public ReinforcedLavaCauldronBlock(Properties properties) {
 		super(properties, IReinforcedCauldronInteraction.LAVA);
 	}
@@ -25,9 +24,8 @@ public class ReinforcedLavaCauldronBlock extends ReinforcedCauldronBlock {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (isEntityInsideContent(state, pos, entity)) {
+		if (isEntityInsideContent(state, pos, entity))
 			entity.lavaHurt();
-		}
 	}
 
 	@Override

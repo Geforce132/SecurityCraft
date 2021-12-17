@@ -17,19 +17,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class IMSBombRenderer extends EntityRenderer<IMSBomb> {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/entity/ims_bomb.png");
 	private final IMSBombModel model;
 
-	public IMSBombRenderer(EntityRendererProvider.Context ctx){
+	public IMSBombRenderer(EntityRendererProvider.Context ctx) {
 		super(ctx);
 
 		model = new IMSBombModel(ctx.bakeLayer(ClientHandler.IMS_BOMB_LOCATION));
 	}
 
 	@Override
-	public void render(IMSBomb imsBomb, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight)
-	{
+	public void render(IMSBomb imsBomb, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight) {
 		pose.translate(-0.1D, 0, 0.1D);
 		pose.scale(1.4F, 1.4F, 1.4F);
 		RenderSystem._setShaderTexture(0, getTextureLocation(imsBomb));

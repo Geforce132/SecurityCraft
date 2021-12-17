@@ -25,42 +25,33 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-public class UniversalBlockModifierItem extends Item
-{
-	public UniversalBlockModifierItem(Item.Properties properties)
-	{
+public class UniversalBlockModifierItem extends Item {
+	public UniversalBlockModifierItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx)
-	{
+	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx) {
 		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		BlockEntity be = level.getBlockEntity(pos);
 		Player player = ctx.getPlayer();
 
-		if(be instanceof IModuleInventory)
-		{
-			if(be instanceof IOwnable ownable && !ownable.getOwner().isOwner(player))
-			{
-				if(!(be.getBlockState().getBlock() instanceof DisguisableBlock db) || (((BlockItem)db.getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock))
+		if (be instanceof IModuleInventory) {
+			if (be instanceof IOwnable ownable && !ownable.getOwner().isOwner(player)) {
+				if (!(be.getBlockState().getBlock() instanceof DisguisableBlock db) || (((BlockItem) db.getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(ownable.getOwner().getName())), ChatFormatting.RED);
-
 				return InteractionResult.FAIL;
 			}
-			else if(!ctx.getLevel().isClientSide)
-			{
-				NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+			else if (!ctx.getLevel().isClientSide) {
+				NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
 					@Override
-					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
-					{
+					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 						return new CustomizeBlockMenu(windowId, level, pos, inv);
 					}
 
 					@Override
-					public Component getDisplayName()
-					{
+					public Component getDisplayName() {
 						return new TranslatableComponent(be.getBlockState().getBlock().getDescriptionId());
 					}
 				}, pos);

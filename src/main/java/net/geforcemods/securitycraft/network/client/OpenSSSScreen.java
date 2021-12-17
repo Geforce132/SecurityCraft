@@ -26,8 +26,7 @@ public class OpenSSSScreen {
 		return new OpenSSSScreen(buf.readBlockPos());
 	}
 
-	public static void onMessage(OpenSSSScreen message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(OpenSSSScreen message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof SonicSecuritySystemBlockEntity sss)
 				ClientHandler.displaySonicSecuritySystemGui(sss);

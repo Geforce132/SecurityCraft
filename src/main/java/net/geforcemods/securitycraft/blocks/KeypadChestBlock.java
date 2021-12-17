@@ -48,7 +48,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 public class KeypadChestBlock extends ChestBlock {
-
 	private static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>> CONTAINER_MERGER = new DoubleBlockCombiner.Combiner<>() {
 		@Override
 		public Optional<MenuProvider> acceptDouble(final ChestBlockEntity chest1, final ChestBlockEntity chest2) {
@@ -60,18 +59,17 @@ public class KeypadChestBlock extends ChestBlock {
 						chest1.unpackLootTable(inventory.player);
 						chest2.unpackLootTable(inventory.player);
 						return ChestMenu.sixRows(id, inventory, chestInventory);
-					} else {
-						return null;
 					}
+					else
+						return null;
 				}
 
 				@Override
 				public Component getDisplayName() {
-					if (chest1.hasCustomName()) {
+					if (chest1.hasCustomName())
 						return chest1.getDisplayName();
-					} else {
+					else
 						return chest2.hasCustomName() ? chest2.getDisplayName() : Utils.localize("block.securitycraft.keypad_chest_double");
-					}
 				}
 			});
 		}
@@ -87,39 +85,35 @@ public class KeypadChestBlock extends ChestBlock {
 		}
 	};
 
-	public KeypadChestBlock(Block.Properties properties){
+	public KeypadChestBlock(Block.Properties properties) {
 		super(properties, () -> SCContent.beTypeKeypadChest);
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
-	{
-		if(!level.isClientSide && !isBlocked(level, pos))
-		{
-			KeypadChestBlockEntity be = (KeypadChestBlockEntity)level.getBlockEntity(pos);
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!level.isClientSide && !isBlocked(level, pos)) {
+			KeypadChestBlockEntity be = (KeypadChestBlockEntity) level.getBlockEntity(pos);
 
-			if(ModuleUtils.isDenied(be, player))
-			{
-				if(be.sendsMessages())
+			if (ModuleUtils.isDenied(be, player)) {
+				if (be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}
-			else if(ModuleUtils.isAllowed(be, player))
-			{
-				if(be.sendsMessages())
+			else if (ModuleUtils.isAllowed(be, player)) {
+				if (be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
 				activate(state, level, pos, player);
 			}
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				be.openPasswordGUI(player);
 		}
 
 		return InteractionResult.SUCCESS;
 	}
 
-	public void activate(BlockState state, Level level, BlockPos pos, Player player){
-		if(!level.isClientSide) {
-			ChestBlock block = (ChestBlock)state.getBlock();
+	public void activate(BlockState state, Level level, BlockPos pos, Player player) {
+		if (!level.isClientSide) {
+			ChestBlock block = (ChestBlock) state.getBlock();
 			MenuProvider menuProvider = block.getMenuProvider(state, level, pos);
 
 			if (menuProvider != null) {
@@ -130,19 +124,17 @@ public class KeypadChestBlock extends ChestBlock {
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack){
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, entity, stack);
 
-		if(entity instanceof Player player)
-		{
+		if (entity instanceof Player player) {
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 
-			if(state.getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE)
-			{
-				KeypadChestBlockEntity thisBe = (KeypadChestBlockEntity)level.getBlockEntity(pos);
+			if (state.getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE) {
+				KeypadChestBlockEntity thisBe = (KeypadChestBlockEntity) level.getBlockEntity(pos);
 				BlockEntity otherBe = level.getBlockEntity(pos.relative(getConnectedDirection(state)));
 
-				if(otherBe instanceof KeypadChestBlockEntity te && thisBe.getOwner().owns(te))
+				if (otherBe instanceof KeypadChestBlockEntity te && thisBe.getOwner().owns(te))
 					thisBe.setPassword(te.getPassword());
 			}
 		}
@@ -155,9 +147,10 @@ public class KeypadChestBlock extends ChestBlock {
 
 	@Override
 	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
-		if(level.getBlockEntity(pos) instanceof KeypadChestBlockEntity be)
+		if (level.getBlockEntity(pos) instanceof KeypadChestBlockEntity be)
 			return be.hasModule(ModuleType.REDSTONE) ? Mth.clamp(be.getNumPlayersUsing(), 0, 15) : 0;
-		else return 0;
+		else
+			return 0;
 	}
 
 	@Override
@@ -166,10 +159,10 @@ public class KeypadChestBlock extends ChestBlock {
 	}
 
 	@Override
-	public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor){
+	public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
 		super.onNeighborChange(state, level, pos, neighbor);
 
-		if(level.getBlockEntity(pos) instanceof KeypadChestBlockEntity be)
+		if (level.getBlockEntity(pos) instanceof KeypadChestBlockEntity be)
 			be.setBlockState(state);
 	}
 
@@ -179,8 +172,7 @@ public class KeypadChestBlock extends ChestBlock {
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new KeypadChestBlockEntity(pos, state);
 	}
 
@@ -189,47 +181,39 @@ public class KeypadChestBlock extends ChestBlock {
 		return level.isClientSide ? createTickerHelper(type, SCContent.beTypeKeypadChest, KeypadChestBlockEntity::lidAnimateTick) : null;
 	}
 
-	public static boolean isBlocked(Level level, BlockPos pos)
-	{
+	public static boolean isBlocked(Level level, BlockPos pos) {
 		return isBelowSolidBlock(level, pos);
 	}
 
-	private static boolean isBelowSolidBlock(Level level, BlockPos pos)
-	{
+	private static boolean isBelowSolidBlock(Level level, BlockPos pos) {
 		return level.getBlockState(pos.above()).isRedstoneConductor(level, pos.above());
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
-	public static class Convertible implements IPasswordConvertible
-	{
+	public static class Convertible implements IPasswordConvertible {
 		@Override
-		public Block getOriginalBlock()
-		{
+		public Block getOriginalBlock() {
 			return Blocks.CHEST;
 		}
 
 		@Override
-		public boolean convert(Player player, Level level, BlockPos pos)
-		{
+		public boolean convert(Player player, Level level, BlockPos pos) {
 			BlockState state = level.getBlockState(pos);
 			Direction facing = state.getValue(FACING);
 			ChestType type = state.getValue(TYPE);
 
 			convertChest(player, level, pos, facing, type);
 
-			if(type != ChestType.SINGLE)
-			{
+			if (type != ChestType.SINGLE) {
 				BlockPos newPos = pos.relative(getConnectedDirection(state));
 				BlockState newState = level.getBlockState(newPos);
 				Direction newFacing = newState.getValue(FACING);
@@ -241,16 +225,15 @@ public class KeypadChestBlock extends ChestBlock {
 			return true;
 		}
 
-		private void convertChest(Player player, Level level, BlockPos pos, Direction facing, ChestType type)
-		{
-			ChestBlockEntity chest = (ChestBlockEntity)level.getBlockEntity(pos);
+		private void convertChest(Player player, Level level, BlockPos pos, Direction facing, ChestType type) {
+			ChestBlockEntity chest = (ChestBlockEntity) level.getBlockEntity(pos);
 			CompoundTag tag;
 
 			chest.unpackLootTable(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated
 			tag = chest.save(new CompoundTag());
 			chest.clearContent();
 			level.setBlockAndUpdate(pos, SCContent.KEYPAD_CHEST.get().defaultBlockState().setValue(FACING, facing).setValue(TYPE, type));
-			((ChestBlockEntity)level.getBlockEntity(pos)).load(tag);
+			((ChestBlockEntity) level.getBlockEntity(pos)).load(tag);
 			((IOwnable) level.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
 		}
 	}

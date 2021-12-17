@@ -8,31 +8,26 @@ import net.minecraftforge.eventbus.api.Event;
 /**
  * Fired when a SecurityCraft block needs to have ownership information attached
  */
-public class OwnershipEvent extends Event
-{
+public class OwnershipEvent extends Event {
 	private Level level;
 	private BlockPos pos;
 	private Player player;
 
-	public OwnershipEvent(Level level, BlockPos pos, Player player)
-	{
+	public OwnershipEvent(Level level, BlockPos pos, Player player) {
 		this.level = level;
 		this.pos = pos;
 		this.player = player;
 	}
 
-	public Level getLevel()
-	{
+	public Level getLevel() {
 		return level;
 	}
 
-	public BlockPos getPos()
-	{
+	public BlockPos getPos() {
 		return pos;
 	}
 
-	public Player getPlayer()
-	{
+	public Player getPlayer() {
 		return player;
 	}
 }

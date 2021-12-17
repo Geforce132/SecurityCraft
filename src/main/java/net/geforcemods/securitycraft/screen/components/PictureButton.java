@@ -18,8 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
 
 @OnlyIn(Dist.CLIENT)
-public class PictureButton extends IdButton{
-
+public class PictureButton extends IdButton {
 	private final ItemRenderer itemRenderer;
 	private ItemStack blockToRender = ItemStack.EMPTY;
 	private ItemStack itemToRender = ItemStack.EMPTY;
@@ -41,15 +40,13 @@ public class PictureButton extends IdButton{
 		super(id, xPos, yPos, width, height, "", onClick);
 		itemRenderer = par7;
 
-		if(!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem) {
+		if (!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
 			blockToRender = new ItemStack(Block.byItem(itemToRender.getItem()));
-		}
 		else
 			this.itemToRender = new ItemStack(itemToRender.getItem());
 	}
 
-	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, Consumer<IdButton> onClick)
-	{
+	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, Consumer<IdButton> onClick) {
 		super(id, xPos, yPos, width, height, "", onClick);
 
 		itemRenderer = null;
@@ -65,10 +62,8 @@ public class PictureButton extends IdButton{
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
-	{
-		if (visible)
-		{
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+		if (visible) {
 			Minecraft mc = Minecraft.getInstance();
 			Font font = mc.font;
 
@@ -77,15 +72,15 @@ public class PictureButton extends IdButton{
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			GuiUtils.drawContinuousTexturedBox(pose, WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHovered()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 
-			if(!blockToRender.isEmpty()){
+			if (!blockToRender.isEmpty()) {
 				itemRenderer.renderAndDecorateItem(blockToRender, x + 2, y + 3);
 				itemRenderer.renderGuiItemDecorations(font, blockToRender, x + 2, y + 3, "");
-			}else if(!itemToRender.isEmpty()){
+			}
+			else if (!itemToRender.isEmpty()) {
 				itemRenderer.renderAndDecorateItem(itemToRender, x + 2, y + 2);
 				itemRenderer.renderGuiItemDecorations(font, itemToRender, x + 2, y + 2, "");
 			}
-			else if(getTextureLocation() != null)
-			{
+			else if (getTextureLocation() != null) {
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 				RenderSystem._setShaderTexture(0, getTextureLocation());
 				blit(pose, x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
@@ -93,8 +88,7 @@ public class PictureButton extends IdButton{
 		}
 	}
 
-	public ResourceLocation getTextureLocation()
-	{
+	public ResourceLocation getTextureLocation() {
 		return textureLocation;
 	}
 

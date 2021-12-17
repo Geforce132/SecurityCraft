@@ -120,54 +120,42 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DataSerializerEntry;
 
-@EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
-public class RegistrationHandler
-{
+@EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
+public class RegistrationHandler {
 	@SubscribeEvent
-	public static void registerItems(RegistryEvent.Register<Item> event)
-	{
+	public static void registerItems(RegistryEvent.Register<Item> event) {
 		//register item blocks from annotated fields
-		for(Field field : SCContent.class.getFields())
-		{
-			try
-			{
-				if(field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem())
-				{
-					Block block = ((RegistryObject<Block>)field.get(null)).get();
+		for (Field field : SCContent.class.getFields()) {
+			try {
+				if (field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem()) {
+					Block block = ((RegistryObject<Block>) field.get(null)).get();
 
 					event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(SecurityCraft.decorationTab).fireResistant()).setRegistryName(block.getRegistryName()));
 				}
-				else if(field.isAnnotationPresent(RegisterItemBlock.class))
-				{
+				else if (field.isAnnotationPresent(RegisterItemBlock.class)) {
 					int tab = field.getAnnotation(RegisterItemBlock.class).value().ordinal();
-					RegistryObject<Block> block = (RegistryObject<Block>)field.get(null);
+					RegistryObject<Block> block = (RegistryObject<Block>) field.get(null);
 
 					event.getRegistry().register(new BlockItem(block.get(), new Item.Properties().tab(tab == 0 ? SecurityCraft.technicalTab : (tab == 1 ? SecurityCraft.mineTab : SecurityCraft.decorationTab))).setRegistryName(block.get().getRegistryName()));
 				}
 			}
-			catch(IllegalArgumentException | IllegalAccessException e)
-			{
+			catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
 	@SubscribeEvent
-	public static void registerBlockEntities(RegistryEvent.Register<BlockEntityType<?>> event)
-	{
+	public static void registerBlockEntities(RegistryEvent.Register<BlockEntityType<?>> event) {
 		List<Block> beOwnableBlocks = new ArrayList<>();
 
 		//find all blocks whose tile entity is TileEntityOwnable
-		for(Field field : SCContent.class.getFields())
-		{
-			try
-			{
-				if(field.isAnnotationPresent(OwnableBE.class))
-					beOwnableBlocks.add(((RegistryObject<Block>)field.get(null)).get());
-
+		for (Field field : SCContent.class.getFields()) {
+			try {
+				if (field.isAnnotationPresent(OwnableBE.class))
+					beOwnableBlocks.add(((RegistryObject<Block>) field.get(null)).get());
 			}
-			catch(IllegalArgumentException | IllegalAccessException e)
-			{
+			catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 		}
@@ -209,8 +197,8 @@ public class RegistrationHandler
 	}
 
 	@SubscribeEvent
-	public static void registerEntities(RegistryEvent.Register<EntityType<?>> event)
-	{
+	public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
+		//@formatter:off
 		EntityType<Sentry> sentry = (EntityType<Sentry>)EntityType.Builder.<Sentry>of(Sentry::new, MobCategory.MISC)
 				.sized(1.0F, 2.0F)
 				.setTrackingRange(256)
@@ -248,17 +236,16 @@ public class RegistrationHandler
 				.setShouldReceiveVelocityUpdates(true)
 				.build(SecurityCraft.MODID + ":bullet")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bullet")));
+		//@formatter:on
 	}
 
 	@SubscribeEvent
-	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event)
-	{
+	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
 		event.put(SCContent.eTypeSentry, Mob.createMobAttributes().build());
 	}
 
 	@SubscribeEvent
-	public static void registerMenus(RegistryEvent.Register<MenuType<?>> event)
-	{
+	public static void registerMenus(RegistryEvent.Register<MenuType<?>> event) {
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BlockReinforcerMenu(windowId, inv, data.readBoolean())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_reinforcer")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericMenu(SCContent.mTypeBriefcase, windowId)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(inv, SCContent.BRIEFCASE.get())))).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase_inventory")));
@@ -278,8 +265,7 @@ public class RegistrationHandler
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BlockPocketManagerMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
 	}
 
-	public static void registerPackets()
-	{
+	public static void registerPackets() {
 		int index = 0;
 
 		//client
@@ -320,34 +306,28 @@ public class RegistrationHandler
 	}
 
 	@SubscribeEvent
-	public static void registerSounds(RegistryEvent.Register<SoundEvent> event)
-	{
-		for(int i = 0; i < SCSounds.values().length; i++)
-		{
+	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+		for (int i = 0; i < SCSounds.values().length; i++) {
 			event.getRegistry().register(SCSounds.values()[i].event);
 		}
 	}
 
 	@SubscribeEvent
-	public static void registerRecipeSerializer(RegistryEvent.Register<RecipeSerializer<?>> event)
-	{
+	public static void registerRecipeSerializer(RegistryEvent.Register<RecipeSerializer<?>> event) {
 		event.getRegistry().register(new SimpleRecipeSerializer<>(LimitedUseKeycardRecipe::new).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_recipe")));
 	}
 
 	@SubscribeEvent
-	public static void registerDataSerializerEntries(RegistryEvent.Register<DataSerializerEntry> event)
-	{
+	public static void registerDataSerializerEntries(RegistryEvent.Register<DataSerializerEntry> event) {
 		event.getRegistry().register(new DataSerializerEntry(new EntityDataSerializer<Owner>() {
 			@Override
-			public void write(FriendlyByteBuf buf, Owner value)
-			{
+			public void write(FriendlyByteBuf buf, Owner value) {
 				buf.writeUtf(value.getName());
 				buf.writeUtf(value.getUUID());
 			}
 
 			@Override
-			public Owner read(FriendlyByteBuf buf)
-			{
+			public Owner read(FriendlyByteBuf buf) {
 				String name = buf.readUtf(Integer.MAX_VALUE / 4);
 				String uuid = buf.readUtf(Integer.MAX_VALUE / 4);
 
@@ -355,14 +335,12 @@ public class RegistrationHandler
 			}
 
 			@Override
-			public EntityDataAccessor<Owner> createAccessor(int id)
-			{
+			public EntityDataAccessor<Owner> createAccessor(int id) {
 				return new EntityDataAccessor<>(id, this);
 			}
 
 			@Override
-			public Owner copy(Owner value)
-			{
+			public Owner copy(Owner value) {
 				return new Owner(value.getName(), value.getUUID());
 			}
 		}).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "owner")));

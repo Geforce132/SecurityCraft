@@ -9,10 +9,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class BriefcaseContainer implements Container {
-
 	public static final int SIZE = 12;
 	private final ItemStack briefcase;
-	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack>withSize(SIZE, ItemStack.EMPTY);
+	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack> withSize(SIZE, ItemStack.EMPTY);
 
 	public BriefcaseContainer(ItemStack briefcaseItem) {
 		briefcase = briefcaseItem;
@@ -36,11 +35,11 @@ public class BriefcaseContainer implements Container {
 	public void readFromNBT(CompoundTag tag) {
 		ListTag items = tag.getList("ItemInventory", Tag.TAG_COMPOUND);
 
-		for(int i = 0; i < items.size(); i++) {
+		for (int i = 0; i < items.size(); i++) {
 			CompoundTag item = items.getCompound(i);
 			int slot = item.getInt("Slot");
 
-			if(slot < getContainerSize())
+			if (slot < getContainerSize())
 				briefcaseInventory.set(slot, ItemStack.of(item));
 		}
 	}
@@ -48,8 +47,8 @@ public class BriefcaseContainer implements Container {
 	public void writeToNBT(CompoundTag tag) {
 		ListTag items = new ListTag();
 
-		for(int i = 0; i < getContainerSize(); i++)
-			if(!getItem(i).isEmpty()) {
+		for (int i = 0; i < getContainerSize(); i++)
+			if (!getItem(i).isEmpty()) {
 				CompoundTag item = new CompoundTag();
 				item.putInt("Slot", i);
 				getItem(i).save(item);
@@ -64,8 +63,8 @@ public class BriefcaseContainer implements Container {
 	public ItemStack removeItem(int index, int size) {
 		ItemStack stack = getItem(index);
 
-		if(!stack.isEmpty())
-			if(stack.getCount() > size) {
+		if (!stack.isEmpty())
+			if (stack.getCount() > size) {
 				stack = stack.split(size);
 				setChanged();
 			}
@@ -86,7 +85,7 @@ public class BriefcaseContainer implements Container {
 	public void setItem(int index, ItemStack itemStack) {
 		briefcaseInventory.set(index, itemStack);
 
-		if(!itemStack.isEmpty() && itemStack.getCount() > getMaxStackSize())
+		if (!itemStack.isEmpty() && itemStack.getCount() > getMaxStackSize())
 			itemStack.setCount(getMaxStackSize());
 
 		setChanged();
@@ -99,9 +98,10 @@ public class BriefcaseContainer implements Container {
 
 	@Override
 	public void setChanged() {
-		for(int i = 0; i < getContainerSize(); i++)
-			if(!getItem(i).isEmpty() && getItem(i).getCount() == 0)
+		for (int i = 0; i < getContainerSize(); i++) {
+			if (!getItem(i).isEmpty() && getItem(i).getCount() == 0)
 				briefcaseInventory.set(i, ItemStack.EMPTY);
+		}
 
 		writeToNBT(briefcase.getTag());
 	}
@@ -124,16 +124,17 @@ public class BriefcaseContainer implements Container {
 
 	@Override
 	public void clearContent() {
-		for(int i = 0; i < SIZE; i++)
+		for (int i = 0; i < SIZE; i++) {
 			briefcaseInventory.set(i, ItemStack.EMPTY);
+		}
 	}
 
 	@Override
-	public boolean isEmpty()
-	{
-		for(ItemStack stack : briefcaseInventory)
-			if(!stack.isEmpty())
+	public boolean isEmpty() {
+		for (ItemStack stack : briefcaseInventory) {
+			if (!stack.isEmpty())
 				return false;
+		}
 
 		return true;
 	}

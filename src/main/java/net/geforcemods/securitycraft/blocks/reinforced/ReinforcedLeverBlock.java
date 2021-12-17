@@ -20,46 +20,39 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock, EntityBlock {
-
-	public ReinforcedLeverBlock(Properties properties)
-	{
+	public ReinforcedLeverBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if(isAllowedToPress(level, pos, (AllowlistOnlyBlockEntity)level.getBlockEntity(pos), player))
+		if (isAllowedToPress(level, pos, (AllowlistOnlyBlockEntity) level.getBlockEntity(pos), player))
 			return super.use(state, level, pos, player, hand, result);
 		return InteractionResult.FAIL;
 	}
 
-	public boolean isAllowedToPress(Level level, BlockPos pos, AllowlistOnlyBlockEntity be, Player entity)
-	{
+	public boolean isAllowedToPress(Level level, BlockPos pos, AllowlistOnlyBlockEntity be, Player entity) {
 		return be.getOwner().isOwner(entity) || ModuleUtils.isAllowed(be, entity);
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return Blocks.LEVER;
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return defaultBlockState().setValue(FACE, vanillaState.getValue(FACE)).setValue(FACING, vanillaState.getValue(FACING)).setValue(POWERED, vanillaState.getValue(POWERED));
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof Player player)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new AllowlistOnlyBlockEntity(pos, state);
 	}
 }

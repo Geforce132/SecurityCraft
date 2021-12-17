@@ -16,42 +16,36 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-public class MountCamera
-{
+public class MountCamera {
 	private BlockPos pos;
 
 	public MountCamera() {}
 
-	public MountCamera(BlockPos pos)
-	{
+	public MountCamera(BlockPos pos) {
 		this.pos = pos;
 	}
 
-	public static void encode(MountCamera message, FriendlyByteBuf buf)
-	{
+	public static void encode(MountCamera message, FriendlyByteBuf buf) {
 		buf.writeBlockPos(message.pos);
 	}
 
-	public static MountCamera decode(FriendlyByteBuf buf)
-	{
+	public static MountCamera decode(FriendlyByteBuf buf) {
 		MountCamera message = new MountCamera();
 
 		message.pos = buf.readBlockPos();
 		return message;
 	}
 
-	public static void onMessage(MountCamera message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(MountCamera message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			ServerPlayer player = ctx.get().getSender();
 			Level level = player.level;
 			BlockState state = level.getBlockState(pos);
 
-			if(level.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te)
-			{
-				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
-					((SecurityCameraBlock)state.getBlock()).mountCamera(level, pos, player);
+			if (level.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity te) {
+				if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
+					((SecurityCameraBlock) state.getBlock()).mountCamera(level, pos, player);
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", te.getOwner().getName()), ChatFormatting.RED);
 			}

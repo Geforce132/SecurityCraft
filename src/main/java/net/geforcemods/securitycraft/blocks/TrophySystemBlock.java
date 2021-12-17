@@ -35,7 +35,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class TrophySystemBlock extends DisguisableBlock {
-
+	//@formatter:off
 	private static final VoxelShape SHAPE = Stream.of(
 			Block.box(6.5, 0, 12, 9.5, 1.5, 15),
 			Block.box(5.5, 7, 5.5, 10.5, 11, 10.5),
@@ -47,28 +47,27 @@ public class TrophySystemBlock extends DisguisableBlock {
 			Block.box(12, 0, 6.5, 15, 1.5, 9.5),
 			Block.box(6.5, 0, 1, 9.5, 1.5, 4)
 			).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElse(Shapes.block());
-
+	//@formatter:on
 	public TrophySystemBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos){
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		return BlockUtils.isSideSolid(level, pos.below(), Direction.UP);
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if(!canSurvive(state, level, pos)) {
+		if (!canSurvive(state, level, pos))
 			level.destroyBlock(pos, true);
-		}
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (((IOwnable) level.getBlockEntity(pos)).getOwner().isOwner(player)) {
-			if (!level.isClientSide)
-				NetworkHooks.openGui((ServerPlayer)player, new MenuProvider() {
+			if (!level.isClientSide) {
+				NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 						return new GenericTEMenu(SCContent.mTypeTrophySystem, windowId, level, pos);
@@ -79,6 +78,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 						return new TranslatableComponent(getDescriptionId());
 					}
 				}, pos);
+			}
 
 			return InteractionResult.SUCCESS;
 		}
@@ -87,13 +87,13 @@ public class TrophySystemBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
-	{
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
-		if(disguisedState.getBlock() != this)
+		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
-		else return SHAPE;
+		else
+			return SHAPE;
 	}
 
 	@Override

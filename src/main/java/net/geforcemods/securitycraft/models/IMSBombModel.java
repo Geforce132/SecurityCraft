@@ -18,13 +18,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class IMSBombModel extends EntityModel<IMSBomb> {
 	public ModelPart bomb;
 
-	public IMSBombModel(ModelPart modelPart)
-	{
+	public IMSBombModel(ModelPart modelPart) {
 		bomb = modelPart.getChild("ims_bomb");
 	}
 
-	public static LayerDefinition createLayer()
-	{
+	public static LayerDefinition createLayer() {
 		MeshDefinition meshDefinition = new MeshDefinition();
 		PartDefinition partDefinition = meshDefinition.getRoot();
 
@@ -33,8 +31,7 @@ public class IMSBombModel extends EntityModel<IMSBomb> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
-	{
+	public void renderToBuffer(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		bomb.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 

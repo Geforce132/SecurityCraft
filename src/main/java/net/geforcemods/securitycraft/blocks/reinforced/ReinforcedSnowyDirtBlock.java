@@ -29,25 +29,20 @@ import net.minecraft.world.level.levelgen.feature.AbstractFlowerFeature;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, BonemealableBlock, EntityBlock
-{
+public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, BonemealableBlock, EntityBlock {
 	private Block vanillaBlock;
 
-	public ReinforcedSnowyDirtBlock(Block.Properties properties, Block vB)
-	{
+	public ReinforcedSnowyDirtBlock(Block.Properties properties, Block vB) {
 		super(properties);
 		this.vanillaBlock = vB;
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
-	{
-		if(facing != Direction.UP)
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+		if (facing != Direction.UP)
 			return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 		else
-		{
 			return state.setValue(SNOWY, isSnowySetting(facingState));
-		}
 	}
 
 	@Override
@@ -61,26 +56,22 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
-	{
-		if(this == SCContent.REINFORCED_MYCELIUM.get())
-		{
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+		if (this == SCContent.REINFORCED_MYCELIUM.get()) {
 			super.animateTick(state, level, pos, rand);
 
-			if(rand.nextInt(10) == 0)
+			if (rand.nextInt(10) == 0)
 				level.addParticle(ParticleTypes.MYCELIUM, (double) pos.getX() + (double) rand.nextFloat(), pos.getY() + 1.1D, (double) pos.getZ() + (double) rand.nextFloat(), 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient)
-	{
+	public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient) {
 		return this == SCContent.REINFORCED_GRASS_BLOCK.get() && level.getBlockState(pos.above()).isAir();
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level level, Random rand, BlockPos pos, BlockState state)
-	{
+	public boolean isBonemealSuccess(Level level, Random rand, BlockPos pos, BlockState state) {
 		return this == SCContent.REINFORCED_GRASS_BLOCK.get();
 	}
 
@@ -90,41 +81,37 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 		BlockPos posAbove = pos.above();
 		BlockState grass = Blocks.GRASS.defaultBlockState();
 
-		for(int i = 0; i < 128; ++i)
-		{
+		for (int i = 0; i < 128; ++i) {
 			BlockPos tempPos = posAbove;
 			int j = 0;
 
-			while(true)
-			{
-				if(j >= i / 16)
-				{
+			while (true) {
+				if (j >= i / 16) {
 					BlockState tempState = level.getBlockState(tempPos);
 
-					if(tempState.getBlock() == grass.getBlock() && rand.nextInt(10) == 0)
-						((BonemealableBlock)grass.getBlock()).performBonemeal(level, rand, tempPos, tempState);
+					if (tempState.getBlock() == grass.getBlock() && rand.nextInt(10) == 0)
+						((BonemealableBlock) grass.getBlock()).performBonemeal(level, rand, tempPos, tempState);
 
-					if(!tempState.isAir())
+					if (!tempState.isAir())
 						break;
 
 					BlockState placeState;
 
-					if(rand.nextInt(8) == 0)
-					{
+					if (rand.nextInt(8) == 0) {
 						List<ConfiguredFeature<?, ?>> flowers = level.getBiome(tempPos).getGenerationSettings().getFlowerFeatures();
 
-						if(flowers.isEmpty())
+						if (flowers.isEmpty())
 							break;
 
 						ConfiguredFeature<?, ?> configuredfeature = flowers.get(0);
-						AbstractFlowerFeature flowersfeature = (AbstractFlowerFeature)configuredfeature.feature;
+						AbstractFlowerFeature flowersfeature = (AbstractFlowerFeature) configuredfeature.feature;
 
 						placeState = flowersfeature.getRandomFlower(rand, tempPos, configuredfeature.config());
 					}
 					else
 						placeState = grass;
 
-					if(placeState.canSurvive(level, tempPos))
+					if (placeState.canSurvive(level, tempPos))
 						level.setBlock(tempPos, placeState, 3);
 
 					break;
@@ -132,7 +119,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 
 				tempPos = tempPos.offset(rand.nextInt(3) - 1, (rand.nextInt(3) - 1) * rand.nextInt(3) / 2, rand.nextInt(3) - 1);
 
-				if(level.getBlockState(tempPos.below()).getBlock() != this || level.getBlockState(tempPos).isCollisionShapeFullBlock(level, tempPos))
+				if (level.getBlockState(tempPos.below()).getBlock() != this || level.getBlockState(tempPos).isCollisionShapeFullBlock(level, tempPos))
 					break;
 
 				++j;
@@ -141,28 +128,23 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return vanillaBlock;
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return defaultBlockState().setValue(SNOWY, vanillaState.getValue(SNOWY));
 	}
 
 	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof Player player)
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new OwnableBlockEntity(pos, state);
 	}
 }
-

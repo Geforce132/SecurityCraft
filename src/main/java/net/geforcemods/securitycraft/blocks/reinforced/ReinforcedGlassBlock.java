@@ -10,35 +10,29 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ReinforcedGlassBlock extends BaseReinforcedBlock
-{
-	public ReinforcedGlassBlock(Block.Properties properties, Block vB)
-	{
+public class ReinforcedGlassBlock extends BaseReinforcedBlock {
+	public ReinforcedGlassBlock(Block.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos)
-	{
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
-	{
+	public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
 		return 1.0F;
 	}
 
 	@Override
-	public boolean shouldDisplayFluidOverlay(BlockState state, BlockAndTintGetter level, BlockPos pos, FluidState fluidState)
-	{
+	public boolean shouldDisplayFluidOverlay(BlockState state, BlockAndTintGetter level, BlockPos pos, FluidState fluidState) {
 		return true;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side)
-	{
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 	}
 }

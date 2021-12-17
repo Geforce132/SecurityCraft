@@ -20,41 +20,35 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, IModuleInventory, ICustomizable
-{
+public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, IModuleInventory, ICustomizable {
 	private Owner owner = new Owner();
 	private BooleanOption isSecret = new BooleanOption("isSecret", true);
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
-	public SecretSignBlockEntity(BlockPos pos, BlockState state)
-	{
+	public SecretSignBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);
 	}
 
 	@Override
-	public BlockEntityType<?> getType()
-	{
+	public BlockEntityType<?> getType() {
 		return SCContent.beTypeSecretSign;
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag)
-	{
+	public CompoundTag save(CompoundTag tag) {
 		super.save(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
 
-		if(owner != null){
+		if (owner != null)
 			owner.save(tag, false);
-		}
 
 		return tag;
 	}
 
 	@Override
-	public void load(CompoundTag tag)
-	{
+	public void load(CompoundTag tag) {
 		super.load(tag);
 
 		modules = readModuleInventory(tag);
@@ -69,12 +63,16 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ isSecret };
+		return new Option[] {
+				isSecret
+		};
 	}
 
 	public boolean isSecret() {
@@ -86,14 +84,14 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option)
-	{
+	public void onOptionChanged(Option<?> option) {
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
 		CompoundTag tag = new CompoundTag();
+
 		save(tag);
 		return new ClientboundBlockEntityDataPacket(worldPosition, 1, tag);
 	}
@@ -104,7 +102,7 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 	}
 
 	@Override
-	public Owner getOwner(){
+	public Owner getOwner() {
 		return owner;
 	}
 

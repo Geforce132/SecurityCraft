@@ -13,27 +13,22 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.ItemStack;
 
-public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer
-{
+public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer {
 	private static final KeypadChestBlockEntity DUMMY_BE = new KeypadChestBlockEntity(BlockPos.ZERO, SCContent.KEYPAD_CHEST.get().defaultBlockState());
 	private static KeypadChestRenderer dummyRenderer = null;
 
-	public ItemKeypadChestRenderer()
-	{
+	public ItemKeypadChestRenderer() {
 		super(null, null);
 	}
 
 	@Override
-	public void onResourceManagerReload(ResourceManager resourceManager)
-	{
+	public void onResourceManagerReload(ResourceManager resourceManager) {
 		dummyRenderer = null;
 	}
 
 	@Override
-	public void renderByItem(ItemStack stack, TransformType transformType, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
-	{
-		if(dummyRenderer == null)
-		{
+	public void renderByItem(ItemStack stack, TransformType transformType, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+		if (dummyRenderer == null) {
 			Minecraft mc = Minecraft.getInstance();
 
 			dummyRenderer = new KeypadChestRenderer(new BlockEntityRendererProvider.Context(mc.getBlockEntityRenderDispatcher(), mc.getBlockRenderer(), mc.getEntityModels(), mc.font));

@@ -13,22 +13,18 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ReinforcedRedstoneBlock extends BaseReinforcedBlock
-{
-	public ReinforcedRedstoneBlock(Block.Properties properties, Block vB)
-	{
+public class ReinforcedRedstoneBlock extends BaseReinforcedBlock {
+	public ReinforcedRedstoneBlock(Block.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 
 	@Override
-	public boolean isSignalSource(BlockState state)
-	{
+	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side)
-	{
+	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
 		return 15;
 	}
 

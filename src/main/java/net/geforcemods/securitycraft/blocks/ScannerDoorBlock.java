@@ -12,16 +12,13 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ScannerDoorBlock extends SpecialDoorBlock
-{
-	public ScannerDoorBlock(Properties properties)
-	{
+public class ScannerDoorBlock extends SpecialDoorBlock {
+	public ScannerDoorBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
-	{
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ScannerDoorBlockEntity(pos, state);
 	}
 
@@ -31,8 +28,7 @@ public class ScannerDoorBlock extends SpecialDoorBlock
 	}
 
 	@Override
-	public Item getDoorItem()
-	{
+	public Item getDoorItem() {
 		return SCContent.SCANNER_DOOR_ITEM.get();
 	}
 }

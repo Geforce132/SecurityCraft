@@ -41,7 +41,8 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 				if (state.is(SCContent.REINFORCED_PISTON_HEAD.get()) && be.getProgress(partialTicks) <= 4.0F) {
 					state = state.setValue(PistonHeadBlock.SHORT, be.getProgress(partialTicks) <= 0.5F);
 					renderBlocks(oppositePos, state, poseStack, buffer, level, false, combinedOverlay);
-				} else if (be.isSourcePiston() && !be.isExtending()) {
+				}
+				else if (be.isSourcePiston() && !be.isExtending()) {
 					PistonType pistonType = state.is(SCContent.REINFORCED_STICKY_PISTON.get()) ? PistonType.STICKY : PistonType.DEFAULT;
 					BlockState headState = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.TYPE, pistonType).setValue(PistonHeadBlock.FACING, state.getValue(PistonBaseBlock.FACING));
 					BlockPos renderPos = oppositePos.relative(be.getMovementDirection());
@@ -52,9 +53,9 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 					poseStack.pushPose();
 					state = state.setValue(PistonBaseBlock.EXTENDED, true);
 					renderBlocks(renderPos, state, poseStack, buffer, level, true, combinedOverlay);
-				} else {
-					renderBlocks(oppositePos, state, poseStack, buffer, level, false, combinedOverlay);
 				}
+				else
+					renderBlocks(oppositePos, state, poseStack, buffer, level, false, combinedOverlay);
 
 				poseStack.popPose();
 				ModelBlockRenderer.clearCache();

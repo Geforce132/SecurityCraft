@@ -20,25 +20,22 @@ import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class OpenBriefcaseGui {
-
 	private ResourceLocation id;
 	private Component name;
 
-	public OpenBriefcaseGui(){}
+	public OpenBriefcaseGui() {}
 
-	public OpenBriefcaseGui(ResourceLocation id, Component name){
+	public OpenBriefcaseGui(ResourceLocation id, Component name) {
 		this.id = id;
 		this.name = name;
 	}
 
-	public static void encode(OpenBriefcaseGui message, FriendlyByteBuf buf)
-	{
+	public static void encode(OpenBriefcaseGui message, FriendlyByteBuf buf) {
 		buf.writeResourceLocation(message.id);
 		buf.writeComponent(message.name);
 	}
 
-	public static OpenBriefcaseGui decode(FriendlyByteBuf buf)
-	{
+	public static OpenBriefcaseGui decode(FriendlyByteBuf buf) {
 		OpenBriefcaseGui message = new OpenBriefcaseGui();
 
 		message.id = buf.readResourceLocation();
@@ -46,59 +43,48 @@ public class OpenBriefcaseGui {
 		return message;
 	}
 
-	public static void onMessage(OpenBriefcaseGui message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(OpenBriefcaseGui message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			ResourceLocation id = message.id;
 			ServerPlayer player = ctx.get().getSender();
 			BlockPos pos = player.blockPosition();
 
-			if(PlayerUtils.isHoldingItem(player, SCContent.BRIEFCASE.get(), null))
-			{
-				if(id.equals(SCContent.mTypeBriefcaseInventory.getRegistryName()))
-				{
+			if (PlayerUtils.isHoldingItem(player, SCContent.BRIEFCASE.get(), null)) {
+				if (id.equals(SCContent.mTypeBriefcaseInventory.getRegistryName())) {
 					NetworkHooks.openGui(player, new MenuProvider() {
 						@Override
-						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
-						{
+						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 							return new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
 						}
 
 						@Override
-						public Component getDisplayName()
-						{
+						public Component getDisplayName() {
 							return message.name;
 						}
 					}, pos);
 				}
-				else if(id.equals(SCContent.mTypeBriefcaseSetup.getRegistryName()))
-				{
+				else if (id.equals(SCContent.mTypeBriefcaseSetup.getRegistryName())) {
 					NetworkHooks.openGui(player, new MenuProvider() {
 						@Override
-						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
-						{
+						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 							return new GenericMenu(SCContent.mTypeBriefcaseSetup, windowId);
 						}
 
 						@Override
-						public Component getDisplayName()
-						{
+						public Component getDisplayName() {
 							return message.name;
 						}
 					}, pos);
 				}
-				else if(id.equals(SCContent.mTypeBriefcase.getRegistryName()))
-				{
+				else if (id.equals(SCContent.mTypeBriefcase.getRegistryName())) {
 					NetworkHooks.openGui(player, new MenuProvider() {
 						@Override
-						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player)
-						{
+						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 							return new GenericMenu(SCContent.mTypeBriefcase, windowId);
 						}
 
 						@Override
-						public Component getDisplayName()
-						{
+						public Component getDisplayName() {
 							return message.name;
 						}
 					}, pos);

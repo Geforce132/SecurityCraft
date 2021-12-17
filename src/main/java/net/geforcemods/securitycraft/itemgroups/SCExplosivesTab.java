@@ -7,18 +7,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class SCExplosivesTab extends CreativeModeTab
-{
-	public SCExplosivesTab()
-	{
+public class SCExplosivesTab extends CreativeModeTab {
+	public SCExplosivesTab() {
 		super(SecurityCraft.MODID + ".explosives");
 		setRecipeFolderName(SecurityCraft.MODID);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public ItemStack makeIcon()
-	{
+	public ItemStack makeIcon() {
 		return new ItemStack(SCContent.MINE.get().asItem());
 	}
 }

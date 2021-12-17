@@ -13,19 +13,18 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 
 public class BouncingBetty extends Entity {
-
 	/** How long the fuse is */
 	public int fuse;
 
-	public BouncingBetty(EntityType<BouncingBetty> type, Level level){
+	public BouncingBetty(EntityType<BouncingBetty> type, Level level) {
 		super(SCContent.eTypeBouncingBetty, level);
 	}
 
-	public BouncingBetty(Level level, double x, double y, double z){
+	public BouncingBetty(Level level, double x, double y, double z) {
 		this(SCContent.eTypeBouncingBetty, level);
 		setPos(x, y, z);
-		float f = (float)(Math.random() * Math.PI * 2.0D);
-		setDeltaMovement(-((float)Math.sin(f)) * 0.02F, 0.20000000298023224D, -((float)Math.cos(f)) * 0.02F);
+		float f = (float) (Math.random() * Math.PI * 2.0D);
+		setDeltaMovement(-((float) Math.sin(f)) * 0.02F, 0.20000000298023224D, -((float) Math.cos(f)) * 0.02F);
 		fuse = 80;
 		xo = x;
 		yo = y;
@@ -36,20 +35,17 @@ public class BouncingBetty extends Entity {
 	protected void defineSynchedData() {}
 
 	@Override
-	protected MovementEmission getMovementEmission()
-	{
+	protected MovementEmission getMovementEmission() {
 		return MovementEmission.NONE;
 	}
 
 	@Override
-	public boolean isPickable()
-	{
+	public boolean isPickable() {
 		return !isRemoved();
 	}
 
 	@Override
-	public void tick()
-	{
+	public void tick() {
 		xo = getX();
 		yo = getY();
 		zo = getZ();
@@ -60,35 +56,30 @@ public class BouncingBetty extends Entity {
 		if (onGround)
 			setDeltaMovement(getDeltaMovement().multiply(0.699999988079071D, 0.699999988079071D, -0.5D));
 
-		if (!level.isClientSide && fuse-- <= 0)
-		{
+		if (!level.isClientSide && fuse-- <= 0) {
 			discard();
 			explode();
 		}
-		else if(level.isClientSide)
+		else if (level.isClientSide)
 			level.addParticle(ParticleTypes.SMOKE, false, getX(), getY() + 0.5D, getZ(), 0.0D, 0.0D, 0.0D);
 	}
 
-	private void explode()
-	{
+	private void explode() {
 		level.explode(this, getX(), getY(), getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tag)
-	{
-		tag.putByte("Fuse", (byte)fuse);
+	protected void addAdditionalSaveData(CompoundTag tag) {
+		tag.putByte("Fuse", (byte) fuse);
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag tag)
-	{
+	protected void readAdditionalSaveData(CompoundTag tag) {
 		fuse = tag.getByte("Fuse");
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket()
-	{
+	public Packet<?> getAddEntityPacket() {
 		return new ClientboundAddEntityPacket(this);
 	}
 }

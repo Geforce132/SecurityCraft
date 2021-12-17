@@ -20,61 +20,51 @@ import net.minecraft.world.level.material.Material;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class FallingBlockMineBlock extends BaseFullMineBlock
-{
-	public FallingBlockMineBlock(Block.Properties properties, Block disguisedBlock)
-	{
+public class FallingBlockMineBlock extends BaseFullMineBlock {
+	public FallingBlockMineBlock(Block.Properties properties, Block disguisedBlock) {
 		super(properties, disguisedBlock);
 	}
 
 	@Override
-	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean flag)
-	{
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean flag) {
 		level.getBlockTicks().scheduleTick(pos, this, 2);
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
-	{
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
 		level.getBlockTicks().scheduleTick(currentPos, this, 2);
 		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
-	{
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
 		//TODO: 1.18 check this
-		if((level.isEmptyBlock(pos.below()) || canFallThrough(level.getBlockState(pos.below()))) && pos.getY() >= 0)
-		{
-			if(level.hasChunksAt(pos.offset(-32, -32, -32), pos.offset(32, 32, 32)))
-			{
+		if ((level.isEmptyBlock(pos.below()) || canFallThrough(level.getBlockState(pos.below()))) && pos.getY() >= 0) {
+			if (level.hasChunksAt(pos.offset(-32, -32, -32), pos.offset(32, 32, 32))) {
 				BlockEntity be = level.getBlockEntity(pos);
 
-				if(!level.isClientSide && be instanceof IOwnable)
-				{
+				if (!level.isClientSide && be instanceof IOwnable) {
 					FallingBlockEntity entity = new FallingBlockEntity(level, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, level.getBlockState(pos));
 
 					entity.blockData = be.save(new CompoundTag());
 					level.addFreshEntity(entity);
 				}
 			}
-			else
-			{
+			else {
 				BlockPos landedPos;
 
 				level.destroyBlock(pos, false);
 
 				//TODO: 1.18 check this
-				for(landedPos = pos.below(); (level.isEmptyBlock(landedPos) || canFallThrough(level.getBlockState(landedPos))) && landedPos.getY() > 0; landedPos = landedPos.below()) {}
+				for (landedPos = pos.below(); (level.isEmptyBlock(landedPos) || canFallThrough(level.getBlockState(landedPos))) && landedPos.getY() > 0; landedPos = landedPos.below()) {}
 
-				if(landedPos.getY() > 0)
+				if (landedPos.getY() > 0)
 					level.setBlockAndUpdate(landedPos.above(), state); //Forge: Fix loss of state information during world gen.
 			}
 		}
 	}
 
-	public static boolean canFallThrough(BlockState state)
-	{
+	public static boolean canFallThrough(BlockState state) {
 		Block block = state.getBlock();
 		Material material = state.getMaterial();
 
@@ -83,12 +73,9 @@ public class FallingBlockMineBlock extends BaseFullMineBlock
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
-	{
-		if(rand.nextInt(16) == 0)
-		{
-			if(canFallThrough(level.getBlockState(pos.below())))
-			{
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+		if (rand.nextInt(16) == 0) {
+			if (canFallThrough(level.getBlockState(pos.below()))) {
 				double particleX = pos.getX() + rand.nextFloat();
 				double particleY = pos.getY() - 0.05D;
 				double particleZ = pos.getZ() + rand.nextFloat();
