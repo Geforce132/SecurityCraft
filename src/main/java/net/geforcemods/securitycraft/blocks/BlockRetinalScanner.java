@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import javafx.scene.chart.ScatterChart;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;

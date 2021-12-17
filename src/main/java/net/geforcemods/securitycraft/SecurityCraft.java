@@ -26,7 +26,6 @@ import net.geforcemods.securitycraft.tabs.CreativeTabSCExplosives;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCTechnical;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

@@ -6,7 +6,6 @@ import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDoorActivator;
-import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockLever;
