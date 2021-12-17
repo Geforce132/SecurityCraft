@@ -30,7 +30,7 @@ public abstract class TrackedEntityMixin {
 	@Shadow
 	@Final
 	Entity entity;
-
+	@Unique
 	private boolean shouldBeSent = false;
 
 	/**
