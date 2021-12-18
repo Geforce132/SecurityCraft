@@ -41,7 +41,7 @@ public interface ILockable {
 
 	/**
 	 * Called when a locked block is right-clicked by a player.
-	 * 
+	 *
 	 * @param level The level that you're in.
 	 * @param pos The position of the block that was clicked.
 	 * @return Return true if you want the player's interaction with the block to be stopped, false otherwise.

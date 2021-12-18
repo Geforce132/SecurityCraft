@@ -12,11 +12,11 @@ import net.minecraft.world.level.block.state.BlockState;
 /**
  * Defines a block that can activate a Reinforced Doors/Reinforced Trapdoors/Reinforced Fence Gates (henceforth referred to
  * as "the doors"). Call
- * 
+ *
  * <pre>
  * InterModComms.sendTo("securitycraft", SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, ClassThatImplementsIDoorActivator::new);
  * </pre>
- * 
+ *
  * during InterModEnqueueEvent to register this with SecurityCraft.
  *
  * @author bl4ckscor3

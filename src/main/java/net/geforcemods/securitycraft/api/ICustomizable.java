@@ -4,7 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 
 /**
  * Let your TileEntity implement this to be able to add options to it
- * 
+ *
  * @author bl4ckscor3
  */
 public interface ICustomizable {
@@ -15,14 +15,14 @@ public interface ICustomizable {
 
 	/**
 	 * Called whenever an {@link Option} in this TileEntity changes its value
-	 * 
+	 *
 	 * @param option The changed Option
 	 */
 	public default void onOptionChanged(Option<?> option) {}
 
 	/**
 	 * Call this from your read method. Used for reading the options from a tag. Use in conjunction with writeOptions.
-	 * 
+	 *
 	 * @param tag The tag to read the options from
 	 */
 	public default void readOptions(CompoundTag tag) {
@@ -35,7 +35,7 @@ public interface ICustomizable {
 
 	/**
 	 * Call this from your write method. Used for writing the options to a tag. Use in conjunction with readOptions.
-	 * 
+	 *
 	 * @param tag The tag to write the options to
 	 * @return The modified CompoundNBT
 	 */
