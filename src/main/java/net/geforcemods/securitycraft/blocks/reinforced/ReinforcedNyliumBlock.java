@@ -4,36 +4,19 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.data.worldgen.Features;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.NetherForestVegetationFeature;
 import net.minecraft.world.level.levelgen.feature.TwistingVinesFeature;
-import net.minecraft.world.level.lighting.LayerLightEngine;
 
 public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements BonemealableBlock {
 	public ReinforcedNyliumBlock(Block.Properties properties, Block vB) {
 		super(properties, vB);
-	}
-
-	@Override
-	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
-		if (!hasLightAbove(state, level, pos))
-			level.setBlockAndUpdate(pos, Blocks.NETHERRACK.defaultBlockState());
-	}
-
-	private static boolean hasLightAbove(BlockState state, LevelReader level, BlockPos pos) {
-		BlockPos upperPos = pos.above();
-		BlockState upperState = level.getBlockState(upperPos);
-		int lightLevel = LayerLightEngine.getLightBlockInto(level, state, pos, upperState, upperPos, Direction.UP, upperState.getLightBlock(level, upperPos));
-		return lightLevel < level.getMaxLightLevel();
 	}
 
 	@Override
