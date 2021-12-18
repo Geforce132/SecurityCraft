@@ -15,8 +15,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class CommonDoorActivator implements IDoorActivator
-{
+public class CommonDoorActivator implements IDoorActivator {
+	//@formatter:off
 	private List<Block> blocks = Arrays.asList(
 			SCContent.LASER_BLOCK.get(),
 			SCContent.RETINAL_SCANNER.get(),
@@ -38,32 +38,33 @@ public class CommonDoorActivator implements IDoorActivator
 			SCContent.KEY_PANEL_BLOCK.get(),
 			SCContent.SECURITY_CAMERA.get(),
 			SCContent.SONIC_SECURITY_SYSTEM.get());
+	//@formatter:on
 
 	@Override
 	public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te, Direction direction, int distance) {
 		if (state.get(BlockStateProperties.POWERED)) {
 			if (distance == 2) {
 				//checking that e.g. a lever/button is correctly attached to the block
-				if(state.hasProperty(BlockStateProperties.FACE) && state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+				if (state.hasProperty(BlockStateProperties.FACE) && state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
 					Direction.Axis offsetAxis = direction.getAxis();
 					Direction facing = state.get(BlockStateProperties.HORIZONTAL_FACING);
 					AttachFace attachFace = state.get(BlockStateProperties.FACE);
 
-					switch(offsetAxis) {
+					switch (offsetAxis) {
 						case X:
 						case Z:
-							if(attachFace != AttachFace.WALL || direction != facing)
+							if (attachFace != AttachFace.WALL || direction != facing)
 								return false;
 							break;
 						case Y:
-							if((direction == Direction.UP && attachFace != AttachFace.FLOOR) || (direction == Direction.DOWN && attachFace != AttachFace.CEILING))
+							if ((direction == Direction.UP && attachFace != AttachFace.FLOOR) || (direction == Direction.DOWN && attachFace != AttachFace.CEILING))
 								return false;
 							break;
 					}
 				}
-				else if(state.hasProperty(BlockStateProperties.FACING))
+				else if (state.hasProperty(BlockStateProperties.FACING))
 					return state.get(BlockStateProperties.FACING) == direction;
-				else if(state.hasProperty(SecurityCameraBlock.FACING))
+				else if (state.hasProperty(SecurityCameraBlock.FACING))
 					return state.get(SecurityCameraBlock.FACING) == direction;
 			}
 
@@ -74,8 +75,7 @@ public class CommonDoorActivator implements IDoorActivator
 	}
 
 	@Override
-	public List<Block> getBlocks()
-	{
+	public List<Block> getBlocks() {
 		return blocks;
 	}
 }

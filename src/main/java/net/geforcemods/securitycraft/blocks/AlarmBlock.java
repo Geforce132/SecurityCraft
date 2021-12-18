@@ -29,7 +29,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public class AlarmBlock extends OwnableBlock {
-
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 	private static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(0, 4, 4, 8, 12, 12);
@@ -45,52 +44,39 @@ public class AlarmBlock extends OwnableBlock {
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP).with(LIT, false));
 	}
 
-	/**
-	 * Check whether this Block can be placed on the given side
-	 */
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
 		Direction facing = state.get(FACING);
 
 		return facing == Direction.UP && BlockUtils.isSideSolid(world, pos.down(), Direction.UP) ? true : BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
-	{
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
 		if (!isValidPosition(state, world, pos))
 			world.destroyBlock(pos, true);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
-	{
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) ? getDefaultState().with(FACING, facing) : null;
 	}
 
-	/**
-	 * Called whenever the block is added into the world. Args: world, x, y, z
-	 */
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag) {
-		if(world.isRemote)
+		if (world.isRemote)
 			return;
 		else
 			world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 5);
 	}
 
-	/**
-	 * Ticks the block if it's been scheduled
-	 */
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
-	{
-		if(!world.isRemote){
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		if (!world.isRemote) {
 			playSoundAndUpdate(world, pos);
 
 			world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 5);
@@ -98,13 +84,13 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onNeighborChange(BlockState state, IWorldReader w, BlockPos pos, BlockPos neighbor){
-		if(w.isRemote() || !(w instanceof World))
+	public void onNeighborChange(BlockState state, IWorldReader w, BlockPos pos, BlockPos neighbor) {
+		if (w.isRemote() || !(w instanceof World))
 			return;
 
-		World world = (World)w;
+		World world = (World) w;
 
-		playSoundAndUpdate((world), pos);
+		playSoundAndUpdate(world, pos);
 
 		Direction facing = world.getBlockState(pos).get(FACING);
 
@@ -113,11 +99,10 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
 		Direction facing = state.get(FACING);
 
-		switch(facing){
+		switch (facing) {
 			case EAST:
 				return SHAPE_EAST;
 			case WEST:
@@ -135,30 +120,29 @@ public class AlarmBlock extends OwnableBlock {
 		return VoxelShapes.fullCube();
 	}
 
-	private void playSoundAndUpdate(World world, BlockPos pos){
+	private void playSoundAndUpdate(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
-		if(state.getBlock() != SCContent.ALARM.get())
+		if (state.getBlock() != SCContent.ALARM.get())
 			return;
 
 		TileEntity tile = world.getTileEntity(pos);
 
-		if(tile instanceof AlarmTileEntity)
-		{
-			AlarmTileEntity te = (AlarmTileEntity)tile;
+		if (tile instanceof AlarmTileEntity) {
+			AlarmTileEntity te = (AlarmTileEntity) tile;
 
-			if(world.getRedstonePowerFromNeighbors(pos) > 0){
+			if (world.getRedstonePowerFromNeighbors(pos) > 0) {
 				boolean isPowered = te.isPowered();
 
-				if(!isPowered){
+				if (!isPowered) {
 					world.setBlockState(pos, state.with(LIT, true));
 					te.setPowered(true);
 				}
-
-			}else{
+			}
+			else {
 				boolean isPowered = te.isPowered();
 
-				if(isPowered){
+				if (isPowered) {
 					world.setBlockState(pos, state.with(LIT, false));
 					te.setPowered(false);
 				}
@@ -167,44 +151,41 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public ItemStack getItem(IBlockReader world, BlockPos pos, BlockState state)
-	{
+	public ItemStack getItem(IBlockReader world, BlockPos pos, BlockState state) {
 		return new ItemStack(SCContent.ALARM.get().asItem());
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder){
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 		builder.add(LIT);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader reader){
+	public TileEntity createTileEntity(BlockState state, IBlockReader reader) {
 		return new AlarmTileEntity();
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		Direction facing = state.get(FACING);
 
-		switch(mirror)
-		{
+		switch (mirror) {
 			case LEFT_RIGHT:
-				if(facing.getAxis() == Axis.Z)
+				if (facing.getAxis() == Axis.Z)
 					return state.with(FACING, facing.getOpposite());
 				break;
 			case FRONT_BACK:
-				if(facing.getAxis() == Axis.X)
+				if (facing.getAxis() == Axis.X)
 					return state.with(FACING, facing.getOpposite());
 				break;
-			case NONE: break;
+			case NONE:
+				break;
 		}
 
 		return state;

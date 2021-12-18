@@ -25,7 +25,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class BouncingBettyBlock extends ExplosiveBlock {
-
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 	private static final VoxelShape SHAPE = Block.makeCuboidShape(3, 0, 3, 13, 3, 13);
 
@@ -35,13 +34,12 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
 		return SHAPE;
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
 		if (!world.getBlockState(pos.down()).isAir())
 			return;
 		else if (world.getBlockState(pos).get(DEACTIVATED))
@@ -50,22 +48,20 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 			explode(world, pos);
 	}
 
-	/**
-	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-	 */
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
 		return BlockUtils.isSideSolid(world, pos.down(), Direction.UP);
 	}
 
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if(!EntityUtils.doesEntityOwn(entity, world, pos))
+		if (!EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
+
 	@Override
-	public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity player){
-		if(!player.isCreative() && !EntityUtils.doesPlayerOwn(player, world, pos))
+	public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+		if (!player.isCreative() && !EntityUtils.doesPlayerOwn(player, world, pos))
 			explode(world, pos);
 	}
 
@@ -73,8 +69,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	public boolean activateMine(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
-		if(state.get(DEACTIVATED))
-		{
+		if (state.get(DEACTIVATED)) {
 			world.setBlockState(pos, state.with(DEACTIVATED, false));
 			return true;
 		}
@@ -86,8 +81,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	public boolean defuseMine(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
-		if(!state.get(DEACTIVATED))
-		{
+		if (!state.get(DEACTIVATED)) {
 			world.setBlockState(pos, state.with(DEACTIVATED, true));
 			return true;
 		}
@@ -96,10 +90,11 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos){
-		if(world.isRemote)
+	public void explode(World world, BlockPos pos) {
+		if (world.isRemote)
 			return;
-		if(world.getBlockState(pos).get(DEACTIVATED))
+
+		if (world.getBlockState(pos).get(DEACTIVATED))
 			return;
 
 		world.destroyBlock(pos, false);
@@ -110,17 +105,13 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 		entitytntprimed.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.tnt.primed")), 1.0F, 1.0F);
 	}
 
-	/**
-	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-	 */
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state){
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(asItem());
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(DEACTIVATED);
 	}
 
@@ -138,5 +129,4 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new OwnableTileEntity(SCContent.teTypeAbstract);
 	}
-
 }

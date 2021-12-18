@@ -12,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SetTrophySystemTarget {
-
 	private BlockPos trophyPos;
 	private int targetID;
 
@@ -41,12 +40,11 @@ public class SetTrophySystemTarget {
 			TileEntity te = Minecraft.getInstance().world.getTileEntity(message.trophyPos);
 
 			if (te instanceof TrophySystemTileEntity) {
-				TrophySystemTileEntity trophySystemTE = (TrophySystemTileEntity)te;
+				TrophySystemTileEntity trophySystemTE = (TrophySystemTileEntity) te;
 				Entity target = Minecraft.getInstance().world.getEntityByID(message.targetID);
 
-				if (target instanceof ProjectileEntity) {
-					trophySystemTE.setTarget((ProjectileEntity)target);
-				}
+				if (target instanceof ProjectileEntity)
+					trophySystemTE.setTarget((ProjectileEntity) target);
 			}
 		});
 

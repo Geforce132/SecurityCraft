@@ -23,71 +23,78 @@ public class ProtectoTileEntity extends DisguisableTileEntity implements ITickab
 	private int cooldown = 0;
 	private int ticksBetweenAttacks = hasModule(ModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
 
-	public ProtectoTileEntity()
-	{
+	public ProtectoTileEntity() {
 		super(SCContent.teTypeProtecto);
 	}
 
 	@Override
 	public void tick() {
-		if(cooldown++ < ticksBetweenAttacks)
+		if (cooldown++ < ticksBetweenAttacks)
 			return;
 
-		if(world.isRaining() && world.canBlockSeeSky(pos)) {
+		if (world.isRaining() && world.canBlockSeeSky(pos)) {
 			List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(ATTACK_RANGE));
 
-			if(!getBlockState().get(ProtectoBlock.ACTIVATED))
+			if (!getBlockState().get(ProtectoBlock.ACTIVATED)) {
 				world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, true));
+			}
 
-			if(entities.size() != 0) {
+			if (entities.size() != 0) {
 				boolean shouldDeactivate = false;
 
-				for(LivingEntity entity : entities) {
+				for (LivingEntity entity : entities) {
 					if (!(entity instanceof SentryEntity) && !EntityUtils.isInvisible(entity)) {
-						if (entity instanceof PlayerEntity)
-						{
-							PlayerEntity player = (PlayerEntity)entity;
+						if (entity instanceof PlayerEntity) {
+							PlayerEntity player = (PlayerEntity) entity;
 
-							if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
+							if (player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity)) {
 								continue;
+							}
 						}
 
-						if(!world.isRemote)
+						if (!world.isRemote) {
 							WorldUtils.spawnLightning(world, entity.getPositionVec(), false);
+						}
 
 						shouldDeactivate = true;
 					}
 				}
 
-				if(shouldDeactivate)
+				if (shouldDeactivate) {
 					world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, false));
+				}
 			}
 
 			cooldown = 0;
 		}
-		else if(getBlockState().get(ProtectoBlock.ACTIVATED))
+		else if (getBlockState().get(ProtectoBlock.ACTIVATED)) {
 			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, false));
+		}
 	}
 
 	@Override
 	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		super.onModuleInserted(stack, module);
 
-		if(module == ModuleType.SPEED)
+		if (module == ModuleType.SPEED) {
 			ticksBetweenAttacks = FAST_SPEED;
+		}
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		super.onModuleRemoved(stack, module);
 
-		if(module == ModuleType.SPEED)
+		if (module == ModuleType.SPEED) {
 			ticksBetweenAttacks = SLOW_SPEED;
+		}
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.SPEED, ModuleType.DISGUISE};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.SPEED, ModuleType.DISGUISE
+		};
 	}
 
 	@Override

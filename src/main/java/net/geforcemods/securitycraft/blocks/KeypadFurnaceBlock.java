@@ -46,7 +46,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class KeypadFurnaceBlock extends DisguisableBlock {
-
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
@@ -65,49 +64,45 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(disguisedState.getBlock() != this)
+		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(world, pos, ctx);
 
-		switch(state.get(FACING))
-		{
+		switch (state.get(FACING)) {
 			case NORTH:
-				if(state.get(OPEN))
+				if (state.get(OPEN))
 					return NORTH_OPEN;
 				else
 					return NORTH_CLOSED;
 			case EAST:
-				if(state.get(OPEN))
+				if (state.get(OPEN))
 					return EAST_OPEN;
 				else
 					return EAST_CLOSED;
 			case SOUTH:
-				if(state.get(OPEN))
+				if (state.get(OPEN))
 					return SOUTH_OPEN;
 				else
 					return SOUTH_CLOSED;
 			case WEST:
-				if(state.get(OPEN))
+				if (state.get(OPEN))
 					return WEST_OPEN;
 				else
 					return WEST_CLOSED;
-			default: return VoxelShapes.fullCube();
+			default:
+				return VoxelShapes.fullCube();
 		}
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-	{
-		if(!(newState.getBlock() instanceof KeypadFurnaceBlock))
-		{
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!(newState.getBlock() instanceof KeypadFurnaceBlock)) {
 			TileEntity tileentity = world.getTileEntity(pos);
 
-			if (tileentity instanceof IInventory)
-			{
-				InventoryHelper.dropInventoryItems(world, pos, (IInventory)tileentity);
+			if (tileentity instanceof IInventory) {
+				InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileentity);
 				world.updateComparatorOutputLevel(pos, this);
 			}
 
@@ -116,68 +111,58 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
-		if(!world.isRemote)
-		{
-			KeypadFurnaceTileEntity te = (KeypadFurnaceTileEntity)world.getTileEntity(pos);
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!world.isRemote) {
+			KeypadFurnaceTileEntity te = (KeypadFurnaceTileEntity) world.getTileEntity(pos);
 
-			if(ModuleUtils.isDenied(te, player))
-			{
-				if(te.sendsMessages())
+			if (ModuleUtils.isDenied(te, player)) {
+				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}
-			else if(ModuleUtils.isAllowed(te, player))
-			{
-				if(te.sendsMessages())
+			else if (ModuleUtils.isAllowed(te, player)) {
+				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				activate(state, world, pos, player);
 			}
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				te.openPasswordGUI(player);
 		}
 
 		return ActionResultType.SUCCESS;
 	}
 
-	public void activate(BlockState state, World world, BlockPos pos, PlayerEntity player){
-		if(!state.get(KeypadFurnaceBlock.OPEN))
+	public void activate(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+		if (!state.get(KeypadFurnaceBlock.OPEN))
 			world.setBlockState(pos, state.with(KeypadFurnaceBlock.OPEN, true));
 
-		if(player instanceof ServerPlayerEntity)
-		{
+		if (player instanceof ServerPlayerEntity) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof INamedContainerProvider)
-			{
-				world.playEvent((PlayerEntity)null, 1006, pos, 0);
-				NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
+			if (te instanceof INamedContainerProvider) {
+				world.playEvent((PlayerEntity) null, 1006, pos, 0);
+				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
 			}
 		}
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
-	{
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite()).with(OPEN, false).with(LIT, false);
 	}
 
 	@Override
-	public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
-	{
-		if(state.get(OPEN) && state.get(LIT) && getDisguisedStateOrDefault(state, world, pos).getBlock() != this)
-		{
+	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
+		if (state.get(OPEN) && state.get(LIT) && getDisguisedStateOrDefault(state, world, pos).getBlock() != this) {
 			double x = pos.getX() + 0.5D;
 			double y = pos.getY();
 			double z = pos.getZ() + 0.5D;
 
-			if(rand.nextDouble() < 0.1D)
+			if (rand.nextDouble() < 0.1D)
 				world.playSound(x, y, z, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 
 			Direction direction = state.get(FACING);
@@ -193,8 +178,7 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(FACING, OPEN, LIT);
 	}
 
@@ -204,37 +188,32 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.toRotation(state.get(FACING)));
 	}
 
-	public static class Convertible implements IPasswordConvertible
-	{
+	public static class Convertible implements IPasswordConvertible {
 		@Override
-		public Block getOriginalBlock()
-		{
+		public Block getOriginalBlock() {
 			return Blocks.FURNACE;
 		}
 
 		@Override
-		public boolean convert(PlayerEntity player, World world, BlockPos pos)
-		{
+		public boolean convert(PlayerEntity player, World world, BlockPos pos) {
 			BlockState state = world.getBlockState(pos);
 			Direction facing = state.get(FACING);
 			boolean lit = state.get(LIT);
-			FurnaceTileEntity furnace = (FurnaceTileEntity)world.getTileEntity(pos);
+			FurnaceTileEntity furnace = (FurnaceTileEntity) world.getTileEntity(pos);
 			CompoundNBT tag = furnace.write(new CompoundNBT());
 
 			furnace.clear();
 			world.setBlockState(pos, SCContent.KEYPAD_FURNACE.get().getDefaultState().with(FACING, facing).with(OPEN, false).with(LIT, lit));
-			((KeypadFurnaceTileEntity)world.getTileEntity(pos)).read(world.getBlockState(pos), tag);
+			((KeypadFurnaceTileEntity) world.getTileEntity(pos)).read(world.getBlockState(pos), tag);
 			((IOwnable) world.getTileEntity(pos)).setOwner(player.getUniqueID().toString(), player.getName().getString());
 			return true;
 		}

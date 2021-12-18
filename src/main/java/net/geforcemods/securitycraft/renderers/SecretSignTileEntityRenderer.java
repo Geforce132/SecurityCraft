@@ -24,18 +24,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignTileEntity>
-{
+public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignTileEntity> {
 	private final SignModel model = new SignModel();
 
-	public SecretSignTileEntityRenderer(TileEntityRendererDispatcher terd)
-	{
+	public SecretSignTileEntityRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 
 	@Override
-	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
-	{
+	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		BlockState state = te.getBlockState();
 		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
 		FontRenderer font = renderDispatcher.getFontRenderer();
@@ -43,14 +40,12 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 
 		matrix.push();
 
-		if(state.getBlock() instanceof SecretStandingSignBlock)
-		{
+		if (state.getBlock() instanceof SecretStandingSignBlock) {
 			matrix.translate(0.5D, 0.5D, 0.5D);
 			matrix.rotate(Vector3f.YP.rotationDegrees(-(state.get(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
 			model.signStick.showModel = true;
 		}
-		else
-		{
+		else {
 			matrix.translate(0.5D, 0.5D, 0.5D);
 			matrix.rotate(Vector3f.YP.rotationDegrees(-state.get(SecretWallSignBlock.FACING).getHorizontalAngle()));
 			matrix.translate(0.0D, -0.3125D, -0.4375D);
@@ -66,22 +61,20 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 		matrix.translate(0.0D, 0.33333334F, 0.046666667F);
 		matrix.scale(0.010416667F, -0.010416667F, 0.010416667F);
 
-		if(te.isPlayerAllowedToSeeText(Minecraft.getInstance().player))
-		{
+		if (te.isPlayerAllowedToSeeText(Minecraft.getInstance().player)) {
 			int textColor = te.getTextColor().getTextColor();
-			int r = (int)(NativeImage.getRed(textColor) * 0.4D);
-			int g = (int)(NativeImage.getGreen(textColor) * 0.4D);
-			int b = (int)(NativeImage.getBlue(textColor) * 0.4D);
+			int r = (int) (NativeImage.getRed(textColor) * 0.4D);
+			int g = (int) (NativeImage.getGreen(textColor) * 0.4D);
+			int b = (int) (NativeImage.getBlue(textColor) * 0.4D);
 			int argb = NativeImage.getCombined(0, b, g, r);
 
-			for(int line = 0; line < 4; ++line)
-			{
+			for (int line = 0; line < 4; ++line) {
 				IReorderingProcessor rp = te.reorderText(line, (p_243502_1_) -> {
 					List<IReorderingProcessor> list = font.trimStringToWidth(p_243502_1_, 90);
 					return list.isEmpty() ? IReorderingProcessor.field_242232_a : list.get(0);
 				});
 
-				if(rp != null)
+				if (rp != null)
 					font.drawEntityText(rp, -font.func_243245_a(rp) / 2, line * 10 - 20, argb, false, matrix.getLast().getMatrix(), buffer, false, 0, combinedLight);
 			}
 		}

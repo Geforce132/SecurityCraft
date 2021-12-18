@@ -17,57 +17,51 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
-public class ClaymoreTileEntity extends CustomizableTileEntity implements ITickableTileEntity
-{
+public class ClaymoreTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
 	private IntOption range = new IntOption(this::getPos, "range", 5, 1, 10, 1, true);
 	private int cooldown = -1;
 
-	public ClaymoreTileEntity()
-	{
+	public ClaymoreTileEntity() {
 		super(SCContent.teTypeClaymore);
 	}
 
 	@Override
 	public void tick() {
-		if(!getWorld().isRemote)
-		{
-			if(getBlockState().get(ClaymoreBlock.DEACTIVATED))
+		if (!getWorld().isRemote) {
+			if (getBlockState().get(ClaymoreBlock.DEACTIVATED))
 				return;
 
-			if(cooldown > 0){
+			if (cooldown > 0) {
 				cooldown--;
 				return;
 			}
 
-			if(cooldown == 0){
-				((ClaymoreBlock)getBlockState().getBlock()).explode(world, pos);
+			if (cooldown == 0) {
+				((ClaymoreBlock) getBlockState().getBlock()).explode(world, pos);
 				return;
 			}
 
 			Direction dir = getBlockState().get(ClaymoreBlock.FACING);
 			AxisAlignedBB area = new AxisAlignedBB(pos);
 
-			if(dir == Direction.NORTH)
+			if (dir == Direction.NORTH)
 				area = area.contract(-0, -0, range.get());
-			else if(dir == Direction.SOUTH)
+			else if (dir == Direction.SOUTH)
 				area = area.contract(-0, -0, -range.get());
-			else if(dir == Direction.EAST)
+			else if (dir == Direction.EAST)
 				area = area.contract(-range.get(), -0, -0);
-			else if(dir == Direction.WEST)
+			else if (dir == Direction.WEST)
 				area = area.contract(range.get(), -0, -0);
 
-			getWorld().getEntitiesWithinAABB(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !EntityUtils.doesEntityOwn(e, world, pos))
-			.stream().findFirst().ifPresent(entity -> {
+			getWorld().getEntitiesWithinAABB(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !EntityUtils.doesEntityOwn(e, world, pos)).stream().findFirst().ifPresent(entity -> {
 				cooldown = 20;
 				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			});
 		}
-
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 		writeOptions(tag);
 		tag.putInt("cooldown", cooldown);
@@ -75,8 +69,7 @@ public class ClaymoreTileEntity extends CustomizableTileEntity implements ITicka
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
-	{
+	public void read(BlockState state, CompoundNBT tag) {
 		super.read(state, tag);
 
 		readOptions(tag);
@@ -84,14 +77,14 @@ public class ClaymoreTileEntity extends CustomizableTileEntity implements ITicka
 	}
 
 	@Override
-	public Option<?>[] customOptions()
-	{
-		return new Option[]{range};
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				range
+		};
 	}
 
 	@Override
-	public ModuleType[] acceptedModules()
-	{
+	public ModuleType[] acceptedModules() {
 		return new ModuleType[0];
 	}
 }

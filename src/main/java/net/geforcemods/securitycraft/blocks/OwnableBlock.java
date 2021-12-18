@@ -15,29 +15,26 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class OwnableBlock extends Block {
-
 	public OwnableBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof PlayerEntity) {
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+		}
 
 		if (stack.hasDisplayName()) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if (te instanceof INameSetter) {
-				((INameSetter)te).setCustomName(stack.getDisplayName());
-			}
+			if (te instanceof INameSetter)
+				((INameSetter) te).setCustomName(stack.getDisplayName());
 		}
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
+	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
 

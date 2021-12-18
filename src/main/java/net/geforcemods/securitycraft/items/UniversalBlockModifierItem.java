@@ -25,42 +25,34 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class UniversalBlockModifierItem extends Item
-{
-	public UniversalBlockModifierItem(Item.Properties properties)
-	{
+public class UniversalBlockModifierItem extends Item {
+	public UniversalBlockModifierItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
-	{
+	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
 		World world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
 		TileEntity te = world.getTileEntity(pos);
 		PlayerEntity player = ctx.getPlayer();
 
-		if(te instanceof IModuleInventory)
-		{
-			if(te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player))
-			{
-				if(!(te.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem)((DisguisableBlock)te.getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
+		if (te instanceof IModuleInventory) {
+			if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player)) {
+				if (!(te.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) te.getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner().getName())), TextFormatting.RED);
 
 				return ActionResultType.FAIL;
 			}
-			else if(!ctx.getWorld().isRemote)
-			{
-				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+			else if (!ctx.getWorld().isRemote) {
+				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-					{
+					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 						return new CustomizeBlockContainer(windowId, world, pos, inv);
 					}
 
 					@Override
-					public ITextComponent getDisplayName()
-					{
+					public ITextComponent getDisplayName() {
 						return new TranslationTextComponent(te.getBlockState().getBlock().getTranslationKey());
 					}
 				}, pos);

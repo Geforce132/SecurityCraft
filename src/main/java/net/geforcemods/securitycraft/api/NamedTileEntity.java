@@ -11,40 +11,35 @@ import net.minecraft.util.text.StringTextComponent;
 public class NamedTileEntity extends OwnableTileEntity implements INameSetter {
 	private ITextComponent customName = StringTextComponent.EMPTY;
 
-	public NamedTileEntity()
-	{
+	public NamedTileEntity() {
 		this(SCContent.teTypeAbstract);
 	}
 
-	public NamedTileEntity(TileEntityType<?> type)
-	{
+	public NamedTileEntity(TileEntityType<?> type) {
 		super(type);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 		tag.putString("customName", customName.getString());
 		return tag;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
-	{
+	public void read(BlockState state, CompoundNBT tag) {
 		super.read(state, tag);
 
 		if (tag.contains("customName")) {
 			String name = tag.getString("customName");
 
-			if(!name.equals("name"))
+			if (!name.equals("name"))
 				customName = new StringTextComponent(name);
 		}
 	}
 
 	@Override
-	public ITextComponent getName()
-	{
+	public ITextComponent getName() {
 		return hasCustomName() ? customName : getDefaultName();
 	}
 

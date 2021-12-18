@@ -39,7 +39,7 @@ public class PortableTunePlayerItem extends Item {
 		BlockPos pos = ctx.getPos();
 
 		if (world.getBlockState(pos).getBlock() == SCContent.SONIC_SECURITY_SYSTEM.get()) {
-			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity)world.getTileEntity(pos);
+			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity) world.getTileEntity(pos);
 			PlayerEntity player = ctx.getPlayer();
 
 			if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)) {
@@ -84,13 +84,13 @@ public class PortableTunePlayerItem extends Item {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
-		if(!stack.hasTag())
+		if (!stack.hasTag())
 			return;
 
 		// If a tune is stored in this item, show the number of notes in this tune in the tooltip
 		int notesCount = stack.getTag().getList("Notes", Constants.NBT.TAG_COMPOUND).size();
 
-		if(notesCount > 0)
+		if (notesCount > 0)
 			tooltip.add(Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).mergeStyle(Utils.GRAY_STYLE));
 	}
 }

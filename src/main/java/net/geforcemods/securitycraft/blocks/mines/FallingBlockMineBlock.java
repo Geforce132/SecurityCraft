@@ -20,81 +20,62 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class FallingBlockMineBlock extends BaseFullMineBlock
-{
-	public FallingBlockMineBlock(Block.Properties properties, Block disguisedBlock)
-	{
+public class FallingBlockMineBlock extends BaseFullMineBlock {
+	public FallingBlockMineBlock(Block.Properties properties, Block disguisedBlock) {
 		super(properties, disguisedBlock);
 	}
 
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag)
-	{
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag) {
 		world.getPendingBlockTicks().scheduleTick(pos, this, 2);
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
-	{
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 		world.getPendingBlockTicks().scheduleTick(currentPos, this, 2);
 		return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
-	{
-		if(!world.isRemote)
-		{
-			if((world.isAirBlock(pos.down()) || canFallThrough(world.getBlockState(pos.down()))) && pos.getY() >= 0)
-			{
-				if(world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
-				{
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		if (!world.isRemote) {
+			if ((world.isAirBlock(pos.down()) || canFallThrough(world.getBlockState(pos.down()))) && pos.getY() >= 0) {
+				if (world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
 					TileEntity te = world.getTileEntity(pos);
 
-					if(!world.isRemote && te instanceof IOwnable)
-					{
+					if (!world.isRemote && te instanceof IOwnable) {
 						FallingBlockEntity entity = new FallingBlockEntity(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos));
 
 						entity.tileEntityData = te.write(new CompoundNBT());
 						world.addEntity(entity);
 					}
 				}
-				else
-				{
+				else {
 					BlockPos blockpos;
 
 					world.destroyBlock(pos, false);
 
-					for(blockpos = pos.down(); (world.isAirBlock(blockpos) || canFallThrough(world.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.down()) {}
+					for (blockpos = pos.down(); (world.isAirBlock(blockpos) || canFallThrough(world.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.down()) {}
 
-					if(blockpos.getY() > 0)
+					if (blockpos.getY() > 0)
 						world.setBlockState(blockpos.up(), state); //Forge: Fix loss of state information during world gen.
 				}
 			}
 		}
 	}
 
-	public static boolean canFallThrough(BlockState state)
-	{
+	public static boolean canFallThrough(BlockState state) {
 		Block block = state.getBlock();
 		Material material = state.getMaterial();
 
 		return block == Blocks.FIRE || material == Material.AIR || material == Material.WATER || material == Material.LAVA;
 	}
 
-	/**
-	 * Called periodically clientside on blocks near the player to show effects (like furnace fire ParticleTypes). Note that
-	 * this method is unrelated to {@link randomTick} and {@link #needsRandomTick}, and will always be called regardless
-	 * of whether the block can receive random update ticks
-	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
-	{
-		if(rand.nextInt(16) == 0)
-		{
-			if(canFallThrough(world.getBlockState(pos.down())))
-			{
+	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
+		if (rand.nextInt(16) == 0) {
+			if (canFallThrough(world.getBlockState(pos.down()))) {
 				double particleX = pos.getX() + rand.nextFloat();
 				double particleY = pos.getY() - 0.05D;
 				double particleZ = pos.getZ() + rand.nextFloat();

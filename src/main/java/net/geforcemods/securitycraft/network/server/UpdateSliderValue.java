@@ -15,28 +15,25 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateSliderValue {
-
 	private BlockPos pos;
 	private int id;
 	private double value;
 
-	public UpdateSliderValue(){ }
+	public UpdateSliderValue() {}
 
-	public UpdateSliderValue(BlockPos pos, int id, double v){
+	public UpdateSliderValue(BlockPos pos, int id, double v) {
 		this.pos = pos;
 		this.id = id;
 		value = v;
 	}
 
-	public static void encode(UpdateSliderValue message, PacketBuffer buf)
-	{
+	public static void encode(UpdateSliderValue message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeInt(message.id);
 		buf.writeDouble(message.value);
 	}
 
-	public static UpdateSliderValue decode(PacketBuffer buf)
-	{
+	public static UpdateSliderValue decode(PacketBuffer buf) {
 		UpdateSliderValue message = new UpdateSliderValue();
 
 		message.pos = buf.readBlockPos();
@@ -45,8 +42,7 @@ public class UpdateSliderValue {
 		return message;
 	}
 
-	public static void onMessage(UpdateSliderValue message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(UpdateSliderValue message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			int id = message.id;
@@ -54,17 +50,17 @@ public class UpdateSliderValue {
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.world.getTileEntity(pos);
 
-			if(te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player))) {
-				Option<?> o = ((ICustomizable)te).customOptions()[id];
+			if (te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player))) {
+				Option<?> o = ((ICustomizable) te).customOptions()[id];
 
-				if(o instanceof DoubleOption)
-					((DoubleOption)o).setValue(value);
-				else if(o instanceof IntOption)
-					((IntOption)o).setValue((int)value);
+				if (o instanceof DoubleOption)
+					((DoubleOption) o).setValue(value);
+				else if (o instanceof IntOption)
+					((IntOption) o).setValue((int) value);
 
-				((ICustomizable)te).onOptionChanged(((ICustomizable)te).customOptions()[id]);
+				((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[id]);
 
-				if(te instanceof CustomizableTileEntity)
+				if (te instanceof CustomizableTileEntity)
 					player.world.notifyBlockUpdate(pos, te.getBlockState(), te.getBlockState(), 3);
 			}
 		});

@@ -12,38 +12,35 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SyncProjector {
-
 	private BlockPos pos;
 	private int data;
 	private DataType dataType;
 
 	public SyncProjector() {}
 
-	public SyncProjector(BlockPos pos, int data, DataType dataType){
+	public SyncProjector(BlockPos pos, int data, DataType dataType) {
 		this.pos = pos;
 		this.data = data;
 		this.dataType = dataType;
 	}
 
-	public static void encode(SyncProjector message, PacketBuffer buf)
-	{
+	public static void encode(SyncProjector message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeEnumValue(message.dataType);
 
-		if(message.dataType == DataType.HORIZONTAL)
+		if (message.dataType == DataType.HORIZONTAL)
 			buf.writeBoolean(message.data == 1);
 		else
 			buf.writeVarInt(message.data);
 	}
 
-	public static SyncProjector decode(PacketBuffer buf)
-	{
+	public static SyncProjector decode(PacketBuffer buf) {
 		SyncProjector message = new SyncProjector();
 
 		message.pos = buf.readBlockPos();
 		message.dataType = buf.readEnumValue(DataType.class);
 
-		if(message.dataType == DataType.HORIZONTAL)
+		if (message.dataType == DataType.HORIZONTAL)
 			message.data = buf.readBoolean() ? 1 : 0;
 		else
 			message.data = buf.readVarInt();
@@ -51,21 +48,18 @@ public class SyncProjector {
 		return message;
 	}
 
-	public static void onMessage(SyncProjector message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(SyncProjector message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 			TileEntity te = world.getTileEntity(pos);
 
-			if(world.isBlockPresent(pos) && te instanceof ProjectorTileEntity && ((ProjectorTileEntity)te).getOwner().isOwner(player))
-			{
-				ProjectorTileEntity projector = (ProjectorTileEntity)te;
+			if (world.isBlockPresent(pos) && te instanceof ProjectorTileEntity && ((ProjectorTileEntity) te).getOwner().isOwner(player)) {
+				ProjectorTileEntity projector = (ProjectorTileEntity) te;
 				BlockState state = world.getBlockState(pos);
 
-				switch(message.dataType)
-				{
+				switch (message.dataType) {
 					case WIDTH:
 						projector.setProjectionWidth(message.data);
 						break;
@@ -81,7 +75,8 @@ public class SyncProjector {
 					case HORIZONTAL:
 						projector.setHorizontal(message.data == 1);
 						break;
-					case INVALID: break;
+					case INVALID:
+						break;
 				}
 
 				world.notifyBlockUpdate(pos, state, state, 2);
@@ -91,8 +86,12 @@ public class SyncProjector {
 		ctx.get().setPacketHandled(true);
 	}
 
-	public enum DataType
-	{
-		WIDTH, HEIGHT, RANGE, OFFSET, HORIZONTAL, INVALID;
+	public enum DataType {
+		WIDTH,
+		HEIGHT,
+		RANGE,
+		OFFSET,
+		HORIZONTAL,
+		INVALID;
 	}
 }

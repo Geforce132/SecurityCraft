@@ -7,24 +7,21 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class DismountCamera
-{
+public class DismountCamera {
 	public DismountCamera() {}
 
 	public static void encode(DismountCamera message, PacketBuffer buf) {}
 
-	public static DismountCamera decode(PacketBuffer buf)
-	{
+	public static DismountCamera decode(PacketBuffer buf) {
 		return new DismountCamera();
 	}
 
-	public static void onMessage(DismountCamera message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(DismountCamera message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			ServerPlayerEntity player = ctx.get().getSender();
 
-			if(player.getSpectatingEntity() instanceof SecurityCameraEntity)
-				((SecurityCameraEntity)player.getSpectatingEntity()).stopViewing(player);
+			if (player.getSpectatingEntity() instanceof SecurityCameraEntity)
+				((SecurityCameraEntity) player.getSpectatingEntity()).stopViewing(player);
 		});
 
 		ctx.get().setPacketHandled(true);

@@ -9,16 +9,14 @@ import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-public class ItemTagGenerator extends ItemTagsProvider
-{
-	protected ItemTagGenerator(DataGenerator dataGenerator, BlockTagsProvider blockTagsProvider, ExistingFileHelper existingFileHelper)
-	{
+public class ItemTagGenerator extends ItemTagsProvider {
+	protected ItemTagGenerator(DataGenerator dataGenerator, BlockTagsProvider blockTagsProvider, ExistingFileHelper existingFileHelper) {
 		super(dataGenerator, blockTagsProvider, SecurityCraft.MODID, existingFileHelper);
 	}
 
 	@Override
-	protected void registerTags()
-	{
+	protected void registerTags() {
+		//@formatter:off
 		//securitycraft tags
 		copy(SCTags.Blocks.REINFORCED_ACACIA_LOGS, SCTags.Items.REINFORCED_ACACIA_LOGS);
 		copy(SCTags.Blocks.REINFORCED_BIRCH_LOGS, SCTags.Items.REINFORCED_BIRCH_LOGS);
@@ -70,11 +68,11 @@ public class ItemTagGenerator extends ItemTagsProvider
 		getOrCreateBuilder(ItemTags.STAIRS).addTag(SCTags.Items.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get().asItem());
 		getOrCreateBuilder(ItemTags.SIGNS).addTag(SCTags.Items.SECRET_SIGNS);
 		getOrCreateBuilder(ItemTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem());
+		//@formatter:on
 	}
 
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return "SecurityCraft Item Tags";
 	}
 }

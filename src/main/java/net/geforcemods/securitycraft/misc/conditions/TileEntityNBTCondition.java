@@ -19,26 +19,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityNBTCondition implements ILootCondition
-{
+public class TileEntityNBTCondition implements ILootCondition {
 	private String key;
 	private boolean value;
 
-	private TileEntityNBTCondition(String key, boolean value)
-	{
+	private TileEntityNBTCondition(String key, boolean value) {
 		this.key = key;
 		this.value = value;
 	}
 
 	@Override
-	public Set<LootParameter<?>> getRequiredParameters()
-	{
+	public Set<LootParameter<?>> getRequiredParameters() {
 		return ImmutableSet.of(LootParameters.ORIGIN);
 	}
 
 	@Override
-	public boolean test(LootContext lootContext)
-	{
+	public boolean test(LootContext lootContext) {
 		TileEntity te = lootContext.getWorld().getTileEntity(new BlockPos(lootContext.get(LootParameters.ORIGIN)));
 		CompoundNBT nbt = te.write(new CompoundNBT());
 
@@ -46,47 +42,39 @@ public class TileEntityNBTCondition implements ILootCondition
 	}
 
 	@Override
-	public LootConditionType getConditionType()
-	{
+	public LootConditionType getConditionType() {
 		return SecurityCraft.TILE_ENTITY_NBT_LOOT_CONDITION;
 	}
 
-	public static Builder builder()
-	{
+	public static Builder builder() {
 		return new Builder();
 	}
 
-	public static class Builder implements IBuilder
-	{
+	public static class Builder implements IBuilder {
 		private String key;
 		private boolean value;
 
-		public Builder equals(String key, boolean value)
-		{
+		public Builder equals(String key, boolean value) {
 			this.key = key;
 			this.value = value;
 			return this;
 		}
 
 		@Override
-		public ILootCondition build()
-		{
+		public ILootCondition build() {
 			return new TileEntityNBTCondition(key, value);
 		}
 	}
 
-	public static class Serializer implements ILootSerializer<TileEntityNBTCondition>
-	{
+	public static class Serializer implements ILootSerializer<TileEntityNBTCondition> {
 		@Override
-		public void serialize(JsonObject json, TileEntityNBTCondition condition, JsonSerializationContext ctx)
-		{
+		public void serialize(JsonObject json, TileEntityNBTCondition condition, JsonSerializationContext ctx) {
 			json.addProperty("key", condition.key);
 			json.addProperty("value", condition.value);
 		}
 
 		@Override
-		public TileEntityNBTCondition deserialize(JsonObject json, JsonDeserializationContext ctx)
-		{
+		public TileEntityNBTCondition deserialize(JsonObject json, JsonDeserializationContext ctx) {
 			return new TileEntityNBTCondition(JSONUtils.getString(json, "key"), JSONUtils.getBoolean(json, "value"));
 		}
 	}

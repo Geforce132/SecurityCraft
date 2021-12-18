@@ -12,27 +12,23 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SetKeycardUses
-{
+public class SetKeycardUses {
 	private BlockPos pos;
 	private int uses;
 
 	public SetKeycardUses() {}
 
-	public SetKeycardUses(BlockPos pos, int uses)
-	{
+	public SetKeycardUses(BlockPos pos, int uses) {
 		this.pos = pos;
 		this.uses = uses;
 	}
 
-	public static void encode(SetKeycardUses message, PacketBuffer buf)
-	{
+	public static void encode(SetKeycardUses message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeVarInt(message.uses);
 	}
 
-	public static SetKeycardUses decode(PacketBuffer buf)
-	{
+	public static SetKeycardUses decode(PacketBuffer buf) {
 		SetKeycardUses message = new SetKeycardUses();
 
 		message.pos = buf.readBlockPos();
@@ -40,23 +36,20 @@ public class SetKeycardUses
 		return message;
 	}
 
-	public static void onMessage(SetKeycardUses message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(SetKeycardUses message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity tile = player.world.getTileEntity(pos);
 
-			if(tile instanceof KeycardReaderTileEntity)
-			{
-				KeycardReaderTileEntity te = (KeycardReaderTileEntity)tile;
+			if (tile instanceof KeycardReaderTileEntity) {
+				KeycardReaderTileEntity te = (KeycardReaderTileEntity) tile;
 
-				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
-				{
+				if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)) {
 					Container container = player.openContainer;
 
-					if(container instanceof KeycardReaderContainer)
-						((KeycardReaderContainer)container).setKeycardUses(message.uses);
+					if (container instanceof KeycardReaderContainer)
+						((KeycardReaderContainer) container).setKeycardUses(message.uses);
 				}
 			}
 		});

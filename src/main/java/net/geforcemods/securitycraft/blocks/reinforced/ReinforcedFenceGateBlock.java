@@ -29,47 +29,39 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 
 public class ReinforcedFenceGateBlock extends FenceGateBlock {
-
-	public ReinforcedFenceGateBlock(Block.Properties properties){
+	public ReinforcedFenceGateBlock(Block.Properties properties) {
 		super(properties);
 	}
 
-	/**
-	 * Called upon block activation (right click on the block.)
-	 */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		return ActionResultType.FAIL;
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 	}
 
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if(world.getBlockState(pos).get(OPEN))
+		if (world.getBlockState(pos).get(OPEN))
 			return;
 
-		if(entity instanceof ItemEntity)
+		if (entity instanceof ItemEntity)
 			return;
-		else if(entity instanceof PlayerEntity)
-		{
-			PlayerEntity player = (PlayerEntity)entity;
+		else if (entity instanceof PlayerEntity) {
+			PlayerEntity player = (PlayerEntity) entity;
 
-			if(((OwnableTileEntity)world.getTileEntity(pos)).getOwner().isOwner(player))
+			if (((OwnableTileEntity) world.getTileEntity(pos)).getOwner().isOwner(player))
 				return;
 		}
-		else if(!world.isRemote && entity instanceof CreeperEntity)
-		{
-			CreeperEntity creeper = (CreeperEntity)entity;
+		else if (!world.isRemote && entity instanceof CreeperEntity) {
+			CreeperEntity creeper = (CreeperEntity) entity;
 			LightningBoltEntity lightning = WorldUtils.createLightning(world, Vector3d.copyCenteredHorizontally(pos), true);
 
-			creeper.causeLightningStrike((ServerWorld)world, lightning);
+			creeper.causeLightningStrike((ServerWorld) world, lightning);
 			return;
 		}
 
@@ -78,10 +70,10 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if(!world.isRemote) {
+		if (!world.isRemote) {
 			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
 
-			if (isPoweredSCBlock || block.getDefaultState().canProvidePower())
+			if (isPoweredSCBlock || block.getDefaultState().canProvidePower()) {
 				if (isPoweredSCBlock && !state.get(OPEN) && !state.get(POWERED)) {
 					world.setBlockState(pos, state.with(OPEN, true).with(POWERED, true), 2);
 					world.playEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
@@ -90,21 +82,22 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 					world.setBlockState(pos, state.with(OPEN, false).with(POWERED, false), 2);
 					world.playEvent(null, Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, pos, 0);
 				}
-				else if (isPoweredSCBlock != state.get(POWERED))
+				else if (isPoweredSCBlock != state.get(POWERED)) {
 					world.setBlockState(pos, state.with(POWERED, isPoweredSCBlock), 2);
+				}
+			}
 		}
 	}
 
 	@Override
-	public boolean eventReceived(BlockState state, World world, BlockPos pos, int par5, int par6){
+	public boolean eventReceived(BlockState state, World world, BlockPos pos, int par5, int par6) {
 		super.eventReceived(state, world, pos, par5, par6);
 		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
+	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
 
@@ -112,5 +105,4 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new OwnableTileEntity(SCContent.teTypeAbstract);
 	}
-
 }

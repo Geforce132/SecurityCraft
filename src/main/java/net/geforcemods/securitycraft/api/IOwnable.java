@@ -14,30 +14,26 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 /**
- * This interface marks a {@link TileEntity} as "ownable". Any TileEntity
- * that implements this interface is able to be destroyed by the
- * Universal Block Remover, and can only be broken or modified by
- * the person who placed it down. <p>
+ * This interface marks a {@link TileEntity} as "ownable". Any TileEntity that implements this interface is able to be
+ * destroyed by the Universal Block Remover, and can only be broken or modified by the person who placed it down. <p> Use
+ * this to set the owner, preferably in Block.onBlockPlacedBy():
  *
- * Use this to set the owner, preferably in Block.onBlockPlacedBy(): <pre>
+ * <pre>
  * ((IOwnable) world.getTileEntity(x, y, z)).setOwner(player.getGameProfile().getId().toString(), player.getCommandSenderName());
  * </pre>
  *
  * @author Geforce
  */
 public interface IOwnable {
-
 	/**
-	 * @return An Owner object containing the player's name and UUID.
-	 *         You are responsible for reading and writing the name and UUID variables
-	 *         to your TileEntity's CompoundNBT in writeToNBT() and readFromNBT().
+	 * @return An Owner object containing the player's name and UUID. You are responsible for reading and writing the name
+	 *         and UUID variables to your TileEntity's CompoundNBT in writeToNBT() and readFromNBT().
 	 */
 	public Owner getOwner();
 
 	/**
-	 * Save a new owner to your Owner object here. <p>
-	 * The easiest way is to use Owner.set(UUID, name), this method is
-	 * here mainly for convenience.
+	 * Save a new owner to your Owner object here. <p> The easiest way is to use Owner.set(UUID, name), this method is here
+	 * mainly for convenience.
 	 *
 	 * @param uuid The UUID of the new player.
 	 * @param name The name of the new player.
@@ -45,7 +41,6 @@ public interface IOwnable {
 	public void setOwner(String uuid, String name);
 
 	/**
-	 *
 	 * @return true if the owner of this IOwnable should be invalidated when changed by the Universal Owner Changer
 	 */
 	default boolean needsValidation() {
@@ -53,7 +48,8 @@ public interface IOwnable {
 	}
 
 	/**
-	 * Executes actions after the owner has been changed, for example making sure the owner of both halves of SecurityCraft's doors get changed, and marks IOwnables that need validation as invalidated
+	 * Executes actions after the owner has been changed, for example making sure the owner of both halves of SecurityCraft's
+	 * doors get changed, and marks IOwnables that need validation as invalidated
 	 *
 	 * @param world The current world
 	 * @param state The IOwnable's state
@@ -61,9 +57,8 @@ public interface IOwnable {
 	 * @param player The player that changed the owner of the IOwnable
 	 */
 	default void onOwnerChanged(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-		if(state.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
+		if (state.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF))
 			UniversalOwnerChangerItem.tryUpdateBlock(world, state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.down() : pos.up(), getOwner());
-		}
 
 		if (needsValidation()) {
 			getOwner().setValidated(false);

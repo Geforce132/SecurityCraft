@@ -13,7 +13,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseContainer> {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
 	private final String formattedTitle;
 
@@ -24,11 +23,10 @@ public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseContainer
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
-	{
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
+		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderTooltip(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
 	}
 
@@ -46,5 +44,4 @@ public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseContainer
 		int startY = (height - ySize) / 2;
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
-
 }

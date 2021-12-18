@@ -20,15 +20,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements IReinforcedBlock {
-
 	public ReinforcedPistonHeadBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+		if (placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 	}

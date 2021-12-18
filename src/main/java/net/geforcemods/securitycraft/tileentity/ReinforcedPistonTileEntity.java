@@ -34,7 +34,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.chunk.Chunk;
 
 public class ReinforcedPistonTileEntity extends TileEntity implements ITickableTileEntity, IOwnable { //this class doesn't extend PistonTileEntity because almost all of that class' content is private
-
 	private BlockState pistonState;
 	private CompoundNBT tileEntityTag;
 	private Direction pistonFacing;
@@ -79,9 +78,8 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 	}
 
 	public float getProgress(float ticks) {
-		if (ticks > 1.0F) {
+		if (ticks > 1.0F)
 			ticks = 1.0F;
-		}
 
 		return MathHelper.lerp(ticks, lastProgress, progress);
 	}
@@ -113,26 +111,24 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 
 		if (!collisionShape.isEmpty()) {
 			AxisAlignedBB boundingBox = moveByPositionAndProgress(collisionShape.getBoundingBox());
-			List<Entity> list = world.getEntitiesWithinAABBExcludingEntity((Entity)null, AabbHelper.func_227019_a_(boundingBox, direction, d0).union(boundingBox));
+			List<Entity> list = world.getEntitiesWithinAABBExcludingEntity((Entity) null, AabbHelper.func_227019_a_(boundingBox, direction, d0).union(boundingBox));
 
 			if (!list.isEmpty()) {
 				List<AxisAlignedBB> boundingBoxes = collisionShape.toBoundingBoxList();
 				boolean isSlimeBlock = pistonState.isSlimeBlock();
 				Iterator<Entity> iterator = list.iterator();
 
-				while(true) {
+				while (true) {
 					Entity entity;
 
-					while(true) {
-						if (!iterator.hasNext()) {
+					while (true) {
+						if (!iterator.hasNext())
 							return;
-						}
 
 						entity = iterator.next();
 						if (entity.getPushReaction() != PushReaction.IGNORE) {
-							if (!isSlimeBlock) {
+							if (!isSlimeBlock)
 								break;
-							}
 
 							if (!(entity instanceof ServerPlayerEntity)) {
 								Vector3d vector3d = entity.getMotion();
@@ -140,7 +136,7 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 								double y = vector3d.y;
 								double z = vector3d.z;
 
-								switch(direction.getAxis()) {
+								switch (direction.getAxis()) {
 									case X:
 										x = direction.getXOffset();
 										break;
@@ -159,15 +155,15 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 
 					double movement = 0.0D;
 
-					for(AxisAlignedBB aabb : boundingBoxes) {
+					for (AxisAlignedBB aabb : boundingBoxes) {
 						AxisAlignedBB movementArea = AabbHelper.func_227019_a_(moveByPositionAndProgress(aabb), direction, d0);
 						AxisAlignedBB entityBoundingBox = entity.getBoundingBox();
 
 						if (movementArea.intersects(entityBoundingBox)) {
 							movement = Math.max(movement, getMovement(movementArea, direction, entityBoundingBox));
-							if (movement >= d0) {
+
+							if (movement >= d0)
 								break;
-							}
 						}
 					}
 
@@ -175,9 +171,8 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 						movement = Math.min(movement, d0) + 0.01D;
 						pushEntity(direction, entity, movement, direction);
 
-						if (!extending && shouldHeadBeRendered) {
+						if (!extending && shouldHeadBeRendered)
 							fixEntityWithinPistonBase(entity, direction, d0);
-						}
 					}
 				}
 			}
@@ -199,10 +194,9 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 				AxisAlignedBB axisalignedbb = moveByPositionAndProgress(new AxisAlignedBB(0.0D, collisionShapeTop, 0.0D, 1.0D, 1.5000000999999998D, 1.0D));
 				double d1 = progress - this.progress;
 
-				for(Entity entity : world.getEntitiesInAABBexcluding(null, axisalignedbb, entity -> canPushEntity(axisalignedbb, entity))) {
+				for (Entity entity : world.getEntitiesInAABBexcluding(null, axisalignedbb, entity -> canPushEntity(axisalignedbb, entity))) {
 					pushEntity(direction, entity, d1, direction);
 				}
-
 			}
 		}
 	}
@@ -220,7 +214,7 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 	}
 
 	private static double getMovement(AxisAlignedBB headShape, Direction direction, AxisAlignedBB facing) {
-		switch(direction) {
+		switch (direction) {
 			case EAST:
 				return headShape.maxX - facing.minX;
 			case WEST:
@@ -262,9 +256,6 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 		return pistonState;
 	}
 
-	/**
-	 * removes a piston's tile entity (and if the piston is moving, stops it)
-	 */
 	public void clearPistonTileEntity() {
 		if (world != null && (lastProgress < 1.0F || world.isRemote)) {
 			progress = 1.0F;
@@ -275,16 +266,15 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 			if (world.getBlockState(pos).matchesBlock(SCContent.REINFORCED_MOVING_PISTON.get())) {
 				BlockState pushedState;
 
-				if (shouldHeadBeRendered) {
+				if (shouldHeadBeRendered)
 					pushedState = Blocks.AIR.getDefaultState();
-				} else {
+				else
 					pushedState = Block.getValidBlockForPosition(pistonState, world, pos);
-				}
 
-				if (tileEntityTag != null){
+				if (tileEntityTag != null) {
 					TileEntity te = pushedState.hasTileEntity() ? pushedState.createTileEntity(world) : null;
 
-					if (te != null){
+					if (te != null) {
 						Chunk chunk = world.getChunkAt(pos);
 
 						te.read(pistonState, tileEntityTag);
@@ -304,9 +294,9 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 		lastProgress = progress;
 
 		if (lastProgress >= 1.0F) {
-			if (world.isRemote && deathTicks < 5) {
+			if (world.isRemote && deathTicks < 5)
 				++deathTicks;
-			} else {
+			else {
 				world.removeTileEntity(pos);
 				remove();
 
@@ -316,15 +306,15 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 					if (pushedState.isAir()) {
 						world.setBlockState(pos, pistonState, 84);
 						Block.replaceBlock(pistonState, pushedState, world, pos, 3);
-					} else {
-						if (pushedState.hasProperty(BlockStateProperties.WATERLOGGED) && pushedState.get(BlockStateProperties.WATERLOGGED)) {
+					}
+					else {
+						if (pushedState.hasProperty(BlockStateProperties.WATERLOGGED) && pushedState.get(BlockStateProperties.WATERLOGGED))
 							pushedState = pushedState.with(BlockStateProperties.WATERLOGGED, false);
-						}
 
-						if (tileEntityTag != null){
+						if (tileEntityTag != null) {
 							TileEntity te = pushedState.hasTileEntity() ? pushedState.createTileEntity(world) : null;
 
-							if (te != null){
+							if (te != null) {
 								Chunk chunk = world.getChunkAt(pos);
 
 								te.read(pistonState, tileEntityTag);
@@ -337,16 +327,16 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			float f = progress + 0.5F;
 
 			moveCollidedEntities(f);
 			moveStuckEntities(f);
 			progress = f;
 
-			if (progress >= 1.0F) {
+			if (progress >= 1.0F)
 				progress = 1.0F;
-			}
 		}
 	}
 
@@ -373,9 +363,8 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 		compound.putBoolean("source", shouldHeadBeRendered);
 		compound.put("movedTileEntityTag", tileEntityTag);
 
-		if(owner != null){
+		if (owner != null)
 			owner.write(compound, false);
-		}
 
 		return compound;
 	}
@@ -383,22 +372,20 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 	public VoxelShape getCollisionShape(IBlockReader world, BlockPos pos) {
 		VoxelShape shape;
 
-		if (!extending && shouldHeadBeRendered) {
+		if (!extending && shouldHeadBeRendered)
 			shape = pistonState.with(PistonBlock.EXTENDED, true).getCollisionShape(world, pos);
-		} else {
+		else
 			shape = VoxelShapes.empty();
-		}
 
-		if (progress < 1.0D && MOVING_ENTITY.get() == getMotionDirection()) {
+		if (progress < 1.0D && MOVING_ENTITY.get() == getMotionDirection())
 			return shape;
-		} else {
+		else {
 			BlockState state;
 
-			if (shouldPistonHeadBeRendered()) {
+			if (shouldPistonHeadBeRendered())
 				state = SCContent.REINFORCED_PISTON_HEAD.get().getDefaultState().with(PistonHeadBlock.FACING, pistonFacing).with(PistonHeadBlock.SHORT, extending != 1.0F - progress < 4.0F);
-			} else {
+			else
 				state = pistonState;
-			}
 
 			float f = getExtendedProgress(progress);
 			double d0 = pistonFacing.getXOffset() * f;
@@ -410,7 +397,7 @@ public class ReinforcedPistonTileEntity extends TileEntity implements ITickableT
 	}
 
 	@Override
-	public Owner getOwner(){
+	public Owner getOwner() {
 		return owner;
 	}
 

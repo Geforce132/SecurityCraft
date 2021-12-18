@@ -35,7 +35,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class ModuleItem extends Item{
+public class ModuleItem extends Item {
 	private static final IFormattableTextComponent MODIFIABLE = new TranslationTextComponent("tooltip.securitycraft:module.modifiable").setStyle(Utils.GRAY_STYLE);
 	private static final IFormattableTextComponent NOT_MODIFIABLE = new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").setStyle(Utils.GRAY_STYLE);
 	public static final int MAX_PLAYERS = 50;
@@ -43,11 +43,11 @@ public class ModuleItem extends Item{
 	private final boolean containsCustomData;
 	private boolean canBeCustomized;
 
-	public ModuleItem(Item.Properties properties, ModuleType module, boolean containsCustomData){
+	public ModuleItem(Item.Properties properties, ModuleType module, boolean containsCustomData) {
 		this(properties, module, containsCustomData, false);
 	}
 
-	public ModuleItem(Item.Properties properties, ModuleType module, boolean containsCustomData, boolean canBeCustomized){
+	public ModuleItem(Item.Properties properties, ModuleType module, boolean containsCustomData, boolean canBeCustomized) {
 		super(properties);
 		this.module = module;
 		this.containsCustomData = containsCustomData;
@@ -55,25 +55,22 @@ public class ModuleItem extends Item{
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx)
-	{
+	public ActionResultType onItemUse(ItemUseContext ctx) {
 		TileEntity te = ctx.getWorld().getTileEntity(ctx.getPos());
 		ItemStack stack = ctx.getItem();
 
-		if(te instanceof IModuleInventory)
-		{
-			IModuleInventory inv = (IModuleInventory)te;
-			ModuleType type = ((ModuleItem)stack.getItem()).getModuleType();
+		if (te instanceof IModuleInventory) {
+			IModuleInventory inv = (IModuleInventory) te;
+			ModuleType type = ((ModuleItem) stack.getItem()).getModuleType();
 
-			if(te instanceof IOwnable && !((IOwnable)te).getOwner().isOwner(ctx.getPlayer()))
+			if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(ctx.getPlayer()))
 				return ActionResultType.PASS;
 
-			if(inv.getAcceptedModules().contains(type) && !inv.hasModule(type))
-			{
+			if (inv.getAcceptedModules().contains(type) && !inv.hasModule(type)) {
 				inv.insertModule(stack);
 				inv.onModuleInserted(stack, type);
 
-				if(!ctx.getPlayer().isCreative())
+				if (!ctx.getPlayer().isCreative())
 					stack.shrink(1);
 
 				return ActionResultType.SUCCESS;
@@ -87,27 +84,23 @@ public class ModuleItem extends Item{
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(canBeCustomized())
-		{
-			if(module == ModuleType.ALLOWLIST || module == ModuleType.DENYLIST) {
-				if(world.isRemote)
+		if (canBeCustomized()) {
+			if (module == ModuleType.ALLOWLIST || module == ModuleType.DENYLIST) {
+				if (world.isRemote)
 					ClientHandler.displayEditModuleGui(stack);
 
 				return ActionResult.resultConsume(stack);
 			}
-			else if(module == ModuleType.DISGUISE)
-			{
+			else if (module == ModuleType.DISGUISE) {
 				if (!world.isRemote) {
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-						{
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 							return new DisguiseModuleContainer(windowId, inv, new ModuleItemInventory(player.getHeldItem(hand)));
 						}
 
 						@Override
-						public ITextComponent getDisplayName()
-						{
+						public ITextComponent getDisplayName() {
 							return new TranslationTextComponent(getTranslationKey());
 						}
 					});
@@ -123,15 +116,15 @@ public class ModuleItem extends Item{
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-		if(containsCustomData || canBeCustomized())
+		if (containsCustomData || canBeCustomized())
 			list.add(MODIFIABLE);
 		else
 			list.add(NOT_MODIFIABLE);
 
-		if(canBeCustomized()) {
+		if (canBeCustomized()) {
 			Block addon = getBlockAddon(stack.getTag());
 
-			if(addon != null)
+			if (addon != null)
 				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getTranslationKey())).setStyle(Utils.GRAY_STYLE));
 		}
 	}
@@ -140,25 +133,23 @@ public class ModuleItem extends Item{
 		return module;
 	}
 
-	public Block getBlockAddon(CompoundNBT tag){
-		if(tag == null)
+	public Block getBlockAddon(CompoundNBT tag) {
+		if (tag == null)
 			return null;
 
 		ListNBT items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
-		if(items != null && !items.isEmpty())
-		{
+		if (items != null && !items.isEmpty()) {
 			Item item = ItemStack.read(items.getCompound(0)).getItem();
 
-			if(item instanceof BlockItem)
-				return ((BlockItem)item).getBlock();
+			if (item instanceof BlockItem)
+				return ((BlockItem) item).getBlock();
 		}
 
 		return null;
 	}
 
-	public boolean canBeCustomized(){
+	public boolean canBeCustomized() {
 		return canBeCustomized;
 	}
-
 }

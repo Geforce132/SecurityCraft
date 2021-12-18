@@ -20,52 +20,45 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock {
-
-	public ReinforcedLeverBlock(Properties properties)
-	{
+	public ReinforcedLeverBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-		if(isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)world.getTileEntity(pos), player))
+		if (isAllowedToPress(world, pos, (AllowlistOnlyTileEntity) world.getTileEntity(pos), player))
 			return super.onBlockActivated(state, world, pos, player, hand, result);
+
 		return ActionResultType.FAIL;
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyTileEntity te, PlayerEntity entity)
-	{
+	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyTileEntity te, PlayerEntity entity) {
 		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return Blocks.LEVER;
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return getDefaultState().with(FACE, vanillaState.get(FACE)).with(HORIZONTAL_FACING, vanillaState.get(HORIZONTAL_FACING)).with(POWERED, vanillaState.get(POWERED));
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
+	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
-	{
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new AllowlistOnlyTileEntity();
 	}
 }

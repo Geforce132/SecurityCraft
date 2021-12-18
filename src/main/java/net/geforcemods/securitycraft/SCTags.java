@@ -7,10 +7,8 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
-public class SCTags
-{
-	public static class Blocks
-	{
+public class SCTags {
+	public static class Blocks {
 		public static final IOptionalNamedTag<Block> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final IOptionalNamedTag<Block> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final IOptionalNamedTag<Block> REINFORCED_BUTTONS = tag("reinforced/buttons");
@@ -41,14 +39,12 @@ public class SCTags
 		public static final IOptionalNamedTag<Block> SECRET_STANDING_SIGNS = tag("secret_standing_signs");
 		public static final IOptionalNamedTag<Block> SECRET_WALL_SIGNS = tag("secret_wall_signs");
 
-		private static IOptionalNamedTag<Block> tag(String name)
-		{
+		private static IOptionalNamedTag<Block> tag(String name) {
 			return BlockTags.createOptional(new ResourceLocation(SecurityCraft.MODID, name));
 		}
 	}
 
-	public static class Items
-	{
+	public static class Items {
 		public static final IOptionalNamedTag<Item> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final IOptionalNamedTag<Item> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final IOptionalNamedTag<Item> REINFORCED_BUTTONS = tag("reinforced/buttons");
@@ -77,8 +73,7 @@ public class SCTags
 		public static final IOptionalNamedTag<Item> REINFORCED_WOOL = tag("reinforced/wool");
 		public static final IOptionalNamedTag<Item> SECRET_SIGNS = tag("secret_signs");
 
-		private static IOptionalNamedTag<Item> tag(String name)
-		{
+		private static IOptionalNamedTag<Item> tag(String name) {
 			return ItemTags.createOptional(new ResourceLocation(SecurityCraft.MODID, name));
 		}
 	}

@@ -13,41 +13,35 @@ import net.minecraft.item.WallOrFloorItem;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class SecretSignItem extends WallOrFloorItem
-{
+public class SecretSignItem extends WallOrFloorItem {
 	private final String translationKey;
 
-	public SecretSignItem(Item.Properties properties, Block floor, Block wall, String translationKey)
-	{
+	public SecretSignItem(Item.Properties properties, Block floor, Block wall, String translationKey) {
 		super(floor, wall, properties);
 
 		this.translationKey = translationKey;
 	}
 
 	@Override
-	public String getTranslationKey()
-	{
+	public String getTranslationKey() {
 		return translationKey;
 	}
 
 	@Override
-	public String getTranslationKey(ItemStack stack)
-	{
+	public String getTranslationKey(ItemStack stack) {
 		return getTranslationKey();
 	}
 
 	@Override
-	public boolean onBlockPlaced(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack, BlockState state)
-	{
+	public boolean onBlockPlaced(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
 		boolean flag = super.onBlockPlaced(pos, world, player, stack, state);
 
-		if(!flag && player != null)
-		{
-			SecretSignTileEntity te = (SecretSignTileEntity)world.getTileEntity(pos);
+		if (!flag && player != null) {
+			SecretSignTileEntity te = (SecretSignTileEntity) world.getTileEntity(pos);
 
 			te.setPlayer(player);
 
-			if(world.isRemote)
+			if (world.isRemote)
 				ClientHandler.displayEditSecretSignGui(te);
 		}
 

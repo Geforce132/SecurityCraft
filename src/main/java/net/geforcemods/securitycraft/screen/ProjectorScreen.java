@@ -25,25 +25,20 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
 	private static final TranslationTextComponent SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block");
 	private ProjectorTileEntity tileEntity;
 	private TranslationTextComponent blockName;
-
 	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[5];
 	private TextHoverChecker slotHoverChecker;
-
 	private NamedSlider projectionWidthSlider;
 	private NamedSlider projectionHeightSlider;
 	private NamedSlider projectionRangeSlider;
 	private NamedSlider projectionOffsetSlider;
 	private TogglePictureButton toggleButton;
-
 	private int sliderWidth = 120;
 
-	public ProjectorScreen(ProjectorContainer container, PlayerInventory inv, ITextComponent name)
-	{
+	public ProjectorScreen(ProjectorContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 		this.tileEntity = container.te;
 		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
@@ -51,8 +46,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	}
 
 	@Override
-	public void init()
-	{
+	public void init() {
 		super.init();
 		int id = 0;
 		int left = guiLeft + ((xSize - sliderWidth) / 2);
@@ -67,8 +61,8 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 
 		projectionRangeSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.range", tileEntity.getProjectionRange()), blockName, id, left, guiTop + 89, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", ""), "", ProjectorTileEntity.MIN_RANGE, ProjectorTileEntity.MAX_RANGE, tileEntity.getProjectionRange(), false, true, slider -> {
 			//show a different number so it makes sense within the world
-			if(tileEntity.isHorizontal())
-				slider.setMessage(new StringTextComponent("").appendSibling(slider.dispString).appendString(Integer.toString((int)Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
+			if (tileEntity.isHorizontal())
+				slider.setMessage(new StringTextComponent("").appendSibling(slider.dispString).appendString(Integer.toString((int) Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
 		}, this::sliderReleased));
 		projectionRangeSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionRangeSlider, Utils.localize("gui.securitycraft:projector.range.description"));
@@ -77,7 +71,9 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		projectionOffsetSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionOffsetSlider, Utils.localize("gui.securitycraft:projector.offset.description"));
 
-		toggleButton = addButton(new TogglePictureButton(id, left, guiTop + 26, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, b -> {
+		//@formatter:off
+		toggleButton = addButton(new TogglePictureButton(id, left, guiTop + 26, 20, 20, TEXTURE, new int[] {176, 192}, new int[] {0, 0}, 2, 2, b -> {
+			//@formatter:on
 			tileEntity.setHorizontal(!tileEntity.isHorizontal());
 			projectionRangeSlider.updateSlider();
 			SecurityCraft.channel.sendToServer(new SyncProjector(tileEntity.getPos(), tileEntity.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
@@ -90,31 +86,27 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
-	{
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
 		renderHoveredTooltip(matrix, mouseX, mouseY);
 
-		for(TextHoverChecker thc : hoverCheckers)
-		{
-			if(thc.checkHover(mouseX, mouseY))
+		for (TextHoverChecker thc : hoverCheckers) {
+			if (thc.checkHover(mouseX, mouseY))
 				renderTooltip(matrix, thc.getName(), mouseX, mouseY);
 		}
 
-		if(slotHoverChecker.checkHover(mouseX, mouseY) && container.te.isEmpty())
+		if (slotHoverChecker.checkHover(mouseX, mouseY) && container.te.isEmpty())
 			renderTooltip(matrix, slotHoverChecker.getName(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
 		font.drawText(matrix, blockName, xSize / 2 - font.getStringPropertyWidth(blockName) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
@@ -124,45 +116,39 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button)
-	{
-		if(projectionWidthSlider.dragging)
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		if (projectionWidthSlider.dragging)
 			projectionWidthSlider.mouseReleased(mouseX, mouseY, button);
 
-		if(projectionHeightSlider.dragging)
+		if (projectionHeightSlider.dragging)
 			projectionWidthSlider.mouseReleased(mouseX, mouseY, button);
 
-		if(projectionRangeSlider.dragging)
+		if (projectionRangeSlider.dragging)
 			projectionRangeSlider.mouseReleased(mouseX, mouseY, button);
 
-		if(projectionOffsetSlider.dragging)
+		if (projectionOffsetSlider.dragging)
 			projectionOffsetSlider.mouseReleased(mouseX, mouseY, button);
 
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
-	public void sliderReleased(NamedSlider slider)
-	{
+	public void sliderReleased(NamedSlider slider) {
 		int data = 0;
 		DataType dataType = DataType.INVALID;
 
-		if(slider.id == projectionWidthSlider.id)
-		{
+		if (slider.id == projectionWidthSlider.id) {
 			tileEntity.setProjectionWidth(data = slider.getValueInt());
 			dataType = DataType.WIDTH;
 		}
-		else if(slider.id == projectionHeightSlider.id)
-		{
+		else if (slider.id == projectionHeightSlider.id) {
 			tileEntity.setProjectionHeight(data = slider.getValueInt());
 			dataType = DataType.HEIGHT;
 		}
-		else if(slider.id == projectionRangeSlider.id)
-		{
+		else if (slider.id == projectionRangeSlider.id) {
 			tileEntity.setProjectionRange(data = slider.getValueInt());
 			dataType = DataType.RANGE;
 		}
-		else if(slider.id == projectionOffsetSlider.id)
-		{
+		else if (slider.id == projectionOffsetSlider.id) {
 			tileEntity.setProjectionOffset(data = slider.getValueInt());
 			dataType = DataType.OFFSET;
 		}

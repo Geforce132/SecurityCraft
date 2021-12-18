@@ -16,7 +16,8 @@ import net.minecraft.util.math.SectionPos;
 import net.minecraft.world.server.ChunkManager;
 
 /**
- * This mixin makes sure that chunks near cameras are properly sent to the player viewing it, as well as fixing block updates not getting sent to chunks loaded by cameras
+ * This mixin makes sure that chunks near cameras are properly sent to the player viewing it, as well as fixing block updates
+ * not getting sent to chunks loaded by cameras
  */
 @Mixin(ChunkManager.class)
 public abstract class ChunkManagerMixin {
@@ -27,7 +28,8 @@ public abstract class ChunkManagerMixin {
 	protected abstract void setChunkLoadedAtClient(ServerPlayerEntity player, ChunkPos chunkPos, IPacket<?>[] packetCache, boolean wasLoaded, boolean load);
 
 	/**
-	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance checking method
+	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance
+	 * checking method
 	 */
 	@Redirect(method = "func_219215_b(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getManagedSectionPos()Lnet/minecraft/util/math/SectionPos;"))
 	private static SectionPos getCameraSectionPos(ServerPlayerEntity player) {
@@ -44,10 +46,10 @@ public abstract class ChunkManagerMixin {
 	private void trackCameraLoadedChunks(ServerPlayerEntity player, CallbackInfo callback) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SectionPos pos = SectionPos.from(player.getSpectatingEntity());
-			SecurityCameraEntity camera = ((SecurityCameraEntity)player.getSpectatingEntity());
+			SecurityCameraEntity camera = ((SecurityCameraEntity) player.getSpectatingEntity());
 
-			for(int i = pos.getSectionX() - viewDistance; i <= pos.getSectionX() + viewDistance; ++i) {
-				for(int j = pos.getSectionZ() - viewDistance; j <= pos.getSectionZ() + viewDistance; ++j) {
+			for (int i = pos.getSectionX() - viewDistance; i <= pos.getSectionX() + viewDistance; ++i) {
+				for (int j = pos.getSectionZ() - viewDistance; j <= pos.getSectionZ() + viewDistance; ++j) {
 					ChunkPos chunkPos = new ChunkPos(i, j);
 
 					setChunkLoadedAtClient(player, chunkPos, new IPacket[2], camera.hasLoadedChunks(), true);

@@ -15,16 +15,14 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
 
-public class BlockTagGenerator extends BlockTagsProvider
-{
-	protected BlockTagGenerator(DataGenerator dataGenerator, ExistingFileHelper existingFileHelper)
-	{
+public class BlockTagGenerator extends BlockTagsProvider {
+	protected BlockTagGenerator(DataGenerator dataGenerator, ExistingFileHelper existingFileHelper) {
 		super(dataGenerator, SecurityCraft.MODID, existingFileHelper);
 	}
 
 	@Override
-	protected void registerTags()
-	{
+	protected void registerTags() {
+		//@formatter:off
 		//securitycraft tags
 		getOrCreateBuilder(SCTags.Blocks.REINFORCED_ACACIA_LOGS).add(
 				SCContent.REINFORCED_ACACIA_LOG.get(),
@@ -294,34 +292,32 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_POLISHED_BLACKSTONE_WALL.get(),
 				SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get());
 		getOrCreateBuilder(BlockTags.WITHER_SUMMON_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
+		//@formatter:on
 
 		//automatic
 		Builder<Block> dragonImmune = getOrCreateBuilder(BlockTags.DRAGON_IMMUNE);
 		Builder<Block> witherImmune = getOrCreateBuilder(BlockTags.WITHER_IMMUNE);
 
-		for(RegistryObject<Block> ro : SCContent.BLOCKS.getEntries())
-		{
+		for (RegistryObject<Block> ro : SCContent.BLOCKS.getEntries()) {
 			Block block = ro.get();
 
-			if(block != SCContent.CHISELED_CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ_PILLAR.get() && block != SCContent.CRYSTAL_QUARTZ_SLAB.get() && block != SCContent.STAIRS_CRYSTAL_QUARTZ.get())
-			{
+			if (block != SCContent.CHISELED_CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ_PILLAR.get() && block != SCContent.CRYSTAL_QUARTZ_SLAB.get() && block != SCContent.STAIRS_CRYSTAL_QUARTZ.get()) {
 				dragonImmune.add(block);
 				witherImmune.add(block);
 			}
 
 			//ugly way of checking if slabs/stairs are wood. they do not need to be added to the tag explicitly, as they are already present in the wooden equivalent tag
-			if(block instanceof ReinforcedSlabBlock && block.getSoundType(block.getDefaultState()) != SoundType.WOOD)
+			if (block instanceof ReinforcedSlabBlock && block.getSoundType(block.getDefaultState()) != SoundType.WOOD)
 				getOrCreateBuilder(SCTags.Blocks.REINFORCED_SLABS).add(block);
-			else if(block instanceof ReinforcedStairsBlock && block.getSoundType(block.getDefaultState()) != SoundType.WOOD)
+			else if (block instanceof ReinforcedStairsBlock && block.getSoundType(block.getDefaultState()) != SoundType.WOOD)
 				getOrCreateBuilder(SCTags.Blocks.REINFORCED_STAIRS).add(block);
-			else if(block instanceof ReinforcedWallBlock)
+			else if (block instanceof ReinforcedWallBlock)
 				getOrCreateBuilder(BlockTags.WALLS).add(block);
 		}
 	}
 
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return "SecurityCraft Block Tags";
 	}
 }

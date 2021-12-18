@@ -9,17 +9,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateLogger {
-
 	private int x, y, z, i;
 	private String username;
 	private String uuid;
 	private long timestamp;
 
-	public UpdateLogger(){
-
+	public UpdateLogger() {
 	}
 
-	public UpdateLogger(int x, int y, int z, int i, String username, String uuid, long timestamp){
+	public UpdateLogger(int x, int y, int z, int i, String username, String uuid, long timestamp) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -29,8 +27,7 @@ public class UpdateLogger {
 		this.timestamp = timestamp;
 	}
 
-	public static void encode(UpdateLogger message, PacketBuffer buf)
-	{
+	public static void encode(UpdateLogger message, PacketBuffer buf) {
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
 		buf.writeInt(message.z);
@@ -40,8 +37,7 @@ public class UpdateLogger {
 		buf.writeLong(message.timestamp);
 	}
 
-	public static UpdateLogger decode(PacketBuffer buf)
-	{
+	public static UpdateLogger decode(PacketBuffer buf) {
 		UpdateLogger message = new UpdateLogger();
 
 		message.x = buf.readInt();
@@ -54,16 +50,14 @@ public class UpdateLogger {
 		return message;
 	}
 
-	public static void onMessage(UpdateLogger message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(UpdateLogger message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			int i = message.i;
 
 			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity) Minecraft.getInstance().player.world.getTileEntity(pos);
 
-			if(te != null)
-			{
+			if (te != null) {
 				te.players[i] = message.username;
 				te.uuids[i] = message.uuid;
 				te.timestamps[i] = message.timestamp;

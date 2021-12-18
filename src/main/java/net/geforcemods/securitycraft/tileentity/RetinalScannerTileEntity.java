@@ -43,7 +43,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class RetinalScannerTileEntity extends DisguisableTileEntity implements IViewActivated, ITickableTileEntity, ILockable {
-
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static PlayerProfileCache profileCache;
 	private static MinecraftSessionService sessionService;
@@ -53,8 +52,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 	private GameProfile ownerProfile;
 	private int viewCooldown = 0;
 
-	public RetinalScannerTileEntity()
-	{
+	public RetinalScannerTileEntity() {
 		super(SCContent.teTypeRetinalScanner);
 	}
 
@@ -64,18 +62,18 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult rayTraceResult){
+	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult rayTraceResult) {
 		if (!isLocked()) {
 			BlockState state = world.getBlockState(pos);
 
 			if (state.get(RetinalScannerBlock.FACING) != rayTraceResult.getFace())
 				return false;
 
-			if(!state.get(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)){
+			if (!state.get(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)) {
 				String name = entity.getName().getString();
 
-				if(entity instanceof PlayerEntity) {
-					PlayerEntity player = (PlayerEntity)entity;
+				if (entity instanceof PlayerEntity) {
+					PlayerEntity player = (PlayerEntity) entity;
 
 					if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == Items.PLAYER_HEAD)
 						name = PlayerUtils.getNameOfSkull(player);
@@ -85,14 +83,14 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 						return true;
 					}
 				}
-				else if(activatedOnlyByPlayer())
+				else if (activatedOnlyByPlayer())
 					return false;
 
 				world.setBlockState(pos, state.with(RetinalScannerBlock.POWERED, true));
 				BlockUtils.updateIndirectNeighbors(world, pos, SCContent.RETINAL_SCANNER.get());
 				world.getPendingBlockTicks().scheduleTick(new BlockPos(pos), SCContent.RETINAL_SCANNER.get(), getSignalLength());
 
-				if(entity instanceof PlayerEntity && sendMessage.get())
+				if (entity instanceof PlayerEntity && sendMessage.get())
 					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
 
 				return true;
@@ -101,7 +99,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 		else if (entity instanceof PlayerEntity && sendMessage.get()) {
 			TranslationTextComponent blockName = Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey());
 
-			PlayerUtils.sendMessageToPlayer((PlayerEntity)entity, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), TextFormatting.DARK_RED, false);
+			PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), TextFormatting.DARK_RED, false);
 			return true;
 		}
 
@@ -128,19 +126,22 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 		return !activatedByEntities.get();
 	}
 
-	public int getSignalLength()
-	{
+	public int getSignalLength() {
 		return signalLength.get();
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.DISGUISE};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.DISGUISE
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ activatedByEntities, sendMessage, signalLength };
+		return new Option[] {
+				activatedByEntities, sendMessage, signalLength
+		};
 	}
 
 	public static void setProfileCache(PlayerProfileCache profileCacheIn) {
@@ -154,10 +155,9 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 	@Override
 	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
-		if(!StringUtils.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")))
-		{
-			if(ownerProfile == null || !getOwner().getName().equals(ownerProfile.getName()))
-				setPlayerProfile(new GameProfile((UUID)null, getOwner().getName()));
+		if (!StringUtils.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner"))) {
+			if (ownerProfile == null || !getOwner().getName().equals(ownerProfile.getName()))
+				setPlayerProfile(new GameProfile((UUID) null, getOwner().getName()));
 
 			updatePlayerProfile();
 			CompoundNBT ownerProfileTag = new CompoundNBT();
@@ -186,7 +186,8 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 	public void updatePlayerProfile() {
 		if (profileCache == null && ServerLifecycleHooks.getCurrentServer() != null)
 			setProfileCache(ServerLifecycleHooks.getCurrentServer().getPlayerProfileCache());
-		if(sessionService == null && ServerLifecycleHooks.getCurrentServer() != null)
+
+		if (sessionService == null && ServerLifecycleHooks.getCurrentServer() != null)
 			setSessionService(ServerLifecycleHooks.getCurrentServer().getMinecraftSessionService());
 
 		ownerProfile = updateGameProfile(ownerProfile);
@@ -198,15 +199,17 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 				return input;
 			else if (profileCache != null && sessionService != null) {
 				GameProfile gameprofile = profileCache.getGameProfileForUsername(input.getName());
+
 				if (gameprofile == null)
 					return input;
 				else {
-					Property property = Iterables.getFirst(gameprofile.getProperties().get("textures"), (Property)null);
+					Property property = Iterables.getFirst(gameprofile.getProperties().get("textures"), (Property) null);
+
 					if (property == null) {
 						try {
 							gameprofile = sessionService.fillProfileProperties(gameprofile, true);
 						}
-						catch(IllegalArgumentException e) { //this seems to only happen on offline servers. log the exception nonetheless, just in case
+						catch (IllegalArgumentException e) { //this seems to only happen on offline servers. log the exception nonetheless, just in case
 							LOGGER.warn("========= WARNING =========");
 							LOGGER.warn("The following error is likely caused by using an offline server. If you are not using an offline server (online-mode=true in the server.properties), please reach out to the SecurityCraft devs in their Discord #help channel: https://discord.gg/U8DvBAW");
 							LOGGER.warn("To mitigate this error, you can set the configuration option \"retinalScannerFace\" to false, in order to disable rendering the owner's face on retinal scanners.");
@@ -215,7 +218,11 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 					}
 					return gameprofile;
 				}
-			} else return input;
-		} else return input;
+			}
+			else
+				return input;
+		}
+		else
+			return input;
 	}
 }

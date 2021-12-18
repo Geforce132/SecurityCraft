@@ -18,21 +18,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
-
-	public BouncingBettyRenderer(EntityRendererManager renderManager)
-	{
+	public BouncingBettyRenderer(EntityRendererManager renderManager) {
 		super(renderManager);
 		shadowSize = 0.5F;
 	}
 
 	@Override
-	public void render(BouncingBettyEntity entity, float entityYaw, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight)
-	{
+	public void render(BouncingBettyEntity entity, float entityYaw, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight) {
 		matrix.push();
 		matrix.translate(0.0D, 0.5D, 0.0D);
 
-		if(entity.fuse - partialTicks + 1.0F < 10.0F)
-		{
+		if (entity.fuse - partialTicks + 1.0F < 10.0F) {
 			float alpha = 1.0F - (entity.fuse - partialTicks + 1.0F) / 10.0F;
 			alpha = MathHelper.clamp(alpha, 0.0F, 1.0F);
 			alpha *= alpha;
@@ -50,8 +46,7 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(BouncingBettyEntity entity)
-	{
+	public ResourceLocation getEntityTexture(BouncingBettyEntity entity) {
 		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}
 }

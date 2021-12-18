@@ -13,16 +13,15 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
 public class SCManualItem extends Item {
-
 	public static final List<SCManualPage> PAGES = new ArrayList<>();
 
-	public SCManualItem(Item.Properties properties){
+	public SCManualItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		if(world.isRemote)
+		if (world.isRemote)
 			ClientHandler.displaySCManualGui();
 
 		return ActionResult.resultConsume(player.getHeldItem(hand));

@@ -15,7 +15,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 
-public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
+public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape X_AXIS_SHAPE = Block.makeCuboidShape(0.0D, 6.5D, 6.5D, 16.0D, 9.5D, 9.5D);
 	protected static final VoxelShape Y_AXIS_SHAPE = Block.makeCuboidShape(6.5D, 0.0D, 6.5D, 9.5D, 16.0D, 9.5D);
@@ -28,7 +28,7 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-		switch(state.get(AXIS)) {
+		switch (state.get(AXIS)) {
 			case X:
 			default:
 				return X_AXIS_SHAPE;
@@ -48,9 +48,8 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
 
 	@Override
 	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-		if (state.get(WATERLOGGED)) {
+		if (state.get(WATERLOGGED))
 			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
-		}
 
 		return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}

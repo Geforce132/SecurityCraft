@@ -16,85 +16,75 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 
-public abstract class SpecialDoorTileEntity extends LinkableTileEntity
-{
+public abstract class SpecialDoorTileEntity extends LinkableTileEntity {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
 
-	public SpecialDoorTileEntity(TileEntityType<?> type)
-	{
+	public SpecialDoorTileEntity(TileEntityType<?> type) {
 		super(type);
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module)
-	{
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		super.onModuleInserted(stack, module);
 		handleModule(stack, module, false);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module)
-	{
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		super.onModuleRemoved(stack, module);
 		handleModule(stack, module, true);
 	}
 
-	private void handleModule(ItemStack stack, ModuleType module, boolean removed)
-	{
+	private void handleModule(ItemStack stack, ModuleType module, boolean removed) {
 		DoubleBlockHalf myHalf = getBlockState().get(DoorBlock.HALF);
 		BlockPos otherPos;
 
-		if(myHalf == DoubleBlockHalf.UPPER)
+		if (myHalf == DoubleBlockHalf.UPPER)
 			otherPos = getPos().down();
 		else
 			otherPos = getPos().up();
 
 		BlockState other = world.getBlockState(otherPos);
 
-		if(other.get(DoorBlock.HALF) != myHalf)
-		{
+		if (other.get(DoorBlock.HALF) != myHalf) {
 			TileEntity otherTe = world.getTileEntity(otherPos);
 
-			if(otherTe instanceof SpecialDoorTileEntity)
-			{
-				SpecialDoorTileEntity otherDoorTe = (SpecialDoorTileEntity)otherTe;
+			if (otherTe instanceof SpecialDoorTileEntity) {
+				SpecialDoorTileEntity otherDoorTe = (SpecialDoorTileEntity) otherTe;
 
-				if(!removed && !otherDoorTe.hasModule(module))
+				if (!removed && !otherDoorTe.hasModule(module))
 					otherDoorTe.insertModule(stack);
-				else if(removed && otherDoorTe.hasModule(module))
+				else if (removed && otherDoorTe.hasModule(module))
 					otherDoorTe.removeModule(module);
 			}
 		}
 	}
 
 	@Override
-	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableTileEntity> excludedTEs)
-	{
-		if(action == LinkedAction.OPTION_CHANGED)
-		{
-			Option<?> option = (Option<?>)parameters[0];
+	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableTileEntity> excludedTEs) {
+		if (action == LinkedAction.OPTION_CHANGED) {
+			Option<?> option = (Option<?>) parameters[0];
 
-			if(option.getName().equals(sendMessage.getName()))
+			if (option.getName().equals(sendMessage.getName()))
 				sendMessage.copy(option);
-			else if(option.getName().equals(signalLength.getName()))
+			else if (option.getName().equals(signalLength.getName()))
 				signalLength.copy(option);
 		}
 	}
 
 	@Override
-	public Option<?>[] customOptions()
-	{
-		return new Option[]{ sendMessage, signalLength };
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				sendMessage, signalLength
+		};
 	}
 
-	public boolean sendsMessages()
-	{
+	public boolean sendsMessages() {
 		return sendMessage.get();
 	}
 
-	public int getSignalLength()
-	{
+	public int getSignalLength() {
 		return signalLength.get();
 	}
 

@@ -18,17 +18,15 @@ import net.minecraft.world.gen.feature.TwistingVineFeature;
 import net.minecraft.world.lighting.LightEngine;
 import net.minecraft.world.server.ServerWorld;
 
-public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements IGrowable
-{
+public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements IGrowable {
 	public ReinforcedNyliumBlock(Block.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!hasLightAbove(state, world, pos)) {
+		if (!hasLightAbove(state, world, pos))
 			world.setBlockState(pos, Blocks.NETHERRACK.getDefaultState());
-		}
 	}
 
 	private static boolean hasLightAbove(BlockState state, IWorldReader world, BlockPos pos) {
@@ -53,16 +51,14 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements IGrowa
 		BlockState state = world.getBlockState(pos);
 		BlockPos upperPos = pos.up();
 
-		if (state.matchesBlock(SCContent.REINFORCED_CRIMSON_NYLIUM.get())) {
+		if (state.matchesBlock(SCContent.REINFORCED_CRIMSON_NYLIUM.get()))
 			NetherVegetationFeature.func_236325_a_(world, random, upperPos, Features.Configs.CRIMSON_FOREST_VEGETATION_CONFIG, 3, 1);
-		}
 		else if (state.matchesBlock(SCContent.REINFORCED_WARPED_NYLIUM.get())) {
 			NetherVegetationFeature.func_236325_a_(world, random, upperPos, Features.Configs.WARPED_FOREST_VEGETATION_CONFIG, 3, 1);
 			NetherVegetationFeature.func_236325_a_(world, random, upperPos, Features.Configs.NETHER_SPROUTS_CONFIG, 3, 1);
 
-			if (random.nextInt(8) == 0) {
+			if (random.nextInt(8) == 0)
 				TwistingVineFeature.func_236423_a_(world, random, upperPos, 3, 1, 2);
-			}
 		}
 	}
 }

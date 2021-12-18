@@ -5,48 +5,39 @@ import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 
-public class TrackMineTileEntity extends OwnableTileEntity
-{
+public class TrackMineTileEntity extends OwnableTileEntity {
 	private boolean active = true;
 
-	public TrackMineTileEntity()
-	{
+	public TrackMineTileEntity() {
 		super(SCContent.teTypeTrackMine);
 	}
 
-	public void activate()
-	{
-		if(!active)
-		{
+	public void activate() {
+		if (!active) {
 			active = true;
 			markDirty();
 		}
 	}
 
-	public void deactivate()
-	{
-		if(active)
-		{
+	public void deactivate() {
+		if (active) {
 			active = false;
 			markDirty();
 		}
 	}
 
-	public boolean isActive()
-	{
+	public boolean isActive() {
 		return active;
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		tag.putBoolean("TrackMineEnabled", active);
 		return super.write(tag);
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
-	{
+	public void read(BlockState state, CompoundNBT tag) {
 		super.read(state, tag);
 		active = tag.getBoolean("TrackMineEnabled");
 	}

@@ -18,33 +18,29 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public abstract class DisguisableBlock extends OwnableBlock implements IOverlayDisplay
-{
-	public DisguisableBlock(Block.Properties properties)
-	{
+public abstract class DisguisableBlock extends OwnableBlock implements IOverlayDisplay {
+	public DisguisableBlock(Block.Properties properties) {
 		super(properties);
 	}
 
-	public static boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos)
-	{
-		if(state.getBlock() instanceof DisguisableBlock) //should not happen, but just to be safe
-		{
-			BlockState disguisedState = ((DisguisableBlock)state.getBlock()).getDisguisedStateOrDefault(state, world, pos);
+	public static boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos) {
+		//should not happen, but just to be safe
+		if (state.getBlock() instanceof DisguisableBlock) {
+			BlockState disguisedState = ((DisguisableBlock) state.getBlock()).getDisguisedStateOrDefault(state, world, pos);
 
-			if(disguisedState.getBlock() != state.getBlock())
+			if (disguisedState.getBlock() != state.getBlock())
 				return disguisedState.isNormalCube(world, pos);
 		}
 
 		return state.getMaterial().isOpaque() && state.hasOpaqueCollisionShape(world, pos);
 	}
 
-	public static boolean isSuffocating(BlockState state, IBlockReader world, BlockPos pos)
-	{
-		if(state.getBlock() instanceof DisguisableBlock) //should not happen, but just to be safe
-		{
-			BlockState disguisedState = ((DisguisableBlock)state.getBlock()).getDisguisedStateOrDefault(state, world, pos);
+	public static boolean isSuffocating(BlockState state, IBlockReader world, BlockPos pos) {
+		//should not happen, but just to be safe
+		if (state.getBlock() instanceof DisguisableBlock) {
+			BlockState disguisedState = ((DisguisableBlock) state.getBlock()).getDisguisedStateOrDefault(state, world, pos);
 
-			if(disguisedState.getBlock() != state.getBlock())
+			if (disguisedState.getBlock() != state.getBlock())
 				return disguisedState.isSuffocating(world, pos);
 		}
 
@@ -52,74 +48,70 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	@Override
-	public SoundType getSoundType(BlockState state, IWorldReader world, BlockPos pos, Entity entity)
-	{
+	public SoundType getSoundType(BlockState state, IWorldReader world, BlockPos pos, Entity entity) {
 		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(disguisedState.getBlock() != this)
+		if (disguisedState.getBlock() != this)
 			return disguisedState.getSoundType(world, pos, entity);
-		else return super.getSoundType(state, world, pos, entity);
+		else
+			return super.getSoundType(state, world, pos, entity);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(disguisedState.getBlock() != this)
+		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(world, pos, ctx);
-		else return super.getShape(state, world, pos, ctx);
+		else
+			return super.getShape(state, world, pos, ctx);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(disguisedState.getBlock() != this)
+		if (disguisedState.getBlock() != this)
 			return disguisedState.getCollisionShape(world, pos, ctx);
-		else return super.getCollisionShape(state, world, pos, ctx);
+		else
+			return super.getCollisionShape(state, world, pos, ctx);
 	}
 
 	@Override
-	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos)
-	{
+	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos) {
 		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(disguisedState.getBlock() != this)
+		if (disguisedState.getBlock() != this)
 			return disguisedState.getRenderShape(world, pos);
-		else return super.getRenderShape(state, world, pos);
+		else
+			return super.getRenderShape(state, world, pos);
 	}
 
 	@Override
-	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader world, BlockPos pos)
-	{
+	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader world, BlockPos pos) {
 		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(disguisedState.getBlock() != this)
+		if (disguisedState.getBlock() != this)
 			return disguisedState.getAmbientOcclusionLightValue(world, pos);
-		else return super.getAmbientOcclusionLightValue(state, world, pos);
+		else
+			return super.getAmbientOcclusionLightValue(state, world, pos);
 	}
 
-	public final BlockState getDisguisedStateOrDefault(BlockState state, IBlockReader world, BlockPos pos)
-	{
+	public final BlockState getDisguisedStateOrDefault(BlockState state, IBlockReader world, BlockPos pos) {
 		BlockState disguisedState = getDisguisedBlockState(world, pos);
 
 		return disguisedState != null ? disguisedState : state;
 	}
 
-	public BlockState getDisguisedBlockState(IBlockReader world, BlockPos pos)
-	{
-		if(world.getTileEntity(pos) instanceof IModuleInventory)
-		{
+	public BlockState getDisguisedBlockState(IBlockReader world, BlockPos pos) {
+		if (world.getTileEntity(pos) instanceof IModuleInventory) {
 			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
 			ItemStack module = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
-			if(!module.isEmpty())
-			{
+			if (!module.isEmpty()) {
 				Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
 
-				if(block != null)
+				if (block != null)
 					return block.getDefaultState();
 			}
 		}
@@ -127,18 +119,15 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		return null;
 	}
 
-	public ItemStack getDisguisedStack(IBlockReader world, BlockPos pos)
-	{
-		if(world != null && world.getTileEntity(pos) instanceof IModuleInventory)
-		{
+	public ItemStack getDisguisedStack(IBlockReader world, BlockPos pos) {
+		if (world != null && world.getTileEntity(pos) instanceof IModuleInventory) {
 			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
 			ItemStack stack = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
-			if(!stack.isEmpty())
-			{
+			if (!stack.isEmpty()) {
 				Block block = ((ModuleItem) stack.getItem()).getBlockAddon(stack.getTag());
 
-				if(block != null)
+				if (block != null)
 					return new ItemStack(block);
 			}
 		}
@@ -147,20 +136,17 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, BlockState state, BlockPos pos)
-	{
+	public ItemStack getDisplayStack(World world, BlockState state, BlockPos pos) {
 		return getDisguisedStack(world, pos);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos)
-	{
+	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos) {
 		return getDisguisedStack(world, pos).getItem() == asItem();
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
-	{
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
 		return getDisguisedStack(world, pos);
 	}
 }

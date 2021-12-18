@@ -28,7 +28,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class CodebreakerItem extends Item {
-
 	public CodebreakerItem(Item.Properties properties) {
 		super(properties);
 	}
@@ -38,7 +37,7 @@ public class CodebreakerItem extends Item {
 		ItemStack codebreaker = player.getHeldItem(hand);
 
 		if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {
-			if(!ConfigHandler.SERVER.allowCodebreakerItem.get()) {
+			if (!ConfigHandler.SERVER.allowCodebreakerItem.get()) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.BRIEFCASE.get().getTranslationKey()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 				return ActionResult.resultSuccess(codebreaker);
 			}
@@ -48,16 +47,14 @@ public class CodebreakerItem extends Item {
 				if (!world.isRemote && new Random().nextInt(3) == 1) {
 					ItemStack briefcase = player.getHeldItemOffhand();
 
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-						{
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 							return new BriefcaseContainer(windowId, inv, new BriefcaseInventory(briefcase));
 						}
 
 						@Override
-						public ITextComponent getDisplayName()
-						{
+						public ITextComponent getDisplayName() {
 							return briefcase.getDisplayName();
 						}
 					}, player.getPosition());
@@ -74,33 +71,27 @@ public class CodebreakerItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean hasEffect(ItemStack stack){
+	public boolean hasEffect(ItemStack stack) {
 		return true;
 	}
 
-	/**
-	 * Return an item rarity from Rarity
-	 */
 	@Override
-	public Rarity getRarity(ItemStack stack){
+	public Rarity getRarity(ItemStack stack) {
 		return Rarity.RARE;
 	}
 
 	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment)
-	{
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return false;
 	}
 
 	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book)
-	{
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		return false;
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack stack)
-	{
+	public boolean isEnchantable(ItemStack stack) {
 		return false;
 	}
 }

@@ -23,33 +23,28 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class SecretStandingSignBlock extends StandingSignBlock
-{
-	public SecretStandingSignBlock(Block.Properties properties, WoodType woodType)
-	{
+public class SecretStandingSignBlock extends StandingSignBlock {
+	public SecretStandingSignBlock(Block.Properties properties, WoodType woodType) {
 		super(properties, woodType);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
-	{
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
 		return VoxelShapes.empty();
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
-		if(!world.isRemote && player.getHeldItem(hand).getItem() == SCContent.ADMIN_TOOL.get())
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!world.isRemote && player.getHeldItem(hand).getItem() == SCContent.ADMIN_TOOL.get())
 			return SCContent.ADMIN_TOOL.get().onItemUse(new ItemUseContext(player, hand, hit));
 
-		SecretSignTileEntity te = (SecretSignTileEntity)world.getTileEntity(pos);
+		SecretSignTileEntity te = (SecretSignTileEntity) world.getTileEntity(pos);
 
 		if (te != null && te.isPlayerAllowedToSeeText(player))
 			return super.onBlockActivated(state, world, pos, player, hand, hit);
@@ -58,8 +53,7 @@ public class SecretStandingSignBlock extends StandingSignBlock
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world)
-	{
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new SecretSignTileEntity();
 	}
 

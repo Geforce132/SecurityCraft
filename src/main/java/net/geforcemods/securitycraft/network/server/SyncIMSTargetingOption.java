@@ -10,27 +10,23 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SyncIMSTargetingOption
-{
+public class SyncIMSTargetingOption {
 	private BlockPos pos;
 	private IMSTargetingMode targetingMode;
 
 	public SyncIMSTargetingOption() {}
 
-	public SyncIMSTargetingOption(BlockPos pos, IMSTargetingMode targetingMode)
-	{
+	public SyncIMSTargetingOption(BlockPos pos, IMSTargetingMode targetingMode) {
 		this.pos = pos;
 		this.targetingMode = targetingMode;
 	}
 
-	public static void encode(SyncIMSTargetingOption message, PacketBuffer buf)
-	{
+	public static void encode(SyncIMSTargetingOption message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeEnumValue(message.targetingMode);
 	}
 
-	public static SyncIMSTargetingOption decode(PacketBuffer buf)
-	{
+	public static SyncIMSTargetingOption decode(PacketBuffer buf) {
 		SyncIMSTargetingOption message = new SyncIMSTargetingOption();
 
 		message.pos = buf.readBlockPos();
@@ -38,18 +34,16 @@ public class SyncIMSTargetingOption
 		return message;
 	}
 
-	public static void onMessage(SyncIMSTargetingOption message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(SyncIMSTargetingOption message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.world.getTileEntity(pos);
 
-			if(te instanceof IMSTileEntity && ((IMSTileEntity)te).getOwner().isOwner(player))
-				((IMSTileEntity)te).setTargetingMode(message.targetingMode);
+			if (te instanceof IMSTileEntity && ((IMSTileEntity) te).getOwner().isOwner(player))
+				((IMSTileEntity) te).setTargetingMode(message.targetingMode);
 		});
 
 		ctx.get().setPacketHandled(true);
 	}
-
 }

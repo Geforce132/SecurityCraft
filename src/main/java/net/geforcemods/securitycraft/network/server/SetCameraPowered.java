@@ -11,27 +11,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SetCameraPowered
-{
+public class SetCameraPowered {
 	private BlockPos pos;
 	private boolean powered;
 
 	public SetCameraPowered() {}
 
-	public SetCameraPowered(BlockPos pos, boolean powered)
-	{
+	public SetCameraPowered(BlockPos pos, boolean powered) {
 		this.pos = pos;
 		this.powered = powered;
 	}
 
-	public static void encode(SetCameraPowered message, PacketBuffer buf)
-	{
+	public static void encode(SetCameraPowered message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeBoolean(message.powered);
 	}
 
-	public static SetCameraPowered decode(PacketBuffer buf)
-	{
+	public static SetCameraPowered decode(PacketBuffer buf) {
 		SetCameraPowered message = new SetCameraPowered();
 
 		message.pos = buf.readBlockPos();
@@ -39,16 +35,14 @@ public class SetCameraPowered
 		return message;
 	}
 
-	public static void onMessage(SetCameraPowered message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(SetCameraPowered message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner(player))
-			{
+			if (te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner(player)) {
 				world.setBlockState(pos, world.getBlockState(pos).with(SecurityCameraBlock.POWERED, message.powered));
 				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(SecurityCameraBlock.FACING), -1), world.getBlockState(pos).getBlock());
 			}

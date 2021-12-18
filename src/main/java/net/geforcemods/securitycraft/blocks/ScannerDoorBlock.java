@@ -9,22 +9,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.world.IBlockReader;
 
-public class ScannerDoorBlock extends SpecialDoorBlock
-{
-	public ScannerDoorBlock(Properties properties)
-	{
+public class ScannerDoorBlock extends SpecialDoorBlock {
+	public ScannerDoorBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
-	{
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new ScannerDoorTileEntity();
 	}
 
 	@Override
-	public Item getDoorItem()
-	{
+	public Item getDoorItem() {
 		return SCContent.SCANNER_DOOR_ITEM.get();
 	}
 

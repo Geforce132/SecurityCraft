@@ -27,7 +27,6 @@ public abstract class EntityTrackerMixin {
 	@Shadow
 	@Final
 	private TrackedEntity entry;
-
 	@Shadow
 	@Final
 	private Entity entity;
@@ -35,16 +34,16 @@ public abstract class EntityTrackerMixin {
 	private boolean shouldBeSent = false;
 
 	/**
-	 * Checks if this entity is in range of a camera that is currently being viewed, and stores the result in the field shouldBeSent
+	 * Checks if this entity is in range of a camera that is currently being viewed, and stores the result in the field
+	 * shouldBeSent
 	 */
 	@Inject(method = "updateTrackingState(Lnet/minecraft/entity/player/ServerPlayerEntity;)V", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/Math;min(II)I"), locals = LocalCapture.CAPTURE_FAILSOFT)
 	private void onUpdateTrackingState(ServerPlayerEntity player, CallbackInfo callback, Vector3d unused, int viewDistance) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			Vector3d relativePosToCamera = player.getSpectatingEntity().getPositionVec().subtract(entry.getDecodedPosition());
 
-			if(relativePosToCamera.x >= -viewDistance && relativePosToCamera.x <= viewDistance && relativePosToCamera.z >= -viewDistance && relativePosToCamera.z <= viewDistance) {
+			if (relativePosToCamera.x >= -viewDistance && relativePosToCamera.x <= viewDistance && relativePosToCamera.z >= -viewDistance && relativePosToCamera.z <= viewDistance)
 				shouldBeSent = true;
-			}
 		}
 	}
 

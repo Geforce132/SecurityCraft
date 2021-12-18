@@ -34,16 +34,13 @@ import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 
-public class RecipeGenerator extends RecipeProvider
-{
-	public RecipeGenerator(DataGenerator generator)
-	{
+public class RecipeGenerator extends RecipeProvider {
+	public RecipeGenerator(DataGenerator generator) {
 		super(generator);
 	}
 
 	@Override
-	protected final void registerRecipes(Consumer<IFinishedRecipe> consumer)
-	{
+	protected final void registerRecipes(Consumer<IFinishedRecipe> consumer) {
 		ItemStack healingStack = new ItemStack(Items.POTION);
 		ItemStack strongHealingStack = new ItemStack(Items.POTION);
 		ItemStack harmingStack = new ItemStack(Items.POTION);
@@ -65,6 +62,7 @@ public class RecipeGenerator extends RecipeProvider
 		//combine keycard with limited use keycard to get keycards with the a configurable limited amount of uses
 		CustomRecipeBuilder.customRecipe(LimitedUseKeycardRecipe.serializer).build(consumer, "limited_use_keycards");
 
+		//@formatter:off
 		//shaped recipes
 		ShapedRecipeBuilder.shapedRecipe(SCContent.ALARM.get())
 		.patternLine("GGG")
@@ -1023,10 +1021,12 @@ public class RecipeGenerator extends RecipeProvider
 		addStonecuttingRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.STAIRS_CRYSTAL_QUARTZ.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.CHISELED_CRYSTAL_QUARTZ.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.CRYSTAL_QUARTZ_PILLAR.get(), 1);
+		//@formatter:on
 	}
 
 	protected final void addBarkRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider log, IItemProvider result) //woof
 	{
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result, 3)
 		.setGroup("securitycraft:bark")
 		.patternLine("LL")
@@ -1034,59 +1034,65 @@ public class RecipeGenerator extends RecipeProvider
 		.key('L', log)
 		.addCriterion("has_log", hasItem(log))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addBlockMineRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result)
-	{
+	protected final void addBlockMineRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result) {
+		//@formatter:off
 		ShapelessRecipeBuilder.shapelessRecipe(result)
 		.setGroup("securitycraft:block_mines")
 		.addIngredient(input)
 		.addIngredient(SCContent.MINE.get())
 		.addCriterion("has_mine", hasItem(SCContent.MINE.get()))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addButtonRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result)
-	{
+	protected final void addButtonRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result) {
+		//@formatter:off
 		ShapelessRecipeBuilder.shapelessRecipe(result)
 		.setGroup("securitycraft:reinforced_buttons")
 		.addIngredient(input)
 		.addCriterion("has_block", hasItem(input))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addCarpetRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider wool, IItemProvider carpet)
-	{
+	protected final void addCarpetRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider wool, IItemProvider carpet) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(carpet, 3)
 		.setGroup("securitycraft:reinforced_carpets")
 		.patternLine("WW")
 		.key('W', wool)
 		.addCriterion("has_wool", hasItem(SCTags.Items.REINFORCED_WOOL))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addChiselingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider slab, IItemProvider result)
-	{
+	protected final void addChiselingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider slab, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result)
 		.patternLine("S")
 		.patternLine("S")
 		.key('S', slab)
 		.addCriterion("has_slab", hasItem(slab))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addColoredWoolRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> dye, IItemProvider result)
-	{
+	protected final void addColoredWoolRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> dye, IItemProvider result) {
+		//@formatter:off
 		ShapelessRecipeBuilder.shapelessRecipe(result)
 		.setGroup("securitycraft:reinforced_wool")
 		.addIngredient(dye)
 		.addIngredient(SCContent.REINFORCED_WHITE_WOOL.get())
 		.addCriterion("has_wool", hasItem(SCContent.REINFORCED_WHITE_WOOL.get()))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addCompressingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
-	{
+	protected final void addCompressingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result)
 		.patternLine("BBB")
 		.patternLine("BBB")
@@ -1094,10 +1100,11 @@ public class RecipeGenerator extends RecipeProvider
 		.key('B', block)
 		.addCriterion("has_block", hasItem(block))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> specialIngredient, IItemProvider result)
-	{
+	protected final void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> specialIngredient, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result)
 		.setGroup("securitycraft:keycards")
 		.patternLine("III")
@@ -1106,18 +1113,20 @@ public class RecipeGenerator extends RecipeProvider
 		.key('S', specialIngredient)
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addKeycardResetRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider keycard)
-	{
+	protected final void addKeycardResetRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider keycard) {
+		//@formatter:off
 		ShapelessRecipeBuilder.shapelessRecipe(keycard)
 		.addIngredient(keycard)
 		.addCriterion("has_keycard", hasItem(keycard))
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, keycard.asItem().getRegistryName().getPath() + "_reset"));
+		//@formatter:on
 	}
 
-	protected final void addModuleRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider specialIngredient, IItemProvider result)
-	{
+	protected final void addModuleRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider specialIngredient, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result)
 		.setGroup("securitycraft:modules")
 		.patternLine("III")
@@ -1128,10 +1137,11 @@ public class RecipeGenerator extends RecipeProvider
 		.key('S', specialIngredient)
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addModuleRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> specialIngredient, IItemProvider result)
-	{
+	protected final void addModuleRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> specialIngredient, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result)
 		.setGroup("securitycraft:modules")
 		.patternLine("III")
@@ -1142,77 +1152,85 @@ public class RecipeGenerator extends RecipeProvider
 		.key('S', specialIngredient)
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> block, IItemProvider result)
-	{
+	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> block, IItemProvider result) {
+		//@formatter:off
 		ShapelessRecipeBuilder.shapelessRecipe(result)
 		.addIngredient(block)
 		.addIngredient(Items.VINE)
 		.addCriterion("has_block", hasItem(block))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
-	{
+	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result) {
+		//@formatter:off
 		ShapelessRecipeBuilder.shapelessRecipe(result)
 		.addIngredient(block)
 		.addIngredient(Items.VINE)
 		.addCriterion("has_block", hasItem(block))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addPillarRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
-	{
+	protected final void addPillarRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result, 2)
 		.patternLine("B")
 		.patternLine("B")
 		.key('B', block)
 		.addCriterion("has_block", hasItem(block))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addPlanksRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> log, IItemProvider result)
-	{
+	protected final void addPlanksRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> log, IItemProvider result) {
+		//@formatter:off
 		ShapelessRecipeBuilder.shapelessRecipe(result, 4)
 		.setGroup("securitycraft:reinforced_planks")
 		.addIngredient(log)
 		.addCriterion("has_log", hasItem(log))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addPolishingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
-	{
+	protected final void addPolishingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result, 4)
 		.patternLine("BB")
 		.patternLine("BB")
 		.key('B', block)
 		.addCriterion("has_block", hasItem(block))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addPressurePlateRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
-	{
+	protected final void addPressurePlateRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result)
 		.setGroup("securitycraft:reinforced_pressure_plates")
 		.patternLine("SS")
 		.key('S', block)
 		.addCriterion("has_block", hasItem(block))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addSecretSignRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider vanillaSign, IItemProvider result)
-	{
+	protected final void addSecretSignRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider vanillaSign, IItemProvider result) {
+		//@formatter:off
 		ShapelessRecipeBuilder.shapelessRecipe(result, 3)
 		.setGroup("securitycraft:secret_signs")
 		.addIngredient(vanillaSign, 3)
 		.addIngredient(SCContent.RETINAL_SCANNER.get())
 		.addCriterion("has_sign", hasItem(ItemTags.SIGNS))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addShapelessConditionalRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider result, int amount, String group, List<IItemProvider> ingredients, CriterionInstance criterion, ICondition condition)
-	{
+	protected final void addShapelessConditionalRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider result, int amount, String group, List<IItemProvider> ingredients, CriterionInstance criterion, ICondition condition) {
+		//@formatter:off
 		ShapelessRecipeBuilder.Result recipe;
 		Item resultItem = result.asItem();
 		ResourceLocation id = resultItem.getRegistryName();
@@ -1221,21 +1239,23 @@ public class RecipeGenerator extends RecipeProvider
 				resultItem, amount, group, ingredients.stream().map(item -> Ingredient.fromItems(item)).collect(Collectors.toList()),
 				Advancement.Builder.builder().withCriterion("has_item", criterion),
 				new ResourceLocation(id.getNamespace(), "recipes/" + resultItem.getGroup().getPath() + "/" + id.getPath()));
+		//@formatter:on
 		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(consumer, id);
 	}
 
-	protected final void addSlabRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
-	{
+	protected final void addSlabRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result, 6)
 		.setGroup("securitycraft:slabs")
 		.patternLine("BBB")
 		.key('B', block)
 		.addCriterion("has_block", hasItem(block))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addStainedGlassRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> dye, IItemProvider result)
-	{
+	protected final void addStainedGlassRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> dye, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result, 8)
 		.setGroup("securitycraft:reinforced_glass")
 		.patternLine("GGG")
@@ -1245,10 +1265,11 @@ public class RecipeGenerator extends RecipeProvider
 		.key('D', dye)
 		.addCriterion("has_glass", hasItem(Tags.Items.GLASS))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addStainedGlassPaneRecipes(Consumer<IFinishedRecipe> consumer, ITag<Item> dye, IItemProvider stainedGlass, IItemProvider result)
-	{
+	protected final void addStainedGlassPaneRecipes(Consumer<IFinishedRecipe> consumer, ITag<Item> dye, IItemProvider stainedGlass, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result, 8)
 		.setGroup("securitycraft:reinforced_glass_panes")
 		.patternLine("GGG")
@@ -1265,10 +1286,11 @@ public class RecipeGenerator extends RecipeProvider
 		.key('G', stainedGlass)
 		.addCriterion("has_glass", hasItem(Tags.Items.GLASS))
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, result.asItem().getRegistryName().getPath() + "_from_glass"));
+		//@formatter:on
 	}
 
-	protected final void addStainedTerracottaRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> dye, IItemProvider result)
-	{
+	protected final void addStainedTerracottaRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> dye, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result, 8)
 		.setGroup("securitycraft:reinforced_terracotta")
 		.patternLine("TTT")
@@ -1278,10 +1300,11 @@ public class RecipeGenerator extends RecipeProvider
 		.key('D', dye)
 		.addCriterion("has_reinforced_terracotta", hasItem(SCContent.REINFORCED_TERRACOTTA.get()))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addStairsRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
-	{
+	protected final void addStairsRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result, 4)
 		.setGroup("securitycraft:stairs")
 		.patternLine("B  ")
@@ -1290,17 +1313,19 @@ public class RecipeGenerator extends RecipeProvider
 		.key('B', block)
 		.addCriterion("has_block", hasItem(block))
 		.build(consumer);
+		//@formatter:on
 	}
 
-	protected final void addStonecuttingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider ingredient, IItemProvider result, int count)
-	{
+	protected final void addStonecuttingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider ingredient, IItemProvider result, int count) {
+		//@formatter:off
 		SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(ingredient), result, count)
 		.addCriterion("has_" + ingredient.asItem().getRegistryName().getPath(), hasItem(ingredient))
 		.build(consumer, result.asItem().getRegistryName() + "_from_" + ingredient.asItem().getRegistryName().getPath() + "_stonecutting");
+		//@formatter:on
 	}
 
-	protected final void addWallRecipes(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
-	{
+	protected final void addWallRecipes(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result) {
+		//@formatter:off
 		ShapedRecipeBuilder.shapedRecipe(result, 6)
 		.setGroup("securitycraft:walls")
 		.patternLine("BBB")
@@ -1309,19 +1334,17 @@ public class RecipeGenerator extends RecipeProvider
 		.addCriterion("has_block", hasItem(block))
 		.build(consumer);
 		addStonecuttingRecipe(consumer, block, result, 1);
+		//@formatter:on
 	}
 
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return "SecurityCraft Recipes";
 	}
 
 	//helper because IngredientNBT's constructor is protected
-	private static class CustomNBTIngredient extends NBTIngredient
-	{
-		public CustomNBTIngredient(ItemStack stack)
-		{
+	private static class CustomNBTIngredient extends NBTIngredient {
+		public CustomNBTIngredient(ItemStack stack) {
 			super(stack);
 		}
 	}

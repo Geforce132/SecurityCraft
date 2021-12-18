@@ -9,37 +9,32 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateNBTTagOnServer {
-
 	private ItemStack stack;
 
-	public UpdateNBTTagOnServer(){
-
+	public UpdateNBTTagOnServer() {
 	}
 
-	public UpdateNBTTagOnServer(ItemStack stack){
-		if(!stack.isEmpty() && stack.getTag() != null){
+	public UpdateNBTTagOnServer(ItemStack stack) {
+		if (!stack.isEmpty() && stack.getTag() != null) {
 			this.stack = stack;
 		}
 	}
 
-	public static void encode(UpdateNBTTagOnServer message, PacketBuffer buf)
-	{
+	public static void encode(UpdateNBTTagOnServer message, PacketBuffer buf) {
 		buf.writeItemStack(message.stack);
 	}
 
-	public static UpdateNBTTagOnServer decode(PacketBuffer buf)
-	{
+	public static UpdateNBTTagOnServer decode(PacketBuffer buf) {
 		UpdateNBTTagOnServer message = new UpdateNBTTagOnServer();
 
 		message.stack = buf.readItemStack();
 		return message;
 	}
 
-	public static void onMessage(UpdateNBTTagOnServer message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(UpdateNBTTagOnServer message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
-			if(PlayerUtils.isHoldingItem(player, message.stack.getItem(), null)) {
+			if (PlayerUtils.isHoldingItem(player, message.stack.getItem(), null)) {
 				ItemStack stack = PlayerUtils.getSelectedItemStack(player, message.stack.getItem());
 
 				stack.setTag(message.stack.getTag());

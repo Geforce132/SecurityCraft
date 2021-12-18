@@ -25,16 +25,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
-
-	public static final String UP_ARROW  = "\u2191";
-	public static final String DOWN_ARROW  = "\u2193";
+	public static final String UP_ARROW = "\u2191";
+	public static final String DOWN_ARROW = "\u2193";
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslationTextComponent enterPasscode = Utils.localize("gui.securitycraft:briefcase.enterPasscode");
 	private Button[] keycodeTopButtons = new Button[4];
 	private Button[] keycodeBottomButtons = new Button[4];
 	private TextFieldWidget[] keycodeTextboxes = new TextFieldWidget[4];
 	private IdButton continueButton;
-	private int[] digits = {0, 0, 0, 0};
+	private int[] digits = {
+			0, 0, 0, 0
+	};
 
 	public BriefcasePasswordScreen(GenericContainer container, PlayerInventory inv, ITextComponent text) {
 		super(container, inv, text);
@@ -44,17 +45,17 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 	public void init() {
 		super.init();
 
-		for(int i = 0; i < keycodeTopButtons.length; i++) {
+		for (int i = 0; i < keycodeTopButtons.length; i++) {
 			addButton(keycodeTopButtons[i] = new IdButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed));
 		}
 
-		for(int i = 0; i < keycodeBottomButtons.length; i++) {
+		for (int i = 0; i < keycodeBottomButtons.length; i++) {
 			addButton(keycodeBottomButtons[i] = new IdButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW, this::actionPerformed));
 		}
 
 		addButton(continueButton = new IdButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">", this::actionPerformed));
 
-		for(int i = 0; i < keycodeTextboxes.length; i++) {
+		for (int i = 0; i < keycodeTextboxes.length; i++) {
 			//text boxes are not added via addButton because they should not be selectable
 			keycodeTextboxes[i] = new TextFieldWidget(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, StringTextComponent.EMPTY);
 			keycodeTextboxes[i].setMaxStringLength(1);
@@ -67,8 +68,9 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 
-		for(TextFieldWidget textfield : keycodeTextboxes)
+		for (TextFieldWidget textfield : keycodeTextboxes) {
 			textfield.render(matrix, mouseX, mouseY, partialTicks);
+		}
 	}
 
 	@Override
@@ -87,13 +89,12 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	protected void actionPerformed(IdButton button) {
-		if(button.id == continueButton.id)
-		{
-			if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
+		if (button.id == continueButton.id) {
+			if (PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
 				CompoundNBT nbt = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get()).getTag();
-				String code = digits[0] + "" + digits[1] + "" +  digits[2] + "" + digits[3];
+				String code = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];
 
-				if(nbt.getString("passcode").equals(code)) {
+				if (nbt.getString("passcode").equals(code)) {
 					if (!nbt.contains("owner")) {
 						nbt.putString("owner", Minecraft.getInstance().player.getName().getString());
 						nbt.putString("ownerUUID", Minecraft.getInstance().player.getUniqueID().toString());
@@ -103,8 +104,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 				}
 			}
 		}
-		else
-		{
+		else {
 			int index = button.id % 4;
 
 			//java's modulo operator % does not handle negative numbers like it should for some reason, so floorMod needs to be used

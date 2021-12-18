@@ -15,20 +15,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 
-public class ReinforcedHopperTileEntity extends HopperTileEntity implements IOwnable, IModuleInventory
-{
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+public class ReinforcedHopperTileEntity extends HopperTileEntity implements IOwnable, IModuleInventory {
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
 
 	@Override
-	public TileEntityType<?> getType()
-	{
+	public TileEntityType<?> getType() {
 		return SCContent.teTypeReinforcedHopper;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
-	{
+	public void read(BlockState state, CompoundNBT tag) {
 		super.read(state, tag);
 
 		owner.read(tag);
@@ -36,76 +33,65 @@ public class ReinforcedHopperTileEntity extends HopperTileEntity implements IOwn
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 
-		if(owner != null)
-		{
+		if (owner != null)
 			owner.write(tag, false);
-		}
 
 		writeModuleInventory(tag);
 		return tag;
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag()
-	{
+	public CompoundNBT getUpdateTag() {
 		return write(new CompoundNBT());
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket()
-	{
+	public SUpdateTileEntityPacket getUpdatePacket() {
 		return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet)
-	{
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
 		read(getBlockState(), packet.getNbtCompound());
 	}
 
 	@Override
-	public Owner getOwner()
-	{
+	public Owner getOwner() {
 		return owner;
 	}
 
 	@Override
-	public void setOwner(String uuid, String name)
-	{
+	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
 	}
 
 	@Override
-	public boolean enableHack()
-	{
+	public boolean enableHack() {
 		return true;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot)
-	{
+	public ItemStack getStackInSlot(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : super.getStackInSlot(slot);
 	}
 
 	@Override
-	public ModuleType[] acceptedModules()
-	{
-		return new ModuleType[] {ModuleType.ALLOWLIST};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
-	public NonNullList<ItemStack> getInventory()
-	{
+	public NonNullList<ItemStack> getInventory() {
 		return modules;
 	}
 
 	@Override
-	public TileEntity getTileEntity()
-	{
+	public TileEntity getTileEntity() {
 		return this;
 	}
 }

@@ -8,27 +8,23 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class AssembleBlockPocket
-{
+public class AssembleBlockPocket {
 	private BlockPos pos;
 	private int size;
 
 	public AssembleBlockPocket() {}
 
-	public AssembleBlockPocket(BlockPocketManagerTileEntity te, int size)
-	{
+	public AssembleBlockPocket(BlockPocketManagerTileEntity te, int size) {
 		pos = te.getPos();
 		this.size = size;
 	}
 
-	public static void encode(AssembleBlockPocket message, PacketBuffer buf)
-	{
+	public static void encode(AssembleBlockPocket message, PacketBuffer buf) {
 		buf.writeLong(message.pos.toLong());
 		buf.writeInt(message.size);
 	}
 
-	public static AssembleBlockPocket decode(PacketBuffer buf)
-	{
+	public static AssembleBlockPocket decode(PacketBuffer buf) {
 		AssembleBlockPocket message = new AssembleBlockPocket();
 
 		message.pos = BlockPos.fromLong(buf.readLong());
@@ -36,15 +32,13 @@ public class AssembleBlockPocket
 		return message;
 	}
 
-	public static void onMessage(AssembleBlockPocket message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(AssembleBlockPocket message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			TileEntity te = ctx.get().getSender().world.getTileEntity(message.pos);
 
-			if(te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(ctx.get().getSender()))
-			{
-				((BlockPocketManagerTileEntity)te).size = message.size;
-				((BlockPocketManagerTileEntity)te).autoAssembleMultiblock();
+			if (te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity) te).getOwner().isOwner(ctx.get().getSender())) {
+				((BlockPocketManagerTileEntity) te).size = message.size;
+				((BlockPocketManagerTileEntity) te).autoAssembleMultiblock();
 			}
 		});
 		ctx.get().setPacketHandled(true);

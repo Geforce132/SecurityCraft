@@ -13,52 +13,44 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-public class ModuleUtils{
-	public static List<String> getPlayersFromModule(ItemStack stack)
-	{
+public class ModuleUtils {
+	public static List<String> getPlayersFromModule(ItemStack stack) {
 		List<String> list = new ArrayList<>();
 
-		if(stack.getItem() instanceof ModuleItem)
-		{
-			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
-			{
-				if(stack.getTag() != null && stack.getTag().getString("Player" + i) != null && !stack.getTag().getString("Player" + i).isEmpty())
+		if (stack.getItem() instanceof ModuleItem) {
+			for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
+				if (stack.getTag() != null && stack.getTag().getString("Player" + i) != null && !stack.getTag().getString("Player" + i).isEmpty()) {
 					list.add(stack.getTag().getString("Player" + i).toLowerCase());
+				}
 			}
 		}
 
 		return list;
 	}
 
-	public static boolean isAllowed(IModuleInventory inv, Entity entity)
-	{
+	public static boolean isAllowed(IModuleInventory inv, Entity entity) {
 		return isAllowed(inv, entity.getName().getString());
 	}
 
-	public static boolean isAllowed(IModuleInventory inv, String name)
-	{
+	public static boolean isAllowed(IModuleInventory inv, String name) {
 		ItemStack stack = inv.getModule(ModuleType.ALLOWLIST);
 
-		if(stack.hasTag() && stack.getTag().getBoolean("affectEveryone"))
+		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone"))
 			return true;
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
 		return getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
-	public static boolean isDenied(IModuleInventory inv, Entity entity)
-	{
+	public static boolean isDenied(IModuleInventory inv, Entity entity) {
 		ItemStack stack = inv.getModule(ModuleType.DENYLIST);
 
-		if(stack.hasTag() && stack.getTag().getBoolean("affectEveryone"))
-		{
-			if(inv.getTileEntity() instanceof IOwnable)
-			{
+		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone")) {
+			if (inv.getTileEntity() instanceof IOwnable) {
 				//only deny players that are not the owner
-				if(entity instanceof PlayerEntity)
-				{
+				if (entity instanceof PlayerEntity) {
 					//if the player IS the owner, fall back to the default handling (check if the name is on the list)
-					if(!((IOwnable)inv.getTileEntity()).getOwner().isOwner((PlayerEntity)entity))
+					if (!((IOwnable) inv.getTileEntity()).getOwner().isOwner((PlayerEntity) entity))
 						return true;
 				}
 				else
@@ -72,11 +64,16 @@ public class ModuleUtils{
 		return getPlayersFromModule(stack).contains(entity.getName().getString().toLowerCase());
 	}
 
-	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableTileEntity te)
-	{
-		if(action == LinkedAction.MODULE_INSERTED)
-			te.createLinkedBlockAction(action, new Object[] {stack, (ModuleItem)stack.getItem()}, te);
-		else if(action == LinkedAction.MODULE_REMOVED)
-			te.createLinkedBlockAction(action, new Object[] {stack, ((ModuleItem)stack.getItem()).getModuleType()}, te);
+	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableTileEntity te) {
+		if (action == LinkedAction.MODULE_INSERTED) {
+			te.createLinkedBlockAction(action, new Object[] {
+					stack, (ModuleItem) stack.getItem()
+			}, te);
+		}
+		else if (action == LinkedAction.MODULE_REMOVED) {
+			te.createLinkedBlockAction(action, new Object[] {
+					stack, ((ModuleItem) stack.getItem()).getModuleType()
+			}, te);
+		}
 	}
 }

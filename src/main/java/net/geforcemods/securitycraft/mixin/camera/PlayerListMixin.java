@@ -16,21 +16,21 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
 
 /**
- * When a player is viewing a camera, enables sounds near the camera to be played, while sounds near the player entity are suppressed
+ * When a player is viewing a camera, enables sounds near the camera to be played, while sounds near the player entity are
+ * suppressed
  */
 @Mixin(PlayerList.class)
 public class PlayerListMixin {
 	@Inject(method = "sendToAllNearExcept", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getPosZ()D"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
 	private void broadcastToCameras(PlayerEntity except, double x, double y, double z, double radius, RegistryKey<World> dimension, IPacket<?> packet, CallbackInfo callback, int iteration, ServerPlayerEntity player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			SecurityCameraEntity camera = (SecurityCameraEntity)player.getSpectatingEntity();
+			SecurityCameraEntity camera = (SecurityCameraEntity) player.getSpectatingEntity();
 			double dX = x - camera.getPosX();
 			double dY = y - camera.getPosY();
 			double dZ = z - camera.getPosZ();
 
-			if(dX * dX + dY * dY + dZ * dZ < radius * radius) {
+			if (dX * dX + dY * dY + dZ * dZ < radius * radius)
 				player.connection.sendPacket(packet);
-			}
 
 			callback.cancel();
 		}

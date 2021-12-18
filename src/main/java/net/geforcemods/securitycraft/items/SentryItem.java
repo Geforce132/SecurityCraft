@@ -16,35 +16,28 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-public class SentryItem extends Item
-{
-	public SentryItem(Item.Properties properties)
-	{
+public class SentryItem extends Item {
+	public SentryItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx)
-	{
+	public ActionResultType onItemUse(ItemUseContext ctx) {
 		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z);
 	}
 
-	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ)
-	{
+	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
 		boolean replacesTargetedBlock = world.getBlockState(pos).getMaterial().isReplaceable();
 
-		if (!replacesTargetedBlock) {
+		if (!replacesTargetedBlock)
 			pos = pos.offset(facing); //if the block is not replaceable, place sentry next to targeted block
-		}
 
-		if(!world.isAirBlock(pos) && !replacesTargetedBlock)
+		if (!world.isAirBlock(pos) && !replacesTargetedBlock)
 			return ActionResultType.PASS;
-		else
-		{
+		else {
 			BlockPos downPos = pos.down();
 
-			if(world.isAirBlock(downPos) || world.hasNoCollisions(new AxisAlignedBB(downPos)))
-			{
+			if (world.isAirBlock(downPos) || world.hasNoCollisions(new AxisAlignedBB(downPos))) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY.get().getTranslationKey()), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
 				return ActionResultType.FAIL;
 			}
@@ -58,14 +51,13 @@ public class SentryItem extends Item
 		if (stack.hasDisplayName())
 			entity.setCustomName(stack.getDisplayName());
 
-		if (replacesTargetedBlock) {
+		if (replacesTargetedBlock)
 			world.removeBlock(pos, false);
-		}
 
 		world.addEntity(entity);
 		player.sendStatusMessage(Utils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(Utils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
 
-		if(!player.isCreative())
+		if (!player.isCreative())
 			stack.shrink(1);
 
 		return ActionResultType.SUCCESS;

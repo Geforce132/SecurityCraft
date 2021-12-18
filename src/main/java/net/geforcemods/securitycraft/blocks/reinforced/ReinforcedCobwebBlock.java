@@ -14,29 +14,23 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class ReinforcedCobwebBlock extends BaseReinforcedBlock
-{
-	public ReinforcedCobwebBlock(Properties properties, Block vB)
-	{
+public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
+	public ReinforcedCobwebBlock(Properties properties, Block vB) {
 		super(properties, vB);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		return VoxelShapes.empty();
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
-	{
-		if(entity instanceof PlayerEntity)
-		{
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+		if (entity instanceof PlayerEntity) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof OwnableTileEntity)
-			{
-				if(((OwnableTileEntity)te).getOwner().isOwner((PlayerEntity)entity))
+			if (te instanceof OwnableTileEntity) {
+				if (((OwnableTileEntity) te).getOwner().isOwner((PlayerEntity) entity))
 					return;
 			}
 		}

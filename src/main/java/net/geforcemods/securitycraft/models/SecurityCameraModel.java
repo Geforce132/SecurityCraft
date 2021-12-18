@@ -10,8 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
- * SecurityCamera - Geforce
- * Created using Tabula 4.1.1
+ * SecurityCamera - Geforce Created using Tabula 4.1.1
  */
 @OnlyIn(Dist.CLIENT)
 public class SecurityCameraModel extends EntityModel<SecurityCameraEntity> {
@@ -62,16 +61,12 @@ public class SecurityCameraModel extends EntityModel<SecurityCameraEntity> {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
-	{
+	public void render(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		cameraRotationPoint.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
 		shape1.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
 		shape2.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
-	/**
-	 * This is a helper function from Tabula to set the rotation of model parts
-	 */
 	public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
 		modelRenderer.rotateAngleX = x;
 		modelRenderer.rotateAngleY = y;

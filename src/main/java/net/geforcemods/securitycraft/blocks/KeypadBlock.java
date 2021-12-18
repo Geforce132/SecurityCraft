@@ -34,7 +34,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public class KeypadBlock extends DisguisableBlock {
-
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
@@ -44,90 +43,73 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
-		if(state.get(POWERED))
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (state.get(POWERED))
 			return ActionResultType.PASS;
-		else
-		{
-			KeypadTileEntity te = (KeypadTileEntity)world.getTileEntity(pos);
+		else {
+			KeypadTileEntity te = (KeypadTileEntity) world.getTileEntity(pos);
 
-			if(ModuleUtils.isDenied(te, player))
-			{
-				if(te.sendsMessages())
+			if (ModuleUtils.isDenied(te, player)) {
+				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}
-			else if(ModuleUtils.isAllowed(te, player))
-			{
-				if(te.sendsMessages())
+			else if (ModuleUtils.isAllowed(te, player)) {
+				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				activate(state, world, pos, te.getSignalLength());
 			}
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				te.openPasswordGUI(player);
 		}
 
 		return ActionResultType.SUCCESS;
 	}
 
-	public void activate(BlockState state, World world, BlockPos pos, int signalLength){
+	public void activate(BlockState state, World world, BlockPos pos, int signalLength) {
 		world.setBlockState(pos, world.getBlockState(pos).with(POWERED, true));
 		BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYPAD.get());
 		world.getPendingBlockTicks().scheduleTick(pos, this, signalLength);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
-	{
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		world.setBlockState(pos, state.with(POWERED, false));
 		BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYPAD.get());
 	}
 
 	@Override
-	public boolean canProvidePower(BlockState state){
+	public boolean canProvidePower(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public boolean shouldCheckWeakPower(BlockState state, IWorldReader world, BlockPos pos, Direction side)
-	{
+	public boolean shouldCheckWeakPower(BlockState state, IWorldReader world, BlockPos pos, Direction side) {
 		return false;
 	}
 
-	/**
-	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
-	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
-	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-	 */
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
-		if(blockState.get(POWERED))
-			return 15;
-		else
-			return 0;
-	}
-
-	/**
-	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
-	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-	 */
-	@Override
-	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
-		if(blockState.get(POWERED))
+	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		if (blockState.get(POWERED))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		if (blockState.get(POWERED))
+			return 15;
+		else
+			return 0;
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
-	{
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite()).with(POWERED, false);
 	}
 
@@ -137,43 +119,33 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
-		builder.add(FACING);
-		builder.add(POWERED);
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+		builder.add(FACING, POWERED);
 	}
 
-	/**
-	 * Returns a new instance of a block's tile entity class. Called on placing the block.
-	 */
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new KeypadTileEntity();
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.toRotation(state.get(FACING)));
 	}
 
-	public static class Convertible implements IPasswordConvertible
-	{
+	public static class Convertible implements IPasswordConvertible {
 		@Override
-		public Block getOriginalBlock()
-		{
+		public Block getOriginalBlock() {
 			return SCContent.FRAME.get();
 		}
 
 		@Override
-		public boolean convert(PlayerEntity player, World world, BlockPos pos)
-		{
+		public boolean convert(PlayerEntity player, World world, BlockPos pos) {
 			world.setBlockState(pos, SCContent.KEYPAD.get().getDefaultState().with(KeypadBlock.FACING, world.getBlockState(pos).get(FrameBlock.FACING)).with(KeypadBlock.POWERED, false));
 			((IOwnable) world.getTileEntity(pos)).setOwner(player.getUniqueID().toString(), player.getName().getString());
 			return true;

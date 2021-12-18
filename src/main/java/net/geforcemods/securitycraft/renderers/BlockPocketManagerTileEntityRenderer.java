@@ -15,19 +15,16 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<BlockPocketManagerTileEntity>
-{
-	public BlockPocketManagerTileEntityRenderer(TileEntityRendererDispatcher terd)
-	{
+public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<BlockPocketManagerTileEntity> {
+	public BlockPocketManagerTileEntityRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 
 	@Override
-	public void render(BlockPocketManagerTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
-	{
+	public void render(BlockPocketManagerTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		// The code below draws the outline border of a block pocket.
 
-		if(!te.showOutline)
+		if (!te.showOutline)
 			return;
 
 		Matrix4f positionMatrix = matrix.getLast().getMatrix();
@@ -41,8 +38,8 @@ public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<Blo
 		int frontZ = facing == Direction.NORTH || facing == Direction.WEST ? 0 : 1;
 		int backZ = facing == Direction.NORTH || facing == Direction.WEST ? size : 1 - size;
 
-		if(facing == Direction.EAST || facing == Direction.WEST) //x- and z-values get switched when the manager's direction is west or east
-		{
+		//x- and z-values get switched when the manager's direction is west or east
+		if (facing == Direction.EAST || facing == Direction.WEST) {
 			leftX = frontZ;
 			rightX = backZ;
 			frontZ = -half + offset;
@@ -79,8 +76,7 @@ public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<Blo
 	}
 
 	@Override
-	public boolean isGlobalRenderer(BlockPocketManagerTileEntity te)
-	{
+	public boolean isGlobalRenderer(BlockPocketManagerTileEntity te) {
 		return te.showOutline;
 	}
 }

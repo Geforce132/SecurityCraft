@@ -13,22 +13,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class ReinforcedRedstoneBlock extends BaseReinforcedBlock
-{
-	public ReinforcedRedstoneBlock(Block.Properties properties, Block vB)
-	{
+public class ReinforcedRedstoneBlock extends BaseReinforcedBlock {
+	public ReinforcedRedstoneBlock(Block.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 
 	@Override
-	public boolean canProvidePower(BlockState state)
-	{
+	public boolean canProvidePower(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side)
-	{
+	public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
 		return 15;
 	}
 

@@ -10,8 +10,8 @@ import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.ObjectHolder;
 
 /**
- * This class is used with {@link IOwnable} to get the player of the block.
- * Allows for easy access to the player's IGN and UUID, with a few helpful methods as well.
+ * This class is used with {@link IOwnable} to get the player of the block. Allows for easy access to the player's IGN and
+ * UUID, with a few helpful methods as well.
  *
  * @author Geforce
  */
@@ -38,9 +38,8 @@ public class Owner {
 	public static Owner fromCompound(CompoundNBT tag) {
 		Owner owner = new Owner();
 
-		if (tag != null){
+		if (tag != null)
 			owner.read(tag);
-		}
 
 		return owner;
 	}
@@ -69,22 +68,22 @@ public class Owner {
 	 * @return If this user is the owner of the given blocks.
 	 */
 	public boolean owns(IOwnable... ownables) {
-		for(IOwnable ownable : ownables) {
-			if(ownable == null)
+		for (IOwnable ownable : ownables) {
+			if (ownable == null)
 				continue;
 
 			String uuidToCheck = ownable.getOwner().getUUID();
 			String nameToCheck = ownable.getOwner().getName();
 
-			if(ConfigHandler.SERVER.enableTeamOwnership.get() && !PlayerUtils.areOnSameTeam(ownerName, nameToCheck))
+			if (ConfigHandler.SERVER.enableTeamOwnership.get() && !PlayerUtils.areOnSameTeam(ownerName, nameToCheck))
 				return false;
 
 			// Check the player's UUID first.
-			if(uuidToCheck != null && !uuidToCheck.equals(ownerUUID))
+			if (uuidToCheck != null && !uuidToCheck.equals(ownerUUID))
 				return false;
 
 			// If the TileEntity doesn't have a UUID saved, use the player's name instead.
-			if(nameToCheck != null && uuidToCheck.equals("ownerUUID") && !nameToCheck.equals("owner") && !nameToCheck.equals(ownerName))
+			if (nameToCheck != null && uuidToCheck.equals("ownerUUID") && !nameToCheck.equals("owner") && !nameToCheck.equals(ownerName))
 				return false;
 		}
 
@@ -95,16 +94,16 @@ public class Owner {
 	 * @return If this person is the same person as the given player.
 	 */
 	public boolean isOwner(PlayerEntity player) {
-		if(player == null)
+		if (player == null)
 			return false;
 
 		String uuidToCheck = player.getGameProfile().getId().toString();
 		String nameToCheck = player.getName().getString();
 
-		if(ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(ownerName, nameToCheck))
+		if (ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(ownerName, nameToCheck))
 			return true;
 
-		if(uuidToCheck != null && uuidToCheck.equals(ownerUUID))
+		if (uuidToCheck != null && uuidToCheck.equals(ownerUUID))
 			return true;
 
 		return nameToCheck != null && ownerUUID.equals("ownerUUID") && nameToCheck.equals(ownerName);
@@ -176,13 +175,11 @@ public class Owner {
 	 */
 	@Override
 	@Deprecated
-	public boolean equals(Object obj)
-	{
-		return obj instanceof Owner && getName().equals(((Owner)obj).getName()) && getUUID().equals(((Owner)obj).getUUID());
+	public boolean equals(Object obj) {
+		return obj instanceof Owner && getName().equals(((Owner) obj).getName()) && getUUID().equals(((Owner) obj).getUUID());
 	}
 
-	public static IDataSerializer<Owner> getSerializer()
-	{
-		return (IDataSerializer<Owner>)SERIALIZER.getSerializer();
+	public static IDataSerializer<Owner> getSerializer() {
+		return (IDataSerializer<Owner>) SERIALIZER.getSerializer();
 	}
 }

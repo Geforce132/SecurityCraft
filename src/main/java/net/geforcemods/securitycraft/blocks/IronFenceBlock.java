@@ -38,7 +38,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-public class IronFenceBlock extends OwnableBlock  {
+public class IronFenceBlock extends OwnableBlock {
 	public static final BooleanProperty NORTH = SixWayBlock.NORTH;
 	public static final BooleanProperty EAST = SixWayBlock.EAST;
 	public static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
@@ -48,8 +48,7 @@ public class IronFenceBlock extends OwnableBlock  {
 	protected final VoxelShape[] shapes;
 	private final VoxelShape[] renderShapes;
 
-	public IronFenceBlock(Block.Properties properties)
-	{
+	public IronFenceBlock(Block.Properties properties) {
 		super(properties);
 
 		setDefaultState(stateContainer.getBaseState().with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false));
@@ -59,13 +58,11 @@ public class IronFenceBlock extends OwnableBlock  {
 	}
 
 	@Override
-	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos)
-	{
+	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos) {
 		return renderShapes[getIndex(state)];
 	}
 
-	protected VoxelShape[] func_196408_a(float p_196408_1_, float p_196408_2_, float p_196408_3_, float p_196408_4_, float p_196408_5_)
-	{
+	protected VoxelShape[] func_196408_a(float p_196408_1_, float p_196408_2_, float p_196408_3_, float p_196408_4_, float p_196408_5_) {
 		float f = 8.0F - p_196408_1_;
 		float f1 = 8.0F + p_196408_1_;
 		float f2 = 8.0F - p_196408_2_;
@@ -77,10 +74,11 @@ public class IronFenceBlock extends OwnableBlock  {
 		VoxelShape voxelshape4 = Block.makeCuboidShape(f2, p_196408_4_, f2, 16.0D, p_196408_5_, f3);
 		VoxelShape voxelshape5 = VoxelShapes.or(voxelshape1, voxelshape4);
 		VoxelShape voxelshape6 = VoxelShapes.or(voxelshape2, voxelshape3);
-		VoxelShape[] returnValue = {VoxelShapes.empty(), voxelshape2, voxelshape3, voxelshape6, voxelshape1, VoxelShapes.or(voxelshape2, voxelshape1), VoxelShapes.or(voxelshape3, voxelshape1), VoxelShapes.or(voxelshape6, voxelshape1), voxelshape4, VoxelShapes.or(voxelshape2, voxelshape4), VoxelShapes.or(voxelshape3, voxelshape4), VoxelShapes.or(voxelshape6, voxelshape4), voxelshape5, VoxelShapes.or(voxelshape2, voxelshape5), VoxelShapes.or(voxelshape3, voxelshape5), VoxelShapes.or(voxelshape6, voxelshape5)};
+		VoxelShape[] returnValue = {
+				VoxelShapes.empty(), voxelshape2, voxelshape3, voxelshape6, voxelshape1, VoxelShapes.or(voxelshape2, voxelshape1), VoxelShapes.or(voxelshape3, voxelshape1), VoxelShapes.or(voxelshape6, voxelshape1), voxelshape4, VoxelShapes.or(voxelshape2, voxelshape4), VoxelShapes.or(voxelshape3, voxelshape4), VoxelShapes.or(voxelshape6, voxelshape4), voxelshape5, VoxelShapes.or(voxelshape2, voxelshape5), VoxelShapes.or(voxelshape3, voxelshape5), VoxelShapes.or(voxelshape6, voxelshape5)
+		};
 
-		for(int i = 0; i < 16; ++i)
-		{
+		for (int i = 0; i < 16; ++i) {
 			returnValue[i] = VoxelShapes.or(voxelshape, returnValue[i]);
 		}
 
@@ -88,19 +86,16 @@ public class IronFenceBlock extends OwnableBlock  {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		return shapes[getIndex(state)];
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		return collisionShapes[getIndex(state)];
 	}
 
-	public boolean func_220111_a(BlockState state, boolean p_220111_2_, Direction direction)
-	{
+	public boolean func_220111_a(BlockState state, boolean p_220111_2_, Direction direction) {
 		Block block = state.getBlock();
 		boolean flag = block.isIn(BlockTags.FENCES) && state.getMaterial() == material;
 		boolean flag1 = block instanceof FenceGateBlock && FenceGateBlock.isParallel(state, direction);
@@ -108,13 +103,11 @@ public class IronFenceBlock extends OwnableBlock  {
 		return !cannotAttach(block) && p_220111_2_ || flag || flag1;
 	}
 
-	private static int getMask(Direction facing)
-	{
+	private static int getMask(Direction facing) {
 		return 1 << facing.getHorizontalIndex();
 	}
 
-	protected int getIndex(BlockState state)
-	{
+	protected int getIndex(BlockState state) {
 		int i = 0;
 
 		if (state.get(NORTH))
@@ -133,16 +126,13 @@ public class IronFenceBlock extends OwnableBlock  {
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type)
-	{
+	public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
 		return false;
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
-		switch(rot)
-		{
+	public BlockState rotate(BlockState state, Rotation rot) {
+		switch (rot) {
 			case CLOCKWISE_180:
 				return state.with(NORTH, state.get(SOUTH)).with(EAST, state.get(WEST)).with(SOUTH, state.get(NORTH)).with(WEST, state.get(EAST));
 			case COUNTERCLOCKWISE_90:
@@ -155,10 +145,8 @@ public class IronFenceBlock extends OwnableBlock  {
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
-		switch(mirror)
-		{
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		switch (mirror) {
 			case LEFT_RIGHT:
 				return state.with(NORTH, state.get(SOUTH)).with(SOUTH, state.get(NORTH));
 			case FRONT_BACK:
@@ -169,8 +157,7 @@ public class IronFenceBlock extends OwnableBlock  {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		IBlockReader iblockreader = ctx.getWorld();
 		BlockPos blockpos = ctx.getPos();
 		BlockPos blockpos1 = blockpos.north();
@@ -185,41 +172,35 @@ public class IronFenceBlock extends OwnableBlock  {
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(NORTH, EAST, WEST, SOUTH);
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
-	{
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? state.with(FACING_TO_PROPERTY_MAP.get(facing), func_220111_a(facingState, facingState.isSolidSide(world, facingPos, facing.getOpposite()), facing.getOpposite())) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		return ActionResultType.FAIL;
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
-	{
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		//so dropped items don't get destroyed
-		if(entity instanceof ItemEntity)
+		if (entity instanceof ItemEntity)
 			return;
 		//owner check
-		else if(entity instanceof PlayerEntity)
-		{
-			if(((OwnableTileEntity) world.getTileEntity(pos)).getOwner().isOwner((PlayerEntity)entity))
+		else if (entity instanceof PlayerEntity) {
+			if (((OwnableTileEntity) world.getTileEntity(pos)).getOwner().isOwner((PlayerEntity) entity))
 				return;
 		}
-		else if(!world.isRemote && entity instanceof CreeperEntity)
-		{
-			CreeperEntity creeper = (CreeperEntity)entity;
+		else if (!world.isRemote && entity instanceof CreeperEntity) {
+			CreeperEntity creeper = (CreeperEntity) entity;
 			LightningBoltEntity lightning = WorldUtils.createLightning(world, Vector3d.copyCenteredHorizontally(pos), true);
 
-			creeper.causeLightningStrike((ServerWorld)world, lightning);
+			creeper.causeLightningStrike((ServerWorld) world, lightning);
 			creeper.extinguish();
 			return;
 		}
@@ -228,16 +209,14 @@ public class IronFenceBlock extends OwnableBlock  {
 	}
 
 	@Override
-	public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam)
-	{
+	public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam) {
 		super.eventReceived(state, world, pos, eventID, eventParam);
 		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
-	{
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new OwnableTileEntity(SCContent.teTypeAbstract);
 	}
 }

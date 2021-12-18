@@ -7,8 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.registries.ObjectHolder;
 
-public class QuarkCompat
-{
+public class QuarkCompat {
 	@ObjectHolder("quark:oak_chest")
 	private static Block oakChest;
 	@ObjectHolder("quark:spruce_chest")
@@ -26,61 +25,52 @@ public class QuarkCompat
 	@ObjectHolder("quark:warped_chest")
 	private static Block warpedChest;
 
-	public static void registerChestConversions()
-	{
+	public static void registerChestConversions() {
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
 			@Override
-			public Block getOriginalBlock()
-			{
+			public Block getOriginalBlock() {
 				return oakChest;
 			}
 		});
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
 			@Override
-			public Block getOriginalBlock()
-			{
+			public Block getOriginalBlock() {
 				return spruceChest;
 			}
 		});
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
 			@Override
-			public Block getOriginalBlock()
-			{
+			public Block getOriginalBlock() {
 				return birchChest;
 			}
 		});
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
 			@Override
-			public Block getOriginalBlock()
-			{
+			public Block getOriginalBlock() {
 				return jungleChest;
 			}
 		});
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
 			@Override
-			public Block getOriginalBlock()
-			{
+			public Block getOriginalBlock() {
 				return acaciaChest;
 			}
 		});
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
 			@Override
-			public Block getOriginalBlock()
-			{
+			public Block getOriginalBlock() {
 				return darkOakChest;
 			}
 		});
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
 			@Override
-			public Block getOriginalBlock()
-			{
+			public Block getOriginalBlock() {
 				return crimsonChest;
 			}
 		});
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
 			@Override
-			public Block getOriginalBlock()
-			{
+			public Block getOriginalBlock() {
 				return warpedChest;
 			}
 		});

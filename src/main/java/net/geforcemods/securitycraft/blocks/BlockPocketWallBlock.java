@@ -24,44 +24,37 @@ import net.minecraft.world.IBlockReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket
-{
+public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 	public static final BooleanProperty SEE_THROUGH = BooleanProperty.create("see_through");
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
 
-	public BlockPocketWallBlock(Block.Properties properties)
-	{
+	public BlockPocketWallBlock(Block.Properties properties) {
 		super(properties);
 
 		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, true).with(SOLID, false));
 	}
 
-	public static boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
-	{
+	public static boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos) {
 		return state.get(SOLID);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
-		if(!state.get(SOLID) && ctx instanceof EntitySelectionContext)
-		{
-			Entity entity = ((EntitySelectionContext)ctx).getEntity();
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+		if (!state.get(SOLID) && ctx instanceof EntitySelectionContext) {
+			Entity entity = ((EntitySelectionContext) ctx).getEntity();
 
-			if(entity instanceof PlayerEntity)
-			{
+			if (entity instanceof PlayerEntity) {
 				TileEntity te1 = world.getTileEntity(pos);
 
-				if(te1 instanceof BlockPocketTileEntity)
-				{
-					BlockPocketTileEntity te = (BlockPocketTileEntity)te1;
+				if (te1 instanceof BlockPocketTileEntity) {
+					BlockPocketTileEntity te = (BlockPocketTileEntity) te1;
 
-					if(te.getManager() == null)
+					if (te.getManager() == null)
 						return VoxelShapes.empty();
 
-					if(ModuleUtils.isAllowed(te.getManager(), entity))
+					if (ModuleUtils.isAllowed(te.getManager(), entity))
 						return VoxelShapes.empty();
-					else if(!te.getOwner().isOwner((PlayerEntity)entity))
+					else if (!te.getOwner().isOwner((PlayerEntity) entity))
 						return VoxelShapes.fullCube();
 					else
 						return VoxelShapes.empty();
@@ -73,33 +66,28 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket
 	}
 
 	@Override
-	public boolean canCreatureSpawn(BlockState state, IBlockReader world, BlockPos pos, PlacementType type, EntityType<?> entityType)
-	{
+	public boolean canCreatureSpawn(BlockState state, IBlockReader world, BlockPos pos, PlacementType type, EntityType<?> entityType) {
 		return false;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side)
-	{
+	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return state.get(SEE_THROUGH) && adjacentBlockState.getBlock() == SCContent.BLOCK_POCKET_WALL.get();
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		return super.getStateForPlacement(context).with(SEE_THROUGH, true);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(SEE_THROUGH, SOLID);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
-	{
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new BlockPocketTileEntity();
 	}
 }

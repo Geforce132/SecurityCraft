@@ -18,71 +18,60 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
 import net.minecraftforge.client.ForgeHooksClient;
 
-public class BlockMineModel implements IBakedModel
-{
+public class BlockMineModel implements IBakedModel {
 	private final IBakedModel defaultModel;
 	private final IBakedModel guiModel;
 
-	public BlockMineModel(IBakedModel defaultModel, IBakedModel guiModel)
-	{
+	public BlockMineModel(IBakedModel defaultModel, IBakedModel guiModel) {
 		this.defaultModel = defaultModel;
 		this.guiModel = guiModel;
 	}
 
 	@Override
-	public boolean doesHandlePerspectives()
-	{
+	public boolean doesHandlePerspectives() {
 		return true;
 	}
 
 	@Override
-	public IBakedModel handlePerspective(TransformType cameraTransformType, MatrixStack matrix)
-	{
-		if(cameraTransformType == TransformType.GUI)
+	public IBakedModel handlePerspective(TransformType cameraTransformType, MatrixStack matrix) {
+		if (cameraTransformType == TransformType.GUI)
 			return ForgeHooksClient.handlePerspective(guiModel, cameraTransformType, matrix);
 		else
 			return ForgeHooksClient.handlePerspective(defaultModel, cameraTransformType, matrix);
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand)
-	{
+	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
 		return defaultModel == null ? new ArrayList<>() : defaultModel.getQuads(state, side, rand);
 	}
 
 	@Override
-	public boolean isAmbientOcclusion()
-	{
+	public boolean isAmbientOcclusion() {
 		return defaultModel == null ? true : defaultModel.isAmbientOcclusion();
 	}
 
 	@Override
-	public boolean isGui3d()
-	{
+	public boolean isGui3d() {
 		return defaultModel == null ? false : defaultModel.isGui3d();
 	}
 
 	@Override
-	public boolean isSideLit()
-	{
+	public boolean isSideLit() {
 		return defaultModel.isSideLit();
 	}
 
 	@Override
-	public boolean isBuiltInRenderer()
-	{
+	public boolean isBuiltInRenderer() {
 		return defaultModel == null ? false : defaultModel.isBuiltInRenderer();
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleTexture()
-	{
+	public TextureAtlasSprite getParticleTexture() {
 		return defaultModel == null ? Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(MissingTextureSprite.getLocation()) : defaultModel.getParticleTexture();
 	}
 
 	@Override
-	public ItemOverrideList getOverrides()
-	{
+	public ItemOverrideList getOverrides() {
 		return defaultModel == null ? ItemOverrideList.EMPTY : defaultModel.getOverrides();
 	}
 }

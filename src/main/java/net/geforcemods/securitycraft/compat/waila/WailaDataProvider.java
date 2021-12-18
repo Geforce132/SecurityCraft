@@ -40,8 +40,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.ModList;
 
 @WailaPlugin(SecurityCraft.MODID)
-public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider
-{
+public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider {
 	public static final WailaDataProvider INSTANCE = new WailaDataProvider();
 	public static final ResourceLocation SHOW_OWNER = new ResourceLocation(SecurityCraft.MODID, "showowner");
 	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
@@ -51,8 +50,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	private static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormatting(TextFormatting.WHITE);
 
 	@Override
-	public void register(IRegistrar registrar)
-	{
+	public void register(IRegistrar registrar) {
 		registrar.addSyncedConfig(SHOW_OWNER, true);
 		registrar.addSyncedConfig(SHOW_MODULES, true);
 		registrar.addSyncedConfig(SHOW_PASSWORDS, true);
@@ -70,9 +68,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	}
 
 	@Override
-	public void appendHead(List<ITextComponent> head, IDataAccessor data, IPluginConfig config)
-	{
-		head.set(0, new TranslationTextComponent(((IOverlayDisplay)data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition()).getTranslationKey()).setStyle(ITEM_NAME_STYLE));
+	public void appendHead(List<ITextComponent> head, IDataAccessor data, IPluginConfig config) {
+		head.set(0, new TranslationTextComponent(((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition()).getTranslationKey()).setStyle(ITEM_NAME_STYLE));
 	}
 
 	@Override
@@ -80,39 +77,39 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		Block block = data.getBlock();
 		boolean disguised = false;
 
-		if(block instanceof DisguisableBlock)
-		{
-			BlockState disguisedBlockState = ((DisguisableBlock)block).getDisguisedBlockState(data.getWorld(), data.getPosition());
+		if (block instanceof DisguisableBlock) {
+			BlockState disguisedBlockState = ((DisguisableBlock) block).getDisguisedBlockState(data.getWorld(), data.getPosition());
 
-			if(disguisedBlockState != null)
-			{
+			if (disguisedBlockState != null) {
 				disguised = true;
 				block = disguisedBlockState.getBlock();
 			}
 		}
 
-		if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition()))
+		if (block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition()))
 			return;
 
 		TileEntity te = data.getTileEntity();
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
-		if(config.get(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
+		if (config.get(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID)) {
 			body.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner().getName())));
+		}
 
-		if(disguised)
+		if (disguised)
 			return;
 
 		//if the te is ownable, show modules only when it's owned, otherwise always show
-		if(config.get(SHOW_MODULES) && te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(data.getPlayer()))){
-			if(!((IModuleInventory) te).getInsertedModules().isEmpty())
+		if (config.get(SHOW_MODULES) && te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(data.getPlayer()))) {
+			if (!((IModuleInventory) te).getInsertedModules().isEmpty())
 				body.add(Utils.localize("waila.securitycraft:equipped"));
 
-			for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
+			for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
 				body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(module.getTranslationKey())));
+			}
 		}
 
-		if(config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
+		if (config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())) {
 			String password = ((IPasswordProtected) te).getPassword();
 
 			body.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
@@ -120,9 +117,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	}
 
 	@Override
-	public void appendTail(List<ITextComponent> tail, IDataAccessor data, IPluginConfig config)
-	{
-		ItemStack disguisedAs = ((IOverlayDisplay)data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
+	public void appendTail(List<ITextComponent> tail, IDataAccessor data, IPluginConfig config) {
+		ItemStack disguisedAs = ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
 
 		tail.set(0, new StringTextComponent(ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()).setStyle(MOD_NAME_STYLE));
 	}
@@ -131,34 +127,31 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public void appendBody(List<ITextComponent> body, IEntityAccessor data, IPluginConfig config) {
 		Entity entity = data.getEntity();
 
-		if(entity instanceof SentryEntity)
-		{
-			SentryEntity sentry = (SentryEntity)entity;
+		if (entity instanceof SentryEntity) {
+			SentryEntity sentry = (SentryEntity) entity;
 			SentryMode mode = sentry.getMode();
 
-			if(config.get(SHOW_OWNER))
+			if (config.get(SHOW_OWNER))
 				body.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())));
 
-			if(config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())){
-
-				if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())
-				{
+			if (config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())) {
+				if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
 					body.add(Utils.localize("waila.securitycraft:equipped"));
 
-					if(!sentry.getAllowlistModule().isEmpty())
+					if (!sentry.getAllowlistModule().isEmpty())
 						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())));
 
-					if(!sentry.getDisguiseModule().isEmpty())
+					if (!sentry.getDisguiseModule().isEmpty())
 						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
 
-					if(sentry.hasSpeedModule())
+					if (sentry.hasSpeedModule())
 						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())));
 				}
 			}
 
 			IFormattableTextComponent modeDescription = Utils.localize(mode.getModeKey());
 
-			if(mode != SentryMode.IDLE)
+			if (mode != SentryMode.IDLE)
 				modeDescription.appendString("- ").appendSibling(Utils.localize(mode.getTargetKey()));
 
 			body.add(modeDescription);
@@ -166,7 +159,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	}
 
 	public static void onWailaRender(WailaRenderEvent.Pre event) {
-		if(ClientHandler.isPlayerMountedOnCamera())
+		if (ClientHandler.isPlayerMountedOnCamera())
 			event.setCanceled(true);
 	}
 }

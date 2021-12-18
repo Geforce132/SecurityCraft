@@ -23,29 +23,25 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPasswordProtected, ILockable
-{
+public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPasswordProtected, ILockable {
 	private String passcode;
 
-	public KeypadDoorTileEntity()
-	{
+	public KeypadDoorTileEntity() {
 		super(SCContent.teTypeKeypadDoor);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 
-		if(passcode != null && !passcode.isEmpty())
+		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
 		return tag;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
-	{
+	public void read(BlockState state, CompoundNBT tag) {
 		super.read(state, tag);
 
 		passcode = tag.getString("passcode");
@@ -53,47 +49,38 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 
 	@Override
 	public void activate(PlayerEntity player) {
-		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadDoorBlock)
-			((KeypadDoorBlock)getBlockState().getBlock()).activate(getBlockState(), world, pos, getSignalLength());
+		if (!world.isRemote && getBlockState().getBlock() instanceof KeypadDoorBlock)
+			((KeypadDoorBlock) getBlockState().getBlock()).activate(getBlockState(), world, pos, getSignalLength());
 	}
 
 	@Override
 	public void openPasswordGUI(PlayerEntity player) {
-		if(getPassword() != null)
-		{
-			if(player instanceof ServerPlayerEntity)
-			{
-				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+		if (getPassword() != null) {
+			if (player instanceof ServerPlayerEntity) {
+				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-					{
+					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, world, pos);
 					}
 
 					@Override
-					public ITextComponent getDisplayName()
-					{
+					public ITextComponent getDisplayName() {
 						return KeypadDoorTileEntity.super.getDisplayName();
 					}
 				}, pos);
 			}
 		}
-		else
-		{
-			if(getOwner().isOwner(player))
-			{
-				if(player instanceof ServerPlayerEntity)
-				{
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+		else {
+			if (getOwner().isOwner(player)) {
+				if (player instanceof ServerPlayerEntity) {
+					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-						{
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, world, pos);
 						}
 
 						@Override
-						public ITextComponent getDisplayName()
-						{
+						public ITextComponent getDisplayName() {
 							return KeypadDoorTileEntity.super.getDisplayName();
 						}
 					}, pos);
@@ -106,7 +93,7 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 
 	@Override
 	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
-		if(!blockState.get(DoorBlock.OPEN)) {
+		if (!blockState.get(DoorBlock.OPEN)) {
 			activate(player);
 			return true;
 		}
@@ -125,30 +112,29 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 
 		passcode = password;
 
-		if(getBlockState().get(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
+		if (getBlockState().get(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
 			te = world.getTileEntity(pos.up());
-		else if(getBlockState().get(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
+		else if (getBlockState().get(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
 			te = world.getTileEntity(pos.down());
 
-		if(te instanceof KeypadDoorTileEntity)
-			((KeypadDoorTileEntity)te).setPasswordExclusively(password);
+		if (te instanceof KeypadDoorTileEntity)
+			((KeypadDoorTileEntity) te).setPasswordExclusively(password);
 	}
 
 	//only set the password for this door half
-	public void setPasswordExclusively(String password)
-	{
+	public void setPasswordExclusively(String password) {
 		passcode = password;
 	}
 
 	@Override
-	public ModuleType[] acceptedModules()
-	{
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.DENYLIST};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST
+		};
 	}
 
 	@Override
-	public int defaultSignalLength()
-	{
+	public int defaultSignalLength() {
 		return 60;
 	}
 }

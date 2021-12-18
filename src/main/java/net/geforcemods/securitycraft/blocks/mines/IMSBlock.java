@@ -34,7 +34,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class IMSBlock extends OwnableBlock {
-
 	public static final IntegerProperty MINES = IntegerProperty.create("mines", 0, 4);
 	private static final VoxelShape SHAPE = Block.makeCuboidShape(4, 0, 5, 12, 7, 11);
 	private static final VoxelShape SHAPE_1_MINE = VoxelShapes.or(SHAPE, Block.makeCuboidShape(0, 0, 0, 5, 5, 5));
@@ -48,21 +47,23 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos)
-	{
+	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos) {
 		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getPlayerRelativeBlockHardness(state, player, world, pos);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
-	{
-		switch(state.get(MINES))
-		{
-			case 4: return SHAPE_4_MINES;
-			case 3: return SHAPE_3_MINES;
-			case 2: return SHAPE_2_MINES;
-			case 1: return SHAPE_1_MINE;
-			default: return SHAPE;
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
+		switch (state.get(MINES)) {
+			case 4:
+				return SHAPE_4_MINES;
+			case 3:
+				return SHAPE_3_MINES;
+			case 2:
+				return SHAPE_2_MINES;
+			case 1:
+				return SHAPE_1_MINE;
+			default:
+				return SHAPE;
 		}
 	}
 
@@ -75,29 +76,24 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
-		if(!world.isRemote)
-		{
-			if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
-			{
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!world.isRemote) {
+			if (((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
 				ItemStack held = player.getHeldItem(hand);
 				int mines = state.get(MINES);
 
-				if(held.getItem() == SCContent.BOUNCING_BETTY.get().asItem() && mines < 4)
-				{
-					if(!player.isCreative())
+				if (held.getItem() == SCContent.BOUNCING_BETTY.get().asItem() && mines < 4) {
+					if (!player.isCreative())
 						held.shrink(1);
 
 					world.setBlockState(pos, state.with(MINES, mines + 1));
-					((IMSTileEntity)world.getTileEntity(pos)).setBombsRemaining(mines + 1);
+					((IMSTileEntity) world.getTileEntity(pos)).setBombsRemaining(mines + 1);
 				}
-				else if(player instanceof ServerPlayerEntity)
-				{
+				else if (player instanceof ServerPlayerEntity) {
 					TileEntity te = world.getTileEntity(pos);
 
-					if(te instanceof INamedContainerProvider)
-						NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
+					if (te instanceof INamedContainerProvider)
+						NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
 				}
 			}
 		}
@@ -105,13 +101,10 @@ public class IMSBlock extends OwnableBlock {
 		return ActionResultType.SUCCESS;
 	}
 
-	/**
-	 * A randomly called display update to be able to add ParticleTypes or other items for display
-	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World world, BlockPos pos, Random random){
-		if(state.get(MINES) == 0){
+	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
+		if (state.get(MINES) == 0) {
 			double x = pos.getX() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.4F + (random.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
@@ -130,19 +123,16 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
-	{
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		return getDefaultState().with(MINES, 4);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(MINES);
 	}
 
@@ -150,5 +140,4 @@ public class IMSBlock extends OwnableBlock {
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new IMSTileEntity();
 	}
-
 }

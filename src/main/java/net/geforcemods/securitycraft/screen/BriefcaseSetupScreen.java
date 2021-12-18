@@ -27,7 +27,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslationTextComponent setupTitle = Utils.localize("gui.securitycraft:briefcase.setupTitle");
 	private TextFieldWidget keycodeTextbox;
@@ -79,10 +78,10 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	protected void actionPerformed(IdButton button) {
-		if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
+		if (PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
 			ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
 
-			if(!briefcase.hasTag())
+			if (!briefcase.hasTag())
 				briefcase.setTag(new CompoundNBT());
 
 			briefcase.getTag().putString("passcode", keycodeTextbox.getText());

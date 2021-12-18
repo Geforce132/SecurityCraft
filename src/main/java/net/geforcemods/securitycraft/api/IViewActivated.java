@@ -26,21 +26,20 @@ public interface IViewActivated {
 	 */
 	default void checkView(World world, BlockPos pos) {
 		if (!world.isRemote) {
-			if(getViewCooldown() > 0) {
+			if (getViewCooldown() > 0) {
 				setViewCooldown(getViewCooldown() - 1);
 				return;
 			}
 
 			List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(5), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof PlayerEntity));
 
-			for (LivingEntity entity : entities)
-			{
+			for (LivingEntity entity : entities) {
 				double eyeHeight = entity.getEyeHeight();
 				Vector3d lookVec = new Vector3d(entity.getPosX() + (entity.getLookVec().x * 5), (eyeHeight + entity.getPosY()) + (entity.getLookVec().y * 5), entity.getPosZ() + (entity.getLookVec().z * 5));
 				BlockRayTraceResult rtr = world.rayTraceBlocks(new RayTraceContext(new Vector3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
 
-				if(rtr != null && rtr.getPos().getX() == pos.getX() && rtr.getPos().getY() == pos.getY() && rtr.getPos().getZ() == pos.getZ()) {
-					if(onEntityViewed(entity, rtr))
+				if (rtr != null && rtr.getPos().getX() == pos.getX() && rtr.getPos().getY() == pos.getY() && rtr.getPos().getZ() == pos.getZ()) {
+					if (onEntityViewed(entity, rtr))
 						setViewCooldown(getDefaultViewCooldown());
 				}
 			}

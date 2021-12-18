@@ -11,31 +11,27 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class CheckPassword {
-
 	private String password;
 	private int x, y, z;
 
-	public CheckPassword(){
-
+	public CheckPassword() {
 	}
 
-	public CheckPassword(int x, int y, int z, String code){
+	public CheckPassword(int x, int y, int z, String code) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		password = code;
 	}
 
-	public static void encode(CheckPassword message, PacketBuffer buf)
-	{
+	public static void encode(CheckPassword message, PacketBuffer buf) {
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
 		buf.writeInt(message.z);
 		buf.writeString(message.password);
 	}
 
-	public static CheckPassword decode(PacketBuffer buf)
-	{
+	public static CheckPassword decode(PacketBuffer buf) {
 		CheckPassword message = new CheckPassword();
 
 		message.x = buf.readInt();
@@ -45,18 +41,16 @@ public class CheckPassword {
 		return message;
 	}
 
-	public static void onMessage(CheckPassword message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(CheckPassword message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			String password = message.password;
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.world.getTileEntity(pos);
 
-			if(te instanceof IPasswordProtected && ((IPasswordProtected)te).getPassword().equals(password))
-			{
+			if (te instanceof IPasswordProtected && ((IPasswordProtected) te).getPassword().equals(password)) {
 				((ServerPlayerEntity) player).closeScreen();
-				((IPasswordProtected)te).activate(player);
+				((IPasswordProtected) te).activate(player);
 			}
 		});
 

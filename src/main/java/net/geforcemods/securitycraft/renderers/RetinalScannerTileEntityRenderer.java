@@ -32,26 +32,21 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.LightType;
 
-public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<RetinalScannerTileEntity>
-{
+public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<RetinalScannerTileEntity> {
 	private static final float CORRECT_FACTOR = 1 / 550F;
 
-	public RetinalScannerTileEntityRenderer(TileEntityRendererDispatcher terd)
-	{
+	public RetinalScannerTileEntityRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 
 	@Override
-	public void render(RetinalScannerTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
-	{
+	public void render(RetinalScannerTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		Direction direction = te.getBlockState().get(RetinalScannerBlock.FACING);
 
-		if(!te.hasModule(ModuleType.DISGUISE) && direction != null)
-		{
+		if (!te.hasModule(ModuleType.DISGUISE) && direction != null) {
 			matrix.push();
 
-			switch(direction)
-			{
+			switch (direction) {
 				case NORTH:
 					matrix.translate(0.25F, 1.0F / 16.0F, 0.0F);
 					break;
@@ -97,10 +92,8 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 		}
 	}
 
-	private static ResourceLocation getSkinTexture(@Nullable GameProfile profile)
-	{
-		if(ConfigHandler.SERVER.retinalScannerFace.get() && profile != null)
-		{
+	private static ResourceLocation getSkinTexture(@Nullable GameProfile profile) {
+		if (ConfigHandler.SERVER.retinalScannerFace.get() && profile != null) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache(profile);
 			return map.containsKey(Type.SKIN) ? minecraft.getSkinManager().loadSkin(map.get(Type.SKIN), Type.SKIN) : DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(profile));

@@ -41,8 +41,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWaterLoggable
-{
+public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWaterLoggable {
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 	public static final EnumProperty<Half> HALF = BlockStateProperties.HALF;
 	public static final EnumProperty<StairsShape> SHAPE = BlockStateProperties.STAIRS_SHAPE;
@@ -59,17 +58,17 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	protected static final VoxelShape SEU_CORNER = Block.makeCuboidShape(8.0D, 8.0D, 8.0D, 16.0D, 16.0D, 16.0D);
 	protected static final VoxelShape[] SLAB_TOP_SHAPES = makeShapes(AABB_SLAB_TOP, NWD_CORNER, NED_CORNER, SWD_CORNER, SED_CORNER);
 	protected static final VoxelShape[] SLAB_BOTTOM_SHAPES = makeShapes(AABB_SLAB_BOTTOM, NWU_CORNER, NEU_CORNER, SWU_CORNER, SEU_CORNER);
-	private static final int[] field_196522_K = {12, 5, 3, 10, 14, 13, 7, 11, 13, 7, 11, 14, 8, 4, 1, 2, 4, 1, 2, 8};
+	private static final int[] field_196522_K = {
+			12, 5, 3, 10, 14, 13, 7, 11, 13, 7, 11, 14, 8, 4, 1, 2, 4, 1, 2, 8
+	};
 	private final Block modelBlock;
 	private final BlockState modelState;
 
-	public ReinforcedStairsBlock(Block.Properties properties, Block vB)
-	{
+	public ReinforcedStairsBlock(Block.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedStairsBlock(Block.Properties properties, Supplier<Block> vB)
-	{
+	public ReinforcedStairsBlock(Block.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HALF, Half.BOTTOM).with(SHAPE, StairsShape.STRAIGHT).with(WATERLOGGED, false));
@@ -77,110 +76,94 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 		modelState = modelBlock.getDefaultState();
 	}
 
-	private static VoxelShape[] makeShapes(VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner)
-	{
+	private static VoxelShape[] makeShapes(VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner) {
 		return IntStream.range(0, 16).mapToObj(shape -> combineShapes(shape, slabShape, nwCorner, neCorner, swCorner, seCorner)).toArray(size -> new VoxelShape[size]);
 	}
 
-	private static VoxelShape combineShapes(int bitfield, VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner)
-	{
+	private static VoxelShape combineShapes(int bitfield, VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner) {
 		VoxelShape shape = slabShape;
 
-		if((bitfield & 1) != 0)
+		if ((bitfield & 1) != 0)
 			shape = VoxelShapes.or(slabShape, nwCorner);
 
-		if((bitfield & 2) != 0)
+		if ((bitfield & 2) != 0)
 			shape = VoxelShapes.or(shape, neCorner);
 
-		if((bitfield & 4) != 0)
+		if ((bitfield & 4) != 0)
 			shape = VoxelShapes.or(shape, swCorner);
 
-		if((bitfield & 8) != 0)
+		if ((bitfield & 8) != 0)
 			shape = VoxelShapes.or(shape, seCorner);
 
 		return shape;
 	}
 
 	@Override
-	public boolean isTransparent(BlockState state)
-	{
+	public boolean isTransparent(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return (state.get(HALF) == Half.TOP ? SLAB_TOP_SHAPES : SLAB_BOTTOM_SHAPES)[field_196522_K[func_196511_x(state)]];
 	}
 
-	private int func_196511_x(BlockState state)
-	{
+	private int func_196511_x(BlockState state) {
 		return state.get(SHAPE).ordinal() * 4 + state.get(FACING).getHorizontalIndex();
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
-	{
+	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		modelBlock.animateTick(stateIn, worldIn, pos, rand);
 	}
 
 	@Override
-	public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player)
-	{
+	public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
 		modelState.onBlockClicked(worldIn, pos, player);
 	}
 
 	@Override
-	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state)
-	{
+	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state) {
 		modelBlock.onPlayerDestroy(worldIn, pos, state);
 	}
 
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving)
-	{
-		if(state.getBlock() != oldState.getBlock())
-		{
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
+		if (state.getBlock() != oldState.getBlock()) {
 			modelState.neighborChanged(world, pos, Blocks.AIR, pos, false);
 			modelBlock.onBlockAdded(modelState, world, pos, oldState, false);
 		}
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-	{
-		if(state.getBlock() != newState.getBlock())
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (state.getBlock() != newState.getBlock())
 			modelState.onReplaced(world, pos, newState, isMoving);
 	}
 
 	@Override
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entity)
-	{
+	public void onEntityWalk(World worldIn, BlockPos pos, Entity entity) {
 		modelBlock.onEntityWalk(worldIn, pos, entity);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
-	{
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		modelState.tick(world, pos, random);
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		return modelState.onBlockActivated(world, player, hand, hit);
 	}
 
 	@Override
-	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion)
-	{
+	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion) {
 		modelBlock.onExplosionDestroy(world, pos, explosion);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		Direction dir = ctx.getFace();
 		BlockPos pos = ctx.getPos();
 		FluidState fluidState = ctx.getWorld().getFluidState(pos);
@@ -190,79 +173,68 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
-	{
-		if(state.get(WATERLOGGED))
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+		if (state.get(WATERLOGGED))
 			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 
 		return facing.getAxis().isHorizontal() ? state.with(SHAPE, getShapeProperty(state, world, currentPos)) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
-	private static StairsShape getShapeProperty(BlockState state, IBlockReader world, BlockPos pos)
-	{
+	private static StairsShape getShapeProperty(BlockState state, IBlockReader world, BlockPos pos) {
 		Direction dir = state.get(FACING);
 		BlockState offsetState = world.getBlockState(pos.offset(dir));
 
-		if(isBlockStairs(offsetState) && state.get(HALF) == offsetState.get(HALF))
-		{
+		if (isBlockStairs(offsetState) && state.get(HALF) == offsetState.get(HALF)) {
 			Direction offsetDir = offsetState.get(FACING);
 
-			if(offsetDir.getAxis() != state.get(FACING).getAxis() && isDifferentStairs(state, world, pos, offsetDir.getOpposite()))
-			{
-				if(offsetDir == dir.rotateYCCW())
+			if (offsetDir.getAxis() != state.get(FACING).getAxis() && isDifferentStairs(state, world, pos, offsetDir.getOpposite())) {
+				if (offsetDir == dir.rotateYCCW())
 					return StairsShape.OUTER_LEFT;
-				else return StairsShape.OUTER_RIGHT;
+				else
+					return StairsShape.OUTER_RIGHT;
 			}
 		}
 
 		BlockState offsetOppositeState = world.getBlockState(pos.offset(dir.getOpposite()));
 
-		if (isBlockStairs(offsetOppositeState) && state.get(HALF) == offsetOppositeState.get(HALF))
-		{
+		if (isBlockStairs(offsetOppositeState) && state.get(HALF) == offsetOppositeState.get(HALF)) {
 			Direction offsetOppositeDir = offsetOppositeState.get(FACING);
 
-			if(offsetOppositeDir.getAxis() != state.get(FACING).getAxis() && isDifferentStairs(state, world, pos, offsetOppositeDir))
-			{
-				if(offsetOppositeDir == dir.rotateYCCW())
+			if (offsetOppositeDir.getAxis() != state.get(FACING).getAxis() && isDifferentStairs(state, world, pos, offsetOppositeDir)) {
+				if (offsetOppositeDir == dir.rotateYCCW())
 					return StairsShape.INNER_LEFT;
-				else return StairsShape.INNER_RIGHT;
+				else
+					return StairsShape.INNER_RIGHT;
 			}
 		}
 
 		return StairsShape.STRAIGHT;
 	}
 
-	private static boolean isDifferentStairs(BlockState state, IBlockReader world, BlockPos pos, Direction face)
-	{
+	private static boolean isDifferentStairs(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 		BlockState offsetState = world.getBlockState(pos.offset(face));
 
 		return !isBlockStairs(offsetState) || offsetState.get(FACING) != state.get(FACING) || offsetState.get(HALF) != state.get(HALF);
 	}
 
-	public static boolean isBlockStairs(BlockState state)
-	{
+	public static boolean isBlockStairs(BlockState state) {
 		return state.getBlock() instanceof ReinforcedStairsBlock || state.getBlock() instanceof StairsBlock;
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		Direction direction = state.get(FACING);
 		StairsShape shape = state.get(SHAPE);
 
-		switch(mirror)
-		{
+		switch (mirror) {
 			case LEFT_RIGHT:
-				if (direction.getAxis() == Direction.Axis.Z)
-				{
-					switch(shape)
-					{
+				if (direction.getAxis() == Direction.Axis.Z) {
+					switch (shape) {
 						case INNER_LEFT:
 							return state.rotate(Rotation.CLOCKWISE_180).with(SHAPE, StairsShape.INNER_RIGHT);
 						case INNER_RIGHT:
@@ -277,10 +249,8 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 				}
 				break;
 			case FRONT_BACK:
-				if (direction.getAxis() == Direction.Axis.X)
-				{
-					switch(shape)
-					{
+				if (direction.getAxis() == Direction.Axis.X) {
+					switch (shape) {
 						case INNER_LEFT:
 							return state.rotate(Rotation.CLOCKWISE_180).with(SHAPE, StairsShape.INNER_LEFT);
 						case INNER_RIGHT:
@@ -302,8 +272,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(FACING, HALF, SHAPE, WATERLOGGED);
 	}
 
@@ -313,14 +282,12 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type)
-	{
+	public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
 		return false;
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return getDefaultState().with(SHAPE, vanillaState.get(SHAPE)).with(FACING, vanillaState.get(FACING)).with(HALF, vanillaState.get(HALF)).with(WATERLOGGED, vanillaState.get(WATERLOGGED));
 	}
 }

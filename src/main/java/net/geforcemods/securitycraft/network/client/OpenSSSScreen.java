@@ -27,13 +27,12 @@ public class OpenSSSScreen {
 		return new OpenSSSScreen(buf.readBlockPos());
 	}
 
-	public static void onMessage(OpenSSSScreen message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(OpenSSSScreen message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			TileEntity te = Minecraft.getInstance().world.getTileEntity(message.pos);
 
 			if (te instanceof SonicSecuritySystemTileEntity)
-				ClientHandler.displaySonicSecuritySystemGui((SonicSecuritySystemTileEntity)te);
+				ClientHandler.displaySonicSecuritySystemGui((SonicSecuritySystemTileEntity) te);
 		});
 		ctx.get().setPacketHandled(true);
 	}

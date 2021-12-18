@@ -24,9 +24,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class KeypadTileEntity extends DisguisableTileEntity implements IPasswordProtected, ILockable {
-
 	private String passcode;
-
 	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
 		@Override
 		public void toggle() {
@@ -39,32 +37,22 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
-	public KeypadTileEntity()
-	{
+	public KeypadTileEntity() {
 		super(SCContent.teTypeKeypad);
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 
-		if(passcode != null && !passcode.isEmpty())
+		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
-	{
+	public void read(BlockState state, CompoundNBT tag) {
 		super.read(state, tag);
 
 		passcode = tag.getString("passcode");
@@ -72,47 +60,38 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 
 	@Override
 	public void activate(PlayerEntity player) {
-		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadBlock)
-			((KeypadBlock)getBlockState().getBlock()).activate(getBlockState(), world, pos, signalLength.get());
+		if (!world.isRemote && getBlockState().getBlock() instanceof KeypadBlock)
+			((KeypadBlock) getBlockState().getBlock()).activate(getBlockState(), world, pos, signalLength.get());
 	}
 
 	@Override
 	public void openPasswordGUI(PlayerEntity player) {
-		if(getPassword() != null)
-		{
-			if(player instanceof ServerPlayerEntity)
-			{
-				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+		if (getPassword() != null) {
+			if (player instanceof ServerPlayerEntity) {
+				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-					{
+					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, world, pos);
 					}
 
 					@Override
-					public ITextComponent getDisplayName()
-					{
+					public ITextComponent getDisplayName() {
 						return KeypadTileEntity.super.getDisplayName();
 					}
 				}, pos);
 			}
 		}
-		else
-		{
-			if(getOwner().isOwner(player))
-			{
-				if(player instanceof ServerPlayerEntity)
-				{
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+		else {
+			if (getOwner().isOwner(player)) {
+				if (player instanceof ServerPlayerEntity) {
+					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-						{
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, world, pos);
 						}
 
 						@Override
-						public ITextComponent getDisplayName()
-						{
+						public ITextComponent getDisplayName() {
 							return KeypadTileEntity.super.getDisplayName();
 						}
 					}, pos);
@@ -125,7 +104,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 
 	@Override
 	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
-		if(!blockState.get(KeypadBlock.POWERED)) {
+		if (!blockState.get(KeypadBlock.POWERED)) {
 			activate(player);
 			return true;
 		}
@@ -143,24 +122,25 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 		passcode = password;
 	}
 
-
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ isAlwaysActive, sendMessage, signalLength };
+		return new Option[] {
+				isAlwaysActive, sendMessage, signalLength
+		};
 	}
 
-	public boolean sendsMessages()
-	{
+	public boolean sendsMessages() {
 		return sendMessage.get();
 	}
 
-	public int getSignalLength()
-	{
+	public int getSignalLength() {
 		return signalLength.get();
 	}
 }

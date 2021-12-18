@@ -13,19 +13,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BouncingBettyEntity extends Entity {
-
 	/** How long the fuse is */
 	public int fuse;
 
-	public BouncingBettyEntity(EntityType<BouncingBettyEntity> type, World world){
+	public BouncingBettyEntity(EntityType<BouncingBettyEntity> type, World world) {
 		super(SCContent.eTypeBouncingBetty, world);
 	}
 
-	public BouncingBettyEntity(World world, double x, double y, double z){
+	public BouncingBettyEntity(World world, double x, double y, double z) {
 		this(SCContent.eTypeBouncingBetty, world);
 		setPosition(x, y, z);
-		float f = (float)(Math.random() * Math.PI * 2.0D);
-		setMotion(-((float)Math.sin(f)) * 0.02F, 0.20000000298023224D, -((float)Math.cos(f)) * 0.02F);
+		float f = (float) (Math.random() * Math.PI * 2.0D);
+		setMotion(-((float) Math.sin(f)) * 0.02F, 0.20000000298023224D, -((float) Math.cos(f)) * 0.02F);
 		fuse = 80;
 		prevPosX = x;
 		prevPosY = y;
@@ -35,31 +34,18 @@ public class BouncingBettyEntity extends Entity {
 	@Override
 	protected void registerData() {}
 
-	/**
-	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-	 * prevent them from trampling crops
-	 */
 	@Override
-	protected boolean canTriggerWalking()
-	{
+	protected boolean canTriggerWalking() {
 		return false;
 	}
 
-	/**
-	 * Returns true if other Entities should be prevented from moving through this Entity.
-	 */
 	@Override
-	public boolean canBeCollidedWith()
-	{
+	public boolean canBeCollidedWith() {
 		return !removed;
 	}
 
-	/**
-	 * Called to update the entity's position/logic.
-	 */
 	@Override
-	public void tick()
-	{
+	public void tick() {
 		prevPosX = getPosX();
 		prevPosY = getPosY();
 		prevPosZ = getPosZ();
@@ -70,41 +56,30 @@ public class BouncingBettyEntity extends Entity {
 		if (onGround)
 			setMotion(getMotion().mul(0.699999988079071D, 0.699999988079071D, -0.5D));
 
-		if (!world.isRemote && fuse-- <= 0)
-		{
+		if (!world.isRemote && fuse-- <= 0) {
 			remove();
 			explode();
 		}
-		else if(world.isRemote)
+		else if (world.isRemote)
 			world.addParticle(ParticleTypes.SMOKE, false, getPosX(), getPosY() + 0.5D, getPosZ(), 0.0D, 0.0D, 0.0D);
 	}
 
-	private void explode()
-	{
+	private void explode() {
 		world.createExplosion(this, getPosX(), getPosY(), getPosZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 	}
 
-	/**
-	 * (abstract) Protected helper method to write subclass entity data to NBT.
-	 */
 	@Override
-	protected void writeAdditional(CompoundNBT tag)
-	{
-		tag.putByte("Fuse", (byte)fuse);
+	protected void writeAdditional(CompoundNBT tag) {
+		tag.putByte("Fuse", (byte) fuse);
 	}
 
-	/**
-	 * (abstract) Protected helper method to read subclass entity data from NBT.
-	 */
 	@Override
-	protected void readAdditional(CompoundNBT tag)
-	{
+	protected void readAdditional(CompoundNBT tag) {
 		fuse = tag.getByte("Fuse");
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket()
-	{
+	public IPacket<?> createSpawnPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

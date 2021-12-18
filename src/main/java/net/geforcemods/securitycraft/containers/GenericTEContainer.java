@@ -12,8 +12,7 @@ public class GenericTEContainer extends Container {
 	public final TileEntity te;
 	private IWorldPosCallable worldPosCallable;
 
-	public GenericTEContainer(ContainerType<GenericTEContainer> type, int windowId, World world, BlockPos pos)
-	{
+	public GenericTEContainer(ContainerType<GenericTEContainer> type, int windowId, World world, BlockPos pos) {
 		super(type, windowId);
 
 		te = world.getTileEntity(pos);

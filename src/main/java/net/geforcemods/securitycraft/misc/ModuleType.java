@@ -7,13 +7,12 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
 
 /**
- * Simple enum that is supposed to be used in conjunction with {@link CustomizableTileEntity}.
- * Gives easy access to the module ItemStack and name.
+ * Simple enum that is supposed to be used in conjunction with {@link CustomizableTileEntity}. Gives easy access to the
+ * module ItemStack and name.
  *
  * @author Geforce
  */
 public enum ModuleType {
-
 	REDSTONE(SCContent.REDSTONE_MODULE),
 	ALLOWLIST(SCContent.ALLOWLIST_MODULE),
 	DENYLIST(SCContent.DENYLIST_MODULE),
@@ -25,7 +24,7 @@ public enum ModuleType {
 
 	private Supplier<ModuleItem> module;
 
-	private ModuleType(Supplier<ModuleItem> moduleItem){
+	private ModuleType(Supplier<ModuleItem> moduleItem) {
 		module = moduleItem;
 	}
 
@@ -36,5 +35,4 @@ public enum ModuleType {
 	public String getTranslationKey() {
 		return getItem().getTranslationKey();
 	}
-
 }

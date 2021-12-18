@@ -56,16 +56,13 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(disguisedState.getBlock() != this)
+		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(world, pos, ctx);
-		else
-		{
-			switch(state.get(FACING))
-			{
+		else {
+			switch (state.get(FACING)) {
 				case NORTH:
 					return SOUTH;
 				case EAST:
@@ -74,36 +71,34 @@ public class ProjectorBlock extends DisguisableBlock {
 					return NORTH;
 				case WEST:
 					return EAST;
-				default: return VoxelShapes.fullCube();
+				default:
+					return VoxelShapes.fullCube();
 			}
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if(!(te instanceof ProjectorTileEntity))
+		if (!(te instanceof ProjectorTileEntity))
 			return ActionResultType.FAIL;
 
-		boolean isOwner = ((IOwnable)te).getOwner().isOwner(player);
+		boolean isOwner = ((IOwnable) te).getOwner().isOwner(player);
 
-		if(!world.isRemote && isOwner)
-			NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider) te, pos);
+		if (!world.isRemote && isOwner)
+			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
 
 		return isOwner ? ActionResultType.SUCCESS : ActionResultType.FAIL;
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-	{
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if(te instanceof ProjectorTileEntity)
-		{
+		if (te instanceof ProjectorTileEntity) {
 			// Drop the block being projected
-			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorTileEntity)te).getStackInSlot(36));
+			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorTileEntity) te).getStackInSlot(36));
 			WorldUtils.addScheduledTask(world, () -> world.addEntity(item));
 		}
 
@@ -111,18 +106,14 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
-	{
-		if(!world.isRemote)
-		{
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		if (!world.isRemote) {
 			TileEntity tile = world.getTileEntity(pos);
 
-			if(tile instanceof ProjectorTileEntity)
-			{
-				ProjectorTileEntity te =  (ProjectorTileEntity)tile;
+			if (tile instanceof ProjectorTileEntity) {
+				ProjectorTileEntity te = (ProjectorTileEntity) tile;
 
-				if(te.isActivatedByRedstone())
-				{
+				if (te.isActivatedByRedstone()) {
 					te.setActive(world.isBlockPowered(pos));
 					world.notifyBlockUpdate(pos, state, state, 3);
 				}
@@ -131,36 +122,30 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
-	{
-		if(!world.isBlockPowered(pos))
-		{
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
+		if (!world.isBlockPowered(pos)) {
 			TileEntity tile = world.getTileEntity(pos);
 
-			if(tile instanceof ProjectorTileEntity)
-			{
-				ProjectorTileEntity te =  (ProjectorTileEntity)tile;
+			if (tile instanceof ProjectorTileEntity) {
+				ProjectorTileEntity te = (ProjectorTileEntity) tile;
 
-				if(te.isActivatedByRedstone())
+				if (te.isActivatedByRedstone())
 					te.setActive(false);
 			}
 		}
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
-	{
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 
@@ -170,21 +155,18 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.toRotation(state.get(FACING)));
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag)
-	{
+	public void addInformation(ItemStack stack, IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		tooltip.add(TOOLTIP);
 	}
 }

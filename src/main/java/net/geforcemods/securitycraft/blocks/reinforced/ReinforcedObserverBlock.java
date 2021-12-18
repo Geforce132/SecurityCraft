@@ -18,47 +18,39 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock
-{
-	public ReinforcedObserverBlock(Block.Properties properties)
-	{
+public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock {
+	public ReinforcedObserverBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, @Nullable Direction side)
-	{
+	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, @Nullable Direction side) {
 		return side == state.get(ObserverBlock.FACING);
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return Blocks.OBSERVER;
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return getDefaultState().with(FACING, vanillaState.get(FACING)).with(POWERED, vanillaState.get(POWERED));
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
+	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
-	{
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new OwnableTileEntity();
 	}
 }

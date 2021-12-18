@@ -43,28 +43,24 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.RegistryObject;
 
-public class BlockLootTableGenerator implements IDataProvider
-{
+public class BlockLootTableGenerator implements IDataProvider {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-	protected final Map<Supplier<Block>,LootTable.Builder> lootTables = new HashMap<>();
+	protected final Map<Supplier<Block>, LootTable.Builder> lootTables = new HashMap<>();
 	private final DataGenerator generator;
 
-	public BlockLootTableGenerator(DataGenerator generator)
-	{
+	public BlockLootTableGenerator(DataGenerator generator) {
 		this.generator = generator;
 	}
 
-	private void addTables()
-	{
-		for(RegistryObject<Block> obj : SCContent.BLOCKS.getEntries())
-		{
+	private void addTables() {
+		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
 			Block block = obj.get();
 
-			if(block instanceof ReinforcedSlabBlock)
+			if (block instanceof ReinforcedSlabBlock)
 				putSlabLootTable(obj);
-			else if(block instanceof IExplosive)
+			else if (block instanceof IExplosive)
 				putMineLootTable(obj);
-			else if(block.asItem() != Items.AIR)
+			else if (block.asItem() != Items.AIR)
 				putStandardBlockLootTable(obj);
 		}
 
@@ -74,11 +70,11 @@ public class BlockLootTableGenerator implements IDataProvider
 
 		StandaloneLootEntry.Builder<?> imsLootEntryBuilder = ItemLootEntry.builder(SCContent.BOUNCING_BETTY.get());
 
-		for(int i = 0; i <= 4; i++)
-		{
-			if(i == 1) //default
+		for (int i = 0; i <= 4; i++) {
+			if (i == 1)
 				continue;
 
+			//@formatter:off
 			imsLootEntryBuilder.acceptFunction(SetCount.builder(ConstantRange.of(i))
 					.acceptCondition(BlockStateProperty.builder(SCContent.IMS.get())
 							.fromProperties(StatePropertiesPredicate.Builder.newBuilder()
@@ -123,27 +119,27 @@ public class BlockLootTableGenerator implements IDataProvider
 				.addLootPool(LootPool.builder()
 						.rolls(ConstantRange.of(1))
 						.addEntry(ItemLootEntry.builder(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
-						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-								.replaceOperation("LinkedBlocks", "LinkedBlocks")))));
-
+								.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
+										.replaceOperation("LinkedBlocks", "LinkedBlocks")))));
+		//@formatter:on
 	}
 
-	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> drop)
-	{
+	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> drop) {
 		return createStandardBlockLootTable(drop.get());
 	}
 
-	protected final LootTable.Builder createStandardBlockLootTable(IItemProvider drop)
-	{
+	protected final LootTable.Builder createStandardBlockLootTable(IItemProvider drop) {
+		//@formatter:off
 		return LootTable.builder()
 				.addLootPool(LootPool.builder()
 						.rolls(ConstantRange.of(1))
 						.addEntry(ItemLootEntry.builder(drop.asItem()))
 						.acceptCondition(SurvivesExplosion.builder()));
+		//@formatter:on
 	}
 
-	protected final void putDoorLootTable(Supplier<Block> door, Supplier<Item> doorItem)
-	{
+	protected final void putDoorLootTable(Supplier<Block> door, Supplier<Item> doorItem) {
+		//@formatter:off
 		lootTables.put(door, LootTable.builder()
 				.addLootPool(LootPool.builder()
 						.rolls(ConstantRange.of(1))
@@ -152,30 +148,30 @@ public class BlockLootTableGenerator implements IDataProvider
 										.fromProperties(StatePropertiesPredicate.Builder.newBuilder()
 												.withProp(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER)))
 								.acceptCondition(SurvivesExplosion.builder()))));
+		//@formatter:on
 	}
 
-	protected final void putStandardBlockLootTable(Supplier<Block> block)
-	{
+	protected final void putStandardBlockLootTable(Supplier<Block> block) {
 		putStandardBlockLootTable(block, block.get());
 	}
 
-	protected final void putStandardBlockLootTable(Supplier<Block> block, IItemProvider drop)
-	{
+	protected final void putStandardBlockLootTable(Supplier<Block> block, IItemProvider drop) {
 		lootTables.put(block, createStandardBlockLootTable(drop));
 	}
 
-	protected final void putMineLootTable(Supplier<Block> mine)
-	{
+	protected final void putMineLootTable(Supplier<Block> mine) {
+		//@formatter:off
 		lootTables.put(mine, LootTable.builder()
 				.addLootPool(LootPool.builder()
 						.rolls(ConstantRange.of(1))
 						.addEntry(ItemLootEntry.builder(mine.get()))
 						.acceptCondition(SurvivesExplosion.builder())
 						.acceptCondition(Inverted.builder(EntityHasProperty.builder(EntityTarget.THIS)))));
+		//@formatter:on
 	}
 
-	protected final void putSlabLootTable(Supplier<Block> slab)
-	{
+	protected final void putSlabLootTable(Supplier<Block> slab) {
+		//@formatter:off
 		lootTables.put(slab, LootTable.builder()
 				.addLootPool(LootPool.builder()
 						.rolls(ConstantRange.of(1))
@@ -185,35 +181,31 @@ public class BlockLootTableGenerator implements IDataProvider
 												.fromProperties(StatePropertiesPredicate.Builder.newBuilder()
 														.withProp(BlockStateProperties.SLAB_TYPE, SlabType.DOUBLE))))
 								.acceptFunction(ExplosionDecay.builder()))));
+		//@formatter:on
 	}
 
 	@Override
-	public void act(DirectoryCache cache) throws IOException
-	{
-		Map<ResourceLocation,LootTable> tables = new HashMap<>();
+	public void act(DirectoryCache cache) throws IOException {
+		Map<ResourceLocation, LootTable> tables = new HashMap<>();
 
 		addTables();
 
-		for(Map.Entry<Supplier<Block>,LootTable.Builder> entry : lootTables.entrySet())
-		{
+		for (Map.Entry<Supplier<Block>, LootTable.Builder> entry : lootTables.entrySet()) {
 			tables.put(entry.getKey().get().getLootTable(), entry.getValue().setParameterSet(LootParameterSets.BLOCK).build());
 		}
 
 		tables.forEach((key, lootTable) -> {
-			try
-			{
+			try {
 				IDataProvider.save(GSON, cache, LootTableManager.toJson(lootTable), generator.getOutputFolder().resolve("data/" + key.getNamespace() + "/loot_tables/" + key.getPath() + ".json"));
 			}
-			catch (IOException e)
-			{
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 		});
 	}
 
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return "SecurityCraft Block Loot Tables";
 	}
 }

@@ -24,8 +24,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class KeyPanelTileEntity extends CustomizableTileEntity implements IPasswordProtected, ILockable
-{
+public class KeyPanelTileEntity extends CustomizableTileEntity implements IPasswordProtected, ILockable {
 	private String passcode;
 	private BooleanOption isAlwaysActive = new BooleanOption("isAlwaysActive", false) {
 		@Override
@@ -39,101 +38,89 @@ public class KeyPanelTileEntity extends CustomizableTileEntity implements IPassw
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
-	public KeyPanelTileEntity()
-	{
+	public KeyPanelTileEntity() {
 		super(SCContent.teTypeKeyPanel);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 
-		if(passcode != null && !passcode.isEmpty())
+		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
 		return tag;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
-	{
+	public void read(BlockState state, CompoundNBT tag) {
 		super.read(state, tag);
 
 		passcode = tag.getString("passcode");
 	}
 
 	@Override
-	public ModuleType[] acceptedModules()
-	{
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.DENYLIST};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST
+		};
 	}
 
 	@Override
-	public Option<?>[] customOptions()
-	{
-		return new Option[]{ isAlwaysActive, sendMessage, signalLength };
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				isAlwaysActive, sendMessage, signalLength
+		};
 	}
 
 	@Override
-	public void activate(PlayerEntity player)
-	{
-		if(!world.isRemote && getBlockState().getBlock() instanceof KeyPanelBlock)
-			((KeyPanelBlock)getBlockState().getBlock()).activate(getBlockState(), world, pos, signalLength.get());
+	public void activate(PlayerEntity player) {
+		if (!world.isRemote && getBlockState().getBlock() instanceof KeyPanelBlock)
+			((KeyPanelBlock) getBlockState().getBlock()).activate(getBlockState(), world, pos, signalLength.get());
 	}
 
 	@Override
 	public void openPasswordGUI(PlayerEntity player) {
-		if(getPassword() != null)
-		{
-			if(player instanceof ServerPlayerEntity)
-			{
-				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+		if (getPassword() != null) {
+			if (player instanceof ServerPlayerEntity) {
+				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-					{
+					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, world, pos);
 					}
 
 					@Override
-					public ITextComponent getDisplayName()
-					{
+					public ITextComponent getDisplayName() {
 						return KeyPanelTileEntity.super.getDisplayName();
 					}
 				}, pos);
 			}
 		}
-		else
-		{
-			if(getOwner().isOwner(player))
-			{
-				if(player instanceof ServerPlayerEntity)
-				{
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+		else {
+			if (getOwner().isOwner(player)) {
+				if (player instanceof ServerPlayerEntity) {
+					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-						{
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, world, pos);
 						}
 
 						@Override
-						public ITextComponent getDisplayName()
-						{
+						public ITextComponent getDisplayName() {
 							return KeyPanelTileEntity.super.getDisplayName();
 						}
 					}, pos);
 				}
 			}
-			else
+			else {
 				PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+			}
 		}
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState state, PlayerEntity player)
-	{
-		if(!state.get(KeyPanelBlock.POWERED))
-		{
+	public boolean onCodebreakerUsed(BlockState state, PlayerEntity player) {
+		if (!state.get(KeyPanelBlock.POWERED)) {
 			activate(player);
 			return true;
 		}
@@ -142,24 +129,20 @@ public class KeyPanelTileEntity extends CustomizableTileEntity implements IPassw
 	}
 
 	@Override
-	public String getPassword()
-	{
+	public String getPassword() {
 		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
 	}
 
 	@Override
-	public void setPassword(String password)
-	{
+	public void setPassword(String password) {
 		passcode = password;
 	}
 
-	public boolean sendsMessages()
-	{
+	public boolean sendsMessages() {
 		return sendMessage.get();
 	}
 
-	public int getSignalLength()
-	{
+	public int getSignalLength() {
 		return signalLength.get();
 	}
 }

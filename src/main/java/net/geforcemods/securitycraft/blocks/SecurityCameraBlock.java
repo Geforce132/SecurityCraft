@@ -36,8 +36,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class SecurityCameraBlock extends OwnableBlock{
-
+public class SecurityCameraBlock extends OwnableBlock {
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != Direction.UP);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty BEING_VIEWED = BooleanProperty.create("being_viewed");
@@ -53,18 +52,17 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader access, BlockPos pos, ISelectionContext ctx){
+	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader access, BlockPos pos, ISelectionContext ctx) {
 		return VoxelShapes.empty();
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state){
+	public BlockRenderType getRenderType(BlockState state) {
 		return state.get(FACING) == Direction.DOWN ? BlockRenderType.MODEL : BlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-	{
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		super.onReplaced(state, world, pos, newState, isMoving);
 
 		world.notifyNeighborsOfStateChange(pos.north(), world.getBlockState(pos).getBlock());
@@ -74,33 +72,30 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
 		Direction dir = state.get(FACING);
 
-		if(dir == Direction.SOUTH)
+		if (dir == Direction.SOUTH)
 			return SHAPE_SOUTH;
-		else if(dir == Direction.NORTH)
+		else if (dir == Direction.NORTH)
 			return SHAPE_NORTH;
-		else if(dir == Direction.WEST)
+		else if (dir == Direction.WEST)
 			return SHAPE_WEST;
-		else if(dir == Direction.DOWN)
+		else if (dir == Direction.DOWN)
 			return SHAPE_DOWN;
 		else
 			return SHAPE;
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return ctx.getFace() != Direction.UP ? getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer()) : null;
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
-	{
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		BlockState state = getDefaultState().with(FACING, facing);
 
-		if(!isValidPosition(state, world, pos)) {
+		if (!isValidPosition(state, world, pos)) {
 			for (Direction newFacing : Plane.HORIZONTAL) {
 				state = state.with(FACING, newFacing);
 
@@ -112,18 +107,17 @@ public class SecurityCameraBlock extends OwnableBlock{
 		return state;
 	}
 
-	public void mountCamera(World world, BlockPos pos, PlayerEntity player){
-		if(!world.isRemote)
-		{
-			ServerWorld serverWorld = (ServerWorld)world;
-			ServerPlayerEntity serverPlayer = (ServerPlayerEntity)player;
+	public void mountCamera(World world, BlockPos pos, PlayerEntity player) {
+		if (!world.isRemote) {
+			ServerWorld serverWorld = (ServerWorld) world;
+			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 			SecurityCameraEntity dummyEntity;
 			SectionPos chunkPos = SectionPos.from(pos);
 			int viewDistance = serverPlayer.server.getPlayerList().getViewDistance();
 			TileEntity te = world.getTileEntity(pos);
 
-			if(serverPlayer.getSpectatingEntity() instanceof SecurityCameraEntity)
-				dummyEntity = new SecurityCameraEntity(world, pos, (SecurityCameraEntity)serverPlayer.getSpectatingEntity());
+			if (serverPlayer.getSpectatingEntity() instanceof SecurityCameraEntity)
+				dummyEntity = new SecurityCameraEntity(world, pos, (SecurityCameraEntity) serverPlayer.getSpectatingEntity());
 			else
 				dummyEntity = new SecurityCameraEntity(world, pos);
 
@@ -139,34 +133,34 @@ public class SecurityCameraBlock extends OwnableBlock{
 			serverPlayer.spectatingEntity = dummyEntity;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
 
-			if(te instanceof SecurityCameraTileEntity)
-				((SecurityCameraTileEntity)te).startViewing();
+			if (te instanceof SecurityCameraTileEntity)
+				((SecurityCameraTileEntity) te).startViewing();
 		}
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
 		Direction facing = state.get(FACING);
 
 		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing);
 	}
 
 	@Override
-	public boolean canProvidePower(BlockState state){
+	public boolean canProvidePower(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side){
-		if(blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE))
+	public int getWeakPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
+		if (blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getStrongPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side){
-		if(blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE) && blockState.get(FACING) == side)
+	public int getStrongPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
+		if (blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE) && blockState.get(FACING) == side)
 			return 15;
 		else
 			return 0;
@@ -174,13 +168,13 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if (!isValidPosition(world.getBlockState(pos), world, pos) && !isValidPosition(state, world, pos))
+		if (!isValidPosition(world.getBlockState(pos), world, pos) && !isValidPosition(state, world, pos)) {
 			world.destroyBlock(pos, true);
+		}
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWERED, BEING_VIEWED);
 	}
 
@@ -190,27 +184,25 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		Direction facing = state.get(FACING);
 
-		switch(mirror)
-		{
+		switch (mirror) {
 			case LEFT_RIGHT:
-				if(facing.getAxis() == Axis.Z)
+				if (facing.getAxis() == Axis.Z)
 					return state.with(FACING, facing.getOpposite());
 				break;
 			case FRONT_BACK:
-				if(facing.getAxis() == Axis.X)
+				if (facing.getAxis() == Axis.X)
 					return state.with(FACING, facing.getOpposite());
 				break;
-			case NONE: break;
+			case NONE:
+				break;
 		}
 
 		return state;

@@ -29,47 +29,43 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class UniversalKeyChangerItem extends Item {
-
 	public UniversalKeyChangerItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
-	{
+	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
 		return onItemUseFirst(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getItem(), ctx.getHand());
 	}
 
 	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, Direction side, ItemStack stack, Hand hand) {
 		ActionResultType briefcaseResult = handleBriefcase(player, hand).getType();
 
-		if(briefcaseResult != ActionResultType.PASS)
+		if (briefcaseResult != ActionResultType.PASS)
 			return briefcaseResult;
 
 		TileEntity te = world.getTileEntity(pos);
 
-		if(te instanceof IPasswordProtected) {
-			if(((IOwnable) te).getOwner().isOwner(player))
-			{
-				if(!world.isRemote)
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+		if (te instanceof IPasswordProtected) {
+			if (((IOwnable) te).getOwner().isOwner(player)) {
+				if (!world.isRemote) {
+					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-						{
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 							return new GenericTEContainer(SCContent.cTypeKeyChanger, windowId, world, pos);
 						}
 
 						@Override
-						public ITextComponent getDisplayName()
-						{
+						public ITextComponent getDisplayName() {
 							return new TranslationTextComponent(getTranslationKey());
 						}
 					}, pos);
+				}
 
 				return ActionResultType.SUCCESS;
 			}
-			else if(!(te.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem)((DisguisableBlock)te.getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable)world.getTileEntity(pos)).getOwner().getName())), TextFormatting.RED);
+			else if (!(te.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) te.getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)) {
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) world.getTileEntity(pos)).getOwner().getName())), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}
 		}
@@ -82,8 +78,7 @@ public class UniversalKeyChangerItem extends Item {
 		return handleBriefcase(player, hand);
 	}
 
-	private ActionResult<ItemStack> handleBriefcase(PlayerEntity player, Hand hand)
-	{
+	private ActionResult<ItemStack> handleBriefcase(PlayerEntity player, Hand hand) {
 		ItemStack keyChanger = player.getHeldItem(hand);
 
 		if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {

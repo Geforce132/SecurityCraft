@@ -26,19 +26,17 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BriefcaseItem extends Item implements IDyeableArmorItem {
-	public BriefcaseItem(Item.Properties properties)
-	{
+	public BriefcaseItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx)
-	{
+	public ActionResultType onItemUse(ItemUseContext ctx) {
 		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getHand());
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, Hand hand) {
-		if(world.getBlockState(pos).getBlock() instanceof CauldronBlock) //don't open the briefcase when a cauldron is rightclicked for removing the dye
+		if (world.getBlockState(pos).getBlock() instanceof CauldronBlock) //don't open the briefcase when a cauldron is rightclicked for removing the dye
 			return ActionResultType.SUCCESS;
 
 		handle(stack, world, player, hand);
@@ -53,15 +51,14 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 		return ActionResult.resultConsume(stack);
 	}
 
-	private void handle(ItemStack stack, World world, PlayerEntity player, Hand hand)
-	{
-		if(world.isRemote) {
-			if(!stack.hasTag()) {
+	private void handle(ItemStack stack, World world, PlayerEntity player, Hand hand) {
+		if (world.isRemote) {
+			if (!stack.hasTag()) {
 				stack.setTag(new CompoundNBT());
 				ClientUtils.syncItemNBT(stack);
 			}
 
-			if(!stack.getTag().contains("passcode"))
+			if (!stack.getTag().contains("passcode"))
 				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), stack.getDisplayName()));
 			else
 				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcase.getRegistryName(), stack.getDisplayName()));
@@ -73,12 +70,12 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 	public void addInformation(ItemStack briefcase, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		String ownerName = getOwnerName(briefcase);
 
-		if(!ownerName.isEmpty())
+		if (!ownerName.isEmpty())
 			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(Utils.GRAY_STYLE));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, PlayerEntity player) {
-		if(!briefcase.hasTag())
+		if (!briefcase.hasTag())
 			return true;
 
 		String ownerName = getOwnerName(briefcase);
@@ -87,13 +84,11 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 		return ownerName.isEmpty() || ownerUUID.equals(player.getUniqueID().toString()) || (ownerUUID.equals("ownerUUID") && ownerName.equals(player.getName().getString()));
 	}
 
-	public static String getOwnerName(ItemStack briefcase)
-	{
+	public static String getOwnerName(ItemStack briefcase) {
 		return briefcase.hasTag() ? briefcase.getTag().getString("owner") : "";
 	}
 
-	public static String getOwnerUUID(ItemStack briefcase)
-	{
+	public static String getOwnerUUID(ItemStack briefcase) {
 		return briefcase.hasTag() ? briefcase.getTag().getString("ownerUUID") : "";
 	}
 }

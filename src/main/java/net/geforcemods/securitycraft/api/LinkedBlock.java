@@ -4,7 +4,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class LinkedBlock {
-
 	public String blockName;
 	public BlockPos blockPos = null;
 
@@ -23,7 +22,8 @@ public class LinkedBlock {
 	}
 
 	public LinkableTileEntity asTileEntity(World world) {
-		if(!validate(world)) return null;
+		if (!validate(world))
+			return null;
 
 		return (LinkableTileEntity) world.getTileEntity(blockPos);
 	}
@@ -58,7 +58,7 @@ public class LinkedBlock {
 
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof LinkedBlock) {
+		if (o instanceof LinkedBlock) {
 			LinkedBlock block = (LinkedBlock) o;
 			return (block.getPos().getX() == blockPos.getX() && block.getPos().getY() == blockPos.getY() && block.getPos().getZ() == blockPos.getZ());
 		}
@@ -75,5 +75,4 @@ public class LinkedBlock {
 	public String toString() {
 		return (blockName + " | " + blockPos.getX() + " " + blockPos.getY() + " " + blockPos.getZ());
 	}
-
 }

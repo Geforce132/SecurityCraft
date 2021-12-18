@@ -14,48 +14,40 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class BlockPocketManagerContainer extends Container
-{
+public class BlockPocketManagerContainer extends Container {
 	public BlockPocketManagerTileEntity te;
 	private IWorldPosCallable worldPosCallable;
 	public final boolean storage;
 	public final boolean isOwner;
 
-	public BlockPocketManagerContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory)
-	{
+	public BlockPocketManagerContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
 		super(SCContent.cTypeBlockPocketManager, windowId);
 
 		TileEntity tile = world.getTileEntity(pos);
 
-		if(tile instanceof BlockPocketManagerTileEntity)
-			te = (BlockPocketManagerTileEntity)tile;
+		if (tile instanceof BlockPocketManagerTileEntity)
+			te = (BlockPocketManagerTileEntity) tile;
 
 		worldPosCallable = IWorldPosCallable.of(world, pos);
 		isOwner = te.getOwner().isOwner(inventory.player);
 		storage = te != null && te.hasModule(ModuleType.STORAGE) && isOwner;
 
-		if(storage)
-		{
-			for(int y = 0; y < 3; y++)
-			{
-				for(int x = 0; x < 9; ++x)
-				{
+		if (storage) {
+			for (int y = 0; y < 3; y++) {
+				for (int x = 0; x < 9; ++x) {
 					addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18 + 74));
 				}
 			}
 
-			for(int x = 0; x < 9; x++)
-			{
+			for (int x = 0; x < 9; x++) {
 				addSlot(new Slot(inventory, x, 8 + x * 18, 142 + 74));
 			}
 
 			te.getStorageHandler().ifPresent(storage -> {
 				int slotId = 0;
 
-				for(int y = 0; y < 8; y++)
-				{
-					for(int x = 0; x < 7; x++)
-					{
+				for (int y = 0; y < 8; y++) {
+					for (int x = 0; x < 7; x++) {
 						addSlot(new SlotItemHandler(storage, slotId++, 124 + x * 18, 8 + y * 18));
 					}
 				}
@@ -64,29 +56,25 @@ public class BlockPocketManagerContainer extends Container
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int index)
-	{
+	public ItemStack transferStackInSlot(PlayerEntity player, int index) {
 		ItemStack copy = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
 
-		if(slot != null && slot.getHasStack())
-		{
+		if (slot != null && slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
 
 			copy = slotStack.copy();
 
-			if(index >= 36) //block pocket manager slots
-			{
-				if(!mergeItemStack(slotStack, 0, 36, true))
+			if (index >= 36) { //block pocket manager slots
+				if (!mergeItemStack(slotStack, 0, 36, true))
 					return ItemStack.EMPTY;
 			}
-			else if(index >= 0 && index <= 35) //main inventory and hotbar
-			{
-				if(!mergeItemStack(slotStack, 36, inventorySlots.size(), false))
+			else if (index >= 0 && index <= 35) { //main inventory and hotbar
+				if (!mergeItemStack(slotStack, 36, inventorySlots.size(), false))
 					return ItemStack.EMPTY;
 			}
 
-			if(slotStack.isEmpty())
+			if (slotStack.isEmpty())
 				slot.putStack(ItemStack.EMPTY);
 			else
 				slot.onSlotChanged();
@@ -96,8 +84,7 @@ public class BlockPocketManagerContainer extends Container
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player)
-	{
+	public boolean canInteractWith(PlayerEntity player) {
 		return isWithinUsableDistance(worldPosCallable, player, SCContent.BLOCK_POCKET_MANAGER.get());
 	}
 }

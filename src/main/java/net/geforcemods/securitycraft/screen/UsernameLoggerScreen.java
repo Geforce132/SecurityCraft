@@ -28,8 +28,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
 
-public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
-
+public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslationTextComponent logged = Utils.localize("gui.securitycraft:logger.logged");
 	private final TranslationTextComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
@@ -38,12 +37,11 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 
 	public UsernameLoggerScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
-		tileEntity = (UsernameLoggerTileEntity)container.te;
+		tileEntity = (UsernameLoggerTileEntity) container.te;
 	}
 
 	@Override
-	protected void init()
-	{
+	protected void init() {
 		super.init();
 
 		addButton(new IdButton(0, guiLeft + 4, guiTop + 4, 8, 8, "x", b -> {
@@ -53,24 +51,19 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 		children.add(playerList = new PlayerList(minecraft, xSize - 24, ySize - 40, guiTop + 20, guiLeft + 12));
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
 		font.drawText(matrix, logged, xSize / 2 - font.getStringPropertyWidth(logged) / 2, 6, 4210752);
 
-		if(mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
+		if (mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
 			renderTooltip(matrix, clear, mouseX - guiLeft, mouseY - guiTop);
 	}
 
 	@Override
-	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
-	{
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		if(playerList != null)
+		if (playerList != null)
 			playerList.render(matrix, mouseX, mouseY, partialTicks);
 	}
 
@@ -85,79 +78,68 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double scroll)
-	{
-		if(playerList != null && playerList.isMouseOver(mouseX, mouseY))
+	public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
+		if (playerList != null && playerList.isMouseOver(mouseX, mouseY))
 			playerList.mouseScrolled(mouseX, mouseY, scroll);
 
 		return super.mouseScrolled(mouseX, mouseY, scroll);
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button)
-	{
-		if(playerList != null)
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (playerList != null)
 			playerList.mouseClicked(mouseX, mouseY, button);
 
 		return super.mouseClicked(mouseX, mouseY, button);
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button)
-	{
-		if(playerList != null)
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		if (playerList != null)
 			playerList.mouseReleased(mouseX, mouseY, button);
 
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY)
-	{
-		if(playerList != null)
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+		if (playerList != null)
 			playerList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
-	class PlayerList extends ScrollPanel
-	{
+	class PlayerList extends ScrollPanel {
 		private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 		private final int slotHeight = 12, listLength = 100;
 
-		public PlayerList(Minecraft client, int width, int height, int top, int left)
-		{
+		public PlayerList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left);
 		}
 
 		@Override
-		protected int getContentHeight()
-		{
+		protected int getContentHeight() {
 			int height = 50 + (tileEntity.players.length * font.FONT_HEIGHT);
 
-			if(height < bottom - top - 8)
+			if (height < bottom - top - 8)
 				height = bottom - top - 8;
 
 			return height;
 		}
 
 		@Override
-		public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
-		{
+		public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 			super.render(matrix, mouseX, mouseY, partialTicks);
 
-			if(tileEntity.getOwner().isOwner(minecraft.player))
-			{
-				int mouseListY = (int)(mouseY - top + scrollDistance - border);
+			if (tileEntity.getOwner().isOwner(minecraft.player)) {
+				int mouseListY = (int) (mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / slotHeight;
 
-				if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
-				{
-					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
-					{
+				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+					if (tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty()) {
 						TranslationTextComponent localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
 
-						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
+						if (tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
 							renderTooltip(matrix, new StringTextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);
 
 						font.drawText(matrix, localized, guiLeft + (xSize / 2 - font.getStringPropertyWidth(localized) / 2), bottom + 5, 4210752);
@@ -167,18 +149,15 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 		}
 
 		@Override
-		protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY)
-		{
-			int baseY = top + border - (int)scrollDistance;
+		protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY) {
+			int baseY = top + border - (int) scrollDistance;
 			int slotBuffer = slotHeight - 4;
-			int mouseListY = (int)(mouseY - top + scrollDistance - border);
+			int mouseListY = (int) (mouseY - top + scrollDistance - border);
 			int slotIndex = mouseListY / slotHeight;
 
 			//highlight hovered slot
-			if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
-			{
-				if(tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty())
-				{
+			if (mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+				if (tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty()) {
 					int min = left;
 					int max = entryRight - 6; //6 is the width of the scrollbar
 					int slotTop = baseY + slotIndex * slotHeight;
@@ -204,9 +183,8 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 			}
 
 			//draw entry strings
-			for(int i = 0; i < tileEntity.players.length; i++)
-			{
-				if(tileEntity.players[i] != null && !tileEntity.players[i].equals(""))
+			for (int i = 0; i < tileEntity.players.length; i++) {
+				if (tileEntity.players[i] != null && !tileEntity.players[i].equals(""))
 					font.drawString(matrix, tileEntity.players[i], left + width / 2 - font.getStringWidth(tileEntity.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 			}
 		}

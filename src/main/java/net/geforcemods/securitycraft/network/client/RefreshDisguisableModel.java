@@ -11,30 +11,26 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class RefreshDisguisableModel
-{
+public class RefreshDisguisableModel {
 	private BlockPos pos;
 	private boolean insert;
 	private ItemStack stack;
 
 	public RefreshDisguisableModel() {}
 
-	public RefreshDisguisableModel(BlockPos pos, boolean insert, ItemStack stack)
-	{
+	public RefreshDisguisableModel(BlockPos pos, boolean insert, ItemStack stack) {
 		this.pos = pos;
 		this.insert = insert;
 		this.stack = stack;
 	}
 
-	public static void encode(RefreshDisguisableModel message, PacketBuffer buf)
-	{
+	public static void encode(RefreshDisguisableModel message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeBoolean(message.insert);
 		buf.writeItemStack(message.stack);
 	}
 
-	public static RefreshDisguisableModel decode(PacketBuffer buf)
-	{
+	public static RefreshDisguisableModel decode(PacketBuffer buf) {
 		RefreshDisguisableModel message = new RefreshDisguisableModel();
 
 		message.pos = buf.readBlockPos();
@@ -43,14 +39,12 @@ public class RefreshDisguisableModel
 		return message;
 	}
 
-	public static void onMessage(RefreshDisguisableModel message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(RefreshDisguisableModel message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			IModuleInventory te = (IModuleInventory)Minecraft.getInstance().world.getTileEntity(message.pos);
+			IModuleInventory te = (IModuleInventory) Minecraft.getInstance().world.getTileEntity(message.pos);
 
-			if(te != null)
-			{
-				if(message.insert)
+			if (te != null) {
+				if (message.insert)
 					te.insertModule(message.stack);
 				else
 					te.removeModule(ModuleType.DISGUISE);

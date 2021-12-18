@@ -27,33 +27,33 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 
 public class IMSTileEntity extends CustomizableTileEntity implements INamedContainerProvider, ITickableTileEntity {
-
 	private IntOption range = new IntOption(this::getPos, "range", 12, 1, 30, 1, true);
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
-	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
+	/**
+	 * The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players,
+	 * MOBS = hostile mobs.
+	 **/
 	private IMSTargetingMode targetingMode = IMSTargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;
 	private int attackTime = getAttackInterval();
 
-	public IMSTileEntity()
-	{
+	public IMSTileEntity() {
 		super(SCContent.teTypeIms);
 	}
 
 	@Override
-	public void tick(){
-		if(!world.isRemote && updateBombCount){
+	public void tick() {
+		if (!world.isRemote && updateBombCount) {
 			int mineCount = getBlockState().get(IMSBlock.MINES);
 
-			if(!(mineCount - 1 < 0 || mineCount > 4))
+			if (!(mineCount - 1 < 0 || mineCount > 4))
 				world.setBlockState(pos, getBlockState().with(IMSBlock.MINES, mineCount - 1));
 
 			updateBombCount = false;
 		}
 
-		if(attackTime-- == 0)
-		{
+		if (attackTime-- == 0) {
 			attackTime = getAttackInterval();
 			launchMine();
 		}
@@ -63,23 +63,21 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	 * Create a bounding box around the IMS, and fire a mine if a mob or player is found.
 	 */
 	private void launchMine() {
-		if(bombsRemaining > 0){
+		if (bombsRemaining > 0) {
 			AxisAlignedBB area = new AxisAlignedBB(pos).grow(range.get());
 			LivingEntity target = null;
 
-			if(targetingMode == IMSTargetingMode.MOBS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS)
-			{
-				List<MonsterEntity> mobs = world.<MonsterEntity>getEntitiesWithinAABB(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
+			if (targetingMode == IMSTargetingMode.MOBS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS) {
+				List<MonsterEntity> mobs = world.<MonsterEntity> getEntitiesWithinAABB(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
-				if(!mobs.isEmpty())
+				if (!mobs.isEmpty())
 					target = mobs.get(0);
 			}
 
-			if(target == null && (targetingMode == IMSTargetingMode.PLAYERS  || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS))
-			{
-				List<PlayerEntity> players = world.<PlayerEntity>getEntitiesWithinAABB(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
+			if (target == null && (targetingMode == IMSTargetingMode.PLAYERS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS)) {
+				List<PlayerEntity> players = world.<PlayerEntity> getEntitiesWithinAABB(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
-				if(!players.isEmpty())
+				if (!players.isEmpty())
 					target = players.get(0);
 			}
 
@@ -102,10 +100,8 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		}
 	}
 
-	public boolean canAttackEntity(LivingEntity entity)
-	{
-		return entity != null
-				&& (!(entity instanceof PlayerEntity) || !getOwner().isOwner((PlayerEntity)entity) && !((PlayerEntity)entity).isCreative() && !((PlayerEntity)entity).isSpectator()) //PlayerEntity checks
+	public boolean canAttackEntity(LivingEntity entity) {
+		return entity != null && (!(entity instanceof PlayerEntity) || !getOwner().isOwner((PlayerEntity) entity) && !((PlayerEntity) entity).isCreative() && !((PlayerEntity) entity).isSpectator()) //PlayerEntity checks
 				&& !(ModuleUtils.isAllowed(this, entity)); //checks for all entities
 	}
 
@@ -115,11 +111,10 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	private int getLaunchHeight() {
 		int height;
 
-		for(height = 1; height <= 9; height++)
-		{
+		for (height = 1; height <= 9; height++) {
 			BlockState state = getWorld().getBlockState(getPos().up(height));
 
-			if(state == null || state.isAir(getWorld(), getPos()))
+			if (state == null || state.isAir(getWorld(), getPos()))
 				continue;
 			else
 				break;
@@ -128,12 +123,8 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		return height;
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag){
+	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 
 		tag.putInt("bombsRemaining", bombsRemaining);
@@ -142,11 +133,8 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
-	public void read(BlockState state, CompoundNBT tag){
+	public void read(BlockState state, CompoundNBT tag) {
 		super.read(state, tag);
 
 		bombsRemaining = tag.getInt("bombsRemaining");
@@ -168,32 +156,35 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.SPEED};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.SPEED
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{range};
+		return new Option[] {
+				range
+		};
 	}
 
 	@Override
-	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-	{
+	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 		return new GenericTEContainer(SCContent.cTypeIMS, windowId, world, pos);
 	}
 
 	@Override
-	public ITextComponent getDisplayName()
-	{
+	public ITextComponent getDisplayName() {
 		return super.getDisplayName();
 	}
 
-	public int getAttackInterval()
-	{
+	public int getAttackInterval() {
 		return hasModule(ModuleType.SPEED) ? 40 : 80;
 	}
 
 	public static enum IMSTargetingMode {
-		PLAYERS, PLAYERS_AND_MOBS, MOBS;
+		PLAYERS,
+		PLAYERS_AND_MOBS,
+		MOBS;
 	}
 }

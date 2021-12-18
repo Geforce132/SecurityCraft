@@ -9,28 +9,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LightType;
 import net.minecraft.world.server.ServerWorld;
 
-public class ReinforcedIceBlock extends BaseReinforcedBlock
-{
-	public ReinforcedIceBlock(Properties properties, Block vB)
-	{
+public class ReinforcedIceBlock extends BaseReinforcedBlock {
+	public ReinforcedIceBlock(Properties properties, Block vB) {
 		super(properties, vB);
 	}
 
 	@Override
-	public boolean ticksRandomly(BlockState state)
-	{
+	public boolean ticksRandomly(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
-	{
-		if(world.getLightFor(LightType.BLOCK, pos) > 11 - state.getOpacity(world, pos))
-		{
-			if(world.getDimensionType().isUltrawarm())
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
+		if (world.getLightFor(LightType.BLOCK, pos) > 11 - state.getOpacity(world, pos)) {
+			if (world.getDimensionType().isUltrawarm())
 				world.removeBlock(pos, false);
-			else
-			{
+			else {
 				world.setBlockState(pos, Blocks.WATER.getDefaultState());
 				world.neighborChanged(pos, Blocks.WATER, pos);
 			}

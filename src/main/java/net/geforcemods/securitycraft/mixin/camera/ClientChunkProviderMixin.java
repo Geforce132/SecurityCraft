@@ -27,13 +27,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
 
 /**
- * These mixins aim at implementing the camera chunk storage from CameraController into all the places ClientChunkProvider#array is used
+ * These mixins aim at implementing the camera chunk storage from CameraController into all the places
+ * ClientChunkProvider#array is used
  */
 @Mixin(ClientChunkProvider.class)
 public abstract class ClientChunkProviderMixin implements IChunkStorageProvider {
 	@Shadow
 	private volatile ClientChunkProvider.ChunkArray array;
-
 	@Shadow
 	@Final
 	private ClientWorld world;
@@ -76,7 +76,8 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	}
 
 	/**
-	 * Handles chunks that get sent to the client which are in range of the camera storage, i.e. place them into the storage for them to be acquired afterwards
+	 * Handles chunks that get sent to the client which are in range of the camera storage, i.e. place them into the storage
+	 * for them to be acquired afterwards
 	 */
 	@Inject(method = "loadChunk", at = @At(value = "HEAD"), cancellable = true)
 	private void onLoad(int x, int z, BiomeContainer biomeContainer, PacketBuffer buffer, CompoundNBT chunkTag, int size, boolean fullChunk, CallbackInfoReturnable<Chunk> callback) {
@@ -100,7 +101,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 
 			lightEngine.enableLightSources(chunkPos, true);
 
-			for(int y = 0; y < chunkSections.length; ++y) {
+			for (int y = 0; y < chunkSections.length; ++y) {
 				lightEngine.updateSectionStatus(SectionPos.of(x, y, z), ChunkSection.isEmpty(chunkSections[y]));
 			}
 
@@ -118,9 +119,8 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && !array.inView(x, z) && CameraController.getCameraStorage().inView(x, z)) {
 			Chunk chunk = CameraController.getCameraStorage().get(CameraController.getCameraStorage().getIndex(x, z));
 
-			if (chunk != null && chunk.getPos().x == x && chunk.getPos().z == z) {
+			if (chunk != null && chunk.getPos().x == x && chunk.getPos().z == z)
 				callback.setReturnValue(chunk);
-			}
 		}
 	}
 }

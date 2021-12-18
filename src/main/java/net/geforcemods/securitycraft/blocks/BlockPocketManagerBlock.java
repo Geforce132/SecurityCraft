@@ -21,44 +21,37 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class BlockPocketManagerBlock extends OwnableBlock
-{
+public class BlockPocketManagerBlock extends OwnableBlock {
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-	public BlockPocketManagerBlock(Block.Properties properties)
-	{
+	public BlockPocketManagerBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
-		if(!world.isRemote)
-		{
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!world.isRemote) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof BlockPocketManagerTileEntity && !((BlockPocketManagerTileEntity)te).isPlacingBlocks())
-				NetworkHooks.openGui((ServerPlayerEntity)player, (BlockPocketManagerTileEntity)te, pos);
+			if (te instanceof BlockPocketManagerTileEntity && !((BlockPocketManagerTileEntity) te).isPlacingBlocks())
+				NetworkHooks.openGui((ServerPlayerEntity) player, (BlockPocketManagerTileEntity) te, pos);
 		}
 
 		return ActionResultType.SUCCESS;
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-	{
-		if(world.isRemote || state.getBlock() == newState.getBlock())
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (world.isRemote || state.getBlock() == newState.getBlock())
 			return;
 
 		TileEntity tile = world.getTileEntity(pos);
 
-		if(tile instanceof BlockPocketManagerTileEntity)
-		{
-			BlockPocketManagerTileEntity te = (BlockPocketManagerTileEntity)tile;
+		if (tile instanceof BlockPocketManagerTileEntity) {
+			BlockPocketManagerTileEntity te = (BlockPocketManagerTileEntity) tile;
 
 			te.getStorageHandler().ifPresent(handler -> {
-				for(int i = 0; i < handler.getSlots(); i++)
-				{
+				for (int i = 0; i < handler.getSlots(); i++) {
 					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
 				}
 			});
@@ -68,32 +61,27 @@ public class BlockPocketManagerBlock extends OwnableBlock
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		return getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
-	{
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new BlockPocketManagerTileEntity();
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.toRotation(state.get(FACING)));
 	}
 }

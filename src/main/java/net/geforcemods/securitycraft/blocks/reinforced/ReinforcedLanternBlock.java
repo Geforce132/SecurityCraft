@@ -19,7 +19,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 
-public class ReinforcedLanternBlock extends BaseReinforcedBlock{
+public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 	public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape STANDING_SHAPE = VoxelShapes.or(Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 7.0D, 11.0D), Block.makeCuboidShape(6.0D, 7.0D, 6.0D, 10.0D, 9.0D, 10.0D));
@@ -34,12 +34,12 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock{
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
 
-		for(Direction direction : context.getNearestLookingDirections()) {
+		for (Direction direction : context.getNearestLookingDirections()) {
 			if (direction.getAxis() == Direction.Axis.Y) {
 				BlockState blockstate = this.getDefaultState().with(HANGING, direction == Direction.UP);
-				if (blockstate.isValidPosition(context.getWorld(), context.getPos())) {
+
+				if (blockstate.isValidPosition(context.getWorld(), context.getPos()))
 					return blockstate.with(WATERLOGGED, fluidstate.getFluid() == Fluids.WATER);
-				}
 			}
 		}
 
@@ -68,9 +68,8 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock{
 
 	@Override
 	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-		if (state.get(WATERLOGGED)) {
+		if (state.get(WATERLOGGED))
 			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
-		}
 
 		return getBlockConnected(state).getOpposite() == facing && !state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}

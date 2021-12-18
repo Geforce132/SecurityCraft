@@ -15,9 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySystemTileEntity> {
-
-	public TrophySystemTileEntityRenderer(TileEntityRendererDispatcher terd)
-	{
+	public TrophySystemTileEntityRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 
@@ -26,7 +24,8 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 		// The code below draws a line between the trophy system and the projectile that
 		// it's targeting.
 
-		if(te.entityBeingTargeted == null) return;
+		if (te.entityBeingTargeted == null)
+			return;
 
 		IVertexBuilder builder = buffer.getBuffer(RenderType.getLines());
 		Matrix4f positionMatrix = matrix.getLast().getMatrix();
@@ -34,13 +33,11 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 
 		//pos, color
 		builder.pos(positionMatrix, 0.5F, 0.75F, 0.5F).color(255, 0, 0, 255).endVertex();
-		builder.pos(positionMatrix, (float)(te.entityBeingTargeted.getPosX() - pos.getX()), (float)(te.entityBeingTargeted.getPosY() - pos.getY()), (float)(te.entityBeingTargeted.getPosZ() - pos.getZ())).color(255, 0, 0, 255).endVertex();
+		builder.pos(positionMatrix, (float) (te.entityBeingTargeted.getPosX() - pos.getX()), (float) (te.entityBeingTargeted.getPosY() - pos.getY()), (float) (te.entityBeingTargeted.getPosZ() - pos.getZ())).color(255, 0, 0, 255).endVertex();
 	}
 
 	@Override
-	public boolean isGlobalRenderer(TrophySystemTileEntity te)
-	{
+	public boolean isGlobalRenderer(TrophySystemTileEntity te) {
 		return true;
 	}
-
 }

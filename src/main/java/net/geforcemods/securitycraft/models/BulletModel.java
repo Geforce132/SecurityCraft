@@ -10,12 +10,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BulletModel extends EntityModel<BulletEntity>
-{
+public class BulletModel extends EntityModel<BulletEntity> {
 	public ModelRenderer bullet;
 
-	public BulletModel()
-	{
+	public BulletModel() {
 		textureWidth = 8;
 		textureHeight = 4;
 		bullet = new ModelRenderer(this, 0, 0);
@@ -24,8 +22,7 @@ public class BulletModel extends EntityModel<BulletEntity>
 	}
 
 	@Override
-	public void render(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
-	{
+	public void render(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		bullet.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 

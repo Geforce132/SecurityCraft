@@ -41,7 +41,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLoggable {
-
+	//@formatter:off
 	private static final VoxelShape SHAPE = Stream.of(
 			Block.makeCuboidShape(5.5, 11, 5.5, 10.5, 16, 10.5),
 			Block.makeCuboidShape(7.5, 13, 7.5, 8.5, 14, 9.5),
@@ -49,12 +49,11 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 			Block.makeCuboidShape(7, 1, 7, 9, 2, 9),
 			Block.makeCuboidShape(6.5, 0, 6.5, 9.5, 1, 9.5)
 			).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
-
+	//@formatter:on
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public SonicSecuritySystemBlock(Properties properties)
-	{
+	public SonicSecuritySystemBlock(Properties properties) {
 		super(properties);
 
 		setDefaultState(stateContainer.getBaseState().with(POWERED, false).with(WATERLOGGED, false));
@@ -66,7 +65,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 
 	@Override
 	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-		if(state.get(WATERLOGGED))
+		if (state.get(WATERLOGGED))
 			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 
 		return facing == Direction.DOWN && !isValidPosition(state, world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
@@ -78,13 +77,12 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (player.getHeldItem(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
-			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity)world.getTileEntity(pos);
+			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity) world.getTileEntity(pos);
 
 			if (!world.isRemote && (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)))
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new OpenSSSScreen(pos)); //watch out for the creeper
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenSSSScreen(pos)); //watch out for the creeper
 
 			return ActionResultType.SUCCESS;
 		}
@@ -98,56 +96,49 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	}
 
 	@Override
-	public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side){
+	public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
 		return state.get(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public int getStrongPower(BlockState state, IBlockReader world, BlockPos pos, Direction side){
+	public int getStrongPower(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
 		return state.get(POWERED) && side == Direction.UP ? 15 : 0;
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		return getDefaultState().with(WATERLOGGED, context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER);
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state)
-	{
+	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext context)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext context) {
 		return SHAPE;
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(POWERED, WATERLOGGED);
 	}
 
 	@Override
-	public FluidState getFluidState(BlockState state)
-	{
+	public FluidState getFluidState(BlockState state) {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
-	{
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
 		return getItemStackFromBlock(world.getTileEntity(pos).getUpdateTag());
 	}
 
-	private ItemStack getItemStackFromBlock(CompoundNBT blockTag)
-	{
+	private ItemStack getItemStackFromBlock(CompoundNBT blockTag) {
 		ItemStack stack = new ItemStack(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 
-		if(!blockTag.contains("LinkedBlocks"))
+		if (!blockTag.contains("LinkedBlocks"))
 			return stack;
 
 		stack.setTag(new CompoundNBT());
@@ -157,9 +148,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
-	{
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new SonicSecuritySystemTileEntity();
 	}
-
 }
