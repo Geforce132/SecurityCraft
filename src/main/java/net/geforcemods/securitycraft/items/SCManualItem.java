@@ -5,11 +5,8 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -28,16 +25,5 @@ public class SCManualItem extends Item {
 			ClientHandler.displaySCManualGui();
 
 		return InteractionResultHolder.consume(player.getItemInHand(hand));
-	}
-
-	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotIndex, boolean isSelected) {
-		if (stack.getTag() == null) {
-			ListTag bookPages = new ListTag();
-
-			stack.addTagElement("pages", bookPages);
-			stack.addTagElement("author", StringTag.valueOf("Geforce"));
-			stack.addTagElement("title", StringTag.valueOf("SecurityCraft"));
-		}
 	}
 }
