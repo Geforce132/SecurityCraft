@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class ReinforcedCauldronTileEntity extends CustomizableTileEntity {
-
 	private final BooleanOption isPublic = new BooleanOption("isPublic", false);
 
 	public ReinforcedCauldronTileEntity() {
@@ -22,11 +21,15 @@ public class ReinforcedCauldronTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{isPublic};
+		return new Option[] {
+				isPublic
+		};
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST
+		};
 	}
 }

@@ -16,14 +16,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class KeyPanelItem extends BlockItem {
-
-	public KeyPanelItem(Item.Properties properties){
+	public KeyPanelItem(Item.Properties properties) {
 		super(SCContent.KEY_PANEL_BLOCK.get(), properties);
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx)
-	{
+	public ActionResultType onItemUse(ItemUseContext ctx) {
 		World world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
 		Block block = world.getBlockState(pos).getBlock();
@@ -31,11 +29,9 @@ public class KeyPanelItem extends BlockItem {
 		ItemStack stack = ctx.getItem();
 
 		for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
-			if(block == pc.getOriginalBlock())
-			{
-				if(pc.convert(player, world, pos))
-				{
-					if(!player.isCreative())
+			if (block == pc.getOriginalBlock()) {
+				if (pc.convert(player, world, pos)) {
+					if (!player.isCreative())
 						stack.shrink(1);
 
 					world.playSound(player, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);

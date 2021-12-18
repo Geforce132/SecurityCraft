@@ -18,35 +18,30 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class IMSScreen extends ContainerScreen<GenericTEContainer>{
-
+public class IMSScreen extends ContainerScreen<GenericTEContainer> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final String imsName = Utils.localize(SCContent.IMS.get().getTranslationKey()).getFormattedText();
 	private final String target = Utils.localize("gui.securitycraft:ims.target").getFormattedText();
-
 	private IMSTileEntity tileEntity;
 	private IdButton targetButton;
 	private IMSTargetingMode targetMode;
 
 	public IMSScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
-		tileEntity = (IMSTileEntity)container.te;
+		tileEntity = (IMSTileEntity) container.te;
 		targetMode = tileEntity.getTargetingMode();
 	}
 
 	@Override
-	public void init(){
+	public void init() {
 		super.init();
 
 		addButton(targetButton = new IdButton(0, width / 2 - 75, height / 2 - 38, 150, 20, "", this::actionPerformed));
 		updateButtonText();
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		font.drawString(imsName, xSize / 2 - font.getStringWidth(imsName) / 2, 6, 4210752);
 		font.drawString(target, xSize / 2 - font.getStringWidth(target) / 2, 30, 4210752);
 	}
@@ -61,7 +56,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	protected void actionPerformed(IdButton button){
+	protected void actionPerformed(IdButton button) {
 		targetMode = IMSTargetingMode.values()[(targetMode.ordinal() + 1) % IMSTargetingMode.values().length]; //next enum value
 		tileEntity.setTargetingMode(targetMode);
 		SecurityCraft.channel.sendToServer(new SyncIMSTargetingOption(tileEntity.getPos(), tileEntity.getTargetingMode()));
@@ -72,5 +67,4 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 		System.out.println(targetMode);
 		targetButton.setMessage(Utils.localize("gui.securitycraft:srat.targets" + (((targetMode.ordinal() + 2) % 3) + 1)).getFormattedText());
 	}
-
 }

@@ -9,40 +9,34 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class ClearLoggerServer
-{
+public class ClearLoggerServer {
 	private BlockPos pos;
 
 	public ClearLoggerServer() {}
 
-	public ClearLoggerServer(BlockPos pos)
-	{
+	public ClearLoggerServer(BlockPos pos) {
 		this.pos = pos;
 	}
 
-	public static void encode(ClearLoggerServer message, PacketBuffer buf)
-	{
+	public static void encode(ClearLoggerServer message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
 	}
 
-	public static ClearLoggerServer decode(PacketBuffer buf)
-	{
+	public static ClearLoggerServer decode(PacketBuffer buf) {
 		ClearLoggerServer message = new ClearLoggerServer();
 
 		message.pos = buf.readBlockPos();
 		return message;
 	}
 
-	public static void onMessage(ClearLoggerServer message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(ClearLoggerServer message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.world.getTileEntity(message.pos);
 
-			if(te instanceof UsernameLoggerTileEntity && ((UsernameLoggerTileEntity)te).getOwner().isOwner(player))
-			{
-				((UsernameLoggerTileEntity)te).players = new String[100];
-				((UsernameLoggerTileEntity)te).clearLoggedPlayersOnClient();
+			if (te instanceof UsernameLoggerTileEntity && ((UsernameLoggerTileEntity) te).getOwner().isOwner(player)) {
+				((UsernameLoggerTileEntity) te).players = new String[100];
+				((UsernameLoggerTileEntity) te).clearLoggedPlayersOnClient();
 			}
 		});
 

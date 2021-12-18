@@ -10,41 +10,34 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class VanillaToSecurityCraftCategory extends BaseCategory
-{
-	public VanillaToSecurityCraftCategory(IGuiHelper helper)
-	{
+public class VanillaToSecurityCraftCategory extends BaseCategory {
+	public VanillaToSecurityCraftCategory(IGuiHelper helper) {
 		super(helper);
 	}
 
 	@Override
-	public void draw(ReinforcerRecipe recipe, double mouseX, double mouseY)
-	{
+	public void draw(ReinforcerRecipe recipe, double mouseX, double mouseY) {
 		Minecraft.getInstance().fontRenderer.drawString(OUTPUT_TEXT, 24, 5, 4210752);
 	}
 
 	@Override
-	public String getTitle()
-	{
+	public String getTitle() {
 		return Utils.localize("jei.securitycraft.category.reinforcing").getFormattedText();
 	}
 
 	@Override
-	public ResourceLocation getUid()
-	{
+	public ResourceLocation getUid() {
 		return SCJEIPlugin.VTS_ID;
 	}
 
 	@Override
-	public void setIngredients(ReinforcerRecipe recipe, IIngredients ingredients)
-	{
+	public void setIngredients(ReinforcerRecipe recipe, IIngredients ingredients) {
 		ingredients.setInput(VanillaTypes.ITEM, new ItemStack(recipe.getVanillaBlock()));
 		ingredients.setOutput(VanillaTypes.ITEM, new ItemStack(recipe.getSecurityCraftBlock()));
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout layout, ReinforcerRecipe recipe, IIngredients ingredients)
-	{
+	public void setRecipe(IRecipeLayout layout, ReinforcerRecipe recipe, IIngredients ingredients) {
 		IGuiItemStackGroup group = layout.getItemStacks();
 
 		group.init(0, true, 0, 0);

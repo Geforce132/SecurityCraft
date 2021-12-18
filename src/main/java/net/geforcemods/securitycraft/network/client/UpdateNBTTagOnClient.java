@@ -8,39 +8,33 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class UpdateNBTTagOnClient{
-
+public class UpdateNBTTagOnClient {
 	private ItemStack stack;
 
-	public UpdateNBTTagOnClient(){
-
+	public UpdateNBTTagOnClient() {
 	}
 
-	public UpdateNBTTagOnClient(ItemStack stack){
-		if(!stack.isEmpty() && stack.hasTag()){
+	public UpdateNBTTagOnClient(ItemStack stack) {
+		if (!stack.isEmpty() && stack.hasTag())
 			this.stack = stack;
-		}
 	}
 
-	public static void encode(UpdateNBTTagOnClient message, PacketBuffer buf)
-	{
+	public static void encode(UpdateNBTTagOnClient message, PacketBuffer buf) {
 		buf.writeItemStack(message.stack);
 	}
 
-	public static UpdateNBTTagOnClient decode(PacketBuffer buf)
-	{
+	public static UpdateNBTTagOnClient decode(PacketBuffer buf) {
 		UpdateNBTTagOnClient message = new UpdateNBTTagOnClient();
 
 		message.stack = buf.readItemStack();
 		return message;
 	}
 
-	public static void onMessage(UpdateNBTTagOnClient message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(UpdateNBTTagOnClient message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			ItemStack stackToUpdate = PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), message.stack.getItem());
 
-			if(!stackToUpdate.isEmpty())
+			if (!stackToUpdate.isEmpty())
 				stackToUpdate.setTag(message.stack.getTag());
 		});
 

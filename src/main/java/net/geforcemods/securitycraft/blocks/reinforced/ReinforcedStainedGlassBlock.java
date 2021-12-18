@@ -11,44 +11,37 @@ import net.minecraft.world.IWorldReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements IBeaconBeamColorProvider
-{
+public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements IBeaconBeamColorProvider {
 	private final DyeColor color;
 
-	public ReinforcedStainedGlassBlock(Block.Properties properties, DyeColor color, Block vB)
-	{
+	public ReinforcedStainedGlassBlock(Block.Properties properties, DyeColor color, Block vB) {
 		super(properties, vB);
 		this.color = color;
 	}
 
 	@Override
-	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos)
-	{
+	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos) {
 		return color.getColorComponentValues();
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos)
-	{
+	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public DyeColor getColor()
-	{
+	public DyeColor getColor() {
 		return color;
 	}
 
 	@Override
-	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader world, BlockPos pos)
-	{
+	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader world, BlockPos pos) {
 		return 1.0F;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side)
-	{
+	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return adjacentBlockState.getBlock() == this ? true : super.isSideInvisible(state, adjacentBlockState, side);
 	}
 }

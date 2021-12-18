@@ -2,30 +2,25 @@ package net.geforcemods.securitycraft.compat.jei;
 
 import net.minecraft.block.Block;
 
-public class ReinforcerRecipe
-{
+public class ReinforcerRecipe {
 	private final Block vanillaBlock;
 	private final Block securityCraftBlock;
 
-	public ReinforcerRecipe(Block vanillaBlock, Block securityCraftBlock)
-	{
+	public ReinforcerRecipe(Block vanillaBlock, Block securityCraftBlock) {
 		this.vanillaBlock = vanillaBlock;
 		this.securityCraftBlock = securityCraftBlock;
 	}
 
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return vanillaBlock;
 	}
 
-	public Block getSecurityCraftBlock()
-	{
+	public Block getSecurityCraftBlock() {
 		return securityCraftBlock;
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "Reinforcer Recipe - Vanilla Block: " + getVanillaBlock().getRegistryName().toString() + " - Reinforced Block: " + getSecurityCraftBlock().getRegistryName().toString();
 	}
 }

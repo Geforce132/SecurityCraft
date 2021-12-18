@@ -47,17 +47,17 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
 
-	/* The number of blocks away from the trophy system you can be for
-	 * the laser beam between itself and the projectile to be rendered */
+	/*
+	 * The number of blocks away from the trophy system you can be for the laser beam between itself and the projectile to be
+	 * rendered
+	 */
 	public static final int RENDER_DISTANCE = 50;
-
 	private final Map<EntityType<?>, Boolean> projectileFilter = new LinkedHashMap<>();
 	public Entity entityBeingTargeted = null;
 	public int cooldown = getCooldownTime();
 	private final Random random = new Random();
 
-	public TrophySystemTileEntity()
-	{
+	public TrophySystemTileEntity() {
 		super(SCContent.teTypeTrophySystem);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
 		//ordering is done in TrophySystemScreen based on the user's current language
@@ -82,42 +82,37 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 	public void tick() {
 		if (!world.isRemote) {
 			// If the trophy does not have a target, try looking for one
-			if(entityBeingTargeted == null) {
+			if (entityBeingTargeted == null) {
 				Entity target = getPotentialTarget();
 
-				if(target != null) {
+				if (target != null) {
 					Entity shooter = getShooter(target);
 
-					if(shooter == null)
+					if (shooter == null)
 						setTarget(target);
-					else
-					{
-						UUID uuid = shooter instanceof SentryEntity ? UUID.fromString(((SentryEntity)shooter).getOwner().getUUID()) : shooter.getUniqueID();
-						String name = shooter instanceof SentryEntity ? ((SentryEntity)shooter).getOwner().getName() : shooter.getName().getString();
+					else {
+						UUID uuid = shooter instanceof SentryEntity ? UUID.fromString(((SentryEntity) shooter).getOwner().getUUID()) : shooter.getUniqueID();
+						String name = shooter instanceof SentryEntity ? ((SentryEntity) shooter).getOwner().getName() : shooter.getName().getString();
 
 						//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-						if(!((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(shooter.getName().getString(), getOwner().getName()))
-								|| (uuid != null && uuid.toString().equals(getOwner().getUUID()))
-								|| ModuleUtils.isAllowed(this, name))) {
+						if (!((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(shooter.getName().getString(), getOwner().getName())) || (uuid != null && uuid.toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, name)))
 							setTarget(target);
-						}
 					}
 				}
 			}
 		}
 
 		// If there are no entities to target, return
-		if(entityBeingTargeted == null)
+		if (entityBeingTargeted == null)
 			return;
 
-		if(!entityBeingTargeted.isAlive())
-		{
+		if (!entityBeingTargeted.isAlive()) {
 			resetTarget();
 			return;
 		}
 
 		// If the cooldown hasn't finished yet, don't destroy any projectiles
-		if(cooldown > 0) {
+		if (cooldown > 0) {
 			cooldown--;
 			return;
 		}
@@ -164,9 +159,8 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 	public void setTarget(Entity target) {
 		this.entityBeingTargeted = target;
 
-		if (!world.isRemote) {
+		if (!world.isRemote)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new SetTrophySystemTarget(pos, target.getEntityId()));
-		}
 	}
 
 	/**
@@ -175,7 +169,7 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 	private void destroyTarget() {
 		entityBeingTargeted.remove();
 
-		if(!world.isRemote)
+		if (!world.isRemote)
 			world.createExplosion(null, entityBeingTargeted.getPosX(), entityBeingTargeted.getPosY(), entityBeingTargeted.getPosZ(), 0.1F, Explosion.Mode.NONE);
 
 		resetTarget();
@@ -190,8 +184,7 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 	}
 
 	/**
-	 * Randomly returns a new Entity target from the list of all entities
-	 * within range of the trophy
+	 * Randomly returns a new Entity target from the list of all entities within range of the trophy
 	 */
 	private Entity getPotentialTarget() {
 		List<Entity> potentialTargets = new ArrayList<>();
@@ -203,7 +196,8 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
 
 		// If there are no projectiles, return
-		if(potentialTargets.size() <= 0) return null;
+		if (potentialTargets.size() <= 0)
+			return null;
 
 		// Return a random entity to target from the list of all possible targets
 		int target = random.nextInt(potentialTargets.size());
@@ -215,10 +209,9 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 		if (target instanceof TridentEntity || target instanceof FishingBobberEntity || target instanceof PotionEntity || target instanceof ExperienceBottleEntity || target instanceof PigEntity)
 			return false;
 
-		if (projectileFilter.containsKey(target.getType()) || target instanceof IProjectile) {
+		if (projectileFilter.containsKey(target.getType()) || target instanceof IProjectile)
 			//try to get the target's type filter first. if not found, it's a modded projectile and the return value falls back to the modded filter (designated by the PIG entity type)
 			return projectileFilter.getOrDefault(target.getType(), projectileFilter.get(EntityType.PIG));
-		}
 
 		return false;
 	}
@@ -226,10 +219,10 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 	private boolean filterSCProjectiles(Entity projectile) {
 		Owner owner = null;
 
-		if(projectile instanceof BulletEntity)
-			owner = ((BulletEntity)projectile).getOwner();
-		else if(projectile instanceof IMSBombEntity)
-			owner = ((IMSBombEntity)projectile).getOwner();
+		if (projectile instanceof BulletEntity)
+			owner = ((BulletEntity) projectile).getOwner();
+		else if (projectile instanceof IMSBombEntity)
+			owner = ((IMSBombEntity) projectile).getOwner();
 
 		return owner == null || (!owner.owns(this) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}
@@ -240,14 +233,14 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 	public Entity getShooter(Entity projectile) {
 		Entity shooter = null;
 
-		if(projectile instanceof AbstractArrowEntity) //arrows, spectral arrows and sentry bullets
-			shooter = ((AbstractArrowEntity)projectile).getShooter();
-		else if(projectile instanceof DamagingProjectileEntity) //small fireballs, fireballs, dragon fireballs, wither skulls and IMS bombs
+		if (projectile instanceof AbstractArrowEntity)
+			shooter = ((AbstractArrowEntity) projectile).getShooter();
+		else if (projectile instanceof DamagingProjectileEntity)
 			shooter = ((DamagingProjectileEntity) projectile).shootingEntity;
 		else if (projectile instanceof FireworkRocketEntity)
-			shooter = ((FireworkRocketEntity)projectile).boostedEntity;
-		else if (projectile instanceof ThrowableEntity) //eggs, snowballs and ender pearls
-			shooter = ((ThrowableEntity)projectile).getThrower();
+			shooter = ((FireworkRocketEntity) projectile).boostedEntity;
+		else if (projectile instanceof ThrowableEntity)
+			shooter = ((ThrowableEntity) projectile).getThrower();
 
 		return shooter;
 	}
@@ -257,13 +250,11 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 	}
 
 	public void setFilter(EntityType<?> projectileType, boolean allowed) {
-		if(projectileFilter.containsKey(projectileType))
-		{
+		if (projectileFilter.containsKey(projectileType)) {
 			projectileFilter.put(projectileType, allowed);
 
-			if (world.isRemote) {
+			if (world.isRemote)
 				SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncTrophySystem(pos, projectileType, allowed));
-			}
 		}
 	}
 
@@ -271,8 +262,7 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 		return projectileFilter.get(projectileType);
 	}
 
-	public Map<EntityType<?>,Boolean> getFilters()
-	{
+	public Map<EntityType<?>, Boolean> getFilters() {
 		return projectileFilter;
 	}
 
@@ -289,7 +279,9 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.SMART, ModuleType.SPEED, ModuleType.ALLOWLIST, ModuleType.DISGUISE};
+		return new ModuleType[] {
+				ModuleType.SMART, ModuleType.SPEED, ModuleType.ALLOWLIST, ModuleType.DISGUISE
+		};
 	}
 
 	@Override
@@ -300,8 +292,7 @@ public class TrophySystemTileEntity extends DisguisableTileEntity implements ITi
 	/*
 	 * @return The number of ticks that the trophy takes to "charge"
 	 */
-	public int getCooldownTime()
-	{
+	public int getCooldownTime() {
 		return hasModule(ModuleType.SPEED) ? 4 : 8;
 	}
 }

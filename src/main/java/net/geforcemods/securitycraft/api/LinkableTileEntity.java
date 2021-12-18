@@ -18,14 +18,13 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private ListNBT nbtTagStorage = null;
 
-	public LinkableTileEntity(TileEntityType<?> type)
-	{
+	public LinkableTileEntity(TileEntityType<?> type) {
 		super(type);
 	}
 
 	@Override
 	public void tick() {
-		if(hasWorld() && nbtTagStorage != null) {
+		if (hasWorld() && nbtTagStorage != null) {
 			readLinkedBlocks(nbtTagStorage);
 			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
 			nbtTagStorage = null;
@@ -33,13 +32,11 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	}
 
 	@Override
-	public void read(CompoundNBT tag)
-	{
+	public void read(CompoundNBT tag) {
 		super.read(tag);
 
-		if (tag.contains("linkedBlocks"))
-		{
-			if(!hasWorld()) {
+		if (tag.contains("linkedBlocks")) {
+			if (!hasWorld()) {
 				nbtTagStorage = tag.getList("linkedBlocks", Constants.NBT.TAG_COMPOUND);
 				return;
 			}
@@ -49,21 +46,19 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 
-		if(hasWorld() && linkedBlocks.size() > 0) {
+		if (hasWorld() && linkedBlocks.size() > 0) {
 			ListNBT tagList = new ListNBT();
 
 			WorldUtils.addScheduledTask(world, () -> {
-				for(int i = linkedBlocks.size() - 1; i >= 0; i--)
-				{
+				for (int i = linkedBlocks.size() - 1; i >= 0; i--) {
 					LinkedBlock block = linkedBlocks.get(i);
 					CompoundNBT toAppend = new CompoundNBT();
 
-					if(block != null) {
-						if(!block.validate(world)) {
+					if (block != null) {
+						if (!block.validate(world)) {
 							linkedBlocks.remove(i);
 							continue;
 						}
@@ -85,62 +80,63 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	}
 
 	private void readLinkedBlocks(ListNBT list) {
-		for(int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			String name = list.getCompound(i).getString("blockName");
 			int x = list.getCompound(i).getInt("blockX");
 			int y = list.getCompound(i).getInt("blockY");
 			int z = list.getCompound(i).getInt("blockZ");
 
 			LinkedBlock block = new LinkedBlock(name, new BlockPos(x, y, z));
-			if(hasWorld() && !block.validate(world)) {
+			if (hasWorld() && !block.validate(world)) {
 				list.remove(i);
 				continue;
 			}
 
-			if(!linkedBlocks.contains(block))
+			if (!linkedBlocks.contains(block))
 				link(this, block.asTileEntity(world));
 		}
 	}
 
 	@Override
 	public void remove() {
-		for(LinkedBlock block : linkedBlocks)
+		for (LinkedBlock block : linkedBlocks) {
 			LinkableTileEntity.unlink(block.asTileEntity(world), this);
+		}
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module)
-	{
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		super.onModuleInserted(stack, module);
 		ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, this);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module)
-	{
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		super.onModuleRemoved(stack, module);
 		ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, this);
 	}
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[]{ option }, this);
+		createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[] {
+				option
+		}, this);
 	}
 
 	/**
-	 * Links two blocks together. Calls onLinkedBlockAction()
-	 * whenever certain events (found in {@link LinkedAction}) occur.
+	 * Links two blocks together. Calls onLinkedBlockAction() whenever certain events (found in {@link LinkedAction}) occur.
 	 */
 	public static void link(LinkableTileEntity tileEntity1, LinkableTileEntity tileEntity2) {
-		if(isLinkedWith(tileEntity1, tileEntity2)) return;
+		if (isLinkedWith(tileEntity1, tileEntity2))
+			return;
 
 		LinkedBlock block1 = new LinkedBlock(tileEntity1);
 		LinkedBlock block2 = new LinkedBlock(tileEntity2);
 
-		if(!tileEntity1.linkedBlocks.contains(block2))
+		if (!tileEntity1.linkedBlocks.contains(block2))
 			tileEntity1.linkedBlocks.add(block2);
 
-		if(!tileEntity2.linkedBlocks.contains(block1))
+		if (!tileEntity2.linkedBlocks.contains(block1))
 			tileEntity2.linkedBlocks.add(block1);
 	}
 
@@ -151,11 +147,12 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	 * @param tileEntity2 The tile entity to unlink
 	 */
 	public static void unlink(LinkableTileEntity tileEntity1, LinkableTileEntity tileEntity2) {
-		if(tileEntity1 == null || tileEntity2 == null) return;
+		if (tileEntity1 == null || tileEntity2 == null)
+			return;
 
 		LinkedBlock block = new LinkedBlock(tileEntity2);
 
-		if(tileEntity1.linkedBlocks.contains(block))
+		if (tileEntity1.linkedBlocks.contains(block))
 			tileEntity1.linkedBlocks.remove(block);
 	}
 
@@ -167,11 +164,8 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	}
 
 	/**
-	 * Calls onLinkedBlockAction() for every block this tile entity
-	 * is linked to. <p>
-	 *
-	 * <b>NOTE:</b> Never use this method in onLinkedBlockAction(),
-	 * use createLinkedBlockAction(EnumLinkedAction, Object[], ArrayList[LinkableTileEntity] instead.
+	 * Calls onLinkedBlockAction() for every block this tile entity is linked to. <p> <b>NOTE:</b> Never use this method in
+	 * onLinkedBlockAction(), use createLinkedBlockAction(EnumLinkedAction, Object[], ArrayList[LinkableTileEntity] instead.
 	 *
 	 * @param action The action that occurred
 	 * @param parameters Action-specific parameters, see comments in {@link LinkedAction}
@@ -181,22 +175,20 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 		ArrayList<LinkableTileEntity> list = new ArrayList<>();
 
 		list.add(excludedTE);
-
 		createLinkedBlockAction(action, parameters, list);
 	}
 
 	/**
-	 * Calls onLinkedBlockAction() for every block this TileEntity
-	 * is linked to.
+	 * Calls onLinkedBlockAction() for every block this TileEntity is linked to.
 	 *
 	 * @param action The action that occurred
 	 * @param parameters Action-specific parameters, see comments in {@link LinkedAction}
-	 * @param excludedTEs LinkableTileEntities that shouldn't have onLinkedBlockAction() called on them,
-	 *        prevents infinite loops. Always add your tile entity to the list whenever using this method
+	 * @param excludedTEs LinkableTileEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite
+	 *            loops. Always add your tile entity to the list whenever using this method
 	 */
 	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableTileEntity> excludedTEs) {
-		for(LinkedBlock block : linkedBlocks)
-			if(excludedTEs.contains(block.asTileEntity(world)))
+		for (LinkedBlock block : linkedBlocks)
+			if (excludedTEs.contains(block.asTileEntity(world)))
 				continue;
 			else {
 				BlockState state = world.getBlockState(block.blockPos);
@@ -207,14 +199,14 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	}
 
 	/**
-	 * Called whenever certain actions occur in blocks
-	 * this tile entity is linked to. See {@link LinkedAction}
-	 * for parameter descriptions. <p>
+	 * Called whenever certain actions occur in blocks this tile entity is linked to. See {@link LinkedAction} for parameter
+	 * descriptions. <p>
 	 *
 	 * @param action The {@link LinkedAction} that occurred
 	 * @param parameters Important variables related to the action
-	 * @param excludedTEs LinkableTileEntities that aren't going to have onLinkedBlockAction() called on them,
-	 *        always add your tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple blocks (i.e: like Laser Blocks)
+	 * @param excludedTEs LinkableTileEntities that aren't going to have onLinkedBlockAction() called on them, always add
+	 *            your tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link
+	 *            multiple blocks (i.e: like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableTileEntity> excludedTEs) {}
 }

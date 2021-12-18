@@ -22,32 +22,27 @@ import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class DisguisableDynamicBakedModel implements IDynamicBakedModel
-{
+public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	public static final ModelProperty<ResourceLocation> DISGUISED_BLOCK_RL = new ModelProperty<>();
 	private final ResourceLocation defaultStateRl;
 	private final IBakedModel oldModel;
 
-	public DisguisableDynamicBakedModel(ResourceLocation defaultStateRl, IBakedModel oldModel)
-	{
+	public DisguisableDynamicBakedModel(ResourceLocation defaultStateRl, IBakedModel oldModel) {
 		this.defaultStateRl = defaultStateRl;
 		this.oldModel = oldModel;
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand, IModelData modelData)
-	{
+	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand, IModelData modelData) {
 		ResourceLocation rl = modelData.getData(DISGUISED_BLOCK_RL);
 
-		if(rl != defaultStateRl)
-		{
+		if (rl != defaultStateRl) {
 			Block block = ForgeRegistries.BLOCKS.getValue(rl);
 
-			if(block != null)
-			{
+			if (block != null) {
 				final IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(block.getDefaultState());
 
-				if(model != null && model != this)
+				if (model != null && model != this)
 					return model.getQuads(block.getDefaultState(), side, rand, modelData);
 			}
 		}
@@ -56,15 +51,13 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleTexture(IModelData modelData)
-	{
+	public TextureAtlasSprite getParticleTexture(IModelData modelData) {
 		ResourceLocation rl = modelData.getData(DISGUISED_BLOCK_RL);
 
-		if(rl != defaultStateRl)
-		{
+		if (rl != defaultStateRl) {
 			Block block = ForgeRegistries.BLOCKS.getValue(rl);
 
-			if(block != null && !(block instanceof DisguisableBlock))
+			if (block != null && !(block instanceof DisguisableBlock))
 				return Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(block.getDefaultState()).getParticleTexture(modelData);
 		}
 
@@ -73,16 +66,13 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 
 	@Override
 	@Nonnull
-	public IModelData getModelData(ILightReader world, BlockPos pos, BlockState state, IModelData tileData)
-	{
+	public IModelData getModelData(ILightReader world, BlockPos pos, BlockState state, IModelData tileData) {
 		Block block = world.getTileEntity(pos).getBlockState().getBlock();
 
-		if(block instanceof DisguisableBlock)
-		{
-			BlockState disguisedState = ((DisguisableBlock)block).getDisguisedBlockState(world, pos);
+		if (block instanceof DisguisableBlock) {
+			BlockState disguisedState = ((DisguisableBlock) block).getDisguisedBlockState(world, pos);
 
-			if(disguisedState != null)
-			{
+			if (disguisedState != null) {
 				tileData.setData(DISGUISED_BLOCK_RL, disguisedState.getBlock().getRegistryName());
 				return tileData;
 			}
@@ -93,32 +83,27 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleTexture()
-	{
+	public TextureAtlasSprite getParticleTexture() {
 		return oldModel.getParticleTexture();
 	}
 
 	@Override
-	public boolean isGui3d()
-	{
+	public boolean isGui3d() {
 		return false;
 	}
 
 	@Override
-	public boolean isBuiltInRenderer()
-	{
+	public boolean isBuiltInRenderer() {
 		return false;
 	}
 
 	@Override
-	public boolean isAmbientOcclusion()
-	{
+	public boolean isAmbientOcclusion() {
 		return true;
 	}
 
 	@Override
-	public ItemOverrideList getOverrides()
-	{
+	public ItemOverrideList getOverrides() {
 		return null;
 	}
 

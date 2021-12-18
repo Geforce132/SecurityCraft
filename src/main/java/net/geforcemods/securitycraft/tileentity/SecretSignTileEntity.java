@@ -19,43 +19,32 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 
-public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IModuleInventory, ICustomizable
-{
+public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IModuleInventory, ICustomizable {
 	private Owner owner = new Owner();
 	private BooleanOption isSecret = new BooleanOption("isSecret", true);
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
 	@Override
-	public TileEntityType<?> getType()
-	{
+	public TileEntityType<?> getType() {
 		return SCContent.teTypeSecretSign;
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
 
-		if(owner != null){
+		if (owner != null) {
 			owner.write(tag, false);
 		}
 
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
-	public void read(CompoundNBT tag)
-	{
+	public void read(CompoundNBT tag) {
 		super.read(tag);
 
 		modules = readModuleInventory(tag);
@@ -64,8 +53,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	}
 
 	@Override
-	public TileEntity getTileEntity()
-	{
+	public TileEntity getTileEntity() {
 		return this;
 	}
 
@@ -76,12 +64,16 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST};
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ isSecret };
+		return new Option[] {
+				isSecret
+		};
 	}
 
 	public boolean isSecret() {
@@ -93,8 +85,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option)
-	{
+	public void onOptionChanged(Option<?> option) {
 		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 	}
 
@@ -111,7 +102,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	}
 
 	@Override
-	public Owner getOwner(){
+	public Owner getOwner() {
 		return owner;
 	}
 

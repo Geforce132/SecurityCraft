@@ -23,7 +23,6 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootParameters;
 
 public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
-
 	public ReinforcedMovingPistonBlock(Block.Properties properties) {
 		super(properties);
 	}
@@ -37,24 +36,18 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 		if (state.getBlock() != newState.getBlock()) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if (te instanceof ReinforcedPistonTileEntity) {
-				((ReinforcedPistonTileEntity)te).clearPistonTileEntity();
-			}
-
+			if (te instanceof ReinforcedPistonTileEntity)
+				((ReinforcedPistonTileEntity) te).clearPistonTileEntity();
 		}
 	}
 
-	/**
-	 * Called after a player destroys this Block - the posiiton pos may no longer hold the state indicated.
-	 */
 	@Override
 	public void onPlayerDestroy(IWorld world, BlockPos pos, BlockState state) {
 		BlockPos oppositePos = pos.offset(state.get(FACING).getOpposite());
 		BlockState oppositeState = world.getBlockState(oppositePos);
 
-		if (oppositeState.getBlock() instanceof ReinforcedPistonBlock && oppositeState.get(PistonBlock.EXTENDED)) {
+		if (oppositeState.getBlock() instanceof ReinforcedPistonBlock && oppositeState.get(PistonBlock.EXTENDED))
 			world.removeBlock(oppositePos, false);
-		}
 	}
 
 	@Override
@@ -71,6 +64,6 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 
 	private ReinforcedPistonTileEntity getTileEntity(IBlockReader world, BlockPos pos) {
 		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity instanceof ReinforcedPistonTileEntity ? (ReinforcedPistonTileEntity)tileentity : null;
+		return tileentity instanceof ReinforcedPistonTileEntity ? (ReinforcedPistonTileEntity) tileentity : null;
 	}
 }

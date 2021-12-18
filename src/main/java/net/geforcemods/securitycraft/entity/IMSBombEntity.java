@@ -21,18 +21,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class IMSBombEntity extends AbstractFireballEntity {
-
 	private static final DataParameter<Owner> OWNER = EntityDataManager.createKey(IMSBombEntity.class, Owner.getSerializer());
 	private int ticksFlying = 0;
 	private int launchTime;
 	private boolean launching = true;
 	private boolean isFast;
 
-	public IMSBombEntity(EntityType<IMSBombEntity> type, World world){
+	public IMSBombEntity(EntityType<IMSBombEntity> type, World world) {
 		super(SCContent.eTypeImsBomb, world);
 	}
 
-	public IMSBombEntity(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSTileEntity te){
+	public IMSBombEntity(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSTileEntity te) {
 		super(SCContent.eTypeImsBomb, x, y, z, accelerationX, accelerationY, accelerationZ, world);
 		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
 
@@ -43,22 +42,19 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	}
 
 	@Override
-	public void tick(){
-		if(!launching)
+	public void tick() {
+		if (!launching)
 			super.tick();
-		else
-		{
-			if(ticksFlying == 0)
+		else {
+			if (ticksFlying == 0)
 				setMotion(getMotion().x, isFast ? 0.66F : 0.33F, getMotion().z);
 
 			//move up before homing onto target
-			if(ticksFlying < launchTime)
-			{
+			if (ticksFlying < launchTime) {
 				ticksFlying += isFast ? 2 : 1;
 				move(MoverType.SELF, getMotion());
 			}
-			else
-			{
+			else {
 				setMotion(0.0D, 0.0D, 0.0D);
 				launching = false;
 			}
@@ -66,9 +62,9 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult result){
-		if(!world.isRemote && result.getType() == Type.BLOCK && world.getBlockState(((BlockRayTraceResult)result).getPos()).getBlock() != SCContent.IMS.get()){
-			BlockPos impactPos = ((BlockRayTraceResult)result).getPos();
+	protected void onImpact(RayTraceResult result) {
+		if (!world.isRemote && result.getType() == Type.BLOCK && world.getBlockState(((BlockRayTraceResult) result).getPos()).getBlock() != SCContent.IMS.get()) {
+			BlockPos impactPos = ((BlockRayTraceResult) result).getPos();
 
 			world.createExplosion(this, impactPos.getX(), impactPos.getY() + 1D, impactPos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.5F : 7F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 			remove();
@@ -76,8 +72,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT tag)
-	{
+	public void writeAdditional(CompoundNBT tag) {
 		super.writeAdditional(tag);
 		tag.putInt("launchTime", launchTime);
 		tag.putInt("ticksFlying", ticksFlying);
@@ -86,8 +81,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT tag)
-	{
+	public void readAdditional(CompoundNBT tag) {
 		super.readAdditional(tag);
 		launchTime = tag.getInt("launchTime");
 		ticksFlying = tag.getInt("ticksFlying");
@@ -98,41 +92,38 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	/**
 	 * @return The owner of the IMS which shot this bullet
 	 */
-	public Owner getOwner()
-	{
+	public Owner getOwner() {
 		return dataManager.get(OWNER);
 	}
 
 	@Override
-	protected void registerData()
-	{
+	protected void registerData() {
 		super.registerData();
 		dataManager.register(OWNER, new Owner());
 	}
 
 	@Override
-	protected float getMotionFactor(){
+	protected float getMotionFactor() {
 		return isFast ? 1.5F : 1.0F;
 	}
 
 	@Override
-	protected boolean canTriggerWalking(){
+	protected boolean canTriggerWalking() {
 		return false;
 	}
 
 	@Override
-	public boolean canBeCollidedWith(){
+	public boolean canBeCollidedWith() {
 		return false;
 	}
 
 	@Override
-	public float getCollisionBorderSize(){
+	public float getCollisionBorderSize() {
 		return 0.3F;
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket()
-	{
+	public IPacket<?> createSpawnPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

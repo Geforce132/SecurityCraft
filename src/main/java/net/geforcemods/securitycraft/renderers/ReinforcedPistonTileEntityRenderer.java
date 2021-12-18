@@ -46,7 +46,8 @@ public class ReinforcedPistonTileEntityRenderer extends TileEntityRenderer<Reinf
 				if (state.getBlock() == SCContent.REINFORCED_PISTON_HEAD.get() && te.getProgress(partialTicks) <= 4.0F) {
 					state = state.with(PistonHeadBlock.SHORT, te.getProgress(partialTicks) <= 0.5F);
 					renderBlocks(oppositePos, state, matrix, buffer, world, false, combinedOverlay);
-				} else if (te.shouldPistonHeadBeRendered() && !te.isExtending()) {
+				}
+				else if (te.shouldPistonHeadBeRendered() && !te.isExtending()) {
 					PistonType pistonType = state.getBlock() == SCContent.REINFORCED_STICKY_PISTON.get() ? PistonType.STICKY : PistonType.DEFAULT;
 					BlockState headState = SCContent.REINFORCED_PISTON_HEAD.get().getDefaultState().with(PistonHeadBlock.TYPE, pistonType).with(PistonHeadBlock.FACING, state.get(PistonBlock.FACING));
 					BlockPos renderPos = oppositePos.offset(te.getMotionDirection());
@@ -57,9 +58,9 @@ public class ReinforcedPistonTileEntityRenderer extends TileEntityRenderer<Reinf
 					matrix.push();
 					state = state.with(PistonBlock.EXTENDED, true);
 					renderBlocks(renderPos, state, matrix, buffer, world, true, combinedOverlay);
-				} else {
-					renderBlocks(oppositePos, state, matrix, buffer, world, false, combinedOverlay);
 				}
+				else
+					renderBlocks(oppositePos, state, matrix, buffer, world, false, combinedOverlay);
 
 				matrix.pop();
 				BlockModelRenderer.disableCache();
@@ -72,9 +73,8 @@ public class ReinforcedPistonTileEntityRenderer extends TileEntityRenderer<Reinf
 			ForgeHooksClient.setRenderLayer(rendertype);
 			IVertexBuilder ivertexbuilder = buffer.getBuffer(rendertype);
 
-			if (blockRenderer == null) {
+			if (blockRenderer == null)
 				blockRenderer = Minecraft.getInstance().getBlockRendererDispatcher();
-			}
 
 			blockRenderer.getBlockModelRenderer().renderModel(world, this.blockRenderer.getModelForState(state), state, pos, stack, ivertexbuilder, checkSides, new Random(), state.getPositionRandom(pos), combinedOverlay);
 		});

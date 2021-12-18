@@ -9,33 +9,28 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe>
-{
+public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> {
 	protected static final String OUTPUT_TEXT = Utils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText();
 	private final IDrawable background;
 	private final IDrawable icon;
 
-	public BaseCategory(IGuiHelper helper)
-	{
+	public BaseCategory(IGuiHelper helper) {
 		background = helper.createDrawable(new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png"), 25, 19, 126, 43);
 		icon = helper.createDrawableIngredient(new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()));
 	}
 
 	@Override
-	public IDrawable getBackground()
-	{
+	public IDrawable getBackground() {
 		return background;
 	}
 
 	@Override
-	public IDrawable getIcon()
-	{
+	public IDrawable getIcon() {
 		return icon;
 	}
 
 	@Override
-	public Class<? extends ReinforcerRecipe> getRecipeClass()
-	{
+	public Class<? extends ReinforcerRecipe> getRecipeClass() {
 		return ReinforcerRecipe.class;
 	}
 }

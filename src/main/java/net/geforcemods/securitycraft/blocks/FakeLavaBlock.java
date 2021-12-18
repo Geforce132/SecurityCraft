@@ -13,31 +13,26 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class FakeLavaBlock extends FlowingFluidBlock
-{
+public class FakeLavaBlock extends FlowingFluidBlock {
 	private static final EffectInstance SHORT_FIRE_RESISTANCE = new EffectInstance(Effects.FIRE_RESISTANCE, 1);
 
-	public FakeLavaBlock(Block.Properties properties, Supplier<? extends FlowingFluid> fluid)
-	{
+	public FakeLavaBlock(Block.Properties properties, Supplier<? extends FlowingFluid> fluid) {
 		super(fluid, properties);
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
-	{
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		super.onEntityCollision(state, world, pos, entity);
 
-		if(entity instanceof LivingEntity)
-		{
-			LivingEntity lEntity = (LivingEntity)entity;
+		if (entity instanceof LivingEntity) {
+			LivingEntity lEntity = (LivingEntity) entity;
 
 			lEntity.extinguish();
 
-			if(!world.isRemote)
-			{
+			if (!world.isRemote) {
 				lEntity.addPotionEffect(SHORT_FIRE_RESISTANCE);
 
-				if(!lEntity.isPotionActive(Effects.REGENERATION))
+				if (!lEntity.isPotionActive(Effects.REGENERATION))
 					lEntity.addPotionEffect(new EffectInstance(Effects.REGENERATION, 20, 2));
 			}
 		}

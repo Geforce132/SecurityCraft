@@ -6,16 +6,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks that a block can be reinforced using the Universal Block Reinforcer.
- * This also automatically registers its item block.
- * Only use on RegistryObjects of blocks
+ * Marks that a block can be reinforced using the Universal Block Reinforcer. This also automatically registers its item
+ * block. Only use on RegistryObjects of blocks
  *
  * @author bl4ckscor3
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Reinforced
-{
+public @interface Reinforced {
 	/**
 	 * @return true if this block should receive a reinforcing tint, false if not
 	 */

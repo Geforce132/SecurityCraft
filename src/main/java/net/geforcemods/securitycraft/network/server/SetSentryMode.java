@@ -10,27 +10,23 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SetSentryMode
-{
+public class SetSentryMode {
 	public BlockPos pos;
 	public int mode;
 
 	public SetSentryMode() {}
 
-	public SetSentryMode(BlockPos sentryPos, int mode)
-	{
+	public SetSentryMode(BlockPos sentryPos, int mode) {
 		pos = sentryPos;
 		this.mode = mode;
 	}
 
-	public static void encode(SetSentryMode message, PacketBuffer buf)
-	{
+	public static void encode(SetSentryMode message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeInt(message.mode);
 	}
 
-	public static SetSentryMode decode(PacketBuffer buf)
-	{
+	public static SetSentryMode decode(PacketBuffer buf) {
 		SetSentryMode message = new SetSentryMode();
 
 		message.pos = buf.readBlockPos();
@@ -38,14 +34,13 @@ public class SetSentryMode
 		return message;
 	}
 
-	public static void onMessage(SetSentryMode message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(SetSentryMode message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
 
-			List<SentryEntity> sentries = player.world.<SentryEntity>getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(message.pos));
+			List<SentryEntity> sentries = player.world.<SentryEntity> getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(message.pos));
 
-			if(!sentries.isEmpty() && sentries.get(0).getOwner().isOwner(player))
+			if (!sentries.isEmpty() && sentries.get(0).getOwner().isOwner(player))
 				sentries.get(0).toggleMode(player, message.mode, false);
 		});
 

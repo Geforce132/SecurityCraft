@@ -16,45 +16,38 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock
-{
+public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
 
-	public ReinforcedWallBlock(Block.Properties properties, Block vanillaBlock)
-	{
+	public ReinforcedWallBlock(Block.Properties properties, Block vanillaBlock) {
 		super(properties);
 
 		this.vanillaBlockSupplier = () -> vanillaBlock;
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return vanillaBlockSupplier.get();
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return getDefaultState().with(UP, vanillaState.get(UP)).with(NORTH, vanillaState.get(NORTH)).with(EAST, vanillaState.get(EAST)).with(SOUTH, vanillaState.get(SOUTH)).with(WEST, vanillaState.get(WEST)).with(WATERLOGGED, vanillaState.get(WATERLOGGED));
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
+	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
-	{
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new OwnableTileEntity();
 	}
 }

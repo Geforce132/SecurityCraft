@@ -17,8 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 
 @OnlyIn(Dist.CLIENT)
-public class PictureButton extends IdButton{
-
+public class PictureButton extends IdButton {
 	private final ItemRenderer itemRenderer;
 	private Block blockToRender;
 	private Item itemToRender;
@@ -40,14 +39,13 @@ public class PictureButton extends IdButton{
 		super(id, xPos, yPos, width, height, "", onClick);
 		itemRenderer = par7;
 
-		if(!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
+		if (!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
 			blockToRender = Block.getBlockFromItem(itemToRender.getItem());
 		else
 			this.itemToRender = itemToRender.getItem();
 	}
 
-	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, Consumer<IdButton> onClick)
-	{
+	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, Consumer<IdButton> onClick) {
 		super(id, xPos, yPos, width, height, "", onClick);
 
 		itemRenderer = null;
@@ -62,14 +60,9 @@ public class PictureButton extends IdButton{
 		this.drawHeight = drawHeight;
 	}
 
-	/**
-	 * Draws this button to the screen.
-	 */
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks)
-	{
-		if (visible)
-		{
+	public void render(int mouseX, int mouseY, float partialTicks) {
+		if (visible) {
 			Minecraft mc = Minecraft.getInstance();
 			FontRenderer font = mc.fontRenderer;
 
@@ -77,18 +70,18 @@ public class PictureButton extends IdButton{
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			GuiUtils.drawContinuousTexturedBox(WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHovered()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 
-			if(blockToRender != null){
+			if (blockToRender != null) {
 				RenderSystem.enableRescaleNormal();
 				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(blockToRender), x + 2, y + 3);
 				itemRenderer.renderItemOverlayIntoGUI(font, new ItemStack(blockToRender), x + 2, y + 3, "");
-			}else if(itemToRender != null){
+			}
+			else if (itemToRender != null) {
 				RenderSystem.enableRescaleNormal();
 				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(itemToRender), x + 2, y + 2);
 				itemRenderer.renderItemOverlayIntoGUI(font, new ItemStack(itemToRender), x + 2, y + 2, "");
 				RenderSystem.disableLighting();
 			}
-			else if(getTextureLocation() != null)
-			{
+			else if (getTextureLocation() != null) {
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				mc.getTextureManager().bindTexture(getTextureLocation());
 				blit(x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
@@ -96,8 +89,7 @@ public class PictureButton extends IdButton{
 		}
 	}
 
-	public ResourceLocation getTextureLocation()
-	{
+	public ResourceLocation getTextureLocation() {
 		return textureLocation;
 	}
 

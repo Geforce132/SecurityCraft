@@ -54,25 +54,21 @@ import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-@EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT)
-public class SCClientEventHandler
-{
+@EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
+public class SCClientEventHandler {
 	public static final ResourceLocation CAMERA_DASHBOARD = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
 	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 
 	@SubscribeEvent
-	public static void onScreenshot(ScreenshotEvent event)
-	{
+	public static void onScreenshot(ScreenshotEvent event) {
 		PlayerEntity player = Minecraft.getInstance().player;
 
-		if(PlayerUtils.isPlayerMountedOnCamera(player))
-		{
-			SecurityCameraEntity camera = (SecurityCameraEntity)Minecraft.getInstance().renderViewEntity;
+		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
+			SecurityCameraEntity camera = (SecurityCameraEntity) Minecraft.getInstance().renderViewEntity;
 
-			if(camera.screenshotSoundCooldown == 0)
-			{
+			if (camera.screenshotSoundCooldown == 0) {
 				camera.screenshotSoundCooldown = 7;
 				Minecraft.getInstance().world.playSound(player.getPosition(), SCSounds.CAMERASNAP.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
@@ -80,15 +76,14 @@ public class SCClientEventHandler
 	}
 
 	@SubscribeEvent
-	public static void renderHandEvent(RenderHandEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player))
+	public static void renderHandEvent(RenderHandEvent event) {
+		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player))
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
 	public static void onClickInput(InputEvent.ClickInputEvent event) {
-		if(event.isAttack() && ClientHandler.isPlayerMountedOnCamera())
-		{
+		if (event.isAttack() && ClientHandler.isPlayerMountedOnCamera()) {
 			event.setCanceled(true);
 			event.setSwingHand(false);
 		}
@@ -96,17 +91,16 @@ public class SCClientEventHandler
 
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent.Pre event) {
-		if((event.getType() == ElementType.EXPERIENCE || event.getType() == ElementType.JUMPBAR || event.getType() == ElementType.POTION_ICONS) && ClientHandler.isPlayerMountedOnCamera())
+		if ((event.getType() == ElementType.EXPERIENCE || event.getType() == ElementType.JUMPBAR || event.getType() == ElementType.POTION_ICONS) && ClientHandler.isPlayerMountedOnCamera())
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
-		if(event.getType() == ElementType.ALL) {
-			if(ClientHandler.isPlayerMountedOnCamera())
+		if (event.getType() == ElementType.ALL) {
+			if (ClientHandler.isPlayerMountedOnCamera())
 				drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().getMainWindow(), Minecraft.getInstance().player, Minecraft.getInstance().world, Minecraft.getInstance().renderViewEntity.getPosition());
-			else
-			{
+			else {
 				Minecraft mc = Minecraft.getInstance();
 				ClientPlayerEntity player = mc.player;
 				World world = player.getEntityWorld();
@@ -116,51 +110,42 @@ public class SCClientEventHandler
 					int uCoord = 0;
 					ItemStack stack = player.getHeldItem(hand);
 
-					if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
-					{
+					if (stack.getItem() == SCContent.CAMERA_MONITOR.get()) {
 						double eyeHeight = player.getEyeHeight();
 						Vec3d lookVec = new Vec3d(player.getPosX() + player.getLookVec().x * reachDistance, eyeHeight + player.getPosY() + player.getLookVec().y * reachDistance, player.getPosZ() + player.getLookVec().z * reachDistance);
 						RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
 
-						if(mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(((BlockRayTraceResult)mop).getPos()) instanceof SecurityCameraTileEntity)
-						{
+						if (mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(((BlockRayTraceResult) mop).getPos()) instanceof SecurityCameraTileEntity) {
 							CompoundNBT cameras = stack.getOrCreateTag();
 							uCoord = 110;
 
-							for(int i = 1; i < 31; i++)
-							{
-								if(!cameras.contains("Camera" + i))
+							for (int i = 1; i < 31; i++) {
+								if (!cameras.contains("Camera" + i))
 									continue;
 
 								String[] coords = cameras.getString("Camera" + i).split(" ");
 
-								if(Integer.parseInt(coords[0]) == ((BlockRayTraceResult)mop).getPos().getX() && Integer.parseInt(coords[1]) == ((BlockRayTraceResult)mop).getPos().getY() && Integer.parseInt(coords[2]) == ((BlockRayTraceResult)mop).getPos().getZ())
-								{
+								if (Integer.parseInt(coords[0]) == ((BlockRayTraceResult) mop).getPos().getX() && Integer.parseInt(coords[1]) == ((BlockRayTraceResult) mop).getPos().getY() && Integer.parseInt(coords[2]) == ((BlockRayTraceResult) mop).getPos().getZ()) {
 									uCoord = 88;
 									break;
 								}
 							}
 						}
 					}
-					else if(stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get())
-					{
+					else if (stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get()) {
 						double eyeHeight = player.getEyeHeight();
 						Vec3d lookVec = new Vec3d(player.getPosX() + player.getLookVec().x * reachDistance, eyeHeight + player.getPosY() + player.getLookVec().y * reachDistance, player.getPosZ() + player.getLookVec().z * reachDistance);
 						RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
 
-						if(mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockRayTraceResult)mop).getPos()).getBlock() instanceof IExplosive)
-						{
+						if (mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockRayTraceResult) mop).getPos()).getBlock() instanceof IExplosive) {
 							uCoord = 110;
 							CompoundNBT mines = stack.getOrCreateTag();
 
-							for(int i = 1; i <= 6; i++)
-							{
-								if(stack.getTag().getIntArray("mine" + i).length > 0)
-								{
+							for (int i = 1; i <= 6; i++) {
+								if (stack.getTag().getIntArray("mine" + i).length > 0) {
 									int[] coords = mines.getIntArray("mine" + i);
 
-									if(coords[0] == ((BlockRayTraceResult)mop).getPos().getX() && coords[1] == ((BlockRayTraceResult)mop).getPos().getY() && coords[2] == ((BlockRayTraceResult)mop).getPos().getZ())
-									{
+									if (coords[0] == ((BlockRayTraceResult) mop).getPos().getX() && coords[1] == ((BlockRayTraceResult) mop).getPos().getY() && coords[2] == ((BlockRayTraceResult) mop).getPos().getZ()) {
 										uCoord = 88;
 										break;
 									}
@@ -168,22 +153,17 @@ public class SCClientEventHandler
 							}
 						}
 					}
-					else if(stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get())
-					{
+					else if (stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get()) {
 						Entity hitEntity = Minecraft.getInstance().pointedEntity;
 
-						if(hitEntity instanceof SentryEntity)
-						{
+						if (hitEntity instanceof SentryEntity) {
 							uCoord = 110;
 							CompoundNBT sentries = stack.getOrCreateTag();
 
-							for(int i = 1; i <= 12; i++)
-							{
-								if(stack.getTag().getIntArray("sentry" + i).length > 0)
-								{
+							for (int i = 1; i <= 12; i++) {
+								if (stack.getTag().getIntArray("sentry" + i).length > 0) {
 									int[] coords = sentries.getIntArray("sentry" + i);
-									if(coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ())
-									{
+									if (coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ()) {
 										uCoord = 88;
 										break;
 									}
@@ -191,28 +171,26 @@ public class SCClientEventHandler
 							}
 						}
 					}
-					else if(stack.getItem() == SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
-					{
+					else if (stack.getItem() == SCContent.SONIC_SECURITY_SYSTEM_ITEM.get()) {
 						double eyeHeight = player.getEyeHeight();
 						Vec3d lookVec = new Vec3d(player.getPosX() + player.getLookVec().x * reachDistance, eyeHeight + player.getPosY() + player.getLookVec().y * reachDistance, player.getPosZ() + player.getLookVec().z * reachDistance);
 						RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
-						TileEntity te = world.getTileEntity(((BlockRayTraceResult)mop).getPos());
+						TileEntity te = world.getTileEntity(((BlockRayTraceResult) mop).getPos());
 
-						if(mop != null && mop.getType() == Type.BLOCK && te instanceof ILockable)
-						{
-							BlockPos pos = ((BlockRayTraceResult)mop).getPos();
+						if (mop != null && mop.getType() == Type.BLOCK && te instanceof ILockable) {
+							BlockPos pos = ((BlockRayTraceResult) mop).getPos();
 
 							//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
-							if (!(te instanceof IOwnable) || !((IOwnable)te).getOwner().isOwner(player)) {
+							if (!(te instanceof IOwnable) || !((IOwnable) te).getOwner().isOwner(player)) {
 								Block block = te.getBlockState().getBlock();
 
-								if (block instanceof DisguisableBlock && ((DisguisableBlock)block).getDisguisedBlockState(world, pos) != null)
+								if (block instanceof DisguisableBlock && ((DisguisableBlock) block).getDisguisedBlockState(world, pos) != null)
 									return;
 							}
 
 							uCoord = 110;
 
-							if(SonicSecuritySystemItem.isAdded(stack.getOrCreateTag(), pos))
+							if (SonicSecuritySystemItem.isAdded(stack.getOrCreateTag(), pos))
 								uCoord = 88;
 						}
 					}
@@ -238,15 +216,14 @@ public class SCClientEventHandler
 			return;
 
 		FontRenderer font = Minecraft.getInstance().fontRenderer;
-		SecurityCameraTileEntity te = (SecurityCameraTileEntity)tile;
+		SecurityCameraTileEntity te = (SecurityCameraTileEntity) tile;
 		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
 		GameSettings settings = Minecraft.getInstance().gameSettings;
 		BlockState state = world.getBlockState(pos);
 		String lookAround = settings.keyBindForward.getLocalizedName().toUpperCase() + settings.keyBindLeft.getLocalizedName().toUpperCase() + settings.keyBindBack.getLocalizedName().toUpperCase() + settings.keyBindRight.getLocalizedName().toUpperCase() + " - " + Utils.localize("gui.securitycraft:camera.lookAround").getFormattedText();
 		int timeY = 25;
 
-		if(te.hasCustomName())
-		{
+		if (te.hasCustomName()) {
 			String cameraName = te.getCustomName().getFormattedText();
 
 			font.drawStringWithShadow(cameraName, resolution.getScaledWidth() - font.getStringWidth(cameraName) - 8, 25, 16777215);
@@ -266,16 +243,16 @@ public class SCClientEventHandler
 		gui.blit(5, 0, 0, 0, 90, 20);
 		gui.blit(resolution.getScaledWidth() - 70, 5, 190, 0, 65, 30);
 
-		if(!player.isPotionActive(Effects.NIGHT_VISION))
+		if (!player.isPotionActive(Effects.NIGHT_VISION))
 			gui.blit(28, 4, 90, 12, 16, 11);
-		else{
+		else {
 			mc.getTextureManager().bindTexture(NIGHT_VISION);
 			AbstractGui.blit(27, -1, 0, 0, 18, 18, 18, 18);
 			mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		}
 
-		if(state.getWeakPower(world, pos, state.get(SecurityCameraBlock.FACING)) == 0) {
-			if(!hasRedstoneModule)
+		if (state.getWeakPower(world, pos, state.get(SecurityCameraBlock.FACING)) == 0) {
+			if (!hasRedstoneModule)
 				gui.blit(12, 2, 104, 0, 12, 12);
 			else
 				gui.blit(12, 3, 90, 0, 12, 11);

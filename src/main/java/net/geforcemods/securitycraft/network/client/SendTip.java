@@ -18,12 +18,10 @@ import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.VersionChecker.Status;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SendTip
-{
+public class SendTip {
 	public static HashMap<String, String> tipsWithLink = new HashMap<>();
 
-	static
-	{
+	static {
 		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
 		tipsWithLink.put("discord", "https://discord.gg/U8DvBAW");
 		tipsWithLink.put("outdated", "https://www.curseforge.com/minecraft/mc-mods/security-craft/files/all");
@@ -33,21 +31,19 @@ public class SendTip
 
 	public static void encode(SendTip message, PacketBuffer packet) {}
 
-	public static SendTip decode(PacketBuffer packet)
-	{
+	public static SendTip decode(PacketBuffer packet) {
 		return new SendTip();
 	}
 
-	public static void onMessage(SendTip packet, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(SendTip packet, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			if(!ConfigHandler.CLIENT.sayThanksMessage.get())
+			if (!ConfigHandler.CLIENT.sayThanksMessage.get())
 				return;
 
 			String tipKey = getRandomTip();
 			ITextComponent message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + Utils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()).getFormattedText() + " " + Utils.localize("messages.securitycraft:tip").getFormattedText() + " " + Utils.localize(tipKey).getFormattedText() + " ");
 
-			if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
+			if (tipsWithLink.containsKey(tipKey.split("\\.")[2]))
 				message.appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 
 			ClientHandler.getClientPlayer().sendMessage(message);
@@ -56,8 +52,8 @@ public class SendTip
 		ctx.get().setPacketHandled(true);
 	}
 
-	private static String getRandomTip()
-	{
+	private static String getRandomTip() {
+		//@formatter:off
 		String[] tips = {
 				"messages.securitycraft:tip.scHelp",
 				"messages.securitycraft:tip.patreon",
@@ -65,12 +61,12 @@ public class SendTip
 				"messages.securitycraft:tip.scserver",
 				"messages.securitycraft:tip.outdated"
 		};
+		//@formatter:on
 
 		return tips[new Random().nextInt(isOutdated() ? tips.length : tips.length - 1)];
 	}
 
-	private static boolean isOutdated()
-	{
+	private static boolean isOutdated() {
 		return VersionChecker.getResult(ModList.get().getModContainerById(SecurityCraft.MODID).get().getModInfo()).status == Status.OUTDATED;
 	}
 }

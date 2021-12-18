@@ -10,8 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
- * IMSBomb - Geforce
- * Created using Tabula 4.1.1
+ * IMSBomb - Geforce Created using Tabula 4.1.1
  */
 @OnlyIn(Dist.CLIENT)
 public class IMSBombModel extends EntityModel<IMSBombEntity> {
@@ -26,8 +25,7 @@ public class IMSBombModel extends EntityModel<IMSBombEntity> {
 	}
 
 	@Override
-	public void render(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
-	{
+	public void render(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		shape1.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 

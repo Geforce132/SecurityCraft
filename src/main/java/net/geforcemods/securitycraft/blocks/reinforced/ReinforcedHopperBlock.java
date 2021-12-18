@@ -25,41 +25,34 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlock
-{
-	public ReinforcedHopperBlock(Block.Properties properties)
-	{
+public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlock {
+	public ReinforcedHopperBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 
-		if(stack.hasDisplayName())
-		{
+		if (stack.hasDisplayName()) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof ReinforcedHopperTileEntity)
-				((ReinforcedHopperTileEntity)te).setCustomName(stack.getDisplayName());
+			if (te instanceof ReinforcedHopperTileEntity)
+				((ReinforcedHopperTileEntity) te).setCustomName(stack.getDisplayName());
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
-		if(!world.isRemote)
-		{
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
 
-			if(tileEntity instanceof ReinforcedHopperTileEntity)
-			{
-				ReinforcedHopperTileEntity te = (ReinforcedHopperTileEntity)tileEntity;
+			if (tileEntity instanceof ReinforcedHopperTileEntity) {
+				ReinforcedHopperTileEntity te = (ReinforcedHopperTileEntity) tileEntity;
 
 				//only allow the owner or players on the allowlist to access a reinforced hopper
-				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
+				if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
 					player.openContainer(te);
 			}
 		}
@@ -68,15 +61,12 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-	{
-		if(state.getBlock() != newState.getBlock())
-		{
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (state.getBlock() != newState.getBlock()) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof ReinforcedHopperTileEntity)
-			{
-				InventoryHelper.dropInventoryItems(world, pos, (ReinforcedHopperTileEntity)te);
+			if (te instanceof ReinforcedHopperTileEntity) {
+				InventoryHelper.dropInventoryItems(world, pos, (ReinforcedHopperTileEntity) te);
 				world.updateComparatorOutputLevel(pos, this);
 			}
 
@@ -85,61 +75,53 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
-	{
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if(te instanceof ReinforcedHopperTileEntity)
-			((ReinforcedHopperTileEntity)te).onEntityCollision(entity);
+		if (te instanceof ReinforcedHopperTileEntity)
+			((ReinforcedHopperTileEntity) te).onEntityCollision(entity);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world)
-	{
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new ReinforcedHopperTileEntity();
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return Blocks.HOPPER;
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return getDefaultState().with(ENABLED, vanillaState.get(ENABLED)).with(FACING, vanillaState.get(FACING));
 	}
 
-	public static class ExtractionBlock implements IExtractionBlock
-	{
+	public static class ExtractionBlock implements IExtractionBlock {
 		@Override
-		public boolean canExtract(IOwnable te, World world, BlockPos pos, BlockState state)
-		{
-			ReinforcedHopperTileEntity hopperTe = (ReinforcedHopperTileEntity)world.getTileEntity(pos);
+		public boolean canExtract(IOwnable te, World world, BlockPos pos, BlockState state) {
+			ReinforcedHopperTileEntity hopperTe = (ReinforcedHopperTileEntity) world.getTileEntity(pos);
 
-			if(!te.getOwner().owns(hopperTe))
-			{
-				if(te instanceof IModuleInventory)
-				{
-					IModuleInventory inv = (IModuleInventory)te;
+			if (!te.getOwner().owns(hopperTe)) {
+				if (te instanceof IModuleInventory) {
+					IModuleInventory inv = (IModuleInventory) te;
 
 					//hoppers can extract out of e.g. chests if the hopper's owner is on the chest's allowlist module
-					if(ModuleUtils.isAllowed(inv, hopperTe.getOwner().getName()))
+					if (ModuleUtils.isAllowed(inv, hopperTe.getOwner().getName()))
 						return true;
 					//hoppers can extract out of e.g. chests whose owner is on the hopper's allowlist module
-					else if(ModuleUtils.isAllowed(hopperTe, te.getOwner().getName()))
+					else if (ModuleUtils.isAllowed(hopperTe, te.getOwner().getName()))
 						return true;
 				}
 
 				return false;
 			}
-			else return true;
+			else
+				return true;
 		}
 
 		@Override
-		public Block getBlock()
-		{
+		public Block getBlock() {
 			return SCContent.REINFORCED_HOPPER.get();
 		}
 	}

@@ -19,7 +19,6 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class ProtectoBlock extends DisguisableBlock {
-
 	public static final BooleanProperty ACTIVATED = BlockStateProperties.ENABLED;
 	public static final VoxelShape SHAPE = VoxelShapes.or(Block.makeCuboidShape(0, 0, 5, 16, 16, 11), Block.makeCuboidShape(5, 0, 0, 11, 16, 16));
 
@@ -29,34 +28,31 @@ public class ProtectoBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		BlockState disguisedState = getExtendedState(state, world, pos);
 
-		if(disguisedState.getBlock() != this)
+		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(world, pos, ctx);
-		else return SHAPE;
+		else
+			return SHAPE;
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
 		return Block.hasSolidSide(world.getBlockState(pos.down()), world, pos.down(), Direction.UP);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
-	{
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		return getDefaultState().with(ACTIVATED, false);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(ACTIVATED);
 	}
 
@@ -64,5 +60,4 @@ public class ProtectoBlock extends DisguisableBlock {
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new ProtectoTileEntity();
 	}
-
 }

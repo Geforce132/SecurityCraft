@@ -22,12 +22,10 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ScannerDoorTileEntity extends SpecialDoorTileEntity implements IViewActivated, ILockable
-{
+public class ScannerDoorTileEntity extends SpecialDoorTileEntity implements IViewActivated, ILockable {
 	private int viewCooldown = 0;
 
-	public ScannerDoorTileEntity()
-	{
+	public ScannerDoorTileEntity() {
 		super(SCContent.teTypeScannerDoor);
 	}
 
@@ -38,18 +36,16 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity implements IVie
 	}
 
 	@Override
-	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult rayTraceResult)
-	{
+	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult rayTraceResult) {
 		BlockState upperState = world.getBlockState(pos);
 		BlockState lowerState = world.getBlockState(pos.down());
 		Direction.Axis facingAxis = ScannerDoorBlock.getFacingAxis(upperState);
 
-		if(upperState.get(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity))
-		{
-			if(!(entity instanceof PlayerEntity) || facingAxis != rayTraceResult.getFace().getAxis())
+		if (upperState.get(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity)) {
+			if (!(entity instanceof PlayerEntity) || facingAxis != rayTraceResult.getFace().getAxis())
 				return false;
 
-			PlayerEntity player = (PlayerEntity)entity;
+			PlayerEntity player = (PlayerEntity) entity;
 
 			if (!isLocked()) {
 				String name = entity.getName().getString();
@@ -69,10 +65,10 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity implements IVie
 				world.setBlockState(pos.down(), lowerState.with(DoorBlock.OPEN, !lowerState.get(DoorBlock.OPEN)), 3);
 				world.playEvent(null, open ? 1005 : 1011, pos, 0);
 
-				if(open && length > 0)
+				if (open && length > 0)
 					world.getPendingBlockTicks().scheduleTick(pos, SCContent.SCANNER_DOOR.get(), length);
 
-				if(open && sendsMessages())
+				if (open && sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
 
 				return true;
@@ -89,8 +85,7 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity implements IVie
 	}
 
 	@Override
-	public int getViewCooldown()
-	{
+	public int getViewCooldown() {
 		return viewCooldown;
 	}
 
@@ -100,14 +95,14 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity implements IVie
 	}
 
 	@Override
-	public ModuleType[] acceptedModules()
-	{
-		return new ModuleType[]{ModuleType.ALLOWLIST};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
-	public int defaultSignalLength()
-	{
+	public int defaultSignalLength() {
 		return 0;
 	}
 }

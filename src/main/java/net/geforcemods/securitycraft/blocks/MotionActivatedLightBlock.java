@@ -25,7 +25,6 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class MotionActivatedLightBlock extends OwnableBlock {
-
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	private static final VoxelShape SHAPE_NORTH = VoxelShapes.or(Block.makeCuboidShape(6, 3, 13, 10, 4, 14), VoxelShapes.or(Block.makeCuboidShape(6, 6, 13, 10, 9, 14), VoxelShapes.combine(Block.makeCuboidShape(7, 3, 14, 9, 8, 16), Block.makeCuboidShape(7, 4, 15, 9, 7, 14), IBooleanFunction.ONLY_FIRST)));
@@ -39,14 +38,18 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx){
-		switch(state.get(FACING))
-		{
-			case NORTH: return SHAPE_NORTH;
-			case EAST: return SHAPE_EAST;
-			case SOUTH: return SHAPE_SOUTH;
-			case WEST: return SHAPE_WEST;
-			default: return VoxelShapes.fullCube();
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+		switch (state.get(FACING)) {
+			case NORTH:
+				return SHAPE_NORTH;
+			case EAST:
+				return SHAPE_EAST;
+			case SOUTH:
+				return SHAPE_SOUTH;
+			case WEST:
+				return SHAPE_WEST;
+			default:
+				return VoxelShapes.fullCube();
 		}
 	}
 
@@ -56,20 +59,18 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
 		Direction side = state.get(FACING);
 
 		return side != Direction.UP && side != Direction.DOWN && BlockUtils.isSideSolid(world, pos.offset(side.getOpposite()), side);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
-	{
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		return facing != Direction.UP && facing != Direction.DOWN && BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) ? getDefaultState().with(FACING, facing) : null;
 	}
 
@@ -80,10 +81,8 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
-		builder.add(FACING);
-		builder.add(LIT);
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+		builder.add(FACING, LIT);
 	}
 
 	@Override
@@ -92,27 +91,25 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		Direction facing = state.get(FACING);
 
-		switch(mirror)
-		{
+		switch (mirror) {
 			case LEFT_RIGHT:
-				if(facing.getAxis() == Axis.Z)
+				if (facing.getAxis() == Axis.Z)
 					return state.with(FACING, facing.getOpposite());
 				break;
 			case FRONT_BACK:
-				if(facing.getAxis() == Axis.X)
+				if (facing.getAxis() == Axis.X)
 					return state.with(FACING, facing.getOpposite());
 				break;
-			case NONE: break;
+			case NONE:
+				break;
 		}
 
 		return state;

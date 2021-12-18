@@ -10,18 +10,15 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 
-public class ReinforcedCarpetBlock extends BaseReinforcedBlock
-{
+public class ReinforcedCarpetBlock extends BaseReinforcedBlock {
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
-	public ReinforcedCarpetBlock(Block.Properties properties, Block block)
-	{
+	public ReinforcedCarpetBlock(Block.Properties properties, Block block) {
 		super(properties, block);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		return SHAPE;
 	}
 

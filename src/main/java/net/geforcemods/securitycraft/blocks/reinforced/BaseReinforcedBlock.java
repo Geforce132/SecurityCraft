@@ -21,31 +21,26 @@ import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
-public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock
-{
+public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
 
-	public BaseReinforcedBlock(Block.Properties properties, Block vB)
-	{
+	public BaseReinforcedBlock(Block.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public BaseReinforcedBlock(Block.Properties properties, Supplier<Block> vB)
-	{
+	public BaseReinforcedBlock(Block.Properties properties, Supplier<Block> vB) {
 		super(properties);
 
 		vanillaBlockSupplier = vB;
 	}
 
 	@Override
-	public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon)
-	{
+	public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon) {
 		return this == SCContent.REINFORCED_IRON_BLOCK.get() || this == SCContent.REINFORCED_GOLD_BLOCK.get() || this == SCContent.REINFORCED_DIAMOND_BLOCK.get() || this == SCContent.REINFORCED_EMERALD_BLOCK.get();
 	}
 
 	@Override
-	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable)
-	{
+	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable) {
 		BlockState plant = plantable.getPlant(world, pos.offset(facing));
 		PlantType type = plantable.getPlantType(world, pos.offset(facing));
 
@@ -55,8 +50,8 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		if (plant.getBlock() == Blocks.CACTUS)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 
-		if (plantable instanceof BushBlock) //a nasty workaround because BaseReinforcedBlock can't use BushBlock#isValidGround because it is protected
-		{
+		//a nasty workaround because BaseReinforcedBlock can't use BushBlock#isValidGround because it is protected
+		if (plantable instanceof BushBlock) {
 			boolean bushCondition = this == SCContent.REINFORCED_GRASS_BLOCK.get() || this == SCContent.REINFORCED_DIRT.get() || this == SCContent.REINFORCED_COARSE_DIRT.get() || this == SCContent.REINFORCED_PODZOL.get();
 
 			if (plantable instanceof LilyPadBlock)
@@ -68,41 +63,39 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		}
 
 		switch (type) {
-			case Desert: return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
+			case Desert:
+				return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 			case Beach:
 				boolean isBeach = this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
-				boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
-						world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
-						world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
-						world.getBlockState(pos.south()).getMaterial() == Material.WATER);
+				boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER || world.getBlockState(pos.west()).getMaterial() == Material.WATER || world.getBlockState(pos.north()).getMaterial() == Material.WATER || world.getBlockState(pos.south()).getMaterial() == Material.WATER);
 				return isBeach && hasWater;
-			default: break;
+			default:
+				break;
 		}
+
 		return false;
 	}
 
 	@Override
-	public boolean isConduitFrame(BlockState state, IWorldReader world, BlockPos pos, BlockPos conduit)
-	{
+	public boolean isConduitFrame(BlockState state, IWorldReader world, BlockPos pos, BlockPos conduit) {
 		return this == SCContent.REINFORCED_PRISMARINE.get() || this == SCContent.REINFORCED_PRISMARINE_BRICKS.get() || this == SCContent.REINFORCED_SEA_LANTERN.get() || this == SCContent.REINFORCED_DARK_PRISMARINE.get();
 	}
 
 	@Override
 	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
-		if (this.getVanillaBlock() instanceof BreakableBlock)
+		if (getVanillaBlock() instanceof BreakableBlock)
 			return adjacentBlockState.getBlock() == this ? true : super.isSideInvisible(state, adjacentBlockState, side);
+
 		return false;
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return vanillaBlockSupplier.get();
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return getDefaultState();
 	}
 }

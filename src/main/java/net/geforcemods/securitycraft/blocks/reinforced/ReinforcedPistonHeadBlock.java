@@ -21,15 +21,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements IReinforcedBlock {
-
 	public ReinforcedPistonHeadBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+		if (placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 	}
@@ -40,9 +39,8 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements IReinf
 			BlockPos behindPos = pos.offset(state.get(FACING).getOpposite());
 			Block behindBlock = world.getBlockState(behindPos).getBlock();
 
-			if (behindBlock == SCContent.REINFORCED_PISTON.get() || behindBlock == SCContent.REINFORCED_STICKY_PISTON.get()) {
+			if (behindBlock == SCContent.REINFORCED_PISTON.get() || behindBlock == SCContent.REINFORCED_STICKY_PISTON.get())
 				world.removeBlock(behindPos, false);
-			}
 		}
 
 		super.onBlockHarvested(world, pos, state, player);

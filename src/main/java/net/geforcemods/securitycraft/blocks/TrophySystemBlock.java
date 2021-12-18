@@ -32,7 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class TrophySystemBlock extends DisguisableBlock {
-
+	//@formatter:off
 	private static final VoxelShape SHAPE = Stream.of(
 			Block.makeCuboidShape(6.5, 0, 12, 9.5, 1.5, 15),
 			Block.makeCuboidShape(5.5, 7, 5.5, 10.5, 11, 10.5),
@@ -44,6 +44,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 			Block.makeCuboidShape(12, 0, 6.5, 15, 1.5, 9.5),
 			Block.makeCuboidShape(6.5, 0, 1, 9.5, 1.5, 4)
 			).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
+	//@formatter:on
 
 	public TrophySystemBlock(Block.Properties properties) {
 		super(properties);
@@ -55,13 +56,13 @@ public class TrophySystemBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
 		return BlockUtils.isSideSolid(world, pos.down(), Direction.UP);
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if(!isValidPosition(state, world, pos)) {
+		if (!isValidPosition(state, world, pos)) {
 			world.destroyBlock(pos, true);
 		}
 	}
@@ -69,8 +70,8 @@ public class TrophySystemBlock extends DisguisableBlock {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
-			if (!world.isRemote)
-				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+			if (!world.isRemote) {
+				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 						return new GenericTEContainer(SCContent.cTypeTrophySystem, windowId, world, pos);
@@ -81,6 +82,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 						return new TranslationTextComponent(getTranslationKey());
 					}
 				}, pos);
+			}
 
 			return ActionResultType.SUCCESS;
 		}
@@ -89,18 +91,17 @@ public class TrophySystemBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		BlockState disguisedState = getExtendedState(state, world, pos);
 
-		if(disguisedState.getBlock() != this)
+		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(world, pos, ctx);
-		else return SHAPE;
+		else
+			return SHAPE;
 	}
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new TrophySystemTileEntity();
 	}
-
 }

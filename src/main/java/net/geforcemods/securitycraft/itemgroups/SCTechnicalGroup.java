@@ -7,23 +7,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class SCTechnicalGroup extends ItemGroup
-{
-	public SCTechnicalGroup()
-	{
+public class SCTechnicalGroup extends ItemGroup {
+	public SCTechnicalGroup() {
 		super(SecurityCraft.MODID);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public ItemStack createIcon()
-	{
+	public ItemStack createIcon() {
 		return new ItemStack(SCContent.USERNAME_LOGGER.get().asItem());
 	}
 
 	@Override
-	public String getTabLabel()
-	{
+	public String getTabLabel() {
 		return super.getTabLabel() + ".technical";
 	}
 }

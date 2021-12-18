@@ -18,20 +18,19 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity imple
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
-	public MotionActivatedLightTileEntity()
-	{
+	public MotionActivatedLightTileEntity() {
 		super(SCContent.teTypeMotionLight);
 	}
 
 	@Override
 	public void tick() {
-		if(cooldown-- > 0)
+		if (cooldown-- > 0)
 			return;
 
 		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.isSpectator());
 		boolean shouldBeOn = !entities.isEmpty();
 
-		if(getBlockState().get(MotionActivatedLightBlock.LIT) != shouldBeOn)
+		if (getBlockState().get(MotionActivatedLightBlock.LIT) != shouldBeOn)
 			world.setBlockState(pos, getBlockState().with(MotionActivatedLightBlock.LIT, shouldBeOn));
 
 		cooldown = TICKS_BETWEEN_ATTACKS;
@@ -44,6 +43,8 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity imple
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option<?>[] {searchRadiusOption};
+		return new Option<?>[] {
+			searchRadiusOption
+		};
 	}
 }

@@ -17,26 +17,22 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BulletRenderer extends EntityRenderer<BulletEntity>
-{
+public class BulletRenderer extends EntityRenderer<BulletEntity> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/bullet.png");
 	private static final BulletModel MODEL = new BulletModel();
 
-	public BulletRenderer(EntityRendererManager renderManager)
-	{
+	public BulletRenderer(EntityRendererManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void render(BulletEntity entity, float p_225623_2_, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225623_6_)
-	{
+	public void render(BulletEntity entity, float p_225623_2_, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225623_6_) {
 		matrix.rotate(new Quaternion(Vector3f.YP, entity.rotationYaw, true)); //YP
 		MODEL.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(getEntityTexture(entity))), p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(BulletEntity entity)
-	{
+	public ResourceLocation getEntityTexture(BulletEntity entity) {
 		return TEXTURE;
 	}
 }

@@ -9,30 +9,26 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class ToggleBlockPocketManager
-{
+public class ToggleBlockPocketManager {
 	private BlockPos pos;
 	private int size;
 	private boolean enabling;
 
 	public ToggleBlockPocketManager() {}
 
-	public ToggleBlockPocketManager(BlockPocketManagerTileEntity te, boolean enabling, int size)
-	{
+	public ToggleBlockPocketManager(BlockPocketManagerTileEntity te, boolean enabling, int size) {
 		pos = te.getPos();
 		this.enabling = enabling;
 		this.size = size;
 	}
 
-	public static void encode(ToggleBlockPocketManager message, PacketBuffer buf)
-	{
+	public static void encode(ToggleBlockPocketManager message, PacketBuffer buf) {
 		buf.writeLong(message.pos.toLong());
 		buf.writeBoolean(message.enabling);
 		buf.writeInt(message.size);
 	}
 
-	public static ToggleBlockPocketManager decode(PacketBuffer buf)
-	{
+	public static ToggleBlockPocketManager decode(PacketBuffer buf) {
 		ToggleBlockPocketManager message = new ToggleBlockPocketManager();
 
 		message.pos = BlockPos.fromLong(buf.readLong());
@@ -41,20 +37,18 @@ public class ToggleBlockPocketManager
 		return message;
 	}
 
-	public static void onMessage(ToggleBlockPocketManager message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(ToggleBlockPocketManager message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.world.getTileEntity(message.pos);
 
-			if(te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(player))
-			{
-				((BlockPocketManagerTileEntity)te).size = message.size;
+			if (te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity) te).getOwner().isOwner(player)) {
+				((BlockPocketManagerTileEntity) te).size = message.size;
 
-				if(message.enabling)
-					((BlockPocketManagerTileEntity)te).enableMultiblock();
+				if (message.enabling)
+					((BlockPocketManagerTileEntity) te).enableMultiblock();
 				else
-					((BlockPocketManagerTileEntity)te).disableMultiblock();
+					((BlockPocketManagerTileEntity) te).disableMultiblock();
 			}
 		});
 

@@ -4,36 +4,30 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.minecraft.nbt.CompoundNBT;
 
-public class ReinforcedIronBarsTileEntity extends OwnableTileEntity
-{
+public class ReinforcedIronBarsTileEntity extends OwnableTileEntity {
 	private boolean canDrop = true;
 
-	public ReinforcedIronBarsTileEntity()
-	{
+	public ReinforcedIronBarsTileEntity() {
 		super(SCContent.teTypeReinforcedIronBars);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		tag.putBoolean("canDrop", canDrop);
 		return super.write(tag);
 	}
 
 	@Override
-	public void read(CompoundNBT tag)
-	{
+	public void read(CompoundNBT tag) {
 		super.read(tag);
 		canDrop = tag.getBoolean("canDrop");
 	}
 
-	public boolean canDrop()
-	{
+	public boolean canDrop() {
 		return canDrop;
 	}
 
-	public void setCanDrop(boolean canDrop)
-	{
+	public void setCanDrop(boolean canDrop) {
 		this.canDrop = canDrop;
 	}
 }

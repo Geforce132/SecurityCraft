@@ -23,7 +23,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforcedBlock {
-
 	public ReinforcedCauldronBlock(Properties properties) {
 		super(properties);
 	}
@@ -33,10 +32,10 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 		Entity entity = ctx.getEntity();
 
 		if (entity instanceof PlayerEntity) {
-			PlayerEntity player = ((PlayerEntity)entity);
+			PlayerEntity player = ((PlayerEntity) entity);
 			TileEntity te = world.getTileEntity(pos);
 
-			if (te instanceof ReinforcedCauldronTileEntity && ((ReinforcedCauldronTileEntity)te).isAllowedToInteract(player))
+			if (te instanceof ReinforcedCauldronTileEntity && ((ReinforcedCauldronTileEntity) te).isAllowedToInteract(player))
 				return SHAPE;
 			else
 				return VoxelShapes.fullCube();
@@ -49,9 +48,8 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof ReinforcedCauldronTileEntity && ((ReinforcedCauldronTileEntity)te).isAllowedToInteract(player)) {
+		if (te instanceof ReinforcedCauldronTileEntity && ((ReinforcedCauldronTileEntity) te).isAllowedToInteract(player))
 			return super.onBlockActivated(state, world, pos, player, hand, hit);
-		}
 
 		return ActionResultType.PASS;
 	}
@@ -68,8 +66,8 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+		if (placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 	}
 
 	@Override

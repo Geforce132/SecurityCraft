@@ -20,65 +20,58 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinforcedBlock
-{
+public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinforcedBlock {
 	private final Block vanillaBlock;
 	public boolean isWoodenButton;
 
-	public ReinforcedButtonBlock(boolean isWooden, Block.Properties properties, Block vb)
-	{
+	public ReinforcedButtonBlock(boolean isWooden, Block.Properties properties, Block vb) {
 		super(isWooden, properties);
 		this.isWoodenButton = isWooden;
 		this.vanillaBlock = vb;
 	}
 
 	@Override
-	public SoundEvent getSoundEvent(boolean powered)
-	{
-		if (isWoodenButton) return powered ? SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_ON : SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_OFF;
-		else return powered ? SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON : SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF;
+	public SoundEvent getSoundEvent(boolean powered) {
+		if (isWoodenButton)
+			return powered ? SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_ON : SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_OFF;
+		else
+			return powered ? SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON : SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF;
 	}
 
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTrace) {
-		if(isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)world.getTileEntity(pos), player))
+		if (isAllowedToPress(world, pos, (AllowlistOnlyTileEntity) world.getTileEntity(pos), player))
 			return super.onBlockActivated(state, world, pos, player, hand, rayTrace);
 		return ActionResultType.FAIL;
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyTileEntity te, PlayerEntity entity)
-	{
+	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyTileEntity te, PlayerEntity entity) {
 		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
 	}
 
 	@Override
-	public Block getVanillaBlock()
-	{
+	public Block getVanillaBlock() {
 		return vanillaBlock;
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return getDefaultState().with(FACE, vanillaState.get(FACE)).with(HORIZONTAL_FACING, vanillaState.get(HORIZONTAL_FACING)).with(POWERED, vanillaState.get(POWERED));
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
+	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world)
-	{
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new AllowlistOnlyTileEntity();
 	}
 }

@@ -11,29 +11,25 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class InitSentryAnimation
-{
+public class InitSentryAnimation {
 	private BlockPos pos;
 	private boolean animate, animateUpwards;
 
 	public InitSentryAnimation() {}
 
-	public InitSentryAnimation(BlockPos sentryPos, boolean animate, boolean animateUpwards)
-	{
+	public InitSentryAnimation(BlockPos sentryPos, boolean animate, boolean animateUpwards) {
 		pos = sentryPos;
 		this.animate = animate;
 		this.animateUpwards = animateUpwards;
 	}
 
-	public static void encode(InitSentryAnimation message, PacketBuffer buf)
-	{
+	public static void encode(InitSentryAnimation message, PacketBuffer buf) {
 		buf.writeLong(message.pos.toLong());
 		buf.writeBoolean(message.animate);
 		buf.writeBoolean(message.animateUpwards);
 	}
 
-	public static InitSentryAnimation decode(PacketBuffer buf)
-	{
+	public static InitSentryAnimation decode(PacketBuffer buf) {
 		InitSentryAnimation message = new InitSentryAnimation();
 
 		message.pos = BlockPos.fromLong(buf.readLong());
@@ -42,15 +38,13 @@ public class InitSentryAnimation
 		return message;
 	}
 
-	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			List<CreatureEntity> sentries = Minecraft.getInstance().world.<CreatureEntity>getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(message.pos));
+			List<CreatureEntity> sentries = Minecraft.getInstance().world.<CreatureEntity> getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(message.pos));
 
-			if(!sentries.isEmpty())
-			{
-				((SentryEntity)sentries.get(0)).animateUpwards = message.animateUpwards;
-				((SentryEntity)sentries.get(0)).animate = message.animate;
+			if (!sentries.isEmpty()) {
+				((SentryEntity) sentries.get(0)).animateUpwards = message.animateUpwards;
+				((SentryEntity) sentries.get(0)).animate = message.animate;
 			}
 		});
 

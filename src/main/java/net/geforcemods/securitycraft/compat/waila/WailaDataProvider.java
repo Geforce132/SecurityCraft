@@ -45,8 +45,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
 
 	@Override
-	public void register(IRegistrar registrar)
-	{
+	public void register(IRegistrar registrar) {
 		registrar.addSyncedConfig(SHOW_OWNER, true);
 		registrar.addSyncedConfig(SHOW_MODULES, true);
 		registrar.addSyncedConfig(SHOW_PASSWORDS, true);
@@ -58,7 +57,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 	@Override
 	public ItemStack getStack(IDataAccessor data, IPluginConfig config) {
-		if(data.getBlock() instanceof IOverlayDisplay)
+		if (data.getBlock() instanceof IOverlayDisplay)
 			return ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
 
 		return ItemStack.EMPTY;
@@ -69,38 +68,38 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		Block block = data.getBlock();
 		boolean disguised = false;
 
-		if(block instanceof DisguisableBlock)
-		{
-			BlockState disguisedBlockState = ((DisguisableBlock)block).getDisguisedBlockState(data.getWorld(), data.getPosition());
+		if (block instanceof DisguisableBlock) {
+			BlockState disguisedBlockState = ((DisguisableBlock) block).getDisguisedBlockState(data.getWorld(), data.getPosition());
 
-			if(disguisedBlockState != null)
-			{
+			if (disguisedBlockState != null) {
 				disguised = true;
 				block = disguisedBlockState.getBlock();
 			}
 		}
 
-		if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return;
+		if (block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition()))
+			return;
 
 		TileEntity te = data.getTileEntity();
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
-		if(config.get(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
+		if (config.get(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
 			body.add(new StringTextComponent(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner().getName())).getFormattedText()));
 
-		if(disguised)
+		if (disguised)
 			return;
 
 		//if the te is ownable, show modules only when it's owned, otherwise always show
-		if(config.get(SHOW_MODULES) && te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(data.getPlayer()))){
-			if(!((IModuleInventory) te).getInsertedModules().isEmpty())
+		if (config.get(SHOW_MODULES) && te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(data.getPlayer()))) {
+			if (!((IModuleInventory) te).getInsertedModules().isEmpty())
 				body.add(Utils.localize("waila.securitycraft:equipped"));
 
-			for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
+			for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
 				body.add(new StringTextComponent("- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText()));
+			}
 		}
 
-		if(config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
+		if (config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())) {
 			String password = ((IPasswordProtected) te).getPassword();
 
 			body.add(new StringTextComponent(Utils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText())));
@@ -111,18 +110,15 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public void appendBody(List<ITextComponent> body, IEntityAccessor data, IPluginConfig config) {
 		Entity entity = data.getEntity();
 
-		if(entity instanceof SentryEntity)
-		{
-			SentryEntity sentry = (SentryEntity)entity;
+		if (entity instanceof SentryEntity) {
+			SentryEntity sentry = (SentryEntity) entity;
 			SentryMode mode = sentry.getMode();
 
-			if(config.get(SHOW_OWNER))
+			if (config.get(SHOW_OWNER))
 				body.add(new StringTextComponent(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())).getFormattedText()));
 
-			if(config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer()))
-			{
-				if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())
-				{
+			if (config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())) {
+				if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
 					body.add(new StringTextComponent(Utils.localize("waila.securitycraft:equipped").getFormattedText()));
 
 					if (!sentry.getAllowlistModule().isEmpty())
@@ -131,14 +127,14 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 					if (!sentry.getDisguiseModule().isEmpty())
 						body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getFormattedText()));
 
-					if(sentry.hasSpeedModule())
+					if (sentry.hasSpeedModule())
 						body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.SPEED.getTranslationKey()).getFormattedText()));
 				}
 			}
 
 			String modeDescription = Utils.localize(mode.getModeKey()).getFormattedText();
 
-			if(mode != SentryMode.IDLE)
+			if (mode != SentryMode.IDLE)
 				modeDescription += "- " + Utils.localize(mode.getTargetKey()).getFormattedText();
 
 			body.add(new StringTextComponent(TextFormatting.GRAY + modeDescription));
@@ -146,7 +142,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	}
 
 	public static void onWailaRender(WailaRenderEvent.Pre event) {
-		if(ClientHandler.isPlayerMountedOnCamera())
+		if (ClientHandler.isPlayerMountedOnCamera())
 			event.setCanceled(true);
 	}
 }

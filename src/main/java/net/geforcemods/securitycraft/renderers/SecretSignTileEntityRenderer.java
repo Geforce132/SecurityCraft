@@ -25,18 +25,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignTileEntity>
-{
+public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignTileEntity> {
 	private final SignModel model = new SignModel();
 
-	public SecretSignTileEntityRenderer(TileEntityRendererDispatcher terd)
-	{
+	public SecretSignTileEntityRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 
 	@Override
-	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_)
-	{
+	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_) {
 		BlockState state = te.getBlockState();
 		Material material = SignTileEntityRenderer.getMaterial(state.getBlock());
 		FontRenderer font = renderDispatcher.getFontRenderer();
@@ -44,14 +41,12 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 
 		stack.push();
 
-		if(state.getBlock() instanceof SecretStandingSignBlock)
-		{
+		if (state.getBlock() instanceof SecretStandingSignBlock) {
 			stack.translate(0.5D, 0.5D, 0.5D);
 			stack.rotate(Vector3f.YP.rotationDegrees(-(state.get(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
 			model.signStick.showModel = true;
 		}
-		else
-		{
+		else {
 			stack.translate(0.5D, 0.5D, 0.5D);
 			stack.rotate(Vector3f.YP.rotationDegrees(-state.get(SecretWallSignBlock.FACING).getHorizontalAngle()));
 			stack.translate(0.0D, -0.3125D, -0.4375D);
@@ -67,26 +62,22 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 		stack.translate(0.0D, 0.33333334F, 0.046666667F);
 		stack.scale(0.010416667F, -0.010416667F, 0.010416667F);
 
-		if(te.isPlayerAllowedToSeeText(Minecraft.getInstance().player))
-		{
+		if (te.isPlayerAllowedToSeeText(Minecraft.getInstance().player)) {
 			int textColor = te.getTextColor().getTextColor();
-			int j = (int)(NativeImage.getRed(textColor) * 0.4D);
-			int k = (int)(NativeImage.getGreen(textColor) * 0.4D);
-			int l = (int)(NativeImage.getBlue(textColor) * 0.4D);
+			int j = (int) (NativeImage.getRed(textColor) * 0.4D);
+			int k = (int) (NativeImage.getGreen(textColor) * 0.4D);
+			int l = (int) (NativeImage.getBlue(textColor) * 0.4D);
 			int i1 = NativeImage.getCombined(0, l, k, j);
 
-			for(int line = 0; line < 4; ++line)
-			{
+			for (int line = 0; line < 4; ++line) {
 				String text = te.getRenderText(line, textComponent -> {
 					List<ITextComponent> list = RenderComponentsUtil.splitText(textComponent, 90, font, false, true);
 
 					return list.isEmpty() ? "" : list.get(0).getFormattedText();
 				});
 
-				if(text != null)
-				{
+				if (text != null)
 					font.renderString(text, -font.getStringWidth(text) / 2, line * 10 - te.signText.length * 5, i1, false, stack.getLast().getMatrix(), buffer, false, 0, p_225616_5_);
-				}
 			}
 		}
 

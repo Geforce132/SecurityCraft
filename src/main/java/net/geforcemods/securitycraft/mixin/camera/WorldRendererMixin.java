@@ -20,7 +20,8 @@ public class WorldRendererMixin {
 	private Minecraft mc;
 
 	/**
-	 * Fixes camera chunks disappearing when the player entity moves while viewing a camera (e.g. while being in a minecart or falling)
+	 * Fixes camera chunks disappearing when the player entity moves while viewing a camera (e.g. while being in a minecart
+	 * or falling)
 	 */
 	@Redirect(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewFrustum;updateChunkPositions(DD)V"))
 	private void onRepositionCamera(ViewFrustum viewFrustum, double x, double z) {

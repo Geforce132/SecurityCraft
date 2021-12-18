@@ -23,30 +23,26 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<SonicSecuritySystemTileEntity> {
-
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
 	private static final SonicSecuritySystemModel MODEL = new SonicSecuritySystemModel();
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/sonic_security_system.png");
 	private static final TranslationTextComponent RECORDING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.recording");
 	private static final TranslationTextComponent LISTENING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.listening");
 
-	public SonicSecuritySystemTileEntityRenderer(TileEntityRendererDispatcher terd)
-	{
+	public SonicSecuritySystemTileEntityRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 
 	@Override
-	public void render(SonicSecuritySystemTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay)
-	{
+	public void render(SonicSecuritySystemTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay) {
 		boolean recording = te.isRecording();
 
 		matrix.translate(0.5D, 1.5D, 0.5D);
 
-		if(recording || te.isListening())
-		{
+		if (recording || te.isListening()) {
 			String text = (recording ? RECORDING_TEXT : LISTENING_TEXT).getFormattedText();
 			float f1 = Minecraft.getInstance().gameSettings.getTextBackgroundOpacity(0.25F);
-			int j = (int)(f1 * 255.0F) << 24;
+			int j = (int) (f1 * 255.0F) << 24;
 			FontRenderer fontRenderer = renderDispatcher.getFontRenderer();
 			float halfWidth = -fontRenderer.getStringWidth(text) / 2;
 			Matrix4f positionMatrix;

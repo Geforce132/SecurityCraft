@@ -24,28 +24,22 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class UniversalBlockReinforcerItem extends Item
-{
-	public UniversalBlockReinforcerItem(Item.Properties properties)
-	{
+public class UniversalBlockReinforcerItem extends Item {
+	public UniversalBlockReinforcerItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
-	{
-		if(!world.isRemote && player instanceof ServerPlayerEntity)
-		{
-			NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+		if (!world.isRemote && player instanceof ServerPlayerEntity) {
+			NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 				@Override
-				public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-				{
+				public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 					return new BlockReinforcerContainer(windowId, inv, UniversalBlockReinforcerItem.this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
 				}
 
 				@Override
-				public ITextComponent getDisplayName()
-				{
+				public ITextComponent getDisplayName() {
 					return new TranslationTextComponent(getTranslationKey());
 				}
 			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
@@ -54,27 +48,23 @@ public class UniversalBlockReinforcerItem extends Item
 		return ActionResult.resultConsume(player.getHeldItem(hand));
 	}
 
-	public static boolean convertBlock(ItemStack stack, BlockPos pos, PlayerEntity player)
-	{
-		if(!player.isCreative())
-		{
+	public static boolean convertBlock(ItemStack stack, BlockPos pos, PlayerEntity player) {
+		if (!player.isCreative()) {
 			World world = player.getEntityWorld();
 			BlockState vanillaState = world.getBlockState(pos);
 			Block block = vanillaState.getBlock();
 			Block rb = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(block);
 
-			if(rb != null)
-			{
-				BlockState convertedState = ((IReinforcedBlock)rb).getConvertedState(vanillaState);
+			if (rb != null) {
+				BlockState convertedState = ((IReinforcedBlock) rb).getConvertedState(vanillaState);
 				TileEntity te = world.getTileEntity(pos);
 				CompoundNBT tag = null;
 
-				if(te != null)
-				{
+				if (te != null) {
 					tag = te.write(new CompoundNBT());
 
-					if(te instanceof IInventory)
-						((IInventory)te).clear();
+					if (te instanceof IInventory)
+						((IInventory) te).clear();
 				}
 
 				world.setBlockState(pos, convertedState);
@@ -84,7 +74,7 @@ public class UniversalBlockReinforcerItem extends Item
 					if (tag != null)
 						te.read(tag);
 
-					((IOwnable)te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+					((IOwnable) te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				}
 
 				stack.damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));

@@ -20,27 +20,23 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive {
-
 	public ExplosiveBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos)
-	{
+	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos) {
 		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
-		if(PlayerUtils.isHoldingItem(player, SCContent.REMOTE_ACCESS_MINE, hand))
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (PlayerUtils.isHoldingItem(player, SCContent.REMOTE_ACCESS_MINE, hand))
 			return ActionResultType.SUCCESS;
 
-		if(isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
-			if(defuseMine(world, pos))
-			{
-				if(!player.isCreative())
+		if (isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
+			if (defuseMine(world, pos)) {
+				if (!player.isCreative())
 					player.getHeldItem(hand).damageItem(1, player, p -> p.sendBreakAnimation(hand));
 
 				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -49,10 +45,9 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 			return ActionResultType.SUCCESS;
 		}
 
-		if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
-			if(activateMine(world, pos))
-			{
-				if(!player.isCreative())
+		if (!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
+			if (activateMine(world, pos)) {
+				if (!player.isCreative())
 					player.getHeldItem(hand).damageItem(1, player, p -> p.sendBreakAnimation(hand));
 
 				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -61,8 +56,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 			return ActionResultType.SUCCESS;
 		}
 
-		if(explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos))
-		{
+		if (explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos)) {
 			explode(world, pos);
 			return ActionResultType.SUCCESS;
 		}
@@ -78,7 +72,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	}
 
 	@Override
-	public boolean isDefusable(){
+	public boolean isDefusable() {
 		return true;
 	}
 }

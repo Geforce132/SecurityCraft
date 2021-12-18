@@ -19,66 +19,59 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class BlockUtils{
+public class BlockUtils {
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
 
-	public static boolean isSideSolid(IWorldReader world, BlockPos pos, Direction side)
-	{
+	public static boolean isSideSolid(IWorldReader world, BlockPos pos, Direction side) {
 		return Block.hasSolidSide(world.getBlockState(pos), world, pos, side);
 	}
 
-	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate){
-		if(shouldUpdate)
+	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate) {
+		if (shouldUpdate)
 			world.getPendingBlockTicks().scheduleTick(pos, block, delay);
 
 		world.notifyNeighborsOfStateChange(pos, block);
 	}
 
-	public static int[] posToIntArray(BlockPos pos){
-		return new int[]{pos.getX(), pos.getY(), pos.getZ()};
+	public static int[] posToIntArray(BlockPos pos) {
+		return new int[] {
+				pos.getX(), pos.getY(), pos.getZ()
+		};
 	}
 
-	public static Mode getExplosionMode()
-	{
+	public static Mode getExplosionMode() {
 		return ConfigHandler.SERVER.mineExplosionsBreakBlocks.get() ? Mode.BREAK : Mode.NONE;
 	}
 
-	public static boolean hasActiveSCBlockNextTo(World world, BlockPos pos)
-	{
+	public static boolean hasActiveSCBlockNextTo(World world, BlockPos pos) {
 		return SecurityCraftAPI.getRegisteredDoorActivators().stream().anyMatch(activator -> hasActiveSCBlockNextTo(world, pos, world.getTileEntity(pos), activator));
 	}
 
-	private static boolean hasActiveSCBlockNextTo(World world, BlockPos pos, TileEntity te, IDoorActivator activator)
-	{
-		for(Direction dir : Direction.values())
-		{
+	private static boolean hasActiveSCBlockNextTo(World world, BlockPos pos, TileEntity te, IDoorActivator activator) {
+		for (Direction dir : Direction.values()) {
 			BlockPos offsetPos = pos.offset(dir);
 			BlockState offsetState = world.getBlockState(offsetPos);
 
-			if(activator.getBlocks().contains(offsetState.getBlock()))
-			{
+			if (activator.getBlocks().contains(offsetState.getBlock())) {
 				TileEntity offsetTe = world.getTileEntity(offsetPos);
 
-				if(activator.isPowering(world, offsetPos, offsetState, offsetTe, dir, 1) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te)))
+				if (activator.isPowering(world, offsetPos, offsetState, offsetTe, dir, 1) && (!(offsetTe instanceof IOwnable) || ((IOwnable) offsetTe).getOwner().owns((IOwnable) te)))
 					return true;
 			}
 
-			if(world.getRedstonePower(offsetPos, dir) == 15 && !offsetState.canProvidePower())
-			{
-				for(Direction dirOffset : Direction.values())
-				{
-					if(dirOffset.getOpposite() == dir) //skip this, as it would just go back to the original position
+			if (world.getRedstonePower(offsetPos, dir) == 15 && !offsetState.canProvidePower()) {
+				for (Direction dirOffset : Direction.values()) {
+					if (dirOffset.getOpposite() == dir)
 						continue;
 
 					BlockPos newOffsetPos = offsetPos.offset(dirOffset);
 
 					offsetState = world.getBlockState(newOffsetPos);
 
-					if(activator.getBlocks().contains(offsetState.getBlock()))
-					{
+					if (activator.getBlocks().contains(offsetState.getBlock())) {
 						TileEntity offsetTe = world.getTileEntity(newOffsetPos);
 
-						if(activator.isPowering(world, newOffsetPos, offsetState, offsetTe, dirOffset, 2) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te)))
+						if (activator.isPowering(world, newOffsetPos, offsetState, offsetTe, dirOffset, 2) && (!(offsetTe instanceof IOwnable) || ((IOwnable) offsetTe).getOwner().owns((IOwnable) te)))
 							return true;
 					}
 				}
@@ -88,21 +81,19 @@ public class BlockUtils{
 		return false;
 	}
 
-	public static LazyOptional<?> getProtectedCapability(Direction side, TileEntity te, Supplier<LazyOptional<?>> extractionPermittedHandler, Supplier<LazyOptional<?>> insertOnlyHandler)
-	{
-		if(side == null)
+	public static LazyOptional<?> getProtectedCapability(Direction side, TileEntity te, Supplier<LazyOptional<?>> extractionPermittedHandler, Supplier<LazyOptional<?>> insertOnlyHandler) {
+		if (side == null)
 			return EMPTY_INVENTORY;
 
 		BlockPos offsetPos = te.getPos().offset(side);
 		BlockState offsetState = te.getWorld().getBlockState(offsetPos);
 
-		for(IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks())
-		{
-			if(offsetState.getBlock() == extractionBlock.getBlock())
-			{
-				if(!extractionBlock.canExtract((IOwnable)te, te.getWorld(), offsetPos, offsetState))
+		for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
+			if (offsetState.getBlock() == extractionBlock.getBlock()) {
+				if (!extractionBlock.canExtract((IOwnable) te, te.getWorld(), offsetPos, offsetState))
 					return EMPTY_INVENTORY;
-				else return extractionPermittedHandler.get();
+				else
+					return extractionPermittedHandler.get();
 			}
 		}
 

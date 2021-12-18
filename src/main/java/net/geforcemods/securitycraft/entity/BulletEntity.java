@@ -25,21 +25,18 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class BulletEntity extends AbstractArrowEntity
-{
-	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(BulletEntity.class, Owner.getSerializer());
+public class BulletEntity extends AbstractArrowEntity {
+	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner> createKey(BulletEntity.class, Owner.getSerializer());
 	private Collection<EffectInstance> potionEffects = Sets.newHashSet();
 
-	public BulletEntity(EntityType<BulletEntity> type, World world)
-	{
+	public BulletEntity(EntityType<BulletEntity> type, World world) {
 		super(SCContent.eTypeBullet, world);
 	}
 
-	public BulletEntity(World world, SentryEntity shooter)
-	{
+	public BulletEntity(World world, SentryEntity shooter) {
 		super(SCContent.eTypeBullet, shooter, world);
 
-		Owner owner =  shooter.getOwner();
+		Owner owner = shooter.getOwner();
 
 		this.potionEffects = shooter.getActivePotionEffects();
 		dataManager.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
@@ -48,14 +45,12 @@ public class BulletEntity extends AbstractArrowEntity
 	/**
 	 * @return The owner of the sentry which shot this bullet
 	 */
-	public Owner getOwner()
-	{
+	public Owner getOwner() {
 		return dataManager.get(OWNER);
 	}
 
 	@Override
-	protected void registerData()
-	{
+	protected void registerData() {
 		super.registerData();
 		dataManager.register(OWNER, new Owner());
 	}
@@ -67,7 +62,7 @@ public class BulletEntity extends AbstractArrowEntity
 		if (!this.potionEffects.isEmpty()) {
 			ListNBT list = new ListNBT();
 
-			for(EffectInstance effect : this.potionEffects) {
+			for (EffectInstance effect : this.potionEffects) {
 				list.add(effect.write(new CompoundNBT()));
 			}
 
@@ -86,52 +81,46 @@ public class BulletEntity extends AbstractArrowEntity
 				for (int i = 0; i < potionList.size(); ++i) {
 					EffectInstance effect = EffectInstance.read(potionList.getCompound(i));
 
-					if (effect != null) {
+					if (effect != null)
 						potionEffects.add(effect);
-					}
 				}
 			}
 		}
 	}
 
 	@Override
-	protected void onHit(RayTraceResult raytraceResult)
-	{
-		if(raytraceResult.getType() == Type.ENTITY)
-		{
-			Entity target = ((EntityRayTraceResult)raytraceResult).getEntity();
+	protected void onHit(RayTraceResult raytraceResult) {
+		if (raytraceResult.getType() == Type.ENTITY) {
+			Entity target = ((EntityRayTraceResult) raytraceResult).getEntity();
 
 			if (!(target instanceof SentryEntity)) {
 				target.attackEntityFrom(DamageSource.causeArrowDamage(this, getShooter()), MathHelper.ceil(getMotion().length()));
 
 				if (target instanceof LivingEntity && !potionEffects.isEmpty()) {
 					for (EffectInstance effect : potionEffects) {
-						((LivingEntity)target).addPotionEffect(effect);
+						((LivingEntity) target).addPotionEffect(effect);
 					}
 				}
 
 				remove();
 			}
 		}
-		else if(raytraceResult.getType() == Type.BLOCK)
+		else if (raytraceResult.getType() == Type.BLOCK)
 			remove();
 	}
 
 	@Override
-	protected void arrowHit(LivingEntity entity)
-	{
+	protected void arrowHit(LivingEntity entity) {
 		remove();
 	}
 
 	@Override
-	protected ItemStack getArrowStack()
-	{
+	protected ItemStack getArrowStack() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket()
-	{
+	public IPacket<?> createSpawnPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

@@ -50,41 +50,35 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implements IPasswordProtected, INamedContainerProvider, IOwnable, INameSetter, IModuleInventory, ICustomizable, ILockable
-{
+public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implements IPasswordProtected, INamedContainerProvider, IOwnable, INameSetter, IModuleInventory, ICustomizable, ILockable {
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private Owner owner = new Owner();
 	private String passcode;
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
-	public KeypadFurnaceTileEntity()
-	{
+	public KeypadFurnaceTileEntity() {
 		super(SCContent.teTypeKeypadFurnace, IRecipeType.SMELTING);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
 
-		if(owner != null)
-		{
+		if (owner != null)
 			owner.write(tag, false);
-		}
 
-		if(passcode != null && !passcode.isEmpty())
+		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
 		return tag;
 	}
 
 	@Override
-	public void read(CompoundNBT tag)
-	{
+	public void read(CompoundNBT tag) {
 		super.read(tag);
 
 		modules = readModuleInventory(tag);
@@ -94,106 +88,89 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag()
-	{
+	public CompoundNBT getUpdateTag() {
 		return write(new CompoundNBT());
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket()
-	{
+	public SUpdateTileEntityPacket getUpdatePacket() {
 		return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet)
-	{
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
 		read(packet.getNbtCompound());
 	}
 
 	@Override
-	public Owner getOwner()
-	{
+	public Owner getOwner() {
 		return owner;
 	}
 
 	@Override
-	public void setOwner(String uuid, String name)
-	{
+	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
-	{
-		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), () -> getInsertOnlyHandler()).cast();
-		else return super.getCapability(cap, side);
+		else
+			return super.getCapability(cap, side);
 	}
 
-	private LazyOptional<IItemHandler> getInsertOnlyHandler()
-	{
-		if(insertOnlyHandler == null)
+	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
+		if (insertOnlyHandler == null)
 			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(KeypadFurnaceTileEntity.this));
 
 		return insertOnlyHandler;
 	}
 
 	@Override
-	public boolean enableHack()
-	{
+	public boolean enableHack() {
 		return true;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot)
-	{
+	public ItemStack getStackInSlot(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : items.get(slot);
 	}
 
 	@Override
 	public void activate(PlayerEntity player) {
-		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadFurnaceBlock)
-			((KeypadFurnaceBlock)getBlockState().getBlock()).activate(getBlockState(), world, pos, player);
+		if (!world.isRemote && getBlockState().getBlock() instanceof KeypadFurnaceBlock)
+			((KeypadFurnaceBlock) getBlockState().getBlock()).activate(getBlockState(), world, pos, player);
 	}
 
 	@Override
 	public void openPasswordGUI(PlayerEntity player) {
-		if(getPassword() != null)
-		{
-			if(player instanceof ServerPlayerEntity)
-			{
-				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+		if (getPassword() != null) {
+			if (player instanceof ServerPlayerEntity) {
+				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-					{
+					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, world, pos);
 					}
 
 					@Override
-					public ITextComponent getDisplayName()
-					{
+					public ITextComponent getDisplayName() {
 						return KeypadFurnaceTileEntity.super.getDisplayName();
 					}
 				}, pos);
 			}
 		}
-		else
-		{
-			if(getOwner().isOwner(player))
-			{
-				if(player instanceof ServerPlayerEntity)
-				{
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+		else {
+			if (getOwner().isOwner(player)) {
+				if (player instanceof ServerPlayerEntity) {
+					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-						{
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, world, pos);
 						}
 
 						@Override
-						public ITextComponent getDisplayName()
-						{
+						public ITextComponent getDisplayName() {
 							return KeypadFurnaceTileEntity.super.getDisplayName();
 						}
 					}, pos);
@@ -220,79 +197,71 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 		passcode = password;
 	}
 
-	public IIntArray getFurnaceData()
-	{
+	public IIntArray getFurnaceData() {
 		return furnaceData;
 	}
 
 	@Override
-	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-	{
+	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 		return new KeypadFurnaceContainer(windowId, world, pos, inv, this, furnaceData);
 	}
 
 	@Override
-	protected Container createMenu(int windowId, PlayerInventory inv)
-	{
+	protected Container createMenu(int windowId, PlayerInventory inv) {
 		return createMenu(windowId, inv, inv.player);
 	}
 
 	@Override
-	protected ITextComponent getDefaultName()
-	{
+	protected ITextComponent getDefaultName() {
 		return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getTranslationKey());
 	}
 
 	@Override
-	public TileEntity getTileEntity()
-	{
+	public TileEntity getTileEntity() {
 		return this;
 	}
 
 	@Override
-	public NonNullList<ItemStack> getInventory()
-	{
+	public NonNullList<ItemStack> getInventory() {
 		return modules;
 	}
 
 	@Override
-	public ModuleType[] acceptedModules()
-	{
-		return new ModuleType[] {ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE
+		};
 	}
 
 	@Override
-	public Option<?>[] customOptions()
-	{
-		return new Option[]{sendMessage};
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				sendMessage
+		};
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module)
-	{
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		IModuleInventory.super.onModuleInserted(stack, module);
 
-		if(!world.isRemote && module == ModuleType.DISGUISE)
+		if (!world.isRemote && module == ModuleType.DISGUISE)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, true, stack));
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module)
-	{
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		IModuleInventory.super.onModuleRemoved(stack, module);
 
-		if(!world.isRemote && module == ModuleType.DISGUISE)
+		if (!world.isRemote && module == ModuleType.DISGUISE)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, false, stack));
 	}
 
 	@Override
-	public IModelData getModelData()
-	{
+	public IModelData getModelData() {
 		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_BLOCK_RL, getBlockState().getBlock().getRegistryName()).build();
 	}
 
-	public boolean sendsMessages()
-	{
+	public boolean sendsMessages() {
 		return sendMessage.get();
 	}
 }

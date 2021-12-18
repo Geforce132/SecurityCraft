@@ -17,48 +17,41 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class MountCamera
-{
+public class MountCamera {
 	private BlockPos pos;
 
 	public MountCamera() {}
 
-	public MountCamera(BlockPos pos)
-	{
+	public MountCamera(BlockPos pos) {
 		this.pos = pos;
 	}
 
-	public static void encode(MountCamera message, PacketBuffer buf)
-	{
+	public static void encode(MountCamera message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
 	}
 
-	public static MountCamera decode(PacketBuffer buf)
-	{
+	public static MountCamera decode(PacketBuffer buf) {
 		MountCamera message = new MountCamera();
 
 		message.pos = buf.readBlockPos();
 		return message;
 	}
 
-	public static void onMessage(MountCamera message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(MountCamera message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			ServerPlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 			BlockState state = world.getBlockState(pos);
 
-			if(world.isBlockPresent(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get())
-			{
+			if (world.isBlockPresent(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get()) {
 				TileEntity te = world.getTileEntity(pos);
 
-				if(te instanceof SecurityCameraTileEntity)
-				{
-					SecurityCameraTileEntity cam = (SecurityCameraTileEntity)te;
+				if (te instanceof SecurityCameraTileEntity) {
+					SecurityCameraTileEntity cam = (SecurityCameraTileEntity) te;
 
-					if(cam.getOwner().isOwner(player) || ModuleUtils.isAllowed(cam, player))
-						((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos, player);
+					if (cam.getOwner().isOwner(player) || ModuleUtils.isAllowed(cam, player))
+						((SecurityCameraBlock) state.getBlock()).mountCamera(world, pos, player);
 					else
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", cam.getOwner().getName()), TextFormatting.RED);
 

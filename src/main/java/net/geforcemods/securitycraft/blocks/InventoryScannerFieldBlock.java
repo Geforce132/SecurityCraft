@@ -39,7 +39,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class InventoryScannerFieldBlock extends OwnableBlock {
-
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty HORIZONTAL = BooleanProperty.create("horizontal");
 	private static final VoxelShape SHAPE_EW = Block.makeCuboidShape(0, 0, 6, 16, 16, 10);
@@ -52,8 +51,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext ctx) {
 		if (ctx.getEntity() == null)
 			return VoxelShapes.empty();
 
@@ -62,21 +60,23 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		Entity entity = ctx.getEntity();
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
-			if (entity instanceof PlayerEntity && !EntityUtils.isInvisible((PlayerEntity)entity)) {
+			if (entity instanceof PlayerEntity && !EntityUtils.isInvisible((PlayerEntity) entity)) {
 				if (ModuleUtils.isAllowed(connectedScanner, entity))
 					return VoxelShapes.empty();
 
 				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty())
-						if (checkInventory((PlayerEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+					if (!connectedScanner.getStackInSlotCopy(i).isEmpty()) {
+						if (checkInventory((PlayerEntity) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
 							return getShape(state, world, pos, ctx);
+					}
 				}
 			}
 			else if (entity instanceof ItemEntity) {
 				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((ItemEntity)entity).getItem().isEmpty())
-						if (checkItemEntity((ItemEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((ItemEntity) entity).getItem().isEmpty()) {
+						if (checkItemEntity((ItemEntity) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
 							return getShape(state, world, pos, ctx);
+					}
 				}
 			}
 		}
@@ -85,36 +85,30 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
-	{
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
-		if(connectedScanner == null || connectedScanner.doesFieldSolidify())
+		if (connectedScanner == null || connectedScanner.doesFieldSolidify())
 			return;
 
-		if(entity instanceof PlayerEntity && !EntityUtils.isInvisible((PlayerEntity)entity))
-		{
-			if(ModuleUtils.isAllowed(connectedScanner, entity))
+		if (entity instanceof PlayerEntity && !EntityUtils.isInvisible((PlayerEntity) entity)) {
+			if (ModuleUtils.isAllowed(connectedScanner, entity))
 				return;
 
-			for(int i = 0; i < 10; i++)
-			{
-				if(!connectedScanner.getStackInSlotCopy(i).isEmpty())
-					checkInventory((PlayerEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
+			for (int i = 0; i < 10; i++) {
+				if (!connectedScanner.getStackInSlotCopy(i).isEmpty())
+					checkInventory((PlayerEntity) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
 			}
 		}
-		else if(entity instanceof ItemEntity)
-		{
-			for(int i = 0; i < 10; i++)
-			{
-				if(!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((ItemEntity)entity).getItem().isEmpty())
-					checkItemEntity((ItemEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
+		else if (entity instanceof ItemEntity) {
+			for (int i = 0; i < 10; i++) {
+				if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((ItemEntity) entity).getItem().isEmpty())
+					checkItemEntity((ItemEntity) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
 			}
 		}
 	}
 
-	public static boolean checkInventory(PlayerEntity player, InventoryScannerTileEntity te, ItemStack stack, boolean allowInteraction)
-	{
+	public static boolean checkInventory(PlayerEntity player, InventoryScannerTileEntity te, ItemStack stack, boolean allowInteraction) {
 		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && te.hasModule(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && te.hasModule(ModuleType.REDSTONE);
@@ -122,28 +116,22 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || te.getOwner().isOwner(player))
 			return false;
 
-		return loopInventory(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) ||
-				loopInventory(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) ||
-				loopInventory(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		return loopInventory(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
 	private static boolean loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
-		for(int i = 1; i <= inventory.size(); i++)
-		{
+		for (int i = 1; i <= inventory.size(); i++) {
 			ItemStack itemStackChecking = inventory.get(i - 1);
 
-			if(!itemStackChecking.isEmpty())
-			{
-				if(areItemsEqual(itemStackChecking, stack, hasSmartModule))
-				{
-					if(hasStorageModule) {
+			if (!itemStackChecking.isEmpty()) {
+				if (areItemsEqual(itemStackChecking, stack, hasSmartModule)) {
+					if (hasStorageModule) {
 						te.addItemToStorage(inventory.get(i - 1));
 						inventory.set(i - 1, ItemStack.EMPTY);
 					}
 
-					if (hasRedstoneModule) {
+					if (hasRedstoneModule)
 						updateInventoryScannerPower(te);
-					}
 
 					return true;
 				}
@@ -156,8 +144,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		return false;
 	}
 
-	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerTileEntity te, ItemStack stack, boolean allowInteraction)
-	{
+	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerTileEntity te, ItemStack stack, boolean allowInteraction) {
 		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && te.hasModule(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && te.hasModule(ModuleType.REDSTONE);
@@ -165,16 +152,14 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction))
 			return false;
 
-		if(areItemsEqual(entity.getItem(), stack, hasSmartModule))
-		{
+		if (areItemsEqual(entity.getItem(), stack, hasSmartModule)) {
 			if (hasStorageModule) {
 				te.addItemToStorage(entity.getItem());
 				entity.remove();
 			}
 
-			if (hasRedstoneModule) {
+			if (hasRedstoneModule)
 				updateInventoryScannerPower(te);
-			}
 
 			return true;
 		}
@@ -183,22 +168,21 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
-		if(item != null) {
-			if(!item.isEmpty() && item.getTag() != null && Block.getBlockFromItem(item.getItem()) instanceof ShulkerBoxBlock) {
+		if (item != null) {
+			if (!item.isEmpty() && item.getTag() != null && Block.getBlockFromItem(item.getItem()) instanceof ShulkerBoxBlock) {
 				ListNBT list = item.getTag().getCompound("BlockEntityTag").getList("Items", NBT.TAG_COMPOUND);
 
-				for(int i = 0; i < list.size(); i++) {
+				for (int i = 0; i < list.size(); i++) {
 					ItemStack itemInChest = ItemStack.read(list.getCompound(i));
 
-					if(areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
-						if(hasStorageModule) {
+					if (areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
+						if (hasStorageModule) {
 							te.addItemToStorage(itemInChest);
 							list.remove(i);
 						}
 
-						if (hasRedstoneModule) {
+						if (hasRedstoneModule)
 							updateInventoryScannerPower(te);
-						}
 
 						return true;
 					}
@@ -210,15 +194,13 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	private static boolean areItemsEqual(ItemStack firstItemStack, ItemStack secondItemStack, boolean hasSmartModule) {
-		return (hasSmartModule && areItemStacksEqual(firstItemStack, secondItemStack) && ItemStack.areItemStackTagsEqual(firstItemStack, secondItemStack))
-				|| (!hasSmartModule && firstItemStack.getItem() == secondItemStack.getItem());
+		return (hasSmartModule && areItemStacksEqual(firstItemStack, secondItemStack) && ItemStack.areItemStackTagsEqual(firstItemStack, secondItemStack)) || (!hasSmartModule && firstItemStack.getItem() == secondItemStack.getItem());
 	}
 
-	private static void updateInventoryScannerPower(InventoryScannerTileEntity te)
-	{
+	private static void updateInventoryScannerPower(InventoryScannerTileEntity te) {
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(te.getWorld(), te.getPos());
 
-		if(connectedScanner == null)
+		if (connectedScanner == null)
 			return;
 
 		updateInvScanner(te);
@@ -235,8 +217,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	/**
 	 * See {@link ItemStack#areItemStacksEqual(ItemStack, ItemStack)} but without size restriction
 	 */
-	public static boolean areItemStacksEqual(ItemStack stack1, ItemStack stack2)
-	{
+	public static boolean areItemStacksEqual(ItemStack stack1, ItemStack stack2) {
 		ItemStack s1 = stack1.copy();
 		ItemStack s2 = stack2.copy();
 
@@ -246,35 +227,27 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onPlayerDestroy(IWorld world, BlockPos pos, BlockState state)
-	{
-		if(!world.isRemote())
-		{
+	public void onPlayerDestroy(IWorld world, BlockPos pos, BlockState state) {
+		if (!world.isRemote()) {
 			Direction facing = state.get(FACING);
 
-			if (facing == Direction.EAST || facing == Direction.WEST)
-			{
+			if (facing == Direction.EAST || facing == Direction.WEST) {
 				checkAndDestroyFields(world, pos, (p, i) -> p.west(i));
 				checkAndDestroyFields(world, pos, (p, i) -> p.east(i));
 			}
-			else if (facing == Direction.NORTH || facing == Direction.SOUTH)
-			{
+			else if (facing == Direction.NORTH || facing == Direction.SOUTH) {
 				checkAndDestroyFields(world, pos, (p, i) -> p.north(i));
 				checkAndDestroyFields(world, pos, (p, i) -> p.south(i));
 			}
 		}
 	}
 
-	private void checkAndDestroyFields(IWorld world, BlockPos pos, BiFunction<BlockPos,Integer,BlockPos> posModifier)
-	{
-		for(int i = 0; i < ConfigHandler.SERVER.inventoryScannerRange.get(); i++)
-		{
+	private void checkAndDestroyFields(IWorld world, BlockPos pos, BiFunction<BlockPos, Integer, BlockPos> posModifier) {
+		for (int i = 0; i < ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
 			BlockPos modifiedPos = posModifier.apply(pos, i);
 
-			if(world.getBlockState(modifiedPos).getBlock() == SCContent.INVENTORY_SCANNER.get())
-			{
-				for(int j = 1; j < i; j++)
-				{
+			if (world.getBlockState(modifiedPos).getBlock() == SCContent.INVENTORY_SCANNER.get()) {
+				for (int j = 1; j < i; j++) {
 					world.destroyBlock(posModifier.apply(pos, j), false);
 				}
 
@@ -284,9 +257,8 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
-	{
-		if(state.get(HORIZONTAL))
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
+		if (state.get(HORIZONTAL))
 			return HORIZONTAL_SHAPE;
 
 		Direction facing = state.get(FACING);
@@ -299,14 +271,12 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(FACING, HORIZONTAL);
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
-	{
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
 		return ItemStack.EMPTY;
 	}
 
@@ -317,8 +287,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side)
-	{
+	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (side == Direction.UP || side == Direction.DOWN)
 			if (state.getBlock() == adjacentBlockState.getBlock())
 				return true;
@@ -327,8 +296,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.toRotation(state.get(FACING)));
 	}
 }

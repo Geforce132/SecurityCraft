@@ -7,10 +7,8 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 
-public class SCTags
-{
-	public static class Blocks
-	{
+public class SCTags {
+	public static class Blocks {
 		public static final Tag<Block> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final Tag<Block> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final Tag<Block> REINFORCED_BUTTONS = tag("reinforced/buttons");
@@ -37,14 +35,12 @@ public class SCTags
 		public static final Tag<Block> SECRET_STANDING_SIGNS = tag("secret_standing_signs");
 		public static final Tag<Block> SECRET_WALL_SIGNS = tag("secret_wall_signs");
 
-		private static Tag<Block> tag(String name)
-		{
+		private static Tag<Block> tag(String name) {
 			return new BlockTags.Wrapper(new ResourceLocation(SecurityCraft.MODID, name));
 		}
 	}
 
-	public static class Items
-	{
+	public static class Items {
 		public static final Tag<Item> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final Tag<Item> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final Tag<Item> REINFORCED_BUTTONS = tag("reinforced/buttons");
@@ -69,8 +65,7 @@ public class SCTags
 		public static final Tag<Item> REINFORCED_WOOL = tag("reinforced/wool");
 		public static final Tag<Item> SECRET_SIGNS = tag("secret_signs");
 
-		private static Tag<Item> tag(String name)
-		{
+		private static Tag<Item> tag(String name) {
 			return new ItemTags.Wrapper(new ResourceLocation(SecurityCraft.MODID, name));
 		}
 	}

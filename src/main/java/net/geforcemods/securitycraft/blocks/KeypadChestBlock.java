@@ -46,7 +46,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class KeypadChestBlock extends ChestBlock {
-
 	private static final TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>> CONTAINER_MERGER = new TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>>() {
 		@Override
 		public Optional<INamedContainerProvider> func_225539_a_(final ChestTileEntity chest1, final ChestTileEntity chest2) {
@@ -58,18 +57,17 @@ public class KeypadChestBlock extends ChestBlock {
 						chest1.fillWithLoot(inventory.player);
 						chest2.fillWithLoot(inventory.player);
 						return ChestContainer.createGeneric9X6(id, inventory, chestInventory);
-					} else {
-						return null;
 					}
+					else
+						return null;
 				}
 
 				@Override
 				public ITextComponent getDisplayName() {
-					if (chest1.hasCustomName()) {
+					if (chest1.hasCustomName())
 						return chest1.getDisplayName();
-					} else {
+					else
 						return chest2.hasCustomName() ? chest2.getDisplayName() : Utils.localize("block.securitycraft.keypad_chest_double");
-					}
 				}
 			});
 		}
@@ -85,42 +83,35 @@ public class KeypadChestBlock extends ChestBlock {
 		}
 	};
 
-	public KeypadChestBlock(Block.Properties properties){
+	public KeypadChestBlock(Block.Properties properties) {
 		super(properties, () -> SCContent.teTypeKeypadChest);
 	}
 
-	/**
-	 * Called upon block activation (right click on the block.)
-	 */
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
-		if(!world.isRemote && !isBlocked(world, pos))
-		{
-			KeypadChestTileEntity te = (KeypadChestTileEntity)world.getTileEntity(pos);
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!world.isRemote && !isBlocked(world, pos)) {
+			KeypadChestTileEntity te = (KeypadChestTileEntity) world.getTileEntity(pos);
 
-			if(ModuleUtils.isDenied(te, player))
-			{
-				if(te.sendsMessages())
+			if (ModuleUtils.isDenied(te, player)) {
+				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}
-			else if(ModuleUtils.isAllowed(te, player))
-			{
-				if(te.sendsMessages())
+			else if (ModuleUtils.isAllowed(te, player)) {
+				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				activate(state, world, pos, player);
 			}
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				te.openPasswordGUI(player);
 		}
 
 		return ActionResultType.SUCCESS;
 	}
 
-	public void activate(BlockState state, World world, BlockPos pos, PlayerEntity player){
-		if(!world.isRemote) {
-			ChestBlock block = (ChestBlock)state.getBlock();
+	public void activate(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+		if (!world.isRemote) {
+			ChestBlock block = (ChestBlock) state.getBlock();
 			INamedContainerProvider containerProvider = block.getContainer(state, world, pos);
 
 			if (containerProvider != null) {
@@ -130,26 +121,21 @@ public class KeypadChestBlock extends ChestBlock {
 		}
 	}
 
-	/**
-	 * Called when the block is placed in the world.
-	 */
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack){
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		super.onBlockPlacedBy(world, pos, state, entity, stack);
 
 		boolean isPlayer = entity instanceof PlayerEntity;
 
-		if(isPlayer)
-		{
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)entity));
+		if (isPlayer) {
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) entity));
 
-			if(state.get(KeypadChestBlock.TYPE) != ChestType.SINGLE)
-			{
-				KeypadChestTileEntity thisTe = (KeypadChestTileEntity)world.getTileEntity(pos);
+			if (state.get(KeypadChestBlock.TYPE) != ChestType.SINGLE) {
+				KeypadChestTileEntity thisTe = (KeypadChestTileEntity) world.getTileEntity(pos);
 				TileEntity otherTe = world.getTileEntity(pos.offset(getDirectionToAttached(state)));
 
-				if(otherTe instanceof KeypadChestTileEntity && thisTe.getOwner().owns((KeypadChestTileEntity)otherTe))
-					thisTe.setPassword(((KeypadChestTileEntity)otherTe).getPassword());
+				if (otherTe instanceof KeypadChestTileEntity && thisTe.getOwner().owns((KeypadChestTileEntity) otherTe))
+					thisTe.setPassword(((KeypadChestTileEntity) otherTe).getPassword());
 			}
 		}
 	}
@@ -163,9 +149,8 @@ public class KeypadChestBlock extends ChestBlock {
 	public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof KeypadChestTileEntity) {
-			return ((KeypadChestTileEntity)te).hasModule(ModuleType.REDSTONE) ? MathHelper.clamp(((KeypadChestTileEntity)te).getNumPlayersUsing(), 0, 15) : 0;
-		}
+		if (te instanceof KeypadChestTileEntity)
+			return ((KeypadChestTileEntity) te).hasModule(ModuleType.REDSTONE) ? MathHelper.clamp(((KeypadChestTileEntity) te).getNumPlayersUsing(), 0, 15) : 0;
 
 		return 0;
 	}
@@ -176,14 +161,13 @@ public class KeypadChestBlock extends ChestBlock {
 	}
 
 	@Override
-	public void onNeighborChange(BlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor){
+	public void onNeighborChange(BlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor) {
 		super.onNeighborChange(state, world, pos, neighbor);
 
 		TileEntity tileEntity = world.getTileEntity(pos);
 
 		if (tileEntity instanceof KeypadChestTileEntity)
 			((KeypadChestTileEntity) tileEntity).updateContainingBlockInfo();
-
 	}
 
 	@Override
@@ -191,56 +175,44 @@ public class KeypadChestBlock extends ChestBlock {
 		return this.combine(state, world, pos, false).apply(CONTAINER_MERGER).orElse(null);
 	}
 
-	/**
-	 * Returns a new instance of a block's tile entity class. Called on placing the block.
-	 */
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader reader)
-	{
+	public TileEntity createNewTileEntity(IBlockReader reader) {
 		return new KeypadChestTileEntity();
 	}
 
-	public static boolean isBlocked(World world, BlockPos pos)
-	{
+	public static boolean isBlocked(World world, BlockPos pos) {
 		return isBelowSolidBlock(world, pos);
 	}
 
-	private static boolean isBelowSolidBlock(World world, BlockPos pos)
-	{
+	private static boolean isBelowSolidBlock(World world, BlockPos pos) {
 		return world.getBlockState(pos.up()).isNormalCube(world, pos.up());
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.toRotation(state.get(FACING)));
 	}
 
-	public static class Convertible implements IPasswordConvertible
-	{
+	public static class Convertible implements IPasswordConvertible {
 		@Override
-		public Block getOriginalBlock()
-		{
+		public Block getOriginalBlock() {
 			return Blocks.CHEST;
 		}
 
 		@Override
-		public boolean convert(PlayerEntity player, World world, BlockPos pos)
-		{
+		public boolean convert(PlayerEntity player, World world, BlockPos pos) {
 			BlockState state = world.getBlockState(pos);
 			Direction facing = state.get(FACING);
 			ChestType type = state.get(TYPE);
 
 			convertChest(player, world, pos, facing, type);
 
-			if(type != ChestType.SINGLE)
-			{
+			if (type != ChestType.SINGLE) {
 				BlockPos newPos = pos.offset(getDirectionToAttached(state));
 				BlockState newState = world.getBlockState(newPos);
 				Direction newFacing = newState.get(FACING);
@@ -252,16 +224,15 @@ public class KeypadChestBlock extends ChestBlock {
 			return true;
 		}
 
-		private void convertChest(PlayerEntity player, World world, BlockPos pos, Direction facing, ChestType type)
-		{
-			ChestTileEntity chest = (ChestTileEntity)world.getTileEntity(pos);
+		private void convertChest(PlayerEntity player, World world, BlockPos pos, Direction facing, ChestType type) {
+			ChestTileEntity chest = (ChestTileEntity) world.getTileEntity(pos);
 			CompoundNBT tag;
 
 			chest.fillWithLoot(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated
 			tag = chest.write(new CompoundNBT());
 			chest.clear();
 			world.setBlockState(pos, SCContent.KEYPAD_CHEST.get().getDefaultState().with(FACING, facing).with(TYPE, type));
-			((ChestTileEntity)world.getTileEntity(pos)).read(tag);
+			((ChestTileEntity) world.getTileEntity(pos)).read(tag);
 			((IOwnable) world.getTileEntity(pos)).setOwner(player.getUniqueID().toString(), player.getName().getFormattedText());
 		}
 	}

@@ -16,26 +16,24 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
+//@formatter:off
 public class SCCommand {
-	public static void register(CommandDispatcher<CommandSource> dispatcher)
-	{
-		dispatcher.register(LiteralArgumentBuilder.<CommandSource>literal("sc")
+	public static void register(CommandDispatcher<CommandSource> dispatcher) {
+		dispatcher.register(LiteralArgumentBuilder.<CommandSource> literal("sc")
 				.requires(Predicates.alwaysTrue())
 				.then(connect())
 				.then(help())
 				.then(bug()));
 	}
 
-	private static ArgumentBuilder<CommandSource, ?> connect()
-	{
+	private static ArgumentBuilder<CommandSource, ?> connect() {
 		return Commands.literal("connect").executes(ctx -> {
 			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("IRC"), Utils.localize("messages.securitycraft:irc.connected"), SendTip.tipsWithLink.get("discord"), TextFormatting.GREEN);
 			return 0;
 		});
 	}
 
-	private static ArgumentBuilder<CommandSource, ?> help()
-	{
+	private static ArgumentBuilder<CommandSource, ?> help() {
 		return Commands.literal("help").executes(ctx -> {
 			ctx.getSource().asPlayer().sendMessage(new TranslationTextComponent("messages.securitycraft:sc_help",
 					new TranslationTextComponent(Blocks.CRAFTING_TABLE.getTranslationKey()),
@@ -45,8 +43,7 @@ public class SCCommand {
 		});
 	}
 
-	private static ArgumentBuilder<CommandSource, ?> bug()
-	{
+	private static ArgumentBuilder<CommandSource, ?> bug() {
 		return Commands.literal("bug").executes(ctx -> {
 			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), SendTip.tipsWithLink.get("discord"), TextFormatting.GOLD);
 			return 0;

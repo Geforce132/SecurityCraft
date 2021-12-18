@@ -14,18 +14,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleContainer> {
-	private static final ResourceLocation TEXTURE  = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
 
 	public DisguiseModuleScreen(DisguiseModuleContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks)
-	{
+	public void render(int mouseX, int mouseY, float partialTicks) {
 		super.render(mouseX, mouseY, partialTicks);
 
-		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
+		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
 	}
 
@@ -44,5 +43,4 @@ public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleContaine
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
-
 }

@@ -10,12 +10,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
- * Sentry - bl4ckscor3
- * Created using Tabula 7.0.0
+ * Sentry - bl4ckscor3 Created using Tabula 7.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class SentryModel extends EntityModel<SentryEntity>
-{
+public class SentryModel extends EntityModel<SentryEntity> {
 	public ModelRenderer base;
 	public ModelRenderer body;
 	public ModelRenderer neck;
@@ -25,8 +23,7 @@ public class SentryModel extends EntityModel<SentryEntity>
 	public ModelRenderer leftEye;
 	public ModelRenderer nose;
 
-	public SentryModel()
-	{
+	public SentryModel() {
 		textureWidth = 64;
 		textureHeight = 64;
 		base = new ModelRenderer(this, 0, 0);
@@ -55,14 +52,12 @@ public class SentryModel extends EntityModel<SentryEntity>
 		hair.addBox(0.0F, 0.0F, 0.0F, 6, 1, 6);
 	}
 
-	public void renderBase(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
-	{
+	public void renderBase(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		base.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override
-	public void render(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
-	{
+	public void render(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		head.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
 		neck.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
 		rightEye.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);

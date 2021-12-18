@@ -18,7 +18,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 
-public class ClientUtils{
+public class ClientUtils {
+	//@formatter:off
 	private static final ResourceLocation[] MODULE_TEXTURES = {
 			new ResourceLocation(SecurityCraft.MODID, "textures/item/module_background.png"),
 			new ResourceLocation(SecurityCraft.MODID, "textures/item/whitelist_module.png"),
@@ -29,13 +30,14 @@ public class ClientUtils{
 			new ResourceLocation(SecurityCraft.MODID, "textures/item/disguise_module.png"),
 			new ResourceLocation(SecurityCraft.MODID, "textures/item/module_background.png")
 	};
+	//@formatter:on
 	private static final ResourceLocation REDSTONE_TEXTURE = new ResourceLocation("textures/item/redstone.png");
 	private static final ResourceLocation SUGAR_TEXTURE = new ResourceLocation("textures/item/sugar.png");
 
 	/**
 	 * Returns the current Minecraft in-game time, in a 12-hour AM/PM format.
 	 */
-	public static String getFormattedMinecraftTime(){
+	public static String getFormattedMinecraftTime() {
 		Long time = Minecraft.getInstance().world.getDayTime();
 
 		int hours24 = (int) ((float) time.longValue() / 1000L + 6L) % 24;
@@ -48,12 +50,11 @@ public class ClientUtils{
 	/**
 	 * Sends the client-side CompoundNBT of a player's held item to the server.
 	 */
-	public static void syncItemNBT(ItemStack item){
+	public static void syncItemNBT(ItemStack item) {
 		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(item));
 	}
 
-	public static void renderModuleInfo(ModuleType module, String moduleTooltip, String noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY)
-	{
+	public static void renderModuleInfo(ModuleType module, String moduleTooltip, String noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
 		Minecraft mc = Minecraft.getInstance();
 		float alpha = isModuleInstalled ? 1.0F : 0.5F;
 		int moduleRight = moduleLeft + 16;
@@ -68,30 +69,26 @@ public class ClientUtils{
 		mc.getTextureManager().bindTexture(MODULE_TEXTURES[module.ordinal()]);
 		drawTexture(bufferBuilder, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 
-		if(module == ModuleType.REDSTONE)
-		{
+		if (module == ModuleType.REDSTONE) {
 			mc.getTextureManager().bindTexture(REDSTONE_TEXTURE);
 			drawTexture(bufferBuilder, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
-		else if(module == ModuleType.SPEED)
-		{
+		else if (module == ModuleType.SPEED) {
 			mc.getTextureManager().bindTexture(SUGAR_TEXTURE);
 			drawTexture(bufferBuilder, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 
 		RenderSystem.disableBlend();
 
-		if(mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
-		{
+		if (mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom) {
 			String text = isModuleInstalled ? moduleTooltip : noModuleTooltip;
 
-			if(text != null && !text.isEmpty())
+			if (text != null && !text.isEmpty())
 				GuiUtils.drawHoveringText(Arrays.asList(text), mouseX, mouseY, screenWidth, screenHeight, -1, mc.fontRenderer);
 		}
 	}
 
-	private static void drawTexture(BufferBuilder bufferBuilder, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha)
-	{
+	private static void drawTexture(BufferBuilder bufferBuilder, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha) {
 		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
 		bufferBuilder.pos(moduleLeft, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 1).endVertex();
 		bufferBuilder.pos(moduleRight, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(1, 1).endVertex();

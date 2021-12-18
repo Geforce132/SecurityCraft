@@ -23,41 +23,34 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTileEntity> {
-
-	public ProjectorTileEntityRenderer(TileEntityRendererDispatcher terd)
-	{
+	public ProjectorTileEntityRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 
 	@Override
-	public void render(ProjectorTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, int combinedOverlay)
-	{
-		if(te.isActive() && !te.isEmpty())
-		{
+	public void render(ProjectorTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, int combinedOverlay) {
+		if (te.isActive() && !te.isEmpty()) {
 			Random random = new Random();
 			BlockState state = te.getProjectedBlock().getDefaultState();
 			BlockPos pos;
 
 			RenderSystem.disableCull();
 
-			for(int x = 0; x < te.getProjectionWidth(); x++) {
-				for(int y = 0; y < te.getProjectionHeight(); y++) {
+			for (int x = 0; x < te.getProjectionWidth(); x++) {
+				for (int y = 0; y < te.getProjectionHeight(); y++) {
 					stack.push();
 
-					if(!te.isHorizontal())
+					if (!te.isHorizontal())
 						pos = translateProjection(te.getPos(), stack, te.getBlockState().get(ProjectorBlock.FACING), x, y, te.getProjectionRange(), te.getProjectionOffset());
 					else
 						pos = translateProjection(te.getPos(), stack, te.getBlockState().get(ProjectorBlock.FACING), x, te.getProjectionRange() - 16, y + 1, te.getProjectionOffset());
 
-					if(pos != null && te.getWorld().isAirBlock(pos))
-					{
-
+					if (pos != null && te.getWorld().isAirBlock(pos)) {
 						switch (state.getRenderType()) {
 							case MODEL:
 								for (RenderType rendertype : RenderType.getBlockRenderTypes()) {
-									if (RenderTypeLookup.canRenderInLayer(state, rendertype)) {
+									if (RenderTypeLookup.canRenderInLayer(state, rendertype))
 										Minecraft.getInstance().getBlockRendererDispatcher().renderModel(state, pos, te.getWorld(), stack, buffer.getBuffer(rendertype), true, random);
-									}
 								}
 
 								break;
@@ -88,26 +81,24 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 	 * @param y The offset from the projectors position on the y axis of the position at which to draw the fake block
 	 * @param distance The distance in blocks that the fake block is away from the projector (set by player)
 	 * @param offset The offset in blocks that the fake block is moved to the side from the projector (set by player)
-	 *
 	 * @return The BlockPos of the fake block to be drawn, null if an invalid direction was given
 	 */
-	private BlockPos translateProjection(BlockPos tePos, MatrixStack stack, Direction direction, int x, int y, double distance, double offset)
-	{
+	private BlockPos translateProjection(BlockPos tePos, MatrixStack stack, Direction direction, int x, int y, double distance, double offset) {
 		BlockPos pos = null;
 
-		if(direction == Direction.NORTH) {
+		if (direction == Direction.NORTH) {
 			pos = new BlockPos(tePos.getX() + x + offset, tePos.getY() + y, tePos.getZ() + distance);
 			stack.translate(0.0D + x + offset, 0.0D + y, distance);
 		}
-		else if(direction == Direction.SOUTH) {
+		else if (direction == Direction.SOUTH) {
 			pos = new BlockPos(tePos.getX() + x + offset, tePos.getY() + y, tePos.getZ() + -distance);
 			stack.translate(0.0D + x + offset, 0.0D + y, -distance);
 		}
-		else if(direction == Direction.WEST) {
+		else if (direction == Direction.WEST) {
 			pos = new BlockPos(tePos.getX() + distance, tePos.getY() + y, tePos.getZ() + x + offset);
 			stack.translate(distance, 0.0D + y, 0.0D + x + offset);
 		}
-		else if(direction == Direction.EAST) {
+		else if (direction == Direction.EAST) {
 			pos = new BlockPos(tePos.getX() + -distance, tePos.getY() + y, tePos.getZ() + x + offset);
 			stack.translate(-distance, 0.0D + y, 0.0D + x + offset);
 		}
@@ -116,8 +107,7 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 	}
 
 	@Override
-	public boolean isGlobalRenderer(ProjectorTileEntity te)
-	{
+	public boolean isGlobalRenderer(ProjectorTileEntity te) {
 		return true;
 	}
 }

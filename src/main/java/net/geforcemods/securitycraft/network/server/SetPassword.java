@@ -15,31 +15,27 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SetPassword {
-
 	private String password;
 	private int x, y, z;
 
-	public SetPassword(){
-
+	public SetPassword() {
 	}
 
-	public SetPassword(int x, int y, int z, String code){
+	public SetPassword(int x, int y, int z, String code) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		password = code;
 	}
 
-	public static void encode(SetPassword message, PacketBuffer buf)
-	{
+	public static void encode(SetPassword message, PacketBuffer buf) {
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
 		buf.writeInt(message.z);
 		buf.writeString(message.password);
 	}
 
-	public static SetPassword decode(PacketBuffer buf)
-	{
+	public static SetPassword decode(PacketBuffer buf) {
 		SetPassword message = new SetPassword();
 
 		message.x = buf.readInt();
@@ -49,8 +45,7 @@ public class SetPassword {
 		return message;
 	}
 
-	public static void onMessage(SetPassword message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(SetPassword message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			String password = message.password;
@@ -58,11 +53,11 @@ public class SetPassword {
 			World world = player.world;
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player))){
-				((IPasswordProtected)te).setPassword(password);
+			if (te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player))) {
+				((IPasswordProtected) te).setPassword(password);
 
-				if(te instanceof KeypadChestTileEntity)
-					checkAndUpdateAdjacentChest((KeypadChestTileEntity)te, world, pos, password, player);
+				if (te instanceof KeypadChestTileEntity)
+					checkAndUpdateAdjacentChest((KeypadChestTileEntity) te, world, pos, password, player);
 			}
 		});
 
@@ -70,14 +65,12 @@ public class SetPassword {
 	}
 
 	private static void checkAndUpdateAdjacentChest(KeypadChestTileEntity te, World world, BlockPos pos, String codeToSet, PlayerEntity player) {
-		if(te.getBlockState().get(KeypadChestBlock.TYPE) != ChestType.SINGLE)
-		{
+		if (te.getBlockState().get(KeypadChestBlock.TYPE) != ChestType.SINGLE) {
 			BlockPos offsetPos = pos.offset(KeypadChestBlock.getDirectionToAttached(te.getBlockState()));
 			TileEntity otherTe = world.getTileEntity(offsetPos);
 
-			if(otherTe instanceof KeypadChestTileEntity && te.getOwner().owns((KeypadChestTileEntity)otherTe))
-			{
-				((KeypadChestTileEntity)otherTe).setPassword(codeToSet);
+			if (otherTe instanceof KeypadChestTileEntity && te.getOwner().owns((KeypadChestTileEntity) otherTe)) {
+				((KeypadChestTileEntity) otherTe).setPassword(codeToSet);
 				world.notifyBlockUpdate(offsetPos, otherTe.getBlockState(), otherTe.getBlockState(), 2);
 			}
 		}

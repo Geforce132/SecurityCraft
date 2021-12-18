@@ -17,43 +17,44 @@ import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class KeycardReaderContainer extends Container
-{
+public class KeycardReaderContainer extends Container {
 	private final Inventory itemInventory = new Inventory(1);
 	public final Slot keycardSlot;
 	public KeycardReaderTileEntity te;
 	private IWorldPosCallable worldPosCallable;
 
-	public KeycardReaderContainer(int windowId, PlayerInventory inventory, World world, BlockPos pos)
-	{
+	public KeycardReaderContainer(int windowId, PlayerInventory inventory, World world, BlockPos pos) {
 		super(SCContent.cTypeKeycardReader, windowId);
 
 		TileEntity tile = world.getTileEntity(pos);
 
-		if(tile instanceof KeycardReaderTileEntity)
-			te = (KeycardReaderTileEntity)tile;
+		if (tile instanceof KeycardReaderTileEntity) {
+			te = (KeycardReaderTileEntity) tile;
+		}
 
 		worldPosCallable = IWorldPosCallable.of(world, pos);
 
 		//main player inventory
-		for(int i = 0; i < 3; i++)
-			for(int j = 0; j < 9; j++)
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
 				addSlot(new Slot(inventory, 9 + j + i * 9, 8 + j * 18, 167 + i * 18));
+			}
+		}
 
 		//player hotbar
-		for(int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; i++) {
 			addSlot(new Slot(inventory, i, 8 + i * 18, 225));
+		}
 
 		keycardSlot = addSlot(new Slot(itemInventory, 0, 35, 86) {
 			@Override
-			public boolean isItemValid(ItemStack stack)
-			{
+			public boolean isItemValid(ItemStack stack) {
 				//only allow keycards
 				//do not allow limited use keycards as they are only crafting components
-				if(!(stack.getItem() instanceof KeycardItem) || stack.getItem() == SCContent.LIMITED_USE_KEYCARD.get())
+				if (!(stack.getItem() instanceof KeycardItem) || stack.getItem() == SCContent.LIMITED_USE_KEYCARD.get())
 					return false;
 
-				if(!stack.hasTag())
+				if (!stack.hasTag())
 					return true;
 
 				CompoundNBT tag = stack.getTag();
@@ -66,12 +67,10 @@ public class KeycardReaderContainer extends Container
 		});
 	}
 
-	public void link()
-	{
+	public void link() {
 		ItemStack keycard = keycardSlot.getStack();
 
-		if(!keycard.isEmpty())
-		{
+		if (!keycard.isEmpty()) {
 			CompoundNBT tag = keycard.getOrCreateTag();
 
 			tag.putBoolean("linked", true);
@@ -81,54 +80,49 @@ public class KeycardReaderContainer extends Container
 		}
 	}
 
-	public void setKeycardUses(int uses)
-	{
+	public void setKeycardUses(int uses) {
 		ItemStack keycard = keycardSlot.getStack();
 
-		if(!keycard.isEmpty())
-		{
+		if (!keycard.isEmpty()) {
 			CompoundNBT tag = keycard.getOrCreateTag();
 
-			if(tag.getBoolean("limited"))
+			if (tag.getBoolean("limited"))
 				tag.putInt("uses", uses);
 		}
 	}
 
 	@Override
-	public void onContainerClosed(PlayerEntity player)
-	{
+	public void onContainerClosed(PlayerEntity player) {
 		super.onContainerClosed(player);
 		clearContainer(player, te.getWorld(), itemInventory);
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int id)
-	{
+	public ItemStack transferStackInSlot(PlayerEntity player, int id) {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(id);
 
-		if(slot != null && slot.getHasStack())
-		{
+		if (slot != null && slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
 
 			slotStackCopy = slotStack.copy();
 
-			if(id >= 36)
-			{
-				if(!mergeItemStack(slotStack, 0, 36, true))
+			if (id >= 36) {
+				if (!mergeItemStack(slotStack, 0, 36, true))
 					return ItemStack.EMPTY;
 				slot.onSlotChange(slotStack, slotStackCopy);
 			}
-			else if(id < 36)
-				if(!mergeItemStack(slotStack, 36, 37, false))
+			else if (id < 36) {
+				if (!mergeItemStack(slotStack, 36, 37, false))
 					return ItemStack.EMPTY;
+			}
 
-			if(slotStack.getCount() == 0)
+			if (slotStack.getCount() == 0)
 				slot.putStack(ItemStack.EMPTY);
 			else
 				slot.onSlotChanged();
 
-			if(slotStack.getCount() == slotStackCopy.getCount())
+			if (slotStack.getCount() == slotStackCopy.getCount())
 				return ItemStack.EMPTY;
 			slot.onTake(player, slotStack);
 		}
@@ -137,8 +131,7 @@ public class KeycardReaderContainer extends Container
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player)
-	{
+	public boolean canInteractWith(PlayerEntity player) {
 		return isWithinUsableDistance(worldPosCallable, player, SCContent.KEYCARD_READER.get());
 	}
 }

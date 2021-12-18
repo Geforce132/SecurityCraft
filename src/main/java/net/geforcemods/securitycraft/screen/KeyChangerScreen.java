@@ -23,7 +23,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final String ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()).getFormattedText();
 	private final String enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode").getFormattedText();
@@ -39,7 +38,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public void init(){
+	public void init() {
 		super.init();
 		minecraft.keyboardListener.enableRepeatEvents(true);
 		addButton(confirmButton = new IdButton(0, width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm").getFormattedText(), this::actionPerformed));
@@ -58,20 +57,20 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public void onClose(){
+	public void onClose() {
 		super.onClose();
 		minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		font.drawString(ukcName, xSize / 2 - font.getStringWidth(ukcName) / 2, 6, 4210752);
 		font.drawString(enterPasscode, xSize / 2 - font.getStringWidth(enterPasscode) / 2, 25, 4210752);
 		font.drawString(confirmPasscode, xSize / 2 - font.getStringWidth(confirmPasscode) / 2, 65, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
@@ -87,7 +86,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		confirmButton.active = confirmPasscode != null && newPasscode != null && !confirmPasscode.isEmpty() && !newPasscode.isEmpty() && newPasscode.equals(confirmPasscode);
 	}
 
-	protected void actionPerformed(IdButton button){
+	protected void actionPerformed(IdButton button) {
 		((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getText());
 		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
 

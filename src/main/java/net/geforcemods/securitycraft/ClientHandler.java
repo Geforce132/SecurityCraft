@@ -89,13 +89,14 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD, value=Dist.CLIENT)
-public class ClientHandler
-{
+@EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD, value = Dist.CLIENT)
+public class ClientHandler {
 	@SubscribeEvent
-	public static void onModelBake(ModelBakeEvent event)
-	{
-		String[] facings = {"east", "north", "south", "west"};
+	public static void onModelBake(ModelBakeEvent event) {
+		String[] facings = {
+				"east", "north", "south", "west"
+		};
+		//@formatter:off
 		ResourceLocation[] facingPoweredBlocks = {
 				new ResourceLocation(SecurityCraft.MODID, "keycard_reader"),
 				new ResourceLocation(SecurityCraft.MODID, "keypad"),
@@ -108,20 +109,34 @@ public class ClientHandler
 		ResourceLocation[] poweredBlocks = {
 				new ResourceLocation(SecurityCraft.MODID, "laser_block")
 		};
-		String[] mines = {"coal_ore", "cobblestone", "diamond_ore", "dirt", "emerald_ore", "gravel", "gold_ore", "gilded_blackstone", "furnace", "iron_ore", "lapis_ore", "nether_gold_ore", "redstone_ore", "sand", "stone"};
+		String[] mines = {
+				"coal_ore",
+				"cobblestone",
+				"diamond_ore",
+				"dirt",
+				"emerald_ore",
+				"gravel",
+				"gold_ore",
+				"gilded_blackstone",
+				"furnace",
+				"iron_ore",
+				"lapis_ore",
+				"nether_gold_ore",
+				"redstone_ore",
+				"sand",
+				"stone"
+		};
+		//@formatter:on
 		ResourceLocation invScanRL = new ResourceLocation(SecurityCraft.MODID, "inventory_scanner");
 		ResourceLocation ppfRL = new ResourceLocation(SecurityCraft.MODID, "keypad_furnace");
 
-		for(String facing : facings)
-		{
-			for(ResourceLocation facingPoweredBlock : facingPoweredBlocks)
-			{
+		for (String facing : facings) {
+			for (ResourceLocation facingPoweredBlock : facingPoweredBlocks) {
 				registerDisguisedModel(event, facingPoweredBlock, "facing=" + facing + ",powered=true");
 				registerDisguisedModel(event, facingPoweredBlock, "facing=" + facing + ",powered=false");
 			}
 
-			for(ResourceLocation facingBlock : facingBlocks)
-			{
+			for (ResourceLocation facingBlock : facingBlocks) {
 				registerDisguisedModel(event, facingBlock, "facing=" + facing);
 			}
 
@@ -133,8 +148,7 @@ public class ClientHandler
 			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=false");
 		}
 
-		for(ResourceLocation poweredBlock : poweredBlocks)
-		{
+		for (ResourceLocation poweredBlock : poweredBlocks) {
 			registerDisguisedModel(event, poweredBlock, "powered=false");
 			registerDisguisedModel(event, poweredBlock, "powered=true");
 		}
@@ -148,33 +162,28 @@ public class ClientHandler
 		registerDisguisedModel(event, protectoRl, "enabled=false");
 		registerDisguisedModel(event, new ResourceLocation(SecurityCraft.MODID, "trophy_system"), "");
 
-		for(String mine : mines)
-		{
+		for (String mine : mines) {
 			registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, mine.replace("_ore", "") + "_mine"), new ResourceLocation(mine));
 		}
 
 		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "quartz_mine"), new ResourceLocation("nether_quartz_ore"));
 	}
 
-	private static void registerDisguisedModel(ModelBakeEvent event, ResourceLocation rl, String stateString)
-	{
+	private static void registerDisguisedModel(ModelBakeEvent event, ResourceLocation rl, String stateString) {
 		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
 
 		event.getModelRegistry().put(mrl, new DisguisableDynamicBakedModel(rl, event.getModelRegistry().get(mrl)));
 	}
 
-	private static void registerBlockMineModel(ModelBakeEvent event, ResourceLocation mineRl, ResourceLocation realBlockRl)
-	{
+	private static void registerBlockMineModel(ModelBakeEvent event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
 		ModelResourceLocation mineMrl = new ModelResourceLocation(mineRl, "inventory");
 
 		event.getModelRegistry().put(mineMrl, new BlockMineModel(event.getModelRegistry().get(new ModelResourceLocation(realBlockRl, "inventory")), event.getModelRegistry().get(mineMrl)));
 	}
 
 	@SubscribeEvent
-	public static void onTextureStitchPre(TextureStitchEvent.Pre event)
-	{
-		if(event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS))
-		{
+	public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
+		if (event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS)) {
 			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/active"));
 			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/inactive"));
 			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/left_active"));
@@ -188,8 +197,7 @@ public class ClientHandler
 	}
 
 	@SubscribeEvent
-	public static void onFMLClientSetup(FMLClientSetupEvent event)
-	{
+	public static void onFMLClientSetup(FMLClientSetupEvent event) {
 		RenderType cutout = RenderType.getCutout();
 		RenderType cutoutMipped = RenderType.getCutoutMipped();
 		RenderType translucent = RenderType.getTranslucent();
@@ -291,31 +299,26 @@ public class ClientHandler
 		KeyBindings.init();
 		tint();
 
-		if(ModList.get().isLoaded("waila"))
+		if (ModList.get().isLoaded("waila"))
 			MinecraftForge.EVENT_BUS.addListener(WailaDataProvider::onWailaRender);
 	}
 
-	public static void tint()
-	{
+	public static void tint() {
 		Set<Block> reinforcedTint = new HashSet<>();
 		Map<Block, Integer> toTint = new HashMap<>();
 		Map<Block, IBlockColor> specialBlockTint = new HashMap<>();
 		Map<Block, IItemColor> specialItemTint = new HashMap<>();
 
-		for(Field field : SCContent.class.getFields())
-		{
-			if(field.isAnnotationPresent(Reinforced.class))
-			{
-				try
-				{
+		for (Field field : SCContent.class.getFields()) {
+			if (field.isAnnotationPresent(Reinforced.class)) {
+				try {
 					if (field.getAnnotation(Reinforced.class).hasReinforcedTint())
-						reinforcedTint.add(((RegistryObject<Block>)field.get(null)).get());
+						reinforcedTint.add(((RegistryObject<Block>) field.get(null)).get());
 
 					if (field.getAnnotation(Reinforced.class).hasReinforcedTint() || field.getAnnotation(Reinforced.class).customTint() != 0xFFFFFF)
-						toTint.put(((RegistryObject<Block>)field.get(null)).get(), field.getAnnotation(Reinforced.class).customTint());
+						toTint.put(((RegistryObject<Block>) field.get(null)).get(), field.getAnnotation(Reinforced.class).customTint());
 				}
-				catch(IllegalArgumentException | IllegalAccessException e)
-				{
+				catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
 				}
 			}
@@ -379,15 +382,15 @@ public class ClientHandler
 		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
 			Block block = state.getBlock();
 
-			if(block instanceof DisguisableBlock)
-			{
-				Block blockFromItem = Block.getBlockFromItem(((DisguisableBlock)block).getDisguisedStack(world, pos).getItem());
+			if (block instanceof DisguisableBlock) {
+				Block blockFromItem = Block.getBlockFromItem(((DisguisableBlock) block).getDisguisedStack(world, pos).getItem());
 
-				if(blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
+				if (blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
 					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.getDefaultState(), world, pos, tintIndex);
 			}
 
 			return noTint;
+			//@formatter:off
 		}, SCContent.CAGE_TRAP.get(),
 				SCContent.INVENTORY_SCANNER.get(),
 				SCContent.KEYCARD_READER.get(),
@@ -399,12 +402,12 @@ public class ClientHandler
 				SCContent.RETINAL_SCANNER.get(),
 				SCContent.TROPHY_SYSTEM.get(),
 				SCContent.USERNAME_LOGGER.get());
+		//@formatter:on
 		Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
-			if(tintIndex == 0)
-			{
-				IDyeableArmorItem item = ((IDyeableArmorItem)stack.getItem());
+			if (tintIndex == 0) {
+				IDyeableArmorItem item = ((IDyeableArmorItem) stack.getItem());
 
-				if(item.hasColor(stack))
+				if (item.hasColor(stack))
 					return item.getColor(stack);
 				else
 					return 0x333333;
@@ -420,69 +423,57 @@ public class ClientHandler
 		return tintReinforcedBlocks ? mixTints(tint1, 0x999999) : tint1;
 	}
 
-	private static int mixTints(int tint1, int tint2)
-	{
+	private static int mixTints(int tint1, int tint2) {
 		int red = (tint1 >> 0x10) & 0xFF;
 		int green = (tint1 >> 0x8) & 0xFF;
 		int blue = tint1 & 0xFF;
 
-		red *= (float)(tint2 >> 0x10 & 0xFF) / 0xFF;
-		green *= (float)(tint2 >> 0x8 & 0xFF) / 0xFF;
-		blue *= (float)(tint2 & 0xFF) / 0xFF;
-
+		red *= (float) (tint2 >> 0x10 & 0xFF) / 0xFF;
+		green *= (float) (tint2 >> 0x8 & 0xFF) / 0xFF;
+		blue *= (float) (tint2 & 0xFF) / 0xFF;
 		return ((red << 8) + green << 8) + blue;
 	}
 
-	public static PlayerEntity getClientPlayer()
-	{
+	public static PlayerEntity getClientPlayer() {
 		return Minecraft.getInstance().player;
 	}
 
-	public static void displayMRATGui(ItemStack stack)
-	{
+	public static void displayMRATGui(ItemStack stack) {
 		Minecraft.getInstance().displayGuiScreen(new MineRemoteAccessToolScreen(stack));
 	}
 
-	public static void displaySRATGui(ItemStack stack, int viewDistance)
-	{
+	public static void displaySRATGui(ItemStack stack, int viewDistance) {
 		Minecraft.getInstance().displayGuiScreen(new SentryRemoteAccessToolScreen(stack, viewDistance));
 	}
 
-	public static void displayEditModuleGui(ItemStack stack)
-	{
+	public static void displayEditModuleGui(ItemStack stack) {
 		Minecraft.getInstance().displayGuiScreen(new EditModuleScreen(stack));
 	}
 
-	public static void displayCameraMonitorGui(PlayerInventory inv, CameraMonitorItem item, CompoundNBT stackTag)
-	{
+	public static void displayCameraMonitorGui(PlayerInventory inv, CameraMonitorItem item, CompoundNBT stackTag) {
 		Minecraft.getInstance().displayGuiScreen(new CameraMonitorScreen(inv, item, stackTag));
 	}
 
-	public static void displaySCManualGui()
-	{
+	public static void displaySCManualGui() {
 		Minecraft.getInstance().displayGuiScreen(new SCManualScreen());
 	}
 
-	public static void displayEditSecretSignGui(SecretSignTileEntity te)
-	{
+	public static void displayEditSecretSignGui(SecretSignTileEntity te) {
 		Minecraft.getInstance().displayGuiScreen(new EditSignScreen(te));
 	}
 
-	public static void displaySonicSecuritySystemGui(SonicSecuritySystemTileEntity te)
-	{
+	public static void displaySonicSecuritySystemGui(SonicSecuritySystemTileEntity te) {
 		Minecraft.getInstance().displayGuiScreen(new SonicSecuritySystemScreen(te));
 	}
 
-	public static void refreshModelData(TileEntity te)
-	{
+	public static void refreshModelData(TileEntity te) {
 		BlockPos pos = te.getPos();
 
 		ModelDataManager.requestModelDataRefresh(te);
 		Minecraft.getInstance().worldRenderer.markBlockRangeForRenderUpdate(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	public static boolean isPlayerMountedOnCamera()
-	{
+	public static boolean isPlayerMountedOnCamera() {
 		return Minecraft.getInstance().renderViewEntity instanceof SecurityCameraEntity;
 	}
 }

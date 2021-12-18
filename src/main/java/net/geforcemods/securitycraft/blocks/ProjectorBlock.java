@@ -43,7 +43,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ProjectorBlock extends DisguisableBlock {
-
 	private static final Style GRAY_STYLE = new Style().setColor(TextFormatting.GRAY);
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	private static final VoxelShape NORTH = Stream.of(Block.makeCuboidShape(3, 5, 0.9, 6, 8, 1.9), Block.makeCuboidShape(0, 3, 1, 16, 10, 16), Block.makeCuboidShape(2, 8, 0.5, 7, 9, 1), Block.makeCuboidShape(2, 4, 0.5, 7, 5, 1), Block.makeCuboidShape(6, 5, 0.5, 7, 8, 1), Block.makeCuboidShape(2, 5, 0.5, 3, 8, 1), Block.makeCuboidShape(0, 0, 1, 2, 3, 3), Block.makeCuboidShape(14, 0, 1, 16, 3, 3), Block.makeCuboidShape(14, 0, 14, 16, 3, 16), Block.makeCuboidShape(0, 0, 14, 2, 3, 16)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
@@ -57,16 +56,13 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		BlockState extendedState = getExtendedState(state, world, pos);
 
-		if(extendedState.getBlock() != this)
+		if (extendedState.getBlock() != this)
 			return extendedState.getShape(world, pos, ctx);
-		else
-		{
-			switch(state.get(FACING))
-			{
+		else {
+			switch (state.get(FACING)) {
 				case NORTH:
 					return SOUTH;
 				case EAST:
@@ -75,36 +71,34 @@ public class ProjectorBlock extends DisguisableBlock {
 					return NORTH;
 				case WEST:
 					return EAST;
-				default: return VoxelShapes.fullCube();
+				default:
+					return VoxelShapes.fullCube();
 			}
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if(!(te instanceof ProjectorTileEntity))
+		if (!(te instanceof ProjectorTileEntity))
 			return ActionResultType.FAIL;
 
-		boolean isOwner = ((IOwnable)te).getOwner().isOwner(player);
+		boolean isOwner = ((IOwnable) te).getOwner().isOwner(player);
 
-		if(!world.isRemote && isOwner)
-			NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider) te, pos);
+		if (!world.isRemote && isOwner)
+			NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
 
 		return isOwner ? ActionResultType.SUCCESS : ActionResultType.FAIL;
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-	{
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if(te instanceof ProjectorTileEntity)
-		{
+		if (te instanceof ProjectorTileEntity) {
 			// Drop the block being projected
-			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorTileEntity)te).getStackInSlot(36));
+			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorTileEntity) te).getStackInSlot(36));
 			WorldUtils.addScheduledTask(world, () -> world.addEntity(item));
 		}
 
@@ -112,18 +106,14 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
-	{
-		if(!world.isRemote)
-		{
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		if (!world.isRemote) {
 			TileEntity tile = world.getTileEntity(pos);
 
-			if(tile instanceof ProjectorTileEntity)
-			{
-				ProjectorTileEntity te =  (ProjectorTileEntity)tile;
+			if (tile instanceof ProjectorTileEntity) {
+				ProjectorTileEntity te = (ProjectorTileEntity) tile;
 
-				if(te.isActivatedByRedstone())
-				{
+				if (te.isActivatedByRedstone()) {
 					te.setActive(world.isBlockPowered(pos));
 					world.notifyBlockUpdate(pos, state, state, 3);
 				}
@@ -132,36 +122,30 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
-	{
-		if(!world.isBlockPowered(pos))
-		{
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
+		if (!world.isBlockPowered(pos)) {
 			TileEntity tile = world.getTileEntity(pos);
 
-			if(tile instanceof ProjectorTileEntity)
-			{
-				ProjectorTileEntity te =  (ProjectorTileEntity)tile;
+			if (tile instanceof ProjectorTileEntity) {
+				ProjectorTileEntity te = (ProjectorTileEntity) tile;
 
-				if(te.isActivatedByRedstone())
+				if (te.isActivatedByRedstone())
 					te.setActive(false);
 			}
 		}
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
-	{
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 
@@ -171,21 +155,18 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.toRotation(state.get(FACING)));
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag)
-	{
+	public void addInformation(ItemStack stack, IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		tooltip.add(new TranslationTextComponent("tooltip.securitycraft:projector").setStyle(GRAY_STYLE));
 	}
 }

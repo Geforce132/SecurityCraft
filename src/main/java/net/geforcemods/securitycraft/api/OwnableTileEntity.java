@@ -11,29 +11,26 @@ import net.minecraft.tileentity.TileEntityType;
  * Used to give this tile entity an owner
  */
 public class OwnableTileEntity extends TileEntity implements IOwnable {
-
 	private Owner owner = new Owner();
 
-	public OwnableTileEntity()
-	{
+	public OwnableTileEntity() {
 		this(SCContent.teTypeOwnable);
 	}
 
-	public OwnableTileEntity(TileEntityType<?> type)
-	{
+	public OwnableTileEntity(TileEntityType<?> type) {
 		super(type);
 	}
 
 	/**
 	 * Writes a tile entity to NBT.
+	 *
 	 * @return
 	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 
-		if(owner != null){
+		if (owner != null) {
 			owner.write(tag, needsValidation());
 		}
 
@@ -44,16 +41,14 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(CompoundNBT tag)
-	{
+	public void read(CompoundNBT tag) {
 		super.read(tag);
 
 		owner.read(tag);
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag()
-	{
+	public CompoundNBT getUpdateTag() {
 		return write(new CompoundNBT());
 	}
 
@@ -68,7 +63,7 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	}
 
 	@Override
-	public Owner getOwner(){
+	public Owner getOwner() {
 		return owner;
 	}
 

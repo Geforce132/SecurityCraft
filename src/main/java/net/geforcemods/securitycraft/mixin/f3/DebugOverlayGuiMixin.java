@@ -23,42 +23,38 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 
 @Mixin(DebugOverlayGui.class)
-public class DebugOverlayGuiMixin
-{
+public class DebugOverlayGuiMixin {
 	@Shadow
 	protected RayTraceResult rayTraceBlock;
 
-	@ModifyVariable(method="getDebugInfoRight", at=@At(value="INVOKE_ASSIGN", target="Lnet/minecraft/client/world/ClientWorld;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
-	public BlockState spoofBlockState(BlockState originalState)
-	{
+	@ModifyVariable(method = "getDebugInfoRight", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/world/ClientWorld;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
+	public BlockState spoofBlockState(BlockState originalState) {
 		Block originalBlock = originalState.getBlock();
 
-		if(originalBlock instanceof DisguisableBlock)
-		{
-			BlockState disguisedState = ((DisguisableBlock)originalBlock).getDisguisedBlockState(Minecraft.getInstance().world, ((BlockRayTraceResult)rayTraceBlock).getPos());
+		if (originalBlock instanceof DisguisableBlock) {
+			BlockState disguisedState = ((DisguisableBlock) originalBlock).getDisguisedBlockState(Minecraft.getInstance().world, ((BlockRayTraceResult) rayTraceBlock).getPos());
 
 			return disguisedState != null ? disguisedState : originalState;
 		}
-		else if(originalBlock instanceof BaseFullMineBlock)
-			return ((BaseFullMineBlock)originalBlock).getBlockDisguisedAs().getDefaultState();
-		else if(originalBlock instanceof FurnaceMineBlock)
+		else if (originalBlock instanceof BaseFullMineBlock)
+			return ((BaseFullMineBlock) originalBlock).getBlockDisguisedAs().getDefaultState();
+		else if (originalBlock instanceof FurnaceMineBlock)
 			return Blocks.FURNACE.getDefaultState().with(BlockStateProperties.HORIZONTAL_FACING, originalState.get(BlockStateProperties.HORIZONTAL_FACING));
 
 		return originalState;
 	}
 
-	@ModifyVariable(method="getDebugInfoRight", at=@At(value="INVOKE_ASSIGN", target="Lnet/minecraft/client/world/ClientWorld;getFluidState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/fluid/IFluidState;"))
-	public IFluidState spoofFluidState(IFluidState originalState)
-	{
+	@ModifyVariable(method = "getDebugInfoRight", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/world/ClientWorld;getFluidState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/fluid/IFluidState;"))
+	public IFluidState spoofFluidState(IFluidState originalState) {
 		Fluid originalFluid = originalState.getFluid();
 
-		if(originalFluid == SCContent.FAKE_WATER.get())
+		if (originalFluid == SCContent.FAKE_WATER.get())
 			return Fluids.WATER.getDefaultState().with(FlowingFluid.FALLING, originalState.get(FlowingFluid.FALLING));
-		else if(originalFluid == SCContent.FLOWING_FAKE_WATER.get())
+		else if (originalFluid == SCContent.FLOWING_FAKE_WATER.get())
 			return Fluids.FLOWING_WATER.getDefaultState().with(FlowingFluid.FALLING, originalState.get(FlowingFluid.FALLING)).with(FlowingFluid.LEVEL_1_8, originalState.get(FlowingFluid.LEVEL_1_8));
-		else if(originalFluid == SCContent.FAKE_LAVA.get())
+		else if (originalFluid == SCContent.FAKE_LAVA.get())
 			return Fluids.LAVA.getDefaultState().with(FlowingFluid.FALLING, originalState.get(FlowingFluid.FALLING));
-		else if(originalFluid == SCContent.FLOWING_FAKE_LAVA.get())
+		else if (originalFluid == SCContent.FLOWING_FAKE_LAVA.get())
 			return Fluids.FLOWING_LAVA.getDefaultState().with(FlowingFluid.FALLING, originalState.get(FlowingFluid.FALLING)).with(FlowingFluid.LEVEL_1_8, originalState.get(FlowingFluid.LEVEL_1_8));
 
 		return originalState;

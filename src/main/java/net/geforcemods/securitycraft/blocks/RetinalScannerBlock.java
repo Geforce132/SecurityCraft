@@ -28,7 +28,6 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 
 public class RetinalScannerBlock extends DisguisableBlock {
-
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
@@ -37,85 +36,62 @@ public class RetinalScannerBlock extends DisguisableBlock {
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false));
 	}
 
-	/**
-	 * Called when the block is placed in the world.
-	 */
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack)
-	{
-		if (entity instanceof PlayerEntity)
-		{
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
+		if (entity instanceof PlayerEntity) {
 			TileEntity tileentity = world.getTileEntity(pos);
-			if (!world.isRemote && tileentity instanceof RetinalScannerTileEntity)
-			{
-				((RetinalScannerTileEntity)tileentity).setPlayerProfile(((PlayerEntity)entity).getGameProfile());
+
+			if (!world.isRemote && tileentity instanceof RetinalScannerTileEntity) {
+				((RetinalScannerTileEntity) tileentity).setPlayerProfile(((PlayerEntity) entity).getGameProfile());
 			}
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)entity));
+
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) entity));
 		}
 	}
 
-	/**
-	 * Ticks the block if it's been scheduled
-	 */
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
-	{
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (!world.isRemote && state.get(POWERED)) {
 			world.setBlockState(pos, state.with(POWERED, false));
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.RETINAL_SCANNER.get());
 		}
 	}
 
-	/**
-	 * Can this block provide power. Only wire currently seems to have this change based on its state.
-	 */
 	@Override
-	public boolean canProvidePower(BlockState state)
-	{
+	public boolean canProvidePower(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public boolean shouldCheckWeakPower(BlockState state, IWorldReader world, BlockPos pos, Direction side)
-	{
+	public boolean shouldCheckWeakPower(BlockState state, IWorldReader world, BlockPos pos, Direction side) {
 		return false;
 	}
 
-	/**
-	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
-	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
-	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-	 */
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
-	{
-		if(blockState.get(POWERED))
+	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		if (blockState.get(POWERED))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getStrongPower(BlockState state, IBlockReader world, BlockPos pos, Direction side){
+	public int getStrongPower(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
 		return state.get(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
-	{
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
 		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite()).with(POWERED, false);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
-		builder.add(FACING);
-		builder.add(POWERED);
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+		builder.add(FACING, POWERED);
 	}
 
 	@Override
@@ -124,14 +100,12 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.toRotation(state.get(FACING)));
 	}
 }

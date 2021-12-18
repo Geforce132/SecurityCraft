@@ -20,21 +20,20 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntity tileEntity;
 	private String blockName;
 	private TextFieldWidget keycodeTextbox;
 	private IdButton saveAndContinueButton;
 
-	public SetPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
+	public SetPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 		this.tileEntity = container.te;
 		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()).getFormattedText();
 	}
 
 	@Override
-	public void init(){
+	public void init() {
 		super.init();
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
@@ -49,33 +48,32 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public void onClose(){
+	public void onClose() {
 		super.onClose();
 		minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks){
+	public void render(int mouseX, int mouseY, float partialTicks) {
 		super.render(mouseX, mouseY, partialTicks);
 		drawString(font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String setup = Utils.localize("gui.securitycraft:password.setup").getFormattedText();
 		String combined = blockName + " " + setup;
 
-		if(font.getStringWidth(combined) < xSize - 10)
+		if (font.getStringWidth(combined) < xSize - 10)
 			font.drawString(combined, xSize / 2 - font.getStringWidth(combined) / 2, 6, 4210752);
 		else
-		{
 			font.drawString(blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
-			font.drawString(setup, xSize / 2 - font.getStringWidth(setup) / 2, 16, 4210752);
-		}
+
+		font.drawString(setup, xSize / 2 - font.getStringWidth(setup) / 2, 16, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
@@ -83,7 +81,8 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
-	protected void actionPerformed(IdButton button){
+
+	protected void actionPerformed(IdButton button) {
 		((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
 		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
 		Minecraft.getInstance().player.closeScreen();

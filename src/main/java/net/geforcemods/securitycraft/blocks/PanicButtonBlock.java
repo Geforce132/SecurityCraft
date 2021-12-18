@@ -47,110 +47,108 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	}
 
 	@Override
-	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
-	{
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
 		return state.get(POWERED) ? 4 : 0;
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		boolean newPowered = !state.get(POWERED);
 
 		world.setBlockState(pos, state.with(POWERED, newPowered));
 		playSound(player, world, pos, newPowered);
 
-		if(state.get(FACE) == AttachFace.WALL)
+		if (state.get(FACE) == AttachFace.WALL)
 			notifyNeighbors(world, pos, state.get(HORIZONTAL_FACING));
-		else if(state.get(FACE) == AttachFace.CEILING)
+		else if (state.get(FACE) == AttachFace.CEILING)
 			notifyNeighbors(world, pos, Direction.DOWN);
-		else if(state.get(FACE) == AttachFace.FLOOR)
+		else if (state.get(FACE) == AttachFace.FLOOR)
 			notifyNeighbors(world, pos, Direction.UP);
 
 		return ActionResultType.SUCCESS;
 	}
 
-	private void notifyNeighbors(World world, BlockPos pos, Direction facing)
-	{
+	private void notifyNeighbors(World world, BlockPos pos, Direction facing) {
 		world.notifyNeighborsOfStateChange(pos, this);
 		world.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this);
 	}
 
 	@Override
-	public boolean eventReceived(BlockState state, World world, BlockPos pos, int id, int param){
+	public boolean eventReceived(BlockState state, World world, BlockPos pos, int id, int param) {
 		super.eventReceived(state, world, pos, id, param);
 		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
-	{
-		switch(state.get(FACE))
-		{
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
+		switch (state.get(FACE)) {
 			case FLOOR:
-				switch(state.get(HORIZONTAL_FACING))
-				{
-					case NORTH: case SOUTH:
-						if(state.get(POWERED))
+				switch (state.get(HORIZONTAL_FACING)) {
+					case NORTH:
+					case SOUTH:
+						if (state.get(POWERED))
 							return FLOOR_NS_POWERED;
 						else
 							return FLOOR_NS_UNPOWERED;
-					case EAST: case WEST:
-						if(state.get(POWERED))
+					case EAST:
+					case WEST:
+						if (state.get(POWERED))
 							return FLOOR_EW_POWERED;
 						else
 							return FLOOR_EW_UNPOWERED;
-					default: break;
+					default:
+						break;
 				}
 				break;
 			case WALL:
-				switch(state.get(HORIZONTAL_FACING))
-				{
+				switch (state.get(HORIZONTAL_FACING)) {
 					case NORTH:
-						if(state.get(POWERED))
+						if (state.get(POWERED))
 							return WALL_N_POWERED;
 						else
 							return WALL_N_UNPOWERED;
 					case SOUTH:
-						if(state.get(POWERED))
+						if (state.get(POWERED))
 							return WALL_S_POWERED;
 						else
 							return WALL_S_UNPOWERED;
 					case EAST:
-						if(state.get(POWERED))
+						if (state.get(POWERED))
 							return WALL_E_POWERED;
 						else
 							return WALL_E_UNPOWERED;
 					case WEST:
-						if(state.get(POWERED))
+						if (state.get(POWERED))
 							return WALL_W_POWERED;
 						else
 							return WALL_W_UNPOWERED;
-					default: break;
+					default:
+						break;
 				}
 				break;
 			case CEILING:
-				switch(state.get(HORIZONTAL_FACING))
-				{
-					case NORTH: case SOUTH:
-						if(state.get(POWERED))
+				switch (state.get(HORIZONTAL_FACING)) {
+					case NORTH:
+					case SOUTH:
+						if (state.get(POWERED))
 							return CEILING_NS_POWERED;
 						else
 							return CEILING_NS_UNPOWERED;
-					case EAST: case WEST:
-						if(state.get(POWERED))
+					case EAST:
+					case WEST:
+						if (state.get(POWERED))
 							return CEILING_EW_POWERED;
 						else
 							return CEILING_EW_UNPOWERED;
-					default: break;
+					default:
+						break;
 				}
 		}
 
@@ -158,14 +156,12 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
-	{
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		return VoxelShapes.empty();
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state)
-	{
+	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
 
@@ -175,8 +171,7 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	}
 
 	@Override
-	protected SoundEvent getSoundEvent(boolean turningOn)
-	{
+	protected SoundEvent getSoundEvent(boolean turningOn) {
 		return turningOn ? SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON : SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF;
 	}
 }

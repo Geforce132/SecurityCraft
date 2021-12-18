@@ -10,16 +10,14 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
 
 public class ModuleItemInventory implements IInventory {
-
 	public final int size = 1;
 	private final ItemStack module;
-
 	public NonNullList<ItemStack> moduleInventory;
 
 	public ModuleItemInventory(ItemStack moduleItem) {
 		module = moduleItem;
 
-		if(!(moduleItem.getItem() instanceof ModuleItem))
+		if (!(moduleItem.getItem() instanceof ModuleItem))
 			return;
 
 		moduleInventory = NonNullList.withSize(size, ItemStack.EMPTY);
@@ -43,11 +41,11 @@ public class ModuleItemInventory implements IInventory {
 	public void readFromNBT(CompoundNBT tag) {
 		ListNBT items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
-		for(int i = 0; i < items.size(); i++) {
+		for (int i = 0; i < items.size(); i++) {
 			CompoundNBT item = items.getCompound(i);
 			int slot = item.getInt("Slot");
 
-			if(slot < getSizeInventory())
+			if (slot < getSizeInventory())
 				moduleInventory.set(slot, ItemStack.read(item));
 		}
 	}
@@ -55,14 +53,15 @@ public class ModuleItemInventory implements IInventory {
 	public void writeToNBT(CompoundNBT tag) {
 		ListNBT items = new ListNBT();
 
-		for(int i = 0; i < getSizeInventory(); i++)
-			if(!getStackInSlot(i).isEmpty()) {
+		for (int i = 0; i < getSizeInventory(); i++) {
+			if (!getStackInSlot(i).isEmpty()) {
 				CompoundNBT item = new CompoundNBT();
 				item.putInt("Slot", i);
 				getStackInSlot(i).write(item);
 
 				items.add(item);
 			}
+		}
 
 		tag.put("ItemInventory", items);
 	}
@@ -71,13 +70,14 @@ public class ModuleItemInventory implements IInventory {
 	public ItemStack decrStackSize(int index, int size) {
 		ItemStack stack = getStackInSlot(index);
 
-		if(!stack.isEmpty())
-			if(stack.getCount() > size) {
+		if (!stack.isEmpty())  {
+			if (stack.getCount() > size) {
 				stack = stack.split(size);
 				markDirty();
 			}
 			else
 				setInventorySlotContents(index, ItemStack.EMPTY);
+		}
 
 		return stack;
 	}
@@ -93,7 +93,7 @@ public class ModuleItemInventory implements IInventory {
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		moduleInventory.set(index, stack);
 
-		if(!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
+		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
 			stack.setCount(getInventoryStackLimit());
 
 		markDirty();
@@ -106,9 +106,10 @@ public class ModuleItemInventory implements IInventory {
 
 	@Override
 	public void markDirty() {
-		for(int i = 0; i < getSizeInventory(); i++)
-			if(!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0)
+		for (int i = 0; i < getSizeInventory(); i++) {
+			if (!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0)
 				moduleInventory.set(i, ItemStack.EMPTY);
+		}
 
 		writeToNBT(module.getTag());
 	}
@@ -133,11 +134,11 @@ public class ModuleItemInventory implements IInventory {
 	public void clear() {}
 
 	@Override
-	public boolean isEmpty()
-	{
-		for(ItemStack stack : moduleInventory)
-			if(!stack.isEmpty())
+	public boolean isEmpty() {
+		for (ItemStack stack : moduleInventory) {
+			if (!stack.isEmpty())
 				return false;
+		}
 
 		return true;
 	}

@@ -34,54 +34,53 @@ import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.fml.RegistryObject;
 
-public class BlockModelAndStateGenerator extends BlockStateProvider
-{
+public class BlockModelAndStateGenerator extends BlockStateProvider {
 	private final SCBlockModelProvider scModels;
 
-	public BlockModelAndStateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper)
-	{
+	public BlockModelAndStateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper) {
 		super(gen, SecurityCraft.MODID, exFileHelper);
 
 		scModels = new SCBlockModelProvider(gen, exFileHelper);
 	}
 
 	@Override
-	protected void registerStatesAndModels()
-	{
-		for(RegistryObject<Block> obj : SCContent.BLOCKS.getEntries())
-		{
+	protected void registerStatesAndModels() {
+		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
 			Block block = obj.get();
 			Item item = block.asItem();
 
-			if(item.getCreativeTabs().contains(SecurityCraft.groupSCDecoration))
-			{
-				if(block instanceof ReinforcedSlabBlock)
+			if (item.getCreativeTabs().contains(SecurityCraft.groupSCDecoration)) {
+				if (block instanceof ReinforcedSlabBlock)
 					reinforcedSlabBlock(block);
-				else if(block instanceof ReinforcedStainedGlassBlock)
+				else if (block instanceof ReinforcedStainedGlassBlock)
 					simpleBlock(block);
-				else if(block instanceof ReinforcedStainedGlassPaneBlock)
-					reinforcedPaneBlock((ReinforcedPaneBlock)block);
-				else if(block instanceof ReinforcedStairsBlock)
+				else if (block instanceof ReinforcedStainedGlassPaneBlock)
+					reinforcedPaneBlock((ReinforcedPaneBlock) block);
+				else if (block instanceof ReinforcedStairsBlock)
 					reinforcedStairsBlock(block);
-				else if(block instanceof ReinforcedWallBlock)
+				else if (block instanceof ReinforcedWallBlock)
 					reinforcedWallBlock(block);
-				else if(block instanceof ReinforcedCarpetBlock)
+				else if (block instanceof ReinforcedCarpetBlock)
 					reinforcedCarpetBlock(block);
 			}
-			else if(item.getCreativeTabs().contains(SecurityCraft.groupSCMine) && block instanceof BaseFullMineBlock)
-				blockMine(((BaseFullMineBlock)block).getBlockDisguisedAs(), block);
+			else if (item.getCreativeTabs().contains(SecurityCraft.groupSCMine) && block instanceof BaseFullMineBlock)
+				blockMine(((BaseFullMineBlock) block).getBlockDisguisedAs(), block);
 		}
 
 		horizontalBlock(SCContent.FURNACE_MINE.get(), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_side"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_front"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_top"));
 		getVariantBuilder(SCContent.REDSTONE_ORE_MINE.get()).forAllStates(state -> {
-			if(state.get(RedstoneOreMineBlock.LIT))
-				return new ConfiguredModel[] {new ConfiguredModel(models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/redstone_ore_on")))};
+			if (state.get(RedstoneOreMineBlock.LIT))
+				return new ConfiguredModel[] {
+						new ConfiguredModel(models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/redstone_ore_on")))
+			};
 			else
-				return new ConfiguredModel[] {new ConfiguredModel(models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/redstone_ore")))};
+				return new ConfiguredModel[] {
+						new ConfiguredModel(models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/redstone_ore")))
+			};
 		});
 
 		simpleBlock(SCContent.REINFORCED_GLASS.get());
-		reinforcedPaneBlock((ReinforcedPaneBlock)SCContent.REINFORCED_GLASS_PANE.get());
+		reinforcedPaneBlock((ReinforcedPaneBlock) SCContent.REINFORCED_GLASS_PANE.get());
 
 		models().reinforcedColumn("reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
 
@@ -151,28 +150,28 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		reinforcedWallBlock(SCContent.REINFORCED_END_STONE_BRICK_WALL.get(), "end_stone_bricks");
 	}
 
-	public void blockMine(Block vanillaBlock, Block block)
-	{
-		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {new ConfiguredModel(new UncheckedModelFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/" + vanillaBlock.getRegistryName().getPath())))});
+	public void blockMine(Block vanillaBlock, Block block) {
+		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {
+				new ConfiguredModel(new UncheckedModelFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/" + vanillaBlock.getRegistryName().getPath())))
+		});
 	}
 
-	public void reinforcedCarpetBlock(Block block)
-	{
+	public void reinforcedCarpetBlock(Block block) {
 		String name = name(block);
 		ModelFile model = models().reinforcedCarpet(name, mcLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("reinforced_", "").replace("carpet", "wool")));
 
-		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[]{new ConfiguredModel(model)});
+		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {
+				new ConfiguredModel(model)
+		});
 	}
 
-	public void reinforcedPaneBlock(ReinforcedPaneBlock block)
-	{
+	public void reinforcedPaneBlock(ReinforcedPaneBlock block) {
 		String name = name(block);
 
 		reinforcedPaneBlock(block, block.getRegistryName().toString(), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"));
 	}
 
-	public void reinforcedPaneBlock(ReinforcedPaneBlock block, String name, ResourceLocation pane, ResourceLocation edge)
-	{
+	public void reinforcedPaneBlock(ReinforcedPaneBlock block, String name, ResourceLocation pane, ResourceLocation edge) {
 		ModelFile post = models().panePost(name + "_post", pane, edge);
 		ModelFile side = models().paneSide(name + "_side", pane, edge);
 		ModelFile sideAlt = models().paneSideAlt(name + "_side_alt", pane, edge);
@@ -183,80 +182,73 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		SixWayBlock.FACING_TO_PROPERTY_MAP.entrySet().forEach(e -> {
 			Direction dir = e.getKey();
 
-			if(dir.getAxis().isHorizontal())
-			{
+			if (dir.getAxis().isHorizontal()) {
+				//@formatter:off
 				builder.part().modelFile(dir == Direction.SOUTH || dir == Direction.WEST ? sideAlt : side).rotationY(dir.getAxis() == Axis.X ? 90 : 0).addModel()
 				.condition(e.getValue(), true).end()
 				.part().modelFile(dir == Direction.SOUTH || dir == Direction.EAST ? noSideAlt : noSide).rotationY(dir == Direction.WEST ? 270 : dir == Direction.SOUTH ? 90 : 0).addModel()
 				.condition(e.getValue(), false);
+				//@formatter:on
 			}
 		});
 	}
 
-	public void reinforcedSlabBlock(Block block)
-	{
+	public void reinforcedSlabBlock(Block block) {
 		String name = name(block).replace("_slab", "");
 
 		reinforcedSlabBlock(block, name, name.replace("reinforced_", ""));
 	}
 
-	public void reinforcedSlabBlock(Block block, String doubleSlabModel, String texture)
-	{
+	public void reinforcedSlabBlock(Block block, String doubleSlabModel, String texture) {
 		ResourceLocation textureLocation = mcLoc(ModelProvider.BLOCK_FOLDER + "/" + texture);
 
 		reinforcedSlabBlock(block, name(block), modLoc(ModelProvider.BLOCK_FOLDER + "/" + doubleSlabModel), textureLocation, textureLocation, textureLocation);
 	}
 
-	public void reinforcedSlabBlock(Block block, String doubleSlabModel, String side, String end)
-	{
+	public void reinforcedSlabBlock(Block block, String doubleSlabModel, String side, String end) {
 		ResourceLocation endTextureLocation = mcLoc(ModelProvider.BLOCK_FOLDER + "/" + end);
 
-		reinforcedSlabBlock(block, name(block),  modLoc(ModelProvider.BLOCK_FOLDER + "/" + doubleSlabModel), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), endTextureLocation, endTextureLocation);
+		reinforcedSlabBlock(block, name(block), modLoc(ModelProvider.BLOCK_FOLDER + "/" + doubleSlabModel), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), endTextureLocation, endTextureLocation);
 	}
 
-	public void reinforcedSlabBlock(Block block, String doubleSlabModel, String side, String bottom, String top)
-	{
+	public void reinforcedSlabBlock(Block block, String doubleSlabModel, String side, String bottom, String top) {
 		reinforcedSlabBlock(block, name(block), modLoc(ModelProvider.BLOCK_FOLDER + "/" + doubleSlabModel), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + bottom), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + top));
 	}
 
-	public void reinforcedSlabBlock(Block block, String baseName, ResourceLocation doubleSlab, ResourceLocation side, ResourceLocation bottom, ResourceLocation top)
-	{
+	public void reinforcedSlabBlock(Block block, String baseName, ResourceLocation doubleSlab, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
 		ModelFile bottomModel = models().reinforcedSlab(baseName, side, bottom, top);
 		ModelFile topModel = models().reinforcedSlabTop(baseName + "_top", side, bottom, top);
 		ModelFile doubleSlabModel = models().getExistingFile(doubleSlab);
 
+		//@formatter:off
 		getVariantBuilder(block)
 		.partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(new ConfiguredModel(bottomModel))
 		.partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(new ConfiguredModel(topModel))
 		.partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(doubleSlabModel));
+		//@formatter:on
 	}
 
-	public void reinforcedStairsBlock(Block block)
-	{
+	public void reinforcedStairsBlock(Block block) {
 		reinforcedStairsBlock(block, name(block).replace("reinforced_", "").replace("_stairs", ""));
 	}
 
-	public void reinforcedStairsBlock(Block block, String texture)
-	{
+	public void reinforcedStairsBlock(Block block, String texture) {
 		ResourceLocation textureLocation = mcLoc(ModelProvider.BLOCK_FOLDER + "/" + texture);
 
 		reinforcedStairsBlock(block, block.getRegistryName().toString(), textureLocation, textureLocation, textureLocation);
 	}
 
-	public void reinforcedStairsBlock(Block block, String side, String end)
-	{
+	public void reinforcedStairsBlock(Block block, String side, String end) {
 		ResourceLocation textureLocationEnd = mcLoc(ModelProvider.BLOCK_FOLDER + "/" + end);
 
 		reinforcedStairsBlock(block, block.getRegistryName().toString(), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), textureLocationEnd, textureLocationEnd);
 	}
 
-	public void reinforcedStairsBlock(Block block, String side, String bottom, String top)
-	{
+	public void reinforcedStairsBlock(Block block, String side, String bottom, String top) {
 		reinforcedStairsBlock(block, block.getRegistryName().toString(), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + bottom), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + top));
 	}
 
-	public void reinforcedStairsBlock(Block block, String baseName, ResourceLocation side, ResourceLocation bottom, ResourceLocation top)
-	{
+	public void reinforcedStairsBlock(Block block, String baseName, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
 		ModelFile stairs = models().reinforcedStairs(baseName, side, bottom, top);
 		ModelFile stairsInner = models().reinforcedStairsInner(baseName + "_inner", side, bottom, top);
 		ModelFile stairsOuter = models().reinforcedStairsOuter(baseName + "_outer", side, bottom, top);
@@ -265,80 +257,77 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 			Direction facing = state.get(StairsBlock.FACING);
 			Half half = state.get(StairsBlock.HALF);
 			StairsShape shape = state.get(StairsBlock.SHAPE);
-			int yRot = (int)facing.rotateY().getHorizontalAngle();
+			int yRot = (int) facing.rotateY().getHorizontalAngle();
 
-			if(shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT)
+			if (shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT)
 				yRot += 270;
 
-			if(shape != StairsShape.STRAIGHT && half == Half.TOP)
+			if (shape != StairsShape.STRAIGHT && half == Half.TOP)
 				yRot += 90;
 
 			yRot %= 360;
 
+			//@formatter:off
 			return ConfiguredModel.builder()
 					.modelFile(shape == StairsShape.STRAIGHT ? stairs : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? stairsInner : stairsOuter)
 					.rotationX(half == Half.BOTTOM ? 0 : 180)
 					.rotationY(yRot)
 					.uvLock(yRot != 0 || half == Half.TOP)
 					.build();
+			//@formatter:on
 		}, StairsBlock.WATERLOGGED);
 	}
 
-	public void reinforcedWallBlock(Block block)
-	{
+	public void reinforcedWallBlock(Block block) {
 		reinforcedWallBlock(block, name(block).replace("reinforced_", "").replace("_wall", ""));
 	}
 
-	public void reinforcedWallBlock(Block block, String textureName)
-	{
+	public void reinforcedWallBlock(Block block, String textureName) {
 		ResourceLocation texture = new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/" + textureName);
 		String baseName = block.getRegistryName().toString();
 		ModelFile post = models().reinforcedWallPost(baseName + "_post", texture);
 		ModelFile side = models().reinforcedWallSide(baseName + "_side", texture);
+		//@formatter:off
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(block)
 				.part().modelFile(post).addModel()
 				.condition(WallBlock.UP, true).end();
+		//@formatter:on
 
 		fourWayMultipart(builder, side);
 		models().reinforcedWallInventory(baseName + "_inventory", texture);
 	}
 
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return "SecurityCraft Block States/Models";
 	}
 
 	@Override
-	public MultiPartBlockStateBuilder getMultipartBuilder(Block b)
-	{
+	public MultiPartBlockStateBuilder getMultipartBuilder(Block b) {
 		//because some blocks' states get set twice (once during scanning SCContent, then actually generating the proper model),
 		//and the super method checking if the state has already been generated, and erroring if so, the key has to be removed so it can be remade
-		if(registeredBlocks.containsKey(b))
+		if (registeredBlocks.containsKey(b))
 			registeredBlocks.remove(b);
 
 		return super.getMultipartBuilder(b);
 	}
 
 	@Override
-	public VariantBlockStateBuilder getVariantBuilder(Block b)
-	{
+	public VariantBlockStateBuilder getVariantBuilder(Block b) {
 		//because some blocks' states get set twice (once during scanning SCContent, then actually generating the proper model),
 		//and the super method checking if the state has already been generated, and erroring if so, the key has to be removed so it can be remade
-		if(registeredBlocks.containsKey(b))
+		if (registeredBlocks.containsKey(b))
 			registeredBlocks.remove(b);
 
 		return super.getVariantBuilder(b);
 	}
 
 	@Override
-	public SCBlockModelProvider models()
-	{
+	public SCBlockModelProvider models() {
 		return scModels;
 	}
 
-	private String name(Block block)
-	{
+	private String name(Block block) {
 		return block.getRegistryName().getPath();
 	}
 }

@@ -14,13 +14,11 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class SyncTrophySystem {
-
 	private BlockPos pos;
 	private ResourceLocation projectileType;
 	private boolean allowed;
 
 	public SyncTrophySystem() {
-
 	}
 
 	public SyncTrophySystem(BlockPos pos, EntityType<?> projectileType, boolean allowed) {
@@ -48,17 +46,16 @@ public class SyncTrophySystem {
 		ctx.get().enqueueWork(() -> {
 			EntityType<?> projectileType = ForgeRegistries.ENTITIES.getValue(message.projectileType);
 
-			if(projectileType != null)
-			{
+			if (projectileType != null) {
 				World world = ctx.get().getSender().world;
 				BlockPos pos = message.pos;
 				boolean allowed = message.allowed;
 				TileEntity te = world.getTileEntity(pos);
 
-				if(te instanceof TrophySystemTileEntity && ((TrophySystemTileEntity)te).getOwner().isOwner(ctx.get().getSender())) {
+				if (te instanceof TrophySystemTileEntity && ((TrophySystemTileEntity) te).getOwner().isOwner(ctx.get().getSender())) {
 					BlockState state = world.getBlockState(pos);
 
-					((TrophySystemTileEntity)te).setFilter(projectileType, allowed);
+					((TrophySystemTileEntity) te).setFilter(projectileType, allowed);
 					world.notifyBlockUpdate(pos, state, state, 2);
 				}
 			}

@@ -9,32 +9,27 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class OpenSRATGui
-{
+public class OpenSRATGui {
 	private int viewDistance;
 
 	public OpenSRATGui() {}
 
-	public OpenSRATGui(int viewDistance)
-	{
+	public OpenSRATGui(int viewDistance) {
 		this.viewDistance = viewDistance;
 	}
 
-	public static void encode(OpenSRATGui message, PacketBuffer buf)
-	{
+	public static void encode(OpenSRATGui message, PacketBuffer buf) {
 		buf.writeInt(message.viewDistance);
 	}
 
-	public static OpenSRATGui decode(PacketBuffer buf)
-	{
+	public static OpenSRATGui decode(PacketBuffer buf) {
 		OpenSRATGui message = new OpenSRATGui();
 
 		message.viewDistance = buf.readInt();
 		return message;
 	}
 
-	public static void onMessage(OpenSRATGui message, Supplier<NetworkEvent.Context> ctx)
-	{
+	public static void onMessage(OpenSRATGui message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> ClientHandler.displaySRATGui(PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player.inventory, SCContent.REMOTE_ACCESS_SENTRY.get()), message.viewDistance));
 		ctx.get().setPacketHandled(true);
 	}

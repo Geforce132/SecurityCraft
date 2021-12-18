@@ -8,15 +8,14 @@ import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 
 public class ConfigHandler {
-
 	public static final ForgeConfigSpec CLIENT_SPEC;
 	public static final Client CLIENT;
 	public static final ForgeConfigSpec SERVER_SPEC;
 	public static final Server SERVER;
 
 	static {
-		Pair<Client,ForgeConfigSpec> clientSpecPair = new ForgeConfigSpec.Builder().configure(Client::new);
-		Pair<Server,ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder().configure(Server::new);
+		Pair<Client, ForgeConfigSpec> clientSpecPair = new ForgeConfigSpec.Builder().configure(Client::new);
+		Pair<Server, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder().configure(Server::new);
 
 		CLIENT_SPEC = clientSpecPair.getRight();
 		CLIENT = clientSpecPair.getLeft();
@@ -24,14 +23,13 @@ public class ConfigHandler {
 		SERVER = serverSpecPair.getLeft();
 	}
 
-	public static class Client
-	{
+	public static class Client {
 		public BooleanValue sayThanksMessage;
 		public DoubleValue cameraSpeed;
 		public BooleanValue reinforcedBlockTint;
 
-		Client(ForgeConfigSpec.Builder builder)
-		{
+		Client(ForgeConfigSpec.Builder builder) {
+			//@formatter:off
 			sayThanksMessage = builder
 					.comment("Display a 'tip' message at spawn?")
 					.define("sayThanksMessage", true);
@@ -43,11 +41,11 @@ public class ConfigHandler {
 			reinforcedBlockTint = builder
 					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This setting can be overriden by servers.")
 					.define("reinforced_block_tint", true);
+			//@formatter:on
 		}
 	}
 
-	public static class Server
-	{
+	public static class Server {
 		public BooleanValue allowCodebreakerItem;
 		public BooleanValue allowAdminTool;
 		public BooleanValue shouldSpawnFire;
@@ -67,8 +65,8 @@ public class ConfigHandler {
 		public BooleanValue disableThanksMessage;
 		public BooleanValue trickScannersWithPlayerHeads;
 
-		Server(ForgeConfigSpec.Builder builder)
-		{
+		Server(ForgeConfigSpec.Builder builder) {
+			//@formatter:off
 			allowCodebreakerItem = builder
 					.comment("Can the codebreaker be used?")
 					.define("allowCodebreakerItem", true);
@@ -142,6 +140,7 @@ public class ConfigHandler {
 			trickScannersWithPlayerHeads = builder
 					.comment("Set this to true if you want players wearing a different player's skull to be able to trick their retinal scanners and scanner doors into activating.")
 					.define("trick_scanners_with_player_heads", false);
+			//@formatter:on
 		}
 	}
 }

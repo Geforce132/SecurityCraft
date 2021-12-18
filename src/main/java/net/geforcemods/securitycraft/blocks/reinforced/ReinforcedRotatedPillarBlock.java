@@ -12,31 +12,25 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 
-public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock
-{
+public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock {
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 
-	public ReinforcedRotatedPillarBlock(Block.Properties properties, Block vB)
-	{
+	public ReinforcedRotatedPillarBlock(Block.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
 
-	public ReinforcedRotatedPillarBlock(Block.Properties properties, Supplier<Block> vB)
-	{
+	public ReinforcedRotatedPillarBlock(Block.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 
 		setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y));
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
-		switch(rot)
-		{
+	public BlockState rotate(BlockState state, Rotation rot) {
+		switch (rot) {
 			case COUNTERCLOCKWISE_90:
 			case CLOCKWISE_90:
-				switch(state.get(AXIS))
-				{
+				switch (state.get(AXIS)) {
 					case X:
 						return state.with(AXIS, Direction.Axis.Z);
 					case Z:
@@ -50,20 +44,17 @@ public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(AXIS);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		return getDefaultState().with(AXIS, context.getFace().getAxis());
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
+	public BlockState getConvertedState(BlockState vanillaState) {
 		return getDefaultState().with(AXIS, vanillaState.get(RotatedPillarBlock.AXIS));
 	}
 }

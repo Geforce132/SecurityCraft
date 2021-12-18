@@ -25,42 +25,38 @@ public class KeypadChestTileEntityRenderer extends ChestTileEntityRenderer<Keypa
 	private static final Material CHRISTMAS_RIGHT = createMaterial("christmas_right");
 	protected boolean isChristmas;
 
-	public KeypadChestTileEntityRenderer(TileEntityRendererDispatcher terd)
-	{
+	public KeypadChestTileEntityRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 
 		Calendar calendar = Calendar.getInstance();
 
-		if(calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26)
+		if (calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26)
 			isChristmas = true;
 	}
 
 	@Override
-	protected Material getMaterial(KeypadChestTileEntity te, ChestType type)
-	{
-		if(isChristmas)
+	protected Material getMaterial(KeypadChestTileEntity te, ChestType type) {
+		if (isChristmas)
 			return getMaterialForType(type, CHRISTMAS_LEFT, CHRISTMAS_RIGHT, CHRISTMAS);
-		else if(te.getLidAngle(0.0F) >= 0.9F)
+		else if (te.getLidAngle(0.0F) >= 0.9F)
 			return getMaterialForType(type, LEFT_ACTIVE, RIGHT_ACTIVE, ACTIVE);
 		else
 			return getMaterialForType(type, LEFT_INACTIVE, RIGHT_INACTIVE, INACTIVE);
 	}
 
-	private Material getMaterialForType(ChestType type, Material left, Material right, Material single)
-	{
-		switch(type)
-		{
+	private Material getMaterialForType(ChestType type, Material left, Material right, Material single) {
+		switch (type) {
 			case LEFT:
 				return left;
 			case RIGHT:
 				return right;
-			case SINGLE: default:
+			case SINGLE:
+			default:
 				return single;
 		}
 	}
 
-	private static Material createMaterial(String name)
-	{
+	private static Material createMaterial(String name) {
 		return new Material(Atlases.CHEST_ATLAS, new ResourceLocation("securitycraft", "entity/chest/" + name));
 	}
 }

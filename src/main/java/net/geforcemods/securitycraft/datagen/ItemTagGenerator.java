@@ -6,16 +6,14 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 
-public class ItemTagGenerator extends ItemTagsProvider
-{
-	protected ItemTagGenerator(DataGenerator dataGenerator)
-	{
+public class ItemTagGenerator extends ItemTagsProvider {
+	protected ItemTagGenerator(DataGenerator dataGenerator) {
 		super(dataGenerator);
 	}
 
 	@Override
-	protected void registerTags()
-	{
+	protected void registerTags() {
+		//@formatter:off
 		//securitycraft tags
 		copy(SCTags.Blocks.REINFORCED_ACACIA_LOGS, SCTags.Items.REINFORCED_ACACIA_LOGS);
 		copy(SCTags.Blocks.REINFORCED_BIRCH_LOGS, SCTags.Items.REINFORCED_BIRCH_LOGS);
@@ -55,11 +53,11 @@ public class ItemTagGenerator extends ItemTagsProvider
 		getBuilder(ItemTags.STAIRS).add(SCTags.Items.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get().asItem());
 		getBuilder(ItemTags.SIGNS).add(SCTags.Items.SECRET_SIGNS);
 		getBuilder(ItemTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem());
+		//@formatter:on
 	}
 
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return "SecurityCraft Item Tags";
 	}
 }

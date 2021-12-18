@@ -42,7 +42,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class CageTrapBlock extends DisguisableBlock {
-
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
 	public CageTrapBlock(Block.Properties properties) {
@@ -51,110 +50,103 @@ public class CageTrapBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx){
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		TileEntity tile = world.getTileEntity(pos);
 
-		if(tile instanceof CageTrapTileEntity)
-		{
-			CageTrapTileEntity te = (CageTrapTileEntity)tile;
+		if (tile instanceof CageTrapTileEntity) {
+			CageTrapTileEntity te = (CageTrapTileEntity) tile;
 
-			if(ctx instanceof EntitySelectionContext)
-			{
-				EntitySelectionContext esc = (EntitySelectionContext)ctx;
+			if (ctx instanceof EntitySelectionContext) {
+				EntitySelectionContext esc = (EntitySelectionContext) ctx;
 				Entity entity = esc.getEntity();
 
-				if(entity instanceof PlayerEntity && (te.getOwner().isOwner((PlayerEntity)entity) || ModuleUtils.isAllowed(te, entity)))
+				if (entity instanceof PlayerEntity && (te.getOwner().isOwner((PlayerEntity) entity) || ModuleUtils.isAllowed(te, entity)))
 					return getCorrectShape(state, world, pos, ctx, te);
-				if(entity instanceof MobEntity && !state.get(DEACTIVATED))
+				if (entity instanceof MobEntity && !state.get(DEACTIVATED))
 					return te.capturesMobs() ? VoxelShapes.empty() : getCorrectShape(state, world, pos, ctx, te);
-				else if(entity instanceof ItemEntity)
+				else if (entity instanceof ItemEntity)
 					return getCorrectShape(state, world, pos, ctx, te);
 			}
 
 			return state.get(DEACTIVATED) ? getCorrectShape(state, world, pos, ctx, te) : VoxelShapes.empty();
 		}
-		else return VoxelShapes.empty(); //shouldn't happen
+		else
+			return VoxelShapes.empty(); //shouldn't happen
 	}
 
-	private VoxelShape getCorrectShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx, DisguisableTileEntity disguisableTe)
-	{
+	private VoxelShape getCorrectShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx, DisguisableTileEntity disguisableTe) {
 		ItemStack moduleStack = disguisableTe.getModule(ModuleType.DISGUISE);
 
-		if(!moduleStack.isEmpty() && (((ModuleItem)moduleStack.getItem()).getBlockAddon(moduleStack.getTag()) != null))
+		if (!moduleStack.isEmpty() && (((ModuleItem) moduleStack.getItem()).getBlockAddon(moduleStack.getTag()) != null))
 			return super.getCollisionShape(state, world, pos, ctx);
-		else return VoxelShapes.fullCube();
+		else
+			return VoxelShapes.fullCube();
 	}
 
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if(!world.isRemote){
+		if (!world.isRemote) {
 			CageTrapTileEntity tileEntity = (CageTrapTileEntity) world.getTileEntity(pos);
 			boolean isPlayer = entity instanceof PlayerEntity;
 
-			if(isPlayer || (entity instanceof MobEntity && tileEntity.capturesMobs())){
-				if((isPlayer && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((PlayerEntity)entity)))
+			if (isPlayer || (entity instanceof MobEntity && tileEntity.capturesMobs())) {
+				if ((isPlayer && ((IOwnable) world.getTileEntity(pos)).getOwner().isOwner((PlayerEntity) entity)))
 					return;
 
-				if(state.get(DEACTIVATED))
+				if (state.get(DEACTIVATED))
 					return;
 
 				BlockPos topMiddle = pos.up(4);
-				String ownerName = ((IOwnable)world.getTileEntity(pos)).getOwner().getName();
+				String ownerName = ((IOwnable) world.getTileEntity(pos)).getOwner().getName();
 
 				BlockModifier placer = new BlockModifier(world, new BlockPos.Mutable(pos), tileEntity.getOwner());
 
 				placer.loop((w, p, o) -> {
-					if(w.isAirBlock(p))
-					{
-						if(p.equals(topMiddle))
+					if (w.isAirBlock(p)) {
+						if (p.equals(topMiddle))
 							w.setBlockState(p, SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get().getDefaultState());
 						else
-							w.setBlockState(p, ((ReinforcedPaneBlock)SCContent.REINFORCED_IRON_BARS.get()).getStateForPlacement(w, p));
+							w.setBlockState(p, ((ReinforcedPaneBlock) SCContent.REINFORCED_IRON_BARS.get()).getStateForPlacement(w, p));
 					}
 				});
 				placer.loop((w, p, o) -> {
 					TileEntity te = w.getTileEntity(p);
 
-					if(te instanceof IOwnable)
-						((IOwnable)te).setOwner(o.getUUID(), o.getName());
+					if (te instanceof IOwnable)
+						((IOwnable) te).setOwner(o.getUUID(), o.getName());
 
-					if(te instanceof ReinforcedIronBarsTileEntity)
-						((ReinforcedIronBarsTileEntity)te).setCanDrop(false);
+					if (te instanceof ReinforcedIronBarsTileEntity)
+						((ReinforcedIronBarsTileEntity) te).setCanDrop(false);
 				});
 				world.setBlockState(pos, state.with(DEACTIVATED, true));
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 
-				if(isPlayer && PlayerUtils.isPlayerOnline(ownerName))
+				if (isPlayer && PlayerUtils.isPlayerOnline(ownerName))
 					PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName(ownerName), Utils.localize(SCContent.CAGE_TRAP.get().getTranslationKey()), Utils.localize("messages.securitycraft:cageTrap.captured", entity.getName(), pos), TextFormatting.BLACK);
 			}
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(stack.getItem() == SCContent.WIRE_CUTTERS.get())
-		{
-			if(!state.get(DEACTIVATED))
-			{
+		if (stack.getItem() == SCContent.WIRE_CUTTERS.get()) {
+			if (!state.get(DEACTIVATED)) {
 				world.setBlockState(pos, state.with(DEACTIVATED, true));
 
-				if(!player.isCreative())
+				if (!player.isCreative())
 					stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
 
 				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				return ActionResultType.SUCCESS;
 			}
 		}
-		else if(stack.getItem() == Items.REDSTONE)
-		{
-			if(state.get(DEACTIVATED))
-			{
+		else if (stack.getItem() == Items.REDSTONE) {
+			if (state.get(DEACTIVATED)) {
 				world.setBlockState(pos, state.with(DEACTIVATED, false));
 
-				if(!player.isCreative())
+				if (!player.isCreative())
 					stack.shrink(1);
 
 				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -166,19 +158,16 @@ public class CageTrapBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity player)
-	{
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity player) {
 		return getDefaultState().with(DEACTIVATED, false);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(DEACTIVATED);
 	}
 
@@ -187,31 +176,25 @@ public class CageTrapBlock extends DisguisableBlock {
 		return new CageTrapTileEntity();
 	}
 
-	public static class BlockModifier
-	{
+	public static class BlockModifier {
 		private World world;
 		private BlockPos.Mutable pos;
 		private BlockPos origin;
 		private Owner owner;
 
-		public BlockModifier(World world, BlockPos.Mutable origin, Owner owner)
-		{
+		public BlockModifier(World world, BlockPos.Mutable origin, Owner owner) {
 			this.world = world;
 			pos = origin.move(-1, 1, -1);
 			this.origin = origin.toImmutable();
 			this.owner = owner;
 		}
 
-		public void loop(TriConsumer<World,BlockPos.Mutable,Owner> ifTrue)
-		{
-			for(int y = 0; y < 4; y++)
-			{
-				for(int x = 0; x < 3; x++)
-				{
-					for(int z = 0; z < 3; z++)
-					{
+		public void loop(TriConsumer<World, BlockPos.Mutable, Owner> ifTrue) {
+			for (int y = 0; y < 4; y++) {
+				for (int x = 0; x < 3; x++) {
+					for (int z = 0; z < 3; z++) {
 						//skip the middle column above the cage trap, but not the place where the horizontal iron bars are
-						if(!(x == 1 && z == 1 && y != 3))
+						if (!(x == 1 && z == 1 && y != 3))
 							ifTrue.accept(world, pos, owner);
 
 						pos.move(0, 0, 1);

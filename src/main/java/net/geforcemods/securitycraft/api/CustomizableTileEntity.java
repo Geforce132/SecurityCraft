@@ -7,33 +7,27 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 
 /**
- * Extend this class in your TileEntity to make it customizable. You will
- * be able to modify it with the various modules in SecurityCraft, and
- * have your block do different functions based on what modules are
- * inserted.
+ * Extend this class in your TileEntity to make it customizable. You will be able to modify it with the various modules in
+ * SecurityCraft, and have your block do different functions based on what modules are inserted.
  *
  * @author Geforce
  */
-public abstract class CustomizableTileEntity extends NamedTileEntity implements IModuleInventory, ICustomizable
-{
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+public abstract class CustomizableTileEntity extends NamedTileEntity implements IModuleInventory, ICustomizable {
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
-	public CustomizableTileEntity(TileEntityType<?> type)
-	{
+	public CustomizableTileEntity(TileEntityType<?> type) {
 		super(type);
 	}
 
 	@Override
-	public void read(CompoundNBT tag)
-	{
+	public void read(CompoundNBT tag) {
 		super.read(tag);
 		modules = readModuleInventory(tag);
 		readOptions(tag);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
-	{
+	public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 		writeModuleInventory(tag);
 		writeOptions(tag);
@@ -41,14 +35,12 @@ public abstract class CustomizableTileEntity extends NamedTileEntity implements 
 	}
 
 	@Override
-	public TileEntity getTileEntity()
-	{
+	public TileEntity getTileEntity() {
 		return this;
 	}
 
 	@Override
-	public NonNullList<ItemStack> getInventory()
-	{
+	public NonNullList<ItemStack> getInventory() {
 		return modules;
 	}
 }

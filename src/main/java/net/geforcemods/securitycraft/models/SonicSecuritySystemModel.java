@@ -11,7 +11,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SonicSecuritySystemModel extends EntityModel<Entity> {
-
 	public ModelRenderer radar;
 	public ModelRenderer bb_main;
 
@@ -42,7 +41,7 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 	public void setRotationAngles(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 
 	@Override
-	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		radar.render(matrixStack, buffer, packedLight, packedOverlay);
 		bb_main.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
