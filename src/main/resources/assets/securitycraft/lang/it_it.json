@@ -1016,11 +1016,11 @@
 	"option.securitycraft.reinforced_cauldron.isPublic": "Pubblico: %s",
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "Questo blocco dovrebbe permettere a ogni giocatore di interagirci?",
 	"option.securitycraft.key_panel.isAlwaysActive": "Sempre attivo: %s",
+	"option.securitycraft.key_panel.isAlwaysActive.description": "Il tastierino dovrebbe rimanere attivo e sbloccato?",
 	"option.securitycraft.key_panel.sendMessage": "Messaggio: %s",
+	"option.securitycraft.key_panel.sendMessage.description": "Vuoi che questo pannello mandi un messaggio all'attivazione (usando moduli lista consentiti/negati)?",
 	"option.securitycraft.key_panel.signalLength": "Lunghezza segnale: %s",
 	"option.securitycraft.key_panel.signalLength.description": "Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)",
-	"option.securitycraft.key_panel.isAlwaysActive.description": "Il tastierino dovrebbe rimanere attivo e sbloccato?",
-	"option.securitycraft.key_panel.sendMessage.description": "Vuoi che questo pannello mandi un messaggio all'attivazione (usando moduli lista consentiti/negati)?",
 	"option.securitycraft.sonic_security_system.signalLength": "Tempo di attività: %s",
 	"option.securitycraft.sonic_security_system.signalLength.description": "Quanto dovrebbe stare attivo il sistema di sicurezza soncico dopo aver sentito la melodia corretta? (In tick, 20 tick = 1 secondo)",
 
