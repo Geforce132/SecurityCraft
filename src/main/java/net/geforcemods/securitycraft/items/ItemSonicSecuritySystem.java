@@ -97,7 +97,9 @@ public class ItemSonicSecuritySystem extends ItemBlock {
 			TileEntitySonicSecuritySystem te = (TileEntitySonicSecuritySystem) world.getTileEntity(pos.offset(facing));
 
 			te.transferPositionsFromItem(stack.getTagCompound());
-			te.setCustomName(stack.getDisplayName());
+
+			if(stack.hasDisplayName())
+				te.setCustomName(stack.getDisplayName());
 		}
 
 		return returnValue;
