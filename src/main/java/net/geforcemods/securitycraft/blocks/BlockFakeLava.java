@@ -6,12 +6,10 @@ import java.util.Random;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.TileEntityNamed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockStaticLiquid;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -20,14 +18,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProvider {
+public class BlockFakeLava extends BlockDynamicLiquid {
 
 	int adjacentSourceBlocks;
 
@@ -303,8 +300,4 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 		return ItemStack.EMPTY;
 	}
 
-	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityNamed();
-	}
 }
