@@ -23,6 +23,7 @@ import net.minecraft.world.level.ChunkPos;
 public abstract class ChunkMapMixin {
 	@Shadow
 	int viewDistance;
+
 	@Shadow
 	protected abstract void updateChunkTracking(ServerPlayer player, ChunkPos chunkPos, Packet<?>[] packetCache, boolean wasLoaded, boolean load);
 

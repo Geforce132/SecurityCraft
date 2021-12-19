@@ -76,8 +76,7 @@ public class SecurityCraft {
 	}
 
 	@SubscribeEvent
-	public static void onFMLCommonSetup(FMLCommonSetupEvent event) //stage 1
-	{
+	public static void onFMLCommonSetup(FMLCommonSetupEvent event) { //stage 1
 		RegistrationHandler.registerPackets();
 	}
 

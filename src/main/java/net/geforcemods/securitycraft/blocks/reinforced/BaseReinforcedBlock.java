@@ -69,6 +69,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		else if (PlantType.BEACH.equals(type)) {
 			boolean isBeach = state.is(SCTags.Blocks.REINFORCED_SAND);
 			boolean hasWater = false;
+
 			for (Direction face : Direction.Plane.HORIZONTAL) {
 				BlockState blockState = level.getBlockState(pos.relative(face));
 				FluidState fluidState = level.getFluidState(pos.relative(face));
@@ -79,8 +80,10 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 				if (hasWater)
 					break; //No point continuing.
 			}
+
 			return isBeach && hasWater;
 		}
+
 		return false;
 	}
 

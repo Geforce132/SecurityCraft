@@ -39,6 +39,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	@Shadow
 	@Final
 	ClientLevel level;
+
 	@Shadow
 	public abstract LevelLightEngine getLightEngine();
 
