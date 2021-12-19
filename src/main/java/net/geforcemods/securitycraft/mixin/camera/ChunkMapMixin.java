@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.mixin.camera;
 
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -10,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.SectionPos;
-import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
@@ -25,13 +26,13 @@ public abstract class ChunkMapMixin {
 	int viewDistance;
 
 	@Shadow
-	protected abstract void updateChunkTracking(ServerPlayer player, ChunkPos chunkPos, Packet<?>[] packetCache, boolean wasLoaded, boolean load);
+	protected abstract void updateChunkTracking(ServerPlayer player, ChunkPos chunkPos, MutableObject<ClientboundLevelChunkWithLightPacket> packetCache, boolean wasLoaded, boolean load);
 
 	/**
 	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance
 	 * checking method
 	 */
-	@Redirect(method = "checkerboardDistance(Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/server/level/ServerPlayer;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"))
+	@Redirect(method = "setViewDistance(I)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"))
 	private static SectionPos getCameraSectionPos(ServerPlayer player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			return SectionPos.of(player.getCamera());
@@ -50,9 +51,7 @@ public abstract class ChunkMapMixin {
 
 			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
 				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
-					ChunkPos chunkPos = new ChunkPos(i, j);
-
-					updateChunkTracking(player, chunkPos, new Packet[2], camera.hasLoadedChunks(), true);
+					updateChunkTracking(player, new ChunkPos(i, j), new MutableObject<>(), camera.hasLoadedChunks(), true);
 				}
 			}
 

@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.mixin.camera;
 
-import java.util.BitSet;
+import java.util.function.Consumer;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,14 +16,12 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.chunk.ChunkBiomeContainer;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
@@ -42,6 +40,11 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 
 	@Shadow
 	public abstract LevelLightEngine getLightEngine();
+
+	@Shadow
+	private static boolean isValidChunk(LevelChunk chunk, int x, int z) {
+		throw new IllegalStateException("Shadowing isValidChunk did not work!");
+	}
 
 	/**
 	 * Initializes the camera storage
@@ -82,7 +85,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	 * for them to be acquired afterwards
 	 */
 	@Inject(method = "replaceWithPacketData", at = @At(value = "HEAD"), cancellable = true)
-	private void onReplace(int x, int z, ChunkBiomeContainer biomeContainer, FriendlyByteBuf buffer, CompoundTag chunkTag, BitSet chunkSection, CallbackInfoReturnable<LevelChunk> callback) {
+	private void onReplace(int x, int z, FriendlyByteBuf buffer, CompoundTag chunkTag, Consumer<ClientboundLevelChunkPacketData.BlockEntityTagOutput> tagOutputConsumer, CallbackInfoReturnable<LevelChunk> callback) {
 		ClientChunkCache.Storage cameraStorage = CameraController.getCameraStorage();
 
 		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && !storage.inRange(x, z) && cameraStorage.inRange(x, z)) {
@@ -90,25 +93,13 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 			LevelChunk chunk = cameraStorage.getChunk(index);
 			ChunkPos chunkPos = new ChunkPos(x, z);
 
-			if (chunk == null || chunk.getPos().x != x || chunk.getPos().z != z) {
-				chunk = new LevelChunk(level, chunkPos, biomeContainer);
-				chunk.replaceWithPacketData(biomeContainer, buffer, chunkTag, chunkSection);
+			if (!isValidChunk(chunk, x, z)) {
+				chunk = new LevelChunk(level, chunkPos);
+				chunk.replaceWithPacketData(buffer, chunkTag, tagOutputConsumer);
 				cameraStorage.replace(index, chunk);
 			}
 			else
-				chunk.replaceWithPacketData(biomeContainer, buffer, chunkTag, chunkSection);
-
-			LevelChunkSection[] chunkSections = chunk.getSections();
-			LevelLightEngine lightEngine = getLightEngine();
-
-			lightEngine.enableLightSources(chunkPos, true);
-
-			for (int j = 0; j < chunkSections.length; ++j) {
-				LevelChunkSection levelChunkSection = chunkSections[j];
-				int sectionY = level.getSectionYFromSectionIndex(j);
-
-				lightEngine.updateSectionStatus(SectionPos.of(x, sectionY, z), LevelChunkSection.isEmpty(levelChunkSection));
-			}
+				chunk.replaceWithPacketData(buffer, chunkTag, tagOutputConsumer);
 
 			level.onChunkLoaded(chunkPos);
 			MinecraftForge.EVENT_BUS.post(new ChunkEvent.Load(chunk));
