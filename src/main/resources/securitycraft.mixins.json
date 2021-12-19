@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"package": "net.geforcemods.securitycraft.mixin",
-	"compatibilityLevel": "JAVA_16",
+	"compatibilityLevel": "JAVA_17",
 	"refmap": "securitycraft.refmap.json",
 	"client": [
 		"camera.ClientChunkCacheMixin",

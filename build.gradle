@@ -24,7 +24,7 @@ version = '1.9'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 processResources { 
@@ -44,7 +44,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '2021.12.12-1.17.1'
+    mappings channel: 'parchment', version: '2021.12.19-1.18.1'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
 	runs {
@@ -103,13 +103,13 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.1.1'
+    minecraft 'net.minecraftforge:forge:1.18.1-39.0.5'
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
     
-	implementation fg.deobf("mezz.jei:jei-1.17.1:8.0.0.14")
-    implementation fg.deobf("curse.maven:the-one-probe-245211:3430022")
-    implementation fg.deobf("curse.maven:jade-324717:3439489")
-    implementation fg.deobf("curse.maven:betterf3-401648:3466536")
+	implementation fg.deobf("mezz.jei:jei-1.18.1:9.1.0.47")
+    implementation fg.deobf("curse.maven:the-one-probe-245211:3550084")
+    implementation fg.deobf("curse.maven:jade-324717:3551337")
+    implementation fg.deobf("curse.maven:betterf3-401648:3551266")
 	//compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
 }
 
