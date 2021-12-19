@@ -79,16 +79,14 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 
 		for (int i = 0; i < players.length; i++) {
 			tag.putString("player" + i, players[i] == null ? "" : players[i]);
 			tag.putString("uuid" + i, uuids[i] == null ? "" : uuids[i]);
 			tag.putLong("timestamp" + i, timestamps[i]);
 		}
-
-		return tag;
 	}
 
 	@Override

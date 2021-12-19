@@ -28,11 +28,10 @@ public abstract class CustomizableBlockEntity extends NamedBlockEntity implement
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 		writeModuleInventory(tag);
 		writeOptions(tag);
-		return tag;
 	}
 
 	@Override

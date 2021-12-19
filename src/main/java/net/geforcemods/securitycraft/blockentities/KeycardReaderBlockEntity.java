@@ -30,8 +30,8 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 
 		CompoundTag acceptedLevelsTag = new CompoundTag();
 
@@ -41,7 +41,6 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 
 		tag.put("acceptedLevels", acceptedLevelsTag);
 		tag.putInt("signature", signature);
-		return tag;
 	}
 
 	@Override

@@ -54,10 +54,10 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
+	public void saveAdditional(CompoundTag tag) {
 		tag.putFloat("LastPitch", lastPitch);
 		tag.putFloat("LastYaw", lastYaw);
-		return super.save(tag);
+		super.saveAdditional(tag);
 	}
 
 	@Override

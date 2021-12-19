@@ -126,13 +126,12 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 
 		tag.putInt("bombsRemaining", bombsRemaining);
 		tag.putInt("targetingOption", targetingMode.ordinal());
 		tag.putBoolean("updateBombCount", updateBombCount);
-		return tag;
 	}
 
 	@Override

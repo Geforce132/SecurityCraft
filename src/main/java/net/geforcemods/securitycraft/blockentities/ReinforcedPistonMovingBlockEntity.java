@@ -11,6 +11,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -63,7 +67,23 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return save(new CompoundTag());
+		return saveWithoutMetadata();
+	}
+
+	@Override
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+		super.onDataPacket(net, pkt);
+		handleUpdateTag(pkt.getTag());
+	}
+
+	@Override
+	public void handleUpdateTag(CompoundTag tag) {
+		load(tag);
+	}
+
+	@Override
+	public Packet<ClientGamePacketListener> getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	public boolean isExtending() {
@@ -343,8 +363,8 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 		tag.put("blockState", NbtUtils.writeBlockState(movedState));
 		tag.putInt("facing", direction.get3DDataValue());
 		tag.putFloat("progress", lastProgress);
@@ -356,8 +376,6 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 
 		if (owner != null)
 			owner.save(movedBlockEntityTag, false);
-
-		return tag;
 	}
 
 	public VoxelShape getCollisionShape(BlockGetter level, BlockPos pos) {

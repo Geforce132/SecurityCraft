@@ -44,13 +44,11 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
-
-		return tag;
 	}
 
 	@Override

@@ -21,13 +21,11 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 
 		if (owner != null)
 			owner.save(tag, needsValidation());
-
-		return tag;
 	}
 
 	@Override
@@ -39,7 +37,12 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return save(new CompoundTag());
+		return saveWithoutMetadata();
+	}
+
+	@Override
+	public void handleUpdateTag(CompoundTag tag) {
+		load(tag);
 	}
 
 	@Override
@@ -49,7 +52,8 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		load(packet.getTag());
+		super.onDataPacket(net, packet);
+		handleUpdateTag(packet.getTag());
 	}
 
 	@Override

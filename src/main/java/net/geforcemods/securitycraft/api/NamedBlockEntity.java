@@ -21,10 +21,9 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 		tag.putString("customName", customName.getString());
-		return tag;
 	}
 
 	@Override

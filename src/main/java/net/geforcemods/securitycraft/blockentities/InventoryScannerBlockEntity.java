@@ -77,8 +77,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 
 		ListTag list = new ListTag();
 
@@ -93,7 +93,6 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		tag.put("Items", list);
 		tag.putInt("cooldown", cooldown);
-		return tag;
 	}
 
 	@Override
@@ -141,10 +140,6 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		return getStackInSlot(slot);
 	}
 
-	/**
-	 * Copy of getStackInSlot which doesn't get overrided by CustomizableSCTE.
-	 */
-
 	public ItemStack getStackInSlotCopy(int index) {
 		return inventoryContents.get(index);
 	}
@@ -159,11 +154,6 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		setChanged();
 	}
 
-	/**
-	 * Adds the given stack to the inventory. Will void any excess.
-	 *
-	 * @param stack The stack to add
-	 */
 	public void addItemToStorage(ItemStack stack) {
 		ItemStack remainder = stack;
 

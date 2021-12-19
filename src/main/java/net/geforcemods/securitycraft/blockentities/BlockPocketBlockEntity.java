@@ -48,11 +48,11 @@ public class BlockPocketBlockEntity extends OwnableBlockEntity implements ITicki
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
+	public void saveAdditional(CompoundTag tag) {
 		if (manager != null)
 			tag.putLong("ManagerPos", manager.getBlockPos().asLong());
 
-		return super.save(tag);
+		super.saveAdditional(tag);
 	}
 
 	@Override

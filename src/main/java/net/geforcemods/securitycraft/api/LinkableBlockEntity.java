@@ -47,8 +47,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 
 		if (hasLevel() && linkedBlocks.size() > 0) {
 			ListTag tagList = new ListTag();
@@ -76,8 +76,6 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 				tag.put("linkedBlocks", tagList);
 			});
 		}
-
-		return tag;
 	}
 
 	@Override

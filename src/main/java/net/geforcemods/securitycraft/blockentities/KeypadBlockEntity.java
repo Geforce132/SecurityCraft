@@ -43,13 +43,11 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
-
-		return tag;
 	}
 
 	@Override

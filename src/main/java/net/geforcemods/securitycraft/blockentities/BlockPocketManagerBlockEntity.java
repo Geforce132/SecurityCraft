@@ -655,7 +655,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
+	public void saveAdditional(CompoundTag tag) {
 		tag.putBoolean("BlockPocketEnabled", enabled);
 		tag.putBoolean("ShowOutline", showOutline);
 		tag.putInt("Size", size);
@@ -674,7 +674,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			tag.putLong("FloorList" + i, floor.get(i).asLong());
 		}
 
-		return super.save(tag);
+		super.saveAdditional(tag);
 	}
 
 	@Override

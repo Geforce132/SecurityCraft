@@ -87,12 +87,11 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 
 		tag.putBoolean("shouldSendNewMessage", shouldSendNewMessage);
 		tag.putString("lastPlayerName", lastPlayerName);
-		return tag;
 	}
 
 	@Override

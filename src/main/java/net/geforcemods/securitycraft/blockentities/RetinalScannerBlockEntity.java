@@ -155,16 +155,14 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 
 		if (!StringUtil.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")) && ownerProfile != null) {
 			CompoundTag ownerProfileTag = new CompoundTag();
 			NbtUtils.writeGameProfile(ownerProfileTag, ownerProfile);
 			tag.put("ownerProfile", ownerProfileTag);
 		}
-
-		return tag;
 	}
 
 	@Override

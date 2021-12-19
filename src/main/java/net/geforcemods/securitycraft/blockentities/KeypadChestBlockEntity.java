@@ -58,8 +58,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
@@ -69,8 +69,6 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 		if (owner != null)
 			owner.save(tag, false);
-
-		return tag;
 	}
 
 	@Override
@@ -85,7 +83,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return save(new CompoundTag());
+		return saveWithoutMetadata();
 	}
 
 	@Override
@@ -95,7 +93,13 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-		load(packet.getTag());
+		super.onDataPacket(net, packet);
+		handleUpdateTag(packet.getTag());
+	}
+
+	@Override
+	public void handleUpdateTag(CompoundTag tag) {
+		load(tag);
 	}
 
 	@Override

@@ -164,8 +164,8 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		super.save(tag);
+	public void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 
 		// If there are blocks to save but the tag doesn't have a CompoundNBT
 		// to store them in, create one (shouldn't be needed)
@@ -192,7 +192,6 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		tag.putInt("listenPos", listenPos);
 		tag.putBoolean("correctTuneWasPlayed", correctTuneWasPlayed);
 		tag.putInt("powerCooldown", powerCooldown);
-		return tag;
 	}
 
 	@Override
