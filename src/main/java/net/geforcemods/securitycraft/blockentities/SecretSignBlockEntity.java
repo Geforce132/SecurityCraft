@@ -90,10 +90,7 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		CompoundTag tag = new CompoundTag();
-
-		save(tag);
-		return new ClientboundBlockEntityDataPacket(worldPosition, 1, tag);
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override

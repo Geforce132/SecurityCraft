@@ -63,26 +63,26 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		return switch (state.getValue(FACE)) {
 			case FLOOR -> switch (state.getValue(FACING)) {
-				case NORTH -> FLOOR_NS;
-				case EAST -> FLOOR_EW;
-				case SOUTH -> FLOOR_NS;
-				case WEST -> FLOOR_EW;
-				default -> Shapes.empty();
-			};
+					case NORTH -> FLOOR_NS;
+					case EAST -> FLOOR_EW;
+					case SOUTH -> FLOOR_NS;
+					case WEST -> FLOOR_EW;
+					default -> Shapes.empty();
+				};
 			case CEILING -> switch (state.getValue(FACING)) {
-				case NORTH -> CEILING_NS;
-				case EAST -> CEILING_EW;
-				case SOUTH -> CEILING_NS;
-				case WEST -> CEILING_EW;
-				default -> Shapes.empty();
-			};
+					case NORTH -> CEILING_NS;
+					case EAST -> CEILING_EW;
+					case SOUTH -> CEILING_NS;
+					case WEST -> CEILING_EW;
+					default -> Shapes.empty();
+				};
 			case WALL -> switch (state.getValue(FACING)) {
-				case NORTH -> WALL_N;
-				case EAST -> WALL_E;
-				case SOUTH -> WALL_S;
-				case WEST -> WALL_W;
-				default -> Shapes.empty();
-			};
+					case NORTH -> WALL_N;
+					case EAST -> WALL_E;
+					case SOUTH -> WALL_S;
+					case WEST -> WALL_W;
+					default -> Shapes.empty();
+				};
 		};
 	}
 
@@ -164,7 +164,7 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	@Override
 	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED))
-			level.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
 		return getConnectedDirection(state).getOpposite() == facing && !state.canSurvive(level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, pos, facingPos);
 	}
@@ -197,7 +197,7 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	public void activate(BlockState state, Level level, BlockPos pos, int signalLength) {
 		level.setBlockAndUpdate(pos, state.setValue(POWERED, true));
 		BlockUtils.updateIndirectNeighbors(level, pos, this, getConnectedDirection(state).getOpposite());
-		level.getBlockTicks().scheduleTick(pos, this, signalLength);
+		level.scheduleTick(pos, this, signalLength);
 	}
 
 	protected static Direction getConnectedDirection(BlockState state) {

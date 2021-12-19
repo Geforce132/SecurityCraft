@@ -72,7 +72,7 @@ public class AlarmBlock extends OwnableBlock {
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean flag) {
 		if (!level.isClientSide)
-			level.getBlockTicks().scheduleTick(pos, state.getBlock(), 5);
+			level.scheduleTick(pos, state.getBlock(), 5);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class AlarmBlock extends OwnableBlock {
 		if (!level.isClientSide) {
 			playSoundAndUpdate(level, pos);
 
-			level.getBlockTicks().scheduleTick(pos, state.getBlock(), 5);
+			level.scheduleTick(pos, state.getBlock(), 5);
 		}
 	}
 

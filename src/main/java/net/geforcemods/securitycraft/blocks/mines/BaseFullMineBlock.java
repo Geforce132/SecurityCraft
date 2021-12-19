@@ -35,8 +35,8 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
-		if (collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent()) {
-			Entity entity = ctx.getEntity().get();
+		if (collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity() != null) {
+			Entity entity = ctx.getEntity();
 
 			if (entity instanceof ItemEntity)
 				return Shapes.block();
@@ -70,16 +70,16 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
 		if (!level.isClientSide)
 			if (player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
-				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 			else if (!EntityUtils.doesPlayerOwn(player, level, pos)) {
 				explode(level, pos);
-				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 			}
 
-		return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 	}
 
 	@Override
@@ -136,9 +136,9 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
 		if (player.isCreative() || (level.getBlockEntity(pos) instanceof OwnableBlockEntity te && te.getOwner().isOwner(player)))
-			return super.getPickBlock(state, target, level, pos, player);
+			return super.getCloneItemStack(state, target, level, pos, player);
 
 		return new ItemStack(blockDisguisedAs);
 	}

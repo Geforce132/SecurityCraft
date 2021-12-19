@@ -48,16 +48,16 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
 		if (!level.isClientSide)
 			if (player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
-				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 			else if (!EntityUtils.doesPlayerOwn(player, level, pos)) {
 				explode(level, pos);
-				return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 			}
 
-		return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 	}
 
 	@Override

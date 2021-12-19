@@ -66,7 +66,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 				level.levelEvent(null, open ? 1005 : 1011, worldPosition, 0);
 
 				if (open && length > 0)
-					level.getBlockTicks().scheduleTick(worldPosition, SCContent.SCANNER_DOOR.get(), length);
+					level.scheduleTick(worldPosition, SCContent.SCANNER_DOOR.get(), length);
 
 				if (open && sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), ChatFormatting.GREEN);

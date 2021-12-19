@@ -59,7 +59,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
 		if (!player.isCreative() && !level.isClientSide && !level.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
 			level.destroyBlock(pos, false);
 
@@ -67,7 +67,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 				explode(level, pos);
 		}
 
-		return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 	}
 
 	@Override

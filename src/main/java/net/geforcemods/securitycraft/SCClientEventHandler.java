@@ -47,9 +47,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.ScreenOpenEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.OverlayRegistry;
@@ -93,8 +93,8 @@ public class SCClientEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onGuiOpen(GuiOpenEvent event) {
-		Screen screen = event.getGui();
+	public static void onGuiOpen(ScreenOpenEvent event) {
+		Screen screen = event.getScreen();
 
 		//makes sure the overlays are properly reset when the player exits a world/server when viewing a camera
 		if (screen instanceof TitleScreen || screen instanceof JoinMultiplayerScreen) {

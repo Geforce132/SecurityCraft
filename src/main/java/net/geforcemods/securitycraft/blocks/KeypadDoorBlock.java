@@ -57,7 +57,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 		level.updateNeighborsAt(pos, SCContent.KEYPAD_DOOR.get());
 
 		if (open && signalLength > 0)
-			level.getBlockTicks().scheduleTick(pos, SCContent.KEYPAD_DOOR.get(), signalLength);
+			level.scheduleTick(pos, SCContent.KEYPAD_DOOR.get(), signalLength);
 	}
 
 	@Override

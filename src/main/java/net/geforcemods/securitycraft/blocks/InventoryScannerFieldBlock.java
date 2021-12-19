@@ -53,10 +53,10 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext collisionContext) {
-		if (!(collisionContext instanceof EntityCollisionContext ctx) || ctx.getEntity() == null || !ctx.getEntity().isPresent())
+		if (!(collisionContext instanceof EntityCollisionContext ctx) || ctx.getEntity() == null)
 			return Shapes.empty();
 
-		Entity entity = ctx.getEntity().get();
+		Entity entity = ctx.getEntity();
 		Level level = entity.getCommandSenderWorld();
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, pos);
 
@@ -275,7 +275,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
 		return ItemStack.EMPTY;
 	}
 

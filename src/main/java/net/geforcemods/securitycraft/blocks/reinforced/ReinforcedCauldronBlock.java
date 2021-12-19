@@ -55,8 +55,8 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
 		if (collisionContext instanceof EntityCollisionContext ctx) {
-			if (ctx.getEntity().isPresent()) {
-				Entity entity = ctx.getEntity().get();
+			if (ctx.getEntity() != null) {
+				Entity entity = ctx.getEntity();
 
 				if (entity instanceof Player player) {
 					if (level.getBlockEntity(pos) instanceof ReinforcedCauldronBlockEntity be && be.isAllowedToInteract(player))

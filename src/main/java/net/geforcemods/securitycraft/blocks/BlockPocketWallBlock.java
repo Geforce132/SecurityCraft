@@ -43,7 +43,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
-		if (!state.getValue(SOLID) && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent() && ctx.getEntity().get() instanceof Player player) {
+		if (!state.getValue(SOLID) && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity() != null && ctx.getEntity() instanceof Player player) {
 			if (level.getBlockEntity(pos) instanceof BlockPocketBlockEntity be) {
 				if (be.getManager() == null)
 					return Shapes.empty();
@@ -60,7 +60,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 	}
 
 	@Override
-	public boolean canCreatureSpawn(BlockState state, BlockGetter level, BlockPos pos, Type type, EntityType<?> entityType) {
+	public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos, Type type, EntityType<?> entityType) {
 		return false;
 	}
 

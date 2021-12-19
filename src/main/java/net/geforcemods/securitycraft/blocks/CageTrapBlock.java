@@ -52,8 +52,8 @@ public class CageTrapBlock extends DisguisableBlock {
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
 		if (level.getBlockEntity(pos) instanceof CageTrapBlockEntity be) {
-			if (collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent()) {
-				Entity entity = ctx.getEntity().get();
+			if (collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity() != null) {
+				Entity entity = ctx.getEntity();
 
 				if (entity instanceof Player player && (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)))
 					return getCorrectShape(state, level, pos, collisionContext, be);

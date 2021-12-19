@@ -94,7 +94,7 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return new ClientboundBlockEntityDataPacket(worldPosition, 1, getUpdateTag());
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override

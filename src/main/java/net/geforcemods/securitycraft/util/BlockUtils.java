@@ -28,7 +28,7 @@ public class BlockUtils {
 
 	public static void updateAndNotify(Level level, BlockPos pos, Block block, int delay, boolean shouldUpdate) {
 		if (shouldUpdate)
-			level.getBlockTicks().scheduleTick(pos, block, delay);
+			level.scheduleTick(pos, block, delay);
 
 		level.updateNeighborsAt(pos, block);
 	}

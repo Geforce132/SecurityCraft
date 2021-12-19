@@ -132,7 +132,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	public void activate(Level level, BlockPos pos, int signalLength) {
 		level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(POWERED, true));
 		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYCARD_READER.get());
-		level.getBlockTicks().scheduleTick(pos, SCContent.KEYCARD_READER.get(), signalLength);
+		level.scheduleTick(pos, SCContent.KEYCARD_READER.get(), signalLength);
 	}
 
 	@Override

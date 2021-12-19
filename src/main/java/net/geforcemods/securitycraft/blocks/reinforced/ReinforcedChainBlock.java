@@ -46,7 +46,7 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock {
 	@Override
 	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
 		if (state.getValue(WATERLOGGED))
-			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
 		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}

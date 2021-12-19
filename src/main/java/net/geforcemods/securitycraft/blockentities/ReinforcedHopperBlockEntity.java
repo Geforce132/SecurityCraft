@@ -54,7 +54,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return new ClientboundBlockEntityDataPacket(worldPosition, 1, getUpdateTag());
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override

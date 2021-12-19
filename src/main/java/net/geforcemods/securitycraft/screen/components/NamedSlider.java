@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraftforge.client.gui.widget.Slider.ISlider;
+import net.minecraftforge.client.gui.widget.Slider;
 
 public class NamedSlider extends Slider {
 	public int id;
@@ -45,7 +45,7 @@ public class NamedSlider extends Slider {
 	@Override
 	protected void renderBg(PoseStack pose, Minecraft mc, int mouseX, int mouseY) {
 		if (visible) {
-			int offset = (isHovered() && active ? 2 : 1) * 20;
+			int offset = (isHoveredOrFocused() && active ? 2 : 1) * 20;
 
 			if (dragging) {
 				sliderValue = (mouseX - (x + 4)) / (float) (width - 8);

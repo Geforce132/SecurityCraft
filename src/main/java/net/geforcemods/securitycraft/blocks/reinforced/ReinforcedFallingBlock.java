@@ -23,12 +23,12 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock {
 
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean flag) {
-		level.getBlockTicks().scheduleTick(pos, this, 2);
+		level.scheduleTick(pos, this, 2);
 	}
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-		level.getBlockTicks().scheduleTick(currentPos, this, 2);
+		level.scheduleTick(currentPos, this, 2);
 		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
 	}
 

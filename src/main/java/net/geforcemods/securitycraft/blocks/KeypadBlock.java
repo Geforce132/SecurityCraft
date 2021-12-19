@@ -69,7 +69,7 @@ public class KeypadBlock extends DisguisableBlock {
 	public void activate(BlockState state, Level level, BlockPos pos, int signalLength) {
 		level.setBlockAndUpdate(pos, state.setValue(POWERED, true));
 		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.KEYPAD.get());
-		level.getBlockTicks().scheduleTick(pos, this, signalLength);
+		level.scheduleTick(pos, this, signalLength);
 	}
 
 	@Override

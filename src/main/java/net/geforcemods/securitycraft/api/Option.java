@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraftforge.client.gui.widget.Slider;
 import net.minecraftforge.client.gui.widget.Slider.ISlider;
 
 /**

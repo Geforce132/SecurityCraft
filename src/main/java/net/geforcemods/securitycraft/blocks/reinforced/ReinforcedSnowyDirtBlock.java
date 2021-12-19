@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -22,11 +21,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.GrassBlock;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.AbstractFlowerFeature;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, BonemealableBlock, EntityBlock {
@@ -75,56 +73,9 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 		return this == SCContent.REINFORCED_GRASS_BLOCK.get();
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void performBonemeal(ServerLevel level, Random rand, BlockPos pos, BlockState state) {
-		BlockPos posAbove = pos.above();
-		BlockState grass = Blocks.GRASS.defaultBlockState();
-
-		for (int i = 0; i < 128; ++i) {
-			BlockPos tempPos = posAbove;
-			int j = 0;
-
-			while (true) {
-				if (j >= i / 16) {
-					BlockState tempState = level.getBlockState(tempPos);
-
-					if (tempState.getBlock() == grass.getBlock() && rand.nextInt(10) == 0)
-						((BonemealableBlock) grass.getBlock()).performBonemeal(level, rand, tempPos, tempState);
-
-					if (!tempState.isAir())
-						break;
-
-					BlockState placeState;
-
-					if (rand.nextInt(8) == 0) {
-						List<ConfiguredFeature<?, ?>> flowers = level.getBiome(tempPos).getGenerationSettings().getFlowerFeatures();
-
-						if (flowers.isEmpty())
-							break;
-
-						ConfiguredFeature<?, ?> configuredfeature = flowers.get(0);
-						AbstractFlowerFeature flowersfeature = (AbstractFlowerFeature) configuredfeature.feature;
-
-						placeState = flowersfeature.getRandomFlower(rand, tempPos, configuredfeature.config());
-					}
-					else
-						placeState = grass;
-
-					if (placeState.canSurvive(level, tempPos))
-						level.setBlock(tempPos, placeState, 3);
-
-					break;
-				}
-
-				tempPos = tempPos.offset(rand.nextInt(3) - 1, (rand.nextInt(3) - 1) * rand.nextInt(3) / 2, rand.nextInt(3) - 1);
-
-				if (level.getBlockState(tempPos.below()).getBlock() != this || level.getBlockState(tempPos).isCollisionShapeFullBlock(level, tempPos))
-					break;
-
-				++j;
-			}
-		}
+		((GrassBlock) Blocks.GRASS_BLOCK).performBonemeal(level, rand, pos, state);
 	}
 
 	@Override

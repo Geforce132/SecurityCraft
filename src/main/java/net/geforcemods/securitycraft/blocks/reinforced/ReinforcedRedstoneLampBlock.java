@@ -36,7 +36,7 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 
 			if (isLit != level.hasNeighborSignal(pos)) {
 				if (isLit)
-					level.getBlockTicks().scheduleTick(pos, this, 4);
+					level.scheduleTick(pos, this, 4);
 				else
 					level.setBlock(pos, state.cycle(LIT), 2);
 			}

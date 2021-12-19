@@ -209,7 +209,7 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
-		if (event.getMap().location().equals(Sheets.CHEST_SHEET)) {
+		if (event.getAtlas().location().equals(Sheets.CHEST_SHEET)) {
 			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/active"));
 			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/inactive"));
 			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/left_active"));
