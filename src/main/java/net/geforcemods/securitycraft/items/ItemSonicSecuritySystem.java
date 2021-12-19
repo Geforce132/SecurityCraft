@@ -98,7 +98,7 @@ public class ItemSonicSecuritySystem extends ItemBlock {
 
 			te.transferPositionsFromItem(stack.getTagCompound());
 
-			if(stack.hasDisplayName())
+			if (stack.hasDisplayName())
 				te.setCustomName(stack.getDisplayName());
 		}
 
