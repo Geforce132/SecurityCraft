@@ -9,8 +9,7 @@ import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.fmlclient.gui.widget.Slider;
-import net.minecraftforge.fmlclient.gui.widget.Slider.ISlider;
+import net.minecraftforge.client.gui.widget.Slider.ISlider;
 
 /**
  * A class that allows blocks that have {@link ICustomizable} block entities to have custom, per-block options that are

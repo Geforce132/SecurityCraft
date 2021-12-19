@@ -32,7 +32,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 public class ModuleItem extends Item {
 	private static final MutableComponent MODIFIABLE = new TranslatableComponent("tooltip.securitycraft:module.modifiable").setStyle(Utils.GRAY_STYLE);

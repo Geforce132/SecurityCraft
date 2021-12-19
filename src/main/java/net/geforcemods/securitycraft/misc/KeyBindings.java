@@ -5,7 +5,7 @@ import javax.swing.text.JTextComponent.KeyBinding;
 import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.fmlclient.registry.ClientRegistry;
+import net.minecraftforge.client.ClientRegistry;
 
 /**
  * Custom {@link KeyBinding}s that SecurityCraft uses.
