@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
+
+- Fix: Copper -> Cut Copper stonecutting recipes yield incorrect amounts
+
 --------------------------Changelog for v1.9 of SecurityCraft--------------------------
 
 - New: Reinforced Blocks: Deepslate, Cobbled Deepslate, Polished Deepslate, Calcite, Tuff, Dripstone Block, Rooted Dirt, Block of Raw Iron, Block of Raw Copper, Block of Raw Gold, Block of Amethyst, Block of Copper, Exposed Copper, Weathered Copper, Oxidized Copper, Cut Copper, Exposed Cut Copper, Weathered Cut Copper, Oxidized Cut Copper, Cut Copper Stairs, Exposed Cut Copper Stairs, Weathered Cut Copper Stairs, Oxidized Cut Copper Stairs, Cut Copper Slab, Exposed Cut Copper Slab, Weathered Cut Copper Slab, Oxidized Cut Copper Slab, Tinted Glass, Smooth Basalt, Deepslate Bricks, Cracked Deepslate Bricks, Deepslate Tiles, Cracked Deepslate Tiles, Chiseled Deepslate, Cobbled Deepslate Stairs, Polished Deepslate Stairs, Deepslate Brick Stairs, Deepslate Tile Stairs, Cobbled Deepslate Slab, Polished Deepslate Slab, Deepslate Brick Slab, Deepslate Tile Slab, Moss Carpet, Moss Block, Cobbled Deepslate Wall, Polished Deepslate Wall, Deepslate Brick Wall, Deepslate Tile Wall
