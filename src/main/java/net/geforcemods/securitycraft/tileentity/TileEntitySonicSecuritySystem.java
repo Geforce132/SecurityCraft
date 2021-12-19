@@ -20,13 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
-public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements ITickable {
+public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements ITickable, IEMPAffected {
 	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
 	/**
@@ -63,6 +64,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	 */
 	private int listenPos = 0;
 	private boolean tracked = false;
+	private boolean shutDown = false;
 
 	@Override
 	public void update() {
@@ -188,6 +190,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 		tag.setInteger("listenPos", listenPos);
 		tag.setBoolean("correctTuneWasPlayed", correctTuneWasPlayed);
 		tag.setInteger("powerCooldown", powerCooldown);
+		tag.setBoolean("shutDown", shutDown);
 		return tag;
 	}
 
@@ -221,6 +224,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 		listenPos = tag.getInteger("listenPos");
 		correctTuneWasPlayed = tag.getBoolean("correctTuneWasPlayed");
 		powerCooldown = tag.getInteger("powerCooldown");
+		shutDown = tag.getBoolean("shutDown");
 	}
 
 	/**
@@ -349,7 +353,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	 * @return Whether or not this Sonic Security System is actively running
 	 */
 	public boolean isActive() {
-		return isActive;
+		return isActive && !isShutDown();
 	}
 
 	/**
@@ -469,6 +473,22 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	 */
 	public void clearNotes() {
 		recordedNotes.clear();
+	}
+
+	@Override
+	public boolean isShutDown() {
+		return shutDown;
+	}
+
+	@Override
+	public void setShutDown(boolean shutDown) {
+		this.shutDown = shutDown;
+		sync();
+	}
+
+	@Override
+	public TileEntity getTileEntity() {
+		return this;
 	}
 
 	/**

@@ -66,7 +66,7 @@ dependencies {
     deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2"
 	deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
     compileOnly "curse.maven:cyclic-239286:2883487"
-    compileOnly "curse.maven:icbm-classic-244451:2918052"
+    compileOnly "curse.maven:icbm-classic-244451:3516968"
     compileOnly "curse.maven:lycanites-mobs-224770:2935745"
 	compile 'org.spongepowered:mixin:0.8.3'
     runtime 'mezz.jei:jei_1.12.2:4.16.1.302'

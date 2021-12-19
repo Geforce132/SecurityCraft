@@ -129,7 +129,7 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 		}));
 		soundButton.setCurrentIndex(!te.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
 
-		powerButton.enabled = isOwner;
+		powerButton.enabled = isActive && isOwner;
 		recordingButton.enabled = isActive && isOwner;
 		soundButton.enabled = isActive && isOwner;
 		playButton.enabled = isActive && hasNotes;

@@ -26,7 +26,7 @@ public class TileEntitySonicSecuritySystemRenderer extends TileEntitySpecialRend
 
 		boolean recording = te.isRecording();
 
-		if (recording || te.isListening()) {
+		if (recording || te.isListening() && !te.isShutDown()) {
 			EntityPlayer player = Minecraft.getMinecraft().player;
 
 			setLightmapDisabled(true);
