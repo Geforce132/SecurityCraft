@@ -23,24 +23,25 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 public class TileEntityIMS extends CustomizableSCTE implements ITickable {
-
 	private OptionInt range = new OptionInt(this::getPos, "range", 12, 1, 30, 1, true);
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
-	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
+	/**
+	 * The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players,
+	 * MOBS = hostile mobs.
+	 **/
 	private EnumIMSTargetingMode targetingMode = EnumIMSTargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;
 	private int attackTime = getAttackInterval();
 
 	@Override
-	public void update(){
-		if(!world.isRemote && updateBombCount){
+	public void update() {
+		if (!world.isRemote && updateBombCount) {
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockIMS.MINES, bombsRemaining));
 			updateBombCount = false;
 		}
 
-		if(attackTime-- == 0)
-		{
+		if (attackTime-- == 0) {
 			attackTime = getAttackInterval();
 			launchMine();
 		}
@@ -50,23 +51,21 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 	 * Create a bounding box around the IMS, and fire a mine if a mob or player is found.
 	 */
 	private void launchMine() {
-		if(bombsRemaining > 0 && !world.isRemote){
+		if (bombsRemaining > 0 && !world.isRemote) {
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range.get(), range.get(), range.get());
 			EntityLivingBase target = null;
 
-			if(targetingMode == EnumIMSTargetingMode.MOBS || targetingMode == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
-			{
+			if (targetingMode == EnumIMSTargetingMode.MOBS || targetingMode == EnumIMSTargetingMode.PLAYERS_AND_MOBS) {
 				List<EntityMob> mobs = world.getEntitiesWithinAABB(EntityMob.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
-				if(!mobs.isEmpty())
+				if (!mobs.isEmpty())
 					target = mobs.get(0);
 			}
 
-			if(target == null && (targetingMode == EnumIMSTargetingMode.PLAYERS  || targetingMode == EnumIMSTargetingMode.PLAYERS_AND_MOBS))
-			{
+			if (target == null && (targetingMode == EnumIMSTargetingMode.PLAYERS || targetingMode == EnumIMSTargetingMode.PLAYERS_AND_MOBS)) {
 				List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
-				if(!players.isEmpty())
+				if (!players.isEmpty())
 					target = players.get(0);
 			}
 
@@ -86,10 +85,8 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 		}
 	}
 
-	public boolean canAttackEntity(EntityLivingBase entity)
-	{
-		return entity != null
-				&& (!(entity instanceof EntityPlayer) || !getOwner().isOwner((EntityPlayer)entity) && !((EntityPlayer)entity).isCreative() && !((EntityPlayer)entity).isSpectator()) //PlayerEntity checks
+	public boolean canAttackEntity(EntityLivingBase entity) {
+		return entity != null && (!(entity instanceof EntityPlayer) || !getOwner().isOwner((EntityPlayer) entity) && !((EntityPlayer) entity).isCreative() && !((EntityPlayer) entity).isSpectator()) //PlayerEntity checks
 				&& !ModuleUtils.isAllowed(this, entity); //checks for all entities
 	}
 
@@ -99,24 +96,19 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 	private int getLaunchHeight() {
 		int height;
 
-		for(height = 1; height <= 9; height++)
-		{
+		for (height = 1; height <= 9; height++) {
 			BlockPos upPos = pos.up(height);
 			IBlockState state = world.getBlockState(upPos);
 
-			if(!state.getBlock().isAir(state, world, upPos))
+			if (!state.getBlock().isAir(state, world, upPos))
 				break;
 		}
 
 		return height;
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag){
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
 		tag.setInteger("bombsRemaining", bombsRemaining);
@@ -125,11 +117,8 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
-	public void readFromNBT(NBTTagCompound tag){
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		bombsRemaining = tag.getInteger("bombsRemaining");
 		targetingMode = EnumIMSTargetingMode.values()[tag.getInteger("targetingOption")];
@@ -154,20 +143,25 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.ALLOWLIST, EnumModuleType.SPEED};
+		return new EnumModuleType[] {
+				EnumModuleType.ALLOWLIST, EnumModuleType.SPEED
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{range};
+		return new Option[] {
+				range
+		};
 	}
 
-	public int getAttackInterval()
-	{
+	public int getAttackInterval() {
 		return hasModule(EnumModuleType.SPEED) ? 40 : 80;
 	}
 
 	public static enum EnumIMSTargetingMode {
-		PLAYERS, PLAYERS_AND_MOBS, MOBS;
+		PLAYERS,
+		PLAYERS_AND_MOBS,
+		MOBS;
 	}
 }

@@ -11,49 +11,42 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class AssembleBlockPocket implements IMessage
-{
+public class AssembleBlockPocket implements IMessage {
 	private BlockPos pos;
 	private int dimension, size;
 
 	public AssembleBlockPocket() {}
 
-	public AssembleBlockPocket(TileEntityBlockPocketManager te, int size)
-	{
+	public AssembleBlockPocket(TileEntityBlockPocketManager te, int size) {
 		pos = te.getPos();
 		dimension = te.getWorld().provider.getDimension();
 		this.size = size;
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf)
-	{
+	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
 		dimension = buf.readInt();
 		size = buf.readInt();
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf)
-	{
+	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 		buf.writeInt(dimension);
 		buf.writeInt(size);
 	}
 
-	public static class Handler implements IMessageHandler<AssembleBlockPocket, IMessage>
-	{
+	public static class Handler implements IMessageHandler<AssembleBlockPocket, IMessage> {
 		@Override
-		public IMessage onMessage(AssembleBlockPocket message, MessageContext ctx)
-		{
+		public IMessage onMessage(AssembleBlockPocket message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				TileEntity te = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension).getTileEntity(message.pos);
 				EntityPlayer player = ctx.getServerHandler().player;
 
-				if(te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager)te).getOwner().isOwner(player))
-				{
-					((TileEntityBlockPocketManager)te).size = message.size;
-					((TileEntityBlockPocketManager)te).autoAssembleMultiblock();
+				if (te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager) te).getOwner().isOwner(player)) {
+					((TileEntityBlockPocketManager) te).size = message.size;
+					((TileEntityBlockPocketManager) te).autoAssembleMultiblock();
 				}
 			});
 

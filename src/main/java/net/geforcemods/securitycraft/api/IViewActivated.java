@@ -22,21 +22,19 @@ public interface IViewActivated {
 	 */
 	default void checkView(World world, BlockPos pos) {
 		if (!world.isRemote) {
-			if(getViewCooldown() > 0){
+			if (getViewCooldown() > 0) {
 				setViewCooldown(getViewCooldown() - 1);
 				return;
 			}
 
 			List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(5));
 
-			for (EntityLivingBase entity : entities)
-			{
+			for (EntityLivingBase entity : entities) {
 				double eyeHeight = entity.getEyeHeight();
 				Vec3d lookVec = new Vec3d(entity.posX + (entity.getLookVec().x * 5), (eyeHeight + entity.posY) + (entity.getLookVec().y * 5), entity.posZ + (entity.getLookVec().z * 5));
 				RayTraceResult mop = world.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
 
-				if(mop != null && mop.typeOfHit == Type.BLOCK && mop.getBlockPos().getX() == pos.getX() && mop.getBlockPos().getY() == pos.getY() && mop.getBlockPos().getZ() == pos.getZ())
-				{
+				if (mop != null && mop.typeOfHit == Type.BLOCK && mop.getBlockPos().getX() == pos.getX() && mop.getBlockPos().getY() == pos.getY() && mop.getBlockPos().getZ() == pos.getZ()) {
 					if (onEntityViewed(entity, mop))
 						setViewCooldown(getDefaultViewCooldown());
 				}

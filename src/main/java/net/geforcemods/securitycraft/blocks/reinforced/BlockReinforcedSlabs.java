@@ -28,15 +28,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvider, IOverlayDisplay {
-
 	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class);
 	private final boolean isDouble;
 
-	public BlockReinforcedSlabs(boolean isDouble, Material blockMaterial){
+	public BlockReinforcedSlabs(boolean isDouble, Material blockMaterial) {
 		super(blockMaterial);
 
 		this.isDouble = isDouble;
-		if(!isDouble())
+
+		if (!isDouble())
 			useNeighborBrightness = true;
 
 		setSoundType(SoundType.STONE);
@@ -44,43 +44,43 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state){
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
 		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune){
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(SCContent.reinforcedStoneSlabs);
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
-	{
-		if(!isDouble)
-			for (EnumType et : EnumType.values())
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+		if (!isDouble) {
+			for (EnumType et : EnumType.values()) {
 				list.add(new ItemStack(this, 1, et.getMetadata()));
+			}
+		}
 	}
 
 	@Override
-	public int damageDropped(IBlockState state){
+	public int damageDropped(IBlockState state) {
 		return state.getValue(VARIANT).getMetadata();
 	}
 
 	@Override
-	public String getTranslationKey(int meta){
+	public String getTranslationKey(int meta) {
 		return super.getTranslationKey() + "." + EnumType.byMetadata(meta).getTranslationKey();
 	}
 
 	@Override
-	public IProperty<?> getVariantProperty(){
+	public IProperty<?> getVariantProperty() {
 		return VARIANT;
 	}
 
@@ -90,28 +90,28 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta){
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta & 7)).withProperty(HALF, (meta & 8) == 0 ? EnumBlockHalf.BOTTOM : EnumBlockHalf.TOP);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state){
+	public int getMetaFromState(IBlockState state) {
 		byte b0 = 0;
 		int meta = b0 | state.getValue(VARIANT).getMetadata();
 
-		if(state.getValue(HALF) == EnumBlockHalf.TOP)
+		if (state.getValue(HALF) == EnumBlockHalf.TOP)
 			meta |= 8;
 
 		return meta;
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState(){
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, HALF, VARIANT);
 	}
 
 	@Override
-	public boolean isDouble(){
+	public boolean isDouble() {
 		return isDouble;
 	}
 
@@ -121,12 +121,11 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-	{
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		return new ItemStack(SCContent.reinforcedStoneSlabs, 1, damageDropped(state));
 	}
 
-	public static enum EnumType implements IStringSerializable{
+	public static enum EnumType implements IStringSerializable {
 		STONE(0, "stone"),
 		COBBLESTONE(1, "cobblestone", "cobble"),
 		SANDSTONE(2, "sandstone", "sandstone"),
@@ -140,38 +139,38 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 		private final String name;
 		private final String unlocalizedName;
 
-		private EnumType(int meta, String name){
+		private EnumType(int meta, String name) {
 			this(meta, name, name);
 		}
 
-		private EnumType(int meta, String name, String unlocalizedName){
+		private EnumType(int meta, String name, String unlocalizedName) {
 			this.meta = meta;
 			this.name = name;
 			this.unlocalizedName = unlocalizedName;
 		}
 
-		public int getMetadata(){
+		public int getMetadata() {
 			return meta;
 		}
 
 		@Override
-		public String toString(){
+		public String toString() {
 			return name;
 		}
 
-		public static EnumType byMetadata(int meta){
-			if(meta < 0 || meta >= META_LOOKUP.length)
+		public static EnumType byMetadata(int meta) {
+			if (meta < 0 || meta >= META_LOOKUP.length)
 				meta = 0;
 
 			return META_LOOKUP[meta];
 		}
 
 		@Override
-		public String getName(){
+		public String getName() {
 			return name;
 		}
 
-		public String getTranslationKey(){
+		public String getTranslationKey() {
 			return unlocalizedName;
 		}
 
@@ -179,7 +178,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 			EnumType[] values = values();
 			int length = values.length;
 
-			for(int i = 0; i < length; ++i){
+			for (int i = 0; i < length; ++i) {
 				EnumType type = values[i];
 				META_LOOKUP[type.getMetadata()] = type;
 			}
@@ -187,14 +186,12 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
-	{
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedStoneSlabs), 1, getMetaFromState(state) % 8);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
-	{
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return true;
 	}
 }

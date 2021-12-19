@@ -15,25 +15,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntitySonicSecuritySystemRenderer extends TileEntitySpecialRenderer<TileEntitySonicSecuritySystem> {
-
 	private static final ModelSonicSecuritySystem MODEL = new ModelSonicSecuritySystem();
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/blocks/sonic_security_system.png");
 	private static final TextComponentTranslation RECORDING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.recording");
 	private static final TextComponentTranslation LISTENING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.listening");
 
 	@Override
-	public void render(TileEntitySonicSecuritySystem te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
-	{
+	public void render(TileEntitySonicSecuritySystem te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GlStateManager.pushMatrix();
 
 		boolean recording = te.isRecording();
 
-		if(recording || te.isListening())
-		{
+		if (recording || te.isListening()) {
 			EntityPlayer player = Minecraft.getMinecraft().player;
 
 			setLightmapDisabled(true);
-			EntityRenderer.drawNameplate(getFontRenderer(), (recording ? RECORDING_TEXT : LISTENING_TEXT).getFormattedText(), (float)x + 0.5F, (float)y + 1.5F, (float)z + 0.5F, 0, player.rotationYaw, player.rotationPitch, false, false);
+			EntityRenderer.drawNameplate(getFontRenderer(), (recording ? RECORDING_TEXT : LISTENING_TEXT).getFormattedText(), (float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F, 0, player.rotationYaw, player.rotationPitch, false, false);
 			setLightmapDisabled(false);
 		}
 

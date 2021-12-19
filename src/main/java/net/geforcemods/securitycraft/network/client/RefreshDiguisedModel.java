@@ -13,49 +13,42 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class RefreshDiguisedModel implements IMessage
-{
+public class RefreshDiguisedModel implements IMessage {
 	private BlockPos pos;
 	private boolean insert;
 	private ItemStack stack;
 
 	public RefreshDiguisedModel() {}
 
-	public RefreshDiguisedModel(BlockPos pos, boolean insert, ItemStack stack)
-	{
+	public RefreshDiguisedModel(BlockPos pos, boolean insert, ItemStack stack) {
 		this.pos = pos;
 		this.insert = insert;
 		this.stack = stack;
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf)
-	{
+	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 		buf.writeBoolean(insert);
 		ByteBufUtils.writeItemStack(buf, stack);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf)
-	{
+	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
 		insert = buf.readBoolean();
 		stack = ByteBufUtils.readItemStack(buf);
 	}
 
-	public static class Handler implements IMessageHandler<RefreshDiguisedModel,IMessage>
-	{
+	public static class Handler implements IMessageHandler<RefreshDiguisedModel, IMessage> {
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(RefreshDiguisedModel message, MessageContext context)
-		{
+		public IMessage onMessage(RefreshDiguisedModel message, MessageContext context) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				IModuleInventory te = (IModuleInventory)Minecraft.getMinecraft().world.getTileEntity(message.pos);
+				IModuleInventory te = (IModuleInventory) Minecraft.getMinecraft().world.getTileEntity(message.pos);
 
-				if(te != null)
-				{
-					if(message.insert)
+				if (te != null) {
+					if (message.insert)
 						te.insertModule(message.stack);
 					else
 						te.removeModule(EnumModuleType.DISGUISE);

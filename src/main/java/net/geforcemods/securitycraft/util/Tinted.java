@@ -6,15 +6,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks that a block has a block and item color handler which applies a tint to its texture.
- * Only use on fields of type net.minecraft.Block
+ * Marks that a block has a block and item color handler which applies a tint to its texture. Only use on fields of type
+ * net.minecraft.Block
  *
  * @author bl4ckscor3
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Tinted
-{
+public @interface Tinted {
 	/**
 	 * @return true if this block should receive a reinforcing tint, false if not
 	 */

@@ -24,8 +24,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
-public class EntitySecurityCamera extends Entity{
-
+public class EntitySecurityCamera extends Entity {
 	protected final float cameraSpeed = ConfigHandler.cameraSpeed;
 	public int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
@@ -35,7 +34,7 @@ public class EntitySecurityCamera extends Entity{
 	protected boolean zooming = false;
 	private Ticket chunkTicket;
 
-	public EntitySecurityCamera(World world){
+	public EntitySecurityCamera(World world) {
 		super(world);
 		noClip = true;
 		forceSpawn = true;
@@ -43,81 +42,79 @@ public class EntitySecurityCamera extends Entity{
 		width = 0.0001F;
 	}
 
-	public EntitySecurityCamera(World world, double x, double y, double z){
+	public EntitySecurityCamera(World world, double x, double y, double z) {
 		this(world);
 
 		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 
-		if(!(te instanceof TileEntitySecurityCamera))
-		{
+		if (!(te instanceof TileEntitySecurityCamera)) {
 			setDead();
 			return;
 		}
 
-		TileEntitySecurityCamera cam = (TileEntitySecurityCamera)te;
+		TileEntitySecurityCamera cam = (TileEntitySecurityCamera) te;
 
 		x += 0.5D;
 		y += 0.5D;
 		z += 0.5D;
 
-		if(cam.down)
+		if (cam.down)
 			y += 0.25D;
 
 		setPosition(x, y, z);
 		setInitialPitchYaw(cam);
 	}
 
-	public EntitySecurityCamera(World world, double x, double y, double z, EntitySecurityCamera oldCamera){
+	public EntitySecurityCamera(World world, double x, double y, double z, EntitySecurityCamera oldCamera) {
 		this(world, x, y, z);
 		oldCamera.discardCamera();
 	}
 
-	private void setInitialPitchYaw(TileEntitySecurityCamera te)
-	{
+	private void setInitialPitchYaw(TileEntitySecurityCamera te) {
 		rotationPitch = 30F;
 
 		EnumFacing facing = world.getBlockState(new BlockPos(posX, posY, posZ)).getValue(BlockSecurityCamera.FACING);
 
-		if(facing == EnumFacing.NORTH)
+		if (facing == EnumFacing.NORTH)
 			rotationYaw = 180F;
-		else if(facing == EnumFacing.WEST)
+		else if (facing == EnumFacing.WEST)
 			rotationYaw = 90F;
-		else if(facing == EnumFacing.SOUTH)
+		else if (facing == EnumFacing.SOUTH)
 			rotationYaw = 0F;
-		else if(facing == EnumFacing.EAST)
+		else if (facing == EnumFacing.EAST)
 			rotationYaw = 270F;
-		else if(facing == EnumFacing.DOWN)
+		else if (facing == EnumFacing.DOWN)
 			rotationPitch = 75F;
 	}
 
 	@Override
-	protected boolean shouldSetPosAfterLoading(){
+	protected boolean shouldSetPosAfterLoading() {
 		return false;
 	}
 
 	@Override
-	public void onUpdate(){
-		if(world.isRemote){
-			if(screenshotSoundCooldown > 0)
+	public void onUpdate() {
+		if (world.isRemote) {
+			if (screenshotSoundCooldown > 0)
 				screenshotSoundCooldown -= 1;
 
-			if(redstoneCooldown > 0)
+			if (redstoneCooldown > 0)
 				redstoneCooldown -= 1;
 
-			if(toggleNightVisionCooldown > 0)
+			if (toggleNightVisionCooldown > 0)
 				toggleNightVisionCooldown -= 1;
 
-			if(shouldProvideNightVision)
+			if (shouldProvideNightVision)
 				SecurityCraft.network.sendToServer(new GiveNightVision());
 		}
-		else if(world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock() != SCContent.securityCamera)
+		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock() != SCContent.securityCamera)
 			setDead();
 	}
 
 	public void toggleRedstonePower() {
 		BlockPos pos = new BlockPos(posX, posY, posZ);
 
-		if(((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
+		if (((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
 			SecurityCraft.network.sendToServer(new SetCameraPowered(pos, !world.getBlockState(pos).getValue(BlockSecurityCamera.POWERED)));
 	}
 
@@ -126,15 +123,14 @@ public class EntitySecurityCamera extends Entity{
 		shouldProvideNightVision = !shouldProvideNightVision;
 	}
 
-	public float getZoomAmount(){
+	public float getZoomAmount() {
 		return zoomAmount;
 	}
 
-	public boolean isCameraDown()
-	{
+	public boolean isCameraDown() {
 		BlockPos pos = new BlockPos(posX, posY, posZ);
 
-		return world.getTileEntity(pos) instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)world.getTileEntity(pos)).down;
+		return world.getTileEntity(pos) instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera) world.getTileEntity(pos)).down;
 	}
 
 	//here to make this method accessible to CameraController
@@ -145,7 +141,7 @@ public class EntitySecurityCamera extends Entity{
 
 	public void stopViewing(EntityPlayerMP player) {
 		if (!world.isRemote) {
-			WorldServer serverWorld = (WorldServer)world;
+			WorldServer serverWorld = (WorldServer) world;
 			BlockPos pos = new BlockPos(posX, posY, posZ);
 			Chunk chunk = serverWorld.getChunk(pos);
 			ChunkPos chunkPos = chunk.getPos();
@@ -175,10 +171,10 @@ public class EntitySecurityCamera extends Entity{
 		if (!world.isRemote) {
 			TileEntity te = world.getTileEntity(new BlockPos(posX, posY, posZ));
 
-			if(te instanceof TileEntitySecurityCamera)
-				((TileEntitySecurityCamera)te).stopViewing();
+			if (te instanceof TileEntitySecurityCamera)
+				((TileEntitySecurityCamera) te).stopViewing();
 
-			if(chunkTicket != null) {
+			if (chunkTicket != null) {
 				ForgeChunkManager.releaseTicket(chunkTicket);
 				chunkTicket = null;
 			}
@@ -192,7 +188,7 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	@Override
-	protected void entityInit(){}
+	protected void entityInit() {}
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tag) {}

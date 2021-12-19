@@ -25,27 +25,26 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 
 	@Override
 	public void update() {
-		if(cooldown++ < ticksBetweenAttacks)
+		if (cooldown++ < ticksBetweenAttacks)
 			return;
 
 		IBlockState state = world.getBlockState(pos);
 
-		if(world.isRaining() && world.canBlockSeeSky(pos)) {
+		if (world.isRaining() && world.canBlockSeeSky(pos)) {
 			List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(ATTACK_RANGE));
 
-			if(!state.getValue(BlockProtecto.ACTIVATED))
+			if (!state.getValue(BlockProtecto.ACTIVATED))
 				world.setBlockState(pos, state.withProperty(BlockProtecto.ACTIVATED, true));
 
-			if(entities.size() != 0) {
+			if (entities.size() != 0) {
 				boolean shouldDeactivate = false;
 
-				for(EntityLivingBase entity : entities) {
+				for (EntityLivingBase entity : entities) {
 					if (!(entity instanceof EntitySentry) && !EntityUtils.isInvisible(entity)) {
-						if (entity instanceof EntityPlayer)
-						{
-							EntityPlayer player = (EntityPlayer)entity;
+						if (entity instanceof EntityPlayer) {
+							EntityPlayer player = (EntityPlayer) entity;
 
-							if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
+							if (player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
 								continue;
 						}
 
@@ -54,21 +53,22 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 					}
 				}
 
-				if(shouldDeactivate)
+				if (shouldDeactivate)
 					world.setBlockState(pos, state.withProperty(BlockProtecto.ACTIVATED, false));
 			}
 
 			cooldown = 0;
 		}
-		else if(state.getValue(BlockProtecto.ACTIVATED))
+		else if (state.getValue(BlockProtecto.ACTIVATED)) {
 			world.setBlockState(pos, state.withProperty(BlockProtecto.ACTIVATED, false));
+		}
 	}
 
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
 		super.onModuleInserted(stack, module);
 
-		if(module == EnumModuleType.SPEED)
+		if (module == EnumModuleType.SPEED)
 			ticksBetweenAttacks = FAST_SPEED;
 	}
 
@@ -76,13 +76,15 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
 		super.onModuleRemoved(stack, module);
 
-		if(module == EnumModuleType.SPEED)
+		if (module == EnumModuleType.SPEED)
 			ticksBetweenAttacks = SLOW_SPEED;
 	}
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.ALLOWLIST, EnumModuleType.SPEED, EnumModuleType.DISGUISE};
+		return new EnumModuleType[] {
+				EnumModuleType.ALLOWLIST, EnumModuleType.SPEED, EnumModuleType.DISGUISE
+		};
 	}
 
 	@Override

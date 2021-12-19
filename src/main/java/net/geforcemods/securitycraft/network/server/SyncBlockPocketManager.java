@@ -13,17 +13,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class SyncBlockPocketManager implements IMessage
-{
+public class SyncBlockPocketManager implements IMessage {
 	private BlockPos pos;
 	private int size;
 	private boolean showOutline;
 	private int autoBuildOffset;
 
-	public SyncBlockPocketManager(){}
+	public SyncBlockPocketManager() {}
 
-	public SyncBlockPocketManager(BlockPos pos, int size, boolean showOutline, int autoBuildOffset)
-	{
+	public SyncBlockPocketManager(BlockPos pos, int size, boolean showOutline, int autoBuildOffset) {
 		this.pos = pos;
 		this.size = size;
 		this.showOutline = showOutline;
@@ -31,8 +29,7 @@ public class SyncBlockPocketManager implements IMessage
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf)
-	{
+	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
 		size = ByteBufUtils.readVarInt(buf, 5);
 		showOutline = buf.readBoolean();
@@ -40,28 +37,24 @@ public class SyncBlockPocketManager implements IMessage
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf)
-	{
+	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 		ByteBufUtils.writeVarInt(buf, size, 5);
 		buf.writeBoolean(showOutline);
 		ByteBufUtils.writeVarInt(buf, autoBuildOffset, 5);
 	}
 
-	public static class Handler implements IMessageHandler<SyncBlockPocketManager, IMessage>
-	{
+	public static class Handler implements IMessageHandler<SyncBlockPocketManager, IMessage> {
 		@Override
-		public IMessage onMessage(SyncBlockPocketManager message, MessageContext ctx)
-		{
+		public IMessage onMessage(SyncBlockPocketManager message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = message.pos;
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if(world.isBlockLoaded(pos) && te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager)te).getOwner().isOwner(player))
-				{
-					TileEntityBlockPocketManager bpm = (TileEntityBlockPocketManager)te;
+				if (world.isBlockLoaded(pos) && te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager) te).getOwner().isOwner(player)) {
+					TileEntityBlockPocketManager bpm = (TileEntityBlockPocketManager) te;
 					IBlockState state = world.getBlockState(pos);
 
 					bpm.size = message.size;

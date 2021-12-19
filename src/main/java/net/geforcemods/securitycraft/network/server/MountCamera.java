@@ -18,31 +18,26 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class MountCamera implements IMessage
-{
+public class MountCamera implements IMessage {
 	private BlockPos pos;
 
 	public MountCamera() {}
 
-	public MountCamera(BlockPos pos)
-	{
+	public MountCamera(BlockPos pos) {
 		this.pos = pos;
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf)
-	{
+	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf)
-	{
+	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
 	}
 
-	public static class Handler implements IMessageHandler<MountCamera, IMessage>
-	{
+	public static class Handler implements IMessageHandler<MountCamera, IMessage> {
 		@Override
 		public IMessage onMessage(MountCamera message, MessageContext context) {
 			WorldUtils.addScheduledTask(context.getServerHandler().player.world, (() -> {
@@ -51,16 +46,14 @@ public class MountCamera implements IMessage
 				World world = player.world;
 				IBlockState state = world.getBlockState(pos);
 
-				if(world.isBlockLoaded(pos) && state.getBlock() == SCContent.securityCamera)
-				{
+				if (world.isBlockLoaded(pos) && state.getBlock() == SCContent.securityCamera) {
 					TileEntity te = world.getTileEntity(pos);
 
-					if(te instanceof TileEntitySecurityCamera)
-					{
-						TileEntitySecurityCamera cam = (TileEntitySecurityCamera)te;
+					if (te instanceof TileEntitySecurityCamera) {
+						TileEntitySecurityCamera cam = (TileEntitySecurityCamera) te;
 
-						if(cam.getOwner().isOwner(player) || ModuleUtils.isAllowed(cam, player))
-							((BlockSecurityCamera)state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), player);
+						if (cam.getOwner().isOwner(player) || ModuleUtils.isAllowed(cam, player))
+							((BlockSecurityCamera) state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), player);
 						else
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.cameraMonitor.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:notOwned", cam.getOwner().getName()), TextFormatting.RED);
 					}

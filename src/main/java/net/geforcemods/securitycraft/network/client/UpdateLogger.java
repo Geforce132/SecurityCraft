@@ -11,18 +11,16 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class UpdateLogger implements IMessage{
-
+public class UpdateLogger implements IMessage {
 	private int x, y, z, i;
 	private String username;
 	private String uuid;
 	private long timestamp;
 
-	public UpdateLogger(){
-
+	public UpdateLogger() {
 	}
 
-	public UpdateLogger(int x, int y, int z, int i, String username, String uuid, long timestamp){
+	public UpdateLogger(int x, int y, int z, int i, String username, String uuid, long timestamp) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -55,7 +53,6 @@ public class UpdateLogger implements IMessage{
 	}
 
 	public static class Handler implements IMessageHandler<UpdateLogger, IMessage> {
-
 		@Override
 		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(UpdateLogger message, MessageContext context) {
@@ -64,8 +61,7 @@ public class UpdateLogger implements IMessage{
 				int i = message.i;
 				TileEntityLogger te = (TileEntityLogger) Minecraft.getMinecraft().player.world.getTileEntity(pos);
 
-				if(te != null)
-				{
+				if (te != null) {
 					te.players[i] = message.username;
 					te.uuids[i] = message.uuid;
 					te.timestamps[i] = message.timestamp;
@@ -75,5 +71,4 @@ public class UpdateLogger implements IMessage{
 			return null;
 		}
 	}
-
 }

@@ -11,18 +11,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiDisguiseModule extends GuiContainer {
-	private static final ResourceLocation TEXTURE  = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
 
 	public GuiDisguiseModule(InventoryPlayer inventory) {
 		super(new ContainerDisguiseModule(inventory, new ModuleItemInventory(PlayerUtils.getSelectedItemStack(inventory, SCContent.disguiseModule))));
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks)
-	{
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
+		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);
 	}
 
@@ -40,5 +39,4 @@ public class GuiDisguiseModule extends GuiContainer {
 		int startY = (height - ySize) / 2;
 		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
-
 }

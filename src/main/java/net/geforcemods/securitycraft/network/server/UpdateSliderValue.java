@@ -15,15 +15,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class UpdateSliderValue implements IMessage{
-
+public class UpdateSliderValue implements IMessage {
 	private BlockPos pos;
 	private int id;
 	private double value;
 
-	public UpdateSliderValue(){ }
+	public UpdateSliderValue() {}
 
-	public UpdateSliderValue(BlockPos pos, int id, double v){
+	public UpdateSliderValue(BlockPos pos, int id, double v) {
 		this.pos = pos;
 		this.id = id;
 		value = v;
@@ -44,7 +43,6 @@ public class UpdateSliderValue implements IMessage{
 	}
 
 	public static class Handler implements IMessageHandler<UpdateSliderValue, IMessage> {
-
 		@Override
 		public IMessage onMessage(UpdateSliderValue message, MessageContext context) {
 			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
@@ -54,23 +52,22 @@ public class UpdateSliderValue implements IMessage{
 				EntityPlayer player = context.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
-				if(te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)) {
-					Option<?> o = ((ICustomizable)te).customOptions()[id];
+				if (te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player)) {
+					Option<?> o = ((ICustomizable) te).customOptions()[id];
 
-					if(o instanceof OptionDouble)
-						((OptionDouble)o).setValue(value);
-					else if(o instanceof OptionInt)
-						((OptionInt)o).setValue((int)value);
+					if (o instanceof OptionDouble)
+						((OptionDouble) o).setValue(value);
+					else if (o instanceof OptionInt)
+						((OptionInt) o).setValue((int) value);
 
-					((ICustomizable)te).onOptionChanged(((ICustomizable)te).customOptions()[id]);
+					((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[id]);
 
-					if(te instanceof CustomizableSCTE)
-						((CustomizableSCTE)te).sync();
+					if (te instanceof CustomizableSCTE)
+						((CustomizableSCTE) te).sync();
 				}
 			});
 
 			return null;
 		}
 	}
-
 }

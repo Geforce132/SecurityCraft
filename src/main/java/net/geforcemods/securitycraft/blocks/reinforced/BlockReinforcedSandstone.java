@@ -22,26 +22,23 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedSandstone extends BlockSandStone implements ITileEntityProvider, IReinforcedBlock {
-
-	public BlockReinforcedSandstone(){
+	public BlockReinforcedSandstone() {
 		setSoundType(SoundType.STONE);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(TYPE, BlockSandStone.EnumType.byMetadata(meta));
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state){
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
 		world.removeTileEntity(pos);
 	}
@@ -52,14 +49,12 @@ public class BlockReinforcedSandstone extends BlockSandStone implements ITileEnt
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
-	{
+	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.SANDSTONE);
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return 3;
 	}
 }

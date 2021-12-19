@@ -8,21 +8,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
-public class BlockReinforcedBase extends BlockOwnable implements IReinforcedBlock
-{
+public class BlockReinforcedBase extends BlockOwnable implements IReinforcedBlock {
 	private List<Block> vanillaBlocks;
 	private int amount;
 
-	public BlockReinforcedBase(Material mat, int a, Block... vB)
-	{
+	public BlockReinforcedBase(Material mat, int a, Block... vB) {
 		super(mat);
 
 		vanillaBlocks = Arrays.asList(vB);
 		amount = a;
 	}
 
-	public BlockReinforcedBase(Material mat, int a, SoundType sound, Block... vB)
-	{
+	public BlockReinforcedBase(Material mat, int a, SoundType sound, Block... vB) {
 		super(mat);
 
 		setSoundType(sound);
@@ -31,14 +28,12 @@ public class BlockReinforcedBase extends BlockOwnable implements IReinforcedBloc
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
-	{
+	public List<Block> getVanillaBlocks() {
 		return vanillaBlocks;
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return amount;
 	}
 }

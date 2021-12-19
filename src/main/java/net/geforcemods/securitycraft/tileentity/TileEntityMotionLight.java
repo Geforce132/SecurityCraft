@@ -21,14 +21,14 @@ public class TileEntityMotionLight extends CustomizableSCTE implements ITickable
 
 	@Override
 	public void update() {
-		if(cooldown-- > 0)
+		if (cooldown-- > 0)
 			return;
 
-		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && (!(e instanceof EntityPlayer) || !((EntityPlayer)e).isSpectator()));
+		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && (!(e instanceof EntityPlayer) || !((EntityPlayer) e).isSpectator()));
 		IBlockState state = world.getBlockState(pos);
 		boolean shouldBeOn = !entities.isEmpty();
 
-		if(state.getValue(BlockMotionActivatedLight.LIT) != shouldBeOn)
+		if (state.getValue(BlockMotionActivatedLight.LIT) != shouldBeOn)
 			world.setBlockState(pos, state.withProperty(BlockMotionActivatedLight.LIT, shouldBeOn));
 
 		cooldown = TICKS_BETWEEN_ATTACKS;
@@ -41,6 +41,8 @@ public class TileEntityMotionLight extends CustomizableSCTE implements ITickable
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option<?>[] {searchRadiusOption};
+		return new Option<?>[] {
+			searchRadiusOption
+		};
 	}
 }

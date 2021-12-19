@@ -15,51 +15,43 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedFalling extends BlockReinforcedBase
-{
+public class BlockReinforcedFalling extends BlockReinforcedBase {
 	public static boolean fallInstantly;
 
-	public BlockReinforcedFalling(Material material, Block disguisedBlock)
-	{
+	public BlockReinforcedFalling(Material material, Block disguisedBlock) {
 		super(material, 1, disguisedBlock);
 
-		if(material == Material.SAND)
+		if (material == Material.SAND) {
 			setSoundType(SoundType.SAND);
+		}
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-	{
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-	{
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
-	{
-		if(!world.isRemote)
-		{
-			if((world.isAirBlock(pos.down()) || canFallThrough(world.getBlockState(pos.down()))) && pos.getY() >= 0)
-			{
-				if(!fallInstantly && world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
-				{
-					if(!world.isRemote && world.getTileEntity(pos) instanceof IOwnable)
-						world.spawnEntity(new EntityFallingOwnableBlock(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos), ((IOwnable)world.getTileEntity(pos)).getOwner()));
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		if (!world.isRemote) {
+			if ((world.isAirBlock(pos.down()) || canFallThrough(world.getBlockState(pos.down()))) && pos.getY() >= 0) {
+				if (!fallInstantly && world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
+					if (!world.isRemote && world.getTileEntity(pos) instanceof IOwnable)
+						world.spawnEntity(new EntityFallingOwnableBlock(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos), ((IOwnable) world.getTileEntity(pos)).getOwner()));
 				}
-				else
-				{
+				else {
 					BlockPos blockpos;
 
 					world.setBlockToAir(pos);
 
-					for(blockpos = pos.down(); (world.isAirBlock(blockpos) || canFallThrough(world.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.down()) {}
+					for (blockpos = pos.down(); (world.isAirBlock(blockpos) || canFallThrough(world.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.down()) {}
 
-					if(blockpos.getY() > 0)
+					if (blockpos.getY() > 0)
 						world.setBlockState(blockpos.up(), state); //Forge: Fix loss of state information during world gen.
 				}
 			}
@@ -67,13 +59,11 @@ public class BlockReinforcedFalling extends BlockReinforcedBase
 	}
 
 	@Override
-	public int tickRate(World world)
-	{
+	public int tickRate(World world) {
 		return 2;
 	}
 
-	public static boolean canFallThrough(IBlockState state)
-	{
+	public static boolean canFallThrough(IBlockState state) {
 		Block block = state.getBlock();
 		Material material = state.getMaterial();
 
@@ -82,12 +72,9 @@ public class BlockReinforcedFalling extends BlockReinforcedBase
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
-	{
-		if(rand.nextInt(16) == 0)
-		{
-			if(canFallThrough(world.getBlockState(pos.down())))
-			{
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		if (rand.nextInt(16) == 0) {
+			if (canFallThrough(world.getBlockState(pos.down()))) {
 				double particleX = pos.getX() + rand.nextFloat();
 				double particleY = pos.getY() - 0.05D;
 				double particleZ = pos.getZ() + rand.nextFloat();

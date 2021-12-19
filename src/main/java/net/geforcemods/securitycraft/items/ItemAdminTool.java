@@ -27,68 +27,66 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class ItemAdminTool extends Item {
-
 	public ItemAdminTool() {
-		if(ConfigHandler.allowAdminTool)
+		if (ConfigHandler.allowAdminTool) {
 			setCreativeTab(SecurityCraft.tabSCTechnical);
+		}
 	}
 
 	@Override
 	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-		if(!world.isRemote && ConfigHandler.allowAdminTool) {
-			if(!player.isCreative())
-			{
+		if (!world.isRemote && ConfigHandler.allowAdminTool) {
+			if (!player.isCreative()) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:adminTool.name"), Utils.localize("messages.securitycraft:adminTool.needCreative"), TextFormatting.DARK_PURPLE);
 				return EnumActionResult.SUCCESS;
 			}
 
 			EnumActionResult briefcaseResult = handleBriefcase(player, hand).getType();
 
-			if(briefcaseResult != EnumActionResult.PASS)
+			if (briefcaseResult != EnumActionResult.PASS)
 				return briefcaseResult;
 
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te != null) {
+			if (te != null) {
 				boolean hasInfo = false;
 
-				if(te instanceof IOwnable) {
+				if (te instanceof IOwnable) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:adminTool.name"), Utils.localize("messages.securitycraft:adminTool.owner.name", (((IOwnable) te).getOwner().getName() == null ? "????" : ((IOwnable) te).getOwner().getName())), TextFormatting.DARK_PURPLE);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:adminTool.name"), Utils.localize("messages.securitycraft:adminTool.owner.uuid", (((IOwnable) te).getOwner().getUUID() == null ? "????" : ((IOwnable) te).getOwner().getUUID())), TextFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
-				if(te instanceof IPasswordProtected) {
+				if (te instanceof IPasswordProtected) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:adminTool.name"), Utils.localize("messages.securitycraft:adminTool.password", (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword())), TextFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
-				if(te instanceof IModuleInventory) {
+				if (te instanceof IModuleInventory) {
 					List<EnumModuleType> modules = ((IModuleInventory) te).getInsertedModules();
 
-					if(!modules.isEmpty()) {
+					if (!modules.isEmpty()) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:adminTool.name"), Utils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
 
-						for(EnumModuleType module : modules)
+						for (EnumModuleType module : modules) {
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:adminTool.name"), new TextComponentString("- ").appendSibling(Utils.localize(module.getTranslationKey())), TextFormatting.DARK_PURPLE);
+						}
 
 						hasInfo = true;
 					}
 				}
 
-				if(te instanceof TileEntitySecretSign)
-				{
+				if (te instanceof TileEntitySecretSign) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:adminTool.name"), new TextComponentString(""), TextFormatting.DARK_PURPLE);
 
-					for(int i = 0; i < 4; i++)
-					{
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:adminTool.name"), ((TileEntitySecretSign)te).signText[i], TextFormatting.DARK_PURPLE);
+					for (int i = 0; i < 4; i++) {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:adminTool.name"), ((TileEntitySecretSign) te).signText[i], TextFormatting.DARK_PURPLE);
 					}
 
 					hasInfo = true;
 				}
 
-				if(!hasInfo)
+				if (!hasInfo)
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:adminTool.name"), Utils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 
 				return EnumActionResult.SUCCESS;
@@ -105,16 +103,15 @@ public class ItemAdminTool extends Item {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if(!player.isCreative())
-		{
+		if (!player.isCreative()) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:adminTool.needCreative"), TextFormatting.DARK_PURPLE);
 			return ActionResult.newResult(EnumActionResult.FAIL, player.getHeldItem(hand));
 		}
-		else return handleBriefcase(player, hand);
+		else
+			return handleBriefcase(player, hand);
 	}
 
-	private ActionResult<ItemStack> handleBriefcase(EntityPlayer player, EnumHand hand)
-	{
+	private ActionResult<ItemStack> handleBriefcase(EntityPlayer player, EnumHand hand) {
 		ItemStack adminTool = player.getHeldItem(hand);
 
 		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {

@@ -24,7 +24,6 @@ import net.minecraftforge.fml.client.GuiScrollingList;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 
 public class GuiTrophySystem extends GuiContainer {
-
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	private final String projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles").getFormattedText();
@@ -44,11 +43,12 @@ public class GuiTrophySystem extends GuiContainer {
 		orderedFilterList = new ArrayList<>(tileEntity.getFilters().keySet());
 		orderedFilterList.sort((e1, e2) -> {
 			//the entry for modded projectiles always shows at the bottom of the list
-			if(e1 == TileEntityTrophySystem.MODDED_PROJECTILES)
+			if (e1 == TileEntityTrophySystem.MODDED_PROJECTILES)
 				return 1;
-			else if(e2 == TileEntityTrophySystem.MODDED_PROJECTILES)
+			else if (e2 == TileEntityTrophySystem.MODDED_PROJECTILES)
 				return -1;
-			else return e1.getName().compareTo(e2.getName());
+			else
+				return e1.getName().compareTo(e2.getName());
 		});
 	}
 
@@ -72,7 +72,7 @@ public class GuiTrophySystem extends GuiContainer {
 
 		GlStateManager.disableLighting();
 
-		if(projectileList != null)
+		if (projectileList != null)
 			projectileList.drawScreen(mouseX, mouseY, partialTicks);
 
 		GuiUtils.renderModuleInfo(EnumModuleType.SMART, toggle, moduleRequired, isSmart, guiLeft + 5, guiTop + 5, width, height, mouseX, mouseY);
@@ -90,8 +90,7 @@ public class GuiTrophySystem extends GuiContainer {
 	}
 
 	@Override
-	public void handleMouseInput() throws IOException
-	{
+	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 
 		int mouseX = Mouse.getEventX() * width / mc.displayWidth;
@@ -103,20 +102,17 @@ public class GuiTrophySystem extends GuiContainer {
 	class ProjectileScrollList extends GuiScrollingList {
 		private int hoveredSlot = -1;
 
-		public ProjectileScrollList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight)
-		{
+		public ProjectileScrollList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight) {
 			super(client, width, height, top, top + height, left, 12, screenWidth, screenHeight);
 		}
 
 		@Override
-		protected int getSize()
-		{
+		protected int getSize() {
 			return orderedFilterList.size();
 		}
 
 		@Override
-		protected boolean isSelected(int index)
-		{
+		protected boolean isSelected(int index) {
 			return index == hoveredSlot;
 		}
 
@@ -124,11 +120,10 @@ public class GuiTrophySystem extends GuiContainer {
 		protected void drawBackground() {}
 
 		@Override
-		protected int getContentHeight()
-		{
+		protected int getContentHeight() {
 			int height = 50 + (getSize() * fontRenderer.FONT_HEIGHT);
 
-			if(height < bottom - top - 8)
+			if (height < bottom - top - 8)
 				height = bottom - top - 8;
 
 			return height;
@@ -136,22 +131,19 @@ public class GuiTrophySystem extends GuiContainer {
 
 		@Override
 		protected void elementClicked(int index, boolean doubleClick) {
-			if(isSmart) {
+			if (isSmart) {
 				tileEntity.toggleFilter(orderedFilterList.get(index));
 				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 			}
 		}
 
 		@Override
-		protected void drawSlot(int slotIndex, int entryRight, int slotTop, int slotBuffer, Tessellator tess)
-		{
+		protected void drawSlot(int slotIndex, int entryRight, int slotTop, int slotBuffer, Tessellator tess) {
 			//highlight hovered slot
-			if(isSmart && (mouseX >= left && mouseX <= entryRight && slotIndex >= 0 && slotIndex < getSize() && mouseY >= slotTop - 1 && mouseY <= slotTop + slotBuffer + 2)) {
+			if (isSmart && (mouseX >= left && mouseX <= entryRight && slotIndex >= 0 && slotIndex < getSize() && mouseY >= slotTop - 1 && mouseY <= slotTop + slotBuffer + 2))
 				hoveredSlot = slotIndex;
-			}
-			else if (mouseX < left || mouseX > right || mouseY < top || mouseY > bottom){
+			else if (mouseX < left || mouseX > right || mouseY < top || mouseY > bottom)
 				hoveredSlot = -1;
-			}
 
 			//draw entry strings and indicators whether the filter is enabled
 			EntityEntry projectileType = orderedFilterList.get(slotIndex);

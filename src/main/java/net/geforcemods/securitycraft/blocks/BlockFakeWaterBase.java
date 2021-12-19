@@ -14,35 +14,29 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockFakeWaterBase extends BlockStaticLiquid implements IOverlayDisplay {
-
-	public BlockFakeWaterBase(Material material)
-	{
+	public BlockFakeWaterBase(Material material) {
 		super(material);
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-	{
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (!checkForMixing(world, pos, state))
 			updateLiquid(world, pos, state);
 	}
 
-	private void updateLiquid(World world, BlockPos pos, IBlockState state)
-	{
+	private void updateLiquid(World world, BlockPos pos, IBlockState state) {
 		BlockDynamicLiquid liquid = getFlowingBlock(this.material);
 		world.setBlockState(pos, liquid.getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
 		world.scheduleUpdate(pos, liquid, tickRate(world));
 	}
 
-	public static BlockDynamicLiquid getFlowingBlock(Material material)
-	{
+	public static BlockDynamicLiquid getFlowingBlock(Material material) {
 		if (material == Material.WATER)
 			return (BlockDynamicLiquid) SCContent.bogusWaterFlowing;
 		else if (material == Material.LAVA)
@@ -52,22 +46,16 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IOverlayDis
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
-	{
-		if(!world.isRemote && !(entity instanceof EntityItem) && !(entity instanceof EntityBoat))
-		{
-			if(!(entity instanceof EntityPlayer) || (!((EntityPlayer) entity).capabilities.isCreativeMode && !(((EntityPlayer)entity).getRidingEntity() instanceof EntityBoat)))
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+		if (!world.isRemote && !(entity instanceof EntityItem) && !(entity instanceof EntityBoat)) {
+			if (!(entity instanceof EntityPlayer) || (!((EntityPlayer) entity).capabilities.isCreativeMode && !(((EntityPlayer) entity).getRidingEntity() instanceof EntityBoat)))
 				entity.attackEntityFrom(CustomDamageSources.FAKE_WATER, 1.5F);
 		}
 	}
 
-	/**
-	 * Gets an item for the block being called on. Args: world, x, y, z
-	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
-	{
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return ItemStack.EMPTY;
 	}
 
@@ -77,8 +65,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IOverlayDis
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
-	{
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return false;
 	}
 }

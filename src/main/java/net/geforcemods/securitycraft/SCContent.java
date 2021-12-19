@@ -8,14 +8,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.item.Item;
 
-public class SCContent
-{
+public class SCContent {
 	//Blocks
 	public static Block alarm;
 	@Deprecated //use alarm and its lit property
 	public static Block alarmLit;
-	@Tinted(customTint = 0x15b3a2) public static Block blockPocketManager;
-	@Tinted(customTint = 0x15b3a2) public static Block blockPocketWall;
+	@Tinted(customTint = 0x15b3a2)
+	public static Block blockPocketManager;
+	@Tinted(customTint = 0x15b3a2)
+	public static Block blockPocketWall;
 	public static Block bogusLavaFlowing;
 	public static Block bogusWaterFlowing;
 	public static Block bouncingBetty;
@@ -23,11 +24,14 @@ public class SCContent
 	public static Block claymore;
 	public static Block coalOreMine;
 	public static Block cobblestoneMine;
-	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false) public static Block crystalQuartz;
-	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false) public static Block crystalQuartzSlab;
+	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
+	public static Block crystalQuartz;
+	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
+	public static Block crystalQuartzSlab;
 	public static Block diamondOreMine;
 	public static Block dirtMine;
-	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false) public static Block doubleCrystalQuartzSlab;
+	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
+	public static Block doubleCrystalQuartzSlab;
 	public static Block emeraldOreMine;
 	public static Block frame;
 	public static Block furnaceMine;
@@ -55,96 +59,255 @@ public class SCContent
 	public static Block protecto;
 	public static Block quartzOreMine;
 	public static Block redstoneOreMine;
-	@Reinforced @Tinted public static Block reinforcedBoneBlock;
-	@Reinforced @Tinted public static Block reinforcedBookshelf;
-	@Reinforced @Tinted public static Block reinforcedBrick;
-	@Reinforced @Tinted public static Block reinforcedCarpet;
-	@Reinforced @Tinted public static Block reinforcedCauldron;
-	@Reinforced @Tinted public static Block reinforcedClay;
-	@Reinforced @Tinted public static Block reinforcedCobblestone;
-	@Reinforced @Tinted public static Block reinforcedCompressedBlocks;
-	@Reinforced @Tinted public static Block reinforcedConcrete;
-	@Reinforced @Tinted(customTint = 0x15b3a2) public static Block reinforcedCrystalQuartz;
-	@Reinforced @Tinted public static Block reinforcedDirt;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedBoneBlock;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedBookshelf;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedBrick;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedCarpet;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedCauldron;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedClay;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedCobblestone;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedCompressedBlocks;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedConcrete;
+	@Reinforced
+	@Tinted(customTint = 0x15b3a2)
+	public static Block reinforcedCrystalQuartz;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedDirt;
 	public static Block reinforcedDoor;
-	@Reinforced @Tinted public static Block reinforcedCobweb;
-	@Tinted(customTint = 0x15b3a2) public static Block reinforcedCrystalQuartzSlab;
-	@Tinted(customTint = 0x15b3a2) public static Block reinforcedDoubleCrystalQuartzSlab;
-	@Tinted public static Block reinforcedDoubleStoneSlabs;
-	@Tinted public static Block reinforcedDoubleStoneSlabs2;
-	@Tinted public static Block reinforcedDoubleWoodSlabs;
-	@Reinforced @Tinted public static Block reinforcedEndStone;
-	@Reinforced @Tinted public static Block reinforcedEndStoneBricks;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedCobweb;
+	@Tinted(customTint = 0x15b3a2)
+	public static Block reinforcedCrystalQuartzSlab;
+	@Tinted(customTint = 0x15b3a2)
+	public static Block reinforcedDoubleCrystalQuartzSlab;
+	@Tinted
+	public static Block reinforcedDoubleStoneSlabs;
+	@Tinted
+	public static Block reinforcedDoubleStoneSlabs2;
+	@Tinted
+	public static Block reinforcedDoubleWoodSlabs;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedEndStone;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedEndStoneBricks;
 	public static Block reinforcedFencegate;
-	@Reinforced public static Block reinforcedGlass;
-	@Reinforced public static Block reinforcedGlassPane;
-	@Reinforced @Tinted public static Block reinforcedGrassPath;
-	@Reinforced @Tinted public static Block reinforcedGlowstone;
-	@Reinforced @Tinted public static Block reinforcedGrass;
-	@Reinforced @Tinted public static Block reinforcedGravel;
-	@Reinforced @Tinted public static Block reinforcedHardenedClay;
-	@Reinforced @Tinted public static Block reinforcedHopper;
-	@Reinforced @Tinted public static Block reinforcedIce;
+	@Reinforced
+	public static Block reinforcedGlass;
+	@Reinforced
+	public static Block reinforcedGlassPane;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedGrassPath;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedGlowstone;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedGrass;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedGravel;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedHardenedClay;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedHopper;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedIce;
 	public static Block horizontalReinforcedIronBars;
-	@Reinforced public static Block reinforcedIronBars;
-	@Reinforced public static Block reinforcedIronTrapdoor;
-	@Reinforced @Tinted public static Block reinforcedLever;
-	@Reinforced @Tinted public static Block reinforcedMetals;
-	@Reinforced @Tinted public static Block reinforcedMossyCobblestone;
-	@Reinforced @Tinted public static Block reinforcedMycelium;
-	@Reinforced @Tinted public static Block reinforcedNetherBrick;
-	@Reinforced @Tinted public static Block reinforcedNetherrack;
-	@Reinforced @Tinted public static Block reinforcedNetherWartBlock;
-	@Reinforced @Tinted public static Block reinforcedNewLogs;
-	@Reinforced @Tinted public static Block reinforcedObserver;
-	@Reinforced @Tinted public static Block reinforcedObsidian;
-	@Reinforced @Tinted public static Block reinforcedOldLogs;
-	@Reinforced @Tinted public static Block reinforcedPackedIce;
-	@Reinforced @Tinted public static Block reinforcedPiston;
-	@Reinforced @Tinted public static Block reinforcedPistonHead;
+	@Reinforced
+	public static Block reinforcedIronBars;
+	@Reinforced
+	public static Block reinforcedIronTrapdoor;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedLever;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedMetals;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedMossyCobblestone;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedMycelium;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedNetherBrick;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedNetherrack;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedNetherWartBlock;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedNewLogs;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedObserver;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedObsidian;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedOldLogs;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedPackedIce;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedPiston;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedPistonHead;
 	public static Block reinforcedPistonExtension;
-	@Reinforced @Tinted public static Block reinforcedPrismarine;
-	@Reinforced @Tinted public static Block reinforcedPurpur;
-	@Reinforced @Tinted public static Block reinforcedQuartz;
-	@Reinforced @Tinted public static Block reinforcedRedNetherBrick;
-	@Reinforced @Tinted public static Block reinforcedRedSandstone;
-	@Reinforced @Tinted public static Block reinforcedRedstoneLamp;
-	@Reinforced @Tinted public static Block reinforcedSand;
-	@Reinforced @Tinted public static Block reinforcedSandstone;
-	@Reinforced @Tinted public static Block reinforcedSeaLantern;
-	@Reinforced @Tinted public static Block reinforcedSnowBlock;
-	@Reinforced public static Block reinforcedStainedGlass;
-	@Reinforced public static Block reinforcedStainedGlassPanes;
-	@Reinforced @Tinted public static Block reinforcedStainedHardenedClay;
-	@Reinforced @Tinted public static Block reinforcedStairsAcacia;
-	@Reinforced @Tinted public static Block reinforcedStairsBirch;
-	@Reinforced @Tinted public static Block reinforcedStairsBrick;
-	@Reinforced @Tinted public static Block reinforcedStairsCobblestone;
-	@Reinforced @Tinted(customTint = 0x15b3a2) public static Block reinforcedStairsCrystalQuartz;
-	@Reinforced @Tinted public static Block reinforcedStairsDarkoak;
-	@Reinforced @Tinted public static Block reinforcedStairsJungle;
-	@Reinforced @Tinted public static Block reinforcedStairsNetherBrick;
-	@Reinforced @Tinted public static Block reinforcedStairsOak;
-	@Reinforced @Tinted public static Block reinforcedStairsPurpur;
-	@Reinforced @Tinted public static Block reinforcedStairsQuartz;
-	@Reinforced @Tinted public static Block reinforcedStairsRedSandstone;
-	@Reinforced @Tinted public static Block reinforcedStairsSandstone;
-	@Reinforced @Tinted public static Block reinforcedStairsSpruce;
-	@Tinted public static Block reinforcedStairsStone;
-	@Reinforced @Tinted public static Block reinforcedStairsStoneBrick;
-	@Reinforced @Tinted public static Block reinforcedStickyPiston;
-	@Reinforced @Tinted public static Block reinforcedStone;
-	@Reinforced @Tinted public static Block reinforcedStoneBrick;
-	@Reinforced @Tinted public static Block reinforcedStoneButton;
-	@Reinforced @Tinted public static Block reinforcedStonePressurePlate;
-	@Tinted public static Block reinforcedStoneSlabs;
-	@Reinforced @Tinted public static Block reinforcedStoneSlabs2;
-	@Reinforced @Tinted public static Block reinforcedWalls;
-	@Reinforced @Tinted public static Block reinforcedWoodenButton;
-	@Reinforced @Tinted public static Block reinforcedWoodenPressurePlate;
-	@Reinforced @Tinted public static Block reinforcedWoodPlanks;
-	@Reinforced @Tinted public static Block reinforcedWoodSlabs;
-	@Reinforced @Tinted public static Block reinforcedWool;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedPrismarine;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedPurpur;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedQuartz;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedRedNetherBrick;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedRedSandstone;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedRedstoneLamp;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedSand;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedSandstone;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedSeaLantern;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedSnowBlock;
+	@Reinforced
+	public static Block reinforcedStainedGlass;
+	@Reinforced
+	public static Block reinforcedStainedGlassPanes;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStainedHardenedClay;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsAcacia;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsBirch;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsBrick;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsCobblestone;
+	@Reinforced
+	@Tinted(customTint = 0x15b3a2)
+	public static Block reinforcedStairsCrystalQuartz;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsDarkoak;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsJungle;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsNetherBrick;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsOak;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsPurpur;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsQuartz;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsRedSandstone;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsSandstone;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsSpruce;
+	@Tinted
+	public static Block reinforcedStairsStone;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStairsStoneBrick;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStickyPiston;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStone;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStoneBrick;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStoneButton;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStonePressurePlate;
+	@Tinted
+	public static Block reinforcedStoneSlabs;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedStoneSlabs2;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedWalls;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedWoodenButton;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedWoodenPressurePlate;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedWoodPlanks;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedWoodSlabs;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedWool;
 	public static Block retinalScanner;
 	public static Block sandMine;
 	public static Block scannerDoor;
@@ -152,7 +315,8 @@ public class SCContent
 	public static Block secretSignWall;
 	public static Block securityCamera;
 	public static Block sonicSecuritySystem;
-	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false) public static Block stairsCrystalQuartz;
+	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
+	public static Block stairsCrystalQuartz;
 	public static Block stoneMine;
 	public static Block trackMine;
 	public static Block trophySystem;

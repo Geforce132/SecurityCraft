@@ -10,23 +10,22 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityBouncingBetty extends Entity {
-
 	/** How long the fuse is */
 	public int fuse;
 
-	public EntityBouncingBetty(World world){
+	public EntityBouncingBetty(World world) {
 		super(world);
 		preventEntitySpawning = true;
 		setSize(0.500F, 0.200F);
 	}
 
-	public EntityBouncingBetty(World world, double x, double y, double z){
+	public EntityBouncingBetty(World world, double x, double y, double z) {
 		this(world);
 		setPosition(x, y, z);
-		float f = (float)(Math.random() * Math.PI * 2.0D);
-		motionX = -((float)Math.sin(f)) * 0.02F;
+		float f = (float) (Math.random() * Math.PI * 2.0D);
+		motionX = -((float) Math.sin(f)) * 0.02F;
 		motionY = 0.20000000298023224D;
-		motionZ = -((float)Math.cos(f)) * 0.02F;
+		motionZ = -((float) Math.cos(f)) * 0.02F;
 		fuse = 80;
 		prevPosX = x;
 		prevPosY = y;
@@ -36,31 +35,18 @@ public class EntityBouncingBetty extends Entity {
 	@Override
 	protected void entityInit() {}
 
-	/**
-	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-	 * prevent them from trampling crops
-	 */
 	@Override
-	protected boolean canTriggerWalking()
-	{
+	protected boolean canTriggerWalking() {
 		return false;
 	}
 
-	/**
-	 * Returns true if other Entities should be prevented from moving through this Entity.
-	 */
 	@Override
-	public boolean canBeCollidedWith()
-	{
+	public boolean canBeCollidedWith() {
 		return !isDead;
 	}
 
-	/**
-	 * Called to update the entity's position/logic.
-	 */
 	@Override
-	public void onUpdate()
-	{
+	public void onUpdate() {
 		prevPosX = posX;
 		prevPosY = posY;
 		prevPosZ = posZ;
@@ -70,15 +56,13 @@ public class EntityBouncingBetty extends Entity {
 		motionY *= 0.9800000190734863D;
 		motionZ *= 0.9800000190734863D;
 
-		if (onGround)
-		{
+		if (onGround) {
 			motionX *= 0.699999988079071D;
 			motionZ *= 0.699999988079071D;
 			motionY *= -0.5D;
 		}
 
-		if (!world.isRemote && fuse-- <= 0)
-		{
+		if (!world.isRemote && fuse-- <= 0) {
 			setDead();
 			explode();
 		}
@@ -86,33 +70,22 @@ public class EntityBouncingBetty extends Entity {
 			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX, posY + 0.5D, posZ, 0.0D, 0.0D, 0.0D);
 	}
 
-	private void explode()
-	{
+	private void explode() {
 		world.newExplosion(this, posX, posY, posZ, ConfigHandler.smallerMineExplosion ? 3.0F : 6.0F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
 	}
 
-	/**
-	 * (abstract) Protected helper method to write subclass entity data to NBT.
-	 */
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound tag)
-	{
-		tag.setByte("Fuse", (byte)fuse);
+	protected void writeEntityToNBT(NBTTagCompound tag) {
+		tag.setByte("Fuse", (byte) fuse);
 	}
 
-	/**
-	 * (abstract) Protected helper method to read subclass entity data from NBT.
-	 */
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound tag)
-	{
+	protected void readEntityFromNBT(NBTTagCompound tag) {
 		fuse = tag.getByte("Fuse");
 	}
 
 	@SideOnly(Side.CLIENT)
-	public float getShadowSize()
-	{
+	public float getShadowSize() {
 		return 0.0F;
 	}
-
 }

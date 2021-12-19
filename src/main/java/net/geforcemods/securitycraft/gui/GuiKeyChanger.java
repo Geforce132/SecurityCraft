@@ -24,9 +24,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiKeyChanger extends GuiContainer {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u0009', '\u001B'}; //0-9, backspace, tab, and escape
+	private char[] allowedChars = {
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\u0008', '\u0009', '\u001B'
+	}; //0-9, backspace, tab, and escape
 	private GuiTextField textboxNewPasscode;
 	private GuiTextField textboxConfirmPasscode;
 	private GuiButton confirmButton;
@@ -38,7 +39,7 @@ public class GuiKeyChanger extends GuiContainer {
 	}
 
 	@Override
-	public void initGui(){
+	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
 		buttonList.add(confirmButton = new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm").getFormattedText()));
@@ -61,13 +62,13 @@ public class GuiKeyChanger extends GuiContainer {
 	}
 
 	@Override
-	public void onGuiClosed(){
+	public void onGuiClosed() {
 		super.onGuiClosed();
 		Keyboard.enableRepeatEvents(false);
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks){
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 		textboxNewPasscode.drawTextBox();
@@ -75,14 +76,14 @@ public class GuiKeyChanger extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawString(Utils.localize("item.securitycraft:universalKeyChanger.name").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("item.securitycraft:universalKeyChanger.name").getFormattedText()) / 2, 6, 4210752);
 		fontRenderer.drawString(Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode").getFormattedText()) / 2, 25, 4210752);
 		fontRenderer.drawString(Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode").getFormattedText()) / 2, 65, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
@@ -93,23 +94,21 @@ public class GuiKeyChanger extends GuiContainer {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(keyCode == Keyboard.KEY_TAB)
-		{
+		if (keyCode == Keyboard.KEY_TAB) {
 			boolean isFirstTextboxFocused = textboxNewPasscode.isFocused();
 
 			textboxNewPasscode.setFocused(!isFirstTextboxFocused);
 			textboxConfirmPasscode.setFocused(isFirstTextboxFocused);
 			return;
 		}
-		else if(keyCode == Keyboard.KEY_ESCAPE || !isValidChar(typedChar))
-		{
+		else if (keyCode == Keyboard.KEY_ESCAPE || !isValidChar(typedChar)) {
 			super.keyTyped(typedChar, keyCode);
 			return;
 		}
 
-		if(textboxNewPasscode.isFocused())
+		if (textboxNewPasscode.isFocused())
 			textboxNewPasscode.textboxKeyTyped(typedChar, keyCode);
-		else if(textboxConfirmPasscode.isFocused())
+		else if (textboxConfirmPasscode.isFocused())
 			textboxConfirmPasscode.textboxKeyTyped(typedChar, keyCode);
 		else
 			super.keyTyped(typedChar, keyCode);
@@ -118,11 +117,10 @@ public class GuiKeyChanger extends GuiContainer {
 	}
 
 	private boolean isValidChar(char c) {
-		for(int x = 1; x <= allowedChars.length; x++)
-			if(c == allowedChars[x - 1])
+		for (int x = 1; x <= allowedChars.length; x++) {
+			if (c == allowedChars[x - 1])
 				return true;
-			else
-				continue;
+		}
 
 		return false;
 	}
@@ -141,8 +139,8 @@ public class GuiKeyChanger extends GuiContainer {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button){
-		if(button.id == 0){
+	protected void actionPerformed(GuiButton button) {
+		if (button.id == 0) {
 			((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getText());
 			SecurityCraft.network.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
 

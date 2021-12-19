@@ -30,12 +30,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class GuiUtils{
-
+public class GuiUtils {
 	public static ResourceLocation cameraDashboard = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
 	public static ResourceLocation potionIcons = new ResourceLocation("minecraft:textures/gui/container/inventory.png");
 	private static RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
+	//@formatter:off
 	private static final ResourceLocation[] MODULE_TEXTURES = {
 			new ResourceLocation(SecurityCraft.MODID, "textures/items/module_background.png"),
 			new ResourceLocation(SecurityCraft.MODID, "textures/items/whitelist_module.png"),
@@ -46,6 +46,7 @@ public class GuiUtils{
 			new ResourceLocation(SecurityCraft.MODID, "textures/items/disguise_module.png"),
 			new ResourceLocation(SecurityCraft.MODID, "textures/items/module_background.png")
 	};
+	//@formatter:on
 	private static final ResourceLocation REDSTONE_TEXTURE = new ResourceLocation("textures/items/redstone_dust.png");
 	private static final ResourceLocation SUGAR_TEXTURE = new ResourceLocation("textures/items/sugar.png");
 
@@ -59,15 +60,14 @@ public class GuiUtils{
 			return;
 
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
-		TileEntitySecurityCamera te = (TileEntitySecurityCamera)tile;
+		TileEntitySecurityCamera te = (TileEntitySecurityCamera) tile;
 		boolean hasRedstoneModule = te.hasModule(EnumModuleType.REDSTONE);
 		GameSettings settings = Minecraft.getMinecraft().gameSettings;
 		IBlockState state = world.getBlockState(pos);
 		String lookAround = GameSettings.getKeyDisplayString(settings.keyBindForward.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindLeft.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindBack.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindRight.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.lookAround").getFormattedText();
 		int timeY = 25;
 
-		if(te.hasCustomName())
-		{
+		if (te.hasCustomName()) {
 			String cameraName = te.getName();
 
 			font.drawStringWithShadow(cameraName, resolution.getScaledWidth() - font.getStringWidth(cameraName) - 8, 25, 16777215);
@@ -87,17 +87,16 @@ public class GuiUtils{
 		gui.drawTexturedModalRect(5, 0, 0, 0, 90, 20);
 		gui.drawTexturedModalRect(resolution.getScaledWidth() - 70, 5, 190, 0, 65, 30);
 
-		if(player.getActivePotionEffect(Potion.getPotionFromResourceLocation("night_vision")) == null)
+		if (player.getActivePotionEffect(Potion.getPotionFromResourceLocation("night_vision")) == null)
 			gui.drawTexturedModalRect(28, 4, 90, 12, 16, 11);
-		else{
+		else {
 			mc.getTextureManager().bindTexture(potionIcons);
 			gui.drawTexturedModalRect(25, 2, 70, 218, 19, 16);
 			mc.getTextureManager().bindTexture(cameraDashboard);
 		}
 
-		if(state.getWeakPower(world, pos, state.getValue(BlockSecurityCamera.FACING)) == 0)
-		{
-			if(!hasRedstoneModule)
+		if (state.getWeakPower(world, pos, state.getValue(BlockSecurityCamera.FACING)) == 0) {
+			if (!hasRedstoneModule)
 				gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
 			else
 				gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
@@ -106,9 +105,8 @@ public class GuiUtils{
 			drawItemStackToGui(REDSTONE, 10, 0, false);
 	}
 
-	public static void drawItemStackToGui(ItemStack stack, int x, int y, boolean fixLighting)
-	{
-		if(fixLighting)
+	public static void drawItemStackToGui(ItemStack stack, int x, int y, boolean fixLighting) {
+		if (fixLighting)
 			GlStateManager.enableLighting();
 
 		RenderHelper.enableGUIStandardItemLighting();
@@ -120,8 +118,7 @@ public class GuiUtils{
 		GlStateManager.disableRescaleNormal();
 	}
 
-	public static void renderModuleInfo(EnumModuleType module, String moduleTooltip, String noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY)
-	{
+	public static void renderModuleInfo(EnumModuleType module, String moduleTooltip, String noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
 		Minecraft mc = Minecraft.getMinecraft();
 		float alpha = isModuleInstalled ? 1.0F : 0.5F;
 		int moduleRight = moduleLeft + 16;
@@ -133,22 +130,19 @@ public class GuiUtils{
 		mc.getTextureManager().bindTexture(MODULE_TEXTURES[module.ordinal()]);
 		drawTexture(Tessellator.getInstance(), moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 
-		if(module == EnumModuleType.REDSTONE)
-		{
+		if (module == EnumModuleType.REDSTONE) {
 			mc.getTextureManager().bindTexture(REDSTONE_TEXTURE);
 			drawTexture(Tessellator.getInstance(), moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
-		else if(module == EnumModuleType.SPEED)
-		{
+		else if (module == EnumModuleType.SPEED) {
 			mc.getTextureManager().bindTexture(SUGAR_TEXTURE);
 			drawTexture(Tessellator.getInstance(), moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 
-		if(mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
-		{
+		if (mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom) {
 			String text = isModuleInstalled ? moduleTooltip : noModuleTooltip;
 
-			if(text != null && !text.isEmpty())
+			if (text != null && !text.isEmpty())
 				net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Arrays.asList(text), mouseX, mouseY, screenWidth, screenHeight, -1, mc.fontRenderer);
 		}
 
@@ -157,8 +151,7 @@ public class GuiUtils{
 		GlStateManager.enableLighting();
 	}
 
-	private static void drawTexture(Tessellator tess, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha)
-	{
+	private static void drawTexture(Tessellator tess, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha) {
 		BufferBuilder bufferBuilder = tess.getBuffer();
 
 		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);

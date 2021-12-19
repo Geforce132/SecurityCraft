@@ -30,8 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.GuiScrollingList;
 
-public class GuiEditModule extends GuiContainer implements GuiResponder
-{
+public class GuiEditModule extends GuiContainer implements GuiResponder {
 	private static NBTTagCompound savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
 	private final String editModule = Utils.localize("gui.securitycraft:editModule").getFormattedText();
@@ -40,8 +39,7 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 	private GuiButton addButton, removeButton, copyButton, pasteButton, clearButton;
 	private PlayerList playerList;
 
-	public GuiEditModule(InventoryPlayer inventory, ItemStack item, TileEntity te)
-	{
+	public GuiEditModule(InventoryPlayer inventory, ItemStack item, TileEntity te) {
 		super(new ContainerGeneric(inventory, te));
 
 		module = item;
@@ -50,11 +48,10 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 	}
 
 	@Override
-	public void initGui()
-	{
+	public void initGui() {
 		super.initGui();
 
-		int controlsStartX = (int)(guiLeft + xSize * (3.0F / 4.0F)) - 43;
+		int controlsStartX = (int) (guiLeft + xSize * (3.0F / 4.0F)) - 43;
 		String checkboxText = Utils.localize("gui.securitycraft:editModule.affectEveryone").getFormattedText();
 		int length = fontRenderer.getStringWidth(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
 
@@ -66,7 +63,7 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 		buttonList.add(pasteButton = new GuiButton(3, controlsStartX, height / 2 + 20, 76, 20, Utils.localize("gui.securitycraft:editModule.paste").getFormattedText()));
 		buttonList.add(clearButton = new GuiButton(4, controlsStartX, height / 2 + 45, 76, 20, Utils.localize("gui.securitycraft:editModule.clear").getFormattedText()));
 		buttonList.add(new CallbackCheckbox(5, guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTagCompound() && module.getTagCompound().getBoolean("affectEveryone"), newState -> {
-			if(!module.hasTagCompound())
+			if (!module.hasTagCompound())
 				module.setTagCompound(new NBTTagCompound());
 
 			module.getTagCompound().setBoolean("affectEveryone", newState);
@@ -91,34 +88,28 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 	}
 
 	@Override
-	public void onGuiClosed(){
+	public void onGuiClosed() {
 		super.onGuiClosed();
 		Keyboard.enableRepeatEvents(false);
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks){
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 		inputField.drawTextBox();
 
-		if(playerList != null)
+		if (playerList != null)
 			playerList.drawScreen(mouseX, mouseY, partialTicks);
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawSplitString(editModule, xSize / 2 - fontRenderer.getStringWidth(editModule) / 2, 6, xSize, 4210752);
 	}
 
-	/**
-	 * Draw the background layer for the GuiContainer (everything behind the items)
-	 */
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
@@ -128,10 +119,9 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException{
-		if(keyCode != Keyboard.KEY_ESCAPE && inputField.isFocused())
-		{
-			if(keyCode == Keyboard.KEY_SPACE)
+	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		if (keyCode != Keyboard.KEY_ESCAPE && inputField.isFocused()) {
+			if (keyCode == Keyboard.KEY_SPACE)
 				return;
 
 			inputField.textboxKeyTyped(typedChar, keyCode);
@@ -141,48 +131,46 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 	}
 
 	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException{
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		inputField.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button){
-		switch(button.id){
+	protected void actionPerformed(GuiButton button) {
+		switch (button.id) {
 			case 0: //add
-				if(inputField.getText().isEmpty())
+				if (inputField.getText().isEmpty())
 					return;
 
-				if(module.getTagCompound() == null)
+				if (module.getTagCompound() == null)
 					module.setTagCompound(new NBTTagCompound());
 
-				for(int i = 1; i <= ItemModule.MAX_PLAYERS; i++)
-				{
-					if(module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).equals(inputField.getText()))
-					{
+				for (int i = 1; i <= ItemModule.MAX_PLAYERS; i++) {
+					if (module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).equals(inputField.getText())) {
 						if (i == 9)
 							addButton.enabled = false;
+
 						return;
 					}
 				}
 
 				module.getTagCompound().setString("Player" + getNextSlot(module.getTagCompound()), inputField.getText());
 
-				if(module.getTagCompound() != null && module.getTagCompound().hasKey("Player" + ItemModule.MAX_PLAYERS))
+				if (module.getTagCompound() != null && module.getTagCompound().hasKey("Player" + ItemModule.MAX_PLAYERS))
 					addButton.enabled = false;
 
 				inputField.setText("");
 				break;
 			case 1: //remove
-				if(inputField.getText().isEmpty())
+				if (inputField.getText().isEmpty())
 					return;
 
-				if(module.getTagCompound() == null)
+				if (module.getTagCompound() == null)
 					module.setTagCompound(new NBTTagCompound());
 
-				for(int i = 1; i <= ItemModule.MAX_PLAYERS; i++)
-				{
-					if(module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).equals(inputField.getText()))
+				for (int i = 1; i <= ItemModule.MAX_PLAYERS; i++) {
+					if (module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).equals(inputField.getText()))
 						module.getTagCompound().removeTag("Player" + i);
 				}
 
@@ -201,12 +189,13 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 				inputField.setText("");
 				break;
 			case 5: //checkbox
-				((CallbackCheckbox)button).onPress();
+				((CallbackCheckbox) button).onPress();
 				break;
-			default: return;
+			default:
+				return;
 		}
 
-		if(module.getTagCompound() != null)
+		if (module.getTagCompound() != null)
 			SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(module));
 
 		addButton.enabled = module.getTagCompound() != null && !module.getTagCompound().hasKey("Player" + ItemModule.MAX_PLAYERS) && !inputField.getText().isEmpty();
@@ -217,25 +206,21 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 	}
 
 	private int getNextSlot(NBTTagCompound tag) {
-		for(int i = 1; i <= ItemModule.MAX_PLAYERS; i++)
-		{
-			if(!tag.hasKey("Player" + i) || tag.getString("Player" + i).isEmpty())
+		for (int i = 1; i <= ItemModule.MAX_PLAYERS; i++) {
+			if (!tag.hasKey("Player" + i) || tag.getString("Player" + i).isEmpty())
 				return i;
 		}
 
 		return 0;
 	}
 
-	private void defragmentTag(NBTTagCompound tag)
-	{
+	private void defragmentTag(NBTTagCompound tag) {
 		Deque<Integer> freeIndices = new ArrayDeque<>();
 
-		for(int i = 1; i <= ItemModule.MAX_PLAYERS; i++)
-		{
-			if(!tag.hasKey("Player" + i) || tag.getString("Player" + i).isEmpty())
+		for (int i = 1; i <= ItemModule.MAX_PLAYERS; i++) {
+			if (!tag.hasKey("Player" + i) || tag.getString("Player" + i).isEmpty())
 				freeIndices.add(i);
-			else if(!freeIndices.isEmpty())
-			{
+			else if (!freeIndices.isEmpty()) {
 				String player = tag.getString("Player" + i);
 				int nextFreeIndex = freeIndices.poll();
 
@@ -247,8 +232,7 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 	}
 
 	@Override
-	public void handleMouseInput() throws IOException
-	{
+	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 
 		int mouseX = Mouse.getEventX() * width / mc.displayWidth;
@@ -259,18 +243,13 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 	}
 
 	@Override
-	public void setEntryValue(int id, String text)
-	{
-		if(text.isEmpty())
+	public void setEntryValue(int id, String text) {
+		if (text.isEmpty())
 			addButton.enabled = false;
-		else
-		{
-			if(module.hasTagCompound())
-			{
-				for(int i = 1; i <= ItemModule.MAX_PLAYERS; i++)
-				{
-					if(text.equals(module.getTagCompound().getString("Player" + i)))
-					{
+		else {
+			if (module.hasTagCompound()) {
+				for (int i = 1; i <= ItemModule.MAX_PLAYERS; i++) {
+					if (text.equals(module.getTagCompound().getString("Player" + i))) {
 						addButton.enabled = false;
 						removeButton.enabled = true;
 						playerList.setSelectedIndex(i - 1);
@@ -292,29 +271,24 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 	@Override
 	public void setEntryValue(int id, float value) {}
 
-	class PlayerList extends GuiScrollingList
-	{
-		public PlayerList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight)
-		{
+	class PlayerList extends GuiScrollingList {
+		public PlayerList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight) {
 			super(client, width, height, top, top + height, left, 12, screenWidth, screenHeight);
 		}
 
 		@Override
-		protected int getSize()
-		{
+		protected int getSize() {
 			return ItemModule.MAX_PLAYERS;
 		}
 
 		@Override
-		protected void elementClicked(int index, boolean doubleClick)
-		{
-			if(module.hasTagCompound() && module.getTagCompound().hasKey("Player" + (index + 1)))
+		protected void elementClicked(int index, boolean doubleClick) {
+			if (module.hasTagCompound() && module.getTagCompound().hasKey("Player" + (index + 1)))
 				inputField.setText(module.getTagCompound().getString("Player" + (index + 1)));
 		}
 
 		@Override
-		protected boolean isSelected(int index)
-		{
+		protected boolean isSelected(int index) {
 			return index == selectedIndex && module.hasTagCompound() && module.getTagCompound().hasKey("Player" + (index + 1)) && !module.getTagCompound().getString("Player" + (index + 1)).isEmpty();
 		}
 
@@ -322,37 +296,31 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 		protected void drawBackground() {}
 
 		@Override
-		protected void drawSlot(int slotIndex, int entryRight, int slotTop, int slotBuffer, Tessellator tessellator)
-		{
-			if(module.hasTagCompound())
-			{
+		protected void drawSlot(int slotIndex, int entryRight, int slotTop, int slotBuffer, Tessellator tessellator) {
+			if (module.hasTagCompound()) {
 				NBTTagCompound tag = module.getTagCompound();
 
 				slotBuffer--;
 
 				//highlighted selected slot
-				if(isSelected(slotIndex))
+				if (isSelected(slotIndex))
 					renderBox(tessellator, left, entryRight + 1, slotTop, slotBuffer, 0xFF);
-				//highlight hovered slot
-				else if(mouseX >= left && mouseX <= entryRight && slotIndex >= 0 && slotIndex < getSize() && mouseY >= slotTop - 1 && mouseY <= slotTop + slotBuffer + 2)
-				{
-					if(tag.hasKey("Player" + (slotIndex + 1)) && !tag.getString("Player" + (slotIndex + 1)).isEmpty())
+				else if (mouseX >= left && mouseX <= entryRight && slotIndex >= 0 && slotIndex < getSize() && mouseY >= slotTop - 1 && mouseY <= slotTop + slotBuffer + 2) {
+					if (tag.hasKey("Player" + (slotIndex + 1)) && !tag.getString("Player" + (slotIndex + 1)).isEmpty())
 						renderBox(tessellator, left, entryRight + 1, slotTop, slotBuffer, 0x80);
 				}
 
 				//draw name
-				if(tag.hasKey("Player" + (slotIndex + 1)))
-				{
+				if (tag.hasKey("Player" + (slotIndex + 1))) {
 					String name = tag.getString("Player" + (slotIndex + 1));
 
-					if(!name.isEmpty())
+					if (!name.isEmpty())
 						fontRenderer.drawString(name, width / 2 - 110 + listWidth / 2 - fontRenderer.getStringWidth(name) / 2 - 4, slotTop, 0xC6C6C6);
 				}
 			}
 		}
 
-		private void renderBox(Tessellator tessellator, int min, int max, int slotTop, int slotBuffer, int borderColor)
-		{
+		private void renderBox(Tessellator tessellator, int min, int max, int slotTop, int slotBuffer, int borderColor) {
 			BufferBuilder bufferBuilder = tessellator.getBuffer();
 
 			GlStateManager.disableTexture2D();
@@ -369,8 +337,7 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 			GlStateManager.enableTexture2D();
 		}
 
-		public void setSelectedIndex(int selectedIndex)
-		{
+		public void setSelectedIndex(int selectedIndex) {
 			this.selectedIndex = selectedIndex;
 		}
 	}

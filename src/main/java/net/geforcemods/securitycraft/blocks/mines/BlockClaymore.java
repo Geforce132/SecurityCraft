@@ -28,7 +28,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockClaymore extends BlockExplosive {
-
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
@@ -37,41 +36,33 @@ public class BlockClaymore extends BlockExplosive {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
-	}
-
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
-	@Override
-	public boolean isNormalCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public boolean isNormalCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-	{
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
 			return;
 		else
@@ -79,24 +70,21 @@ public class BlockClaymore extends BlockExplosive {
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess world, BlockPos pos)
-	{
+	public boolean isPassable(IBlockAccess world, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos)
-	{
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
 		return world.getBlockState(pos.down()).getBlock().isSideSolid(world.getBlockState(pos.down()), world, pos.down(), EnumFacing.UP);
 	}
 
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-		if (!player.capabilities.isCreativeMode && !world.isRemote && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED))
-		{
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+		if (!player.capabilities.isCreativeMode && !world.isRemote && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED)) {
 			world.destroyBlock(pos, false);
 
-			if(!EntityUtils.doesPlayerOwn(player, world, pos))
+			if (!EntityUtils.doesPlayerOwn(player, world, pos))
 				explode(world, pos);
 		}
 
@@ -104,15 +92,12 @@ public class BlockClaymore extends BlockExplosive {
 	}
 
 	@Override
-	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion)
-	{
-		if (!world.isRemote)
-		{
+	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion) {
+		if (!world.isRemote) {
 			IBlockState state = world.getBlockState(pos);
 
-			if(state.getPropertyKeys().contains(BlockClaymore.DEACTIVATED) && !state.getValue(BlockClaymore.DEACTIVATED))
-			{
-				if(pos.equals(new BlockPos(explosion.getPosition())))
+			if (state.getPropertyKeys().contains(BlockClaymore.DEACTIVATED) && !state.getValue(BlockClaymore.DEACTIVATED)) {
+				if (pos.equals(new BlockPos(explosion.getPosition())))
 					return;
 
 				explode(world, pos);
@@ -121,8 +106,7 @@ public class BlockClaymore extends BlockExplosive {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(DEACTIVATED, false);
 	}
 
@@ -130,8 +114,7 @@ public class BlockClaymore extends BlockExplosive {
 	public boolean activateMine(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 
-		if(state.getValue(DEACTIVATED))
-		{
+		if (state.getValue(DEACTIVATED)) {
 			world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
 			return true;
 		}
@@ -143,8 +126,7 @@ public class BlockClaymore extends BlockExplosive {
 	public boolean defuseMine(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 
-		if(!state.getValue(DEACTIVATED))
-		{
+		if (!state.getValue(DEACTIVATED)) {
 			world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
 			return true;
 		}
@@ -154,15 +136,14 @@ public class BlockClaymore extends BlockExplosive {
 
 	@Override
 	public void explode(World world, BlockPos pos) {
-		if(!world.isRemote){
+		if (!world.isRemote) {
 			world.destroyBlock(pos, false);
 			world.newExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.smallerMineExplosion ? 1.5F : 3.5F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
 		}
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		if (state.getValue(FACING) == EnumFacing.NORTH)
 			return new AxisAlignedBB(0.225F, 0.000F, 0.175F, 0.775F, 0.325F, 0.450F);
 		else if (state.getValue(FACING) == EnumFacing.SOUTH)
@@ -174,26 +155,23 @@ public class BlockClaymore extends BlockExplosive {
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		if(meta <= 5)
+	public IBlockState getStateFromMeta(int meta) {
+		if (meta <= 5)
 			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(DEACTIVATED, true);
 		else
 			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(DEACTIVATED, false);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		if(state.getValue(DEACTIVATED))
+	public int getMetaFromState(IBlockState state) {
+		if (state.getValue(DEACTIVATED))
 			return (state.getValue(FACING).getIndex() + 6);
 		else
 			return state.getValue(FACING).getIndex();
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, DEACTIVATED);
 	}
 
@@ -213,14 +191,12 @@ public class BlockClaymore extends BlockExplosive {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror)
-	{
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
 }

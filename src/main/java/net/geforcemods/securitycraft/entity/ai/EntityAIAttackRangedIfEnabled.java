@@ -9,17 +9,15 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.MathHelper;
 
-public class EntityAIAttackRangedIfEnabled extends EntityAIBase
-{
+public class EntityAIAttackRangedIfEnabled extends EntityAIBase {
 	private EntitySentry sentry;
 	private EntityLivingBase attackTarget;
 	private int rangedAttackTime;
 	private final Supplier<Integer> maxAttackTime;
 	private final float attackRadius;
 
-	public EntityAIAttackRangedIfEnabled(IRangedAttackMob attacker, Supplier<Integer> maxAttackTime, float maxAttackDistance)
-	{
-		sentry = (EntitySentry)attacker;
+	public EntityAIAttackRangedIfEnabled(IRangedAttackMob attacker, Supplier<Integer> maxAttackTime, float maxAttackDistance) {
+		sentry = (EntitySentry) attacker;
 		rangedAttackTime = -1;
 		this.maxAttackTime = maxAttackTime;
 		attackRadius = maxAttackDistance;
@@ -27,22 +25,19 @@ public class EntityAIAttackRangedIfEnabled extends EntityAIBase
 	}
 
 	@Override
-	public boolean shouldExecute()
-	{
+	public boolean shouldExecute() {
 		EntityLivingBase potentialTarget = sentry.getAttackTarget();
 
-		if(potentialTarget == null)
+		if (potentialTarget == null)
 			return false;
-		else
-		{
+		else {
 			attackTarget = potentialTarget;
 			return sentry.getMode() != EnumSentryMode.IDLE;
 		}
 	}
 
 	@Override
-	public void resetTask()
-	{
+	public void resetTask() {
 		attackTarget = null;
 		rangedAttackTime = -3;
 	}
@@ -54,9 +49,8 @@ public class EntityAIAttackRangedIfEnabled extends EntityAIBase
 
 		sentry.getLookHelper().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
 
-		if(--rangedAttackTime == 0)
-		{
-			if(!sentry.getEntitySenses().canSee(attackTarget))
+		if (--rangedAttackTime == 0) {
+			if (!sentry.getEntitySenses().canSee(attackTarget))
 				return;
 
 			float f = MathHelper.sqrt(targetDistance) / attackRadius;
@@ -65,7 +59,7 @@ public class EntityAIAttackRangedIfEnabled extends EntityAIBase
 			sentry.attackEntityWithRangedAttack(attackTarget, distanceFactor);
 			rangedAttackTime = MathHelper.floor(maxAttackTime.get());
 		}
-		else if(rangedAttackTime < 0)
+		else if (rangedAttackTime < 0)
 			rangedAttackTime = MathHelper.floor(maxAttackTime.get());
 	}
 }

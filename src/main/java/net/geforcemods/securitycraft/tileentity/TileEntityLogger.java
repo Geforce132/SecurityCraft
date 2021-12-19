@@ -24,11 +24,11 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 
 	@Override
 	public void update() {
-		if(!world.isRemote) {
-			if(cooldown-- > 0)
+		if (!world.isRemote) {
+			if (cooldown-- > 0)
 				return;
 
-			if(world.getRedstonePowerFromNeighbors(pos) > 0) {
+			if (world.getRedstonePowerFromNeighbors(pos) > 0) {
 				world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
 				syncLoggedPlayersToClient();
 			}
@@ -41,15 +41,13 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 		String playerName = player.getName();
 		long timestamp = System.currentTimeMillis();
 
-		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp))
-		{
+		if (!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !wasPlayerRecentlyAdded(playerName, timestamp)) {
 			//ignore players on the allowlist
-			if(ModuleUtils.isAllowed(this, player))
+			if (ModuleUtils.isAllowed(this, player))
 				return;
 
-			for(int i = 0; i < players.length; i++)
-			{
-				if(players[i] == null || players[i].equals("")){
+			for (int i = 0; i < players.length; i++) {
+				if (players[i] == null || players[i].equals("")) {
 					players[i] = player.getName();
 					uuids[i] = player.getGameProfile().getId().toString();
 					timestamps[i] = timestamp;
@@ -60,9 +58,8 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 	}
 
 	private boolean wasPlayerRecentlyAdded(String username, long timestamp) {
-		for(int i = 0; i < players.length; i++)
-		{
-			if(players[i] != null && players[i].equals(username) && (timestamps[i] + 1000L) > timestamp) //was within the last second that the same player was last added
+		for (int i = 0; i < players.length; i++) {
+			if (players[i] != null && players[i].equals(username) && (timestamps[i] + 1000L) > timestamp) //was within the last second that the same player was last added
 				return true;
 		}
 
@@ -70,11 +67,10 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag){
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		for(int i = 0; i < players.length; i++)
-		{
+		for (int i = 0; i < players.length; i++) {
 			tag.setString("player" + i, players[i] == null ? "" : players[i]);
 			tag.setString("uuid" + i, uuids[i] == null ? "" : uuids[i]);
 			tag.setLong("timestamp" + i, timestamps[i]);
@@ -84,21 +80,19 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag){
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
-		for(int i = 0; i < players.length; i++)
-		{
+		for (int i = 0; i < players.length; i++) {
 			players[i] = tag.getString("player" + i);
 			uuids[i] = tag.getString("uuid" + i);
 			timestamps[i] = tag.getLong("timestamp" + i);
 		}
 	}
 
-	public void syncLoggedPlayersToClient(){
-		for(int i = 0; i < players.length; i++)
-		{
-			if(players[i] != null)
+	public void syncLoggedPlayersToClient() {
+		for (int i = 0; i < players.length; i++) {
+			if (players[i] != null)
 				SecurityCraft.network.sendToAll(new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
 		}
 	}
@@ -108,14 +102,16 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 	}
 
 	@Override
-	public EnumModuleType[] acceptedModules()
-	{
-		return new EnumModuleType[]{EnumModuleType.DISGUISE, EnumModuleType.ALLOWLIST};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[] {
+				EnumModuleType.DISGUISE, EnumModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
-	public Option<?>[] customOptions()
-	{
-		return new Option[]{searchRadius};
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				searchRadius
+		};
 	}
 }

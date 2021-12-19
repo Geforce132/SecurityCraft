@@ -11,53 +11,47 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class SyncSSSSettingsOnServer implements IMessage {
-
 	private BlockPos pos;
 	private DataType dataType;
 
 	public SyncSSSSettingsOnServer() {}
 
-	public SyncSSSSettingsOnServer(BlockPos pos, DataType dataType){
+	public SyncSSSSettingsOnServer(BlockPos pos, DataType dataType) {
 		this.pos = pos;
 		this.dataType = dataType;
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf)
-	{
+	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 		buf.writeInt(dataType.ordinal());
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf)
-	{
+	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
 		dataType = DataType.values()[buf.readInt()];
 	}
 
 	public static class Handler implements IMessageHandler<SyncSSSSettingsOnServer, IMessage> {
 		@Override
-		public IMessage onMessage(SyncSSSSettingsOnServer message, MessageContext ctx)
-		{
+		public IMessage onMessage(SyncSSSSettingsOnServer message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = message.pos;
 				World world = ctx.getServerHandler().player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if(te instanceof TileEntitySonicSecuritySystem && ((TileEntitySonicSecuritySystem) te).getOwner().isOwner(ctx.getServerHandler().player))
-				{
+				if (te instanceof TileEntitySonicSecuritySystem && ((TileEntitySonicSecuritySystem) te).getOwner().isOwner(ctx.getServerHandler().player)) {
 					TileEntitySonicSecuritySystem sss = (TileEntitySonicSecuritySystem) te;
 
-					switch(message.dataType)
-					{
+					switch (message.dataType) {
 						case POWER_ON:
 							sss.setActive(true);
 							break;
 						case POWER_OFF:
 							sss.setActive(false);
 
-							if(sss.isRecording())
+							if (sss.isRecording())
 								sss.setRecording(false);
 							break;
 						case SOUND_ON:
@@ -82,8 +76,13 @@ public class SyncSSSSettingsOnServer implements IMessage {
 		}
 	}
 
-	public enum DataType
-	{
-		POWER_ON, POWER_OFF, SOUND_ON, SOUND_OFF, RECORDING_ON, RECORDING_OFF, CLEAR_NOTES;
+	public enum DataType {
+		POWER_ON,
+		POWER_OFF,
+		SOUND_ON,
+		SOUND_OFF,
+		RECORDING_ON,
+		RECORDING_OFF,
+		CLEAR_NOTES;
 	}
 }

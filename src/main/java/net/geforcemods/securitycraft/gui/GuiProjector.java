@@ -23,25 +23,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiProjector extends GuiContainer implements ISlider {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
 	private static final String SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block").getFormattedText();
 	private TileEntityProjector te;
 	private String blockName;
-
 	private StringHoverChecker[] hoverCheckers = new StringHoverChecker[5];
 	private StringHoverChecker slotHoverChecker;
-
 	private GuiSlider projectionWidthSlider;
 	private GuiSlider projectionHeightSlider;
 	private GuiSlider projectionRangeSlider;
 	private GuiSlider projectionOffsetSlider;
 	private TogglePictureButton toggleButton;
-
 	private int sliderWidth = 120;
 
-	public GuiProjector(InventoryPlayer inv, TileEntityProjector te)
-	{
+	public GuiProjector(InventoryPlayer inv, TileEntityProjector te) {
 		super(new ContainerProjector(inv, te));
 		this.te = te;
 		blockName = Utils.localize(te.getWorld().getBlockState(te.getPos()).getBlock().getTranslationKey() + ".name").getFormattedText();
@@ -49,8 +44,7 @@ public class GuiProjector extends GuiContainer implements ISlider {
 	}
 
 	@Override
-	public void initGui()
-	{
+	public void initGui() {
 		super.initGui();
 		int id = 0;
 		int left = guiLeft + ((xSize - sliderWidth) / 2);
@@ -71,7 +65,9 @@ public class GuiProjector extends GuiContainer implements ISlider {
 		projectionWidthSlider.packedFGColour = 14737632;
 		hoverCheckers[id++] = new StringHoverChecker(projectionOffsetSlider, Utils.localize("gui.securitycraft:projector.offset.description").getFormattedText());
 
-		toggleButton = addButton(new TogglePictureButton(id, left, guiTop + 26, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, b -> {
+		//@formatter:off
+		toggleButton = addButton(new TogglePictureButton(id, left, guiTop + 26, 20, 20, TEXTURE, new int[] {176, 192}, new int[] {0, 0}, 2, 2, b -> {
+			//@formatter:on
 			te.setHorizontal(!te.isHorizontal());
 			projectionRangeSlider.updateSlider();
 			SecurityCraft.network.sendToServer(new SyncProjector(te.getPos(), te.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
@@ -84,31 +80,27 @@ public class GuiProjector extends GuiContainer implements ISlider {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks)
-	{
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		renderHoveredToolTip(mouseX, mouseY);
 
-		for(StringHoverChecker thc : hoverCheckers)
-		{
-			if(thc.checkHover(mouseX, mouseY))
+		for (StringHoverChecker thc : hoverCheckers) {
+			if (thc.checkHover(mouseX, mouseY))
 				drawHoveringText(thc.getName(), mouseX, mouseY);
 		}
 
-		if(slotHoverChecker.checkHover(mouseX, mouseY) && te.isEmpty())
+		if (slotHoverChecker.checkHover(mouseX, mouseY) && te.isEmpty())
 			drawHoveringText(slotHoverChecker.getName(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
@@ -118,35 +110,29 @@ public class GuiProjector extends GuiContainer implements ISlider {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button)
-	{
-		if(button instanceof ClickButton)
-			((ClickButton)button).onClick();
+	protected void actionPerformed(GuiButton button) {
+		if (button instanceof ClickButton)
+			((ClickButton) button).onClick();
 	}
 
 	@Override
-	public void onMouseRelease(int id)
-	{
+	public void onMouseRelease(int id) {
 		int data = 0;
 		DataType dataType = DataType.INVALID;
 
-		if(id == projectionWidthSlider.id)
-		{
+		if (id == projectionWidthSlider.id) {
 			te.setProjectionWidth(data = projectionWidthSlider.getValueInt());
 			dataType = DataType.WIDTH;
 		}
-		else if(id == projectionHeightSlider.id)
-		{
+		else if (id == projectionHeightSlider.id) {
 			te.setProjectionHeight(data = projectionHeightSlider.getValueInt());
 			dataType = DataType.HEIGHT;
 		}
-		else if(id == projectionRangeSlider.id)
-		{
+		else if (id == projectionRangeSlider.id) {
 			te.setProjectionRange(data = projectionRangeSlider.getValueInt());
 			dataType = DataType.RANGE;
 		}
-		else if(id == projectionOffsetSlider.id)
-		{
+		else if (id == projectionOffsetSlider.id) {
 			te.setProjectionOffset(data = projectionOffsetSlider.getValueInt());
 			dataType = DataType.OFFSET;
 		}
@@ -155,9 +141,8 @@ public class GuiProjector extends GuiContainer implements ISlider {
 	}
 
 	@Override
-	public void onChangeSliderValue(GuiSlider slider, String blockName, int id)
-	{
-		if(te.isHorizontal() && slider.id == projectionRangeSlider.id)
+	public void onChangeSliderValue(GuiSlider slider, String blockName, int id) {
+		if (te.isHorizontal() && slider.id == projectionRangeSlider.id)
 			slider.displayString = slider.prefix + (slider.getValueInt() - 16);
 		else
 			slider.displayString = slider.prefix + slider.getValueInt();

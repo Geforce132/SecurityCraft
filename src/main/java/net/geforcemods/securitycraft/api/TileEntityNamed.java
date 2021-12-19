@@ -11,8 +11,7 @@ public class TileEntityNamed extends TileEntityOwnable implements INameSetter {
 	private String customName = "";
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
 		tag.setString("customName", customName);
@@ -20,22 +19,22 @@ public class TileEntityNamed extends TileEntityOwnable implements INameSetter {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
 		if (tag.hasKey("customName")) {
 			String name = tag.getString("customName");
 
-			if(!name.equals("name"))
+			if (!name.equals("name"))
 				customName = name;
 		}
 	}
 
 	public void sync() {
-		if(world == null) return;
+		if (world == null)
+			return;
 
-		if(world.isRemote)
+		if (world.isRemote)
 			ClientUtils.syncTileEntity(this);
 		else
 			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getUpdatePacket());

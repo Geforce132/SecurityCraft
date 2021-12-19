@@ -40,46 +40,35 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable, INameSetter, ILockable {
-
 	private InsertOnlyDoubleChestHandler insertOnlyHandler;
 	private String passcode;
 	private Owner owner = new Owner();
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
 
-		if(passcode != null && !passcode.isEmpty())
+		if (passcode != null && !passcode.isEmpty())
 			tag.setString("passcode", passcode);
 
-		if(owner != null)
+		if (owner != null)
 			owner.writeToNBT(tag, false);
 
 		return tag;
 	}
 
 	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
-	{
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		return oldState.getBlock() != newState.getBlock();
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
 		modules = readModuleInventory(tag);
@@ -89,75 +78,67 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag()
-	{
+	public NBTTagCompound getUpdateTag() {
 		return writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket()
-	{
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		return new SPacketUpdateTileEntity(pos, 1, getUpdateTag());
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-	{
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
-	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T)BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), () -> getInsertOnlyHandler());
-		else return super.getCapability(capability, facing);
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return (T) BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), () -> getInsertOnlyHandler());
+		else
+			return super.getCapability(capability, facing);
 	}
 
-	private InsertOnlyDoubleChestHandler getInsertOnlyHandler()
-	{
-		if(insertOnlyHandler == null || insertOnlyHandler.needsRefresh())
+	private InsertOnlyDoubleChestHandler getInsertOnlyHandler() {
+		if (insertOnlyHandler == null || insertOnlyHandler.needsRefresh())
 			insertOnlyHandler = InsertOnlyDoubleChestHandler.get(this);
 
 		return insertOnlyHandler;
 	}
 
-	public IItemHandler getHandlerForSentry(EntitySentry entity)
-	{
-		if(entity.getOwner().owns(this))
+	public IItemHandler getHandlerForSentry(EntitySentry entity) {
+		if (entity.getOwner().owns(this))
 			return super.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
 		else
 			return null;
 	}
 
 	@Override
-	public boolean enableHack()
-	{
+	public boolean enableHack() {
 		return true;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot)
-	{
+	public ItemStack getStackInSlot(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : super.getStackInSlot(slot);
 	}
 
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!world.isRemote && !isBlocked())
-			((BlockKeypadChest)getBlockType()).activate(world, pos, player);
+		if (!world.isRemote && !isBlocked())
+			((BlockKeypadChest) getBlockType()).activate(world, pos, player);
 	}
 
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
-		if(isBlocked())
+		if (isBlocked())
 			return;
 
-		if(getPassword() != null)
+		if (getPassword() != null)
 			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
-		else
-		{
-			if(getOwner().isOwner(player))
+		else {
+			if (getOwner().isOwner(player))
 				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			else
 				PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
@@ -171,64 +152,55 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumModuleType module)
-	{
+	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
 		IModuleInventory.super.onModuleInserted(stack, module);
 
 		addOrRemoveModuleFromAttached(stack, false);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
-	{
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
 		IModuleInventory.super.onModuleRemoved(stack, module);
 
 		addOrRemoveModuleFromAttached(stack, true);
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option)
-	{
-		if(option instanceof OptionBoolean)
-		{
+	public void onOptionChanged(Option<?> option) {
+		if (option instanceof OptionBoolean) {
 			TileEntityKeypadChest offsetTe = findOther();
 
-			if(offsetTe != null)
-				offsetTe.setSendsMessages(((OptionBoolean)option).get());
+			if (offsetTe != null)
+				offsetTe.setSendsMessages(((OptionBoolean) option).get());
 		}
 	}
 
-	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove)
-	{
-		if(module.isEmpty() || !(module.getItem() instanceof ItemModule))
+	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove) {
+		if (module.isEmpty() || !(module.getItem() instanceof ItemModule))
 			return;
 
 		TileEntityKeypadChest offsetTe = findOther();
 
-		if(offsetTe != null)
-		{
-			if(remove)
-				offsetTe.removeModule(((ItemModule)module.getItem()).getModuleType());
+		if (offsetTe != null) {
+			if (remove)
+				offsetTe.removeModule(((ItemModule) module.getItem()).getModuleType());
 			else
 				offsetTe.insertModule(module);
 		}
 	}
 
-	public TileEntityKeypadChest findOther()
-	{
+	public TileEntityKeypadChest findOther() {
 		IBlockState state = world.getBlockState(pos);
 
-		for(EnumFacing facing : EnumFacing.HORIZONTALS)
-		{
+		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
 			BlockPos offsetPos = pos.offset(facing);
 			IBlockState offsetState = world.getBlockState(offsetPos);
 
-			if(state.getBlock() == offsetState.getBlock())
-			{
+			if (state.getBlock() == offsetState.getBlock()) {
 				TileEntity offsetTe = world.getTileEntity(offsetPos);
 
-				if(offsetTe instanceof TileEntityKeypadChest)
-					return (TileEntityKeypadChest)offsetTe;
+				if (offsetTe instanceof TileEntityKeypadChest)
+					return (TileEntityKeypadChest) offsetTe;
 			}
 		}
 
@@ -246,7 +218,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
-	public Owner getOwner(){
+	public Owner getOwner() {
 		return owner;
 	}
 
@@ -256,17 +228,14 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
-	protected TileEntityChest getAdjacentChest(EnumFacing side)
-	{
+	protected TileEntityChest getAdjacentChest(EnumFacing side) {
 		BlockPos blockpos = pos.offset(side);
 
-		if(isChestAt(blockpos))
-		{
+		if (isChestAt(blockpos)) {
 			TileEntity te = world.getTileEntity(blockpos);
 
-			if(te instanceof TileEntityKeypadChest)
-			{
-				TileEntityKeypadChest tileentitychest = (TileEntityKeypadChest)te;
+			if (te instanceof TileEntityKeypadChest) {
+				TileEntityKeypadChest tileentitychest = (TileEntityKeypadChest) te;
 
 				tileentitychest.setNeighbor(this, side.getOpposite());
 				return tileentitychest;
@@ -277,97 +246,81 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
-	public boolean isChestAt(BlockPos pos)
-	{
+	public boolean isChestAt(BlockPos pos) {
 		return world != null && world.getBlockState(pos).getBlock() instanceof BlockKeypadChest;
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player)
-	{
-		if (!player.isSpectator())
-		{
-			if (this.numPlayersUsing < 0)
-			{
-				this.numPlayersUsing = 0;
-			}
+	public void openInventory(EntityPlayer player) {
+		if (!player.isSpectator()) {
+			if (numPlayersUsing < 0)
+				numPlayersUsing = 0;
 
-			++this.numPlayersUsing;
-			this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
-			this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), false);
+			++numPlayersUsing;
+			world.addBlockEvent(pos, getBlockType(), 1, numPlayersUsing);
+			world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
 
 			if (hasModule(EnumModuleType.REDSTONE))
-			{
-				this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType(), false);
-			}
+				this.world.notifyNeighborsOfStateChange(pos.down(), getBlockType(), false);
 		}
 	}
 
 	@Override
-	public void closeInventory(EntityPlayer player)
-	{
-		if(!player.isSpectator() && getBlockType() instanceof BlockKeypadChest)
-		{
+	public void closeInventory(EntityPlayer player) {
+		if (!player.isSpectator() && getBlockType() instanceof BlockKeypadChest) {
 			--numPlayersUsing;
 			world.addBlockEvent(pos, getBlockType(), 1, numPlayersUsing);
 			world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
 
 			if (hasModule(EnumModuleType.REDSTONE))
-			{
-				this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType(), false);
-			}
+				world.notifyNeighborsOfStateChange(pos.down(), getBlockType(), false);
 		}
 	}
 
-	public boolean isBlocked()
-	{
-		for(EnumFacing facing : EnumFacing.HORIZONTALS)
-		{
+	public boolean isBlocked() {
+		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
 			BlockPos pos = getPos().offset(facing);
 
-			if(world.getBlockState(pos).getBlock() instanceof BlockKeypadChest && BlockKeypadChest.isBlocked(world, pos))
+			if (world.getBlockState(pos).getBlock() instanceof BlockKeypadChest && BlockKeypadChest.isBlocked(world, pos))
 				return true;
 		}
 
 		return isSingleBlocked();
 	}
 
-	public boolean isSingleBlocked()
-	{
+	public boolean isSingleBlocked() {
 		return BlockKeypadChest.isBlocked(getWorld(), getPos());
 	}
 
 	@Override
-	public AxisAlignedBB getRenderBoundingBox()
-	{
+	public AxisAlignedBB getRenderBoundingBox() {
 		return new AxisAlignedBB(pos.add(-1, 0, -1), pos.add(2, 2, 2));
 	}
 
 	@Override
-	public NonNullList<ItemStack> getInventory()
-	{
+	public NonNullList<ItemStack> getInventory() {
 		return modules;
 	}
 
 	@Override
-	public EnumModuleType[] acceptedModules()
-	{
-		return new EnumModuleType[] {EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.REDSTONE};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[] {
+				EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.REDSTONE
+		};
 	}
 
 	@Override
-	public Option<?>[] customOptions()
-	{
-		return new Option[]{sendMessage};
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				sendMessage
+		};
 	}
 
-	public boolean sendsMessages()
-	{
+	public boolean sendsMessages() {
 		return sendMessage.get();
 	}
 
-	public void setSendsMessages(boolean value)
-	{
+	public void setSendsMessages(boolean value) {
 		IBlockState state = world.getBlockState(pos);
 
 		sendMessage.setValue(value);

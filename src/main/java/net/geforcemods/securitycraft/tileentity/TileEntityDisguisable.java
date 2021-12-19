@@ -7,35 +7,32 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.minecraft.item.ItemStack;
 
-public class TileEntityDisguisable extends CustomizableSCTE
-{
+public class TileEntityDisguisable extends CustomizableSCTE {
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumModuleType module)
-	{
+	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
 		super.onModuleInserted(stack, module);
 
-		if(!world.isRemote && module == EnumModuleType.DISGUISE)
+		if (!world.isRemote && module == EnumModuleType.DISGUISE)
 			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, true, stack));
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
-	{
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
 		super.onModuleRemoved(stack, module);
 
-		if(!world.isRemote && module == EnumModuleType.DISGUISE)
+		if (!world.isRemote && module == EnumModuleType.DISGUISE)
 			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, false, stack));
 	}
 
 	@Override
-	public EnumModuleType[] acceptedModules()
-	{
-		return new EnumModuleType[]{EnumModuleType.DISGUISE};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[] {
+				EnumModuleType.DISGUISE
+		};
 	}
 
 	@Override
-	public Option<?>[] customOptions()
-	{
+	public Option<?>[] customOptions() {
 		return null;
 	}
 }

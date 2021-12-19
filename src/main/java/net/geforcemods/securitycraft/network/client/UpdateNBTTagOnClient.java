@@ -11,16 +11,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class UpdateNBTTagOnClient implements IMessage{
-
+public class UpdateNBTTagOnClient implements IMessage {
 	private ItemStack stack;
 
-	public UpdateNBTTagOnClient(){
-
+	public UpdateNBTTagOnClient() {
 	}
 
-	public UpdateNBTTagOnClient(ItemStack stack){
-		if(!stack.isEmpty() && stack.hasTagCompound()){
+	public UpdateNBTTagOnClient(ItemStack stack) {
+		if (!stack.isEmpty() && stack.hasTagCompound()) {
 			this.stack = stack;
 		}
 	}
@@ -36,17 +34,15 @@ public class UpdateNBTTagOnClient implements IMessage{
 	}
 
 	public static class Handler implements IMessageHandler<UpdateNBTTagOnClient, IMessage> {
-
 		@Override
 		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(UpdateNBTTagOnClient message, MessageContext ctx) {
 			ItemStack stackToUpdate = PlayerUtils.getSelectedItemStack(Minecraft.getMinecraft().player.inventory, message.stack.getItem());
 
-			if(!stackToUpdate.isEmpty())
+			if (!stackToUpdate.isEmpty())
 				stackToUpdate.setTagCompound(message.stack.getTagCompound());
 
 			return null;
 		}
 	}
-
 }

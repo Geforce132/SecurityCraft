@@ -20,7 +20,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockReinforcedPistonMoving extends BlockPistonMoving {
-
 	public static TileEntity createTilePiston(IBlockState state, NBTTagCompound tag, EnumFacing facing, boolean extending, boolean shouldHeadBeRendered) {
 		return new TileEntityReinforcedPiston(state, tag, facing, extending, shouldHeadBeRendered);
 	}
@@ -29,9 +28,8 @@ public class BlockReinforcedPistonMoving extends BlockPistonMoving {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof TileEntityReinforcedPiston) {
-			((TileEntityReinforcedPiston)te).clearPistonTileEntity();
-		}
+		if (te instanceof TileEntityReinforcedPiston)
+			((TileEntityReinforcedPiston) te).clearPistonTileEntity();
 	}
 
 	@Override
@@ -39,9 +37,8 @@ public class BlockReinforcedPistonMoving extends BlockPistonMoving {
 		BlockPos oppositePos = pos.offset(state.getValue(FACING).getOpposite());
 		IBlockState oppositeState = world.getBlockState(oppositePos);
 
-		if (oppositeState.getBlock() instanceof BlockReinforcedPistonBase && oppositeState.getValue(BlockPistonBase.EXTENDED)) {
+		if (oppositeState.getBlock() instanceof BlockReinforcedPistonBase && oppositeState.getValue(BlockPistonBase.EXTENDED))
 			world.setBlockToAir(oppositePos);
-		}
 	}
 
 	@Override
@@ -55,9 +52,8 @@ public class BlockReinforcedPistonMoving extends BlockPistonMoving {
 	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entity, boolean isActualState) {
 		TileEntityReinforcedPiston tileEntityReinforcedPiston = getTilePistonAt(world, pos);
 
-		if (tileEntityReinforcedPiston != null) {
+		if (tileEntityReinforcedPiston != null)
 			tileEntityReinforcedPiston.addCollisionAABBs(world, pos, entityBox, collidingBoxes, entity);
-		}
 	}
 
 	@Override
@@ -70,7 +66,7 @@ public class BlockReinforcedPistonMoving extends BlockPistonMoving {
 	private TileEntityReinforcedPiston getTilePistonAt(IBlockAccess world, BlockPos pos) {
 		TileEntity tileentity = world.getTileEntity(pos);
 
-		return tileentity instanceof TileEntityReinforcedPiston ? (TileEntityReinforcedPiston)tileentity : null;
+		return tileentity instanceof TileEntityReinforcedPiston ? (TileEntityReinforcedPiston) tileentity : null;
 	}
 
 	@Override

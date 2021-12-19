@@ -25,43 +25,40 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedIronBars extends BlockPane implements ITileEntityProvider, IReinforcedBlock {
-
 	public BlockReinforcedIronBars(Material material, boolean par2) {
 		super(material, par2);
 		setSoundType(SoundType.METAL);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state){
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
 		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param){
+	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
 		super.eventReceived(state, world, pos, id, param);
 		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity != null ? tileentity.receiveClientEvent(id, param) : false;
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player){
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		return new ItemStack(SCContent.reinforcedIronBars);
 	}
 
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-	{
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if(te instanceof TileEntityReinforcedIronBars && ((TileEntityReinforcedIronBars)te).canDrop())
+		if (te instanceof TileEntityReinforcedIronBars && ((TileEntityReinforcedIronBars) te).canDrop())
 			drops.add(new ItemStack(SCContent.reinforcedIronBars));
 	}
 
@@ -71,14 +68,12 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
-	{
+	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.IRON_BARS);
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return 1;
 	}
 }

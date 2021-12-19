@@ -27,7 +27,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 public class TileEntityReinforcedPiston extends TileEntity implements IOwnable, ITickable { //this class doesn't extend TileEntityPiston because almost all of that class' content is private
-
 	private IBlockState pistonState;
 	private NBTTagCompound tileEntityTag;
 	private EnumFacing pistonFacing;
@@ -38,8 +37,7 @@ public class TileEntityReinforcedPiston extends TileEntity implements IOwnable, 
 	public float lastProgress;
 	private Owner owner = new Owner();
 
-	public TileEntityReinforcedPiston() {
-	}
+	public TileEntityReinforcedPiston() {}
 
 	public TileEntityReinforcedPiston(IBlockState pistonState, NBTTagCompound tag, EnumFacing pistonFacing, boolean extending, boolean shouldHeadBeRendered) {
 		this.pistonState = pistonState;
@@ -76,14 +74,9 @@ public class TileEntityReinforcedPiston extends TileEntity implements IOwnable, 
 		return shouldHeadBeRendered;
 	}
 
-	/**
-	 * Get interpolated progress value (between lastProgress and progress) given the fractional time between ticks as an
-	 * argument
-	 */
 	public float getProgress(float ticks) {
-		if (ticks > 1.0F) {
+		if (ticks > 1.0F)
 			ticks = 1.0F;
-		}
 
 		return lastProgress + (progress - lastProgress) * ticks;
 	}
@@ -159,9 +152,8 @@ public class TileEntityReinforcedPiston extends TileEntity implements IOwnable, 
 							if (movementArea.intersects(entityBoundingBox)) {
 								movement = Math.max(movement, getMovement(movementArea, facing, entityBoundingBox));
 
-								if (movement >= d0) {
+								if (movement >= d0)
 									break;
-								}
 							}
 						}
 
@@ -171,9 +163,8 @@ public class TileEntityReinforcedPiston extends TileEntity implements IOwnable, 
 							entity.move(MoverType.PISTON, movement * facing.getXOffset(), movement * facing.getYOffset(), movement * facing.getZOffset());
 							MOVING_ENTITY.set(null);
 
-							if (!extending && shouldHeadBeRendered) {
+							if (!extending && shouldHeadBeRendered)
 								fixEntityWithinPistonBase(entity, facing, d0);
-							}
 						}
 					}
 				}
@@ -213,8 +204,7 @@ public class TileEntityReinforcedPiston extends TileEntity implements IOwnable, 
 		}
 	}
 
-	private AxisAlignedBB moveByPositionAndProgress(AxisAlignedBB boundingBox)
-	{
+	private AxisAlignedBB moveByPositionAndProgress(AxisAlignedBB boundingBox) {
 		double progress = getExtendedProgress(this.progress);
 		return boundingBox.offset(pos.getX() + progress * pistonFacing.getXOffset(), pos.getY() + progress * pistonFacing.getYOffset(), pos.getZ() + progress * pistonFacing.getZOffset());
 	}
@@ -282,10 +272,10 @@ public class TileEntityReinforcedPiston extends TileEntity implements IOwnable, 
 				IBlockState pushedState = getPistonState();
 				Block pushedBlock = pushedState.getBlock();
 
-				if (tileEntityTag != null){
+				if (tileEntityTag != null) {
 					TileEntity te = pushedBlock.hasTileEntity(pushedState) ? pushedBlock.createTileEntity(world, pushedState) : null;
 
-					if (te != null){
+					if (te != null) {
 						Chunk chunk = world.getChunk(pos);
 
 						te.readFromNBT(tileEntityTag);
@@ -302,7 +292,7 @@ public class TileEntityReinforcedPiston extends TileEntity implements IOwnable, 
 
 	@Override
 	public void update() {
-		this.lastProgress = progress;
+		lastProgress = progress;
 
 		if (lastProgress >= 1.0F) {
 			world.removeTileEntity(pos);
@@ -333,9 +323,8 @@ public class TileEntityReinforcedPiston extends TileEntity implements IOwnable, 
 			moveCollidedEntities(f);
 			progress = f;
 
-			if (progress >= 1.0F) {
+			if (progress >= 1.0F)
 				progress = 1.0F;
-			}
 		}
 	}
 
@@ -363,17 +352,15 @@ public class TileEntityReinforcedPiston extends TileEntity implements IOwnable, 
 		compound.setBoolean("source", shouldHeadBeRendered);
 		compound.setTag("movedTileEntityTag", tileEntityTag);
 
-		if(owner != null){
+		if (owner != null)
 			owner.writeToNBT(compound, false);
-		}
 
 		return compound;
 	}
 
 	public void addCollisionAABBs(World world, BlockPos pos, AxisAlignedBB entityBoundingBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entity) {
-		if (!extending && shouldHeadBeRendered) {
+		if (!extending && shouldHeadBeRendered)
 			pistonState.withProperty(BlockPistonBase.EXTENDED, true).addCollisionBoxToList(world, pos, entityBoundingBox, collidingBoxes, entity, false);
-		}
 
 		EnumFacing enumfacing = MOVING_ENTITY.get();
 
@@ -381,12 +368,10 @@ public class TileEntityReinforcedPiston extends TileEntity implements IOwnable, 
 			int i = collidingBoxes.size();
 			IBlockState state;
 
-			if (shouldPistonHeadBeRendered()) {
+			if (shouldPistonHeadBeRendered())
 				state = SCContent.reinforcedPistonHead.getDefaultState().withProperty(BlockPistonExtension.FACING, pistonFacing).withProperty(BlockPistonExtension.SHORT, extending != 1.0F - progress < 0.25F);
-			}
-			else {
+			else
 				state = pistonState;
-			}
 
 			float progress = getExtendedProgress(this.progress);
 			double d0 = pistonFacing.getXOffset() * progress;

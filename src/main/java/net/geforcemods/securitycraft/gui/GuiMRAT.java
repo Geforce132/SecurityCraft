@@ -23,8 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
-public class GuiMRAT extends GuiContainer{
-
+public class GuiMRAT extends GuiContainer {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
 	private ItemStack mrat;
@@ -41,7 +40,7 @@ public class GuiMRAT extends GuiContainer{
 	}
 
 	@Override
-	public void initGui(){
+	public void initGui() {
 		super.initGui();
 
 		int padding = 25;
@@ -50,19 +49,16 @@ public class GuiMRAT extends GuiContainer{
 		int id = 0;
 		hoverCheckers.clear();
 
-		for(int i = 0; i < 6; i++)
-		{
+		for (int i = 0; i < 6; i++) {
 			y += 30;
 			coords = getMineCoordinates(i);
 
 			//initialize buttons
-			for(int j = 0; j < 4; j++)
-			{
+			for (int j = 0; j < 4; j++) {
 				int btnX = guiLeft + j * padding + 154;
 				int btnY = guiTop + y - 48;
 
-				switch(j)
-				{
+				switch (j) {
 					case DEFUSE:
 						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(SCContent.wireCutters));
 						buttons[i][j].enabled = false;
@@ -103,6 +99,7 @@ public class GuiMRAT extends GuiContainer{
 					}
 					else {
 						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
+
 						for (int j = 0; j < 4; j++) {
 							buttons[i][j].enabled = false;
 						}
@@ -112,26 +109,22 @@ public class GuiMRAT extends GuiContainer{
 					for (int j = 0; j < 3; j++) {
 						hoverCheckers.add(new StringHoverChecker(buttons[i][j], Utils.localize("gui.securitycraft:mrat.outOfRange").getFormattedText()));
 					}
+
 					hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind").getFormattedText()));
 				}
 			}
 		}
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawString(Utils.localize("item.securitycraft:remoteAccessMine.name").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("item.securitycraft:remoteAccessMine.name").getFormattedText()), -25 + 13, 0xFF0000);
 
-		for(int i = 0; i < 6; i++)
-		{
+		for (int i = 0; i < 6; i++) {
 			int[] coords = getMineCoordinates(i);
 			String line;
 
-			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
+			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 				line = Utils.localize("gui.securitycraft:mrat.notBound").getFormattedText();
 			else
 				line = Utils.localize("gui.securitycraft:mrat.mineLocations", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).getFormattedText();
@@ -140,12 +133,8 @@ public class GuiMRAT extends GuiContainer{
 		}
 	}
 
-	/**
-	 * Draw the background layer for the GuiContainer (everything behind the items)
-	 */
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
@@ -158,31 +147,29 @@ public class GuiMRAT extends GuiContainer{
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		for(StringHoverChecker chc : hoverCheckers)
-		{
-			if(chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
+		for (StringHoverChecker chc : hoverCheckers) {
+			if (chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
 				drawHoveringText(chc.getLines(), mouseX, mouseY, fontRenderer);
 		}
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button){
+	protected void actionPerformed(GuiButton button) {
 		int mine = button.id / 4;
 		int action = button.id % 4;
 
 		int[] coords = getMineCoordinates(mine);
 
-		switch(action)
-		{
+		switch (action) {
 			case DEFUSE:
-				((IExplosive)Minecraft.getMinecraft().player.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getMinecraft().player.world, new BlockPos(coords[0], coords[1], coords[2]));
+				((IExplosive) Minecraft.getMinecraft().player.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getMinecraft().player.world, new BlockPos(coords[0], coords[1], coords[2]));
 				SecurityCraft.network.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "defuse"));
 				buttons[mine][DEFUSE].enabled = false;
 				buttons[mine][ACTIVATE].enabled = true;
 				buttons[mine][DETONATE].enabled = false;
 				break;
 			case ACTIVATE:
-				((IExplosive)Minecraft.getMinecraft().player.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getMinecraft().player.world, new BlockPos(coords[0], coords[1], coords[2]));
+				((IExplosive) Minecraft.getMinecraft().player.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getMinecraft().player.world, new BlockPos(coords[0], coords[1], coords[2]));
 				SecurityCraft.network.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "activate"));
 				buttons[mine][DEFUSE].enabled = true;
 				buttons[mine][ACTIVATE].enabled = false;
@@ -192,8 +179,7 @@ public class GuiMRAT extends GuiContainer{
 				SecurityCraft.network.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "detonate"));
 				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 
-				for(int i = 0; i < 4; i++)
-				{
+				for (int i = 0; i < 4; i++) {
 					buttons[mine][i].enabled = false;
 				}
 
@@ -201,8 +187,7 @@ public class GuiMRAT extends GuiContainer{
 			case UNBIND:
 				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 
-				for(int i = 0; i < 4; i++)
-				{
+				for (int i = 0; i < 4; i++) {
 					buttons[mine][i].enabled = false;
 				}
 		}
@@ -211,30 +196,29 @@ public class GuiMRAT extends GuiContainer{
 	/**
 	 * @param mine 0 based
 	 */
-	private int[] getMineCoordinates(int mine)
-	{
+	private int[] getMineCoordinates(int mine) {
 		mine++; //mines are stored starting by mine1 up to mine6
 
-		if(mrat.getItem() != null && mrat.getItem() == SCContent.remoteAccessMine && mrat.getTagCompound() != null &&  mrat.getTagCompound().getIntArray("mine" + mine) != null && mrat.getTagCompound().getIntArray("mine" + mine).length > 0)
+		if (mrat.getItem() != null && mrat.getItem() == SCContent.remoteAccessMine && mrat.getTagCompound() != null && mrat.getTagCompound().getIntArray("mine" + mine) != null && mrat.getTagCompound().getIntArray("mine" + mine).length > 0)
 			return mrat.getTagCompound().getIntArray("mine" + mine);
-		else
-			return new int[] {0,0,0};
+
+		return new int[] {
+				0, 0, 0
+		};
 	}
 
-	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z)
-	{
-		if(stack.getTagCompound() == null)
+	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z) {
+		if (stack.getTagCompound() == null)
 			return;
 
-		for(int i = 1; i <= 6; i++)
-		{
-			if(stack.getTagCompound().getIntArray("mine" + i).length > 0)
-			{
+		for (int i = 1; i <= 6; i++) {
+			if (stack.getTagCompound().getIntArray("mine" + i).length > 0) {
 				int[] coords = stack.getTagCompound().getIntArray("mine" + i);
 
-				if(coords[0] == x && coords[1] == y && coords[2] == z)
-				{
-					stack.getTagCompound().setIntArray("mine" + i, new int[]{0, 0, 0});
+				if (coords[0] == x && coords[1] == y && coords[2] == z) {
+					stack.getTagCompound().setIntArray("mine" + i, new int[] {
+							0, 0, 0
+					});
 					SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(stack));
 					return;
 				}

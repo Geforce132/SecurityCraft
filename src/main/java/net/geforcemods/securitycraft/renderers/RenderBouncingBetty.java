@@ -15,22 +15,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
-
-	public RenderBouncingBetty(RenderManager renderManager)
-	{
+	public RenderBouncingBetty(RenderManager renderManager) {
 		super(renderManager);
 		shadowSize = 0.5F;
 	}
 
 	@Override
-	public void doRender(EntityBouncingBetty entity, double x, double y, double z, float entityYaw, float partialTicks)
-	{
+	public void doRender(EntityBouncingBetty entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 		GlStateManager.pushMatrix();
-		GlStateManager.translate((float)x, (float)y + 0.5F, (float)z);
+		GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);
 
-		if (entity.fuse - partialTicks + 1.0F < 10.0F)
-		{
+		if (entity.fuse - partialTicks + 1.0F < 10.0F) {
 			float alpha = 1.0F - (entity.fuse - partialTicks + 1.0F) / 10.0F;
 			alpha = MathHelper.clamp(alpha, 0.0F, 1.0F);
 			alpha *= alpha;
@@ -48,8 +44,7 @@ public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBouncingBetty entity)
-	{
+	protected ResourceLocation getEntityTexture(EntityBouncingBetty entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 }

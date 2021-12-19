@@ -5,8 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 /**
- * SecurityCamera - Geforce
- * Created using Tabula 4.1.1
+ * SecurityCamera - Geforce Created using Tabula 4.1.1
  */
 public class ModelSecurityCamera extends ModelBase {
 	public ModelRenderer shape1;
@@ -62,9 +61,6 @@ public class ModelSecurityCamera extends ModelBase {
 		shape2.render(scale);
 	}
 
-	/**
-	 * This is a helper function from Tabula to set the rotation of model parts
-	 */
 	public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
 		modelRenderer.rotateAngleX = x;
 		modelRenderer.rotateAngleY = y;

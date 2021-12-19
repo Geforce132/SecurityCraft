@@ -11,57 +11,55 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class ContainerProjector extends Container {
-
 	public static final int SIZE = 1;
 	private final TileEntityProjector te;
 
-	public ContainerProjector(InventoryPlayer inventory, TileEntityProjector te)
-	{
+	public ContainerProjector(InventoryPlayer inventory, TileEntityProjector te) {
 		this.te = te;
 
-		for(int y = 0; y < 3; y++)
-			for(int x = 0; x < 9; ++x)
+		for (int y = 0; y < 3; y++) {
+			for (int x = 0; x < 9; ++x) {
 				addSlotToContainer(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18 + 59));
+			}
+		}
 
-		for(int x = 0; x < 9; x++)
+		for (int x = 0; x < 9; x++) {
 			addSlotToContainer(new Slot(inventory, x, 8 + x * 18, 142 + 59));
+		}
 
 		// A custom slot that prevents non-Block items from being inserted into the projector
-		addSlotToContainer(new Slot(te, 36, 79, 23)
-		{
+		addSlotToContainer(new Slot(te, 36, 79, 23) {
 			@Override
-			public boolean isItemValid(ItemStack stack)
-			{
+			public boolean isItemValid(ItemStack stack) {
 				return stack.getItem() instanceof ItemBlock;
 			}
 		});
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int index)
-	{
+	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
 
-		if(slot != null && slot.getHasStack()) {
+		if (slot != null && slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
 			slotStackCopy = slotStack.copy();
 
-			if(index == 36) {
-				if(!mergeItemStack(slotStack, 0, 36, false))
+			if (index == 36) {
+				if (!mergeItemStack(slotStack, 0, 36, false))
 					return ItemStack.EMPTY;
 			}
 			else {
-				if(!mergeItemStack(slotStack, 36, 37, false))
+				if (!mergeItemStack(slotStack, 36, 37, false))
 					return ItemStack.EMPTY;
 			}
 
-			if(slotStack.getCount() == 0)
+			if (slotStack.getCount() == 0)
 				slot.putStack(ItemStack.EMPTY);
 			else
 				slot.onSlotChanged();
 
-			if(slotStack.getCount() == slotStack.getCount())
+			if (slotStack.getCount() == slotStack.getCount())
 				return ItemStack.EMPTY;
 
 			slot.onTake(player, slotStack);
@@ -71,8 +69,7 @@ public class ContainerProjector extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player)
-	{
+	public boolean canInteractWith(EntityPlayer player) {
 		return BlockUtils.isWithinUsableDistance(te.getWorld(), te.getPos(), player, SCContent.projector);
 	}
 }

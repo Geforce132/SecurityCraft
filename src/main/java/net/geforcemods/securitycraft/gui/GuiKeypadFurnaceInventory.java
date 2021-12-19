@@ -13,43 +13,36 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiKeypadFurnaceInventory extends GuiContainer{
-
+public class GuiKeypadFurnaceInventory extends GuiContainer {
 	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation("textures/gui/container/furnace.png");
 	private TileEntityKeypadFurnace tileFurnace;
 	private boolean gurnace = false;
 
-	public GuiKeypadFurnaceInventory(InventoryPlayer inventory, TileEntityKeypadFurnace te){
+	public GuiKeypadFurnaceInventory(InventoryPlayer inventory, TileEntityKeypadFurnace te) {
 		super(new ContainerFurnace(inventory, te));
 		tileFurnace = te;
 
-		if(new Random().nextInt(100) < 5)
+		if (new Random().nextInt(100) < 5)
 			gurnace = true;
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks)
-	{
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
+		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomName() ? tileFurnace.getName() : Utils.localize("gui.securitycraft:protectedFurnace.name").getFormattedText());
 		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
 		fontRenderer.drawString(Utils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(furnaceGuiTextures);
@@ -57,8 +50,7 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
 		int startY = (height - ySize) / 2;
 		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 
-		if (tileFurnace.isBurning())
-		{
+		if (tileFurnace.isBurning()) {
 			int burnTime = tileFurnace.getBurnTimeRemainingScaled(13);
 			this.drawTexturedModalRect(startX + 56, startY + 36 + 12 - burnTime, 176, 12 - burnTime, 14, burnTime + 1);
 			burnTime = tileFurnace.getCookProgressScaled(24);

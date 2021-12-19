@@ -26,17 +26,15 @@ public class ItemKeyPanel extends ItemBlock {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		for(IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
-			if(block == pc.getOriginalBlock())
-			{
-				if(pc.convert(player, world, pos))
-				{
-					if(!player.capabilities.isCreativeMode)
+		for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
+			if (block == pc.getOriginalBlock()) {
+				if (pc.convert(player, world, pos)) {
+					if (!player.capabilities.isCreativeMode)
 						stack.shrink(1);
 
 					world.playSound(player, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -46,37 +44,33 @@ public class ItemKeyPanel extends ItemBlock {
 		}
 
 		//respect replaceable blocks when trying placing the key panel
-		if(state.getBlock().isReplaceable(world, pos))
-		{
+		if (state.getBlock().isReplaceable(world, pos)) {
 			pos = pos.offset(facing.getOpposite());
 			state = world.getBlockState(pos);
 		}
 
-		if(state.isSideSolid(world, pos, facing))
-		{
+		if (state.isSideSolid(world, pos, facing)) {
 			IBlockState stateToPlace;
 			BlockPos placeAt = pos.offset(facing);
 			IBlockState stateAtPlacePosition = world.getBlockState(placeAt);
 
-			if(player.canPlayerEdit(placeAt, facing, stack) && stateAtPlacePosition.getBlock().isReplaceable(world, placeAt))
-			{
-				if(facing.getAxis() == Axis.Y)
+			if (player.canPlayerEdit(placeAt, facing, stack) && stateAtPlacePosition.getBlock().isReplaceable(world, placeAt)) {
+				if (facing.getAxis() == Axis.Y)
 					stateToPlace = SCContent.keyPanelFloorCeilingBlock.getStateForPlacement(world, placeAt, facing, hitX, hitY, hitZ, 0, player, hand);
 				else
 					stateToPlace = SCContent.keyPanelWallBlock.getStateForPlacement(world, placeAt, facing, hitX, hitY, hitZ, 0, player, hand);
 
-				if(stateToPlace != null)
-				{
+				if (stateToPlace != null) {
 					SoundType soundType = stateToPlace.getBlock().getSoundType(stateToPlace, world, placeAt, player);
 
 					world.setBlockState(placeAt, stateToPlace);
 					world.playSound(player, placeAt, soundType.getPlaceSound(), SoundCategory.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
 					ItemBlock.setTileEntityNBT(world, player, placeAt, stack);
 
-					if(player instanceof EntityPlayerMP)
-						CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, placeAt, stack);
+					if (player instanceof EntityPlayerMP)
+						CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, placeAt, stack);
 
-					if(!player.isCreative())
+					if (!player.isCreative())
 						stack.shrink(1);
 
 					stateToPlace.getBlock().onBlockPlacedBy(world, placeAt, stateToPlace, player, stack);

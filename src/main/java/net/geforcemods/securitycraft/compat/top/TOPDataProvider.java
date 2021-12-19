@@ -39,14 +39,12 @@ import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 
-public class TOPDataProvider implements Function<ITheOneProbe, Void>
-{
+public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 	private final String formatting = TextFormatting.BLUE.toString() + TextFormatting.ITALIC.toString();
 
 	@Nullable
 	@Override
-	public Void apply(ITheOneProbe theOneProbe)
-	{
+	public Void apply(ITheOneProbe theOneProbe) {
 		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, world, blockState, data) -> {
 			boolean edited = false;
 			ItemStack item = ItemStack.EMPTY;
@@ -55,37 +53,32 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 			String text = formatting + "Minecraft";
 
 			//split up so the display override does not work for every block
-			if(blockState.getBlock() instanceof BlockDisguisable)
-			{
-				item = ((BlockDisguisable)blockState.getBlock()).getDisguisedStack(world, data.getPos());
+			if (blockState.getBlock() instanceof BlockDisguisable) {
+				item = ((BlockDisguisable) blockState.getBlock()).getDisguisedStack(world, data.getPos());
 				itemLabel = item;
 				text = formatting + Loader.instance().getIndexedModList().get(item.getItem().getRegistryName().getNamespace()).getName();
 				edited = true;
 			}
-			else if(blockState.getBlock() instanceof BlockFakeLavaBase)
-			{
+			else if (blockState.getBlock() instanceof BlockFakeLavaBase) {
 				item = new ItemStack(Items.LAVA_BUCKET);
 				labelText = Utils.localize("tile.lava.name").getFormattedText();
 				edited = true;
 			}
-			else if(blockState.getBlock() instanceof BlockFakeWaterBase)
-			{
+			else if (blockState.getBlock() instanceof BlockFakeWaterBase) {
 				item = new ItemStack(Items.WATER_BUCKET);
 				labelText = Utils.localize("tile.water.name").getFormattedText();
 				edited = true;
 			}
-			else if(blockState.getBlock() instanceof IOverlayDisplay)
-			{
-				item = ((IOverlayDisplay)blockState.getBlock()).getDisplayStack(world, blockState, data.getPos());
+			else if (blockState.getBlock() instanceof IOverlayDisplay) {
+				item = ((IOverlayDisplay) blockState.getBlock()).getDisplayStack(world, blockState, data.getPos());
 				itemLabel = item;
 				edited = true;
 			}
 
-			if(edited)
-			{
+			if (edited) {
 				IProbeInfo info = probeInfo.horizontal().item(item).vertical();
 
-				if(itemLabel.isEmpty())
+				if (itemLabel.isEmpty())
 					info.text(labelText);
 				else
 					info.itemLabel(itemLabel);
@@ -98,30 +91,26 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 		});
 		theOneProbe.registerProvider(new IProbeInfoProvider() {
 			@Override
-			public String getID()
-			{
+			public String getID() {
 				return SecurityCraft.MODID + ":" + SecurityCraft.MODID;
 			}
 
 			@Override
-			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data)
-			{
+			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
 				Block block = blockState.getBlock();
 
-				if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(world, blockState, data.getPos()))
+				if (block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(world, blockState, data.getPos()))
 					return;
 
 				TileEntity te = world.getTileEntity(data.getPos());
 
-				if(te instanceof IOwnable)
-				{
-					String ownerName = TextFormatting.GRAY + ((IOwnable)te).getOwner().getName();
+				if (te instanceof IOwnable) {
+					String ownerName = TextFormatting.GRAY + ((IOwnable) te).getOwner().getName();
 
-					if(ConfigHandler.enableTeamOwnership)
-					{
+					if (ConfigHandler.enableTeamOwnership) {
 						ScorePlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
 
-						if(team != null)
+						if (team != null)
 							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName() + TextFormatting.GRAY).getFormattedText();
 					}
 
@@ -129,25 +118,23 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				}
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
-				if(te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))
-				{
-					if(!((IModuleInventory)te).getInsertedModules().isEmpty())
-					{
+				if (te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player))) {
+					if (!((IModuleInventory) te).getInsertedModules().isEmpty()) {
 						probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
-						for(EnumModuleType module : ((IModuleInventory) te).getInsertedModules())
+						for (EnumModuleType module : ((IModuleInventory) te).getInsertedModules()) {
 							probeInfo.text(TextFormatting.GRAY + "- " + Utils.localize(module.getTranslationKey()).getFormattedText());
+						}
 					}
 				}
 
-				if(te instanceof IPasswordProtected && !(te instanceof TileEntityKeycardReader) && ((IOwnable)te).getOwner().isOwner(player))
-				{
+				if (te instanceof IPasswordProtected && !(te instanceof TileEntityKeycardReader) && ((IOwnable) te).getOwner().isOwner(player)) {
 					String password = ((IPasswordProtected) te).getPassword();
 
 					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText()));
 				}
 
-				if(te instanceof IWorldNameable && ((IWorldNameable) te).hasCustomName()){
+				if (te instanceof IWorldNameable && ((IWorldNameable) te).hasCustomName()) {
 					String name = ((IWorldNameable) te).getName();
 
 					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:customName").getFormattedText() + " " + name);
@@ -162,39 +149,36 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 
 			@Override
 			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, EntityPlayer player, World world, Entity entity, IProbeHitEntityData data) {
-				if (entity instanceof EntitySentry)
-				{
-					EntitySentry sentry = (EntitySentry)entity;
+				if (entity instanceof EntitySentry) {
+					EntitySentry sentry = (EntitySentry) entity;
 					EnumSentryMode mode = sentry.getMode();
 					String ownerName = TextFormatting.GRAY + sentry.getOwner().getName();
 
-					if(ConfigHandler.enableTeamOwnership)
-					{
+					if (ConfigHandler.enableTeamOwnership) {
 						ScorePlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
 
-						if(team != null)
+						if (team != null)
 							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName() + TextFormatting.GRAY).getFormattedText();
 					}
 
 					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getFormattedText());
 
-					if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())
-					{
+					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
 						probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
-						if(!sentry.getAllowlistModule().isEmpty())
+						if (!sentry.getAllowlistModule().isEmpty())
 							probeInfo.text(TextFormatting.GRAY + "- " + Utils.localize(EnumModuleType.ALLOWLIST.getTranslationKey()).getFormattedText());
 
-						if(!sentry.getDisguiseModule().isEmpty())
+						if (!sentry.getDisguiseModule().isEmpty())
 							probeInfo.text(TextFormatting.GRAY + "- " + Utils.localize(EnumModuleType.DISGUISE.getTranslationKey()).getFormattedText());
 
-						if(sentry.hasSpeedModule())
+						if (sentry.hasSpeedModule())
 							probeInfo.text(TextFormatting.GRAY + "- " + Utils.localize(EnumModuleType.SPEED.getTranslationKey()).getFormattedText());
 					}
 
 					String modeDescription = Utils.localize(mode.getModeKey()).getFormattedText();
 
-					if(mode != EnumSentryMode.IDLE)
+					if (mode != EnumSentryMode.IDLE)
 						modeDescription += " - " + Utils.localize(mode.getTargetKey()).getFormattedText();
 
 					probeInfo.text(TextFormatting.GRAY + modeDescription);

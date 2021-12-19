@@ -22,16 +22,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedStoneBrick extends BlockStoneBrick implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
-
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state){
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
 		world.removeTileEntity(pos);
 	}
@@ -42,26 +40,22 @@ public class BlockReinforcedStoneBrick extends BlockStoneBrick implements ITileE
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
-	{
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedStoneBrick), 1, getMetaFromState(state));
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
-	{
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
-	{
+	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.STONEBRICK);
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return 4;
 	}
 }

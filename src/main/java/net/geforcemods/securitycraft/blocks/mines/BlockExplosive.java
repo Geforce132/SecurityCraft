@@ -23,20 +23,18 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public abstract class BlockExplosive extends BlockOwnable implements IExplosive, IBlockWithNoDrops {
-
 	public BlockExplosive(Material material) {
 		super(material);
 	}
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine, hand) || PlayerUtils.isHoldingItem(player, SCContent.universalOwnerChanger, hand))
+		if (PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine, hand) || PlayerUtils.isHoldingItem(player, SCContent.universalOwnerChanger, hand))
 			return false;
 
-		if(isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters, hand)) {
-			if(defuseMine(world, pos))
-			{
-				if(!player.isCreative())
+		if (isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters, hand)) {
+			if (defuseMine(world, pos)) {
+				if (!player.isCreative())
 					player.getHeldItem(hand).damageItem(1, player);
 
 				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -45,10 +43,9 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive,
 			return true;
 		}
 
-		if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
-			if(activateMine(world, pos))
-			{
-				if(!player.isCreative())
+		if (!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
+			if (activateMine(world, pos)) {
+				if (!player.isCreative())
 					player.getHeldItem(hand).damageItem(1, player);
 
 				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -57,7 +54,7 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive,
 			return true;
 		}
 
-		if(explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos)) {
+		if (explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos)) {
 			explode(world, pos);
 			return true;
 		}
@@ -73,13 +70,12 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive,
 	}
 
 	@Override
-	public boolean isDefusable(){
+	public boolean isDefusable() {
 		return true;
 	}
 
 	@Override
-	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-	{
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		return Collections.emptyList();
 	}
 }

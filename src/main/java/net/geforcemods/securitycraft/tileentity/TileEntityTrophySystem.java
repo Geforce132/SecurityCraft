@@ -47,11 +47,12 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
 
-	/* The number of blocks away from the trophy system you can be for
-	 * the laser beam between itself and the projectile to be rendered */
+	/*
+	 * The number of blocks away from the trophy system you can be for the laser beam between itself and the projectile to be
+	 * rendered
+	 */
 	public static final int RENDER_DISTANCE = 50;
 	public static final EntityEntry MODDED_PROJECTILES = ForgeRegistries.ENTITIES.getValue(new ResourceLocation("minecraft:pig"));
-
 	private final Map<EntityEntry, Boolean> projectileFilter = new LinkedHashMap<>();
 	public Entity entityBeingTargeted = null;
 	public int cooldown = getCooldownTime();
@@ -88,36 +89,31 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 				if (target != null) {
 					Entity shooter = getShooter(target);
 
-					if(shooter == null)
+					if (shooter == null)
 						setTarget(target);
-					else
-					{
-						UUID uuid = shooter instanceof EntitySentry ? UUID.fromString(((EntitySentry)shooter).getOwner().getUUID()) : shooter.getUniqueID();
-						String name = shooter instanceof EntitySentry ? ((EntitySentry)shooter).getOwner().getName() : shooter.getName();
+					else {
+						UUID uuid = shooter instanceof EntitySentry ? UUID.fromString(((EntitySentry) shooter).getOwner().getUUID()) : shooter.getUniqueID();
+						String name = shooter instanceof EntitySentry ? ((EntitySentry) shooter).getOwner().getName() : shooter.getName();
 
 						//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-						if(!((ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(shooter.getName(), getOwner().getName()))
-								|| (uuid != null && uuid.toString().equals(getOwner().getUUID()))
-								|| ModuleUtils.isAllowed(this, name))) {
+						if (!((ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(shooter.getName(), getOwner().getName())) || (uuid != null && uuid.toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, name)))
 							setTarget(target);
-						}
 					}
 				}
 			}
 		}
 
 		// If there are no entities to target, return
-		if(entityBeingTargeted == null)
+		if (entityBeingTargeted == null)
 			return;
 
-		if(!entityBeingTargeted.isEntityAlive())
-		{
+		if (!entityBeingTargeted.isEntityAlive()) {
 			resetTarget();
 			return;
 		}
 
 		// If the cooldown hasn't finished yet, don't destroy any projectiles
-		if(cooldown > 0) {
+		if (cooldown > 0) {
 			cooldown--;
 			return;
 		}
@@ -162,10 +158,10 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	}
 
 	public void setTarget(Entity target) {
-		this.entityBeingTargeted = target;
-		if (!world.isRemote) {
+		entityBeingTargeted = target;
+
+		if (!world.isRemote)
 			SecurityCraft.network.sendToAll(new SetTrophySystemTarget(pos, target.getEntityId()));
-		}
 	}
 
 	/**
@@ -174,7 +170,7 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	private void destroyTarget() {
 		entityBeingTargeted.setDead();
 
-		if(!world.isRemote)
+		if (!world.isRemote)
 			world.createExplosion(null, entityBeingTargeted.posX, entityBeingTargeted.posY, entityBeingTargeted.posZ, 0.1F, false);
 
 		resetTarget();
@@ -189,8 +185,7 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	}
 
 	/**
-	 * Randomly returns a new Entity target from the list of all entities
-	 * within range of the trophy
+	 * Randomly returns a new Entity target from the list of all entities within range of the trophy
 	 */
 	private Entity getPotentialTarget() {
 		List<Entity> potentialTargets = new ArrayList<>();
@@ -202,7 +197,8 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
 
 		// If there are no projectiles, return
-		if(potentialTargets.size() <= 0) return null;
+		if (potentialTargets.size() <= 0)
+			return null;
 
 		// Return a random entity to target from the list of all possible targets
 		int target = random.nextInt(potentialTargets.size());
@@ -216,10 +212,9 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 
 		EntityEntry targetEntry = EntityRegistry.getEntry(target.getClass());
 
-		if (projectileFilter.containsKey(targetEntry) || target instanceof IProjectile) {
+		if (projectileFilter.containsKey(targetEntry) || target instanceof IProjectile)
 			//try to get the target's type filter first. if not found, it's a modded projectile and the return value falls back to the modded filter (designated by the PIG entity type)
 			return projectileFilter.getOrDefault(targetEntry, projectileFilter.get(MODDED_PROJECTILES));
-		}
 
 		return false;
 	}
@@ -227,10 +222,10 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	private boolean filterSCProjectiles(Entity projectile) {
 		Owner owner = null;
 
-		if(projectile instanceof EntityBullet)
-			owner = ((EntityBullet)projectile).getOwner();
-		else if(projectile instanceof EntityIMSBomb)
-			owner = ((EntityIMSBomb)projectile).getOwner();
+		if (projectile instanceof EntityBullet)
+			owner = ((EntityBullet) projectile).getOwner();
+		else if (projectile instanceof EntityIMSBomb)
+			owner = ((EntityIMSBomb) projectile).getOwner();
 
 		return owner == null || (!owner.owns(this) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}
@@ -241,14 +236,14 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	public EntityLivingBase getShooter(Entity projectile) {
 		EntityLivingBase shooter = null;
 
-		if(projectile instanceof EntityArrow) //arrows, spectral arrows and sentry bullets
-			shooter = (EntityLivingBase)((EntityArrow) projectile).shootingEntity;
-		else if(projectile instanceof EntityFireball) //small fireballs, fireballs, dragon fireballs, wither skulls and IMS bombs
+		if (projectile instanceof EntityArrow)
+			shooter = (EntityLivingBase) ((EntityArrow) projectile).shootingEntity;
+		else if (projectile instanceof EntityFireball)
 			shooter = ((EntityFireball) projectile).shootingEntity;
-		else if(projectile instanceof EntityFireworkRocket)
-			shooter = ((EntityFireworkRocket)projectile).boostedEntity;
-		else if(projectile instanceof EntityThrowable) //eggs, snowballs and ender pearls
-			shooter = ((EntityThrowable)projectile).getThrower();
+		else if (projectile instanceof EntityFireworkRocket)
+			shooter = ((EntityFireworkRocket) projectile).boostedEntity;
+		else if (projectile instanceof EntityThrowable)
+			shooter = ((EntityThrowable) projectile).getThrower();
 
 		return shooter;
 	}
@@ -258,13 +253,11 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	}
 
 	public void setFilter(EntityEntry projectileType, boolean allowed) {
-		if(projectileFilter.containsKey(projectileType))
-		{
+		if (projectileFilter.containsKey(projectileType)) {
 			projectileFilter.put(projectileType, allowed);
 
-			if (world.isRemote) {
+			if (world.isRemote)
 				SecurityCraft.network.sendToServer(new SyncTrophySystem(pos, projectileType, allowed));
-			}
 		}
 	}
 
@@ -272,11 +265,9 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 		return projectileFilter.get(projectileType);
 	}
 
-	public Map<EntityEntry,Boolean> getFilters()
-	{
+	public Map<EntityEntry, Boolean> getFilters() {
 		return projectileFilter;
 	}
-
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
@@ -291,7 +282,9 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.SMART, EnumModuleType.SPEED, EnumModuleType.ALLOWLIST, EnumModuleType.DISGUISE};
+		return new EnumModuleType[] {
+				EnumModuleType.SMART, EnumModuleType.SPEED, EnumModuleType.ALLOWLIST, EnumModuleType.DISGUISE
+		};
 	}
 
 	@Override
@@ -302,8 +295,7 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	/*
 	 * @return The number of ticks that the trophy takes to "charge"
 	 */
-	public int getCooldownTime()
-	{
+	public int getCooldownTime() {
 		return hasModule(EnumModuleType.SPEED) ? 4 : 8;
 	}
 }

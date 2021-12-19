@@ -23,7 +23,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockReinforcedCrystalQuartzSlab extends ItemBlock {
-
 	private BlockSlab singleSlab = (BlockSlab) SCContent.reinforcedCrystalQuartzSlab;
 	private Block doubleSlab = SCContent.reinforcedDoubleCrystalQuartzSlab;
 
@@ -32,45 +31,45 @@ public class ItemBlockReinforcedCrystalQuartzSlab extends ItemBlock {
 	}
 
 	@Override
-	public int getMetadata(int meta){
+	public int getMetadata(int meta) {
 		return meta;
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(stack.getCount() == 0)
+		if (stack.getCount() == 0)
 			return EnumActionResult.FAIL;
 		else if (!player.canPlayerEdit(pos.offset(side), side, stack))
 			return EnumActionResult.FAIL;
-		else{
+		else {
 			IBlockState state = world.getBlockState(pos);
 
-			if(state.getBlock() instanceof BlockReinforcedCrystalQuartzSlab){
+			if (state.getBlock() instanceof BlockReinforcedCrystalQuartzSlab) {
 				BlockSlab.EnumBlockHalf half = state.getValue(BlockSlab.HALF);
 				Owner owner = null;
 
-				if(world.getTileEntity(pos) instanceof IOwnable){
+				if (world.getTileEntity(pos) instanceof IOwnable) {
 					owner = ((IOwnable) world.getTileEntity(pos)).getOwner();
 
-					if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
-						if(!world.isRemote)
+					if (!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
+						if (!world.isRemote)
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
 
 						return EnumActionResult.SUCCESS;
 					}
 				}
 
-				if((side == EnumFacing.UP && half == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN && half == BlockSlab.EnumBlockHalf.TOP)){
+				if ((side == EnumFacing.UP && half == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN && half == BlockSlab.EnumBlockHalf.TOP)) {
 					IBlockState doubleState = doubleSlab.getDefaultState();
 					doubleState.getBlock();
 
-					if(world.checkNoEntityCollision(doubleState.getCollisionBoundingBox(world, pos)) && world.setBlockState(pos, doubleState, 3)){
+					if (world.checkNoEntityCollision(doubleState.getCollisionBoundingBox(world, pos)) && world.setBlockState(pos, doubleState, 3)) {
 						world.playSound(player, pos, doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, doubleSlab.getSoundType().getPitch() * 0.8F);
 						stack.shrink(1);
 
-						if(owner != null)
+						if (owner != null)
 							((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
 					}
 
@@ -84,14 +83,14 @@ public class ItemBlockReinforcedCrystalQuartzSlab extends ItemBlock {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack){
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack) {
 		BlockPos originalPos = pos;
 		IBlockState state = world.getBlockState(pos);
 
-		if(state.getBlock() == singleSlab){
+		if (state.getBlock() == singleSlab) {
 			boolean isTop = state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP;
 
-			if((side == EnumFacing.UP && !isTop || side == EnumFacing.DOWN && isTop))
+			if ((side == EnumFacing.UP && !isTop || side == EnumFacing.DOWN && isTop))
 				return true;
 		}
 
@@ -100,21 +99,21 @@ public class ItemBlockReinforcedCrystalQuartzSlab extends ItemBlock {
 		return updatedState.getBlock() == singleSlab ? true : super.canPlaceBlockOnSide(world, originalPos, side, player, stack);
 	}
 
-	private boolean tryPlace(ItemStack stack, World world, EntityPlayer player, BlockPos pos){
+	private boolean tryPlace(ItemStack stack, World world, EntityPlayer player, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		Owner owner = null;
 
-		if(world.getTileEntity(pos) instanceof IOwnable)
+		if (world.getTileEntity(pos) instanceof IOwnable)
 			owner = ((IOwnable) world.getTileEntity(pos)).getOwner();
 
-		if(state.getBlock() == singleSlab){
+		if (state.getBlock() == singleSlab) {
 			IBlockState newState = doubleSlab.getDefaultState();
 
-			if (world.checkNoEntityCollision(newState.getCollisionBoundingBox( world, pos)) && world.setBlockState(pos, newState, 3)){
+			if (world.checkNoEntityCollision(newState.getCollisionBoundingBox(world, pos)) && world.setBlockState(pos, newState, 3)) {
 				world.playSound(player, pos, doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, doubleSlab.getSoundType().getPitch() * 0.8F);
 				stack.shrink(1);
 
-				if(owner != null)
+				if (owner != null)
 					((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
 			}
 

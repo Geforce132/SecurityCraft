@@ -24,44 +24,38 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockFullMineBase extends BlockExplosive implements IOverlayDisplay, IBlockMine {
-
 	private final Block blockDisguisedAs;
 
 	public BlockFullMineBase(Material material, Block disguisedBlock) {
 		super(material);
 		blockDisguisedAs = disguisedBlock;
 
-		if(material == Material.SAND)
+		if (material == Material.SAND)
 			setSoundType(SoundType.SAND);
-		else if(material == Material.GROUND)
+		else if (material == Material.GROUND)
 			setSoundType(SoundType.GROUND);
 		else
 			setSoundType(SoundType.STONE);
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess access, BlockPos pos){
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess access, BlockPos pos) {
 		return null;
 	}
 
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
-	{
-		if(entity instanceof EntityItem)
-		{
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState) {
+		if (entity instanceof EntityItem) {
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
 			return;
 		}
-		else if(entity instanceof EntityPlayer)
-		{
+		else if (entity instanceof EntityPlayer) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof TileEntityOwnable)
-			{
+			if (te instanceof TileEntityOwnable) {
 				TileEntityOwnable ownableTe = (TileEntityOwnable) te;
 
-				if(ownableTe.getOwner().isOwner((EntityPlayer)entity))
-				{
+				if (ownableTe.getOwner().isOwner((EntityPlayer) entity)) {
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
 					return;
 				}
@@ -72,19 +66,15 @@ public class BlockFullMineBase extends BlockExplosive implements IOverlayDisplay
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity){
-		if(!EntityUtils.doesEntityOwn(entity, world, pos))
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+		if (!EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 
-	/**
-	 * Called upon the block being destroyed by an explosion
-	 */
 	@Override
-	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion){
-		if (!world.isRemote)
-		{
-			if(pos.equals(new BlockPos(explosion.getPosition())))
+	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion) {
+		if (!world.isRemote) {
+			if (pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
 			explode(world, pos);
@@ -92,11 +82,11 @@ public class BlockFullMineBase extends BlockExplosive implements IOverlayDisplay
 	}
 
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-		if(!world.isRemote)
-			if(player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+		if (!world.isRemote)
+			if (player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
-			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
+			else if (!EntityUtils.doesPlayerOwn(player, world, pos)) {
 				explode(world, pos);
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
 			}
@@ -105,14 +95,12 @@ public class BlockFullMineBase extends BlockExplosive implements IOverlayDisplay
 	}
 
 	@Override
-	public boolean activateMine(World world, BlockPos pos)
-	{
+	public boolean activateMine(World world, BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean defuseMine(World world, BlockPos pos)
-	{
+	public boolean defuseMine(World world, BlockPos pos) {
 		return false;
 	}
 
@@ -120,15 +108,12 @@ public class BlockFullMineBase extends BlockExplosive implements IOverlayDisplay
 	public void explode(World world, BlockPos pos) {
 		if (!world.isRemote) {
 			world.destroyBlock(pos, false);
-			world.newExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.smallerMineExplosion ? 2.5F : 5.0F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
+			world.newExplosion((Entity) null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.smallerMineExplosion ? 2.5F : 5.0F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
 		}
 	}
 
-	/**
-	 * Return whether this block can drop from an explosion.
-	 */
 	@Override
-	public boolean canDropFromExplosion(Explosion explosion){
+	public boolean canDropFromExplosion(Explosion explosion) {
 		return false;
 	}
 
@@ -165,7 +150,7 @@ public class BlockFullMineBase extends BlockExplosive implements IOverlayDisplay
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		if (world.getTileEntity(pos) instanceof TileEntityOwnable) {
-			TileEntityOwnable te = (TileEntityOwnable)world.getTileEntity(pos);
+			TileEntityOwnable te = (TileEntityOwnable) world.getTileEntity(pos);
 
 			if (player.isCreative() || te.getOwner().isOwner(player))
 				return super.getPickBlock(state, target, world, pos, player);
@@ -174,8 +159,7 @@ public class BlockFullMineBase extends BlockExplosive implements IOverlayDisplay
 		return new ItemStack(blockDisguisedAs);
 	}
 
-	public Block getBlockDisguisedAs()
-	{
+	public Block getBlockDisguisedAs() {
 		return blockDisguisedAs;
 	}
 }

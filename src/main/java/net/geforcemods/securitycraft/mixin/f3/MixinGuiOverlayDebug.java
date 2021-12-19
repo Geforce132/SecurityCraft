@@ -15,22 +15,19 @@ import net.minecraft.client.gui.GuiOverlayDebug;
 import net.minecraft.init.Blocks;
 
 @Mixin(GuiOverlayDebug.class)
-public class MixinGuiOverlayDebug
-{
-	@ModifyVariable(method="getDebugInfoRight", at=@At(value="INVOKE_ASSIGN", target="Lnet/minecraft/client/multiplayer/WorldClient;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;"))
-	public IBlockState spoofBlockState(IBlockState originalState)
-	{
+public class MixinGuiOverlayDebug {
+	@ModifyVariable(method = "getDebugInfoRight", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/multiplayer/WorldClient;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/state/IBlockState;"))
+	public IBlockState spoofBlockState(IBlockState originalState) {
 		Block originalBlock = originalState.getBlock();
 
-		if(originalBlock instanceof BlockDisguisable)
-		{
-			IBlockState disguisedState = ((BlockDisguisable)originalBlock).getDisguisedBlockState(Minecraft.getMinecraft().world, Minecraft.getMinecraft().objectMouseOver.getBlockPos());
+		if (originalBlock instanceof BlockDisguisable) {
+			IBlockState disguisedState = ((BlockDisguisable) originalBlock).getDisguisedBlockState(Minecraft.getMinecraft().world, Minecraft.getMinecraft().objectMouseOver.getBlockPos());
 
 			return disguisedState != null ? disguisedState : originalState;
 		}
-		else if(originalBlock instanceof BlockFullMineBase)
-			return ((BlockFullMineBase)originalBlock).getBlockDisguisedAs().getDefaultState();
-		else if(originalBlock instanceof BlockFurnaceMine)
+		else if (originalBlock instanceof BlockFullMineBase)
+			return ((BlockFullMineBase) originalBlock).getBlockDisguisedAs().getDefaultState();
+		else if (originalBlock instanceof BlockFurnaceMine)
 			return Blocks.FURNACE.getDefaultState().withProperty(BlockFurnace.FACING, originalState.getValue(BlockFurnace.FACING));
 
 		return originalState;

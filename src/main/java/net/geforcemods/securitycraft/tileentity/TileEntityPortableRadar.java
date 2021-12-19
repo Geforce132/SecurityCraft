@@ -23,7 +23,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityPortableRadar extends CustomizableSCTE implements ITickable {
-
 	private OptionDouble searchRadiusOption = new OptionDouble(this::getPos, "searchRadius", 25.0D, 5.0D, 50.0D, 1.0D, true);
 	private OptionInt searchDelayOption = new OptionInt(this::getPos, "searchDelay", 4, 4, 10, 1, true);
 	private OptionBoolean repeatMessageOption = new OptionBoolean("repeatMessage", true);
@@ -33,10 +32,8 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 	private int ticksUntilNextSearch = getSearchDelay();
 
 	@Override
-	public void update()
-	{
-		if(!world.isRemote && enabledOption.get() && ticksUntilNextSearch-- <= 0)
-		{
+	public void update() {
+		if (!world.isRemote && enabledOption.get() && ticksUntilNextSearch-- <= 0) {
 			ticksUntilNextSearch = getSearchDelay();
 
 			EntityPlayerMP owner = world.getMinecraftServer().getPlayerList().getPlayerByUsername(getOwner().getName());
@@ -44,21 +41,19 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 			List<EntityPlayer> entities = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> {
 				boolean isNotAllowed = true;
 
-				if(hasModule(EnumModuleType.ALLOWLIST))
+				if (hasModule(EnumModuleType.ALLOWLIST))
 					isNotAllowed = !ModuleUtils.isAllowed(this, e);
 
 				return e != owner && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
-			if(hasModule(EnumModuleType.REDSTONE))
+			if (hasModule(EnumModuleType.REDSTONE)) {
 				BlockPortableRadar.togglePowerOutput(world, pos, !entities.isEmpty());
+			}
 
-			if(owner != null)
-			{
-				for(EntityPlayer e : entities)
-				{
-					if(shouldSendMessage(e))
-					{
+			if (owner != null) {
+				for (EntityPlayer e : entities) {
+					if (shouldSendMessage(e)) {
 						PlayerUtils.sendMessageToPlayer(owner, Utils.localize("tile.securitycraft:portableRadar.name"), hasCustomName() ? (Utils.localize("messages.securitycraft:portableRadar.withName", TextFormatting.ITALIC + e.getName() + TextFormatting.RESET, TextFormatting.ITALIC + getName() + TextFormatting.RESET)) : (Utils.localize("messages.securitycraft:portableRadar.withoutName", TextFormatting.ITALIC + e.getName() + TextFormatting.RESET, pos)), TextFormatting.BLUE);
 						setSentMessage();
 					}
@@ -68,17 +63,15 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
-	{
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
 		super.onModuleRemoved(stack, module);
 
-		if(module == EnumModuleType.REDSTONE)
+		if (module == EnumModuleType.REDSTONE)
 			BlockPortableRadar.togglePowerOutput(world, pos, false);
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
 		tag.setBoolean("shouldSendNewMessage", shouldSendNewMessage);
@@ -87,18 +80,18 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
 		lastPlayerName = tag.getString("lastPlayerName");
 	}
 
 	public boolean shouldSendMessage(EntityPlayer player) {
-		if(!player.getName().equals(lastPlayerName)) {
+		if (!player.getName().equals(lastPlayerName)) {
 			shouldSendNewMessage = true;
 			lastPlayerName = player.getName();
 		}
+
 		boolean lastPlayerOwns = ConfigHandler.enableTeamOwnership ? PlayerUtils.areOnSameTeam(lastPlayerName, getOwner().getName()) : lastPlayerName.equals(getOwner().getName());
 
 		return (shouldSendNewMessage || repeatMessageOption.get()) && !lastPlayerOwns;
@@ -118,12 +111,15 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.REDSTONE, EnumModuleType.ALLOWLIST};
+		return new EnumModuleType[] {
+				EnumModuleType.REDSTONE, EnumModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ searchRadiusOption, searchDelayOption, repeatMessageOption, enabledOption };
+		return new Option[] {
+				searchRadiusOption, searchDelayOption, repeatMessageOption, enabledOption
+		};
 	}
-
 }

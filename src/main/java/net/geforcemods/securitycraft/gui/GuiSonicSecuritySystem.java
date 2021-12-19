@@ -25,7 +25,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiSonicSecuritySystem extends GuiContainer {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private static final ResourceLocation STREAMER_ICONS = new ResourceLocation("textures/gui/stream_indicator.png");
 	private static final TextComponentTranslation SOUND_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.sound");
@@ -43,31 +42,31 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 	private boolean isOwner;
 	private String title;
 
-	public GuiSonicSecuritySystem(InventoryPlayer inv, TileEntitySonicSecuritySystem te)
-	{
+	public GuiSonicSecuritySystem(InventoryPlayer inv, TileEntitySonicSecuritySystem te) {
 		super(new ContainerGeneric(inv, te));
 		this.te = te;
 		title = te.getDisplayName().getFormattedText();
 		isOwner = te.getOwner().isOwner(Minecraft.getMinecraft().player);
 	}
+
 	@Override
 	public void updateScreen() {
 		// Play the note combination of this SSS when the player clicks on the play button
-		if(playback) {
+		if (playback) {
 			tickCount++;
 
 			// Only emit the note sound after a certain delay and if there are still notes to play
-			if(tickCount >= PLAYBACK_DELAY) {
-				if(currentNote < te.getNumberOfNotes()) {
+			if (tickCount >= PLAYBACK_DELAY) {
+				if (currentNote < te.getNumberOfNotes()) {
 					NoteWrapper note = te.getRecordedNotes().get(currentNote++);
-					SoundEvent sound = ((BlockNote)Blocks.NOTEBLOCK).getInstrument(Instrument.valueOf(note.instrumentName.toUpperCase()).ordinal());
-					float pitch = (float)Math.pow(2.0D, (note.noteID - 12) / 12.0D);
+					SoundEvent sound = ((BlockNote) Blocks.NOTEBLOCK).getInstrument(Instrument.valueOf(note.instrumentName.toUpperCase()).ordinal());
+					float pitch = (float) Math.pow(2.0D, (note.noteID - 12) / 12.0D);
 
 					tickCount = 0;
 					mc.world.playSound(mc.player, te.getPos(), sound, SoundCategory.RECORDS, 3.0F, pitch);
 				}
 				// Reset the counters when we are finished playing the final note
-				else if(currentNote >= te.getNumberOfNotes()) {
+				else if (currentNote >= te.getNumberOfNotes()) {
 					currentNote = 0;
 					playback = false;
 				}
@@ -76,8 +75,7 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 	}
 
 	@Override
-	public void initGui()
-	{
+	public void initGui() {
 		super.initGui();
 
 		boolean isActive = te.isActive();
@@ -91,7 +89,7 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 			SecurityCraft.network.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), toggledState ? SyncSSSSettingsOnServer.DataType.POWER_ON : SyncSSSSettingsOnServer.DataType.POWER_OFF));
 			powerButton.displayString = getPowerString(toggledState);
 
-			if(!toggledState)
+			if (!toggledState)
 				recordingButton.displayString = getRecordingString(false);
 
 			// Disable the recording-related buttons when the SSS is powered off
@@ -110,7 +108,7 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 
 		playButton = addButton(new ClickButton(2, width / 2 - 75, height / 2 - 10, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play").getFormattedText(), button -> {
 			// Start playing back any notes that have been recorded
-			if(te.getNumberOfNotes() > 0)
+			if (te.getNumberOfNotes() > 0)
 				playback = true;
 		}));
 
@@ -121,7 +119,9 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 			clearButton.enabled = false;
 		}));
 
-		soundButton = addButton(new TogglePictureButton(4, width / 2 + 55, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[]{0, 0}, new int[]{32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
+		//@formatter:off
+		soundButton = addButton(new TogglePictureButton(4, width / 2 + 55, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[] {0, 0}, new int[] {32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
+			//@formatter:on
 			boolean toggledPing = !te.pings();
 
 			te.setPings(toggledPing);
@@ -137,15 +137,13 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button)
-	{
-		if(button instanceof ClickButton)
-			((ClickButton)button).onClick();
+	protected void actionPerformed(GuiButton button) {
+		if (button instanceof ClickButton)
+			((ClickButton) button).onClick();
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String soundText = SOUND_TEXT.getFormattedText();
 		int textWidth = fontRenderer.getStringWidth(title);
 		int soundTextLength = fontRenderer.getStringWidth(soundText);
@@ -155,8 +153,7 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 	}
 
 	@Override
-	public void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-	{
+	public void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
@@ -168,14 +165,11 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 		return false;
 	}
 
-	private String getRecordingString(boolean recording)
-	{
+	private String getRecordingString(boolean recording) {
 		return (recording ? Utils.localize("gui.securitycraft:sonic_security_system.stop_recording") : Utils.localize("gui.securitycraft:sonic_security_system.start_recording")).getFormattedText();
 	}
 
-	private String getPowerString(boolean on)
-	{
+	private String getPowerString(boolean on) {
 		return (on ? Utils.localize("gui.securitycraft:sonic_security_system.power.on") : Utils.localize("gui.securitycraft:sonic_security_system.power.off")).getFormattedText();
 	}
-
 }

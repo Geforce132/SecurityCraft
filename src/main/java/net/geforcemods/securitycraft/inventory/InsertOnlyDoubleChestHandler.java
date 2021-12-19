@@ -11,18 +11,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.VanillaDoubleChestItemHandler;
 
-public class InsertOnlyDoubleChestHandler extends VanillaDoubleChestItemHandler
-{
+public class InsertOnlyDoubleChestHandler extends VanillaDoubleChestItemHandler {
 	public static final InsertOnlyDoubleChestHandler NO_ADJACENT_CHESTS = new InsertOnlyDoubleChestHandler(null, null, false);
 
-	public InsertOnlyDoubleChestHandler(TileEntityChest mainChest, TileEntityChest other, boolean mainChestIsUpper)
-	{
+	public InsertOnlyDoubleChestHandler(TileEntityChest mainChest, TileEntityChest other, boolean mainChestIsUpper) {
 		super(mainChest, other, mainChestIsUpper);
 	}
 
 	@Override
-	public ItemStack extractItem(int slot, int amount, boolean simulate)
-	{
+	public ItemStack extractItem(int slot, int amount, boolean simulate) {
 		return ItemStack.EMPTY;
 	}
 
@@ -35,37 +32,33 @@ public class InsertOnlyDoubleChestHandler extends VanillaDoubleChestItemHandler
 			return null; // Still loading
 
 		Block blockType = chest.getBlockType();
-
 		EnumFacing[] horizontals = EnumFacing.HORIZONTALS;
-		for (int i = horizontals.length - 1; i >= 0; i--)   // Use reverse order so we can return early
-		{
+
+		// Use reverse order so we can return early
+		for (int i = horizontals.length - 1; i >= 0; i--) {
 			EnumFacing enumfacing = horizontals[i];
 			BlockPos blockpos = pos.offset(enumfacing);
 			Block block = world.getBlockState(blockpos).getBlock();
 
-			if (block == blockType)
-			{
+			if (block == blockType) {
 				TileEntity otherTE = world.getTileEntity(blockpos);
 
-				if (otherTE instanceof TileEntityChest)
-				{
+				if (otherTE instanceof TileEntityChest) {
 					TileEntityChest otherChest = (TileEntityChest) otherTE;
-					return new InsertOnlyDoubleChestHandler(chest, otherChest,
-							enumfacing != EnumFacing.WEST && enumfacing != EnumFacing.NORTH);
-
+					return new InsertOnlyDoubleChestHandler(chest, otherChest, enumfacing != EnumFacing.WEST && enumfacing != EnumFacing.NORTH);
 				}
 			}
 		}
+
 		return NO_ADJACENT_CHESTS; //All alone
 	}
 
 	@Override
-	public boolean needsRefresh()
-	{
+	public boolean needsRefresh() {
 		if (this == NO_ADJACENT_CHESTS)
 			return false;
+
 		TileEntityChest tileEntityChest = get();
 		return tileEntityChest == null || tileEntityChest.isInvalid();
 	}
 }
-

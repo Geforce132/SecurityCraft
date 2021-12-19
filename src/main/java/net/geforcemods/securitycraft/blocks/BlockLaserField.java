@@ -34,7 +34,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockLaserField extends BlockContainer {
-
 	public static final PropertyInteger BOUNDTYPE = PropertyInteger.create("boundtype", 1, 3);
 	private static final AxisAlignedBB BOUNDTYPE_1_AABB, BOUNDTYPE_2_AABB, BOUNDTYPE_3_AABB;
 
@@ -51,81 +50,62 @@ public class BlockLaserField extends BlockContainer {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos)
-	{
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
 		return null;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getRenderLayer()
-	{
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
-	/**
-	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-	 */
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
-	}
-
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
-	@Override
-	public boolean isNormalCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess world, BlockPos pos)
-	{
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isPassable(IBlockAccess world, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
-	{
-		if(!world.isRemote && entity instanceof EntityLivingBase && !EntityUtils.isInvisible((EntityLivingBase)entity))
-		{
-			for(EnumFacing facing : EnumFacing.VALUES)
-			{
-				for(int i = 0; i < ConfigHandler.laserBlockRange; i++)
-				{
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+		if (!world.isRemote && entity instanceof EntityLivingBase && !EntityUtils.isInvisible((EntityLivingBase) entity)) {
+			for (EnumFacing facing : EnumFacing.VALUES) {
+				for (int i = 0; i < ConfigHandler.laserBlockRange; i++) {
 					BlockPos offsetPos = pos.offset(facing, i);
 					IBlockState offsetState = world.getBlockState(offsetPos);
 					Block block = offsetState.getBlock();
 
-					if(block == SCContent.laserBlock && !offsetState.getValue(BlockLaserBlock.POWERED))
-					{
+					if (block == SCContent.laserBlock && !offsetState.getValue(BlockLaserBlock.POWERED)) {
 						TileEntity te = world.getTileEntity(offsetPos);
 
-						if(te instanceof IModuleInventory && ModuleUtils.isAllowed((IModuleInventory)te, entity))
+						if (te instanceof IModuleInventory && ModuleUtils.isAllowed((IModuleInventory) te, entity))
 							return;
 
 						world.setBlockState(offsetPos, offsetState.withProperty(BlockLaserBlock.POWERED, true));
 						BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.laserBlock);
 						world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
 
-						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(EnumModuleType.HARMING))
-						{
-							if(!(entity instanceof EntityPlayer && ((IOwnable)te).getOwner().isOwner((EntityPlayer)entity)))
+						if (te instanceof IModuleInventory && ((IModuleInventory) te).hasModule(EnumModuleType.HARMING)) {
+							if (!(entity instanceof EntityPlayer && ((IOwnable) te).getOwner().isOwner((EntityPlayer) entity)))
 								((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
 						}
 					}
@@ -134,24 +114,17 @@ public class BlockLaserField extends BlockContainer {
 		}
 	}
 
-	/**
-	 * Called right before the block is destroyed by a player.  Args: world, pos, state
-	 */
 	@Override
-	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state)
-	{
-		if(!world.isRemote)
-		{
-			EnumFacing[] facingArray = {EnumFacing.byIndex((state.getValue(BlockLaserField.BOUNDTYPE) - 1) * 2), EnumFacing.byIndex((state.getValue(BlockLaserField.BOUNDTYPE) - 1) * 2).getOpposite()};
+	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state) {
+		if (!world.isRemote) {
+			EnumFacing[] facingArray = {
+					EnumFacing.byIndex((state.getValue(BlockLaserField.BOUNDTYPE) - 1) * 2), EnumFacing.byIndex((state.getValue(BlockLaserField.BOUNDTYPE) - 1) * 2).getOpposite()
+			};
 
-			for(EnumFacing facing : facingArray)
-			{
-				for(int i = 0; i < ConfigHandler.laserBlockRange; i++)
-				{
-					if(world.getBlockState(pos.offset(facing, i)).getBlock() == SCContent.laserBlock)
-					{
-						for(int j = 1; j < i; j++)
-						{
+			for (EnumFacing facing : facingArray) {
+				for (int i = 0; i < ConfigHandler.laserBlockRange; i++) {
+					if (world.getBlockState(pos.offset(facing, i)).getBlock() == SCContent.laserBlock) {
+						for (int j = 1; j < i; j++) {
 							world.destroyBlock(pos.offset(facing, j), false);
 						}
 
@@ -163,49 +136,40 @@ public class BlockLaserField extends BlockContainer {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		if (source.getBlockState(pos).getValue(BOUNDTYPE) == 1)
 			return BOUNDTYPE_1_AABB;
 		else if (source.getBlockState(pos).getValue(BOUNDTYPE) == 2)
 			return BOUNDTYPE_2_AABB;
 		else if (source.getBlockState(pos).getValue(BOUNDTYPE) == 3)
 			return BOUNDTYPE_3_AABB;
-		else return FULL_BLOCK_AABB;
+		else
+			return FULL_BLOCK_AABB;
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(BOUNDTYPE, 1);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(BOUNDTYPE, meta);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(BOUNDTYPE);
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, BOUNDTYPE);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-
-	/**
-	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-	 */
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
-	{
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return ItemStack.EMPTY;
 	}
 
@@ -215,8 +179,7 @@ public class BlockLaserField extends BlockContainer {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		int boundType = state.getValue(BOUNDTYPE);
 
 		return rot == Rotation.CLOCKWISE_180 ? state : state.withProperty(BOUNDTYPE, boundType == 2 ? 3 : (boundType == 3 ? 2 : 1));

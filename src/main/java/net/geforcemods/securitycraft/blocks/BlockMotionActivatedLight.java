@@ -20,7 +20,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockMotionActivatedLight extends BlockOwnable {
-
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool LIT = PropertyBool.create("lit");
 
@@ -31,37 +30,33 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state){
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state){
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		EnumFacing dir = state.getValue(FACING);
 		float px = 1.0F / 16.0F;
 
-		if(dir == EnumFacing.NORTH) {
+		if (dir == EnumFacing.NORTH)
 			return new AxisAlignedBB(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
-		}
-		else if(dir == EnumFacing.SOUTH) {
+		else if (dir == EnumFacing.SOUTH)
 			return new AxisAlignedBB(px * 6, px * 3, 1F, px * 10, px * 9, 1F - (px * 3));
-		}
-		else if(dir == EnumFacing.EAST) {
+		else if (dir == EnumFacing.EAST)
 			return new AxisAlignedBB(1F, px * 3, px * 6, 1F - (px * 3), px * 9, px * 10);
-		}
-		else if(dir == EnumFacing.WEST) {
+		else if (dir == EnumFacing.WEST)
 			return new AxisAlignedBB(0F, px * 3, px * 6, px * 3, px * 9, px * 10);
-		}
 
 		return new AxisAlignedBB(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
 	}
@@ -72,8 +67,9 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
-		if(side == EnumFacing.UP || side == EnumFacing.DOWN) return false;
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
+		if (side == EnumFacing.UP || side == EnumFacing.DOWN)
+			return false;
 
 		return world.isSideSolid(pos.offset(side.getOpposite()), side);
 	}
@@ -87,36 +83,35 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return getDefaultState().withProperty(FACING, facing.getOpposite()).withProperty(LIT, false);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		if(meta == 15) return getDefaultState();
+	public IBlockState getStateFromMeta(int meta) {
+		if (meta == 15)
+			return getDefaultState();
 
-		if(meta <= 5)
+		if (meta <= 5)
 			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(LIT, false);
 		else
 			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(LIT, true);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		if(state.getProperties().containsKey(LIT) && state.getValue(LIT))
+	public int getMetaFromState(IBlockState state) {
+		if (state.getProperties().containsKey(LIT) && state.getValue(LIT))
 			return (state.getValue(FACING).getIndex() + 6);
-		else{
-			if(!state.getProperties().containsKey(FACING)) return 15;
+		else {
+			if (!state.getProperties().containsKey(FACING))
+				return 15;
 
 			return state.getValue(FACING).getIndex();
 		}
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, LIT);
 	}
 
@@ -126,27 +121,25 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror)
-	{
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		EnumFacing facing = state.getValue(FACING);
 
-		switch(mirror)
-		{
+		switch (mirror) {
 			case LEFT_RIGHT:
-				if(facing.getAxis() == Axis.Z)
+				if (facing.getAxis() == Axis.Z)
 					return state.withProperty(FACING, facing.getOpposite());
 				break;
 			case FRONT_BACK:
-				if(facing.getAxis() == Axis.X)
+				if (facing.getAxis() == Axis.X)
 					return state.withProperty(FACING, facing.getOpposite());
 				break;
-			case NONE: break;
+			case NONE:
+				break;
 		}
 
 		return state;

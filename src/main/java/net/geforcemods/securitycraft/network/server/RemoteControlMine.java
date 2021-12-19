@@ -14,16 +14,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class RemoteControlMine implements IMessage{
-
+public class RemoteControlMine implements IMessage {
 	private int x, y, z;
 	private String state;
 
-	public RemoteControlMine(){
+	public RemoteControlMine() {}
 
-	}
-
-	public RemoteControlMine(int x, int y, int z, String state){
+	public RemoteControlMine(int x, int y, int z, String state) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -47,7 +44,6 @@ public class RemoteControlMine implements IMessage{
 	}
 
 	public static class Handler implements IMessageHandler<RemoteControlMine, IMessage> {
-
 		@Override
 		public IMessage onMessage(RemoteControlMine message, MessageContext context) {
 			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
@@ -56,18 +52,16 @@ public class RemoteControlMine implements IMessage{
 				BlockPos pos = new BlockPos(message.x, message.y, message.z);
 				IBlockState state = world.getBlockState(pos);
 
-				if(state.getBlock() instanceof IExplosive)
-				{
+				if (state.getBlock() instanceof IExplosive) {
 					IExplosive explosive = ((IExplosive) state.getBlock());
 					TileEntity te = world.getTileEntity(pos);
 
-					if(!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player))
-					{
-						if(message.state.equalsIgnoreCase("activate"))
+					if (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player)) {
+						if (message.state.equalsIgnoreCase("activate"))
 							explosive.activateMine(world, pos);
-						else if(message.state.equalsIgnoreCase("defuse"))
+						else if (message.state.equalsIgnoreCase("defuse"))
 							explosive.defuseMine(world, pos);
-						else if(message.state.equalsIgnoreCase("detonate"))
+						else if (message.state.equalsIgnoreCase("detonate"))
 							explosive.explode(world, pos);
 					}
 				}
@@ -75,7 +69,5 @@ public class RemoteControlMine implements IMessage{
 
 			return null;
 		}
-
 	}
-
 }

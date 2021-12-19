@@ -14,8 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<TileEntityKeypadChest>
-{
+public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<TileEntityKeypadChest> {
 	private static final ResourceLocation christmasDouble = new ResourceLocation("securitycraft:textures/entity/chest/christmas_double.png");
 	private static final ResourceLocation normalDoubleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/double_chest_unactive.png");
 	private static final ResourceLocation normalDoubleActive = new ResourceLocation("securitycraft:textures/entity/chest/double_chest_active.png");
@@ -26,8 +25,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
 	private static final ModelChest largeModel = new ModelLargeChest();
 	private boolean isChristmas;
 
-	public TileEntityKeypadChestRenderer()
-	{
+	public TileEntityKeypadChestRenderer() {
 		Calendar calendar = Calendar.getInstance();
 
 		if (calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26)
@@ -35,36 +33,30 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
 	}
 
 	@Override
-	public void render(TileEntityKeypadChest te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
-	{
+	public void render(TileEntityKeypadChest te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		int meta;
 
 		if (!te.hasWorld())
 			meta = 0;
-		else
-		{
+		else {
 			Block block = te.getBlockType();
 			meta = te.getBlockMetadata();
 
-			if (block instanceof BlockKeypadChest)
-			{
-				((BlockKeypadChest)block).checkForSurroundingChests(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()));
+			if (block instanceof BlockKeypadChest) {
+				((BlockKeypadChest) block).checkForSurroundingChests(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()));
 				meta = te.getBlockMetadata();
 			}
 
 			te.checkForAdjacentChests();
 		}
 
-		if (te.adjacentChestZNeg == null && te.adjacentChestXNeg == null)
-		{
+		if (te.adjacentChestZNeg == null && te.adjacentChestXNeg == null) {
 			ModelChest model;
 
-			if (te.adjacentChestXPos == null && te.adjacentChestZPos == null)
-			{
+			if (te.adjacentChestXPos == null && te.adjacentChestZPos == null) {
 				model = smallModel;
 
-				if (destroyStage >= 0)
-				{
+				if (destroyStage >= 0) {
 					bindTexture(DESTROY_STAGES[destroyStage]);
 					GlStateManager.matrixMode(5890);
 					GlStateManager.pushMatrix();
@@ -74,17 +66,15 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
 				}
 				else if (isChristmas)
 					bindTexture(christmasNormal);
-				else if(te.lidAngle >= 0.9)
+				else if (te.lidAngle >= 0.9)
 					bindTexture(normalSingleActive);
 				else
 					bindTexture(normalSingleUnactive);
 			}
-			else
-			{
+			else {
 				model = largeModel;
 
-				if (destroyStage >= 0)
-				{
+				if (destroyStage >= 0) {
 					bindTexture(DESTROY_STAGES[destroyStage]);
 					GlStateManager.matrixMode(5890);
 					GlStateManager.pushMatrix();
@@ -94,7 +84,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
 				}
 				else if (isChristmas)
 					bindTexture(christmasDouble);
-				else if(te.lidAngle >= 0.9)
+				else if (te.lidAngle >= 0.9)
 					bindTexture(normalDoubleActive);
 				else
 					bindTexture(normalDoubleUnactive);
@@ -106,7 +96,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
 			if (destroyStage < 0)
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-			GlStateManager.translate((float)x, (float)y + 1.0F, (float)z + 1.0F);
+			GlStateManager.translate((float) x, (float) y + 1.0F, (float) z + 1.0F);
 			GlStateManager.scale(1.0F, -1.0F, -1.0F);
 			GlStateManager.translate(0.5F, 0.5F, 0.5F);
 			short rotation = 0;
@@ -134,16 +124,14 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
 			float angle = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
 			float adjacentAngle;
 
-			if (te.adjacentChestZNeg != null)
-			{
+			if (te.adjacentChestZNeg != null) {
 				adjacentAngle = te.adjacentChestZNeg.prevLidAngle + (te.adjacentChestZNeg.lidAngle - te.adjacentChestZNeg.prevLidAngle) * partialTicks;
 
 				if (adjacentAngle > angle)
 					angle = adjacentAngle;
 			}
 
-			if (te.adjacentChestXNeg != null)
-			{
+			if (te.adjacentChestXNeg != null) {
 				adjacentAngle = te.adjacentChestXNeg.prevLidAngle + (te.adjacentChestXNeg.lidAngle - te.adjacentChestXNeg.prevLidAngle) * partialTicks;
 
 				if (adjacentAngle > angle)
@@ -152,14 +140,13 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
 
 			angle = 1.0F - angle;
 			angle = 1.0F - angle * angle * angle;
-			model.chestLid.rotateAngleX = -(angle * (float)Math.PI / 2.0F);
+			model.chestLid.rotateAngleX = -(angle * (float) Math.PI / 2.0F);
 			model.renderAll();
 			GlStateManager.disableRescaleNormal();
 			GlStateManager.popMatrix();
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-			if (destroyStage >= 0)
-			{
+			if (destroyStage >= 0) {
 				GlStateManager.matrixMode(5890);
 				GlStateManager.popMatrix();
 				GlStateManager.matrixMode(5888);

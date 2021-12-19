@@ -29,35 +29,29 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockIronFence extends BlockFence implements ITileEntityProvider {
-
-	public BlockIronFence(Material material)
-	{
+	public BlockIronFence(Material material) {
 		super(material, MapColor.IRON);
 		setSoundType(SoundType.METAL);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		return false;
 	}
 
 	@Override
-	public boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing)
-	{
+	public boolean canConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
 		Block block = world.getBlockState(pos).getBlock();
 
 		//split up oneliner to be more readable
-		if(block != this && !(block instanceof BlockFenceGate) && block != SCContent.reinforcedFencegate)
-		{
-			if(block.getDefaultState().getMaterial().isOpaque())
+		if (block != this && !(block instanceof BlockFenceGate) && block != SCContent.reinforcedFencegate) {
+			if (block.getDefaultState().getMaterial().isOpaque())
 				return block.getDefaultState().getMaterial() != Material.GOURD;
 			else
 				return false;
@@ -67,25 +61,22 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider {
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
-	{
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if(((TileEntityIronFence)te).isShutDown())
+		if (((TileEntityIronFence) te).isShutDown())
 			return;
 
 		//so dropped items don't get destroyed
-		if(entity instanceof EntityItem)
+		if (entity instanceof EntityItem)
 			return;
 		//owner check
-		else if(entity instanceof EntityPlayer)
-		{
-			if(((TileEntityOwnable) te).getOwner().isOwner((EntityPlayer)entity))
+		else if (entity instanceof EntityPlayer) {
+			if (((TileEntityOwnable) te).getOwner().isOwner((EntityPlayer) entity))
 				return;
 		}
-		else if(entity instanceof EntityCreeper)
-		{
-			EntityCreeper creeper = (EntityCreeper)entity;
+		else if (entity instanceof EntityCreeper) {
+			EntityCreeper creeper = (EntityCreeper) entity;
 			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), true);
 
 			creeper.onStruckByLightning(lightning);
@@ -97,23 +88,20 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state)
-	{
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
 		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int eventID, int eventParam)
-	{
+	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int eventID, int eventParam) {
 		super.eventReceived(state, world, pos, eventID, eventParam);
 		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityIronFence();
 	}
 }

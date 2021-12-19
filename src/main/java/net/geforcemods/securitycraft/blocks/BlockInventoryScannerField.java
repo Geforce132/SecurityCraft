@@ -42,12 +42,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockInventoryScannerField extends BlockContainer {
-
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool HORIZONTAL = PropertyBool.create("horizontal");
-	public static final AxisAlignedBB EAST_WEST_SHAPE = new AxisAlignedBB(0.000F, 0.000F, 6F/16F, 1.000F, 1.000F, 10F/16F);
-	public static final AxisAlignedBB NORTH_SOUTH_SHAPE = new AxisAlignedBB(6F/16F, 0.000F, 0.000F, 10F/16F, 1.000F, 1.000F);
-	public static final AxisAlignedBB HORIZONTAL_SHAPE = new AxisAlignedBB(0.000F, 6F/16F, 0.000F, 1.000F, 10F/16F, 1.000F);
+	public static final AxisAlignedBB EAST_WEST_SHAPE = new AxisAlignedBB(0.000F, 0.000F, 6F / 16F, 1.000F, 1.000F, 10F / 16F);
+	public static final AxisAlignedBB NORTH_SOUTH_SHAPE = new AxisAlignedBB(6F / 16F, 0.000F, 0.000F, 10F / 16F, 1.000F, 1.000F);
+	public static final AxisAlignedBB HORIZONTAL_SHAPE = new AxisAlignedBB(0.000F, 6F / 16F, 0.000F, 1.000F, 10F / 16F, 1.000F);
 
 	public BlockInventoryScannerField(Material material) {
 		super(material);
@@ -55,32 +54,32 @@ public class BlockInventoryScannerField extends BlockContainer {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos)
-	{
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
 		return null;
 	}
 
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entity, boolean isActualState) {
-
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
-			if (entity instanceof EntityPlayer && !EntityUtils.isInvisible((EntityPlayer)entity)) {
+			if (entity instanceof EntityPlayer && !EntityUtils.isInvisible((EntityPlayer) entity)) {
 				if (ModuleUtils.isAllowed(connectedScanner, entity))
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
 
 				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty())
-						if (checkInventory((EntityPlayer)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+					if (!connectedScanner.getStackInSlotCopy(i).isEmpty()) {
+						if (checkInventory((EntityPlayer) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
 							addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, world, pos));
+					}
 				}
 			}
 			else if (entity instanceof EntityItem) {
 				for (int i = 0; i < 10; i++) {
-					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((EntityItem)entity).getItem().isEmpty())
-						if (checkEntityItem((EntityItem)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((EntityItem) entity).getItem().isEmpty()) {
+						if (checkEntityItem((EntityItem) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
 							addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, world, pos));
+					}
 				}
 			}
 		}
@@ -90,78 +89,60 @@ public class BlockInventoryScannerField extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getRenderLayer()
-	{
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
-	/**
-	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-	 */
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
-	}
-
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
-	@Override
-	public boolean isNormalCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess world, BlockPos pos)
-	{
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isPassable(IBlockAccess world, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
-	{
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
-		if(connectedScanner == null || connectedScanner.doesFieldSolidify())
+		if (connectedScanner == null || connectedScanner.doesFieldSolidify())
 			return;
 
-		if(entity instanceof EntityPlayer && !EntityUtils.isInvisible((EntityLivingBase)entity))
-		{
-			if(ModuleUtils.isAllowed(connectedScanner, entity))
+		if (entity instanceof EntityPlayer && !EntityUtils.isInvisible((EntityLivingBase) entity)) {
+			if (ModuleUtils.isAllowed(connectedScanner, entity))
 				return;
 
-			for(int i = 0; i < 10; i++)
-			{
-				if(!connectedScanner.getStackInSlotCopy(i).isEmpty())
-					checkInventory((EntityPlayer)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
+			for (int i = 0; i < 10; i++) {
+				if (!connectedScanner.getStackInSlotCopy(i).isEmpty())
+					checkInventory((EntityPlayer) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
 			}
 		}
-		else if(entity instanceof EntityItem)
-		{
-			for(int i = 0; i < 10; i++)
-			{
-				if(!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((EntityItem)entity).getItem().isEmpty())
-					checkEntityItem((EntityItem)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
+		else if (entity instanceof EntityItem) {
+			for (int i = 0; i < 10; i++) {
+				if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((EntityItem) entity).getItem().isEmpty())
+					checkEntityItem((EntityItem) entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
 			}
 		}
 	}
 
-	public static boolean checkInventory(EntityPlayer player, TileEntityInventoryScanner te, ItemStack stack, boolean allowInteraction)
-	{
+	public static boolean checkInventory(EntityPlayer player, TileEntityInventoryScanner te, ItemStack stack, boolean allowInteraction) {
 		boolean hasSmartModule = te.hasModule(EnumModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && te.hasModule(EnumModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && te.hasModule(EnumModuleType.REDSTONE);
@@ -169,28 +150,22 @@ public class BlockInventoryScannerField extends BlockContainer {
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || te.getOwner().isOwner(player))
 			return false;
 
-		return loopInventory(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) ||
-				loopInventory(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) ||
-				loopInventory(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		return loopInventory(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
 	private static boolean loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, TileEntityInventoryScanner te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
-		for(int i = 1; i <= inventory.size(); i++)
-		{
+		for (int i = 1; i <= inventory.size(); i++) {
 			ItemStack itemStackChecking = inventory.get(i - 1);
 
-			if(!itemStackChecking.isEmpty())
-			{
-				if(areItemsEqual(itemStackChecking, stack, hasSmartModule))
-				{
-					if(hasStorageModule) {
+			if (!itemStackChecking.isEmpty()) {
+				if (areItemsEqual(itemStackChecking, stack, hasSmartModule)) {
+					if (hasStorageModule) {
 						te.addItemToStorage(inventory.get(i - 1));
 						inventory.set(i - 1, ItemStack.EMPTY);
 					}
 
-					if (hasRedstoneModule) {
+					if (hasRedstoneModule)
 						updateInventoryScannerPower(te);
-					}
 
 					return true;
 				}
@@ -202,8 +177,7 @@ public class BlockInventoryScannerField extends BlockContainer {
 		return false;
 	}
 
-	public static boolean checkEntityItem(EntityItem entity, TileEntityInventoryScanner te, ItemStack stack, boolean allowInteraction)
-	{
+	public static boolean checkEntityItem(EntityItem entity, TileEntityInventoryScanner te, ItemStack stack, boolean allowInteraction) {
 		boolean hasSmartModule = te.hasModule(EnumModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && te.hasModule(EnumModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && te.hasModule(EnumModuleType.REDSTONE);
@@ -211,16 +185,14 @@ public class BlockInventoryScannerField extends BlockContainer {
 		if (!hasRedstoneModule && !hasStorageModule && allowInteraction)
 			return false;
 
-		if(areItemsEqual(entity.getItem(), stack, hasSmartModule))
-		{
+		if (areItemsEqual(entity.getItem(), stack, hasSmartModule)) {
 			if (hasStorageModule) {
 				te.addItemToStorage(entity.getItem());
 				entity.setDead();
 			}
 
-			if (hasRedstoneModule) {
+			if (hasRedstoneModule)
 				updateInventoryScannerPower(te);
-			}
 
 			return true;
 		}
@@ -229,22 +201,21 @@ public class BlockInventoryScannerField extends BlockContainer {
 	}
 
 	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, TileEntityInventoryScanner te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
-		if(item != null) {
-			if(!item.isEmpty() && item.getTagCompound() != null && Block.getBlockFromItem(item.getItem()) instanceof BlockShulkerBox) {
+		if (item != null) {
+			if (!item.isEmpty() && item.getTagCompound() != null && Block.getBlockFromItem(item.getItem()) instanceof BlockShulkerBox) {
 				NBTTagList list = item.getTagCompound().getCompoundTag("BlockEntityTag").getTagList("Items", NBT.TAG_COMPOUND);
 
-				for(int i = 0; i < list.tagCount(); i++) {
+				for (int i = 0; i < list.tagCount(); i++) {
 					ItemStack itemInChest = new ItemStack(list.getCompoundTagAt(i));
 
-					if(areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
-						if(hasStorageModule) {
+					if (areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
+						if (hasStorageModule) {
 							te.addItemToStorage(itemInChest);
 							list.removeTag(i);
 						}
 
-						if (hasRedstoneModule) {
+						if (hasRedstoneModule)
 							updateInventoryScannerPower(te);
-						}
 
 						return true;
 					}
@@ -256,15 +227,13 @@ public class BlockInventoryScannerField extends BlockContainer {
 	}
 
 	private static boolean areItemsEqual(ItemStack firstItemStack, ItemStack secondItemStack, boolean hasSmartModule) {
-		return (hasSmartModule && areItemStacksEqual(firstItemStack, secondItemStack) && ItemStack.areItemStackTagsEqual(firstItemStack, secondItemStack))
-				|| (!hasSmartModule && areItemStacksEqual(firstItemStack, secondItemStack));
+		return (hasSmartModule && areItemStacksEqual(firstItemStack, secondItemStack) && ItemStack.areItemStackTagsEqual(firstItemStack, secondItemStack)) || (!hasSmartModule && areItemStacksEqual(firstItemStack, secondItemStack));
 	}
 
-	private static void updateInventoryScannerPower(TileEntityInventoryScanner te)
-	{
+	private static void updateInventoryScannerPower(TileEntityInventoryScanner te) {
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(te.getWorld(), te.getPos());
 
-		if(connectedScanner == null)
+		if (connectedScanner == null)
 			return;
 
 		updateInvScanner(te);
@@ -281,8 +250,7 @@ public class BlockInventoryScannerField extends BlockContainer {
 	/**
 	 * See {@link ItemStack#areItemStacksEqual(ItemStack, ItemStack)} but without size restriction
 	 */
-	public static boolean areItemStacksEqual(ItemStack stack1, ItemStack stack2)
-	{
+	public static boolean areItemStacksEqual(ItemStack stack1, ItemStack stack2) {
 		ItemStack s1 = stack1.copy();
 		ItemStack s2 = stack2.copy();
 
@@ -292,35 +260,27 @@ public class BlockInventoryScannerField extends BlockContainer {
 	}
 
 	@Override
-	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state)
-	{
-		if(!world.isRemote)
-		{
+	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state) {
+		if (!world.isRemote) {
 			EnumFacing facing = state.getValue(FACING);
 
-			if (facing == EnumFacing.EAST || facing == EnumFacing.WEST)
-			{
+			if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) {
 				checkAndDestroyFields(world, pos, (p, i) -> p.west(i));
 				checkAndDestroyFields(world, pos, (p, i) -> p.east(i));
 			}
-			else if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH)
-			{
+			else if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) {
 				checkAndDestroyFields(world, pos, (p, i) -> p.north(i));
 				checkAndDestroyFields(world, pos, (p, i) -> p.south(i));
 			}
 		}
 	}
 
-	private void checkAndDestroyFields(World world, BlockPos pos, BiFunction<BlockPos,Integer,BlockPos> posModifier)
-	{
-		for(int i = 0; i < ConfigHandler.inventoryScannerRange; i++)
-		{
+	private void checkAndDestroyFields(World world, BlockPos pos, BiFunction<BlockPos, Integer, BlockPos> posModifier) {
+		for (int i = 0; i < ConfigHandler.inventoryScannerRange; i++) {
 			BlockPos modifiedPos = posModifier.apply(pos, i);
 
-			if(world.getBlockState(modifiedPos) == SCContent.inventoryScanner)
-			{
-				for(int j = 1; j < i; j++)
-				{
+			if (world.getBlockState(modifiedPos) == SCContent.inventoryScanner) {
+				for (int j = 1; j < i; j++) {
 					world.destroyBlock(posModifier.apply(pos, j), false);
 				}
 
@@ -330,9 +290,8 @@ public class BlockInventoryScannerField extends BlockContainer {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
-		if(state.getValue(HORIZONTAL))
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		if (state.getValue(HORIZONTAL))
 			return HORIZONTAL_SHAPE;
 
 		if (state.getValue(FACING) == EnumFacing.EAST || state.getValue(FACING) == EnumFacing.WEST)
@@ -343,26 +302,22 @@ public class BlockInventoryScannerField extends BlockContainer {
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta % 4)).withProperty(HORIZONTAL, meta > 3);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(FACING).getHorizontalIndex() + (state.getValue(HORIZONTAL) ? 4 : 0);
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, HORIZONTAL);
 	}
 
 	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
-	{
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return ItemStack.EMPTY;
 	}
 
@@ -373,21 +328,20 @@ public class BlockInventoryScannerField extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-	{
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
 		Block block = iblockstate.getBlock();
 
-		if (side == EnumFacing.UP || side == EnumFacing.DOWN)
+		if (side == EnumFacing.UP || side == EnumFacing.DOWN) {
 			if (block == this)
 				return false;
+		}
 
 		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 }

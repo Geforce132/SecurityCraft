@@ -43,7 +43,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockCageTrap extends BlockDisguisable {
-
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
 	public BlockCageTrap(Material material) {
@@ -52,8 +51,7 @@ public class BlockCageTrap extends BlockDisguisable {
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
@@ -64,52 +62,48 @@ public class BlockCageTrap extends BlockDisguisable {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
-		if(state.getValue(DEACTIVATED))
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		if (state.getValue(DEACTIVATED))
 			return super.getCollisionBoundingBox(state, world, pos);
-		else return null;
+		else
+			return null;
 	}
 
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
-	{
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState) {
 		TileEntity tile = world.getTileEntity(pos);
 
-		if(tile instanceof TileEntityCageTrap)
-		{
-			TileEntityCageTrap te = (TileEntityCageTrap)tile;
+		if (tile instanceof TileEntityCageTrap) {
+			TileEntityCageTrap te = (TileEntityCageTrap) tile;
 
-			if(entity instanceof EntityPlayer && (te.getOwner().isOwner((EntityPlayer)entity) || ModuleUtils.isAllowed(te, entity)))
+			if (entity instanceof EntityPlayer && (te.getOwner().isOwner((EntityPlayer) entity) || ModuleUtils.isAllowed(te, entity)))
 				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
-			if(entity instanceof EntityLiving && !state.getValue(DEACTIVATED))
-			{
-				if(te.capturesMobs())
+			if (entity instanceof EntityLiving && !state.getValue(DEACTIVATED)) {
+				if (te.capturesMobs())
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
 				else
 					addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
 
 				return;
 			}
-			else if(entity instanceof EntityItem)
-			{
+			else if (entity instanceof EntityItem) {
 				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
 				return;
 			}
 
-			if(state.getValue(DEACTIVATED))
+			if (state.getValue(DEACTIVATED))
 				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
 			else
 				addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
 		}
-		else //shouldn't happen
+		else
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
 	}
 
-	private void addCorrectShape(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState, TileEntityDisguisable disguisableTe)
-	{
+	private void addCorrectShape(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState, TileEntityDisguisable disguisableTe) {
 		ItemStack moduleStack = disguisableTe.getModule(EnumModuleType.DISGUISE);
 
-		if(!moduleStack.isEmpty() && (((ItemModule)moduleStack.getItem()).getBlockAddon(moduleStack.getTagCompound()) != null))
+		if (!moduleStack.isEmpty() && (((ItemModule) moduleStack.getItem()).getBlockAddon(moduleStack.getTagCompound()) != null))
 			super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
 		else
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
@@ -117,15 +111,15 @@ public class BlockCageTrap extends BlockDisguisable {
 
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if(!world.isRemote){
-			if(state.getValue(DEACTIVATED))
+		if (!world.isRemote) {
+			if (state.getValue(DEACTIVATED))
 				return;
 
 			TileEntityCageTrap tileEntity = (TileEntityCageTrap) world.getTileEntity(pos);
 			boolean isPlayer = entity instanceof EntityPlayer;
 
-			if(isPlayer || (entity instanceof EntityMob && tileEntity.capturesMobs())){
-				if((isPlayer && tileEntity.getOwner().isOwner((EntityPlayer)entity)))
+			if (isPlayer || (entity instanceof EntityMob && tileEntity.capturesMobs())) {
+				if ((isPlayer && tileEntity.getOwner().isOwner((EntityPlayer) entity)))
 					return;
 
 				BlockPos topMiddle = pos.up(4);
@@ -133,57 +127,51 @@ public class BlockCageTrap extends BlockDisguisable {
 				BlockModifier placer = new BlockModifier(world, new MutableBlockPos(pos), tileEntity.getOwner());
 
 				placer.loop((w, p, o) -> {
-					if(w.isAirBlock(p))
-					{
-						if(p.equals(topMiddle))
+					if (w.isAirBlock(p)) {
+						if (p.equals(topMiddle))
 							w.setBlockState(p, SCContent.horizontalReinforcedIronBars.getDefaultState());
 						else
-							w.setBlockState(p, ((BlockReinforcedIronBars)SCContent.reinforcedIronBars).getActualState(SCContent.reinforcedIronBars.getDefaultState(), w, p));
+							w.setBlockState(p, ((BlockReinforcedIronBars) SCContent.reinforcedIronBars).getActualState(SCContent.reinforcedIronBars.getDefaultState(), w, p));
 					}
 				});
 				placer.loop((w, p, o) -> {
 					TileEntity te = w.getTileEntity(p);
 
-					if(te instanceof IOwnable)
-						((IOwnable)te).setOwner(o.getUUID(), o.getName());
+					if (te instanceof IOwnable)
+						((IOwnable) te).setOwner(o.getUUID(), o.getName());
 
-					if(te instanceof TileEntityReinforcedIronBars)
-						((TileEntityReinforcedIronBars)te).setCanDrop(false);
+					if (te instanceof TileEntityReinforcedIronBars)
+						((TileEntityReinforcedIronBars) te).setCanDrop(false);
 				});
 				world.setBlockState(pos, getDefaultState().withProperty(DEACTIVATED, true));
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 
-				if(isPlayer && PlayerUtils.isPlayerOnline(ownerName))
+				if (isPlayer && PlayerUtils.isPlayerOnline(ownerName))
 					PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName(ownerName), Utils.localize("tile.securitycraft:cageTrap.name"), Utils.localize("messages.securitycraft:cageTrap.captured", entity.getName(), pos), TextFormatting.BLACK);
 			}
 		}
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(stack.getItem() == SCContent.wireCutters)
-		{
-			if(!state.getValue(DEACTIVATED))
-			{
+		if (stack.getItem() == SCContent.wireCutters) {
+			if (!state.getValue(DEACTIVATED)) {
 				world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
 
-				if(!player.isCreative())
+				if (!player.isCreative())
 					stack.damageItem(1, player);
 
 				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				return true;
 			}
 		}
-		else if(stack.getItem() == Items.REDSTONE)
-		{
-			if(state.getValue(DEACTIVATED))
-			{
+		else if (stack.getItem() == Items.REDSTONE) {
+			if (state.getValue(DEACTIVATED)) {
 				world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
 
-				if(!player.isCreative())
+				if (!player.isCreative())
 					stack.shrink(1);
 
 				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -194,26 +182,22 @@ public class BlockCageTrap extends BlockDisguisable {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(DEACTIVATED, false);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(DEACTIVATED, (meta == 1 ? true : false));
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(DEACTIVATED) ? 1 : 0;
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, DEACTIVATED);
 	}
 
@@ -222,31 +206,25 @@ public class BlockCageTrap extends BlockDisguisable {
 		return new TileEntityCageTrap();
 	}
 
-	public static class BlockModifier
-	{
+	public static class BlockModifier {
 		private World world;
 		private MutableBlockPos pos;
 		private BlockPos origin;
 		private Owner owner;
 
-		public BlockModifier(World world, MutableBlockPos origin, Owner owner)
-		{
+		public BlockModifier(World world, MutableBlockPos origin, Owner owner) {
 			this.world = world;
 			pos = origin.setPos(origin.getX() - 1, origin.getY() + 1, origin.getZ() - 1);
 			this.origin = origin.toImmutable();
 			this.owner = owner;
 		}
 
-		public void loop(TriConsumer<World,MutableBlockPos,Owner> ifTrue)
-		{
-			for(int y = 0; y < 4; y++)
-			{
-				for(int x = 0; x < 3; x++)
-				{
-					for(int z = 0; z < 3; z++)
-					{
+		public void loop(TriConsumer<World, MutableBlockPos, Owner> ifTrue) {
+			for (int y = 0; y < 4; y++) {
+				for (int x = 0; x < 3; x++) {
+					for (int z = 0; z < 3; z++) {
 						//skip the middle column above the cage trap, but not the place where the horizontal iron bars are
-						if(!(x == 1 && z == 1 && y != 3))
+						if (!(x == 1 && z == 1 && y != 3))
 							ifTrue.accept(world, pos, owner);
 
 						pos.setPos(pos.getX(), pos.getY(), pos.getZ() + 1);

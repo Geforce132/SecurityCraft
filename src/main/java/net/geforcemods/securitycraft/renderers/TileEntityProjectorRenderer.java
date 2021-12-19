@@ -15,31 +15,27 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileEntityProjector> {
-
 	@Override
-	public void render(TileEntityProjector te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
-	{
-		if(te.isActive() && !te.isEmpty())
-		{
+	public void render(TileEntityProjector te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		if (te.isActive() && !te.isEmpty()) {
 			EnumFacing facing = te.getWorld().getBlockState(te.getPos()).getValue(BlockProjector.FACING);
 
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x, y, z + 1); //everything's offset by one on z, no idea why
 			Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
-			for(int fakeX = 0; fakeX < te.getProjectionWidth(); fakeX++) {
-				for(int fakeY = 0; fakeY < te.getProjectionHeight(); fakeY++) {
+			for (int fakeX = 0; fakeX < te.getProjectionWidth(); fakeX++) {
+				for (int fakeY = 0; fakeY < te.getProjectionHeight(); fakeY++) {
 					GlStateManager.pushMatrix();
 
 					BlockPos pos;
 
-					if(!te.isHorizontal())
+					if (!te.isHorizontal())
 						pos = translateProjection(te.getPos(), facing, fakeX, fakeY, te.getProjectionRange(), te.getProjectionOffset());
 					else
 						pos = translateProjection(te.getPos(), facing, fakeX, te.getProjectionRange() - 16, fakeY + 1, te.getProjectionOffset());
 
-					if(pos != null && te.getWorld().isAirBlock(pos))
-					{
+					if (pos != null && te.getWorld().isAirBlock(pos)) {
 						BlockRendererDispatcher blockRendererDispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 						IBlockState state = te.getProjectedBlock().getStateFromMeta(te.getStackInSlot(36).getMetadata());
 
@@ -67,26 +63,24 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 	 * @param y The offset from the projectors position on the y axis of the position at which to draw the fake block
 	 * @param distance The distance in blocks that the fake block is away from the projector (set by player)
 	 * @param offset The offset in blocks that the fake block is moved to the side from the projector (set by player)
-	 *
 	 * @return The BlockPos of the fake block to be drawn, null if an invalid direction was given
 	 */
-	private BlockPos translateProjection(BlockPos tePos, EnumFacing direction, int x, int y, double distance, double offset)
-	{
+	private BlockPos translateProjection(BlockPos tePos, EnumFacing direction, int x, int y, double distance, double offset) {
 		BlockPos pos = null;
 
-		if(direction == EnumFacing.NORTH) {
+		if (direction == EnumFacing.NORTH) {
 			pos = new BlockPos(tePos.getX() + x + offset, tePos.getY() + y, tePos.getZ() + distance);
 			GlStateManager.translate(0.0D + x + offset, 0.0D + y, distance);
 		}
-		else if(direction == EnumFacing.SOUTH) {
+		else if (direction == EnumFacing.SOUTH) {
 			pos = new BlockPos(tePos.getX() + x + offset, tePos.getY() + y, tePos.getZ() + -distance);
 			GlStateManager.translate(0.0D + x + offset, 0.0D + y, -distance);
 		}
-		else if(direction == EnumFacing.WEST) {
+		else if (direction == EnumFacing.WEST) {
 			pos = new BlockPos(tePos.getX() + distance, tePos.getY() + y, tePos.getZ() + x + offset);
 			GlStateManager.translate(distance, 0.0D + y, 0.0D + x + offset);
 		}
-		else if(direction == EnumFacing.EAST) {
+		else if (direction == EnumFacing.EAST) {
 			pos = new BlockPos(tePos.getX() + -distance, tePos.getY() + y, tePos.getZ() + x + offset);
 			GlStateManager.translate(-distance, 0.0D + y, 0.0D + x + offset);
 		}
@@ -95,8 +89,7 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 	}
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityProjector te)
-	{
+	public boolean isGlobalRenderer(TileEntityProjector te) {
 		return true;
 	}
 }

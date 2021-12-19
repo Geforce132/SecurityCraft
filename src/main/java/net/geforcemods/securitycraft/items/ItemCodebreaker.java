@@ -22,7 +22,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCodebreaker extends Item {
-
 	public ItemCodebreaker() {
 		maxStackSize = 1;
 		setMaxDamage(4); //5 uses because when the damage is 0 the item has one more use
@@ -33,7 +32,7 @@ public class ItemCodebreaker extends Item {
 		ItemStack codebreaker = player.getHeldItem(hand);
 
 		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {
-			if(!ConfigHandler.allowCodebreakerItem) {
+			if (!ConfigHandler.allowCodebreakerItem) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.briefcase.getTranslationKey()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, codebreaker);
 			}
@@ -41,7 +40,7 @@ public class ItemCodebreaker extends Item {
 				codebreaker.damageItem(1, player);
 
 				if (!world.isRemote && new Random().nextInt(3) == 1)
-					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:codebreaker.name"), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 			}
@@ -54,34 +53,28 @@ public class ItemCodebreaker extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(ItemStack stack){
+	public boolean hasEffect(ItemStack stack) {
 		return true;
 	}
 
-	/**
-	 * Return an item rarity from EnumRarity
-	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack stack){
+	public EnumRarity getRarity(ItemStack stack) {
 		return EnumRarity.RARE;
 	}
 
 	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment)
-	{
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return false;
 	}
 
 	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book)
-	{
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		return false;
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack stack)
-	{
+	public boolean isEnchantable(ItemStack stack) {
 		return false;
 	}
 }

@@ -8,13 +8,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 /**
- * Simple enum that is supposed to be used in conjunction with {@link CustomizableSCTE}.
- * Gives easy access to the module ItemStack and name.
+ * Simple enum that is supposed to be used in conjunction with {@link CustomizableSCTE}. Gives easy access to the module
+ * ItemStack and name.
  *
  * @author Geforce
  */
 public enum EnumModuleType {
-
 	REDSTONE(SCContent.redstoneModule, "redstone_module"),
 	ALLOWLIST(SCContent.allowlistModule, "whitelist_module"),
 	DENYLIST(SCContent.denylistModule, "blacklist_module"),
@@ -27,7 +26,7 @@ public enum EnumModuleType {
 	private ItemModule module;
 	private String registryPath;
 
-	private EnumModuleType(ItemModule moduleItem, String registryPath){
+	private EnumModuleType(ItemModule moduleItem, String registryPath) {
 		module = moduleItem;
 		this.registryPath = registryPath;
 	}
@@ -45,8 +44,8 @@ public enum EnumModuleType {
 	}
 
 	public static void refresh() {
-		for(EnumModuleType module : values())
+		for (EnumModuleType module : values()) {
 			module.module = (ItemModule) ForgeRegistries.ITEMS.getValue(new ResourceLocation(SecurityCraft.MODID, module.getRegistryPath()));
+		}
 	}
-
 }

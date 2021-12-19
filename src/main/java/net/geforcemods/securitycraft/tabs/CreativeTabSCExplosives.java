@@ -7,22 +7,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class CreativeTabSCExplosives extends CreativeTabs{
-
-	public CreativeTabSCExplosives(){
+public class CreativeTabSCExplosives extends CreativeTabs {
+	public CreativeTabSCExplosives() {
 		super(getNextID(), "tabSecurityCraft");
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack createIcon(){
+	public ItemStack createIcon() {
 		return new ItemStack(Item.getItemFromBlock(SCContent.mine));
 	}
 
 	@Override
-	public String getTabLabel(){
+	public String getTabLabel() {
 		return super.getTabLabel() + ".explosives";
-
 	}
-
 }

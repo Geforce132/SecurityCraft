@@ -18,15 +18,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiBriefcase extends GuiContainer {
-
-	public static final String UP_ARROW  = "\u2191";
-	public static final String DOWN_ARROW  = "\u2193";
+	public static final String UP_ARROW = "\u2191";
+	public static final String DOWN_ARROW = "\u2193";
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private GuiButton[] keycodeTopButtons = new GuiButton[4];
 	private GuiButton[] keycodeBottomButtons = new GuiButton[4];
 	private GuiTextField[] keycodeTextboxes = new GuiTextField[4];
 	private GuiButton continueButton;
-	private int[] digits = {0, 0, 0, 0};
+	private int[] digits = {
+			0, 0, 0, 0
+	};
 
 	public GuiBriefcase(InventoryPlayer inventoryPlayer, TileEntity tileEntity) {
 		super(new ContainerGeneric(inventoryPlayer, tileEntity));
@@ -36,12 +37,12 @@ public class GuiBriefcase extends GuiContainer {
 	public void initGui() {
 		super.initGui();
 
-		for(int i = 0; i < keycodeTopButtons.length; i++) {
+		for (int i = 0; i < keycodeTopButtons.length; i++) {
 			keycodeTopButtons[i] = new GuiButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW);
 			buttonList.add(keycodeTopButtons[i]);
 		}
 
-		for(int i = 0; i < keycodeBottomButtons.length; i++) {
+		for (int i = 0; i < keycodeBottomButtons.length; i++) {
 			keycodeBottomButtons[i] = new GuiButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW);
 			buttonList.add(keycodeBottomButtons[i]);
 		}
@@ -49,7 +50,7 @@ public class GuiBriefcase extends GuiContainer {
 		continueButton = new GuiButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">");
 		buttonList.add(continueButton);
 
-		for(int i = 0; i < keycodeTextboxes.length; i++) {
+		for (int i = 0; i < keycodeTextboxes.length; i++) {
 			keycodeTextboxes[i] = new GuiTextField(9 + i, fontRenderer, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12);
 
 			keycodeTextboxes[i].setTextColor(-1);
@@ -65,8 +66,9 @@ public class GuiBriefcase extends GuiContainer {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 
-		for(GuiTextField textfield : keycodeTextboxes)
+		for (GuiTextField textfield : keycodeTextboxes) {
 			textfield.drawTextBox();
+		}
 	}
 
 	@Override
@@ -86,14 +88,13 @@ public class GuiBriefcase extends GuiContainer {
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
-		if(button.id == 8)
-		{
-			if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase, null)) {
+		if (button.id == 8) {
+			if (PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase, null)) {
 				ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getMinecraft().player, SCContent.briefcase);
 				NBTTagCompound nbt = briefcase.getTagCompound();
-				String code = digits[0] + "" + digits[1] + "" +  digits[2] + "" + digits[3];
+				String code = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];
 
-				if(nbt.getString("passcode").equals(code)) {
+				if (nbt.getString("passcode").equals(code)) {
 					if (!nbt.hasKey("owner")) {
 						nbt.setString("owner", Minecraft.getMinecraft().player.getName());
 						nbt.setString("ownerUUID", Minecraft.getMinecraft().player.getUniqueID().toString());
@@ -103,8 +104,7 @@ public class GuiBriefcase extends GuiContainer {
 				}
 			}
 		}
-		else
-		{
+		else {
 			int index = button.id % 4;
 
 			//java's modulo operator % does not handle negative numbers like it should for some reason, so floorMod needs to be used

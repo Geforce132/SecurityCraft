@@ -18,8 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
-public class TileEntityKeyPanel extends CustomizableSCTE implements IPasswordProtected, ILockable
-{
+public class TileEntityKeyPanel extends CustomizableSCTE implements IPasswordProtected, ILockable {
 	private String passcode;
 	private OptionBoolean isAlwaysActive = new OptionBoolean("isAlwaysActive", false) {
 		@Override
@@ -34,50 +33,47 @@ public class TileEntityKeyPanel extends CustomizableSCTE implements IPasswordPro
 	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		if(passcode != null && !passcode.isEmpty())
+		if (passcode != null && !passcode.isEmpty())
 			tag.setString("passcode", passcode);
 
 		return tag;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		passcode = tag.getString("passcode");
 	}
 
 	@Override
-	public EnumModuleType[] acceptedModules()
-	{
-		return new EnumModuleType[]{EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[] {
+				EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST
+		};
 	}
 
 	@Override
-	public Option<?>[] customOptions()
-	{
-		return new Option[]{ isAlwaysActive, sendMessage, signalLength };
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				isAlwaysActive, sendMessage, signalLength
+		};
 	}
 
 	@Override
-	public void activate(EntityPlayer player)
-	{
-		if(!world.isRemote)
-			((BlockKeyPanel)getBlockType()).activate(world.getBlockState(pos), world, pos, signalLength.get());
+	public void activate(EntityPlayer player) {
+		if (!world.isRemote)
+			((BlockKeyPanel) getBlockType()).activate(world.getBlockState(pos), world, pos, signalLength.get());
 	}
 
 	@Override
-	public void openPasswordGUI(EntityPlayer player)
-	{
-		if(getPassword() != null)
+	public void openPasswordGUI(EntityPlayer player) {
+		if (getPassword() != null)
 			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
-		else
-		{
-			if(getOwner().isOwner(player))
+		else {
+			if (getOwner().isOwner(player))
 				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			else
 				PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
@@ -85,10 +81,8 @@ public class TileEntityKeyPanel extends CustomizableSCTE implements IPasswordPro
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player)
-	{
-		if(!state.getValue(BlockKeyPanel.POWERED))
-		{
+	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
+		if (!state.getValue(BlockKeyPanel.POWERED)) {
 			activate(player);
 			return true;
 		}
@@ -97,24 +91,20 @@ public class TileEntityKeyPanel extends CustomizableSCTE implements IPasswordPro
 	}
 
 	@Override
-	public String getPassword()
-	{
+	public String getPassword() {
 		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
 	}
 
 	@Override
-	public void setPassword(String password)
-	{
+	public void setPassword(String password) {
 		passcode = password;
 	}
 
-	public boolean sendsMessages()
-	{
+	public boolean sendsMessages() {
 		return sendMessage.get();
 	}
 
-	public int getSignalLength()
-	{
+	public int getSignalLength() {
 		return signalLength.get();
 	}
 }

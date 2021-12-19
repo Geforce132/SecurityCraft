@@ -17,15 +17,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockOwnable extends BlockContainer {
-
 	private EnumBlockRenderType renderType = EnumBlockRenderType.MODEL;
 
 	public BlockOwnable(Material material) {
 		super(material);
 
-		if(material == Material.GROUND)
+		if (material == Material.GROUND)
 			setSoundType(SoundType.GROUND);
-		else if(material == Material.GLASS)
+		else if (material == Material.GLASS)
 			setSoundType(SoundType.GLASS);
 		else
 			setSoundType(SoundType.STONE);
@@ -35,15 +34,14 @@ public class BlockOwnable extends BlockContainer {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 
 		if (!world.isRemote && stack.hasDisplayName()) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if (te instanceof INameSetter) {
-				((INameSetter)te).setCustomName(stack.getDisplayName());
-			}
+			if (te instanceof INameSetter)
+				((INameSetter) te).setCustomName(stack.getDisplayName());
 		}
 	}
 

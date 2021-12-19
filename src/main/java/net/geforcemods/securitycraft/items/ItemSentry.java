@@ -18,25 +18,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-public class ItemSentry extends Item
-{
+public class ItemSentry extends Item {
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		boolean replacesTargetedBlock = world.getBlockState(pos).getMaterial().isReplaceable();
 
-		if (!replacesTargetedBlock) {
+		if (!replacesTargetedBlock)
 			pos = pos.offset(facing); //if the block is not replaceable, place sentry next to targeted block
-		}
 
-		if(!world.isAirBlock(pos) && !replacesTargetedBlock)
+		if (!world.isAirBlock(pos) && !replacesTargetedBlock)
 			return EnumActionResult.PASS;
-		else
-		{
+		else {
 			BlockPos downPos = pos.down();
 
-			if(world.isAirBlock(downPos) || world.getCollisionBoxes(null, new AxisAlignedBB(downPos)).isEmpty())
-			{
+			if (world.isAirBlock(downPos) || world.getCollisionBoxes(null, new AxisAlignedBB(downPos)).isEmpty()) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:sentry.name"), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
 				return EnumActionResult.SUCCESS;
 			}
@@ -50,16 +45,15 @@ public class ItemSentry extends Item
 		if (stack.hasDisplayName())
 			entity.setCustomNameTag(stack.getDisplayName());
 
-		if (replacesTargetedBlock) {
+		if (replacesTargetedBlock)
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-		}
 
 		if (!world.isRemote)
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
 
 		player.sendStatusMessage(Utils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(Utils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
 
-		if(!player.isCreative())
+		if (!player.isCreative())
 			player.getHeldItem(hand).shrink(1);
 
 		return EnumActionResult.SUCCESS;

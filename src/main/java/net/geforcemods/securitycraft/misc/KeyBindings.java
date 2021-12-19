@@ -11,13 +11,12 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
  * @author Geforce
  */
 public class KeyBindings {
-
 	public static KeyBinding cameraZoomIn;
 	public static KeyBinding cameraZoomOut;
 	public static KeyBinding cameraEmitRedstone;
 	public static KeyBinding cameraActivateNightVision;
 
-	public static void init(){
+	public static void init() {
 		cameraZoomIn = new KeyBinding("key.securitycraft.cameraZoomIn", Keyboard.KEY_EQUALS, "key.categories.securitycraft");
 		cameraZoomOut = new KeyBinding("key.securitycraft.cameraZoomOut", Keyboard.KEY_MINUS, "key.categories.securitycraft");
 		cameraEmitRedstone = new KeyBinding("key.securitycraft.cameraEmitRedstone", Keyboard.KEY_R, "key.categories.securitycraft");
@@ -28,5 +27,4 @@ public class KeyBindings {
 		ClientRegistry.registerKeyBinding(cameraEmitRedstone);
 		ClientRegistry.registerKeyBinding(cameraActivateNightVision);
 	}
-
 }

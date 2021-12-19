@@ -15,34 +15,34 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Tracks all of the Sonic Security Systems in the world. Used when
- * notes are played or lockable blocks are interacted with. Modified from
+ * Tracks all of the Sonic Security Systems in the world. Used when notes are played or lockable blocks are interacted with.
+ * Modified from
  * https://github.com/bl4ckscor3/The-Plopper/blob/1.16/src/main/java/bl4ckscor3/mod/theplopper/tracking/PlopperTracker.java
  */
 public class SonicSecuritySystemTracker {
-
 	private static final Map<Integer, Collection<BlockPos>> trackedSonicSecuritySystems = new HashMap<>();
 
 	/**
 	 * Starts tracking a Sonic Security System
+	 *
 	 * @param te The Sonic Security System to track
 	 */
-	public static void track(TileEntitySonicSecuritySystem te)
-	{
+	public static void track(TileEntitySonicSecuritySystem te) {
 		getTrackedSonicSecuritySystems(te.getWorld()).add(te.getPos().toImmutable());
 	}
 
 	/**
 	 * Stops tracking the given Sonic Security System. Use when e.g. removing the tile entity from the world
+	 *
 	 * @param te The Sonic Security System to stop tracking
 	 */
-	public static void stopTracking(TileEntitySonicSecuritySystem te)
-	{
+	public static void stopTracking(TileEntitySonicSecuritySystem te) {
 		getTrackedSonicSecuritySystems(te.getWorld()).remove(te.getPos());
 	}
 
 	/**
 	 * Gets all Sonic Security Systems that have the given block position in their range in the given world
+	 *
 	 * @param world The world
 	 * @param pos The block position
 	 * @return A list of all sonic security systems that have the given block position in their range
@@ -53,28 +53,25 @@ public class SonicSecuritySystemTracker {
 
 	/**
 	 * Gets all Sonic Security Systems that have the given block position in the given range in the world
+	 *
 	 * @param world The world
 	 * @param pos The block position
 	 * @param range The range to search within (in number of blocks)
 	 * @return A list of all sonic security systems that have the given block position in their range
 	 */
-	public static List<TileEntitySonicSecuritySystem> getSonicSecuritySystemsInRange(World world, BlockPos pos, int range)
-	{
+	public static List<TileEntitySonicSecuritySystem> getSonicSecuritySystemsInRange(World world, BlockPos pos, int range) {
 		final Collection<BlockPos> sonicSecuritySystems = getTrackedSonicSecuritySystems(world);
 		List<TileEntitySonicSecuritySystem> returnValue = new ArrayList<>();
 
-		for(Iterator<BlockPos> it = sonicSecuritySystems.iterator(); it.hasNext(); )
-		{
+		for (Iterator<BlockPos> it = sonicSecuritySystems.iterator(); it.hasNext();) {
 			BlockPos sonicSecuritySystemPos = it.next();
 
-			if(sonicSecuritySystemPos != null)
-			{
+			if (sonicSecuritySystemPos != null) {
 				TileEntity potentialSonicSecuritySystem = world.getTileEntity(sonicSecuritySystemPos);
 
-				if(potentialSonicSecuritySystem instanceof TileEntitySonicSecuritySystem)
-				{
-					if(canSonicSecuritySystemReach((TileEntitySonicSecuritySystem)potentialSonicSecuritySystem, pos))
-						returnValue.add((TileEntitySonicSecuritySystem)potentialSonicSecuritySystem);
+				if (potentialSonicSecuritySystem instanceof TileEntitySonicSecuritySystem) {
+					if (canSonicSecuritySystemReach((TileEntitySonicSecuritySystem) potentialSonicSecuritySystem, pos))
+						returnValue.add((TileEntitySonicSecuritySystem) potentialSonicSecuritySystem);
 
 					continue;
 				}
@@ -88,14 +85,13 @@ public class SonicSecuritySystemTracker {
 
 	/**
 	 * Gets the positions of all tracked Sonic Security Systems in the given world
+	 *
 	 * @param world The world to get the tracked Sonic Security Systems of
 	 */
-	private static Collection<BlockPos> getTrackedSonicSecuritySystems(World world)
-	{
+	private static Collection<BlockPos> getTrackedSonicSecuritySystems(World world) {
 		Collection<BlockPos> sonicSecuritySystems = trackedSonicSecuritySystems.get(world.provider.getDimension());
 
-		if(sonicSecuritySystems == null)
-		{
+		if (sonicSecuritySystems == null) {
 			sonicSecuritySystems = new HashSet<>();
 			trackedSonicSecuritySystems.put(world.provider.getDimension(), sonicSecuritySystems);
 		}
@@ -105,14 +101,13 @@ public class SonicSecuritySystemTracker {
 
 	/**
 	 * Checks whether the given block position is contained in the given Sonic Security System's range
+	 *
 	 * @param te The Sonic Security System
 	 * @param pos The block position to check
 	 */
-	public static boolean canSonicSecuritySystemReach(TileEntitySonicSecuritySystem te, BlockPos pos)
-	{
+	public static boolean canSonicSecuritySystemReach(TileEntitySonicSecuritySystem te, BlockPos pos) {
 		AxisAlignedBB sssRange = new AxisAlignedBB(te.getPos()).grow(TileEntitySonicSecuritySystem.MAX_RANGE);
 
 		return sssRange.minX <= pos.getX() && sssRange.minY <= pos.getY() && sssRange.minZ <= pos.getZ() && sssRange.maxX >= pos.getX() && sssRange.maxY >= pos.getY() && sssRange.maxZ >= pos.getZ();
 	}
-
 }

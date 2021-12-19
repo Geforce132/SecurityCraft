@@ -12,20 +12,18 @@ import net.minecraft.entity.EntityTrackerEntry;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 /**
- * Allows security cameras as well as entities outside the player's range to be sent to the player when they are viewing a camera
+ * Allows security cameras as well as entities outside the player's range to be sent to the player when they are viewing a
+ * camera
  */
 @Mixin(EntityTrackerEntry.class)
 public class MixinEntityTrackerEntry {
 	@Shadow
 	@Final
 	private int range;
-
 	@Shadow
 	private int maxRange;
-
 	@Shadow
 	private long encodedPosX;
-
 	@Shadow
 	private long encodedPosZ;
 
@@ -35,7 +33,7 @@ public class MixinEntityTrackerEntry {
 			return true;
 
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			EntitySecurityCamera cam = (EntitySecurityCamera)player.getSpectatingEntity();
+			EntitySecurityCamera cam = (EntitySecurityCamera) player.getSpectatingEntity();
 			double relativeX = cam.posX - encodedPosX / 4096.0D;
 			double relativeZ = cam.posZ - encodedPosZ / 4096.0D;
 			int range = Math.min(this.range, maxRange);

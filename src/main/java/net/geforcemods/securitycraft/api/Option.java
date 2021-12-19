@@ -12,19 +12,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 
 /**
- * A class that allows blocks that have
- * {@link CustomizableSCTE}s to have custom, "per-block"
- * options that are separate from the main SecurityCraft
- * configuration options.
+ * A class that allows blocks that have {@link CustomizableSCTE}s to have custom, "per-block" options that are separate from
+ * the main SecurityCraft configuration options.
  *
  * @author Geforce
- *
  * @param <T> The Class of the type of value this option should use
  */
 public abstract class Option<T> {
-
 	private String name;
-
 	protected T value;
 	private T defaultValue;
 	private T increment;
@@ -47,11 +42,8 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * Called when this option's button in {@link GuiCustomizeBlock} is pressed.
-	 * Update the option's value here. <p>
-	 *
-	 * NOTE: This gets called on the server side, not on the client!
-	 * Use TileEntitySCTE.sync() to update values on the client-side.
+	 * Called when this option's button in {@link GuiCustomizeBlock} is pressed. Update the option's value here. <p> NOTE:
+	 * This gets called on the server side, not on the client! Use TileEntitySCTE.sync() to update values on the client-side.
 	 */
 	public abstract void toggle();
 
@@ -94,9 +86,8 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * @return If this option is some kind of number (integer, float, etc.),
-	 *         return the amount the number should increase/decrease every time
-	 *         the option is toggled in {@link GuiCustomizeBlock}.
+	 * @return If this option is some kind of number (integer, float, etc.), return the amount the number should
+	 *         increase/decrease every time the option is toggled in {@link GuiCustomizeBlock}.
 	 */
 	public T getIncrement() {
 		return increment;
@@ -131,8 +122,7 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle booleans.
 	 */
-	public static class OptionBoolean extends Option<Boolean>{
-
+	public static class OptionBoolean extends Option<Boolean> {
 		public OptionBoolean(String optionName, Boolean value) {
 			super(optionName, value);
 		}
@@ -143,17 +133,15 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(NBTTagCompound tag)
-		{
-			if(tag.hasKey(getName()))
+		public void readFromNBT(NBTTagCompound tag) {
+			if (tag.hasKey(getName()))
 				value = tag.getBoolean(getName());
 			else
 				value = getDefaultValue();
 		}
 
 		@Override
-		public void writeToNBT(NBTTagCompound tag)
-		{
+		public void writeToNBT(NBTTagCompound tag) {
 			tag.setBoolean(getName(), value);
 		}
 	}
@@ -161,7 +149,7 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle integers.
 	 */
-	public static class OptionInt extends Option<Integer> implements ISlider{
+	public static class OptionInt extends Option<Integer> implements ISlider {
 		private boolean slider;
 		private Supplier<BlockPos> pos;
 
@@ -183,15 +171,15 @@ public abstract class Option<T> {
 
 		@Override
 		public void toggle() {
-			if(isSlider())
+			if (isSlider())
 				return;
 
-			if(get() >= getMax()) {
+			if (get() >= getMax()) {
 				setValue(getMin());
 				return;
 			}
 
-			if((get() + getIncrement()) >= getMax()) {
+			if ((get() + getIncrement()) >= getMax()) {
 				setValue(getMax());
 				return;
 			}
@@ -200,39 +188,34 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(NBTTagCompound tag)
-		{
-			if(tag.hasKey(getName()))
+		public void readFromNBT(NBTTagCompound tag) {
+			if (tag.hasKey(getName()))
 				value = tag.getInteger(getName());
 			else
 				value = getDefaultValue();
 		}
 
 		@Override
-		public void writeToNBT(NBTTagCompound tag)
-		{
+		public void writeToNBT(NBTTagCompound tag) {
 			tag.setInteger(getName(), value);
 		}
 
 		@Override
-		public boolean isSlider()
-		{
+		public boolean isSlider() {
 			return slider;
 		}
 
 		@Override
-		public void onChangeSliderValue(GuiSlider slider, String blockName, int id)
-		{
-			if(!isSlider())
+		public void onChangeSliderValue(GuiSlider slider, String blockName, int id) {
+			if (!isSlider())
 				return;
 
-			setValue((int)slider.getValue());
+			setValue((int) slider.getValue());
 			slider.displayString = (Utils.localize("option." + blockName + "." + getName()).getFormattedText() + " ").replace("#", toString());
 		}
 
 		@Override
-		public void onMouseRelease(int id)
-		{
+		public void onMouseRelease(int id) {
 			SecurityCraft.network.sendToServer(new UpdateSliderValue(pos.get(), id, get()));
 		}
 	}
@@ -240,7 +223,7 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle doubles.
 	 */
-	public static class OptionDouble extends Option<Double> implements ISlider{
+	public static class OptionDouble extends Option<Double> implements ISlider {
 		private boolean slider;
 		private Supplier<BlockPos> pos;
 
@@ -262,15 +245,15 @@ public abstract class Option<T> {
 
 		@Override
 		public void toggle() {
-			if(isSlider())
+			if (isSlider())
 				return;
 
-			if(get() >= getMax()) {
+			if (get() >= getMax()) {
 				setValue(getMin());
 				return;
 			}
 
-			if((get() + getIncrement()) >= getMax()) {
+			if ((get() + getIncrement()) >= getMax()) {
 				setValue(getMax());
 				return;
 			}
@@ -279,17 +262,15 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(NBTTagCompound tag)
-		{
-			if(tag.hasKey(getName()))
+		public void readFromNBT(NBTTagCompound tag) {
+			if (tag.hasKey(getName()))
 				value = tag.getDouble(getName());
 			else
 				value = getDefaultValue();
 		}
 
 		@Override
-		public void writeToNBT(NBTTagCompound tag)
-		{
+		public void writeToNBT(NBTTagCompound tag) {
 			tag.setDouble(getName(), value);
 		}
 
@@ -299,15 +280,13 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public boolean isSlider()
-		{
+		public boolean isSlider() {
 			return slider;
 		}
 
 		@Override
-		public void onChangeSliderValue(GuiSlider slider, String blockName, int id)
-		{
-			if(!isSlider())
+		public void onChangeSliderValue(GuiSlider slider, String blockName, int id) {
+			if (!isSlider())
 				return;
 
 			setValue(slider.getValue());
@@ -315,8 +294,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void onMouseRelease(int id)
-		{
+		public void onMouseRelease(int id) {
 			SecurityCraft.network.sendToServer(new UpdateSliderValue(pos.get(), id, get()));
 		}
 	}
@@ -324,8 +302,7 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle floats.
 	 */
-	public static class OptionFloat extends Option<Float>{
-
+	public static class OptionFloat extends Option<Float> {
 		public OptionFloat(String optionName, Float value) {
 			super(optionName, value);
 		}
@@ -336,12 +313,12 @@ public abstract class Option<T> {
 
 		@Override
 		public void toggle() {
-			if(get() >= getMax()) {
+			if (get() >= getMax()) {
 				setValue(getMin());
 				return;
 			}
 
-			if((get() + getIncrement()) >= getMax()) {
+			if ((get() + getIncrement()) >= getMax()) {
 				setValue(getMax());
 				return;
 			}
@@ -350,17 +327,15 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void readFromNBT(NBTTagCompound tag)
-		{
-			if(tag.hasKey(getName()))
+		public void readFromNBT(NBTTagCompound tag) {
+			if (tag.hasKey(getName()))
 				value = tag.getFloat(getName());
 			else
 				value = getDefaultValue();
 		}
 
 		@Override
-		public void writeToNBT(NBTTagCompound tag)
-		{
+		public void writeToNBT(NBTTagCompound tag) {
 			tag.setFloat(getName(), value);
 		}
 
@@ -368,7 +343,5 @@ public abstract class Option<T> {
 		public String toString() {
 			return Float.toString(value).length() > 5 ? Float.toString(value).substring(0, 5) : Float.toString(value);
 		}
-
 	}
-
 }

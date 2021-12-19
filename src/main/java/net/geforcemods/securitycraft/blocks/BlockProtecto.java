@@ -14,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockProtecto extends BlockDisguisable {
-
 	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 
 	public BlockProtecto(Material material) {
@@ -23,36 +22,32 @@ public class BlockProtecto extends BlockDisguisable {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos){
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
 		return world.isSideSolid(pos.down(), EnumFacing.UP);
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(ACTIVATED, false);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(ACTIVATED, meta == 1 ? true : false);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(ACTIVATED) ? 1 : 0;
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, ACTIVATED);
 	}
 
@@ -60,5 +55,4 @@ public class BlockProtecto extends BlockDisguisable {
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityProtecto();
 	}
-
 }

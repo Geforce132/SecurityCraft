@@ -19,22 +19,19 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class EntityBullet extends EntityArrow
-{
-	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(EntityBullet.class, Owner.getSerializer());
+public class EntityBullet extends EntityArrow {
+	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner> createKey(EntityBullet.class, Owner.getSerializer());
 	private Collection<PotionEffect> potionEffects = Sets.newHashSet();
 
-	public EntityBullet(World world)
-	{
+	public EntityBullet(World world) {
 		super(world);
 		setSize(0.15F, 0.1F);
 	}
 
-	public EntityBullet(World world, EntitySentry shooter)
-	{
+	public EntityBullet(World world, EntitySentry shooter) {
 		super(world, shooter);
 
-		Owner owner =  shooter.getOwner();
+		Owner owner = shooter.getOwner();
 
 		this.potionEffects = shooter.getActivePotionEffects();
 		dataManager.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
@@ -44,14 +41,12 @@ public class EntityBullet extends EntityArrow
 	/**
 	 * @return The owner of the sentry which shot this bullet
 	 */
-	public Owner getOwner()
-	{
+	public Owner getOwner() {
 		return dataManager.get(OWNER);
 	}
 
 	@Override
-	protected void entityInit()
-	{
+	protected void entityInit() {
 		super.entityInit();
 		dataManager.register(OWNER, new Owner());
 	}
@@ -63,7 +58,7 @@ public class EntityBullet extends EntityArrow
 		if (!potionEffects.isEmpty()) {
 			NBTTagList list = new NBTTagList();
 
-			for(PotionEffect effect : potionEffects) {
+			for (PotionEffect effect : potionEffects) {
 				list.appendTag(effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
 			}
 
@@ -82,25 +77,23 @@ public class EntityBullet extends EntityArrow
 				for (int i = 0; i < potionList.tagCount(); ++i) {
 					PotionEffect effect = PotionEffect.readCustomPotionEffectFromNBT(potionList.getCompoundTagAt(i));
 
-					if (effect != null) {
+					if (effect != null)
 						potionEffects.add(effect);
-					}
 				}
 			}
 		}
 	}
 
 	@Override
-	protected void onHit(RayTraceResult raytraceResult)
-	{
+	protected void onHit(RayTraceResult raytraceResult) {
 		Entity target = raytraceResult.entityHit;
 
-		if(target != null && !(target instanceof EntitySentry)) {
+		if (target != null && !(target instanceof EntitySentry)) {
 			target.attackEntityFrom(DamageSource.causeArrowDamage(this, shootingEntity == null ? this : shootingEntity), MathHelper.ceil(MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ)));
 
 			if (target instanceof EntityLivingBase && !potionEffects.isEmpty()) {
 				for (PotionEffect effect : potionEffects) {
-					((EntityLivingBase)target).addPotionEffect(effect);
+					((EntityLivingBase) target).addPotionEffect(effect);
 				}
 			}
 		}
@@ -109,14 +102,12 @@ public class EntityBullet extends EntityArrow
 	}
 
 	@Override
-	protected void arrowHit(EntityLivingBase entity)
-	{
+	protected void arrowHit(EntityLivingBase entity) {
 		setDead();
 	}
 
 	@Override
-	protected ItemStack getArrowStack()
-	{
+	protected ItemStack getArrowStack() {
 		return ItemStack.EMPTY;
 	}
 }

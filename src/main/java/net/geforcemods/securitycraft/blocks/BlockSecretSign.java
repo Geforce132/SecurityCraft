@@ -27,121 +27,101 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSecretSign extends BlockContainer
-{
+public class BlockSecretSign extends BlockContainer {
 	protected static final AxisAlignedBB SIGN_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
 
-	public BlockSecretSign()
-	{
+	public BlockSecretSign() {
 		super(Material.WOOD);
 		setSoundType(SoundType.WOOD);
 	}
 
 	@Override
-	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager)
-	{
-		if(world.getBlockState(pos).getBlock() instanceof BlockSecretSign)
-		{
+	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+		if (world.getBlockState(pos).getBlock() instanceof BlockSecretSign) {
 			manager.addBlockDestroyEffects(pos, Blocks.PLANKS.getDefaultState());
 			return true;
 		}
-		else return false;
+		else
+			return false;
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return SIGN_AABB;
 	}
 
 	@Override
 	@Nullable
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos)
-	{
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean hasCustomBreakingProgress(IBlockState state)
-	{
+	public boolean hasCustomBreakingProgress(IBlockState state) {
 		return true;
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess world, BlockPos pos)
-	{
+	public boolean isPassable(IBlockAccess world, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean canSpawnInBlock()
-	{
+	public boolean canSpawnInBlock() {
 		return true;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntitySecretSign();
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
-	{
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return SCContent.secretSignItem;
 	}
 
 	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
-	{
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return new ItemStack(SCContent.secretSignItem);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (world.isRemote)
-		{
 			return true;
-		}
-		else
-		{
-			if(player.getHeldItem(hand).getItem() == SCContent.adminTool)
+		else {
+			if (player.getHeldItem(hand).getItem() == SCContent.adminTool)
 				return SCContent.adminTool.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ) == EnumActionResult.SUCCESS;
 
 			TileEntity te = world.getTileEntity(pos);
-			return te instanceof TileEntitySecretSign && ((TileEntitySecretSign)te).isPlayerAllowedToSeeText(player) ? ((TileEntitySecretSign)te).executeCommand(player) : false;
+			return te instanceof TileEntitySecretSign && ((TileEntitySecretSign) te).isPlayerAllowedToSeeText(player) ? ((TileEntitySecretSign) te).executeCommand(player) : false;
 		}
 	}
 
 	@Override
-	public String getTranslationKey()
-	{
+	public String getTranslationKey() {
 		return "tile.securitycraft:secret_sign";
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos)
-	{
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
 		return !hasInvalidNeighbor(world, pos) && super.canPlaceBlockAt(world, pos);
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face)
-	{
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
 		return BlockFaceShape.UNDEFINED;
 	}
 }

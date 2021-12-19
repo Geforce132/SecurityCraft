@@ -16,13 +16,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityBlockPocketManagerRenderer extends TileEntitySpecialRenderer<TileEntityBlockPocketManager> {
-
 	@Override
-	public void render(TileEntityBlockPocketManager te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
-	{
+	public void render(TileEntityBlockPocketManager te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		// The code below draws the outline border of a block pocket.
 
-		if(!te.showOutline)
+		if (!te.showOutline)
 			return;
 
 		EnumFacing facing = te.getWorld().getBlockState(te.getPos()).getValue(BlockBlockPocketManager.FACING);
@@ -34,8 +32,7 @@ public class TileEntityBlockPocketManagerRenderer extends TileEntitySpecialRende
 		int frontZ = facing == EnumFacing.NORTH || facing == EnumFacing.WEST ? 0 : 1;
 		int backZ = facing == EnumFacing.NORTH || facing == EnumFacing.WEST ? size : 1 - size;
 
-		if(facing == EnumFacing.EAST || facing == EnumFacing.WEST) //x- and z-values get switched when the manager's EnumFacing is west or east
-		{
+		if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) { //x- and z-values get switched when the manager's EnumFacing is west or east
 			leftX = frontZ;
 			rightX = backZ;
 			frontZ = -half + offset;
@@ -81,8 +78,7 @@ public class TileEntityBlockPocketManagerRenderer extends TileEntitySpecialRende
 	}
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityBlockPocketManager te)
-	{
+	public boolean isGlobalRenderer(TileEntityBlockPocketManager te) {
 		return te.showOutline;
 	}
 }

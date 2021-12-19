@@ -25,7 +25,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockRetinalScanner extends BlockDisguisable {
-
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
@@ -40,11 +39,8 @@ public class BlockRetinalScanner extends BlockDisguisable {
 		return getRenderLayer() == layer;
 	}
 
-	/**
-	 * Called when the block is placed in the world.
-	 */
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
 		super.onBlockPlacedBy(world, pos, state, entity, stack);
 
 		IBlockState north = world.getBlockState(pos.north());
@@ -64,83 +60,65 @@ public class BlockRetinalScanner extends BlockDisguisable {
 
 		world.setBlockState(pos, state.withProperty(FACING, facing), 2);
 
-		if (entity instanceof EntityPlayer)
-		{
+		if (entity instanceof EntityPlayer) {
 			TileEntity tileentity = world.getTileEntity(pos);
+
 			if (!world.isRemote && tileentity instanceof TileEntityRetinalScanner)
-			{
-				((TileEntityRetinalScanner)tileentity).setPlayerProfile(((EntityPlayer)entity).getGameProfile());
-			}
+				((TileEntityRetinalScanner) tileentity).setPlayerProfile(((EntityPlayer) entity).getGameProfile());
 		}
 	}
 
-	/**
-	 * Ticks the block if it's been scheduled
-	 */
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
 		if (!world.isRemote && state.getValue(POWERED)) {
 			world.setBlockState(pos, state.withProperty(POWERED, false));
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.retinalScanner);
 		}
 	}
 
-	/**
-	 * Can this block provide power. Only wire currently seems to have this change based on its state.
-	 */
 	@Override
-	public boolean canProvidePower(IBlockState state)
-	{
+	public boolean canProvidePower(IBlockState state) {
 		return true;
 	}
 
-	/**
-	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
-	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
-	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-	 */
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-	{
-		if(blockState.getValue(POWERED))
+	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		if (blockState.getValue(POWERED))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side){
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return state.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		if(meta <= 5)
+	public IBlockState getStateFromMeta(int meta) {
+		if (meta <= 5)
 			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
 		else
 			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(POWERED, true);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED))
+	public int getMetaFromState(IBlockState state) {
+		if (state.getProperties().containsKey(POWERED) && state.getValue(POWERED))
 			return (state.getValue(FACING).getIndex() + 6);
-		else if(state.getProperties().containsKey(FACING))
+		else if (state.getProperties().containsKey(FACING))
 			return state.getValue(FACING).getIndex();
-		else return 0;
+		else
+			return 0;
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, POWERED);
 	}
 
@@ -150,14 +128,12 @@ public class BlockRetinalScanner extends BlockDisguisable {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror)
-	{
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
 }

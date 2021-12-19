@@ -56,19 +56,18 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 	}
 
 	@Override
-	public boolean onEntityViewed(EntityLivingBase entity, RayTraceResult rayTraceResult){
+	public boolean onEntityViewed(EntityLivingBase entity, RayTraceResult rayTraceResult) {
 		if (!isLocked()) {
 			IBlockState state = world.getBlockState(pos);
 
 			if (state.getValue(BlockRetinalScanner.FACING) != rayTraceResult.sideHit)
 				return false;
 
-			if(!state.getValue(BlockRetinalScanner.POWERED) && !EntityUtils.isInvisible(entity))
-			{
+			if (!state.getValue(BlockRetinalScanner.POWERED) && !EntityUtils.isInvisible(entity)) {
 				String name = entity.getName();
 
-				if(entity instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer)entity;
+				if (entity instanceof EntityPlayer) {
+					EntityPlayer player = (EntityPlayer) entity;
 
 					if (ConfigHandler.trickScannersWithPlayerHeads && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.SKULL)
 						name = PlayerUtils.getNameOfSkull(player);
@@ -78,21 +77,21 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 						return true;
 					}
 				}
-				else if(activatedOnlyByPlayer())
+				else if (activatedOnlyByPlayer())
 					return false;
 
 				world.setBlockState(pos, state.withProperty(BlockRetinalScanner.POWERED, true));
 				BlockUtils.updateIndirectNeighbors(world, pos, SCContent.retinalScanner);
 				world.scheduleUpdate(pos, SCContent.retinalScanner, getSignalLength());
 
-				if(entity instanceof EntityPlayer && sendMessage.get())
+				if (entity instanceof EntityPlayer && sendMessage.get())
 					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize("tile.securitycraft:retinalScanner.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
 
 				return true;
 			}
 		}
 		else if (entity instanceof EntityPlayer && sendMessage.get()) {
-			PlayerUtils.sendMessageToPlayer((EntityPlayer)entity, Utils.localize(SCContent.retinalScanner), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(SCContent.retinalScanner)), TextFormatting.DARK_RED, false);
+			PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize(SCContent.retinalScanner), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(SCContent.retinalScanner)), TextFormatting.DARK_RED, false);
 			return true;
 		}
 
@@ -119,19 +118,22 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 		return !activatedByEntities.get();
 	}
 
-	public int getSignalLength()
-	{
+	public int getSignalLength() {
 		return signalLength.get();
 	}
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.ALLOWLIST, EnumModuleType.DISGUISE};
+		return new EnumModuleType[] {
+				EnumModuleType.ALLOWLIST, EnumModuleType.DISGUISE
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ activatedByEntities, sendMessage, signalLength };
+		return new Option[] {
+				activatedByEntities, sendMessage, signalLength
+		};
 	}
 
 	public static void setProfileCache(PlayerProfileCache profileCacheIn) {
@@ -143,13 +145,11 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		if(!StringUtils.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")))
-		{
-			if(ownerProfile == null || !getOwner().getName().equals(ownerProfile.getName()))
-				setPlayerProfile(new GameProfile((UUID)null, getOwner().getName()));
+		if (!StringUtils.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner"))) {
+			if (ownerProfile == null || !getOwner().getName().equals(ownerProfile.getName()))
+				setPlayerProfile(new GameProfile((UUID) null, getOwner().getName()));
 
 			updatePlayerProfile();
 			NBTTagCompound ownerProfileTag = new NBTTagCompound();
@@ -161,8 +161,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		ownerProfile = NBTUtil.readGameProfileFromNBT(tag.getCompoundTag("ownerProfile"));
 	}
@@ -179,7 +178,8 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 	public void updatePlayerProfile() {
 		if (profileCache == null && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
 			setProfileCache(FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerProfileCache());
-		if(sessionService == null && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
+
+		if (sessionService == null && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
 			setSessionService(FMLCommonHandler.instance().getMinecraftServerInstance().getMinecraftSessionService());
 
 		ownerProfile = updateGameProfile(ownerProfile);
@@ -191,15 +191,17 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 				return input;
 			else if (profileCache != null && sessionService != null) {
 				GameProfile gameprofile = profileCache.getGameProfileForUsername(input.getName());
+
 				if (gameprofile == null)
 					return input;
 				else {
-					Property property = Iterables.getFirst(gameprofile.getProperties().get("textures"), (Property)null);
+					Property property = Iterables.getFirst(gameprofile.getProperties().get("textures"), (Property) null);
+
 					if (property == null) {
 						try {
 							gameprofile = sessionService.fillProfileProperties(gameprofile, true);
 						}
-						catch(IllegalArgumentException e) { //this seems to only happen on offline servers. log the exception nonetheless, just in case
+						catch (IllegalArgumentException e) { //this seems to only happen on offline servers. log the exception nonetheless, just in case
 							LOGGER.warn("========= WARNING =========");
 							LOGGER.warn("The following error is likely caused by using an offline server. If you are not using an offline server (online-mode=true in the server.properties), please reach out to the SecurityCraft devs in their Discord #help channel: https://discord.gg/U8DvBAW");
 							LOGGER.warn("To mitigate this error, you can set the configuration option \"retinalScannerFace\" to false, in order to disable rendering the owner's face on retinal scanners.");
@@ -208,7 +210,11 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 					}
 					return gameprofile;
 				}
-			} else return input;
-		} else return input;
+			}
+			else
+				return input;
+		}
+		else
+			return input;
 	}
 }

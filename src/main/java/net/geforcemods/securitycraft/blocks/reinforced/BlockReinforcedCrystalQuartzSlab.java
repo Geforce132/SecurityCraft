@@ -24,33 +24,32 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedCrystalQuartzSlab extends BlockSlab implements ITileEntityProvider, IOverlayDisplay {
-
 	private final boolean isDouble;
 
-	public BlockReinforcedCrystalQuartzSlab(boolean isDouble, Material blockMaterial){
+	public BlockReinforcedCrystalQuartzSlab(boolean isDouble, Material blockMaterial) {
 		super(blockMaterial);
 
 		this.isDouble = isDouble;
-		if(!isDouble())
+
+		if (!isDouble())
 			useNeighborBrightness = true;
 
 		setSoundType(SoundType.STONE);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune){
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(SCContent.reinforcedCrystalQuartzSlab);
 	}
 
 	@Override
-	public IProperty<?> getVariantProperty(){
+	public IProperty<?> getVariantProperty() {
 		return null;
 	}
 
@@ -60,28 +59,28 @@ public class BlockReinforcedCrystalQuartzSlab extends BlockSlab implements ITile
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta){
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(HALF, (meta & 8) == 0 ? EnumBlockHalf.BOTTOM : EnumBlockHalf.TOP);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state){
+	public int getMetaFromState(IBlockState state) {
 		byte b0 = 0;
 		int meta = b0;
 
-		if(state.getValue(HALF) == EnumBlockHalf.TOP)
+		if (state.getValue(HALF) == EnumBlockHalf.TOP)
 			meta |= 8;
 
 		return meta;
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState(){
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, HALF);
 	}
 
 	@Override
-	public boolean isDouble(){
+	public boolean isDouble() {
 		return isDouble;
 	}
 
@@ -91,26 +90,22 @@ public class BlockReinforcedCrystalQuartzSlab extends BlockSlab implements ITile
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-	{
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		return new ItemStack(SCContent.reinforcedCrystalQuartzSlab);
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
-	{
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedCrystalQuartzSlab), 1, getMetaFromState(state) % 8);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
-	{
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public String getTranslationKey(int meta)
-	{
+	public String getTranslationKey(int meta) {
 		return super.getTranslationKey();
 	}
 }

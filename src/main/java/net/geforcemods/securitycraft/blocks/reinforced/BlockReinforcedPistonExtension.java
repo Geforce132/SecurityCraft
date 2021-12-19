@@ -22,11 +22,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedPistonExtension extends BlockPistonExtension implements IReinforcedBlock, ITileEntityProvider {
-
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 	}
@@ -37,9 +36,8 @@ public class BlockReinforcedPistonExtension extends BlockPistonExtension impleme
 			BlockPos behindPos = pos.offset(state.getValue(FACING).getOpposite());
 			Block behindBlock = world.getBlockState(behindPos).getBlock();
 
-			if (behindBlock == SCContent.reinforcedPiston || behindBlock == SCContent.reinforcedStickyPiston) {
+			if (behindBlock == SCContent.reinforcedPiston || behindBlock == SCContent.reinforcedStickyPiston)
 				world.setBlockToAir(behindPos);
-			}
 		}
 
 		super.onBlockHarvested(world, pos, state, player);
@@ -65,11 +63,10 @@ public class BlockReinforcedPistonExtension extends BlockPistonExtension impleme
 		BlockPos behindPos = pos.offset(facing.getOpposite());
 		IBlockState behindState = world.getBlockState(behindPos);
 
-		if (behindState.getBlock() != SCContent.reinforcedPiston && behindState.getBlock() != SCContent.reinforcedStickyPiston) {
+		if (behindState.getBlock() != SCContent.reinforcedPiston && behindState.getBlock() != SCContent.reinforcedStickyPiston)
 			world.setBlockToAir(pos);
-		} else {
+		else
 			behindState.neighborChanged(world, behindPos, block, fromPos);
-		}
 	}
 
 	@Override

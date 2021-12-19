@@ -11,8 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class OpenBriefcaseGui implements IMessage
-{
+public class OpenBriefcaseGui implements IMessage {
 	public OpenBriefcaseGui() {}
 
 	@Override
@@ -21,16 +20,14 @@ public class OpenBriefcaseGui implements IMessage
 	@Override
 	public void fromBytes(ByteBuf buf) {}
 
-	public static class Handler implements IMessageHandler<OpenBriefcaseGui, IMessage>
-	{
+	public static class Handler implements IMessageHandler<OpenBriefcaseGui, IMessage> {
 		@Override
-		public IMessage onMessage(OpenBriefcaseGui message, MessageContext context)
-		{
+		public IMessage onMessage(OpenBriefcaseGui message, MessageContext context) {
 			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayerMP player = context.getServerHandler().player;
 
-				if(PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
-					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID, player.world, (int)player.posX, (int)player.posY, (int)player.posZ);
+				if (PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
+					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID, player.world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			});
 
 			return null;

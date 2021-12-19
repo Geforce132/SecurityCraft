@@ -15,12 +15,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class ItemSCManual extends Item {
-
 	public static final List<SCManualPage> PAGES = new ArrayList<>();
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if(world.isRemote)
+		if (world.isRemote)
 			FMLCommonHandler.instance().showGuiScreen(new GuiSCManual());
 
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));

@@ -12,16 +12,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class SyncTENBTTag implements IMessage{
-
+public class SyncTENBTTag implements IMessage {
 	private int x, y, z;
 	private NBTTagCompound tag;
 
-	public SyncTENBTTag(){
-
+	public SyncTENBTTag() {
 	}
 
-	public SyncTENBTTag(int x, int y, int z, NBTTagCompound tag){
+	public SyncTENBTTag(int x, int y, int z, NBTTagCompound tag) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -45,7 +43,6 @@ public class SyncTENBTTag implements IMessage{
 	}
 
 	public static class Handler implements IMessageHandler<SyncTENBTTag, IMessage> {
-
 		@Override
 		public IMessage onMessage(SyncTENBTTag message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
@@ -53,13 +50,11 @@ public class SyncTENBTTag implements IMessage{
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
-				if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner(player))
+				if (te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner(player))
 					te.readFromNBT(message.tag);
 			});
 
 			return null;
 		}
-
 	}
-
 }

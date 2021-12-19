@@ -27,7 +27,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 public class GuiSRAT extends GuiContainer {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
 	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
 	private ItemStack srat;
@@ -57,9 +56,15 @@ public class GuiSRAT extends GuiContainer {
 		int[] coords = null;
 		int id = 0;
 		boolean foundSentry = false;
-		int[] modeTextureX = {0, 16, 32};
-		int[] targetTextureX = {48, 64, 80};
-		int[] yStarts = {0, 0, 0};
+		int[] modeTextureX = {
+				0, 16, 32
+		};
+		int[] targetTextureX = {
+				48, 64, 80
+		};
+		int[] yStarts = {
+				0, 0, 0
+		};
 
 		hoverCheckers.clear();
 
@@ -91,6 +96,7 @@ public class GuiSRAT extends GuiContainer {
 			}
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
+
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				guiButtons[i][UNBIND].enabled = true;
 				if (Minecraft.getMinecraft().player.world.isBlockLoaded(sentryPos, false) && isSentryVisibleToPlayer(sentryPos)) {
@@ -100,8 +106,7 @@ public class GuiSRAT extends GuiContainer {
 						EntitySentry sentry = sentries.get(0);
 						EnumSentryMode mode = sentry.getMode();
 
-						if(sentry.hasCustomName())
-						{
+						if (sentry.hasCustomName()) {
 							String line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])).getFormattedText();
 							int nameWidth = fontRenderer.getStringWidth(sentry.getCustomNameTag());
 							int nameX = guiLeft + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
@@ -115,8 +120,8 @@ public class GuiSRAT extends GuiContainer {
 						guiButtons[i][MODE].enabled = true;
 						guiButtons[i][TARGETS].enabled = mode != EnumSentryMode.IDLE;
 						guiButtons[i][UNBIND].enabled = true;
-						((TogglePictureButton)guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
-						((TogglePictureButton)guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
+						((TogglePictureButton) guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
+						((TogglePictureButton) guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
 						hoverCheckers.add(new StringHoverChecker(guiButtons[i][MODE], Arrays.asList(Utils.localize("gui.securitycraft:srat.mode2").getFormattedText(), Utils.localize("gui.securitycraft:srat.mode1").getFormattedText(), Utils.localize("gui.securitycraft:srat.mode3").getFormattedText())));
 						hoverCheckers.add(new StringHoverChecker(guiButtons[i][TARGETS], Arrays.asList(Utils.localize("gui.securitycraft:srat.targets1").getFormattedText(), Utils.localize("gui.securitycraft:srat.targets2").getFormattedText(), Utils.localize("gui.securitycraft:srat.targets3").getFormattedText())));
 						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
@@ -154,8 +159,7 @@ public class GuiSRAT extends GuiContainer {
 	}
 
 	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of
-	 * the items)
+	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
@@ -168,7 +172,7 @@ public class GuiSRAT extends GuiContainer {
 
 			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 				line = Utils.localize("gui.securitycraft:srat.notBound").getFormattedText();
-			else if(names[i] != null)
+			else if (names[i] != null)
 				line = names[i];
 			else
 				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])).getFormattedText();
@@ -179,10 +183,6 @@ public class GuiSRAT extends GuiContainer {
 		fontRenderer.drawString(modifyAll, xSize / 2 - fontRenderer.getStringWidth(modifyAll) + 25, 194, 4210752);
 	}
 
-	/**
-	 * Draw the background layer for the GuiContainer (everything behind the
-	 * items)
-	 */
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
@@ -197,9 +197,8 @@ public class GuiSRAT extends GuiContainer {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		for(StringHoverChecker chc : hoverCheckers)
-		{
-			if(chc != null && chc.checkHover(mouseX, mouseY))
+		for (StringHoverChecker chc : hoverCheckers) {
+			if (chc != null && chc.checkHover(mouseX, mouseY))
 				drawHoveringText(chc.getName(), mouseX, mouseY);
 		}
 	}
@@ -207,11 +206,11 @@ public class GuiSRAT extends GuiContainer {
 	/**
 	 * Change the sentry mode, and update GUI buttons state
 	 */
-	protected void performSingleAction(int sentry, int mode, int targets){
+	protected void performSingleAction(int sentry, int mode, int targets) {
 		int[] coords = getSentryCoordinates(sentry);
 		List<EntitySentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(new BlockPos(coords[0], coords[1], coords[2])));
 
-		if(!sentries.isEmpty()) {
+		if (!sentries.isEmpty()) {
 			int resultingMode = Math.max(0, Math.min(targets + mode * 3, 6)); //bind between 0 and 6
 
 			guiButtons[sentry][TARGETS].enabled = EnumSentryMode.values()[resultingMode] != EnumSentryMode.IDLE;
@@ -220,32 +219,27 @@ public class GuiSRAT extends GuiContainer {
 		}
 	}
 
-	private void clickUnbind(ClickButton button)
-	{
+	private void clickUnbind(ClickButton button) {
 		unbindSentry(button.id / 3);
 	}
 
-	private void clickGlobalUnbind(ClickButton button)
-	{
-		for(int i = 0; i < 12; i++)
-		{
+	private void clickGlobalUnbind(ClickButton button) {
+		for (int i = 0; i < 12; i++) {
 			unbindSentry(i);
 		}
 	}
 
-	private void unbindSentry(int sentry)
-	{
+	private void unbindSentry(int sentry) {
 		int[] coords = getSentryCoordinates(sentry);
 
 		removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
 
-		for(int i = 0; i < 3; i++) {
+		for (int i = 0; i < 3; i++) {
 			guiButtons[sentry][i].enabled = false;
 		}
 
-		for(int i = 0; i < guiButtons.length; i++)
-		{
-			if(guiButtons[i][UNBIND].enabled)
+		for (int i = 0; i < guiButtons.length; i++) {
+			if (guiButtons[i][UNBIND].enabled)
 				return;
 		}
 
@@ -255,25 +249,21 @@ public class GuiSRAT extends GuiContainer {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button)
-	{
-		if(button instanceof ClickButton)
-			((ClickButton)button).onClick();
+	protected void actionPerformed(GuiButton button) {
+		if (button instanceof ClickButton)
+			((ClickButton) button).onClick();
 	}
 
-	/**
-	 * Action to perform when a button is clicked
-	 */
 	protected void actionPerformedSingle(ClickButton button) {
 		int sentry = button.id / 3;
 		int type = button.id % 3;
-		int mode = ((TogglePictureButton)button).getCurrentIndex();
+		int mode = ((TogglePictureButton) button).getCurrentIndex();
 		int targets = mode;
 
-		if(type == 0)
-			targets = ((TogglePictureButton)guiButtons[sentry][TARGETS]).getCurrentIndex();
-		else if(type == 1)
-			mode = ((TogglePictureButton)guiButtons[sentry][MODE]).getCurrentIndex();
+		if (type == 0)
+			targets = ((TogglePictureButton) guiButtons[sentry][TARGETS]).getCurrentIndex();
+		else if (type == 1)
+			mode = ((TogglePictureButton) guiButtons[sentry][MODE]).getCurrentIndex();
 
 		performSingleAction(sentry, mode, targets);
 	}
@@ -282,14 +272,13 @@ public class GuiSRAT extends GuiContainer {
 		for (int i = 0; i < buttonList.size() / 3; i++) {
 			GuiButton buttonFromList = buttonList.get(i * 3);
 
-			if(buttonFromList instanceof ClickButton && getSentryCoordinates(i)[1] != 0)
-			{
-				int sentry = ((ClickButton)buttonList.get(i * 3)).id / 3;
-				int mode = button.id == guiButtonsGlobal[MODE].id ? ((TogglePictureButton)guiButtonsGlobal[MODE]).getCurrentIndex() : ((TogglePictureButton)guiButtons[sentry][MODE]).getCurrentIndex();
-				int targets = button.id == guiButtonsGlobal[TARGETS].id ? ((TogglePictureButton)guiButtonsGlobal[TARGETS]).getCurrentIndex() : ((TogglePictureButton)guiButtons[sentry][TARGETS]).getCurrentIndex();
+			if (buttonFromList instanceof ClickButton && getSentryCoordinates(i)[1] != 0) {
+				int sentry = ((ClickButton) buttonList.get(i * 3)).id / 3;
+				int mode = button.id == guiButtonsGlobal[MODE].id ? ((TogglePictureButton) guiButtonsGlobal[MODE]).getCurrentIndex() : ((TogglePictureButton) guiButtons[sentry][MODE]).getCurrentIndex();
+				int targets = button.id == guiButtonsGlobal[TARGETS].id ? ((TogglePictureButton) guiButtonsGlobal[TARGETS]).getCurrentIndex() : ((TogglePictureButton) guiButtons[sentry][TARGETS]).getCurrentIndex();
 
-				((TogglePictureButton)guiButtons[sentry][MODE]).setCurrentIndex(mode);
-				((TogglePictureButton)guiButtons[sentry][TARGETS]).setCurrentIndex(targets);
+				((TogglePictureButton) guiButtons[sentry][MODE]).setCurrentIndex(mode);
+				((TogglePictureButton) guiButtons[sentry][TARGETS]).setCurrentIndex(targets);
 				performSingleAction(sentry, mode, targets);
 			}
 		}
@@ -303,8 +292,10 @@ public class GuiSRAT extends GuiContainer {
 
 		if (srat.getItem() != null && srat.getItem() == SCContent.remoteAccessSentry && srat.getTagCompound() != null && srat.getTagCompound().getIntArray("sentry" + sentry) != null && srat.getTagCompound().getIntArray("sentry" + sentry).length > 0)
 			return srat.getTagCompound().getIntArray("sentry" + sentry);
-		else
-			return new int[] { 0, 0, 0 };
+
+		return new int[] {
+				0, 0, 0
+		};
 	}
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z) {
@@ -316,7 +307,9 @@ public class GuiSRAT extends GuiContainer {
 				int[] coords = stack.getTagCompound().getIntArray("sentry" + i);
 
 				if (coords[0] == x && coords[1] == y && coords[2] == z) {
-					stack.getTagCompound().setIntArray("sentry" + i, new int[] { 0, 0, 0 });
+					stack.getTagCompound().setIntArray("sentry" + i, new int[] {
+							0, 0, 0
+					});
 					SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(stack));
 					return;
 				}
@@ -325,7 +318,7 @@ public class GuiSRAT extends GuiContainer {
 	}
 
 	// Based on EntityTrackerEntry#isVisibleTo
-	private boolean isSentryVisibleToPlayer(BlockPos sentryPos){
+	private boolean isSentryVisibleToPlayer(BlockPos sentryPos) {
 		EntityPlayer player = Minecraft.getMinecraft().player;
 		double d0 = player.posX - sentryPos.getX();
 		double d1 = player.posZ - sentryPos.getZ();

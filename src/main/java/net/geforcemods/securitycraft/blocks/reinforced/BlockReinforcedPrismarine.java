@@ -22,54 +22,45 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockReinforcedPrismarine extends BlockPrismarine implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock
-{
+public class BlockReinforcedPrismarine extends BlockPrismarine implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 
 	@Override
-	public int quantityDropped(Random random)
-	{
+	public int quantityDropped(Random random) {
 		return 1;
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
-	{
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(this);
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
-	{
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedPrismarine), 1, getMetaFromState(state));
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
-	{
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
-	{
+	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.PRISMARINE);
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return 3;
 	}
 }

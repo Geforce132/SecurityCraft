@@ -16,16 +16,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class SetPassword implements IMessage{
-
+public class SetPassword implements IMessage {
 	private String password;
 	private int x, y, z;
 
-	public SetPassword(){
-
+	public SetPassword() {
 	}
 
-	public SetPassword(int x, int y, int z, String code){
+	public SetPassword(int x, int y, int z, String code) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -49,7 +47,6 @@ public class SetPassword implements IMessage{
 	}
 
 	public static class Handler implements IMessageHandler<SetPassword, IMessage> {
-
 		@Override
 		public IMessage onMessage(SetPassword message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
@@ -59,10 +56,10 @@ public class SetPassword implements IMessage{
 				World world = player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if(te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player))){
-					((IPasswordProtected)te).setPassword(password);
+				if (te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player))) {
+					((IPasswordProtected) te).setPassword(password);
 
-					if(te instanceof TileEntityKeypadChest)
+					if (te instanceof TileEntityKeypadChest)
 						checkAndUpdateAdjacentChest(world, pos, password, player);
 				}
 			});
@@ -71,21 +68,18 @@ public class SetPassword implements IMessage{
 		}
 
 		private void checkAndUpdateAdjacentChest(World world, BlockPos pos, String codeToSet, EntityPlayer player) {
-			for(EnumFacing facing : EnumFacing.HORIZONTALS)
-			{
+			for (EnumFacing facing : EnumFacing.HORIZONTALS) {
 				BlockPos offsetPos = pos.offset(facing);
 				TileEntity te = world.getTileEntity(offsetPos);
 
-				if(te instanceof TileEntityKeypadChest)
-				{
+				if (te instanceof TileEntityKeypadChest) {
 					IBlockState state = world.getBlockState(offsetPos);
 
-					((IPasswordProtected)te).setPassword(codeToSet);
+					((IPasswordProtected) te).setPassword(codeToSet);
 					world.notifyBlockUpdate(offsetPos, state, state, 2);
 					break;
 				}
 			}
 		}
 	}
-
 }

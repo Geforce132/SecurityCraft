@@ -10,11 +10,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Vanilla code adapted to allow reinforced obsidian
- * Borrowed from BlockPortal$Size
+ * Vanilla code adapted to allow reinforced obsidian Borrowed from BlockPortal$Size
  */
-public class PortalSize
-{
+public class PortalSize {
 	private final World world;
 	private final EnumFacing.Axis axis;
 	private final EnumFacing rightDir;
@@ -24,164 +22,125 @@ public class PortalSize
 	private int height;
 	private int width;
 
-	public PortalSize(World world, BlockPos pos, EnumFacing.Axis axis)
-	{
+	public PortalSize(World world, BlockPos pos, EnumFacing.Axis axis) {
 		this.world = world;
 		this.axis = axis;
 
-		if (axis == EnumFacing.Axis.X)
-		{
-			this.leftDir = EnumFacing.EAST;
-			this.rightDir = EnumFacing.WEST;
+		if (axis == EnumFacing.Axis.X) {
+			leftDir = EnumFacing.EAST;
+			rightDir = EnumFacing.WEST;
 		}
-		else
-		{
-			this.leftDir = EnumFacing.NORTH;
-			this.rightDir = EnumFacing.SOUTH;
+		else {
+			leftDir = EnumFacing.NORTH;
+			rightDir = EnumFacing.SOUTH;
 		}
 
-		for (BlockPos blockPos = pos; pos.getY() > blockPos.getY() - 21 && pos.getY() > 0 && this.isEmptyBlock(world.getBlockState(pos.down()).getBlock()); pos = pos.down())
-		{
-
+		for (BlockPos blockPos = pos; pos.getY() > blockPos.getY() - 21 && pos.getY() > 0 && isEmptyBlock(world.getBlockState(pos.down()).getBlock()); pos = pos.down()) {
 		}
 
-		int distanceToEdge = this.getDistanceUntilEdge(pos, this.leftDir) - 1;
+		int distanceToEdge = getDistanceUntilEdge(pos, leftDir) - 1;
 
-		if (distanceToEdge >= 0)
-		{
-			this.bottomLeft = pos.offset(this.leftDir, distanceToEdge);
-			this.width = this.getDistanceUntilEdge(this.bottomLeft, this.rightDir);
+		if (distanceToEdge >= 0) {
+			bottomLeft = pos.offset(leftDir, distanceToEdge);
+			width = getDistanceUntilEdge(bottomLeft, rightDir);
 
-			if (this.width < 2 || this.width > 21)
-			{
-				this.bottomLeft = null;
-				this.width = 0;
+			if (width < 2 || width > 21) {
+				bottomLeft = null;
+				width = 0;
 			}
 		}
 
-		if (this.bottomLeft != null)
-		{
-			this.height = this.calculatePortalHeight();
-		}
+		if (bottomLeft != null)
+			height = calculatePortalHeight();
 	}
 
-	protected int getDistanceUntilEdge(BlockPos pos, EnumFacing facing)
-	{
+	protected int getDistanceUntilEdge(BlockPos pos, EnumFacing facing) {
 		int distance;
 
-		for (distance = 0; distance < 22; ++distance)
-		{
+		for (distance = 0; distance < 22; ++distance) {
 			BlockPos blockPos = pos.offset(facing, distance);
 
-			if (!this.isEmptyBlock(this.world.getBlockState(blockPos).getBlock()) || this.world.getBlockState(blockPos.down()).getBlock() != SCContent.reinforcedObsidian)
-			{
+			if (!isEmptyBlock(world.getBlockState(blockPos).getBlock()) || world.getBlockState(blockPos.down()).getBlock() != SCContent.reinforcedObsidian)
 				break;
-			}
 		}
 
-		Block block = this.world.getBlockState(pos.offset(facing, distance)).getBlock();
+		Block block = world.getBlockState(pos.offset(facing, distance)).getBlock();
 		return block == SCContent.reinforcedObsidian ? distance : 0;
 	}
 
-	public int getHeight()
-	{
-		return this.height;
+	public int getHeight() {
+		return height;
 	}
 
-	public int getWidth()
-	{
-		return this.width;
+	public int getWidth() {
+		return width;
 	}
 
-	protected int calculatePortalHeight()
-	{
+	protected int calculatePortalHeight() {
 		{
-			label56: for (this.height = 0; this.height < 21; ++this.height)
-			{
-				for (int i = 0; i < this.width; ++i)
-				{
-					BlockPos pos = this.bottomLeft.offset(this.rightDir, i).up(this.height);
-					Block block = this.world.getBlockState(pos).getBlock();
+			label56: for (height = 0; height < 21; ++height) {
+				for (int i = 0; i < width; ++i) {
+					BlockPos pos = bottomLeft.offset(rightDir, i).up(height);
+					Block block = world.getBlockState(pos).getBlock();
 
-					if (!this.isEmptyBlock(block))
-					{
+					if (!isEmptyBlock(block))
 						break label56;
-					}
 
 					if (block == Blocks.PORTAL)
-					{
-						++this.portalBlockCount;
-					}
+						++portalBlockCount;
 
-					if (i == 0)
-					{
-						block = this.world.getBlockState(pos.offset(this.leftDir)).getBlock();
+					if (i == 0) {
+						block = world.getBlockState(pos.offset(leftDir)).getBlock();
 
 						if (block != SCContent.reinforcedObsidian)
-						{
 							break label56;
-						}
 					}
-					else if (i == this.width - 1)
-					{
-						block = this.world.getBlockState(pos.offset(this.rightDir)).getBlock();
+					else if (i == width - 1) {
+						block = world.getBlockState(pos.offset(rightDir)).getBlock();
 
 						if (block != SCContent.reinforcedObsidian)
-						{
 							break label56;
-						}
 					}
 				}
 			}
 		}
 
-		for (int j = 0; j < this.width; ++j)
-		{
-			if (this.world.getBlockState(this.bottomLeft.offset(this.rightDir, j).up(this.height)).getBlock() != SCContent.reinforcedObsidian)
-			{
-				this.height = 0;
+		for (int j = 0; j < width; ++j) {
+			if (world.getBlockState(bottomLeft.offset(rightDir, j).up(height)).getBlock() != SCContent.reinforcedObsidian) {
+				height = 0;
 				break;
 			}
 		}
 
-		if (this.height <= 21 && this.height >= 3)
-		{
-			return this.height;
-		}
-		else
-		{
-			this.bottomLeft = null;
-			this.width = 0;
-			this.height = 0;
+		if (height <= 21 && height >= 3)
+			return height;
+		else {
+			bottomLeft = null;
+			width = 0;
+			height = 0;
 			return 0;
 		}
 	}
 
-	protected boolean isEmptyBlock(Block block)
-	{
+	protected boolean isEmptyBlock(Block block) {
 		return block.getMaterial(block.getDefaultState()) == Material.AIR || block == Blocks.FIRE || block == Blocks.PORTAL;
 	}
 
-	public boolean isValid()
-	{
-		return this.bottomLeft != null && this.width >= 2 && this.width <= 21 && this.height >= 3 && this.height <= 21;
+	public boolean isValid() {
+		return bottomLeft != null && width >= 2 && width <= 21 && height >= 3 && height <= 21;
 	}
 
-	public void placePortalBlocks()
-	{
-		for (int i = 0; i < this.width; ++i)
-		{
-			BlockPos pos = this.bottomLeft.offset(this.rightDir, i);
+	public void placePortalBlocks() {
+		for (int i = 0; i < width; ++i) {
+			BlockPos pos = bottomLeft.offset(rightDir, i);
 
-			for (int j = 0; j < this.height; ++j)
-			{
-				this.world.setBlockState(pos.up(j), Blocks.PORTAL.getDefaultState().withProperty(BlockPortal.AXIS, this.axis), 2 | 16);
+			for (int j = 0; j < height; ++j) {
+				world.setBlockState(pos.up(j), Blocks.PORTAL.getDefaultState().withProperty(BlockPortal.AXIS, axis), 2 | 16);
 			}
 		}
 	}
 
-	public int getPortalBlockCount()
-	{
+	public int getPortalBlockCount() {
 		return portalBlockCount;
 	}
 }

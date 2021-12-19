@@ -11,19 +11,21 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class ContainerDisguiseModule extends Container {
-
 	private ModuleItemInventory inventory;
 
 	public ContainerDisguiseModule(InventoryPlayer playerInventory, ModuleItemInventory moduleInventory) {
 		inventory = moduleInventory;
 		addSlotToContainer(new AddonSlot(inventory, 0, 79, 20));
 
-		for(int i = 0; i < 3; i++)
-			for(int j = 0; j < 9; j++)
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+			}
+		}
 
-		for(int i = 0; i < 9; i++)
+		for (int i = 0; i < 9; i++) {
 			addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 142));
+		}
 	}
 
 	@Override
@@ -31,26 +33,26 @@ public class ContainerDisguiseModule extends Container {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
 
-		if(slot != null && slot.getHasStack()) {
+		if (slot != null && slot.getHasStack()) {
 			ItemStack slotStack = slot.getStack();
 			slotStackCopy = slotStack.copy();
 
-			if(index < inventory.size) {
-				if(!mergeItemStack(slotStack, inventory.size, 37, true))
+			if (index < inventory.size) {
+				if (!mergeItemStack(slotStack, inventory.size, 37, true))
 					return ItemStack.EMPTY;
 
 				slot.onSlotChange(slotStack, slotStackCopy);
 			}
-			else if(index >= inventory.size)
-				if(!mergeItemStack(slotStack, 0, inventory.size, false))
+			else if (index >= inventory.size)
+				if (!mergeItemStack(slotStack, 0, inventory.size, false))
 					return ItemStack.EMPTY;
 
-			if(slotStack.getCount() == 0)
+			if (slotStack.getCount() == 0)
 				slot.putStack(ItemStack.EMPTY);
 			else
 				slot.onSlotChanged();
 
-			if(slotStack.getCount() == slotStackCopy.getCount())
+			if (slotStack.getCount() == slotStackCopy.getCount())
 				return ItemStack.EMPTY;
 
 			slot.onTake(player, slotStack);
@@ -60,9 +62,8 @@ public class ContainerDisguiseModule extends Container {
 	}
 
 	@Override
-	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player)
-	{
-		if(slot >= 0 && getSlot(slot) != null && (!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand() && player.getHeldItemMainhand().getItem() == SCContent.disguiseModule))
+	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player) {
+		if (slot >= 0 && getSlot(slot) != null && (!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand() && player.getHeldItemMainhand().getItem() == SCContent.disguiseModule))
 			return ItemStack.EMPTY;
 
 		return super.slotClick(slot, dragType, clickType, player);
@@ -74,7 +75,6 @@ public class ContainerDisguiseModule extends Container {
 	}
 
 	public static class AddonSlot extends Slot {
-
 		public AddonSlot(ModuleItemInventory inventory, int index, int xPos, int yPos) {
 			super(inventory, index, xPos, yPos);
 		}
@@ -89,5 +89,4 @@ public class ContainerDisguiseModule extends Container {
 			return 1;
 		}
 	}
-
 }

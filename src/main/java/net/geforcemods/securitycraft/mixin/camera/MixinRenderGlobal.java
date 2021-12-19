@@ -12,7 +12,8 @@ import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.ViewFrustum;
 
 /**
- * Fixes camera chunks disappearing when the player entity moves while viewing a camera (e.g. while being in a minecart or falling)
+ * Fixes camera chunks disappearing when the player entity moves while viewing a camera (e.g. while being in a minecart or
+ * falling)
  */
 @Mixin(RenderGlobal.class)
 public class MixinRenderGlobal {

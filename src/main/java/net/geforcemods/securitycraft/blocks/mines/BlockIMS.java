@@ -32,7 +32,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockIMS extends BlockOwnable {
-
 	public static final PropertyInteger MINES = PropertyInteger.create("mines", 0, 4);
 
 	public BlockIMS(Material material) {
@@ -41,24 +40,22 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state){
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return new AxisAlignedBB(0F, 0F, 0F, 1F, 0.45F, 1F);
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-	{
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
 			return;
 		else
@@ -66,25 +63,22 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
-		if(!world.isRemote)
-		{
-			if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
-			{
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (!world.isRemote) {
+			if (((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
 				ItemStack held = player.getHeldItem(hand);
 				int mines = state.getValue(MINES);
 
-				if(held.getItem() == Item.getItemFromBlock(SCContent.bouncingBetty) && mines < 4)
-				{
-					if(!player.capabilities.isCreativeMode)
+				if (held.getItem() == Item.getItemFromBlock(SCContent.bouncingBetty) && mines < 4) {
+					if (!player.capabilities.isCreativeMode)
 						held.shrink(1);
 
 					world.setBlockState(pos, state.withProperty(MINES, mines + 1));
-					((TileEntityIMS)world.getTileEntity(pos)).setBombsRemaining(mines + 1);
+					((TileEntityIMS) world.getTileEntity(pos)).setBombsRemaining(mines + 1);
 				}
 				else
 					player.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+
 				return true;
 			}
 		}
@@ -92,13 +86,10 @@ public class BlockIMS extends BlockOwnable {
 		return true;
 	}
 
-	/**
-	 * A randomly called display update to be able to add particles or other items for display
-	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random){
-		if(world.getTileEntity(pos) instanceof TileEntityIMS && ((TileEntityIMS) world.getTileEntity(pos)).getBombsRemaining() == 0){
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+		if (world.getTileEntity(pos) instanceof TileEntityIMS && ((TileEntityIMS) world.getTileEntity(pos)).getBombsRemaining() == 0) {
 			double x = pos.getX() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.4F + (random.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
@@ -117,38 +108,33 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
-	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-	{
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		int mines = state.getValue(MINES);
 		ArrayList<ItemStack> drops = new ArrayList<>();
 
-		if(mines != 0)
+		if (mines != 0)
 			drops.add(new ItemStack(SCContent.bouncingBetty, mines));
 
 		return drops;
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(MINES, 4);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(MINES, meta);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return (state.getValue(MINES));
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, MINES);
 	}
 
@@ -156,5 +142,4 @@ public class BlockIMS extends BlockOwnable {
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityIMS();
 	}
-
 }

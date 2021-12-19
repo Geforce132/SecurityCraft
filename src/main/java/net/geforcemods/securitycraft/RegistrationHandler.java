@@ -134,8 +134,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.DataSerializerEntry;
 
 @EventBusSubscriber
-public class RegistrationHandler
-{
+public class RegistrationHandler {
+	//@formatter:off
 	private static ItemStack[] harmingPotions = {PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HARMING),
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_HARMING),
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.HARMING),
@@ -144,14 +144,14 @@ public class RegistrationHandler
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_HEALING),
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.HEALING),
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.STRONG_HEALING)};
+	//@formatter:on
 	private static List<Item> itemBlocks = new ArrayList<>();
 	private static List<Block> blockPages = new ArrayList<>();
-	private static Map<Block,String> blocksDesignedBy = new HashMap<>();
-	private static Map<Block,Boolean> blockConfigValues = new HashMap<>();
+	private static Map<Block, String> blocksDesignedBy = new HashMap<>();
+	private static Map<Block, Boolean> blockConfigValues = new HashMap<>();
 
 	@SubscribeEvent
-	public static void registerBlocks(RegistryEvent.Register<Block> event)
-	{
+	public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		registerBlock(event, SCContent.laserBlock);
 		event.getRegistry().register(SCContent.laserField);
 		registerBlock(event, SCContent.keypad);
@@ -286,7 +286,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedCauldron, false);
 		event.getRegistry().register(SCContent.keyPanelFloorCeilingBlock);
 		event.getRegistry().register(SCContent.keyPanelWallBlock);
-		registerBlock(event, SCContent.sonicSecuritySystem, (ItemBlock)SCContent.sonicSecuritySystemItem, true);
+		registerBlock(event, SCContent.sonicSecuritySystem, (ItemBlock) SCContent.sonicSecuritySystemItem, true);
 
 		//block mines
 		registerBlock(event, SCContent.stoneMine, false);
@@ -306,24 +306,21 @@ public class RegistrationHandler
 	}
 
 	@SubscribeEvent
-	public static void registerItems(RegistryEvent.Register<Item> event)
-	{
+	public static void registerItems(RegistryEvent.Register<Item> event) {
 		//register item blocks
-		for(Item item : itemBlocks)
-		{
+		for (Item item : itemBlocks) {
 			event.getRegistry().register(item);
 		}
 
 		//init block sc manual pages
-		for(Block block : blockPages)
-		{
-			if(block == SCContent.reinforcedStone)
+		for (Block block : blockPages) {
+			if (block == SCContent.reinforcedStone) {
 				ItemSCManual.PAGES.add(new SCManualPage(Item.getItemFromBlock(block), "help.securitycraft:reinforced.info"));
-			else
-			{
+			}
+			else {
 				SCManualPage page = new SCManualPage(Item.getItemFromBlock(block), "help." + block.getTranslationKey().substring(5) + ".info", blockConfigValues.getOrDefault(block, true));
 
-				if(blocksDesignedBy.containsKey(block))
+				if (blocksDesignedBy.containsKey(block))
 					page.setDesignedBy(blocksDesignedBy.get(block));
 
 				ItemSCManual.PAGES.add(page);
@@ -380,8 +377,7 @@ public class RegistrationHandler
 	}
 
 	@SubscribeEvent
-	public static void registerTileEntities(RegistryEvent.Register<Block> event)
-	{
+	public static void registerTileEntities(RegistryEvent.Register<Block> event) {
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, new ResourceLocation("securitycraft:ownable"));
 		GameRegistry.registerTileEntity(TileEntityNamed.class, new ResourceLocation("securitycraft:abstract"));
 		GameRegistry.registerTileEntity(TileEntityKeypad.class, new ResourceLocation("securitycraft:keypad"));
@@ -421,41 +417,37 @@ public class RegistrationHandler
 	}
 
 	@SubscribeEvent
-	public static void registerEntities(RegistryEvent.Register<EntityEntry> event)
-	{
+	public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+		//@formatter:off
 		event.getRegistry().register(EntityEntryBuilder.create()
 				.id(new ResourceLocation(SecurityCraft.MODID, "bouncingbetty"), 0)
 				.entity(EntityBouncingBetty.class)
 				.name("BBetty")
 				.tracker(128, 1, true).build());
-
 		event.getRegistry().register(EntityEntryBuilder.create()
 				.id(new ResourceLocation(SecurityCraft.MODID, "imsbomb"), 3)
 				.entity(EntityIMSBomb.class)
 				.name("IMSBomb")
 				.tracker(256, 1, true).build());
-
 		event.getRegistry().register(EntityEntryBuilder.create()
 				.id(new ResourceLocation(SecurityCraft.MODID, "securitycamera"), 4)
 				.entity(EntitySecurityCamera.class)
 				.name("SecurityCamera")
 				.tracker(256, 20, true).build());
-
 		event.getRegistry().register(EntityEntryBuilder.create()
 				.id(new ResourceLocation(SecurityCraft.MODID, "sentry"), 5)
 				.entity(EntitySentry.class)
 				.name("Sentry")
 				.tracker(256, 1, true).build());
-
 		event.getRegistry().register(EntityEntryBuilder.create()
 				.id(new ResourceLocation(SecurityCraft.MODID, "bullet"), 6)
 				.entity(EntityBullet.class)
 				.name("SentryBullet")
 				.tracker(256, 1, true).build());
+		//@formatter:on
 	}
 
-	public static void registerPackets(SimpleNetworkWrapper network)
-	{
+	public static void registerPackets(SimpleNetworkWrapper network) {
 		network.registerMessage(SetCameraPowered.Handler.class, SetCameraPowered.class, 1, Side.SERVER);
 		network.registerMessage(SyncKeycardSettings.Handler.class, SyncKeycardSettings.class, 3, Side.SERVER);
 		network.registerMessage(UpdateLogger.Handler.class, UpdateLogger.class, 4, Side.CLIENT);
@@ -489,28 +481,23 @@ public class RegistrationHandler
 	}
 
 	@SubscribeEvent
-	public static void registerSounds(RegistryEvent.Register<SoundEvent> event)
-	{
-		for(int i = 0; i < SCSounds.values().length; i++)
-		{
+	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+		for (int i = 0; i < SCSounds.values().length; i++) {
 			event.getRegistry().register(SCSounds.values()[i].event);
 		}
 	}
 
 	@SubscribeEvent
-	public static void registerDataSerializerEntries(RegistryEvent.Register<DataSerializerEntry> event)
-	{
+	public static void registerDataSerializerEntries(RegistryEvent.Register<DataSerializerEntry> event) {
 		event.getRegistry().register(new DataSerializerEntry(new DataSerializer<Owner>() {
 			@Override
-			public void write(PacketBuffer buf, Owner value)
-			{
+			public void write(PacketBuffer buf, Owner value) {
 				ByteBufUtils.writeUTF8String(buf, value.getName());
 				ByteBufUtils.writeUTF8String(buf, value.getUUID());
 			}
 
 			@Override
-			public Owner read(PacketBuffer buf) throws IOException
-			{
+			public Owner read(PacketBuffer buf) throws IOException {
 				String name = ByteBufUtils.readUTF8String(buf);
 				String uuid = ByteBufUtils.readUTF8String(buf);
 
@@ -518,30 +505,26 @@ public class RegistrationHandler
 			}
 
 			@Override
-			public DataParameter<Owner> createKey(int id)
-			{
+			public DataParameter<Owner> createKey(int id) {
 				return new DataParameter<>(id, this);
 			}
 
 			@Override
-			public Owner copyValue(Owner value)
-			{
+			public Owner copyValue(Owner value) {
 				return new Owner(value.getName(), value.getUUID());
 			}
 		}).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "owner")));
 	}
 
 	@SubscribeEvent
-	public static void registerRecipes(RegistryEvent.Register<IRecipe> event)
-	{
+	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 		event.getRegistry().register(new DyeBriefcaseRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dye_briefcase")));
 		event.getRegistry().register(new LimitedUseKeycardRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_conversion")));
 	}
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-	public static void registerResourceLocations(ModelRegistryEvent event)
-	{
+	public static void registerResourceLocations(ModelRegistryEvent event) {
 		//blocks
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.keypad), 0, new ModelResourceLocation("securitycraft:keypad", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.frame), 0, new ModelResourceLocation("securitycraft:keypad_frame", "inventory"));
@@ -868,104 +851,103 @@ public class RegistrationHandler
 
 	/**
 	 * Registers a block and its ItemBlock and adds the help info for the block to the SecurityCraft manual item
+	 *
 	 * @param block The block to register
 	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, String designedBy)
-	{
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, String designedBy) {
 		registerBlock(event, block, new ItemBlock(block), true, designedBy);
 	}
 
 	/**
 	 * Registers a block and its ItemBlock and adds the help info for the block to the SecurityCraft manual item
+	 *
 	 * @param block The block to register
 	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block)
-	{
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block) {
 		registerBlock(event, block, new ItemBlock(block), true);
 	}
 
 	/**
 	 * Registers a block and its ItemBlock and adds the help info for the block to the SecurityCraft manual item.
 	 * Additionally, a configuration value can be set to have this block's recipe show as disabled in the manual.
+	 *
 	 * @param block The block to register
 	 * @param configValue The config value
 	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, Supplier<Boolean> configValue)
-	{
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, Supplier<Boolean> configValue) {
 		registerBlock(event, block, new ItemBlock(block), true);
 		blockConfigValues.put(block, configValue.get());
 	}
 
 	/**
 	 * Registers a block and its ItemBlock
+	 *
 	 * @param block The Block to register
 	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
 	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, boolean initPage)
-	{
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, boolean initPage) {
 		registerBlock(event, block, new ItemBlock(block), initPage);
 	}
 
 	/**
 	 * Registers a block with a custom ItemBlock
+	 *
 	 * @param block The Block to register
 	 * @param itemBlock The ItemBlock to register
 	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
 	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, ItemBlock itemBlock, boolean initPage)
-	{
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, ItemBlock itemBlock, boolean initPage) {
 		event.getRegistry().register(block);
 
-		if(itemBlock != null)
+		if (itemBlock != null)
 			itemBlocks.add(itemBlock.setRegistryName(block.getRegistryName().toString()));
 
-		if(initPage)
+		if (initPage)
 			blockPages.add(block);
 	}
 
 	/**
 	 * Registers a block with a custom ItemBlock
+	 *
 	 * @param block The Block to register
 	 * @param itemBlock The ItemBlock to register
 	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
 	 * @param designedBy The name of the person who designed this block
 	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, ItemBlock itemBlock, boolean initPage, String designedBy)
-	{
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, ItemBlock itemBlock, boolean initPage, String designedBy) {
 		event.getRegistry().register(block);
 
-		if(itemBlock != null)
+		if (itemBlock != null)
 			itemBlocks.add(itemBlock.setRegistryName(block.getRegistryName().toString()));
 
-		if(initPage)
+		if (initPage)
 			blockPages.add(block);
 
-		if(designedBy != null)
+		if (designedBy != null)
 			blocksDesignedBy.put(block, designedBy);
 	}
 
 	/**
-	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft
+	 * manual item.
 	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item)
-	{
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item) {
 		registerItem(event, item, "");
 	}
 
 	/**
-	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
-	 * Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft
+	 * manual item. Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
 	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item, boolean configValue)
-	{
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item, boolean configValue) {
 		registerItem(event, item, configValue, "");
 	}
 
 	/**
-	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft
+	 * manual item.
 	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item, String designedBy)
-	{
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item, String designedBy) {
 		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info");
 
 		event.getRegistry().register(item);
@@ -974,11 +956,10 @@ public class RegistrationHandler
 	}
 
 	/**
-	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
-	 * Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft
+	 * manual item. Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
 	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item, boolean configValue, String designedBy)
-	{
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item, boolean configValue, String designedBy) {
 		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", configValue);
 
 		event.getRegistry().register(item);
@@ -987,17 +968,17 @@ public class RegistrationHandler
 	}
 
 	/**
-	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
-	 * Also overrides the default recipe that would've been drawn in the manual with a new recipe.
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft
+	 * manual item. Also overrides the default recipe that would've been drawn in the manual with a new recipe.
 	 */
-	private static void registerItemWithCustomRecipe(RegistryEvent.Register<Item> event, Item item, ItemStack... customRecipe)
-	{
+	private static void registerItemWithCustomRecipe(RegistryEvent.Register<Item> event, Item item, ItemStack... customRecipe) {
 		event.getRegistry().register(item);
 
-		NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(customRecipe.length, Ingredient.EMPTY);
+		NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(customRecipe.length, Ingredient.EMPTY);
 
-		for(int i = 0; i < recipeItems.size(); i++)
+		for (int i = 0; i < recipeItems.size(); i++) {
 			recipeItems.set(i, Ingredient.fromStacks(customRecipe[i]));
+		}
 
 		ItemSCManual.PAGES.add(new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", recipeItems));
 	}

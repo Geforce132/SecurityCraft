@@ -25,35 +25,24 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockMine extends BlockExplosive {
-
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
 	public BlockMine(Material material) {
 		super(material);
 	}
 
-	/**
-	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-	 */
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
-	}
-
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
-	@Override
-	public boolean isNormalCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-	{
+	public boolean isNormalCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
 			return;
 		else if (world.getBlockState(pos).getValue(DEACTIVATED))
@@ -62,20 +51,17 @@ public class BlockMine extends BlockExplosive {
 			explode(world, pos);
 	}
 
-	/**
-	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, pos
-	 */
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos){
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
 		return world.getBlockState(pos.down()).getBlock().isSideSolid(world.getBlockState(pos.down()), world, pos.down(), EnumFacing.UP);
 	}
 
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-		if(!world.isRemote)
-			if(player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+		if (!world.isRemote)
+			if (player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
-			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
+			else if (!EntityUtils.doesPlayerOwn(player, world, pos)) {
 				explode(world, pos);
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
 			}
@@ -84,24 +70,20 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		float fifth = 0.2F;
 		float tenth = 0.1F;
 
 		return BlockUtils.fromBounds(0.5F - fifth, 0.0F, 0.5F - fifth, 0.5F + fifth, (tenth * 2.0F) / 2 + 0.1F, 0.5F + fifth);
 	}
 
-	/**
-	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-	 */
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity){
-		if(world.isRemote)
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+		if (world.isRemote)
 			return;
-		else if(entity instanceof EntityItem)
+		else if (entity instanceof EntityItem)
 			return;
-		else if(!EntityUtils.doesEntityOwn(entity, world, pos))
+		else if (!EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 
@@ -109,8 +91,7 @@ public class BlockMine extends BlockExplosive {
 	public boolean activateMine(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 
-		if(state.getValue(DEACTIVATED))
-		{
+		if (state.getValue(DEACTIVATED)) {
 			world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
 			return true;
 		}
@@ -122,8 +103,7 @@ public class BlockMine extends BlockExplosive {
 	public boolean defuseMine(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 
-		if(!state.getValue(DEACTIVATED))
-		{
+		if (!state.getValue(DEACTIVATED)) {
 			world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
 			return true;
 		}
@@ -133,46 +113,37 @@ public class BlockMine extends BlockExplosive {
 
 	@Override
 	public void explode(World world, BlockPos pos) {
-		if(world.isRemote)
+		if (world.isRemote)
 			return;
 
-		if(!world.getBlockState(pos).getValue(DEACTIVATED)){
+		if (!world.getBlockState(pos).getValue(DEACTIVATED)) {
 			world.destroyBlock(pos, false);
 			world.newExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.smallerMineExplosion ? 1.0F : 3.0F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
 		}
 	}
 
-	/**
-	 * Returns the ID of the items to drop on destruction.
-	 */
 	@Override
-	public Item getItemDropped(IBlockState state, Random random, int fortune){
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		return Item.getItemFromBlock(SCContent.mine);
 	}
 
-	/**
-	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-	 */
 	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return new ItemStack(Item.getItemFromBlock(SCContent.mine));
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(DEACTIVATED, meta == 1 ? true : false);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return (state.getValue(DEACTIVATED) ? 1 : 0);
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(DEACTIVATED) ? 1 : 0;
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, DEACTIVATED);
 	}
 
@@ -190,5 +161,4 @@ public class BlockMine extends BlockExplosive {
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
-
 }

@@ -5,8 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 /**
- * IMSBomb - Geforce
- * Created using Tabula 4.1.1
+ * IMSBomb - Geforce Created using Tabula 4.1.1
  */
 public class ModelIMSBomb extends ModelBase {
 	public ModelRenderer shape1;

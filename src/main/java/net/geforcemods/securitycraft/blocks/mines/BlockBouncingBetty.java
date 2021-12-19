@@ -25,7 +25,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockBouncingBetty extends BlockExplosive {
-
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
 	public BlockBouncingBetty(Material material) {
@@ -33,24 +32,22 @@ public class BlockBouncingBetty extends BlockExplosive {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state){
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return new AxisAlignedBB(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-	{
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
 			return;
 		else if (world.getBlockState(pos).getValue(DEACTIVATED))
@@ -59,23 +56,20 @@ public class BlockBouncingBetty extends BlockExplosive {
 			explode(world, pos);
 	}
 
-	/**
-	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-	 */
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos){
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
 		return world.isSideSolid(pos.down(), EnumFacing.UP);
 	}
 
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if(!EntityUtils.doesEntityOwn(entity, world, pos))
+		if (!EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 
 	@Override
-	public void onBlockClicked(World world, BlockPos pos, EntityPlayer player){
-		if(!player.capabilities.isCreativeMode && !EntityUtils.doesPlayerOwn(player, world, pos))
+	public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
+		if (!player.capabilities.isCreativeMode && !EntityUtils.doesPlayerOwn(player, world, pos))
 			explode(world, pos);
 	}
 
@@ -83,8 +77,7 @@ public class BlockBouncingBetty extends BlockExplosive {
 	public boolean activateMine(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 
-		if(state.getValue(DEACTIVATED))
-		{
+		if (state.getValue(DEACTIVATED)) {
 			world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
 			return true;
 		}
@@ -96,8 +89,7 @@ public class BlockBouncingBetty extends BlockExplosive {
 	public boolean defuseMine(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 
-		if(!state.getValue(DEACTIVATED))
-		{
+		if (!state.getValue(DEACTIVATED)) {
 			world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
 			return true;
 		}
@@ -106,8 +98,8 @@ public class BlockBouncingBetty extends BlockExplosive {
 	}
 
 	@Override
-	public void explode(World world, BlockPos pos){
-		if(world.isRemote || world.getBlockState(pos).getValue(DEACTIVATED))
+	public void explode(World world, BlockPos pos) {
+		if (world.isRemote || world.getBlockState(pos).getValue(DEACTIVATED))
 			return;
 
 		world.setBlockToAir(pos);
@@ -118,38 +110,28 @@ public class BlockBouncingBetty extends BlockExplosive {
 		entitytntprimed.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.tnt.primed")), 1.0F, 1.0F);
 	}
 
-	/**
-	 * Returns the ID of the items to drop on destruction.
-	 */
 	@Override
-	public Item getItemDropped(IBlockState state, Random random, int fortune)
-	{
+	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		return Item.getItemFromBlock(this);
 	}
 
-	/**
-	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-	 */
 	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return new ItemStack(Item.getItemFromBlock(this));
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(DEACTIVATED, meta == 1 ? true : false);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return (state.getValue(DEACTIVATED) ? 1 : 0);
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(DEACTIVATED) ? 1 : 0;
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, DEACTIVATED);
 	}
 
@@ -167,5 +149,4 @@ public class BlockBouncingBetty extends BlockExplosive {
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
-
 }

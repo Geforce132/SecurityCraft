@@ -25,30 +25,27 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedCauldron extends BlockCauldron implements IReinforcedBlock {
-
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState) {
 		if (entity instanceof EntityPlayer) {
-			EntityPlayer player = ((EntityPlayer)entity);
+			EntityPlayer player = ((EntityPlayer) entity);
 			TileEntity te = world.getTileEntity(pos);
 
-			if (te instanceof TileEntityReinforcedCauldron && ((TileEntityReinforcedCauldron)te).isAllowedToInteract(player))
+			if (te instanceof TileEntityReinforcedCauldron && ((TileEntityReinforcedCauldron) te).isAllowedToInteract(player))
 				super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
 			else
 				addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
 		}
-		else {
+		else
 			super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
-		}
 	}
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof TileEntityReinforcedCauldron && ((TileEntityReinforcedCauldron)te).isAllowedToInteract(player)) {
+		if (te instanceof TileEntityReinforcedCauldron && ((TileEntityReinforcedCauldron) te).isAllowedToInteract(player))
 			return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
-		}
 
 		return false;
 	}
@@ -65,8 +62,8 @@ public class BlockReinforcedCauldron extends BlockCauldron implements IReinforce
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override

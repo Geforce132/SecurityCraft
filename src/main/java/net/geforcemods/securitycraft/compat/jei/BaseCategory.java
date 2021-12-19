@@ -13,41 +13,35 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe>
-{
+public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> {
 	protected static final String OUTPUT_TEXT = Utils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText();
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final int yOffset;
 
-	public BaseCategory(IGuiHelper helper, int yOffset)
-	{
+	public BaseCategory(IGuiHelper helper, int yOffset) {
 		background = helper.createDrawable(new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png"), 25, 19, 126, 43);
 		icon = helper.createDrawableIngredient(new ItemStack(SCContent.universalBlockReinforcerLvL3));
 		this.yOffset = yOffset;
 	}
 
 	@Override
-	public IDrawable getBackground()
-	{
+	public IDrawable getBackground() {
 		return background;
 	}
 
 	@Override
-	public IDrawable getIcon()
-	{
+	public IDrawable getIcon() {
 		return icon;
 	}
 
 	@Override
-	public String getModName()
-	{
+	public String getModName() {
 		return SecurityCraft.MODID;
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout layout, ReinforcerRecipe recipe, IIngredients ingredients)
-	{
+	public void setRecipe(IRecipeLayout layout, ReinforcerRecipe recipe, IIngredients ingredients) {
 		IGuiItemStackGroup group = layout.getItemStacks();
 
 		group.init(0, true, 0, yOffset);
@@ -57,8 +51,7 @@ public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe>
 	}
 
 	@Override
-	public void drawExtras(Minecraft mc)
-	{
+	public void drawExtras(Minecraft mc) {
 		mc.fontRenderer.drawString(OUTPUT_TEXT, 24, 5 + yOffset, 4210752);
 	}
 }

@@ -22,23 +22,22 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class ItemUniversalKeyChanger extends Item {
-
 	@Override
 	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 		EnumActionResult briefcaseResult = handleBriefcase(player, hand).getType();
 
-		if(briefcaseResult != EnumActionResult.PASS)
+		if (briefcaseResult != EnumActionResult.PASS)
 			return briefcaseResult;
 
 		TileEntity te = world.getTileEntity(pos);
 
-		if(te instanceof IPasswordProtected) {
-			if(((IOwnable) te).getOwner().isOwner(player)) {
+		if (te instanceof IPasswordProtected) {
+			if (((IOwnable) te).getOwner().isOwner(player)) {
 				player.openGui(SecurityCraft.instance, GuiHandler.KEY_CHANGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 				return EnumActionResult.SUCCESS;
 			}
-			else if(!(te.getBlockType() instanceof BlockDisguisable) || (((ItemBlock)((BlockDisguisable)te.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable)) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalKeyChanger.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable)world.getTileEntity(pos)).getOwner().getName())), TextFormatting.RED);
+			else if (!(te.getBlockType() instanceof BlockDisguisable) || (((ItemBlock) ((BlockDisguisable) te.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable)) {
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalKeyChanger.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) world.getTileEntity(pos)).getOwner().getName())), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
 		}
@@ -51,8 +50,7 @@ public class ItemUniversalKeyChanger extends Item {
 		return handleBriefcase(player, hand);
 	}
 
-	private ActionResult<ItemStack> handleBriefcase(EntityPlayer player, EnumHand hand)
-	{
+	private ActionResult<ItemStack> handleBriefcase(EntityPlayer player, EnumHand hand) {
 		ItemStack keyChanger = player.getHeldItem(hand);
 
 		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {

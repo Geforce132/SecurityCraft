@@ -26,135 +26,105 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
-{
+public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock {
 	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class);
 
-	public BlockReinforcedMetals()
-	{
+	public BlockReinforcedMetals() {
 		super(Material.ROCK);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.GOLD));
 		setSoundType(SoundType.METAL);
 	}
 
-	/**
-	 * Gets the metadata of the item this Block can drop. This method is called when the block gets destroyed. It
-	 * returns the metadata of the dropped item based on the old metadata of the block.
-	 */
 	@Override
-	public int damageDropped(IBlockState state)
-	{
+	public int damageDropped(IBlockState state) {
 		return state.getValue(VARIANT).getMetadata();
 	}
 
-	/**
-	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-	 */
 	@Override
-	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
-	{
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
 		EnumType[] values = EnumType.values();
 
-		for (EnumType type : values)
+		for (EnumType type : values) {
 			list.add(new ItemStack(this, 1, type.getMetadata()));
+		}
 	}
 
-	/**
-	 * Convert the given metadata into a BlockState for this Block
-	 */
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta));
 	}
 
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(VARIANT).getMetadata();
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, VARIANT);
 	}
 
 	@Override
-	public boolean isBeaconBase(IBlockAccess world, BlockPos pos, BlockPos beacon)
-	{
+	public boolean isBeaconBase(IBlockAccess world, BlockPos pos, BlockPos beacon) {
 		return world.getBlockState(pos).getValue(VARIANT) != EnumType.REDSTONE;
 	}
 
 	@Override
-	public boolean canProvidePower(IBlockState state)
-	{
+	public boolean canProvidePower(IBlockState state) {
 		return state.getValue(VARIANT) == EnumType.REDSTONE;
 	}
 
 	@Override
-	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
-	{
+	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return state.getValue(VARIANT) == EnumType.REDSTONE ? 15 : 0;
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
-	{
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedMetals), 1, getMetaFromState(state));
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
-	{
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
-	{
+	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.GOLD_BLOCK, Blocks.IRON_BLOCK, Blocks.DIAMOND_BLOCK, Blocks.EMERALD_BLOCK, Blocks.REDSTONE_BLOCK);
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return 5;
 	}
 
-	public static enum EnumType implements IStringSerializable
-	{
+	public static enum EnumType implements IStringSerializable {
 		GOLD(0, "gold"),
 		IRON(1, "iron"),
 		DIAMOND(2, "diamond"),
 		EMERALD(3, "emerald"),
 		REDSTONE(4, "redstone");
+
 		private static final EnumType[] META_LOOKUP = new EnumType[values().length];
 		private final int meta;
 		private final String name;
 
-		private EnumType(int meta, String name)
-		{
+		private EnumType(int meta, String name) {
 			this.meta = meta;
 			this.name = name;
 		}
 
-		public int getMetadata()
-		{
+		public int getMetadata() {
 			return meta;
 		}
 
 		@Override
-		public String toString()
-		{
+		public String toString() {
 			return name;
 		}
 
-		public static EnumType byMetadata(int meta)
-		{
+		public static EnumType byMetadata(int meta) {
 			if (meta < 0 || meta >= META_LOOKUP.length)
 				meta = 0;
 
@@ -162,17 +132,16 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 		}
 
 		@Override
-		public String getName()
-		{
+		public String getName() {
 			return name;
 		}
 
-		static
-		{
+		static {
 			EnumType[] values = values();
 
-			for (EnumType type : values)
+			for (EnumType type : values) {
 				META_LOOKUP[type.getMetadata()] = type;
+			}
 		}
 	}
 

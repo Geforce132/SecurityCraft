@@ -9,20 +9,16 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockSecretSignStanding extends BlockSecretSign
-{
+public class BlockSecretSignStanding extends BlockSecretSign {
 	public static final PropertyInteger ROTATION = PropertyInteger.create("rotation", 0, 15);
 
-	public BlockSecretSignStanding()
-	{
+	public BlockSecretSignStanding() {
 		setDefaultState(blockState.getBaseState().withProperty(ROTATION, 0));
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-	{
-		if (!world.getBlockState(pos.down()).getMaterial().isSolid())
-		{
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		if (!world.getBlockState(pos.down()).getMaterial().isSolid()) {
 			dropBlockAsItem(world, pos, state, 0);
 			world.setBlockToAir(pos);
 		}
@@ -31,32 +27,27 @@ public class BlockSecretSignStanding extends BlockSecretSign
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(ROTATION, meta);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(ROTATION);
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(ROTATION, rot.rotate(state.getValue(ROTATION), 16));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror)
-	{
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		return state.withProperty(ROTATION, mirror.mirrorRotation(state.getValue(ROTATION), 16));
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, ROTATION);
 	}
 }

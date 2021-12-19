@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class SetTrophySystemTarget implements IMessage {
-
 	private BlockPos trophyPos;
 	private int targetID;
 
@@ -41,7 +40,7 @@ public class SetTrophySystemTarget implements IMessage {
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(message.trophyPos);
 
 				if (te instanceof TileEntityTrophySystem) {
-					TileEntityTrophySystem trophySystemTE = (TileEntityTrophySystem)te;
+					TileEntityTrophySystem trophySystemTE = (TileEntityTrophySystem) te;
 					Entity target = Minecraft.getMinecraft().world.getEntityByID(message.targetID);
 					trophySystemTE.setTarget(target);
 				}

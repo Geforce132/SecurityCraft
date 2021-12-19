@@ -6,9 +6,9 @@ import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RangeInt;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
 
-@Config(modid=SecurityCraft.MODID, category="options")
-public class ConfigHandler
-{
+@Config(modid = SecurityCraft.MODID, category = "options")
+public class ConfigHandler {
+	//@formatter:off
 	@Name("Is codebreaker allowed?")
 	@LangKey("config.securitycraft:isCodebreakerAllowed")
 	public static boolean allowCodebreakerItem = true;
@@ -74,7 +74,7 @@ public class ConfigHandler
 
 	@Name("Should check for updates on Github?")
 	@LangKey("config.securitycraft:checkForUpdates")
-	public static boolean checkForUpdates =true;
+	public static boolean checkForUpdates = true;
 
 	@Name("Laser range:")
 	@LangKey("config.securitycraft:laserBlockRange")
@@ -91,7 +91,7 @@ public class ConfigHandler
 
 	@Name("Maximum Alarm range:")
 	@LangKey("config.securitycraft:maxAlarmRange")
-	@RangeInt(min=1)
+	@RangeInt(min = 1)
 	public static int maxAlarmRange = 100;
 
 	@Name("Allow claiming unowned blocks?")

@@ -17,13 +17,11 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class SyncTrophySystem implements IMessage {
-
 	private BlockPos pos;
 	private String projectileType;
 	private boolean allowed;
 
 	public SyncTrophySystem() {
-
 	}
 
 	public SyncTrophySystem(BlockPos pos, EntityEntry projectileType, boolean allowed) {
@@ -59,14 +57,14 @@ public class SyncTrophySystem implements IMessage {
 					boolean allowed = message.allowed;
 					TileEntity te = world.getTileEntity(pos);
 
-					if (te instanceof TileEntityTrophySystem && ((TileEntityTrophySystem)te).getOwner().isOwner(player)) {
+					if (te instanceof TileEntityTrophySystem && ((TileEntityTrophySystem) te).getOwner().isOwner(player)) {
 						IBlockState state = world.getBlockState(pos);
 
-						((TileEntityTrophySystem)te).setFilter(projectileType, allowed);
+						((TileEntityTrophySystem) te).setFilter(projectileType, allowed);
 						world.notifyBlockUpdate(pos, state, state, 2);
 					}
-				}});
-
+				}
+			});
 
 			return null;
 		}

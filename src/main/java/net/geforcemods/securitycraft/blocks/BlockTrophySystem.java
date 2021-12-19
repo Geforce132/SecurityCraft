@@ -20,7 +20,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockTrophySystem extends BlockDisguisable {
-
 	public BlockTrophySystem(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
@@ -58,7 +57,7 @@ public class BlockTrophySystem extends BlockDisguisable {
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if(!canPlaceBlockAt(world, pos)) {
+		if (!canPlaceBlockAt(world, pos)) {
 			dropBlockAsItemWithChance(world, pos, state, 1.0F, 0);
 			world.setBlockToAir(pos);
 		}
@@ -66,7 +65,7 @@ public class BlockTrophySystem extends BlockDisguisable {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
+		if (((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
 			if (!world.isRemote)
 				player.openGui(SecurityCraft.instance, GuiHandler.TROPHY_SYSTEM_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 
@@ -75,7 +74,6 @@ public class BlockTrophySystem extends BlockDisguisable {
 
 		return false;
 	}
-
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
@@ -86,5 +84,4 @@ public class BlockTrophySystem extends BlockDisguisable {
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityTrophySystem();
 	}
-
 }

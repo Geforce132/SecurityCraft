@@ -25,40 +25,38 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
-
 	private final boolean isDouble;
 
-	public BlockReinforcedWoodSlabs(boolean isDouble){
+	public BlockReinforcedWoodSlabs(boolean isDouble) {
 		this.isDouble = isDouble;
 		setSoundType(SoundType.WOOD);
 
-		if(isDouble())
+		if (isDouble())
 			setCreativeTab(null);
 
-		if(!isDouble())
+		if (!isDouble())
 			useNeighborBrightness = true;
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state){
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
 		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune){
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(SCContent.reinforcedWoodSlabs);
 	}
 
 	@Override
-	public boolean isDouble(){
+	public boolean isDouble() {
 		return isDouble;
 	}
 
@@ -68,32 +66,27 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-	{
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		return new ItemStack(SCContent.reinforcedWoodSlabs, 1, damageDropped(state));
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
-	{
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedWoodSlabs), 1, getMetaFromState(state) % 8);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
-	{
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
-	{
+	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.WOODEN_SLAB);
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return 6;
 	}
 }

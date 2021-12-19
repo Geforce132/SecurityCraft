@@ -32,7 +32,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockLaserBlock extends BlockDisguisable {
-
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
 	public BlockLaserBlock(Material material) {
@@ -41,68 +40,56 @@ public class BlockLaserBlock extends BlockDisguisable {
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state){
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
-	/**
-	 * Called when the block is placed in the world.
-	 */
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
 		super.onBlockPlacedBy(world, pos, state, entity, stack);
 
-		if(!world.isRemote && entity instanceof EntityPlayer)
+		if (!world.isRemote && entity instanceof EntityPlayer)
 			setLaser(new Owner(entity.getName(), entity.getUniqueID().toString()), world, pos);
 	}
 
-	public void setLaser(Owner owner, World world, BlockPos pos)
-	{
-		TileEntityLaserBlock thisTe = (TileEntityLaserBlock)world.getTileEntity(pos);
+	public void setLaser(Owner owner, World world, BlockPos pos) {
+		TileEntityLaserBlock thisTe = (TileEntityLaserBlock) world.getTileEntity(pos);
 
-		for(EnumFacing facing : EnumFacing.VALUES)
-		{
+		for (EnumFacing facing : EnumFacing.VALUES) {
 			int boundType = facing == EnumFacing.UP || facing == EnumFacing.DOWN ? 1 : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? 2 : 3);
 
-			inner: for(int i = 1; i <= ConfigHandler.laserBlockRange; i++)
-			{
+			inner: for (int i = 1; i <= ConfigHandler.laserBlockRange; i++) {
 				BlockPos offsetPos = pos.offset(facing, i);
 				Block offsetBlock = world.getBlockState(offsetPos).getBlock();
 
-				if(offsetBlock != Blocks.AIR && offsetBlock != SCContent.laserBlock)
+				if (offsetBlock != Blocks.AIR && offsetBlock != SCContent.laserBlock)
 					break inner;
-				else if(offsetBlock == SCContent.laserBlock)
-				{
-					TileEntityLaserBlock thatTe = (TileEntityLaserBlock)world.getTileEntity(offsetPos);
+				else if (offsetBlock == SCContent.laserBlock) {
+					TileEntityLaserBlock thatTe = (TileEntityLaserBlock) world.getTileEntity(offsetPos);
 
-					if(owner.owns(thatTe))
-					{
+					if (owner.owns(thatTe)) {
 						TileEntityLinkable.link(thisTe, thatTe);
 
-						for(EnumModuleType type : thatTe.getInsertedModules())
-						{
+						for (EnumModuleType type : thatTe.getInsertedModules()) {
 							thisTe.insertModule(thatTe.getModule(type));
 						}
 
-						if (thisTe.isEnabled() && thatTe.isEnabled())
-						{
-							for(int j = 1; j < i; j++)
-							{
+						if (thisTe.isEnabled() && thatTe.isEnabled()) {
+							for (int j = 1; j < i; j++) {
 								offsetPos = pos.offset(facing, j);
 
-								if(world.getBlockState(offsetPos).getBlock() == Blocks.AIR)
-								{
+								if (world.getBlockState(offsetPos).getBlock() == Blocks.AIR) {
 									world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, boundType));
 
 									TileEntity te = world.getTileEntity(offsetPos);
 
-									if(te instanceof IOwnable)
-										((IOwnable)te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
+									if (te instanceof IOwnable)
+										((IOwnable) te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
 								}
 							}
 						}
@@ -114,74 +101,56 @@ public class BlockLaserBlock extends BlockDisguisable {
 		}
 	}
 
-	/**
-	 * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
-	 */
 	@Override
 	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state) {
-		if(!world.isRemote)
+		if (!world.isRemote)
 			destroyAdjacentLasers(world, pos);
 	}
 
-	public static void destroyAdjacentLasers(World world, BlockPos pos)
-	{
-		for(EnumFacing facing : EnumFacing.VALUES)
-		{
+	public static void destroyAdjacentLasers(World world, BlockPos pos) {
+		for (EnumFacing facing : EnumFacing.VALUES) {
 			int boundType = facing == EnumFacing.UP || facing == EnumFacing.DOWN ? 1 : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? 2 : 3);
 
-			for(int i = 1; i <= ConfigHandler.laserBlockRange; i++)
-			{
+			for (int i = 1; i <= ConfigHandler.laserBlockRange; i++) {
 				BlockPos offsetPos = pos.offset(facing, i);
 				IBlockState state = world.getBlockState(offsetPos);
 
-				if(state.getBlock() == SCContent.laserBlock)
+				if (state.getBlock() == SCContent.laserBlock)
 					break;
-				else if(state.getBlock() == SCContent.laserField && state.getValue(BlockLaserField.BOUNDTYPE) == boundType)
+				else if (state.getBlock() == SCContent.laserField && state.getValue(BlockLaserField.BOUNDTYPE) == boundType)
 					world.destroyBlock(offsetPos, false);
 			}
 		}
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos){
-		setLaser(((CustomizableSCTE)world.getTileEntity(pos)).getOwner(), world, pos);
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		setLaser(((CustomizableSCTE) world.getTileEntity(pos)).getOwner(), world, pos);
 	}
 
 	@Override
-	public boolean canProvidePower(IBlockState state){
+	public boolean canProvidePower(IBlockState state) {
 		return true;
 	}
 
-	/**
-	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
-	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
-	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-	 */
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED))
+	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		if (blockState.getValue(POWERED))
 			return 15;
 		else
 			return 0;
 	}
 
-	/**
-	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
-	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-	 */
 	@Override
-	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED))
+	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		if (blockState.getValue(POWERED))
 			return 15;
 		else
 			return 0;
 	}
 
-	/**
-	 * Ticks the block if it's been scheduled
-	 */
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
 		if (!world.isRemote && state.getValue(POWERED)) {
 			world.setBlockState(pos, state.withProperty(BlockLaserBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.laserBlock);
@@ -190,8 +159,8 @@ public class BlockLaserBlock extends BlockDisguisable {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand){
-		if(state.getValue(POWERED)){
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		if (state.getValue(POWERED)) {
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
@@ -204,24 +173,20 @@ public class BlockLaserBlock extends BlockDisguisable {
 			world.spawnParticle(EnumParticleTypes.REDSTONE, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
 			world.spawnParticle(EnumParticleTypes.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D);
 		}
-
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(POWERED, meta == 1 ? true : false);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getBlock() != this ? 0 : (state.getValue(POWERED) ? 1 : 0);
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, POWERED);
 	}
 

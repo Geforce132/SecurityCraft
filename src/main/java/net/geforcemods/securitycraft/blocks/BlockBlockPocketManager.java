@@ -22,23 +22,19 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 
-public class BlockBlockPocketManager extends BlockOwnable
-{
+public class BlockBlockPocketManager extends BlockOwnable {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-	public BlockBlockPocketManager()
-	{
+	public BlockBlockPocketManager() {
 		super(Material.IRON);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
-		if(!world.isRemote)
-		{
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (!world.isRemote) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof TileEntityBlockPocketManager && !((TileEntityBlockPocketManager)te).isPlacingBlocks())
+			if (te instanceof TileEntityBlockPocketManager && !((TileEntityBlockPocketManager) te).isPlacingBlocks())
 				player.openGui(SecurityCraft.instance, GuiHandler.BLOCK_POCKET_MANAGER, world, pos.getX(), pos.getY(), pos.getZ());
 		}
 
@@ -46,22 +42,18 @@ public class BlockBlockPocketManager extends BlockOwnable
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state)
-	{
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity tile = world.getTileEntity(pos);
 
-		if(tile instanceof TileEntityBlockPocketManager)
-		{
-			IItemHandler handler = ((TileEntityBlockPocketManager)tile).getStorageHandler();
+		if (tile instanceof TileEntityBlockPocketManager) {
+			IItemHandler handler = ((TileEntityBlockPocketManager) tile).getStorageHandler();
 
-			for(int i = 0; i < handler.getSlots(); i++)
-			{
+			for (int i = 0; i < handler.getSlots(); i++) {
 				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
 			}
 		}
@@ -71,49 +63,42 @@ public class BlockBlockPocketManager extends BlockOwnable
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getRenderLayer()
-	{
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT_MIPPED;
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		EnumFacing facing = EnumFacing.byIndex(meta);
 
-		if(facing.getAxis() == EnumFacing.Axis.Y)
+		if (facing.getAxis() == EnumFacing.Axis.Y)
 			facing = EnumFacing.NORTH;
 
 		return getDefaultState().withProperty(FACING, facing);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(FACING).getIndex();
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityBlockPocketManager();
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror)
-	{
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
 }

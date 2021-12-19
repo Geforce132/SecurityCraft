@@ -31,21 +31,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemUniversalOwnerChanger extends Item
-{
-	/**
-	 * Returns True is the item is renderer in full 3D when hold.
-	 */
+public class ItemUniversalOwnerChanger extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean isFull3D()
-	{
+	public boolean isFull3D() {
 		return true;
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
-	{
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
 
 		//prioritize handling the briefcase
@@ -57,18 +51,16 @@ public class ItemUniversalOwnerChanger extends Item
 		TileEntity te = world.getTileEntity(pos);
 		String newOwner = stack.getDisplayName();
 
-		if(!(te instanceof IOwnable))
-		{
+		if (!(te instanceof IOwnable)) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
 			return EnumActionResult.SUCCESS;
 		}
 
-		Owner owner = ((IOwnable)te).getOwner();
+		Owner owner = ((IOwnable) te).getOwner();
 		boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
 
-		if(!owner.isOwner(player) && !isDefault)
-		{
-			if(!(block instanceof IBlockMine) && (!(te.getBlockType() instanceof BlockDisguisable) || (((ItemBlock)((BlockDisguisable)te.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable))) {
+		if (!owner.isOwner(player) && !isDefault) {
+			if (!(block instanceof IBlockMine) && (!(te.getBlockType() instanceof BlockDisguisable) || (((ItemBlock) ((BlockDisguisable) te.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable))) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
@@ -76,40 +68,34 @@ public class ItemUniversalOwnerChanger extends Item
 			return EnumActionResult.PASS;
 		}
 
-		if(!stack.hasDisplayName() && !isDefault)
-		{
+		if (!stack.hasDisplayName() && !isDefault) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
 			return EnumActionResult.SUCCESS;
 		}
 
-		if(isDefault)
-		{
-			if(ConfigHandler.allowBlockClaim)
+		if (isDefault) {
+			if (ConfigHandler.allowBlockClaim)
 				newOwner = player.getName();
-			else
-			{
+			else {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.noBlockClaiming"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
 		}
 
-		if(te instanceof IOwnable) {
-			((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-			((IOwnable)te).onOwnerChanged(state, world, pos, player);
+		if (te instanceof IOwnable) {
+			((IOwnable) te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+			((IOwnable) te).onOwnerChanged(state, world, pos, player);
 		}
 
-		if (!world.isRemote) {
+		if (!world.isRemote)
 			world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
-		}
 
-		if(!world.isRemote && te instanceof IModuleInventory)
-		{
-			for(EnumModuleType moduleType : ((IModuleInventory)te).getInsertedModules())
-			{
-				ItemStack moduleStack = ((IModuleInventory)te).getModule(moduleType);
+		if (!world.isRemote && te instanceof IModuleInventory) {
+			for (EnumModuleType moduleType : ((IModuleInventory) te).getInsertedModules()) {
+				ItemStack moduleStack = ((IModuleInventory) te).getModule(moduleType);
 
-				((IModuleInventory)te).removeModule(moduleType);
-				((IModuleInventory)te).onModuleRemoved(moduleStack, moduleType);
+				((IModuleInventory) te).removeModule(moduleType);
+				((IModuleInventory) te).onModuleRemoved(moduleStack, moduleType);
 				Block.spawnAsEntity(world, pos, moduleStack);
 			}
 		}
@@ -133,17 +119,15 @@ public class ItemUniversalOwnerChanger extends Item
 		return ActionResult.newResult(EnumActionResult.PASS, ownerChanger);
 	}
 
-	public static boolean tryUpdateBlock(World world, BlockPos pos, Owner newOwner)
-	{
+	public static boolean tryUpdateBlock(World world, BlockPos pos, Owner newOwner) {
 		Block block = world.getBlockState(pos).getBlock();
 
-		if(block instanceof BlockReinforcedDoor || block instanceof BlockSpecialDoor)
-		{
-			TileEntityOwnable te = (TileEntityOwnable)world.getTileEntity(pos);
+		if (block instanceof BlockReinforcedDoor || block instanceof BlockSpecialDoor) {
+			TileEntityOwnable te = (TileEntityOwnable) world.getTileEntity(pos);
 
 			te.setOwner(newOwner.getName(), newOwner.getUUID());
 
-			if(!world.isRemote)
+			if (!world.isRemote)
 				world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
 
 			return true;
@@ -152,8 +136,7 @@ public class ItemUniversalOwnerChanger extends Item
 		return false;
 	}
 
-	private ActionResult<ItemStack> handleBriefcase(EntityPlayer player, ItemStack ownerChanger)
-	{
+	private ActionResult<ItemStack> handleBriefcase(EntityPlayer player, ItemStack ownerChanger) {
 		ItemStack briefcase = player.getHeldItemOffhand();
 
 		if (ItemBriefcase.isOwnedBy(briefcase, player)) {

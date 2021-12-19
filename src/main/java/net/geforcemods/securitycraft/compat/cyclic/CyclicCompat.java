@@ -8,17 +8,14 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBloc
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class CyclicCompat
-{
+public class CyclicCompat {
 	//blocks sack of holding from picking up blocks of other owners
 	@SubscribeEvent
-	public void onRightClickBlock(RightClickBlock event)
-	{
-		if(event.getEntityPlayer().inventory.getCurrentItem().getItem() instanceof ItemChestSackEmpty)
-		{
+	public void onRightClickBlock(RightClickBlock event) {
+		if (event.getEntityPlayer().inventory.getCurrentItem().getItem() instanceof ItemChestSackEmpty) {
 			TileEntity te = event.getWorld().getTileEntity(event.getPos());
 
-			if(te instanceof IOwnable && !((IOwnable)te).getOwner().isOwner(event.getEntityPlayer()))
+			if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(event.getEntityPlayer()))
 				event.setUseItem(Result.DENY);
 		}
 	}

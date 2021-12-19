@@ -17,52 +17,41 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<TileEntitySecretSign>
-{
+public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<TileEntitySecretSign> {
 	private static final ResourceLocation SIGN_TEXTURE = new ResourceLocation("textures/entity/sign.png");
 	private static final ModelSign model = new ModelSign();
 
 	@Override
-	public void render(TileEntitySecretSign te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
-	{
+	public void render(TileEntitySecretSign te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		Block block = te.getBlockType();
 		GlStateManager.pushMatrix();
 
-		if (block == SCContent.secretSignStanding)
-		{
-			GlStateManager.translate((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
+		if (block == SCContent.secretSignStanding) {
+			GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 			float rotation = te.getBlockMetadata() * 360 / 16.0F;
 			GlStateManager.rotate(-rotation, 0.0F, 1.0F, 0.0F);
 			model.signStick.showModel = true;
 		}
-		else
-		{
+		else {
 			int meta = te.getBlockMetadata();
 			float roation = 0.0F;
 
 			if (meta == 2)
-			{
 				roation = 180.0F;
-			}
 
 			if (meta == 4)
-			{
 				roation = 90.0F;
-			}
 
 			if (meta == 5)
-			{
 				roation = -90.0F;
-			}
 
-			GlStateManager.translate((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
+			GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 			GlStateManager.rotate(-roation, 0.0F, 1.0F, 0.0F);
 			GlStateManager.translate(0.0F, -0.3125F, -0.4375F);
 			model.signStick.showModel = false;
 		}
 
-		if (destroyStage >= 0)
-		{
+		if (destroyStage >= 0) {
 			bindTexture(DESTROY_STAGES[destroyStage]);
 			GlStateManager.matrixMode(5890);
 			GlStateManager.pushMatrix();
@@ -71,9 +60,7 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<Tile
 			GlStateManager.matrixMode(5888);
 		}
 		else
-		{
 			bindTexture(SIGN_TEXTURE);
-		}
 
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.pushMatrix();
@@ -81,33 +68,26 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<Tile
 		model.renderSign();
 		GlStateManager.popMatrix();
 
-		if(te.isPlayerAllowedToSeeText(Minecraft.getMinecraft().player))
-		{
+		if (te.isPlayerAllowedToSeeText(Minecraft.getMinecraft().player)) {
 			FontRenderer fontrenderer = getFontRenderer();
 			GlStateManager.translate(0.0F, 0.33333334F, 0.046666667F);
 			GlStateManager.scale(0.010416667F, -0.010416667F, 0.010416667F);
 			GlStateManager.glNormal3f(0.0F, 0.0F, -0.010416667F);
 			GlStateManager.depthMask(false);
 
-			if (destroyStage < 0)
-			{
-				for (int j = 0; j < te.signText.length; ++j)
-				{
-					if (te.signText[j] != null)
-					{
+			if (destroyStage < 0) {
+				for (int j = 0; j < te.signText.length; ++j) {
+					if (te.signText[j] != null) {
 						ITextComponent text = te.signText[j];
 						List<ITextComponent> textList = GuiUtilRenderComponents.splitText(text, 90, fontrenderer, false, true);
 						String line = textList != null && !textList.isEmpty() ? textList.get(0).getFormattedText() : "";
 
-						if (j == te.lineBeingEdited)
-						{
+						if (j == te.lineBeingEdited) {
 							line = "> " + line + " <";
 							fontrenderer.drawString(line, -fontrenderer.getStringWidth(line) / 2, j * 10 - te.signText.length * 5, 0);
 						}
 						else
-						{
 							fontrenderer.drawString(line, -fontrenderer.getStringWidth(line) / 2, j * 10 - te.signText.length * 5, 0);
-						}
 					}
 				}
 			}
@@ -118,8 +98,7 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<Tile
 
 		GlStateManager.popMatrix();
 
-		if (destroyStage >= 0)
-		{
+		if (destroyStage >= 0) {
 			GlStateManager.matrixMode(5890);
 			GlStateManager.popMatrix();
 			GlStateManager.matrixMode(5888);

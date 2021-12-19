@@ -24,7 +24,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockFurnaceMine extends BlockFullMineBase {
-
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	public BlockFurnaceMine(Material material) {
@@ -47,7 +46,7 @@ public class BlockFurnaceMine extends BlockFullMineBase {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if(player.getHeldItem(hand).getItem() != SCContent.remoteAccessMine && !EntityUtils.doesPlayerOwn(player, world, pos)){
+		if (player.getHeldItem(hand).getItem() != SCContent.remoteAccessMine && !EntityUtils.doesPlayerOwn(player, world, pos)) {
 			explode(world, pos);
 			return true;
 		}
@@ -56,23 +55,22 @@ public class BlockFurnaceMine extends BlockFullMineBase {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta){
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state){
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(FACING).getIndex();
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState(){
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING);
 	}
 
@@ -82,14 +80,12 @@ public class BlockFurnaceMine extends BlockFullMineBase {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror)
-	{
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
 

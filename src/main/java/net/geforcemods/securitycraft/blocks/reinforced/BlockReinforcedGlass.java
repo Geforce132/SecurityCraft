@@ -27,21 +27,19 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvider, IReinforcedBlock {
-
 	public BlockReinforcedGlass(Material material) {
 		super(material, false);
 		setSoundType(SoundType.GLASS);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state){
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
 		world.removeTileEntity(pos);
 	}
@@ -52,36 +50,31 @@ public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvi
 	}
 
 	@Override
-	public int quantityDropped(Random random)
-	{
+	public int quantityDropped(Random random) {
 		return 1;
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
-	{
+	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.GLASS);
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return 1;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-	{
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		IBlockState offsetState = blockAccess.getBlockState(pos.offset(side));
 		Block offsetBlock = offsetState.getBlock();
 
-		if(this == SCContent.reinforcedGlass)
-		{
-			if(blockState != offsetState)
+		if (this == SCContent.reinforcedGlass) {
+			if (blockState != offsetState)
 				return true;
 
-			if(offsetBlock == this)
+			if (offsetBlock == this)
 				return false;
 		}
 

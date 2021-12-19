@@ -6,17 +6,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockReinforcedNetherrack extends BlockReinforcedBase
-{
-	public BlockReinforcedNetherrack(Material mat, int a, Block... vB)
-	{
+public class BlockReinforcedNetherrack extends BlockReinforcedBase {
+	public BlockReinforcedNetherrack(Material mat, int a, Block... vB) {
 		super(mat, a, vB);
 	}
 
 	@Override
-	public boolean isFireSource(World world, BlockPos pos, EnumFacing side)
-	{
+	public boolean isFireSource(World world, BlockPos pos, EnumFacing side) {
 		return side == EnumFacing.UP;
 	}
-
 }

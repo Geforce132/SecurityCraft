@@ -13,34 +13,29 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockFakeLavaBase extends BlockStaticLiquid implements IOverlayDisplay {
-
-	public BlockFakeLavaBase(Material material){
+	public BlockFakeLavaBase(Material material) {
 		super(material);
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-	{
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (!checkForMixing(world, pos, state))
 			updateLiquid(world, pos, state);
 	}
 
-	private void updateLiquid(World world, BlockPos pos, IBlockState state)
-	{
-		BlockDynamicLiquid liquid = getFlowingBlock(this.material);
+	private void updateLiquid(World world, BlockPos pos, IBlockState state) {
+		BlockDynamicLiquid liquid = getFlowingBlock(material);
 		world.setBlockState(pos, liquid.getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
 		world.scheduleUpdate(pos, liquid, tickRate(world));
 	}
 
-	public static BlockDynamicLiquid getFlowingBlock(Material material)
-	{
+	public static BlockDynamicLiquid getFlowingBlock(Material material) {
 		if (material == Material.WATER)
 			return (BlockDynamicLiquid) SCContent.bogusWaterFlowing;
 		else if (material == Material.LAVA)
@@ -49,23 +44,17 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IOverlayDisp
 			throw new IllegalArgumentException("Invalid material");
 	}
 
-	/**
-	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-	 */
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
-	{
-		if(entity instanceof EntityLivingBase)
-		{
-			EntityLivingBase lEntity = (EntityLivingBase)entity;
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+		if (entity instanceof EntityLivingBase) {
+			EntityLivingBase lEntity = (EntityLivingBase) entity;
 
 			lEntity.extinguish();
 
-			if(!world.isRemote)
-			{
+			if (!world.isRemote) {
 				lEntity.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 1));
 
-				if(!lEntity.isPotionActive(MobEffects.REGENERATION))
+				if (!lEntity.isPotionActive(MobEffects.REGENERATION))
 					lEntity.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20, 2));
 			}
 		}
@@ -73,7 +62,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IOverlayDisp
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return ItemStack.EMPTY;
 	}
 
@@ -83,9 +72,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IOverlayDisp
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
-	{
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return false;
 	}
-
 }

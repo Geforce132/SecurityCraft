@@ -12,13 +12,12 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class ToggleOption implements IMessage{
-
+public class ToggleOption implements IMessage {
 	private int x, y, z, id;
 
-	public ToggleOption(){ }
+	public ToggleOption() {}
 
-	public ToggleOption(int x, int y, int z, int id){
+	public ToggleOption(int x, int y, int z, int id) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -42,7 +41,6 @@ public class ToggleOption implements IMessage{
 	}
 
 	public static class Handler implements IMessageHandler<ToggleOption, IMessage> {
-
 		@Override
 		public IMessage onMessage(ToggleOption packet, MessageContext message) {
 			WorldUtils.addScheduledTask(message.getServerHandler().player.world, () -> {
@@ -54,17 +52,16 @@ public class ToggleOption implements IMessage{
 				EntityPlayer player = message.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
-				if(te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)) {
-					((ICustomizable)te).customOptions()[id].toggle();
-					((ICustomizable)te).onOptionChanged(((ICustomizable)te).customOptions()[id]);
+				if (te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player)) {
+					((ICustomizable) te).customOptions()[id].toggle();
+					((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[id]);
 
-					if(te instanceof CustomizableSCTE)
-						((CustomizableSCTE)te).sync();
+					if (te instanceof CustomizableSCTE)
+						((CustomizableSCTE) te).sync();
 				}
 			});
 
 			return null;
 		}
 	}
-
 }

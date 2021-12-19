@@ -23,66 +23,55 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockReinforcedLever extends BlockLever implements IReinforcedBlock
-{
-	public BlockReinforcedLever()
-	{
+public class BlockReinforcedLever extends BlockLever implements IReinforcedBlock {
+	public BlockReinforcedLever() {
 		setSoundType(SoundType.WOOD);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
-		if(isAllowedToPress(world, pos, (TileEntityAllowlistOnly)world.getTileEntity(pos), player))
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (isAllowedToPress(world, pos, (TileEntityAllowlistOnly) world.getTileEntity(pos), player))
 			return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
 		return false;
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, TileEntityAllowlistOnly te, EntityPlayer entity)
-	{
+	public boolean isAllowedToPress(World world, BlockPos pos, TileEntityAllowlistOnly te, EntityPlayer entity) {
 		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
 	}
 
 	@Override
-	public Material getMaterial(IBlockState state)
-	{
+	public Material getMaterial(IBlockState state) {
 		return Material.WOOD;
 	}
 
 	@Override
-	public EnumPushReaction getPushReaction(IBlockState state)
-	{
+	public EnumPushReaction getPushReaction(IBlockState state) {
 		return EnumPushReaction.IGNORE;
 	}
 
 	@Override
-	public boolean hasTileEntity(IBlockState state)
-	{
+	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState state)
-	{
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityAllowlistOnly();
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return 1;
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
-	{
+	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.LEVER);
 	}
 }

@@ -16,29 +16,25 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemReinforcedDoor extends ItemBlock
-{
+public class ItemReinforcedDoor extends ItemBlock {
 	public ItemReinforcedDoor(Block block) {
 		super(block);
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (facing != EnumFacing.UP)
 			return EnumActionResult.FAIL;
-		else
-		{
+		else {
 			IBlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
 			if (!block.isReplaceable(world, pos))
 				pos = pos.offset(facing);
 
-			if (player.canPlayerEdit(pos, facing, stack) && getBlock().canPlaceBlockAt(world, pos))
-			{
+			if (player.canPlayerEdit(pos, facing, stack) && getBlock().canPlaceBlockAt(world, pos)) {
 				EnumFacing angleFacing = EnumFacing.fromAngle(player.rotationYaw);
 				int offsetX = angleFacing.getXOffset();
 				int offsetZ = angleFacing.getZOffset();
@@ -48,8 +44,7 @@ public class ItemReinforcedDoor extends ItemBlock
 				world.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				stack.shrink(1);
 
-				if(world.getTileEntity(pos) != null)
-				{
+				if (world.getTileEntity(pos) != null) {
 					((TileEntityOwnable) world.getTileEntity(pos)).setOwner(player.getGameProfile().getId().toString(), player.getName());
 					((TileEntityOwnable) world.getTileEntity(pos.up())).setOwner(player.getGameProfile().getId().toString(), player.getName());
 				}
@@ -70,8 +65,7 @@ public class ItemReinforcedDoor extends ItemBlock
 		boolean isRightDoor = world.getBlockState(right).getBlock() == door || world.getBlockState(right.up()).getBlock() == door;
 		boolean isLeftDoor = world.getBlockState(left).getBlock() == door || world.getBlockState(left.up()).getBlock() == door;
 
-		if ((!isRightDoor || isLeftDoor) && leftNormalCubeAmount <= rightNormalCubeAmount)
-		{
+		if ((!isRightDoor || isLeftDoor) && leftNormalCubeAmount <= rightNormalCubeAmount) {
 			if (isLeftDoor && !isRightDoor || leftNormalCubeAmount < rightNormalCubeAmount)
 				isRightHinge = false;
 		}

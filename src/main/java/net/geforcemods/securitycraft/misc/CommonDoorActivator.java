@@ -16,9 +16,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class CommonDoorActivator implements Function<Object,IDoorActivator>, IDoorActivator
-{
+public class CommonDoorActivator implements Function<Object, IDoorActivator>, IDoorActivator {
 	private final PropertyBool poweredProperty = PropertyBool.create("powered");
+	//@formatter:off
 	private List<Block> blocks = Arrays.asList(
 			SCContent.laserBlock,
 			SCContent.retinalScanner,
@@ -33,23 +33,20 @@ public class CommonDoorActivator implements Function<Object,IDoorActivator>, IDo
 			SCContent.keyPanelWallBlock,
 			SCContent.securityCamera,
 			SCContent.sonicSecuritySystem);
+	//@formatter:on
 
 	@Override
-	public IDoorActivator apply(Object o)
-	{
+	public IDoorActivator apply(Object o) {
 		return this;
 	}
 
 	@Override
-	public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te, EnumFacing direction, int distance)
-	{
+	public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te, EnumFacing direction, int distance) {
 		if (state.getValue(poweredProperty)) {
-			if(state.getPropertyKeys().contains(BlockLever.FACING)) {
+			if (state.getPropertyKeys().contains(BlockLever.FACING))
 				return direction == state.getValue(BlockLever.FACING).getFacing();
-			}
-			else if(state.getPropertyKeys().contains(BlockDirectional.FACING)) {
+			else if (state.getPropertyKeys().contains(BlockDirectional.FACING))
 				return direction == state.getValue(BlockDirectional.FACING);
-			}
 
 			return true;
 		}
@@ -58,8 +55,7 @@ public class CommonDoorActivator implements Function<Object,IDoorActivator>, IDo
 	}
 
 	@Override
-	public List<Block> getBlocks()
-	{
+	public List<Block> getBlocks() {
 		return blocks;
 	}
 }

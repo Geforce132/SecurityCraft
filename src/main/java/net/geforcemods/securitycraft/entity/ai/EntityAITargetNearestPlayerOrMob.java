@@ -20,58 +20,53 @@ import net.minecraft.entity.player.EntityPlayer;
 /**
  * Attacks any player who is not the owner, or any mob
  */
-public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableTarget<EntityLivingBase>
-{
+public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableTarget<EntityLivingBase> {
 	private EntitySentry sentry;
 
-	public EntityAITargetNearestPlayerOrMob(EntitySentry sentry)
-	{
+	public EntityAITargetNearestPlayerOrMob(EntitySentry sentry) {
 		super(sentry, EntityLivingBase.class, true);
 
 		this.sentry = sentry;
 	}
 
 	@Override
-	public boolean shouldExecute()
-	{
-		List<EntityLivingBase> list = taskOwner.world.<EntityLivingBase>getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> !EntityUtils.isInvisible(e));
+	public boolean shouldExecute() {
+		List<EntityLivingBase> list = taskOwner.world.<EntityLivingBase> getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> !EntityUtils.isInvisible(e));
 
-		if(list.isEmpty())
+		if (list.isEmpty())
 			return false;
-		else
-		{
+		else {
 			EnumSentryMode mode = sentry.getMode();
 			int i;
 
 			Collections.sort(list, sorter);
 
 			//get the nearest target that is either a mob or a player
-			for(i = 0; i < list.size(); i++)
-			{
+			for (i = 0; i < list.size(); i++) {
 				EntityLivingBase potentialTarget = list.get(i);
 
-				if(potentialTarget.getIsInvulnerable())
+				if (potentialTarget.getIsInvulnerable())
 					continue;
 
-				if(mode.attacksPlayers())
-				{
+				if (mode.attacksPlayers()) {
+					//@formatter:off
 					if(potentialTarget instanceof EntityPlayer
 							&& !((EntityPlayer)potentialTarget).isSpectator()
 							&& !((EntityPlayer)potentialTarget).isCreative()
 							&& !((EntitySentry)taskOwner).getOwner().isOwner(((EntityPlayer)potentialTarget))
 							&& !sentry.isTargetingAllowedPlayer(potentialTarget)
-							&& !EntityUtils.isInvisible(potentialTarget))
+							&& !EntityUtils.isInvisible(potentialTarget)) {
 						break;
+					}
+					//@formatter:on
 				}
 
-				if(mode.attacksHostile() && isSupportedTarget(potentialTarget))
+				if (mode.attacksHostile() && isSupportedTarget(potentialTarget))
 					break;
 			}
 
-			if(i < list.size())
-			{
-				if(isCloseEnough(list.get(i)))
-				{
+			if (i < list.size()) {
+				if (isCloseEnough(list.get(i))) {
 					targetEntity = list.get(i);
 					taskOwner.setAttackTarget(targetEntity);
 					return true;
@@ -83,18 +78,16 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 	}
 
 	@Override
-	public boolean shouldContinueExecuting()
-	{
+	public boolean shouldContinueExecuting() {
 		return (isSupportedTarget(targetEntity) || targetEntity instanceof EntityPlayer) && isCloseEnough(targetEntity) && shouldExecute() && !sentry.isTargetingAllowedPlayer(targetEntity) && super.shouldContinueExecuting();
 	}
 
-	public boolean isCloseEnough(Entity entity)
-	{
+	public boolean isCloseEnough(Entity entity) {
 		return entity != null && taskOwner.getDistanceSq(entity) <= getTargetDistance() * getTargetDistance();
 	}
 
-	public boolean isSupportedTarget(EntityLivingBase potentialTarget)
-	{
+	public boolean isSupportedTarget(EntityLivingBase potentialTarget) {
+		//@formatter:off
 		return potentialTarget.deathTime == 0 &&
 				(potentialTarget instanceof EntityMob ||
 						potentialTarget instanceof EntityFlying ||
@@ -102,11 +95,11 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 						potentialTarget instanceof EntityShulker ||
 						potentialTarget instanceof EntityDragon ||
 						SecurityCraftAPI.getRegisteredSentryAttackTargetChecks().stream().anyMatch(check -> check.canAttack(potentialTarget)));
+		//@formatter:on
 	}
 
 	@Override
-	protected double getTargetDistance()
-	{
+	protected double getTargetDistance() {
 		return EntitySentry.MAX_TARGET_DISTANCE;
 	}
 }

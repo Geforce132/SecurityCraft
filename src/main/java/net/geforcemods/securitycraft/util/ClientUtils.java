@@ -8,11 +8,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class ClientUtils{
+public class ClientUtils {
 	/**
 	 * Returns the current Minecraft in-game time, in a 12-hour AM/PM format.
 	 */
-	public static String getFormattedMinecraftTime(){
+	public static String getFormattedMinecraftTime() {
 		Long time = Minecraft.getMinecraft().world.provider.getWorldTime();
 
 		int hours24 = (int) ((float) time.longValue() / 1000L + 6L) % 24;
@@ -25,7 +25,7 @@ public class ClientUtils{
 	/**
 	 * Sends the client-side NBTTagCompound of a block's TileEntity to the server.
 	 */
-	public static void syncTileEntity(TileEntity tileEntity){
+	public static void syncTileEntity(TileEntity tileEntity) {
 		NBTTagCompound tag = new NBTTagCompound();
 		tileEntity.writeToNBT(tag);
 		SecurityCraft.network.sendToServer(new SyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
@@ -34,7 +34,7 @@ public class ClientUtils{
 	/**
 	 * Sends the client-side NBTTagCompound of a player's held item to the server.
 	 */
-	public static void syncItemNBT(ItemStack item){
+	public static void syncItemNBT(ItemStack item) {
 		SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(item));
 	}
 }

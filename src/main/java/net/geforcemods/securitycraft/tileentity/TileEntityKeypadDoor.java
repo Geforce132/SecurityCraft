@@ -17,55 +17,48 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
-public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPasswordProtected, ILockable
-{
+public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPasswordProtected, ILockable {
 	private String passcode;
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		if(passcode != null && !passcode.isEmpty())
+		if (passcode != null && !passcode.isEmpty())
 			tag.setString("passcode", passcode);
 
 		return tag;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		passcode = tag.getString("passcode");
 	}
 
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!world.isRemote)
-		{
+		if (!world.isRemote) {
 			IBlockState state = world.getBlockState(pos);
 
-			if(state.getBlock() instanceof BlockKeypadDoor)
-			{
+			if (state.getBlock() instanceof BlockKeypadDoor) {
 				//for some reason calling BlockKeypadDoor#activate if the block is the upper half does not work, so delegate opening to the lower half
-				if(state.getValue(BlockDoor.HALF) == EnumDoorHalf.UPPER)
-				{
+				if (state.getValue(BlockDoor.HALF) == EnumDoorHalf.UPPER) {
 					pos = pos.down();
 					state = world.getBlockState(pos);
 				}
 
-				((BlockKeypadDoor)state.getBlock()).activate(state, world, pos, getSignalLength());
+				((BlockKeypadDoor) state.getBlock()).activate(state, world, pos, getSignalLength());
 			}
 		}
 	}
 
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
-		if(getPassword() != null)
+		if (getPassword() != null)
 			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
-		else
-		{
-			if(getOwner().isOwner(player))
+		else {
+			if (getOwner().isOwner(player))
 				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			else
 				PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
@@ -74,7 +67,7 @@ public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPass
 
 	@Override
 	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
-		if(!state.getValue(BlockKeypad.POWERED)) {
+		if (!state.getValue(BlockKeypad.POWERED)) {
 			activate(player);
 			return true;
 		}
@@ -94,24 +87,22 @@ public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPass
 
 		passcode = password;
 
-		if(state.getValue(BlockDoor.HALF) == EnumDoorHalf.LOWER)
+		if (state.getValue(BlockDoor.HALF) == EnumDoorHalf.LOWER)
 			te = world.getTileEntity(pos.up());
-		else if(state.getValue(BlockDoor.HALF) == EnumDoorHalf.UPPER)
+		else if (state.getValue(BlockDoor.HALF) == EnumDoorHalf.UPPER)
 			te = world.getTileEntity(pos.down());
 
-		if(te instanceof TileEntityKeypadDoor)
-			((TileEntityKeypadDoor)te).setPasswordExclusively(password);
+		if (te instanceof TileEntityKeypadDoor)
+			((TileEntityKeypadDoor) te).setPasswordExclusively(password);
 	}
 
 	//only set the password for this door half
-	public void setPasswordExclusively(String password)
-	{
+	public void setPasswordExclusively(String password) {
 		passcode = password;
 	}
 
 	@Override
-	public int defaultSignalLength()
-	{
+	public int defaultSignalLength() {
 		return 60;
 	}
 }

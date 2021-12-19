@@ -19,7 +19,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Deprecated //use BlockAlarm and its lit property
 public class BlockOldLitAlarm extends BlockOwnable {
-
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
 	public BlockOldLitAlarm(Material material) {
@@ -31,20 +30,20 @@ public class BlockOldLitAlarm extends BlockOwnable {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return new ItemStack(Item.getItemFromBlock(SCContent.alarm));
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random p_149650_2_, int p_149650_3_){
+	public Item getItemDropped(IBlockState state, Random p_149650_2_, int p_149650_3_) {
 		return Item.getItemFromBlock(SCContent.alarm);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta){
+	public IBlockState getStateFromMeta(int meta) {
 		EnumFacing facing;
 
-		switch (meta & 7){
+		switch (meta & 7) {
 			case 0:
 				facing = EnumFacing.DOWN;
 				break;
@@ -69,10 +68,10 @@ public class BlockOldLitAlarm extends BlockOwnable {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state){
+	public int getMetaFromState(IBlockState state) {
 		int meta;
 
-		switch(BlockOldLitAlarm.SwitchEnumFacing.FACING_LOOKUP[state.getValue(FACING).ordinal()]){
+		switch (BlockOldLitAlarm.SwitchEnumFacing.FACING_LOOKUP[state.getValue(FACING).ordinal()]) {
 			case 1:
 				meta = 1;
 				break;
@@ -97,53 +96,53 @@ public class BlockOldLitAlarm extends BlockOwnable {
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState(){
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta){
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityAlarm();
 	}
 
-	static final class SwitchEnumFacing{
+	static final class SwitchEnumFacing {
 		static final int[] FACING_LOOKUP = new int[EnumFacing.values().length];
 
-		static{
-			try{
+		static {
+			try {
 				FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
-			}catch (NoSuchFieldError e){
-
+			}
+			catch (NoSuchFieldError e) {
 			}
 
-			try{
+			try {
 				FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
-			}catch (NoSuchFieldError e){
-
+			}
+			catch (NoSuchFieldError e) {
 			}
 
-			try{
+			try {
 				FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
-			}catch (NoSuchFieldError e){
-
+			}
+			catch (NoSuchFieldError e) {
 			}
 
-			try{
+			try {
 				FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
-			}catch (NoSuchFieldError e){
-
+			}
+			catch (NoSuchFieldError e) {
 			}
 
-			try{
+			try {
 				FACING_LOOKUP[EnumFacing.UP.ordinal()] = 5;
-			}catch (NoSuchFieldError e){
-
+			}
+			catch (NoSuchFieldError e) {
 			}
 
-			try{
+			try {
 				FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 6;
-			}catch (NoSuchFieldError e){
-
+			}
+			catch (NoSuchFieldError e) {
 			}
 		}
 	}

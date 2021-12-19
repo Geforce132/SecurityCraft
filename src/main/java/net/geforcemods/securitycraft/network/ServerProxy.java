@@ -2,8 +2,7 @@ package net.geforcemods.securitycraft.network;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-public class ServerProxy implements IProxy
-{
+public class ServerProxy implements IProxy {
 	@Override
 	public void registerEntityRenderingHandlers() {}
 
@@ -14,8 +13,7 @@ public class ServerProxy implements IProxy
 	public void registerVariants() {}
 
 	@Override
-	public EntityPlayer getClientPlayer()
-	{
+	public EntityPlayer getClientPlayer() {
 		return null;
 	}
 }

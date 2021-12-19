@@ -10,18 +10,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class UpdateNBTTagOnServer implements IMessage{
-
+public class UpdateNBTTagOnServer implements IMessage {
 	private ItemStack stack;
 
-	public UpdateNBTTagOnServer(){
+	public UpdateNBTTagOnServer() {}
 
-	}
-
-	public UpdateNBTTagOnServer(ItemStack stack){
-		if(!stack.isEmpty() && stack.hasTagCompound()){
+	public UpdateNBTTagOnServer(ItemStack stack) {
+		if (!stack.isEmpty() && stack.hasTagCompound())
 			this.stack = stack;
-		}
 	}
 
 	@Override
@@ -35,13 +31,12 @@ public class UpdateNBTTagOnServer implements IMessage{
 	}
 
 	public static class Handler implements IMessageHandler<UpdateNBTTagOnServer, IMessage> {
-
 		@Override
 		public IMessage onMessage(UpdateNBTTagOnServer message, MessageContext context) {
 			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
 
-				if(PlayerUtils.isHoldingItem(player, message.stack.getItem(), null)) {
+				if (PlayerUtils.isHoldingItem(player, message.stack.getItem(), null)) {
 					ItemStack stack = PlayerUtils.getSelectedItemStack(player, message.stack.getItem());
 
 					stack.setTagCompound(message.stack.getTagCompound());
@@ -51,5 +46,4 @@ public class UpdateNBTTagOnServer implements IMessage{
 			return null;
 		}
 	}
-
 }

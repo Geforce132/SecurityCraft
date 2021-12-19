@@ -99,12 +99,11 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
-@EventBusSubscriber(modid=SecurityCraft.MODID)
+@EventBusSubscriber(modid = SecurityCraft.MODID)
 public class SCEventHandler {
-
 	public static HashMap<String, String> tipsWithLink = new HashMap<>();
 	public static final Integer NOTE_DELAY = 10;
-	public static final Map<EntityPlayer,MutablePair<Integer,Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
+	public static final Map<EntityPlayer, MutablePair<Integer, Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
 
 	static {
 		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
@@ -127,8 +126,8 @@ public class SCEventHandler {
 					NoteWrapper note = pair.getRight().poll();
 
 					if (note != null) {
-						SoundEvent sound = ((BlockNote)Blocks.NOTEBLOCK).getInstrument(Instrument.valueOf(note.instrumentName.toUpperCase()).ordinal());
-						float pitch = (float)Math.pow(2.0D, (note.noteID - 12) / 12.0D);
+						SoundEvent sound = ((BlockNote) Blocks.NOTEBLOCK).getInstrument(Instrument.valueOf(note.instrumentName.toUpperCase()).ordinal());
+						float pitch = (float) Math.pow(2.0D, (note.noteID - 12) / 12.0D);
 
 						player.world.playSound(null, player.getPosition(), sound, SoundCategory.RECORDS, 3.0F, pitch);
 						handlePlayedNote(player.world, player.getPosition(), note.noteID, note.instrumentName);
@@ -143,7 +142,7 @@ public class SCEventHandler {
 
 			//remove finished tunes
 			if (PLAYING_TUNES.size() > 0) {
-				Iterator<Entry<EntityPlayer,MutablePair<Integer,Deque<NoteWrapper>>>> entries = PLAYING_TUNES.entrySet().iterator();
+				Iterator<Entry<EntityPlayer, MutablePair<Integer, Deque<NoteWrapper>>>> entries = PLAYING_TUNES.entrySet().iterator();
 
 				while (entries.hasNext()) {
 					if (entries.next().getValue().left == -1)
@@ -154,18 +153,19 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		if(ConfigHandler.sayThanksMessage)
-		{
+	public static void onPlayerLoggedIn(PlayerLoggedInEvent event) {
+		if (ConfigHandler.sayThanksMessage) {
 			String tipKey = getRandomTip();
+			//@formatter:off
 			ITextComponent message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] ")
 					.appendSibling(Utils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()))
 					.appendSibling(new TextComponentString(" "))
 					.appendSibling(Utils.localize("messages.securitycraft:tip"))
 					.appendSibling(new TextComponentString(" "))
 					.appendSibling(Utils.localize(tipKey));
+			//@formatter:on
 
-			if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
+			if (tipsWithLink.containsKey(tipKey.split("\\.")[2]))
 				message.appendSibling(new TextComponentString(" ")).appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 
 			event.player.sendMessage(message);
@@ -173,41 +173,38 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event)
-	{
-		EntityPlayerMP player = (EntityPlayerMP)event.player;
+	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
+		EntityPlayerMP player = (EntityPlayerMP) event.player;
 
-		if(player.getSpectatingEntity() instanceof EntitySecurityCamera)
-		{
-			EntitySecurityCamera cam = (EntitySecurityCamera)player.getSpectatingEntity();
+		if (player.getSpectatingEntity() instanceof EntitySecurityCamera) {
+			EntitySecurityCamera cam = (EntitySecurityCamera) player.getSpectatingEntity();
 			TileEntity tile = player.world.getTileEntity(new BlockPos(cam.posX, cam.posY, cam.posZ));
 
-			if(tile instanceof TileEntitySecurityCamera)
-				((TileEntitySecurityCamera)tile).stopViewing();
+			if (tile instanceof TileEntitySecurityCamera)
+				((TileEntitySecurityCamera) tile).stopViewing();
 
 			cam.setDead();
 		}
 	}
 
 	@SubscribeEvent
-	public static void onDamageTaken(LivingHurtEvent event)
-	{
+	public static void onDamageTaken(LivingHurtEvent event) {
 		EntityLivingBase entity = event.getEntityLiving();
 		World world = entity.world;
 
-		if(event.getSource() == CustomDamageSources.ELECTRICITY)
+		if (event.getSource() == CustomDamageSources.ELECTRICITY)
 			world.playSound(null, entity.getPosition(), SCSounds.ELECTRIFIED.event, SoundCategory.BLOCKS, 0.25F, 1.0F);
 
-		if(!world.isRemote && entity instanceof EntityPlayerMP && PlayerUtils.isPlayerMountedOnCamera(entity)) {
-			EntityPlayerMP player = (EntityPlayerMP)entity;
+		if (!world.isRemote && entity instanceof EntityPlayerMP && PlayerUtils.isPlayerMountedOnCamera(entity)) {
+			EntityPlayerMP player = (EntityPlayerMP) entity;
 
-			((EntitySecurityCamera)player.getSpectatingEntity()).stopViewing(player);
+			((EntitySecurityCamera) player.getSpectatingEntity()).stopViewing(player);
 		}
 	}
 
 	@SubscribeEvent
-	public static void onBucketUsed(FillBucketEvent event){
-		if(event.getTarget() == null)
+	public static void onBucketUsed(FillBucketEvent event) {
+		if (event.getTarget() == null)
 			return;
 
 		World world = event.getWorld();
@@ -215,9 +212,9 @@ public class SCEventHandler {
 		ItemStack result;
 		Block block = world.getBlockState(pos).getBlock();
 
-		if(block == SCContent.fakeWater)
+		if (block == SCContent.fakeWater)
 			result = new ItemStack(SCContent.fWaterBucket, 1);
-		else if(block == SCContent.fakeLava)
+		else if (block == SCContent.fakeLava)
 			result = new ItemStack(SCContent.fLavaBucket, 1);
 		else
 			return;
@@ -229,28 +226,24 @@ public class SCEventHandler {
 
 	//disallow rightclicking doors, fixes wrenches from other mods being able to switch their state
 	//side effect for keypad door: it is now only openable with an empty hand
-	@SubscribeEvent(priority=EventPriority.HIGHEST)
-	public static void highestPriorityOnRightClickBlock(PlayerInteractEvent.RightClickBlock event)
-	{
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public static void highestPriorityOnRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
 		ItemStack stack = event.getItemStack();
 		Item item = stack.getItem();
 
-		if(!stack.isEmpty() && item != SCContent.universalBlockRemover && item != SCContent.universalBlockModifier && item != SCContent.universalOwnerChanger)
-		{
-			if(!(item instanceof ItemBlock))
-			{
+		if (!stack.isEmpty() && item != SCContent.universalBlockRemover && item != SCContent.universalBlockModifier && item != SCContent.universalOwnerChanger) {
+			if (!(item instanceof ItemBlock)) {
 				Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
 
-				if(block == SCContent.keypadDoor || block == SCContent.reinforcedDoor || block == SCContent.reinforcedIronTrapdoor || block == SCContent.scannerDoor)
+				if (block == SCContent.keypadDoor || block == SCContent.reinforcedDoor || block == SCContent.reinforcedIronTrapdoor || block == SCContent.scannerDoor)
 					event.setCanceled(true);
 			}
 		}
 	}
 
 	@SubscribeEvent
-	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event){
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer()))
-		{
+	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+		if (PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
 			event.setCanceled(true);
 			return;
 		}
@@ -259,20 +252,18 @@ public class SCEventHandler {
 		TileEntity te = world.getTileEntity(event.getPos());
 		Block block = world.getBlockState(event.getPos()).getBlock();
 
-		if(te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).disableInteractionWhenLocked(world, event.getPos(), event.getEntityPlayer()))
-		{
-			if(event.getHand() == EnumHand.MAIN_HAND)
+		if (te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).disableInteractionWhenLocked(world, event.getPos(), event.getEntityPlayer())) {
+			if (event.getHand() == EnumHand.MAIN_HAND)
 				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block)), TextFormatting.DARK_RED, false);
 
 			event.setCanceled(true);
 			return;
 		}
 
-		if(event.getItemStack().getItem() == Items.REDSTONE && te instanceof IEMPAffected && ((IEMPAffected)te).isShutDown())
-		{
-			((IEMPAffected)te).reactivate();
+		if (event.getItemStack().getItem() == Items.REDSTONE && te instanceof IEMPAffected && ((IEMPAffected) te).isShutDown()) {
+			((IEMPAffected) te).reactivate();
 
-			if(!event.getEntityPlayer().isCreative())
+			if (!event.getEntityPlayer().isCreative())
 				event.getItemStack().shrink(1);
 
 			event.getEntityPlayer().swingArm(event.getHand());
@@ -281,12 +272,9 @@ public class SCEventHandler {
 			return;
 		}
 
-		if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.keyPanel, event.getHand()))
-		{
-			for(IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles())
-			{
-				if(pc.getOriginalBlock() == block)
-				{
+		if (PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.keyPanel, event.getHand())) {
+			for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
+				if (pc.getOriginalBlock() == block) {
 					event.setUseBlock(Result.DENY);
 					event.setUseItem(Result.ALLOW);
 				}
@@ -295,19 +283,19 @@ public class SCEventHandler {
 			return;
 		}
 
-		if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.codebreaker, event.getHand()) && handleCodebreaking(event)) {
+		if (PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.codebreaker, event.getHand()) && handleCodebreaking(event)) {
 			event.setCanceled(true);
 			event.setCancellationResult(EnumActionResult.SUCCESS);
 			return;
 		}
 
-		if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockModifier, event.getHand())){
-			if(te instanceof IModuleInventory) {
+		if (PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockModifier, event.getHand())) {
+			if (te instanceof IModuleInventory) {
 				event.setCanceled(true);
 				event.setCancellationResult(EnumActionResult.SUCCESS);
 
-				if(te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(event.getEntityPlayer())){
-					if(!(te.getBlockType() instanceof BlockDisguisable) || (((ItemBlock)((BlockDisguisable)te.getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof BlockDisguisable))
+				if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(event.getEntityPlayer())) {
+					if (!(te.getBlockType() instanceof BlockDisguisable) || (((ItemBlock) ((BlockDisguisable) te.getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof BlockDisguisable))
 						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize("item.securitycraft:universalBlockModifier.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner().getName())), TextFormatting.RED);
 
 					return;
@@ -318,19 +306,19 @@ public class SCEventHandler {
 			}
 		}
 
-		if(te instanceof INameSetter && (te instanceof TileEntitySecurityCamera || te instanceof TileEntityPortableRadar) && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG, event.getHand()) && event.getEntityPlayer().getHeldItem(event.getHand()).hasDisplayName()){
+		if (te instanceof INameSetter && (te instanceof TileEntitySecurityCamera || te instanceof TileEntityPortableRadar) && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG, event.getHand()) && event.getEntityPlayer().getHeldItem(event.getHand()).hasDisplayName()) {
 			ItemStack nametag = event.getEntityPlayer().getHeldItem(event.getHand());
-			INameSetter nameable = (INameSetter)te;
+			INameSetter nameable = (INameSetter) te;
 
 			event.setCanceled(true);
 			event.setCancellationResult(EnumActionResult.SUCCESS);
 
-			if(nameable.getName().equals(nametag.getDisplayName())) {
+			if (nameable.getName().equals(nametag.getDisplayName())) {
 				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getDisplayName()), TextFormatting.RED);
 				return;
 			}
 
-			if(!event.getEntityPlayer().isCreative())
+			if (!event.getEntityPlayer().isCreative())
 				nametag.shrink(1);
 
 			if (!world.isRemote)
@@ -343,8 +331,7 @@ public class SCEventHandler {
 		//all the sentry functionality for when the sentry is diguised
 		List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
 
-		if(!sentries.isEmpty())
-		{
+		if (!sentries.isEmpty()) {
 			event.setCanceled(sentries.get(0).processInteract(event.getEntityPlayer(), event.getHand())); //cancel if an action was taken
 			event.setCancellationResult(EnumActionResult.SUCCESS);
 		}
@@ -352,7 +339,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onLeftClickBlock(LeftClickBlock event) {
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
+		if (PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
 			event.setCanceled(true);
 			event.setCancellationResult(EnumActionResult.FAIL);
 			return;
@@ -361,34 +348,35 @@ public class SCEventHandler {
 		ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
 		Item held = stack.getItem();
 
-		if(held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3)
+		if (held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3)
 			ItemUniversalBlockReinforcer.convertBlock(stack, event.getPos(), event.getEntityPlayer());
 	}
 
 	@SubscribeEvent
-	public static void onBlockEventBreak(BlockEvent.BreakEvent event)
-	{
-		if(!event.getWorld().isRemote) {
+	public static void onBlockEventBreak(BlockEvent.BreakEvent event) {
+		if (!event.getWorld().isRemote) {
 			BlockPos pos = event.getPos();
 			World world = event.getWorld();
 
-			if(world.getTileEntity(pos) instanceof IModuleInventory){
+			if (world.getTileEntity(pos) instanceof IModuleInventory) {
 				IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
 
-				for(int i = 100; i - 100 < te.getMaxNumberOfModules(); i++) {
-					if(!te.getStackInSlot(i).isEmpty()){
+				for (int i = 100; i - 100 < te.getMaxNumberOfModules(); i++) {
+					if (!te.getStackInSlot(i).isEmpty()) {
 						ItemStack stack = te.getStackInSlot(i);
 						EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
 						WorldUtils.addScheduledTask(world, () -> world.spawnEntity(item));
 
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModuleType());
 
-						if(te instanceof TileEntityLinkable)
-							((TileEntityLinkable)te).createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModuleType() }, (TileEntityLinkable)te);
+						if (te instanceof TileEntityLinkable) {
+							((TileEntityLinkable) te).createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[] {
+									stack, ((ItemModule) stack.getItem()).getModuleType()
+							}, (TileEntityLinkable) te);
+						}
 
-						if(te instanceof TileEntitySecurityCamera)
-						{
-							TileEntitySecurityCamera cam = (TileEntitySecurityCamera)te;
+						if (te instanceof TileEntitySecurityCamera) {
+							TileEntitySecurityCamera cam = (TileEntitySecurityCamera) te;
 
 							cam.getWorld().notifyNeighborsOfStateChange(cam.getPos().offset(cam.getWorld().getBlockState(cam.getPos()).getValue(BlockSecurityCamera.FACING), -1), cam.getWorld().getBlockState(cam.getPos()).getBlock(), true);
 						}
@@ -400,47 +388,42 @@ public class SCEventHandler {
 		List<EntitySentry> sentries = event.getWorld().getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
 
 		//don't let people break the disguise block
-		if(!sentries.isEmpty() && !sentries.get(0).getDisguiseModule().isEmpty())
-		{
+		if (!sentries.isEmpty() && !sentries.get(0).getDisguiseModule().isEmpty()) {
 			ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
-			Block block = ((ItemModule)disguiseModule.getItem()).getBlockAddon(disguiseModule.getTagCompound());
+			Block block = ((ItemModule) disguiseModule.getItem()).getBlockAddon(disguiseModule.getTagCompound());
 
-			if(block == event.getWorld().getBlockState(event.getPos()).getBlock())
+			if (block == event.getWorld().getBlockState(event.getPos()).getBlock())
 				event.setCanceled(true);
 		}
 	}
 
 	@SubscribeEvent
-	public static void onConfigChanged(OnConfigChangedEvent event)
-	{
-		if(event.getModID().equals(SecurityCraft.MODID))
+	public static void onConfigChanged(OnConfigChangedEvent event) {
+		if (event.getModID().equals(SecurityCraft.MODID))
 			ConfigManager.sync(SecurityCraft.MODID, Config.Type.INSTANCE);
 	}
 
 	@SubscribeEvent
-	public static void onOwnership(OwnershipEvent event)
-	{
+	public static void onOwnership(OwnershipEvent event) {
 		TileEntity te = event.getWorld().getTileEntity(event.getPos());
 
-		if(te instanceof IOwnable) {
+		if (te instanceof IOwnable) {
 			String name = event.getPlayer().getName();
 			String uuid = event.getPlayer().getGameProfile().getId().toString();
 
-			((IOwnable)te).setOwner(uuid, name);
+			((IOwnable) te).setOwner(uuid, name);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onBlockPlaced(PlaceEvent event) {
 		//reinforced obsidian portal handling
-		if(event.getState().getBlock() == Blocks.FIRE && event.getWorld().getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian)
-		{
+		if (event.getState().getBlock() == Blocks.FIRE && event.getWorld().getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian) {
 			PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.X);
 
 			if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
 				portalSize.placePortalBlocks();
-			else
-			{
+			else {
 				portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.Z);
 
 				if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
@@ -450,26 +433,22 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onEntityJoinWorld(EntityJoinWorldEvent event)
-	{
+	public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
 		//fix for spawning under the portal
-		if(event.getEntity() instanceof EntityPlayer && !event.getWorld().isRemote) //nether
+		if (event.getEntity() instanceof EntityPlayer && !event.getWorld().isRemote) //nether
 		{
 			BlockPos pos = event.getEntity().getPosition();
 
 			//check for obsidian or reinforced obsidian from the player's position up to the world height
-			do
-			{
-				if(event.getWorld().getBlockState(pos).getBlock() == Blocks.OBSIDIAN)
-				{
+			do {
+				if (event.getWorld().getBlockState(pos).getBlock() == Blocks.OBSIDIAN) {
 					//check if the block is part of a valid portal, and if so move the entity down
 					BlockPortal.Size portalSize = new BlockPortal.Size(event.getWorld(), pos, EnumFacing.Axis.X);
 
-					if (portalSize.isValid())
-					{
+					if (portalSize.isValid()) {
 						double y = pos.getY() + 0.5D;
 
-						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL) //sometimes the top of the portal is more valid than the bottom o.O
+						if (event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
 							y -= 3.0D;
 
 						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
@@ -479,11 +458,10 @@ public class SCEventHandler {
 					{
 						portalSize = new BlockPortal.Size(event.getWorld(), pos, EnumFacing.Axis.Z);
 
-						if (portalSize.isValid())
-						{
+						if (portalSize.isValid()) {
 							double y = pos.getY() + 0.5D;
 
-							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
+							if (event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
 								y -= 3.0D;
 
 							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
@@ -491,29 +469,26 @@ public class SCEventHandler {
 						}
 					}
 				}
-				else if(event.getWorld().getBlockState(pos).getBlock() == SCContent.reinforcedObsidian) //analogous to if check above
+				else if (event.getWorld().getBlockState(pos).getBlock() == SCContent.reinforcedObsidian) //analogous to if check above
 				{
 					PortalSize portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.X);
 
-					if (portalSize.isValid())
-					{
+					if (portalSize.isValid()) {
 						double y = pos.getY() + 0.5D;
 
-						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
+						if (event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
 							y -= 3.0D;
 
 						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
 						break;
 					}
-					else
-					{
+					else {
 						portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.Z);
 
-						if (portalSize.isValid())
-						{
+						if (portalSize.isValid()) {
 							double y = pos.getY() + 0.5D;
 
-							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
+							if (event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
 								y -= 3.0D;
 
 							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
@@ -522,27 +497,23 @@ public class SCEventHandler {
 					}
 				}
 			}
-			while((pos = pos.up()).getY() < Math.min(event.getWorld().getHeight(), 256)); //open cubic chunks "fix"
+			while ((pos = pos.up()).getY() < Math.min(event.getWorld().getHeight(), 256)); //open cubic chunks "fix"
 		}
 	}
 
 	@SubscribeEvent
-	public static void onNeighborNotify(NeighborNotifyEvent event)
-	{
+	public static void onNeighborNotify(NeighborNotifyEvent event) {
 		//prevent portal blocks from disappearing because they think they're not inside of a proper portal frame
-		if(event.getState().getBlock() == Blocks.PORTAL)
-		{
+		if (event.getState().getBlock() == Blocks.PORTAL) {
 			EnumFacing.Axis axis = event.getState().getValue(BlockPortal.AXIS);
 
-			if (axis == EnumFacing.Axis.X)
-			{
+			if (axis == EnumFacing.Axis.X) {
 				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.X);
 
 				if (portalSize.isValid() || portalSize.getPortalBlockCount() > portalSize.getWidth() * portalSize.getHeight())
 					event.setCanceled(true);
 			}
-			else if (axis == EnumFacing.Axis.Z)
-			{
+			else if (axis == EnumFacing.Axis.Z) {
 				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.Z);
 
 				if (portalSize.isValid() || portalSize.getPortalBlockCount() > portalSize.getWidth() * portalSize.getHeight())
@@ -552,58 +523,50 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
-	{
-		if(event.getEntityLiving() instanceof EntityPlayer)
+	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event) {
+		if (event.getEntityLiving() instanceof EntityPlayer)
 			return;
 
-		if(event.getTarget() instanceof EntitySentry)
-			((EntityLiving)event.getEntityLiving()).setAttackTarget(null);
+		if (event.getTarget() instanceof EntitySentry)
+			((EntityLiving) event.getEntityLiving()).setAttackTarget(null);
 	}
 
 	@SubscribeEvent
-	public static void onWorldLoad(WorldEvent.Load event)
-	{
+	public static void onWorldLoad(WorldEvent.Load event) {
 		event.getWorld().addEventListener(new SCWorldListener());
 	}
 
 	@SubscribeEvent
-	public static void onRightClickItem(PlayerInteractEvent.RightClickItem event)
-	{
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer()) && event.getItemStack().getItem() != SCContent.cameraMonitor)
+	public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+		if (PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer()) && event.getItemStack().getItem() != SCContent.cameraMonitor)
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
-	public static void onLivingDestroyEvent(LivingDestroyBlockEvent event)
-	{
+	public static void onLivingDestroyEvent(LivingDestroyBlockEvent event) {
 		event.setCanceled(event.getEntity() instanceof EntityWither && event.getState().getBlock() instanceof IReinforcedBlock);
 	}
 
 	@SubscribeEvent
-	public static void onNoteBlockPlayed(NoteBlockEvent.Play event)
-	{
+	public static void onNoteBlockPlayed(NoteBlockEvent.Play event) {
 		handlePlayedNote(event.getWorld(), event.getPos(), event.getVanillaNoteId(), event.getInstrument().name());
 	}
 
 	private static void handlePlayedNote(World world, BlockPos pos, int vanillaNoteId, String instrumentName) {
 		List<TileEntitySonicSecuritySystem> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange(world, pos);
 
-		for(TileEntitySonicSecuritySystem te : sonicSecuritySystems) {
-
+		for (TileEntitySonicSecuritySystem te : sonicSecuritySystems) {
 			// If the SSS is disabled, don't listen to any notes
-			if(!te.isActive())
+			if (!te.isActive())
 				continue;
 
 			// If the SSS is recording, record the note being played
-			if(te.isRecording())
-			{
+			if (te.isRecording()) {
 				te.recordNote(vanillaNoteId, instrumentName);
 			}
 			// If the SSS is active, check to see if the note being played matches the saved combination.
 			// If so, toggle its redstone power output on
-			else if(te.listenToNote(vanillaNoteId, instrumentName))
-			{
+			else if (te.listenToNote(vanillaNoteId, instrumentName)) {
 				te.correctTuneWasPlayed = true;
 				te.powerCooldown = te.signalLength.get();
 
@@ -619,14 +582,12 @@ public class SCEventHandler {
 		World world = event.getEntityPlayer().world;
 		TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
 
-		if(tileEntity instanceof IPasswordProtected && ((IPasswordProtected)tileEntity).isCodebreakable())
-		{
-			if(ConfigHandler.allowCodebreakerItem)
-			{
-				if(event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker)
+		if (tileEntity instanceof IPasswordProtected && ((IPasswordProtected) tileEntity).isCodebreakable()) {
+			if (ConfigHandler.allowCodebreakerItem) {
+				if (event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker)
 					event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());
 
-				if(event.getEntityPlayer().isCreative() || new Random().nextInt(3) == 1)
+				if (event.getEntityPlayer().isCreative() || new Random().nextInt(3) == 1)
 					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer());
 				else {
 					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize("item.securitycraft:codebreaker.name"), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
@@ -643,7 +604,8 @@ public class SCEventHandler {
 		return false;
 	}
 
-	private static String getRandomTip(){
+	private static String getRandomTip() {
+		//@formatter:off
 		String[] tips = {
 				"messages.securitycraft:tip.scHelp",
 				"messages.securitycraft:tip.patreon",
@@ -651,12 +613,12 @@ public class SCEventHandler {
 				"messages.securitycraft:tip.scserver",
 				"messages.securitycraft:tip.outdated"
 		};
+		//@formatter:on
 
 		return tips[new Random().nextInt(isOutdated() ? tips.length : tips.length - 1)];
 	}
 
-	private static boolean isOutdated()
-	{
+	private static boolean isOutdated() {
 		return ForgeVersion.getResult(Loader.instance().activeModContainer()).status == Status.OUTDATED;
 	}
 }

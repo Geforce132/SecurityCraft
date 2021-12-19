@@ -14,20 +14,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.Loader;
 
 public class VersionUpdateChecker {
-
 	public static NBTTagCompound getNBTTagCompound() {
 		NBTTagCompound tag = new NBTTagCompound();
 		Gson gson = new GsonBuilder().create();
 
-		try{
+		try {
 			URL updateURL = new URL("https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/" + Loader.MC_VERSION + ".json");
 			BufferedReader in = new BufferedReader(new InputStreamReader(updateURL.openStream()));
 
 			Update update = gson.fromJson(in, Update.class);
 
-			if(update == null) return null;
+			if (update == null)
+				return null;
 
-			if((update.getVersion().equals("0.0.0") && update.getFileName().equals("test")) || update.getVersion().equals(SecurityCraft.getVersion()))
+			if ((update.getVersion().equals("0.0.0") && update.getFileName().equals("test")) || update.getVersion().equals(SecurityCraft.getVersion()))
 				return null;
 
 			tag.setString("newVersion", update.getVersion());
@@ -35,7 +35,8 @@ public class VersionUpdateChecker {
 			tag.setString("changelog", update.getChangelog());
 			tag.setString("newFileName", update.getFileName());
 			tag.setBoolean("isDirectLink", true);
-		}catch(JsonSyntaxException | IOException e){
+		}
+		catch (JsonSyntaxException | IOException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -44,35 +45,32 @@ public class VersionUpdateChecker {
 	}
 
 	public static class Update {
-
 		private String version;
 		private String downloadURL;
 		private String fileName;
 		private String changelog;
 
-		public Update(String version, String downloadURL, String fileName, String changelog){
+		public Update(String version, String downloadURL, String fileName, String changelog) {
 			this.version = version;
 			this.downloadURL = downloadURL;
 			this.fileName = fileName;
 			this.changelog = changelog;
 		}
 
-		public String getVersion(){
+		public String getVersion() {
 			return version;
 		}
 
-		public String getDownloadURL(){
+		public String getDownloadURL() {
 			return downloadURL;
 		}
 
-		public String getFileName(){
+		public String getFileName() {
 			return fileName;
 		}
 
-		public String getChangelog(){
+		public String getChangelog() {
 			return changelog;
 		}
-
 	}
-
 }

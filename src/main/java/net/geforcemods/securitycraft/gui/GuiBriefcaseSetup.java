@@ -23,9 +23,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiBriefcaseSetup extends GuiContainer implements GuiResponder {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u001B'}; //0-9, backspace and escape
+	private char[] allowedChars = {
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\u0008', '\u001B'
+	}; //0-9, backspace and escape
 	private GuiTextField keycodeTextbox;
 	private GuiButton saveAndContinueButton;
 
@@ -80,18 +81,17 @@ public class GuiBriefcaseSetup extends GuiContainer implements GuiResponder {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(keyCode != Keyboard.KEY_ESCAPE && keycodeTextbox.isFocused() && isValidChar(typedChar))
+		if (keyCode != Keyboard.KEY_ESCAPE && keycodeTextbox.isFocused() && isValidChar(typedChar))
 			keycodeTextbox.textboxKeyTyped(typedChar, keyCode);
 		else
 			super.keyTyped(typedChar, keyCode);
 	}
 
 	private boolean isValidChar(char c) {
-		for(int i = 0; i < allowedChars.length; i++)
-			if(c == allowedChars[i])
+		for (int i = 0; i < allowedChars.length; i++) {
+			if (c == allowedChars[i])
 				return true;
-			else
-				continue;
+		}
 
 		return false;
 	}
@@ -104,11 +104,11 @@ public class GuiBriefcaseSetup extends GuiContainer implements GuiResponder {
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
-		if(button.id == saveAndContinueButton.id){
-			if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase, null)) {
+		if (button.id == saveAndContinueButton.id) {
+			if (PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase, null)) {
 				ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getMinecraft().player, SCContent.briefcase);
 
-				if(!briefcase.hasTagCompound())
+				if (!briefcase.hasTagCompound())
 					briefcase.setTagCompound(new NBTTagCompound());
 
 				briefcase.getTagCompound().setString("passcode", keycodeTextbox.getText());
@@ -125,8 +125,7 @@ public class GuiBriefcaseSetup extends GuiContainer implements GuiResponder {
 	}
 
 	@Override
-	public void setEntryValue(int id, String text)
-	{
+	public void setEntryValue(int id, String text) {
 		saveAndContinueButton.enabled = text.length() == 4;
 	}
 

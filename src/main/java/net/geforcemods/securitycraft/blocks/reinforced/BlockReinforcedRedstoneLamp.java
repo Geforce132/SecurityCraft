@@ -12,12 +12,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockReinforcedRedstoneLamp extends BlockReinforcedBase
-{
+public class BlockReinforcedRedstoneLamp extends BlockReinforcedBase {
 	public static final PropertyBool LIT = PropertyBool.create("lit");
 
-	public BlockReinforcedRedstoneLamp()
-	{
+	public BlockReinforcedRedstoneLamp() {
 		super(Material.REDSTONE_LIGHT, 1, Blocks.REDSTONE_LAMP, Blocks.LIT_REDSTONE_LAMP);
 
 		setDefaultState(getDefaultState().withProperty(LIT, false));
@@ -25,64 +23,54 @@ public class BlockReinforcedRedstoneLamp extends BlockReinforcedBase
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-	{
-		if(!world.isRemote)
-		{
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		if (!world.isRemote) {
 			boolean isOn = state.getValue(LIT);
 
-			if(isOn && !world.isBlockPowered(pos))
+			if (isOn && !world.isBlockPowered(pos))
 				world.setBlockState(pos, getDefaultState().withProperty(LIT, false), 2);
-			else if(!isOn && world.isBlockPowered(pos))
+			else if (!isOn && world.isBlockPowered(pos))
 				world.setBlockState(pos, getDefaultState().withProperty(LIT, true), 2);
 		}
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-	{
-		if(!world.isRemote)
-		{
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		if (!world.isRemote) {
 			boolean isOn = state.getValue(LIT);
 
-			if(isOn && !world.isBlockPowered(pos))
+			if (isOn && !world.isBlockPowered(pos))
 				world.scheduleUpdate(pos, this, 4);
-			else if(!isOn && world.isBlockPowered(pos))
+			else if (!isOn && world.isBlockPowered(pos))
 				world.setBlockState(pos, getDefaultState().withProperty(LIT, true), 2);
 		}
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
-	{
-		if(!world.isRemote)
-		{
-			if(state.getValue(LIT) && !world.isBlockPowered(pos))
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		if (!world.isRemote) {
+			if (state.getValue(LIT) && !world.isBlockPowered(pos))
 				world.setBlockState(pos, getDefaultState().withProperty(LIT, false), 2);
 		}
 	}
 
 	@Override
-	public int getLightValue(IBlockState state)
-	{
+	public int getLightValue(IBlockState state) {
 		return state.getValue(LIT) ? 15 : 0;
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(LIT, meta == 1);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(LIT) ? 1 : 0;
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, LIT);
 	}
 }

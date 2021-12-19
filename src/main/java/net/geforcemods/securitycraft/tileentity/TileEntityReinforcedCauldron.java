@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class TileEntityReinforcedCauldron extends CustomizableSCTE {
-
 	private final OptionBoolean isPublic = new OptionBoolean("isPublic", false);
 
 	public boolean isAllowedToInteract(EntityPlayer player) {
@@ -17,11 +16,15 @@ public class TileEntityReinforcedCauldron extends CustomizableSCTE {
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{isPublic};
+		return new Option[] {
+				isPublic
+		};
 	}
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.ALLOWLIST};
+		return new EnumModuleType[] {
+				EnumModuleType.ALLOWLIST
+		};
 	}
 }

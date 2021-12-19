@@ -8,19 +8,16 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderSentry extends Render<EntitySentry>
-{
+public class RenderSentry extends Render<EntitySentry> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/sentry.png");
 	private static final ModelSentry MODEL = new ModelSentry();
 
-	public RenderSentry(RenderManager renderManager)
-	{
+	public RenderSentry(RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntitySentry entity, double x, double y, double z, float entityYaw, float partialTicks)
-	{
+	public void doRender(EntitySentry entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y + 1.5F, z);
 		GlStateManager.scale(-1, -1, 1); //rotate model rightside up
@@ -30,8 +27,7 @@ public class RenderSentry extends Render<EntitySentry>
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntitySentry entity)
-	{
+	protected ResourceLocation getEntityTexture(EntitySentry entity) {
 		return TEXTURE;
 	}
 }

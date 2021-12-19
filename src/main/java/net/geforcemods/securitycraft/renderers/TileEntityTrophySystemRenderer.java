@@ -14,13 +14,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityTrophySystemRenderer extends TileEntitySpecialRenderer<TileEntityTrophySystem> {
-
 	@Override
 	public void render(TileEntityTrophySystem tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		// The code below draws a line between the trophy system and the projectile that
 		// it's targeting.
 
-		if(tileEntityIn.entityBeingTargeted == null) return;
+		if (tileEntityIn.entityBeingTargeted == null)
+			return;
 
 		Vec3d blockpos = new Vec3d(x + 0.5D, y + 0.75D, z + 0.5D);
 
@@ -42,9 +42,7 @@ public class TileEntityTrophySystemRenderer extends TileEntitySpecialRenderer<Ti
 	}
 
 	@Override
-	public boolean isGlobalRenderer(TileEntityTrophySystem te)
-	{
+	public boolean isGlobalRenderer(TileEntityTrophySystem te) {
 		return true;
 	}
-
 }

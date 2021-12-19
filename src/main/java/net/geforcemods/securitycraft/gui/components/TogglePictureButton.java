@@ -8,7 +8,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class TogglePictureButton extends ClickButton {
-
 	private ResourceLocation textureLocation;
 	private int[] u;
 	private int[] v;
@@ -22,16 +21,14 @@ public class TogglePictureButton extends ClickButton {
 	private final int textureWidth;
 	private final int textureHeight;
 
-	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int toggleCount, Consumer<ClickButton> onClick)
-	{
+	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int toggleCount, Consumer<ClickButton> onClick) {
 		this(id, xPos, yPos, width, height, texture, textureX, textureY, drawOffset, 16, 16, 16, 16, 256, 256, toggleCount, onClick);
 	}
 
-	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int drawWidth, int drawHeight, int uWidth, int vHeight, int textureWidth, int textureHeight, int toggleCount, Consumer<ClickButton> onClick)
-	{
+	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int drawWidth, int drawHeight, int uWidth, int vHeight, int textureWidth, int textureHeight, int toggleCount, Consumer<ClickButton> onClick) {
 		super(id, xPos, yPos, width, height, "", onClick);
 
-		if(textureX.length != toggleCount || textureY.length != toggleCount)
+		if (textureX.length != toggleCount || textureY.length != toggleCount)
 			throw new RuntimeException("GuiTogglePictureButton was set up incorrectly. Array lengths must match toggleCount!");
 
 		this.toggleCount = toggleCount;
@@ -48,16 +45,13 @@ public class TogglePictureButton extends ClickButton {
 	}
 
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
-	{
-		if (visible)
-		{
+	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+		if (visible) {
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			GuiUtils.drawContinuousTexturedBox(BUTTON_TEXTURES, x, y, 0, 46 + getHoverState(hovered) * 20, width, height, 200, 20, 2, 3, 2, 2, zLevel);
 
-			if(getTextureLocation() != null)
-			{
+			if (getTextureLocation() != null) {
 				mc.getTextureManager().bindTexture(getTextureLocation());
 				drawScaledCustomSizeModalRect(x + drawOffset, y + drawOffset, u[currentIndex], v[currentIndex], uWidth, vHeight, drawWidth, drawHeight, textureWidth, textureHeight);
 			}
@@ -65,24 +59,20 @@ public class TogglePictureButton extends ClickButton {
 	}
 
 	@Override
-	public void onClick()
-	{
+	public void onClick() {
 		setCurrentIndex(currentIndex + 1);
 		super.onClick();
 	}
 
-	public int getCurrentIndex()
-	{
+	public int getCurrentIndex() {
 		return currentIndex;
 	}
 
-	public void setCurrentIndex(int newIndex)
-	{
+	public void setCurrentIndex(int newIndex) {
 		currentIndex = newIndex % toggleCount;
 	}
 
-	public ResourceLocation getTextureLocation()
-	{
+	public ResourceLocation getTextureLocation() {
 		return textureLocation;
 	}
 }

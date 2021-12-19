@@ -36,8 +36,7 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 
-public class BlockSecurityCamera extends BlockOwnable{
-
+public class BlockSecurityCamera extends BlockOwnable {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
@@ -47,24 +46,24 @@ public class BlockSecurityCamera extends BlockOwnable{
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess access, BlockPos pos){
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess access, BlockPos pos) {
 		return null;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		if(state.getValue(FACING) == EnumFacing.DOWN)
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		if (state.getValue(FACING) == EnumFacing.DOWN)
 			return EnumBlockRenderType.MODEL;
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state){
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
@@ -74,8 +73,7 @@ public class BlockSecurityCamera extends BlockOwnable{
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state)
-	{
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
 
 		world.notifyNeighborsOfStateChange(pos.north(), world.getBlockState(pos).getBlock(), true);
@@ -85,32 +83,29 @@ public class BlockSecurityCamera extends BlockOwnable{
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing dir = state.getValue(FACING);
 		float px = 1.0F / 16.0F; //one sixteenth of a block
 
-		if(dir == EnumFacing.SOUTH)
+		if (dir == EnumFacing.SOUTH)
 			return new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
-		else if(dir == EnumFacing.NORTH)
+		else if (dir == EnumFacing.NORTH)
 			return new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
-		else if(dir == EnumFacing.WEST)
+		else if (dir == EnumFacing.WEST)
 			return new AxisAlignedBB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
-		else if(dir == EnumFacing.DOWN)
+		else if (dir == EnumFacing.DOWN)
 			return new AxisAlignedBB(px * 5, 1.0F - px * 2, px * 5, px * 11, 1.0F, px * 11);
 		else
 			return new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		IBlockState state = getDefaultState().withProperty(FACING, facing);
 
-		if(!world.isSideSolid(pos.offset(facing.getOpposite()), facing)) {
+		if (!world.isSideSolid(pos.offset(facing.getOpposite()), facing)) {
 			for (EnumFacing newFacing : Plane.HORIZONTAL) {
-
-				if(world.isSideSolid(pos.offset(newFacing.getOpposite()), newFacing)) {
+				if (world.isSideSolid(pos.offset(newFacing.getOpposite()), newFacing)) {
 					state = state.withProperty(FACING, newFacing);
 					break;
 				}
@@ -120,11 +115,10 @@ public class BlockSecurityCamera extends BlockOwnable{
 		return state;
 	}
 
-	public void mountCamera(World world, int x, int y, int z, EntityPlayer player){
-		if(!world.isRemote)
-		{
-			EntityPlayerMP serverPlayer = (EntityPlayerMP)player;
-			WorldServer serverWorld = (WorldServer)world;
+	public void mountCamera(World world, int x, int y, int z, EntityPlayer player) {
+		if (!world.isRemote) {
+			EntityPlayerMP serverPlayer = (EntityPlayerMP) player;
+			WorldServer serverWorld = (WorldServer) world;
 			EntitySecurityCamera dummyEntity;
 			BlockPos pos = new BlockPos(x, y, z);
 			Chunk chunk = serverWorld.getChunk(pos);
@@ -133,8 +127,8 @@ public class BlockSecurityCamera extends BlockOwnable{
 			TileEntity te = world.getTileEntity(pos);
 			Ticket ticket = ForgeChunkManager.requestTicket(SecurityCraft.instance, world, Type.ENTITY);
 
-			if(serverPlayer.getSpectatingEntity() instanceof EntitySecurityCamera)
-				dummyEntity = new EntitySecurityCamera(world, x, y, z, (EntitySecurityCamera)serverPlayer.getSpectatingEntity());
+			if (serverPlayer.getSpectatingEntity() instanceof EntitySecurityCamera)
+				dummyEntity = new EntitySecurityCamera(world, x, y, z, (EntitySecurityCamera) serverPlayer.getSpectatingEntity());
 			else
 				dummyEntity = new EntitySecurityCamera(world, x, y, z);
 
@@ -165,35 +159,35 @@ public class BlockSecurityCamera extends BlockOwnable{
 				entry.updatePlayerEntity(serverPlayer);
 			}
 
-			if(te instanceof TileEntitySecurityCamera)
-				((TileEntitySecurityCamera)te).startViewing();
+			if (te instanceof TileEntitySecurityCamera)
+				((TileEntitySecurityCamera) te).startViewing();
 		}
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
-		if(side == EnumFacing.UP)
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
+		if (side == EnumFacing.UP)
 			return false;
 		else
 			return world.isSideSolid(pos.offset(side.getOpposite()), side);
 	}
 
 	@Override
-	public boolean canProvidePower(IBlockState state){
+	public boolean canProvidePower(IBlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side){
-		if(state.getValue(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
+	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		if (state.getValue(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side){
-		if(state.getValue(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE) && state.getValue(FACING) == side)
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		if (state.getValue(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE) && state.getValue(FACING) == side)
 			return 15;
 		else
 			return 0;
@@ -208,56 +202,51 @@ public class BlockSecurityCamera extends BlockOwnable{
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		if(meta <= 5)
+	public IBlockState getStateFromMeta(int meta) {
+		if (meta <= 5)
 			return getDefaultState().withProperty(FACING, (EnumFacing.values()[meta] == EnumFacing.UP) ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
 		else
 			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(POWERED, true);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		if(state.getValue(POWERED))
+	public int getMetaFromState(IBlockState state) {
+		if (state.getValue(POWERED))
 			return (state.getValue(FACING).getIndex() + 6);
 		else
 			return state.getValue(FACING).getIndex();
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, POWERED);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta){
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntitySecurityCamera();
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror)
-	{
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		EnumFacing facing = state.getValue(FACING);
 
-		switch(mirror)
-		{
+		switch (mirror) {
 			case LEFT_RIGHT:
-				if(facing.getAxis() == Axis.Z)
+				if (facing.getAxis() == Axis.Z)
 					return state.withProperty(FACING, facing.getOpposite());
 				break;
 			case FRONT_BACK:
-				if(facing.getAxis() == Axis.X)
+				if (facing.getAxis() == Axis.X)
 					return state.withProperty(FACING, facing.getOpposite());
 				break;
-			case NONE: break;
+			case NONE:
+				break;
 		}
 
 		return state;

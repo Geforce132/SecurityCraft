@@ -16,44 +16,41 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-public class BlockKeypadDoor extends BlockSpecialDoor
-{
-	public BlockKeypadDoor(Material material)
-	{
+public class BlockKeypadDoor extends BlockSpecialDoor {
+	public BlockKeypadDoor(Material material) {
 		super(material);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(state.getValue(POWERED))
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (state.getValue(POWERED))
 			return false;
-		else if(!world.isRemote) {
-			TileEntityKeypadDoor te = (TileEntityKeypadDoor)world.getTileEntity(pos);
+		else if (!world.isRemote) {
+			TileEntityKeypadDoor te = (TileEntityKeypadDoor) world.getTileEntity(pos);
 
-			if(ModuleUtils.isDenied(te, player))
-			{
-				if(te.sendsMessages())
+			if (ModuleUtils.isDenied(te, player)) {
+				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 
 				return true;
 			}
 
-			if(ModuleUtils.isAllowed(te, player)){
-				if(te.sendsMessages())
+			if (ModuleUtils.isAllowed(te, player)) {
+				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				activate(state, world, pos, te.getSignalLength());
 				return true;
 			}
 
-			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
+			if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
 				te.openPasswordGUI(player);
 		}
 
 		return true;
 	}
 
-	public void activate(IBlockState state, World world, BlockPos pos, int signalLength){
+	public void activate(IBlockState state, World world, BlockPos pos, int signalLength) {
 		boolean open = !state.getValue(OPEN);
 
 		world.playEvent(null, open ? 1005 : 1011, pos, 0);
@@ -61,19 +58,17 @@ public class BlockKeypadDoor extends BlockSpecialDoor
 		world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyNeighborsOfStateChange(pos, this, false);
 
-		if(open && signalLength > 0)
+		if (open && signalLength > 0)
 			world.scheduleUpdate(pos, this, signalLength);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityKeypadDoor();
 	}
 
 	@Override
-	public Item getDoorItem()
-	{
+	public Item getDoorItem() {
 		return SCContent.keypadDoorItem;
 	}
 }

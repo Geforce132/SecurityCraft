@@ -14,28 +14,23 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityReinforcedHopper extends TileEntityHopper implements IOwnable, IModuleInventory
-{
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+public class TileEntityReinforcedHopper extends TileEntityHopper implements IOwnable, IModuleInventory {
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
-		if(owner != null)
-		{
+		if (owner != null)
 			owner.writeToNBT(tag, false);
-		}
 
 		writeModuleInventory(tag);
 		return tag;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
 		owner.readFromNBT(tag);
@@ -43,62 +38,54 @@ public class TileEntityReinforcedHopper extends TileEntityHopper implements IOwn
 	}
 
 	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
-	{
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		return oldState.getBlock() != newState.getBlock();
 	}
 
 	@Override
-	public boolean enableHack()
-	{
+	public boolean enableHack() {
 		return true;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot)
-	{
+	public ItemStack getStackInSlot(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : super.getStackInSlot(slot);
 	}
 
 	@Override
-	public EnumModuleType[] acceptedModules()
-	{
-		return new EnumModuleType[] {EnumModuleType.ALLOWLIST};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[] {
+				EnumModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
-	public NonNullList<ItemStack> getInventory()
-	{
+	public NonNullList<ItemStack> getInventory() {
 		return modules;
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag()
-	{
+	public NBTTagCompound getUpdateTag() {
 		return writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket()
-	{
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		return new SPacketUpdateTileEntity(pos, 1, getUpdateTag());
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-	{
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override
-	public Owner getOwner()
-	{
+	public Owner getOwner() {
 		return owner;
 	}
 
 	@Override
-	public void setOwner(String uuid, String name)
-	{
+	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
 	}
 }

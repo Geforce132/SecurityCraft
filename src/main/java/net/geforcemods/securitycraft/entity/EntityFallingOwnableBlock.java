@@ -8,17 +8,14 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 
-public class EntityFallingOwnableBlock extends EntityFallingBlock
-{
-	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(EntityFallingOwnableBlock.class, Owner.getSerializer());
+public class EntityFallingOwnableBlock extends EntityFallingBlock {
+	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner> createKey(EntityFallingOwnableBlock.class, Owner.getSerializer());
 
-	public EntityFallingOwnableBlock(World world)
-	{
+	public EntityFallingOwnableBlock(World world) {
 		super(world);
 	}
 
-	public EntityFallingOwnableBlock(World world, double x, double y, double z, IBlockState fallingBlockState, Owner owner)
-	{
+	public EntityFallingOwnableBlock(World world, double x, double y, double z, IBlockState fallingBlockState, Owner owner) {
 		super(world, x, y, z, fallingBlockState);
 
 		dataManager.set(OWNER, owner);
@@ -26,22 +23,19 @@ public class EntityFallingOwnableBlock extends EntityFallingBlock
 	}
 
 	@Override
-	protected void entityInit()
-	{
+	protected void entityInit() {
 		super.entityInit();
 
 		dataManager.register(OWNER, new Owner());
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound tag)
-	{
+	protected void writeEntityToNBT(NBTTagCompound tag) {
 		tag.setTag("TileEntityData", getOwnerTag());
 		super.writeEntityToNBT(tag);
 	}
 
-	public NBTTagCompound getOwnerTag()
-	{
+	public NBTTagCompound getOwnerTag() {
 		NBTTagCompound tag = new NBTTagCompound();
 		Owner owner = dataManager.get(OWNER);
 
@@ -51,8 +45,7 @@ public class EntityFallingOwnableBlock extends EntityFallingBlock
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound tag)
-	{
+	protected void readEntityFromNBT(NBTTagCompound tag) {
 		NBTTagCompound teTag = tag.getCompoundTag("TileEntityData");
 		String name = teTag.getString("owner");
 		String uuid = teTag.getString("ownerUUID");

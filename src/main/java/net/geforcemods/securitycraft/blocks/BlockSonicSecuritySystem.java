@@ -26,11 +26,9 @@ import net.minecraftforge.common.util.Constants;
 
 public class BlockSonicSecuritySystem extends BlockOwnable {
 	protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.4D, 0.0D, 0.4D, 0.6D, 1.0D, 0.6D);
-
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-	public BlockSonicSecuritySystem(Material material)
-	{
+	public BlockSonicSecuritySystem(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
 		setDefaultState(blockState.getBaseState().withProperty(POWERED, false));
@@ -74,10 +72,9 @@ public class BlockSonicSecuritySystem extends BlockOwnable {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (player.getHeldItem(hand).getItem() != SCContent.portableTunePlayer) {
-			TileEntitySonicSecuritySystem te = (TileEntitySonicSecuritySystem)world.getTileEntity(pos);
+			TileEntitySonicSecuritySystem te = (TileEntitySonicSecuritySystem) world.getTileEntity(pos);
 
 			if (!world.isRemote && (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)))
 				player.openGui(SecurityCraft.instance, GuiHandler.SONIC_SECURITY_SYSTEM, world, pos.getX(), pos.getY(), pos.getZ());
@@ -100,7 +97,7 @@ public class BlockSonicSecuritySystem extends BlockOwnable {
 
 	@Override
 	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return state.getValue(POWERED) && side == EnumFacing.UP  ? 15 : 0;
+		return state.getValue(POWERED) && side == EnumFacing.UP ? 15 : 0;
 	}
 
 	@Override
@@ -118,11 +115,10 @@ public class BlockSonicSecuritySystem extends BlockOwnable {
 		return getItemStackFromBlock(world.getTileEntity(pos).getUpdateTag());
 	}
 
-	private ItemStack getItemStackFromBlock(NBTTagCompound blockTag)
-	{
+	private ItemStack getItemStackFromBlock(NBTTagCompound blockTag) {
 		ItemStack stack = new ItemStack(SCContent.sonicSecuritySystem);
 
-		if(!blockTag.hasKey("LinkedBlocks"))
+		if (!blockTag.hasKey("LinkedBlocks"))
 			return stack;
 
 		stack.setTagCompound(new NBTTagCompound());
@@ -131,8 +127,7 @@ public class BlockSonicSecuritySystem extends BlockOwnable {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntitySonicSecuritySystem();
 	}
 

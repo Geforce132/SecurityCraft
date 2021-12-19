@@ -20,25 +20,20 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockReinforcedDirt extends BlockDirt implements IReinforcedBlock
-{
-	public BlockReinforcedDirt()
-	{
+public class BlockReinforcedDirt extends BlockDirt implements IReinforcedBlock {
+	public BlockReinforcedDirt() {
 		setSoundType(SoundType.GROUND);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
-		if(state.getValue(VARIANT) == DirtType.PODZOL)
-		{
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		if (state.getValue(VARIANT) == DirtType.PODZOL) {
 			Block block = world.getBlockState(pos.up()).getBlock();
 
 			state = state.withProperty(SNOWY, block == Blocks.SNOW || block == Blocks.SNOW_LAYER || block == SCContent.reinforcedSnowBlock);
@@ -48,26 +43,22 @@ public class BlockReinforcedDirt extends BlockDirt implements IReinforcedBlock
 	}
 
 	@Override
-	public boolean hasTileEntity(IBlockState state)
-	{
+	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState state)
-	{
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityOwnable();
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
-	{
+	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.DIRT);
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return 3;
 	}
 }

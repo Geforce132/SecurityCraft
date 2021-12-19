@@ -32,8 +32,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
-public class GuiKeycardReader extends GuiContainer
-{
+public class GuiKeycardReader extends GuiContainer {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
@@ -71,11 +70,10 @@ public class GuiKeycardReader extends GuiContainer
 	private boolean firstTick = true;
 	private ContainerKeycardReader container;
 
-	public GuiKeycardReader(InventoryPlayer inv, TileEntityKeycardReader tile)
-	{
+	public GuiKeycardReader(InventoryPlayer inv, TileEntityKeycardReader tile) {
 		super(new ContainerKeycardReader(inv, tile));
 
-		container = (ContainerKeycardReader)inventorySlots;
+		container = (ContainerKeycardReader) inventorySlots;
 		te = tile;
 		previousSignature = te.getSignature();
 		signature = previousSignature;
@@ -86,8 +84,7 @@ public class GuiKeycardReader extends GuiContainer
 	}
 
 	@Override
-	public void initGui()
-	{
+	public void initGui() {
 		super.initGui();
 
 		int buttonHeight = 13;
@@ -97,17 +94,16 @@ public class GuiKeycardReader extends GuiContainer
 		int id = 0;
 
 		//keycard level buttons
-		for(int i = 0; i < 5; i++)
-		{
-			toggleButtons[i] = addButton(new TogglePictureButton(id++, guiLeft + 100, guiTop + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[]{110, 88}, new int[]{219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
+		for (int i = 0; i < 5; i++) {
+			//@formatter:off
+			toggleButtons[i] = addButton(new TogglePictureButton(id++, guiLeft + 100, guiTop + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[] {110, 88}, new int[] {219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
+				//@formatter:on
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
-				if(!isSmart)
-				{
-					for(int otherButtonId = 0; otherButtonId < 5; otherButtonId++)
-					{
+				if (!isSmart) {
+					for (int otherButtonId = 0; otherButtonId < 5; otherButtonId++) {
 						boolean active;
 
-						if(isExactLevel)
+						if (isExactLevel)
 							active = (otherButtonId == thisButton.id);
 						else
 							active = (otherButtonId >= thisButton.id);
@@ -122,11 +118,9 @@ public class GuiKeycardReader extends GuiContainer
 			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
 			toggleButtons[i].enabled = isOwner;
 
-			if(!isSmart)
-			{
-				if(acceptedLevels[i])
-				{
-					if(firstActiveButton == -1)
+			if (!isSmart) {
+				if (acceptedLevels[i]) {
+					if (firstActiveButton == -1)
 						firstActiveButton = i;
 
 					activeButtons++;
@@ -139,8 +133,7 @@ public class GuiKeycardReader extends GuiContainer
 		minusOne = addButton(new ClickButton(id++, guiLeft + 68, buttonY, 12, buttonHeight, "-", b -> changeSignature(signature - 1)));
 		reset = addButton(new GuiPictureButton(id++, guiLeft + 82, buttonY, 12, buttonHeight, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(previousSignature)) {
 			@Override
-			public ResourceLocation getTextureLocation()
-			{
+			public ResourceLocation getTextureLocation() {
 				return enabled ? RESET_TEXTURE : RESET_INACTIVE_TEXTURE;
 			}
 		});
@@ -155,15 +148,14 @@ public class GuiKeycardReader extends GuiContainer
 			changeSignature(signature);
 			SecurityCraft.network.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature, true));
 
-			if(container.keycardSlot.getStack().getDisplayName().equalsIgnoreCase("Zelda"))
+			if (container.keycardSlot.getStack().getDisplayName().equalsIgnoreCase("Zelda"))
 				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SCSounds.GET_ITEM.event, 1.25F));
 		}));
 		linkButton.enabled = false;
 		//button for saving the amount of limited uses onto the keycard
 		setUsesButton = addButton(new GuiPictureButton(id++, guiLeft + 62, guiTop + 106, 16, 17, RETURN_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.network.sendToServer(new SetKeycardUses(te.getPos(), Integer.parseInt(usesTextField.getText())))) {
 			@Override
-			public ResourceLocation getTextureLocation()
-			{
+			public ResourceLocation getTextureLocation() {
 				return enabled ? RETURN_TEXTURE : RETURN_INACTIVE_TEXTURE;
 			}
 		});
@@ -180,25 +172,21 @@ public class GuiKeycardReader extends GuiContainer
 		usesHoverChecker = new StringHoverChecker(guiTop + 107, guiTop + 122, guiLeft + 28, guiLeft + 58, limitedInfo);
 
 		//add =/>= button and handle it being set to the correct state, as well as changing keycard level buttons' states if a smart module was removed
-		if(!isSmart)
-		{
-			if(activeButtons == 1)
+		if (!isSmart) {
+			if (activeButtons == 1)
 				isExactLevel = true;
-			else if(activeButtons == 0) //probably won't happen but just in case
-			{
+			else if (activeButtons == 0) { //probably won't happen but just in case
 				isExactLevel = true;
 				changeLevelState(0, true);
 			}
-			else
-			{
+			else {
 				boolean active = false;
 
 				isExactLevel = false;
 
 				//set all buttons prior to the first active button to false, and >= firstActiveButton to true
-				for(int i = 0; i < 5; i++)
-				{
-					if(i == firstActiveButton)
+				for (int i = 0; i < 5; i++) {
+					if (i == firstActiveButton)
 						active = true;
 
 					changeLevelState(i, active);
@@ -211,9 +199,8 @@ public class GuiKeycardReader extends GuiContainer
 				isExactLevel = !isExactLevel;
 
 				//change keycard level buttons' states based on the =/>= button's state
-				for(int i = 0; i < 5; i++)
-				{
-					if(change)
+				for (int i = 0; i < 5; i++) {
+					if (change)
 						changeLevelState(i, !isExactLevel);
 					else
 						change = acceptedLevels[i];
@@ -225,22 +212,19 @@ public class GuiKeycardReader extends GuiContainer
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button)
-	{
-		if(button instanceof ClickButton)
-			((ClickButton)button).onClick();
+	protected void actionPerformed(GuiButton button) {
+		if (button instanceof ClickButton)
+			((ClickButton) button).onClick();
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
 		fontRenderer.drawString(signatureText, xSize / 2 - fontRenderer.getStringWidth(signatureText) / 2, 23, 4210752);
 		fontRenderer.drawString(keycardLevelsText, 170 - fontRenderer.getStringWidth(keycardLevelsText), 56, 4210752);
 
 		//numbers infront of keycard levels buttons
-		for(int i = 1; i <= 5; i++)
-		{
+		for (int i = 1; i <= 5; i++) {
 			fontRenderer.drawString("" + i, 91, 55 + 17 * i, 4210752);
 		}
 
@@ -248,8 +232,7 @@ public class GuiKeycardReader extends GuiContainer
 	}
 
 	@Override
-	public void updateScreen()
-	{
+	public void updateScreen() {
 		super.updateScreen();
 
 		ItemStack stack = container.keycardSlot.getStack();
@@ -262,20 +245,18 @@ public class GuiKeycardReader extends GuiContainer
 		usesTextField.setEnabled(enabled);
 
 		//set the text of the text field to the amount of uses on the keycard
-		if(!wasActive && enabled)
+		if (!wasActive && enabled)
 			usesTextField.setText("" + stack.getTagCompound().getInteger("uses"));
-		else if(wasActive && !enabled)
+		else if (wasActive && !enabled)
 			usesTextField.setText("");
 
 		//fixes the buttons being active for a brief moment right after opening the screen
-		if(firstTick)
-		{
+		if (firstTick) {
 			setUsesButton.enabled = false;
 			linkButton.enabled = false;
 			firstTick = false;
 		}
-		else
-		{
+		else {
 			//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
 			setUsesButton.enabled = enabled && usesTextField.getText() != null && !usesTextField.getText().isEmpty() && !("" + stack.getTagCompound().getInteger("uses")).equals(usesTextField.getText());
 			linkButton.enabled = !isEmpty && cardSignature != signature;
@@ -283,8 +264,7 @@ public class GuiKeycardReader extends GuiContainer
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks)
-	{
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		usesTextField.drawTextBox();
@@ -293,19 +273,18 @@ public class GuiKeycardReader extends GuiContainer
 		ItemStack stack = container.keycardSlot.getStack();
 
 		//if the level of the keycard currently in the slot is not enabled in the keycard reader, show a warning
-		if(!stack.isEmpty() && !acceptedLevels[((ItemKeycard)stack.getItem()).getLevel()])
-		{
+		if (!stack.isEmpty() && !acceptedLevels[((ItemKeycard) stack.getItem()).getLevel()]) {
 			int left = guiLeft + 40;
 			int top = guiTop + 60;
 
 			mc.getTextureManager().bindTexture(WORLD_SELECTION_ICONS);
 			drawScaledCustomSizeModalRect(left, top, 70, 37, 22, 22, 22, 22, 256, 256);
 
-			if(mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
+			if (mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
 				GuiUtils.drawHoveringText(Arrays.asList(levelMismatchInfo), mouseX, mouseY, width, height, -1, fontRenderer);
 		}
 
-		if(!usesTextField.isEnabled && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
+		if (!usesTextField.isEnabled && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
 			GuiUtils.drawHoveringText(usesHoverChecker.getLines(), mouseX, mouseY, width, height, -1, fontRenderer);
 
 		renderHoveredToolTip(mouseX, mouseY);
@@ -313,8 +292,7 @@ public class GuiKeycardReader extends GuiContainer
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
@@ -322,43 +300,37 @@ public class GuiKeycardReader extends GuiContainer
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException
-	{
-		if(keyCode != Keyboard.KEY_ESCAPE && usesTextField.isFocused())
+	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		if (keyCode != Keyboard.KEY_ESCAPE && usesTextField.isFocused())
 			usesTextField.textboxKeyTyped(typedChar, keyCode);
 		else
 			super.keyTyped(typedChar, keyCode);
 	}
 
 	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
-	{
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		usesTextField.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override
-	public void handleMouseInput() throws IOException
-	{
+	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 
-		if(isOwner)
-		{
+		if (isOwner) {
 			int mouseX = Mouse.getEventX() * width / mc.displayWidth;
 			int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
 
-			if(mouseX >= guiLeft + signatureTextStartX && mouseY >= guiTop + 23 && mouseX <= guiLeft + signatureTextStartX + signatureTextLength && mouseY <= guiTop + 43)
-				changeSignature(signature + (int)Math.signum(Mouse.getEventDWheel()));
+			if (mouseX >= guiLeft + signatureTextStartX && mouseY >= guiTop + 23 && mouseX <= guiLeft + signatureTextStartX + signatureTextLength && mouseY <= guiTop + 43)
+				changeSignature(signature + (int) Math.signum(Mouse.getEventDWheel()));
 		}
 	}
 
 	@Override
-	public void onGuiClosed()
-	{
+	public void onGuiClosed() {
 		super.onGuiClosed();
 
-		if(isOwner)
-		{
+		if (isOwner) {
 			//write new data to client te and send that data to the server, which verifies and updates it on its side
 			te.setAcceptedLevels(acceptedLevels);
 			te.setSignature(signature);
@@ -366,12 +338,11 @@ public class GuiKeycardReader extends GuiContainer
 		}
 	}
 
-	public void changeSignature(int newSignature)
-	{
+	public void changeSignature(int newSignature) {
 		boolean enablePlusButtons;
 		boolean enableMinusButtons;
 
-		if(isOwner)
+		if (isOwner)
 			signature = Math.max(0, Math.min(newSignature, Short.MAX_VALUE)); //keep between 0 and 32767 (disallow negative numbers)
 
 		signatureText = new TextComponentTranslation("gui.securitycraft:keycard_reader.signature", StringUtils.leftPad("" + signature, 5, "0")).getFormattedText();
@@ -389,10 +360,8 @@ public class GuiKeycardReader extends GuiContainer
 		plusThree.enabled = enablePlusButtons;
 	}
 
-	public void changeLevelState(int i, boolean active)
-	{
-		if(isOwner)
-		{
+	public void changeLevelState(int i, boolean active) {
+		if (isOwner) {
 			toggleButtons[i].setCurrentIndex(active ? 1 : 0);
 			acceptedLevels[i] = active;
 		}

@@ -12,27 +12,33 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 
 @MCVersion(ForgeVersion.mcVersion)
-public class SecurityCraftLoadingPlugin implements IFMLLoadingPlugin
-{
-	public SecurityCraftLoadingPlugin()
-	{
+public class SecurityCraftLoadingPlugin implements IFMLLoadingPlugin {
+	public SecurityCraftLoadingPlugin() {
 		MixinBootstrap.init();
 		Mixins.addConfiguration(SecurityCraft.MODID + ".mixins.json");
 	}
 
 	@Override
-	public String[] getASMTransformerClass() { return new String[0]; }
+	public String[] getASMTransformerClass() {
+		return new String[0];
+	}
 
 	@Override
-	public String getModContainerClass() { return null; }
+	public String getModContainerClass() {
+		return null;
+	}
 
 	@Nullable
 	@Override
-	public String getSetupClass() { return null; }
+	public String getSetupClass() {
+		return null;
+	}
 
 	@Override
-	public void injectData(Map<String,Object> data) {}
+	public void injectData(Map<String, Object> data) {}
 
 	@Override
-	public String getAccessTransformerClass() { return null; }
+	public String getAccessTransformerClass() {
+		return null;
+	}
 }

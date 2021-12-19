@@ -11,21 +11,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldEventListener;
 import net.minecraft.world.World;
 
-public class SCWorldListener implements IWorldEventListener
-{
+public class SCWorldListener implements IWorldEventListener {
 	@Override
-	public void notifyBlockUpdate(World world, BlockPos pos, IBlockState oldState, IBlockState newState, int flags)
-	{
+	public void notifyBlockUpdate(World world, BlockPos pos, IBlockState oldState, IBlockState newState, int flags) {
 		//chunky code because of readability
-		if(oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS && (world.getBlockState(pos.up()).getBlock() == SCContent.bogusWaterFlowing || world.getBlockState(pos.up()).getBlock() == SCContent.fakeWater))
+		if (oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS && (world.getBlockState(pos.up()).getBlock() == SCContent.bogusWaterFlowing || world.getBlockState(pos.up()).getBlock() == SCContent.fakeWater))
 			world.setBlockState(pos, oldState);
-		else if(oldState.getBlock() == SCContent.fakeLava && newState.getBlock() == Blocks.LAVA)
+		else if (oldState.getBlock() == SCContent.fakeLava && newState.getBlock() == Blocks.LAVA)
 			world.setBlockState(pos, oldState);
-		else if(oldState.getBlock() == SCContent.bogusLavaFlowing && newState.getBlock() == Blocks.FLOWING_LAVA)
+		else if (oldState.getBlock() == SCContent.bogusLavaFlowing && newState.getBlock() == Blocks.FLOWING_LAVA)
 			world.setBlockState(pos, oldState);
-		else if(oldState.getBlock() == SCContent.fakeWater && newState.getBlock() == Blocks.WATER)
+		else if (oldState.getBlock() == SCContent.fakeWater && newState.getBlock() == Blocks.WATER)
 			world.setBlockState(pos, oldState);
-		else if(oldState.getBlock() == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.FLOWING_WATER)
+		else if (oldState.getBlock() == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.FLOWING_WATER)
 			world.setBlockState(pos, oldState);
 	}
 

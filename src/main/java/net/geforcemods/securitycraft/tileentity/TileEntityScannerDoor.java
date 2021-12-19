@@ -19,8 +19,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 
-public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IViewActivated, ILockable
-{
+public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IViewActivated, ILockable {
 	private int viewCooldown = 0;
 
 	@Override
@@ -30,18 +29,16 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 	}
 
 	@Override
-	public boolean onEntityViewed(EntityLivingBase entity, RayTraceResult rayTraceResult)
-	{
+	public boolean onEntityViewed(EntityLivingBase entity, RayTraceResult rayTraceResult) {
 		IBlockState upperState = world.getBlockState(pos);
 		IBlockState lowerState = world.getBlockState(pos.down());
 		EnumFacing.Axis facingAxis = BlockScannerDoor.getFacingAxis(upperState);
 
-		if(upperState.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER && !EntityUtils.isInvisible(entity))
-		{
-			if(!(entity instanceof EntityPlayer) || facingAxis != rayTraceResult.sideHit.getAxis())
+		if (upperState.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER && !EntityUtils.isInvisible(entity)) {
+			if (!(entity instanceof EntityPlayer) || facingAxis != rayTraceResult.sideHit.getAxis())
 				return false;
 
-			EntityPlayer player = (EntityPlayer)entity;
+			EntityPlayer player = (EntityPlayer) entity;
 
 			if (!isLocked()) {
 				String name = entity.getName();
@@ -62,16 +59,16 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 				world.markBlockRangeForRenderUpdate(pos.down(), pos);
 				world.playEvent(null, open ? 1005 : 1011, pos, 0);
 
-				if(open && length > 0)
+				if (open && length > 0)
 					world.scheduleUpdate(pos, SCContent.scannerDoor, length);
 
-				if(open && sendsMessages())
+				if (open && sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:scannerDoorItem.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
 
 				return true;
 			}
 			else if (sendsMessages()) {
-				PlayerUtils.sendMessageToPlayer((EntityPlayer)entity, Utils.localize(SCContent.scannerDoor), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(SCContent.scannerDoor)), TextFormatting.DARK_RED, false);
+				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize(SCContent.scannerDoor), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(SCContent.scannerDoor)), TextFormatting.DARK_RED, false);
 				return true;
 			}
 		}
@@ -80,8 +77,7 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 	}
 
 	@Override
-	public int getViewCooldown()
-	{
+	public int getViewCooldown() {
 		return viewCooldown;
 	}
 
@@ -91,8 +87,7 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 	}
 
 	@Override
-	public int defaultSignalLength()
-	{
+	public int defaultSignalLength() {
 		return 0;
 	}
 }

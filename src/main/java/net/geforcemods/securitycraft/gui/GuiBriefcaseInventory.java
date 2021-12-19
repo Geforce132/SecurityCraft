@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiBriefcaseInventory extends GuiContainer {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
 	private String briefcaseName;
 
@@ -20,11 +19,10 @@ public class GuiBriefcaseInventory extends GuiContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks)
-	{
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
+		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);
 	}
 
@@ -42,5 +40,4 @@ public class GuiBriefcaseInventory extends GuiContainer {
 		int startY = (height - ySize) / 2;
 		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
-
 }

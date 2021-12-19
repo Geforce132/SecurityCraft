@@ -26,89 +26,77 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityProvider
-{
+public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityProvider {
 	public static final PropertyBool SEE_THROUGH = PropertyBool.create("see_through");
 	public static final PropertyBool SOLID = PropertyBool.create("solid");
 	private static final AxisAlignedBB EMPTY_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 
-	public BlockBlockPocketWall()
-	{
+	public BlockBlockPocketWall() {
 		super(Material.ROCK);
 
 		setDefaultState(blockState.getBaseState().withProperty(SEE_THROUGH, true).withProperty(SOLID, false));
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
-	{
-		if(!state.getValue(SOLID) && entity instanceof EntityPlayer)
-		{
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState) {
+		if (!state.getValue(SOLID) && entity instanceof EntityPlayer) {
 			TileEntity te1 = world.getTileEntity(pos);
 
-			if(te1 instanceof TileEntityBlockPocket)
-			{
-				TileEntityBlockPocket te = (TileEntityBlockPocket)te1;
+			if (te1 instanceof TileEntityBlockPocket) {
+				TileEntityBlockPocket te = (TileEntityBlockPocket) te1;
 
-				if(te.getManager() == null)
+				if (te.getManager() == null)
 					return;
 
-				if(ModuleUtils.isAllowed(te.getManager(), entity))
+				if (ModuleUtils.isAllowed(te.getManager(), entity))
 					return;
-				else if(!te.getOwner().isOwner((EntityPlayer)entity))
+				else if (!te.getOwner().isOwner((EntityPlayer) entity))
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
 			}
 		}
-		else
+		else {
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+		}
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(SOLID) ? FULL_BLOCK_AABB : EMPTY_AABB;
 	}
 
 	@Override
-	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type)
-	{
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
 		return false;
 	}
 
 	@Override
-	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
-	{
+	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return !(state.getValue(SEE_THROUGH) && world.getBlockState(pos.offset(side)).getBlock() == SCContent.blockPocketWall);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getRenderLayer()
-	{
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return !state.getValue(SEE_THROUGH);
 	}
 
 	@Override
-	public float getAmbientOcclusionLightValue(IBlockState state)
-	{
+	public float getAmbientOcclusionLightValue(IBlockState state) {
 		return state.getValue(SEE_THROUGH) ? 1.0F : super.getAmbientOcclusionLightValue(state);
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(SEE_THROUGH, true);
 	}
 
@@ -119,39 +107,33 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 	//3    | 0			 | 1
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(SEE_THROUGH, meta == 0 || meta == 2).withProperty(SOLID, meta == 2 || meta == 3);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		int solid = state.getValue(SOLID) ? 0 : 2;
 		return state.getValue(SEE_THROUGH) ? 1 + solid : 0 + solid;
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, SEE_THROUGH, SOLID);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityBlockPocket();
 	}
 
 	@Override
-	public int quantityDropped(Random random)
-	{
+	public int quantityDropped(Random random) {
 		return 1;
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
-	{
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(this);
 	}
 }

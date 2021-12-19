@@ -3,17 +3,13 @@ package net.geforcemods.securitycraft.misc;
 import net.minecraft.util.math.BlockPos;
 
 /**
- * Simple wrapper class for LookingGlass camera views
- * that SecurityCraft uses. Provides easy access to the
- * view's coordinates and a formatted string for storage
- * in HashMaps, as well as a few helpful methods.
+ * Simple wrapper class for LookingGlass camera views that SecurityCraft uses. Provides easy access to the view's coordinates
+ * and a formatted string for storage in HashMaps, as well as a few helpful methods.
  *
  * @version 1.0.0
- *
  * @author Geforce
  */
 public class CameraView {
-
 	public int x = 0;
 	public int y = 0;
 	public int z = 0;
@@ -33,7 +29,6 @@ public class CameraView {
 		dimension = dim;
 	}
 
-
 	/**
 	 * @return The position of this view in BlockPos form.
 	 */
@@ -42,8 +37,7 @@ public class CameraView {
 	}
 
 	/**
-	 * Checks to see if the given coordinates are the same
-	 * as this view's coordinates.
+	 * Checks to see if the given coordinates are the same as this view's coordinates.
 	 *
 	 * @param coordinates a String[] which contains the x, y, and z coordinates, and the dimension ID of the view
 	 * @return true if the x, y, z and dimension match, false otherwise
@@ -63,5 +57,4 @@ public class CameraView {
 	public String toNBTString() {
 		return x + " " + y + " " + z + " " + dimension;
 	}
-
 }

@@ -25,7 +25,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class GuiCameraMonitor extends GuiContainer {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private InventoryPlayer playerInventory;
 	private ItemCameraMonitor cameraMonitor;
@@ -52,7 +51,7 @@ public class GuiCameraMonitor extends GuiContainer {
 	}
 
 	@Override
-	public void initGui(){
+	public void initGui() {
 		super.initGui();
 
 		prevPageButton = new GuiButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<");
@@ -82,7 +81,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		unbindButtons[8] = new GuiButton(19, width / 2 + 41, height / 2 + 2, 8, 8, "x");
 		unbindButtons[9] = new GuiButton(20, width / 2 + 41, height / 2 + 32, 8, 8, "x");
 
-		for(int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) {
 			GuiButton button = cameraButtons[i];
 			int camID = (button.id + ((page - 1) * 10));
 			ArrayList<CameraView> views = cameraMonitor.getCameraPositions(nbtTag);
@@ -91,8 +90,8 @@ public class GuiCameraMonitor extends GuiContainer {
 			button.displayString += camID;
 			buttonList.add(button);
 
-			if(view != null) {
-				if(view.dimension != Minecraft.getMinecraft().player.dimension) {
+			if (view != null) {
+				if (view.dimension != Minecraft.getMinecraft().player.dimension) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button);
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
@@ -103,8 +102,7 @@ public class GuiCameraMonitor extends GuiContainer {
 				cameraTEs[button.id - 1] = te instanceof TileEntitySecurityCamera ? (TileEntitySecurityCamera) te : null;
 				hoverCheckers[button.id - 1] = new HoverChecker(button);
 			}
-			else
-			{
+			else {
 				button.enabled = false;
 				unbindButtons[button.id - 1].enabled = false;
 				cameraTEs[button.id - 1] = null;
@@ -112,45 +110,46 @@ public class GuiCameraMonitor extends GuiContainer {
 			}
 		}
 
-		for(int i = 0; i < 10; i++)
+		for (int i = 0; i < 10; i++) {
 			buttonList.add(unbindButtons[i]);
+		}
 
-		if(page == 1)
+		if (page == 1)
 			prevPageButton.enabled = false;
 
-		if(page == 3 || cameraMonitor.getCameraPositions(nbtTag).size() < (page * 10) + 1)
+		if (page == 3 || cameraMonitor.getCameraPositions(nbtTag).size() < (page * 10) + 1)
 			nextPageButton.enabled = false;
 
-		for(int i = cameraMonitor.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++)
+		for (int i = cameraMonitor.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++) {
 			cameraButtons[(i - 1) - ((page - 1) * 10)].enabled = false;
-
+		}
 	}
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		for(int i = 0; i < hoverCheckers.length; i++)
-			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
-				if(cameraTEs[i] != null && cameraTEs[i].hasCustomName())
+		for (int i = 0; i < hoverCheckers.length; i++) {
+			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
+				if (cameraTEs[i] != null && cameraTEs[i].hasCustomName())
 					drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getName()), 150), mouseX, mouseY, mc.fontRenderer);
 			}
+		}
 	}
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
-		if(button.id == -1)
+		if (button.id == -1)
 			mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page - 1));
-		else if(button.id == 0)
+		else if (button.id == 0)
 			mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page + 1));
-		else if (button.id < 11){
+		else if (button.id < 11) {
 			int camID = button.id + ((page - 1) * 10);
 
 			SecurityCraft.network.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getLocation()));
 			Minecraft.getMinecraft().player.closeScreen();
 		}
-		else
-		{
+		else {
 			int camID = (button.id - 10) + ((page - 1) * 10);
 
 			SecurityCraft.network.sendToServer(new RemoveCameraTag(PlayerUtils.getSelectedItemStack(playerInventory, SCContent.cameraMonitor), camID));
@@ -179,5 +178,4 @@ public class GuiCameraMonitor extends GuiContainer {
 	public boolean doesGuiPauseGame() {
 		return false;
 	}
-
 }

@@ -27,7 +27,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBriefcase extends Item {
-
 	private static final Style GRAY_STYLE = new Style().setColor(TextFormatting.GRAY);
 
 	@Override
@@ -40,21 +39,17 @@ public class ItemBriefcase extends Item {
 		IBlockState state = world.getBlockState(pos);
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(state.getBlock() instanceof BlockCauldron)
-		{
+		if (state.getBlock() instanceof BlockCauldron) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if (te instanceof TileEntityReinforcedCauldron && !((TileEntityReinforcedCauldron)te).isAllowedToInteract(player))
-			{
+			if (te instanceof TileEntityReinforcedCauldron && !((TileEntityReinforcedCauldron) te).isAllowedToInteract(player))
 				return EnumActionResult.FAIL;
-			}
 
 			int level = state.getValue(BlockCauldron.LEVEL);
 
-			if(level > 0 && hasColor(stack))
-			{
+			if (level > 0 && hasColor(stack)) {
 				removeColor(stack);
-				((BlockCauldron)state.getBlock()).setWaterLevel(world, pos, state, level - 1);
+				((BlockCauldron) state.getBlock()).setWaterLevel(world, pos, state, level - 1);
 
 				return EnumActionResult.SUCCESS;
 			}
@@ -74,15 +69,14 @@ public class ItemBriefcase extends Item {
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-	private void handle(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
-	{
-		if(world.isRemote) {
-			if(!stack.hasTagCompound()) {
+	private void handle(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+		if (world.isRemote) {
+			if (!stack.hasTagCompound()) {
 				stack.setTagCompound(new NBTTagCompound());
 				ClientUtils.syncItemNBT(stack);
 			}
 
-			if(!stack.getTagCompound().hasKey("passcode"))
+			if (!stack.getTagCompound().hasKey("passcode"))
 				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			else
 				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
@@ -91,68 +85,60 @@ public class ItemBriefcase extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack briefcase, World world, List<String> tooltip, ITooltipFlag flag)
-	{
+	public void addInformation(ItemStack briefcase, World world, List<String> tooltip, ITooltipFlag flag) {
 		String ownerName = getOwnerName(briefcase);
 
-		if(!ownerName.isEmpty())
+		if (!ownerName.isEmpty())
 			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(GRAY_STYLE).getFormattedText());
 	}
 
-	public boolean hasColor(ItemStack stack)
-	{
+	public boolean hasColor(ItemStack stack) {
 		NBTTagCompound tag = stack.getTagCompound();
 		return tag != null && tag.hasKey("display", 10) ? tag.getCompoundTag("display").hasKey("color", 3) : false;
 	}
 
-	public int getColor(ItemStack stack)
-	{
+	public int getColor(ItemStack stack) {
 		NBTTagCompound tag = stack.getTagCompound();
 
-		if(tag != null)
-		{
+		if (tag != null) {
 			NBTTagCompound displayTag = tag.getCompoundTag("display");
 
-			if(displayTag != null && displayTag.hasKey("color", 3))
+			if (displayTag != null && displayTag.hasKey("color", 3))
 				return displayTag.getInteger("color");
 		}
 
 		return 0x333333;
 	}
 
-	public void removeColor(ItemStack stack)
-	{
+	public void removeColor(ItemStack stack) {
 		NBTTagCompound tag = stack.getTagCompound();
 
-		if(tag != null)
-		{
+		if (tag != null) {
 			NBTTagCompound displayTag = tag.getCompoundTag("display");
 
-			if(displayTag.hasKey("color"))
+			if (displayTag.hasKey("color"))
 				displayTag.removeTag("color");
 		}
 	}
 
-	public void setColor(ItemStack stack, int color)
-	{
+	public void setColor(ItemStack stack, int color) {
 		NBTTagCompound tag = stack.getTagCompound();
 
-		if(tag == null)
-		{
+		if (tag == null) {
 			tag = new NBTTagCompound();
 			stack.setTagCompound(tag);
 		}
 
 		NBTTagCompound displayTag = tag.getCompoundTag("display");
 
-		if(!tag.hasKey("display", 10))
+		if (!tag.hasKey("display", 10))
 			tag.setTag("display", displayTag);
 
 		displayTag.setInteger("color", color);
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, EntityPlayer player) {
-		if(!briefcase.hasTagCompound())
+		if (!briefcase.hasTagCompound())
 			return true;
 
 		String ownerName = getOwnerName(briefcase);
@@ -161,13 +147,11 @@ public class ItemBriefcase extends Item {
 		return ownerName.isEmpty() || ownerUUID.equals(player.getUniqueID().toString()) || (ownerUUID.equals("ownerUUID") && ownerName.equals(player.getName()));
 	}
 
-	public static String getOwnerName(ItemStack briefcase)
-	{
+	public static String getOwnerName(ItemStack briefcase) {
 		return briefcase.hasTagCompound() ? briefcase.getTagCompound().getString("owner") : "";
 	}
 
-	public static String getOwnerUUID(ItemStack briefcase)
-	{
+	public static String getOwnerUUID(ItemStack briefcase) {
 		return briefcase.hasTagCompound() ? briefcase.getTagCompound().getString("ownerUUID") : "";
 	}
 }

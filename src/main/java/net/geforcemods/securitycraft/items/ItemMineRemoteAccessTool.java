@@ -28,49 +28,49 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMineRemoteAccessTool extends Item {
-
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (!world.isRemote){
-			player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+		if (!world.isRemote) {
+			player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
 
 		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(world.getBlockState(pos).getBlock() instanceof IExplosive){
-			if(!isMineAdded(stack, pos)){
+		if (world.getBlockState(pos).getBlock() instanceof IExplosive) {
+			if (!isMineAdded(stack, pos)) {
 				int availSlot = getNextAvailableSlot(stack);
 
-				if(availSlot == 0){
+				if (availSlot == 0) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessMine.name"), Utils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
 				TileEntity te = world.getTileEntity(pos);
 
-				if(te instanceof IOwnable && !((IOwnable)te).getOwner().isOwner(player)){
+				if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player)) {
 					player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 					return EnumActionResult.SUCCESS;
 				}
 
-				if(stack.getTagCompound() == null)
+				if (stack.getTagCompound() == null)
 					stack.setTagCompound(new NBTTagCompound());
 
 				stack.getTagCompound().setIntArray(("mine" + availSlot), BlockUtils.posToIntArray(pos));
 
 				if (!world.isRemote)
-					SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP)player);
+					SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP) player);
 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessMine.name"), Utils.localize("messages.securitycraft:mrat.bound", pos), TextFormatting.GREEN);
 				return EnumActionResult.SUCCESS;
-			}else{
+			}
+			else {
 				removeTagFromItemAndUpdate(stack, pos, player);
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessMine.name"), Utils.localize("messages.securitycraft:mrat.unbound", pos), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
@@ -83,14 +83,14 @@ public class ItemMineRemoteAccessTool extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
-		if(stack.getTagCompound() == null)
+		if (stack.getTagCompound() == null)
 			return;
 
-		for(int i = 1; i <= 6; i++)
-			if(stack.getTagCompound().getIntArray("mine" + i).length > 0){
+		for (int i = 1; i <= 6; i++) {
+			if (stack.getTagCompound().getIntArray("mine" + i).length > 0) {
 				int[] coords = stack.getTagCompound().getIntArray("mine" + i);
 
-				if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0){
+				if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0) {
 					list.add("---");
 					continue;
 				}
@@ -99,18 +99,21 @@ public class ItemMineRemoteAccessTool extends Item {
 			}
 			else
 				list.add("---");
+		}
 	}
 
 	private void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, EntityPlayer player) {
-		if(stack.getTagCompound() == null)
+		if (stack.getTagCompound() == null)
 			return;
 
-		for(int i = 1; i <= 6; i++)
-			if(stack.getTagCompound().getIntArray("mine" + i).length > 0){
+		for (int i = 1; i <= 6; i++) {
+			if (stack.getTagCompound().getIntArray("mine" + i).length > 0) {
 				int[] coords = stack.getTagCompound().getIntArray("mine" + i);
 
-				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
-					stack.getTagCompound().setIntArray("mine" + i, new int[]{0, 0, 0});
+				if (coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
+					stack.getTagCompound().setIntArray("mine" + i, new int[] {
+							0, 0, 0
+					});
 
 					if (!player.world.isRemote)
 						SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP) player);
@@ -118,37 +121,34 @@ public class ItemMineRemoteAccessTool extends Item {
 					return;
 				}
 			}
-			else
-				continue;
+		}
 
 		return;
 	}
 
 	private boolean isMineAdded(ItemStack stack, BlockPos pos) {
-		if(stack.getTagCompound() == null)
+		if (stack.getTagCompound() == null)
 			return false;
 
-		for(int i = 1; i <= 6; i++)
-			if(stack.getTagCompound().getIntArray("mine" + i).length > 0){
+		for (int i = 1; i <= 6; i++) {
+			if (stack.getTagCompound().getIntArray("mine" + i).length > 0) {
 				int[] coords = stack.getTagCompound().getIntArray("mine" + i);
 
-				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
+				if (coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
 					return true;
 			}
-			else
-				continue;
+		}
 
 		return false;
 	}
 
-	private int getNextAvailableSlot(ItemStack stack){
-		for(int i = 1; i <= 6; i++)
-			if(stack.getTagCompound() == null)
+	private int getNextAvailableSlot(ItemStack stack) {
+		for (int i = 1; i <= 6; i++) {
+			if (stack.getTagCompound() == null)
 				return 1;
-			else if(stack.getTagCompound().getIntArray("mine" + i).length == 0 || (stack.getTagCompound().getIntArray("mine" + i)[0] == 0 && stack.getTagCompound().getIntArray("mine" + i)[1] == 0 && stack.getTagCompound().getIntArray("mine" + i)[2] == 0))
+			else if (stack.getTagCompound().getIntArray("mine" + i).length == 0 || (stack.getTagCompound().getIntArray("mine" + i)[0] == 0 && stack.getTagCompound().getIntArray("mine" + i)[1] == 0 && stack.getTagCompound().getIntArray("mine" + i)[2] == 0))
 				return i;
-			else
-				continue;
+		}
 
 		return 0;
 	}

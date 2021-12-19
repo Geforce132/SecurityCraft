@@ -32,13 +32,13 @@ public class ItemPortableTunePlayer extends Item {
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (world.getBlockState(pos).getBlock() == SCContent.sonicSecuritySystem) {
-			TileEntitySonicSecuritySystem te = (TileEntitySonicSecuritySystem)world.getTileEntity(pos);
+			TileEntitySonicSecuritySystem te = (TileEntitySonicSecuritySystem) world.getTileEntity(pos);
 
 			if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)) {
 				if (te.getNumberOfNotes() > 0) {
 					ItemStack stack = player.getHeldItem(hand);
 
-					if(!stack.hasTagCompound())
+					if (!stack.hasTagCompound())
 						stack.setTagCompound(new NBTTagCompound());
 
 					te.saveNotes(stack.getTagCompound());
@@ -59,7 +59,7 @@ public class ItemPortableTunePlayer extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (!world.isRemote) {
-			if(!stack.hasTagCompound())
+			if (!stack.hasTagCompound())
 				stack.setTagCompound(new NBTTagCompound());
 
 			NBTTagCompound tag = stack.getTagCompound();
@@ -84,13 +84,13 @@ public class ItemPortableTunePlayer extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-		if(!stack.hasTagCompound())
+		if (!stack.hasTagCompound())
 			return;
 
 		// If a tune is stored in this item, show the number of notes in this tune in the tooltip
 		int notesCount = stack.getTagCompound().getTagList("Notes", Constants.NBT.TAG_COMPOUND).tagCount();
 
-		if(notesCount > 0)
+		if (notesCount > 0)
 			tooltip.add(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).getFormattedText());
 	}
 }

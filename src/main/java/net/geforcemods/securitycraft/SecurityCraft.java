@@ -64,12 +64,12 @@ public class SecurityCraft {
 	public static CreativeTabs tabSCDecoration = new CreativeTabSCDecoration();
 
 	@EventHandler
-	public void serverStarting(FMLServerStartingEvent event){
+	public void serverStarting(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandSC());
 	}
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event){
+	public void preInit(FMLPreInitializationEvent event) {
 		SecurityCraft.network = NetworkRegistry.INSTANCE.newSimpleChannel(SecurityCraft.MODID);
 		RegistrationHandler.registerPackets(SecurityCraft.network);
 		SetupHandler.setupBlocks();
@@ -77,12 +77,12 @@ public class SecurityCraft {
 		SetupHandler.setupItems();
 		proxy.registerEntityRenderingHandlers();
 
-		if(Loader.isModLoaded("icbmclassic"))
+		if (Loader.isModLoaded("icbmclassic"))
 			MinecraftForge.EVENT_BUS.register(new ICBMClassicEMPCompat());
 	}
 
 	@EventHandler
-	public void init(FMLInitializationEvent event){
+	public void init(FMLInitializationEvent event) {
 		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, BlockReinforcedHopper.ExtractionBlock.class.getName());
 		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, BlockKeypad.Convertible.class.getName());
 		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, BlockKeypadChest.Convertible.class.getName());
@@ -94,15 +94,16 @@ public class SecurityCraft {
 		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.compat.waila.WailaDataProvider.callbackRegister");
 		FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "net.geforcemods.securitycraft.compat.top.TOPDataProvider");
 
-		if(Loader.isModLoaded("lycanitesmobs"))
+		if (Loader.isModLoaded("lycanitesmobs"))
 			FMLInterModComms.sendFunctionMessage(MODID, SecurityCraftAPI.IMC_SENTRY_ATTACK_TARGET_MSG, LycanitesMobsCompat.class.getName());
 
-		if(Loader.isModLoaded("quark"))
+		if (Loader.isModLoaded("quark"))
 			QuarkCompat.registerChestConversion();
 
-		if(ConfigHandler.checkForUpdates) {
+		if (ConfigHandler.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
-			if(vcUpdateTag != null)
+
+			if (vcUpdateTag != null)
 				FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);
 		}
 
@@ -118,40 +119,34 @@ public class SecurityCraft {
 	}
 
 	@EventHandler
-	public void onIMC(IMCEvent event)
-	{
+	public void onIMC(IMCEvent event) {
 		SecurityCraftAPI.onIMC(event);
 	}
 
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event){
-
-		if(Loader.isModLoaded("cyclicmagic"))
+	public void postInit(FMLPostInitializationEvent event) {
+		if (Loader.isModLoaded("cyclicmagic"))
 			MinecraftForge.EVENT_BUS.register(new CyclicCompat());
 
-		for(Field field : SCContent.class.getFields())
-		{
-			try
-			{
-				if(field.isAnnotationPresent(Reinforced.class))
-					IReinforcedBlock.BLOCKS.add((Block)field.get(null));
+		for (Field field : SCContent.class.getFields()) {
+			try {
+				if (field.isAnnotationPresent(Reinforced.class))
+					IReinforcedBlock.BLOCKS.add((Block) field.get(null));
 			}
-			catch(IllegalArgumentException | IllegalAccessException e)
-			{
+			catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 		}
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(instance, (tickets, world) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCameraEntity) somewhere
 			tickets.forEach(ticket -> {
-				if(ticket.getType() == Type.ENTITY && ((WorldServer)ticket.world).getEntityFromUuid(ticket.getEntity().getPersistentID()) == null)
+				if (ticket.getType() == Type.ENTITY && ((WorldServer) ticket.world).getEntityFromUuid(ticket.getEntity().getPersistentID()) == null)
 					ForgeChunkManager.releaseTicket(ticket);
 			});
 		});
 	}
 
-	public static String getVersion()
-	{
+	public static String getVersion() {
 		return Loader.instance().activeModContainer().getVersion();
 	}
 }

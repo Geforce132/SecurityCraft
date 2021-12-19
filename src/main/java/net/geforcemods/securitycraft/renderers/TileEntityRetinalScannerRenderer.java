@@ -35,12 +35,11 @@ public class TileEntityRetinalScannerRenderer extends TileEntitySpecialRenderer<
 	public void render(TileEntityRetinalScanner te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		IBlockState state = te.getWorld().getBlockState(te.getPos());
 
-		if(state.getBlock() == SCContent.retinalScanner)
-		{
+		if (state.getBlock() == SCContent.retinalScanner) {
 			EnumFacing direction = state.getValue(BlockRetinalScanner.FACING);
 
 			if (!te.hasModule(EnumModuleType.DISGUISE))
-				render((float)x, (float)y, (float)z, direction, te.getPlayerProfile(), destroyStage);
+				render((float) x, (float) y, (float) z, direction, te.getPlayerProfile(), destroyStage);
 		}
 	}
 
@@ -102,14 +101,15 @@ public class TileEntityRetinalScannerRenderer extends TileEntitySpecialRenderer<
 
 	private ResourceLocation getSkinTexture(@Nullable GameProfile profile) {
 		ResourceLocation resourcelocation = DefaultPlayerSkin.getDefaultSkinLegacy();
+
 		if (ConfigHandler.retinalScannerFace && profile != null) {
 			Minecraft minecraft = Minecraft.getMinecraft();
 			Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache(profile);
-			if (map.containsKey(Type.SKIN)) {
+
+			if (map.containsKey(Type.SKIN))
 				resourcelocation = minecraft.getSkinManager().loadSkin(map.get(Type.SKIN), Type.SKIN);
-			} else {
+			else
 				resourcelocation = DefaultPlayerSkin.getDefaultSkin(EntityPlayer.getUUID(profile));
-			}
 		}
 
 		return resourcelocation;

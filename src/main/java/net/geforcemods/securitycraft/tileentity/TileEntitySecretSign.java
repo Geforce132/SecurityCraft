@@ -17,37 +17,26 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.NonNullList;
 
-public class TileEntitySecretSign extends TileEntitySign implements IOwnable, IModuleInventory, ICustomizable
-{
+public class TileEntitySecretSign extends TileEntitySign implements IOwnable, IModuleInventory, ICustomizable {
 	private Owner owner = new Owner();
 	private OptionBoolean isSecret = new OptionBoolean("isSecret", true);
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
 
-		if(owner != null){
+		if (owner != null)
 			owner.writeToNBT(tag, false);
-		}
 
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
 		modules = readModuleInventory(tag);
@@ -62,12 +51,16 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable, IM
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.ALLOWLIST};
+		return new EnumModuleType[] {
+				EnumModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ isSecret };
+		return new Option[] {
+				isSecret
+		};
 	}
 
 	public boolean isSecret() {
@@ -79,33 +72,29 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable, IM
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option)
-	{
+	public void onOptionChanged(Option<?> option) {
 		IBlockState state = world.getBlockState(pos);
 
 		world.notifyBlockUpdate(pos, state, state, 2);
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag()
-	{
+	public NBTTagCompound getUpdateTag() {
 		return writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket()
-	{
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		return new SPacketUpdateTileEntity(pos, 1, getUpdateTag());
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-	{
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override
-	public Owner getOwner(){
+	public Owner getOwner() {
 		return owner;
 	}
 

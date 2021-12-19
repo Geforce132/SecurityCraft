@@ -3,18 +3,22 @@ package net.geforcemods.securitycraft.api;
 import net.minecraft.entity.Entity;
 
 /**
- * Defines a callback that the Sentry checks before trying to attack an entity.
- * Call <pre>FMLInterModComms.sendFunctionMessage("securitycraft", SecurityCraftAPI.IMC_SENTRY_ATTACK_TARGET_MSG, "your.package.ClassThatImplementsIAttackTargetCheck");</pre>
- * during FMLInitializationEvent to register this with SecurityCraft.<br>
- * Do note, that you also need to implement Function<Object,IAttackTargetCheck> on the class that you send via IMC. You can just return <code>this</code>
- * in the apply method. The Object argument is unused and will always be null.
+ * Defines a callback that the Sentry checks before trying to attack an entity. Call
+ *
+ * <pre>
+ * FMLInterModComms.sendFunctionMessage("securitycraft", SecurityCraftAPI.IMC_SENTRY_ATTACK_TARGET_MSG, "your.package.ClassThatImplementsIAttackTargetCheck");
+ * </pre>
+ *
+ * during FMLInitializationEvent to register this with SecurityCraft.<br> Do note, that you also need to implement
+ * Function<Object,IAttackTargetCheck> on the class that you send via IMC. You can just return <code>this</code> in the apply
+ * method. The Object argument is unused and will always be null.
  *
  * @author bl4ckscor3
  */
-public interface IAttackTargetCheck
-{
+public interface IAttackTargetCheck {
 	/**
 	 * Checks if the Sentry is allowed to attack the given entity
+	 *
 	 * @param potentialTarget The entity that the Sentry wants to attack
 	 * @return true if the Sentry is allowed to attack this entity, false otherwise
 	 */

@@ -6,22 +6,18 @@ import net.geforcemods.securitycraft.tileentity.IEMPAffected;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class ICBMClassicEMPCompat
-{
+public class ICBMClassicEMPCompat {
 	@SubscribeEvent
-	public void onEmpBlockPost(EmpEvent.BlockPost event)
-	{
+	public void onEmpBlockPost(EmpEvent.BlockPost event) {
 		TileEntity te = event.world.getTileEntity(event.blockPos);
 
-		if(te instanceof IEMPAffected)
-			((IEMPAffected)te).shutDown();
+		if (te instanceof IEMPAffected)
+			((IEMPAffected) te).shutDown();
 	}
 
 	@SubscribeEvent
-	public void onEmpEntityPost(EmpEvent.EntityPost event)
-	{
-		if(event.target instanceof EntitySecurityCamera)
-		{
+	public void onEmpEntityPost(EmpEvent.EntityPost event) {
+		if (event.target instanceof EntitySecurityCamera) {
 			event.target.removePassengers();
 			event.target.setDead();
 		}

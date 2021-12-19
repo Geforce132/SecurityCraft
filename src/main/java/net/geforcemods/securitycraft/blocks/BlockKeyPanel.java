@@ -29,68 +29,59 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public abstract class BlockKeyPanel extends BlockOwnable
-{
+public abstract class BlockKeyPanel extends BlockOwnable {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-	public BlockKeyPanel(Material material)
-	{
+	public BlockKeyPanel(Material material) {
 		super(material);
 
 		setSoundType(SoundType.METAL);
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state)
-	{
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
-	{
-		if(state.getValue(POWERED))
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (state.getValue(POWERED))
 			return false;
-		else
-		{
-			TileEntityKeyPanel te = (TileEntityKeyPanel)world.getTileEntity(pos);
+		else {
+			TileEntityKeyPanel te = (TileEntityKeyPanel) world.getTileEntity(pos);
 
-			if(ModuleUtils.isDenied(te, player))
-			{
-				if(te.sendsMessages())
+			if (ModuleUtils.isDenied(te, player)) {
+				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 
 				return true;
 			}
 
-			if(ModuleUtils.isAllowed(te, player)){
-				if(te.sendsMessages())
+			if (ModuleUtils.isAllowed(te, player)) {
+				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				activate(state, world, pos, te.getSignalLength());
 				return true;
 			}
 
-			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
+			if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
 				te.openPasswordGUI(player);
 		}
 
@@ -98,14 +89,12 @@ public abstract class BlockKeyPanel extends BlockOwnable
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
-	{
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
 		world.setBlockState(pos, state.withProperty(POWERED, false));
 		BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
 	}
 
-	public void activate(IBlockState state, World world, BlockPos pos, int signalLength)
-	{
+	public void activate(IBlockState state, World world, BlockPos pos, int signalLength) {
 		world.setBlockState(pos, state.withProperty(POWERED, true));
 		BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
 		world.scheduleUpdate(pos, this, signalLength);
@@ -114,62 +103,52 @@ public abstract class BlockKeyPanel extends BlockOwnable
 	protected abstract EnumFacing getConnectedDirection(IBlockState state);
 
 	@Override
-	public boolean canProvidePower(IBlockState state)
-	{
+	public boolean canProvidePower(IBlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
-	{
+	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return state.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
-	{
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return state.getValue(POWERED) && getConnectedDirection(state) == side ? 15 : 0;
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos)
-	{
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side)
-	{
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
 		return world.getBlockState(pos).isSideSolid(world, pos, side);
 	}
 
 	@Override
-	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-	{
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		return Arrays.asList(new ItemStack(SCContent.keyPanel));
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-	{
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		return new ItemStack(SCContent.keyPanel);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityKeyPanel();
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror)
-	{
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
 }

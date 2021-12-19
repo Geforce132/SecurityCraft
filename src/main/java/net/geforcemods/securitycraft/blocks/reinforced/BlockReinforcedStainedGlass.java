@@ -27,21 +27,19 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedStainedGlass extends BlockStainedGlass implements ITileEntityProvider, IReinforcedBlock {
-
 	public BlockReinforcedStainedGlass(Material material) {
 		super(material);
 		setSoundType(SoundType.GLASS);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state){
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
 		world.removeTileEntity(pos);
 	}
@@ -52,46 +50,42 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
 	}
 
 	@Override
-	public int quantityDropped(Random random)
-	{
+	public int quantityDropped(Random random) {
 		return 1;
 	}
 
 	@Override
-	public float[] getBeaconColorMultiplier(IBlockState state, World world, BlockPos pos, BlockPos beaconPos)
-	{
+	public float[] getBeaconColorMultiplier(IBlockState state, World world, BlockPos pos, BlockPos beaconPos) {
 		//sponge fix
-		if(world.isRemote)
+		if (world.isRemote)
 			return state.getValue(COLOR).getColorComponentValues();
-		else
-			return new float[] {0.0F, 0.0F, 0.0F};
+
+		return new float[] {
+				0.0F, 0.0F, 0.0F
+		};
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
-	{
+	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.STAINED_GLASS);
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return 16;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-	{
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		IBlockState offsetState = blockAccess.getBlockState(pos.offset(side));
 		Block offsetBlock = offsetState.getBlock();
 
-		if(this == SCContent.reinforcedStainedGlass)
-		{
-			if(blockState != offsetState)
+		if (this == SCContent.reinforcedStainedGlass) {
+			if (blockState != offsetState)
 				return true;
 
-			if(offsetBlock == this)
+			if (offsetBlock == this)
 				return false;
 		}
 

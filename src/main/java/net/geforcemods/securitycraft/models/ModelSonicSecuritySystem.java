@@ -8,7 +8,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelSonicSecuritySystem extends ModelBase {
-
 	public ModelRenderer radar;
 	public ModelRenderer bb_main;
 
@@ -36,7 +35,7 @@ public class ModelSonicSecuritySystem extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale){
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		radar.render(scale);
 		bb_main.render(scale);
 	}

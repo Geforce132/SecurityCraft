@@ -20,37 +20,33 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockPanicButton extends BlockButton implements ITileEntityProvider {
-
 	public BlockPanicButton() {
 		super(false);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state)
-	{
+	public boolean isNormalCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(POWERED) ? 4 : 0;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		boolean newPowered = !state.getValue(POWERED);
 
 		world.setBlockState(pos, state.withProperty(POWERED, newPowered));
 
-		if(newPowered)
+		if (newPowered)
 			playClickSound(player, world, pos);
 		else
 			playReleaseSound(world, pos);
@@ -60,28 +56,25 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 		return true;
 	}
 
-	private void notifyNeighbors(World world, BlockPos pos, EnumFacing facing)
-	{
+	private void notifyNeighbors(World world, BlockPos pos, EnumFacing facing) {
 		world.notifyNeighborsOfStateChange(pos, this, false);
 		world.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this, false);
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param){
+	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
 		super.eventReceived(state, world, pos, id, param);
 		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-	{
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing facing = state.getValue(FACING);
 		boolean isPowered = state.getValue(POWERED);
 		float height = (isPowered ? 1 : 2) / 16.0F;
 
-		switch (BlockPanicButton.SwitchEnumFacing.FACING_LOOKUP[facing.ordinal()])
-		{
+		switch (BlockPanicButton.SwitchEnumFacing.FACING_LOOKUP[facing.ordinal()]) {
 			case 1:
 				return new AxisAlignedBB(0.0F, 0.30F, 0.18F, height, 0.70F, 0.82F);
 			case 2:
@@ -104,78 +97,57 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 		return new TileEntityOwnable();
 	}
 
-	static final class SwitchEnumFacing
-	{
+	static final class SwitchEnumFacing {
 		static final int[] FACING_LOOKUP = new int[EnumFacing.values().length];
 
-		static
-		{
-			try
-			{
+		static {
+			try {
 				FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
 			}
-			catch (NoSuchFieldError e)
-			{
-
+			catch (NoSuchFieldError e) {
 			}
 
-			try
-			{
+			try {
 				FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
 			}
-			catch (NoSuchFieldError e)
-			{
-
+			catch (NoSuchFieldError e) {
 			}
 
-			try
-			{
+			try {
 				FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
 			}
-			catch (NoSuchFieldError e)
-			{
-
+			catch (NoSuchFieldError e) {
 			}
 
-			try
-			{
+			try {
 				FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
 			}
-			catch (NoSuchFieldError e)
-			{
-
+			catch (NoSuchFieldError e) {
 			}
 
-			try
-			{
+			try {
 				FACING_LOOKUP[EnumFacing.UP.ordinal()] = 5;
 			}
-			catch (NoSuchFieldError e)
-			{
-
+			catch (NoSuchFieldError e) {
 			}
 
-			try
-			{
+			try {
 				FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 6;
 			}
-			catch (NoSuchFieldError e)
-			{
-
+			catch (NoSuchFieldError e) {
 			}
 		}
 	}
 
 	@Override
-	protected void playClickSound(EntityPlayer player, World world, BlockPos pos)
-	{
+	protected void playClickSound(EntityPlayer player, World world, BlockPos pos) {
 		world.playSound(player, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.4D), SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 	}
 
 	@Override
-	protected void playReleaseSound(World world, BlockPos pos)
-	{
-		for(EntityPlayer player : world.playerEntities)
+	protected void playReleaseSound(World world, BlockPos pos) {
+		for (EntityPlayer player : world.playerEntities) {
 			world.playSound(player, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
+		}
 	}
 }

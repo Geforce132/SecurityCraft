@@ -26,8 +26,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.GuiScrollingList;
 
-public class GuiLogger extends GuiContainer{
-
+public class GuiLogger extends GuiContainer {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private static final DateFormat DATE_FORMAT = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 	private TileEntityLogger tileEntity;
@@ -39,8 +38,7 @@ public class GuiLogger extends GuiContainer{
 	}
 
 	@Override
-	public void initGui()
-	{
+	public void initGui() {
 		super.initGui();
 
 		addButton(new GuiButton(0, guiLeft + 4, guiTop + 4, 8, 8, "x")).enabled = tileEntity.getOwner().isOwner(mc.player);
@@ -48,40 +46,31 @@ public class GuiLogger extends GuiContainer{
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button)
-	{
-		if(button.id == 0)
-		{
+	protected void actionPerformed(GuiButton button) {
+		if (button.id == 0) {
 			tileEntity.players = new String[100];
 			SecurityCraft.network.sendToServer(new ClearLoggerServer(tileEntity.getPos()));
 		}
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String localized = Utils.localize("gui.securitycraft:logger.logged").getFormattedText();
 
 		fontRenderer.drawString(localized, xSize / 2 - fontRenderer.getStringWidth(localized) / 2, 6, 4210752);
 
-		if(mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
+		if (mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
 			drawHoveringText(Utils.localize("gui.securitycraft:editModule.clear").getFormattedText(), mouseX - guiLeft, mouseY - guiTop);
 
 		int slotIndex = playerList.hoveredSlot;
 
 		//draw extra info
-		if(slotIndex != -1)
-		{
-			if(tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty())
-			{
-				if(tileEntity.getOwner().isOwner(mc.player))
-				{
+		if (slotIndex != -1) {
+			if (tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty()) {
+				if (tileEntity.getOwner().isOwner(mc.player)) {
 					localized = Utils.localize("gui.securitycraft:logger.date", DATE_FORMAT.format(new Date(tileEntity.timestamps[slotIndex]))).getFormattedText();
 
-					if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
+					if (tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
 						drawHoveringText(tileEntity.uuids[slotIndex], mouseX - guiLeft, mouseY - guiTop);
 
 					fontRenderer.drawString(localized, xSize / 2 - fontRenderer.getStringWidth(localized) / 2, ySize - 15, 4210752);
@@ -99,13 +88,12 @@ public class GuiLogger extends GuiContainer{
 		int startY = (height - ySize) / 2;
 		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 
-		if(playerList != null)
+		if (playerList != null)
 			playerList.drawScreen(mouseX, mouseY, partialTicks);
 	}
 
 	@Override
-	public void handleMouseInput() throws IOException
-	{
+	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 
 		int mouseX = Mouse.getEventX() * width / mc.displayWidth;
@@ -114,39 +102,33 @@ public class GuiLogger extends GuiContainer{
 		playerList.handleMouseInput(mouseX, mouseY);
 	}
 
-	class PlayerList extends GuiScrollingList
-	{
+	class PlayerList extends GuiScrollingList {
 		private int hoveredSlot = -1;
 		private int i = 0;
 		private boolean isHovering = false;
 
-		public PlayerList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight)
-		{
+		public PlayerList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight) {
 			super(client, width, height, top, top + height, left, 12, screenWidth, screenHeight);
 		}
 
 		@Override
-		protected int getSize()
-		{
+		protected int getSize() {
 			return tileEntity.players.length;
 		}
 
 		@Override
-		protected void elementClicked(int index, boolean doubleClick)
-		{
-			if(tileEntity.getOwner().isOwner(mc.player))
-			{
+		protected void elementClicked(int index, boolean doubleClick) {
+			if (tileEntity.getOwner().isOwner(mc.player)) {
 				String uuid = tileEntity.uuids[index];
 
 				//copy UUID to clipboard
-				if(uuid != null)
+				if (uuid != null)
 					Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(uuid), null);
 			}
 		}
 
 		@Override
-		protected boolean isSelected(int index)
-		{
+		protected boolean isSelected(int index) {
 			return false;
 		}
 
@@ -154,13 +136,10 @@ public class GuiLogger extends GuiContainer{
 		protected void drawBackground() {}
 
 		@Override
-		protected void drawSlot(int slotIndex, int entryRight, int slotTop, int slotBuffer, Tessellator tess)
-		{
+		protected void drawSlot(int slotIndex, int entryRight, int slotTop, int slotBuffer, Tessellator tess) {
 			//highlighted hovered slot
-			if(mouseX >= left && mouseX <= entryRight && slotIndex >= 0 && slotIndex < getSize() && mouseY >= slotTop - 1 && mouseY <= slotTop + slotBuffer + 2)
-			{
-				if(tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty())
-				{
+			if (mouseX >= left && mouseX <= entryRight && slotIndex >= 0 && slotIndex < getSize() && mouseY >= slotTop - 1 && mouseY <= slotTop + slotBuffer + 2) {
+				if (tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty()) {
 					int min = left;
 					int max = entryRight + 1;
 					BufferBuilder bufferBuilder = tess.getBuffer();
@@ -184,21 +163,18 @@ public class GuiLogger extends GuiContainer{
 			}
 
 			//trickery to correctly set the currently hovered slot back if no slot is being hovered
-			if(i++ == getSize() - 1)
-			{
-				if(!isHovering)
-				{
+			if (i++ == getSize() - 1) {
+				if (!isHovering) {
 					hoveredSlot = -1;
 					i = 0;
 				}
-				else
-				{
+				else {
 					isHovering = false;
 					i = 0;
 				}
 			}
 
-			if(slotIndex >= 0 && slotIndex < tileEntity.players.length && tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].equals(""))
+			if (slotIndex >= 0 && slotIndex < tileEntity.players.length && tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].equals(""))
 				fontRenderer.drawString(tileEntity.players[slotIndex], width / 2 - fontRenderer.getStringWidth(tileEntity.players[slotIndex]) / 2, slotTop, 0xC6C6C6);
 		}
 	}

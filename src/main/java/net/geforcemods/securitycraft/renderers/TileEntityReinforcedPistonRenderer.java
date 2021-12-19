@@ -42,11 +42,10 @@ public class TileEntityReinforcedPistonRenderer extends TileEntitySpecialRendere
 			GlStateManager.enableBlend();
 			GlStateManager.disableCull();
 
-			if (Minecraft.isAmbientOcclusionEnabled()) {
+			if (Minecraft.isAmbientOcclusionEnabled())
 				GlStateManager.shadeModel(7425);
-			} else {
+			else
 				GlStateManager.shadeModel(7424);
-			}
 
 			bufferBuilder.begin(7, DefaultVertexFormats.BLOCK);
 			bufferBuilder.setTranslation(x - pos.getX() + te.getOffsetX(partialTicks), y - pos.getY() + te.getOffsetY(partialTicks), z - pos.getZ() + te.getOffsetZ(partialTicks));
@@ -66,9 +65,8 @@ public class TileEntityReinforcedPistonRenderer extends TileEntitySpecialRendere
 				movedState = movedState.withProperty(BlockPistonBase.EXTENDED, true);
 				renderStateModel(pos, movedState, bufferBuilder, world, true);
 			}
-			else {
+			else
 				renderStateModel(pos, movedState, bufferBuilder, world, false);
-			}
 
 			bufferBuilder.setTranslation(0.0D, 0.0D, 0.0D);
 			tessellator.draw();

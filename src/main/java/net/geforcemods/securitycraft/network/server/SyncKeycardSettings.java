@@ -13,8 +13,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class SyncKeycardSettings implements IMessage
-{
+public class SyncKeycardSettings implements IMessage {
 	private BlockPos pos;
 	private int signature;
 	private boolean[] acceptedLevels;
@@ -22,8 +21,7 @@ public class SyncKeycardSettings implements IMessage
 
 	public SyncKeycardSettings() {}
 
-	public SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int signature, boolean link)
-	{
+	public SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int signature, boolean link) {
 		this.pos = pos;
 		this.acceptedLevels = acceptedLevels;
 		this.signature = signature;
@@ -31,61 +29,51 @@ public class SyncKeycardSettings implements IMessage
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf)
-	{
+	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 		buf.writeInt(signature);
 		buf.writeBoolean(link);
 
-		for(int i = 0; i < 5; i++)
-		{
+		for (int i = 0; i < 5; i++) {
 			buf.writeBoolean(acceptedLevels[i]);
 		}
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf)
-	{
+	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
 		signature = buf.readInt();
 		link = buf.readBoolean();
 		acceptedLevels = new boolean[5];
 
-		for(int i = 0; i < 5; i++)
-		{
+		for (int i = 0; i < 5; i++) {
 			acceptedLevels[i] = buf.readBoolean();
 		}
 	}
 
-	public static class Handler implements IMessageHandler<SyncKeycardSettings, IMessage>
-	{
+	public static class Handler implements IMessageHandler<SyncKeycardSettings, IMessage> {
 		@Override
-		public IMessage onMessage(SyncKeycardSettings message, MessageContext context)
-		{
+		public IMessage onMessage(SyncKeycardSettings message, MessageContext context) {
 			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				BlockPos pos = message.pos;
 				EntityPlayer player = context.getServerHandler().player;
 				TileEntity tile = player.world.getTileEntity(pos);
 
-				if(tile instanceof TileEntityKeycardReader)
-				{
-					TileEntityKeycardReader te = (TileEntityKeycardReader)tile;
+				if (tile instanceof TileEntityKeycardReader) {
+					TileEntityKeycardReader te = (TileEntityKeycardReader) tile;
 					boolean isOwner = te.getOwner().isOwner(player);
 
-					if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
-					{
-						if(isOwner)
-						{
+					if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)) {
+						if (isOwner) {
 							te.setAcceptedLevels(message.acceptedLevels);
 							te.setSignature(message.signature);
 						}
 
-						if(message.link)
-						{
+						if (message.link) {
 							Container container = player.openContainer;
 
-							if(container instanceof ContainerKeycardReader)
-								((ContainerKeycardReader)container).link();
+							if (container instanceof ContainerKeycardReader)
+								((ContainerKeycardReader) container).link();
 						}
 					}
 				}

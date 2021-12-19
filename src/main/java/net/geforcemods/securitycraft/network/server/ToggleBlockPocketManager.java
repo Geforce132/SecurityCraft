@@ -11,16 +11,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class ToggleBlockPocketManager implements IMessage
-{
+public class ToggleBlockPocketManager implements IMessage {
 	private BlockPos pos;
 	private int dimension, size;
 	private boolean enabling;
 
 	public ToggleBlockPocketManager() {}
 
-	public ToggleBlockPocketManager(TileEntityBlockPocketManager te, boolean enabling, int size)
-	{
+	public ToggleBlockPocketManager(TileEntityBlockPocketManager te, boolean enabling, int size) {
 		pos = te.getPos();
 		dimension = te.getWorld().provider.getDimension();
 		this.enabling = enabling;
@@ -28,8 +26,7 @@ public class ToggleBlockPocketManager implements IMessage
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf)
-	{
+	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
 		dimension = buf.readInt();
 		enabling = buf.readBoolean();
@@ -37,32 +34,28 @@ public class ToggleBlockPocketManager implements IMessage
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf)
-	{
+	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 		buf.writeInt(dimension);
 		buf.writeBoolean(enabling);
 		buf.writeInt(size);
 	}
 
-	public static class Handler implements IMessageHandler<ToggleBlockPocketManager, IMessage>
-	{
+	public static class Handler implements IMessageHandler<ToggleBlockPocketManager, IMessage> {
 		@Override
-		public IMessage onMessage(ToggleBlockPocketManager message, MessageContext ctx)
-		{
+		public IMessage onMessage(ToggleBlockPocketManager message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
 				TileEntity te = world.getTileEntity(message.pos);
 
-				if(te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager)te).getOwner().isOwner(player))
-				{
-					((TileEntityBlockPocketManager)te).size = message.size;
+				if (te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager) te).getOwner().isOwner(player)) {
+					((TileEntityBlockPocketManager) te).size = message.size;
 
-					if(message.enabling)
-						((TileEntityBlockPocketManager)te).enableMultiblock();
+					if (message.enabling)
+						((TileEntityBlockPocketManager) te).enableMultiblock();
 					else
-						((TileEntityBlockPocketManager)te).disableMultiblock();
+						((TileEntityBlockPocketManager) te).disableMultiblock();
 				}
 			});
 			return null;

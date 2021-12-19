@@ -7,11 +7,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 
 /**
- * Sentry - bl4ckscor3
- * Created using Tabula 7.0.0
+ * Sentry - bl4ckscor3 Created using Tabula 7.0.0
  */
-public class ModelSentry extends ModelBase
-{
+public class ModelSentry extends ModelBase {
 	public ModelRenderer base;
 	public ModelRenderer body;
 	public ModelRenderer neck;
@@ -21,8 +19,7 @@ public class ModelSentry extends ModelBase
 	public ModelRenderer leftEye;
 	public ModelRenderer nose;
 
-	public ModelSentry()
-	{
+	public ModelSentry() {
 		textureWidth = 64;
 		textureHeight = 64;
 		base = new ModelRenderer(this, 0, 0);
@@ -52,15 +49,13 @@ public class ModelSentry extends ModelBase
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
-	{
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		base.render(scale);
 		GlStateManager.pushMatrix();
 
-		if(entity instanceof EntitySentry)
-		{
-			GlStateManager.rotate(((EntitySentry)entity).getDataManager().get(EntitySentry.HEAD_ROTATION), 0.0F, 1.0F, 0.0F);
-			GlStateManager.translate(0.0F, ((EntitySentry)entity).getHeadYTranslation(), 0.0F);
+		if (entity instanceof EntitySentry) {
+			GlStateManager.rotate(((EntitySentry) entity).getDataManager().get(EntitySentry.HEAD_ROTATION), 0.0F, 1.0F, 0.0F);
+			GlStateManager.translate(0.0F, ((EntitySentry) entity).getHeadYTranslation(), 0.0F);
 		}
 
 		head.render(scale);

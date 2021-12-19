@@ -11,10 +11,9 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 
 public class BriefcaseInventory implements IInventory {
-
 	public static final int SIZE = 12;
 	private final ItemStack briefcase;
-	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack>withSize(SIZE, ItemStack.EMPTY);
+	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack> withSize(SIZE, ItemStack.EMPTY);
 
 	public BriefcaseInventory(ItemStack briefcaseItem) {
 		briefcase = briefcaseItem;
@@ -38,11 +37,11 @@ public class BriefcaseInventory implements IInventory {
 	public void readFromNBT(NBTTagCompound tag) {
 		NBTTagList items = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
-		for(int i = 0; i < items.tagCount(); i++) {
+		for (int i = 0; i < items.tagCount(); i++) {
 			NBTTagCompound item = items.getCompoundTagAt(i);
 			int slot = item.getInteger("Slot");
 
-			if(slot < getSizeInventory())
+			if (slot < getSizeInventory())
 				briefcaseInventory.set(slot, new ItemStack(item));
 		}
 	}
@@ -50,14 +49,15 @@ public class BriefcaseInventory implements IInventory {
 	public void writeToNBT(NBTTagCompound tag) {
 		NBTTagList items = new NBTTagList();
 
-		for(int i = 0; i < getSizeInventory(); i++)
-			if(!getStackInSlot(i).isEmpty()) {
+		for (int i = 0; i < getSizeInventory(); i++) {
+			if (!getStackInSlot(i).isEmpty()) {
 				NBTTagCompound item = new NBTTagCompound();
 				item.setInteger("Slot", i);
 				getStackInSlot(i).writeToNBT(item);
 
 				items.appendTag(item);
 			}
+		}
 
 		tag.setTag("ItemInventory", items);
 	}
@@ -66,8 +66,8 @@ public class BriefcaseInventory implements IInventory {
 	public ItemStack decrStackSize(int index, int size) {
 		ItemStack stack = getStackInSlot(index);
 
-		if(!stack.isEmpty())
-			if(stack.getCount() > size) {
+		if (!stack.isEmpty())
+			if (stack.getCount() > size) {
 				stack = stack.splitStack(size);
 				markDirty();
 			}
@@ -88,7 +88,7 @@ public class BriefcaseInventory implements IInventory {
 	public void setInventorySlotContents(int index, ItemStack itemStack) {
 		briefcaseInventory.set(index, itemStack);
 
-		if(!itemStack.isEmpty() && itemStack.getCount() > getInventoryStackLimit())
+		if (!itemStack.isEmpty() && itemStack.getCount() > getInventoryStackLimit())
 			itemStack.setCount(getInventoryStackLimit());
 
 		markDirty();
@@ -111,9 +111,10 @@ public class BriefcaseInventory implements IInventory {
 
 	@Override
 	public void markDirty() {
-		for(int i = 0; i < getSizeInventory(); i++)
-			if(!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0)
+		for (int i = 0; i < getSizeInventory(); i++) {
+			if (!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0)
 				briefcaseInventory.set(i, ItemStack.EMPTY);
+		}
 
 		writeToNBT(briefcase.getTagCompound());
 	}
@@ -154,16 +155,17 @@ public class BriefcaseInventory implements IInventory {
 
 	@Override
 	public void clear() {
-		for(int i = 0; i < SIZE; i++)
+		for (int i = 0; i < SIZE; i++) {
 			briefcaseInventory.set(i, ItemStack.EMPTY);
+		}
 	}
 
 	@Override
-	public boolean isEmpty()
-	{
-		for(ItemStack stack : briefcaseInventory)
-			if(!stack.isEmpty())
+	public boolean isEmpty() {
+		for (ItemStack stack : briefcaseInventory) {
+			if (!stack.isEmpty())
 				return false;
+		}
 
 		return true;
 	}

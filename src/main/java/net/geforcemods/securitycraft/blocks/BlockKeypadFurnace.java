@@ -36,7 +36,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockKeypadFurnace extends BlockDisguisable {
-
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool OPEN = PropertyBool.create("open");
 
@@ -45,33 +44,22 @@ public class BlockKeypadFurnace extends BlockDisguisable {
 		setSoundType(SoundType.METAL);
 	}
 
-	/**
-	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-	 */
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
-	}
-
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
-	@Override
-	public boolean isNormalCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state)
-	{
+	public boolean isNormalCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity tileentity = world.getTileEntity(pos);
 
-		if (tileentity instanceof IInventory)
-		{
-			InventoryHelper.dropInventoryItems(world, pos, (IInventory)tileentity);
+		if (tileentity instanceof IInventory) {
+			InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileentity);
 			world.updateComparatorOutputLevel(pos, this);
 		}
 
@@ -79,34 +67,31 @@ public class BlockKeypadFurnace extends BlockDisguisable {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(!world.isRemote)
-		{
-			TileEntityKeypadFurnace te = (TileEntityKeypadFurnace)world.getTileEntity(pos);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (!world.isRemote) {
+			TileEntityKeypadFurnace te = (TileEntityKeypadFurnace) world.getTileEntity(pos);
 
-			if(ModuleUtils.isDenied(te, player))
-			{
-				if(te.sendsMessages())
+			if (ModuleUtils.isDenied(te, player)) {
+				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 
 				return true;
 			}
-			else if(ModuleUtils.isAllowed(te, player))
-			{
-				if(te.sendsMessages())
+			else if (ModuleUtils.isAllowed(te, player)) {
+				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				activate(state, world, pos, player);
 			}
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
+			else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
 				te.openPasswordGUI(player);
 		}
 
 		return true;
 	}
 
-	public void activate(IBlockState state, World world, BlockPos pos, EntityPlayer player){
-		if(!state.getValue(OPEN))
+	public void activate(IBlockState state, World world, BlockPos pos, EntityPlayer player) {
+		if (!state.getValue(OPEN))
 			world.setBlockState(pos, state.withProperty(OPEN, true));
 
 		world.playEvent(null, 1006, pos, 0);
@@ -114,40 +99,35 @@ public class BlockKeypadFurnace extends BlockDisguisable {
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
 		TileEntity te = world.getTileEntity(pos);
 
-		return (state.getValue(OPEN) && te != null && te instanceof TileEntityKeypadFurnace && ((TileEntityKeypadFurnace)te).isBurning()) ? 15 : 0;
+		return (state.getValue(OPEN) && te != null && te instanceof TileEntityKeypadFurnace && ((TileEntityKeypadFurnace) te).isBurning()) ? 15 : 0;
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(OPEN, false);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		if(meta <= 5)
+	public IBlockState getStateFromMeta(int meta) {
+		if (meta <= 5)
 			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(OPEN, false);
 		else
 			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(OPEN, true);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		if(state.getValue(OPEN))
+	public int getMetaFromState(IBlockState state) {
+		if (state.getValue(OPEN))
 			return (state.getValue(FACING).getIndex() + 6);
 		else
 			return state.getValue(FACING).getIndex();
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, OPEN);
 	}
 
@@ -157,44 +137,38 @@ public class BlockKeypadFurnace extends BlockDisguisable {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror)
-	{
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
 
-	public static class Convertible implements Function<Object,IPasswordConvertible>, IPasswordConvertible
-	{
+	public static class Convertible implements Function<Object, IPasswordConvertible>, IPasswordConvertible {
 		@Override
-		public IPasswordConvertible apply(Object o)
-		{
+		public IPasswordConvertible apply(Object o) {
 			return this;
 		}
 
 		@Override
-		public Block getOriginalBlock()
-		{
+		public Block getOriginalBlock() {
 			return Blocks.FURNACE;
 		}
 
 		@Override
-		public boolean convert(EntityPlayer player, World world, BlockPos pos)
-		{
+		public boolean convert(EntityPlayer player, World world, BlockPos pos) {
 			EnumFacing facing = world.getBlockState(pos).getValue(FACING);
-			TileEntityFurnace furnace = (TileEntityFurnace)world.getTileEntity(pos);
+			TileEntityFurnace furnace = (TileEntityFurnace) world.getTileEntity(pos);
 			NBTTagCompound tag = furnace.writeToNBT(new NBTTagCompound());
 			TileEntity newTe;
 
 			furnace.clear();
 			world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().withProperty(FACING, facing).withProperty(OPEN, false));
 			newTe = world.getTileEntity(pos);
-			((TileEntityKeypadFurnace)newTe).readFromNBT(tag);
-			((IOwnable)newTe).setOwner(player.getUniqueID().toString(), player.getName());
+			((TileEntityKeypadFurnace) newTe).readFromNBT(tag);
+			((IOwnable) newTe).setOwner(player.getUniqueID().toString(), player.getName());
 			return true;
 		}
 	}

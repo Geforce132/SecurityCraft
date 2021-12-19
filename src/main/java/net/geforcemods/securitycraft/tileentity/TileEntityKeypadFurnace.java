@@ -41,48 +41,47 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class TileEntityKeypadFurnace extends TileEntityDisguisable implements ISidedInventory, IPasswordProtected, ITickable, IModuleInventory, ICustomizable, INameSetter, ILockable {
-
 	private IItemHandler insertOnlyHandler;
-	private static final int[] slotsTop = {0};
-	private static final int[] slotsBottom = {2, 1};
-	private static final int[] slotsSides = {1};
-	public NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
+	private static final int[] slotsTop = {
+			0
+	};
+	private static final int[] slotsBottom = {
+			2, 1
+	};
+	private static final int[] slotsSides = {
+			1
+	};
+	public NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack> withSize(3, ItemStack.EMPTY);
 	public int furnaceBurnTime;
 	public int currentItemBurnTime;
 	public int cookTime;
 	public int totalCookTime;
 	private String furnaceCustomName;
 	private String passcode;
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 
 	@Override
-	public int getSizeInventory()
-	{
+	public int getSizeInventory() {
 		return furnaceItemStacks.size();
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int index)
-	{
+	public ItemStack getStackInSlot(int index) {
 		return index >= 100 ? getModuleInSlot(index) : furnaceItemStacks.get(index);
 	}
 
 	@Override
-	public ItemStack decrStackSize(int index, int count)
-	{
-		if (!furnaceItemStacks.get(index).isEmpty())
-		{
+	public ItemStack decrStackSize(int index, int count) {
+		if (!furnaceItemStacks.get(index).isEmpty()) {
 			ItemStack stack;
 
-			if (furnaceItemStacks.get(index).getCount() <= count)
-			{
+			if (furnaceItemStacks.get(index).getCount() <= count) {
 				stack = furnaceItemStacks.get(index);
 				furnaceItemStacks.set(index, ItemStack.EMPTY);
 				return stack;
 			}
-			else
-			{
+			else {
 				stack = furnaceItemStacks.get(index).splitStack(count);
 
 				if (furnaceItemStacks.get(index).getCount() == 0)
@@ -96,10 +95,8 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	}
 
 	@Override
-	public ItemStack removeStackFromSlot(int index)
-	{
-		if (!furnaceItemStacks.get(index).isEmpty())
-		{
+	public ItemStack removeStackFromSlot(int index) {
+		if (!furnaceItemStacks.get(index).isEmpty()) {
 			ItemStack stack = furnaceItemStacks.get(index);
 			furnaceItemStacks.set(index, ItemStack.EMPTY);
 			return stack;
@@ -109,8 +106,7 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack stack)
-	{
+	public void setInventorySlotContents(int index, ItemStack stack) {
 		ItemStack furnaceStack = furnaceItemStacks.get(index);
 		boolean areStacksEqual = !stack.isEmpty() && stack.isItemEqual(furnaceStack) && ItemStack.areItemStackTagsEqual(stack, furnaceStack);
 		furnaceItemStacks.set(index, stack);
@@ -118,8 +114,7 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 		if (stack.getCount() > getInventoryStackLimit())
 			stack.setCount(getInventoryStackLimit());
 
-		if (index == 0 && !areStacksEqual)
-		{
+		if (index == 0 && !areStacksEqual) {
 			totalCookTime = getTotalCookTime();
 			cookTime = 0;
 			markDirty();
@@ -127,14 +122,12 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	}
 
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return furnaceCustomName;
 	}
 
 	@Override
-	public boolean hasCustomName()
-	{
+	public boolean hasCustomName() {
 		return furnaceCustomName != null && !furnaceCustomName.isEmpty() && !furnaceCustomName.equals(getDefaultName().getFormattedText());
 	}
 
@@ -154,17 +147,15 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
 		NBTTagList list = tag.getTagList("Items", 10);
-		furnaceItemStacks = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
+		furnaceItemStacks = NonNullList.<ItemStack> withSize(getSizeInventory(), ItemStack.EMPTY);
 
-		for (int i = 0; i < list.tagCount(); ++i)
-		{
+		for (int i = 0; i < list.tagCount(); ++i) {
 			NBTTagCompound stackTag = list.getCompoundTagAt(i);
 			byte slot = stackTag.getByte("Slot");
 
@@ -181,29 +172,28 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
-		tag.setShort("BurnTime", (short)furnaceBurnTime);
-		tag.setShort("CookTime", (short)cookTime);
-		tag.setShort("CookTimeTotal", (short)totalCookTime);
+		tag.setShort("BurnTime", (short) furnaceBurnTime);
+		tag.setShort("CookTime", (short) cookTime);
+		tag.setShort("CookTimeTotal", (short) totalCookTime);
 		NBTTagList list = new NBTTagList();
 
-		for (int i = 0; i < furnaceItemStacks.size(); ++i)
-			if (!furnaceItemStacks.get(i).isEmpty())
-			{
+		for (int i = 0; i < furnaceItemStacks.size(); ++i) {
+			if (!furnaceItemStacks.get(i).isEmpty()) {
 				NBTTagCompound stackTag = new NBTTagCompound();
-				stackTag.setByte("Slot", (byte)i);
+				stackTag.setByte("Slot", (byte) i);
 				furnaceItemStacks.get(i).writeToNBT(stackTag);
 				list.appendTag(stackTag);
 			}
+		}
 
 		tag.setTag("Items", list);
 
-		if(passcode != null && !passcode.isEmpty())
+		if (passcode != null && !passcode.isEmpty())
 			tag.setString("passcode", passcode);
 
 		if (hasCustomName())
@@ -213,83 +203,62 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	}
 
 	@Override
-	public int getInventoryStackLimit()
-	{
+	public int getInventoryStackLimit() {
 		return 64;
 	}
 
-	/**
-	 * Returns an integer between 0 and the passed value representing how close the current item is to being completely
-	 * cooked
-	 */
 	@SideOnly(Side.CLIENT)
-	public int getCookProgressScaled(int scaleFactor)
-	{
+	public int getCookProgressScaled(int scaleFactor) {
 		return cookTime * scaleFactor / 200;
 	}
 
-	/**
-	 * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel
-	 * item, where 0 means that the item is exhausted and the passed value means that the item is fresh
-	 */
 	@SideOnly(Side.CLIENT)
-	public int getBurnTimeRemainingScaled(int scaleFactor)
-	{
+	public int getBurnTimeRemainingScaled(int scaleFactor) {
 		if (currentItemBurnTime == 0)
 			currentItemBurnTime = 200;
 
 		return furnaceBurnTime * scaleFactor / currentItemBurnTime;
 	}
 
-	public boolean isBurning()
-	{
+	public boolean isBurning() {
 		return furnaceBurnTime > 0;
 	}
 
 	@Override
-	public void update()
-	{
+	public void update() {
 		boolean wasBurning = isBurning();
 		boolean shouldMarkDirty = false;
 
-		if(isBurning())
+		if (isBurning())
 			--furnaceBurnTime;
 
-		if(!world.isRemote)
-		{
+		if (!world.isRemote) {
 			ItemStack fuelStack = furnaceItemStacks.get(1);
 
-			if(!isBurning() && (fuelStack.isEmpty() || furnaceItemStacks.get(0).isEmpty()))
-			{
-				if(!isBurning() && cookTime > 0)
+			if (!isBurning() && (fuelStack.isEmpty() || furnaceItemStacks.get(0).isEmpty())) {
+				if (!isBurning() && cookTime > 0)
 					cookTime = MathHelper.clamp(cookTime - 2, 0, totalCookTime);
 			}
-			else
-			{
-				if(!isBurning() && canSmelt())
-				{
+			else {
+				if (!isBurning() && canSmelt()) {
 					currentItemBurnTime = furnaceBurnTime = TileEntityFurnace.getItemBurnTime(fuelStack);
 
-					if(isBurning())
-					{
+					if (isBurning()) {
 						shouldMarkDirty = true;
 
-						if(!fuelStack.isEmpty())
-						{
+						if (!fuelStack.isEmpty()) {
 							fuelStack.shrink(1);
 
-							if(fuelStack.getCount() == 0)
+							if (fuelStack.getCount() == 0)
 								furnaceItemStacks.set(1, fuelStack.getItem().getContainerItem(fuelStack));
 						}
 					}
 				}
 
-				if(isBurning() && canSmelt())
-				{
+				if (isBurning() && canSmelt()) {
 					++cookTime;
 
-					if(cookTime == totalCookTime)
-					{
+					if (cookTime == totalCookTime) {
 						cookTime = 0;
 						totalCookTime = getTotalCookTime();
 						smeltItem();
@@ -300,35 +269,32 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 					cookTime = 0;
 			}
 
-			if(wasBurning != isBurning())
+			if (wasBurning != isBurning())
 				shouldMarkDirty = true;
 		}
 
-		if(shouldMarkDirty)
+		if (shouldMarkDirty)
 			markDirty();
 	}
 
-	public int getTotalCookTime()
-	{
+	public int getTotalCookTime() {
 		return 200;
 	}
 
-	private boolean canSmelt()
-	{
-		if(furnaceItemStacks.get(0).isEmpty())
+	private boolean canSmelt() {
+		if (furnaceItemStacks.get(0).isEmpty())
 			return false;
-		else
-		{
+		else {
 			ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(furnaceItemStacks.get(0));
 
-			if(smeltResult.isEmpty())
+			if (smeltResult.isEmpty())
 				return false;
 
 			ItemStack outputStack = furnaceItemStacks.get(2);
 
-			if(outputStack.isEmpty())
+			if (outputStack.isEmpty())
 				return true;
-			else if(!outputStack.isItemEqual(smeltResult))
+			else if (!outputStack.isItemEqual(smeltResult))
 				return false;
 
 			int resultAmount = outputStack.getCount() + smeltResult.getCount();
@@ -337,33 +303,30 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 		}
 	}
 
-	public void smeltItem()
-	{
-		if(canSmelt())
-		{
+	public void smeltItem() {
+		if (canSmelt()) {
 			ItemStack fuelStack = furnaceItemStacks.get(0);
 			ItemStack inputStack = furnaceItemStacks.get(1);
 			ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(fuelStack);
 			ItemStack outputStack = furnaceItemStacks.get(2);
 
-			if(outputStack.isEmpty())
+			if (outputStack.isEmpty())
 				furnaceItemStacks.set(2, smeltResult.copy());
-			else if(outputStack.getItem() == smeltResult.getItem())
+			else if (outputStack.getItem() == smeltResult.getItem())
 				outputStack.grow(smeltResult.getCount());
 
-			if(fuelStack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && fuelStack.getMetadata() == 1 && !inputStack.isEmpty() && inputStack.getItem() == Items.BUCKET)
+			if (fuelStack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && fuelStack.getMetadata() == 1 && !inputStack.isEmpty() && inputStack.getItem() == Items.BUCKET)
 				furnaceItemStacks.set(1, new ItemStack(Items.WATER_BUCKET));
 
 			fuelStack.shrink(1);
 
-			if(fuelStack.getCount() <= 0)
+			if (fuelStack.getCount() <= 0)
 				furnaceItemStacks.set(0, ItemStack.EMPTY);
 		}
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer player)
-	{
+	public boolean isUsableByPlayer(EntityPlayer player) {
 		return world.getTileEntity(pos) != this ? false : player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
 	}
 
@@ -374,38 +337,33 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	public void closeInventory(EntityPlayer player) {}
 
 	@Override
-	public boolean isEmpty()
-	{
-		for(ItemStack stack : furnaceItemStacks)
-			if(!stack.isEmpty())
+	public boolean isEmpty() {
+		for (ItemStack stack : furnaceItemStacks) {
+			if (!stack.isEmpty())
 				return false;
+		}
 
 		return true;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack)
-	{
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
 		return index != 2 && (index != 1 || (TileEntityFurnace.isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack) && furnaceItemStacks.get(1).getItem() != Items.BUCKET));
 	}
 
 	@Override
-	public int[] getSlotsForFace(EnumFacing side)
-	{
+	public int[] getSlotsForFace(EnumFacing side) {
 		return side == EnumFacing.DOWN ? slotsBottom : (side == EnumFacing.UP ? slotsTop : slotsSides);
 	}
 
 	@Override
-	public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction)
-	{
+	public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction) {
 		return isItemValidForSlot(index, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
-	{
-		if (direction == EnumFacing.DOWN && index == 1)
-		{
+	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+		if (direction == EnumFacing.DOWN && index == 1) {
 			Item item = stack.getItem();
 
 			if (item != Items.WATER_BUCKET && item != Items.BUCKET)
@@ -416,10 +374,8 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	}
 
 	@Override
-	public int getField(int id)
-	{
-		switch (id)
-		{
+	public int getField(int id) {
+		switch (id) {
 			case 0:
 				return furnaceBurnTime;
 			case 1:
@@ -434,10 +390,8 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	}
 
 	@Override
-	public void setField(int id, int value)
-	{
-		switch (id)
-		{
+	public void setField(int id, int value) {
+		switch (id) {
 			case 0:
 				furnaceBurnTime = value;
 				break;
@@ -453,41 +407,37 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	}
 
 	@Override
-	public int getFieldCount()
-	{
+	public int getFieldCount() {
 		return 4;
 	}
 
 	@Override
-	public void clear()
-	{
-		for (int i = 0; i < furnaceItemStacks.size(); ++i)
+	public void clear() {
+		for (int i = 0; i < furnaceItemStacks.size(); ++i) {
 			furnaceItemStacks.set(i, ItemStack.EMPTY);
+		}
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-	{
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public boolean enableHack()
-	{
+	public boolean enableHack() {
 		return true;
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
-	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T)BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), () -> getInsertOnlyHandler());
-		else return super.getCapability(capability, facing);
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return (T) BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), () -> getInsertOnlyHandler());
+		else
+			return super.getCapability(capability, facing);
 	}
 
-	private IItemHandler getInsertOnlyHandler()
-	{
-		if(insertOnlyHandler == null)
+	private IItemHandler getInsertOnlyHandler() {
+		if (insertOnlyHandler == null)
 			insertOnlyHandler = new InsertOnlyInvWrapper(this);
 
 		return insertOnlyHandler;
@@ -495,17 +445,16 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!world.isRemote)
-			((BlockKeypadFurnace)getBlockType()).activate(world.getBlockState(pos), world, pos, player);
+		if (!world.isRemote)
+			((BlockKeypadFurnace) getBlockType()).activate(world.getBlockState(pos), world, pos, player);
 	}
 
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
-		if(getPassword() != null)
+		if (getPassword() != null)
 			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
-		else
-		{
-			if(getOwner().isOwner(player))
+		else {
+			if (getOwner().isOwner(player))
 				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			else
 				PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
@@ -529,25 +478,25 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	}
 
 	@Override
-	public NonNullList<ItemStack> getInventory()
-	{
+	public NonNullList<ItemStack> getInventory() {
 		return modules;
 	}
 
 	@Override
-	public EnumModuleType[] acceptedModules()
-	{
-		return new EnumModuleType[] {EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.DISGUISE};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[] {
+				EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.DISGUISE
+		};
 	}
 
 	@Override
-	public Option<?>[] customOptions()
-	{
-		return new Option[]{sendMessage};
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				sendMessage
+		};
 	}
 
-	public boolean sendsMessages()
-	{
+	public boolean sendsMessages() {
 		return sendMessage.get();
 	}
 }

@@ -14,7 +14,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 
 public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAffected, ITickable {
-
 	private final double CAMERA_SPEED = 0.0180D;
 	public double cameraRotation = 0.0D;
 	public boolean addToRotation = true;
@@ -28,21 +27,19 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 	private int playersViewing = 0;
 
 	@Override
-	public void update(){
-		if(!shutDown)
-		{
-			if(!shouldRotateOption.get())
-			{
+	public void update() {
+		if (!shutDown) {
+			if (!shouldRotateOption.get()) {
 				cameraRotation = customRotationOption.get();
 				return;
 			}
 
-			if(addToRotation && cameraRotation <= 1.55F)
+			if (addToRotation && cameraRotation <= 1.55F)
 				cameraRotation += rotationSpeedOption.get();
 			else
 				addToRotation = false;
 
-			if(!addToRotation && cameraRotation >= -1.55F)
+			if (!addToRotation && cameraRotation >= -1.55F)
 				cameraRotation -= rotationSpeedOption.get();
 			else
 				addToRotation = true;
@@ -50,26 +47,22 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 	}
 
 	@Override
-	public boolean isShutDown()
-	{
+	public boolean isShutDown() {
 		return shutDown;
 	}
 
 	@Override
-	public void setShutDown(boolean shutDown)
-	{
+	public void setShutDown(boolean shutDown) {
 		this.shutDown = shutDown;
 	}
 
 	@Override
-	public TileEntity getTileEntity()
-	{
+	public TileEntity getTileEntity() {
 		return this;
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		tag.setFloat("LastPitch", lastPitch);
 		tag.setFloat("LastYaw", lastYaw);
 		tag.setBoolean("ShutDown", shutDown);
@@ -78,8 +71,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		lastPitch = tag.getFloat("LastPitch");
 		lastYaw = tag.getFloat("LastYaw");
@@ -88,12 +80,10 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
-	{
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
 		super.onModuleRemoved(stack, module);
 
-		if(module == EnumModuleType.REDSTONE)
-		{
+		if (module == EnumModuleType.REDSTONE) {
 			IBlockState newState = world.getBlockState(pos).withProperty(BlockSecurityCamera.POWERED, false);
 
 			world.setBlockState(pos, newState);
@@ -103,38 +93,38 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 	}
 
 	@Override
-	public EnumModuleType[] acceptedModules(){
-		return new EnumModuleType[] { EnumModuleType.REDSTONE, EnumModuleType.ALLOWLIST };
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[] {
+				EnumModuleType.REDSTONE, EnumModuleType.ALLOWLIST
+		};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ rotationSpeedOption, shouldRotateOption, customRotationOption };
+		return new Option[] {
+				rotationSpeedOption, shouldRotateOption, customRotationOption
+		};
 	}
 
 	@Override
-	public void onLoad()
-	{
+	public void onLoad() {
 		super.onLoad();
 
-		if(world != null && world.getBlockState(pos).getBlock() instanceof BlockSecurityCamera)
+		if (world != null && world.getBlockState(pos).getBlock() instanceof BlockSecurityCamera)
 			down = world.getBlockState(pos).getValue(BlockSecurityCamera.FACING) == EnumFacing.DOWN;
 	}
 
-	public void startViewing()
-	{
+	public void startViewing() {
 		playersViewing++;
 		sync();
 	}
 
-	public void stopViewing()
-	{
+	public void stopViewing() {
 		playersViewing--;
 		sync();
 	}
 
-	public boolean isSomeoneViewing()
-	{
+	public boolean isSomeoneViewing() {
 		return playersViewing > 0;
 	}
 }

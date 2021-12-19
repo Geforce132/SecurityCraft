@@ -16,27 +16,25 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockOwnableStairs extends BlockStairs implements ITileEntityProvider
-{
+public class BlockOwnableStairs extends BlockStairs implements ITileEntityProvider {
 	public BlockOwnableStairs(Block baseBlock, int meta) {
 		super(meta != 0 ? baseBlock.getStateFromMeta(meta) : baseBlock.getDefaultState());
 		useNeighborBrightness = true;
 
-		if(baseBlock == SCContent.reinforcedWoodPlanks)
+		if (baseBlock == SCContent.reinforcedWoodPlanks)
 			setSoundType(SoundType.WOOD);
 		else
 			setSoundType(SoundType.STONE);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state){
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
 		world.removeTileEntity(pos);
 	}

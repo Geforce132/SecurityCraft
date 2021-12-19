@@ -57,7 +57,6 @@ import net.minecraft.util.text.event.ClickEvent.Action;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class GuiSCManual extends GuiScreen {
-
 	private ResourceLocation infoBookTexture = new ResourceLocation("securitycraft:textures/gui/info_book_texture.png");
 	private ResourceLocation infoBookTextureSpecial = new ResourceLocation("securitycraft:textures/gui/info_book_texture_special.png"); //for items without a recipe
 	private ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
@@ -81,7 +80,7 @@ public class GuiSCManual extends GuiScreen {
 	private ItemStack pageStack;
 
 	@Override
-	public void initGui(){
+	public void initGui() {
 		byte startY = 2;
 
 		startX = (width - 256) / 2;
@@ -102,38 +101,36 @@ public class GuiSCManual extends GuiScreen {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks){
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-		if(currentPage == -1)
+		if (currentPage == -1)
 			mc.getTextureManager().bindTexture(infoBookTitlePage);
-		else if(recipe != null || ItemSCManual.PAGES.get(currentPage).isRecipeDisabled())
+		else if (recipe != null || ItemSCManual.PAGES.get(currentPage).isRecipeDisabled())
 			mc.getTextureManager().bindTexture(infoBookTexture);
 		else
 			mc.getTextureManager().bindTexture(infoBookTextureSpecial);
 
 		drawTexturedModalRect(startX, 5, 0, 0, 256, 250);
 
-		for(int i = 0; i < buttonList.size(); i++)
-		{
+		for (int i = 0; i < buttonList.size(); i++) {
 			buttonList.get(i).drawButton(mc, mouseX, mouseY, 0);
 		}
 
-		if(currentPage > -1)
-		{
+		if (currentPage > -1) {
 			String pageNumberText = (currentPage + 2) + "/" + (ItemSCManual.PAGES.size() + 1); //+1 because the "welcome" page is not included
 			String designedBy = ItemSCManual.PAGES.get(currentPage).getDesignedBy();
 
-			if(subpages.size() > 1)
+			if (subpages.size() > 1)
 				fontRenderer.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
-			if(ItemSCManual.PAGES.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
+			if (ItemSCManual.PAGES.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
 				fontRenderer.drawString(Utils.localize("gui.securitycraft:scManual.reinforced").getFormattedText(), startX + 39, 27, 0, false);
 			else
 				fontRenderer.drawString(Utils.localize(ItemSCManual.PAGES.get(currentPage).getItem().getTranslationKey() + ".name").getFormattedText(), startX + 39, 27, 0, false);
 
-			if(designedBy != null && !designedBy.isEmpty())
+			if (designedBy != null && !designedBy.isEmpty())
 				fontRenderer.drawSplitString(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy).getFormattedText(), startX + 18, 150, 75, 0);
 
 			fontRenderer.drawString(pageNumberText, startX + 240 - fontRenderer.getStringWidth(pageNumberText), 182, 0x8E8270);
@@ -142,42 +139,39 @@ public class GuiSCManual extends GuiScreen {
 			mc.getTextureManager().bindTexture(infoBookIcons);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-			if(explosive)
+			if (explosive)
 				drawTexturedModalRect(startX + 107, 117, 54, 1, 18, 18);
 
-			if(ownable)
+			if (ownable)
 				drawTexturedModalRect(startX + 29, 118, 1, 1, 16, 16);
 
-			if(passwordProtected)
+			if (passwordProtected)
 				drawTexturedModalRect(startX + 55, 118, 18, 1, 17, 16);
 
-			if(viewActivated)
+			if (viewActivated)
 				drawTexturedModalRect(startX + 81, 118, 36, 1, 17, 16);
 
-			if(customizable)
+			if (customizable)
 				drawTexturedModalRect(startX + 136, 118, 88, 1, 16, 16);
 
-			if(moduleInventory)
+			if (moduleInventory)
 				drawTexturedModalRect(startX + 163, 118, 105, 1, 16, 16);
 
 			if (lockable)
 				drawTexturedModalRect(startX + 189, 118, 154, 1, 16, 16);
 
-			if(customizable || moduleInventory)
+			if (customizable || moduleInventory)
 				drawTexturedModalRect(startX + 213, 118, 72, 1, 16, 16);
 
-			if(recipe != null)
-			{
-				for(int i = 0; i < 3; i++)
-				{
-					for(int j = 0; j < 3; j++)
-					{
-						if(((i * 3) + j) >= recipe.size())
+			if (recipe != null) {
+				for (int i = 0; i < 3; i++) {
+					for (int j = 0; j < 3; j++) {
+						if (((i * 3) + j) >= recipe.size())
 							break;
 
 						ItemStack[] matchingStacks = recipe.get((i * 3) + j).getMatchingStacks();
 
-						if(matchingStacks.length == 0 || matchingStacks[0].isEmpty())
+						if (matchingStacks.length == 0 || matchingStacks[0].isEmpty())
 							continue;
 
 						GuiUtils.drawItemStackToGui(matchingStacks[0], (startX + 101) + (j * 19), 144 + (i * 19), !(matchingStacks[0].getItem() instanceof ItemBlock));
@@ -185,39 +179,34 @@ public class GuiSCManual extends GuiScreen {
 				}
 			}
 
-			for(HoverChecker chc : hoverCheckers)
-			{
-				if(chc != null && chc.checkHover(mouseX, mouseY))
-				{
-					if(chc instanceof StackHoverChecker && !((StackHoverChecker)chc).getStack().isEmpty())
-						renderToolTip(((StackHoverChecker)chc).getStack(), mouseX, mouseY);
-					else if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
-						drawHoveringText(((StringHoverChecker)chc).getLines(), mouseX, mouseY);
+			for (HoverChecker chc : hoverCheckers) {
+				if (chc != null && chc.checkHover(mouseX, mouseY)) {
+					if (chc instanceof StackHoverChecker && !((StackHoverChecker) chc).getStack().isEmpty())
+						renderToolTip(((StackHoverChecker) chc).getStack(), mouseX, mouseY);
+					else if (chc instanceof StringHoverChecker && ((StringHoverChecker) chc).getName() != null)
+						drawHoveringText(((StringHoverChecker) chc).getLines(), mouseX, mouseY);
 				}
 			}
 		}
-		else //"welcome" page
-		{
+		else { //"welcome" page
 			String pageNumberText = "1/" + (ItemSCManual.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
 			fontRenderer.drawString(intro1, width / 2 - fontRenderer.getStringWidth(intro1) / 2, 22, 0, false);
 
-			for(int i = 0; i < intro2.size(); i++)
-			{
+			for (int i = 0; i < intro2.size(); i++) {
 				String text = intro2.get(i);
 
 				fontRenderer.drawString(text, width / 2 - fontRenderer.getStringWidth(text) / 2, 150 + 10 * i, 0);
 			}
 
-			for(int i = 0; i < author.size(); i++)
-			{
+			for (int i = 0; i < author.size(); i++) {
 				String text = author.get(i);
 
 				fontRenderer.drawString(text, width / 2 - fontRenderer.getStringWidth(text) / 2, 180 + 10 * i, 0);
 			}
 
 			//the patreon link button may overlap with a name tooltip from the list, so draw the list after the buttons
-			if(patronList != null)
+			if (patronList != null)
 				patronList.drawScreen(mouseX, mouseY, partialTicks);
 
 			fontRenderer.drawString(pageNumberText, startX + 240 - fontRenderer.getStringWidth(pageNumberText), 182, 0x8E8270);
@@ -226,34 +215,33 @@ public class GuiSCManual extends GuiScreen {
 	}
 
 	@Override
-	public void onGuiClosed(){
+	public void onGuiClosed() {
 		super.onGuiClosed();
 		lastPage = currentPage;
 		Keyboard.enableRepeatEvents(false);
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException{
+	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		super.keyTyped(typedChar, keyCode);
 
-		if(keyCode == Keyboard.KEY_LEFT)
+		if (keyCode == Keyboard.KEY_LEFT)
 			previousSubpage();
-		else if(keyCode == Keyboard.KEY_RIGHT)
+		else if (keyCode == Keyboard.KEY_RIGHT)
 			nextSubpage();
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button){
-		if(button.id == 1)
+	protected void actionPerformed(GuiButton button) {
+		if (button.id == 1)
 			nextPage();
-		else if(button.id == 2)
+		else if (button.id == 2)
 			previousPage();
-		else if(button.id == 3)
+		else if (button.id == 3)
 			nextSubpage();
-		else if(button.id == 4)
+		else if (button.id == 4)
 			previousSubpage();
-		else if(button.id == patreonLinkButton.id)
-		{
+		else if (button.id == patreonLinkButton.id) {
 			handleComponentClick(new TextComponentString("").setStyle(new Style().setClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce"))));
 			return;
 		}
@@ -264,23 +252,24 @@ public class GuiSCManual extends GuiScreen {
 	}
 
 	@Override
-	public void handleMouseInput() throws IOException
-	{
+	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 
 		int mouseX = Mouse.getEventX() * width / mc.displayWidth;
 		int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
 
-		if(currentPage == -1 && patronList != null && patronList.isHovering && !patronList.patrons.isEmpty())
-		{
+		if (currentPage == -1 && patronList != null && patronList.isHovering && !patronList.patrons.isEmpty()) {
 			patronList.handleMouseInput(mouseX, mouseY);
 			return;
 		}
 
-		switch((int)Math.signum(Mouse.getEventDWheel()))
-		{
-			case -1: nextPage(); break;
-			case 1: previousPage(); break;
+		switch ((int) Math.signum(Mouse.getEventDWheel())) {
+			case -1:
+				nextPage();
+				break;
+			case 1:
+				previousPage();
+				break;
 		}
 
 		//hide subpage buttons on main page
@@ -288,53 +277,49 @@ public class GuiSCManual extends GuiScreen {
 		buttonList.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
 
-	private void nextPage()
-	{
+	private void nextPage() {
 		currentPage++;
 
-		if(currentPage > ItemSCManual.PAGES.size() - 1)
+		if (currentPage > ItemSCManual.PAGES.size() - 1)
 			currentPage = -1;
 
 		updateRecipeAndIcons();
 	}
 
-	private void previousPage()
-	{
+	private void previousPage() {
 		currentPage--;
 
-		if(currentPage < -1)
+		if (currentPage < -1)
 			currentPage = ItemSCManual.PAGES.size() - 1;
 
 		updateRecipeAndIcons();
 	}
 
-	private void nextSubpage()
-	{
+	private void nextSubpage() {
 		currentSubpage++;
 
-		if(currentSubpage == subpages.size())
+		if (currentSubpage == subpages.size())
 			currentSubpage = 0;
 	}
 
-	private void previousSubpage()
-	{
+	private void previousSubpage() {
 		currentSubpage--;
 
-		if(currentSubpage == -1)
+		if (currentSubpage == -1)
 			currentSubpage = subpages.size() - 1;
 	}
 
-	private void updateRecipeAndIcons(){
+	private void updateRecipeAndIcons() {
 		currentSubpage = 0;
 		hoverCheckers.clear();
 		patreonLinkButton.visible = currentPage == -1;
 
-		if(currentPage < 0){
+		if (currentPage < 0) {
 			buttonList.get(2).visible = false;
 			buttonList.get(3).visible = false;
 			recipe = null;
 
-			if(I18n.hasKey("gui.securitycraft:scManual.author"))
+			if (I18n.hasKey("gui.securitycraft:scManual.author"))
 				author = fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:scManual.author").getFormattedText(), 180);
 			else
 				author.clear();
@@ -346,43 +331,42 @@ public class GuiSCManual extends GuiScreen {
 
 		SCManualPage page = ItemSCManual.PAGES.get(currentPage);
 
-		if(page.hasCustomRecipe())
+		if (page.hasCustomRecipe())
 			recipe = page.getRecipe();
-		else
-		{
+		else {
 			recipe = null;
 
-			for(int o = 0; o < CraftingManager.REGISTRY.getKeys().size(); o++)
-			{
+			for (int o = 0; o < CraftingManager.REGISTRY.getKeys().size(); o++) {
 				IRecipe object = CraftingManager.REGISTRY.getObjectById(o);
 
-				if(object instanceof ShapedRecipes){
+				if (object instanceof ShapedRecipes) {
 					ShapedRecipes recipe = (ShapedRecipes) object;
 
-					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()){
+					if (!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()) {
 						NonNullList<Ingredient> ingredients = recipe.getIngredients();
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(9, Ingredient.EMPTY);
 
-						for(int i = 0; i < ingredients.size(); i++)
-						{
+						for (int i = 0; i < ingredients.size(); i++) {
 							recipeItems.set(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()), ingredients.get(i));
 						}
 
 						this.recipe = recipeItems;
 						break;
 					}
-				}else if(object instanceof ShapelessRecipes){
+				}
+				else if (object instanceof ShapelessRecipes) {
 					ShapelessRecipes recipe = (ShapelessRecipes) object;
 
-					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()){
+					if (!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()) {
 						//don't show keycard reset recipes
-						if(recipe.getRegistryName().getPath().endsWith("_reset"))
+						if (recipe.getRegistryName().getPath().endsWith("_reset"))
 							continue;
 
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.recipeItems.size(), Ingredient.EMPTY);
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(recipe.recipeItems.size(), Ingredient.EMPTY);
 
-						for(int i = 0; i < recipeItems.size(); i++)
+						for (int i = 0; i < recipeItems.size(); i++) {
 							recipeItems.set(i, recipe.recipeItems.get(i));
+						}
 
 						this.recipe = recipeItems;
 						break;
@@ -394,29 +378,24 @@ public class GuiSCManual extends GuiScreen {
 		String helpInfo = page.getHelpInfo();
 		boolean reinforcedPage = helpInfo.equals("help.securitycraft:reinforced.info") || helpInfo.contains("reinforced_hopper");
 
-		if(recipe != null && !reinforcedPage)
-		{
-			outer: for(int i = 0; i < 3; i++)
-			{
-				for(int j = 0; j < 3; j++)
-				{
-					if((i * 3) + j == recipe.size())
+		if (recipe != null && !reinforcedPage) {
+			outer: for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 3; j++) {
+					if ((i * 3) + j == recipe.size())
 						break outer;
 
-					if(recipe.get((i * 3) + j).getMatchingStacks().length > 0 && !recipe.get((i * 3) + j).getMatchingStacks()[0].isEmpty())
+					if (recipe.get((i * 3) + j).getMatchingStacks().length > 0 && !recipe.get((i * 3) + j).getMatchingStacks()[0].isEmpty())
 						hoverCheckers.add(new StackHoverChecker(recipe.get((i * 3) + j).getMatchingStacks()[0], 144 + (i * 19), 144 + (i * 19) + 16, (startX + 101) + (j * 19), (startX + 100) + (j * 19) + 16));
 				}
 			}
 		}
-		else if(page.isRecipeDisabled())
+		else if (page.isRecipeDisabled())
 			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.disabled").getFormattedText()));
-		else if(reinforcedPage)
-		{
+		else if (reinforcedPage) {
 			recipe = null;
 			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.recipe.reinforced").getFormattedText()));
 		}
-		else
-		{
+		else {
 			String name = page.getItem().getRegistryName().getPath();
 
 			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.recipe." + name).getFormattedText()));
@@ -427,39 +406,35 @@ public class GuiSCManual extends GuiScreen {
 		pageStack = new ItemStack(item);
 		resetTileEntityInfo();
 
-		if(item instanceof ItemBlock){
+		if (item instanceof ItemBlock) {
 			Block block = ((ItemBlock) item).getBlock();
 
-			if(explosive = block instanceof IExplosive)
+			if (explosive = block instanceof IExplosive)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock").getFormattedText()));
 
-			if(block.hasTileEntity(block.getDefaultState()))
-			{
+			if (block.hasTileEntity(block.getDefaultState())) {
 				TileEntity te = block.createTileEntity(Minecraft.getMinecraft().world, block.getDefaultState());
 
-				if(ownable = te instanceof IOwnable)
+				if (ownable = te instanceof IOwnable)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock").getFormattedText()));
 
-				if(passwordProtected = te instanceof IPasswordProtected)
+				if (passwordProtected = te instanceof IPasswordProtected)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passwordProtectedBlock").getFormattedText()));
 
-				if(viewActivated = te instanceof IViewActivated)
+				if (viewActivated = te instanceof IViewActivated)
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock").getFormattedText()));
 
-				if(te instanceof ICustomizable)
-				{
-					ICustomizable scte = (ICustomizable)te;
+				if (te instanceof ICustomizable) {
+					ICustomizable scte = (ICustomizable) te;
 
-					if(scte.customOptions() != null && scte.customOptions().length > 0)
-					{
+					if (scte.customOptions() != null && scte.customOptions().length > 0) {
 						List<String> display = new ArrayList<>();
 
 						customizable = true;
 						display.add(Utils.localize("gui.securitycraft:scManual.options").getFormattedText());
 						display.add("---");
 
-						for(Option<?> option : scte.customOptions())
-						{
+						for (Option<?> option : scte.customOptions()) {
 							display.add("- " + Utils.localize("option." + block.getTranslationKey().substring(5) + "." + option.getName() + ".description").getFormattedText());
 							display.add("");
 						}
@@ -469,20 +444,17 @@ public class GuiSCManual extends GuiScreen {
 					}
 				}
 
-				if(te instanceof IModuleInventory)
-				{
-					IModuleInventory moduleInv = (IModuleInventory)te;
+				if (te instanceof IModuleInventory) {
+					IModuleInventory moduleInv = (IModuleInventory) te;
 
-					if(moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0)
-					{
+					if (moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0) {
 						List<String> display = new ArrayList<>();
 
 						moduleInventory = true;
 						display.add(Utils.localize("gui.securitycraft:scManual.modules").getFormattedText());
 						display.add("---");
 
-						for(EnumModuleType module : moduleInv.acceptedModules())
-						{
+						for (EnumModuleType module : moduleInv.acceptedModules()) {
 							display.add("- " + Utils.localize("module." + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft:", "") + ".description").getFormattedText());
 							display.add("");
 						}
@@ -504,12 +476,13 @@ public class GuiSCManual extends GuiScreen {
 		helpInfo = Utils.localize(page.getHelpInfo()).getFormattedText();
 		subpages.clear();
 
-		while(fontRenderer.getStringWidth(helpInfo) > subpageLength)
-		{
+		while (fontRenderer.getStringWidth(helpInfo) > subpageLength) {
 			String trimmed = fontRenderer.trimStringToWidth(helpInfo, 1285);
 			int temp = trimmed.lastIndexOf(' ');
-			if(temp > 0)
+
+			if (temp > 0)
 				trimmed = trimmed.trim().substring(0, temp); //remove last word to remove the possibility to break it up onto multiple pages
+
 			trimmed = trimmed.trim();
 			subpages.add(trimmed);
 			helpInfo = helpInfo.replace(trimmed, "").trim();
@@ -528,8 +501,7 @@ public class GuiSCManual extends GuiScreen {
 		moduleInventory = false;
 	}
 
-	class PatronList extends PatronScrollList
-	{
+	class PatronList extends PatronScrollList {
 		private final int slotHeight = 12;
 		private final ExecutorService executor = Executors.newSingleThreadExecutor();
 		private Future<List<String>> patronRequestFuture;
@@ -543,8 +515,7 @@ public class GuiSCManual extends GuiScreen {
 		private final String loadingText = Utils.localize("gui.securitycraft:scManual.patreon.loading").getFormattedText();
 		private final int border = 4;
 
-		public PatronList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight)
-		{
+		public PatronList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight) {
 			super(client, width, height, top, top + height, left, 12, screenWidth, screenHeight);
 
 			fetchErrorLines = fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:scManual.patreon.error").getFormattedText(), listWidth);
@@ -552,105 +523,89 @@ public class GuiSCManual extends GuiScreen {
 		}
 
 		@Override
-		public int getSize()
-		{
+		public int getSize() {
 			return patrons.size();
 		}
 
 		@Override
-		public int getContentHeight()
-		{
+		public int getContentHeight() {
 			int height = 50 + (patrons.size() * fontRenderer.FONT_HEIGHT);
 
-			if(height < bottom - top - 8)
+			if (height < bottom - top - 8)
 				height = bottom - top - 8;
 
 			return height;
 		}
 
 		@Override
-		public void drawScreen(int mouseX, int mouseY, float partialTicks)
-		{
-			if(patronsAvailable)
-			{
+		public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+			if (patronsAvailable) {
 				super.drawScreen(mouseX, mouseY, partialTicks);
 
 				//draw tooltip for long patron names
-				int mouseListY = (int)(mouseY - top + scrollDistance - border);
+				int mouseListY = (int) (mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / slotHeight;
-				int baseY = top + border - (int)scrollDistance;
+				int baseY = top + border - (int) scrollDistance;
 
-				if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < patrons.size() && mouseY >= top && mouseY <= bottom)
-				{
+				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < patrons.size() && mouseY >= top && mouseY <= bottom) {
 					String patron = patrons.get(slotIndex);
 					int length = fontRenderer.getStringWidth(patron);
 
-					if(length >= listWidth - barWidth)
-					{
+					if (length >= listWidth - barWidth) {
 						drawHoveringText(patron, left - 10, baseY + (slotHeight * slotIndex + slotHeight));
 						GlStateManager.disableLighting();
 					}
 				}
 
 				if (patrons.isEmpty()) {
-					for(int i = 0; i < noPatronsLines.size(); i++) {
+					for (int i = 0; i < noPatronsLines.size(); i++) {
 						String line = noPatronsLines.get(i);
 
 						fontRenderer.drawString(line, left + listWidth / 2 - fontRenderer.getStringWidth(line) / 2, top + 30 + i * 10, 0xFF333333);
 					}
 				}
 			}
-			else if(error)
-			{
-				for(int i = 0; i < fetchErrorLines.size(); i++)
-				{
+			else if (error) {
+				for (int i = 0; i < fetchErrorLines.size(); i++) {
 					String line = fetchErrorLines.get(i);
 
 					fontRenderer.drawString(line, left + listWidth / 2 - fontRenderer.getStringWidth(line) / 2, top + 30 + i * 10, 0xFFB00101);
 				}
 			}
-			else if(patronRequestFuture != null && patronRequestFuture.isDone())
-			{
-				try
-				{
+			else if (patronRequestFuture != null && patronRequestFuture.isDone()) {
+				try {
 					patrons = patronRequestFuture.get();
 					executor.shutdown();
 					patronsAvailable = true;
 				}
-				catch(InterruptedException | ExecutionException e)
-				{
+				catch (InterruptedException | ExecutionException e) {
 					error = true;
 				}
 			}
-			else
+			else {
 				fontRenderer.drawString(loadingText, left + listWidth / 2 - fontRenderer.getStringWidth(loadingText) / 2, top + 30, 0);
+			}
 		}
 
 		@Override
-		public void drawPanel(int entryRight, int relativeY, Tessellator tesselator, int mouseX, int mouseY)
-		{
+		public void drawPanel(int entryRight, int relativeY, Tessellator tesselator, int mouseX, int mouseY) {
 			//draw entry strings
-			for(int i = 0; i < patrons.size(); i++)
-			{
+			for (int i = 0; i < patrons.size(); i++) {
 				String patron = patrons.get(i);
 
-				if(patron != null && !patron.isEmpty())
+				if (patron != null && !patron.isEmpty())
 					fontRenderer.drawString(patron, left + 2, relativeY + (slotHeight * i), 0);
 			}
 		}
 
-		public void fetchPatrons()
-		{
-			if(!patronsRequested)
-			{
+		public void fetchPatrons() {
+			if (!patronsRequested) {
 				//create thread to fetch patrons. without this, and for example if the player has no internet connection, the game will hang
 				patronRequestFuture = executor.submit(() -> {
-					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw").openStream())))
-					{
+					try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw").openStream()))) {
 						return reader.lines().collect(Collectors.toList());
 					}
-					catch(IOException e)
-					{
+					catch (IOException e) {
 						error = true;
 						return new ArrayList<>();
 					}
@@ -663,14 +618,14 @@ public class GuiSCManual extends GuiScreen {
 	static class ChangePageButton extends GuiButton {
 		private final int textureY;
 
-		public ChangePageButton(int index, int xPos, int yPos, boolean forward){
+		public ChangePageButton(int index, int xPos, int yPos, boolean forward) {
 			super(index, xPos, yPos, 23, 13, "");
 			textureY = forward ? 192 : 205;
 		}
 
 		@Override
-		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks){
-			if(visible){
+		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+			if (visible) {
 				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -680,22 +635,18 @@ public class GuiSCManual extends GuiScreen {
 		}
 	}
 
-	class HyperlinkButton extends GuiButtonExt
-	{
-		public HyperlinkButton(int id, int xPos, int yPos, int width, int height, String displayString)
-		{
+	class HyperlinkButton extends GuiButtonExt {
+		public HyperlinkButton(int id, int xPos, int yPos, int width, int height, String displayString) {
 			super(id, xPos, yPos, width, height, displayString);
 		}
 
 		@Override
-		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
-		{
-			if(visible)
-			{
+		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+			if (visible) {
 				mc.getTextureManager().bindTexture(infoBookIcons);
 				hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
-				if(hovered)
+				if (hovered)
 					drawTexturedModalRect(x, y, 138, 1, 16, 16);
 				else
 					drawTexturedModalRect(x, y, 122, 1, 16, 16);
@@ -704,35 +655,30 @@ public class GuiSCManual extends GuiScreen {
 	}
 
 	//from JEI
-	private int getCraftMatrixPosition(int i, int width, int height)
-	{
+	private int getCraftMatrixPosition(int i, int width, int height) {
 		int index;
 
-		if(width == 1)
-		{
-			if(height == 3)
+		if (width == 1) {
+			if (height == 3)
 				index = (i * 3) + 1;
-			else if(height == 2)
+			else if (height == 2)
 				index = (i * 3) + 1;
 			else
 				index = 4;
-
 		}
-		else if(height == 1)
+		else if (height == 1)
 			index = i + 3;
-		else if(width == 2)
-		{
+		else if (width == 2) {
 			index = i;
 
-			if(i > 1)
-			{
+			if (i > 1) {
 				index++;
 
-				if(i > 3)
+				if (i > 3)
 					index++;
 			}
 		}
-		else if(height == 2)
+		else if (height == 2)
 			index = i + 3;
 		else
 			index = i;

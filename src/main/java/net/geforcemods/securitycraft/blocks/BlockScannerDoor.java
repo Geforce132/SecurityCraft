@@ -10,22 +10,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-public class BlockScannerDoor extends BlockSpecialDoor
-{
-	public BlockScannerDoor(Material material)
-	{
+public class BlockScannerDoor extends BlockSpecialDoor {
+	public BlockScannerDoor(Material material) {
 		super(material);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityScannerDoor();
 	}
 
 	@Override
-	public Item getDoorItem()
-	{
+	public Item getDoorItem() {
 		return SCContent.scannerDoorItem;
 	}
 

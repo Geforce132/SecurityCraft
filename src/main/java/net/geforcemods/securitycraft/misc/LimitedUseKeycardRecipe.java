@@ -10,39 +10,33 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class LimitedUseKeycardRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
-{
+public class LimitedUseKeycardRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 	@Override
-	public boolean matches(InventoryCrafting inv, World world)
-	{
+	public boolean matches(InventoryCrafting inv, World world) {
 		boolean hasNormalKeycard = false;
 		boolean hasLimitedUseKeycard = false;
 
-		for(int i = 0; i < inv.getSizeInventory(); ++i)
-		{
+		for (int i = 0; i < inv.getSizeInventory(); ++i) {
 			ItemStack stack = inv.getStackInSlot(i);
 			Item item = stack.getItem();
 
-			if(item instanceof ItemKeycard)
-			{
-				if(item != SCContent.limitedUseKeycard)
-				{
-					if(hasNormalKeycard || (stack.hasTagCompound() && stack.getTagCompound().getBoolean("limited")))
+			if (item instanceof ItemKeycard) {
+				if (item != SCContent.limitedUseKeycard) {
+					if (hasNormalKeycard || (stack.hasTagCompound() && stack.getTagCompound().getBoolean("limited")))
 						return false;
 
 					hasNormalKeycard = true;
 					continue;
 				}
-				else //item is SCContent.LIMITED_USE_KEYCARD.get()
-				{
-					if(hasLimitedUseKeycard)
+				else { //item is SCContent.LIMITED_USE_KEYCARD.get()
+					if (hasLimitedUseKeycard)
 						return false;
 
 					hasLimitedUseKeycard = true;
 					continue;
 				}
 			}
-			else if(!stack.isEmpty())
+			else if (!stack.isEmpty())
 				return false;
 		}
 
@@ -50,23 +44,20 @@ public class LimitedUseKeycardRecipe extends IForgeRegistryEntry.Impl<IRecipe> i
 	}
 
 	@Override
-	public ItemStack getCraftingResult(InventoryCrafting inv)
-	{
+	public ItemStack getCraftingResult(InventoryCrafting inv) {
 		ItemStack keycard = ItemStack.EMPTY;
 
-		for(int i = 0; i < inv.getSizeInventory(); ++i)
-		{
+		for (int i = 0; i < inv.getSizeInventory(); ++i) {
 			ItemStack stack = inv.getStackInSlot(i);
 			Item item = stack.getItem();
 
-			if(item instanceof ItemKeycard && item != SCContent.limitedUseKeycard)
-			{
+			if (item instanceof ItemKeycard && item != SCContent.limitedUseKeycard) {
 				keycard = stack.copy();
 				break;
 			}
 		}
 
-		if(keycard.isEmpty())
+		if (keycard.isEmpty())
 			return ItemStack.EMPTY;
 
 		boolean hasTag = keycard.hasTagCompound();
@@ -76,27 +67,24 @@ public class LimitedUseKeycardRecipe extends IForgeRegistryEntry.Impl<IRecipe> i
 		tag.setInteger("uses", 0);
 		keycard.setCount(2);
 
-		if(!hasTag)
+		if (!hasTag)
 			keycard.setTagCompound(tag);
 
 		return keycard;
 	}
 
 	@Override
-	public boolean canFit(int width, int height)
-	{
+	public boolean canFit(int width, int height) {
 		return width * height >= 2;
 	}
 
 	@Override
-	public ItemStack getRecipeOutput()
-	{
+	public ItemStack getRecipeOutput() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public boolean isDynamic()
-	{
+	public boolean isDynamic() {
 		return true;
 	}
 }

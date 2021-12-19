@@ -32,48 +32,43 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSonicSecuritySystem extends ItemBlock {
-	public ItemSonicSecuritySystem()
-	{
+	public ItemSonicSecuritySystem() {
 		super(SCContent.sonicSecuritySystem);
 	}
 
 	@Override
-	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
-	{
+	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
 		// If the player is sneaking, add/remove positions from the item when right-clicking a lockable block
-		if(player.isSneaking())
-		{
+		if (player.isSneaking()) {
 			TileEntity te = world.getTileEntity(pos);
 
 			if (te instanceof ILockable) {
-				if(te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player)) {
+				if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player)) {
 					Block block = te.getBlockType();
 
-					if (!(block instanceof BlockDisguisable) || ((BlockDisguisable)block).getDisguisedBlockState(world, pos) == null) {
+					if (!(block instanceof BlockDisguisable) || ((BlockDisguisable) block).getDisguisedBlockState(world, pos) == null) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.sonicSecuritySystem), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) te).getOwner().getName(), pos), TextFormatting.GREEN);
 						return EnumActionResult.SUCCESS;
 					}
 				}
 				else {
-					if(stack.getTagCompound() == null)
+					if (stack.getTagCompound() == null)
 						stack.setTagCompound(new NBTTagCompound());
 
 					// Remove a block from the tag if it was already linked to.
 					// If not, link to it
-					if(isAdded(stack.getTagCompound(), pos))
-					{
+					if (isAdded(stack.getTagCompound(), pos)) {
 						removeLinkedBlock(stack.getTagCompound(), pos);
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.sonicSecuritySystem), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", world.getBlockState(pos).getBlock(), pos), TextFormatting.GREEN);
 						return EnumActionResult.SUCCESS;
 					}
-					else if(addLinkedBlock(stack.getTagCompound(), pos, player))
-					{
+					else if (addLinkedBlock(stack.getTagCompound(), pos, player)) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.sonicSecuritySystem), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", world.getBlockState(pos).getBlock(), pos), TextFormatting.GREEN);
 
-						if(!world.isRemote)
-							SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP)player);
+						if (!world.isRemote)
+							SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP) player);
 
 						return EnumActionResult.SUCCESS;
 					}
@@ -83,9 +78,8 @@ public class ItemSonicSecuritySystem extends ItemBlock {
 
 		//don't place down the SSS if it has at least one linked block
 		//placing is handled by minecraft otherwise
-		if(!stack.hasTagCompound() || !hasLinkedBlock(stack.getTagCompound()))
-		{
-			if(!world.isRemote)
+		if (!stack.hasTagCompound() || !hasLinkedBlock(stack.getTagCompound())) {
+			if (!world.isRemote)
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.sonicSecuritySystem), Utils.localize("messages.securitycraft:sonic_security_system.notLinked"), TextFormatting.DARK_RED);
 
 			return EnumActionResult.FAIL;
@@ -98,7 +92,7 @@ public class ItemSonicSecuritySystem extends ItemBlock {
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		EnumActionResult returnValue = super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
 
-		if(returnValue == EnumActionResult.SUCCESS) {
+		if (returnValue == EnumActionResult.SUCCESS) {
 			ItemStack stack = player.getHeldItem(hand);
 			TileEntitySonicSecuritySystem te = (TileEntitySonicSecuritySystem) world.getTileEntity(pos.offset(facing));
 
@@ -112,33 +106,32 @@ public class ItemSonicSecuritySystem extends ItemBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-		if(!stack.hasTagCompound())
+		if (!stack.hasTagCompound())
 			return;
 
 		// If this item is storing block positions, show the number of them in the tooltip
 		int numOfLinkedBlocks = stack.getTagCompound().getTagList("LinkedBlocks", Constants.NBT.TAG_COMPOUND).tagCount();
 
-		if(numOfLinkedBlocks > 0)
+		if (numOfLinkedBlocks > 0)
 			tooltip.add(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).getFormattedText());
 	}
 
 	/**
 	 * Adds a position to a tag
+	 *
 	 * @param tag The tag to add the position to
 	 * @param pos The position to add to the tag
 	 * @param player The player who tries to link a block
 	 * @return true if the position was added, false otherwise
 	 */
-	public static boolean addLinkedBlock(NBTTagCompound tag, BlockPos pos, EntityPlayer player)
-	{
+	public static boolean addLinkedBlock(NBTTagCompound tag, BlockPos pos, EntityPlayer player) {
 		// If the position was already added, return
-		if(isAdded(tag, pos))
+		if (isAdded(tag, pos))
 			return false;
 
 		NBTTagList list = tag.getTagList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
 
-		if(list.tagCount() >= TileEntitySonicSecuritySystem.MAX_LINKED_BLOCKS)
-		{
+		if (list.tagCount() >= TileEntitySonicSecuritySystem.MAX_LINKED_BLOCKS) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.sonicSecuritySystem), Utils.localize("messages.securitycraft:sonic_security_system.linkMaxReached", TileEntitySonicSecuritySystem.MAX_LINKED_BLOCKS), TextFormatting.DARK_RED);
 			return false;
 		}
@@ -152,44 +145,42 @@ public class ItemSonicSecuritySystem extends ItemBlock {
 
 	/**
 	 * Removes a position from a tag
+	 *
 	 * @param tag The tag to remove the position from
 	 * @param pos The position to remove from the tag
 	 */
-	public static void removeLinkedBlock(NBTTagCompound tag, BlockPos pos)
-	{
-		if(!tag.hasKey("LinkedBlocks"))
+	public static void removeLinkedBlock(NBTTagCompound tag, BlockPos pos) {
+		if (!tag.hasKey("LinkedBlocks"))
 			return;
 
 		NBTTagList list = tag.getTagList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
 
 		// Starting from the end of the list to prevent skipping over entries
-		for(int i = list.tagCount() - 1; i >= 0; i--)
-		{
+		for (int i = list.tagCount() - 1; i >= 0; i--) {
 			BlockPos posRead = NBTUtil.getPosFromTag(list.getCompoundTagAt(i));
 
-			if(pos.equals(posRead))
+			if (pos.equals(posRead))
 				list.removeTag(i);
 		}
 	}
 
 	/**
 	 * Checks whether a position is added to a tag
+	 *
 	 * @param tag The tag to check
 	 * @param pos The position to check
 	 * @return true if the position is added, false otherwise
 	 */
-	public static boolean isAdded(NBTTagCompound tag, BlockPos pos)
-	{
-		if(!tag.hasKey("LinkedBlocks"))
+	public static boolean isAdded(NBTTagCompound tag, BlockPos pos) {
+		if (!tag.hasKey("LinkedBlocks"))
 			return false;
 
 		NBTTagList list = tag.getTagList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
 
-		for(int i = 0; i < list.tagCount(); i++)
-		{
+		for (int i = 0; i < list.tagCount(); i++) {
 			BlockPos posRead = NBTUtil.getPosFromTag(list.getCompoundTagAt(i));
 
-			if(pos.equals(posRead))
+			if (pos.equals(posRead))
 				return true;
 		}
 
@@ -199,12 +190,10 @@ public class ItemSonicSecuritySystem extends ItemBlock {
 	/**
 	 * @return true if the tag contains at least one position, false otherwise
 	 */
-	public static boolean hasLinkedBlock(NBTTagCompound tag)
-	{
-		if(!tag.hasKey("LinkedBlocks"))
+	public static boolean hasLinkedBlock(NBTTagCompound tag) {
+		if (!tag.hasKey("LinkedBlocks"))
 			return false;
 
 		return tag.getTagList("LinkedBlocks", Constants.NBT.TAG_COMPOUND).tagCount() > 0;
 	}
-
 }

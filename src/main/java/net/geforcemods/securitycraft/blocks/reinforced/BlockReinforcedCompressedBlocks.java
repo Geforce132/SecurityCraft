@@ -20,88 +20,64 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
-{
+public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock {
 	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class);
 
-	public BlockReinforcedCompressedBlocks()
-	{
+	public BlockReinforcedCompressedBlocks() {
 		super(Material.ROCK);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.LAPIS));
 	}
 
-	/**
-	 * Gets the metadata of the item this Block can drop. This method is called when the block gets destroyed. It
-	 * returns the metadata of the dropped item based on the old metadata of the block.
-	 */
 	@Override
-	public int damageDropped(IBlockState state)
-	{
+	public int damageDropped(IBlockState state) {
 		return state.getValue(VARIANT).getMetadata();
 	}
 
-	/**
-	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-	 */
 	@Override
-	public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items)
-	{
+	public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items) {
 		EnumType[] values = EnumType.values();
 
-		for (EnumType type : values)
+		for (EnumType type : values) {
 			items.add(new ItemStack(this, 1, type.getMetadata()));
+		}
 	}
 
-	/**
-	 * Convert the given metadata into a BlockState for this Block
-	 */
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta));
 	}
 
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(VARIANT).getMetadata();
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, VARIANT);
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
-	{
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedCompressedBlocks), 1, getMetaFromState(state));
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
-	{
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return true;
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
-	{
+	public List<Block> getVanillaBlocks() {
 		return Arrays.asList(Blocks.LAPIS_BLOCK, Blocks.COAL_BLOCK);
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return 2;
 	}
 
-	public static enum EnumType implements IStringSerializable
-	{
+	public static enum EnumType implements IStringSerializable {
 		LAPIS(0, "lapis"),
 		COAL(1, "coal");
 
@@ -109,25 +85,21 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOv
 		private final int meta;
 		private final String name;
 
-		private EnumType(int meta, String name)
-		{
+		private EnumType(int meta, String name) {
 			this.meta = meta;
 			this.name = name;
 		}
 
-		public int getMetadata()
-		{
+		public int getMetadata() {
 			return meta;
 		}
 
 		@Override
-		public String toString()
-		{
+		public String toString() {
 			return name;
 		}
 
-		public static EnumType byMetadata(int meta)
-		{
+		public static EnumType byMetadata(int meta) {
 			if (meta < 0 || meta >= META_LOOKUP.length)
 				meta = 0;
 
@@ -135,15 +107,14 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOv
 		}
 
 		@Override
-		public String getName()
-		{
+		public String getName() {
 			return name;
 		}
 
-		static
-		{
-			for(EnumType type : values())
+		static {
+			for (EnumType type : values()) {
 				META_LOOKUP[type.getMetadata()] = type;
+			}
 		}
 	}
 }

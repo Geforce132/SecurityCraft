@@ -23,87 +23,78 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockSpecialDoor extends BlockDoor implements ITileEntityProvider
-{
-	public BlockSpecialDoor(Material material)
-	{
+public abstract class BlockSpecialDoor extends BlockDoor implements ITileEntityProvider {
+	public BlockSpecialDoor(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if (placer instanceof EntityPlayer) {
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
+		}
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-	{
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		onNeighborChanged(world, pos, fromPos);
 	}
 
 	/**
 	 * Old method, renamed because I am lazy. Called by neighborChanged
+	 *
 	 * @param world The world the change occured in
 	 * @param pos The position of this block
 	 * @param neighbor The position of the changed block
 	 */
-	public void onNeighborChanged(IBlockAccess access, BlockPos pos, BlockPos neighbor)
-	{
-		World world = (World)access;
+	public void onNeighborChanged(IBlockAccess access, BlockPos pos, BlockPos neighbor) {
+		World world = (World) access;
 		IBlockState state = world.getBlockState(pos);
 		Block neighborBlock = world.getBlockState(neighbor).getBlock();
 
-		if(state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
-		{
+		if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER) {
 			BlockPos blockBelow = pos.down();
 			IBlockState stateBelow = world.getBlockState(blockBelow);
 
-			if(stateBelow.getBlock() != this)
+			if (stateBelow.getBlock() != this)
 				world.setBlockToAir(pos);
 			else if (neighborBlock != this)
 				onNeighborChanged(world, blockBelow, neighbor);
 		}
-		else
-		{
+		else {
 			boolean drop = false;
 			BlockPos blockBelow = pos.up();
 			IBlockState stateBelow = world.getBlockState(blockBelow);
 
-			if(stateBelow.getBlock() != this)
-			{
+			if (stateBelow.getBlock() != this) {
 				world.setBlockToAir(pos);
 				drop = true;
 			}
 
-			if(!world.isSideSolid(pos.down(), EnumFacing.UP))
-			{
+			if (!world.isSideSolid(pos.down(), EnumFacing.UP)) {
 				world.setBlockToAir(pos);
 				drop = true;
 
-				if(stateBelow.getBlock() == this)
+				if (stateBelow.getBlock() == this)
 					world.setBlockToAir(blockBelow);
 			}
 
-			if(drop && !world.isRemote)
+			if (drop && !world.isRemote)
 				dropBlockAsItem(world, pos, state, 0);
 		}
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
-	{
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
 		IBlockState upperState = world.getBlockState(pos);
 
-		if(!upperState.getValue(BlockDoor.OPEN))
+		if (!upperState.getValue(BlockDoor.OPEN))
 			return;
 
 		IBlockState lowerState;
 
-		if(upperState.getValue(BlockDoor.HALF) == EnumDoorHalf.LOWER)
-		{
+		if (upperState.getValue(BlockDoor.HALF) == EnumDoorHalf.LOWER) {
 			lowerState = upperState;
 			pos = pos.up();
 			upperState = world.getBlockState(pos);
@@ -117,15 +108,13 @@ public abstract class BlockSpecialDoor extends BlockDoor implements ITileEntityP
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state)
-	{
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		super.breakBlock(world, pos, state);
 		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param)
-	{
+	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
 		super.eventReceived(state, world, pos, id, param);
 
 		TileEntity tileentity = world.getTileEntity(pos);
@@ -135,20 +124,17 @@ public abstract class BlockSpecialDoor extends BlockDoor implements ITileEntityP
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
-	{
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return new ItemStack(getDoorItem());
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
-	{
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? null : getDoorItem();
 	}
 
 	@Override
-	public EnumPushReaction getPushReaction(IBlockState state)
-	{
+	public EnumPushReaction getPushReaction(IBlockState state) {
 		return EnumPushReaction.BLOCK;
 	}
 

@@ -7,13 +7,12 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.datafix.IFixableData;
 
-public class TileEntityIDDataFixer implements IFixableData
-{
+public class TileEntityIDDataFixer implements IFixableData {
 	public static final int VERSION = 1;
 	private final Map<String, String> idsToFix;
 
-	public TileEntityIDDataFixer()
-	{
+	public TileEntityIDDataFixer() {
+		//@formatter:off
 		idsToFix = ImmutableMap.<String, String>builder().put("minecraft:abstractownable", "securitycraft:ownable")
 				.put("minecraft:abstractsc", "securitycraft:abstract")
 				.put("minecraft:keypad", "securitycraft:keypad")
@@ -35,11 +34,11 @@ public class TileEntityIDDataFixer implements IFixableData
 				.put("minecraft:scannerdoor", "securitycraft:scanner_door")
 				.put("minecraft:secretsign", "securitycraft:secret_sign")
 				.put("minecraft:motionlight", "securitycraft:motion_light").build();
+		//@formatter:on
 	}
 
 	@Override
-	public NBTTagCompound fixTagCompound(NBTTagCompound tag)
-	{
+	public NBTTagCompound fixTagCompound(NBTTagCompound tag) {
 		String teID = tag.getString("id");
 
 		tag.setString("id", idsToFix.getOrDefault(teID, teID)); //only change value if teID is in the map
@@ -47,8 +46,7 @@ public class TileEntityIDDataFixer implements IFixableData
 	}
 
 	@Override
-	public int getFixVersion()
-	{
+	public int getFixVersion() {
 		return VERSION;
 	}
 }

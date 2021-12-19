@@ -26,19 +26,18 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemModule extends Item{
-
+public class ItemModule extends Item {
 	public static final int MAX_PLAYERS = 50;
 	private final EnumModuleType module;
 	private final boolean containsCustomData;
 	private boolean canBeCustomized;
 	private int guiToOpen;
 
-	public ItemModule(EnumModuleType module, boolean containsCustomData){
+	public ItemModule(EnumModuleType module, boolean containsCustomData) {
 		this(module, containsCustomData, false, -1);
 	}
 
-	public ItemModule(EnumModuleType module, boolean containsCustomData, boolean canBeCustomized, int guiToOpen){
+	public ItemModule(EnumModuleType module, boolean containsCustomData, boolean canBeCustomized, int guiToOpen) {
 		this.module = module;
 		this.containsCustomData = containsCustomData;
 		this.canBeCustomized = canBeCustomized;
@@ -49,25 +48,22 @@ public class ItemModule extends Item{
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if(te instanceof IModuleInventory)
-		{
-			IModuleInventory inv = (IModuleInventory)te;
+		if (te instanceof IModuleInventory) {
+			IModuleInventory inv = (IModuleInventory) te;
 			ItemStack stack = player.getHeldItem(hand);
-			EnumModuleType type = ((ItemModule)stack.getItem()).getModuleType();
+			EnumModuleType type = ((ItemModule) stack.getItem()).getModuleType();
 
-			if(te instanceof IOwnable && !((IOwnable)te).getOwner().isOwner(player))
+			if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player))
 				return EnumActionResult.PASS;
 
-			if(inv.getAcceptedModules().contains(type) && !inv.hasModule(type))
-			{
+			if (inv.getAcceptedModules().contains(type) && !inv.hasModule(type)) {
 				inv.insertModule(stack);
 				inv.onModuleInserted(stack, type);
 
-				if(!player.isCreative())
+				if (!player.isCreative())
 					stack.shrink(1);
 
 				return EnumActionResult.SUCCESS;
@@ -81,13 +77,12 @@ public class ItemModule extends Item{
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(!player.isSneaking())
-		{
-			if(!stack.hasTagCompound())
+		if (!player.isSneaking()) {
+			if (!stack.hasTagCompound())
 				stack.setTagCompound(new NBTTagCompound());
 
-			if(canBeCustomized()) {
-				player.openGui(SecurityCraft.instance, guiToOpen, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+			if (canBeCustomized()) {
+				player.openGui(SecurityCraft.instance, guiToOpen, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 			}
 		}
@@ -98,15 +93,15 @@ public class ItemModule extends Item{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
-		if(containsCustomData || canBeCustomized())
+		if (containsCustomData || canBeCustomized())
 			list.add(Utils.localize("tooltip.securitycraft:module.modifiable").getFormattedText());
 		else
 			list.add(Utils.localize("tooltip.securitycraft:module.notModifiable").getFormattedText());
 
-		if(canBeCustomized()) {
+		if (canBeCustomized()) {
 			Block addon = getBlockAddon(stack.getTagCompound());
 
-			if(addon != null)
+			if (addon != null)
 				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getTranslationKey())).getFormattedText());
 		}
 	}
@@ -115,28 +110,28 @@ public class ItemModule extends Item{
 		return module;
 	}
 
-	public Block getBlockAddon(NBTTagCompound tag){
+	public Block getBlockAddon(NBTTagCompound tag) {
 		ItemStack stack = getAddonAsStack(tag);
 
-		if(stack.getItem() instanceof ItemBlock)
-			return ((ItemBlock)stack.getItem()).getBlock();
-		else return null;
+		if (stack.getItem() instanceof ItemBlock)
+			return ((ItemBlock) stack.getItem()).getBlock();
+		else
+			return null;
 	}
 
-	public ItemStack getAddonAsStack(NBTTagCompound tag){
-		if(tag == null)
+	public ItemStack getAddonAsStack(NBTTagCompound tag) {
+		if (tag == null)
 			return ItemStack.EMPTY;
 
 		NBTTagList items = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
-		if(items != null && !items.isEmpty())
+		if (items != null && !items.isEmpty())
 			return new ItemStack(items.getCompoundTagAt(0));
 
 		return ItemStack.EMPTY;
 	}
 
-	public boolean canBeCustomized(){
+	public boolean canBeCustomized() {
 		return canBeCustomized;
 	}
-
 }

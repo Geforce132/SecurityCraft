@@ -22,23 +22,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiCheckPassword extends GuiContainer {
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntity tileEntity;
-	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u001B'}; //0-9, backspace and escape
+	private char[] allowedChars = {
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\u0008', '\u001B'
+	}; //0-9, backspace and escape
 	private String blockName;
 	private GuiTextField keycodeTextbox;
 	private String currentString = "";
 	private static final int MAX_CHARS = 11;
 
-	public GuiCheckPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity){
+	public GuiCheckPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity) {
 		super(new ContainerGeneric(inventoryPlayer, tileEntity));
 		this.tileEntity = tileEntity;
 		blockName = Utils.localize(tileEntity.getBlockType().getTranslationKey() + ".name").getFormattedText();
 	}
 
 	@Override
-	public void initGui(){
+	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
 
@@ -64,31 +65,25 @@ public class GuiCheckPassword extends GuiContainer {
 	}
 
 	@Override
-	public void onGuiClosed(){
+	public void onGuiClosed() {
 		super.onGuiClosed();
 		Keyboard.enableRepeatEvents(false);
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks){
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 		keycodeTextbox.drawTextBox();
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
 	}
 
-	/**
-	 * Draw the background layer for the GuiContainer (everything behind the items)
-	 */
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
@@ -99,14 +94,14 @@ public class GuiCheckPassword extends GuiContainer {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(keyCode != Keyboard.KEY_ESCAPE && isValidChar(typedChar))
-		{
-			if(typedChar != '' && currentString.length() < MAX_CHARS){
+		if (keyCode != Keyboard.KEY_ESCAPE && isValidChar(typedChar)) {
+			if (typedChar != '' && currentString.length() < MAX_CHARS) {
 				Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 				currentString += typedChar;
 				setTextboxCensoredText(keycodeTextbox, currentString);
 				checkCode(currentString);
-			}else if(typedChar == ''){
+			}
+			else if (typedChar == '') {
 				Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 				currentString = Utils.removeLastChar(currentString);
 				setTextboxCensoredText(keycodeTextbox, currentString);
@@ -118,25 +113,22 @@ public class GuiCheckPassword extends GuiContainer {
 	}
 
 	private boolean isValidChar(char c) {
-		for(int i = 0; i < allowedChars.length; i++)
-			if(c == allowedChars[i])
+		for (int i = 0; i < allowedChars.length; i++) {
+			if (c == allowedChars[i])
 				return true;
-			else
-				continue;
+		}
 
 		return false;
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button){
-		if(button.id >= 0 && button.id <= 9)
-		{
+	protected void actionPerformed(GuiButton button) {
+		if (button.id >= 0 && button.id <= 9) {
 			currentString += "" + button.id;
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);
 		}
-		else if(button.id == 10)
-		{
+		else if (button.id == 10) {
 			currentString = Utils.removeLastChar(currentString);
 			setTextboxCensoredText(keycodeTextbox, currentString);
 		}
@@ -144,8 +136,10 @@ public class GuiCheckPassword extends GuiContainer {
 
 	private void setTextboxCensoredText(GuiTextField textField, String text) {
 		String x = "";
-		for(int i = 1; i <= text.length(); i++)
+
+		for (int i = 1; i <= text.length(); i++) {
 			x += "*";
+		}
 
 		textField.setText(x);
 	}

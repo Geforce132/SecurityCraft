@@ -8,8 +8,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class DismountCamera implements IMessage
-{
+public class DismountCamera implements IMessage {
 	public DismountCamera() {}
 
 	@Override
@@ -24,8 +23,8 @@ public class DismountCamera implements IMessage
 			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayerMP player = ctx.getServerHandler().player;
 
-				if(player.getSpectatingEntity() instanceof EntitySecurityCamera)
-					((EntitySecurityCamera)player.getSpectatingEntity()).stopViewing(player);
+				if (player.getSpectatingEntity() instanceof EntitySecurityCamera)
+					((EntitySecurityCamera) player.getSpectatingEntity()).stopViewing(player);
 			});
 
 			return null;

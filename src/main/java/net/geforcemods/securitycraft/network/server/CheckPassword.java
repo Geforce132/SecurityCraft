@@ -12,16 +12,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class CheckPassword implements IMessage{
-
+public class CheckPassword implements IMessage {
 	private String password;
 	private int x, y, z;
 
-	public CheckPassword(){
+	public CheckPassword() {}
 
-	}
-
-	public CheckPassword(int x, int y, int z, String code){
+	public CheckPassword(int x, int y, int z, String code) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -45,7 +42,6 @@ public class CheckPassword implements IMessage{
 	}
 
 	public static class Handler implements IMessageHandler<CheckPassword, IMessage> {
-
 		@Override
 		public IMessage onMessage(CheckPassword message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
@@ -53,10 +49,9 @@ public class CheckPassword implements IMessage{
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
-				if(te instanceof IPasswordProtected && ((IPasswordProtected)te).getPassword().equals(message.password))
-				{
+				if (te instanceof IPasswordProtected && ((IPasswordProtected) te).getPassword().equals(message.password)) {
 					((EntityPlayerMP) player).closeScreen();
-					((IPasswordProtected)te).activate(player);
+					((IPasswordProtected) te).activate(player);
 				}
 			});
 

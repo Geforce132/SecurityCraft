@@ -32,8 +32,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.IItemHandler;
 
-public class GuiBlockPocketManager extends GuiContainer implements ISlider
-{
+public class GuiBlockPocketManager extends GuiContainer implements ISlider {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager.png");
 	private static final ResourceLocation TEXTURE_STORAGE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager_storage.png");
 	private static final ItemStack BLOCK_POCKET_WALL = new ItemStack(SCContent.blockPocketWall);
@@ -61,8 +60,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 	private int pillarsStillNeeded;
 	private int chiseledStillNeeded;
 
-	public GuiBlockPocketManager(InventoryPlayer inventory, TileEntityBlockPocketManager te)
-	{
+	public GuiBlockPocketManager(InventoryPlayer inventory, TileEntityBlockPocketManager te) {
 		super(new ContainerBlockPocketManager(inventory, te));
 
 		this.te = te;
@@ -71,21 +69,22 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 		isOwner = te.getOwner().isOwner(inventory.player);
 		storage = te != null && te.hasModule(EnumModuleType.STORAGE) && isOwner;
 
-		if(storage)
+		if (storage)
 			xSize = 256;
 
 		ySize = !storage ? 194 : 240;
 	}
 
 	@Override
-	public void initGui()
-	{
+	public void initGui() {
 		super.initGui();
 
 		int width = storage ? 123 : xSize;
 		int widgetWidth = storage ? 110 : 120;
 		int widgetOffset = widgetWidth / 2;
-		int[] yOffset = storage ? new int[]{-76, -100, -52, -28, -4} : new int[]{-40, -70, 23, 47, 71};
+		//@formatter:off
+		int[] yOffset = storage ? new int[] {-76, -100, -52, -28, -4} : new int[] {-40, -70, 23, 47, 71};
+		//@formatter:on
 
 		buttonList.add(toggleButton = new GuiButton(0, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")).getFormattedText()));
 		buttonList.add(sizeButton = new GuiButton(1, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[1], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText()));
@@ -94,22 +93,19 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 		buttonList.add(offsetSlider = new GuiSlider(Utils.localize("gui.securitycraft:projector.offset", te.autoBuildOffset).getFormattedText(), "", 4, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), (-size + 2) / 2, (size - 2) / 2, te.autoBuildOffset, false, true, this));
 		offsetSlider.updateSlider();
 
-		if(!te.getOwner().isOwner(Minecraft.getMinecraft().player))
+		if (!te.getOwner().isOwner(Minecraft.getMinecraft().player))
 			sizeButton.enabled = toggleButton.enabled = assembleButton.enabled = outlineButton.enabled = offsetSlider.enabled = false;
-		else
-		{
+		else {
 			updateMaterialInformation(true);
 			sizeButton.enabled = offsetSlider.enabled = !te.enabled;
 		}
 
-		if(!storage)
-		{
+		if (!storage) {
 			hoverCheckers[0] = new StackHoverChecker(BLOCK_POCKET_WALL, guiTop + 93, guiTop + 113, guiLeft + 23, guiLeft + 43);
 			hoverCheckers[1] = new StackHoverChecker(REINFORCED_CRYSTAL_QUARTZ_PILLAR, guiTop + 93, guiTop + 113, guiLeft + 75, guiLeft + 95);
 			hoverCheckers[2] = new StackHoverChecker(REINFORCED_CHISELED_CRYSTAL_QUARTZ, guiTop + 93, guiTop + 113, guiLeft + 128, guiLeft + 148);
 		}
-		else
-		{
+		else {
 			hoverCheckers[0] = new StackHoverChecker(BLOCK_POCKET_WALL, guiTop + ySize - 73, guiTop + ySize - 54, guiLeft + 174, guiLeft + 191);
 			hoverCheckers[1] = new StackHoverChecker(REINFORCED_CRYSTAL_QUARTZ_PILLAR, guiTop + ySize - 50, guiTop + ySize - 31, guiLeft + 174, guiLeft + 191);
 			hoverCheckers[2] = new StackHoverChecker(REINFORCED_CHISELED_CRYSTAL_QUARTZ, guiTop + ySize - 27, guiTop + ySize - 9, guiLeft + 174, guiLeft + 191);
@@ -119,14 +115,11 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawString(blockPocketManager, (storage ? 123 : xSize) / 2 - fontRenderer.getStringWidth(blockPocketManager) / 2, 6, 4210752);
 
-		if(!te.enabled && isOwner)
-		{
-			if(!storage)
-			{
+		if (!te.enabled && isOwner) {
+			if (!storage) {
 				fontRenderer.drawString(youNeed, xSize / 2 - fontRenderer.getStringWidth(youNeed) / 2, 83, 4210752);
 
 				fontRenderer.drawString(wallsNeededOverall + "", 42, 100, 4210752);
@@ -138,8 +131,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 				fontRenderer.drawString(chiseledNeededOverall + "", 147, 100, 4210752);
 				GuiUtils.drawItemStackToGui(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96, false);
 			}
-			else
-			{
+			else {
 				fontRenderer.drawString(youNeed, 169 + 87 / 2 - fontRenderer.getStringWidth(youNeed) / 2, ySize - 83, 4210752);
 
 				fontRenderer.drawString(Math.max(0, wallsStillNeeded) + "", 192, ySize - 66, 4210752);
@@ -153,33 +145,27 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 			}
 		}
 
-		if(storage)
-		{
+		if (storage) {
 			fontRenderer.drawString(playerInventory.getDisplayName().getFormattedText(), 8, ySize - 94, 4210752);
 			renderHoveredToolTip(mouseX - guiLeft, mouseY - guiTop);
 		}
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks)
-	{
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		if(!te.enabled && isOwner)
-		{
-			for(StackHoverChecker shc : hoverCheckers)
-			{
-				if(shc.checkHover(mouseX, mouseY))
-				{
+		if (!te.enabled && isOwner) {
+			for (StackHoverChecker shc : hoverCheckers) {
+				if (shc.checkHover(mouseX, mouseY)) {
 					renderToolTip(shc.getStack(), mouseX, mouseY);
 					return;
 				}
 			}
 		}
 
-		if(!te.enabled && isOwner && !assembleButton.enabled && assembleHoverChecker.checkHover(mouseX, mouseY))
-		{
-			if(!storage)
+		if (!te.enabled && isOwner && !assembleButton.enabled && assembleHoverChecker.checkHover(mouseX, mouseY)) {
+			if (!storage)
 				net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY, width, height, -1, fontRenderer);
 			else
 				net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(assembleHoverChecker.getLines().subList(1, 2), mouseX, mouseY, width, height, -1, fontRenderer);
@@ -187,8 +173,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-	{
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 
@@ -199,8 +184,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 	}
 
 	@Override
-	protected void handleMouseClick(Slot slot, int slotId, int mouseButton, ClickType type)
-	{
+	protected void handleMouseClick(Slot slot, int slotId, int mouseButton, ClickType type) {
 		//the super call needs to be before calculating the stored materials, as it is responsible for putting the stack inside the slot
 		super.handleMouseClick(slot, slotId, mouseButton, type);
 		//every time items are added/removed, the mouse is clicking a slot and these values are recomputed
@@ -209,40 +193,36 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) throws IOException
-	{
-		if(button.id == toggleButton.id)
-		{
-			if(te.enabled)
+	protected void actionPerformed(GuiButton button) throws IOException {
+		if (button.id == toggleButton.id) {
+			if (te.enabled)
 				te.disableMultiblock();
-			else
-			{
+			else {
 				TextComponentTranslation feedback;
 
 				te.size = size;
 				feedback = te.enableMultiblock();
 
-				if(feedback != null)
+				if (feedback != null)
 					PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, Utils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), feedback, TextFormatting.DARK_AQUA, true);
 			}
 
 			Minecraft.getMinecraft().player.closeScreen();
 		}
-		else if(button.id == sizeButton.id)
-		{
+		else if (button.id == sizeButton.id) {
 			int newOffset;
 			int newMin;
 			int newMax;
 
 			size += 4;
 
-			if(size > 25)
+			if (size > 25)
 				size = 5;
 
 			newMin = (-size + 2) / 2;
 			newMax = (size - 2) / 2;
 
-			if(te.autoBuildOffset > 0)
+			if (te.autoBuildOffset > 0)
 				newOffset = Math.min(te.autoBuildOffset, newMax);
 			else
 				newOffset = Math.max(te.autoBuildOffset, newMin);
@@ -257,62 +237,53 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 			button.displayString = Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText();
 			sync();
 		}
-		else if(button.id == assembleButton.id)
-		{
+		else if (button.id == assembleButton.id) {
 			ITextComponent feedback;
 
 			te.size = size;
 			feedback = te.autoAssembleMultiblock();
 
-			if(feedback != null)
+			if (feedback != null)
 				PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, Utils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), feedback, TextFormatting.DARK_AQUA);
 
 			Minecraft.getMinecraft().player.closeScreen();
 		}
-		else if(button.id == outlineButton.id)
-		{
+		else if (button.id == outlineButton.id) {
 			te.toggleOutline();
-			outlineButton.displayString = Utils.localize("gui.securitycraft:blockPocketManager.outline."+ (!te.showOutline ? "show" : "hide")).getFormattedText();
+			outlineButton.displayString = Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")).getFormattedText();
 			sync();
 		}
 	}
 
-	private void sync()
-	{
+	private void sync() {
 		SecurityCraft.network.sendToServer(new SyncBlockPocketManager(te.getPos(), te.size, te.showOutline, te.autoBuildOffset));
 	}
 
 	@Override
-	public void onMouseRelease(int id)
-	{
-		if(id == offsetSlider.id)
-		{
+	public void onMouseRelease(int id) {
+		if (id == offsetSlider.id) {
 			te.autoBuildOffset = offsetSlider.getValueInt();
 			sync();
 		}
 	}
 
-	private void updateMaterialInformation(boolean recalculateStoredStacks)
-	{
-		if(recalculateStoredStacks)
-		{
+	private void updateMaterialInformation(boolean recalculateStoredStacks) {
+		if (recalculateStoredStacks) {
 			materialCounts[0] = materialCounts[1] = materialCounts[2] = 0;
 
 			IItemHandler handler = te.getStorageHandler();
 
-			for(int i = 0; i < handler.getSlots(); i++)
-			{
+			for (int i = 0; i < handler.getSlots(); i++) {
 				ItemStack stack = handler.getStackInSlot(i);
 
-				if(stack.getItem() instanceof ItemBlock)
-				{
-					Block block = ((ItemBlock)stack.getItem()).getBlock();
+				if (stack.getItem() instanceof ItemBlock) {
+					Block block = ((ItemBlock) stack.getItem()).getBlock();
 
-					if(block == SCContent.blockPocketWall)
+					if (block == SCContent.blockPocketWall)
 						materialCounts[0] += stack.getCount();
-					else if(block == SCContent.reinforcedCrystalQuartz && stack.getMetadata() >= 2)
+					else if (block == SCContent.reinforcedCrystalQuartz && stack.getMetadata() >= 2)
 						materialCounts[1] += stack.getCount();
-					else if(block == SCContent.reinforcedCrystalQuartz && stack.getMetadata() == 1)
+					else if (block == SCContent.reinforcedCrystalQuartz && stack.getMetadata() == 1)
 						materialCounts[2] += stack.getCount();
 				}
 			}
@@ -328,9 +299,8 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 	}
 
 	@Override
-	public void onChangeSliderValue(GuiSlider slider, String blockName, int id)
-	{
-		if(slider.id == offsetSlider.id)
+	public void onChangeSliderValue(GuiSlider slider, String blockName, int id) {
+		if (slider.id == offsetSlider.id)
 			slider.displayString = slider.prefix + slider.getValueInt();
 	}
 }

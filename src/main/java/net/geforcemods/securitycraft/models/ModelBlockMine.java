@@ -17,59 +17,50 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.ForgeHooksClient;
 
-public class ModelBlockMine implements IBakedModel
-{
+public class ModelBlockMine implements IBakedModel {
 	private final IBakedModel defaultModel;
 	private final IBakedModel guiModel;
 
-	public ModelBlockMine(IBakedModel defaultModel, IBakedModel guiModel)
-	{
+	public ModelBlockMine(IBakedModel defaultModel, IBakedModel guiModel) {
 		this.defaultModel = defaultModel;
 		this.guiModel = guiModel;
 	}
 
 	@Override
-	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType)
-	{
-		if(cameraTransformType == TransformType.GUI)
+	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+		if (cameraTransformType == TransformType.GUI)
 			return ForgeHooksClient.handlePerspective(guiModel, cameraTransformType);
 		else
 			return ForgeHooksClient.handlePerspective(defaultModel, cameraTransformType);
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
-	{
+	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
 		return defaultModel == null ? new ArrayList<>() : defaultModel.getQuads(state, side, rand);
 	}
 
 	@Override
-	public boolean isAmbientOcclusion()
-	{
+	public boolean isAmbientOcclusion() {
 		return defaultModel == null ? true : defaultModel.isAmbientOcclusion();
 	}
 
 	@Override
-	public boolean isGui3d()
-	{
+	public boolean isGui3d() {
 		return defaultModel == null ? false : defaultModel.isGui3d();
 	}
 
 	@Override
-	public boolean isBuiltInRenderer()
-	{
+	public boolean isBuiltInRenderer() {
 		return defaultModel == null ? false : defaultModel.isBuiltInRenderer();
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleTexture()
-	{
+	public TextureAtlasSprite getParticleTexture() {
 		return defaultModel == null ? Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite() : defaultModel.getParticleTexture();
 	}
 
 	@Override
-	public ItemOverrideList getOverrides()
-	{
+	public ItemOverrideList getOverrides() {
 		return defaultModel == null ? ItemOverrideList.NONE : defaultModel.getOverrides();
 	}
 }

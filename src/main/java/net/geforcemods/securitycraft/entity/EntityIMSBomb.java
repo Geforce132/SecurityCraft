@@ -15,19 +15,18 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 
 public class EntityIMSBomb extends EntityFireball {
-
 	private static final DataParameter<Owner> OWNER = EntityDataManager.createKey(EntityIMSBomb.class, Owner.getSerializer());
 	private int ticksFlying = 0;
 	private int launchTime;
 	private boolean launching = true;
 	private boolean isFast;
 
-	public EntityIMSBomb(World world){
+	public EntityIMSBomb(World world) {
 		super(world);
 		setSize(0.25F, 0.3F);
 	}
 
-	public EntityIMSBomb(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, TileEntityIMS te){
+	public EntityIMSBomb(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, TileEntityIMS te) {
 		super(world, x, y, z, accelerationX, accelerationY, accelerationZ);
 		setSize(0.25F, 0.3F);
 		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
@@ -39,24 +38,21 @@ public class EntityIMSBomb extends EntityFireball {
 	}
 
 	@Override
-	public void onUpdate(){
-		if(!launching){
+	public void onUpdate() {
+		if (!launching) {
 			super.onUpdate();
 			return;
 		}
-		else
-		{
-			if(ticksFlying == 0)
+		else {
+			if (ticksFlying == 0)
 				motionY = isFast ? 0.66F : 0.33F;
 
 			//move up before homing onto target
-			if(ticksFlying < launchTime)
-			{
+			if (ticksFlying < launchTime) {
 				ticksFlying += isFast ? 2 : 1;
 				move(MoverType.SELF, motionX, motionY, motionZ);
 			}
-			else
-			{
+			else {
 				motionX = motionY = motionZ = 0.0F;
 				launching = false;
 			}
@@ -64,16 +60,15 @@ public class EntityIMSBomb extends EntityFireball {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult result){
-		if(!world.isRemote && result.typeOfHit == Type.BLOCK && world.getBlockState(result.getBlockPos()).getBlock() != SCContent.ims){
+	protected void onImpact(RayTraceResult result) {
+		if (!world.isRemote && result.typeOfHit == Type.BLOCK && world.getBlockState(result.getBlockPos()).getBlock() != SCContent.ims) {
 			world.newExplosion(this, result.getBlockPos().getX(), result.getBlockPos().getY() + 1D, result.getBlockPos().getZ(), ConfigHandler.smallerMineExplosion ? 3.5F : 7F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
 			setDead();
 		}
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
-	{
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setInteger("launchTime", launchTime);
 		tag.setInteger("ticksFlying", ticksFlying);
@@ -83,8 +78,7 @@ public class EntityIMSBomb extends EntityFireball {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
-	{
+	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		launchTime = tag.getInteger("launchTime");
 		ticksFlying = tag.getInteger("ticksFlying");
@@ -95,36 +89,33 @@ public class EntityIMSBomb extends EntityFireball {
 	/**
 	 * @return The owner of the IMS which shot this bullet
 	 */
-	public Owner getOwner()
-	{
+	public Owner getOwner() {
 		return dataManager.get(OWNER);
 	}
 
 	@Override
-	protected void entityInit()
-	{
+	protected void entityInit() {
 		super.entityInit();
 		dataManager.register(OWNER, new Owner());
 	}
 
 	@Override
-	protected float getMotionFactor(){
+	protected float getMotionFactor() {
 		return isFast ? 1.5F : 1.0F;
 	}
 
 	@Override
-	protected boolean canTriggerWalking(){
+	protected boolean canTriggerWalking() {
 		return false;
 	}
 
 	@Override
-	public boolean canBeCollidedWith(){
+	public boolean canBeCollidedWith() {
 		return false;
 	}
 
 	@Override
-	public float getCollisionBorderSize(){
+	public float getCollisionBorderSize() {
 		return 0.3F;
 	}
-
 }

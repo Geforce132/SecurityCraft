@@ -29,69 +29,61 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
-{
-	public BlockDisguisable(Material material)
-	{
+public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
+	public BlockDisguisable(Material material) {
 		super(material);
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity)
-	{
+	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) {
 		IBlockState actualState = getDisguisedBlockState(world, pos);
 
-		if(actualState != null && actualState.getBlock() != this)
+		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getBlock().getSoundType(state, world, pos, entity);
 		else
 			return blockSoundType;
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		IBlockState actualState = getDisguisedBlockState(world, pos);
 
-		if(actualState != null && actualState.getBlock() != this)
+		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getBoundingBox(world, pos);
 		else
 			return super.getBoundingBox(state, world, pos);
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		IBlockState actualState = getDisguisedBlockState(world, pos);
 
-		if(actualState != null && actualState.getBlock() != this)
+		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getCollisionBoundingBox(world, pos);
 		else
 			return super.getCollisionBoundingBox(state, world, pos);
 	}
 
 	@Override
-	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos)
-	{
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
 		IBlockState actualState = getDisguisedBlockState(world, pos);
 
-		if(actualState != null && actualState.getBlock() != this)
+		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getSelectedBoundingBox(world, pos);
 		else
 			return super.getSelectedBoundingBox(state, world, pos);
 	}
 
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
-	{
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState) {
 		IBlockState actualState = getDisguisedBlockState(world, pos);
 
-		if(actualState != null && actualState.getBlock() != this)
+		if (actualState != null && actualState.getBlock() != this)
 			actualState.addCollisionBoxToList(world, pos, entityBox, collidingBoxes, entity, true);
 		else
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, getCollisionBoundingBox(state, world, pos));
@@ -99,30 +91,27 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getRenderLayer()
-	{
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
 	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) //ctm fix
-	{
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) { //ctm fix
 		return true;
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face)
-	{
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(EnumModuleType.DISGUISE))
-		{
-			ItemStack module = ((IModuleInventory)te).getModule(EnumModuleType.DISGUISE);
-			Block block = ((ItemModule)module.getItem()).getBlockAddon(module.getTagCompound());
+		if (te instanceof IModuleInventory && ((IModuleInventory) te).hasModule(EnumModuleType.DISGUISE)) {
+			ItemStack module = ((IModuleInventory) te).getModule(EnumModuleType.DISGUISE);
+			Block block = ((ItemModule) module.getItem()).getBlockAddon(module.getTagCompound());
 
-			if(block == null)
+			if (block == null)
 				return BlockFaceShape.SOLID;
-			else return block.getDefaultState().getBlockFaceShape(world, pos, face);
+			else
+				return block.getDefaultState().getBlockFaceShape(world, pos, face);
 		}
 
 		return BlockFaceShape.SOLID;
@@ -130,22 +119,19 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side)
-	{
-		if(!(world.getTileEntity(pos) instanceof IModuleInventory))
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		if (!(world.getTileEntity(pos) instanceof IModuleInventory))
 			return true;
 
 		IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
 
-		if(te.hasModule(EnumModuleType.DISGUISE))
-		{
+		if (te.hasModule(EnumModuleType.DISGUISE)) {
 			ItemStack disguiseModule = te.getModule(EnumModuleType.DISGUISE);
 			Block blockToDisguiseAs = ((ItemModule) disguiseModule.getItem()).getBlockAddon(disguiseModule.getTagCompound());
 
-			if(blockToDisguiseAs != null)
-			{
+			if (blockToDisguiseAs != null) {
 				// If this block has a disguise module added with a transparent block inserted.
-				if(!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
+				if (!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
 					return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side), side);
 			}
 		}
@@ -153,11 +139,10 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 		return true;
 	}
 
-	public boolean checkForSideTransparency(IBlockAccess world, IBlockState neighborState, BlockPos neighborPos, EnumFacing side)
-	{
+	public boolean checkForSideTransparency(IBlockAccess world, IBlockState neighborState, BlockPos neighborPos, EnumFacing side) {
 		Block neighborBlock = neighborState.getBlock();
 
-		if(neighborBlock.isAir(neighborState, world, neighborPos))
+		if (neighborBlock.isAir(neighborState, world, neighborPos))
 			return true;
 
 		// Slightly cheating here, checking if the block is an instance of BlockBreakable
@@ -167,7 +152,7 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
+	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
 
@@ -178,15 +163,12 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 		return disguisedState != null ? disguisedState : state;
 	}
 
-	public IBlockState getDisguisedBlockState(IBlockAccess world, BlockPos pos)
-	{
-		if(world.getTileEntity(pos) instanceof IModuleInventory)
-		{
+	public IBlockState getDisguisedBlockState(IBlockAccess world, BlockPos pos) {
+		if (world.getTileEntity(pos) instanceof IModuleInventory) {
 			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
 			ItemStack module = te.hasModule(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
 
-			if(!module.isEmpty())
-			{
+			if (!module.isEmpty()) {
 				ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddonAsStack(module.getTagCompound());
 				Block block = Block.getBlockFromItem(disguisedStack.getItem());
 				boolean hasMeta = disguisedStack.getHasSubtypes();
@@ -201,18 +183,15 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 		return null;
 	}
 
-	public ItemStack getDisguisedStack(IBlockAccess world, BlockPos pos)
-	{
-		if(world.getTileEntity(pos) instanceof IModuleInventory)
-		{
+	public ItemStack getDisguisedStack(IBlockAccess world, BlockPos pos) {
+		if (world.getTileEntity(pos) instanceof IModuleInventory) {
 			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
 			ItemStack stack = te.hasModule(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
 
-			if(!stack.isEmpty())
-			{
+			if (!stack.isEmpty()) {
 				ItemStack disguisedStack = ((ItemModule) stack.getItem()).getAddonAsStack(stack.getTagCompound());
 
-				if(!disguisedStack.isEmpty())
+				if (!disguisedStack.isEmpty())
 					return disguisedStack.copy();
 			}
 		}
@@ -221,32 +200,27 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
-	{
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return getDisguisedStack(world, pos);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
-	{
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return getDisguisedStack(world, pos).getItem() == Item.getItemFromBlock(this);
 	}
 
 	@Override
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
-	{
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-	{
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		return getDisguisedStack(world, pos);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityDisguisable();
 	}
 }

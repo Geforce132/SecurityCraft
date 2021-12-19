@@ -16,7 +16,7 @@ public class MixinEntityRenderer {
 	@ModifyConstant(method = "updateFovModifierHand", constant = @Constant(floatValue = 1.0F))
 	private float modifyInitialFValue(float f) {
 		if (Minecraft.getMinecraft().getRenderViewEntity() instanceof EntitySecurityCamera)
-			return ((EntitySecurityCamera)Minecraft.getMinecraft().getRenderViewEntity()).getZoomAmount();
+			return ((EntitySecurityCamera) Minecraft.getMinecraft().getRenderViewEntity()).getZoomAmount();
 		else
 			return f;
 	}

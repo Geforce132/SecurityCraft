@@ -32,7 +32,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockProjector extends BlockDisguisable {
-
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	private static final AxisAlignedBB NORTH = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 10.0F / 16.0F, 15.0F / 16.0F);
 	private static final AxisAlignedBB EAST = new AxisAlignedBB(1.0F / 16.0F, 0.0F, 0.0F, 1.0F, 10.0F / 16.0F, 1.0F);
@@ -46,54 +45,53 @@ public class BlockProjector extends BlockDisguisable {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
-		switch(state.getValue(FACING))
-		{
-			case NORTH: return NORTH;
-			case EAST: return EAST;
-			case SOUTH: return SOUTH;
-			case WEST: return WEST;
-			default: return super.getBoundingBox(state, world, pos);
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		switch (state.getValue(FACING)) {
+			case NORTH:
+				return NORTH;
+			case EAST:
+				return EAST;
+			case SOUTH:
+				return SOUTH;
+			case WEST:
+				return WEST;
+			default:
+				return super.getBoundingBox(state, world, pos);
 		}
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		IBlockState actualState = getDisguisedBlockState(world, pos);
 
-		if(actualState != null && actualState.getBlock() != this)
+		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getCollisionBoundingBox(world, pos);
 		else
 			return getBoundingBox(state, world, pos);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if(!(te instanceof TileEntityProjector))
+		if (!(te instanceof TileEntityProjector))
 			return false;
 
-		boolean isOwner = ((TileEntityProjector)te).getOwner().isOwner(player);
+		boolean isOwner = ((TileEntityProjector) te).getOwner().isOwner(player);
 
-		if(!world.isRemote && isOwner)
+		if (!world.isRemote && isOwner)
 			player.openGui(SecurityCraft.instance, GuiHandler.PROJECTOR, world, pos.getX(), pos.getY(), pos.getZ());
 
 		return isOwner;
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state)
-	{
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if(te instanceof TileEntityProjector)
-		{
+		if (te instanceof TileEntityProjector) {
 			// Drop the block being projected
-			EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityProjector)te).getStackInSlot(36));
+			EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityProjector) te).getStackInSlot(36));
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(item));
 		}
 
@@ -101,18 +99,14 @@ public class BlockProjector extends BlockDisguisable {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
-	{
-		if(!world.isRemote)
-		{
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		if (!world.isRemote) {
 			TileEntity tile = world.getTileEntity(pos);
 
-			if(tile instanceof TileEntityProjector)
-			{
-				TileEntityProjector te = (TileEntityProjector)tile;
+			if (tile instanceof TileEntityProjector) {
+				TileEntityProjector te = (TileEntityProjector) tile;
 
-				if(te.isActivatedByRedstone())
-				{
+				if (te.isActivatedByRedstone()) {
 					te.setActive(world.isBlockPowered(pos));
 					te.sync();
 				}
@@ -121,68 +115,57 @@ public class BlockProjector extends BlockDisguisable {
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
-	{
-		if(!world.isBlockPowered(pos))
-		{
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		if (!world.isBlockPowered(pos)) {
 			TileEntity tile = world.getTileEntity(pos);
 
-			if(tile instanceof TileEntityProjector)
-			{
-				TileEntityProjector te = (TileEntityProjector)tile;
+			if (tile instanceof TileEntityProjector) {
+				TileEntityProjector te = (TileEntityProjector) tile;
 
-				if(te.isActivatedByRedstone())
+				if (te.isActivatedByRedstone())
 					te.setActive(false);
 			}
 		}
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(FACING).getHorizontalIndex();
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState state)
-	{
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityProjector();
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror)
-	{
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag)
-	{
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		tooltip.add(new TextComponentTranslation("tooltip.securitycraft:projector").getFormattedText());
 	}
 }

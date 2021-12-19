@@ -4,7 +4,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
 public enum SCSounds {
-
 	ALARM("securitycraft:alarm"),
 	CAMERAZOOMIN("securitycraft:cameraZoomIn"),
 	CAMERASNAP("securitycraft:cameraSnap"),
@@ -18,7 +17,7 @@ public enum SCSounds {
 	public final ResourceLocation location;
 	public final SoundEvent event;
 
-	private SCSounds(String path){
+	private SCSounds(String path) {
 		this.path = path;
 		location = new ResourceLocation(path);
 		event = new SoundEvent(new ResourceLocation(path));

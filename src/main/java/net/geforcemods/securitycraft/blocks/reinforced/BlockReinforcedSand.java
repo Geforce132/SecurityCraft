@@ -11,12 +11,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-public class BlockReinforcedSand extends BlockReinforcedFalling
-{
-	public static final PropertyEnum<BlockSand.EnumType> VARIANT = PropertyEnum.<BlockSand.EnumType>create("variant", BlockSand.EnumType.class);
+public class BlockReinforcedSand extends BlockReinforcedFalling {
+	public static final PropertyEnum<BlockSand.EnumType> VARIANT = PropertyEnum.<BlockSand.EnumType> create("variant", BlockSand.EnumType.class);
 
-	public BlockReinforcedSand()
-	{
+	public BlockReinforcedSand() {
 		super(Material.SAND, Blocks.SAND);
 
 		setSoundType(SoundType.SAND);
@@ -24,41 +22,34 @@ public class BlockReinforcedSand extends BlockReinforcedFalling
 	}
 
 	@Override
-	public int damageDropped(IBlockState state)
-	{
+	public int damageDropped(IBlockState state) {
 		return state.getValue(VARIANT).getMetadata();
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items)
-	{
-		for(BlockSand.EnumType type : BlockSand.EnumType.values())
-		{
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+		for (BlockSand.EnumType type : BlockSand.EnumType.values()) {
 			items.add(new ItemStack(this, 1, type.getMetadata()));
 		}
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, BlockSand.EnumType.byMetadata(meta));
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		return state.getValue(VARIANT).getMetadata();
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, VARIANT);
 	}
 
 	@Override
-	public int getAmount()
-	{
+	public int getAmount() {
 		return 2;
 	}
 }

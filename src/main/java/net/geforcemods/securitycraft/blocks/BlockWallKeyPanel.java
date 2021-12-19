@@ -11,8 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockWallKeyPanel extends BlockKeyPanel
-{
+public class BlockWallKeyPanel extends BlockKeyPanel {
 	public static final AxisAlignedBB WALL_N;
 	public static final AxisAlignedBB WALL_E;
 	public static final AxisAlignedBB WALL_S;
@@ -27,54 +26,51 @@ public class BlockWallKeyPanel extends BlockKeyPanel
 		WALL_W = new AxisAlignedBB(15 * px, 1 * px, 2 * px, 16 * px, 15 * px, 14 * px);
 	}
 
-	public BlockWallKeyPanel(Material material)
-	{
+	public BlockWallKeyPanel(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false));
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
-		switch(state.getValue(FACING))
-		{
-			case NORTH: return WALL_N;
-			case EAST: return WALL_E;
-			case SOUTH: return WALL_S;
-			case WEST: return WALL_W;
-			default: return NULL_AABB;
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		switch (state.getValue(FACING)) {
+			case NORTH:
+				return WALL_N;
+			case EAST:
+				return WALL_E;
+			case SOUTH:
+				return WALL_S;
+			case WEST:
+				return WALL_W;
+			default:
+				return NULL_AABB;
 		}
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-	{
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(FACING, facing).withProperty(POWERED, false);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
+	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 0b0011)).withProperty(POWERED, (meta & 0b0100) == 0b0100);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
+	public int getMetaFromState(IBlockState state) {
 		int meta = state.getValue(FACING).getHorizontalIndex();
 
 		return state.getValue(POWERED) ? meta | 0b0100 : meta;
 	}
 
 	@Override
-	protected EnumFacing getConnectedDirection(IBlockState state)
-	{
+	protected EnumFacing getConnectedDirection(IBlockState state) {
 		return state.getValue(FACING);
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
-	{
+	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, POWERED);
 	}
 }
