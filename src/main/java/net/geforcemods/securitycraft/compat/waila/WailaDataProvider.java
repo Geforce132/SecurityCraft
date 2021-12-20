@@ -30,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvider {
@@ -37,6 +38,10 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 	private static final String SHOW_MODULES = "securitycraft.showmodules";
 	private static final String SHOW_PASSWORDS = "securitycraft.showpasswords";
 	private static final String SHOW_CUSTOM_NAME = "securitycraft.showcustomname";
+
+	static {
+		MinecraftForge.EVENT_BUS.register(WailaDataProvider.class);
+	}
 
 	public static void callbackRegister(IWailaRegistrar registrar) {
 		registrar.addConfigRemote("SecurityCraft", SHOW_OWNER, Utils.localize("waila.securitycraft:displayOwner").getFormattedText());
