@@ -37,6 +37,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
 
 @WailaPlugin(SecurityCraft.MODID)
@@ -48,6 +49,10 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
 	private static final Style MOD_NAME_STYLE = Style.EMPTY.setFormatting(TextFormatting.BLUE).setItalic(true);
 	private static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormatting(TextFormatting.WHITE);
+
+	static {
+		MinecraftForge.EVENT_BUS.addListener(WailaDataProvider::onWailaRender);
+	}
 
 	@Override
 	public void register(IRegistrar registrar) {
