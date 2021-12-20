@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -37,8 +38,8 @@ public abstract class TrackedEntityMixin {
 	 * Checks if this entity is in range of a camera that is currently being viewed, and stores the result in the field
 	 * shouldBeSent
 	 */
-	@Inject(method = "updatePlayer", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/Math;min(II)I"), locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void onUpdatePlayer(ServerPlayer player, CallbackInfo callback, Vec3 unused, int viewDistance) {
+	@Inject(method = "updatePlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;broadcastToPlayer(Lnet/minecraft/server/level/ServerPlayer;)Z", shift = Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILSOFT)
+	private void onUpdatePlayer(ServerPlayer player, CallbackInfo callback, Vec3 unused, double viewDistance) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			Vec3 relativePosToCamera = player.getCamera().position().subtract(serverEntity.sentPos());
 
