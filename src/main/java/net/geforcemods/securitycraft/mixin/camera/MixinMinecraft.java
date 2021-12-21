@@ -14,7 +14,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 
-@Mixin(Minecraft.class)
+@Mixin(value = Minecraft.class, priority = 1100)
 public class MixinMinecraft {
 	@Shadow
 	public EntityPlayerSP player;

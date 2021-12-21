@@ -14,7 +14,7 @@ import net.minecraft.entity.Entity;
 /**
  * Fixes players not being able to see themselves while mounted to a camera
  */
-@Mixin(RenderPlayer.class)
+@Mixin(value = RenderPlayer.class, priority = 1100)
 public class MixinRenderPlayer {
 	@Redirect(method = "doRender(Lnet/minecraft/client/entity/AbstractClientPlayer;DDDFF)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/entity/RenderManager;renderViewEntity:Lnet/minecraft/entity/Entity;", opcode = Opcodes.GETFIELD))
 	private Entity checkForCamera(RenderManager renderManager, AbstractClientPlayer entity, double x, double y, double z, float entityYaw, float partialTicks) {

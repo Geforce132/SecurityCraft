@@ -15,7 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
  * Allows security cameras as well as entities outside the player's range to be sent to the player when they are viewing a
  * camera
  */
-@Mixin(EntityTrackerEntry.class)
+@Mixin(value = EntityTrackerEntry.class, priority = 1100)
 public class MixinEntityTrackerEntry {
 	@Shadow
 	@Final

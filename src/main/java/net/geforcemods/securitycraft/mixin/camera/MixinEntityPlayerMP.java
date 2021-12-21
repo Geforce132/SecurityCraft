@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 /**
  * Makes sure the server does not move the player viewing a camera to the camera's position
  */
-@Mixin(EntityPlayerMP.class)
+@Mixin(value = EntityPlayerMP.class, priority = 1100)
 public class MixinEntityPlayerMP {
 	@Redirect(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayerMP;setPositionAndRotation(DDDFF)V"))
 	private void onUpdate(EntityPlayerMP player, double x, double y, double z, float yaw, float pitch) {
