@@ -1,2 +1,1 @@
---------------------------Changelog for v1.9-beta1 of SecurityCraft--------------------------
-
+--------------------------Changelog for v1.9.0.1 of SecurityCraft--------------------------
