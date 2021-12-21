@@ -12,7 +12,7 @@ import net.minecraft.client.settings.PointOfView;
 /**
  * Disallows players from pressing F5 (by default) to change to third person while viewing a camera
  */
-@Mixin(Minecraft.class)
+@Mixin(value = Minecraft.class, priority = 1100)
 public class MinecraftMixin {
 	@Redirect(method = "processKeyBinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/GameSettings;setPointOfView(Lnet/minecraft/client/settings/PointOfView;)V"))
 	private void processKeyBinds(GameSettings gameSettings, PointOfView newPov) {

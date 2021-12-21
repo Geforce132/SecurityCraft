@@ -22,7 +22,7 @@ import net.minecraft.world.server.ChunkManager;
 /**
  * Lets entities get sent to the client even though they're not in range of the player
  */
-@Mixin(ChunkManager.EntityTracker.class)
+@Mixin(value = ChunkManager.EntityTracker.class, priority = 1100)
 public abstract class EntityTrackerMixin {
 	@Shadow
 	@Final

@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.WorldRenderer;
  * This mixin fixes camera chunks disappearing when the player entity moves while viewing a camera (e.g. while being in a
  * minecart or falling)
  */
-@Mixin(WorldRenderer.class)
+@Mixin(value = WorldRenderer.class, priority = 1100)
 public class WorldRendererMixin {
 	@Shadow
 	@Final

@@ -19,7 +19,7 @@ import net.minecraft.world.World;
  * When a player is viewing a camera, enables sounds near the camera to be played, while sounds near the player entity are
  * suppressed
  */
-@Mixin(PlayerList.class)
+@Mixin(value = PlayerList.class, priority = 1100)
 public class PlayerListMixin {
 	@Inject(method = "sendToAllNearExcept", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getPosZ()D"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
 	private void broadcastToCameras(PlayerEntity except, double x, double y, double z, double radius, RegistryKey<World> dimension, IPacket<?> packet, CallbackInfo callback, int iteration, ServerPlayerEntity player) {
