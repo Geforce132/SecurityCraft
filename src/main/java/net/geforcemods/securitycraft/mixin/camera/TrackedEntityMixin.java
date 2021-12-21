@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 /**
  * Lets entities get sent to the client even though they're not in range of the player
  */
-@Mixin(ChunkMap.TrackedEntity.class)
+@Mixin(value = ChunkMap.TrackedEntity.class, priority = 1100)
 public abstract class TrackedEntityMixin {
 	@Shadow
 	@Final

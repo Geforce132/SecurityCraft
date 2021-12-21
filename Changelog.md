@@ -1,6 +1,7 @@
---------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9.0.1 of SecurityCraft--------------------------
 
 - Fix: Copper -> Cut Copper stonecutting recipes yield incorrect amounts
+- Fix: Possible incompatibilities with other mods that use mixins to modify the same code as SecurityCraft (known: Magnesium, Immersive Portals)
 
 --------------------------Changelog for v1.9 of SecurityCraft--------------------------
 

@@ -19,7 +19,7 @@ import net.minecraft.world.level.ChunkPos;
  * This mixin makes sure that chunks near cameras are properly sent to the player viewing it, as well as fixing block updates
  * not getting sent to chunks loaded by cameras
  */
-@Mixin(ChunkMap.class)
+@Mixin(value = ChunkMap.class, priority = 1100)
 public abstract class ChunkMapMixin {
 	@Shadow
 	int viewDistance;

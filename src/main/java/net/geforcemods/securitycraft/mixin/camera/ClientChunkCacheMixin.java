@@ -32,7 +32,7 @@ import net.minecraftforge.event.world.ChunkEvent;
  * These mixins aim at implementing the camera chunk storage from CameraController into all the places
  * ClientChunkCache#storage is used
  */
-@Mixin(ClientChunkCache.class)
+@Mixin(value = ClientChunkCache.class, priority = 1100)
 public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	@Shadow
 	volatile ClientChunkCache.Storage storage;
