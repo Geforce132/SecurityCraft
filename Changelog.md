@@ -2,7 +2,7 @@
 
 - Fix: Key Panel is not placeable 
 - Fix: Key Panel cannot convert the chest, furnace, or Frame
-- Fix: Possible incompatibilities with other mods that use mixins to modify the same code as SecurityCraft
+- Fix: Possible incompatibilities with other mods that use mixins to modify the same code as SecurityCraft (known: Magnesium, Immersive Portals)
 
 --------------------------Changelog for v1.9 of SecurityCraft--------------------------
 
