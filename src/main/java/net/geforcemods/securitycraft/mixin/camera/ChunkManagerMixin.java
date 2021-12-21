@@ -20,7 +20,7 @@ import net.minecraft.world.server.ChunkManager;
  * This mixin makes sure that chunks near cameras are properly sent to the player viewing it, as well as fixing block updates
  * not getting sent to chunks loaded by cameras
  */
-@Mixin(ChunkManager.class)
+@Mixin(value = ChunkManager.class, priority = 1100)
 public abstract class ChunkManagerMixin {
 	@Shadow
 	private int viewDistance;

@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.ViewFrustum;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
 
-@Mixin(WorldRenderer.class)
+@Mixin(value = WorldRenderer.class, priority = 1100)
 public class WorldRendererMixin {
 	@Shadow
 	@Final

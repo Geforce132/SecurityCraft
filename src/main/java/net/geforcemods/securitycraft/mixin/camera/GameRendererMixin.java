@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.GameRenderer;
 /**
  * Makes sure the camera zooming works, because the fov is only updated when the camera entity is the player itself
  */
-@Mixin(GameRenderer.class)
+@Mixin(value = GameRenderer.class, priority = 1100)
 public class GameRendererMixin {
 	@ModifyConstant(method = "updateFovModifierHand", constant = @Constant(floatValue = 1.0F))
 	private float modifyInitialFValue(float f) {
