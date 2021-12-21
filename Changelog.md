@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.9.0.1 of SecurityCraft--------------------------
+
+- Fix: Key Panel is not placeable 
+- Fix: Key Panel cannot convert the chest, furnace, or Frame
+
 --------------------------Changelog for v1.9 of SecurityCraft--------------------------
 
 - New: Reinforced Pistons
