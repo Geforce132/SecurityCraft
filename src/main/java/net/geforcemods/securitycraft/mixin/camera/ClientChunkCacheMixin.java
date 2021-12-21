@@ -22,7 +22,6 @@ import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
 
@@ -37,9 +36,6 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	@Shadow
 	@Final
 	ClientLevel level;
-
-	@Shadow
-	public abstract LevelLightEngine getLightEngine();
 
 	@Shadow
 	private static boolean isValidChunk(LevelChunk chunk, int x, int z) {
