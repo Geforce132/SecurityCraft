@@ -318,7 +318,8 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 			OptionBoolean bo = (OptionBoolean) option;
 			TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
-			connectedScanner.setSolidifyField(bo.get());
+			if (connectedScanner != null)
+				connectedScanner.setSolidifyField(bo.get());
 		}
 	}
 
