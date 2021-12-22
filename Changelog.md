@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
+
+- Fix: Item duplication bug involving reinforced hoppers
+
 --------------------------Changelog for v1.9.0.1 of SecurityCraft--------------------------
 
 - Fix: Possible incompatibilities with other mods that use mixins to modify the same code as SecurityCraft (known: Magnesium, Immersive Portals)
