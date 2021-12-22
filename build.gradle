@@ -17,7 +17,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 
-version = 'v1.9.0.1'
+version = 'v1.9.0.2'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
