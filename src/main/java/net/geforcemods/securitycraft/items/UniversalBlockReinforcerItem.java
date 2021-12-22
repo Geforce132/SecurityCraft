@@ -60,7 +60,7 @@ public class UniversalBlockReinforcerItem extends Item {
 				CompoundTag tag = null;
 
 				if (be != null) {
-					tag = be.save(new CompoundTag());
+					tag = be.saveWithoutMetadata();
 
 					if (be instanceof Container container)
 						container.clearContent();
@@ -69,7 +69,7 @@ public class UniversalBlockReinforcerItem extends Item {
 				level.setBlockAndUpdate(pos, convertedState);
 				be = level.getBlockEntity(pos);
 
-				if (be != null) { //in case the converted state gets removed immediately after it is placed down
+				if (be != null) { //in case the converted block gets removed immediately after it's set
 					if (tag != null)
 						be.load(tag);
 
