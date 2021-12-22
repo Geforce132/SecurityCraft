@@ -1,7 +1,8 @@
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
 
 - Fix: Item duplication bug involving reinforced hoppers
-- Fix: Crash when opening Password-protected Furnace
+- Fix: Crash when opening the Password-protected Furnace
+- Fix: Log error when changing "solidifyField" option in an Inventory Scanner that's not linked to another one
 
 --------------------------Changelog for v1.9.0.1 of SecurityCraft--------------------------
 
