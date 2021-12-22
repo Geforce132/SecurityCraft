@@ -36,7 +36,7 @@ public class BlockEntityNBTCondition implements LootItemCondition {
 	@Override
 	public boolean test(LootContext lootContext) {
 		BlockEntity be = lootContext.getLevel().getBlockEntity(new BlockPos(lootContext.getParamOrNull(LootContextParams.ORIGIN)));
-		CompoundTag nbt = be.save(new CompoundTag());
+		CompoundTag nbt = be.saveWithFullMetadata();
 
 		return nbt.contains(key) && nbt.getBoolean(key) == value;
 	}
