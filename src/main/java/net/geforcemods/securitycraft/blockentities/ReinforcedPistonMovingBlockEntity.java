@@ -374,7 +374,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		if (movedBlockEntityTag != null)
 			tag.put("movedBlockEntityTag", movedBlockEntityTag);
 
-		if (owner != null)
+		if (owner != null && movedBlockEntityTag != null)
 			owner.save(movedBlockEntityTag, false);
 	}
 

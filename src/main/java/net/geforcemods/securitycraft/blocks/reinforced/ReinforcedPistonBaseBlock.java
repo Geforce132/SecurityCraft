@@ -292,8 +292,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				posToMove = posToMove.relative(direction);
 
 				if (beToMove != null) {
-					tag = new CompoundTag();
-					beToMove.save(tag);
+					tag = beToMove.saveWithoutMetadata();
 					tag.putInt("x", posToMove.getX());
 					tag.putInt("y", posToMove.getY());
 					tag.putInt("z", posToMove.getZ());
