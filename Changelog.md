@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
 
 - Fix: Item duplication bug involving reinforced hoppers
+- Fix: Crash when opening Password-protected Furnace
 
 --------------------------Changelog for v1.9.0.1 of SecurityCraft--------------------------
 
