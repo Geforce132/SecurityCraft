@@ -322,7 +322,8 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 			BooleanOption bo = (BooleanOption) option;
 			InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
-			connectedScanner.setSolidifyField(bo.get());
+			if (connectedScanner != null)
+				connectedScanner.setSolidifyField(bo.get());
 		}
 	}
 
