@@ -66,11 +66,13 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 			TileEntity te = world.getTileEntity(pos);
 
 			if (te instanceof ReinforcedHopperTileEntity) {
-				InventoryHelper.dropInventoryItems(world, pos, (ReinforcedHopperTileEntity) te);
+				if (!isMoving)
+					InventoryHelper.dropInventoryItems(world, pos, (ReinforcedHopperTileEntity) te);
+
 				world.updateComparatorOutputLevel(pos, this);
 			}
 
-			super.onReplaced(state, world, pos, newState, isMoving);
+			world.removeTileEntity(pos);
 		}
 	}
 
