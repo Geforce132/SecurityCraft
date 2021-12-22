@@ -202,11 +202,11 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 	}
 
 	public static boolean isPushable(BlockState state, Level level, BlockPos pistonPos, BlockPos pos, Direction facing, boolean destroyBlocks, Direction direction) {
-		if (pos.getY() >= 0 && pos.getY() <= level.getHeight() - 1 && level.getWorldBorder().isWithinBounds(pos)) {
+		if (pos.getY() >= level.getMinBuildHeight() && pos.getY() <= level.getMaxBuildHeight() - 1 && level.getWorldBorder().isWithinBounds(pos)) {
 			if (state.isAir())
 				return true;
 			else if (!state.is(Blocks.OBSIDIAN) && !state.is(Blocks.CRYING_OBSIDIAN) && !state.is(Blocks.RESPAWN_ANCHOR) && !state.is(SCContent.REINFORCED_OBSIDIAN.get()) && !state.is(SCContent.REINFORCED_CRYING_OBSIDIAN.get())) {
-				if ((facing == Direction.DOWN && pos.getY() == level.getMinBuildHeight()) || (facing == Direction.UP && pos.getY() == level.getHeight() - 1))
+				if ((facing == Direction.DOWN && pos.getY() == level.getMinBuildHeight()) || (facing == Direction.UP && pos.getY() == level.getMaxBuildHeight() - 1))
 					return false;
 				else {
 					if (!state.is(Blocks.PISTON) && !state.is(Blocks.STICKY_PISTON) && !state.is(SCContent.REINFORCED_PISTON.get()) && !state.is(SCContent.REINFORCED_STICKY_PISTON.get())) {
