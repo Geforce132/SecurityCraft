@@ -180,9 +180,8 @@ public class KeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity impleme
 					}, worldPosition);
 				}
 			}
-			else {
+			else
 				PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
-			}
 		}
 	}
 

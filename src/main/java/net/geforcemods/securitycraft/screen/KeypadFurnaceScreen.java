@@ -6,7 +6,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -19,12 +18,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class KeypadFurnaceScreen extends AbstractContainerScreen<KeypadFurnaceMenu> {
 	private static final ResourceLocation FURNACE_GUI_TEXTURES = new ResourceLocation("textures/gui/container/furnace.png");
-	private Component title;
 
 	public KeypadFurnaceScreen(KeypadFurnaceMenu menu, Inventory inv, Component title) {
-		super(menu, inv, title);
-
-		title = new Random().nextInt(100) < 5 ? new TextComponent("Keypad Gurnace") : (menu.be.hasCustomName() ? menu.be.getCustomName() : Utils.localize("gui.securitycraft:protectedFurnace.name"));
+		super(menu, inv, new Random().nextInt(100) < 5 ? new TextComponent("Keypad Gurnace") : (menu.be.hasCustomName() ? menu.be.getCustomName() : title));
 	}
 
 	@Override
