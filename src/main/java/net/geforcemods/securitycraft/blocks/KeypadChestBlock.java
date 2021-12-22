@@ -230,7 +230,7 @@ public class KeypadChestBlock extends ChestBlock {
 			CompoundTag tag;
 
 			chest.unpackLootTable(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated
-			tag = chest.save(new CompoundTag());
+			tag = chest.saveWithFullMetadata();
 			chest.clearContent();
 			level.setBlockAndUpdate(pos, SCContent.KEYPAD_CHEST.get().defaultBlockState().setValue(FACING, facing).setValue(TYPE, type));
 			((ChestBlockEntity) level.getBlockEntity(pos)).load(tag);

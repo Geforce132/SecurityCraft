@@ -192,7 +192,7 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 			Direction facing = state.getValue(FACING);
 			boolean lit = state.getValue(LIT);
 			FurnaceBlockEntity furnace = (FurnaceBlockEntity) level.getBlockEntity(pos);
-			CompoundTag tag = furnace.save(new CompoundTag());
+			CompoundTag tag = furnace.saveWithFullMetadata();
 
 			furnace.clearContent();
 			level.setBlockAndUpdate(pos, SCContent.KEYPAD_FURNACE.get().defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(LIT, lit));
