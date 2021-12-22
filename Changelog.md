@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
+
+- Fix: Item duplication bug involving reinforced hoppers
+
 --------------------------Changelog for v1.9.0.1 of SecurityCraft--------------------------
 
 - Fix: Copper -> Cut Copper stonecutting recipes yield incorrect amounts
