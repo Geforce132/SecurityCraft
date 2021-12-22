@@ -26,7 +26,7 @@ public class BlockFrame extends BlockOwnable {
 
 	public BlockFrame(Material material) {
 		super(material);
-		setSoundType(SoundType.STONE);
+		setSoundType(SoundType.METAL);
 	}
 
 	@Override
