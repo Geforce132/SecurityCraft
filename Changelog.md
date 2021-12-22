@@ -3,6 +3,7 @@
 - Fix: Item duplication bug involving reinforced hoppers
 - Fix: Crash when opening the Password-protected Furnace
 - Fix: Log error when changing "solidifyField" option in an Inventory Scanner that's not linked to another one
+- Fix: Sound for converting chests/furnaces to their password-protected variants does not play
 
 --------------------------Changelog for v1.9.0.1 of SecurityCraft--------------------------
 

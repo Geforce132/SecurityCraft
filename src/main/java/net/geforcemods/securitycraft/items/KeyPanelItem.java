@@ -34,7 +34,7 @@ public class KeyPanelItem extends BlockItem {
 					if (!player.isCreative())
 						stack.shrink(1);
 
-					level.playSound(player, pos, SCSounds.LOCK.event, SoundSource.BLOCKS, 1.0F, 1.0F);
+					level.playSound(null, pos, SCSounds.LOCK.event, SoundSource.BLOCKS, 1.0F, 1.0F);
 					return InteractionResult.SUCCESS;
 				}
 			}
