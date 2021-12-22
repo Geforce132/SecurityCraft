@@ -124,7 +124,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		BlockPos pos = context.getClickedPos();
 		Level level = context.getLevel();
 
-		if (pos.getY() < level.getHeight() && context.getLevel().getBlockState(pos.above()).canBeReplaced(context)) {
+		if (pos.getY() < level.getMaxBuildHeight() - 1 && context.getLevel().getBlockState(pos.above()).canBeReplaced(context)) {
 			boolean hasNeighborSignal = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
 			return defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(HINGE, getHingeSide(context)).setValue(OPEN, hasNeighborSignal).setValue(HALF, DoubleBlockHalf.LOWER);
 		}
