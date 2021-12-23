@@ -31,7 +31,7 @@ public class SecurityCraftAPI {
 				if (value.isPresent())
 					registeredExtractionBlocks.add(value.get().apply(null));
 				else
-					logger.error("Mod %s did not supply sufficient extraction block information.", msg.getSender());
+					logger.error("Mod {} did not supply sufficient extraction block information.", msg.getSender());
 			}
 			else if (msg.key.equals(IMC_SENTRY_ATTACK_TARGET_MSG)) {
 				Optional<Function<Object, IAttackTargetCheck>> value = msg.getFunctionValue(Object.class, IAttackTargetCheck.class);
@@ -39,7 +39,7 @@ public class SecurityCraftAPI {
 				if (value.isPresent())
 					registeredSentryAttackTargetChecks.add(value.get().apply(null));
 				else
-					logger.error("Mod %s did not supply sufficient sufficient sentry attack target information.", msg.getSender());
+					logger.error("Mod {} did not supply sufficient sufficient sentry attack target information.", msg.getSender());
 			}
 			else if (msg.key.equals(IMC_PASSWORD_CONVERTIBLE_MSG)) {
 				Optional<Function<Object, IPasswordConvertible>> value = msg.getFunctionValue(Object.class, IPasswordConvertible.class);
@@ -47,7 +47,7 @@ public class SecurityCraftAPI {
 				if (value.isPresent())
 					registeredPasswordConvertibles.add(value.get().apply(null));
 				else
-					logger.error("Mod %s did not supply sufficient password convertible information.", msg.getSender());
+					logger.error("Mod {} did not supply sufficient password convertible information.", msg.getSender());
 			}
 			else if (msg.key.equals(IMC_DOOR_ACTIVATOR_MSG)) {
 				Optional<Function<Object, IDoorActivator>> value = msg.getFunctionValue(Object.class, IDoorActivator.class);
@@ -55,7 +55,7 @@ public class SecurityCraftAPI {
 				if (value.isPresent())
 					registeredDoorActivators.add(value.get().apply(null));
 				else
-					logger.error("Mod %s did not supply sufficient door activator information.", msg.getSender());
+					logger.error("Mod {} did not supply sufficient door activator information.", msg.getSender());
 			}
 		}
 
