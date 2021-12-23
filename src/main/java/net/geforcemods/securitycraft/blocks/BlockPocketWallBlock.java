@@ -24,8 +24,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 	public static final BooleanProperty SEE_THROUGH = BooleanProperty.create("see_through");
@@ -65,7 +63,6 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return state.getValue(SEE_THROUGH) && adjacentBlockState.getBlock() == SCContent.BLOCK_POCKET_WALL.get();
 	}

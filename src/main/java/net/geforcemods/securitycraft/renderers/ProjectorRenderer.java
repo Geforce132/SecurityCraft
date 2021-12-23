@@ -19,11 +19,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.RenderProperties;
 
-@OnlyIn(Dist.CLIENT)
 public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEntity> {
 	public ProjectorRenderer(BlockEntityRendererProvider.Context ctx) {}
 

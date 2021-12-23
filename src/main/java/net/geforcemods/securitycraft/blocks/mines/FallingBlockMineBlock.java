@@ -17,8 +17,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FallingBlockMineBlock extends BaseFullMineBlock {
 	public FallingBlockMineBlock(Block.Properties properties, Block disguisedBlock) {
@@ -72,7 +70,6 @@ public class FallingBlockMineBlock extends BaseFullMineBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
 		if (rand.nextInt(16) == 0) {
 			if (canFallThrough(level.getBlockState(pos.below()))) {

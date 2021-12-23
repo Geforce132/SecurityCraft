@@ -8,11 +8,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
 
-@OnlyIn(Dist.CLIENT)
 public class TogglePictureButton extends IdButton {
 	private ResourceLocation textureLocation;
 	private int[] u;

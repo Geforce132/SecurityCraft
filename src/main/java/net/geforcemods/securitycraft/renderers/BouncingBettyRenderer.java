@@ -13,10 +13,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty> {
 	public BouncingBettyRenderer(EntityRendererProvider.Context ctx) {
 		super(ctx);
