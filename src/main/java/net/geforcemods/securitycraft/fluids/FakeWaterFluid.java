@@ -26,8 +26,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidAttributes;
 
 public abstract class FakeWaterFluid extends FlowingFluid {
@@ -58,7 +56,6 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 		//@formatter:on
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void animateTick(Level level, BlockPos pos, FluidState state, Random random) {
 		if (!state.isSource() && !state.getValue(FALLING)) {
@@ -70,7 +67,6 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 	}
 
 	@Nullable
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ParticleOptions getDripParticle() {
 		return ParticleTypes.DRIPPING_WATER;

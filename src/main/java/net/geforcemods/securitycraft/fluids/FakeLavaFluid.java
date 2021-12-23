@@ -27,8 +27,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidAttributes;
 
 public abstract class FakeLavaFluid extends FlowingFluid {
@@ -58,7 +56,6 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 		//@formatter:on
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void animateTick(Level level, BlockPos pos, FluidState state, Random random) {
 		BlockPos posAbove = pos.above();
@@ -132,7 +129,6 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 	}
 
 	@Nullable
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ParticleOptions getDripParticle() {
 		return ParticleTypes.DRIPPING_LAVA;

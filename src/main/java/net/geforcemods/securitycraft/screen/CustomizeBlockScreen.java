@@ -30,12 +30,9 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.widget.Slider;
 import net.minecraftforge.client.gui.widget.Slider.ISlider;
 
-@OnlyIn(Dist.CLIENT)
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> {
 	//@formatter:off
 	private static final ResourceLocation[] TEXTURES = {

@@ -13,11 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.GuiUtils;
 
-@OnlyIn(Dist.CLIENT)
 public class PictureButton extends IdButton {
 	private final ItemRenderer itemRenderer;
 	private ItemStack blockToRender = ItemStack.EMPTY;

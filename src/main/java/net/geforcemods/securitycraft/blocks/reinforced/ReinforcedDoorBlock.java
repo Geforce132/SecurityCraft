@@ -38,8 +38,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ReinforcedDoorBlock extends OwnableBlock {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -322,7 +320,6 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public long getSeed(BlockState state, BlockPos pos) {
 		return Mth.getSeed(pos.getX(), pos.below(state.getValue(HALF) == DoubleBlockHalf.LOWER ? 0 : 1).getY(), pos.getZ());
 	}

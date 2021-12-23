@@ -7,8 +7,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ReinforcedGlassBlock extends BaseReinforcedBlock {
 	public ReinforcedGlassBlock(Block.Properties properties, Block vB) {
@@ -31,7 +29,6 @@ public class ReinforcedGlassBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 	}

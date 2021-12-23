@@ -4,8 +4,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SCDecorationTab extends CreativeModeTab {
 	public SCDecorationTab() {
@@ -14,7 +12,6 @@ public class SCDecorationTab extends CreativeModeTab {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public ItemStack makeIcon() {
 		return new ItemStack(SCContent.REINFORCED_OAK_STAIRS.get().asItem());
 	}

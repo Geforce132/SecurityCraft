@@ -13,8 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class KeycardItem extends Item {
 	private static final Component LINK_INFO = new TranslatableComponent("tooltip.securitycraft:keycard.link_info").setStyle(Utils.GRAY_STYLE);
@@ -35,7 +33,6 @@ public class KeycardItem extends Item {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, Level level, List<Component> list, TooltipFlag flag) {
 		if (this == SCContent.LIMITED_USE_KEYCARD.get())
 			return;
