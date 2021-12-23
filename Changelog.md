@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
+
+- Fix: Reinforced pressure plates cannot open reinforced doors/trapdoors/etc.
+
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
 
 - Fix: Log error when changing "solidifyField" option in an Inventory Scanner that's not linked to another one

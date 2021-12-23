@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDoorActivator;
@@ -99,12 +100,17 @@ public class BlockReinforcedPressurePlate extends BlockPressurePlate implements 
 		return new TileEntityAllowlistOnly();
 	}
 
-	public static class DoorActivator implements IDoorActivator {
+	public static class DoorActivator implements Function<Object, IDoorActivator>, IDoorActivator {
 		//@formatter:off
 		private final List<Block> blocks = Arrays.asList(
 				SCContent.reinforcedStonePressurePlate,
 				SCContent.reinforcedWoodenPressurePlate);
 		//@formatter:on
+
+		@Override
+		public IDoorActivator apply(Object o) {
+			return this;
+		}
 
 		@Override
 		public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te, EnumFacing direction, int distance) {
