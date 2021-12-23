@@ -31,7 +31,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvider {
 	private static final String SHOW_OWNER = "securitycraft.showowner";
@@ -40,7 +42,8 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 	private static final String SHOW_CUSTOM_NAME = "securitycraft.showcustomname";
 
 	static {
-		MinecraftForge.EVENT_BUS.register(WailaDataProvider.class);
+		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+			MinecraftForge.EVENT_BUS.register(WailaDataProvider.class);
 	}
 
 	public static void callbackRegister(IWailaRegistrar registrar) {
