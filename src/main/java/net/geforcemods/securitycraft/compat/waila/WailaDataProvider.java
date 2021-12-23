@@ -35,7 +35,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 @WailaPlugin(SecurityCraft.MODID)
 public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider {
@@ -46,7 +48,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
 
 	static {
-		MinecraftForge.EVENT_BUS.addListener(WailaDataProvider::onWailaRender);
+		if (FMLEnvironment.dist == Dist.CLIENT)
+			MinecraftForge.EVENT_BUS.addListener(WailaDataProvider::onWailaRender);
 	}
 
 	@Override
