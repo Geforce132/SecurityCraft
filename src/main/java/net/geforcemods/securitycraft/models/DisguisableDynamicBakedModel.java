@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -67,14 +68,18 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	@Override
 	@Nonnull
 	public IModelData getModelData(ILightReader world, BlockPos pos, BlockState state, IModelData tileData) {
-		Block block = world.getTileEntity(pos).getBlockState().getBlock();
+		TileEntity te = world.getTileEntity(pos);
 
-		if (block instanceof DisguisableBlock) {
-			BlockState disguisedState = ((DisguisableBlock) block).getDisguisedBlockState(world, pos);
+		if (te != null) {
+			Block block = te.getBlockState().getBlock();
 
-			if (disguisedState != null) {
-				tileData.setData(DISGUISED_BLOCK_RL, disguisedState.getBlock().getRegistryName());
-				return tileData;
+			if (block instanceof DisguisableBlock) {
+				BlockState disguisedState = ((DisguisableBlock) block).getDisguisedBlockState(world, pos);
+
+				if (disguisedState != null) {
+					tileData.setData(DISGUISED_BLOCK_RL, disguisedState.getBlock().getRegistryName());
+					return tileData;
+				}
 			}
 		}
 
