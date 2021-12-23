@@ -37,8 +37,10 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 @WailaPlugin(SecurityCraft.MODID)
 public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider {
@@ -51,7 +53,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	private static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormatting(TextFormatting.WHITE);
 
 	static {
-		MinecraftForge.EVENT_BUS.addListener(WailaDataProvider::onWailaRender);
+		if (FMLEnvironment.dist == Dist.CLIENT)
+			MinecraftForge.EVENT_BUS.addListener(WailaDataProvider::onWailaRender);
 	}
 
 	@Override

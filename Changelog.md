@@ -5,7 +5,6 @@
 - Fix: Sound for converting chests/furnaces to their password-protected variants does not play
 - Fix: Frame has stone sounds instead of metal sounds
 
-
 --------------------------Changelog for v1.9.0.1 of SecurityCraft--------------------------
 
 - Fix: Possible incompatibilities with other mods that use mixins to modify the same code as SecurityCraft (known: Magnesium, Immersive Portals)
