@@ -14,23 +14,23 @@ import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-public class KeypadFurnaceMenu extends AbstractFurnaceMenu {
+public class KeypadBlastFurnaceMenu extends AbstractFurnaceMenu {
 	public AbstractKeypadFurnaceBlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 
-	public KeypadFurnaceMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
+	public KeypadBlastFurnaceMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		this(windowId, level, pos, inventory, (AbstractKeypadFurnaceBlockEntity) level.getBlockEntity(pos), ((AbstractKeypadFurnaceBlockEntity) level.getBlockEntity(pos)).getFurnaceData());
 	}
 
-	public KeypadFurnaceMenu(int windowId, Level level, BlockPos pos, Inventory inventory, Container furnaceInv, ContainerData furnaceData) {
-		super(SCContent.mTypeKeypadFurnace, RecipeType.SMELTING, RecipeBookType.FURNACE, windowId, inventory, furnaceInv, furnaceData);
+	public KeypadBlastFurnaceMenu(int windowId, Level level, BlockPos pos, Inventory inventory, Container furnaceInv, ContainerData furnaceData) {
+		super(SCContent.mTypeKeypadBlastFurnace, RecipeType.BLASTING, RecipeBookType.BLAST_FURNACE, windowId, inventory, furnaceInv, furnaceData);
 		this.be = (AbstractKeypadFurnaceBlockEntity) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 	}
 
 	@Override
 	public boolean stillValid(Player player) {
-		return stillValid(worldPosCallable, player, SCContent.KEYPAD_FURNACE.get());
+		return stillValid(worldPosCallable, player, SCContent.KEYPAD_BLAST_FURNACE.get());
 	}
 
 	@Override

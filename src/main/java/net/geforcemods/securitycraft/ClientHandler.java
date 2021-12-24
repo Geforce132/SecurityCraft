@@ -47,7 +47,9 @@ import net.geforcemods.securitycraft.screen.IMSScreen;
 import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.KeyChangerScreen;
 import net.geforcemods.securitycraft.screen.KeycardReaderScreen;
+import net.geforcemods.securitycraft.screen.KeypadBlastFurnaceScreen;
 import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
+import net.geforcemods.securitycraft.screen.KeypadSmokerScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
@@ -149,9 +151,13 @@ public class ClientHandler {
 				"sand",
 				"stone"
 		};
+		ResourceLocation[] furnaces = {
+				new ResourceLocation(SecurityCraft.MODID, "keypad_furnace"),
+				new ResourceLocation(SecurityCraft.MODID, "keypad_smoker"),
+				new ResourceLocation(SecurityCraft.MODID, "keypad_blast_furnace")
+		};
 		//@formatter:on
 		ResourceLocation invScanRL = new ResourceLocation(SecurityCraft.MODID, "inventory_scanner");
-		ResourceLocation ppfRL = new ResourceLocation(SecurityCraft.MODID, "keypad_furnace");
 
 		for (String facing : facings) {
 			for (ResourceLocation facingPoweredBlock : facingPoweredBlocks) {
@@ -163,10 +169,13 @@ public class ClientHandler {
 				registerDisguisedModel(event, facingBlock, "facing=" + facing);
 			}
 
-			registerDisguisedModel(event, ppfRL, "facing=" + facing + ",lit=false,open=false");
-			registerDisguisedModel(event, ppfRL, "facing=" + facing + ",lit=false,open=true");
-			registerDisguisedModel(event, ppfRL, "facing=" + facing + ",lit=true,open=false");
-			registerDisguisedModel(event, ppfRL, "facing=" + facing + ",lit=true,open=true");
+			for (ResourceLocation furnace : furnaces) {
+				registerDisguisedModel(event, furnace, "facing=" + facing + ",lit=false,open=false");
+				registerDisguisedModel(event, furnace, "facing=" + facing + ",lit=false,open=true");
+				registerDisguisedModel(event, furnace, "facing=" + facing + ",lit=true,open=false");
+				registerDisguisedModel(event, furnace, "facing=" + facing + ",lit=true,open=true");
+			}
+
 			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=true");
 			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=false");
 		}
@@ -237,6 +246,8 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_DOOR.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_FURNACE.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_SMOKER.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_BLAST_FURNACE.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.LASER_BLOCK.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.LASER_FIELD.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), translucent);
@@ -300,6 +311,8 @@ public class ClientHandler {
 			MenuScreens.register(SCContent.mTypeDisguiseModule, DisguiseModuleScreen::new);
 			MenuScreens.register(SCContent.mTypeInventoryScanner, InventoryScannerScreen::new);
 			MenuScreens.register(SCContent.mTypeKeypadFurnace, KeypadFurnaceScreen::new);
+			MenuScreens.register(SCContent.mTypeKeypadSmoker, KeypadSmokerScreen::new);
+			MenuScreens.register(SCContent.mTypeKeypadBlastFurnace, KeypadBlastFurnaceScreen::new);
 			MenuScreens.register(SCContent.mTypeCheckPassword, CheckPasswordScreen::new);
 			MenuScreens.register(SCContent.mTypeSetPassword, SetPasswordScreen::new);
 			MenuScreens.register(SCContent.mTypeUsernameLogger, UsernameLoggerScreen::new);
@@ -435,6 +448,8 @@ public class ClientHandler {
 				SCContent.KEYCARD_READER.get(),
 				SCContent.KEYPAD.get(),
 				SCContent.KEYPAD_FURNACE.get(),
+				SCContent.KEYPAD_SMOKER.get(),
+				SCContent.KEYPAD_BLAST_FURNACE.get(),
 				SCContent.LASER_BLOCK.get(),
 				SCContent.PROJECTOR.get(),
 				SCContent.PROTECTO.get(),
