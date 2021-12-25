@@ -4,17 +4,17 @@
         "facing=south,lit=false,open=false": { "model": "securitycraft:block/base_keypad_furnace_closed", "y": 180 },
         "facing=west,lit=false,open=false":  { "model": "securitycraft:block/base_keypad_furnace_closed", "y": 270 },
         "facing=east,lit=false,open=false":  { "model": "securitycraft:block/base_keypad_furnace_closed", "y": 90 },
-        "facing=north,lit=false,open=true": { "model": "securitycraft:block/keypad_furnace_open" },
-        "facing=south,lit=false,open=true": { "model": "securitycraft:block/keypad_furnace_open", "y": 180 },
-        "facing=west,lit=false,open=true":  { "model": "securitycraft:block/keypad_furnace_open", "y": 270 },
-        "facing=east,lit=false,open=true":  { "model": "securitycraft:block/keypad_furnace_open", "y": 90 },
+        "facing=north,lit=false,open=true": { "model": "securitycraft:block/keypad_blast_furnace_open" },
+        "facing=south,lit=false,open=true": { "model": "securitycraft:block/keypad_blast_furnace_open", "y": 180 },
+        "facing=west,lit=false,open=true":  { "model": "securitycraft:block/keypad_blast_furnace_open", "y": 270 },
+        "facing=east,lit=false,open=true":  { "model": "securitycraft:block/keypad_blast_furnace_open", "y": 90 },
         "facing=north,lit=true,open=false": { "model": "securitycraft:block/base_keypad_furnace_closed" },
         "facing=south,lit=true,open=false": { "model": "securitycraft:block/base_keypad_furnace_closed", "y": 180 },
         "facing=west,lit=true,open=false":  { "model": "securitycraft:block/base_keypad_furnace_closed", "y": 270 },
         "facing=east,lit=true,open=false":  { "model": "securitycraft:block/base_keypad_furnace_closed", "y": 90 },
-        "facing=north,lit=true,open=true": { "model": "securitycraft:block/keypad_furnace_open_lit" },
-        "facing=south,lit=true,open=true": { "model": "securitycraft:block/keypad_furnace_open_lit", "y": 180 },
-        "facing=west,lit=true,open=true":  { "model": "securitycraft:block/keypad_furnace_open_lit", "y": 270 },
-        "facing=east,lit=true,open=true":  { "model": "securitycraft:block/keypad_furnace_open_lit", "y": 90 }
+        "facing=north,lit=true,open=true": { "model": "securitycraft:block/keypad_blast_furnace_open_lit" },
+        "facing=south,lit=true,open=true": { "model": "securitycraft:block/keypad_blast_furnace_open_lit", "y": 180 },
+        "facing=west,lit=true,open=true":  { "model": "securitycraft:block/keypad_blast_furnace_open_lit", "y": 270 },
+        "facing=east,lit=true,open=true":  { "model": "securitycraft:block/keypad_blast_furnace_open_lit", "y": 90 }
     }
 }

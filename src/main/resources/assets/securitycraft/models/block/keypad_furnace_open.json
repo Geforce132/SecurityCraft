@@ -1,0 +1,7 @@
+{
+	"parent": "securitycraft:block/base_keypad_furnace_open",
+    "ambientocclusion": false,
+    "textures": {
+        "furnaceFront": "block/furnace_front"
+    }
+}
