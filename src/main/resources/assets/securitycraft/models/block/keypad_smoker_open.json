@@ -2,6 +2,7 @@
 	"parent": "securitycraft:block/base_keypad_furnace_open",
     "ambientocclusion": false,
     "textures": {
-        "furnace": "block/smoker_front"
+        "furnace": "block/smoker_front",
+        "window": "securitycraft:block/keypad_smoker_window"
     }
 }
