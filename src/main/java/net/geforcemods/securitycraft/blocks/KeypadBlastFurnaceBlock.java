@@ -23,7 +23,7 @@ public class KeypadBlastFurnaceBlock extends AbstractKeypadFurnaceBlock {
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
-		if (getDisguisedStateOrDefault(state, level, pos).getBlock() == this) {
+		if (state.getValue(LIT) && getDisguisedStateOrDefault(state, level, pos).getBlock() == this) {
 			double x = pos.getX() + 0.5D;
 			double y = pos.getY();
 			double z = pos.getZ() + 0.5D;
@@ -31,7 +31,7 @@ public class KeypadBlastFurnaceBlock extends AbstractKeypadFurnaceBlock {
 			if (random.nextDouble() < 0.1D)
 				level.playLocalSound(x, y, z, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 
-			if (state.getValue(OPEN) && state.getValue(LIT)) {
+			if (state.getValue(OPEN)) {
 				Direction direction = state.getValue(FACING);
 				Direction.Axis axis = direction.getAxis();
 				double randomNumber = random.nextDouble() * 0.6D - 0.3D;
