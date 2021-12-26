@@ -14,23 +14,23 @@ import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class KeypadFurnaceContainer extends AbstractFurnaceContainer {
+public class KeypadBlastFurnaceContainer extends AbstractFurnaceContainer {
 	public AbstractKeypadFurnaceTileEntity te;
 	private IWorldPosCallable worldPosCallable;
 
-	public KeypadFurnaceContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
+	public KeypadBlastFurnaceContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
 		this(windowId, world, pos, inventory, (AbstractKeypadFurnaceTileEntity) world.getTileEntity(pos), ((AbstractKeypadFurnaceTileEntity) world.getTileEntity(pos)).getFurnaceData());
 	}
 
-	public KeypadFurnaceContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory, IInventory furnaceInv, IIntArray furnaceData) {
-		super(SCContent.cTypeKeypadFurnace, IRecipeType.SMELTING, RecipeBookCategory.FURNACE, windowId, inventory, furnaceInv, furnaceData);
+	public KeypadBlastFurnaceContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory, IInventory furnaceInv, IIntArray furnaceData) {
+		super(SCContent.cTypeKeypadBlastFurnace, IRecipeType.BLASTING, RecipeBookCategory.BLAST_FURNACE, windowId, inventory, furnaceInv, furnaceData);
 		te = (AbstractKeypadFurnaceTileEntity) world.getTileEntity(pos);
 		worldPosCallable = IWorldPosCallable.of(world, pos);
 	}
 
 	@Override
 	public boolean canInteractWith(PlayerEntity player) {
-		return isWithinUsableDistance(worldPosCallable, player, SCContent.KEYPAD_FURNACE.get());
+		return isWithinUsableDistance(worldPosCallable, player, SCContent.KEYPAD_BLAST_FURNACE.get());
 	}
 
 	@Override

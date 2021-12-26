@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
-import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
+import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
  *
  * during InterModEnqueueEvent to register this with SecurityCraft. <p> - If you are converting a chest into a
  * password-protected chest, you can extend {@link KeypadChestBlock.Convertible}.<br> - If you are converting a furnace into
- * a password-protected furnace, you can extend {@link KeypadFurnaceBlock.Convertible}.
+ * a password-protected furnace, you can extend {@link AbstractKeypadFurnaceBlock.Convertible}.
  *
  * @author bl4ckscor3
  */

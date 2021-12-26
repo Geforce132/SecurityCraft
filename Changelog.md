@@ -1,3 +1,10 @@
+--------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
+
+- New: Password-protected Smoker and Password-protected Blast Furnace
+- Change: The Password-protected Furnace now has a new look
+- Fix: Cannot access the recipe book for the Password-protected Furnace
+- Fix: Password-protected Furnace is not shown as a recipe catalyst for furnace recipes in JEI
+
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
 
 - Fix: Item duplication bug involving reinforced hoppers
