@@ -24,23 +24,25 @@ public class KeypadFurnaceBlock extends AbstractKeypadFurnaceBlock {
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
-		double x = pos.getX() + 0.5D;
-		double y = pos.getY();
-		double z = pos.getZ() + 0.5D;
+		if (getDisguisedStateOrDefault(state, level, pos).getBlock() == this) {
+			double x = pos.getX() + 0.5D;
+			double y = pos.getY();
+			double z = pos.getZ() + 0.5D;
 
-		if (rand.nextDouble() < 0.1D)
-			level.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+			if (rand.nextDouble() < 0.1D)
+				level.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 
-		if (state.getValue(OPEN) && state.getValue(LIT) && getDisguisedStateOrDefault(state, level, pos).getBlock() == this) {
-			Direction direction = state.getValue(FACING);
-			Axis axis = direction.getAxis();
-			double randomNumber = rand.nextDouble() * 0.6D - 0.3D;
-			double xOffset = axis == Axis.X ? direction.getStepX() * 0.32D : randomNumber;
-			double yOffset = rand.nextDouble() * 6.0D / 16.0D;
-			double zOffset = axis == Axis.Z ? direction.getStepZ() * 0.32D : randomNumber;
+			if (state.getValue(OPEN) && state.getValue(LIT)) {
+				Direction direction = state.getValue(FACING);
+				Axis axis = direction.getAxis();
+				double randomNumber = rand.nextDouble() * 0.6D - 0.3D;
+				double xOffset = axis == Axis.X ? direction.getStepX() * 0.32D : randomNumber;
+				double yOffset = rand.nextDouble() * 6.0D / 16.0D;
+				double zOffset = axis == Axis.Z ? direction.getStepZ() * 0.32D : randomNumber;
 
-			level.addParticle(ParticleTypes.SMOKE, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
-			level.addParticle(ParticleTypes.FLAME, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
+				level.addParticle(ParticleTypes.SMOKE, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
+				level.addParticle(ParticleTypes.FLAME, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
+			}
 		}
 	}
 

@@ -23,22 +23,24 @@ public class KeypadBlastFurnaceBlock extends AbstractKeypadFurnaceBlock {
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
-		double x = pos.getX() + 0.5D;
-		double y = pos.getY();
-		double z = pos.getZ() + 0.5D;
+		if (getDisguisedStateOrDefault(state, level, pos).getBlock() == this) {
+			double x = pos.getX() + 0.5D;
+			double y = pos.getY();
+			double z = pos.getZ() + 0.5D;
 
-		if (random.nextDouble() < 0.1D)
-			level.playLocalSound(x, y, z, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+			if (random.nextDouble() < 0.1D)
+				level.playLocalSound(x, y, z, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 
-		if (state.getValue(OPEN) && state.getValue(LIT) && getDisguisedStateOrDefault(state, level, pos).getBlock() == this) {
-			Direction direction = state.getValue(FACING);
-			Direction.Axis axis = direction.getAxis();
-			double randomNumber = random.nextDouble() * 0.6D - 0.3D;
-			double xOffset = axis == Direction.Axis.X ? direction.getStepX() * 0.32D : randomNumber;
-			double yOffset = random.nextDouble() * 9.0D / 16.0D;
-			double zOffset = axis == Direction.Axis.Z ? direction.getStepZ() * 0.32D : randomNumber;
+			if (state.getValue(OPEN) && state.getValue(LIT)) {
+				Direction direction = state.getValue(FACING);
+				Direction.Axis axis = direction.getAxis();
+				double randomNumber = random.nextDouble() * 0.6D - 0.3D;
+				double xOffset = axis == Direction.Axis.X ? direction.getStepX() * 0.32D : randomNumber;
+				double yOffset = random.nextDouble() * 9.0D / 16.0D;
+				double zOffset = axis == Direction.Axis.Z ? direction.getStepZ() * 0.32D : randomNumber;
 
-			level.addParticle(ParticleTypes.SMOKE, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
+				level.addParticle(ParticleTypes.SMOKE, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
+			}
 		}
 	}
 
