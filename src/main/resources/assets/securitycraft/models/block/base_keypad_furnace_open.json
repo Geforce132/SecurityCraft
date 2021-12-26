@@ -68,7 +68,7 @@
 			"from": [1, 1, 2],
 			"to": [15, 2, 3],
 			"faces": {
-				"north": {"uv": [1, 14, 15, 15], "texture": "#ironBlock"},
+				"north": {"uv": [1, 1, 15, 2], "texture": "#window"},
 				"east": {"uv": [13, 14, 14, 15], "texture": "#ironBlock"},
 				"west": {"uv": [2, 14, 3, 15], "texture": "#ironBlock"},
 				"up": {"uv": [1, 2, 15, 3], "texture": "#ironBlock"},
