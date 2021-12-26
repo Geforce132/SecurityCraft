@@ -245,9 +245,9 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYCARD_READER.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_DOOR.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_FURNACE.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_SMOKER.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_BLAST_FURNACE.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_FURNACE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_SMOKER.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_BLAST_FURNACE.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.LASER_BLOCK.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.LASER_FIELD.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), translucent);

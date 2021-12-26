@@ -1,191 +1,122 @@
 {
 	"parent": "block/block",
-    "ambientocclusion": false,
-    "textures": {
-    	"keypadUnpowered": "securitycraft:block/keypad_unactive",
-    	"ironBlock": "block/iron_block",
-    	"particle": "block/iron_block"
-    },
-    "elements": [
-        {
-            "from": [1,1,4],
-            "to": [15,15,15],
-            "faces": {
-                "north": {
-                    "texture": "#furnaceFront"
-                }
-            }
-        },
-        {
-            "from": [0,0,4],
-            "to": [16,16,16],
-            "faces": {
-                "up": {
-                    "texture": "#ironBlock"
-                },
-                "down": {
-                    "texture": "#ironBlock"
-                },
-                "west": {
-                    "texture": "#ironBlock"
-                },
-                "east": {
-                    "texture": "#ironBlock"
-                },
-                "south": {
-                    "texture": "#ironBlock"
-                }
-            }
-        },
-        {
-            "from": [0,15,3],
-            "to": [16,16,4],
-            "faces": {
-                "up": {
-                    "texture": "#ironBlock"
-                },
-                "down": {
-                    "texture": "#ironBlock"
-                },
-                "west": {
-                    "texture": "#ironBlock"
-                },
-                "east": {
-                    "texture": "#ironBlock"
-                },
-                "north": {
-                    "texture": "#ironBlock"
-                }
-            }
-        },
-        {
-            "from": [15,0,3],
-            "to": [16,15,4],
-            "faces": {
-                "west": {
-                    "texture": "#ironBlock"
-                },
-                "east": {
-                    "texture": "#ironBlock"
-                },
-                "north": {
-                    "texture": "#ironBlock"
-                }
-            }
-        },
-        {
-            "from": [0,0,3],
-            "to": [1,15,4],
-            "faces": {
-                "west": {
-                    "texture": "#ironBlock"
-                },
-                "east": {
-                    "texture": "#ironBlock"
-                },
-                "north": {
-                    "texture": "#ironBlock"
-                }
-            }
-        },
-        {
-            "from": [0,0,3],
-            "to": [16,1,4],
-            "faces": {
-                "down": {
-                    "texture": "#ironBlock"
-                },
-                "north": {
-                    "texture": "#ironBlock"
-                }
-            }
-        },
-        {
-            "from": [1,1,2],
-            "to": [15,2,4],
-            "faces": {
-                "up": {
-                    "texture": "#ironBlock"
-                },
-                "down": {
-                    "texture": "#ironBlock"
-                },
-                "west": {
-                    "texture": "#ironBlock"
-                },
-                "east": {
-                    "texture": "#ironBlock"
-                },
-                "north": {
-                    "texture": "#keypadUnpowered"
-                }
-            }
-        },
-        {
-            "from": [4,1,1],
-            "to": [5,2,2],
-            "faces": {
-                "up": {
-                    "texture": "#ironBlock"
-                },
-                "down": {
-                    "texture": "#ironBlock"
-                },
-                "west": {
-                    "texture": "#ironBlock"
-                },
-                "east": {
-                    "texture": "#ironBlock"
-                },
-                "north": {
-                    "texture": "#ironBlock"
-                }
-            }
-        },
-        {
-            "from": [11,1,1],
-            "to": [12,2,2],
-            "faces": {
-                "up": {
-                    "texture": "#ironBlock"
-                },
-                "down": {
-                    "texture": "#ironBlock"
-                },
-                "west": {
-                    "texture": "#ironBlock"
-                },
-                "east": {
-                    "texture": "#ironBlock"
-                },
-                "north": {
-                    "texture": "#ironBlock"
-                }
-            }
-        },
-        {
-            "from": [4,1,0],
-            "to": [12,2,1],
-            "faces": {
-                "up": {
-                    "texture": "#ironBlock"
-                },
-                "down": {
-                    "texture": "#ironBlock"
-                },
-                "west": {
-                    "texture": "#ironBlock"
-                },
-                "east": {
-                    "texture": "#ironBlock"
-                },
-                "north": {
-                    "texture": "#ironBlock"
-                },
-                "south": {
-                    "texture": "#ironBlock"
-                }
-            }
-        }
-    ]
+	"ambientocclusion": false,
+	"textures": {
+		"keypad": "securitycraft:block/keypad_active",
+		"ironBlock": "block/iron_block",
+		"particle": "block/iron_block"
+	},
+	"elements": [
+		{
+			"name": "main",
+			"from": [0, 0, 3],
+			"to": [16, 16, 16],
+			"faces": {
+				"east": {"uv": [0, 0, 13, 16], "texture": "#ironBlock"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#ironBlock"},
+				"west": {"uv": [3, 0, 16, 16], "texture": "#ironBlock"},
+				"up": {"uv": [0, 0, 16, 13], "rotation": 180, "texture": "#keypad"},
+				"down": {"uv": [0, 0, 16, 13], "texture": "#ironBlock"}
+			}
+		},
+		{
+			"name": "top_edge",
+			"from": [0, 15, 2],
+			"to": [16, 16, 3],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 1], "texture": "#ironBlock"},
+				"east": {"uv": [13, 0, 14, 1], "texture": "#ironBlock"},
+				"west": {"uv": [2, 0, 3, 1], "texture": "#ironBlock"},
+				"up": {"uv": [0, 13, 16, 14], "rotation": 180, "texture": "#keypad"},
+				"down": {"uv": [0, 13, 16, 14], "texture": "#ironBlock"}
+			}
+		},
+		{
+			"name": "left_edge",
+			"from": [15, 1, 2],
+			"to": [16, 15, 3],
+			"faces": {
+				"north": {"uv": [0, 1, 1, 15], "texture": "#ironBlock"},
+				"east": {"uv": [13, 1, 14, 15], "texture": "#ironBlock"},
+				"west": {"uv": [13, 1, 14, 15], "texture": "#ironBlock"}
+			}
+		},
+		{
+			"name": "right_edge",
+			"from": [0, 1, 2],
+			"to": [1, 15, 3],
+			"faces": {
+				"north": {"uv": [15, 1, 16, 15], "texture": "#ironBlock"},
+				"east": {"uv": [2, 1, 3, 15], "texture": "#ironBlock"},
+				"west": {"uv": [2, 1, 3, 15], "texture": "#ironBlock"}
+			}
+		},
+		{
+			"name": "bottom_edge",
+			"from": [0, 0, 2],
+			"to": [16, 1, 3],
+			"faces": {
+				"north": {"uv": [0, 15, 16, 16], "texture": "#ironBlock"},
+				"east": {"uv": [13, 15, 14, 16], "texture": "#ironBlock"},
+				"west": {"uv": [2, 15, 3, 16], "texture": "#ironBlock"},
+				"up": {"uv": [0, 13, 16, 14], "texture": "#ironBlock"},
+				"down": {"uv": [0, 13, 16, 14], "texture": "#ironBlock"}
+			}
+		},
+		{
+			"name": "door",
+			"from": [1, 1, 2],
+			"to": [15, 2, 3],
+			"faces": {
+				"north": {"uv": [1, 14, 15, 15], "texture": "#ironBlock"},
+				"east": {"uv": [13, 14, 14, 15], "texture": "#ironBlock"},
+				"west": {"uv": [2, 14, 3, 15], "texture": "#ironBlock"},
+				"up": {"uv": [1, 2, 15, 3], "texture": "#ironBlock"},
+				"down": {"uv": [1, 13, 15, 14], "texture": "#ironBlock"}
+			}
+		},
+		{
+			"name": "furnace",
+			"from": [1, 1, 3],
+			"to": [15, 15, 3],
+			"faces": {
+				"north": {"uv": [1, 1, 15, 15], "texture": "#furnace"}
+			}
+		},
+		{
+			"name": "handle_front",
+			"from": [4, 1, 0],
+			"to": [12, 2, 1],
+			"faces": {
+				"north": {"uv": [4, 14, 12, 15], "texture": "#ironBlock"},
+				"east": {"uv": [15, 14, 16, 15], "texture": "#ironBlock"},
+				"south": {"uv": [4, 14, 12, 15], "texture": "#ironBlock"},
+				"west": {"uv": [0, 14, 1, 15], "texture": "#ironBlock"},
+				"up": {"uv": [4, 0, 12, 1], "texture": "#ironBlock"},
+				"down": {"uv": [4, 15, 12, 16], "texture": "#ironBlock"}
+			}
+		},
+		{
+			"name": "handle_right",
+			"from": [4, 1, 1],
+			"to": [5, 2, 2],
+			"faces": {
+				"east": {"uv": [14, 14, 15, 15], "texture": "#ironBlock"},
+				"west": {"uv": [1, 14, 2, 15], "texture": "#ironBlock"},
+				"up": {"uv": [4, 1, 5, 2], "texture": "#ironBlock"},
+				"down": {"uv": [4, 14, 5, 15], "texture": "#ironBlock"}
+			}
+		},
+		{
+			"name": "handle_left",
+			"from": [11, 1, 1],
+			"to": [12, 2, 2],
+			"faces": {
+				"east": {"uv": [14, 14, 15, 15], "texture": "#ironBlock"},
+				"west": {"uv": [1, 14, 2, 15], "texture": "#ironBlock"},
+				"up": {"uv": [11, 1, 12, 2], "texture": "#ironBlock"},
+				"down": {"uv": [11, 14, 12, 15], "texture": "#ironBlock"}
+			}
+		}
+	]
 }
