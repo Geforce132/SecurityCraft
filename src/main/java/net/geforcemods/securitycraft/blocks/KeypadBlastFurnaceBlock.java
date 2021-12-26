@@ -30,13 +30,13 @@ public class KeypadBlastFurnaceBlock extends AbstractKeypadFurnaceBlock {
 		if (random.nextDouble() < 0.1D)
 			level.playLocalSound(x, y, z, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 
-		if (!state.getValue(OPEN) && state.getValue(LIT) && getDisguisedStateOrDefault(state, level, pos).getBlock() == this) {
+		if (state.getValue(OPEN) && state.getValue(LIT) && getDisguisedStateOrDefault(state, level, pos).getBlock() == this) {
 			Direction direction = state.getValue(FACING);
 			Direction.Axis axis = direction.getAxis();
 			double randomNumber = random.nextDouble() * 0.6D - 0.3D;
-			double xOffset = axis == Direction.Axis.X ? direction.getStepX() * 0.35D : randomNumber;
+			double xOffset = axis == Direction.Axis.X ? direction.getStepX() * 0.32D : randomNumber;
 			double yOffset = random.nextDouble() * 9.0D / 16.0D;
-			double zOffset = axis == Direction.Axis.Z ? direction.getStepZ() * 0.35D : randomNumber;
+			double zOffset = axis == Direction.Axis.Z ? direction.getStepZ() * 0.32D : randomNumber;
 
 			level.addParticle(ParticleTypes.SMOKE, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
 		}

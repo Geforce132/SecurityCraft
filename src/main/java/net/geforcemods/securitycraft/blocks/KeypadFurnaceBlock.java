@@ -35,9 +35,9 @@ public class KeypadFurnaceBlock extends AbstractKeypadFurnaceBlock {
 			Direction direction = state.getValue(FACING);
 			Axis axis = direction.getAxis();
 			double randomNumber = rand.nextDouble() * 0.6D - 0.3D;
-			double xOffset = axis == Axis.X ? direction.getStepX() * 0.35D : randomNumber;
+			double xOffset = axis == Axis.X ? direction.getStepX() * 0.32D : randomNumber;
 			double yOffset = rand.nextDouble() * 6.0D / 16.0D;
-			double zOffset = axis == Axis.Z ? direction.getStepZ() * 0.35D : randomNumber;
+			double zOffset = axis == Axis.Z ? direction.getStepZ() * 0.32D : randomNumber;
 
 			level.addParticle(ParticleTypes.SMOKE, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
 			level.addParticle(ParticleTypes.FLAME, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
