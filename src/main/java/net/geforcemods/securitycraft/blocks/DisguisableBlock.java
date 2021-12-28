@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Optional;
+
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -24,8 +26,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public static boolean isNormalCube(BlockState state, BlockGetter level, BlockPos pos) {
-		if (state.getBlock() instanceof DisguisableBlock disguisableBlock) //should not happen, but just to be safe
-		{
+		if (state.getBlock() instanceof DisguisableBlock disguisableBlock) { //should not happen, but just to be safe
 			BlockState disguisedState = disguisableBlock.getDisguisedStateOrDefault(state, level, pos);
 
 			if (disguisedState.getBlock() != state.getBlock())
@@ -36,8 +37,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public static boolean isSuffocating(BlockState state, BlockGetter level, BlockPos pos) {
-		if (state.getBlock() instanceof DisguisableBlock disguisableBlock) //should not happen, but just to be safe
-		{
+		if (state.getBlock() instanceof DisguisableBlock disguisableBlock) { //should not happen, but just to be safe
 			BlockState disguisedState = disguisableBlock.getDisguisedStateOrDefault(state, level, pos);
 
 			if (disguisedState.getBlock() != state.getBlock())
@@ -98,12 +98,10 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public final BlockState getDisguisedStateOrDefault(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = getDisguisedBlockState(level, pos);
-
-		return disguisedState != null ? disguisedState : state;
+		return getDisguisedBlockState(level, pos).orElseGet(() -> state);
 	}
 
-	public BlockState getDisguisedBlockState(BlockGetter level, BlockPos pos) {
+	public Optional<BlockState> getDisguisedBlockState(BlockGetter level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof IModuleInventory be) {
 			ItemStack module = be.hasModule(ModuleType.DISGUISE) ? be.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
@@ -111,11 +109,11 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 				Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
 
 				if (block != null)
-					return block.defaultBlockState();
+					return Optional.of(block.defaultBlockState());
 			}
 		}
 
-		return null;
+		return Optional.empty();
 	}
 
 	public ItemStack getDisguisedStack(BlockGetter level, BlockPos pos) {
