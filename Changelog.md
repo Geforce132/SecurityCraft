@@ -1,6 +1,9 @@
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 
+- Change: The Password-protected Furnace now has a new look
 - Fix: Reinforced pressure plates cannot open reinforced doors/trapdoors/etc.
+- Fix: Password-protected Furnace is not shown as a recipe catalyst for furnace recipes in JEI
+- Fix: Light level of Password-protected Furnace is too high compared to the vanilla furnace
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
 

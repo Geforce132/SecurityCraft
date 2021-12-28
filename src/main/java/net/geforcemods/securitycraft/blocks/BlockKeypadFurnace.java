@@ -26,10 +26,12 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
@@ -38,10 +40,42 @@ import net.minecraft.world.World;
 public class BlockKeypadFurnace extends BlockDisguisable {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool OPEN = PropertyBool.create("open");
+	public static final PropertyBool LIT = PropertyBool.create("lit");
+	private static final AxisAlignedBB NORTH = new AxisAlignedBB(0, 0, 0.125F, 1, 1, 1);
+	private static final AxisAlignedBB EAST = new AxisAlignedBB(0, 0, 0, 0.875F, 1, 1);
+	private static final AxisAlignedBB SOUTH = new AxisAlignedBB(0, 0, 0, 1, 1, 0.875F);
+	private static final AxisAlignedBB WEST = new AxisAlignedBB(0.125F, 0, 0, 1, 1, 1);
 
 	public BlockKeypadFurnace(Material material) {
 		super(material);
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(OPEN, false).withProperty(LIT, false));
 		setSoundType(SoundType.METAL);
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		switch (state.getValue(FACING)) {
+			case NORTH:
+				return NORTH;
+			case EAST:
+				return EAST;
+			case SOUTH:
+				return SOUTH;
+			case WEST:
+				return WEST;
+			default:
+				return FULL_BLOCK_AABB;
+		}
+	}
+
+	@Override
+	public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) { //ctm fix not possible due to glass in the front of the furnace
+		return layer == getRenderLayer();
 	}
 
 	@Override
@@ -51,6 +85,11 @@ public class BlockKeypadFurnace extends BlockDisguisable {
 
 	@Override
 	public boolean isNormalCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
 
@@ -100,9 +139,7 @@ public class BlockKeypadFurnace extends BlockDisguisable {
 
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		TileEntity te = world.getTileEntity(pos);
-
-		return (state.getValue(OPEN) && te != null && te instanceof TileEntityKeypadFurnace && ((TileEntityKeypadFurnace) te).isBurning()) ? 15 : 0;
+		return state.getValue(LIT) ? 13 : 0;
 	}
 
 	@Override
@@ -110,25 +147,74 @@ public class BlockKeypadFurnace extends BlockDisguisable {
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(OPEN, false);
 	}
 
+	//@formatter:off
+	/*
+	 * lit property was added later, it needed to be jammed between the existing meta values that were wrongly assigned to start with
+	 * meta - facing/open/lit
+	 * 0 - north/false/true
+	 * 1 - south/false/true
+	 * 2 - north/false/false
+	 * 3 - south/false/false
+	 * 4 - west/false/false
+	 * 5 - east/false/false
+	 * 6 - west/false/true
+	 * 7 - east/false/true
+	 * 8 - north/true/false
+	 * 9 - south/true/false
+	 * 10 - west/true/false
+	 * 11 - east/true/false
+	 * 12 - north/true/true
+	 * 13 - south/true/true
+	 * 14 - west/true/true
+	 * 15 - east/true/true
+	 */
+	//@formatter:on
+
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		if (meta <= 5)
-			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(OPEN, false);
-		else
-			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(OPEN, true);
+		boolean open = meta >= 8;
+		boolean lit = false;
+
+		if (meta >= 12) {
+			meta -= 4;
+			lit = true;
+		}
+		else if (meta <= 1) {
+			meta += 2;
+			lit = true;
+		}
+		else if (meta == 6 || meta == 7) {
+			meta -= 2;
+			lit = true;
+		}
+
+		if (open)
+			meta -= 6;
+
+		return getDefaultState().withProperty(FACING, EnumFacing.values()[meta]).withProperty(OPEN, open).withProperty(LIT, lit);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		if (state.getValue(OPEN))
-			return (state.getValue(FACING).getIndex() + 6);
-		else
-			return state.getValue(FACING).getIndex();
+			return state.getValue(FACING).getIndex() + 6 + (state.getValue(LIT) ? 4 : 0);
+		else {
+			EnumFacing facing = state.getValue(FACING);
+
+			if (state.getValue(LIT)) {
+				if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH)
+					return facing.getIndex() - 2;
+				else
+					return facing.getIndex() + 2;
+			}
+			else
+				return facing.getIndex();
+		}
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING, OPEN);
+		return new BlockStateContainer(this, FACING, OPEN, LIT);
 	}
 
 	@Override

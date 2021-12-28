@@ -269,8 +269,10 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 					cookTime = 0;
 			}
 
-			if (wasBurning != isBurning())
+			if (wasBurning != isBurning()) {
 				shouldMarkDirty = true;
+				world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockKeypadFurnace.LIT, isBurning()));
+			}
 		}
 
 		if (shouldMarkDirty)
