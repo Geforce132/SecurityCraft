@@ -98,7 +98,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public final BlockState getDisguisedStateOrDefault(BlockState state, BlockGetter level, BlockPos pos) {
-		return getDisguisedBlockState(level, pos).orElseGet(() -> state);
+		return getDisguisedBlockState(level, pos).orElse(state);
 	}
 
 	public Optional<BlockState> getDisguisedBlockState(BlockGetter level, BlockPos pos) {
