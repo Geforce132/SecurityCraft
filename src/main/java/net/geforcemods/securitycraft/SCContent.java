@@ -260,13 +260,13 @@ public class SCContent {
 	public static final RegistryObject<Block> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(prop(Material.IRON).sound(SoundType.METAL).notSolid()));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_FURNACE = BLOCKS.register("keypad_furnace", () -> new KeypadFurnaceBlock(prop(Material.IRON).sound(SoundType.METAL).setLightLevel(state -> state.get(AbstractKeypadFurnaceBlock.OPEN) && state.get(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
+	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_FURNACE = BLOCKS.register("keypad_furnace", () -> new KeypadFurnaceBlock(prop(Material.IRON).sound(SoundType.METAL).setLightLevel(state -> state.get(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_SMOKER = BLOCKS.register("keypad_smoker", () -> new KeypadSmokerBlock(prop(Material.IRON).sound(SoundType.METAL).setLightLevel(state -> state.get(AbstractKeypadFurnaceBlock.OPEN) && state.get(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
+	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_SMOKER = BLOCKS.register("keypad_smoker", () -> new KeypadSmokerBlock(prop(Material.IRON).sound(SoundType.METAL).setLightLevel(state -> state.get(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_BLAST_FURNACE = BLOCKS.register("keypad_blast_furnace", () -> new KeypadBlastFurnaceBlock(prop(Material.IRON).sound(SoundType.METAL).setLightLevel(state -> state.get(AbstractKeypadFurnaceBlock.OPEN) && state.get(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
+	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_BLAST_FURNACE = BLOCKS.register("keypad_blast_furnace", () -> new KeypadBlastFurnaceBlock(prop(Material.IRON).sound(SoundType.METAL).setLightLevel(state -> state.get(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> LASER_BLOCK = BLOCKS.register("laser_block", () -> new LaserBlock(propDisguisable(Material.IRON).tickRandomly().sound(SoundType.METAL)));
