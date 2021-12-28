@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -28,6 +29,8 @@ public class SCJEIPlugin implements IModPlugin {
 		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + SCContent.KEYPAD.get().getRegistryName().getPath());
 		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_CHEST.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_CHEST.get().getRegistryName().getPath());
 		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_FURNACE.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_FURNACE.get().getRegistryName().getPath());
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_SMOKER.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_SMOKER.get().getRegistryName().getPath());
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_BLAST_FURNACE.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_BLAST_FURNACE.get().getRegistryName().getPath());
 		//@formatter:off
 		registration.addRecipes(IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.entrySet().stream()
 				.filter(entry -> entry.getKey().asItem() != Items.AIR && entry.getValue().asItem() != Items.AIR)
@@ -48,6 +51,9 @@ public class SCJEIPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+		registration.addRecipeCatalyst(new ItemStack(SCContent.KEYPAD_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
+		registration.addRecipeCatalyst(new ItemStack(SCContent.KEYPAD_SMOKER.get()), VanillaRecipeCategoryUid.SMOKING);
+		registration.addRecipeCatalyst(new ItemStack(SCContent.KEYPAD_BLAST_FURNACE.get()), VanillaRecipeCategoryUid.BLASTING);
 		registration.addRecipeCatalyst(new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()), VTS_ID);
 		registration.addRecipeCatalyst(new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get()), VTS_ID, STV_ID);
 		registration.addRecipeCatalyst(new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()), VTS_ID, STV_ID);

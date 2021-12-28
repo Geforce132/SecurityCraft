@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.api.NamedTileEntity;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
@@ -15,10 +16,12 @@ import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.IronFenceBlock;
 import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
+import net.geforcemods.securitycraft.blocks.KeypadBlastFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
+import net.geforcemods.securitycraft.blocks.KeypadSmokerBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.LoggerBlock;
@@ -88,7 +91,9 @@ import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
+import net.geforcemods.securitycraft.containers.KeypadBlastFurnaceContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
+import net.geforcemods.securitycraft.containers.KeypadSmokerContainer;
 import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.geforcemods.securitycraft.entity.BulletEntity;
@@ -122,6 +127,7 @@ import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
+import net.geforcemods.securitycraft.tileentity.AbstractKeypadFurnaceTileEntity;
 import net.geforcemods.securitycraft.tileentity.AlarmTileEntity;
 import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
@@ -132,9 +138,10 @@ import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeyPanelTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
+import net.geforcemods.securitycraft.tileentity.KeypadBlastFurnaceTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadDoorTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
+import net.geforcemods.securitycraft.tileentity.KeypadSmokerTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
@@ -249,7 +256,13 @@ public class SCContent {
 	public static final RegistryObject<Block> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(prop(Material.IRON).sound(SoundType.METAL).notSolid()));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final RegistryObject<Block> KEYPAD_FURNACE = BLOCKS.register("keypad_furnace", () -> new KeypadFurnaceBlock(prop(Material.IRON).sound(SoundType.METAL)));
+	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_FURNACE = BLOCKS.register("keypad_furnace", () -> new KeypadFurnaceBlock(prop(Material.IRON).sound(SoundType.METAL)));
+	@HasManualPage(hasRecipeDescription = true)
+	@RegisterItemBlock
+	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_SMOKER = BLOCKS.register("keypad_smoker", () -> new KeypadSmokerBlock(prop(Material.IRON).sound(SoundType.METAL)));
+	@HasManualPage(hasRecipeDescription = true)
+	@RegisterItemBlock
+	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_BLAST_FURNACE = BLOCKS.register("keypad_blast_furnace", () -> new KeypadBlastFurnaceBlock(prop(Material.IRON).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> LASER_BLOCK = BLOCKS.register("laser_block", () -> new LaserBlock(propNotSolid(Material.IRON).tickRandomly().sound(SoundType.METAL)));
@@ -1369,7 +1382,11 @@ public class SCContent {
 	@ObjectHolder(SecurityCraft.MODID + ":claymore")
 	public static TileEntityType<ClaymoreTileEntity> teTypeClaymore;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
-	public static TileEntityType<KeypadFurnaceTileEntity> teTypeKeypadFurnace;
+	public static TileEntityType<AbstractKeypadFurnaceTileEntity> teTypeKeypadFurnace;
+	@ObjectHolder(SecurityCraft.MODID + ":keypad_smoker")
+	public static TileEntityType<KeypadSmokerTileEntity> teTypeKeypadSmoker;
+	@ObjectHolder(SecurityCraft.MODID + ":keypad_blast_furnace")
+	public static TileEntityType<KeypadBlastFurnaceTileEntity> teTypeKeypadBlastFurnace;
 	@ObjectHolder(SecurityCraft.MODID + ":ims")
 	public static TileEntityType<IMSTileEntity> teTypeIms;
 	@ObjectHolder(SecurityCraft.MODID + ":protecto")
@@ -1438,6 +1455,10 @@ public class SCContent {
 	public static ContainerType<InventoryScannerContainer> cTypeInventoryScanner;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
 	public static ContainerType<KeypadFurnaceContainer> cTypeKeypadFurnace;
+	@ObjectHolder(SecurityCraft.MODID + ":keypad_smoker")
+	public static ContainerType<KeypadSmokerContainer> cTypeKeypadSmoker;
+	@ObjectHolder(SecurityCraft.MODID + ":keypad_blast_furnace")
+	public static ContainerType<KeypadBlastFurnaceContainer> cTypeKeypadBlastFurnace;
 	@ObjectHolder(SecurityCraft.MODID + ":projector")
 	public static ContainerType<ProjectorContainer> cTypeProjector;
 	@ObjectHolder(SecurityCraft.MODID + ":check_password")
