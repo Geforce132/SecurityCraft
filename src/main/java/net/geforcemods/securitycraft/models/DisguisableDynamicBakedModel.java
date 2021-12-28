@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.models;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
@@ -74,10 +75,10 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 			Block block = te.getBlockState().getBlock();
 
 			if (block instanceof DisguisableBlock) {
-				BlockState disguisedState = ((DisguisableBlock) block).getDisguisedBlockState(world, pos);
+				Optional<BlockState> disguisedState = ((DisguisableBlock) block).getDisguisedBlockState(world, pos);
 
-				if (disguisedState != null) {
-					tileData.setData(DISGUISED_BLOCK_RL, disguisedState.getBlock().getRegistryName());
+				if (disguisedState.isPresent()) {
+					tileData.setData(DISGUISED_BLOCK_RL, disguisedState.get().getBlock().getRegistryName());
 					return tileData;
 				}
 			}
