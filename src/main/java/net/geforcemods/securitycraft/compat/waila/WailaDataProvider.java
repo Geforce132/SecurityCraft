@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.compat.waila;
 
 import java.util.List;
+import java.util.Optional;
 
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.IDataAccessor;
@@ -77,11 +78,11 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		boolean disguised = false;
 
 		if (block instanceof DisguisableBlock) {
-			BlockState disguisedBlockState = ((DisguisableBlock) block).getDisguisedBlockState(data.getWorld(), data.getPosition());
+			Optional<BlockState> disguisedBlockState = ((DisguisableBlock) block).getDisguisedBlockState(data.getWorld(), data.getPosition());
 
-			if (disguisedBlockState != null) {
+			if (disguisedBlockState.isPresent()) {
 				disguised = true;
-				block = disguisedBlockState.getBlock();
+				block = disguisedBlockState.get().getBlock();
 			}
 		}
 

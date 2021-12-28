@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Optional;
+
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -95,12 +97,10 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public BlockState getExtendedState(BlockState state, IBlockReader world, BlockPos pos) {
-		BlockState disguisedState = getDisguisedBlockState(world, pos);
-
-		return disguisedState != null ? disguisedState : state;
+		return getDisguisedBlockState(world, pos).orElse(state);
 	}
 
-	public BlockState getDisguisedBlockState(IBlockReader world, BlockPos pos) {
+	public Optional<BlockState> getDisguisedBlockState(IBlockReader world, BlockPos pos) {
 		if (world.getTileEntity(pos) instanceof IModuleInventory) {
 			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
 			ItemStack module = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
@@ -109,11 +109,11 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 				Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
 
 				if (block != null)
-					return block.getDefaultState();
+					return Optional.of(block.getDefaultState());
 			}
 		}
 
-		return null;
+		return Optional.empty();
 	}
 
 	public ItemStack getDisguisedStack(IBlockReader world, BlockPos pos) {
