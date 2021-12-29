@@ -88,7 +88,7 @@ public class ItemUniversalBlockRemover extends Item {
 					}
 				});
 
-				world.destroyBlock(originalPos, false);
+				world.destroyBlock(originalPos, true);
 				player.getHeldItem(hand).damageItem(1, player);
 			}
 			else {
