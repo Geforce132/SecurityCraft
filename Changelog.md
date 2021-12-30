@@ -5,5 +5,6 @@
 - Change: The Cage Trap is now reusable
 - Fix: Cannot access the recipe book for the Password-protected Furnace
 - Fix: Password-protected Furnace is not shown as a recipe catalyst for furnace recipes in JEI
+- Misc.: More texture changes
 
 --------------------------Changelog for v1.9.0.2-beta1 of SecurityCraft--------------------------
