@@ -4,11 +4,8 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
-import net.geforcemods.securitycraft.blocks.SpecialDoorBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -116,23 +113,6 @@ public class UniversalOwnerChangerItem extends Item {
 			return handleBriefcase(player, ownerChanger);
 
 		return InteractionResultHolder.pass(ownerChanger);
-	}
-
-	public static boolean tryUpdateBlock(Level level, BlockPos pos, Owner newOwner) {
-		Block block = level.getBlockState(pos).getBlock();
-
-		if (block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock) {
-			OwnableBlockEntity be = (OwnableBlockEntity) level.getBlockEntity(pos);
-
-			be.setOwner(newOwner.getUUID(), newOwner.getName());
-
-			if (!level.isClientSide)
-				level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
-
-			return true;
-		}
-
-		return false;
 	}
 
 	private InteractionResultHolder<ItemStack> handleBriefcase(Player player, ItemStack ownerChanger) {

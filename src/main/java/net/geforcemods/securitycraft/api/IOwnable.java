@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -10,8 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 /**
  * This interface marks a {@link BlockEntity} as "ownable". Any block entity that implements this interface is able to be
@@ -42,8 +39,7 @@ public interface IOwnable {
 	}
 
 	/**
-	 * Executes actions after the owner has been changed, for example making sure the owner of both halves of SecurityCraft's
-	 * doors get changed, and marks IOwnables that need validation as invalidated
+	 * Executes after the owner has been changed and invalidates this if it needs validation
 	 *
 	 * @param level The current level
 	 * @param state The IOwnable's state
@@ -51,9 +47,6 @@ public interface IOwnable {
 	 * @param player The player that changed the owner of the IOwnable
 	 */
 	default void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {
-		if (state.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF))
-			UniversalOwnerChangerItem.tryUpdateBlock(level, state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.above() : pos.below(), getOwner());
-
 		if (needsValidation()) {
 			getOwner().setValidated(false);
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), ChatFormatting.GREEN);

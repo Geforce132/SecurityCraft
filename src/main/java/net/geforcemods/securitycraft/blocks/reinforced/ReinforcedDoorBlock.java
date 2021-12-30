@@ -346,7 +346,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableBlockEntity(pos, state);
+		return new ReinforcedDoorBlockEntity(pos, state);
 	}
 
 	@Override

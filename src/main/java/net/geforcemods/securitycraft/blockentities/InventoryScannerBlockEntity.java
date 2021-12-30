@@ -59,6 +59,18 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, pos);
+
+		if (connectedScanner != null) {
+			connectedScanner.setOwner(getOwner().getUUID(), getOwner().getName());
+
+			if (!level.isClientSide)
+				level.getServer().getPlayerList().broadcastAll(connectedScanner.getUpdatePacket());
+		}
+	}
+
+	@Override
 	public void load(CompoundTag tag) {
 		ListTag list = tag.getList("Items", 10);
 
