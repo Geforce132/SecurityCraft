@@ -62,11 +62,11 @@ public class BlockReinforcedPistonBase extends BlockPistonBase implements IReinf
 			if (!owner.isValidated()) {
 				if (owner.isOwner(player)) {
 					owner.setValidated(true);
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:ownable.validate"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:ownable.validate"), TextFormatting.GREEN);
 					return true;
 				}
 
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:ownable.ownerNotValidated"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:ownable.ownerNotValidated"), TextFormatting.RED);
 				return true;
 			}
 		}

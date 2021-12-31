@@ -33,7 +33,7 @@ public class ItemCodebreaker extends Item {
 
 		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {
 			if (!ConfigHandler.allowCodebreakerItem) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.briefcase.getTranslationKey()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.briefcase.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, codebreaker);
 			}
 			else {

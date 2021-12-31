@@ -73,7 +73,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 						name = PlayerUtils.getNameOfSkull(player);
 
 					if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.retinalScanner.getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.retinalScanner), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
 						return true;
 					}
 				}
