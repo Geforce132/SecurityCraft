@@ -55,7 +55,7 @@ public interface IOwnable {
 	default void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player) {
 		if (needsValidation()) {
 			getOwner().setValidated(false);
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalOwnerChanger.getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), TextFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), TextFormatting.GREEN);
 		}
 	}
 }
