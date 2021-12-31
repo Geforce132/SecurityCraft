@@ -92,6 +92,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedCauldron;
+import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedHopper;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedIronBars;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPiston;
@@ -414,6 +415,7 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(TileEntityValidationOwnable.class, new ResourceLocation("securitycraft:validation_ownable"));
 		GameRegistry.registerTileEntity(TileEntityKeyPanel.class, new ResourceLocation("securitycraft:key_panel"));
 		GameRegistry.registerTileEntity(TileEntitySonicSecuritySystem.class, new ResourceLocation("securitycraft:sonic_security_system"));
+		GameRegistry.registerTileEntity(TileEntityReinforcedDoor.class, new ResourceLocation("securitycraft:reinforced_door"));
 	}
 
 	@SubscribeEvent

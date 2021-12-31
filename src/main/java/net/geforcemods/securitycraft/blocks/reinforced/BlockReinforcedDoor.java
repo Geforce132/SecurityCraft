@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedDoor;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
@@ -201,6 +201,6 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityOwnable();
+		return new TileEntityReinforcedDoor();
 	}
 }

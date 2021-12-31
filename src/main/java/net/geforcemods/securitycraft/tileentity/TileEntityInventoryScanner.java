@@ -22,6 +22,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -43,6 +44,18 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 			isProvidingPower = false;
 			BlockUtils.updateAndNotify(getWorld(), pos, getWorld().getBlockState(pos).getBlock(), 1, true);
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.inventoryScanner);
+		}
+	}
+
+	@Override
+	public void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player) {
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+
+		if (connectedScanner != null) {
+			connectedScanner.setOwner(getOwner().getUUID(), getOwner().getName());
+
+			if (!world.isRemote)
+				world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(connectedScanner.getUpdatePacket());
 		}
 	}
 

@@ -5,10 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
-import net.geforcemods.securitycraft.blocks.BlockSpecialDoor;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -117,23 +114,6 @@ public class ItemUniversalOwnerChanger extends Item {
 			return handleBriefcase(player, ownerChanger);
 
 		return ActionResult.newResult(EnumActionResult.PASS, ownerChanger);
-	}
-
-	public static boolean tryUpdateBlock(World world, BlockPos pos, Owner newOwner) {
-		Block block = world.getBlockState(pos).getBlock();
-
-		if (block instanceof BlockReinforcedDoor || block instanceof BlockSpecialDoor) {
-			TileEntityOwnable te = (TileEntityOwnable) world.getTileEntity(pos);
-
-			te.setOwner(newOwner.getName(), newOwner.getUUID());
-
-			if (!world.isRemote)
-				world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
-
-			return true;
-		}
-
-		return false;
 	}
 
 	private ActionResult<ItemStack> handleBriefcase(EntityPlayer player, ItemStack ownerChanger) {

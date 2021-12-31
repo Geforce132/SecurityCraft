@@ -11,13 +11,30 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public abstract class TileEntitySpecialDoor extends TileEntityLinkable {
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
+
+	@Override
+	public void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player) {
+		TileEntity te;
+
+		pos = state.getValue(BlockDoor.HALF) == EnumDoorHalf.UPPER ? pos.down() : pos.up();
+		te = world.getTileEntity(pos);
+
+		if (te instanceof TileEntitySpecialDoor && isLinkedWith(this, (TileEntitySpecialDoor) te)) {
+			((TileEntitySpecialDoor) te).setOwner(getOwner().getUUID(), getOwner().getName());
+
+			if (!world.isRemote)
+				world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+		}
+	}
 
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
