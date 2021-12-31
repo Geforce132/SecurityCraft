@@ -38,7 +38,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand, IModelData modelData) {
 		ResourceLocation rl = modelData.getData(DISGUISED_BLOCK_RL);
 
-		if (rl != defaultStateRl) {
+		if (rl != null && rl != defaultStateRl) {
 			Block block = ForgeRegistries.BLOCKS.getValue(rl);
 
 			if (block != null) {
@@ -56,7 +56,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	public TextureAtlasSprite getParticleIcon(IModelData modelData) {
 		ResourceLocation rl = modelData.getData(DISGUISED_BLOCK_RL);
 
-		if (rl != defaultStateRl) {
+		if (rl != null && rl != defaultStateRl) {
 			Block block = ForgeRegistries.BLOCKS.getValue(rl);
 
 			if (block != null && !(block instanceof DisguisableBlock))
