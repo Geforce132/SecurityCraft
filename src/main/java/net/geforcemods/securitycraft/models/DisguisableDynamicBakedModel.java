@@ -17,6 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.IModelData;
@@ -37,7 +38,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand, IModelData modelData) {
 		ResourceLocation rl = modelData.getData(DISGUISED_BLOCK_RL);
 
-		if (rl != defaultStateRl) {
+		if (rl != null && rl != defaultStateRl) {
 			Block block = ForgeRegistries.BLOCKS.getValue(rl);
 
 			if (block != null) {
@@ -55,7 +56,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	public TextureAtlasSprite getParticleIcon(IModelData modelData) {
 		ResourceLocation rl = modelData.getData(DISGUISED_BLOCK_RL);
 
-		if (rl != defaultStateRl) {
+		if (rl != null && rl != defaultStateRl) {
 			Block block = ForgeRegistries.BLOCKS.getValue(rl);
 
 			if (block != null && !(block instanceof DisguisableBlock))
@@ -68,14 +69,16 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	@Override
 	@Nonnull
 	public IModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, IModelData tileData) {
-		Block block = level.getBlockEntity(pos).getBlockState().getBlock();
+		BlockEntity blockEntity = level.getBlockEntity(pos);
 
-		if (block instanceof DisguisableBlock disguisedBlock) {
-			Optional<BlockState> disguisedState = disguisedBlock.getDisguisedBlockState(level, pos);
+		if (blockEntity != null) {
+			if (blockEntity.getBlockState().getBlock() instanceof DisguisableBlock disguisedBlock) {
+				Optional<BlockState> disguisedState = disguisedBlock.getDisguisedBlockState(level, pos);
 
-			if (disguisedState.isPresent()) {
-				tileData.setData(DISGUISED_BLOCK_RL, disguisedState.get().getBlock().getRegistryName());
-				return tileData;
+				if (disguisedState.isPresent()) {
+					tileData.setData(DISGUISED_BLOCK_RL, disguisedState.get().getBlock().getRegistryName());
+					return tileData;
+				}
 			}
 		}
 
