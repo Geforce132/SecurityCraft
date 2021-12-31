@@ -280,7 +280,7 @@ public class SCContent {
 	@HasManualPage
 	@OwnableTE
 	@RegisterItemBlock
-	public static final RegistryObject<Block> PROJECTOR = BLOCKS.register("projector", () -> new ProjectorBlock(propNotSolid(Material.IRON).tickRandomly()));
+	public static final RegistryObject<Block> PROJECTOR = BLOCKS.register("projector", () -> new ProjectorBlock(propNotSolid(Material.IRON).tickRandomly().sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> PROTECTO = BLOCKS.register("protecto", () -> new ProtectoBlock(propNotSolid(Material.IRON).sound(SoundType.METAL)));
