@@ -27,6 +27,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -54,6 +55,18 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 			isProvidingPower = false;
 			BlockUtils.updateAndNotify(getWorld(), pos, getWorld().getBlockState(pos).getBlock(), 1, true);
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.INVENTORY_SCANNER.get());
+		}
+	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+
+		if (connectedScanner != null) {
+			connectedScanner.setOwner(getOwner().getUUID(), getOwner().getName());
+
+			if (!world.isRemote)
+				world.getServer().getPlayerList().sendPacketToAllPlayers(connectedScanner.getUpdatePacket());
 		}
 	}
 

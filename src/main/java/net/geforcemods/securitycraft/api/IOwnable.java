@@ -1,13 +1,10 @@
 package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -48,8 +45,7 @@ public interface IOwnable {
 	}
 
 	/**
-	 * Executes actions after the owner has been changed, for example making sure the owner of both halves of SecurityCraft's
-	 * doors get changed, and marks IOwnables that need validation as invalidated
+	 * Executes after the owner has been changed and invalidates this if it needs validation
 	 *
 	 * @param world The current world
 	 * @param state The IOwnable's state
@@ -57,9 +53,6 @@ public interface IOwnable {
 	 * @param player The player that changed the owner of the IOwnable
 	 */
 	default void onOwnerChanged(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-		if (state.has(BlockStateProperties.DOUBLE_BLOCK_HALF))
-			UniversalOwnerChangerItem.tryUpdateBlock(world, state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.down() : pos.up(), getOwner());
-
 		if (needsValidation()) {
 			getOwner().setValidated(false);
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), TextFormatting.GREEN);

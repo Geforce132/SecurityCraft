@@ -10,11 +10,14 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public abstract class SpecialDoorTileEntity extends LinkableTileEntity {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
@@ -22,6 +25,21 @@ public abstract class SpecialDoorTileEntity extends LinkableTileEntity {
 
 	public SpecialDoorTileEntity(TileEntityType<?> type) {
 		super(type);
+	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+		TileEntity te;
+
+		pos = state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.down() : pos.up();
+		te = world.getTileEntity(pos);
+
+		if (te instanceof SpecialDoorTileEntity && isLinkedWith(this, (SpecialDoorTileEntity) te)) {
+			((SpecialDoorTileEntity) te).setOwner(getOwner().getUUID(), getOwner().getName());
+
+			if (!world.isRemote)
+				world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+		}
 	}
 
 	@Override
