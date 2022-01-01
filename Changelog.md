@@ -8,6 +8,8 @@
 - Fix: Changing the owner of the Inventory Scanner or doors does not change the owner of the other block/half
 - Fix: Projecting disguisable blocks (those that support the disguise module) does not work
 - Fix: Projector has incorrect sound
+- Fix: Crash when trying to place a door one block below to the build height
+- Fix: Door item gets removed when trying to place a door outside the build height
 - Misc.: More texture changes
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
