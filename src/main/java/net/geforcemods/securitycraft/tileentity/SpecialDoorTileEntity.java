@@ -88,6 +88,8 @@ public abstract class SpecialDoorTileEntity extends LinkableTileEntity {
 				sendMessage.copy(option);
 			else if (option.getName().equals(signalLength.getName()))
 				signalLength.copy(option);
+
+			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 		}
 	}
 
