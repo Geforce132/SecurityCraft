@@ -122,7 +122,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		BlockPos pos = context.getClickedPos();
 		Level level = context.getLevel();
 
-		if (pos.getY() < level.getMaxBuildHeight() - 1 && context.getLevel().getBlockState(pos.above()).canBeReplaced(context)) {
+		if (pos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(pos.above()).canBeReplaced(context)) {
 			boolean hasNeighborSignal = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
 			return defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(HINGE, getHingeSide(context)).setValue(OPEN, hasNeighborSignal).setValue(HALF, DoubleBlockHalf.LOWER);
 		}
@@ -297,11 +297,12 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		BlockPos posBelow = pos.below();
+		BlockState stateBelow = level.getBlockState(posBelow);
 
 		if (state.getValue(HALF) == DoubleBlockHalf.LOWER)
-			return state.isFaceSturdy(level, posBelow, Direction.UP);
+			return stateBelow.isFaceSturdy(level, posBelow, Direction.UP);
 		else
-			return state.getBlock() == this;
+			return stateBelow.is(this);
 	}
 
 	@Override

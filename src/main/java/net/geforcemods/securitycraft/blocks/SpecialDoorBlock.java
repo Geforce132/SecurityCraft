@@ -2,7 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.MinecraftForge;
 
 public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock {
 	public SpecialDoorBlock(Block.Properties properties) {
@@ -70,10 +70,17 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock 
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if (placer instanceof Player player)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
-
 		super.setPlacedBy(level, pos, state, placer, stack);
+
+		if (level.getBlockEntity(pos) instanceof IOwnable lowerBe && level.getBlockEntity(pos.above()) instanceof IOwnable upperBe) {
+			if (placer instanceof Player player) {
+				lowerBe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				upperBe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+			}
+
+			if (lowerBe instanceof LinkableBlockEntity linkable1 && upperBe instanceof LinkableBlockEntity linkable2)
+				LinkableBlockEntity.link(linkable1, linkable2);
+		}
 	}
 
 	@Override

@@ -157,13 +157,11 @@ import net.geforcemods.securitycraft.items.KeypadChestItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
-import net.geforcemods.securitycraft.items.ReinforcedDoorItem;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.items.SecretSignItem;
 import net.geforcemods.securitycraft.items.SentryItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
-import net.geforcemods.securitycraft.items.SpecialDoorItem;
 import net.geforcemods.securitycraft.items.TaserItem;
 import net.geforcemods.securitycraft.items.UniversalBlockModifierItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
@@ -181,6 +179,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
@@ -1626,19 +1625,19 @@ public class SCContent {
 	public static final RegistryObject<Item> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem(itemProp(SecurityCraft.technicalTab)));
 	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestItem(SCContent.KEYPAD_CHEST.get(), itemProp(SecurityCraft.technicalTab)));
 	@HasManualPage
-	public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new SpecialDoorItem(KEYPAD_DOOR.get(), itemProp(SecurityCraft.decorationTab)));
+	public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new DoubleHighBlockItem(KEYPAD_DOOR.get(), itemProp(SecurityCraft.decorationTab)));
 	@HasManualPage
 	public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new KeycardItem(itemProp(SecurityCraft.technicalTab), -1));
 	@HasManualPage
 	public static final RegistryObject<Item> PORTABLE_TUNE_PLAYER = ITEMS.register("portable_tune_player", () -> new PortableTunePlayerItem(itemProp(SecurityCraft.technicalTab)));
 	@HasManualPage
-	public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new ReinforcedDoorItem(REINFORCED_DOOR.get(), itemProp(SecurityCraft.decorationTab)));
+	public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new DoubleHighBlockItem(REINFORCED_DOOR.get(), itemProp(SecurityCraft.decorationTab)));
 	@HasManualPage
 	public static final RegistryObject<Item> REMOTE_ACCESS_MINE = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(SecurityCraft.technicalTab).stacksTo(1)));
 	@HasManualPage
 	public static final RegistryObject<Item> REMOTE_ACCESS_SENTRY = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(SecurityCraft.technicalTab).stacksTo(1)));
 	@HasManualPage
-	public static final RegistryObject<Item> SCANNER_DOOR_ITEM = ITEMS.register("scanner_door_item", () -> new SpecialDoorItem(SCANNER_DOOR.get(), itemProp(SecurityCraft.decorationTab)));
+	public static final RegistryObject<Item> SCANNER_DOOR_ITEM = ITEMS.register("scanner_door_item", () -> new DoubleHighBlockItem(SCANNER_DOOR.get(), itemProp(SecurityCraft.decorationTab)));
 	@HasManualPage
 	public static final RegistryObject<Item> SC_MANUAL = ITEMS.register("sc_manual", () -> new SCManualItem(itemProp(SecurityCraft.technicalTab).stacksTo(1)));
 	@HasManualPage
