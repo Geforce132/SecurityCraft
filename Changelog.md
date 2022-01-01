@@ -11,6 +11,7 @@
 - Fix: Crash when trying to place a door one block below to the build height
 - Fix: Door item gets removed when trying to place a door outside the build height
 - Fix: Changing options and adding modules to doors does not properly update the other door half
+- Fix: Doors drop when breaking the lower half in creative mode
 - Misc.: More texture changes
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
