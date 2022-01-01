@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.blocks.reinforced;
+package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.minecraft.core.BlockPos;
