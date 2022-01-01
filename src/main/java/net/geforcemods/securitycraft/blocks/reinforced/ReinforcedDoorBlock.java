@@ -125,12 +125,12 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockPos blockpos = context.getPos();
+		BlockPos pos = context.getPos();
+		World world = context.getWorld();
 
-		if (blockpos.getY() < 255 && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context)) {
-			World world = context.getWorld();
-			boolean flag = world.isBlockPowered(blockpos) || world.isBlockPowered(blockpos.up());
-			return getDefaultState().with(FACING, context.getPlacementHorizontalFacing()).with(HINGE, getHingeSide(context)).with(OPEN, flag).with(HALF, DoubleBlockHalf.LOWER);
+		if (pos.getY() < 255 && world.getBlockState(pos.up()).isReplaceable(context)) {
+			boolean hasNeighborSignal = world.isBlockPowered(pos) || world.isBlockPowered(pos.up());
+			return getDefaultState().with(FACING, context.getPlacementHorizontalFacing()).with(HINGE, getHingeSide(context)).with(OPEN, hasNeighborSignal).with(HALF, DoubleBlockHalf.LOWER);
 		}
 		else
 			return null;

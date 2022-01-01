@@ -2,7 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.LinkableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
@@ -19,7 +20,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.MinecraftForge;
 
 public abstract class SpecialDoorBlock extends DoorBlock {
 	public SpecialDoorBlock(Block.Properties properties) {
@@ -33,10 +33,22 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if (placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
-
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
+
+		TileEntity lowerTe = world.getTileEntity(pos);
+		TileEntity upperTe = world.getTileEntity(pos.up());
+
+		if (lowerTe instanceof IOwnable && upperTe instanceof IOwnable) {
+			if (placer instanceof PlayerEntity) {
+				PlayerEntity player = (PlayerEntity) placer;
+
+				((IOwnable) lowerTe).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				((IOwnable) upperTe).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+			}
+
+			if (lowerTe instanceof LinkableTileEntity && upperTe instanceof LinkableTileEntity)
+				LinkableTileEntity.link((LinkableTileEntity) lowerTe, (LinkableTileEntity) upperTe);
+		}
 	}
 
 	/**
