@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "securitycraft:item/keypad_door_item"
+        "layer0": "securitycraft:item/keypad_door"
     }
 }
