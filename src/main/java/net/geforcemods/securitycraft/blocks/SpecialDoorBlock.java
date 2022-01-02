@@ -14,7 +14,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
@@ -24,11 +23,6 @@ import net.minecraft.world.server.ServerWorld;
 public abstract class SpecialDoorBlock extends DoorBlock {
 	public SpecialDoorBlock(Block.Properties properties) {
 		super(properties);
-	}
-
-	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		onNeighborChanged(world, pos, fromPos);
 	}
 
 	@Override
@@ -48,53 +42,6 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 
 			if (lowerTe instanceof LinkableTileEntity && upperTe instanceof LinkableTileEntity)
 				LinkableTileEntity.link((LinkableTileEntity) lowerTe, (LinkableTileEntity) upperTe);
-		}
-	}
-
-	/**
-	 * Old method, renamed because I am lazy. Called by neighborChanged
-	 *
-	 * @param world The world the change occured in
-	 * @param pos The position of this block
-	 * @param neighbor The position of the changed block
-	 */
-	public void onNeighborChanged(World world, BlockPos pos, BlockPos neighbor) {
-		BlockState state = world.getBlockState(pos);
-		Block neighborBlock = world.getBlockState(neighbor).getBlock();
-
-		if (state.get(HALF) == DoubleBlockHalf.UPPER) {
-			BlockPos blockBelow = pos.down();
-			BlockState stateBelow = world.getBlockState(blockBelow);
-
-			if (stateBelow.getBlock() != this)
-				world.destroyBlock(pos, false);
-			else if (neighborBlock != this)
-				onNeighborChanged(world, blockBelow, neighbor);
-		}
-		else {
-			boolean drop = false;
-			BlockPos blockBelow = pos.up();
-			BlockState stateBelow = world.getBlockState(blockBelow);
-
-			if (stateBelow.getBlock() != this) {
-				world.destroyBlock(pos, false);
-				drop = true;
-			}
-
-			if (!world.getBlockState(pos.down()).isSolidSide(world, pos.down(), Direction.UP)) {
-				world.destroyBlock(pos, false);
-				drop = true;
-
-				if (stateBelow.getBlock() == this)
-					world.destroyBlock(blockBelow, false);
-			}
-
-			if (drop) {
-				if (!world.isRemote) {
-					world.destroyBlock(pos, false);
-					Block.spawnAsEntity(world, pos, new ItemStack(getDoorItem()));
-				}
-			}
 		}
 	}
 
