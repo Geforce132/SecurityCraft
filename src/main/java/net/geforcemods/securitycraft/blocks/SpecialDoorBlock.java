@@ -5,7 +5,6 @@ import java.util.Random;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -26,46 +25,6 @@ import net.minecraft.world.phys.HitResult;
 public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock {
 	public SpecialDoorBlock(Block.Properties properties) {
 		super(properties);
-	}
-
-	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighbor, boolean flag) {
-		Block neighborBlock = level.getBlockState(neighbor).getBlock();
-
-		if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
-			BlockPos posBelow = pos.below();
-			BlockState stateBelow = level.getBlockState(posBelow);
-
-			if (stateBelow.getBlock() != this)
-				level.destroyBlock(pos, false);
-			else if (neighborBlock != this)
-				neighborChanged(stateBelow, level, posBelow, block, pos, flag);
-		}
-		else {
-			boolean drop = false;
-			BlockPos blockBelow = pos.above();
-			BlockState stateBelow = level.getBlockState(blockBelow);
-
-			if (stateBelow.getBlock() != this) {
-				level.destroyBlock(pos, false);
-				drop = true;
-			}
-
-			if (!level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP)) {
-				level.destroyBlock(pos, false);
-				drop = true;
-
-				if (stateBelow.getBlock() == this)
-					level.destroyBlock(blockBelow, false);
-			}
-
-			if (drop) {
-				if (!level.isClientSide) {
-					level.destroyBlock(pos, false);
-					Block.popResource(level, pos, new ItemStack(getDoorItem()));
-				}
-			}
-		}
 	}
 
 	@Override
