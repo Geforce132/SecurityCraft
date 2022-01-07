@@ -1,15 +1,15 @@
 buildscript {
-    repositories {
-        jcenter()
-        maven { url = "http://maven.minecraftforge.net" }
-        maven { url = 'https://repo.spongepowered.org/maven' }
-        maven { url = 'https://plugins.gradle.org/m2' }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
-    }
+	repositories {
+		jcenter()
+		maven { url = "http://maven.minecraftforge.net" }
+		maven { url = 'https://repo.spongepowered.org/maven' }
+		maven { url = 'https://plugins.gradle.org/m2' }
+	}
+	dependencies {
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+		classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+		classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+	}
 }
 
 import groovy.json.JsonOutput
@@ -25,57 +25,57 @@ archivesBaseName = 'securitycraft'
 
 sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
-    sourceCompatibility = targetCompatibility = "1.8"
+	sourceCompatibility = targetCompatibility = "1.8"
 }
 
 minecraft {
-    version = "1.12.2-14.23.5.2826"
-    runDir = "run"
-    coreMod = 'net.geforcemods.securitycraft.SecurityCraftLoadingPlugin'
-    mappings = "stable_39"
+	version = "1.12.2-14.23.5.2826"
+	runDir = "run"
+	coreMod = 'net.geforcemods.securitycraft.SecurityCraftLoadingPlugin'
+	mappings = "stable_39"
 }
 
 repositories {
-  maven { //HWYLA
-    name = "TehNut Maven"
-    url = "http://maven.tehnut.info"
-  }
-  maven { //main jei maven
-    name = "Progwml6 maven"
-    url = "http://dvs1.progwml6.com/files/maven"
-  }
-  maven { //jei fallback
-    name = "ModMaven"
-    url = "modmaven.k-4u.nl"
-  }
-  maven { // TOP
-	name 'tterrag maven'
-	url "http://maven.tterrag.com/"
-  }
-  maven {
-    name = "CurseMaven"
-    url = 'https://cursemaven.com/'
-  }
-  maven {
-    name = "Sponge Maven"
-    url = 'https://repo.spongepowered.org/maven'
-  }
+	maven { //HWYLA
+		name = "TehNut Maven"
+		url = "http://maven.tehnut.info"
+	}
+	maven { //main jei maven
+		name = "Progwml6 maven"
+		url = "http://dvs1.progwml6.com/files/maven"
+	}
+	maven { //jei fallback
+		name = "ModMaven"
+		url = "modmaven.k-4u.nl"
+	}
+	maven { // TOP
+		name 'tterrag maven'
+		url "http://maven.tterrag.com/"
+	}
+	maven {
+		name = "CurseMaven"
+		url = 'https://cursemaven.com/'
+	}
+	maven {
+		name = "Sponge Maven"
+		url = 'https://repo.spongepowered.org/maven'
+	}
 }
 
 dependencies {
-    annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
-    deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2"
+	annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
+	deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2"
 	deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
-    compileOnly "curse.maven:cyclic-239286:2883487"
-    compileOnly "curse.maven:icbm-classic-244451:3516968"
-    compileOnly "curse.maven:lycanites-mobs-224770:2935745"
+	compileOnly "curse.maven:cyclic-239286:2883487"
+	compileOnly "curse.maven:icbm-classic-244451:3516968"
+	compileOnly "curse.maven:lycanites-mobs-224770:2935745"
 	compile 'org.spongepowered:mixin:0.8.3'
-    runtime 'mezz.jei:jei_1.12.2:4.16.1.302'
-    deobfProvided 'mezz.jei:jei_1.12.2:4.16.1.302:api'
+	runtime 'mezz.jei:jei_1.12.2:4.16.1.302'
+	deobfProvided 'mezz.jei:jei_1.12.2:4.16.1.302:api'
 }
 
 mixin {
-    add sourceSets.main, 'securitycraft.refmap.json'
+	add sourceSets.main, 'securitycraft.refmap.json'
 }
 
 shadowJar {
@@ -86,41 +86,54 @@ shadowJar {
 	exclude 'dummyThing'
 	classifier = ''
 }
+
+task noMixinJar(type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+	exclude 'dummyThing'
+	classifier = 'no_mixin'
+	relocators = shadowJar.relocators
+	
+	manifest {
+		inheritFrom jar.manifest
+	}
+
+	from sourceSets.main.output
+}
+
 build.dependsOn(shadowJar)
 
 reobf {
-    shadowJar {
-        mappingType = 'SEARGE'
-        classpath = sourceSets.main.compileClasspath
-    }
+	shadowJar {
+		mappingType = 'SEARGE'
+		classpath = sourceSets.main.compileClasspath
+	}
+	noMixinJar {}
 }
 
-processResources
-{
-    inputs.property "version", project.version
+processResources {
+	inputs.property "version", project.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
+	from(sourceSets.main.resources.srcDirs) {
+		include 'mcmod.info'
 
-        expand 'version': project.version
-    }
+		expand 'version': project.version
+	}
 
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-    
-    //minify json resources
-    doLast {
-        fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
-            File file -> file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
-        }
-    }
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'mcmod.info'
+	}
+	
+	//minify json resources
+	doLast {
+		fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
+			File file -> file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+		}
+	}
 }
 
 jar.manifest.attributes(
-  'FMLCorePluginContainsFMLMod': true,
-  'FMLCorePlugin': 'net.geforcemods.securitycraft.SecurityCraftLoadingPlugin',
-  'ForceLoadAsMod': true,
-  'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-  'FMLAT': 'securitycraft_at.cfg'
+	'FMLCorePluginContainsFMLMod': true,
+	'FMLCorePlugin': 'net.geforcemods.securitycraft.SecurityCraftLoadingPlugin',
+	'ForceLoadAsMod': true,
+	'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+	'FMLAT': 'securitycraft_at.cfg'
 )
