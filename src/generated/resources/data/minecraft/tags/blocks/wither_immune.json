@@ -18,6 +18,8 @@
     "securitycraft:keypad_chest",
     "securitycraft:keypad_door",
     "securitycraft:keypad_furnace",
+    "securitycraft:keypad_smoker",
+    "securitycraft:keypad_blast_furnace",
     "securitycraft:laser_block",
     "securitycraft:laser",
     "securitycraft:motion_activated_light",
