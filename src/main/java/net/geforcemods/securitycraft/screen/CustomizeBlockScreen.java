@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
+import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
@@ -33,7 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.widget.Slider;
 import net.minecraftforge.client.gui.widget.Slider.ISlider;
 
-public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> {
+public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas {
 	//@formatter:off
 	private static final ResourceLocation[] TEXTURES = {
 			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
@@ -184,7 +185,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			return new TextComponent(option.toString());
 	}
 
-	public List<Rect2i> getGuiExtraAreas() {
+	@Override
+	public List<Rect2i> getExtraAreas() {
 		return extraAreas;
 	}
 }

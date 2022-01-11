@@ -33,9 +33,13 @@ public class ToggleComponentButton extends IdButton {
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		cycleIndex(-(int) Math.signum(delta));
-		onPress.onPress(this);
-		return true;
+		if (clicked(mouseX, mouseY)) {
+			cycleIndex(-(int) Math.signum(delta));
+			onPress.onPress(this);
+			return true;
+		}
+
+		return false;
 	}
 
 	public void cycleIndex(int value) {
