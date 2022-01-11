@@ -11,7 +11,6 @@ import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -212,9 +211,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_POLISHED_ANDESITE.get(),
 				SCContent.REINFORCED_POLISHED_DIORITE.get(),
 				SCContent.REINFORCED_POLISHED_GRANITE.get());
-
-		//forge tags
-		tag(Tags.Blocks.DIRT).addTag(SCTags.Blocks.REINFORCED_DIRT);
 
 		//minecraft tags
 		tag(BlockTags.BAMBOO_PLANTABLE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).add(SCContent.REINFORCED_GRAVEL.get(),
