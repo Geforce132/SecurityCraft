@@ -13,7 +13,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,8 +28,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class FurnaceMineBlock extends BaseFullMineBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	public FurnaceMineBlock(Block.Properties properties) {
-		super(properties, Blocks.FURNACE);
+	public FurnaceMineBlock(Block.Properties properties, Block vanillaBlock) {
+		super(properties, vanillaBlock);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 

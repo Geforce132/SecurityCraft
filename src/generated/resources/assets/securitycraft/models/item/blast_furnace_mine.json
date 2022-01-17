@@ -1,0 +1,11 @@
+{
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/blast_furnace_top",
+    "up": "minecraft:block/blast_furnace_top",
+    "north": "minecraft:block/blast_furnace_front",
+    "east": "minecraft:block/blast_furnace_side",
+    "south": "minecraft:block/blast_furnace_side",
+    "west": "minecraft:block/blast_furnace_side"
+  }
+}
