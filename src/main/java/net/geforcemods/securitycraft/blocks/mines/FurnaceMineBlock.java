@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -29,8 +28,8 @@ import net.minecraft.world.World;
 public class FurnaceMineBlock extends BaseFullMineBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	public FurnaceMineBlock(Block.Properties properties) {
-		super(properties, Blocks.FURNACE);
+	public FurnaceMineBlock(Block.Properties properties, Block vanillaBlock) {
+		super(properties, vanillaBlock);
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
 
