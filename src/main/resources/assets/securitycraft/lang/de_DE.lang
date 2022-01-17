@@ -764,7 +764,7 @@ config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?
 config.securitycraft:isCodebreakerAllowed.tooltip=Kann der Codebrecher benutzt werden?
 config.securitycraft:allowAdminTool=Ist das Admin-Werkzeug erlaubt?
 config.securitycraft:allowAdminTool.tooltip=Kann das Admin-Werkzeug benutzt werden?
-config.securitycraft:shouldSpawnFire=Spawnen Minen Feuer ,wenn sie detonieren?
+config.securitycraft:shouldSpawnFire=Spawnen Minen Feuer, wenn sie detonieren?
 config.securitycraft:shouldSpawnFire.tooltip=Spawnen Minen Feuer, wenn sie detonieren?
 config.securitycraft:ableToBreakMines=Sind Minen abbaubar?
 config.securitycraft:ableToBreakMines.tooltip=Sollten Spieler Minen abbauen können, ohne dass diese explodieren?
@@ -820,7 +820,7 @@ config.securitycraft:mineExplosionsBreakBlocks=Zerstören Minenexplosionen Blöc
 config.securitycraft:mineExplosionsBreakBlocks.tooltip=Setze diese Option auf false wenn Du möchtest, dass Minen keine Blöcke zerstören wenn sie explodieren.
 config.securitycraft:enableTeamOwnership=Ist das Besitzen von Blöcken innerhalb von Teams aktiviert?
 config.securitycraft:enableTeamOwnership.tooltip=Setze diese Option auf true, damit jeder Spieler in einem Scoreboard-Team die Blöcke aller anderen Spieler in dem selben Team bestitzt. Das macht es Spielern möglich, die verstärkten Blöcke aller anderen Spieler im selben Team zu zerbrechen, Optionen zu ändern, Module hinzufügen oder entfernen, und Zugriff auf alle anderen besitzergebundenen Sachen zu haben.
-config.securitycraft:trickScannersWithPlayerHeads=Sollen Augenscanner und Scannertüren von Spielern die einen Spielerkopf tragen reingelegt werden können?
+config.securitycraft:trickScannersWithPlayerHeads=Augenscanner mit Spielerköpfen reinlegen?
 config.securitycraft:trickScannersWithPlayerHeads.tooltip=Setze diese Option auf true, wenn du möchtest, dass Spieler die einen Spielerkopf tragen, Augenscanner und Scannertüren dieses Spielers öffnen können.
 
 option.securitycraft:portableRadar.searchRadius=Suchradius: #
