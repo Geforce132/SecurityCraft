@@ -67,16 +67,18 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 				blockMine(((BaseFullMineBlock) block).getBlockDisguisedAs(), block);
 		}
 
-		horizontalBlock(SCContent.FURNACE_MINE.get(), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_side"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_front"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_top"));
+		horizontalBlock(SCContent.FURNACE_MINE.get(), mcLoc(ModelProvider.BLOCK_FOLDER + "/furnace_side"), mcLoc(ModelProvider.BLOCK_FOLDER + "/furnace_front"), mcLoc(ModelProvider.BLOCK_FOLDER + "/furnace_top"));
+		horizontalBlock(SCContent.SMOKER_MINE.get(), mcLoc(ModelProvider.BLOCK_FOLDER + "/smoker_side"), mcLoc(ModelProvider.BLOCK_FOLDER + "/smoker_front"), mcLoc(ModelProvider.BLOCK_FOLDER + "/smoker_top"));
+		horizontalBlock(SCContent.BLAST_FURNACE_MINE.get(), mcLoc(ModelProvider.BLOCK_FOLDER + "/blast_furnace_side"), mcLoc(ModelProvider.BLOCK_FOLDER + "/blast_furnace_front"), mcLoc(ModelProvider.BLOCK_FOLDER + "/blast_furnace_top"));
 		getVariantBuilder(SCContent.REDSTONE_ORE_MINE.get()).forAllStates(state -> {
 			if (state.get(RedstoneOreMineBlock.LIT))
 				return new ConfiguredModel[] {
 						new ConfiguredModel(models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/redstone_ore_on")))
-			};
+				};
 			else
 				return new ConfiguredModel[] {
 						new ConfiguredModel(models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/redstone_ore")))
-			};
+				};
 		});
 
 		simpleBlock(SCContent.REINFORCED_GLASS.get());

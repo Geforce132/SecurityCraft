@@ -1,0 +1,11 @@
+{
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "block/blast_furnace_top",
+    "up": "block/blast_furnace_top",
+    "north": "block/blast_furnace_front",
+    "east": "block/blast_furnace_side",
+    "south": "block/blast_furnace_side",
+    "west": "block/blast_furnace_side"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "securitycraft:block_mines",
+  "ingredients": [
+    {
+      "item": "minecraft:blast_furnace"
+    },
+    {
+      "item": "securitycraft:mine"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:blast_furnace_mine"
+  }
+}

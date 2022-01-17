@@ -1,0 +1,11 @@
+{
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "block/smoker_top",
+    "up": "block/smoker_top",
+    "north": "block/smoker_front",
+    "east": "block/smoker_side",
+    "south": "block/smoker_side",
+    "west": "block/smoker_side"
+  }
+}
