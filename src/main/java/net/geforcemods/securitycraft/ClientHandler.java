@@ -124,6 +124,7 @@ public class ClientHandler {
 				new ResourceLocation(SecurityCraft.MODID, "laser_block")
 		};
 		String[] mines = {
+				"blast_furnace",
 				"coal_ore",
 				"cobbled_deepslate",
 				"cobblestone",
@@ -149,6 +150,7 @@ public class ClientHandler {
 				"nether_gold_ore",
 				"redstone_ore",
 				"sand",
+				"smoker",
 				"stone"
 		};
 		ResourceLocation[] furnaces = {
