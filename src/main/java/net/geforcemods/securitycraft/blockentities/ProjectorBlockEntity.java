@@ -77,6 +77,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 
 	public void setProjectionWidth(int width) {
 		projectionWidth = width;
+		setChanged();
 	}
 
 	public int getProjectionHeight() {
@@ -85,6 +86,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 
 	public void setProjectionHeight(int projectionHeight) {
 		this.projectionHeight = projectionHeight;
+		setChanged();
 	}
 
 	public int getProjectionRange() {
@@ -93,6 +95,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 
 	public void setProjectionRange(int range) {
 		projectionRange = range;
+		setChanged();
 	}
 
 	public int getProjectionOffset() {
@@ -101,6 +104,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 
 	public void setProjectionOffset(int offset) {
 		projectionOffset = offset;
+		setChanged();
 	}
 
 	public boolean isActivatedByRedstone() {
@@ -109,6 +113,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 
 	public void setActivatedByRedstone(boolean redstone) {
 		activatedByRedstone = redstone;
+		setChanged();
 	}
 
 	public boolean isHorizontal() {
@@ -117,6 +122,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 
 	public void setHorizontal(boolean horizontal) {
 		this.horizontal = horizontal;
+		setChanged();
 	}
 
 	public boolean isActive() {
@@ -125,6 +131,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 
 	public void setActive(boolean isOn) {
 		active = isOn;
+		setChanged();
 	}
 
 	public Block getProjectedBlock() {

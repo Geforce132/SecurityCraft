@@ -10,6 +10,7 @@
 - Fix: Projecting disguisable blocks (those that support the disguise module) does not work
 - Fix: Crash when trying to place a door one block below to the build height
 - Fix: Door item gets removed when trying to place a door outside the build height
+- Fix: Some blocks' settings/inventory doesn't properly save 
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2-beta1 of SecurityCraft--------------------------

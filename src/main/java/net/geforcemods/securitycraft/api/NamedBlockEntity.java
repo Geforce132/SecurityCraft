@@ -58,6 +58,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 	@Override
 	public void setCustomName(Component customName) {
 		this.customName = customName;
+		setChanged();
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 	}
 

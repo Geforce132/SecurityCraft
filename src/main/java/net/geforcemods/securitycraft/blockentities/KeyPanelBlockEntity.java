@@ -135,6 +135,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	@Override
 	public void setPassword(String password) {
 		passcode = password;
+		setChanged();
 	}
 
 	public boolean sendsMessages() {
