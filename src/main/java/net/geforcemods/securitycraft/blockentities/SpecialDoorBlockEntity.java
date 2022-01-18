@@ -36,18 +36,20 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity {
 			if (!level.isClientSide)
 				level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
 		}
+
+		super.onOwnerChanged(state, level, pos, player);
 	}
 
 	@Override
 	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		super.onModuleInserted(stack, module);
 		handleModule(stack, module, false);
+		super.onModuleInserted(stack, module);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
 		handleModule(stack, module, true);
+		super.onModuleRemoved(stack, module);
 	}
 
 	private void handleModule(ItemStack stack, ModuleType module, boolean removed) {
@@ -80,6 +82,8 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity {
 				sendMessage.copy(option);
 			else if (option.getName().equals(signalLength.getName()))
 				signalLength.copy(option);
+
+			setChanged();
 		}
 	}
 

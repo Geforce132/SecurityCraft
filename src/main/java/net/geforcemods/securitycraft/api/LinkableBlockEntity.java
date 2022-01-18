@@ -92,6 +92,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 		createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[] {
 				option
 		}, this);
+		super.onOptionChanged(option);
 	}
 
 	@Override
@@ -134,11 +135,15 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 		LinkedBlock block1 = new LinkedBlock(blockEntity1);
 		LinkedBlock block2 = new LinkedBlock(blockEntity2);
 
-		if (!blockEntity1.linkedBlocks.contains(block2))
+		if (!blockEntity1.linkedBlocks.contains(block2)) {
 			blockEntity1.linkedBlocks.add(block2);
+			blockEntity1.setChanged();
+		}
 
-		if (!blockEntity2.linkedBlocks.contains(block1))
+		if (!blockEntity2.linkedBlocks.contains(block1)) {
 			blockEntity2.linkedBlocks.add(block1);
+			blockEntity2.setChanged();
+		}
 	}
 
 	/**
@@ -153,8 +158,10 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 		LinkedBlock block = new LinkedBlock(blockEntity2);
 
-		if (blockEntity1.linkedBlocks.contains(block))
+		if (blockEntity1.linkedBlocks.contains(block)) {
 			blockEntity1.linkedBlocks.remove(block);
+			blockEntity1.setChanged();
+		}
 	}
 
 	/**

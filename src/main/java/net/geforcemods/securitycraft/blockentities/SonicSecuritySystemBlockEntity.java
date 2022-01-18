@@ -476,6 +476,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	private void sync() {
+		setChanged();
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 	}
 

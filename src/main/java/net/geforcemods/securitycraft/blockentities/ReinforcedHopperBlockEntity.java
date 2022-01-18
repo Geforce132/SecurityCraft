@@ -70,6 +70,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	@Override
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
+		setChanged();
 	}
 
 	@Override

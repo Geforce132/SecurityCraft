@@ -47,6 +47,8 @@ public class ToggleBlockPocketManager {
 					be.enableMultiblock();
 				else
 					be.disableMultiblock();
+
+				be.setChanged();
 			}
 		});
 

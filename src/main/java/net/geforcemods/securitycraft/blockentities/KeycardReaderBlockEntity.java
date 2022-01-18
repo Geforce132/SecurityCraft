@@ -75,6 +75,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 
 	public void setAcceptedLevels(boolean[] acceptedLevels) {
 		this.acceptedLevels = acceptedLevels;
+		setChanged();
 	}
 
 	public boolean[] getAcceptedLevels() {
@@ -83,6 +84,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 
 	public void setSignature(int signature) {
 		this.signature = signature;
+		setChanged();
 	}
 
 	public int getSignature() {

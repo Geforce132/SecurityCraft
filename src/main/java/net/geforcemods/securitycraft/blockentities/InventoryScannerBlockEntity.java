@@ -55,6 +55,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			isProvidingPower = false;
 			BlockUtils.updateAndNotify(level, pos, state.getBlock(), 1, true);
 			BlockUtils.updateIndirectNeighbors(level, pos, SCContent.INVENTORY_SCANNER.get());
+			setChanged();
 		}
 	}
 
@@ -68,6 +69,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			if (!level.isClientSide)
 				level.getServer().getPlayerList().broadcastAll(connectedScanner.getUpdatePacket());
 		}
+
+		super.onOwnerChanged(state, level, pos, player);
 	}
 
 	@Override
@@ -196,11 +199,13 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		if (slotStack.isEmpty()) {
 			setItem(slot, stackToInsert);
+			setChanged();
 			return ItemStack.EMPTY;
 		}
 		else if (InventoryScannerFieldBlock.areItemStacksEqual(slotStack, stackToInsert) && slotStack.getCount() < limit) {
 			if (limit - slotStack.getCount() >= stackToInsert.getCount()) {
 				slotStack.setCount(slotStack.getCount() + stackToInsert.getCount());
+				setChanged();
 				return ItemStack.EMPTY;
 			}
 			else {
@@ -208,6 +213,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 				ItemStack toReturn = toInsert.split((slotStack.getCount() + stackToInsert.getCount()) - limit); //this is the remaining stack that could not be inserted
 
 				slotStack.setCount(slotStack.getCount() + toInsert.getCount());
+				setChanged();
 				return toReturn;
 			}
 		}
@@ -263,10 +269,12 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	public void setShouldProvidePower(boolean isProvidingPower) {
 		this.isProvidingPower = isProvidingPower;
+		setChanged();
 	}
 
 	public void setCooldown(int cooldown) {
 		this.cooldown = cooldown;
+		setChanged();
 	}
 
 	public NonNullList<ItemStack> getContents() {
@@ -275,6 +283,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	public void setContents(NonNullList<ItemStack> contents) {
 		inventoryContents = contents;
+		setChanged();
 	}
 
 	@Override
@@ -351,11 +360,14 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			if (connectedScanner != null)
 				connectedScanner.setSolidifyField(bo.get());
 		}
+
+		super.onOptionChanged(option);
 	}
 
 	public void setHorizontal(boolean isHorizontal) {
 		horizontal.setValue(isHorizontal);
 		level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, isHorizontal));
+		setChanged();
 	}
 
 	public boolean isHorizontal() {
@@ -369,6 +381,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	public void setSolidifyField(boolean shouldSolidify) {
 		solidifyField.setValue(shouldSolidify);
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+		setChanged();
 	}
 
 	@Override

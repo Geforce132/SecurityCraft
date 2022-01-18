@@ -223,6 +223,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 			if (offsetTe != null)
 				offsetTe.setSendsMessages(option.get());
 		}
+
+		ICustomizable.super.onOptionChanged(o);
 	}
 
 	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove) {
@@ -268,6 +270,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	@Override
 	public void setPassword(String password) {
 		passcode = password;
+		setChanged();
 	}
 
 	@Override
@@ -278,6 +281,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	@Override
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
+		setChanged();
 	}
 
 	public boolean isBlocked() {
@@ -321,5 +325,6 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	public void setSendsMessages(boolean value) {
 		sendMessage.setValue(value);
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+		setChanged();
 	}
 }

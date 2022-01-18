@@ -70,12 +70,12 @@ public class ModuleItemContainer implements Container {
 		ItemStack stack = getItem(index);
 
 		if (!stack.isEmpty()) {
-			if (stack.getCount() > size) {
+			if (stack.getCount() > size)
 				stack = stack.split(size);
-				setChanged();
-			}
 			else
 				setItem(index, ItemStack.EMPTY);
+
+			setChanged();
 		}
 
 		return stack;
@@ -85,6 +85,7 @@ public class ModuleItemContainer implements Container {
 	public ItemStack removeItemNoUpdate(int index) {
 		ItemStack stack = getItem(index);
 		setItem(index, ItemStack.EMPTY);
+		setChanged();
 		return stack;
 	}
 

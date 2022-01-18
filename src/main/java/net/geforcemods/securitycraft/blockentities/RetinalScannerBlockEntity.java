@@ -117,6 +117,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public void setViewCooldown(int viewCooldown) {
 		this.viewCooldown = viewCooldown;
+		setChanged();
 	}
 
 	@Override
@@ -142,16 +143,16 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		};
 	}
 
-	public static void setProfileCache(GameProfileCache profileCacheIn) {
-		profileCache = profileCacheIn;
+	public static void setProfileCache(GameProfileCache profileCache) {
+		RetinalScannerBlockEntity.profileCache = profileCache;
 	}
 
-	public static void setSessionService(MinecraftSessionService sessionServiceIn) {
-		sessionService = sessionServiceIn;
+	public static void setSessionService(MinecraftSessionService sessionService) {
+		RetinalScannerBlockEntity.sessionService = sessionService;
 	}
 
-	public static void setMainThreadExecutor(Executor mainThreadExecutorIn) {
-		mainThreadExecutor = mainThreadExecutorIn;
+	public static void setMainThreadExecutor(Executor mainThreadExecutor) {
+		RetinalScannerBlockEntity.mainThreadExecutor = mainThreadExecutor;
 	}
 
 	@Override
@@ -161,6 +162,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		if (!StringUtil.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")) && ownerProfile != null) {
 			CompoundTag ownerProfileTag = new CompoundTag();
 			NbtUtils.writeGameProfile(ownerProfileTag, ownerProfile);
+
 			tag.put("ownerProfile", ownerProfileTag);
 		}
 
@@ -177,8 +179,8 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 
 	@Override
 	public void onOwnerChanged(BlockState state, Level world, BlockPos pos, Player player) {
-		super.onOwnerChanged(state, world, pos, player);
 		setPlayerProfile(new GameProfile(null, getOwner().getName()));
+		super.onOwnerChanged(state, world, pos, player);
 	}
 
 	@Nullable
@@ -230,8 +232,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 				}, () -> mainThreadExecutor.execute(() -> onChanged.accept(input)));
 			}));
 		}
-		else {
+		else
 			onChanged.accept(input);
-		}
 	}
 }

@@ -107,6 +107,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		if (!player.getName().getString().equals(lastPlayerName)) {
 			shouldSendNewMessage = true;
 			lastPlayerName = player.getName().getString();
+			setChanged();
 		}
 
 		boolean lastPlayerOwns = ConfigHandler.SERVER.enableTeamOwnership.get() ? PlayerUtils.areOnSameTeam(lastPlayerName, getOwner().getName()) : lastPlayerName.equals(getOwner().getName());
@@ -116,6 +117,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 	public void setSentMessage() {
 		shouldSendNewMessage = false;
+		setChanged();
 	}
 
 	public double getSearchRadius() {

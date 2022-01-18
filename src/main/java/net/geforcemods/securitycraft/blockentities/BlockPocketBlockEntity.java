@@ -20,11 +20,13 @@ public class BlockPocketBlockEntity extends OwnableBlockEntity implements ITicki
 	public void setManager(BlockPocketManagerBlockEntity manager) {
 		this.manager = manager;
 		managerPos = manager.getBlockPos();
+		setChanged();
 	}
 
 	public void removeManager() {
 		managerPos = null;
 		manager = null;
+		setChanged();
 	}
 
 	public BlockPocketManagerBlockEntity getManager() {

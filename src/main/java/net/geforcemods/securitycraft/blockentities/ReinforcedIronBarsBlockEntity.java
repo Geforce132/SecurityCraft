@@ -31,5 +31,6 @@ public class ReinforcedIronBarsBlockEntity extends OwnableBlockEntity {
 
 	public void setCanDrop(boolean canDrop) {
 		this.canDrop = canDrop;
+		setChanged();
 	}
 }

@@ -36,6 +36,7 @@ public class AssembleBlockPocket {
 			if (ctx.get().getSender().level.getBlockEntity(message.pos) instanceof BlockPocketManagerBlockEntity be && be.getOwner().isOwner(ctx.get().getSender())) {
 				be.size = message.size;
 				be.autoAssembleMultiblock();
+				be.setChanged();
 			}
 		});
 		ctx.get().setPacketHandled(true);

@@ -302,6 +302,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			this.floor = floor;
 			enabled = true;
 			autoBuildOffset = -offset + (size / 2);
+			setChanged();
 
 			for (BlockPos blockPos : blocks) {
 				if (level.getBlockEntity(blockPos) instanceof BlockPocketBlockEntity be)
@@ -556,6 +557,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			blocks.clear();
 			walls.clear();
 			floor.clear();
+			setChanged();
 		}
 	}
 
@@ -600,6 +602,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 	public void toggleOutline() {
 		showOutline = !showOutline;
+		setChanged();
 	}
 
 	public void setWalls(boolean seeThrough) {

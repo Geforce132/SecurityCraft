@@ -196,6 +196,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	@Override
 	public void setPassword(String password) {
 		passcode = password;
+		setChanged();
 	}
 
 	public ContainerData getFurnaceData() {
