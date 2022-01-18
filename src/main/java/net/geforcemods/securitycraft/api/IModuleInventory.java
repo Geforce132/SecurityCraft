@@ -281,7 +281,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		for (int i = 0; i < modules.size(); i++) {
 			if (modules.get(i).isEmpty()) {
-				modules.set(i, module.copy());
+				ItemStack toInsert = module.copy();
+
+				modules.set(i, toInsert);
+				onModuleInserted(toInsert, ((ItemModule) module.getItem()).getModuleType());
 				break;
 			}
 		}
@@ -296,8 +299,12 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		NonNullList<ItemStack> modules = getInventory();
 
 		for (int i = 0; i < modules.size(); i++) {
-			if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModuleType() == module)
+			if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModuleType() == module) {
+				ItemStack removed = modules.get(i).copy();
+
 				modules.set(i, ItemStack.EMPTY);
+				onModuleRemoved(removed, module);
+			}
 		}
 	}
 
