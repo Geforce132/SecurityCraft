@@ -262,31 +262,6 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Inserts a generic copy of the given module type into the customization inventory.
-	 *
-	 * @param module The module type to insert
-	 */
-	public default void insertModule(EnumModuleType module) {
-		NonNullList<ItemStack> modules = getInventory();
-
-		for (int i = 0; i < modules.size(); i++) {
-			if (!modules.get(i).isEmpty()) {
-				if (modules.get(i).getItem() == module.getItem())
-					return;
-			}
-		}
-
-		for (int i = 0; i < modules.size(); i++) {
-			if (!modules.get(i).isEmpty() && module != null) {
-				modules.set(i, new ItemStack(module.getItem()));
-				break;
-			}
-			else if (!modules.get(i).isEmpty() && module == null)
-				modules.set(i, ItemStack.EMPTY);
-		}
-	}
-
-	/**
 	 * Inserts an exact copy of the given item into the customization inventory, if it is not empty and a module.
 	 *
 	 * @param module The stack to insert

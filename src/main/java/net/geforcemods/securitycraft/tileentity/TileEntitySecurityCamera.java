@@ -18,8 +18,6 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 	public double cameraRotation = 0.0D;
 	public boolean addToRotation = true;
 	public boolean down = false;
-	public float lastPitch = Float.MAX_VALUE;
-	public float lastYaw = Float.MAX_VALUE;
 	private boolean shutDown = false;
 	private OptionDouble rotationSpeedOption = new OptionDouble(this::getPos, "rotationSpeed", CAMERA_SPEED, 0.01D, 0.025D, 0.001D, true);
 	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
@@ -63,8 +61,6 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		tag.setFloat("LastPitch", lastPitch);
-		tag.setFloat("LastYaw", lastYaw);
 		tag.setBoolean("ShutDown", shutDown);
 		tag.setInteger("PlayersViewing", playersViewing);
 		return super.writeToNBT(tag);
@@ -73,8 +69,6 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		lastPitch = tag.getFloat("LastPitch");
-		lastYaw = tag.getFloat("LastYaw");
 		shutDown = tag.getBoolean("ShutDown");
 		playersViewing = tag.getInteger("PlayersViewing");
 	}
