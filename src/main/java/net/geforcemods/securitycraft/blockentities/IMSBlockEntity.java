@@ -98,6 +98,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 
 				bombsRemaining--;
 				updateBombCount = true;
+				setChanged();
 			}
 		}
 	}
@@ -145,6 +146,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 
 	public void setBombsRemaining(int bombsRemaining) {
 		this.bombsRemaining = bombsRemaining;
+		setChanged();
 	}
 
 	public IMSTargetingMode getTargetingMode() {
@@ -153,6 +155,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 
 	public void setTargetingMode(IMSTargetingMode targetingOption) {
 		this.targetingMode = targetingOption;
+		setChanged();
 	}
 
 	@Override

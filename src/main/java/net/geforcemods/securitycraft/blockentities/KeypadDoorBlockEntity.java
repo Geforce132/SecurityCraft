@@ -119,11 +119,14 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 		if (be instanceof KeypadDoorBlockEntity doorTe)
 			doorTe.setPasswordExclusively(password);
+
+		setChanged();
 	}
 
 	//only set the password for this door half
 	public void setPasswordExclusively(String password) {
 		passcode = password;
+		setChanged();
 	}
 
 	@Override

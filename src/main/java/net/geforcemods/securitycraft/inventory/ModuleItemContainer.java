@@ -85,6 +85,7 @@ public class ModuleItemContainer implements Container {
 	public ItemStack removeItemNoUpdate(int index) {
 		ItemStack stack = getItem(index);
 		setItem(index, ItemStack.EMPTY);
+		setChanged();
 		return stack;
 	}
 

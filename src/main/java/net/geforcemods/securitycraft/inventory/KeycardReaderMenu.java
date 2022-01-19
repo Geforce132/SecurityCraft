@@ -91,6 +91,7 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 	public void removed(Player player) {
 		super.removed(player);
 		clearContainer(player, itemInventory);
+		be.setChanged();
 	}
 
 	@Override

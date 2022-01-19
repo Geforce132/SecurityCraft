@@ -64,5 +64,6 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 	@Override
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
+		setChanged();
 	}
 }

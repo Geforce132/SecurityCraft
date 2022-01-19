@@ -413,6 +413,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	@Override
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
+		setChanged();
 	}
 
 	public long getLastTicked() {

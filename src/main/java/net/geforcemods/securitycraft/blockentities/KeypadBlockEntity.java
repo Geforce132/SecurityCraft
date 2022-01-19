@@ -120,6 +120,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 	@Override
 	public void setPassword(String password) {
 		passcode = password;
+		setChanged();
 	}
 
 	@Override

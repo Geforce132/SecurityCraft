@@ -23,5 +23,7 @@ public class ReinforcedDoorBlockEntity extends OwnableBlockEntity {
 			if (!level.isClientSide)
 				level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
 		}
+
+		super.onOwnerChanged(state, level, pos, player);
 	}
 }
