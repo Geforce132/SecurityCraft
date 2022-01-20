@@ -1,6 +1,6 @@
 modLoader="javafml" #mandatory
 loaderVersion="[34,)" #mandatory
-logoFile="scLogo.png"
+logoFile="sc_banner.png"
 license="GNU GPL v3.0 https://github.com/Geforce132/SecurityCraft/blob/1.16.2/LICENSE"
 issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 
@@ -27,3 +27,6 @@ issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
     versionRange="[1.16,1.17)"
     ordering="NONE"
     side="BOTH"
+
+[modproperties.securitycraft]
+    catalogueImageIcon="sc_logo.png"
