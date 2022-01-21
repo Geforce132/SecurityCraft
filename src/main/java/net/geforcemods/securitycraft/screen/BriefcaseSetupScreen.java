@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -21,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
 public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
@@ -37,7 +37,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	public void init() {
 		super.init();
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save").getFormattedText(), this::actionPerformed));
+		addButton(saveAndContinueButton = new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save").getFormattedText(), this::saveAndContinueButtonClicked));
 		saveAndContinueButton.active = false;
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, ""));
@@ -76,7 +76,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	protected void actionPerformed(IdButton button) {
+	private void saveAndContinueButtonClicked(Button button) {
 		if (PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
 			ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
 

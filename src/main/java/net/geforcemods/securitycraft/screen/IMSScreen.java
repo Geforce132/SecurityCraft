@@ -6,16 +6,17 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity.IMSTargetingMode;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
 public class IMSScreen extends ContainerScreen<GenericTEContainer> {
@@ -23,7 +24,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer> {
 	private final String imsName = Utils.localize(SCContent.IMS.get().getTranslationKey()).getFormattedText();
 	private final String target = Utils.localize("gui.securitycraft:ims.target").getFormattedText();
 	private IMSTileEntity tileEntity;
-	private IdButton targetButton;
+	private Button targetButton;
 	private IMSTargetingMode targetMode;
 
 	public IMSScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
@@ -36,7 +37,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer> {
 	public void init() {
 		super.init();
 
-		addButton(targetButton = new IdButton(0, width / 2 - 75, height / 2 - 38, 150, 20, "", this::actionPerformed));
+		addButton(targetButton = new ExtendedButton(width / 2 - 75, height / 2 - 38, 150, 20, "", this::targetButtonClicked));
 		updateButtonText();
 	}
 
@@ -56,7 +57,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer> {
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	protected void actionPerformed(IdButton button) {
+	protected void targetButtonClicked(Button button) {
 		targetMode = IMSTargetingMode.values()[(targetMode.ordinal() + 1) % IMSTargetingMode.values().length]; //next enum value
 		tileEntity.setTargetingMode(targetMode);
 		SecurityCraft.channel.sendToServer(new SyncIMSTargetingOption(tileEntity.getPos(), tileEntity.getTargetingMode()));

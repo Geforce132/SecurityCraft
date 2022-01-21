@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import java.util.function.Consumer;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
@@ -9,9 +7,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.GuiUtils;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class TogglePictureButton extends IdButton {
+public class TogglePictureButton extends ExtendedButton {
 	private ResourceLocation textureLocation;
 	private int[] u;
 	private int[] v;
@@ -25,12 +24,12 @@ public class TogglePictureButton extends IdButton {
 	private final int textureWidth;
 	private final int textureHeight;
 
-	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int toggleCount, Consumer<IdButton> onClick) {
-		this(id, xPos, yPos, width, height, texture, textureX, textureY, drawOffset, 16, 16, 16, 16, 256, 256, toggleCount, onClick);
+	public TogglePictureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int toggleCount, IPressable onClick) {
+		this(xPos, yPos, width, height, texture, textureX, textureY, drawOffset, 16, 16, 16, 16, 256, 256, toggleCount, onClick);
 	}
 
-	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int drawWidth, int drawHeight, int uWidth, int vHeight, int textureWidth, int textureHeight, int toggleCount, Consumer<IdButton> onClick) {
-		super(id, xPos, yPos, width, height, "", onClick);
+	public TogglePictureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int drawWidth, int drawHeight, int uWidth, int vHeight, int textureWidth, int textureHeight, int toggleCount, IPressable onClick) {
+		super(xPos, yPos, width, height, "", onClick);
 
 		if (textureX.length != toggleCount || textureY.length != toggleCount)
 			throw new RuntimeException("TogglePictureButton was set up incorrectly. Array lengths must match toggleCount!");

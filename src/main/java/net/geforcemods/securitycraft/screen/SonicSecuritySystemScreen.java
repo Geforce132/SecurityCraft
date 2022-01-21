@@ -4,13 +4,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity.NoteWrapper;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.state.properties.NoteBlockInstrument;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -18,6 +18,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
 public class SonicSecuritySystemScreen extends Screen {
@@ -28,7 +29,7 @@ public class SonicSecuritySystemScreen extends Screen {
 	private static final int PLAYBACK_DELAY = 10;
 	private final SonicSecuritySystemTileEntity te;
 	private int xSize = 176, ySize = 166;
-	private IdButton recordingButton, clearButton, powerButton, playButton;
+	private Button recordingButton, clearButton, powerButton, playButton;
 	private TogglePictureButton soundButton;
 	/** If a recording is currently being played back **/
 	private boolean playback = false;
@@ -75,7 +76,7 @@ public class SonicSecuritySystemScreen extends Screen {
 		boolean isActive = te.isActive();
 		boolean hasNotes = te.getNumberOfNotes() > 0;
 
-		powerButton = addButton(new IdButton(0, width / 2 - 75, height / 2 - 59, 150, 20, getPowerString(te.isActive()), button -> {
+		powerButton = addButton(new ExtendedButton(width / 2 - 75, height / 2 - 59, 150, 20, getPowerString(te.isActive()), button -> {
 			boolean toggledState = !te.isActive();
 			boolean containsNotes = te.getNumberOfNotes() > 0;
 
@@ -93,21 +94,21 @@ public class SonicSecuritySystemScreen extends Screen {
 			clearButton.active = toggledState && containsNotes;
 		}));
 
-		recordingButton = addButton(new IdButton(1, width / 2 - 75, height / 2 - 32, 150, 20, getRecordingString(te.isRecording()), button -> {
+		recordingButton = addButton(new ExtendedButton(width / 2 - 75, height / 2 - 32, 150, 20, getRecordingString(te.isRecording()), button -> {
 			boolean recording = !te.isRecording();
 			te.setRecording(recording);
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
 			recordingButton.setMessage(getRecordingString(te.isRecording()));
 		}));
 
-		playButton = addButton(new IdButton(2, width / 2 - 75, height / 2 - 10, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play").getFormattedText(), button -> {
+		playButton = addButton(new ExtendedButton(width / 2 - 75, height / 2 - 10, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play").getFormattedText(), button -> {
 			// Start playing back any notes that have been recorded
 			if (te.getNumberOfNotes() > 0) {
 				playback = true;
 			}
 		}));
 
-		clearButton = addButton(new IdButton(3, width / 2 - 75, height / 2 + 12, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear").getFormattedText(), button -> {
+		clearButton = addButton(new ExtendedButton(width / 2 - 75, height / 2 + 12, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear").getFormattedText(), button -> {
 			te.clearNotes();
 			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
 			playButton.active = false;
@@ -115,7 +116,7 @@ public class SonicSecuritySystemScreen extends Screen {
 		}));
 
 		//@formatter:off
-		soundButton = addButton(new TogglePictureButton(4, width / 2 + 55, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[] {0, 0}, new int[] {32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
+		soundButton = addButton(new TogglePictureButton(width / 2 + 55, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[] {0, 0}, new int[] {32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
 			//@formatter:on
 			boolean toggledPing = !te.pings();
 

@@ -11,11 +11,11 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
@@ -27,6 +27,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ScrollPanel;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
 public class EditModuleScreen extends Screen {
@@ -35,7 +36,7 @@ public class EditModuleScreen extends Screen {
 	private final String editModule = Utils.localize("gui.securitycraft:editModule").getFormattedText();
 	private final ItemStack module;
 	private TextFieldWidget inputField;
-	private IdButton addButton, removeButton, copyButton, pasteButton, clearButton;
+	private Button addButton, removeButton, copyButton, pasteButton, clearButton;
 	private int xSize = 247, ySize = 186;
 	private PlayerList playerList;
 	private int guiLeft;
@@ -59,11 +60,11 @@ public class EditModuleScreen extends Screen {
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
 		addButton(inputField = new TextFieldWidget(font, controlsStartX - 17, height / 2 - 75, 110, 15, ""));
-		addButton(addButton = new IdButton(0, controlsStartX, height / 2 - 55, 76, 20, Utils.localize("gui.securitycraft:editModule.add").getFormattedText(), this::actionPerformed));
-		addButton(removeButton = new IdButton(1, controlsStartX, height / 2 - 30, 76, 20, Utils.localize("gui.securitycraft:editModule.remove").getFormattedText(), this::actionPerformed));
-		addButton(copyButton = new IdButton(2, controlsStartX, height / 2 - 5, 76, 20, Utils.localize("gui.securitycraft:editModule.copy").getFormattedText(), this::actionPerformed));
-		addButton(pasteButton = new IdButton(3, controlsStartX, height / 2 + 20, 76, 20, Utils.localize("gui.securitycraft:editModule.paste").getFormattedText(), this::actionPerformed));
-		addButton(clearButton = new IdButton(4, controlsStartX, height / 2 + 45, 76, 20, Utils.localize("gui.securitycraft:editModule.clear").getFormattedText(), this::actionPerformed));
+		addButton(addButton = new ExtendedButton(controlsStartX, height / 2 - 55, 76, 20, Utils.localize("gui.securitycraft:editModule.add").getFormattedText(), this::addButtonClicked));
+		addButton(removeButton = new ExtendedButton(controlsStartX, height / 2 - 30, 76, 20, Utils.localize("gui.securitycraft:editModule.remove").getFormattedText(), this::removeButtonClicked));
+		addButton(copyButton = new ExtendedButton(controlsStartX, height / 2 - 5, 76, 20, Utils.localize("gui.securitycraft:editModule.copy").getFormattedText(), this::copyButtonClicked));
+		addButton(pasteButton = new ExtendedButton(controlsStartX, height / 2 + 20, 76, 20, Utils.localize("gui.securitycraft:editModule.paste").getFormattedText(), this::pasteButtonClicked));
+		addButton(clearButton = new ExtendedButton(controlsStartX, height / 2 + 45, 76, 20, Utils.localize("gui.securitycraft:editModule.clear").getFormattedText(), this::clearButtonClicked));
 		addButton(new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTag() && module.getTag().getBoolean("affectEveryone"), newState -> {
 			module.getOrCreateTag().putBoolean("affectEveryone", newState);
 			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
@@ -163,60 +164,67 @@ public class EditModuleScreen extends Screen {
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
-	protected void actionPerformed(IdButton button) {
-		if (button.id == addButton.id) {
-			if (inputField.getText().isEmpty())
-				return;
-
-			if (module.getTag() == null)
-				module.setTag(new CompoundNBT());
-
-			for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
-				if (module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText())) {
-					if (i == 9)
-						addButton.active = false;
-
-					return;
-				}
-			}
-
-			module.getTag().putString("Player" + getNextFreeSlot(module.getTag()), inputField.getText());
-
-			if (module.getTag() != null && module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS))
-				addButton.active = false;
-
-			inputField.setText("");
-		}
-		else if (button.id == removeButton.id) {
-			if (inputField.getText().isEmpty())
-				return;
-
-			if (module.getTag() == null)
-				module.setTag(new CompoundNBT());
-
-			for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
-				if (module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText())) {
-					module.getTag().remove("Player" + i);
-					defragmentTag(module.getTag());
-				}
-			}
-
-			inputField.setText("");
-		}
-		else if (button.id == copyButton.id) {
-			savedModule = module.getTag().copy();
-			copyButton.active = false;
+	private void addButtonClicked(Button button) {
+		if (inputField.getText().isEmpty())
 			return;
-		}
-		else if (button.id == pasteButton.id)
-			module.setTag(savedModule.copy());
-		else if (button.id == clearButton.id) {
+
+		if (module.getTag() == null)
 			module.setTag(new CompoundNBT());
-			inputField.setText("");
+
+		for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
+			if (module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText())) {
+				if (i == 9)
+					addButton.active = false;
+
+				return;
+			}
 		}
-		else
+
+		module.getTag().putString("Player" + getNextFreeSlot(module.getTag()), inputField.getText());
+
+		if (module.getTag() != null && module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS))
+			addButton.active = false;
+
+		inputField.setText("");
+		updateButtonStates();
+	}
+
+	private void removeButtonClicked(Button button) {
+		if (inputField.getText().isEmpty())
 			return;
 
+		if (module.getTag() == null)
+			module.setTag(new CompoundNBT());
+
+		for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
+			if (module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText())) {
+				module.getTag().remove("Player" + i);
+				defragmentTag(module.getTag());
+			}
+		}
+
+		inputField.setText("");
+		updateButtonStates();
+	}
+
+	private void copyButtonClicked(Button button) {
+		savedModule = module.getTag().copy();
+		copyButton.active = false;
+		updateButtonStates();
+	}
+
+	private void pasteButtonClicked(Button button) {
+		module.setTag(savedModule.copy());
+		updateButtonStates();
+	}
+
+	private void clearButtonClicked(Button button) {
+		module.setTag(new CompoundNBT());
+		inputField.setText("");
+		updateButtonStates();
+	}
+
+	private void updateButtonStates() {
 		if (module.getTag() != null)
 			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 

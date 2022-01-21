@@ -10,7 +10,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.lwjgl.glfw.GLFW;
@@ -31,7 +30,6 @@ import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
@@ -61,14 +59,15 @@ import net.minecraft.util.text.event.ClickEvent.Action;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ScrollPanel;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {
-	private ResourceLocation infoBookTexture = new ResourceLocation("securitycraft:textures/gui/info_book_texture.png");
-	private ResourceLocation infoBookTextureSpecial = new ResourceLocation("securitycraft:textures/gui/info_book_texture_special.png"); //for items without a recipe
-	private ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
-	private ResourceLocation infoBookIcons = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png");
+	private static ResourceLocation infoBookTexture = new ResourceLocation("securitycraft:textures/gui/info_book_texture.png");
+	private static ResourceLocation infoBookTextureSpecial = new ResourceLocation("securitycraft:textures/gui/info_book_texture_special.png"); //for items without a recipe
+	private static ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
+	private static ResourceLocation infoBookIcons = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png");
 	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
 	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private static int lastPage = -1;
@@ -98,10 +97,10 @@ public class SCManualScreen extends Screen {
 
 		startX = (width - 256) / 2;
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 188, true, this::actionPerformed)); //next page
-		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 188, false, this::actionPerformed)); //previous page
-		addButton(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
-		addButton(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
+		addButton(new ChangePageButton(startX + 210, startY + 188, true, b -> nextPage()));
+		addButton(new ChangePageButton(startX + 16, startY + 188, false, b -> previousPage()));
+		addButton(new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
+		addButton(new ChangePageButton(startX + 155, startY + 97, false, b -> previousSubpage()));
 		addButton(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, "", b -> handleComponentClicked(new StringTextComponent("").setStyle(new Style().setClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce"))))));
 		children.add(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
 
@@ -241,17 +240,7 @@ public class SCManualScreen extends Screen {
 		return super.charTyped(typedChar, keyCode);
 	}
 
-	protected void actionPerformed(IdButton button) {
-		if (button.id == 1)
-			nextPage();
-		else if (button.id == 2)
-			previousPage();
-		else if (button.id == 3)
-			nextSubpage();
-		else if (button.id == 4)
-			previousSubpage();
-
-		//hide subpage buttons on main page
+	private void hideSubpageButtonsOnMainPage() {
 		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
 		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
@@ -287,6 +276,7 @@ public class SCManualScreen extends Screen {
 			currentPage = -1;
 
 		updateRecipeAndIcons();
+		hideSubpageButtonsOnMainPage();
 	}
 
 	private void previousPage() {
@@ -296,6 +286,7 @@ public class SCManualScreen extends Screen {
 			currentPage = SCManualItem.PAGES.size() - 1;
 
 		updateRecipeAndIcons();
+		hideSubpageButtonsOnMainPage();
 	}
 
 	private void nextSubpage() {
@@ -704,11 +695,11 @@ public class SCManualScreen extends Screen {
 		}
 	}
 
-	static class ChangePageButton extends IdButton {
+	static class ChangePageButton extends ExtendedButton {
 		private final int textureY;
 
-		public ChangePageButton(int index, int xPos, int yPos, boolean forward, Consumer<IdButton> onClick) {
-			super(index, xPos, yPos, 23, 13, "", onClick);
+		public ChangePageButton(int xPos, int yPos, boolean forward, IPressable onClick) {
+			super(xPos, yPos, 23, 13, "", onClick);
 			textureY = forward ? 192 : 205;
 		}
 

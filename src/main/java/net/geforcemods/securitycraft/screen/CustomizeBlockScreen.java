@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.util.Utils;
@@ -31,6 +30,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
@@ -68,7 +68,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
 			int column = i % numberOfColumns;
 
-			addButton(descriptionButtons[i] = new PictureButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
+			addButton(descriptionButtons[i] = new PictureButton(guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 
@@ -82,14 +82,14 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 				if (option instanceof ISlider && option.isSlider()) {
 					if (option instanceof DoubleOption)
-						optionButtons[i] = new NamedSlider((Utils.localize("option" + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option);
+						optionButtons[i] = new NamedSlider((Utils.localize("option" + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString()), blockName, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option);
 					else if (option instanceof IntOption)
-						optionButtons[i] = new NamedSlider((Utils.localize("option" + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option);
+						optionButtons[i] = new NamedSlider((Utils.localize("option" + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString()), blockName, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option);
 
 					optionButtons[i].setFGColor(14737632);
 				}
 				else {
-					optionButtons[i] = new IdButton(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::actionPerformed);
+					optionButtons[i] = new ExtendedButton(guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::optionButtonClicked);
 					optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
 				}
 
@@ -148,12 +148,19 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	protected void actionPerformed(IdButton button) {
-		Option<?> tempOption = ((ICustomizable) moduleInv.getTileEntity()).customOptions()[button.id]; //safe cast, as this method is only called when it can be casted
-		tempOption.toggle();
-		button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
-		button.setMessage(getOptionButtonTitle(tempOption));
-		SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getTileEntity().getPos().getX(), moduleInv.getTileEntity().getPos().getY(), moduleInv.getTileEntity().getPos().getZ(), button.id));
+	protected void optionButtonClicked(Button button) {
+		for (int i = 0; i < optionButtons.length; i++) {
+			if (button != optionButtons[i])
+				continue;
+
+			Option<?> tempOption = ((ICustomizable) moduleInv.getTileEntity()).customOptions()[i]; //safe cast, as this method is only called when it can be casted
+
+			tempOption.toggle();
+			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
+			button.setMessage(getOptionButtonTitle(tempOption));
+			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getTileEntity().getPos().getX(), moduleInv.getTileEntity().getPos().getY(), moduleInv.getTileEntity().getPos().getZ(), i));
+			return;
+		}
 	}
 
 	private String getModuleDescription(int buttonID) {

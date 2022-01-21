@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import java.util.function.Consumer;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.block.Block;
@@ -15,9 +13,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.GuiUtils;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class PictureButton extends IdButton {
+public class PictureButton extends ExtendedButton {
 	private final ItemRenderer itemRenderer;
 	private Block blockToRender;
 	private Item itemToRender;
@@ -31,13 +30,13 @@ public class PictureButton extends IdButton {
 	private int textureWidth;
 	private int textureHeight;
 
-	public PictureButton(int id, int xPos, int yPos, int width, int height, ItemRenderer par7, ItemStack itemToRender) {
-		this(id, xPos, yPos, width, height, par7, itemToRender, null);
+	public PictureButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ItemStack itemToRender) {
+		this(xPos, yPos, width, height, itemRenderer, itemToRender, b -> {});
 	}
 
-	public PictureButton(int id, int xPos, int yPos, int width, int height, ItemRenderer par7, ItemStack itemToRender, Consumer<IdButton> onClick) {
-		super(id, xPos, yPos, width, height, "", onClick);
-		itemRenderer = par7;
+	public PictureButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ItemStack itemToRender, IPressable onClick) {
+		super(xPos, yPos, width, height, "", onClick);
+		this.itemRenderer = itemRenderer;
 
 		if (!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
 			blockToRender = Block.getBlockFromItem(itemToRender.getItem());
@@ -45,8 +44,8 @@ public class PictureButton extends IdButton {
 			this.itemToRender = itemToRender.getItem();
 	}
 
-	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, Consumer<IdButton> onClick) {
-		super(id, xPos, yPos, width, height, "", onClick);
+	public PictureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, IPressable onClick) {
+		super(xPos, yPos, width, height, "", onClick);
 
 		itemRenderer = null;
 		textureLocation = texture;
@@ -81,10 +80,14 @@ public class PictureButton extends IdButton {
 				itemRenderer.renderItemOverlayIntoGUI(font, new ItemStack(itemToRender), x + 2, y + 2, "");
 				RenderSystem.disableLighting();
 			}
-			else if (getTextureLocation() != null) {
-				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				mc.getTextureManager().bindTexture(getTextureLocation());
-				blit(x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
+			else {
+				ResourceLocation texture = getTextureLocation();
+
+				if (texture != null) {
+					RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+					mc.getTextureManager().bindTexture(texture);
+					blit(x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
+				}
 			}
 		}
 	}

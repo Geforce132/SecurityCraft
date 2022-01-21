@@ -7,12 +7,12 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.SetPassword;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -20,6 +20,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
 public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
@@ -29,7 +30,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	private final String confirmPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode").getFormattedText();
 	private TextFieldWidget textboxNewPasscode;
 	private TextFieldWidget textboxConfirmPasscode;
-	private IdButton confirmButton;
+	private Button confirmButton;
 	private TileEntity tileEntity;
 
 	public KeyChangerScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
@@ -41,7 +42,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	public void init() {
 		super.init();
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(confirmButton = new IdButton(0, width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm").getFormattedText(), this::actionPerformed));
+		addButton(confirmButton = new ExtendedButton(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm").getFormattedText(), this::confirmButtonClicked));
 		confirmButton.active = false;
 
 		addButton(textboxNewPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 47, 110, 12, ""));
@@ -86,7 +87,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		confirmButton.active = confirmPasscode != null && newPasscode != null && !confirmPasscode.isEmpty() && !newPasscode.isEmpty() && newPasscode.equals(confirmPasscode);
 	}
 
-	protected void actionPerformed(IdButton button) {
+	private void confirmButtonClicked(Button button) {
 		((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getText());
 		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
 
