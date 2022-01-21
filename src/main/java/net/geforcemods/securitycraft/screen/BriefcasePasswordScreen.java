@@ -40,8 +40,10 @@ public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericMenu
 		super.init();
 
 		for (int i = 0; i < 4; i++) {
-			addRenderableWidget(new KeycodeButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, new TextComponent(UP_ARROW), this::keycodeButtonClicked));
-			addRenderableWidget(new KeycodeButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, new TextComponent(DOWN_ARROW), this::keycodeButtonClicked));
+			final int id = i;
+
+			addRenderableWidget(new ExtendedButton(width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, new TextComponent(UP_ARROW), b -> keycodeButtonClicked(id)));
+			addRenderableWidget(new ExtendedButton(width / 2 - 40 + (i * 20), height / 2, 20, 20, new TextComponent(DOWN_ARROW), b -> keycodeButtonClicked(4 + id)));
 			//text boxes are not added via addRenderableWidget because they should not be selectable
 			keycodeTextboxes[i] = addRenderableOnly(new EditBox(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, TextComponent.EMPTY));
 			keycodeTextboxes[i].setMaxLength(1);
@@ -80,22 +82,11 @@ public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericMenu
 		}
 	}
 
-	private void keycodeButtonClicked(Button button) {
-		int id = ((KeycodeButton) button).index;
-		int codeIndex = id % 4;
+	private void keycodeButtonClicked(int id) {
+		int index = id % 4;
 
 		//java's modulo operator % does not handle negative numbers like it should for some reason, so floorMod needs to be used
-		digits[codeIndex] = Math.floorMod((id > 3 ? --digits[codeIndex] : ++digits[codeIndex]), 10);
-		keycodeTextboxes[codeIndex].setValue(String.valueOf(digits[codeIndex]));
-	}
-
-	private static class KeycodeButton extends ExtendedButton {
-		private final int index;
-
-		public KeycodeButton(int index, int xPos, int yPos, int width, int height, Component displayString, OnPress handler) {
-			super(xPos, yPos, width, height, displayString, handler);
-
-			this.index = index;
-		}
+		digits[index] = Math.floorMod((id > 3 ? --digits[index] : ++digits[index]), 10);
+		keycodeTextboxes[index].setValue(String.valueOf(digits[index]));
 	}
 }
