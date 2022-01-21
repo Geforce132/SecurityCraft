@@ -81,13 +81,10 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 
 	@Override

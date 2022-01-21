@@ -52,9 +52,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer> {
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 
 	protected void targetButtonClicked(Button button) {
