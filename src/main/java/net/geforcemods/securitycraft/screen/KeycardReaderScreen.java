@@ -96,8 +96,9 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 
 		//keycard level buttons
 		for (int i = 0; i < 5; i++) {
+			final int thisButtonId = i;
 			//@formatter:off
-			toggleButtons[i] = addButton(new TogglePictureButton(i, guiLeft + 100, guiTop + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[] {110, 88}, new int[] {219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
+			toggleButtons[i] = addButton(new TogglePictureButton(guiLeft + 100, guiTop + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[] {110, 88}, new int[] {219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
 				//@formatter:on
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
 				if (!isSmart) {
@@ -105,16 +106,16 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 						boolean active;
 
 						if (isExactLevel)
-							active = (otherButtonId == thisButton.id);
+							active = (otherButtonId == thisButtonId);
 						else
-							active = (otherButtonId >= thisButton.id);
+							active = (otherButtonId >= thisButtonId);
 
 						//update button state and data
 						changeLevelState(otherButtonId, active);
 					}
 				}
 				else
-					acceptedLevels[thisButton.id] = !acceptedLevels[thisButton.id];
+					acceptedLevels[thisButtonId] = !acceptedLevels[thisButtonId];
 			}));
 			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
 			toggleButtons[i].active = isOwner;
@@ -132,12 +133,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		minusThree = addButton(new ExtendedButton(guiLeft + 22, buttonY, 24, buttonHeight, new StringTextComponent("---"), b -> changeSignature(signature - 100)));
 		minusTwo = addButton(new ExtendedButton(guiLeft + 48, buttonY, 18, buttonHeight, new StringTextComponent("--"), b -> changeSignature(signature - 10)));
 		minusOne = addButton(new ExtendedButton(guiLeft + 68, buttonY, 12, buttonHeight, new StringTextComponent("-"), b -> changeSignature(signature - 1)));
-		reset = addButton(new PictureButton(-1, guiLeft + 82, buttonY, 12, buttonHeight, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(previousSignature)) {
-			@Override
-			public ResourceLocation getTextureLocation() {
-				return active ? RESET_TEXTURE : RESET_INACTIVE_TEXTURE;
-			}
-		});
+		reset = addButton(new ActiveBasedTextureButton(guiLeft + 82, buttonY, 12, buttonHeight, RESET_TEXTURE, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(previousSignature)));
 		plusOne = addButton(new ExtendedButton(guiLeft + 96, buttonY, 12, buttonHeight, new StringTextComponent("+"), b -> changeSignature(signature + 1)));
 		plusTwo = addButton(new ExtendedButton(guiLeft + 110, buttonY, 18, buttonHeight, new StringTextComponent("++"), b -> changeSignature(signature + 10)));
 		plusThree = addButton(new ExtendedButton(guiLeft + 130, buttonY, 24, buttonHeight, new StringTextComponent("+++"), b -> changeSignature(signature + 100)));
@@ -154,12 +150,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		}));
 		linkButton.active = false;
 		//button for saving the amount of limited uses onto the keycard
-		setUsesButton = addButton(new PictureButton(-1, guiLeft + 62, guiTop + 106, 16, 17, RETURN_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(te.getPos(), Integer.parseInt(usesTextField.getText())))) {
-			@Override
-			public ResourceLocation getTextureLocation() {
-				return active ? RETURN_TEXTURE : RETURN_INACTIVE_TEXTURE;
-			}
-		});
+		setUsesButton = addButton(new ActiveBasedTextureButton(guiLeft + 62, guiTop + 106, 16, 17, RETURN_TEXTURE, RETURN_INACTIVE_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(te.getPos(), Integer.parseInt(usesTextField.getText())))));
 		setUsesButton.active = false;
 		//text field for setting amount of limited uses
 		usesTextField = addButton(new TextFieldWidget(font, guiLeft + 28, guiTop + 107, 30, 15, StringTextComponent.EMPTY));
@@ -334,6 +325,21 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		if (isOwner) {
 			toggleButtons[i].setCurrentIndex(active ? 1 : 0);
 			acceptedLevels[i] = active;
+		}
+	}
+
+	private static class ActiveBasedTextureButton extends PictureButton {
+		private final ResourceLocation inactiveTexture;
+
+		public ActiveBasedTextureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, ResourceLocation inactiveTexture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, IPressable onPress) {
+			super(xPos, yPos, width, height, texture, textureX, textureY, drawOffsetX, drawOffsetY, drawWidth, drawHeight, textureWidth, textureHeight, onPress);
+
+			this.inactiveTexture = inactiveTexture;
+		}
+
+		@Override
+		public ResourceLocation getTextureLocation() {
+			return active ? super.getTextureLocation() : inactiveTexture;
 		}
 	}
 }

@@ -8,7 +8,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -22,6 +21,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
 public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
@@ -46,17 +46,17 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		super.init();
 		minecraft.keyboardListener.enableRepeatEvents(true);
 
-		addButton(new IdButton(0, width / 2 - 38, height / 2 + 30 + 10, 80, 20, "0", this::actionPerformed));
-		addButton(new IdButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "1", this::actionPerformed));
-		addButton(new IdButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "2", this::actionPerformed));
-		addButton(new IdButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "3", this::actionPerformed));
-		addButton(new IdButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "4", this::actionPerformed));
-		addButton(new IdButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "5", this::actionPerformed));
-		addButton(new IdButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "6", this::actionPerformed));
-		addButton(new IdButton(7, width / 2 - 38, height / 2 + 10, 20, 20, "7", this::actionPerformed));
-		addButton(new IdButton(8, width / 2 - 8, height / 2 + 10, 20, 20, "8", this::actionPerformed));
-		addButton(new IdButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "9", this::actionPerformed));
-		addButton(new IdButton(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
+		addButton(new ExtendedButton(width / 2 - 38, height / 2 + 30 + 10, 80, 20, new StringTextComponent("0"), b -> addNumberToString(0)));
+		addButton(new ExtendedButton(width / 2 - 38, height / 2 - 60 + 10, 20, 20, new StringTextComponent("1"), b -> addNumberToString(1)));
+		addButton(new ExtendedButton(width / 2 - 8, height / 2 - 60 + 10, 20, 20, new StringTextComponent("2"), b -> addNumberToString(2)));
+		addButton(new ExtendedButton(width / 2 + 22, height / 2 - 60 + 10, 20, 20, new StringTextComponent("3"), b -> addNumberToString(3)));
+		addButton(new ExtendedButton(width / 2 - 38, height / 2 - 30 + 10, 20, 20, new StringTextComponent("4"), b -> addNumberToString(4)));
+		addButton(new ExtendedButton(width / 2 - 8, height / 2 - 30 + 10, 20, 20, new StringTextComponent("5"), b -> addNumberToString(5)));
+		addButton(new ExtendedButton(width / 2 + 22, height / 2 - 30 + 10, 20, 20, new StringTextComponent("6"), b -> addNumberToString(6)));
+		addButton(new ExtendedButton(width / 2 - 38, height / 2 + 10, 20, 20, new StringTextComponent("7"), b -> addNumberToString(7)));
+		addButton(new ExtendedButton(width / 2 - 8, height / 2 + 10, 20, 20, new StringTextComponent("8"), b -> addNumberToString(8)));
+		addButton(new ExtendedButton(width / 2 + 22, height / 2 + 10, 20, 20, new StringTextComponent("9"), b -> addNumberToString(9)));
+		addButton(new ExtendedButton(width / 2 + 48, height / 2 + 30 + 10, 25, 20, new StringTextComponent("<-"), b -> removeLastCharacter()));
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 67, 77, 12, StringTextComponent.EMPTY));
 		keycodeTextbox.setMaxStringLength(MAX_CHARS);
@@ -120,13 +120,16 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		return false;
 	}
 
-	protected void actionPerformed(IdButton button) {
-		if (currentString.length() < MAX_CHARS && button.id >= 0 && button.id <= 9) {
-			currentString += "" + button.id;
+	protected void addNumberToString(int number) {
+		if (currentString.length() < MAX_CHARS) {
+			currentString += "" + number;
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);
 		}
-		else if (button.id == 10 && currentString.length() > 0) {
+	}
+
+	private void removeLastCharacter() {
+		if (currentString.length() > 0) {
 			currentString = Utils.removeLastChar(currentString);
 			setTextboxCensoredText(keycodeTextbox, currentString);
 		}

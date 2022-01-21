@@ -35,7 +35,6 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	private NamedSlider projectionHeightSlider;
 	private NamedSlider projectionRangeSlider;
 	private NamedSlider projectionOffsetSlider;
-	private TogglePictureButton toggleButton;
 	private int sliderWidth = 120;
 
 	public ProjectorScreen(ProjectorContainer container, PlayerInventory inv, ITextComponent name) {
@@ -48,18 +47,20 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	@Override
 	public void init() {
 		super.init();
+
 		int id = 0;
 		int left = guiLeft + ((xSize - sliderWidth) / 2);
+		TogglePictureButton toggleButton;
 
-		projectionWidthSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.width", tileEntity.getProjectionWidth()), blockName, id, left, guiTop + 47, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", ""), "", ProjectorTileEntity.MIN_WIDTH, ProjectorTileEntity.MAX_WIDTH, tileEntity.getProjectionWidth(), false, true, null, this::sliderReleased));
+		projectionWidthSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.width", tileEntity.getProjectionWidth()), blockName, left, guiTop + 47, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", ""), "", ProjectorTileEntity.MIN_WIDTH, ProjectorTileEntity.MAX_WIDTH, tileEntity.getProjectionWidth(), false, true, null, this::sliderReleased));
 		projectionWidthSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionWidthSlider, Utils.localize("gui.securitycraft:projector.width.description"));
 
-		projectionHeightSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.height", tileEntity.getProjectionHeight()), blockName, id, left, guiTop + 68, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.height", ""), "", ProjectorTileEntity.MIN_WIDTH, ProjectorTileEntity.MAX_WIDTH, tileEntity.getProjectionHeight(), false, true, null, this::sliderReleased));
+		projectionHeightSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.height", tileEntity.getProjectionHeight()), blockName, left, guiTop + 68, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.height", ""), "", ProjectorTileEntity.MIN_WIDTH, ProjectorTileEntity.MAX_WIDTH, tileEntity.getProjectionHeight(), false, true, null, this::sliderReleased));
 		projectionHeightSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionHeightSlider, Utils.localize("gui.securitycraft:projector.height.description"));
 
-		projectionRangeSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.range", tileEntity.getProjectionRange()), blockName, id, left, guiTop + 89, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", ""), "", ProjectorTileEntity.MIN_RANGE, ProjectorTileEntity.MAX_RANGE, tileEntity.getProjectionRange(), false, true, slider -> {
+		projectionRangeSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.range", tileEntity.getProjectionRange()), blockName, left, guiTop + 89, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", ""), "", ProjectorTileEntity.MIN_RANGE, ProjectorTileEntity.MAX_RANGE, tileEntity.getProjectionRange(), false, true, slider -> {
 			//show a different number so it makes sense within the world
 			if (tileEntity.isHorizontal())
 				slider.setMessage(new StringTextComponent("").appendSibling(slider.dispString).appendString(Integer.toString((int) Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
@@ -67,12 +68,12 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		projectionRangeSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionRangeSlider, Utils.localize("gui.securitycraft:projector.range.description"));
 
-		projectionOffsetSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", tileEntity.getProjectionOffset()), blockName, id, left, guiTop + 110, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", ProjectorTileEntity.MIN_OFFSET, ProjectorTileEntity.MAX_OFFSET, tileEntity.getProjectionOffset(), false, true, null, this::sliderReleased));
+		projectionOffsetSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", tileEntity.getProjectionOffset()), blockName, left, guiTop + 110, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", ProjectorTileEntity.MIN_OFFSET, ProjectorTileEntity.MAX_OFFSET, tileEntity.getProjectionOffset(), false, true, null, this::sliderReleased));
 		projectionOffsetSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionOffsetSlider, Utils.localize("gui.securitycraft:projector.offset.description"));
 
 		//@formatter:off
-		toggleButton = addButton(new TogglePictureButton(id, left, guiTop + 26, 20, 20, TEXTURE, new int[] {176, 192}, new int[] {0, 0}, 2, 2, b -> {
+		toggleButton = addButton(new TogglePictureButton(left, guiTop + 26, 20, 20, TEXTURE, new int[] {176, 192}, new int[] {0, 0}, 2, 2, b -> {
 			//@formatter:on
 			tileEntity.setHorizontal(!tileEntity.isHorizontal());
 			projectionRangeSlider.updateSlider();
@@ -136,19 +137,19 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		int data = 0;
 		DataType dataType = DataType.INVALID;
 
-		if (slider.id == projectionWidthSlider.id) {
+		if (slider == projectionWidthSlider) {
 			tileEntity.setProjectionWidth(data = slider.getValueInt());
 			dataType = DataType.WIDTH;
 		}
-		else if (slider.id == projectionHeightSlider.id) {
+		else if (slider == projectionHeightSlider) {
 			tileEntity.setProjectionHeight(data = slider.getValueInt());
 			dataType = DataType.HEIGHT;
 		}
-		else if (slider.id == projectionRangeSlider.id) {
+		else if (slider == projectionRangeSlider) {
 			tileEntity.setProjectionRange(data = slider.getValueInt());
 			dataType = DataType.RANGE;
 		}
-		else if (slider.id == projectionOffsetSlider.id) {
+		else if (slider == projectionOffsetSlider) {
 			tileEntity.setProjectionOffset(data = slider.getValueInt());
 			dataType = DataType.OFFSET;
 		}

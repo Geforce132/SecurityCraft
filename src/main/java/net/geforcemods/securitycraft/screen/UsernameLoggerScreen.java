@@ -12,7 +12,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -27,6 +26,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -44,7 +44,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer> {
 	protected void init() {
 		super.init();
 
-		addButton(new IdButton(0, guiLeft + 4, guiTop + 4, 8, 8, "x", b -> {
+		addButton(new ExtendedButton(guiLeft + 4, guiTop + 4, 8, 8, new StringTextComponent("x"), b -> {
 			tileEntity.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getPos()));
 		})).active = tileEntity.getOwner().isOwner(minecraft.player);

@@ -11,21 +11,23 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
 public class MineRemoteAccessToolScreen extends Screen {
@@ -33,7 +35,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
 	private final TranslationTextComponent mratName = Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey());
 	private ItemStack mrat;
-	private IdButton[][] guiButtons = new IdButton[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
+	private Button[][] guiButtons = new Button[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 	private int xSize = 256, ySize = 184;
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
@@ -68,22 +70,26 @@ public class MineRemoteAccessToolScreen extends Screen {
 			for (int j = 0; j < 4; j++) {
 				int btnX = startX + j * padding + 154;
 				int btnY = startY + y - 48;
+				int mine = id / 4;
+				int action = id % 4;
+
+				id++;
 
 				switch (j) {
 					case DEFUSE:
-						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, itemRenderer, new ItemStack(SCContent.WIRE_CUTTERS.get()), this::actionPerformed);
+						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, itemRenderer, new ItemStack(SCContent.WIRE_CUTTERS.get()), b -> buttonClicked(mine, action));
 						guiButtons[i][j].active = false;
 						break;
 					case ACTIVATE:
-						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, itemRenderer, new ItemStack(Items.FLINT_AND_STEEL), this::actionPerformed);
+						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, itemRenderer, new ItemStack(Items.FLINT_AND_STEEL), b -> buttonClicked(mine, action));
 						guiButtons[i][j].active = false;
 						break;
 					case DETONATE:
-						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 0, 1, 18, 18, 256, 256, this::actionPerformed);
+						guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 0, 1, 18, 18, 256, 256, b -> buttonClicked(mine, action));
 						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
-						guiButtons[i][j] = new IdButton(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
+						guiButtons[i][j] = new ExtendedButton(btnX, btnY, 20, 20, new StringTextComponent("X"), b -> buttonClicked(mine, action));
 						guiButtons[i][j].active = false;
 						break;
 				}
@@ -158,10 +164,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 		}
 	}
 
-	protected void actionPerformed(IdButton button) {
-		int mine = button.id / 4;
-		int action = button.id % 4;
-
+	private void buttonClicked(int mine, int action) {
 		int[] coords = getMineCoordinates(mine);
 
 		switch (action) {

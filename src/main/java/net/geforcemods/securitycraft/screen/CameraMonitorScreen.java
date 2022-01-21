@@ -11,22 +11,24 @@ import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.GlobalPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
 public class CameraMonitorScreen extends Screen {
@@ -35,10 +37,8 @@ public class CameraMonitorScreen extends Screen {
 	private PlayerInventory playerInventory;
 	private CameraMonitorItem cameraMonitor;
 	private CompoundNBT nbtTag;
-	private IdButton prevPageButton;
-	private IdButton nextPageButton;
-	private IdButton[] cameraButtons = new IdButton[10];
-	private IdButton[] unbindButtons = new IdButton[10];
+	private CameraButton[] cameraButtons = new CameraButton[10];
+	private CameraButton[] unbindButtons = new CameraButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private SecurityCameraTileEntity[] cameraTEs = new SecurityCameraTileEntity[10];
 	private ResourceLocation[] cameraViewDim = new ResourceLocation[10];
@@ -61,34 +61,35 @@ public class CameraMonitorScreen extends Screen {
 	public void init() {
 		super.init();
 
-		addButton(prevPageButton = new IdButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<", this::actionPerformed));
-		addButton(nextPageButton = new IdButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">", this::actionPerformed));
+		Button prevPageButton = addButton(new ExtendedButton(width / 2 - 68, height / 2 + 40, 20, 20, new StringTextComponent("<"), b -> minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1))));
+		Button nextPageButton = addButton(new ExtendedButton(width / 2 + 52, height / 2 + 40, 20, 20, new StringTextComponent(">"), b -> minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1))));
+		StringTextComponent x = new StringTextComponent("x");
 
-		cameraButtons[0] = new IdButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[1] = new IdButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[2] = new IdButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[3] = new IdButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[4] = new IdButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[5] = new IdButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[6] = new IdButton(7, width / 2 - 38, height / 2 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[7] = new IdButton(8, width / 2 - 8, height / 2 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[8] = new IdButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[9] = new IdButton(10, width / 2 - 38, height / 2 + 40, 80, 20, "", this::actionPerformed);
+		cameraButtons[0] = new CameraButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, StringTextComponent.EMPTY, this::cameraButtonClicked);
+		cameraButtons[1] = new CameraButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, StringTextComponent.EMPTY, this::cameraButtonClicked);
+		cameraButtons[2] = new CameraButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, StringTextComponent.EMPTY, this::cameraButtonClicked);
+		cameraButtons[3] = new CameraButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, StringTextComponent.EMPTY, this::cameraButtonClicked);
+		cameraButtons[4] = new CameraButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, StringTextComponent.EMPTY, this::cameraButtonClicked);
+		cameraButtons[5] = new CameraButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, StringTextComponent.EMPTY, this::cameraButtonClicked);
+		cameraButtons[6] = new CameraButton(7, width / 2 - 38, height / 2 + 10, 20, 20, StringTextComponent.EMPTY, this::cameraButtonClicked);
+		cameraButtons[7] = new CameraButton(8, width / 2 - 8, height / 2 + 10, 20, 20, StringTextComponent.EMPTY, this::cameraButtonClicked);
+		cameraButtons[8] = new CameraButton(9, width / 2 + 22, height / 2 + 10, 20, 20, StringTextComponent.EMPTY, this::cameraButtonClicked);
+		cameraButtons[9] = new CameraButton(10, width / 2 - 38, height / 2 + 40, 80, 20, StringTextComponent.EMPTY, this::cameraButtonClicked);
 
-		unbindButtons[0] = new IdButton(11, width / 2 - 19, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[1] = new IdButton(12, width / 2 + 11, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[2] = new IdButton(13, width / 2 + 41, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[3] = new IdButton(14, width / 2 - 19, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[4] = new IdButton(15, width / 2 + 11, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[5] = new IdButton(16, width / 2 + 41, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[6] = new IdButton(17, width / 2 - 19, height / 2 + 2, 8, 8, "x", this::actionPerformed);
-		unbindButtons[7] = new IdButton(18, width / 2 + 11, height / 2 + 2, 8, 8, "x", this::actionPerformed);
-		unbindButtons[8] = new IdButton(19, width / 2 + 41, height / 2 + 2, 8, 8, "x", this::actionPerformed);
-		unbindButtons[9] = new IdButton(20, width / 2 + 41, height / 2 + 32, 8, 8, "x", this::actionPerformed);
+		unbindButtons[0] = new CameraButton(1, width / 2 - 19, height / 2 - 68 + 10, 8, 8, x, this::unbindButtonClicked);
+		unbindButtons[1] = new CameraButton(2, width / 2 + 11, height / 2 - 68 + 10, 8, 8, x, this::unbindButtonClicked);
+		unbindButtons[2] = new CameraButton(3, width / 2 + 41, height / 2 - 68 + 10, 8, 8, x, this::unbindButtonClicked);
+		unbindButtons[3] = new CameraButton(4, width / 2 - 19, height / 2 - 38 + 10, 8, 8, x, this::unbindButtonClicked);
+		unbindButtons[4] = new CameraButton(5, width / 2 + 11, height / 2 - 38 + 10, 8, 8, x, this::unbindButtonClicked);
+		unbindButtons[5] = new CameraButton(6, width / 2 + 41, height / 2 - 38 + 10, 8, 8, x, this::unbindButtonClicked);
+		unbindButtons[6] = new CameraButton(7, width / 2 - 19, height / 2 + 2, 8, 8, x, this::unbindButtonClicked);
+		unbindButtons[7] = new CameraButton(8, width / 2 + 11, height / 2 + 2, 8, 8, x, this::unbindButtonClicked);
+		unbindButtons[8] = new CameraButton(9, width / 2 + 41, height / 2 + 2, 8, 8, x, this::unbindButtonClicked);
+		unbindButtons[9] = new CameraButton(10, width / 2 + 41, height / 2 + 32, 8, 8, x, this::unbindButtonClicked);
 
 		for (int i = 0; i < 10; i++) {
-			IdButton button = cameraButtons[i];
-			int camID = (button.id + ((page - 1) * 10));
+			CameraButton button = cameraButtons[i];
+			int camID = (button.camId + ((page - 1) * 10));
 			ArrayList<GlobalPos> views = cameraMonitor.getCameraPositions(nbtTag);
 			GlobalPos view = views.get(camID - 1);
 
@@ -97,20 +98,20 @@ public class CameraMonitorScreen extends Screen {
 
 			if (view != null) {
 				if (!view.getDimension().equals(Minecraft.getInstance().player.world.getDimensionKey())) {
-					hoverCheckers[button.id - 1] = new HoverChecker(button);
-					cameraViewDim[button.id - 1] = view.getDimension().getLocation();
+					hoverCheckers[button.camId - 1] = new HoverChecker(button);
+					cameraViewDim[button.camId - 1] = view.getDimension().getLocation();
 				}
 
 				World world = Minecraft.getInstance().world;
 				TileEntity te = world.getTileEntity(view.getPos());
 
-				cameraTEs[button.id - 1] = te instanceof SecurityCameraTileEntity ? (SecurityCameraTileEntity) te : null;
-				hoverCheckers[button.id - 1] = new HoverChecker(button);
+				cameraTEs[button.camId - 1] = te instanceof SecurityCameraTileEntity ? (SecurityCameraTileEntity) te : null;
+				hoverCheckers[button.camId - 1] = new HoverChecker(button);
 			}
 			else {
 				button.active = false;
-				unbindButtons[button.id - 1].active = false;
-				cameraTEs[button.id - 1] = null;
+				unbindButtons[button.camId - 1].active = false;
+				cameraTEs[button.camId - 1] = null;
 				continue;
 			}
 		}
@@ -151,29 +152,34 @@ public class CameraMonitorScreen extends Screen {
 		}
 	}
 
-	protected void actionPerformed(IdButton button) {
-		if (button.id == prevPageButton.id)
-			minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1));
-		else if (button.id == nextPageButton.id)
-			minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1));
-		else if (button.id < 11) {
-			int camID = button.id + ((page - 1) * 10);
+	protected void cameraButtonClicked(Button button) {
+		int camID = ((CameraButton) button).camId + (page - 1) * 10;
 
-			SecurityCraft.channel.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getPos()));
-			Minecraft.getInstance().player.closeScreen();
-		}
-		else {
-			int camID = (button.id - 10) + ((page - 1) * 10);
+		SecurityCraft.channel.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getPos()));
+		Minecraft.getInstance().player.closeScreen();
+	}
 
-			SecurityCraft.channel.sendToServer(new RemoveCameraTag(PlayerUtils.getSelectedItemStack(playerInventory, SCContent.CAMERA_MONITOR.get()), camID));
-			nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
-			button.active = false;
-			cameraButtons[(camID - 1) % 10].active = false;
-		}
+	private void unbindButtonClicked(Button button) {
+		int camID = ((CameraButton) button).camId + (page - 1) * 10;
+
+		SecurityCraft.channel.sendToServer(new RemoveCameraTag(PlayerUtils.getSelectedItemStack(playerInventory, SCContent.CAMERA_MONITOR.get()), camID));
+		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
+		button.active = false;
+		cameraButtons[(camID - 1) % 10].active = false;
 	}
 
 	@Override
 	public boolean isPauseScreen() {
 		return false;
+	}
+
+	private static class CameraButton extends ExtendedButton {
+		private final int camId;
+
+		public CameraButton(int camId, int xPos, int yPos, int width, int height, ITextComponent displayString, IPressable handler) {
+			super(xPos, yPos, width, height, displayString, handler);
+
+			this.camId = camId;
+		}
 	}
 }
