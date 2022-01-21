@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
@@ -34,6 +33,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.fmlclient.gui.widget.ExtendedButton;
 import net.minecraftforge.fmlclient.gui.widget.Slider;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
@@ -92,11 +92,11 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		int[] yOffset = storage ? new int[] {-76, -100, -52, -28, -4} : new int[] {-40, -70, 23, 47, 71};
 		//@formatter:on
 
-		addRenderableWidget(toggleButton = new IdButton(0, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!be.enabled ? "activate" : "deactivate")), this::toggleButtonClicked));
-		addRenderableWidget(sizeButton = new ToggleComponentButton(1, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[1], widgetWidth, 20, this::updateSizeButtonText, ArrayUtils.indexOf(allowedSizes, size), allowedSizes.length, this::sizeButtonClicked));
-		addRenderableWidget(assembleButton = new IdButton(2, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[2], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked));
-		addRenderableWidget(outlineButton = new IdButton(3, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!be.showOutline ? "show" : "hide")), this::outlineButtonClicked));
-		addRenderableWidget(offsetSlider = new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", be.autoBuildOffset), TextComponent.EMPTY, 4, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", (-size + 2) / 2, (size - 2) / 2, be.autoBuildOffset, false, true, null, this::offsetSliderReleased));
+		addRenderableWidget(toggleButton = new ExtendedButton(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!be.enabled ? "activate" : "deactivate")), this::toggleButtonClicked));
+		addRenderableWidget(sizeButton = new ToggleComponentButton(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[1], widgetWidth, 20, this::updateSizeButtonText, ArrayUtils.indexOf(allowedSizes, size), allowedSizes.length, this::sizeButtonClicked));
+		addRenderableWidget(assembleButton = new ExtendedButton(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[2], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked));
+		addRenderableWidget(outlineButton = new ExtendedButton(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!be.showOutline ? "show" : "hide")), this::outlineButtonClicked));
+		addRenderableWidget(offsetSlider = new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", be.autoBuildOffset), TextComponent.EMPTY, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", (-size + 2) / 2, (size - 2) / 2, be.autoBuildOffset, false, true, null, this::offsetSliderReleased));
 		offsetSlider.updateSlider();
 
 		if (!be.getOwner().isOwner(Minecraft.getInstance().player))
@@ -235,7 +235,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		assembleButton.active = isOwner && (minecraft.player.isCreative() || (!be.enabled && storage && wallsStillNeeded <= 0 && pillarsStillNeeded <= 0 && chiseledStillNeeded <= 0));
 	}
 
-	public void toggleButtonClicked(IdButton button) {
+	public void toggleButtonClicked(Button button) {
 		if (be.enabled)
 			be.disableMultiblock();
 		else {
@@ -251,7 +251,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		Minecraft.getInstance().player.closeContainer();
 	}
 
-	public void sizeButtonClicked(IdButton button) {
+	public void sizeButtonClicked(Button button) {
 		int newOffset;
 		int newMin;
 		int newMax;
@@ -280,7 +280,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		return Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size);
 	}
 
-	public void assembleButtonClicked(IdButton button) {
+	public void assembleButtonClicked(Button button) {
 		MutableComponent feedback;
 
 		be.size = size;
@@ -292,7 +292,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		Minecraft.getInstance().player.closeContainer();
 	}
 
-	public void outlineButtonClicked(IdButton button) {
+	public void outlineButtonClicked(Button button) {
 		be.toggleOutline();
 		outlineButton.setMessage(Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!be.showOutline ? "show" : "hide")));
 		sync();

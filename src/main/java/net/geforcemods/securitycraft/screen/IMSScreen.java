@@ -9,9 +9,9 @@ import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.IMSTargetingMode;
 import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -35,7 +35,7 @@ public class IMSScreen extends AbstractContainerScreen<GenericTEMenu> {
 	public void init() {
 		super.init();
 
-		addRenderableWidget(new ToggleComponentButton(0, width / 2 - 75, height / 2 - 38, 150, 20, this::updateButtonText, targetMode.ordinal(), 3, this::actionPerformed));
+		addRenderableWidget(new ToggleComponentButton(width / 2 - 75, height / 2 - 38, 150, 20, this::updateButtonText, targetMode.ordinal(), 3, this::modeButtonClicked));
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class IMSScreen extends AbstractContainerScreen<GenericTEMenu> {
 		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
-	protected void actionPerformed(IdButton button) {
+	private void modeButtonClicked(Button button) {
 		targetMode = IMSTargetingMode.values()[((ToggleComponentButton) button).getCurrentIndex()];
 		be.setTargetingMode(targetMode);
 		SecurityCraft.channel.sendToServer(new SyncIMSTargetingOption(be.getBlockPos(), be.getTargetingMode()));
