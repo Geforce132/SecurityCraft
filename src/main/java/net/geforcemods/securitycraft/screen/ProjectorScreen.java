@@ -117,7 +117,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 			projectionWidthSlider.mouseReleased(mouseX, mouseY, button);
 
 		if (projectionHeightSlider.dragging)
-			projectionWidthSlider.mouseReleased(mouseX, mouseY, button);
+			projectionHeightSlider.mouseReleased(mouseX, mouseY, button);
 
 		if (projectionRangeSlider.dragging)
 			projectionRangeSlider.mouseReleased(mouseX, mouseY, button);
