@@ -92,7 +92,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 
 		//keycard level buttons
 		for (int i = 0; i < 5; i++) {
-			final int thisbuttonId = i;
+			final int thisButtonId = i;
 			//@formatter:off
 			toggleButtons[i] = addRenderableWidget(new TogglePictureButton(leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[]{110, 88}, new int[]{219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
 				//@formatter:on
@@ -102,16 +102,16 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 						boolean active;
 
 						if (isExactLevel)
-							active = otherButtonId == thisbuttonId;
+							active = otherButtonId == thisButtonId;
 						else
-							active = otherButtonId >= thisbuttonId;
+							active = otherButtonId >= thisButtonId;
 
 						//update button state and data
 						changeLevelState(otherButtonId, active);
 					}
 				}
 				else
-					acceptedLevels[thisbuttonId] = !acceptedLevels[thisbuttonId];
+					acceptedLevels[thisButtonId] = !acceptedLevels[thisButtonId];
 			}));
 			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
 			toggleButtons[i].active = isOwner;

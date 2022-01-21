@@ -292,8 +292,6 @@ public class SCManualScreen extends Screen {
 
 		if (currentSubpage == subpages.size())
 			currentSubpage = 0;
-
-		hideSubpageButtonsOnMainPage();
 	}
 
 	private void previousSubpage() {
@@ -301,8 +299,6 @@ public class SCManualScreen extends Screen {
 
 		if (currentSubpage == -1)
 			currentSubpage = subpages.size() - 1;
-
-		hideSubpageButtonsOnMainPage();
 	}
 
 	private void updateRecipeAndIcons() {
