@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.fluids;
 
+import java.util.Optional;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -10,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -46,13 +48,21 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 	}
 
 	@Override
+	public Optional<SoundEvent> getPickupSound() {
+		return Optional.ofNullable(getAttributes().getFillSound());
+	}
+
+	@Override
 	protected FluidAttributes createAttributes() {
 		//@formatter:off
 		return FluidAttributes.builder(
 				new ResourceLocation("block/lava_still"),
 				new ResourceLocation("block/lava_flow"))
 				.translationKey("block.minecraft.lava")
-				.luminosity(15).density(3000).viscosity(6000).temperature(1300).build(this);
+				.sound(null, null)
+				.luminosity(15).density(3000).viscosity(6000).temperature(1300)
+                .sound(SoundEvents.BUCKET_FILL_LAVA, SoundEvents.BUCKET_EMPTY_LAVA)
+                .build(this);
 		//@formatter:on
 	}
 
