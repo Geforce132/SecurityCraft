@@ -51,7 +51,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
 public class StateSelector extends Screen implements GuiEventListener, NarratableEntry, ContainerListener {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/state_changer.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/state_selector.png");
 	private static final int PAGE_LENGTH = 5;
 	private static final float ROTATION_SENSITIVITY = 0.1F;
 	private static final Vector3f Y_DRAG_ROTATION_VECTOR = new Vector3f((float) (1.0D / Math.sqrt(2)), 0, (float) (1.0D / Math.sqrt(2)));
