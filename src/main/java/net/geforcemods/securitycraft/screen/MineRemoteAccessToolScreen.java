@@ -145,12 +145,13 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
+		blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		font.drawText(matrix, mratName, startX + xSize / 2 - font.getStringPropertyWidth(mratName), startY + -25 + 13, 0xFF0000);
 

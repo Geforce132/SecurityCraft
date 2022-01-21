@@ -139,6 +139,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
 		TranslationTextComponent s = Utils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
+
 		font.drawText(matrix, s, xSize / 2 - font.getStringPropertyWidth(s) / 2, 6, 4210752);
 		font.drawText(matrix, Utils.INVENTORY_TEXT, 8, ySize - 96 + 2, 4210752);
 	}
@@ -148,9 +149,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURES[moduleInv.getMaxNumberOfModules()]);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
+		blit(matrix, guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 
 	protected void optionButtonClicked(Button button) {

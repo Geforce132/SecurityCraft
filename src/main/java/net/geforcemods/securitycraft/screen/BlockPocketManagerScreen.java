@@ -175,13 +175,10 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(storage ? TEXTURE_STORAGE : TEXTURE);
-		blit(matrix, startX, startY, 0, 0, xSize, ySize);
+		blit(matrix, guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 
 	@Override

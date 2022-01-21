@@ -39,7 +39,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 
 	public ProjectorScreen(ProjectorContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
-		this.tileEntity = container.te;
+		tileEntity = container.te;
 		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
 		ySize = 225;
 	}
@@ -111,9 +111,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
+		blit(matrix, guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 
 	@Override

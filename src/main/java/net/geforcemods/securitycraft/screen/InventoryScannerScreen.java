@@ -93,6 +93,6 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
-		blit(matrix, (width - xSize) / 2, (height - ySize) / 2, 0, 0, xSize, ySize + 30);
+		blit(matrix, guiLeft, guiTop, 0, 0, xSize, ySize + 30);
 	}
 }
