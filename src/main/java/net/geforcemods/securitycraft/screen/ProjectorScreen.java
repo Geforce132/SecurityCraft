@@ -32,7 +32,6 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 	private NamedSlider projectionHeightSlider;
 	private NamedSlider projectionRangeSlider;
 	private NamedSlider projectionOffsetSlider;
-	private TogglePictureButton toggleButton;
 	private int sliderWidth = 120;
 
 	public ProjectorScreen(ProjectorMenu menu, Inventory inv, Component text) {
@@ -45,18 +44,20 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 	@Override
 	public void init() {
 		super.init();
+
 		int id = 0;
 		int left = leftPos + ((imageWidth - sliderWidth) / 2);
+		TogglePictureButton toggleButton;
 
-		projectionWidthSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.width", be.getProjectionWidth()), blockName, id, left, topPos + 47, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", ""), "", ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionWidth(), false, true, null, this::sliderReleased));
+		projectionWidthSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.width", be.getProjectionWidth()), blockName, left, topPos + 47, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", ""), "", ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionWidth(), false, true, null, this::sliderReleased));
 		projectionWidthSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionWidthSlider, Utils.localize("gui.securitycraft:projector.width.description"));
 
-		projectionHeightSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.height", be.getProjectionHeight()), blockName, id, left, topPos + 68, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.height", ""), "", ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionHeight(), false, true, null, this::sliderReleased));
+		projectionHeightSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.height", be.getProjectionHeight()), blockName, left, topPos + 68, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.height", ""), "", ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionHeight(), false, true, null, this::sliderReleased));
 		projectionHeightSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionHeightSlider, Utils.localize("gui.securitycraft:projector.height.description"));
 
-		projectionRangeSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.range", be.getProjectionRange()), blockName, id, left, topPos + 89, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", ""), "", ProjectorBlockEntity.MIN_RANGE, ProjectorBlockEntity.MAX_RANGE, be.getProjectionRange(), false, true, slider -> {
+		projectionRangeSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.range", be.getProjectionRange()), blockName, left, topPos + 89, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", ""), "", ProjectorBlockEntity.MIN_RANGE, ProjectorBlockEntity.MAX_RANGE, be.getProjectionRange(), false, true, slider -> {
 			//show a different number so it makes sense within the world
 			if (be.isHorizontal())
 				slider.setMessage(new TextComponent("").append(slider.dispString).append(Integer.toString((int) Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
@@ -64,11 +65,11 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 		projectionRangeSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionRangeSlider, Utils.localize("gui.securitycraft:projector.range.description"));
 
-		projectionOffsetSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", be.getProjectionOffset()), blockName, id, left, topPos + 110, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", ProjectorBlockEntity.MIN_OFFSET, ProjectorBlockEntity.MAX_OFFSET, be.getProjectionOffset(), false, true, null, this::sliderReleased));
+		projectionOffsetSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", be.getProjectionOffset()), blockName, left, topPos + 110, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", ProjectorBlockEntity.MIN_OFFSET, ProjectorBlockEntity.MAX_OFFSET, be.getProjectionOffset(), false, true, null, this::sliderReleased));
 		projectionOffsetSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionOffsetSlider, Utils.localize("gui.securitycraft:projector.offset.description"));
 		//@formatter:off
-		toggleButton = addRenderableWidget(new TogglePictureButton(id, left, topPos + 26, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, b -> {
+		toggleButton = addRenderableWidget(new TogglePictureButton(left, topPos + 26, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, b -> {
 			//@formatter:on
 			be.setHorizontal(!be.isHorizontal());
 			projectionRangeSlider.updateSlider();
@@ -133,19 +134,19 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 		int data = 0;
 		DataType dataType = DataType.INVALID;
 
-		if (slider.id == projectionWidthSlider.id) {
+		if (slider == projectionWidthSlider) {
 			be.setProjectionWidth(data = slider.getValueInt());
 			dataType = DataType.WIDTH;
 		}
-		else if (slider.id == projectionHeightSlider.id) {
+		else if (slider == projectionHeightSlider) {
 			be.setProjectionHeight(data = slider.getValueInt());
 			dataType = DataType.HEIGHT;
 		}
-		else if (slider.id == projectionRangeSlider.id) {
+		else if (slider == projectionRangeSlider) {
 			be.setProjectionRange(data = slider.getValueInt());
 			dataType = DataType.RANGE;
 		}
-		else if (slider.id == projectionOffsetSlider.id) {
+		else if (slider == projectionOffsetSlider) {
 			be.setProjectionOffset(data = slider.getValueInt());
 			dataType = DataType.OFFSET;
 		}

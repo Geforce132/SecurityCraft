@@ -16,7 +16,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -27,6 +26,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.client.gui.ScrollPanel;
+import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -44,7 +44,7 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 	protected void init() {
 		super.init();
 
-		addRenderableWidget(new IdButton(0, leftPos + 4, topPos + 4, 8, 8, "x", b -> {
+		addRenderableWidget(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, new TextComponent("x"), b -> {
 			be.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(be.getBlockPos()));
 		})).active = be.getOwner().isOwner(minecraft.player);

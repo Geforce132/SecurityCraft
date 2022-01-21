@@ -7,9 +7,9 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.network.server.SetPassword;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -19,6 +19,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class SetPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -27,7 +28,6 @@ public class SetPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
 	private TranslatableComponent setup;
 	private MutableComponent combined;
 	private EditBox keycodeTextbox;
-	private IdButton saveAndContinueButton;
 
 	public SetPasswordScreen(GenericTEMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
@@ -41,9 +41,10 @@ public class SetPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
 	public void init() {
 		super.init();
 
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		addRenderableWidget(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::actionPerformed));
+		Button saveAndContinueButton = addRenderableWidget(new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::saveAndContinueButtonClicked));
+
 		saveAndContinueButton.active = false;
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
 		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 47, 77, 12, TextComponent.EMPTY));
 		keycodeTextbox.setMaxLength(20);
@@ -85,7 +86,7 @@ public class SetPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
 		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
-	protected void actionPerformed(IdButton button) {
+	private void saveAndContinueButtonClicked(Button button) {
 		((IPasswordProtected) be).setPassword(keycodeTextbox.getValue());
 		SecurityCraft.channel.sendToServer(new SetPassword(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ(), keycodeTextbox.getValue()));
 		Minecraft.getInstance().player.closeContainer();
