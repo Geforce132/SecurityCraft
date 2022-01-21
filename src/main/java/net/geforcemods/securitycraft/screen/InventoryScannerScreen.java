@@ -89,6 +89,6 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
-		blit(pose, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, imageWidth, imageHeight + 30);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight + 30);
 	}
 }
