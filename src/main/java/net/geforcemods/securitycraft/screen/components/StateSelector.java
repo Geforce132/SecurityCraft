@@ -198,23 +198,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 				defaultValueIndex++;
 			}
 
-			buttons.add(addRenderableWidget(new BlockStatePropertyButton<>(xStart + 91, yStart + buttonY + 5, 100, 20, defaultValueIndex, property, idButton -> {
-				BlockStatePropertyButton<?> button = (BlockStatePropertyButton<?>) idButton;
-				Property<?> buttonProperty = button.getProperty();
-
-				if (property == STANDING_OR_WALL_TYPE_PROPERTY) {
-					state = standingOrWallType.getNewState((StandingAndWallBlockItem) blockItem);
-					standingOrWallType = standingOrWallType == StandingOrWallType.STANDING ? StandingOrWallType.WALL : StandingOrWallType.STANDING;
-					updateButtons(true, false);
-					updateBlockEntityInfo(true);
-				}
-				else {
-					state = state.setValue(buttonProperty.getClass().cast(buttonProperty), buttonProperty.getValueClass().cast(button.getValue()));
-					updateBlockEntityInfo(false);
-				}
-
-				menu.onStateChange(state);
-			})));
+			buttons.add(addRenderableWidget(new BlockStatePropertyButton<>(xStart + 91, yStart + buttonY + 5, 100, 20, defaultValueIndex, property)));
 			buttonY += 23;
 			i++;
 		}
@@ -360,5 +344,57 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 	public List<Rect2i> getGuiExtraAreas() {
 		return extraAreas;
+	}
+
+	public class BlockStatePropertyButton<T extends Comparable<T>> extends ToggleComponentButton {
+		private final Property<T> property;
+		private T value;
+
+		public BlockStatePropertyButton(int xPos, int yPos, int width, int height, int initialValue, Property<T> property) {
+			super(-1, xPos, yPos, width, height, null, initialValue, property.getPossibleValues().size(), b -> {});
+			this.property = property;
+			onValueChange();
+		}
+
+		@Override
+		public void onValueChange() {
+			if (property != null) {
+				Collection<T> values = property.getPossibleValues();
+				int i = 0;
+
+				for (T t : values) {
+					if (i++ == getCurrentIndex()) {
+						value = property.value(t).pValue();
+						break;
+					}
+				}
+
+				setMessage(new TextComponent(property.getName(value)));
+			}
+		}
+
+		@Override
+		public void onPress() {
+			if (property == STANDING_OR_WALL_TYPE_PROPERTY) {
+				state = standingOrWallType.getNewState((StandingAndWallBlockItem) blockItem);
+				standingOrWallType = standingOrWallType == StandingOrWallType.STANDING ? StandingOrWallType.WALL : StandingOrWallType.STANDING;
+				updateButtons(true, false);
+				updateBlockEntityInfo(true);
+			}
+			else {
+				state = state.setValue(property, value);
+				updateBlockEntityInfo(false);
+			}
+
+			menu.onStateChange(state);
+		}
+
+		public Property<T> getProperty() {
+			return property;
+		}
+
+		public T getValue() {
+			return value;
+		}
 	}
 }
