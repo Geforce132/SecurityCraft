@@ -303,7 +303,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 			}
 			else {
 				state = Blocks.AIR.defaultBlockState();
-				this.blockItem = Items.AIR;
+				blockItem = Items.AIR;
 			}
 
 			updateButtons(true, true);
