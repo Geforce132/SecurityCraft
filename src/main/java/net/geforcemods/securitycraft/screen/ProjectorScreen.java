@@ -87,7 +87,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 
 		slotHoverChecker = new TextHoverChecker(topPos + 22, topPos + 39, leftPos + 78, leftPos + 95, SLOT_TOOLTIP);
 
-		stateSelector = addRenderableWidget(new StateSelector(menu, title, leftPos - 190, topPos + 7, 36, 197, 0, -1.4F, 4.9F));
+		stateSelector = addRenderableWidget(new StateSelector(menu, title, leftPos - 190, topPos + 7, 0, 197, 0, -2.85F, -0.45F));
 		stateSelector.init(minecraft, width, height);
 	}
 

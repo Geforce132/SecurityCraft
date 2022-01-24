@@ -29,6 +29,14 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 
+		// A custom slot that prevents non-Block items from being inserted into the projector
+		projectedBlockSlot = addSlot(new Slot(new BlockEntityInventoryWrapper<>(be, this), 36, 79, 23) {
+			@Override
+			public boolean mayPlace(ItemStack stack) {
+				return stack.getItem() instanceof BlockItem;
+			}
+		});
+
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; ++x) {
 				addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18 + 69));
@@ -38,14 +46,6 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 		for (int x = 0; x < 9; x++) {
 			addSlot(new Slot(inventory, x, 8 + x * 18, 142 + 69));
 		}
-
-		// A custom slot that prevents non-Block items from being inserted into the projector
-		projectedBlockSlot = addSlot(new Slot(new BlockEntityInventoryWrapper<>(be, this), 36, 79, 23) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return stack.getItem() instanceof BlockItem;
-			}
-		});
 	}
 
 	@Override
@@ -57,12 +57,14 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
-			if (index == 36) {
-				if (!moveItemStackTo(slotStack, 0, 36, false))
+			if (index < 1) {
+				if (!moveItemStackTo(slotStack, 1, 37, true))
 					return ItemStack.EMPTY;
+
+				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
-			else {
-				if (!moveItemStackTo(slotStack, 36, 37, false))
+			else if (index >= 1) {
+				if (!moveItemStackTo(slotStack, 0, 1, false))
 					return ItemStack.EMPTY;
 			}
 
@@ -71,7 +73,7 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 			else
 				slot.setChanged();
 
-			if (slotStack.getCount() == slotStack.getCount())
+			if (slotStack.getCount() == slotStackCopy.getCount())
 				return ItemStack.EMPTY;
 
 			slot.onTake(player, slotStack);
