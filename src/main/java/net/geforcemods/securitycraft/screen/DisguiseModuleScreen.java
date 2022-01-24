@@ -36,7 +36,7 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 		super.init();
 
 		leftPos += 90;
-		stateSelector = addRenderableWidget(new StateSelector(menu, title, leftPos - 190, topPos + 7, 0, 183, 10, -3.0F, -1.0F));
+		stateSelector = addRenderableWidget(new StateSelector(menu, title, leftPos - 190, topPos + 7, 0, 200, 15, -2.725F, -1.2F));
 		stateSelector.init(minecraft, width, height);
 	}
 
