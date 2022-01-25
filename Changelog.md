@@ -2,6 +2,7 @@
 
 - New: Password-protected Smoker and Password-protected Blast Furnace
 - New: Smoker and Blast Furnace mines
+- New: The Disguise Module can now be set to display a specific state of a block (e.g. corner stairs), instead of a fixed one
 - Change: The Password-protected Furnace now has a new look
 - Change: The Cage Trap is now reusable
 - Fix: Cannot access the recipe book for the Password-protected Furnace
@@ -12,6 +13,8 @@
 - Fix: Door item gets removed when trying to place a door outside the build height
 - Fix: Some blocks' settings/inventory doesn't properly save
 - Fix: Fake Water/Lava bucket fill sounds don't play
+- Fix: Disguising blocks using certain blocks with block entity renderers (like signs and banners) doesn't work
+- Fix: It's possible to jump over disguisable blocks that are disguised as fences or walls
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------

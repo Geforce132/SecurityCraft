@@ -1,20 +1,25 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
@@ -34,6 +39,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	public boolean active = false;
 	private boolean horizontal = false;
 	private ItemStack projectedBlock = ItemStack.EMPTY;
+	private BlockState projectedState = Blocks.AIR.defaultBlockState();
 
 	public ProjectorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeProjector, pos, state);
@@ -55,6 +61,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		tag.putBoolean("active", active);
 		tag.putBoolean("horizontal", horizontal);
 		tag.put("storedItem", projectedBlock.save(new CompoundTag()));
+		tag.put("SavedState", NbtUtils.writeBlockState(projectedState));
 		return tag;
 	}
 
@@ -70,6 +77,11 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		active = tag.getBoolean("active");
 		horizontal = tag.getBoolean("horizontal");
 		projectedBlock = ItemStack.of(tag.getCompound("storedItem"));
+
+		if (!tag.contains("SavedState"))
+			resetSavedState();
+		else
+			setProjectedState(NbtUtils.readBlockState(tag.getCompound("SavedState")));
 	}
 
 	public int getProjectionWidth() {
@@ -135,8 +147,8 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		setChanged();
 	}
 
-	public Block getProjectedBlock() {
-		return Block.byItem(projectedBlock.getItem());
+	public BlockState getProjectedState() {
+		return projectedState;
 	}
 
 	@Override
@@ -180,14 +192,17 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	@Override
 	public void clearContent() {
 		projectedBlock = ItemStack.EMPTY;
+		resetSavedState();
 	}
 
 	@Override
 	public ItemStack removeItem(int index, int count) {
 		ItemStack stack = projectedBlock;
 
-		if (count >= 1)
+		if (count >= 1) {
 			projectedBlock = ItemStack.EMPTY;
+			resetSavedState();
+		}
 
 		return stack;
 	}
@@ -225,7 +240,9 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
 		ItemStack stack = projectedBlock;
+
 		projectedBlock = ItemStack.EMPTY;
+		resetSavedState();
 		return stack;
 	}
 
@@ -234,11 +251,68 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		if (!stack.isEmpty() && stack.getCount() > getMaxStackSize())
 			stack = new ItemStack(stack.getItem(), getMaxStackSize());
 
+		ItemStack old = projectedBlock;
+
 		projectedBlock = stack;
+
+		if (old.getItem() != projectedBlock.getItem())
+			resetSavedState();
 	}
 
 	@Override
 	public boolean enableHack() {
 		return true;
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+
+		if (level.isClientSide)
+			ClientHandler.PROJECTOR_RENDER_DELEGATE.putDelegateFor(this, projectedState);
+	}
+
+	@Override
+	public void setRemoved() {
+		super.setRemoved();
+
+		if (level.isClientSide)
+			ClientHandler.PROJECTOR_RENDER_DELEGATE.removeDelegateOf(this);
+	}
+
+	public void setProjectedState(BlockState projectedState) {
+		if (level != null && level.isClientSide) {
+			if (this.projectedState.getBlock() != projectedState.getBlock())
+				ClientHandler.PROJECTOR_RENDER_DELEGATE.removeDelegateOf(this);
+
+			ClientHandler.PROJECTOR_RENDER_DELEGATE.putDelegateFor(this, projectedState);
+		}
+
+		this.projectedState = projectedState;
+		setChanged();
+	}
+
+	public void resetSavedState() {
+		if (projectedBlock.getItem() instanceof BlockItem blockItem)
+			setProjectedState(blockItem.getBlock().defaultBlockState());
+		else {
+			projectedState = Blocks.AIR.defaultBlockState();
+
+			if (level != null && level.isClientSide)
+				ClientHandler.PROJECTOR_RENDER_DELEGATE.removeDelegateOf(this);
+
+			setChanged();
+		}
+	}
+
+	public StandingOrWallType getStandingOrWallType() {
+		if (projectedState != null && projectedBlock != null && projectedBlock.getItem() instanceof StandingAndWallBlockItem sawbi) {
+			if (projectedState.getBlock() == sawbi.getBlock())
+				return StandingOrWallType.STANDING;
+			else if (projectedState.getBlock() == sawbi.wallBlock)
+				return StandingOrWallType.WALL;
+		}
+
+		return StandingOrWallType.NONE;
 	}
 }

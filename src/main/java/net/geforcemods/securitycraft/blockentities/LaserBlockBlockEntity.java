@@ -2,22 +2,22 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.ArrayList;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
-import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	private BooleanOption enabledOption = new BooleanOption("enabled", true) {
@@ -56,13 +56,22 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			ItemStack module = (ItemStack) parameters[0];
 
 			insertModule(module);
+
+			if (((ModuleItem) module.getItem()).getModuleType() == ModuleType.DISGUISE)
+				onInsertDisguiseModule(module);
+
 			excludedBEs.add(this);
 			createLinkedBlockAction(LinkedAction.MODULE_INSERTED, parameters, excludedBEs);
 		}
 		else if (action == LinkedAction.MODULE_REMOVED) {
 			ModuleType module = (ModuleType) parameters[1];
+			ItemStack moduleStack = getModule(module);
 
 			removeModule(module);
+
+			if (module == ModuleType.DISGUISE)
+				onRemoveDisguiseModule(moduleStack);
+
 			excludedBEs.add(this);
 			createLinkedBlockAction(LinkedAction.MODULE_REMOVED, parameters, excludedBEs);
 		}
@@ -72,16 +81,46 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		super.onModuleInserted(stack, module);
 
-		if (!level.isClientSide && module == ModuleType.DISGUISE)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack));
+		if (module == ModuleType.DISGUISE)
+			onInsertDisguiseModule(stack);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		super.onModuleRemoved(stack, module);
 
-		if (!level.isClientSide && module == ModuleType.DISGUISE)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack));
+		if (module == ModuleType.DISGUISE)
+			onRemoveDisguiseModule(stack);
+	}
+
+	private void onInsertDisguiseModule(ItemStack stack) {
+		if (!level.isClientSide)
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+		else
+			ClientHandler.putDisguisedBeRenderer(this, stack);
+	}
+
+	private void onRemoveDisguiseModule(ItemStack stack) {
+		if (!level.isClientSide)
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+		else
+			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+
+		if (level.isClientSide)
+			ClientHandler.putDisguisedBeRenderer(this, getModule(ModuleType.DISGUISE));
+	}
+
+	@Override
+	public void setRemoved() {
+		super.setRemoved();
+
+		if (level.isClientSide)
+			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
 	}
 
 	@Override
@@ -100,7 +139,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 	@Override
 	public IModelData getModelData() {
-		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_BLOCK_RL, getBlockState().getBlock().getRegistryName()).build();
+		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_STATE_RL, Blocks.AIR.defaultBlockState()).build();
 	}
 
 	public boolean isEnabled() {

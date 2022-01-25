@@ -1843,7 +1843,7 @@ public class SCContent {
 	}
 
 	private static final Block.Properties propDisguisable(Material mat) {
-		return prop(mat).noOcclusion().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
+		return prop(mat).noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
 	}
 
 	private static final Block.Properties glassProp() {
