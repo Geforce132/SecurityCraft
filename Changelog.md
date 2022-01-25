@@ -6,6 +6,7 @@
 - Fix: Password-protected Furnace is not shown as a recipe catalyst for furnace recipes in JEI
 - Fix: Light level of Password-protected Furnace is too high compared to the vanilla furnace
 - Fix: Changing the owner of the Inventory Scanner or doors does not change the owner of the other block/half
+- Fix: Reinforced Pistons and Reinforced Sticky Pistons cannot retract
 - Potential Fix: Entities sometimes disappear when dismounting a camera
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------

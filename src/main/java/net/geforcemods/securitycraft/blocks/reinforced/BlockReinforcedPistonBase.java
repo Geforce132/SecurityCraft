@@ -79,12 +79,13 @@ public class BlockReinforcedPistonBase extends BlockPistonBase implements IReinf
 		EnumFacing facing = state.getValue(FACING);
 		boolean hasSignal = shouldBeExtended(world, pos, facing);
 
-		if (hasSignal && !state.getValue(EXTENDED))
+		if (hasSignal && !state.getValue(EXTENDED)) {
 			if ((new BlockReinforcedPistonStructureHelper(world, pos, facing, true)).canMove()) {
 				world.addBlockEvent(pos, this, 0, facing.getIndex());
 			}
-			else if (!hasSignal && state.getValue(EXTENDED))
-				world.addBlockEvent(pos, this, 1, facing.getIndex());
+		}
+		else if (!hasSignal && state.getValue(EXTENDED))
+			world.addBlockEvent(pos, this, 1, facing.getIndex());
 	}
 
 	private boolean shouldBeExtended(World world, BlockPos pos, EnumFacing facing) { // copied because shouldBeExtended() in PistonBlock is private
