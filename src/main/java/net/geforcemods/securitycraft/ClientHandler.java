@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
+import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.ProjectorRenderer;
@@ -58,6 +59,7 @@ import net.geforcemods.securitycraft.screen.SetPasswordScreen;
 import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
 import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
+import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
@@ -73,6 +75,7 @@ import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -102,6 +105,8 @@ public class ClientHandler {
 	public static final ModelLayerLocation SENTRY_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "sentry"), "main");
 	public static final ModelLayerLocation SECURITY_CAMERA_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "security_camera"), "main");
 	public static final ModelLayerLocation SONIC_SECURITY_SYSTEM_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "sonic_security_system"), "main");
+	public static final BlockEntityRenderDelegate DISGUISED_BLOCK_RENDER_DELEGATE = new BlockEntityRenderDelegate();
+	public static final BlockEntityRenderDelegate PROJECTOR_RENDER_DELEGATE = new BlockEntityRenderDelegate();
 	public static IIngameOverlay cameraOverlay;
 	public static IIngameOverlay hotbarBindOverlay;
 
@@ -206,7 +211,7 @@ public class ClientHandler {
 	private static void registerDisguisedModel(ModelBakeEvent event, ResourceLocation rl, String stateString) {
 		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
 
-		event.getModelRegistry().put(mrl, new DisguisableDynamicBakedModel(rl, event.getModelRegistry().get(mrl)));
+		event.getModelRegistry().put(mrl, new DisguisableDynamicBakedModel(event.getModelRegistry().get(mrl)));
 	}
 
 	private static void registerBlockMineModel(ModelBakeEvent event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
@@ -339,15 +344,28 @@ public class ClientHandler {
 		event.registerEntityRenderer(SCContent.eTypeSecurityCamera, NoopRenderer::new);
 		event.registerEntityRenderer(SCContent.eTypeSentry, SentryRenderer::new);
 		event.registerEntityRenderer(SCContent.eTypeBullet, BulletRenderer::new);
+		//normal renderers
 		event.registerBlockEntityRenderer(SCContent.beTypeBlockPocketManager, BlockPocketManagerRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeKeypadChest, KeypadChestRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeProjector, ProjectorRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeReinforcedPiston, ReinforcedPistonHeadRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeRetinalScanner, RetinalScannerRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeSecurityCamera, SecurityCameraRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeSecretSign, SecretSignRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeTrophySystem, TrophySystemRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeProjector, ProjectorRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeReinforcedPiston, ReinforcedPistonHeadRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeSonicSecuritySystem, SonicSecuritySystemRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeTrophySystem, TrophySystemRenderer::new);
+		//disguisable block entity renderers
+		event.registerBlockEntityRenderer(SCContent.beTypeCageTrap, DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeInventoryScanner, DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeKeycardReader, DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeKeypad, DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeKeypadBlastFurnace, DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeKeypadFurnace, DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeKeypadSmoker, DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeLaserBlock, DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeProtecto, DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeRetinalScanner, DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.beTypeUsernameLogger, DisguisableBlockEntityRenderer::new);
 	}
 
 	@SubscribeEvent
@@ -532,5 +550,9 @@ public class ClientHandler {
 
 	public static boolean isPlayerMountedOnCamera() {
 		return Minecraft.getInstance().cameraEntity instanceof SecurityCamera;
+	}
+
+	public static void putDisguisedBeRenderer(BlockEntity disguisableBlockEntity, ItemStack stack) {
+		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, NbtUtils.readBlockState(stack.getOrCreateTag().getCompound("SavedState")));
 	}
 }

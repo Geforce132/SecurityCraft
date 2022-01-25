@@ -44,7 +44,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '2021.12.19-1.18.1'
+    mappings channel: 'parchment', version: '2022.01.23-1.18.1'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
 	runs {
@@ -103,7 +103,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.19'
+    minecraft 'net.minecraftforge:forge:1.18.1-39.0.59'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
 	implementation fg.deobf("mezz.jei:jei-1.18.1:9.2.1.69")

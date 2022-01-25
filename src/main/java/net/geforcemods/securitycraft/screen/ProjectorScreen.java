@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
 import java.util.Arrays;
+import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -11,17 +12,20 @@ import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.network.server.SyncProjector.DataType;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
+import net.geforcemods.securitycraft.screen.components.StateSelector;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
+import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
+public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> implements IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
 	private static final TranslatableComponent SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block");
 	private ProjectorBlockEntity be;
@@ -32,18 +36,20 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 	private NamedSlider projectionHeightSlider;
 	private NamedSlider projectionRangeSlider;
 	private NamedSlider projectionOffsetSlider;
+	private StateSelector stateSelector;
 	private int sliderWidth = 120;
 
 	public ProjectorScreen(ProjectorMenu menu, Inventory inv, Component text) {
 		super(menu, inv, text);
 		this.be = menu.be;
 		blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
-		imageHeight = 225;
+		imageHeight = 235;
 	}
 
 	@Override
 	public void init() {
 		super.init();
+		leftPos += 90;
 
 		int id = 0;
 		int left = leftPos + ((imageWidth - sliderWidth) / 2);
@@ -62,7 +68,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 			if (be.isHorizontal())
 				slider.setMessage(new TextComponent("").append(slider.dispString).append(Integer.toString((int) Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
 		}, this::sliderReleased));
-		projectionRangeSlider.setFGColor(14737632);
+		projectionRangeSlider.setFGColor(0xE0E0E0);
 		hoverCheckers[id++] = new TextHoverChecker(projectionRangeSlider, Utils.localize("gui.securitycraft:projector.range.description"));
 
 		projectionOffsetSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", be.getProjectionOffset()), blockName, left, topPos + 110, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", ProjectorBlockEntity.MIN_OFFSET, ProjectorBlockEntity.MAX_OFFSET, be.getProjectionOffset(), false, true, null, this::sliderReleased));
@@ -80,6 +86,9 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 		projectionRangeSlider.updateSlider();
 
 		slotHoverChecker = new TextHoverChecker(topPos + 22, topPos + 39, leftPos + 78, leftPos + 95, SLOT_TOOLTIP);
+
+		stateSelector = addRenderableWidget(new StateSelector(menu, title, leftPos - 190, topPos + 7, 0, 197, 0, -2.85F, -0.45F));
+		stateSelector.init(minecraft, width, height);
 	}
 
 	@Override
@@ -99,7 +108,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 
 	@Override
 	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
+		font.draw(pose, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 0x404040);
 	}
 
 	@Override
@@ -125,6 +134,32 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> {
 			projectionOffsetSlider.mouseReleased(mouseX, mouseY, button);
 
 		return super.mouseReleased(mouseX, mouseY, button);
+	}
+
+	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+		if (stateSelector != null && stateSelector.mouseDragged(mouseX, mouseY, button, dragX, dragY))
+			return true;
+
+		return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+	}
+
+	@Override
+	public List<Rect2i> getExtraAreas() {
+		if (stateSelector != null)
+			return stateSelector.getGuiExtraAreas();
+		else
+			return List.of();
+	}
+
+	@Override
+	public void onClose() {
+		super.onClose();
+
+		if (stateSelector.getState() != null) {
+			be.setProjectedState(stateSelector.getState());
+			SecurityCraft.channel.sendToServer(new SyncProjector(be.getBlockPos(), stateSelector.getState()));
+		}
 	}
 
 	public void sliderReleased(NamedSlider slider) {
