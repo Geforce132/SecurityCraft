@@ -364,7 +364,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 				for (T t : values) {
 					if (i++ == getCurrentIndex()) {
-						value = property.value(t).pValue();
+						value = property.value(t).value();
 						break;
 					}
 				}
