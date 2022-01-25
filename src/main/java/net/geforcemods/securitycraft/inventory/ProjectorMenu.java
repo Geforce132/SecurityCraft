@@ -35,6 +35,11 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 			public boolean mayPlace(ItemStack stack) {
 				return stack.getItem() instanceof BlockItem;
 			}
+
+			@Override
+			public int getMaxStackSize() {
+				return 1;
+			}
 		});
 
 		for (int y = 0; y < 3; y++) {
