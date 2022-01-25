@@ -15,6 +15,7 @@
 - Fix: Fake Water/Lava bucket fill sounds don't play
 - Fix: Disguising blocks using certain blocks with block entity renderers (like signs and banners) doesn't work
 - Fix: It's possible to jump over disguisable blocks that are disguised as fences or walls
+- Fix: Attempting to put more than one item into the Projector's slot swallows extra items
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2-beta1 of SecurityCraft--------------------------
