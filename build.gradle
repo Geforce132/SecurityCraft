@@ -54,7 +54,7 @@ repositories {
 	}
 	maven {
 		name = "CurseMaven"
-		url = 'https://cursemaven.com/'
+		url = 'https://cfa2.cursemaven.com/'
 	}
 	maven {
 		name = "Sponge Maven"
