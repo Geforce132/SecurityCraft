@@ -21,16 +21,16 @@ import net.minecraft.world.World;
  */
 @Mixin(value = PlayerList.class, priority = 1100)
 public class PlayerListMixin {
-	@Inject(method = "sendToAllNearExcept", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getPosZ()D"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
+	@Inject(method = "broadcast", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getZ()D"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
 	private void broadcastToCameras(PlayerEntity except, double x, double y, double z, double radius, RegistryKey<World> dimension, IPacket<?> packet, CallbackInfo callback, int iteration, ServerPlayerEntity player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			SecurityCameraEntity camera = (SecurityCameraEntity) player.getSpectatingEntity();
-			double dX = x - camera.getPosX();
-			double dY = y - camera.getPosY();
-			double dZ = z - camera.getPosZ();
+			SecurityCameraEntity camera = (SecurityCameraEntity) player.getCamera();
+			double dX = x - camera.getX();
+			double dY = y - camera.getY();
+			double dZ = z - camera.getZ();
 
 			if (dX * dX + dY * dY + dZ * dZ < radius * radius)
-				player.connection.sendPacket(packet);
+				player.connection.send(packet);
 
 			callback.cancel();
 		}

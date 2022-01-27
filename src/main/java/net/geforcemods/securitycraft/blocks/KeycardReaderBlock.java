@@ -47,20 +47,20 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	public KeycardReaderBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (!world.isRemote) {
-			KeycardReaderTileEntity te = (KeycardReaderTileEntity) world.getTileEntity(pos);
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!world.isClientSide) {
+			KeycardReaderTileEntity te = (KeycardReaderTileEntity) world.getBlockEntity(pos);
 
 			if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}
 			else {
-				ItemStack stack = player.getHeldItem(hand);
+				ItemStack stack = player.getItemInHand(hand);
 				Item item = stack.getItem();
 				boolean isCodebreaker = item == SCContent.CODEBREAKER.get();
 
@@ -74,7 +74,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 				{
 					if (isCodebreaker) {
 						if (!player.isCreative())
-							stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
+							stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
 						if (new Random().nextInt(3) == 1)
 							activate(world, pos, te.getSignalLength());
@@ -83,7 +83,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 						IFormattableTextComponent feedback = insertCard(world, pos, te, stack, player);
 
 						if (feedback != null)
-							PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getTranslationKey()), feedback, TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getDescriptionId()), feedback, TextFormatting.RED);
 					}
 				}
 			}
@@ -109,7 +109,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 		if (!te.getAcceptedLevels()[level]) //both are 0 indexed, so it's ok
 			return new TranslationTextComponent("messages.securitycraft:keycardReader.wrongLevel", level + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
 
-		boolean powered = world.getBlockState(pos).get(POWERED);
+		boolean powered = world.getBlockState(pos).getValue(POWERED);
 
 		if (tag.getBoolean("limited")) {
 			int uses = tag.getInt("uses");
@@ -129,15 +129,15 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	}
 
 	public void activate(World world, BlockPos pos, int signalLength) {
-		world.setBlockState(pos, world.getBlockState(pos).with(POWERED, true));
+		world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(POWERED, true));
 		BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYCARD_READER.get());
-		world.getPendingBlockTicks().scheduleTick(pos, SCContent.KEYCARD_READER.get(), signalLength);
+		world.getBlockTicks().scheduleTick(pos, SCContent.KEYCARD_READER.get(), signalLength);
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (!world.isRemote) {
-			world.setBlockState(pos, state.with(POWERED, false));
+		if (!world.isClientSide) {
+			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.KEYCARD_READER.get());
 		}
 	}
@@ -145,7 +145,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-		if ((state.get(POWERED))) {
+		if ((state.getValue(POWERED))) {
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
@@ -164,34 +164,34 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		if ((blockState.get(POWERED)))
+	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		if ((blockState.getValue(POWERED)))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getStrongPower(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return state.get(POWERED) ? 15 : 0;
+	public int getDirectSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+		return state.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public boolean canProvidePower(BlockState state) {
+	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
+		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
-		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite()).with(POWERED, false);
+		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()).setValue(POWERED, false);
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWERED);
 	}
 
@@ -202,11 +202,11 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.toRotation(state.get(FACING)));
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 }

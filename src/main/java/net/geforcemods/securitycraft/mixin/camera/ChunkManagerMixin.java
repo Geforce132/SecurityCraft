@@ -25,34 +25,34 @@ public abstract class ChunkManagerMixin {
 	private int viewDistance;
 
 	@Shadow
-	protected abstract void setChunkLoadedAtClient(ServerPlayerEntity player, ChunkPos chunkPos, IPacket<?>[] packetCache, boolean wasLoaded, boolean load);
+	protected abstract void updateChunkTracking(ServerPlayerEntity player, ChunkPos chunkPos, IPacket<?>[] packetCache, boolean wasLoaded, boolean load);
 
 	/**
 	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance
 	 * checking method
 	 */
-	@Redirect(method = "func_219215_b(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getManagedSectionPos()Lnet/minecraft/util/math/SectionPos;"))
+	@Redirect(method = "checkerboardDistance(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getLastSectionPos()Lnet/minecraft/util/math/SectionPos;"))
 	private static SectionPos getCameraSectionPos(ServerPlayerEntity player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
-			return SectionPos.from(player.getSpectatingEntity());
+			return SectionPos.of(player.getCamera());
 
-		return player.getManagedSectionPos();
+		return player.getLastSectionPos();
 	}
 
 	/**
 	 * Tracks chunks loaded by cameras to make sure they're being sent to the client
 	 */
-	@Inject(method = "updatePlayerPosition", at = @At(value = "TAIL"))
+	@Inject(method = "move", at = @At(value = "TAIL"))
 	private void trackCameraLoadedChunks(ServerPlayerEntity player, CallbackInfo callback) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			SectionPos pos = SectionPos.from(player.getSpectatingEntity());
-			SecurityCameraEntity camera = ((SecurityCameraEntity) player.getSpectatingEntity());
+			SectionPos pos = SectionPos.of(player.getCamera());
+			SecurityCameraEntity camera = ((SecurityCameraEntity) player.getCamera());
 
-			for (int i = pos.getSectionX() - viewDistance; i <= pos.getSectionX() + viewDistance; ++i) {
-				for (int j = pos.getSectionZ() - viewDistance; j <= pos.getSectionZ() + viewDistance; ++j) {
+			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
+				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
 					ChunkPos chunkPos = new ChunkPos(i, j);
 
-					setChunkLoadedAtClient(player, chunkPos, new IPacket[2], camera.hasLoadedChunks(), true);
+					updateChunkTracking(player, chunkPos, new IPacket[2], camera.hasLoadedChunks(), true);
 				}
 			}
 

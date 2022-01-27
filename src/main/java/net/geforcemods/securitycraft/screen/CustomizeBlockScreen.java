@@ -58,7 +58,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	public CustomizeBlockScreen(CustomizeBlockContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 		moduleInv = container.moduleInv;
-		blockName = container.moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey().substring(5);
+		blockName = container.moduleInv.getTileEntity().getBlockState().getBlock().getDescriptionId().substring(5);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
 			int column = i % numberOfColumns;
 
-			addButton(descriptionButtons[i] = new PictureButton(guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
+			addButton(descriptionButtons[i] = new PictureButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 
@@ -86,14 +86,14 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 					TranslationTextComponent translatedBlockName = Utils.localize(blockName);
 
 					if (option instanceof DoubleOption)
-						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, null);
+						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, null);
 					else if (option instanceof IntOption)
-						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, null);
+						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, null);
 
 					optionButtons[i].setFGColor(14737632);
 				}
 				else {
-					optionButtons[i] = new ExtendedButton(guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::optionButtonClicked);
+					optionButtons[i] = new ExtendedButton(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::optionButtonClicked);
 					optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
 				}
 
@@ -124,32 +124,32 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderTooltip(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
+		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
+			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
 			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
 				if (i < moduleInv.getMaxNumberOfModules())
-					renderTooltip(matrix, minecraft.fontRenderer.trimStringToWidth(getModuleDescription(i), 150), mouseX, mouseY);
+					renderTooltip(matrix, minecraft.font.split(getModuleDescription(i), 150), mouseX, mouseY);
 				else
-					renderTooltip(matrix, minecraft.fontRenderer.trimStringToWidth(getOptionDescription(i), 150), mouseX, mouseY);
+					renderTooltip(matrix, minecraft.font.split(getOptionDescription(i), 150), mouseX, mouseY);
 		}
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
-		TranslationTextComponent s = Utils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
+	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
+		TranslationTextComponent s = Utils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getDescriptionId());
 
-		font.drawText(matrix, s, xSize / 2 - font.getStringPropertyWidth(s) / 2, 6, 4210752);
-		font.drawText(matrix, Utils.INVENTORY_TEXT, 8, ySize - 96 + 2, 4210752);
+		font.draw(matrix, s, imageWidth / 2 - font.width(s) / 2, 6, 4210752);
+		font.draw(matrix, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURES[moduleInv.getMaxNumberOfModules()]);
-		blit(matrix, guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURES[moduleInv.getMaxNumberOfModules()]);
+		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	protected void optionButtonClicked(Button button) {
@@ -162,20 +162,20 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			tempOption.toggle();
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
-			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getTileEntity().getPos().getX(), moduleInv.getTileEntity().getPos().getY(), moduleInv.getTileEntity().getPos().getZ(), i));
+			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getTileEntity().getBlockPos().getX(), moduleInv.getTileEntity().getBlockPos().getY(), moduleInv.getTileEntity().getBlockPos().getZ(), i));
 			return;
 		}
 	}
 
 	private ITextComponent getModuleDescription(int buttonID) {
-		String moduleDescription = "module" + blockName + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description";
+		String moduleDescription = "module" + blockName + "." + descriptionButtons[buttonID].getItemStack().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description";
 
 		//@formatter:off
-		return Utils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey())
-				.appendSibling(new StringTextComponent(":"))
-				.mergeStyle(TextFormatting.RESET)
-				.appendSibling(new StringTextComponent("\n\n"))
-				.appendSibling(Utils.localize(moduleDescription));
+		return Utils.localize(descriptionButtons[buttonID].getItemStack().getDescriptionId())
+				.append(new StringTextComponent(":"))
+				.withStyle(TextFormatting.RESET)
+				.append(new StringTextComponent("\n\n"))
+				.append(Utils.localize(moduleDescription));
 		//@formatter:on
 	}
 

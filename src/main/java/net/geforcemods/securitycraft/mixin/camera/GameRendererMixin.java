@@ -13,10 +13,10 @@ import net.minecraft.client.renderer.GameRenderer;
  */
 @Mixin(value = GameRenderer.class, priority = 1100)
 public class GameRendererMixin {
-	@ModifyConstant(method = "updateFovModifierHand", constant = @Constant(floatValue = 1.0F))
+	@ModifyConstant(method = "tickFov", constant = @Constant(floatValue = 1.0F))
 	private float modifyInitialFValue(float f) {
-		if (Minecraft.getInstance().renderViewEntity instanceof SecurityCameraEntity)
-			return ((SecurityCameraEntity) Minecraft.getInstance().renderViewEntity).getZoomAmount();
+		if (Minecraft.getInstance().cameraEntity instanceof SecurityCameraEntity)
+			return ((SecurityCameraEntity) Minecraft.getInstance().cameraEntity).getZoomAmount();
 		else
 			return f;
 	}

@@ -27,7 +27,7 @@ public class RefreshDisguisableModel {
 	public static void encode(RefreshDisguisableModel message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeBoolean(message.insert);
-		buf.writeItemStack(message.stack);
+		buf.writeItem(message.stack);
 	}
 
 	public static RefreshDisguisableModel decode(PacketBuffer buf) {
@@ -35,13 +35,13 @@ public class RefreshDisguisableModel {
 
 		message.pos = buf.readBlockPos();
 		message.insert = buf.readBoolean();
-		message.stack = buf.readItemStack();
+		message.stack = buf.readItem();
 		return message;
 	}
 
 	public static void onMessage(RefreshDisguisableModel message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			IModuleInventory te = (IModuleInventory) Minecraft.getInstance().world.getTileEntity(message.pos);
+			IModuleInventory te = (IModuleInventory) Minecraft.getInstance().level.getBlockEntity(message.pos);
 
 			if (te != null) {
 				if (message.insert)

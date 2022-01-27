@@ -50,8 +50,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
 	public static final ResourceLocation SHOW_PASSWORDS = new ResourceLocation(SecurityCraft.MODID, "showpasswords");
 	public static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
-	private static final Style MOD_NAME_STYLE = Style.EMPTY.setFormatting(TextFormatting.BLUE).setItalic(true);
-	private static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormatting(TextFormatting.WHITE);
+	private static final Style MOD_NAME_STYLE = Style.EMPTY.withColor(TextFormatting.BLUE).withItalic(true);
+	private static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormat(TextFormatting.WHITE);
 
 	static {
 		if (FMLEnvironment.dist == Dist.CLIENT)
@@ -78,7 +78,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 	@Override
 	public void appendHead(List<ITextComponent> head, IDataAccessor data, IPluginConfig config) {
-		head.set(0, new TranslationTextComponent(((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition()).getTranslationKey()).setStyle(ITEM_NAME_STYLE));
+		head.set(0, new TranslationTextComponent(((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition()).getDescriptionId()).setStyle(ITEM_NAME_STYLE));
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				body.add(Utils.localize("waila.securitycraft:equipped"));
 
 			for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
-				body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(module.getTranslationKey())));
+				body.add(new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())));
 			}
 		}
 
@@ -148,20 +148,20 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 					body.add(Utils.localize("waila.securitycraft:equipped"));
 
 					if (!sentry.getAllowlistModule().isEmpty())
-						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())));
+						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())));
 
 					if (!sentry.getDisguiseModule().isEmpty())
-						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
+						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
 
 					if (sentry.hasSpeedModule())
-						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())));
+						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())));
 				}
 			}
 
 			IFormattableTextComponent modeDescription = Utils.localize(mode.getModeKey());
 
 			if (mode != SentryMode.IDLE)
-				modeDescription.appendString("- ").appendSibling(Utils.localize(mode.getTargetKey()));
+				modeDescription.append("- ").append(Utils.localize(mode.getTargetKey()));
 
 			body.add(modeDescription);
 		}

@@ -32,11 +32,11 @@ public class ProtectoTileEntity extends DisguisableTileEntity implements ITickab
 		if (cooldown++ < ticksBetweenAttacks)
 			return;
 
-		if (world.isRaining() && world.canBlockSeeSky(pos)) {
-			List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(ATTACK_RANGE));
+		if (level.isRaining() && level.canSeeSkyFromBelowWater(worldPosition)) {
+			List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(worldPosition).inflate(ATTACK_RANGE));
 
-			if (!getBlockState().get(ProtectoBlock.ACTIVATED)) {
-				world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, true));
+			if (!getBlockState().getValue(ProtectoBlock.ACTIVATED)) {
+				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, true));
 			}
 
 			if (entities.size() != 0) {
@@ -52,8 +52,8 @@ public class ProtectoTileEntity extends DisguisableTileEntity implements ITickab
 							}
 						}
 
-						if (!world.isRemote) {
-							WorldUtils.spawnLightning(world, entity.getPositionVec(), false);
+						if (!level.isClientSide) {
+							WorldUtils.spawnLightning(level, entity.position(), false);
 						}
 
 						shouldDeactivate = true;
@@ -61,14 +61,14 @@ public class ProtectoTileEntity extends DisguisableTileEntity implements ITickab
 				}
 
 				if (shouldDeactivate) {
-					world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, false));
+					level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, false));
 				}
 			}
 
 			cooldown = 0;
 		}
-		else if (getBlockState().get(ProtectoBlock.ACTIVATED)) {
-			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, false));
+		else if (getBlockState().getValue(ProtectoBlock.ACTIVATED)) {
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, false));
 		}
 	}
 

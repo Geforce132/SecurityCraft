@@ -40,8 +40,8 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 	@Override
 	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable) {
-		BlockState plant = plantable.getPlant(world, pos.offset(facing));
-		PlantType type = plantable.getPlantType(world, pos.offset(facing));
+		BlockState plant = plantable.getPlant(world, pos.relative(facing));
+		PlantType type = plantable.getPlantType(world, pos.relative(facing));
 
 		if (super.canSustainPlant(state, world, pos, facing, plantable))
 			return true;
@@ -51,32 +51,32 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 		//a nasty workaround because BaseReinforcedBlock can't use BushBlock#isValidGround because it is protected
 		if (plantable instanceof BushBlock) {
-			boolean bushCondition = state.matchesBlock(SCContent.REINFORCED_GRASS_BLOCK.get()) || state.matchesBlock(SCContent.REINFORCED_DIRT.get()) || state.matchesBlock(SCContent.REINFORCED_COARSE_DIRT.get()) || state.matchesBlock(SCContent.REINFORCED_PODZOL.get());
+			boolean bushCondition = state.is(SCContent.REINFORCED_GRASS_BLOCK.get()) || state.is(SCContent.REINFORCED_DIRT.get()) || state.is(SCContent.REINFORCED_COARSE_DIRT.get()) || state.is(SCContent.REINFORCED_PODZOL.get());
 
 			if (plantable instanceof NetherSproutsBlock || plantable instanceof NetherRootsBlock)
-				return state.matchesBlock(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
+				return state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
 			else if (plantable instanceof FungusBlock)
-				return state.matchesBlock(SCContent.REINFORCED_MYCELIUM.get()) || state.matchesBlock(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
+				return state.is(SCContent.REINFORCED_MYCELIUM.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
 			else if (plantable instanceof LilyPadBlock)
-				return world.getFluidState(pos).getFluid() == SCContent.FAKE_WATER.get() && world.getFluidState(pos.up()).getFluid() == Fluids.EMPTY;
+				return world.getFluidState(pos).getType() == SCContent.FAKE_WATER.get() && world.getFluidState(pos.above()).getType() == Fluids.EMPTY;
 			else if (plantable instanceof WitherRoseBlock)
-				return state.matchesBlock(SCContent.REINFORCED_NETHERRACK.get()) || state.matchesBlock(SCContent.REINFORCED_SOUL_SOIL.get());
+				return state.is(SCContent.REINFORCED_NETHERRACK.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get());
 			else if (plantable instanceof DeadBushBlock)
-				return state.isIn(SCTags.Blocks.REINFORCED_SAND) || state.matchesBlock(SCContent.REINFORCED_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_WHITE_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_ORANGE_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_MAGENTA_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_YELLOW_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_LIME_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_PINK_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_GRAY_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_CYAN_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_PURPLE_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_BLUE_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_BROWN_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_GREEN_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_RED_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_BLACK_TERRACOTTA.get()) || state.matchesBlock(SCContent.REINFORCED_DIRT.get()) || state.matchesBlock(SCContent.REINFORCED_COARSE_DIRT.get()) || state.matchesBlock(SCContent.REINFORCED_PODZOL.get());
+				return state.is(SCTags.Blocks.REINFORCED_SAND) || state.is(SCContent.REINFORCED_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_WHITE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_ORANGE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_MAGENTA_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_YELLOW_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIME_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_PINK_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_GRAY_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_CYAN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_PURPLE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BLUE_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BROWN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_GREEN_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_RED_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_BLACK_TERRACOTTA.get()) || state.is(SCContent.REINFORCED_DIRT.get()) || state.is(SCContent.REINFORCED_COARSE_DIRT.get()) || state.is(SCContent.REINFORCED_PODZOL.get());
 		}
 
 		if (type == PlantType.DESERT)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 		else if (type == PlantType.BEACH) {
-			boolean isBeach = state.isIn(SCTags.Blocks.REINFORCED_SAND);
+			boolean isBeach = state.is(SCTags.Blocks.REINFORCED_SAND);
 			boolean hasWater = false;
 
 			for (Direction face : Direction.Plane.HORIZONTAL) {
-				BlockState blockState = world.getBlockState(pos.offset(face));
-				FluidState fluidState = world.getFluidState(pos.offset(face));
+				BlockState blockState = world.getBlockState(pos.relative(face));
+				FluidState fluidState = world.getFluidState(pos.relative(face));
 
-				hasWater |= blockState.matchesBlock(Blocks.FROSTED_ICE);
-				hasWater |= fluidState.isTagged(net.minecraft.tags.FluidTags.WATER);
+				hasWater |= blockState.is(Blocks.FROSTED_ICE);
+				hasWater |= fluidState.is(net.minecraft.tags.FluidTags.WATER);
 
 				if (hasWater)
 					break; //No point continuing.
@@ -92,9 +92,9 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (this.getVanillaBlock() instanceof BreakableBlock)
-			return adjacentBlockState.getBlock() == this ? true : super.isSideInvisible(state, adjacentBlockState, side);
+			return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 		return false;
 	}
 
@@ -105,6 +105,6 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState) {
-		return getDefaultState();
+		return defaultBlockState();
 	}
 }

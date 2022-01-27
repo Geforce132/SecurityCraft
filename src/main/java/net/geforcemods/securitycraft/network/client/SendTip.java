@@ -44,18 +44,18 @@ public class SendTip {
 			//@formatter:off
 			String tipKey = getRandomTip();
 			IFormattableTextComponent message = new StringTextComponent("[")
-					.appendSibling(new StringTextComponent("SecurityCraft").mergeStyle(TextFormatting.GOLD))
-					.appendSibling(new StringTextComponent("] "))
-					.appendSibling(Utils.localize("messages.securitycraft:thanks",
+					.append(new StringTextComponent("SecurityCraft").withStyle(TextFormatting.GOLD))
+					.append(new StringTextComponent("] "))
+					.append(Utils.localize("messages.securitycraft:thanks",
 							SecurityCraft.getVersion(),
 							Utils.localize("messages.securitycraft:tip"),
 							Utils.localize(tipKey)));
 			//@formatter:on
 
 			if (tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-				message = message.appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+				message = message.append(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 
-			ClientHandler.getClientPlayer().sendMessage(message, Util.DUMMY_UUID);
+			ClientHandler.getClientPlayer().sendMessage(message, Util.NIL_UUID);
 		});
 
 		ctx.get().setPacketHandled(true);

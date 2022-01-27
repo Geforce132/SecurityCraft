@@ -16,21 +16,21 @@ public class WorldUtils {
 	 * serverside
 	 */
 	public static void addScheduledTask(IWorld w, Runnable r) {
-		if (w.isRemote())
+		if (w.isClientSide())
 			Minecraft.getInstance().execute(r);
 		else
 			ServerLifecycleHooks.getCurrentServer().execute(r);
 	}
 
 	public static void spawnLightning(World world, Vector3d pos, boolean effectOnly) {
-		world.addEntity(createLightning(world, pos, effectOnly));
+		world.addFreshEntity(createLightning(world, pos, effectOnly));
 	}
 
 	public static LightningBoltEntity createLightning(World world, Vector3d pos, boolean effectOnly) {
 		LightningBoltEntity lightning = EntityType.LIGHTNING_BOLT.create(world);
 
-		lightning.moveForced(pos);
-		lightning.setEffectOnly(effectOnly);
+		lightning.moveTo(pos);
+		lightning.setVisualOnly(effectOnly);
 		return lightning;
 	}
 
@@ -47,7 +47,7 @@ public class WorldUtils {
 		int zPos = Integer.parseInt(coordinates[2]);
 		ResourceLocation dim = new ResourceLocation(coordinates.length == 4 ? coordinates[3] : "");
 
-		return pos.getPos().getX() == xPos && pos.getPos().getY() == yPos && pos.getPos().getZ() == zPos && pos.getDimension().getLocation().equals(dim);
+		return pos.pos().getX() == xPos && pos.pos().getY() == yPos && pos.pos().getZ() == zPos && pos.dimension().location().equals(dim);
 	}
 
 	/**
@@ -55,6 +55,6 @@ public class WorldUtils {
 	 * @return A formatted string of the GlobalPos' location. Format: "*X* *Y* *Z* *dimension ID*"
 	 */
 	public static String toNBTString(GlobalPos pos) {
-		return pos.getPos().getX() + " " + pos.getPos().getY() + " " + pos.getPos().getZ() + " " + pos.getDimension().getLocation();
+		return pos.pos().getX() + " " + pos.pos().getY() + " " + pos.pos().getZ() + " " + pos.dimension().location();
 	}
 }

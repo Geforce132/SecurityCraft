@@ -30,29 +30,29 @@ public class DisguiseModuleContainer extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int index) {
+	public ItemStack quickMoveStack(PlayerEntity player, int index) {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
-		Slot slot = inventorySlots.get(index);
+		Slot slot = slots.get(index);
 
-		if (slot != null && slot.getHasStack()) {
-			ItemStack slotStack = slot.getStack();
+		if (slot != null && slot.hasItem()) {
+			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
 			if (index < inventory.size) {
-				if (!mergeItemStack(slotStack, inventory.size, 37, true))
+				if (!moveItemStackTo(slotStack, inventory.size, 37, true))
 					return ItemStack.EMPTY;
 
-				slot.onSlotChange(slotStack, slotStackCopy);
+				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
 			else if (index >= inventory.size) {
-				if (!mergeItemStack(slotStack, 0, inventory.size, false))
+				if (!moveItemStackTo(slotStack, 0, inventory.size, false))
 					return ItemStack.EMPTY;
 			}
 
 			if (slotStack.getCount() == 0)
-				slot.putStack(ItemStack.EMPTY);
+				slot.set(ItemStack.EMPTY);
 			else
-				slot.onSlotChanged();
+				slot.setChanged();
 
 			if (slotStack.getCount() == slotStackCopy.getCount())
 				return ItemStack.EMPTY;
@@ -64,15 +64,15 @@ public class DisguiseModuleContainer extends Container {
 	}
 
 	@Override
-	public ItemStack slotClick(int slot, int dragType, ClickType clickType, PlayerEntity player) {
-		if (slot >= 0 && getSlot(slot) != null && ((!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand() && player.getHeldItemMainhand().getItem() == SCContent.DISGUISE_MODULE.get())))
+	public ItemStack clicked(int slot, int dragType, ClickType clickType, PlayerEntity player) {
+		if (slot >= 0 && getSlot(slot) != null && ((!player.getMainHandItem().isEmpty() && getSlot(slot).getItem() == player.getMainHandItem() && player.getMainHandItem().getItem() == SCContent.DISGUISE_MODULE.get())))
 			return ItemStack.EMPTY;
 
-		return super.slotClick(slot, dragType, clickType, player);
+		return super.clicked(slot, dragType, clickType, player);
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player) {
+	public boolean stillValid(PlayerEntity player) {
 		return true;
 	}
 
@@ -82,12 +82,12 @@ public class DisguiseModuleContainer extends Container {
 		}
 
 		@Override
-		public boolean isItemValid(ItemStack itemStack) {
+		public boolean mayPlace(ItemStack itemStack) {
 			return itemStack.getItem() instanceof BlockItem;
 		}
 
 		@Override
-		public int getSlotStackLimit() {
+		public int getMaxStackSize() {
 			return 1;
 		}
 	}

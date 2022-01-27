@@ -14,14 +14,14 @@ public class ReinforcedDoorTileEntity extends OwnableTileEntity {
 	public void onOwnerChanged(BlockState state, World world, BlockPos pos, PlayerEntity player) {
 		TileEntity te;
 
-		pos = state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.down() : pos.up();
-		te = world.getTileEntity(pos);
+		pos = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos.above();
+		te = world.getBlockEntity(pos);
 
 		if (te instanceof ReinforcedDoorTileEntity) {
 			((ReinforcedDoorTileEntity) te).setOwner(getOwner().getUUID(), getOwner().getName());
 
-			if (!world.isRemote)
-				world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+			if (!world.isClientSide)
+				world.getServer().getPlayerList().broadcastAll(te.getUpdatePacket());
 		}
 	}
 }

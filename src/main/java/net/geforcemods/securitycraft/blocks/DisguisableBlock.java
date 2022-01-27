@@ -31,10 +31,10 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 			BlockState disguisedState = ((DisguisableBlock) state.getBlock()).getDisguisedStateOrDefault(state, world, pos);
 
 			if (disguisedState.getBlock() != state.getBlock())
-				return disguisedState.isNormalCube(world, pos);
+				return disguisedState.isRedstoneConductor(world, pos);
 		}
 
-		return state.getMaterial().isOpaque() && state.hasOpaqueCollisionShape(world, pos);
+		return state.getMaterial().isSolidBlocking() && state.isCollisionShapeFullBlock(world, pos);
 	}
 
 	public static boolean isSuffocating(BlockState state, IBlockReader world, BlockPos pos) {
@@ -46,7 +46,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 				return disguisedState.isSuffocating(world, pos);
 		}
 
-		return state.getMaterial().blocksMovement() && state.hasOpaqueCollisionShape(world, pos);
+		return state.getMaterial().blocksMotion() && state.isCollisionShapeFullBlock(world, pos);
 	}
 
 	@Override
@@ -80,23 +80,23 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	@Override
-	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos) {
+	public VoxelShape getOcclusionShape(BlockState state, IBlockReader world, BlockPos pos) {
 		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
 		if (disguisedState.getBlock() != this)
-			return disguisedState.getRenderShape(world, pos);
+			return disguisedState.getOcclusionShape(world, pos);
 		else
-			return super.getRenderShape(state, world, pos);
+			return super.getOcclusionShape(state, world, pos);
 	}
 
 	@Override
-	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+	public float getShadeBrightness(BlockState state, IBlockReader world, BlockPos pos) {
 		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
 		if (disguisedState.getBlock() != this)
-			return disguisedState.getAmbientOcclusionLightValue(world, pos);
+			return disguisedState.getShadeBrightness(world, pos);
 		else
-			return super.getAmbientOcclusionLightValue(state, world, pos);
+			return super.getShadeBrightness(state, world, pos);
 	}
 
 	public final BlockState getDisguisedStateOrDefault(BlockState state, IBlockReader world, BlockPos pos) {
@@ -104,15 +104,15 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public Optional<BlockState> getDisguisedBlockState(IBlockReader world, BlockPos pos) {
-		if (world.getTileEntity(pos) instanceof IModuleInventory) {
-			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
+		if (world.getBlockEntity(pos) instanceof IModuleInventory) {
+			IModuleInventory te = (IModuleInventory) world.getBlockEntity(pos);
 			ItemStack module = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!module.isEmpty()) {
 				Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
 
 				if (block != null)
-					return Optional.of(block.getDefaultState());
+					return Optional.of(block.defaultBlockState());
 			}
 		}
 
@@ -120,8 +120,8 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public ItemStack getDisguisedStack(IBlockReader world, BlockPos pos) {
-		if (world != null && world.getTileEntity(pos) instanceof IModuleInventory) {
-			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
+		if (world != null && world.getBlockEntity(pos) instanceof IModuleInventory) {
+			IModuleInventory te = (IModuleInventory) world.getBlockEntity(pos);
 			ItemStack stack = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!stack.isEmpty()) {

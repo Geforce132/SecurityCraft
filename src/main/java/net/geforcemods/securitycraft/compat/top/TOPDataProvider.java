@@ -41,10 +41,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.ModList;
 
 public class TOPDataProvider implements Function<ITheOneProbe, Void> {
-	private static final IFormattableTextComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").mergeStyle(Utils.GRAY_STYLE);
-	private static final IFormattableTextComponent ALLOWLIST_MODULE = new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey()));
-	private static final IFormattableTextComponent DISGUISE_MODULE = new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()));
-	private static final IFormattableTextComponent SPEED_MODULE = new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey()));
+	private static final IFormattableTextComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(Utils.GRAY_STYLE);
+	private static final IFormattableTextComponent ALLOWLIST_MODULE = new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey()));
+	private static final IFormattableTextComponent DISGUISE_MODULE = new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()));
+	private static final IFormattableTextComponent SPEED_MODULE = new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey()));
 
 	@Nullable
 	@Override
@@ -83,7 +83,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				if (block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(world, blockState, data.getPos()))
 					return;
 
-				TileEntity te = world.getTileEntity(data.getPos());
+				TileEntity te = world.getBlockEntity(data.getPos());
 
 				if (te instanceof IOwnable) {
 					String ownerName = ((IOwnable) te).getOwner().getName();
@@ -104,7 +104,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 						probeInfo.text(EQUIPPED);
 
 						for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(module.getTranslationKey())));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(module.getTranslationKey())));
 						}
 					}
 				}
@@ -161,7 +161,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 					IFormattableTextComponent modeDescription = Utils.localize(mode.getModeKey());
 
 					if (mode != SentryMode.IDLE)
-						modeDescription.appendString("- ").appendSibling(Utils.localize(mode.getTargetKey()));
+						modeDescription.append("- ").append(Utils.localize(mode.getTargetKey()));
 
 					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + modeDescription.getString()));
 				}

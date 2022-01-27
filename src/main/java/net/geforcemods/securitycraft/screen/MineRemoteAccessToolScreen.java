@@ -33,7 +33,7 @@ import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 public class MineRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
-	private final TranslationTextComponent mratName = Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey());
+	private final TranslationTextComponent mratName = Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId());
 	private ItemStack mrat;
 	private Button[][] guiButtons = new Button[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
@@ -44,7 +44,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 	private final int[] lengths = new int[6];
 
 	public MineRemoteAccessToolScreen(ItemStack item) {
-		super(new TranslationTextComponent(item.getTranslationKey()));
+		super(new TranslationTextComponent(item.getDescriptionId()));
 
 		mrat = item;
 	}
@@ -102,11 +102,11 @@ public class MineRemoteAccessToolScreen extends Screen {
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				guiButtons[i][UNBIND].active = true;
 
-				if (Minecraft.getInstance().player.world.isBlockPresent(minePos)) {
-					Block block = minecraft.world.getBlockState(minePos).getBlock();
+				if (Minecraft.getInstance().player.level.isLoaded(minePos)) {
+					Block block = minecraft.level.getBlockState(minePos).getBlock();
 
 					if (block instanceof IExplosive) {
-						boolean active = ((IExplosive) block).isActive(minecraft.world, minePos);
+						boolean active = ((IExplosive) block).isActive(minecraft.level, minePos);
 						boolean defusable = ((IExplosive) block).isDefusable();
 
 						guiButtons[i][DEFUSE].active = active && defusable;
@@ -139,7 +139,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 			else
 				lines[i] = Utils.localize("gui.securitycraft:mrat.mineLocations", new BlockPos(coords[0], coords[1], coords[2]));
 
-			lengths[i] = font.getStringPropertyWidth(lines[i]);
+			lengths[i] = font.width(lines[i]);
 		}
 	}
 
@@ -150,18 +150,18 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bind(TEXTURE);
 		blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.drawText(matrix, mratName, startX + xSize / 2 - font.getStringPropertyWidth(mratName), startY + -25 + 13, 0xFF0000);
+		font.draw(matrix, mratName, startX + xSize / 2 - font.width(mratName), startY + -25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 6; i++) {
-			font.drawText(matrix, lines[i], startX + xSize / 2 - lengths[i] + 25, startY + i * 30 + 13, 4210752);
+			font.draw(matrix, lines[i], startX + xSize / 2 - lengths[i] + 25, startY + i * 30 + 13, 4210752);
 		}
 
 		for (TextHoverChecker chc : hoverCheckers) {
 			if (chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
-				func_243308_b(matrix, chc.getLines(), mouseX, mouseY);
+				renderComponentTooltip(matrix, chc.getLines(), mouseX, mouseY);
 		}
 	}
 
@@ -170,14 +170,14 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 		switch (action) {
 			case DEFUSE:
-				((IExplosive) Minecraft.getInstance().player.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getInstance().player.world, new BlockPos(coords[0], coords[1], coords[2]));
+				((IExplosive) Minecraft.getInstance().player.level.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getInstance().player.level, new BlockPos(coords[0], coords[1], coords[2]));
 				SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "defuse"));
 				guiButtons[mine][DEFUSE].active = false;
 				guiButtons[mine][ACTIVATE].active = true;
 				guiButtons[mine][DETONATE].active = false;
 				break;
 			case ACTIVATE:
-				((IExplosive) Minecraft.getInstance().player.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getInstance().player.world, new BlockPos(coords[0], coords[1], coords[2]));
+				((IExplosive) Minecraft.getInstance().player.level.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getInstance().player.level, new BlockPos(coords[0], coords[1], coords[2]));
 				SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "activate"));
 				guiButtons[mine][DEFUSE].active = true;
 				guiButtons[mine][ACTIVATE].active = false;
@@ -241,8 +241,8 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 	@Override
 	public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
-		if (minecraft.gameSettings.keyBindInventory.isActiveAndMatches(InputMappings.getInputByCode(p_keyPressed_1_, p_keyPressed_2_))) {
-			this.onClose();
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputMappings.getKey(p_keyPressed_1_, p_keyPressed_2_))) {
+			this.removed();
 			return true;
 		}
 

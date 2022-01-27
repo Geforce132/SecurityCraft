@@ -41,13 +41,13 @@ import net.minecraftforge.common.util.Constants.NBT;
 public class InventoryScannerFieldBlock extends OwnableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty HORIZONTAL = BooleanProperty.create("horizontal");
-	private static final VoxelShape SHAPE_EW = Block.makeCuboidShape(0, 0, 6, 16, 16, 10);
-	private static final VoxelShape SHAPE_NS = Block.makeCuboidShape(6, 0, 0, 10, 16, 16);
-	private static final VoxelShape HORIZONTAL_SHAPE = Block.makeCuboidShape(0, 6, 0, 16, 10, 16);
+	private static final VoxelShape SHAPE_EW = Block.box(0, 0, 6, 16, 16, 10);
+	private static final VoxelShape SHAPE_NS = Block.box(6, 0, 0, 10, 16, 16);
+	private static final VoxelShape HORIZONTAL_SHAPE = Block.box(0, 6, 0, 16, 10, 16);
 
 	public InventoryScannerFieldBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HORIZONTAL, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HORIZONTAL, false));
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		if (ctx.getEntity() == null)
 			return VoxelShapes.empty();
 
-		World world = ctx.getEntity().getEntityWorld();
+		World world = ctx.getEntity().getCommandSenderWorld();
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 		Entity entity = ctx.getEntity();
 
@@ -85,7 +85,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 		if (connectedScanner == null || connectedScanner.doesFieldSolidify())
@@ -116,7 +116,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || te.getOwner().isOwner(player))
 			return false;
 
-		return loopInventory(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		return loopInventory(player.inventory.items, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.armor, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.offhand, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
 	private static boolean loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
@@ -169,11 +169,11 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 
 	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
 		if (item != null) {
-			if (!item.isEmpty() && item.getTag() != null && Block.getBlockFromItem(item.getItem()) instanceof ShulkerBoxBlock) {
+			if (!item.isEmpty() && item.getTag() != null && Block.byItem(item.getItem()) instanceof ShulkerBoxBlock) {
 				ListNBT list = item.getTag().getCompound("BlockEntityTag").getList("Items", NBT.TAG_COMPOUND);
 
 				for (int i = 0; i < list.size(); i++) {
-					ItemStack itemInChest = ItemStack.read(list.getCompound(i));
+					ItemStack itemInChest = ItemStack.of(list.getCompound(i));
 
 					if (areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
 						if (hasStorageModule) {
@@ -194,11 +194,11 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	private static boolean areItemsEqual(ItemStack firstItemStack, ItemStack secondItemStack, boolean hasSmartModule) {
-		return (hasSmartModule && areItemStacksEqual(firstItemStack, secondItemStack) && ItemStack.areItemStackTagsEqual(firstItemStack, secondItemStack)) || (!hasSmartModule && firstItemStack.getItem() == secondItemStack.getItem());
+		return (hasSmartModule && areItemStacksEqual(firstItemStack, secondItemStack) && ItemStack.tagMatches(firstItemStack, secondItemStack)) || (!hasSmartModule && firstItemStack.getItem() == secondItemStack.getItem());
 	}
 
 	private static void updateInventoryScannerPower(InventoryScannerTileEntity te) {
-		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(te.getWorld(), te.getPos());
+		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(te.getLevel(), te.getBlockPos());
 
 		if (connectedScanner == null)
 			return;
@@ -210,8 +210,8 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	private static void updateInvScanner(InventoryScannerTileEntity te) {
 		te.setShouldProvidePower(true);
 		te.setCooldown(60);
-		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getBlockState().getBlock(), 1, true);
-		BlockUtils.updateIndirectNeighbors(te.getWorld(), te.getPos(), SCContent.INVENTORY_SCANNER.get());
+		BlockUtils.updateAndNotify(te.getLevel(), te.getBlockPos(), te.getBlockState().getBlock(), 1, true);
+		BlockUtils.updateIndirectNeighbors(te.getLevel(), te.getBlockPos(), SCContent.INVENTORY_SCANNER.get());
 	}
 
 	/**
@@ -223,13 +223,13 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 
 		s1.setCount(1);
 		s2.setCount(1);
-		return ItemStack.areItemStacksEqual(s1, s2);
+		return ItemStack.matches(s1, s2);
 	}
 
 	@Override
-	public void onPlayerDestroy(IWorld world, BlockPos pos, BlockState state) {
-		if (!world.isRemote()) {
-			Direction facing = state.get(FACING);
+	public void destroy(IWorld world, BlockPos pos, BlockState state) {
+		if (!world.isClientSide()) {
+			Direction facing = state.getValue(FACING);
 
 			if (facing == Direction.EAST || facing == Direction.WEST) {
 				checkAndDestroyFields(world, pos, (p, i) -> p.west(i));
@@ -258,21 +258,21 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
-		if (state.get(HORIZONTAL))
+		if (state.getValue(HORIZONTAL))
 			return HORIZONTAL_SHAPE;
 
-		Direction facing = state.get(FACING);
+		Direction facing = state.getValue(FACING);
 
 		if (facing == Direction.EAST || facing == Direction.WEST)
 			return SHAPE_EW; //ew
 		else if (facing == Direction.NORTH || facing == Direction.SOUTH)
 			return SHAPE_NS; //ns
 
-		return VoxelShapes.fullCube();
+		return VoxelShapes.block();
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, HORIZONTAL);
 	}
 
@@ -288,17 +288,17 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (side == Direction.UP || side == Direction.DOWN) {
 			if (state.getBlock() == adjacentBlockState.getBlock())
 				return true;
 		}
 
-		return super.isSideInvisible(state, adjacentBlockState, side);
+		return super.skipRendering(state, adjacentBlockState, side);
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.toRotation(state.get(FACING)));
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 }

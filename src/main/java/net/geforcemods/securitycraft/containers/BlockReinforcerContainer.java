@@ -24,7 +24,7 @@ public class BlockReinforcerContainer extends Container {
 	public BlockReinforcerContainer(int windowId, PlayerInventory inventory, boolean isLvl1) {
 		super(SCContent.cTypeBlockReinforcer, windowId);
 
-		blockReinforcer = inventory.getCurrentItem().getItem() instanceof UniversalBlockReinforcerItem ? inventory.getCurrentItem() : inventory.offHandInventory.get(0);
+		blockReinforcer = inventory.getSelected().getItem() instanceof UniversalBlockReinforcerItem ? inventory.getSelected() : inventory.offhand.get(0);
 		this.isLvl1 = isLvl1;
 		//main player inventory
 		for (int i = 0; i < 3; i++) {
@@ -47,68 +47,68 @@ public class BlockReinforcerContainer extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player) {
+	public boolean stillValid(PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	public void onContainerClosed(PlayerEntity player) {
+	public void removed(PlayerEntity player) {
 		if (!player.isAlive() || player instanceof ServerPlayerEntity && ((ServerPlayerEntity) player).hasDisconnected()) {
-			for (int slot = 0; slot < itemInventory.getSizeInventory(); ++slot) {
-				player.dropItem(itemInventory.removeStackFromSlot(slot), false);
+			for (int slot = 0; slot < itemInventory.getContainerSize(); ++slot) {
+				player.drop(itemInventory.removeItemNoUpdate(slot), false);
 			}
 
 			return;
 		}
 
-		if (!itemInventory.getStackInSlot(0).isEmpty()) {
-			if (itemInventory.getStackInSlot(0).getCount() > reinforcingSlot.output.getCount()) { //if there's more in the slot than the reinforcer can reinforce (due to durability)
-				ItemStack overflowStack = itemInventory.getStackInSlot(0).copy();
+		if (!itemInventory.getItem(0).isEmpty()) {
+			if (itemInventory.getItem(0).getCount() > reinforcingSlot.output.getCount()) { //if there's more in the slot than the reinforcer can reinforce (due to durability)
+				ItemStack overflowStack = itemInventory.getItem(0).copy();
 
-				overflowStack.setCount(itemInventory.getStackInSlot(0).getCount() - reinforcingSlot.output.getCount());
-				player.dropItem(overflowStack, false);
+				overflowStack.setCount(itemInventory.getItem(0).getCount() - reinforcingSlot.output.getCount());
+				player.drop(overflowStack, false);
 			}
 
-			player.dropItem(reinforcingSlot.output, false);
-			blockReinforcer.damageItem(reinforcingSlot.output.getCount(), player, p -> p.sendBreakAnimation(p.getActiveHand()));
+			player.drop(reinforcingSlot.output, false);
+			blockReinforcer.hurtAndBreak(reinforcingSlot.output.getCount(), player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
 		}
 
-		if (!isLvl1 && !itemInventory.getStackInSlot(1).isEmpty()) {
-			if (itemInventory.getStackInSlot(1).getCount() > unreinforcingSlot.output.getCount()) {
-				ItemStack overflowStack = itemInventory.getStackInSlot(1).copy();
+		if (!isLvl1 && !itemInventory.getItem(1).isEmpty()) {
+			if (itemInventory.getItem(1).getCount() > unreinforcingSlot.output.getCount()) {
+				ItemStack overflowStack = itemInventory.getItem(1).copy();
 
-				overflowStack.setCount(itemInventory.getStackInSlot(1).getCount() - unreinforcingSlot.output.getCount());
-				player.dropItem(overflowStack, false);
+				overflowStack.setCount(itemInventory.getItem(1).getCount() - unreinforcingSlot.output.getCount());
+				player.drop(overflowStack, false);
 			}
 
-			player.dropItem(unreinforcingSlot.output, false);
-			blockReinforcer.damageItem(unreinforcingSlot.output.getCount(), player, p -> p.sendBreakAnimation(p.getActiveHand()));
+			player.drop(unreinforcingSlot.output, false);
+			blockReinforcer.hurtAndBreak(unreinforcingSlot.output.getCount(), player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
 		}
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int id) {
+	public ItemStack quickMoveStack(PlayerEntity player, int id) {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
-		Slot slot = inventorySlots.get(id);
+		Slot slot = slots.get(id);
 
-		if (slot != null && slot.getHasStack()) {
-			ItemStack slotStack = slot.getStack();
+		if (slot != null && slot.hasItem()) {
+			ItemStack slotStack = slot.getItem();
 
 			slotStackCopy = slotStack.copy();
 
 			if (id >= 36) {
-				if (!mergeItemStack(slotStack, 0, 36, true))
+				if (!moveItemStackTo(slotStack, 0, 36, true))
 					return ItemStack.EMPTY;
-				slot.onSlotChange(slotStack, slotStackCopy);
+				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
 			else if (id < 36)
-				if (!mergeItemStack(slotStack, 36, fixSlot(38), false))
+				if (!moveItemStackTo(slotStack, 36, fixSlot(38), false))
 					return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
-				slot.putStack(ItemStack.EMPTY);
+				slot.set(ItemStack.EMPTY);
 			else
-				slot.onSlotChanged();
+				slot.setChanged();
 
 			if (slotStack.getCount() == slotStackCopy.getCount())
 				return ItemStack.EMPTY;
@@ -125,7 +125,7 @@ public class BlockReinforcerContainer extends Container {
 
 	//edited to check if the item to be merged is valid in that slot
 	@Override
-	protected boolean mergeItemStack(ItemStack stack, int startIndex, int endIndex, boolean useEndIndex) {
+	protected boolean moveItemStackTo(ItemStack stack, int startIndex, int endIndex, boolean useEndIndex) {
 		boolean merged = false;
 		int currentIndex = startIndex;
 
@@ -137,22 +137,22 @@ public class BlockReinforcerContainer extends Container {
 
 		if (stack.isStackable()) {
 			while (stack.getCount() > 0 && (!useEndIndex && currentIndex < endIndex || useEndIndex && currentIndex >= startIndex)) {
-				slot = inventorySlots.get(currentIndex);
-				slotStack = slot.getStack();
+				slot = slots.get(currentIndex);
+				slotStack = slot.getItem();
 
-				if (!slotStack.isEmpty() && areItemsAndTagsEqual(stack, slotStack) && slot.isItemValid(stack)) {
+				if (!slotStack.isEmpty() && consideredTheSameItem(stack, slotStack) && slot.mayPlace(stack)) {
 					int combinedCount = slotStack.getCount() + stack.getCount();
 
 					if (combinedCount <= stack.getMaxStackSize()) {
 						stack.setCount(0);
 						slotStack.setCount(combinedCount);
-						slot.onSlotChanged();
+						slot.setChanged();
 						merged = true;
 					}
 					else if (slotStack.getCount() < stack.getMaxStackSize()) {
 						stack.shrink(stack.getMaxStackSize() - slotStack.getCount());
 						slotStack.setCount(stack.getMaxStackSize());
-						slot.onSlotChanged();
+						slot.setChanged();
 						merged = true;
 					}
 				}
@@ -173,12 +173,12 @@ public class BlockReinforcerContainer extends Container {
 			}
 
 			while (!useEndIndex && currentIndex < endIndex || useEndIndex && currentIndex >= startIndex) {
-				slot = inventorySlots.get(currentIndex);
-				slotStack = slot.getStack();
+				slot = slots.get(currentIndex);
+				slotStack = slot.getItem();
 
-				if (slotStack.isEmpty() && slot.isItemValid(stack)) {
-					slot.putStack(stack.copy());
-					slot.onSlotChanged();
+				if (slotStack.isEmpty() && slot.mayPlace(stack)) {
+					slot.set(stack.copy());
+					slot.setChanged();
 					stack.setCount(0);
 					merged = true;
 					break;
@@ -195,11 +195,11 @@ public class BlockReinforcerContainer extends Container {
 	}
 
 	@Override
-	public ItemStack slotClick(int slot, int dragType, ClickType clickType, PlayerEntity player) {
-		if (slot >= 0 && !player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand() && player.getHeldItemMainhand().getItem() instanceof UniversalBlockReinforcerItem)
+	public ItemStack clicked(int slot, int dragType, ClickType clickType, PlayerEntity player) {
+		if (slot >= 0 && !player.getMainHandItem().isEmpty() && getSlot(slot).getItem() == player.getMainHandItem() && player.getMainHandItem().getItem() instanceof UniversalBlockReinforcerItem)
 			return ItemStack.EMPTY;
 
-		return super.slotClick(slot, dragType, clickType, player);
+		return super.clicked(slot, dragType, clickType, player);
 	}
 
 	public class SlotBlockReinforcer extends Slot {
@@ -213,26 +213,26 @@ public class BlockReinforcerContainer extends Container {
 		}
 
 		@Override
-		public boolean isItemValid(ItemStack stack) {
+		public boolean mayPlace(ItemStack stack) {
 			//can only reinforce OR unreinforce at once
-			if (!itemInventory.getStackInSlot((slotNumber + 1) % 2).isEmpty())
+			if (!itemInventory.getItem((index + 1) % 2).isEmpty())
 				return false;
 
-			return (reinforce ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).containsKey(Block.getBlockFromItem(stack.getItem()));
+			return (reinforce ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).containsKey(Block.byItem(stack.getItem()));
 		}
 
 		@Override
-		public void onSlotChanged() {
-			ItemStack stack = itemInventory.getStackInSlot(slotNumber % 2);
+		public void setChanged() {
+			ItemStack stack = itemInventory.getItem(index % 2);
 
 			if (!stack.isEmpty()) {
-				Block block = (reinforce ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(Block.getBlockFromItem(stack.getItem()));
+				Block block = (reinforce ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(Block.byItem(stack.getItem()));
 
 				if (block != null) {
 					boolean isLvl3 = blockReinforcer.getItem() == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get();
 
 					output = new ItemStack(block);
-					output.setCount(isLvl3 ? stack.getCount() : Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getDamage()));
+					output.setCount(isLvl3 ? stack.getCount() : Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getDamageValue()));
 				}
 			}
 		}

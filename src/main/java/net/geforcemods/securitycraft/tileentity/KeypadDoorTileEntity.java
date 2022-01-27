@@ -31,8 +31,8 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
@@ -41,16 +41,16 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag) {
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag) {
+		super.load(state, tag);
 
 		passcode = tag.getString("passcode");
 	}
 
 	@Override
 	public void activate(PlayerEntity player) {
-		if (!world.isRemote && getBlockState().getBlock() instanceof KeypadDoorBlock)
-			((KeypadDoorBlock) getBlockState().getBlock()).activate(getBlockState(), world, pos, getSignalLength());
+		if (!level.isClientSide && getBlockState().getBlock() instanceof KeypadDoorBlock)
+			((KeypadDoorBlock) getBlockState().getBlock()).activate(getBlockState(), level, worldPosition, getSignalLength());
 	}
 
 	@Override
@@ -60,14 +60,14 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, world, pos);
+						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
 					public ITextComponent getDisplayName() {
 						return KeypadDoorTileEntity.super.getDisplayName();
 					}
-				}, pos);
+				}, worldPosition);
 			}
 		}
 		else {
@@ -76,14 +76,14 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, world, pos);
+							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override
 						public ITextComponent getDisplayName() {
 							return KeypadDoorTileEntity.super.getDisplayName();
 						}
-					}, pos);
+					}, worldPosition);
 				}
 			}
 			else
@@ -93,7 +93,7 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 
 	@Override
 	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
-		if (!blockState.get(DoorBlock.OPEN)) {
+		if (!blockState.getValue(DoorBlock.OPEN)) {
 			activate(player);
 			return true;
 		}
@@ -112,10 +112,10 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 
 		passcode = password;
 
-		if (getBlockState().get(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
-			te = world.getTileEntity(pos.up());
-		else if (getBlockState().get(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
-			te = world.getTileEntity(pos.down());
+		if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
+			te = level.getBlockEntity(worldPosition.above());
+		else if (getBlockState().getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
+			te = level.getBlockEntity(worldPosition.below());
 
 		if (te instanceof KeypadDoorTileEntity)
 			((KeypadDoorTileEntity) te).setPasswordExclusively(password);

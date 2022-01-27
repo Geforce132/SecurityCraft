@@ -30,8 +30,8 @@ public class UniversalBlockReinforcerItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		if (!world.isRemote && player instanceof ServerPlayerEntity) {
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		if (!world.isClientSide && player instanceof ServerPlayerEntity) {
 			NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 				@Override
 				public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
@@ -40,12 +40,12 @@ public class UniversalBlockReinforcerItem extends Item {
 
 				@Override
 				public ITextComponent getDisplayName() {
-					return new TranslationTextComponent(getTranslationKey());
+					return new TranslationTextComponent(getDescriptionId());
 				}
 			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
 		}
 
-		return ActionResult.resultConsume(player.getHeldItem(hand));
+		return ActionResult.consume(player.getItemInHand(hand));
 	}
 
 	public static boolean convertBlock(BlockState vanillaState, World world, ItemStack stack, BlockPos pos, PlayerEntity player) {
@@ -55,27 +55,27 @@ public class UniversalBlockReinforcerItem extends Item {
 
 			if (rb != null) {
 				BlockState convertedState = ((IReinforcedBlock) rb).getConvertedState(vanillaState);
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getBlockEntity(pos);
 				CompoundNBT tag = null;
 
 				if (te != null) {
-					tag = te.write(new CompoundNBT());
+					tag = te.save(new CompoundNBT());
 
 					if (te instanceof IInventory)
-						((IInventory) te).clear();
+						((IInventory) te).clearContent();
 				}
 
-				world.setBlockState(pos, convertedState);
-				te = world.getTileEntity(pos);
+				world.setBlockAndUpdate(pos, convertedState);
+				te = world.getBlockEntity(pos);
 
 				if (te != null) { //in case the converted state gets removed immediately after it is placed down
 					if (tag != null)
-						te.read(convertedState, tag);
+						te.load(convertedState, tag);
 
 					((IOwnable) te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				}
 
-				stack.damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
+				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
 				return false;
 			}
 		}

@@ -25,15 +25,15 @@ public class IMSBombRenderer extends EntityRenderer<IMSBombEntity> {
 	}
 
 	@Override
-	public void render(IMSBombEntity imsBomb, float p_225623_2_, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225623_6_) {
+	public void render(IMSBombEntity imsBomb, float pEntityYaw, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int pPackedLight) {
 		matrix.translate(-0.1D, 0, 0.1D);
 		matrix.scale(1.4F, 1.4F, 1.4F);
-		Minecraft.getInstance().textureManager.bindTexture(getEntityTexture(imsBomb));
-		modelBomb.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(getEntityTexture(imsBomb))), p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		Minecraft.getInstance().textureManager.bind(getTextureLocation(imsBomb));
+		modelBomb.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(imsBomb))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(IMSBombEntity imsBomb) {
+	public ResourceLocation getTextureLocation(IMSBombEntity imsBomb) {
 		return TEXTURE;
 	}
 }

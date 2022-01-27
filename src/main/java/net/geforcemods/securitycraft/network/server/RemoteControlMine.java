@@ -30,7 +30,7 @@ public class RemoteControlMine {
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
 		buf.writeInt(message.z);
-		buf.writeString(message.state);
+		buf.writeUtf(message.state);
 	}
 
 	public static RemoteControlMine decode(PacketBuffer buf) {
@@ -39,20 +39,20 @@ public class RemoteControlMine {
 		message.x = buf.readInt();
 		message.y = buf.readInt();
 		message.z = buf.readInt();
-		message.state = buf.readString(Integer.MAX_VALUE / 4);
+		message.state = buf.readUtf(Integer.MAX_VALUE / 4);
 		return message;
 	}
 
 	public static void onMessage(RemoteControlMine message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
-			World world = player.world;
+			World world = player.level;
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			BlockState state = world.getBlockState(pos);
 
 			if (state.getBlock() instanceof IExplosive) {
 				IExplosive explosive = ((IExplosive) state.getBlock());
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getBlockEntity(pos);
 
 				if (te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner(player)) {
 					if (message.state.equalsIgnoreCase("activate"))

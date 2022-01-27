@@ -39,21 +39,21 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	@Override
 	public void init() {
 		super.init();
-		minecraft.keyboardListener.enableRepeatEvents(true);
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addButton(saveAndContinueButton = new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::saveAndContinueButtonClicked));
 		saveAndContinueButton.active = false;
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY));
-		keycodeTextbox.setMaxStringLength(4);
-		keycodeTextbox.setValidator(s -> s.matches("[0-9]*"));
+		keycodeTextbox.setMaxLength(4);
+		keycodeTextbox.setFilter(s -> s.matches("[0-9]*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = text.length() == 4);
-		setFocusedDefault(keycodeTextbox);
+		setInitialFocus(keycodeTextbox);
 	}
 
 	@Override
-	public void onClose() {
-		super.onClose();
-		minecraft.keyboardListener.enableRepeatEvents(false);
+	public void removed() {
+		super.removed();
+		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
@@ -63,16 +63,16 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
-		font.drawText(matrix, setupTitle, xSize / 2 - font.getStringPropertyWidth(setupTitle) / 2, 6, 4210752);
+	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
+		font.draw(matrix, setupTitle, imageWidth / 2 - font.width(setupTitle) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		blit(matrix, guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURE);
+		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {
@@ -82,11 +82,11 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 			if (!briefcase.hasTag())
 				briefcase.setTag(new CompoundNBT());
 
-			briefcase.getTag().putString("passcode", keycodeTextbox.getText());
+			briefcase.getTag().putString("passcode", keycodeTextbox.getValue());
 
 			if (!briefcase.getTag().contains("owner")) {
 				briefcase.getTag().putString("owner", Minecraft.getInstance().player.getName().getString());
-				briefcase.getTag().putString("ownerUUID", Minecraft.getInstance().player.getUniqueID().toString());
+				briefcase.getTag().putString("ownerUUID", Minecraft.getInstance().player.getUUID().toString());
 			}
 
 			ClientUtils.syncItemNBT(briefcase);

@@ -29,7 +29,7 @@ public class UpdateSliderValue {
 
 	public static void encode(UpdateSliderValue message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
-		buf.writeString(message.option);
+		buf.writeUtf(message.option);
 		buf.writeDouble(message.value);
 	}
 
@@ -37,7 +37,7 @@ public class UpdateSliderValue {
 		UpdateSliderValue message = new UpdateSliderValue();
 
 		message.pos = buf.readBlockPos();
-		message.option = buf.readString();
+		message.option = buf.readUtf();
 		message.value = buf.readDouble();
 		return message;
 	}
@@ -48,7 +48,7 @@ public class UpdateSliderValue {
 			String optionName = message.option;
 			double value = message.value;
 			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.world.getTileEntity(pos);
+			TileEntity te = player.level.getBlockEntity(pos);
 
 			if (te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player))) {
 				ICustomizable customizable = (ICustomizable) te;
@@ -72,7 +72,7 @@ public class UpdateSliderValue {
 				customizable.onOptionChanged(option);
 
 				if (te instanceof CustomizableTileEntity)
-					player.world.notifyBlockUpdate(pos, te.getBlockState(), te.getBlockState(), 3);
+					player.level.sendBlockUpdated(pos, te.getBlockState(), te.getBlockState(), 3);
 			}
 		});
 

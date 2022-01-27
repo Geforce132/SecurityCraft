@@ -42,13 +42,13 @@ public class CommonDoorActivator implements IDoorActivator {
 
 	@Override
 	public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te, Direction direction, int distance) {
-		if (state.get(BlockStateProperties.POWERED)) {
+		if (state.getValue(BlockStateProperties.POWERED)) {
 			if (distance == 2) {
 				//checking that e.g. a lever/button is correctly attached to the block
-				if (state.hasProperty(BlockStateProperties.FACE) && state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+				if (state.hasProperty(BlockStateProperties.ATTACH_FACE) && state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
 					Direction.Axis offsetAxis = direction.getAxis();
-					Direction facing = state.get(BlockStateProperties.HORIZONTAL_FACING);
-					AttachFace attachFace = state.get(BlockStateProperties.FACE);
+					Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+					AttachFace attachFace = state.getValue(BlockStateProperties.ATTACH_FACE);
 
 					switch (offsetAxis) {
 						case X:
@@ -63,9 +63,9 @@ public class CommonDoorActivator implements IDoorActivator {
 					}
 				}
 				else if (state.hasProperty(BlockStateProperties.FACING))
-					return state.get(BlockStateProperties.FACING) == direction;
+					return state.getValue(BlockStateProperties.FACING) == direction;
 				else if (state.hasProperty(SecurityCameraBlock.FACING))
-					return state.get(SecurityCameraBlock.FACING) == direction;
+					return state.getValue(SecurityCameraBlock.FACING) == direction;
 			}
 
 			return true;

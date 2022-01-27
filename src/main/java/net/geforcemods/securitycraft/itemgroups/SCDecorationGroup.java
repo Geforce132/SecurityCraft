@@ -10,12 +10,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class SCDecorationGroup extends ItemGroup {
 	public SCDecorationGroup() {
 		super(SecurityCraft.MODID + ".decoration");
-		setGroupPath(SecurityCraft.MODID);
+		setRecipeFolderName(SecurityCraft.MODID);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public ItemStack createIcon() {
+	public ItemStack makeIcon() {
 		return new ItemStack(SCContent.REINFORCED_OAK_STAIRS.get().asItem());
 	}
 }

@@ -22,7 +22,7 @@ public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock {
 	public ReinforcedRotatedPillarBlock(Block.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
 
-		setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y));
+		registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.Y));
 	}
 
 	@Override
@@ -30,11 +30,11 @@ public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock {
 		switch (rot) {
 			case COUNTERCLOCKWISE_90:
 			case CLOCKWISE_90:
-				switch (state.get(AXIS)) {
+				switch (state.getValue(AXIS)) {
 					case X:
-						return state.with(AXIS, Direction.Axis.Z);
+						return state.setValue(AXIS, Direction.Axis.Z);
 					case Z:
-						return state.with(AXIS, Direction.Axis.X);
+						return state.setValue(AXIS, Direction.Axis.X);
 					default:
 						return state;
 				}
@@ -44,17 +44,17 @@ public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(AXIS);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return getDefaultState().with(AXIS, context.getFace().getAxis());
+		return defaultBlockState().setValue(AXIS, context.getClickedFace().getAxis());
 	}
 
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState) {
-		return getDefaultState().with(AXIS, vanillaState.get(RotatedPillarBlock.AXIS));
+		return defaultBlockState().setValue(AXIS, vanillaState.getValue(RotatedPillarBlock.AXIS));
 	}
 }

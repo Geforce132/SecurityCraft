@@ -29,7 +29,7 @@ public class SonicSecuritySystemTracker {
 	 * @param te The Sonic Security System to track
 	 */
 	public static void track(SonicSecuritySystemTileEntity te) {
-		getTrackedSonicSecuritySystems(te.getWorld()).add(te.getPos().toImmutable());
+		getTrackedSonicSecuritySystems(te.getLevel()).add(te.getBlockPos().immutable());
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class SonicSecuritySystemTracker {
 	 * @param te The Sonic Security System to stop tracking
 	 */
 	public static void stopTracking(SonicSecuritySystemTileEntity te) {
-		getTrackedSonicSecuritySystems(te.getWorld()).remove(te.getPos());
+		getTrackedSonicSecuritySystems(te.getLevel()).remove(te.getBlockPos());
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class SonicSecuritySystemTracker {
 			BlockPos sonicSecuritySystemPos = it.next();
 
 			if (sonicSecuritySystemPos != null) {
-				TileEntity potentialSonicSecuritySystem = world.getTileEntity(sonicSecuritySystemPos);
+				TileEntity potentialSonicSecuritySystem = world.getBlockEntity(sonicSecuritySystemPos);
 
 				if (potentialSonicSecuritySystem instanceof SonicSecuritySystemTileEntity) {
 					if (canSonicSecuritySystemReach((SonicSecuritySystemTileEntity) potentialSonicSecuritySystem, pos))
@@ -90,11 +90,11 @@ public class SonicSecuritySystemTracker {
 	 * @param world The world to get the tracked Sonic Security Systems of
 	 */
 	private static Collection<BlockPos> getTrackedSonicSecuritySystems(World world) {
-		Collection<BlockPos> sonicSecuritySystems = trackedSonicSecuritySystems.get(world.getDimensionKey());
+		Collection<BlockPos> sonicSecuritySystems = trackedSonicSecuritySystems.get(world.dimension());
 
 		if (sonicSecuritySystems == null) {
 			sonicSecuritySystems = new HashSet<>();
-			trackedSonicSecuritySystems.put(world.getDimensionKey(), sonicSecuritySystems);
+			trackedSonicSecuritySystems.put(world.dimension(), sonicSecuritySystems);
 		}
 
 		return sonicSecuritySystems;
@@ -107,7 +107,7 @@ public class SonicSecuritySystemTracker {
 	 * @param pos The block position to check
 	 */
 	public static boolean canSonicSecuritySystemReach(SonicSecuritySystemTileEntity te, BlockPos pos) {
-		AxisAlignedBB sssRange = new AxisAlignedBB(te.getPos()).grow(SonicSecuritySystemTileEntity.MAX_RANGE);
+		AxisAlignedBB sssRange = new AxisAlignedBB(te.getBlockPos()).inflate(SonicSecuritySystemTileEntity.MAX_RANGE);
 
 		return sssRange.minX <= pos.getX() && sssRange.minY <= pos.getY() && sssRange.minZ <= pos.getZ() && sssRange.maxX >= pos.getX() && sssRange.maxY >= pos.getY() && sssRange.maxZ >= pos.getZ();
 	}

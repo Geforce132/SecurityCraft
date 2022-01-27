@@ -12,9 +12,9 @@ import net.minecraft.entity.player.ServerPlayerEntity;
  */
 @Mixin(value = ServerPlayerEntity.class, priority = 1100)
 public class ServerPlayerEntityMixin {
-	@Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;setPositionAndRotation(DDDFF)V"))
+	@Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;absMoveTo(DDDFF)V"))
 	private void tick(ServerPlayerEntity player, double x, double y, double z, float yaw, float pitch) {
 		if (!PlayerUtils.isPlayerMountedOnCamera(player))
-			player.setPositionAndRotation(x, y, z, yaw, pitch);
+			player.absMoveTo(x, y, z, yaw, pitch);
 	}
 }

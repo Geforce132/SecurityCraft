@@ -18,8 +18,8 @@ public class KeypadSmokerBlock extends AbstractKeypadFurnaceBlock {
 
 	@Override
 	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-		if (rand.nextDouble() < 0.1D && state.get(LIT) && getDisguisedStateOrDefault(state, world, pos).getBlock() == this)
-			world.playSound(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, SoundEvents.BLOCK_SMOKER_SMOKE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+		if (rand.nextDouble() < 0.1D && state.getValue(LIT) && getDisguisedStateOrDefault(state, world, pos).getBlock() == this)
+			world.playLocalSound(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, SoundEvents.SMOKER_SMOKE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 	}
 
 	@Override

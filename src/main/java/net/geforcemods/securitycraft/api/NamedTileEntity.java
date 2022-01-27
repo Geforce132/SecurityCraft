@@ -20,15 +20,15 @@ public class NamedTileEntity extends OwnableTileEntity implements INameSetter {
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 		tag.putString("customName", customName.getString());
 		return tag;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag) {
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag) {
+		super.load(state, tag);
 
 		if (tag.contains("customName")) {
 			String name = tag.getString("customName");
@@ -58,10 +58,10 @@ public class NamedTileEntity extends OwnableTileEntity implements INameSetter {
 	@Override
 	public void setCustomName(ITextComponent customName) {
 		this.customName = customName;
-		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 	}
 
 	public ITextComponent getDefaultName() {
-		return Utils.localize(getBlockState().getBlock().getTranslationKey());
+		return Utils.localize(getBlockState().getBlock().getDescriptionId());
 	}
 }

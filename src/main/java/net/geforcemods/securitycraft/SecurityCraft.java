@@ -120,7 +120,7 @@ public class SecurityCraft {
 					String key = "help.";
 
 					if (hmp.specialInfoKey().isEmpty())
-						key += item.getTranslationKey().substring(5) + ".info";
+						key += item.getDescriptionId().substring(5) + ".info";
 					else
 						key += hmp.specialInfoKey();
 
@@ -142,7 +142,7 @@ public class SecurityCraft {
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(SecurityCraft.MODID, (world, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCameraEntity) somewhere
 			ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
-				if (world.getEntityByUuid(uuid) == null)
+				if (world.getEntity(uuid) == null)
 					ticketHelper.removeAllTickets(uuid);
 			}));
 		});

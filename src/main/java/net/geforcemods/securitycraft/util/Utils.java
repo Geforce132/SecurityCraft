@@ -12,7 +12,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class Utils {
-	public static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
+	public static final Style GRAY_STYLE = Style.EMPTY.withColor(TextFormatting.GRAY);
 	public static final ITextComponent INVENTORY_TEXT = Utils.localize("container.inventory");
 
 	/**
@@ -48,7 +48,7 @@ public class Utils {
 	public static TranslationTextComponent localize(String key, Object... params) {
 		for (int i = 0; i < params.length; i++) {
 			if (params[i] instanceof TranslationTextComponent)
-				params[i] = localize(((TranslationTextComponent) params[i]).getKey(), ((TranslationTextComponent) params[i]).getFormatArgs());
+				params[i] = localize(((TranslationTextComponent) params[i]).getKey(), ((TranslationTextComponent) params[i]).getArgs());
 			else if (params[i] instanceof BlockPos)
 				params[i] = getFormattedCoordinates((BlockPos) params[i]);
 		}

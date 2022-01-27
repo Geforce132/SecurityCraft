@@ -22,14 +22,14 @@ public class SyncSSSSettingsOnServer {
 
 	public static void encode(SyncSSSSettingsOnServer message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
-		buf.writeEnumValue(message.dataType);
+		buf.writeEnum(message.dataType);
 	}
 
 	public static SyncSSSSettingsOnServer decode(PacketBuffer buf) {
 		SyncSSSSettingsOnServer message = new SyncSSSSettingsOnServer();
 
 		message.pos = buf.readBlockPos();
-		message.dataType = buf.readEnumValue(DataType.class);
+		message.dataType = buf.readEnum(DataType.class);
 
 		return message;
 	}
@@ -37,8 +37,8 @@ public class SyncSSSSettingsOnServer {
 	public static void onMessage(SyncSSSSettingsOnServer message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
-			World world = ctx.get().getSender().world;
-			TileEntity te = world.getTileEntity(pos);
+			World world = ctx.get().getSender().level;
+			TileEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof SonicSecuritySystemTileEntity && ((SonicSecuritySystemTileEntity) te).getOwner().isOwner(ctx.get().getSender())) {
 				SonicSecuritySystemTileEntity sss = (SonicSecuritySystemTileEntity) te;

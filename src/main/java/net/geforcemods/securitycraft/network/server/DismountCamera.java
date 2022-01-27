@@ -20,8 +20,8 @@ public class DismountCamera {
 		ctx.get().enqueueWork(() -> {
 			ServerPlayerEntity player = ctx.get().getSender();
 
-			if (player.getSpectatingEntity() instanceof SecurityCameraEntity)
-				((SecurityCameraEntity) player.getSpectatingEntity()).stopViewing(player);
+			if (player.getCamera() instanceof SecurityCameraEntity)
+				((SecurityCameraEntity) player.getCamera()).stopViewing(player);
 		});
 
 		ctx.get().setPacketHandled(true);

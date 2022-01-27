@@ -33,13 +33,13 @@ import net.minecraftforge.event.world.ChunkEvent;
 @Mixin(value = ClientChunkProvider.class, priority = 1100)
 public abstract class ClientChunkProviderMixin implements IChunkStorageProvider {
 	@Shadow
-	private volatile ClientChunkProvider.ChunkArray array;
+	private volatile ClientChunkProvider.ChunkArray storage;
 	@Shadow
 	@Final
-	private ClientWorld world;
+	private ClientWorld level;
 
 	@Shadow
-	public abstract WorldLightManager getLightManager();
+	public abstract WorldLightManager getLightEngine();
 
 	/**
 	 * Initializes the camera storage
@@ -52,25 +52,25 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	/**
 	 * Updates the camera storage with the new view radius
 	 */
-	@Inject(method = "setViewDistance", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/multiplayer/ClientChunkProvider$ChunkArray;<init>(Lnet/minecraft/client/multiplayer/ClientChunkProvider;I)V"))
-	public void onSetViewDistance(int viewDistance, CallbackInfo ci) {
+	@Inject(method = "updateViewRadius", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/multiplayer/ClientChunkProvider$ChunkArray;<init>(Lnet/minecraft/client/multiplayer/ClientChunkProvider;I)V"))
+	public void onUpdateViewRadius(int viewDistance, CallbackInfo ci) {
 		CameraController.setCameraStorage(newStorage(Math.max(2, viewDistance) + 3));
 	}
 
 	/**
 	 * Handles chunks that are unloaded in range of the camera storage
 	 */
-	@Inject(method = "unloadChunk", at = @At(value = "HEAD"))
-	public void onUnloadChunk(int x, int z, CallbackInfo ci) {
+	@Inject(method = "drop", at = @At(value = "HEAD"))
+	public void onDrop(int x, int z, CallbackInfo ci) {
 		ClientChunkProvider.ChunkArray cameraStorage = CameraController.getCameraStorage();
 
-		if (cameraStorage.inView(x, z)) {
+		if (cameraStorage.inRange(x, z)) {
 			int i = cameraStorage.getIndex(x, z);
-			Chunk chunk = cameraStorage.get(i);
+			Chunk chunk = cameraStorage.getChunk(i);
 
 			if (chunk != null && chunk.getPos().x == x && chunk.getPos().z == z) {
 				MinecraftForge.EVENT_BUS.post(new ChunkEvent.Unload(chunk));
-				cameraStorage.unload(i, chunk, null);
+				cameraStorage.replace(i, chunk, null);
 			}
 		}
 	}
@@ -79,25 +79,25 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * Handles chunks that get sent to the client which are in range of the camera storage, i.e. place them into the storage
 	 * for them to be acquired afterwards
 	 */
-	@Inject(method = "loadChunk", at = @At(value = "HEAD"), cancellable = true)
-	private void onLoad(int x, int z, BiomeContainer biomeContainer, PacketBuffer buffer, CompoundNBT chunkTag, int size, boolean fullChunk, CallbackInfoReturnable<Chunk> callback) {
+	@Inject(method = "replaceWithPacketData", at = @At(value = "HEAD"), cancellable = true)
+	private void onReplace(int x, int z, BiomeContainer biomeContainer, PacketBuffer buffer, CompoundNBT chunkTag, int size, boolean fullChunk, CallbackInfoReturnable<Chunk> callback) {
 		ClientChunkProvider.ChunkArray cameraStorage = CameraController.getCameraStorage();
 
-		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && !array.inView(x, z) && cameraStorage.inView(x, z)) {
+		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && !storage.inRange(x, z) && cameraStorage.inRange(x, z)) {
 			int index = cameraStorage.getIndex(x, z);
-			Chunk chunk = cameraStorage.get(index);
+			Chunk chunk = cameraStorage.getChunk(index);
 			ChunkPos chunkPos = new ChunkPos(x, z);
 
 			if (chunk == null || chunk.getPos().x != x || chunk.getPos().z != z) {
-				chunk = new Chunk(world, chunkPos, biomeContainer);
-				chunk.read(biomeContainer, buffer, chunkTag, size);
+				chunk = new Chunk(level, chunkPos, biomeContainer);
+				chunk.replaceWithPacketData(biomeContainer, buffer, chunkTag, size);
 				cameraStorage.replace(index, chunk);
 			}
 			else
-				chunk.read(biomeContainer, buffer, chunkTag, size);
+				chunk.replaceWithPacketData(biomeContainer, buffer, chunkTag, size);
 
 			ChunkSection[] chunkSections = chunk.getSections();
-			WorldLightManager lightEngine = getLightManager();
+			WorldLightManager lightEngine = getLightEngine();
 
 			lightEngine.enableLightSources(chunkPos, true);
 
@@ -105,7 +105,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 				lightEngine.updateSectionStatus(SectionPos.of(x, y, z), ChunkSection.isEmpty(chunkSections[y]));
 			}
 
-			world.onChunkLoaded(x, z);
+			level.onChunkLoaded(x, z);
 			MinecraftForge.EVENT_BUS.post(new ChunkEvent.Load(chunk));
 			callback.setReturnValue(chunk);
 		}
@@ -116,8 +116,8 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 */
 	@Inject(method = "getChunk(IILnet/minecraft/world/chunk/ChunkStatus;Z)Lnet/minecraft/world/chunk/Chunk;", at = @At("TAIL"), cancellable = true)
 	private void onGetChunk(int x, int z, ChunkStatus requiredStatus, boolean load, CallbackInfoReturnable<Chunk> callback) {
-		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && !array.inView(x, z) && CameraController.getCameraStorage().inView(x, z)) {
-			Chunk chunk = CameraController.getCameraStorage().get(CameraController.getCameraStorage().getIndex(x, z));
+		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && !storage.inRange(x, z) && CameraController.getCameraStorage().inRange(x, z)) {
+			Chunk chunk = CameraController.getCameraStorage().getChunk(CameraController.getCameraStorage().getIndex(x, z));
 
 			if (chunk != null && chunk.getPos().x == x && chunk.getPos().z == z)
 				callback.setReturnValue(chunk);

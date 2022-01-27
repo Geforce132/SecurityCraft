@@ -46,7 +46,7 @@ public class CameraMonitorScreen extends Screen {
 	private int page = 1;
 
 	public CameraMonitorScreen(PlayerInventory inventory, CameraMonitorItem item, CompoundNBT itemNBTTag) {
-		super(new TranslationTextComponent(SCContent.CAMERA_MONITOR.get().getTranslationKey()));
+		super(new TranslationTextComponent(SCContent.CAMERA_MONITOR.get().getDescriptionId()));
 		playerInventory = inventory;
 		cameraMonitor = item;
 		nbtTag = itemNBTTag;
@@ -61,8 +61,8 @@ public class CameraMonitorScreen extends Screen {
 	public void init() {
 		super.init();
 
-		Button prevPageButton = addButton(new ExtendedButton(width / 2 - 68, height / 2 + 40, 20, 20, new StringTextComponent("<"), b -> minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1))));
-		Button nextPageButton = addButton(new ExtendedButton(width / 2 + 52, height / 2 + 40, 20, 20, new StringTextComponent(">"), b -> minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1))));
+		Button prevPageButton = addButton(new ExtendedButton(width / 2 - 68, height / 2 + 40, 20, 20, new StringTextComponent("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1))));
+		Button nextPageButton = addButton(new ExtendedButton(width / 2 + 52, height / 2 + 40, 20, 20, new StringTextComponent(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1))));
 		StringTextComponent x = new StringTextComponent("x");
 
 		cameraButtons[0] = new CameraButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, StringTextComponent.EMPTY, this::cameraButtonClicked);
@@ -93,17 +93,17 @@ public class CameraMonitorScreen extends Screen {
 			ArrayList<GlobalPos> views = cameraMonitor.getCameraPositions(nbtTag);
 			GlobalPos view = views.get(camID - 1);
 
-			button.setMessage(button.getMessage().copyRaw().appendSibling(new StringTextComponent("" + camID)));
+			button.setMessage(button.getMessage().plainCopy().append(new StringTextComponent("" + camID)));
 			addButton(button);
 
 			if (view != null) {
-				if (!view.getDimension().equals(Minecraft.getInstance().player.world.getDimensionKey())) {
+				if (!view.dimension().equals(Minecraft.getInstance().player.level.dimension())) {
 					hoverCheckers[button.camId - 1] = new HoverChecker(button);
-					cameraViewDim[button.camId - 1] = view.getDimension().getLocation();
+					cameraViewDim[button.camId - 1] = view.dimension().location();
 				}
 
-				World world = Minecraft.getInstance().world;
-				TileEntity te = world.getTileEntity(view.getPos());
+				World world = Minecraft.getInstance().level;
+				TileEntity te = world.getBlockEntity(view.pos());
 
 				cameraTEs[button.camId - 1] = te instanceof SecurityCameraTileEntity ? (SecurityCameraTileEntity) te : null;
 				hoverCheckers[button.camId - 1] = new HoverChecker(button);
@@ -135,19 +135,19 @@ public class CameraMonitorScreen extends Screen {
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bind(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		font.drawText(matrix, selectCameras, startX + xSize / 2 - font.getStringPropertyWidth(selectCameras) / 2, startY + 6, 4210752);
+		font.draw(matrix, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
 			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
 				if (cameraTEs[i] != null && cameraTEs[i].hasCustomName())
-					renderTooltip(matrix, font.trimStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomName()), 150), mouseX, mouseY);
+					renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomName()), 150), mouseX, mouseY);
 			}
 		}
 	}
@@ -155,8 +155,8 @@ public class CameraMonitorScreen extends Screen {
 	protected void cameraButtonClicked(Button button) {
 		int camID = ((CameraButton) button).camId + (page - 1) * 10;
 
-		SecurityCraft.channel.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getPos()));
-		Minecraft.getInstance().player.closeScreen();
+		SecurityCraft.channel.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).pos()));
+		Minecraft.getInstance().player.closeContainer();
 	}
 
 	private void unbindButtonClicked(Button button) {

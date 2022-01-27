@@ -34,21 +34,21 @@ public class PortableTunePlayerItem extends Item {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx) {
-		World world = ctx.getWorld();
-		BlockPos pos = ctx.getPos();
+	public ActionResultType useOn(ItemUseContext ctx) {
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 
 		if (world.getBlockState(pos).getBlock() == SCContent.SONIC_SECURITY_SYSTEM.get()) {
-			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity) world.getTileEntity(pos);
+			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity) world.getBlockEntity(pos);
 			PlayerEntity player = ctx.getPlayer();
 
 			if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)) {
 				if (te.getNumberOfNotes() > 0) {
-					te.saveNotes(ctx.getItem().getOrCreateTag());
-					player.sendStatusMessage(Utils.localize("messages.securitycraft:portable_tune_player.tune_saved"), true);
+					te.saveNotes(ctx.getItemInHand().getOrCreateTag());
+					player.displayClientMessage(Utils.localize("messages.securitycraft:portable_tune_player.tune_saved"), true);
 				}
 				else
-					player.sendStatusMessage(Utils.localize("messages.securitycraft:portable_tune_player.no_tune"), true);
+					player.displayClientMessage(Utils.localize("messages.securitycraft:portable_tune_player.no_tune"), true);
 
 				return ActionResultType.SUCCESS;
 			}
@@ -58,10 +58,10 @@ public class PortableTunePlayerItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		ItemStack stack = player.getItemInHand(hand);
 
-		if (!world.isRemote) {
+		if (!world.isClientSide) {
 			CompoundNBT tag = stack.getOrCreateTag();
 			boolean isTunePlaying = SCEventHandler.PLAYING_TUNES.containsKey(player);
 
@@ -70,20 +70,20 @@ public class PortableTunePlayerItem extends Item {
 
 				SonicSecuritySystemTileEntity.loadNotes(stack.getTag(), notes);
 				SCEventHandler.PLAYING_TUNES.put(player, MutablePair.of(0, notes));
-				return ActionResult.resultSuccess(stack);
+				return ActionResult.success(stack);
 			}
 			else if (isTunePlaying) {
 				SCEventHandler.PLAYING_TUNES.remove(player);
-				return ActionResult.resultSuccess(stack);
+				return ActionResult.success(stack);
 			}
 		}
 
-		return ActionResult.resultPass(stack);
+		return ActionResult.pass(stack);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		if (!stack.hasTag())
 			return;
 
@@ -91,6 +91,6 @@ public class PortableTunePlayerItem extends Item {
 		int notesCount = stack.getTag().getList("Notes", Constants.NBT.TAG_COMPOUND).size();
 
 		if (notesCount > 0)
-			tooltip.add(Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).mergeStyle(Utils.GRAY_STYLE));
+			tooltip.add(Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).withStyle(Utils.GRAY_STYLE));
 	}
 }

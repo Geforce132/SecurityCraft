@@ -21,7 +21,7 @@ public class IngredientDisplay {
 		if (stacks == null || stacks.length == 0)
 			return;
 
-		mc.getItemRenderer().renderItemAndEffectIntoGUI(stacks[currentRenderingStack], x, y);
+		mc.getItemRenderer().renderAndDecorateItem(stacks[currentRenderingStack], x, y);
 		ticksToChange -= partialTicks;
 
 		if (ticksToChange <= 0) {
@@ -33,7 +33,7 @@ public class IngredientDisplay {
 	}
 
 	public void setIngredient(Ingredient ingredient) {
-		stacks = ingredient.getMatchingStacks();
+		stacks = ingredient.getItems();
 		currentRenderingStack = 0;
 		ticksToChange = DISPLAY_LENGTH;
 	}

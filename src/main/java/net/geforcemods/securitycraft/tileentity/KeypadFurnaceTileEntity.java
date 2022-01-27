@@ -13,6 +13,6 @@ public class KeypadFurnaceTileEntity extends AbstractKeypadFurnaceTileEntity {
 
 	@Override
 	protected Container createMenu(int windowId, PlayerInventory inv) {
-		return new KeypadFurnaceContainer(windowId, world, pos, inv, this, furnaceData);
+		return new KeypadFurnaceContainer(windowId, level, worldPosition, inv, this, dataAccess);
 	}
 }

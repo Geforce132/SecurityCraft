@@ -21,15 +21,15 @@ public abstract class CustomizableTileEntity extends NamedTileEntity implements 
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag) {
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag) {
+		super.load(state, tag);
 		modules = readModuleInventory(tag);
 		readOptions(tag);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 		writeModuleInventory(tag);
 		writeOptions(tag);
 		return tag;

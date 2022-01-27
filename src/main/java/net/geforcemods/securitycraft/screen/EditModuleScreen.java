@@ -44,7 +44,7 @@ public class EditModuleScreen extends Screen {
 	private int guiLeft;
 
 	public EditModuleScreen(ItemStack item) {
-		super(new TranslationTextComponent(item.getTranslationKey()));
+		super(new TranslationTextComponent(item.getDescriptionId()));
 
 		module = item;
 	}
@@ -58,9 +58,9 @@ public class EditModuleScreen extends Screen {
 		int guiTop = (height - ySize) / 2;
 		int controlsStartX = (int) (guiLeft + xSize * (3.0F / 4.0F)) - 43;
 		TranslationTextComponent checkboxText = Utils.localize("gui.securitycraft:editModule.affectEveryone");
-		int length = font.getStringPropertyWidth(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
+		int length = font.width(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
 
-		minecraft.keyboardListener.enableRepeatEvents(true);
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addButton(inputField = new TextFieldWidget(font, controlsStartX - 17, height / 2 - 75, 110, 15, StringTextComponent.EMPTY));
 		addButton(addButton = new ExtendedButton(controlsStartX, height / 2 - 55, 76, 20, Utils.localize("gui.securitycraft:editModule.add"), this::addButtonClicked));
 		addButton(removeButton = new ExtendedButton(controlsStartX, height / 2 - 30, 76, 20, Utils.localize("gui.securitycraft:editModule.remove"), this::removeButtonClicked));
@@ -85,8 +85,8 @@ public class EditModuleScreen extends Screen {
 		if (module.getTag() == null || module.getTag().isEmpty())
 			clearButton.active = false;
 
-		inputField.setMaxStringLength(16);
-		inputField.setValidator(s -> !s.contains(" "));
+		inputField.setMaxLength(16);
+		inputField.setFilter(s -> !s.contains(" "));
 		inputField.setResponder(s -> {
 			if (s.isEmpty())
 				addButton.active = false;
@@ -108,27 +108,27 @@ public class EditModuleScreen extends Screen {
 			removeButton.active = false;
 			playerList.setSelectedIndex(-1);
 		});
-		setFocusedDefault(inputField);
+		setInitialFocus(inputField);
 	}
 
 	@Override
-	public void onClose() {
-		super.onClose();
+	public void removed() {
+		super.removed();
 
 		if (minecraft != null)
-			minecraft.keyboardListener.enableRepeatEvents(false);
+			minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bind(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.func_238418_a_(editModule, startX + xSize / 2 - font.getStringPropertyWidth(editModule) / 2, startY + 6, width, 4210752);
+		font.drawWordWrap(editModule, startX + xSize / 2 - font.width(editModule) / 2, startY + 6, width, 4210752);
 
 		if (playerList != null)
 			playerList.render(matrix, mouseX, mouseY, partialTicks);
@@ -167,14 +167,14 @@ public class EditModuleScreen extends Screen {
 	}
 
 	private void addButtonClicked(Button button) {
-		if (inputField.getText().isEmpty())
+		if (inputField.getValue().isEmpty())
 			return;
 
 		if (module.getTag() == null)
 			module.setTag(new CompoundNBT());
 
 		for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
-			if (module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText())) {
+			if (module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getValue())) {
 				if (i == 9)
 					addButton.active = false;
 
@@ -182,30 +182,30 @@ public class EditModuleScreen extends Screen {
 			}
 		}
 
-		module.getTag().putString("Player" + getNextFreeSlot(module.getTag()), inputField.getText());
+		module.getTag().putString("Player" + getNextFreeSlot(module.getTag()), inputField.getValue());
 
 		if (module.getTag() != null && module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS))
 			addButton.active = false;
 
-		inputField.setText("");
+		inputField.setValue("");
 		updateButtonStates();
 	}
 
 	private void removeButtonClicked(Button button) {
-		if (inputField.getText().isEmpty())
+		if (inputField.getValue().isEmpty())
 			return;
 
 		if (module.getTag() == null)
 			module.setTag(new CompoundNBT());
 
 		for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
-			if (module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText())) {
+			if (module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getValue())) {
 				module.getTag().remove("Player" + i);
 				defragmentTag(module.getTag());
 			}
 		}
 
-		inputField.setText("");
+		inputField.setValue("");
 		updateButtonStates();
 	}
 
@@ -222,7 +222,7 @@ public class EditModuleScreen extends Screen {
 
 	private void clearButtonClicked(Button button) {
 		module.setTag(new CompoundNBT());
-		inputField.setText("");
+		inputField.setValue("");
 		updateButtonStates();
 	}
 
@@ -230,8 +230,8 @@ public class EditModuleScreen extends Screen {
 		if (module.getTag() != null)
 			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 
-		addButton.active = module.getTag() != null && !module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getText().isEmpty();
-		removeButton.active = !(module.getTag() == null || module.getTag().isEmpty() || inputField.getText().isEmpty());
+		addButton.active = module.getTag() != null && !module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getValue().isEmpty();
+		removeButton.active = !(module.getTag() == null || module.getTag().isEmpty() || inputField.getValue().isEmpty());
 		copyButton.active = !(module.getTag() == null || module.getTag().isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));
 		pasteButton.active = !(savedModule == null || savedModule.isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));
 		clearButton.active = !(module.getTag() == null || module.getTag().isEmpty());
@@ -273,7 +273,7 @@ public class EditModuleScreen extends Screen {
 
 		@Override
 		protected int getContentHeight() {
-			int height = 50 + (listLength * font.FONT_HEIGHT);
+			int height = 50 + (listLength * font.lineHeight);
 
 			if (height < bottom - top - 8)
 				height = bottom - top - 8;
@@ -288,7 +288,7 @@ public class EditModuleScreen extends Screen {
 
 				if (module.hasTag() && module.getTag().contains("Player" + (clickedIndex + 1))) {
 					selectedIndex = clickedIndex;
-					inputField.setText(module.getTag().getString("Player" + (clickedIndex + 1)));
+					inputField.setValue(module.getTag().getString("Player" + (clickedIndex + 1)));
 				}
 			}
 
@@ -306,11 +306,11 @@ public class EditModuleScreen extends Screen {
 				//highlight hovered slot
 				if (slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
 					if (tag.contains("Player" + (slotIndex + 1)) && !tag.getString("Player" + (slotIndex + 1)).isEmpty())
-						renderBox(tessellator.getBuffer(), left, entryRight - 6, baseY + slotIndex * slotHeight, slotHeight - 4, 0x80);
+						renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + slotIndex * slotHeight, slotHeight - 4, 0x80);
 				}
 
 				if (selectedIndex >= 0)
-					renderBox(tessellator.getBuffer(), left, entryRight - 6, baseY + selectedIndex * slotHeight, slotHeight - 4, 0xFF);
+					renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + selectedIndex * slotHeight, slotHeight - 4, 0xFF);
 
 				//draw entry strings
 				for (int i = 0; i < ModuleItem.MAX_PLAYERS; i++) {
@@ -318,7 +318,7 @@ public class EditModuleScreen extends Screen {
 						String name = tag.getString("Player" + (i + 1));
 
 						if (!name.isEmpty())
-							font.drawString(matrix, name, left - 2 + width / 2 - font.getStringWidth(name) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
+							font.draw(matrix, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 					}
 				}
 			}
@@ -329,16 +329,16 @@ public class EditModuleScreen extends Screen {
 			RenderSystem.disableTexture();
 			RenderSystem.defaultBlendFunc();
 			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-			bufferBuilder.pos(min, slotTop + slotBuffer + 2, 0).tex(0, 1).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
-			bufferBuilder.pos(max, slotTop + slotBuffer + 2, 0).tex(1, 1).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
-			bufferBuilder.pos(max, slotTop - 2, 0).tex(1, 0).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
-			bufferBuilder.pos(min, slotTop - 2, 0).tex(0, 0).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
-			bufferBuilder.pos(min + 1, slotTop + slotBuffer + 1, 0).tex(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			bufferBuilder.pos(max - 1, slotTop + slotBuffer + 1, 0).tex(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			bufferBuilder.pos(max - 1, slotTop - 1, 0).tex(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			bufferBuilder.pos(min + 1, slotTop - 1, 0).tex(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			bufferBuilder.finishDrawing();
-			WorldVertexBufferUploader.draw(bufferBuilder);
+			bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
+			bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
+			bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
+			bufferBuilder.vertex(min, slotTop - 2, 0).uv(0, 0).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
+			bufferBuilder.vertex(min + 1, slotTop + slotBuffer + 1, 0).uv(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+			bufferBuilder.vertex(max - 1, slotTop + slotBuffer + 1, 0).uv(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+			bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+			bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+			bufferBuilder.end();
+			WorldVertexBufferUploader.end(bufferBuilder);
 			RenderSystem.enableTexture();
 			RenderSystem.disableBlend();
 		}

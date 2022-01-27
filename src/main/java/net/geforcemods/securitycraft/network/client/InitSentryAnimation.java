@@ -24,7 +24,7 @@ public class InitSentryAnimation {
 	}
 
 	public static void encode(InitSentryAnimation message, PacketBuffer buf) {
-		buf.writeLong(message.pos.toLong());
+		buf.writeLong(message.pos.asLong());
 		buf.writeBoolean(message.animate);
 		buf.writeBoolean(message.animateUpwards);
 	}
@@ -32,7 +32,7 @@ public class InitSentryAnimation {
 	public static InitSentryAnimation decode(PacketBuffer buf) {
 		InitSentryAnimation message = new InitSentryAnimation();
 
-		message.pos = BlockPos.fromLong(buf.readLong());
+		message.pos = BlockPos.of(buf.readLong());
 		message.animate = buf.readBoolean();
 		message.animateUpwards = buf.readBoolean();
 		return message;
@@ -40,7 +40,7 @@ public class InitSentryAnimation {
 
 	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			List<CreatureEntity> sentries = Minecraft.getInstance().world.<CreatureEntity> getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(message.pos));
+			List<CreatureEntity> sentries = Minecraft.getInstance().level.<CreatureEntity> getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(message.pos));
 
 			if (!sentries.isEmpty()) {
 				((SentryEntity) sentries.get(0)).animateUpwards = message.animateUpwards;

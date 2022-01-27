@@ -40,21 +40,21 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
-		return onItemUseFirst(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), stack, ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z);
+		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
 	}
 
 	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
-		if (!world.isRemote) {
+		if (!world.isClientSide) {
 			// If the player is not sneaking, add/remove positions from the item when right-clicking a lockable block
-			if (!player.isSneaking()) {
-				TileEntity te = world.getTileEntity(pos);
+			if (!player.isShiftKeyDown()) {
+				TileEntity te = world.getBlockEntity(pos);
 
 				if (te instanceof ILockable) {
 					if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player)) {
 						Block block = te.getBlockState().getBlock();
 
 						if (!(block instanceof DisguisableBlock) || ((DisguisableBlock) block).getDisguisedBlockState(world, pos) == null) {
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) te).getOwner().getName(), pos), TextFormatting.GREEN);
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) te).getOwner().getName(), pos), TextFormatting.GREEN);
 							return ActionResultType.SUCCESS;
 						}
 					}
@@ -66,11 +66,11 @@ public class SonicSecuritySystemItem extends BlockItem {
 						// If not, link to it
 						if (isAdded(stack.getTag(), pos)) {
 							removeLinkedBlock(stack.getTag(), pos);
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(world.getBlockState(pos).getBlock().getTranslationKey()), pos), TextFormatting.GREEN);
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(world.getBlockState(pos).getBlock().getDescriptionId()), pos), TextFormatting.GREEN);
 							return ActionResultType.SUCCESS;
 						}
 						else if (addLinkedBlock(stack.getTag(), pos, player)) {
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(world.getBlockState(pos).getBlock().getTranslationKey()), pos), TextFormatting.GREEN);
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(world.getBlockState(pos).getBlock().getDescriptionId()), pos), TextFormatting.GREEN);
 							SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateNBTTagOnClient(stack));
 							return ActionResultType.SUCCESS;
 						}
@@ -82,8 +82,8 @@ public class SonicSecuritySystemItem extends BlockItem {
 		//don't place down the SSS if it has at least one linked block
 		//placing is handled by minecraft otherwise
 		if (!stack.hasTag() || !hasLinkedBlock(stack.getTag())) {
-			if (!world.isRemote)
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.notLinked"), TextFormatting.DARK_RED);
+			if (!world.isClientSide)
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.notLinked"), TextFormatting.DARK_RED);
 
 			return ActionResultType.FAIL;
 		}
@@ -92,18 +92,18 @@ public class SonicSecuritySystemItem extends BlockItem {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx) {
-		ActionResultType returnValue = super.onItemUse(ctx);
+	public ActionResultType useOn(ItemUseContext ctx) {
+		ActionResultType returnValue = super.useOn(ctx);
 
-		if (returnValue.isSuccessOrConsume())
-			((SonicSecuritySystemTileEntity) ctx.getWorld().getTileEntity(ctx.getPos().offset(ctx.getFace()))).transferPositionsFromItem(ctx.getItem().getTag());
+		if (returnValue.consumesAction())
+			((SonicSecuritySystemTileEntity) ctx.getLevel().getBlockEntity(ctx.getClickedPos().relative(ctx.getClickedFace()))).transferPositionsFromItem(ctx.getItemInHand().getTag());
 
 		return returnValue;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		if (!stack.hasTag())
 			return;
 
@@ -111,7 +111,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 		int numOfLinkedBlocks = stack.getTag().getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND).size();
 
 		if (numOfLinkedBlocks > 0)
-			tooltip.add(Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).mergeStyle(Utils.GRAY_STYLE));
+			tooltip.add(Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).withStyle(Utils.GRAY_STYLE));
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 		ListNBT list = tag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
 
 		if (list.size() >= SonicSecuritySystemTileEntity.MAX_LINKED_BLOCKS) {
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.linkMaxReached", SonicSecuritySystemTileEntity.MAX_LINKED_BLOCKS), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.linkMaxReached", SonicSecuritySystemTileEntity.MAX_LINKED_BLOCKS), TextFormatting.DARK_RED);
 			return false;
 		}
 

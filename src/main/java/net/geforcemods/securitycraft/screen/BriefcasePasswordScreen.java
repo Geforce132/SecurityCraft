@@ -49,8 +49,8 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 			addButton(new ExtendedButton(width / 2 - 40 + (i * 20), height / 2, 20, 20, new StringTextComponent(DOWN_ARROW), b -> keycodeButtonClicked(4 + id)));
 			//text boxes are not added via addButton because they should not be selectable
 			keycodeTextboxes[i] = new TextFieldWidget(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, StringTextComponent.EMPTY);
-			keycodeTextboxes[i].setMaxStringLength(1);
-			keycodeTextboxes[i].setText("0");
+			keycodeTextboxes[i].setMaxLength(1);
+			keycodeTextboxes[i].setValue("0");
 		}
 
 		addButton(new ExtendedButton((width / 2 + 42), height / 2 - 26, 20, 20, new StringTextComponent(">"), this::continueButtonClicked));
@@ -67,16 +67,16 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
-		font.drawText(matrix, enterPasscode, xSize / 2 - font.getStringPropertyWidth(enterPasscode) / 2, 6, 4210752);
+	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
+		font.draw(matrix, enterPasscode, imageWidth / 2 - font.width(enterPasscode) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		blit(matrix, guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURE);
+		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	protected void continueButtonClicked(Button button) {
@@ -87,7 +87,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 			if (nbt.getString("passcode").equals(code)) {
 				if (!nbt.contains("owner")) {
 					nbt.putString("owner", Minecraft.getInstance().player.getName().getString());
-					nbt.putString("ownerUUID", Minecraft.getInstance().player.getUniqueID().toString());
+					nbt.putString("ownerUUID", Minecraft.getInstance().player.getUUID().toString());
 				}
 
 				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcaseInventory.getRegistryName(), getTitle()));
@@ -100,6 +100,6 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 
 		//java's modulo operator % does not handle negative numbers like it should for some reason, so floorMod needs to be used
 		digits[index] = Math.floorMod((id > 3 ? --digits[index] : ++digits[index]), 10);
-		keycodeTextboxes[index].setText(String.valueOf(digits[index]));
+		keycodeTextboxes[index].setValue(String.valueOf(digits[index]));
 	}
 }

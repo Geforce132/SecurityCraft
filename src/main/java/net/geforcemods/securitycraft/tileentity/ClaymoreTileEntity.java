@@ -18,7 +18,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 public class ClaymoreTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
-	private IntOption range = new IntOption(this::getPos, "range", 5, 1, 10, 1, true);
+	private IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 10, 1, true);
 	private int cooldown = -1;
 
 	public ClaymoreTileEntity() {
@@ -27,8 +27,8 @@ public class ClaymoreTileEntity extends CustomizableTileEntity implements ITicka
 
 	@Override
 	public void tick() {
-		if (!getWorld().isRemote) {
-			if (getBlockState().get(ClaymoreBlock.DEACTIVATED))
+		if (!getLevel().isClientSide) {
+			if (getBlockState().getValue(ClaymoreBlock.DEACTIVATED))
 				return;
 
 			if (cooldown > 0) {
@@ -37,12 +37,12 @@ public class ClaymoreTileEntity extends CustomizableTileEntity implements ITicka
 			}
 
 			if (cooldown == 0) {
-				((ClaymoreBlock) getBlockState().getBlock()).explode(world, pos);
+				((ClaymoreBlock) getBlockState().getBlock()).explode(level, worldPosition);
 				return;
 			}
 
-			Direction dir = getBlockState().get(ClaymoreBlock.FACING);
-			AxisAlignedBB area = new AxisAlignedBB(pos);
+			Direction dir = getBlockState().getValue(ClaymoreBlock.FACING);
+			AxisAlignedBB area = new AxisAlignedBB(worldPosition);
 
 			if (dir == Direction.NORTH)
 				area = area.contract(-0, -0, range.get());
@@ -53,24 +53,24 @@ public class ClaymoreTileEntity extends CustomizableTileEntity implements ITicka
 			else if (dir == Direction.WEST)
 				area = area.contract(range.get(), -0, -0);
 
-			getWorld().getEntitiesWithinAABB(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !EntityUtils.doesEntityOwn(e, world, pos)).stream().findFirst().ifPresent(entity -> {
+			getLevel().getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !EntityUtils.doesEntityOwn(e, level, worldPosition)).stream().findFirst().ifPresent(entity -> {
 				cooldown = 20;
-				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+				getLevel().playSound(null, new BlockPos(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			});
 		}
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 		writeOptions(tag);
 		tag.putInt("cooldown", cooldown);
 		return tag;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag) {
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag) {
+		super.load(state, tag);
 
 		readOptions(tag);
 		cooldown = tag.getInt("cooldown");

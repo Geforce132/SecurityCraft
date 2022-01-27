@@ -19,22 +19,22 @@ public class KeypadSmokerContainer extends AbstractFurnaceContainer {
 	private IWorldPosCallable worldPosCallable;
 
 	public KeypadSmokerContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
-		this(windowId, world, pos, inventory, (AbstractKeypadFurnaceTileEntity) world.getTileEntity(pos), ((AbstractKeypadFurnaceTileEntity) world.getTileEntity(pos)).getFurnaceData());
+		this(windowId, world, pos, inventory, (AbstractKeypadFurnaceTileEntity) world.getBlockEntity(pos), ((AbstractKeypadFurnaceTileEntity) world.getBlockEntity(pos)).getFurnaceData());
 	}
 
 	public KeypadSmokerContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory, IInventory furnaceInv, IIntArray furnaceData) {
 		super(SCContent.cTypeKeypadSmoker, IRecipeType.SMOKING, RecipeBookCategory.SMOKER, windowId, inventory, furnaceInv, furnaceData);
-		te = (AbstractKeypadFurnaceTileEntity) world.getTileEntity(pos);
-		worldPosCallable = IWorldPosCallable.of(world, pos);
+		te = (AbstractKeypadFurnaceTileEntity) world.getBlockEntity(pos);
+		worldPosCallable = IWorldPosCallable.create(world, pos);
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player) {
-		return isWithinUsableDistance(worldPosCallable, player, SCContent.KEYPAD_SMOKER.get());
+	public boolean stillValid(PlayerEntity player) {
+		return stillValid(worldPosCallable, player, SCContent.KEYPAD_SMOKER.get());
 	}
 
 	@Override
-	public void onContainerClosed(PlayerEntity player) {
-		te.getWorld().setBlockState(te.getPos(), te.getBlockState().with(AbstractKeypadFurnaceBlock.OPEN, false));
+	public void removed(PlayerEntity player) {
+		te.getLevel().setBlockAndUpdate(te.getBlockPos(), te.getBlockState().setValue(AbstractKeypadFurnaceBlock.OPEN, false));
 	}
 }

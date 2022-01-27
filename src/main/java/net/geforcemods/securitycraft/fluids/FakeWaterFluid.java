@@ -32,17 +32,17 @@ import net.minecraftforge.fluids.FluidAttributes;
 
 public abstract class FakeWaterFluid extends FlowingFluid {
 	@Override
-	public Fluid getFlowingFluid() {
+	public Fluid getFlowing() {
 		return SCContent.FLOWING_FAKE_WATER.get();
 	}
 
 	@Override
-	public Fluid getStillFluid() {
+	public Fluid getSource() {
 		return SCContent.FAKE_WATER.get();
 	}
 
 	@Override
-	public Item getFilledBucket() {
+	public Item getBucket() {
 		return SCContent.FAKE_WATER_BUCKET.get();
 	}
 
@@ -61,9 +61,9 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void animateTick(World world, BlockPos pos, FluidState state, Random random) {
-		if (!state.isSource() && !state.get(FALLING)) {
+		if (!state.isSource() && !state.getValue(FALLING)) {
 			if (random.nextInt(64) == 0)
-				world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WATER_AMBIENT, SoundCategory.BLOCKS, random.nextFloat() * 0.25F + 0.75F, random.nextFloat() + 0.5F, false);
+				world.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.WATER_AMBIENT, SoundCategory.BLOCKS, random.nextFloat() * 0.25F + 0.75F, random.nextFloat() + 0.5F, false);
 		}
 		else if (random.nextInt(10) == 0)
 			world.addParticle(ParticleTypes.UNDERWATER, pos.getX() + random.nextFloat(), pos.getY() + random.nextFloat(), pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
@@ -72,20 +72,20 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 	@Nullable
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public IParticleData getDripParticleData() {
+	public IParticleData getDripParticle() {
 		return ParticleTypes.DRIPPING_WATER;
 	}
 
 	@Override
-	protected boolean canSourcesMultiply() {
+	protected boolean canConvertToSource() {
 		return true;
 	}
 
 	@Override
-	protected void beforeReplacingBlock(IWorld world, BlockPos pos, BlockState state) {
-		TileEntity te = state.hasTileEntity() ? world.getTileEntity(pos) : null;
+	protected void beforeDestroyingBlock(IWorld world, BlockPos pos, BlockState state) {
+		TileEntity te = state.hasTileEntity() ? world.getBlockEntity(pos) : null;
 
-		Block.spawnDrops(state, world, pos, te);
+		Block.dropResources(state, world, pos, te);
 	}
 
 	@Override
@@ -94,28 +94,28 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 	}
 
 	@Override
-	public BlockState getBlockState(FluidState state) {
-		return SCContent.FAKE_WATER_BLOCK.get().getDefaultState().with(FlowingFluidBlock.LEVEL, getLevelFromState(state));
+	public BlockState createLegacyBlock(FluidState state) {
+		return SCContent.FAKE_WATER_BLOCK.get().defaultBlockState().setValue(FlowingFluidBlock.LEVEL, getLegacyLevel(state));
 	}
 
 	@Override
-	public boolean isEquivalentTo(Fluid fluid) {
+	public boolean isSame(Fluid fluid) {
 		return fluid == SCContent.FAKE_WATER.get() || fluid == SCContent.FLOWING_FAKE_WATER.get();
 	}
 
 	@Override
-	public int getLevelDecreasePerBlock(IWorldReader world) {
+	public int getDropOff(IWorldReader world) {
 		return 1;
 	}
 
 	@Override
-	public int getTickRate(IWorldReader world) {
+	public int getTickDelay(IWorldReader world) {
 		return 5;
 	}
 
 	@Override
-	public boolean canDisplace(FluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir) {
-		return dir == Direction.DOWN && !fluid.isIn(FluidTags.WATER);
+	public boolean canBeReplacedWith(FluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir) {
+		return dir == Direction.DOWN && !fluid.is(FluidTags.WATER);
 	}
 
 	@Override
@@ -125,14 +125,14 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 
 	public static class Flowing extends FakeWaterFluid {
 		@Override
-		protected void fillStateContainer(StateContainer.Builder<Fluid, FluidState> builder) {
-			super.fillStateContainer(builder);
-			builder.add(LEVEL_1_8);
+		protected void createFluidStateDefinition(StateContainer.Builder<Fluid, FluidState> builder) {
+			super.createFluidStateDefinition(builder);
+			builder.add(LEVEL);
 		}
 
 		@Override
-		public int getLevel(FluidState p_207192_1_) {
-			return p_207192_1_.get(LEVEL_1_8);
+		public int getAmount(FluidState pState) {
+			return pState.getValue(LEVEL);
 		}
 
 		@Override
@@ -143,7 +143,7 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 
 	public static class Source extends FakeWaterFluid {
 		@Override
-		public int getLevel(FluidState p_207192_1_) {
+		public int getAmount(FluidState pState) {
 			return 8;
 		}
 

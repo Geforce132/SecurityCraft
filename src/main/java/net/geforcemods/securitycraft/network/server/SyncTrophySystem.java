@@ -47,16 +47,16 @@ public class SyncTrophySystem {
 			EntityType<?> projectileType = ForgeRegistries.ENTITIES.getValue(message.projectileType);
 
 			if (projectileType != null) {
-				World world = ctx.get().getSender().world;
+				World world = ctx.get().getSender().level;
 				BlockPos pos = message.pos;
 				boolean allowed = message.allowed;
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getBlockEntity(pos);
 
 				if (te instanceof TrophySystemTileEntity && ((TrophySystemTileEntity) te).getOwner().isOwner(ctx.get().getSender())) {
 					BlockState state = world.getBlockState(pos);
 
 					((TrophySystemTileEntity) te).setFilter(projectileType, allowed);
-					world.notifyBlockUpdate(pos, state, state, 2);
+					world.sendBlockUpdated(pos, state, state, 2);
 				}
 			}
 		});

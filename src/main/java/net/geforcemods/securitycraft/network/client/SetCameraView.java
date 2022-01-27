@@ -18,7 +18,7 @@ public class SetCameraView {
 	public SetCameraView() {}
 
 	public SetCameraView(Entity camera) {
-		id = camera.getEntityId();
+		id = camera.getId();
 	}
 
 	public static void encode(SetCameraView message, PacketBuffer buf) {
@@ -35,22 +35,22 @@ public class SetCameraView {
 	public static void onMessage(SetCameraView message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			Minecraft mc = Minecraft.getInstance();
-			Entity entity = mc.world.getEntityByID(message.id);
+			Entity entity = mc.level.getEntity(message.id);
 			boolean isCamera = entity instanceof SecurityCameraEntity;
 
 			if (isCamera || entity instanceof PlayerEntity) {
-				mc.setRenderViewEntity(entity);
+				mc.setCameraEntity(entity);
 
 				if (isCamera) {
-					CameraController.previousCameraType = mc.gameSettings.getPointOfView();
-					mc.gameSettings.setPointOfView(PointOfView.FIRST_PERSON);
-					mc.ingameGUI.setOverlayMessage(Utils.localize("mount.onboard", mc.gameSettings.keyBindSneak.func_238171_j_()), false);
+					CameraController.previousCameraType = mc.options.getCameraType();
+					mc.options.setCameraType(PointOfView.FIRST_PERSON);
+					mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
 					CameraController.setRenderPosition(entity);
 				}
 				else if (CameraController.previousCameraType != null)
-					mc.gameSettings.setPointOfView(CameraController.previousCameraType);
+					mc.options.setCameraType(CameraController.previousCameraType);
 
-				mc.worldRenderer.loadRenderers();
+				mc.levelRenderer.allChanged();
 			}
 		});
 		ctx.get().setPacketHandled(true);

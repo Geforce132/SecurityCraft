@@ -38,7 +38,7 @@ public class KeypadChestTileEntityRenderer extends ChestTileEntityRenderer<Keypa
 	protected RenderMaterial getMaterial(KeypadChestTileEntity te, ChestType type) {
 		if (isChristmas)
 			return getMaterialForType(type, CHRISTMAS_LEFT, CHRISTMAS_RIGHT, CHRISTMAS);
-		else if (te.getLidAngle(0.0F) >= 0.9F)
+		else if (te.getOpenNess(0.0F) >= 0.9F)
 			return getMaterialForType(type, LEFT_ACTIVE, RIGHT_ACTIVE, ACTIVE);
 		else
 			return getMaterialForType(type, LEFT_INACTIVE, RIGHT_INACTIVE, INACTIVE);
@@ -57,6 +57,6 @@ public class KeypadChestTileEntityRenderer extends ChestTileEntityRenderer<Keypa
 	}
 
 	private static RenderMaterial createMaterial(String name) {
-		return new RenderMaterial(Atlases.CHEST_ATLAS, new ResourceLocation("securitycraft", "entity/chest/" + name));
+		return new RenderMaterial(Atlases.CHEST_SHEET, new ResourceLocation("securitycraft", "entity/chest/" + name));
 	}
 }

@@ -56,11 +56,11 @@ public class SonicSecuritySystemScreen extends Screen {
 			if (tickCount >= PLAYBACK_DELAY) {
 				if (currentNote < te.getNumberOfNotes()) {
 					NoteWrapper note = te.getRecordedNotes().get(currentNote++);
-					SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName.toUpperCase()).getSound();
+					SoundEvent sound = NoteBlockInstrument.valueOf(note.instrumentName.toUpperCase()).getSoundEvent();
 					float pitch = (float) Math.pow(2.0D, (note.noteID - 12) / 12.0D);
 
 					tickCount = 0;
-					minecraft.world.playSound(minecraft.player, te.getPos(), sound, SoundCategory.RECORDS, 3.0F, pitch);
+					minecraft.level.playSound(minecraft.player, te.getBlockPos(), sound, SoundCategory.RECORDS, 3.0F, pitch);
 				}
 				// Reset the counters when we are finished playing the final note
 				else if (currentNote >= te.getNumberOfNotes()) {
@@ -83,7 +83,7 @@ public class SonicSecuritySystemScreen extends Screen {
 			boolean containsNotes = te.getNumberOfNotes() > 0;
 
 			te.setActive(toggledState);
-			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), toggledState ? SyncSSSSettingsOnServer.DataType.POWER_ON : SyncSSSSettingsOnServer.DataType.POWER_OFF));
+			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getBlockPos(), toggledState ? SyncSSSSettingsOnServer.DataType.POWER_ON : SyncSSSSettingsOnServer.DataType.POWER_OFF));
 			powerButton.setMessage(getPowerString(toggledState));
 
 			if (!toggledState)
@@ -99,7 +99,7 @@ public class SonicSecuritySystemScreen extends Screen {
 		recordingButton = addButton(new ExtendedButton(width / 2 - 75, height / 2 - 32, 150, 20, getRecordingString(te.isRecording()), button -> {
 			boolean recording = !te.isRecording();
 			te.setRecording(recording);
-			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
+			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getBlockPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
 			recordingButton.setMessage(getRecordingString(te.isRecording()));
 		}));
 
@@ -111,7 +111,7 @@ public class SonicSecuritySystemScreen extends Screen {
 
 		clearButton = addButton(new ExtendedButton(width / 2 - 75, height / 2 + 12, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear"), button -> {
 			te.clearNotes();
-			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
+			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getBlockPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
 			playButton.active = false;
 			clearButton.active = false;
 		}));
@@ -122,7 +122,7 @@ public class SonicSecuritySystemScreen extends Screen {
 			boolean toggledPing = !te.pings();
 
 			te.setPings(toggledPing);
-			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), toggledPing ? SyncSSSSettingsOnServer.DataType.SOUND_ON : SyncSSSSettingsOnServer.DataType.SOUND_OFF));
+			SecurityCraft.channel.sendToServer(new SyncSSSSettingsOnServer(te.getBlockPos(), toggledPing ? SyncSSSSettingsOnServer.DataType.SOUND_ON : SyncSSSSettingsOnServer.DataType.SOUND_OFF));
 		}));
 		soundButton.setCurrentIndex(!te.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
 
@@ -137,16 +137,16 @@ public class SonicSecuritySystemScreen extends Screen {
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		int textWidth = font.getStringPropertyWidth(title);
-		int soundTextLength = font.getStringPropertyWidth(SOUND_TEXT);
+		int textWidth = font.width(title);
+		int soundTextLength = font.width(SOUND_TEXT);
 
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bind(TEXTURE);
 		blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.drawText(matrix, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
-		font.drawText(matrix, SOUND_TEXT, width / 2 + 50 - soundTextLength, startY + 141, 4210752);
+		font.draw(matrix, title, startX + xSize / 2 - textWidth / 2, startY + 6, 4210752);
+		font.draw(matrix, SOUND_TEXT, width / 2 + 50 - soundTextLength, startY + 141, 4210752);
 	}
 
 	@Override

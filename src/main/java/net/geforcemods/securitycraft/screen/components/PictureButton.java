@@ -40,7 +40,7 @@ public class PictureButton extends ExtendedButton {
 		this.itemRenderer = itemRenderer;
 
 		if (!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
-			blockToRender = new ItemStack(Block.getBlockFromItem(itemToRender.getItem()));
+			blockToRender = new ItemStack(Block.byItem(itemToRender.getItem()));
 		else
 			this.itemToRender = new ItemStack(itemToRender.getItem());
 	}
@@ -64,7 +64,7 @@ public class PictureButton extends ExtendedButton {
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		if (visible) {
 			Minecraft mc = Minecraft.getInstance();
-			FontRenderer font = mc.fontRenderer;
+			FontRenderer font = mc.font;
 
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
@@ -72,13 +72,13 @@ public class PictureButton extends ExtendedButton {
 
 			if (!blockToRender.isEmpty()) {
 				RenderSystem.enableRescaleNormal();
-				itemRenderer.renderItemAndEffectIntoGUI(blockToRender, x + 2, y + 3);
-				itemRenderer.renderItemOverlayIntoGUI(font, blockToRender, x + 2, y + 3, "");
+				itemRenderer.renderAndDecorateItem(blockToRender, x + 2, y + 3);
+				itemRenderer.renderGuiItemDecorations(font, blockToRender, x + 2, y + 3, "");
 			}
 			else if (!itemToRender.isEmpty()) {
 				RenderSystem.enableRescaleNormal();
-				itemRenderer.renderItemAndEffectIntoGUI(itemToRender, x + 2, y + 2);
-				itemRenderer.renderItemOverlayIntoGUI(font, itemToRender, x + 2, y + 2, "");
+				itemRenderer.renderAndDecorateItem(itemToRender, x + 2, y + 2);
+				itemRenderer.renderGuiItemDecorations(font, itemToRender, x + 2, y + 2, "");
 				RenderSystem.disableLighting();
 			}
 			else {
@@ -86,7 +86,7 @@ public class PictureButton extends ExtendedButton {
 
 				if (texture != null) {
 					RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-					mc.getTextureManager().bindTexture(texture);
+					mc.getTextureManager().bind(texture);
 					blit(matrix, x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
 				}
 			}

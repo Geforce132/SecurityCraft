@@ -38,14 +38,14 @@ public class SecurityCameraEntity extends Entity {
 
 	public SecurityCameraEntity(EntityType<SecurityCameraEntity> type, World world) {
 		super(SCContent.eTypeSecurityCamera, world);
-		noClip = true;
-		forceSpawn = true;
+		noPhysics = true;
+		forcedLoading = true;
 	}
 
 	public SecurityCameraEntity(World world, BlockPos pos) {
 		this(SCContent.eTypeSecurityCamera, world);
 
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 
 		if (!(te instanceof SecurityCameraTileEntity)) {
 			remove();
@@ -60,7 +60,7 @@ public class SecurityCameraEntity extends Entity {
 		if (cam.down)
 			y += 0.25D;
 
-		setPosition(x, y, z);
+		setPos(x, y, z);
 		setInitialPitchYaw(cam);
 	}
 
@@ -70,30 +70,30 @@ public class SecurityCameraEntity extends Entity {
 	}
 
 	private void setInitialPitchYaw(SecurityCameraTileEntity te) {
-		rotationPitch = 30F;
+		xRot = 30F;
 
-		Direction facing = world.getBlockState(getPosition()).get(SecurityCameraBlock.FACING);
+		Direction facing = level.getBlockState(blockPosition()).getValue(SecurityCameraBlock.FACING);
 
 		if (facing == Direction.NORTH)
-			rotationYaw = 180F;
+			yRot = 180F;
 		else if (facing == Direction.WEST)
-			rotationYaw = 90F;
+			yRot = 90F;
 		else if (facing == Direction.SOUTH)
-			rotationYaw = 0F;
+			yRot = 0F;
 		else if (facing == Direction.EAST)
-			rotationYaw = 270F;
+			yRot = 270F;
 		else if (facing == Direction.DOWN)
-			rotationPitch = 75F;
+			xRot = 75F;
 	}
 
 	@Override
-	protected boolean shouldSetPosAfterLoading() {
+	protected boolean repositionEntityAfterLoad() {
 		return false;
 	}
 
 	@Override
 	public void tick() {
-		if (world.isRemote) {
+		if (level.isClientSide) {
 			if (screenshotSoundCooldown > 0)
 				screenshotSoundCooldown -= 1;
 
@@ -106,15 +106,15 @@ public class SecurityCameraEntity extends Entity {
 			if (shouldProvideNightVision)
 				SecurityCraft.channel.sendToServer(new GiveNightVision());
 		}
-		else if (world.getBlockState(getPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
+		else if (level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
 			remove();
 	}
 
 	public void toggleRedstonePower() {
-		BlockPos pos = getPosition();
+		BlockPos pos = blockPosition();
 
-		if (((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE))
-			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !world.getBlockState(pos).get(SecurityCameraBlock.POWERED)));
+		if (((IModuleInventory) level.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
+			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
 	public void toggleNightVision() {
@@ -127,36 +127,36 @@ public class SecurityCameraEntity extends Entity {
 	}
 
 	public boolean isCameraDown() {
-		return world.getTileEntity(getPosition()) instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity) world.getTileEntity(getPosition())).down;
+		return level.getBlockEntity(blockPosition()) instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity) level.getBlockEntity(blockPosition())).down;
 	}
 
 	//here to make this method accessible to CameraController
 	@Override
-	protected void setRotation(float yaw, float pitch) {
-		super.setRotation(yaw, pitch);
+	protected void setRot(float yaw, float pitch) {
+		super.setRot(yaw, pitch);
 	}
 
 	public void stopViewing(ServerPlayerEntity player) {
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			discardCamera();
-			player.spectatingEntity = player;
+			player.camera = player;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new SetCameraView(player));
 		}
 	}
 
 	public void discardCamera() {
-		if (!world.isRemote) {
-			TileEntity te = world.getTileEntity(getPosition());
+		if (!level.isClientSide) {
+			TileEntity te = level.getBlockEntity(blockPosition());
 
 			if (te instanceof SecurityCameraTileEntity)
 				((SecurityCameraTileEntity) te).stopViewing();
 
-			SectionPos chunkPos = SectionPos.from(getPosition());
-			int viewDistance = this.viewDistance <= 0 ? world.getServer().getPlayerList().getViewDistance() : this.viewDistance;
+			SectionPos chunkPos = SectionPos.of(blockPosition());
+			int viewDistance = this.viewDistance <= 0 ? level.getServer().getPlayerList().getViewDistance() : this.viewDistance;
 
 			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
 				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
-					ForgeChunkManager.forceChunk((ServerWorld) world, SecurityCraft.MODID, this, x, z, false, false);
+					ForgeChunkManager.forceChunk((ServerWorld) level, SecurityCraft.MODID, this, x, z, false, false);
 				}
 			}
 		}
@@ -174,16 +174,16 @@ public class SecurityCameraEntity extends Entity {
 	}
 
 	@Override
-	protected void registerData() {}
+	protected void defineSynchedData() {}
 
 	@Override
-	public void writeAdditional(CompoundNBT tag) {}
+	public void addAdditionalSaveData(CompoundNBT tag) {}
 
 	@Override
-	public void readAdditional(CompoundNBT tag) {}
+	public void readAdditionalSaveData(CompoundNBT tag) {}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

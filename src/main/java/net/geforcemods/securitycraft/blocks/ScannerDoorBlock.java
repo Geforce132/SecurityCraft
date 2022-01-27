@@ -25,8 +25,8 @@ public class ScannerDoorBlock extends SpecialDoorBlock {
 	}
 
 	public static Direction.Axis getFacingAxis(BlockState state) {
-		Direction facing = state.get(DoorBlock.FACING);
+		Direction facing = state.getValue(DoorBlock.FACING);
 
-		return state.get(DoorBlock.OPEN) ? facing.rotateY().getAxis() : facing.getAxis();
+		return state.getValue(DoorBlock.OPEN) ? facing.getClockWise().getAxis() : facing.getAxis();
 	}
 }

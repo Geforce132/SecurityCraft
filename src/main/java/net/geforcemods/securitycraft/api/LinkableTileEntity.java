@@ -24,19 +24,19 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 
 	@Override
 	public void tick() {
-		if (hasWorld() && nbtTagStorage != null) {
+		if (hasLevel() && nbtTagStorage != null) {
 			readLinkedBlocks(nbtTagStorage);
-			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 			nbtTagStorage = null;
 		}
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag) {
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag) {
+		super.load(state, tag);
 
 		if (tag.contains("linkedBlocks")) {
-			if (!hasWorld()) {
+			if (!hasLevel()) {
 				nbtTagStorage = tag.getList("linkedBlocks", Constants.NBT.TAG_COMPOUND);
 				return;
 			}
@@ -46,19 +46,19 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 
-		if (hasWorld() && linkedBlocks.size() > 0) {
+		if (hasLevel() && linkedBlocks.size() > 0) {
 			ListNBT tagList = new ListNBT();
 
-			WorldUtils.addScheduledTask(world, () -> {
+			WorldUtils.addScheduledTask(level, () -> {
 				for (int i = linkedBlocks.size() - 1; i >= 0; i--) {
 					LinkedBlock block = linkedBlocks.get(i);
 					CompoundNBT toAppend = new CompoundNBT();
 
 					if (block != null) {
-						if (!block.validate(world)) {
+						if (!block.validate(level)) {
 							linkedBlocks.remove(i);
 							continue;
 						}
@@ -87,20 +87,20 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 			int z = list.getCompound(i).getInt("blockZ");
 
 			LinkedBlock block = new LinkedBlock(name, new BlockPos(x, y, z));
-			if (hasWorld() && !block.validate(world)) {
+			if (hasLevel() && !block.validate(level)) {
 				list.remove(i);
 				continue;
 			}
 
 			if (!linkedBlocks.contains(block))
-				link(this, block.asTileEntity(world));
+				link(this, block.asTileEntity(level));
 		}
 	}
 
 	@Override
-	public void remove() {
+	public void setRemoved() {
 		for (LinkedBlock block : linkedBlocks) {
-			LinkableTileEntity.unlink(block.asTileEntity(world), this);
+			LinkableTileEntity.unlink(block.asTileEntity(level), this);
 		}
 	}
 
@@ -188,13 +188,13 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	 */
 	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableTileEntity> excludedTEs) {
 		for (LinkedBlock block : linkedBlocks)
-			if (excludedTEs.contains(block.asTileEntity(world)))
+			if (excludedTEs.contains(block.asTileEntity(level)))
 				continue;
 			else {
-				BlockState state = world.getBlockState(block.blockPos);
+				BlockState state = level.getBlockState(block.blockPos);
 
-				block.asTileEntity(world).onLinkedBlockAction(action, parameters, excludedTEs);
-				world.notifyBlockUpdate(pos, state, state, 3);
+				block.asTileEntity(level).onLinkedBlockAction(action, parameters, excludedTEs);
+				level.sendBlockUpdated(worldPosition, state, state, 3);
 			}
 	}
 

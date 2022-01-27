@@ -42,10 +42,10 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 			Block block = ForgeRegistries.BLOCKS.getValue(rl);
 
 			if (block != null) {
-				final IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(block.getDefaultState());
+				final IBakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(block.defaultBlockState());
 
 				if (model != null && model != this)
-					return model.getQuads(block.getDefaultState(), side, rand, modelData);
+					return model.getQuads(block.defaultBlockState(), side, rand, modelData);
 			}
 		}
 
@@ -60,7 +60,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 			Block block = ForgeRegistries.BLOCKS.getValue(rl);
 
 			if (block != null && !(block instanceof DisguisableBlock))
-				return Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(block.getDefaultState()).getParticleTexture(modelData);
+				return Minecraft.getInstance().getBlockRenderer().getBlockModel(block.defaultBlockState()).getParticleTexture(modelData);
 		}
 
 		return oldModel.getParticleTexture(modelData);
@@ -69,7 +69,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	@Override
 	@Nonnull
 	public IModelData getModelData(IBlockDisplayReader world, BlockPos pos, BlockState state, IModelData tileData) {
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 
 		if (te != null) {
 			Block block = te.getBlockState().getBlock();
@@ -89,8 +89,8 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return oldModel.getParticleTexture();
+	public TextureAtlasSprite getParticleIcon() {
+		return oldModel.getParticleIcon();
 	}
 
 	@Override
@@ -99,12 +99,12 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	}
 
 	@Override
-	public boolean isBuiltInRenderer() {
+	public boolean isCustomRenderer() {
 		return false;
 	}
 
 	@Override
-	public boolean isAmbientOcclusion() {
+	public boolean useAmbientOcclusion() {
 		return true;
 	}
 
@@ -114,7 +114,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	}
 
 	@Override
-	public boolean isSideLit() {
+	public boolean usesBlockLight() {
 		return false;
 	}
 }

@@ -32,7 +32,7 @@ public class ClearLoggerServer {
 	public static void onMessage(ClearLoggerServer message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.world.getTileEntity(message.pos);
+			TileEntity te = player.level.getBlockEntity(message.pos);
 
 			if (te instanceof UsernameLoggerTileEntity && ((UsernameLoggerTileEntity) te).getOwner().isOwner(player)) {
 				((UsernameLoggerTileEntity) te).players = new String[100];

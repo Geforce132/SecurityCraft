@@ -63,8 +63,8 @@ public abstract class AbstractKeypadFurnaceTileEntity extends AbstractFurnaceTil
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
@@ -79,8 +79,8 @@ public abstract class AbstractKeypadFurnaceTileEntity extends AbstractFurnaceTil
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag) {
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag) {
+		super.load(state, tag);
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
@@ -90,17 +90,17 @@ public abstract class AbstractKeypadFurnaceTileEntity extends AbstractFurnaceTil
 
 	@Override
 	public CompoundNBT getUpdateTag() {
-		return write(new CompoundNBT());
+		return save(new CompoundNBT());
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
+		return new SUpdateTileEntityPacket(worldPosition, 1, getUpdateTag());
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		read(getBlockState(), packet.getNbtCompound());
+		load(getBlockState(), packet.getTag());
 	}
 
 	@Override
@@ -134,14 +134,14 @@ public abstract class AbstractKeypadFurnaceTileEntity extends AbstractFurnaceTil
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot) {
+	public ItemStack getItem(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : items.get(slot);
 	}
 
 	@Override
 	public void activate(PlayerEntity player) {
-		if (!world.isRemote && getBlockState().getBlock() instanceof AbstractKeypadFurnaceBlock)
-			((AbstractKeypadFurnaceBlock) getBlockState().getBlock()).activate(getBlockState(), world, pos, player);
+		if (!level.isClientSide && getBlockState().getBlock() instanceof AbstractKeypadFurnaceBlock)
+			((AbstractKeypadFurnaceBlock) getBlockState().getBlock()).activate(getBlockState(), level, worldPosition, player);
 	}
 
 	@Override
@@ -151,14 +151,14 @@ public abstract class AbstractKeypadFurnaceTileEntity extends AbstractFurnaceTil
 				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, world, pos);
+						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
 					public ITextComponent getDisplayName() {
 						return AbstractKeypadFurnaceTileEntity.super.getDisplayName();
 					}
-				}, pos);
+				}, worldPosition);
 			}
 		}
 		else {
@@ -167,14 +167,14 @@ public abstract class AbstractKeypadFurnaceTileEntity extends AbstractFurnaceTil
 					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, world, pos);
+							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override
 						public ITextComponent getDisplayName() {
 							return AbstractKeypadFurnaceTileEntity.super.getDisplayName();
 						}
-					}, pos);
+					}, worldPosition);
 				}
 			}
 			else
@@ -199,12 +199,12 @@ public abstract class AbstractKeypadFurnaceTileEntity extends AbstractFurnaceTil
 	}
 
 	public IIntArray getFurnaceData() {
-		return furnaceData;
+		return dataAccess;
 	}
 
 	@Override
 	protected ITextComponent getDefaultName() {
-		return new TranslationTextComponent(getBlockState().getBlock().getTranslationKey());
+		return new TranslationTextComponent(getBlockState().getBlock().getDescriptionId());
 	}
 
 	@Override
@@ -235,16 +235,16 @@ public abstract class AbstractKeypadFurnaceTileEntity extends AbstractFurnaceTil
 	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		IModuleInventory.super.onModuleInserted(stack, module);
 
-		if (!world.isRemote && module == ModuleType.DISGUISE)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, true, stack));
+		if (!level.isClientSide && module == ModuleType.DISGUISE)
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack));
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		IModuleInventory.super.onModuleRemoved(stack, module);
 
-		if (!world.isRemote && module == ModuleType.DISGUISE)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, false, stack));
+		if (!level.isClientSide && module == ModuleType.DISGUISE)
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack));
 	}
 
 	@Override

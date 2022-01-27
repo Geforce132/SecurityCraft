@@ -19,7 +19,7 @@ public class BlockPocketTileEntity extends OwnableTileEntity implements ITickabl
 
 	public void setManager(BlockPocketManagerTileEntity manager) {
 		this.manager = manager;
-		managerPos = manager.getPos();
+		managerPos = manager.getBlockPos();
 	}
 
 	public void removeManager() {
@@ -34,7 +34,7 @@ public class BlockPocketTileEntity extends OwnableTileEntity implements ITickabl
 	@Override
 	public void tick() {
 		if (manager == null && managerPos != null) {
-			TileEntity te = world.getTileEntity(managerPos);
+			TileEntity te = level.getBlockEntity(managerPos);
 
 			if (te instanceof BlockPocketManagerTileEntity)
 				manager = (BlockPocketManagerTileEntity) te;
@@ -42,26 +42,26 @@ public class BlockPocketTileEntity extends OwnableTileEntity implements ITickabl
 	}
 
 	@Override
-	public void remove() {
-		super.remove();
+	public void setRemoved() {
+		super.setRemoved();
 
-		if (world.isBlockLoaded(pos) && manager != null && !(world.getBlockState(pos).getBlock() instanceof IBlockPocket))
+		if (level.hasChunkAt(worldPosition) && manager != null && !(level.getBlockState(worldPosition).getBlock() instanceof IBlockPocket))
 			manager.disableMultiblock();
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
+	public CompoundNBT save(CompoundNBT tag) {
 		if (manager != null)
-			tag.putLong("ManagerPos", manager.getPos().toLong());
+			tag.putLong("ManagerPos", manager.getBlockPos().asLong());
 
-		return super.write(tag);
+		return super.save(tag);
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag) {
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag) {
+		super.load(state, tag);
 
 		if (tag.contains("ManagerPos"))
-			managerPos = BlockPos.fromLong(tag.getLong("ManagerPos"));
+			managerPos = BlockPos.of(tag.getLong("ManagerPos"));
 	}
 }

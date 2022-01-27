@@ -43,7 +43,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	/** Whether the ping sound should be emitted or not */
 	private boolean emitsPings = true;
 	private int pingCooldown = PING_DELAY;
-	public IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	public IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	/** Used to control the number of ticks that Sonic Security Systems emit redstone power for */
 	public int powerCooldown = 0;
 	public float radarRotationDegrees = 0;
@@ -77,7 +77,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 			tracked = true;
 		}
 
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			if (!isActive())
 				return;
 
@@ -86,8 +86,8 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 					powerCooldown--;
 				else {
 					correctTuneWasPlayed = false;
-					world.setBlockState(pos, world.getBlockState(pos).with(SonicSecuritySystemBlock.POWERED, false));
-					BlockUtils.updateIndirectNeighbors(world, pos, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
+					level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(SonicSecuritySystemBlock.POWERED, false));
+					BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
 				}
 			}
 
@@ -118,7 +118,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 				while (iterator.hasNext()) {
 					BlockPos blockPos = iterator.next();
 
-					if (!(world.getTileEntity(blockPos) instanceof ILockable))
+					if (!(level.getBlockEntity(blockPos) instanceof ILockable))
 						blocksToRemove.add(blockPos);
 				}
 
@@ -130,7 +130,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 
 				// Play the ping sound if it was not disabled
 				if (emitsPings && !isRecording)
-					world.playSound(null, pos, SCSounds.PING.event, SoundCategory.BLOCKS, 0.3F, 1.0F);
+					level.playSound(null, worldPosition, SCSounds.PING.event, SoundCategory.BLOCKS, 0.3F, 1.0F);
 
 				pingCooldown = PING_DELAY;
 			}
@@ -147,8 +147,8 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	}
 
 	@Override
-	public void remove() {
-		super.remove();
+	public void setRemoved() {
+		super.setRemoved();
 
 		// Stop tracking SSSs when they are removed from the world
 		SonicSecuritySystemTracker.stopTracking(this);
@@ -157,16 +157,16 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		if (module == ModuleType.REDSTONE) {
-			world.setBlockState(pos, world.getBlockState(pos).with(SonicSecuritySystemBlock.POWERED, false));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
+			level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(SonicSecuritySystemBlock.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
 		}
 
 		super.onModuleRemoved(stack, module);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 
 		// If there are blocks to save but the tag doesn't have a CompoundNBT
 		// to store them in, create one (shouldn't be needed)
@@ -197,8 +197,8 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag) {
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag) {
+		super.load(state, tag);
 
 		if (tag.contains("LinkedBlocks")) {
 			ListNBT list = tag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
@@ -403,9 +403,9 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 		resetListeningTimer();
 		listenPos = 0;
 		isListening = false;
-		world.updateBlock(pos, SCContent.SONIC_SECURITY_SYSTEM.get());
+		level.blockUpdated(worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get());
 
-		if (!world.isRemote)
+		if (!level.isClientSide)
 			sync();
 	}
 
@@ -425,7 +425,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	public void recordNote(int noteID, String instrumentName) {
 		recordedNotes.add(new NoteWrapper(noteID, instrumentName));
 
-		if (!world.isRemote)
+		if (!level.isClientSide)
 			sync();
 	}
 
@@ -477,7 +477,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity implem
 	}
 
 	private void sync() {
-		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 	}
 
 	/**

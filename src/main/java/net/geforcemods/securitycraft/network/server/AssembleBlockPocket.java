@@ -15,26 +15,26 @@ public class AssembleBlockPocket {
 	public AssembleBlockPocket() {}
 
 	public AssembleBlockPocket(BlockPocketManagerTileEntity te, int size) {
-		pos = te.getPos();
+		pos = te.getBlockPos();
 		this.size = size;
 	}
 
 	public static void encode(AssembleBlockPocket message, PacketBuffer buf) {
-		buf.writeLong(message.pos.toLong());
+		buf.writeLong(message.pos.asLong());
 		buf.writeInt(message.size);
 	}
 
 	public static AssembleBlockPocket decode(PacketBuffer buf) {
 		AssembleBlockPocket message = new AssembleBlockPocket();
 
-		message.pos = BlockPos.fromLong(buf.readLong());
+		message.pos = BlockPos.of(buf.readLong());
 		message.size = buf.readInt();
 		return message;
 	}
 
 	public static void onMessage(AssembleBlockPocket message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			TileEntity te = ctx.get().getSender().world.getTileEntity(message.pos);
+			TileEntity te = ctx.get().getSender().level.getBlockEntity(message.pos);
 
 			if (te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity) te).getOwner().isOwner(ctx.get().getSender())) {
 				((BlockPocketManagerTileEntity) te).size = message.size;

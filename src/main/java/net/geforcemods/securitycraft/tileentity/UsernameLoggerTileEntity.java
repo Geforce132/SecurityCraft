@@ -24,7 +24,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider, ITickableTileEntity, ILockable {
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
-	private IntOption searchRadius = new IntOption(this::getPos, "searchRadius", 3, 1, 20, 1, true);
+	private IntOption searchRadius = new IntOption(this::getBlockPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
@@ -36,12 +36,12 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 
 	@Override
 	public void tick() {
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			if (cooldown-- > 0)
 				return;
 
-			if (world.getRedstonePowerFromNeighbors(pos) > 0) {
-				world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(pos).grow(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
+			if (level.getBestNeighborSignal(worldPosition) > 0) {
+				level.getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadius.get()), e -> !e.isSpectator()).forEach(this::addPlayer);
 				syncLoggedPlayersToClient();
 			}
 
@@ -79,8 +79,8 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 
 		for (int i = 0; i < players.length; i++) {
 			tag.putString("player" + i, players[i] == null ? "" : players[i]);
@@ -92,8 +92,8 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag) {
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag) {
+		super.load(state, tag);
 
 		for (int i = 0; i < players.length; i++) {
 			players[i] = tag.getString("player" + i);
@@ -105,17 +105,17 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	public void syncLoggedPlayersToClient() {
 		for (int i = 0; i < players.length; i++) {
 			if (players[i] != null)
-				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), i, players[i], uuids[i], timestamps[i]));
 		}
 	}
 
 	public void clearLoggedPlayersOnClient() {
-		SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new ClearLoggerClient(pos));
+		SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new ClearLoggerClient(worldPosition));
 	}
 
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-		return new GenericTEContainer(SCContent.cTypeUsernameLogger, windowId, world, pos);
+		return new GenericTEContainer(SCContent.cTypeUsernameLogger, windowId, level, worldPosition);
 	}
 
 	@Override
