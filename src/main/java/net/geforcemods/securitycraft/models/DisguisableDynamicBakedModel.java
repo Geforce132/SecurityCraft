@@ -56,8 +56,12 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 		if (state != null) {
 			Block block = state.getBlock();
 
-			if (block != Blocks.AIR)
-				return Minecraft.getInstance().getBlockRenderer().getBlockModel(state).getParticleTexture(modelData);
+			if (block != Blocks.AIR) {
+				IBakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(state);
+
+				if (model != null && model != this)
+					return model.getParticleTexture(modelData);
+			}
 		}
 
 		return oldModel.getParticleTexture(modelData);
