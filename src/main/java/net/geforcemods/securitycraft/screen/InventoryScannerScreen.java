@@ -24,8 +24,8 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	private boolean owns = false;
 	private boolean hasRedstoneModule = false, hasStorageModule = false;
 	private String infoStringRedstone, infoStringStorage;
-	private final String redstoneModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.REDSTONE_MODULE.get().getTranslationKey())).getFormattedText();
-	private final String storageModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.STORAGE_MODULE.get().getTranslationKey())).getFormattedText();
+	private final String redstoneModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.REDSTONE_MODULE.get().getDescriptionId())).getColoredString();
+	private final String storageModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.STORAGE_MODULE.get().getDescriptionId())).getColoredString();
 
 	public InventoryScannerScreen(InventoryScannerContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
@@ -33,21 +33,21 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		owns = tileEntity.getOwner().isOwner(inv.player);
 		hasRedstoneModule = tileEntity.hasModule(ModuleType.REDSTONE);
 		hasStorageModule = tileEntity.hasModule(ModuleType.STORAGE);
-		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no"))).getFormattedText();
-		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no"))).getFormattedText();
+		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no"))).getColoredString();
+		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no"))).getColoredString();
 
 		if (hasStorageModule)
-			xSize = 246;
+			imageWidth = 246;
 		else
-			xSize = 190;
+			imageWidth = 190;
 
-		ySize = 196;
+		imageHeight = 196;
 	}
 
 	@Override
 	public void init() {
 		super.init();
-		minecraft.keyboardListener.enableRepeatEvents(true);
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 	}
 
 	@Override
@@ -55,37 +55,37 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		super.render(mouseX, mouseY, partialTicks);
 
 		RenderSystem.disableLighting();
-		font.drawSplitString(infoStringRedstone, guiLeft + 28, guiTop + 45, 150, 4210752);
-		font.drawSplitString(infoStringStorage, guiLeft + 28, guiTop + 75, 150, 4210752);
-		ClientUtils.renderModuleInfo(ModuleType.REDSTONE, null, redstoneModuleNotInstalled, hasRedstoneModule, guiLeft + 8, guiTop + 45, width, height, mouseX, mouseY);
-		ClientUtils.renderModuleInfo(ModuleType.STORAGE, null, storageModuleNotInstalled, hasStorageModule, guiLeft + 8, guiTop + 75, width, height, mouseX, mouseY);
+		font.drawWordWrap(infoStringRedstone, leftPos + 28, topPos + 45, 150, 4210752);
+		font.drawWordWrap(infoStringStorage, leftPos + 28, topPos + 75, 150, 4210752);
+		ClientUtils.renderModuleInfo(ModuleType.REDSTONE, null, redstoneModuleNotInstalled, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(ModuleType.STORAGE, null, storageModuleNotInstalled, hasStorageModule, leftPos + 8, topPos + 75, width, height, mouseX, mouseY);
 
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
+		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
+			renderTooltip(getSlotUnderMouse().getItem(), mouseX, mouseY);
 	}
 
 	@Override
 	public void onClose() {
 		super.onClose();
-		minecraft.keyboardListener.enableRepeatEvents(false);
+		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(Utils.localize("gui.securitycraft:invScan.prohibitedItems").getFormattedText(), 8, 6, 4210752);
-		font.drawString(tileEntity.getOwner().isOwner(minecraft.player) ? (TextFormatting.UNDERLINE + Utils.localize("gui.securitycraft:invScan.mode.admin").getFormattedText()) : (TextFormatting.UNDERLINE + Utils.localize("gui.securitycraft:invScan.mode.view").getFormattedText()), 112, 6, 4210752);
+	protected void renderLabels(int mouseX, int mouseY) {
+		font.draw(Utils.localize("gui.securitycraft:invScan.prohibitedItems").getColoredString(), 8, 6, 4210752);
+		font.draw(tileEntity.getOwner().isOwner(minecraft.player) ? (TextFormatting.UNDERLINE + Utils.localize("gui.securitycraft:invScan.mode.admin").getColoredString()) : (TextFormatting.UNDERLINE + Utils.localize("gui.securitycraft:invScan.mode.view").getColoredString()), 112, 6, 4210752);
 
 		if (hasStorageModule && owns)
-			font.drawString(Utils.localize("gui.securitycraft:invScan.storage").getFormattedText(), 188, 18, 4210752);
+			font.draw(Utils.localize("gui.securitycraft:invScan.storage").getColoredString(), 188, 18, 4210752);
 
-		font.drawString(Utils.localize("container.inventory").getFormattedText(), 15, ySize - 93, 4210752);
+		font.draw(Utils.localize("container.inventory").getColoredString(), 15, imageHeight - 93, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
-		blit(guiLeft, guiTop, 0, 0, xSize, ySize + 30);
+		minecraft.getTextureManager().bind(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
+		blit(leftPos, topPos, 0, 0, imageWidth, imageHeight + 30);
 	}
 }

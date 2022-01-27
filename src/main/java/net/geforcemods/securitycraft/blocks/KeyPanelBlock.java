@@ -43,27 +43,27 @@ import net.minecraft.world.server.ServerWorld;
 public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-	public static final EnumProperty<AttachFace> FACE = BlockStateProperties.FACE;
+	public static final EnumProperty<AttachFace> FACE = BlockStateProperties.ATTACH_FACE;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	public static final VoxelShape FLOOR_NS = Block.makeCuboidShape(2.0D, 0.0D, 1.0D, 14.0D, 1.0D, 15.0D);
-	public static final VoxelShape FLOOR_EW = Block.makeCuboidShape(1.0D, 0.0D, 2.0D, 15.0D, 1.0D, 14.0D);
-	public static final VoxelShape CEILING_NS = Block.makeCuboidShape(2.0D, 15.0D, 1.0D, 14.0D, 16.0D, 15.0D);
-	public static final VoxelShape CEILING_EW = Block.makeCuboidShape(1.0D, 15.0D, 2.0D, 15.0D, 16.0D, 14.0D);
-	public static final VoxelShape WALL_N = Block.makeCuboidShape(2.0D, 1.0D, 15.0D, 14.0D, 15.0D, 16.0D);
-	public static final VoxelShape WALL_E = Block.makeCuboidShape(0.0D, 1.0D, 2.0D, 1.0D, 15.0D, 14.0D);
-	public static final VoxelShape WALL_S = Block.makeCuboidShape(2.0D, 1.0D, 0.0D, 14.0D, 15.0D, 1.0D);
-	public static final VoxelShape WALL_W = Block.makeCuboidShape(15.0D, 1.0D, 2.0D, 16.0D, 15.0D, 14.0D);
+	public static final VoxelShape FLOOR_NS = Block.box(2.0D, 0.0D, 1.0D, 14.0D, 1.0D, 15.0D);
+	public static final VoxelShape FLOOR_EW = Block.box(1.0D, 0.0D, 2.0D, 15.0D, 1.0D, 14.0D);
+	public static final VoxelShape CEILING_NS = Block.box(2.0D, 15.0D, 1.0D, 14.0D, 16.0D, 15.0D);
+	public static final VoxelShape CEILING_EW = Block.box(1.0D, 15.0D, 2.0D, 15.0D, 16.0D, 14.0D);
+	public static final VoxelShape WALL_N = Block.box(2.0D, 1.0D, 15.0D, 14.0D, 15.0D, 16.0D);
+	public static final VoxelShape WALL_E = Block.box(0.0D, 1.0D, 2.0D, 1.0D, 15.0D, 14.0D);
+	public static final VoxelShape WALL_S = Block.box(2.0D, 1.0D, 0.0D, 14.0D, 15.0D, 1.0D);
+	public static final VoxelShape WALL_W = Block.box(15.0D, 1.0D, 2.0D, 16.0D, 15.0D, 14.0D);
 
 	public KeyPanelBlock(Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false).with(FACE, AttachFace.WALL).with(WATERLOGGED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(FACE, AttachFace.WALL).setValue(WATERLOGGED, false));
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
-		switch (state.get(FACE)) {
+		switch (state.getValue(FACE)) {
 			case FLOOR:
-				switch (state.get(FACING)) {
+				switch (state.getValue(FACING)) {
 					case NORTH:
 						return FLOOR_NS;
 					case EAST:
@@ -76,7 +76,7 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 						return VoxelShapes.empty();
 				}
 			case CEILING:
-				switch (state.get(FACING)) {
+				switch (state.getValue(FACING)) {
 					case NORTH:
 						return CEILING_NS;
 					case EAST:
@@ -89,7 +89,7 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 						return VoxelShapes.empty();
 				}
 			case WALL:
-				switch (state.get(FACING)) {
+				switch (state.getValue(FACING)) {
 					case NORTH:
 						return WALL_N;
 					case EAST:
@@ -112,19 +112,19 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (state.get(POWERED))
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (state.getValue(POWERED))
 			return ActionResultType.PASS;
 		else {
-			KeyPanelTileEntity te = (KeyPanelTileEntity) world.getTileEntity(pos);
+			KeyPanelTileEntity te = (KeyPanelTileEntity) world.getBlockEntity(pos);
 
 			if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}
 			else if (ModuleUtils.isAllowed(te, player)) {
 				if (te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				activate(state, world, pos, te.getSignalLength());
 			}
@@ -137,75 +137,75 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 
 	@Override
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		world.setBlockState(pos, state.with(POWERED, false));
+		world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
 		BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
 	}
 
 	@Override
-	public boolean canProvidePower(BlockState state) {
+	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return state.get(POWERED) ? 15 : 0;
+	public int getSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+		return state.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public int getStrongPower(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return state.get(POWERED) && getConnectedDirection(state) == side ? 15 : 0;
+	public int getDirectSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+		return state.getValue(POWERED) && getConnectedDirection(state) == side ? 15 : 0;
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader level, BlockPos pos) {
+	public boolean canSurvive(BlockState state, IWorldReader level, BlockPos pos) {
 		return canAttach(level, pos, getConnectedDirection(state).getOpposite());
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		World world = ctx.getWorld();
-		BlockPos pos = ctx.getPos();
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 
 		for (Direction direction : ctx.getNearestLookingDirections()) {
 			BlockState state;
 
 			if (direction.getAxis() == Direction.Axis.Y)
-				state = getDefaultState().with(FACE, direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR).with(FACING, ctx.getPlacementHorizontalFacing());
+				state = defaultBlockState().setValue(FACE, direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR).setValue(FACING, ctx.getHorizontalDirection());
 			else
-				state = getDefaultState().with(FACE, AttachFace.WALL).with(FACING, direction.getOpposite());
+				state = defaultBlockState().setValue(FACE, AttachFace.WALL).setValue(FACING, direction.getOpposite());
 
-			if (state.isValidPosition(world, pos))
-				return state.with(POWERED, false).with(WATERLOGGED, world.getFluidState(pos).getFluid() == Fluids.WATER);
+			if (state.canSurvive(world, pos))
+				return state.setValue(POWERED, false).setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER);
 		}
 
 		return null;
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos pos, BlockPos facingPos) {
-		if (state.get(WATERLOGGED))
-			world.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos pos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
+			world.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 
-		return getConnectedDirection(state).getOpposite() == facing && !state.isValidPosition(world, pos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, pos, facingPos);
+		return getConnectedDirection(state).getOpposite() == facing && !state.canSurvive(world, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, world, pos, facingPos);
 	}
 
 	@Override
 	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.toRotation(state.get(FACING)));
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWERED, FACE, WATERLOGGED);
 	}
 
@@ -215,25 +215,25 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	public void activate(BlockState state, World world, BlockPos pos, int signalLength) {
-		world.setBlockState(pos, state.with(POWERED, true));
+		world.setBlockAndUpdate(pos, state.setValue(POWERED, true));
 		BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
-		world.getPendingBlockTicks().scheduleTick(pos, this, signalLength);
+		world.getBlockTicks().scheduleTick(pos, this, signalLength);
 	}
 
 	protected static Direction getConnectedDirection(BlockState state) {
-		switch (state.get(FACE)) {
+		switch (state.getValue(FACE)) {
 			case CEILING:
 				return Direction.DOWN;
 			case FLOOR:
 				return Direction.UP;
 			default:
-				return state.get(FACING);
+				return state.getValue(FACING);
 		}
 	}
 
 	public static boolean canAttach(IWorldReader world, BlockPos pos, Direction direction) {
-		BlockPos relativePos = pos.offset(direction);
+		BlockPos relativePos = pos.relative(direction);
 
-		return world.getBlockState(relativePos).isSolidSide(world, relativePos, direction.getOpposite());
+		return world.getBlockState(relativePos).isFaceSturdy(world, relativePos, direction.getOpposite());
 	}
 }

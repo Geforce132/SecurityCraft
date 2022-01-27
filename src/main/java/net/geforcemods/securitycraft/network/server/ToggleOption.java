@@ -45,14 +45,14 @@ public class ToggleOption {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			int id = message.id;
 			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.world.getTileEntity(pos);
+			TileEntity te = player.level.getBlockEntity(pos);
 
 			if (te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player))) {
 				((ICustomizable) te).customOptions()[id].toggle();
 				((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[id]);
 
 				if (te instanceof CustomizableTileEntity)
-					player.world.notifyBlockUpdate(pos, te.getBlockState(), te.getBlockState(), 3);
+					player.level.sendBlockUpdated(pos, te.getBlockState(), te.getBlockState(), 3);
 			}
 		});
 

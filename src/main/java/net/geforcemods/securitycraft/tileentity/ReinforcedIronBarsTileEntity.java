@@ -12,14 +12,14 @@ public class ReinforcedIronBarsTileEntity extends OwnableTileEntity {
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
+	public CompoundNBT save(CompoundNBT tag) {
 		tag.putBoolean("canDrop", canDrop);
-		return super.write(tag);
+		return super.save(tag);
 	}
 
 	@Override
-	public void read(CompoundNBT tag) {
-		super.read(tag);
+	public void load(CompoundNBT tag) {
+		super.load(tag);
 		canDrop = tag.getBoolean("canDrop");
 	}
 

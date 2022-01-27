@@ -16,7 +16,7 @@ public class ItemRestrictedSlot extends Slot {
 	}
 
 	@Override
-	public boolean isItemValid(ItemStack stack) {
+	public boolean mayPlace(ItemStack stack) {
 		if (stack.getItem() == null)
 			return false;
 
@@ -30,8 +30,8 @@ public class ItemRestrictedSlot extends Slot {
 	}
 
 	@Override
-	public void putStack(ItemStack stack) {
-		inventory.setInventorySlotContents(getSlotIndex(), stack);
-		onSlotChanged();
+	public void set(ItemStack stack) {
+		inventory.setItem(getSlotIndex(), stack);
+		setChanged();
 	}
 }

@@ -38,7 +38,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 	private List<StringHoverChecker> hoverCheckers = new ArrayList<>();
 
 	public MineRemoteAccessToolScreen(ItemStack item) {
-		super(new TranslationTextComponent(item.getTranslationKey()));
+		super(new TranslationTextComponent(item.getDescriptionId()));
 
 		mrat = item;
 	}
@@ -96,20 +96,20 @@ public class MineRemoteAccessToolScreen extends Screen {
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				guiButtons[i][UNBIND].active = true;
 
-				if (Minecraft.getInstance().player.world.isBlockPresent(minePos)) {
-					Block block = minecraft.world.getBlockState(minePos).getBlock();
+				if (Minecraft.getInstance().player.level.isLoaded(minePos)) {
+					Block block = minecraft.level.getBlockState(minePos).getBlock();
 
 					if (block instanceof IExplosive) {
-						boolean active = ((IExplosive) block).isActive(minecraft.world, minePos);
+						boolean active = ((IExplosive) block).isActive(minecraft.level, minePos);
 						boolean defusable = ((IExplosive) block).isDefusable();
 
 						guiButtons[i][DEFUSE].active = active && defusable;
 						guiButtons[i][ACTIVATE].active = !active && defusable;
 						guiButtons[i][DETONATE].active = active;
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][DEFUSE], Utils.localize("gui.securitycraft:mrat.defuse").getFormattedText()));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][ACTIVATE], Utils.localize("gui.securitycraft:mrat.activate").getFormattedText()));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][DETONATE], Utils.localize("gui.securitycraft:mrat.detonate").getFormattedText()));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind").getFormattedText()));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][DEFUSE], Utils.localize("gui.securitycraft:mrat.defuse").getColoredString()));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][ACTIVATE], Utils.localize("gui.securitycraft:mrat.activate").getColoredString()));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][DETONATE], Utils.localize("gui.securitycraft:mrat.detonate").getColoredString()));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind").getColoredString()));
 					}
 					else {
 						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
@@ -121,10 +121,10 @@ public class MineRemoteAccessToolScreen extends Screen {
 				}
 				else {
 					for (int j = 0; j < 3; j++) {
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], Utils.localize("gui.securitycraft:mrat.outOfRange").getFormattedText()));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], Utils.localize("gui.securitycraft:mrat.outOfRange").getColoredString()));
 					}
 
-					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind").getFormattedText()));
+					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind").getColoredString()));
 				}
 			}
 		}
@@ -137,22 +137,22 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bind(TEXTURE);
 		blit(startX, startY, 0, 0, xSize, ySize);
 		super.render(mouseX, mouseY, partialTicks);
-		String mratName = Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()).getFormattedText();
-		font.drawString(mratName, startX + xSize / 2 - font.getStringWidth(mratName), startY + -25 + 13, 0xFF0000);
+		String mratName = Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId()).getColoredString();
+		font.draw(mratName, startX + xSize / 2 - font.width(mratName), startY + -25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 6; i++) {
 			int[] coords = getMineCoordinates(i);
 			String line;
 
 			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-				line = Utils.localize("gui.securitycraft:mrat.notBound").getFormattedText();
+				line = Utils.localize("gui.securitycraft:mrat.notBound").getColoredString();
 			else
-				line = Utils.localize("gui.securitycraft:mrat.mineLocations").getFormattedText().replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])).getFormattedText());
+				line = Utils.localize("gui.securitycraft:mrat.mineLocations").getColoredString().replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])).getColoredString());
 
-			font.drawString(line, startX + xSize / 2 - font.getStringWidth(line) + 25, startY + i * 30 + 13, 4210752);
+			font.draw(line, startX + xSize / 2 - font.width(line) + 25, startY + i * 30 + 13, 4210752);
 		}
 
 		for (StringHoverChecker chc : hoverCheckers) {
@@ -166,14 +166,14 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 		switch (action) {
 			case DEFUSE:
-				((IExplosive) Minecraft.getInstance().player.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getInstance().player.world, new BlockPos(coords[0], coords[1], coords[2]));
+				((IExplosive) Minecraft.getInstance().player.level.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getInstance().player.level, new BlockPos(coords[0], coords[1], coords[2]));
 				SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "defuse"));
 				guiButtons[mine][DEFUSE].active = false;
 				guiButtons[mine][ACTIVATE].active = true;
 				guiButtons[mine][DETONATE].active = false;
 				break;
 			case ACTIVATE:
-				((IExplosive) Minecraft.getInstance().player.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getInstance().player.world, new BlockPos(coords[0], coords[1], coords[2]));
+				((IExplosive) Minecraft.getInstance().player.level.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getInstance().player.level, new BlockPos(coords[0], coords[1], coords[2]));
 				SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "activate"));
 				guiButtons[mine][DEFUSE].active = true;
 				guiButtons[mine][ACTIVATE].active = false;
@@ -237,7 +237,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 	@Override
 	public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
-		if (minecraft.gameSettings.keyBindInventory.isActiveAndMatches(InputMappings.getInputByCode(p_keyPressed_1_, p_keyPressed_2_))) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputMappings.getKey(p_keyPressed_1_, p_keyPressed_2_))) {
 			this.onClose();
 			return true;
 		}

@@ -22,13 +22,13 @@ import net.minecraft.world.IWorldReader;
 
 public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 	public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
-	protected static final VoxelShape STANDING_SHAPE = VoxelShapes.or(Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 7.0D, 11.0D), Block.makeCuboidShape(6.0D, 7.0D, 6.0D, 10.0D, 9.0D, 10.0D));
-	protected static final VoxelShape HANGING_SHAPE = VoxelShapes.or(Block.makeCuboidShape(5.0D, 1.0D, 5.0D, 11.0D, 8.0D, 11.0D), Block.makeCuboidShape(6.0D, 8.0D, 6.0D, 10.0D, 10.0D, 10.0D));
+	protected static final VoxelShape STANDING_SHAPE = VoxelShapes.or(Block.box(5.0D, 0.0D, 5.0D, 11.0D, 7.0D, 11.0D), Block.box(6.0D, 7.0D, 6.0D, 10.0D, 9.0D, 10.0D));
+	protected static final VoxelShape HANGING_SHAPE = VoxelShapes.or(Block.box(5.0D, 1.0D, 5.0D, 11.0D, 8.0D, 11.0D), Block.box(6.0D, 8.0D, 6.0D, 10.0D, 10.0D, 10.0D));
 
 	public ReinforcedLanternBlock(Block.Properties properties, Block vB) {
 		super(properties, vB);
 
-		setDefaultState(stateContainer.getBaseState().with(HANGING, false));
+		registerDefaultState(stateDefinition.any().setValue(HANGING, false));
 	}
 
 	@Override
@@ -36,9 +36,9 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		for (Direction dir : ctx.getNearestLookingDirections()) {
 			if (dir.getAxis() == Direction.Axis.Y) {
-				BlockState state = getDefaultState().with(HANGING, dir == Direction.UP);
+				BlockState state = defaultBlockState().setValue(HANGING, dir == Direction.UP);
 
-				if (state.isValidPosition(ctx.getWorld(), ctx.getPos()))
+				if (state.canSurvive(ctx.getLevel(), ctx.getClickedPos()))
 					return state;
 			}
 		}
@@ -48,37 +48,37 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext ctx) {
-		return state.get(HANGING) ? HANGING_SHAPE : STANDING_SHAPE;
+		return state.getValue(HANGING) ? HANGING_SHAPE : STANDING_SHAPE;
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(HANGING);
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-		Direction dir = func_220277_j(state).getOpposite();
+	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+		Direction dir = getConnectedDirection(state).getOpposite();
 
-		return Block.hasEnoughSolidSide(world, pos.offset(dir), dir.getOpposite());
+		return Block.canSupportCenter(world, pos.relative(dir), dir.getOpposite());
 	}
 
-	protected static Direction func_220277_j(BlockState state) {
-		return state.get(HANGING) ? Direction.DOWN : Direction.UP;
+	protected static Direction getConnectedDirection(BlockState state) {
+		return state.getValue(HANGING) ? Direction.DOWN : Direction.UP;
 	}
 
 	@Override
-	public PushReaction getPushReaction(BlockState state) {
+	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.DESTROY;
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-		return func_220277_j(state).getOpposite() == facing && !state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+		return getConnectedDirection(state).getOpposite() == facing && !state.canSurvive(world, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
+	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
 		return false;
 	}
 }

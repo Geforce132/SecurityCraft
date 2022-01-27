@@ -26,15 +26,15 @@ import net.minecraft.world.IWorld;
 
 public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements IWaterLoggable {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	protected static final VoxelShape SHAPE = Block.makeCuboidShape(-8.0D, 14.0D, -8.0D, 24.0D, 16.0D, 24.0D);
+	protected static final VoxelShape SHAPE = Block.box(-8.0D, 14.0D, -8.0D, 24.0D, 16.0D, 24.0D);
 
 	public HorizontalReinforcedIronBars(Block.Properties properties, Block vB) {
 		super(properties, vB);
-		setDefaultState(stateContainer.getBaseState().with(WATERLOGGED, false));
+		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(WATERLOGGED);
 	}
 
@@ -46,35 +46,35 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		BlockState state = ctx.getWorld().getBlockState(ctx.getPos());
+		BlockState state = ctx.getLevel().getBlockState(ctx.getClickedPos());
 
 		if (state.getBlock() == this)
 			return state;
 		else
-			return getDefaultState().with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getPos()).getFluid() == Fluids.WATER);
+			return defaultBlockState().setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
 	}
 
 	@Override
 	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-		if (state.get(WATERLOGGED))
-			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
+			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 
-		return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+		return super.updateShape(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
+	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
 		return false;
 	}
 
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState) {
-		return getDefaultState().with(WATERLOGGED, vanillaState.get(SlabBlock.WATERLOGGED));
+		return defaultBlockState().setValue(WATERLOGGED, vanillaState.getValue(SlabBlock.WATERLOGGED));
 	}
 
 	@Override

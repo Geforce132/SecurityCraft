@@ -35,7 +35,7 @@ public class CallbackCheckbox extends AbstractButton {
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		Minecraft minecraft = Minecraft.getInstance();
 
-		minecraft.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bind(TEXTURE);
 		RenderSystem.enableDepthTest();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
 		RenderSystem.enableBlend();
@@ -43,7 +43,7 @@ public class CallbackCheckbox extends AbstractButton {
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		blit(x, y, 0.0F, selected ? 20.0F : 0.0F, 20, height, 32, 64);
 		renderBg(minecraft, mouseX, mouseY);
-		minecraft.fontRenderer.drawString(getMessage(), x + 24, y + (height - 8) / 2, textColor | MathHelper.ceil(alpha * 255.0F) << 24);
+		minecraft.font.draw(getMessage(), x + 24, y + (height - 8) / 2, textColor | MathHelper.ceil(alpha * 255.0F) << 24);
 	}
 
 	public boolean selected() {

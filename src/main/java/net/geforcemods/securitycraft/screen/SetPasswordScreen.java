@@ -29,29 +29,29 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	public SetPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 		this.tileEntity = container.te;
-		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()).getFormattedText();
+		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getDescriptionId()).getColoredString();
 	}
 
 	@Override
 	public void init() {
 		super.init();
 
-		Button saveAndContinueButton = addButton(saveAndContinueButton = new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save").getFormattedText(), this::saveAndContinueButtonClicked));
+		Button saveAndContinueButton = addButton(new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save").getColoredString(), this::saveAndContinueButtonClicked));
 
-		minecraft.keyboardListener.enableRepeatEvents(true);
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		saveAndContinueButton.active = false;
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, ""));
-		keycodeTextbox.setMaxStringLength(20);
-		keycodeTextbox.setValidator(s -> s.matches("[0-9]*"));
+		keycodeTextbox.setMaxLength(20);
+		keycodeTextbox.setFilter(s -> s.matches("[0-9]*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = !text.isEmpty());
-		setFocusedDefault(keycodeTextbox);
+		setInitialFocus(keycodeTextbox);
 	}
 
 	@Override
 	public void onClose() {
 		super.onClose();
-		minecraft.keyboardListener.enableRepeatEvents(false);
+		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
@@ -61,29 +61,29 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		String setup = Utils.localize("gui.securitycraft:password.setup").getFormattedText();
+	protected void renderLabels(int mouseX, int mouseY) {
+		String setup = Utils.localize("gui.securitycraft:password.setup").getColoredString();
 		String combined = blockName + " " + setup;
 
-		if (font.getStringWidth(combined) < xSize - 10)
-			font.drawString(combined, xSize / 2 - font.getStringWidth(combined) / 2, 6, 4210752);
+		if (font.width(combined) < imageWidth - 10)
+			font.draw(combined, imageWidth / 2 - font.width(combined) / 2, 6, 4210752);
 		else
-			font.drawString(blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
+			font.draw(blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
 
-		font.drawString(setup, xSize / 2 - font.getStringWidth(setup) / 2, 16, 4210752);
+		font.draw(setup, imageWidth / 2 - font.width(setup) / 2, 16, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURE);
+		blit(leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {
-		((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
-		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
-		Minecraft.getInstance().player.closeScreen();
+		((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getValue());
+		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), keycodeTextbox.getValue()));
+		Minecraft.getInstance().player.closeContainer();
 	}
 }

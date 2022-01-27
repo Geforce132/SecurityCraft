@@ -15,7 +15,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class MotionActivatedLightTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
 	private static final int TICKS_BETWEEN_ATTACKS = 5;
-	private DoubleOption searchRadiusOption = new DoubleOption(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
+	private DoubleOption searchRadiusOption = new DoubleOption(this::getBlockPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	public MotionActivatedLightTileEntity() {
@@ -27,11 +27,11 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity imple
 		if (cooldown-- > 0)
 			return;
 
-		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.isSpectator());
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.isSpectator());
 		boolean shouldBeOn = !entities.isEmpty();
 
-		if (getBlockState().get(MotionActivatedLightBlock.LIT) != shouldBeOn)
-			world.setBlockState(pos, getBlockState().with(MotionActivatedLightBlock.LIT, shouldBeOn));
+		if (getBlockState().getValue(MotionActivatedLightBlock.LIT) != shouldBeOn)
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(MotionActivatedLightBlock.LIT, shouldBeOn));
 
 		cooldown = TICKS_BETWEEN_ATTACKS;
 	}

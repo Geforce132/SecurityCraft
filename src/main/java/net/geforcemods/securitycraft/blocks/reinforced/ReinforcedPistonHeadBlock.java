@@ -26,52 +26,52 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements IReinf
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 
-		super.onBlockPlacedBy(world, pos, state, placer, stack);
+		super.setPlacedBy(world, pos, state, placer, stack);
 	}
 
 	@Override
-	public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		if (!world.isRemote && player.abilities.isCreativeMode) {
-			BlockPos behindPos = pos.offset(state.get(FACING).getOpposite());
+	public void playerWillDestroy(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		if (!world.isClientSide && player.abilities.instabuild) {
+			BlockPos behindPos = pos.relative(state.getValue(FACING).getOpposite());
 			Block behindBlock = world.getBlockState(behindPos).getBlock();
 
 			if (behindBlock == SCContent.REINFORCED_PISTON.get() || behindBlock == SCContent.REINFORCED_STICKY_PISTON.get())
 				world.removeBlock(behindPos, false);
 		}
 
-		super.onBlockHarvested(world, pos, state, player);
+		super.playerWillDestroy(world, pos, state, player);
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			super.onReplaced(state, worldIn, pos, newState, isMoving);
+			super.onRemove(state, worldIn, pos, newState, isMoving);
 
-			Direction behind = state.get(FACING).getOpposite();
-			pos = pos.offset(behind);
+			Direction behind = state.getValue(FACING).getOpposite();
+			pos = pos.relative(behind);
 			BlockState behindState = worldIn.getBlockState(pos);
 
-			if (behindState.getBlock() == SCContent.REINFORCED_PISTON.get() || behindState.getBlock() == SCContent.REINFORCED_STICKY_PISTON.get() && behindState.get(PistonBlock.EXTENDED)) {
-				spawnDrops(behindState, worldIn, pos);
+			if (behindState.getBlock() == SCContent.REINFORCED_PISTON.get() || behindState.getBlock() == SCContent.REINFORCED_STICKY_PISTON.get() && behindState.getValue(PistonBlock.EXTENDED)) {
+				dropResources(behindState, worldIn, pos);
 				worldIn.removeBlock(pos, false);
 			}
 		}
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-		Block behindState = world.getBlockState(pos.offset(state.get(FACING).getOpposite())).getBlock();
+	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+		Block behindState = world.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).getBlock();
 
 		return behindState == SCContent.REINFORCED_PISTON.get() || behindState == SCContent.REINFORCED_STICKY_PISTON.get() || behindState == SCContent.REINFORCED_MOVING_PISTON.get();
 	}
 
 	@Override
-	public ItemStack getItem(IBlockReader world, BlockPos pos, BlockState state) {
-		return new ItemStack(state.get(TYPE) == PistonType.STICKY ? SCContent.REINFORCED_STICKY_PISTON.get() : SCContent.REINFORCED_PISTON.get());
+	public ItemStack getCloneItemStack(IBlockReader world, BlockPos pos, BlockState state) {
+		return new ItemStack(state.getValue(TYPE) == PistonType.STICKY ? SCContent.REINFORCED_STICKY_PISTON.get() : SCContent.REINFORCED_PISTON.get());
 	}
 
 	@Override
@@ -91,6 +91,6 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements IReinf
 
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState) {
-		return getDefaultState().with(FACING, vanillaState.get(FACING)).with(TYPE, vanillaState.get(TYPE)).with(SHORT, vanillaState.get(SHORT));
+		return defaultBlockState().setValue(FACING, vanillaState.getValue(FACING)).setValue(TYPE, vanillaState.getValue(TYPE)).setValue(SHORT, vanillaState.getValue(SHORT));
 	}
 }

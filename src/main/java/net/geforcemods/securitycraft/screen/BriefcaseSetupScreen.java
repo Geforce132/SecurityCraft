@@ -25,7 +25,7 @@ import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 @OnlyIn(Dist.CLIENT)
 public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final String setupTitle = Utils.localize("gui.securitycraft:briefcase.setupTitle").getFormattedText();
+	private final String setupTitle = Utils.localize("gui.securitycraft:briefcase.setupTitle").getColoredString();
 	private TextFieldWidget keycodeTextbox;
 	private Button saveAndContinueButton;
 
@@ -36,21 +36,21 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	@Override
 	public void init() {
 		super.init();
-		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(saveAndContinueButton = new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save").getFormattedText(), this::saveAndContinueButtonClicked));
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
+		addButton(saveAndContinueButton = new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save").getColoredString(), this::saveAndContinueButtonClicked));
 		saveAndContinueButton.active = false;
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, ""));
-		keycodeTextbox.setMaxStringLength(4);
-		keycodeTextbox.setValidator(s -> s.matches("[0-9]*"));
+		keycodeTextbox.setMaxLength(4);
+		keycodeTextbox.setFilter(s -> s.matches("[0-9]*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = text.length() == 4);
-		setFocusedDefault(keycodeTextbox);
+		setInitialFocus(keycodeTextbox);
 	}
 
 	@Override
 	public void onClose() {
 		super.onClose();
-		minecraft.keyboardListener.enableRepeatEvents(false);
+		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
@@ -62,16 +62,16 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(setupTitle, xSize / 2 - font.getStringWidth(setupTitle) / 2, 6, 4210752);
+	protected void renderLabels(int mouseX, int mouseY) {
+		font.draw(setupTitle, imageWidth / 2 - font.width(setupTitle) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURE);
+		blit(leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {
@@ -81,11 +81,11 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 			if (!briefcase.hasTag())
 				briefcase.setTag(new CompoundNBT());
 
-			briefcase.getTag().putString("passcode", keycodeTextbox.getText());
+			briefcase.getTag().putString("passcode", keycodeTextbox.getValue());
 
 			if (!briefcase.getTag().contains("owner")) {
 				briefcase.getTag().putString("owner", Minecraft.getInstance().player.getName().getString());
-				briefcase.getTag().putString("ownerUUID", Minecraft.getInstance().player.getUniqueID().toString());
+				briefcase.getTag().putString("ownerUUID", Minecraft.getInstance().player.getUUID().toString());
 			}
 
 			ClientUtils.syncItemNBT(briefcase);

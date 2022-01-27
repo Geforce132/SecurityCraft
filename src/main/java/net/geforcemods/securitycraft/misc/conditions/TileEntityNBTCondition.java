@@ -27,14 +27,14 @@ public class TileEntityNBTCondition implements ILootCondition {
 	}
 
 	@Override
-	public Set<LootParameter<?>> getRequiredParameters() {
-		return ImmutableSet.of(LootParameters.POSITION);
+	public Set<LootParameter<?>> getReferencedContextParams() {
+		return ImmutableSet.of(LootParameters.BLOCK_POS);
 	}
 
 	@Override
 	public boolean test(LootContext lootContext) {
-		TileEntity te = lootContext.getWorld().getTileEntity(lootContext.get(LootParameters.POSITION));
-		CompoundNBT nbt = te.write(new CompoundNBT());
+		TileEntity te = lootContext.getLevel().getBlockEntity(lootContext.getParamOrNull(LootParameters.BLOCK_POS));
+		CompoundNBT nbt = te.save(new CompoundNBT());
 
 		return nbt.contains(key) && nbt.getBoolean(key) == value;
 	}
@@ -72,7 +72,7 @@ public class TileEntityNBTCondition implements ILootCondition {
 
 		@Override
 		public TileEntityNBTCondition deserialize(JsonObject json, JsonDeserializationContext ctx) {
-			return new TileEntityNBTCondition(JSONUtils.getString(json, "key"), JSONUtils.getBoolean(json, "value"));
+			return new TileEntityNBTCondition(JSONUtils.getAsString(json, "key"), JSONUtils.getAsBoolean(json, "value"));
 		}
 	}
 }

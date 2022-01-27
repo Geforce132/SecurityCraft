@@ -31,19 +31,19 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		return ActionResultType.FAIL;
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (world.getBlockState(pos).get(OPEN))
+	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
+		if (world.getBlockState(pos).getValue(OPEN))
 			return;
 
 		if (entity instanceof ItemEntity)
@@ -51,44 +51,44 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 		else if (entity instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) entity;
 
-			if (((OwnableTileEntity) world.getTileEntity(pos)).getOwner().isOwner(player))
+			if (((OwnableTileEntity) world.getBlockEntity(pos)).getOwner().isOwner(player))
 				return;
 		}
 		else if (entity instanceof CreeperEntity) {
 			CreeperEntity creeper = (CreeperEntity) entity;
 			LightningBoltEntity lightning = new LightningBoltEntity(world, pos.getX(), pos.getY(), pos.getZ(), true);
 
-			creeper.onStruckByLightning(lightning);
+			creeper.thunderHit(lightning);
 			return;
 		}
 
-		entity.attackEntityFrom(CustomDamageSources.ELECTRICITY, 6.0F);
+		entity.hurt(CustomDamageSources.ELECTRICITY, 6.0F);
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if (!world.isRemote) {
+		if (!world.isClientSide) {
 			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
 
-			if (isPoweredSCBlock || block.getDefaultState().canProvidePower())
-				if (isPoweredSCBlock && !state.get(OPEN) && !state.get(POWERED)) {
-					world.setBlockState(pos, state.with(OPEN, true).with(POWERED, true), 2);
-					world.playEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
+			if (isPoweredSCBlock || block.defaultBlockState().isSignalSource())
+				if (isPoweredSCBlock && !state.getValue(OPEN) && !state.getValue(POWERED)) {
+					world.setBlock(pos, state.setValue(OPEN, true).setValue(POWERED, true), 2);
+					world.levelEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
 				}
-				else if (!isPoweredSCBlock && state.get(OPEN) && state.get(POWERED)) {
-					world.setBlockState(pos, state.with(OPEN, false).with(POWERED, false), 2);
-					world.playEvent(null, Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, pos, 0);
+				else if (!isPoweredSCBlock && state.getValue(OPEN) && state.getValue(POWERED)) {
+					world.setBlock(pos, state.setValue(OPEN, false).setValue(POWERED, false), 2);
+					world.levelEvent(null, Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, pos, 0);
 				}
-				else if (isPoweredSCBlock != state.get(POWERED))
-					world.setBlockState(pos, state.with(POWERED, isPoweredSCBlock), 2);
+				else if (isPoweredSCBlock != state.getValue(POWERED))
+					world.setBlock(pos, state.setValue(POWERED, isPoweredSCBlock), 2);
 		}
 	}
 
 	@Override
-	public boolean eventReceived(BlockState state, World world, BlockPos pos, int par5, int par6) {
-		super.eventReceived(state, world, pos, par5, par6);
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int par5, int par6) {
+		super.triggerEvent(state, world, pos, par5, par6);
+		TileEntity tileentity = world.getBlockEntity(pos);
+		return tileentity != null ? tileentity.triggerEvent(par5, par6) : false;
 	}
 
 	@Override

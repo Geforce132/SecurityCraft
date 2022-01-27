@@ -14,12 +14,12 @@ public class SCDecorationGroup extends ItemGroup {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public ItemStack createIcon() {
+	public ItemStack makeIcon() {
 		return new ItemStack(SCContent.REINFORCED_OAK_STAIRS.get().asItem());
 	}
 
 	@Override
-	public String getTabLabel() {
-		return super.getTabLabel() + ".decoration";
+	public String getLangId() {
+		return super.getLangId() + ".decoration";
 	}
 }

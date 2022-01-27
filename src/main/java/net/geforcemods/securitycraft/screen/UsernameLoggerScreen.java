@@ -39,21 +39,21 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer> {
 	protected void init() {
 		super.init();
 
-		addButton(new ExtendedButton(guiLeft + 4, guiTop + 4, 8, 8, "x", b -> {
+		addButton(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, "x", b -> {
 			tileEntity.players = new String[100];
-			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getPos()));
+			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getBlockPos()));
 		})).active = tileEntity.getOwner().isOwner(minecraft.player);
-		children.add(playerList = new PlayerList(minecraft, xSize - 24, ySize - 40, guiTop + 20, guiLeft + 12));
+		children.add(playerList = new PlayerList(minecraft, imageWidth - 24, imageHeight - 40, topPos + 20, leftPos + 12));
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		String localized = Utils.localize("gui.securitycraft:logger.logged").getFormattedText();
+	protected void renderLabels(int mouseX, int mouseY) {
+		String localized = Utils.localize("gui.securitycraft:logger.logged").getColoredString();
 
-		font.drawString(localized, xSize / 2 - font.getStringWidth(localized) / 2, 6, 4210752);
+		font.draw(localized, imageWidth / 2 - font.width(localized) / 2, 6, 4210752);
 
-		if (mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
-			renderTooltip(Utils.localize("gui.securitycraft:editModule.clear").getFormattedText(), mouseX - guiLeft, mouseY - guiTop);
+		if (mouseX >= leftPos + 4 && mouseY >= topPos + 4 && mouseX < leftPos + 4 + 8 && mouseY < topPos + 4 + 8)
+			renderTooltip(Utils.localize("gui.securitycraft:editModule.clear").getColoredString(), mouseX - leftPos, mouseY - topPos);
 	}
 
 	@Override
@@ -65,11 +65,11 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURE);
+		blit(leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer> {
 
 		@Override
 		protected int getContentHeight() {
-			int height = 50 + (tileEntity.players.length * font.FONT_HEIGHT);
+			int height = 50 + (tileEntity.players.length * font.lineHeight);
 
 			if (height < bottom - top - 8)
 				height = bottom - top - 8;
@@ -132,12 +132,12 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer> {
 
 				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
 					if (tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty()) {
-						String localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex]))).getFormattedText();
+						String localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex]))).getColoredString();
 
 						if (tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
 							renderTooltip(tileEntity.uuids[slotIndex], mouseX, mouseY);
 
-						font.drawString(localized, guiLeft + (xSize / 2 - font.getStringWidth(localized) / 2), bottom + 5, 4210752);
+						font.draw(localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752);
 					}
 				}
 			}
@@ -156,22 +156,22 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer> {
 					int min = left;
 					int max = entryRight - 6; //6 is the width of the scrollbar
 					int slotTop = baseY + slotIndex * slotHeight;
-					BufferBuilder bufferBuilder = tess.getBuffer();
+					BufferBuilder bufferBuilder = tess.getBuilder();
 
 					RenderSystem.enableBlend();
 					RenderSystem.disableTexture();
 					RenderSystem.defaultBlendFunc();
 					bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-					bufferBuilder.pos(min, slotTop + slotBuffer + 2, 0).tex(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.pos(max, slotTop + slotBuffer + 2, 0).tex(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.pos(max, slotTop - 2, 0).tex(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.pos(min, slotTop - 2, 0).tex(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.pos(min + 1, slotTop + slotBuffer + 1, 0).tex(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.pos(max - 1, slotTop + slotBuffer + 1, 0).tex(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.pos(max - 1, slotTop - 1, 0).tex(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.pos(min + 1, slotTop - 1, 0).tex(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.finishDrawing();
-					WorldVertexBufferUploader.draw(bufferBuilder);
+					bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+					bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+					bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+					bufferBuilder.vertex(min, slotTop - 2, 0).uv(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+					bufferBuilder.vertex(min + 1, slotTop + slotBuffer + 1, 0).uv(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+					bufferBuilder.vertex(max - 1, slotTop + slotBuffer + 1, 0).uv(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+					bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+					bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+					bufferBuilder.end();
+					WorldVertexBufferUploader.end(bufferBuilder);
 					RenderSystem.enableTexture();
 					RenderSystem.disableBlend();
 				}
@@ -180,7 +180,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer> {
 			//draw entry strings
 			for (int i = 0; i < tileEntity.players.length; i++) {
 				if (tileEntity.players[i] != null && !tileEntity.players[i].equals(""))
-					font.drawString(tileEntity.players[i], left + width / 2 - font.getStringWidth(tileEntity.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
+					font.draw(tileEntity.players[i], left + width / 2 - font.width(tileEntity.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 			}
 		}
 	}

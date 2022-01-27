@@ -41,10 +41,10 @@ public class SendTip {
 				return;
 
 			String tipKey = getRandomTip();
-			ITextComponent message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + Utils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()).getFormattedText() + " " + Utils.localize("messages.securitycraft:tip").getFormattedText() + " " + Utils.localize(tipKey).getFormattedText() + " ");
+			ITextComponent message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + Utils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()).getColoredString() + " " + Utils.localize("messages.securitycraft:tip").getColoredString() + " " + Utils.localize(tipKey).getColoredString() + " ");
 
 			if (tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-				message.appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+				message.append(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 
 			ClientHandler.getClientPlayer().sendMessage(message);
 		});

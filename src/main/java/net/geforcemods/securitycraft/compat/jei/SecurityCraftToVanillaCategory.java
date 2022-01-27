@@ -17,12 +17,12 @@ public class SecurityCraftToVanillaCategory extends BaseCategory {
 
 	@Override
 	public void draw(ReinforcerRecipe recipe, double mouseX, double mouseY) {
-		Minecraft.getInstance().fontRenderer.drawString(OUTPUT_TEXT, 24, 30, 4210752);
+		Minecraft.getInstance().font.draw(OUTPUT_TEXT, 24, 30, 4210752);
 	}
 
 	@Override
 	public String getTitle() {
-		return Utils.localize("jei.securitycraft.category.unreinforcing").getFormattedText();
+		return Utils.localize("jei.securitycraft.category.unreinforcing").getColoredString();
 	}
 
 	@Override

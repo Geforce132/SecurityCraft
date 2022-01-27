@@ -27,13 +27,13 @@ public class LoggerBlock extends DisguisableBlock {
 
 	public LoggerBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (!world.isRemote && player instanceof ServerPlayerEntity) {
-			TileEntity te = world.getTileEntity(pos);
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!world.isClientSide && player instanceof ServerPlayerEntity) {
+			TileEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof INamedContainerProvider)
 				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
@@ -44,15 +44,15 @@ public class LoggerBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
+		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
-		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
+		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 
@@ -63,11 +63,11 @@ public class LoggerBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.toRotation(state.get(FACING)));
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 }

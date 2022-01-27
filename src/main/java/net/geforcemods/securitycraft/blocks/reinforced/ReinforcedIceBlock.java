@@ -15,17 +15,17 @@ public class ReinforcedIceBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public boolean ticksRandomly(BlockState state) {
+	public boolean isRandomlyTicking(BlockState state) {
 		return true;
 	}
 
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
-		if (world.getLightFor(LightType.BLOCK, pos) > 11 - state.getOpacity(world, pos)) {
-			if (world.dimension.doesWaterVaporize())
+		if (world.getBrightness(LightType.BLOCK, pos) > 11 - state.getLightBlock(world, pos)) {
+			if (world.dimension.isUltraWarm())
 				world.removeBlock(pos, false);
 			else {
-				world.setBlockState(pos, Blocks.WATER.getDefaultState());
+				world.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
 				world.neighborChanged(pos, Blocks.WATER, pos);
 			}
 		}

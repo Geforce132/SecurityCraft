@@ -12,7 +12,7 @@ import net.minecraft.client.Minecraft;
  */
 @Mixin(value = Minecraft.class, priority = 1100)
 public class MinecraftMixin {
-	@ModifyConstant(method = "processKeyBinds", constant = @Constant(intValue = 2))
+	@ModifyConstant(method = "handleKeybinds", constant = @Constant(intValue = 2))
 	private int resetView(int i) {
 		if (ClientHandler.isPlayerMountedOnCamera())
 			return -1; //return a low value so the check passes and causes the thirdPersonView field to be set to 0

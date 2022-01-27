@@ -24,21 +24,21 @@ public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleContaine
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		super.render(mouseX, mouseY, partialTicks);
 
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
+		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
+			renderTooltip(getSlotUnderMouse().getItem(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		String disguiseModuleName = Utils.localize(SCContent.DISGUISE_MODULE.get().getTranslationKey()).getFormattedText();
-		font.drawString(disguiseModuleName, xSize / 2 - font.getStringWidth(disguiseModuleName) / 2, 6, 4210752);
+	protected void renderLabels(int mouseX, int mouseY) {
+		String disguiseModuleName = Utils.localize(SCContent.DISGUISE_MODULE.get().getDescriptionId()).getColoredString();
+		font.draw(disguiseModuleName, imageWidth / 2 - font.width(disguiseModuleName) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURE);
+		blit(leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 }

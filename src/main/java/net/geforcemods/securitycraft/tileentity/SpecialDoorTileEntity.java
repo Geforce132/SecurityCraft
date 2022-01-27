@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 public abstract class SpecialDoorTileEntity extends LinkableTileEntity {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new IntOption(this::getPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
 
 	public SpecialDoorTileEntity(TileEntityType<?> type) {
 		super(type);
@@ -31,14 +31,14 @@ public abstract class SpecialDoorTileEntity extends LinkableTileEntity {
 	public void onOwnerChanged(BlockState state, World world, BlockPos pos, PlayerEntity player) {
 		TileEntity te;
 
-		pos = state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.down() : pos.up();
-		te = world.getTileEntity(pos);
+		pos = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos.above();
+		te = world.getBlockEntity(pos);
 
 		if (te instanceof SpecialDoorTileEntity && isLinkedWith(this, (SpecialDoorTileEntity) te)) {
 			((SpecialDoorTileEntity) te).setOwner(getOwner().getUUID(), getOwner().getName());
 
-			if (!world.isRemote)
-				world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+			if (!world.isClientSide)
+				world.getServer().getPlayerList().broadcastAll(te.getUpdatePacket());
 		}
 	}
 
@@ -55,18 +55,18 @@ public abstract class SpecialDoorTileEntity extends LinkableTileEntity {
 	}
 
 	private void handleModule(ItemStack stack, ModuleType module, boolean removed) {
-		DoubleBlockHalf myHalf = getBlockState().get(DoorBlock.HALF);
+		DoubleBlockHalf myHalf = getBlockState().getValue(DoorBlock.HALF);
 		BlockPos otherPos;
 
 		if (myHalf == DoubleBlockHalf.UPPER)
-			otherPos = getPos().down();
+			otherPos = getBlockPos().below();
 		else
-			otherPos = getPos().up();
+			otherPos = getBlockPos().above();
 
-		BlockState other = world.getBlockState(otherPos);
+		BlockState other = level.getBlockState(otherPos);
 
-		if (other.get(DoorBlock.HALF) != myHalf) {
-			TileEntity otherTe = world.getTileEntity(otherPos);
+		if (other.getValue(DoorBlock.HALF) != myHalf) {
+			TileEntity otherTe = level.getBlockEntity(otherPos);
 
 			if (otherTe instanceof SpecialDoorTileEntity) {
 				SpecialDoorTileEntity otherDoorTe = (SpecialDoorTileEntity) otherTe;
@@ -89,7 +89,7 @@ public abstract class SpecialDoorTileEntity extends LinkableTileEntity {
 			else if (option.getName().equals(signalLength.getName()))
 				signalLength.copy(option);
 
-			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 		}
 	}
 

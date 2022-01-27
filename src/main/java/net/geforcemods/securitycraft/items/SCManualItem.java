@@ -20,10 +20,10 @@ public class SCManualItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		if (world.isRemote)
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		if (world.isClientSide)
 			ClientHandler.displaySCManualGui();
 
-		return ActionResult.resultConsume(player.getHeldItem(hand));
+		return ActionResult.consume(player.getItemInHand(hand));
 	}
 }

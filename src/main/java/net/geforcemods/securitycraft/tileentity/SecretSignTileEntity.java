@@ -30,8 +30,8 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
@@ -44,8 +44,8 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	}
 
 	@Override
-	public void read(CompoundNBT tag) {
-		super.read(tag);
+	public void load(CompoundNBT tag) {
+		super.load(tag);
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
@@ -86,19 +86,19 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		CompoundNBT tag = new CompoundNBT();
-		write(tag);
-		return new SUpdateTileEntityPacket(pos, 1, tag);
+		save(tag);
+		return new SUpdateTileEntityPacket(worldPosition, 1, tag);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		read(packet.getNbtCompound());
+		load(packet.getTag());
 	}
 
 	@Override

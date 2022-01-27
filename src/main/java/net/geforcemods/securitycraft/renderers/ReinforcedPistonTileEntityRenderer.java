@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 
 public class ReinforcedPistonTileEntityRenderer extends TileEntityRenderer<ReinforcedPistonTileEntity> {
-	private BlockRendererDispatcher blockRenderer = Minecraft.getInstance().getBlockRendererDispatcher();
+	private BlockRendererDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
 
 	public ReinforcedPistonTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcher) {
 		super(rendererDispatcher);
@@ -32,51 +32,51 @@ public class ReinforcedPistonTileEntityRenderer extends TileEntityRenderer<Reinf
 
 	@Override
 	public void render(ReinforcedPistonTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
-		World world = te.getWorld();
+		World world = te.getLevel();
 
 		if (world != null) {
-			BlockPos oppositePos = te.getPos().offset(te.getMotionDirection().getOpposite());
+			BlockPos oppositePos = te.getBlockPos().relative(te.getMotionDirection().getOpposite());
 			BlockState state = te.getPistonState();
 
 			if (!state.isAir()) {
-				BlockModelRenderer.enableCache();
-				matrix.push();
+				BlockModelRenderer.enableCaching();
+				matrix.pushPose();
 				matrix.translate(te.getOffsetX(partialTicks), te.getOffsetY(partialTicks), te.getOffsetZ(partialTicks));
 
 				if (state.getBlock() == SCContent.REINFORCED_PISTON_HEAD.get() && te.getProgress(partialTicks) <= 4.0F) {
-					state = state.with(PistonHeadBlock.SHORT, te.getProgress(partialTicks) <= 0.5F);
+					state = state.setValue(PistonHeadBlock.SHORT, te.getProgress(partialTicks) <= 0.5F);
 					renderBlocks(oppositePos, state, matrix, buffer, world, false, combinedOverlay);
 				}
 				else if (te.shouldPistonHeadBeRendered() && !te.isExtending()) {
 					PistonType pistonType = state.getBlock() == SCContent.REINFORCED_STICKY_PISTON.get() ? PistonType.STICKY : PistonType.DEFAULT;
-					BlockState headState = SCContent.REINFORCED_PISTON_HEAD.get().getDefaultState().with(PistonHeadBlock.TYPE, pistonType).with(PistonHeadBlock.FACING, state.get(PistonBlock.FACING));
-					BlockPos renderPos = oppositePos.offset(te.getMotionDirection());
+					BlockState headState = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.TYPE, pistonType).setValue(PistonHeadBlock.FACING, state.getValue(PistonBlock.FACING));
+					BlockPos renderPos = oppositePos.relative(te.getMotionDirection());
 
-					headState = headState.with(PistonHeadBlock.SHORT, te.getProgress(partialTicks) >= 0.5F);
+					headState = headState.setValue(PistonHeadBlock.SHORT, te.getProgress(partialTicks) >= 0.5F);
 					renderBlocks(oppositePos, headState, matrix, buffer, world, false, combinedOverlay);
-					matrix.pop();
-					matrix.push();
-					state = state.with(PistonBlock.EXTENDED, true);
+					matrix.popPose();
+					matrix.pushPose();
+					state = state.setValue(PistonBlock.EXTENDED, true);
 					renderBlocks(renderPos, state, matrix, buffer, world, true, combinedOverlay);
 				}
 				else
 					renderBlocks(oppositePos, state, matrix, buffer, world, false, combinedOverlay);
 
-				matrix.pop();
-				BlockModelRenderer.disableCache();
+				matrix.popPose();
+				BlockModelRenderer.clearCache();
 			}
 		}
 	}
 
 	private void renderBlocks(BlockPos pos, BlockState state, MatrixStack stack, IRenderTypeBuffer buffer, World world, boolean checkSides, int combinedOverlay) {
-		RenderType.getBlockRenderTypes().stream().filter(type -> RenderTypeLookup.canRenderInLayer(state, type)).forEach(rendertype -> {
+		RenderType.chunkBufferLayers().stream().filter(type -> RenderTypeLookup.canRenderInLayer(state, type)).forEach(rendertype -> {
 			ForgeHooksClient.setRenderLayer(rendertype);
 			IVertexBuilder ivertexbuilder = buffer.getBuffer(rendertype);
 
 			if (blockRenderer == null)
-				blockRenderer = Minecraft.getInstance().getBlockRendererDispatcher();
+				blockRenderer = Minecraft.getInstance().getBlockRenderer();
 
-			blockRenderer.getBlockModelRenderer().renderModel(world, this.blockRenderer.getModelForState(state), state, pos, stack, ivertexbuilder, checkSides, new Random(), state.getPositionRandom(pos), combinedOverlay);
+			blockRenderer.getModelRenderer().tesselateBlock(world, this.blockRenderer.getBlockModel(state), state, pos, stack, ivertexbuilder, checkSides, new Random(), state.getSeed(pos), combinedOverlay);
 		});
 
 		ForgeHooksClient.setRenderLayer(null);

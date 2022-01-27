@@ -93,7 +93,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
 		if (config.get(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-			body.add(new StringTextComponent(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner().getName())).getFormattedText()));
+			body.add(new StringTextComponent(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner().getName())).getColoredString()));
 
 		if (disguised)
 			return;
@@ -104,14 +104,14 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				body.add(Utils.localize("waila.securitycraft:equipped"));
 
 			for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
-				body.add(new StringTextComponent("- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText()));
+				body.add(new StringTextComponent("- " + new TranslationTextComponent(module.getTranslationKey()).getColoredString()));
 			}
 		}
 
 		if (config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())) {
 			String password = ((IPasswordProtected) te).getPassword();
 
-			body.add(new StringTextComponent(Utils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText())));
+			body.add(new StringTextComponent(Utils.localize("waila.securitycraft:password").getColoredString() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getColoredString())));
 		}
 	}
 
@@ -124,27 +124,27 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			SentryMode mode = sentry.getMode();
 
 			if (config.get(SHOW_OWNER))
-				body.add(new StringTextComponent(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())).getFormattedText()));
+				body.add(new StringTextComponent(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())).getColoredString()));
 
 			if (config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())) {
 				if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
-					body.add(new StringTextComponent(Utils.localize("waila.securitycraft:equipped").getFormattedText()));
+					body.add(new StringTextComponent(Utils.localize("waila.securitycraft:equipped").getColoredString()));
 
 					if (!sentry.getAllowlistModule().isEmpty())
-						body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey()).getFormattedText()));
+						body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey()).getColoredString()));
 
 					if (!sentry.getDisguiseModule().isEmpty())
-						body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getFormattedText()));
+						body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getColoredString()));
 
 					if (sentry.hasSpeedModule())
-						body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.SPEED.getTranslationKey()).getFormattedText()));
+						body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.SPEED.getTranslationKey()).getColoredString()));
 				}
 			}
 
-			String modeDescription = Utils.localize(mode.getModeKey()).getFormattedText();
+			String modeDescription = Utils.localize(mode.getModeKey()).getColoredString();
 
 			if (mode != SentryMode.IDLE)
-				modeDescription += "- " + Utils.localize(mode.getTargetKey()).getFormattedText();
+				modeDescription += "- " + Utils.localize(mode.getTargetKey()).getColoredString();
 
 			body.add(new StringTextComponent(TextFormatting.GRAY + modeDescription));
 		}

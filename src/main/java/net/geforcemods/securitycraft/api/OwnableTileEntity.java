@@ -27,8 +27,8 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	 * @return
 	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 
 		if (owner != null) {
 			owner.write(tag, needsValidation());
@@ -41,25 +41,25 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(CompoundNBT tag) {
-		super.read(tag);
+	public void load(CompoundNBT tag) {
+		super.load(tag);
 
 		owner.read(tag);
 	}
 
 	@Override
 	public CompoundNBT getUpdateTag() {
-		return write(new CompoundNBT());
+		return save(new CompoundNBT());
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
+		return new SUpdateTileEntityPacket(worldPosition, 1, getUpdateTag());
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		read(packet.getNbtCompound());
+		load(packet.getTag());
 	}
 
 	@Override

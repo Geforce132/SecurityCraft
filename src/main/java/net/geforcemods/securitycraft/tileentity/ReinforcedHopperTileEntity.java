@@ -24,16 +24,16 @@ public class ReinforcedHopperTileEntity extends HopperTileEntity implements IOwn
 	}
 
 	@Override
-	public void read(CompoundNBT tag) {
-		super.read(tag);
+	public void load(CompoundNBT tag) {
+		super.load(tag);
 
 		owner.read(tag);
 		modules = readModuleInventory(tag);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 
 		if (owner != null)
 			owner.write(tag, false);
@@ -44,17 +44,17 @@ public class ReinforcedHopperTileEntity extends HopperTileEntity implements IOwn
 
 	@Override
 	public CompoundNBT getUpdateTag() {
-		return write(new CompoundNBT());
+		return save(new CompoundNBT());
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
+		return new SUpdateTileEntityPacket(worldPosition, 1, getUpdateTag());
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		read(packet.getNbtCompound());
+		load(packet.getTag());
 	}
 
 	@Override
@@ -73,8 +73,8 @@ public class ReinforcedHopperTileEntity extends HopperTileEntity implements IOwn
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot) {
-		return slot >= 100 ? getModuleInSlot(slot) : super.getStackInSlot(slot);
+	public ItemStack getItem(int slot) {
+		return slot >= 100 ? getModuleInSlot(slot) : super.getItem(slot);
 	}
 
 	@Override

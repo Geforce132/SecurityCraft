@@ -24,8 +24,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
 
 public class PortableRadarTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
-	private DoubleOption searchRadiusOption = new DoubleOption(this::getPos, "searchRadius", 25.0D, 5.0D, 50.0D, 1.0D, true);
-	private IntOption searchDelayOption = new IntOption(this::getPos, "searchDelay", 4, 4, 10, 1, true);
+	private DoubleOption searchRadiusOption = new DoubleOption(this::getBlockPos, "searchRadius", 25.0D, 5.0D, 50.0D, 1.0D, true);
+	private IntOption searchDelayOption = new IntOption(this::getBlockPos, "searchDelay", 4, 4, 10, 1, true);
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
 	private BooleanOption enabledOption = new BooleanOption("enabled", true);
 	private boolean shouldSendNewMessage = true;
@@ -38,12 +38,12 @@ public class PortableRadarTileEntity extends CustomizableTileEntity implements I
 
 	@Override
 	public void tick() {
-		if (!world.isRemote && enabledOption.get() && ticksUntilNextSearch-- <= 0) {
+		if (!level.isClientSide && enabledOption.get() && ticksUntilNextSearch-- <= 0) {
 			ticksUntilNextSearch = getSearchDelay();
 
-			ServerPlayerEntity owner = world.getServer().getPlayerList().getPlayerByUsername(getOwner().getName());
-			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getSearchRadius(), getSearchRadius(), getSearchRadius());
-			List<PlayerEntity> entities = world.getEntitiesWithinAABB(PlayerEntity.class, area, e -> {
+			ServerPlayerEntity owner = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
+			AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(getSearchRadius(), getSearchRadius(), getSearchRadius());
+			List<PlayerEntity> entities = level.getEntitiesOfClass(PlayerEntity.class, area, e -> {
 				boolean isNotAllowed = true;
 
 				if (hasModule(ModuleType.ALLOWLIST))
@@ -53,12 +53,12 @@ public class PortableRadarTileEntity extends CustomizableTileEntity implements I
 			});
 
 			if (hasModule(ModuleType.REDSTONE))
-				PortableRadarBlock.togglePowerOutput(world, pos, !entities.isEmpty());
+				PortableRadarBlock.togglePowerOutput(level, worldPosition, !entities.isEmpty());
 
 			if (owner != null) {
 				for (PlayerEntity e : entities) {
 					if (shouldSendMessage(e)) {
-						PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.PORTABLE_RADAR.get().getTranslationKey()), hasCustomName() ? (Utils.localize("messages.securitycraft:portableRadar.withName", TextFormatting.ITALIC + e.getName().getFormattedText() + TextFormatting.RESET, TextFormatting.ITALIC + getCustomName().getFormattedText() + TextFormatting.RESET)) : (Utils.localize("messages.securitycraft:portableRadar.withoutName", TextFormatting.ITALIC + e.getName().getFormattedText() + TextFormatting.RESET, pos)), TextFormatting.BLUE);
+						PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), hasCustomName() ? (Utils.localize("messages.securitycraft:portableRadar.withName", TextFormatting.ITALIC + e.getName().getColoredString() + TextFormatting.RESET, TextFormatting.ITALIC + getCustomName().getColoredString() + TextFormatting.RESET)) : (Utils.localize("messages.securitycraft:portableRadar.withoutName", TextFormatting.ITALIC + e.getName().getColoredString() + TextFormatting.RESET, worldPosition)), TextFormatting.BLUE);
 						setSentMessage();
 					}
 				}
@@ -71,12 +71,12 @@ public class PortableRadarTileEntity extends CustomizableTileEntity implements I
 		super.onModuleRemoved(stack, module);
 
 		if (module == ModuleType.REDSTONE)
-			PortableRadarBlock.togglePowerOutput(world, pos, false);
+			PortableRadarBlock.togglePowerOutput(level, worldPosition, false);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 
 		tag.putBoolean("shouldSendNewMessage", shouldSendNewMessage);
 		tag.putString("lastPlayerName", lastPlayerName);
@@ -84,17 +84,17 @@ public class PortableRadarTileEntity extends CustomizableTileEntity implements I
 	}
 
 	@Override
-	public void read(CompoundNBT tag) {
-		super.read(tag);
+	public void load(CompoundNBT tag) {
+		super.load(tag);
 
 		shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
 		lastPlayerName = tag.getString("lastPlayerName");
 	}
 
 	public boolean shouldSendMessage(PlayerEntity player) {
-		if (!player.getName().getFormattedText().equals(lastPlayerName)) {
+		if (!player.getName().getColoredString().equals(lastPlayerName)) {
 			shouldSendNewMessage = true;
-			lastPlayerName = player.getName().getFormattedText();
+			lastPlayerName = player.getName().getColoredString();
 		}
 
 		boolean lastPlayerOwns = ConfigHandler.SERVER.enableTeamOwnership.get() ? PlayerUtils.areOnSameTeam(lastPlayerName, getOwner().getName()) : lastPlayerName.equals(getOwner().getName());

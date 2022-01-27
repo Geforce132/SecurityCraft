@@ -33,53 +33,53 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinf
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos neighbor, boolean flag) {
 		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
 
-		if (hasActiveSCBlock != state.get(OPEN)) {
-			world.setBlockState(pos, state.with(OPEN, hasActiveSCBlock), 2);
+		if (hasActiveSCBlock != state.getValue(OPEN)) {
+			world.setBlock(pos, state.setValue(OPEN, hasActiveSCBlock), 2);
 			playSound((PlayerEntity) null, world, pos, hasActiveSCBlock);
 		}
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		BlockState blockstate = this.getDefaultState();
-		IFluidState fluidstate = ctx.getWorld().getFluidState(ctx.getPos());
-		Direction direction = ctx.getFace();
+		BlockState blockstate = this.defaultBlockState();
+		IFluidState fluidstate = ctx.getLevel().getFluidState(ctx.getClickedPos());
+		Direction direction = ctx.getClickedFace();
 
 		if (!ctx.replacingClickedOnBlock() && direction.getAxis().isHorizontal())
-			blockstate = blockstate.with(HORIZONTAL_FACING, direction).with(HALF, ctx.getHitVec().y - ctx.getPos().getY() > 0.5D ? Half.TOP : Half.BOTTOM);
+			blockstate = blockstate.setValue(FACING, direction).setValue(HALF, ctx.getClickLocation().y - ctx.getClickedPos().getY() > 0.5D ? Half.TOP : Half.BOTTOM);
 		else
-			blockstate = blockstate.with(HORIZONTAL_FACING, ctx.getPlacementHorizontalFacing().getOpposite()).with(HALF, direction == Direction.UP ? Half.BOTTOM : Half.TOP);
+			blockstate = blockstate.setValue(FACING, ctx.getHorizontalDirection().getOpposite()).setValue(HALF, direction == Direction.UP ? Half.BOTTOM : Half.TOP);
 
-		if (BlockUtils.hasActiveSCBlockNextTo(ctx.getWorld(), ctx.getPos()))
-			blockstate = blockstate.with(OPEN, true).with(POWERED, true);
+		if (BlockUtils.hasActiveSCBlockNextTo(ctx.getLevel(), ctx.getClickedPos()))
+			blockstate = blockstate.setValue(OPEN, true).setValue(POWERED, true);
 
-		return blockstate.with(WATERLOGGED, fluidstate.getFluid() == Fluids.WATER);
+		return blockstate.setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		return ActionResultType.FAIL;
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-		super.onReplaced(state, world, pos, newState, isMoving);
+	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+		super.onRemove(state, world, pos, newState, isMoving);
 
 		if (!(newState.getBlock() instanceof ReinforcedIronTrapDoorBlock))
-			world.removeTileEntity(pos);
+			world.removeBlockEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(BlockState state, World world, BlockPos pos, int id, int param) {
-		super.eventReceived(state, world, pos, id, param);
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
+	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param) {
+		super.triggerEvent(state, world, pos, id, param);
+		TileEntity tileentity = world.getBlockEntity(pos);
+		return tileentity == null ? false : tileentity.triggerEvent(id, param);
 	}
 
 	@Override
@@ -99,6 +99,6 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinf
 
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState) {
-		return getDefaultState().with(HORIZONTAL_FACING, vanillaState.get(HORIZONTAL_FACING)).with(OPEN, false).with(HALF, vanillaState.get(HALF)).with(POWERED, false).with(WATERLOGGED, vanillaState.get(WATERLOGGED));
+		return defaultBlockState().setValue(FACING, vanillaState.getValue(FACING)).setValue(OPEN, false).setValue(HALF, vanillaState.getValue(HALF)).setValue(POWERED, false).setValue(WATERLOGGED, vanillaState.getValue(WATERLOGGED));
 	}
 }

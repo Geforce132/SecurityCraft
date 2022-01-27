@@ -32,9 +32,9 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			TileEntity te = world.getTileEntity(pos);
+			TileEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof ReinforcedPistonTileEntity)
 				((ReinforcedPistonTileEntity) te).clearPistonTileEntity();
@@ -42,17 +42,17 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	}
 
 	@Override
-	public void onPlayerDestroy(IWorld world, BlockPos pos, BlockState state) {
-		BlockPos oppositePos = pos.offset(state.get(FACING).getOpposite());
+	public void destroy(IWorld world, BlockPos pos, BlockState state) {
+		BlockPos oppositePos = pos.relative(state.getValue(FACING).getOpposite());
 		BlockState oppositeState = world.getBlockState(oppositePos);
 
-		if (oppositeState.getBlock() instanceof ReinforcedPistonBlock && oppositeState.get(PistonBlock.EXTENDED))
+		if (oppositeState.getBlock() instanceof ReinforcedPistonBlock && oppositeState.getValue(PistonBlock.EXTENDED))
 			world.removeBlock(oppositePos, false);
 	}
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		ReinforcedPistonTileEntity reinforcedPistonTileEntity = this.getTileEntity(builder.getWorld(), new BlockPos(builder.assertPresent(LootParameters.POSITION)));
+		ReinforcedPistonTileEntity reinforcedPistonTileEntity = this.getTileEntity(builder.getLevel(), new BlockPos(builder.getParameter(LootParameters.BLOCK_POS)));
 		return reinforcedPistonTileEntity == null ? Collections.emptyList() : reinforcedPistonTileEntity.getPistonState().getDrops(builder);
 	}
 
@@ -63,7 +63,7 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	}
 
 	private ReinforcedPistonTileEntity getTileEntity(IBlockReader world, BlockPos pos) {
-		TileEntity tileentity = world.getTileEntity(pos);
+		TileEntity tileentity = world.getBlockEntity(pos);
 		return tileentity instanceof ReinforcedPistonTileEntity ? (ReinforcedPistonTileEntity) tileentity : null;
 	}
 }

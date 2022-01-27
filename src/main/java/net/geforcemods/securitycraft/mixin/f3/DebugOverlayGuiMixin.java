@@ -27,32 +27,32 @@ public class DebugOverlayGuiMixin {
 	@Shadow
 	protected RayTraceResult rayTraceBlock;
 
-	@ModifyVariable(method = "getDebugInfoRight", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/world/ClientWorld;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
+	@ModifyVariable(method = "getSystemInformation", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/world/ClientWorld;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
 	public BlockState spoofBlockState(BlockState originalState) {
 		Block originalBlock = originalState.getBlock();
 
 		if (originalBlock instanceof DisguisableBlock)
-			return originalBlock.getExtendedState(originalState, Minecraft.getInstance().world, ((BlockRayTraceResult) rayTraceBlock).getPos());
+			return originalBlock.getExtendedState(originalState, Minecraft.getInstance().level, ((BlockRayTraceResult) rayTraceBlock).getBlockPos());
 		else if (originalBlock instanceof BaseFullMineBlock)
-			return ((BaseFullMineBlock) originalBlock).getBlockDisguisedAs().getDefaultState();
+			return ((BaseFullMineBlock) originalBlock).getBlockDisguisedAs().defaultBlockState();
 		else if (originalBlock instanceof FurnaceMineBlock)
-			return Blocks.FURNACE.getDefaultState().with(BlockStateProperties.HORIZONTAL_FACING, originalState.get(BlockStateProperties.HORIZONTAL_FACING));
+			return Blocks.FURNACE.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, originalState.getValue(BlockStateProperties.HORIZONTAL_FACING));
 
 		return originalState;
 	}
 
-	@ModifyVariable(method = "getDebugInfoRight", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/world/ClientWorld;getFluidState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/fluid/IFluidState;"))
+	@ModifyVariable(method = "getSystemInformation", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/world/ClientWorld;getFluidState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/fluid/IFluidState;"))
 	public IFluidState spoofFluidState(IFluidState originalState) {
-		Fluid originalFluid = originalState.getFluid();
+		Fluid originalFluid = originalState.getType();
 
 		if (originalFluid == SCContent.FAKE_WATER.get())
-			return Fluids.WATER.getDefaultState().with(FlowingFluid.FALLING, originalState.get(FlowingFluid.FALLING));
+			return Fluids.WATER.defaultFluidState().setValue(FlowingFluid.FALLING, originalState.getValue(FlowingFluid.FALLING));
 		else if (originalFluid == SCContent.FLOWING_FAKE_WATER.get())
-			return Fluids.FLOWING_WATER.getDefaultState().with(FlowingFluid.FALLING, originalState.get(FlowingFluid.FALLING)).with(FlowingFluid.LEVEL_1_8, originalState.get(FlowingFluid.LEVEL_1_8));
+			return Fluids.FLOWING_WATER.defaultFluidState().setValue(FlowingFluid.FALLING, originalState.getValue(FlowingFluid.FALLING)).setValue(FlowingFluid.LEVEL, originalState.getValue(FlowingFluid.LEVEL));
 		else if (originalFluid == SCContent.FAKE_LAVA.get())
-			return Fluids.LAVA.getDefaultState().with(FlowingFluid.FALLING, originalState.get(FlowingFluid.FALLING));
+			return Fluids.LAVA.defaultFluidState().setValue(FlowingFluid.FALLING, originalState.getValue(FlowingFluid.FALLING));
 		else if (originalFluid == SCContent.FLOWING_FAKE_LAVA.get())
-			return Fluids.FLOWING_LAVA.getDefaultState().with(FlowingFluid.FALLING, originalState.get(FlowingFluid.FALLING)).with(FlowingFluid.LEVEL_1_8, originalState.get(FlowingFluid.LEVEL_1_8));
+			return Fluids.FLOWING_LAVA.defaultFluidState().setValue(FlowingFluid.FALLING, originalState.getValue(FlowingFluid.FALLING)).setValue(FlowingFluid.LEVEL, originalState.getValue(FlowingFluid.LEVEL));
 
 		return originalState;
 	}

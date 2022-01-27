@@ -25,21 +25,21 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	}
 
 	@Override
-	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos) {
-		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
+	public float getDestroySpeed(BlockState blockState, IBlockReader world, BlockPos pos) {
+		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getDestroySpeed(blockState, world, pos);
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (PlayerUtils.isHoldingItem(player, SCContent.REMOTE_ACCESS_MINE, hand))
 			return ActionResultType.SUCCESS;
 
-		if (isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
+		if (isActive(world, pos) && isDefusable() && player.getItemInHand(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
 			if (defuseMine(world, pos)) {
 				if (!player.isCreative())
-					player.getHeldItem(hand).damageItem(1, player, p -> p.sendBreakAnimation(hand));
+					player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 
 			return ActionResultType.SUCCESS;
@@ -48,9 +48,9 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 		if (!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
 			if (activateMine(world, pos)) {
 				if (!player.isCreative())
-					player.getHeldItem(hand).damageItem(1, player, p -> p.sendBreakAnimation(hand));
+					player.getItemInHand(hand).hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 
 			return ActionResultType.SUCCESS;

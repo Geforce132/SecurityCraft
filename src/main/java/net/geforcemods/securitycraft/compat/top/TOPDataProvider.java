@@ -79,7 +79,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				if (block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(world, blockState, data.getPos()))
 					return;
 
-				TileEntity te = world.getTileEntity(data.getPos());
+				TileEntity te = world.getBlockEntity(data.getPos());
 
 				if (te instanceof IOwnable) {
 					String ownerName = ((IOwnable) te).getOwner().getName();
@@ -88,19 +88,19 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 						ScorePlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
 
 						if (team != null)
-							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName().getFormattedText() + TextFormatting.GRAY).getFormattedText(); //TOP does not work with normal component formatting
+							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName().getColoredString() + TextFormatting.GRAY).getColoredString(); //TOP does not work with normal component formatting
 					}
 
-					probeInfo.vertical().text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getFormattedText()).getFormattedText());
+					probeInfo.vertical().text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getColoredString()).getColoredString());
 				}
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
 				if (te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player))) {
 					if (!((IModuleInventory) te).getInsertedModules().isEmpty()) {
-						probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getFormattedText());
+						probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getColoredString());
 
 						for (ModuleType module : ((IModuleInventory) te).getInsertedModules()) {
-							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText());
+							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(module.getTranslationKey()).getColoredString());
 						}
 					}
 				}
@@ -108,14 +108,14 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				if (te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(player)) {
 					String password = ((IPasswordProtected) te).getPassword();
 
-					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText()));
+					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:password").getColoredString() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getColoredString()));
 				}
 
 				if (te instanceof INameable && ((INameable) te).hasCustomName()) {
 					ITextComponent text = ((INameable) te).getCustomName();
-					String name = text == null ? "" : text.getFormattedText();
+					String name = text == null ? "" : text.getColoredString();
 
-					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:customName", name).getFormattedText() + " " + name);
+					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:customName", name).getColoredString() + " " + name);
 				}
 			}
 		});
@@ -136,28 +136,28 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 						ScorePlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
 
 						if (team != null)
-							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName().getFormattedText() + TextFormatting.GRAY).getFormattedText(); //TOP does not work with normal component formatting
+							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName().getColoredString() + TextFormatting.GRAY).getColoredString(); //TOP does not work with normal component formatting
 					}
 
-					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getFormattedText()).getFormattedText());
+					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getColoredString()).getColoredString());
 
 					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
-						probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getFormattedText());
+						probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getColoredString());
 
 						if (!sentry.getAllowlistModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey()).getFormattedText());
+							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey()).getColoredString());
 
 						if (!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getFormattedText());
+							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getColoredString());
 
 						if (sentry.hasSpeedModule())
-							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.SPEED.getTranslationKey()).getFormattedText());
+							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.SPEED.getTranslationKey()).getColoredString());
 					}
 
-					String modeDescription = Utils.localize(mode.getModeKey()).getFormattedText();
+					String modeDescription = Utils.localize(mode.getModeKey()).getColoredString();
 
 					if (mode != SentryMode.IDLE)
-						modeDescription += "- " + Utils.localize(mode.getTargetKey()).getFormattedText();
+						modeDescription += "- " + Utils.localize(mode.getTargetKey()).getColoredString();
 
 					probeInfo.text(TextFormatting.GRAY + modeDescription);
 				}

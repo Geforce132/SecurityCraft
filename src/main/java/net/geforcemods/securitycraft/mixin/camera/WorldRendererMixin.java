@@ -23,20 +23,20 @@ public class WorldRendererMixin {
 	 * Fixes camera chunks disappearing when the player entity moves while viewing a camera (e.g. while being in a minecart
 	 * or falling)
 	 */
-	@Redirect(method = "setupTerrain", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewFrustum;updateChunkPositions(DD)V"))
+	@Redirect(method = "setupRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewFrustum;repositionCamera(DD)V"))
 	private void onRepositionCamera(ViewFrustum viewFrustum, double x, double z) {
 		if (!PlayerUtils.isPlayerMountedOnCamera(mc.player))
-			viewFrustum.updateChunkPositions(x, z);
+			viewFrustum.repositionCamera(x, z);
 	}
 
 	/*
 	 * Fixes players not being able to see themselves when viewing a camera
 	 */
-	@Redirect(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ActiveRenderInfo;getRenderViewEntity()Lnet/minecraft/entity/Entity;", ordinal = 3))
+	@Redirect(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ActiveRenderInfo;getEntity()Lnet/minecraft/entity/Entity;", ordinal = 3))
 	private Entity makePlayerRenderable(ActiveRenderInfo activeRenderInfo) {
 		if (PlayerUtils.isPlayerMountedOnCamera(mc.player))
 			return mc.player;
 
-		return activeRenderInfo.getRenderViewEntity();
+		return activeRenderInfo.getEntity();
 	}
 }

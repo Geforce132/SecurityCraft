@@ -16,6 +16,6 @@ public class KeypadSmokerScreen extends AbstractFurnaceScreen<KeypadSmokerContai
 	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/container/smoker.png");
 
 	public KeypadSmokerScreen(KeypadSmokerContainer container, PlayerInventory inv, ITextComponent name) {
-		super(container, new SmokerRecipeGui(), inv, container.te.hasCustomName() ? container.te.getCustomName() : Utils.localize(SCContent.KEYPAD_SMOKER.get().getTranslationKey()), TEXTURE);
+		super(container, new SmokerRecipeGui(), inv, container.te.hasCustomName() ? container.te.getCustomName() : Utils.localize(SCContent.KEYPAD_SMOKER.get().getDescriptionId()), TEXTURE);
 	}
 }

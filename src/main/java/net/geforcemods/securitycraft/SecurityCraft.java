@@ -68,7 +68,7 @@ public class SecurityCraft {
 		SCContent.BLOCKS.register(modEventBus);
 		SCContent.FLUIDS.register(modEventBus);
 		SCContent.ITEMS.register(modEventBus);
-		LootConditionManager.registerCondition(new TileEntityNBTCondition.Serializer());
+		LootConditionManager.register(new TileEntityNBTCondition.Serializer());
 	}
 
 	@SubscribeEvent
@@ -117,7 +117,7 @@ public class SecurityCraft {
 					String key = "help.";
 
 					if (hmp.specialInfoKey().isEmpty())
-						key += item.getTranslationKey().substring(5) + ".info";
+						key += item.getDescriptionId().substring(5) + ".info";
 					else
 						key += hmp.specialInfoKey();
 

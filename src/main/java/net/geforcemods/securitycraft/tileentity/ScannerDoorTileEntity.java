@@ -32,17 +32,17 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity implements IVie
 	@Override
 	public void tick() {
 		super.tick();
-		checkView(world, pos);
+		checkView(level, worldPosition);
 	}
 
 	@Override
 	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult rayTraceResult) {
-		BlockState upperState = world.getBlockState(pos);
-		BlockState lowerState = world.getBlockState(pos.down());
+		BlockState upperState = level.getBlockState(worldPosition);
+		BlockState lowerState = level.getBlockState(worldPosition.below());
 		Direction.Axis facingAxis = ScannerDoorBlock.getFacingAxis(upperState);
 
-		if (upperState.get(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity)) {
-			if (!(entity instanceof PlayerEntity) || facingAxis != rayTraceResult.getFace().getAxis())
+		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity)) {
+			if (!(entity instanceof PlayerEntity) || facingAxis != rayTraceResult.getDirection().getAxis())
 				return false;
 
 			PlayerEntity player = (PlayerEntity) entity;
@@ -50,31 +50,31 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity implements IVie
 			if (!isLocked()) {
 				String name = entity.getName().getString();
 
-				if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == Items.PLAYER_HEAD)
+				if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlotType.HEAD).getItem() == Items.PLAYER_HEAD)
 					name = PlayerUtils.getNameOfSkull(player);
 
 				if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
 					return true;
 				}
 
-				boolean open = !lowerState.get(DoorBlock.OPEN);
+				boolean open = !lowerState.getValue(DoorBlock.OPEN);
 				int length = getSignalLength();
 
-				world.setBlockState(pos, upperState.with(DoorBlock.OPEN, !upperState.get(DoorBlock.OPEN)), 3);
-				world.setBlockState(pos.down(), lowerState.with(DoorBlock.OPEN, !lowerState.get(DoorBlock.OPEN)), 3);
-				world.playEvent(null, open ? 1005 : 1011, pos, 0);
+				level.setBlock(worldPosition, upperState.setValue(DoorBlock.OPEN, !upperState.getValue(DoorBlock.OPEN)), 3);
+				level.setBlock(worldPosition.below(), lowerState.setValue(DoorBlock.OPEN, !lowerState.getValue(DoorBlock.OPEN)), 3);
+				level.levelEvent(null, open ? 1005 : 1011, worldPosition, 0);
 
 				if (open && length > 0)
-					world.getPendingBlockTicks().scheduleTick(pos, SCContent.SCANNER_DOOR.get(), length);
+					level.getBlockTicks().scheduleTick(worldPosition, SCContent.SCANNER_DOOR.get(), length);
 
 				if (open && sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
 
 				return true;
 			}
 			else if (sendsMessages()) {
-				TranslationTextComponent blockName = Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey());
+				TranslationTextComponent blockName = Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId());
 
 				PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), TextFormatting.DARK_RED, false);
 				return true;

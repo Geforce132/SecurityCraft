@@ -13,7 +13,7 @@ public class ItemKeypadChestRenderer extends ItemStackTileEntityRenderer {
 	private static KeypadChestTileEntityRenderer dummyRenderer = null;
 
 	@Override
-	public void render(ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+	public void renderByItem(ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		if (dummyRenderer == null)
 			dummyRenderer = new KeypadChestTileEntityRenderer(TileEntityRendererDispatcher.instance);
 

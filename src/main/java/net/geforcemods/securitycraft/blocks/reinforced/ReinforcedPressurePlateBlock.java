@@ -33,28 +33,28 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		int redstoneStrength = getRedstoneStrength(state);
+	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
+		int redstoneStrength = getSignalForState(state);
 
-		if (!world.isRemote && redstoneStrength == 0 && entity instanceof PlayerEntity) {
-			TileEntity te = world.getTileEntity(pos);
+		if (!world.isClientSide && redstoneStrength == 0 && entity instanceof PlayerEntity) {
+			TileEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof AllowlistOnlyTileEntity) {
 				if (isAllowedToPress(world, pos, (AllowlistOnlyTileEntity) te, (PlayerEntity) entity))
-					updateState(world, pos, state, redstoneStrength);
+					checkPressed(world, pos, state, redstoneStrength);
 			}
 		}
 	}
 
 	@Override
-	protected int computeRedstoneStrength(World world, BlockPos pos) {
-		AxisAlignedBB aabb = PRESSURE_AABB.offset(pos);
+	protected int getSignalStrength(World world, BlockPos pos) {
+		AxisAlignedBB aabb = TOUCH_AABB.move(pos);
 		List<? extends Entity> list;
 
-		list = world.getEntitiesWithinAABBExcludingEntity(null, aabb);
+		list = world.getEntities(null, aabb);
 
 		if (!list.isEmpty()) {
-			TileEntity te = world.getTileEntity(pos);
+			TileEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof AllowlistOnlyTileEntity) {
 				for (Entity entity : list) {
@@ -72,7 +72,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 	}
@@ -84,7 +84,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState) {
-		return getDefaultState();
+		return defaultBlockState();
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 
 		@Override
 		public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te, Direction direction, int distance) {
-			return state.get(POWERED) && (distance < 2 || direction == Direction.UP);
+			return state.getValue(POWERED) && (distance < 2 || direction == Direction.UP);
 		}
 
 		@Override

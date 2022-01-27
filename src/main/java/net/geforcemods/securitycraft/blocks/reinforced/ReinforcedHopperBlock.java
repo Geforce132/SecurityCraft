@@ -31,29 +31,29 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
 
-		if (stack.hasDisplayName()) {
-			TileEntity te = world.getTileEntity(pos);
+		if (stack.hasCustomHoverName()) {
+			TileEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof ReinforcedHopperTileEntity)
-				((ReinforcedHopperTileEntity) te).setCustomName(stack.getDisplayName());
+				((ReinforcedHopperTileEntity) te).setCustomName(stack.getHoverName());
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (!world.isRemote) {
-			TileEntity tileEntity = world.getTileEntity(pos);
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (!world.isClientSide) {
+			TileEntity tileEntity = world.getBlockEntity(pos);
 
 			if (tileEntity instanceof ReinforcedHopperTileEntity) {
 				ReinforcedHopperTileEntity te = (ReinforcedHopperTileEntity) tileEntity;
 
 				//only allow the owner or players on the allowlist to access a reinforced hopper
 				if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
-					player.openContainer(te);
+					player.openMenu(te);
 			}
 		}
 
@@ -61,31 +61,31 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			TileEntity te = world.getTileEntity(pos);
+			TileEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof ReinforcedHopperTileEntity) {
 				if (!isMoving)
-					InventoryHelper.dropInventoryItems(world, pos, (ReinforcedHopperTileEntity) te);
+					InventoryHelper.dropContents(world, pos, (ReinforcedHopperTileEntity) te);
 
-				world.updateComparatorOutputLevel(pos, this);
+				world.updateNeighbourForOutputSignal(pos, this);
 			}
 
-			world.removeTileEntity(pos);
+			world.removeBlockEntity(pos);
 		}
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		TileEntity te = world.getTileEntity(pos);
+	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
+		TileEntity te = world.getBlockEntity(pos);
 
 		if (te instanceof ReinforcedHopperTileEntity)
-			((ReinforcedHopperTileEntity) te).onEntityCollision(entity);
+			((ReinforcedHopperTileEntity) te).entityInside(entity);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
+	public TileEntity newBlockEntity(IBlockReader world) {
 		return new ReinforcedHopperTileEntity();
 	}
 
@@ -96,13 +96,13 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState) {
-		return getDefaultState().with(ENABLED, vanillaState.get(ENABLED)).with(FACING, vanillaState.get(FACING));
+		return defaultBlockState().setValue(ENABLED, vanillaState.getValue(ENABLED)).setValue(FACING, vanillaState.getValue(FACING));
 	}
 
 	public static class ExtractionBlock implements IExtractionBlock {
 		@Override
 		public boolean canExtract(IOwnable te, World world, BlockPos pos, BlockState state) {
-			ReinforcedHopperTileEntity hopperTe = (ReinforcedHopperTileEntity) world.getTileEntity(pos);
+			ReinforcedHopperTileEntity hopperTe = (ReinforcedHopperTileEntity) world.getBlockEntity(pos);
 
 			if (!te.getOwner().owns(hopperTe)) {
 				if (te instanceof IModuleInventory) {

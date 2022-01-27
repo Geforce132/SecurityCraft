@@ -30,8 +30,8 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		List<LivingEntity> list = goalOwner.world.<LivingEntity> getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> !EntityUtils.isInvisible(e));
+	public boolean canUse() {
+		List<LivingEntity> list = mob.level.<LivingEntity> getEntitiesOfClass(targetType, getTargetSearchArea(getFollowDistance()), e -> !EntityUtils.isInvisible(e));
 
 		if (list.isEmpty())
 			return false;
@@ -40,8 +40,8 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 			int i;
 
 			Collections.sort(list, (e1, e2) -> {
-				double distTo1 = goalOwner.getDistanceSq(e1);
-				double distTo2 = goalOwner.getDistanceSq(e2);
+				double distTo1 = mob.distanceToSqr(e1);
+				double distTo2 = mob.distanceToSqr(e2);
 
 				if (distTo1 < distTo2)
 					return -1;
@@ -61,7 +61,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 					if(potentialTarget instanceof PlayerEntity
 							&& !((PlayerEntity)potentialTarget).isSpectator()
 							&& !((PlayerEntity)potentialTarget).isCreative()
-							&& !((SentryEntity)goalOwner).getOwner().isOwner(((PlayerEntity)potentialTarget))
+							&& !((SentryEntity)mob).getOwner().isOwner(((PlayerEntity)potentialTarget))
 							&& !sentry.isTargetingAllowedPlayer(potentialTarget)
 							&& !EntityUtils.isInvisible(potentialTarget)) {
 						break;
@@ -75,8 +75,8 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 
 			if (i < list.size()) {
 				if (isCloseEnough(list.get(i))) {
-					nearestTarget = list.get(i);
-					goalOwner.setAttackTarget(nearestTarget);
+					target = list.get(i);
+					mob.setTarget(target);
 					return true;
 				}
 			}
@@ -86,12 +86,12 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		return (isSupportedTarget(nearestTarget) || nearestTarget instanceof PlayerEntity) && isCloseEnough(nearestTarget) && shouldExecute() && !sentry.isTargetingAllowedPlayer(target) && super.shouldContinueExecuting();
+	public boolean canContinueToUse() {
+		return (isSupportedTarget(target) || target instanceof PlayerEntity) && isCloseEnough(target) && canUse() && !sentry.isTargetingAllowedPlayer(targetMob) && super.canContinueToUse();
 	}
 
 	public boolean isCloseEnough(Entity entity) {
-		return entity != null && goalOwner.getDistanceSq(entity) <= getTargetDistance() * getTargetDistance();
+		return entity != null && mob.distanceToSqr(entity) <= getFollowDistance() * getFollowDistance();
 	}
 
 	public boolean isSupportedTarget(LivingEntity potentialTarget) {
@@ -107,7 +107,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 	}
 
 	@Override
-	protected double getTargetDistance() {
+	protected double getFollowDistance() {
 		return SentryEntity.MAX_TARGET_DISTANCE;
 	}
 }

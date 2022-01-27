@@ -14,12 +14,12 @@ public class SCTechnicalGroup extends ItemGroup {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public ItemStack createIcon() {
+	public ItemStack makeIcon() {
 		return new ItemStack(SCContent.USERNAME_LOGGER.get().asItem());
 	}
 
 	@Override
-	public String getTabLabel() {
-		return super.getTabLabel() + ".technical";
+	public String getLangId() {
+		return super.getLangId() + ".technical";
 	}
 }

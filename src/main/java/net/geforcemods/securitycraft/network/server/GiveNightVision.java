@@ -20,7 +20,7 @@ public class GiveNightVision {
 	public static void onMessage(GiveNightVision message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			if (PlayerUtils.isPlayerMountedOnCamera(ctx.get().getSender()))
-				ctx.get().getSender().addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 3, -1, false, false));
+				ctx.get().getSender().addEffect(new EffectInstance(Effects.NIGHT_VISION, 3, -1, false, false));
 		});
 		ctx.get().setPacketHandled(true);
 	}

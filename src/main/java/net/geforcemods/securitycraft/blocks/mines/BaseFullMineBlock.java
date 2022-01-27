@@ -39,34 +39,34 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 			Entity entity = ((EntitySelectionContext) ctx).getEntity();
 
 			if (entity instanceof ItemEntity)
-				return VoxelShapes.fullCube();
+				return VoxelShapes.block();
 			else if (entity instanceof PlayerEntity) {
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getBlockEntity(pos);
 
 				if (te instanceof OwnableTileEntity) {
 					OwnableTileEntity ownableTe = (OwnableTileEntity) te;
 
 					if (ownableTe.getOwner().isOwner((PlayerEntity) entity))
-						return VoxelShapes.fullCube();
+						return VoxelShapes.block();
 				}
 			}
 
-			return ctx == ISelectionContext.dummy() ? VoxelShapes.fullCube() : VoxelShapes.empty();
+			return ctx == ISelectionContext.empty() ? VoxelShapes.block() : VoxelShapes.empty();
 		}
 
-		return VoxelShapes.fullCube();
+		return VoxelShapes.block();
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!EntityUtils.doesEntityOwn(entity, world, pos)) {
 			explode(world, pos);
 		}
 	}
 
 	@Override
-	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion) {
-		if (!world.isRemote) {
+	public void wasExploded(World world, BlockPos pos, Explosion explosion) {
+		if (!world.isClientSide) {
 			if (pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
@@ -76,7 +76,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid) {
-		if (!world.isRemote)
+		if (!world.isClientSide)
 			if (player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 			else if (!EntityUtils.doesPlayerOwn(player, world, pos)) {
@@ -99,14 +99,14 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public void explode(World world, BlockPos pos) {
-		if (!world.isRemote) {
+		if (!world.isClientSide) {
 			world.destroyBlock(pos, false);
-			world.createExplosion((Entity) null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+			world.explode((Entity) null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 		}
 	}
 
 	@Override
-	public boolean canDropFromExplosion(Explosion explosion) {
+	public boolean dropFromExplosion(Explosion explosion) {
 		return false;
 	}
 
@@ -142,8 +142,8 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		if (world.getTileEntity(pos) instanceof OwnableTileEntity) {
-			OwnableTileEntity te = (OwnableTileEntity) world.getTileEntity(pos);
+		if (world.getBlockEntity(pos) instanceof OwnableTileEntity) {
+			OwnableTileEntity te = (OwnableTileEntity) world.getBlockEntity(pos);
 
 			if (player.isCreative() || te.getOwner().isOwner(player))
 				return super.getPickBlock(state, target, world, pos, player);

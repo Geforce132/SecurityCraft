@@ -11,7 +11,7 @@ public class WorldUtils {
 	 * serverside
 	 */
 	public static void addScheduledTask(IWorld w, Runnable r) {
-		if (w.isRemote())
+		if (w.isClientSide())
 			Minecraft.getInstance().execute(r);
 		else
 			ServerLifecycleHooks.getCurrentServer().execute(r);
@@ -30,7 +30,7 @@ public class WorldUtils {
 		int zPos = Integer.parseInt(coordinates[2]);
 		int dim = coordinates.length == 4 ? Integer.parseInt(coordinates[3]) : 0;
 
-		return pos.getPos().getX() == xPos && pos.getPos().getY() == yPos && pos.getPos().getZ() == zPos && pos.getDimension().getId() == dim;
+		return pos.pos().getX() == xPos && pos.pos().getY() == yPos && pos.pos().getZ() == zPos && pos.dimension().getId() == dim;
 	}
 
 	/**
@@ -38,6 +38,6 @@ public class WorldUtils {
 	 * @return A formatted string of the GlobalPos' location. Format: "*X* *Y* *Z* *dimension ID*"
 	 */
 	public static String toNBTString(GlobalPos pos) {
-		return pos.getPos().getX() + " " + pos.getPos().getY() + " " + pos.getPos().getZ() + " " + pos.getDimension().getId();
+		return pos.pos().getX() + " " + pos.pos().getY() + " " + pos.pos().getZ() + " " + pos.dimension().getId();
 	}
 }

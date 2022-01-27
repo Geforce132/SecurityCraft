@@ -21,12 +21,12 @@ public class KeyPanelItem extends BlockItem {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx) {
-		World world = ctx.getWorld();
-		BlockPos pos = ctx.getPos();
+	public ActionResultType useOn(ItemUseContext ctx) {
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 		Block block = world.getBlockState(pos).getBlock();
 		PlayerEntity player = ctx.getPlayer();
-		ItemStack stack = ctx.getItem();
+		ItemStack stack = ctx.getItemInHand();
 
 		for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
 			if (block == pc.getOriginalBlock()) {
@@ -40,6 +40,6 @@ public class KeyPanelItem extends BlockItem {
 			}
 		}
 
-		return super.onItemUse(ctx); //allow key panel to be placed when it did not convert anything
+		return super.useOn(ctx); //allow key panel to be placed when it did not convert anything
 	}
 }

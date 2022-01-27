@@ -21,9 +21,9 @@ public class InventoryScannerContainer extends Container {
 
 	public InventoryScannerContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
 		super(SCContent.cTypeInventoryScanner, windowId);
-		te = (InventoryScannerTileEntity) world.getTileEntity(pos);
-		numRows = te.getSizeInventory() / 9;
-		worldPosCallable = IWorldPosCallable.of(world, pos);
+		te = (InventoryScannerTileEntity) world.getBlockEntity(pos);
+		numRows = te.getContainerSize() / 9;
+		worldPosCallable = IWorldPosCallable.create(world, pos);
 
 		//prohibited items
 		for (int i = 0; i < 10; i++) {
@@ -53,47 +53,47 @@ public class InventoryScannerContainer extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int index) {
+	public ItemStack quickMoveStack(PlayerEntity player, int index) {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
-		Slot slot = inventorySlots.get(index);
+		Slot slot = slots.get(index);
 
-		if (slot != null && slot.getHasStack()) {
-			ItemStack slotStack = slot.getStack();
+		if (slot != null && slot.hasItem()) {
+			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
 			if (index < numRows * 9) {
-				if (!mergeItemStack(slotStack, numRows * 9, inventorySlots.size(), true))
+				if (!moveItemStackTo(slotStack, numRows * 9, slots.size(), true))
 					return ItemStack.EMPTY;
 			}
-			else if (!mergeItemStack(slotStack, 0, numRows * 9, false))
+			else if (!moveItemStackTo(slotStack, 0, numRows * 9, false))
 				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
-				slot.putStack(ItemStack.EMPTY);
+				slot.set(ItemStack.EMPTY);
 			else
-				slot.onSlotChanged();
+				slot.setChanged();
 		}
 
 		return slotStackCopy;
 	}
 
 	@Override
-	public void onContainerClosed(PlayerEntity player) {
-		super.onContainerClosed(player);
+	public void removed(PlayerEntity player) {
+		super.removed(player);
 
-		Utils.setISinTEAppropriately(player.world, te.getPos(), ((InventoryScannerTileEntity) player.world.getTileEntity(te.getPos())).getContents());
+		Utils.setISinTEAppropriately(player.level, te.getBlockPos(), ((InventoryScannerTileEntity) player.level.getBlockEntity(te.getBlockPos())).getContents());
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player) {
-		return isWithinUsableDistance(worldPosCallable, player, SCContent.INVENTORY_SCANNER.get());
+	public boolean stillValid(PlayerEntity player) {
+		return stillValid(worldPosCallable, player, SCContent.INVENTORY_SCANNER.get());
 	}
 
 	@Override
-	public ItemStack slotClick(int slotId, int dragType, ClickType clickType, PlayerEntity player) {
+	public ItemStack clicked(int slotId, int dragType, ClickType clickType, PlayerEntity player) {
 		if (slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof OwnerRestrictedSlot && ((OwnerRestrictedSlot) getSlot(slotId)).isGhostSlot()) {
 			if (te.getOwner().isOwner(player)) {
-				ItemStack pickedUpStack = player.inventory.getItemStack().copy();
+				ItemStack pickedUpStack = player.inventory.getCarried().copy();
 
 				pickedUpStack.setCount(1);
 				te.getContents().set(slotId, pickedUpStack);
@@ -102,6 +102,6 @@ public class InventoryScannerContainer extends Container {
 			return ItemStack.EMPTY;
 		}
 		else
-			return super.slotClick(slotId, dragType, clickType, player);
+			return super.clicked(slotId, dragType, clickType, player);
 	}
 }

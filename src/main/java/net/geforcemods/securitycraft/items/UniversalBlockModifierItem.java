@@ -32,19 +32,19 @@ public class UniversalBlockModifierItem extends Item {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
-		World world = ctx.getWorld();
-		BlockPos pos = ctx.getPos();
-		TileEntity te = world.getTileEntity(pos);
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		TileEntity te = world.getBlockEntity(pos);
 		PlayerEntity player = ctx.getPlayer();
 
 		if (te instanceof IModuleInventory) {
 			if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player)) {
 				if (!(te.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) te.getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner().getName())), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner().getName())), TextFormatting.RED);
 
 				return ActionResultType.FAIL;
 			}
-			else if (!ctx.getWorld().isRemote) {
+			else if (!ctx.getLevel().isClientSide) {
 				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
@@ -53,7 +53,7 @@ public class UniversalBlockModifierItem extends Item {
 
 					@Override
 					public ITextComponent getDisplayName() {
-						return new TranslationTextComponent(te.getBlockState().getBlock().getTranslationKey());
+						return new TranslationTextComponent(te.getBlockState().getBlock().getDescriptionId());
 					}
 				}, pos);
 			}

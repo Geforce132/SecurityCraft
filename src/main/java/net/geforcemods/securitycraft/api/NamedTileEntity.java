@@ -19,15 +19,15 @@ public class NamedTileEntity extends OwnableTileEntity implements INameSetter {
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
-		tag.putString("customName", customName == null ? "" : customName.getFormattedText());
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
+		tag.putString("customName", customName == null ? "" : customName.getColoredString());
 		return tag;
 	}
 
 	@Override
-	public void read(CompoundNBT tag) {
-		super.read(tag);
+	public void load(CompoundNBT tag) {
+		super.load(tag);
 
 		if (tag.contains("customName")) {
 			String name = tag.getString("customName");
@@ -51,7 +51,7 @@ public class NamedTileEntity extends OwnableTileEntity implements INameSetter {
 	public boolean hasCustomName() {
 		ITextComponent name = getCustomName();
 
-		return name != null && !name.getFormattedText().isEmpty() && !getDefaultName().equals(name);
+		return name != null && !name.getColoredString().isEmpty() && !getDefaultName().equals(name);
 	}
 
 	@Override
@@ -62,10 +62,10 @@ public class NamedTileEntity extends OwnableTileEntity implements INameSetter {
 	@Override
 	public void setCustomName(ITextComponent customName) {
 		this.customName = customName;
-		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 	}
 
 	public ITextComponent getDefaultName() {
-		return Utils.localize(getBlockState().getBlock().getTranslationKey());
+		return Utils.localize(getBlockState().getBlock().getDescriptionId());
 	}
 }

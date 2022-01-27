@@ -29,7 +29,7 @@ public class OpenSSSScreen {
 
 	public static void onMessage(OpenSSSScreen message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			TileEntity te = Minecraft.getInstance().world.getTileEntity(message.pos);
+			TileEntity te = Minecraft.getInstance().level.getBlockEntity(message.pos);
 
 			if (te instanceof SonicSecuritySystemTileEntity)
 				ClientHandler.displaySonicSecuritySystemGui((SonicSecuritySystemTileEntity) te);

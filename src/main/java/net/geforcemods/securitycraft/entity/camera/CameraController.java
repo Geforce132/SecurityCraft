@@ -33,72 +33,72 @@ public class CameraController {
 
 	@SubscribeEvent
 	public static void onClientTick(ClientTickEvent event) {
-		Entity renderViewEntity = Minecraft.getInstance().renderViewEntity;
+		Entity renderViewEntity = Minecraft.getInstance().cameraEntity;
 
 		if (renderViewEntity instanceof SecurityCameraEntity) {
 			SecurityCameraEntity cam = (SecurityCameraEntity) renderViewEntity;
-			GameSettings options = Minecraft.getInstance().gameSettings;
+			GameSettings options = Minecraft.getInstance().options;
 
 			//up/down/left/right handling is split to prevent players who are viewing a camera from moving around in a boat or on a horse
 			if (event.phase == Phase.START) {
-				if (wasUpPressed = options.keyBindForward.isKeyDown())
-					options.keyBindForward.setPressed(false);
+				if (wasUpPressed = options.keyUp.isDown())
+					options.keyUp.setDown(false);
 
-				if (wasDownPressed = options.keyBindBack.isKeyDown())
-					options.keyBindBack.setPressed(false);
+				if (wasDownPressed = options.keyDown.isDown())
+					options.keyDown.setDown(false);
 
-				if (wasLeftPressed = options.keyBindLeft.isKeyDown())
-					options.keyBindLeft.setPressed(false);
+				if (wasLeftPressed = options.keyLeft.isDown())
+					options.keyLeft.setDown(false);
 
-				if (wasRightPressed = options.keyBindRight.isKeyDown())
-					options.keyBindRight.setPressed(false);
+				if (wasRightPressed = options.keyRight.isDown())
+					options.keyRight.setDown(false);
 
-				if (options.keyBindSneak.isKeyDown()) {
+				if (options.keyShift.isDown()) {
 					dismount();
-					options.keyBindSneak.setPressed(false);
+					options.keyShift.setDown(false);
 				}
 			}
 			else if (event.phase == Phase.END) {
 				if (wasUpPressed) {
 					moveViewUp(cam);
-					options.keyBindForward.setPressed(true);
+					options.keyUp.setDown(true);
 				}
 
 				if (wasDownPressed) {
 					moveViewDown(cam);
-					options.keyBindBack.setPressed(true);
+					options.keyDown.setDown(true);
 				}
 
 				if (wasLeftPressed) {
-					moveViewHorizontally(cam, cam.rotationYaw, cam.rotationYaw - (float) cam.cameraSpeed * cam.zoomAmount);
-					options.keyBindLeft.setPressed(true);
+					moveViewHorizontally(cam, cam.yRot, cam.yRot - (float) cam.cameraSpeed * cam.zoomAmount);
+					options.keyLeft.setDown(true);
 				}
 
 				if (wasRightPressed) {
-					moveViewHorizontally(cam, cam.rotationYaw, cam.rotationYaw + (float) cam.cameraSpeed * cam.zoomAmount);
-					options.keyBindRight.setPressed(true);
+					moveViewHorizontally(cam, cam.yRot, cam.yRot + (float) cam.cameraSpeed * cam.zoomAmount);
+					options.keyRight.setDown(true);
 				}
 
-				if (KeyBindings.cameraZoomIn.isKeyDown())
+				if (KeyBindings.cameraZoomIn.isDown())
 					zoomIn(cam);
-				else if (KeyBindings.cameraZoomOut.isKeyDown())
+				else if (KeyBindings.cameraZoomOut.isDown())
 					zoomOut(cam);
 				else
 					cam.zooming = false;
 
-				if (KeyBindings.cameraEmitRedstone.isPressed())
+				if (KeyBindings.cameraEmitRedstone.consumeClick())
 					emitRedstone(cam);
 
-				if (KeyBindings.cameraActivateNightVision.isPressed())
+				if (KeyBindings.cameraActivateNightVision.consumeClick())
 					giveNightVision(cam);
 
 				//update other players with the head rotation
 				ClientPlayerEntity player = Minecraft.getInstance().player;
-				double yRotChange = player.rotationYaw - player.lastReportedYaw;
-				double xRotChange = player.rotationPitch - player.lastReportedPitch;
+				double yRotChange = player.yRot - player.yRotLast;
+				double xRotChange = player.xRot - player.xRotLast;
 
 				if (yRotChange != 0.0D || xRotChange != 0.0D)
-					player.connection.sendPacket(new CPlayerPacket.RotationPacket(player.rotationYaw, player.rotationPitch, player.onGround));
+					player.connection.send(new CPlayerPacket.RotationPacket(player.yRot, player.xRot, player.onGround));
 			}
 		}
 	}
@@ -108,31 +108,31 @@ public class CameraController {
 	}
 
 	public static void moveViewUp(SecurityCameraEntity cam) {
-		float next = cam.rotationPitch - (float) cam.cameraSpeed * cam.zoomAmount;
+		float next = cam.xRot - (float) cam.cameraSpeed * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next > 40F)
-				cam.setRotation(cam.rotationYaw, next);
+				cam.setRot(cam.yRot, next);
 		}
 		else if (next > -25F)
-			cam.setRotation(cam.rotationYaw, next);
+			cam.setRot(cam.yRot, next);
 	}
 
 	public static void moveViewDown(SecurityCameraEntity cam) {
-		float next = cam.rotationPitch + (float) cam.cameraSpeed * cam.zoomAmount;
+		float next = cam.xRot + (float) cam.cameraSpeed * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next < 90F)
-				cam.setRotation(cam.rotationYaw, next);
+				cam.setRot(cam.yRot, next);
 		}
 		else if (next < 60F)
-			cam.setRotation(cam.rotationYaw, next);
+			cam.setRot(cam.yRot, next);
 	}
 
 	public static void moveViewHorizontally(SecurityCameraEntity cam, float yRot, float next) {
-		BlockState state = cam.world.getBlockState(cam.getPosition());
+		BlockState state = cam.level.getBlockState(cam.getCommandSenderBlockPosition());
 
-		if (state.has(SecurityCameraBlock.FACING)) {
+		if (state.hasProperty(SecurityCameraBlock.FACING)) {
 			float checkNext = next;
 
 			if (checkNext < 0)
@@ -140,7 +140,7 @@ public class CameraController {
 
 			boolean shouldSetRotation = false;
 
-			switch (state.get(SecurityCameraBlock.FACING)) {
+			switch (state.getValue(SecurityCameraBlock.FACING)) {
 				case NORTH:
 					shouldSetRotation = checkNext > 90F && checkNext < 270F;
 					break;
@@ -162,13 +162,13 @@ public class CameraController {
 			}
 
 			if (shouldSetRotation)
-				cam.rotationYaw = next;
+				cam.yRot = next;
 		}
 	}
 
 	public static void zoomIn(SecurityCameraEntity cam) {
 		if (!cam.zooming)
-			Minecraft.getInstance().world.playSound(cam.getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+			Minecraft.getInstance().level.playLocalSound(cam.getCommandSenderBlockPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 
 		cam.zooming = true;
 		cam.zoomAmount = Math.max(cam.zoomAmount - 0.1F, 0.1F);
@@ -176,7 +176,7 @@ public class CameraController {
 
 	public static void zoomOut(SecurityCameraEntity cam) {
 		if (!cam.zooming)
-			Minecraft.getInstance().world.playSound(cam.getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+			Minecraft.getInstance().level.playLocalSound(cam.getCommandSenderBlockPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 
 		cam.zooming = true;
 		cam.zoomAmount = Math.min(cam.zoomAmount + 0.1F, 1.4F);
@@ -203,8 +203,8 @@ public class CameraController {
 			CameraController.cameraStorage = cameraStorage;
 
 		if (cameraStorage != null) {
-			cameraStorage.centerX = CameraController.cameraStorage.centerX;
-			cameraStorage.centerZ = CameraController.cameraStorage.centerZ;
+			cameraStorage.viewCenterX = CameraController.cameraStorage.viewCenterX;
+			cameraStorage.viewCenterZ = CameraController.cameraStorage.viewCenterZ;
 
 			for (int k = 0; k < CameraController.cameraStorage.chunks.length(); ++k) {
 				Chunk chunk = CameraController.cameraStorage.chunks.get(k);
@@ -212,7 +212,7 @@ public class CameraController {
 				if (chunk != null) {
 					ChunkPos pos = chunk.getPos();
 
-					if (cameraStorage.inView(pos.x, pos.z))
+					if (cameraStorage.inRange(pos.x, pos.z))
 						cameraStorage.replace(cameraStorage.getIndex(pos.x, pos.z), chunk);
 				}
 			}
@@ -223,10 +223,10 @@ public class CameraController {
 
 	public static void setRenderPosition(Entity entity) {
 		if (entity instanceof SecurityCameraEntity) {
-			SectionPos cameraPos = SectionPos.from(entity);
+			SectionPos cameraPos = SectionPos.of(entity);
 
-			cameraStorage.centerX = cameraPos.getSectionX();
-			cameraStorage.centerZ = cameraPos.getSectionZ();
+			cameraStorage.viewCenterX = cameraPos.x();
+			cameraStorage.viewCenterZ = cameraPos.z();
 		}
 	}
 }

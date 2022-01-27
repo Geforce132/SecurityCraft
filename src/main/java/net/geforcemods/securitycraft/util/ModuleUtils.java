@@ -28,7 +28,7 @@ public class ModuleUtils {
 	}
 
 	public static boolean isAllowed(IModuleInventory inv, Entity entity) {
-		return isAllowed(inv, entity.getName().getFormattedText());
+		return isAllowed(inv, entity.getName().getColoredString());
 	}
 
 	public static boolean isAllowed(IModuleInventory inv, String name) {
@@ -60,7 +60,7 @@ public class ModuleUtils {
 		}
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return getPlayersFromModule(stack).contains(entity.getName().getFormattedText().toLowerCase());
+		return getPlayersFromModule(stack).contains(entity.getName().getColoredString().toLowerCase());
 	}
 
 	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableTileEntity te) {

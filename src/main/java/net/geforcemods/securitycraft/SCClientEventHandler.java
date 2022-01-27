@@ -66,11 +66,11 @@ public class SCClientEventHandler {
 		PlayerEntity player = Minecraft.getInstance().player;
 
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			SecurityCameraEntity camera = (SecurityCameraEntity) Minecraft.getInstance().renderViewEntity;
+			SecurityCameraEntity camera = (SecurityCameraEntity) Minecraft.getInstance().cameraEntity;
 
 			if (camera.screenshotSoundCooldown == 0) {
 				camera.screenshotSoundCooldown = 7;
-				Minecraft.getInstance().world.playSound(player.getPosition(), SCSounds.CAMERASNAP.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+				Minecraft.getInstance().level.playLocalSound(player.getCommandSenderBlockPosition(), SCSounds.CAMERASNAP.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
 		}
 	}
@@ -99,23 +99,23 @@ public class SCClientEventHandler {
 	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
 		if (event.getType() == ElementType.ALL) {
 			if (ClientHandler.isPlayerMountedOnCamera())
-				drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().getMainWindow(), Minecraft.getInstance().player, Minecraft.getInstance().world, Minecraft.getInstance().renderViewEntity.getPosition());
+				drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().gui, Minecraft.getInstance().getWindow(), Minecraft.getInstance().player, Minecraft.getInstance().level, Minecraft.getInstance().cameraEntity.getCommandSenderBlockPosition());
 			else {
 				Minecraft mc = Minecraft.getInstance();
 				ClientPlayerEntity player = mc.player;
-				World world = player.getEntityWorld();
-				float reachDistance = mc.playerController.getBlockReachDistance();
+				World world = player.getCommandSenderWorld();
+				float reachDistance = mc.gameMode.getPickRange();
 
 				for (Hand hand : Hand.values()) {
 					int uCoord = 0;
-					ItemStack stack = player.getHeldItem(hand);
+					ItemStack stack = player.getItemInHand(hand);
 
 					if (stack.getItem() == SCContent.CAMERA_MONITOR.get()) {
 						double eyeHeight = player.getEyeHeight();
-						Vec3d lookVec = new Vec3d(player.getPosX() + player.getLookVec().x * reachDistance, eyeHeight + player.getPosY() + player.getLookVec().y * reachDistance, player.getPosZ() + player.getLookVec().z * reachDistance);
-						RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
+						Vec3d lookVec = new Vec3d(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
+						RayTraceResult mop = world.clip(new RayTraceContext(new Vec3d(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
 
-						if (mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(((BlockRayTraceResult) mop).getPos()) instanceof SecurityCameraTileEntity) {
+						if (mop != null && mop.getType() == Type.BLOCK && world.getBlockEntity(((BlockRayTraceResult) mop).getBlockPos()) instanceof SecurityCameraTileEntity) {
 							CompoundNBT cameras = stack.getOrCreateTag();
 							uCoord = 110;
 
@@ -125,7 +125,7 @@ public class SCClientEventHandler {
 
 								String[] coords = cameras.getString("Camera" + i).split(" ");
 
-								if (Integer.parseInt(coords[0]) == ((BlockRayTraceResult) mop).getPos().getX() && Integer.parseInt(coords[1]) == ((BlockRayTraceResult) mop).getPos().getY() && Integer.parseInt(coords[2]) == ((BlockRayTraceResult) mop).getPos().getZ()) {
+								if (Integer.parseInt(coords[0]) == ((BlockRayTraceResult) mop).getBlockPos().getX() && Integer.parseInt(coords[1]) == ((BlockRayTraceResult) mop).getBlockPos().getY() && Integer.parseInt(coords[2]) == ((BlockRayTraceResult) mop).getBlockPos().getZ()) {
 									uCoord = 88;
 									break;
 								}
@@ -134,10 +134,10 @@ public class SCClientEventHandler {
 					}
 					else if (stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get()) {
 						double eyeHeight = player.getEyeHeight();
-						Vec3d lookVec = new Vec3d(player.getPosX() + player.getLookVec().x * reachDistance, eyeHeight + player.getPosY() + player.getLookVec().y * reachDistance, player.getPosZ() + player.getLookVec().z * reachDistance);
-						RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
+						Vec3d lookVec = new Vec3d(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
+						RayTraceResult mop = world.clip(new RayTraceContext(new Vec3d(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
 
-						if (mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockRayTraceResult) mop).getPos()).getBlock() instanceof IExplosive) {
+						if (mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockRayTraceResult) mop).getBlockPos()).getBlock() instanceof IExplosive) {
 							uCoord = 110;
 							CompoundNBT mines = stack.getOrCreateTag();
 
@@ -145,7 +145,7 @@ public class SCClientEventHandler {
 								if (stack.getTag().getIntArray("mine" + i).length > 0) {
 									int[] coords = mines.getIntArray("mine" + i);
 
-									if (coords[0] == ((BlockRayTraceResult) mop).getPos().getX() && coords[1] == ((BlockRayTraceResult) mop).getPos().getY() && coords[2] == ((BlockRayTraceResult) mop).getPos().getZ()) {
+									if (coords[0] == ((BlockRayTraceResult) mop).getBlockPos().getX() && coords[1] == ((BlockRayTraceResult) mop).getBlockPos().getY() && coords[2] == ((BlockRayTraceResult) mop).getBlockPos().getZ()) {
 										uCoord = 88;
 										break;
 									}
@@ -154,7 +154,7 @@ public class SCClientEventHandler {
 						}
 					}
 					else if (stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get()) {
-						Entity hitEntity = Minecraft.getInstance().pointedEntity;
+						Entity hitEntity = Minecraft.getInstance().crosshairPickEntity;
 
 						if (hitEntity instanceof SentryEntity) {
 							uCoord = 110;
@@ -163,7 +163,7 @@ public class SCClientEventHandler {
 							for (int i = 1; i <= 12; i++) {
 								if (stack.getTag().getIntArray("sentry" + i).length > 0) {
 									int[] coords = sentries.getIntArray("sentry" + i);
-									if (coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ()) {
+									if (coords[0] == hitEntity.getCommandSenderBlockPosition().getX() && coords[1] == hitEntity.getCommandSenderBlockPosition().getY() && coords[2] == hitEntity.getCommandSenderBlockPosition().getZ()) {
 										uCoord = 88;
 										break;
 									}
@@ -173,12 +173,12 @@ public class SCClientEventHandler {
 					}
 					else if (stack.getItem() == SCContent.SONIC_SECURITY_SYSTEM_ITEM.get()) {
 						double eyeHeight = player.getEyeHeight();
-						Vec3d lookVec = new Vec3d(player.getPosX() + player.getLookVec().x * reachDistance, eyeHeight + player.getPosY() + player.getLookVec().y * reachDistance, player.getPosZ() + player.getLookVec().z * reachDistance);
-						RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
-						TileEntity te = world.getTileEntity(((BlockRayTraceResult) mop).getPos());
+						Vec3d lookVec = new Vec3d(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
+						RayTraceResult mop = world.clip(new RayTraceContext(new Vec3d(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
+						TileEntity te = world.getBlockEntity(((BlockRayTraceResult) mop).getBlockPos());
 
 						if (mop != null && mop.getType() == Type.BLOCK && te instanceof ILockable) {
-							BlockPos pos = ((BlockRayTraceResult) mop).getPos();
+							BlockPos pos = ((BlockRayTraceResult) mop).getBlockPos();
 
 							//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 							if (!(te instanceof IOwnable) || !((IOwnable) te).getOwner().isOwner(player)) {
@@ -197,8 +197,8 @@ public class SCClientEventHandler {
 
 					if (uCoord != 0) {
 						RenderSystem.enableAlphaTest();
-						Minecraft.getInstance().textureManager.bindTexture(BEACON_GUI);
-						AbstractGui.blit(Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + (hand == Hand.MAIN_HAND ? player.inventory.currentItem * 20 : (mc.gameSettings.mainHand == HandSide.LEFT ? 189 : -29)), Minecraft.getInstance().getMainWindow().getScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+						Minecraft.getInstance().textureManager.bind(BEACON_GUI);
+						AbstractGui.blit(Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == Hand.MAIN_HAND ? player.inventory.selected * 20 : (mc.options.mainHand == HandSide.LEFT ? 189 : -29)), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
 						RenderSystem.disableAlphaTest();
 					}
 				}
@@ -207,57 +207,57 @@ public class SCClientEventHandler {
 	}
 
 	private static void drawCameraOverlay(Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {
-		if (mc.gameSettings.showDebugInfo)
+		if (mc.options.renderDebug)
 			return;
 
-		TileEntity tile = world.getTileEntity(pos);
+		TileEntity tile = world.getBlockEntity(pos);
 
 		if (!(tile instanceof SecurityCameraTileEntity))
 			return;
 
-		FontRenderer font = Minecraft.getInstance().fontRenderer;
+		FontRenderer font = Minecraft.getInstance().font;
 		SecurityCameraTileEntity te = (SecurityCameraTileEntity) tile;
 		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
-		GameSettings settings = Minecraft.getInstance().gameSettings;
+		GameSettings settings = Minecraft.getInstance().options;
 		BlockState state = world.getBlockState(pos);
-		String lookAround = settings.keyBindForward.getLocalizedName().toUpperCase() + settings.keyBindLeft.getLocalizedName().toUpperCase() + settings.keyBindBack.getLocalizedName().toUpperCase() + settings.keyBindRight.getLocalizedName().toUpperCase() + " - " + Utils.localize("gui.securitycraft:camera.lookAround").getFormattedText();
+		String lookAround = settings.keyUp.getTranslatedKeyMessage().toUpperCase() + settings.keyLeft.getTranslatedKeyMessage().toUpperCase() + settings.keyDown.getTranslatedKeyMessage().toUpperCase() + settings.keyRight.getTranslatedKeyMessage().toUpperCase() + " - " + Utils.localize("gui.securitycraft:camera.lookAround").getColoredString();
 		int timeY = 25;
 
 		if (te.hasCustomName()) {
-			String cameraName = te.getCustomName().getFormattedText();
+			String cameraName = te.getCustomName().getColoredString();
 
-			font.drawStringWithShadow(cameraName, resolution.getScaledWidth() - font.getStringWidth(cameraName) - 8, 25, 16777215);
+			font.drawShadow(cameraName, resolution.getGuiScaledWidth() - font.width(cameraName) - 8, 25, 16777215);
 			timeY += 10;
 		}
 
-		font.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() - font.getStringWidth(ClientUtils.getFormattedMinecraftTime()) - 4, timeY, 16777215);
-		font.drawStringWithShadow(lookAround, resolution.getScaledWidth() - font.getStringWidth(lookAround) - 8, resolution.getScaledHeight() - 80, 16777215);
-		font.drawStringWithShadow(settings.keyBindSneak.getLocalizedName() + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(settings.keyBindSneak.getLocalizedName() + " - " + Utils.localize("gui.securitycraft:camera.exit").getFormattedText()) - 8, resolution.getScaledHeight() - 70, 16777215);
-		font.drawStringWithShadow(KeyBindings.cameraZoomIn.getLocalizedName() + "/" + KeyBindings.cameraZoomOut.getLocalizedName() + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(KeyBindings.cameraZoomIn.getLocalizedName() + "/" + Utils.localize(KeyBindings.cameraZoomOut.getTranslationKey()).getFormattedText() + " - " + Utils.localize("gui.securitycraft:camera.zoom").getFormattedText()) - 8, resolution.getScaledHeight() - 60, 16777215);
-		font.drawStringWithShadow(KeyBindings.cameraActivateNightVision.getLocalizedName() + " - " + Utils.localize("gui.securitycraft:camera.activateNightVision").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(KeyBindings.cameraActivateNightVision.getLocalizedName() + " - " + Utils.localize("gui.securitycraft:camera.activateNightVision").getFormattedText()) - 8, resolution.getScaledHeight() - 50, 16777215);
-		font.drawStringWithShadow(KeyBindings.cameraEmitRedstone.getLocalizedName() + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(KeyBindings.cameraEmitRedstone.getLocalizedName() + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText()) - 8, resolution.getScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
-		font.drawStringWithShadow(Utils.localize("gui.securitycraft:camera.toggleRedstoneNote").getFormattedText(), resolution.getScaledWidth() - font.getStringWidth(Utils.localize("gui.securitycraft:camera.toggleRedstoneNote").getFormattedText()) - 8, resolution.getScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
+		font.drawShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getGuiScaledWidth() - font.width(ClientUtils.getFormattedMinecraftTime()) - 4, timeY, 16777215);
+		font.drawShadow(lookAround, resolution.getGuiScaledWidth() - font.width(lookAround) - 8, resolution.getGuiScaledHeight() - 80, 16777215);
+		font.drawShadow(settings.keyShift.getTranslatedKeyMessage() + " - " + Utils.localize("gui.securitycraft:camera.exit").getColoredString(), resolution.getGuiScaledWidth() - font.width(settings.keyShift.getTranslatedKeyMessage() + " - " + Utils.localize("gui.securitycraft:camera.exit").getColoredString()) - 8, resolution.getGuiScaledHeight() - 70, 16777215);
+		font.drawShadow(KeyBindings.cameraZoomIn.getTranslatedKeyMessage() + "/" + KeyBindings.cameraZoomOut.getTranslatedKeyMessage() + " - " + Utils.localize("gui.securitycraft:camera.zoom").getColoredString(), resolution.getGuiScaledWidth() - font.width(KeyBindings.cameraZoomIn.getTranslatedKeyMessage() + "/" + Utils.localize(KeyBindings.cameraZoomOut.saveString()).getColoredString() + " - " + Utils.localize("gui.securitycraft:camera.zoom").getColoredString()) - 8, resolution.getGuiScaledHeight() - 60, 16777215);
+		font.drawShadow(KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage() + " - " + Utils.localize("gui.securitycraft:camera.activateNightVision").getColoredString(), resolution.getGuiScaledWidth() - font.width(KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage() + " - " + Utils.localize("gui.securitycraft:camera.activateNightVision").getColoredString()) - 8, resolution.getGuiScaledHeight() - 50, 16777215);
+		font.drawShadow(KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage() + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getColoredString(), resolution.getGuiScaledWidth() - font.width(KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage() + " - " + Utils.localize("gui.securitycraft:camera.toggleRedstone").getColoredString()) - 8, resolution.getGuiScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
+		font.drawShadow(Utils.localize("gui.securitycraft:camera.toggleRedstoneNote").getColoredString(), resolution.getGuiScaledWidth() - font.width(Utils.localize("gui.securitycraft:camera.toggleRedstoneNote").getColoredString()) - 8, resolution.getGuiScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
 
-		mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
+		mc.getTextureManager().bind(CAMERA_DASHBOARD);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.blit(5, 0, 0, 0, 90, 20);
-		gui.blit(resolution.getScaledWidth() - 70, 5, 190, 0, 65, 30);
+		gui.blit(resolution.getGuiScaledWidth() - 70, 5, 190, 0, 65, 30);
 
-		if (!player.isPotionActive(Effects.NIGHT_VISION))
+		if (!player.hasEffect(Effects.NIGHT_VISION))
 			gui.blit(28, 4, 90, 12, 16, 11);
 		else {
-			mc.getTextureManager().bindTexture(NIGHT_VISION);
+			mc.getTextureManager().bind(NIGHT_VISION);
 			AbstractGui.blit(27, -1, 0, 0, 18, 18, 18, 18);
-			mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
+			mc.getTextureManager().bind(CAMERA_DASHBOARD);
 		}
 
-		if (state.getWeakPower(world, pos, state.get(SecurityCameraBlock.FACING)) == 0) {
+		if (state.getSignal(world, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 			if (!hasRedstoneModule)
 				gui.blit(12, 2, 104, 0, 12, 12);
 			else
 				gui.blit(12, 3, 90, 0, 12, 11);
 		}
 		else
-			Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(REDSTONE, 10, 0);
+			Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(REDSTONE, 10, 0);
 	}
 }

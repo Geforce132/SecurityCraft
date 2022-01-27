@@ -26,11 +26,11 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		super.onBlockPlacedBy(world, pos, state, placer, stack);
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(world, pos, state, placer, stack);
 
-		TileEntity lowerTe = world.getTileEntity(pos);
-		TileEntity upperTe = world.getTileEntity(pos.up());
+		TileEntity lowerTe = world.getBlockEntity(pos);
+		TileEntity upperTe = world.getBlockEntity(pos.above());
 
 		if (lowerTe instanceof IOwnable && upperTe instanceof IOwnable) {
 			if (placer instanceof PlayerEntity) {
@@ -49,39 +49,39 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
 		BlockState upperState = world.getBlockState(pos);
 
-		if (!upperState.get(DoorBlock.OPEN))
+		if (!upperState.getValue(DoorBlock.OPEN))
 			return;
 
 		BlockState lowerState;
 
-		if (upperState.get(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
+		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
 			lowerState = upperState;
-			pos = pos.up();
+			pos = pos.above();
 			upperState = world.getBlockState(pos);
 		}
 		else
-			lowerState = world.getBlockState(pos.down());
+			lowerState = world.getBlockState(pos.below());
 
-		world.setBlockState(pos, upperState.with(DoorBlock.OPEN, false), 3);
-		world.setBlockState(pos.down(), lowerState.with(DoorBlock.OPEN, false), 3);
-		world.playEvent(null, 1011, pos, 0);
+		world.setBlock(pos, upperState.setValue(DoorBlock.OPEN, false), 3);
+		world.setBlock(pos.below(), lowerState.setValue(DoorBlock.OPEN, false), 3);
+		world.levelEvent(null, 1011, pos, 0);
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-		super.onReplaced(state, world, pos, newState, isMoving);
+	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+		super.onRemove(state, world, pos, newState, isMoving);
 
 		if (state.getBlock() != newState.getBlock())
-			world.removeTileEntity(pos);
+			world.removeBlockEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(BlockState state, World world, BlockPos pos, int id, int param) {
-		super.eventReceived(state, world, pos, id, param);
+	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param) {
+		super.triggerEvent(state, world, pos, id, param);
 
-		TileEntity tileentity = world.getTileEntity(pos);
+		TileEntity tileentity = world.getBlockEntity(pos);
 
-		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
+		return tileentity == null ? false : tileentity.triggerEvent(id, param);
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 	}
 
 	@Override
-	public PushReaction getPushReaction(BlockState state) {
+	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.BLOCK;
 	}
 

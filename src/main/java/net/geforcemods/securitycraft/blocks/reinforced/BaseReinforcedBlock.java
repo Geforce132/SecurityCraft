@@ -41,8 +41,8 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 	@Override
 	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable) {
-		BlockState plant = plantable.getPlant(world, pos.offset(facing));
-		PlantType type = plantable.getPlantType(world, pos.offset(facing));
+		BlockState plant = plantable.getPlant(world, pos.relative(facing));
+		PlantType type = plantable.getPlantType(world, pos.relative(facing));
 
 		if (super.canSustainPlant(state, world, pos, facing, plantable))
 			return true;
@@ -55,11 +55,11 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			boolean bushCondition = this == SCContent.REINFORCED_GRASS_BLOCK.get() || this == SCContent.REINFORCED_DIRT.get() || this == SCContent.REINFORCED_COARSE_DIRT.get() || this == SCContent.REINFORCED_PODZOL.get();
 
 			if (plantable instanceof LilyPadBlock)
-				return world.getFluidState(pos).getFluid() == SCContent.FAKE_WATER.get();
+				return world.getFluidState(pos).getType() == SCContent.FAKE_WATER.get();
 			else if (plantable instanceof WitherRoseBlock)
 				return this == SCContent.REINFORCED_NETHERRACK.get() || bushCondition;
 			else if (plantable instanceof DeadBushBlock)
-				return state.isIn(SCTags.Blocks.REINFORCED_SAND) || this == SCContent.REINFORCED_TERRACOTTA.get() || this == SCContent.REINFORCED_WHITE_TERRACOTTA.get() || this == SCContent.REINFORCED_ORANGE_TERRACOTTA.get() || this == SCContent.REINFORCED_MAGENTA_TERRACOTTA.get() || this == SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get() || this == SCContent.REINFORCED_YELLOW_TERRACOTTA.get() || this == SCContent.REINFORCED_LIME_TERRACOTTA.get() || this == SCContent.REINFORCED_PINK_TERRACOTTA.get() || this == SCContent.REINFORCED_GRAY_TERRACOTTA.get() || this == SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get() || this == SCContent.REINFORCED_CYAN_TERRACOTTA.get() || this == SCContent.REINFORCED_PURPLE_TERRACOTTA.get() || this == SCContent.REINFORCED_BLUE_TERRACOTTA.get() || this == SCContent.REINFORCED_BROWN_TERRACOTTA.get() || this == SCContent.REINFORCED_GREEN_TERRACOTTA.get() || this == SCContent.REINFORCED_RED_TERRACOTTA.get() || this == SCContent.REINFORCED_BLACK_TERRACOTTA.get() || this == SCContent.REINFORCED_DIRT.get() || this == SCContent.REINFORCED_COARSE_DIRT.get() || this == SCContent.REINFORCED_PODZOL.get();
+				return state.is(SCTags.Blocks.REINFORCED_SAND) || this == SCContent.REINFORCED_TERRACOTTA.get() || this == SCContent.REINFORCED_WHITE_TERRACOTTA.get() || this == SCContent.REINFORCED_ORANGE_TERRACOTTA.get() || this == SCContent.REINFORCED_MAGENTA_TERRACOTTA.get() || this == SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get() || this == SCContent.REINFORCED_YELLOW_TERRACOTTA.get() || this == SCContent.REINFORCED_LIME_TERRACOTTA.get() || this == SCContent.REINFORCED_PINK_TERRACOTTA.get() || this == SCContent.REINFORCED_GRAY_TERRACOTTA.get() || this == SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get() || this == SCContent.REINFORCED_CYAN_TERRACOTTA.get() || this == SCContent.REINFORCED_PURPLE_TERRACOTTA.get() || this == SCContent.REINFORCED_BLUE_TERRACOTTA.get() || this == SCContent.REINFORCED_BROWN_TERRACOTTA.get() || this == SCContent.REINFORCED_GREEN_TERRACOTTA.get() || this == SCContent.REINFORCED_RED_TERRACOTTA.get() || this == SCContent.REINFORCED_BLACK_TERRACOTTA.get() || this == SCContent.REINFORCED_DIRT.get() || this == SCContent.REINFORCED_COARSE_DIRT.get() || this == SCContent.REINFORCED_PODZOL.get();
 		}
 
 		switch (type) {
@@ -82,9 +82,9 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (getVanillaBlock() instanceof BreakableBlock)
-			return adjacentBlockState.getBlock() == this ? true : super.isSideInvisible(state, adjacentBlockState, side);
+			return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 
 		return false;
 	}
@@ -96,6 +96,6 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState) {
-		return getDefaultState();
+		return defaultBlockState();
 	}
 }

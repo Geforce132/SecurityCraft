@@ -71,7 +71,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		horizontalBlock(SCContent.SMOKER_MINE.get(), mcLoc(ModelProvider.BLOCK_FOLDER + "/smoker_side"), mcLoc(ModelProvider.BLOCK_FOLDER + "/smoker_front"), mcLoc(ModelProvider.BLOCK_FOLDER + "/smoker_top"));
 		horizontalBlock(SCContent.BLAST_FURNACE_MINE.get(), mcLoc(ModelProvider.BLOCK_FOLDER + "/blast_furnace_side"), mcLoc(ModelProvider.BLOCK_FOLDER + "/blast_furnace_front"), mcLoc(ModelProvider.BLOCK_FOLDER + "/blast_furnace_top"));
 		getVariantBuilder(SCContent.REDSTONE_ORE_MINE.get()).forAllStates(state -> {
-			if (state.get(RedstoneOreMineBlock.LIT))
+			if (state.getValue(RedstoneOreMineBlock.LIT))
 				return new ConfiguredModel[] {
 						new ConfiguredModel(models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/redstone_ore_on")))
 				};
@@ -181,7 +181,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		ModelFile noSideAlt = models().paneNoSideAlt(name + "_noside_alt", pane);
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(block).part().modelFile(post).addModel().end();
 
-		SixWayBlock.FACING_TO_PROPERTY_MAP.entrySet().forEach(e -> {
+		SixWayBlock.PROPERTY_BY_DIRECTION.entrySet().forEach(e -> {
 			Direction dir = e.getKey();
 
 			if (dir.getAxis().isHorizontal()) {
@@ -256,10 +256,10 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		ModelFile stairsOuter = models().reinforcedStairsOuter(baseName + "_outer", side, bottom, top);
 
 		getVariantBuilder(block).forAllStatesExcept(state -> {
-			Direction facing = state.get(StairsBlock.FACING);
-			Half half = state.get(StairsBlock.HALF);
-			StairsShape shape = state.get(StairsBlock.SHAPE);
-			int yRot = (int) facing.rotateY().getHorizontalAngle();
+			Direction facing = state.getValue(StairsBlock.FACING);
+			Half half = state.getValue(StairsBlock.HALF);
+			StairsShape shape = state.getValue(StairsBlock.SHAPE);
+			int yRot = (int) facing.getClockWise().toYRot();
 
 			if (shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT)
 				yRot += 270;

@@ -33,9 +33,9 @@ public class LaserBlockTileEntity extends LinkableTileEntity {
 
 	private void toggleLaser(BooleanOption option) {
 		if (option.get())
-			((LaserBlock) getBlockState().getBlock()).setLaser(world, pos);
+			((LaserBlock) getBlockState().getBlock()).setLaser(level, worldPosition);
 		else
-			LaserBlock.destroyAdjacentLasers(world, pos);
+			LaserBlock.destroyAdjacentLasers(level, worldPosition);
 	}
 
 	@Override
@@ -72,16 +72,16 @@ public class LaserBlockTileEntity extends LinkableTileEntity {
 	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		super.onModuleInserted(stack, module);
 
-		if (!world.isRemote && module == ModuleType.DISGUISE)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, true, stack));
+		if (!level.isClientSide && module == ModuleType.DISGUISE)
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack));
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		super.onModuleRemoved(stack, module);
 
-		if (!world.isRemote && module == ModuleType.DISGUISE)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, false, stack));
+		if (!level.isClientSide && module == ModuleType.DISGUISE)
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack));
 	}
 
 	@Override

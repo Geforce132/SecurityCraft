@@ -33,13 +33,13 @@ import net.minecraft.world.World;
 
 public class LaserFieldBlock extends OwnableBlock {
 	public static final IntegerProperty BOUNDTYPE = IntegerProperty.create("boundtype", 1, 3);
-	private static final VoxelShape SHAPE_X = Block.makeCuboidShape(0, 6.75, 6.75, 16, 9.25, 9.25);
-	private static final VoxelShape SHAPE_Y = Block.makeCuboidShape(6.75, 0, 6.75, 9.25, 16, 9.25);
-	private static final VoxelShape SHAPE_Z = Block.makeCuboidShape(6.75, 6.75, 0, 9.25, 9.25, 16);
+	private static final VoxelShape SHAPE_X = Block.box(0, 6.75, 6.75, 16, 9.25, 9.25);
+	private static final VoxelShape SHAPE_Y = Block.box(6.75, 0, 6.75, 9.25, 16, 9.25);
+	private static final VoxelShape SHAPE_Z = Block.box(6.75, 6.75, 0, 9.25, 9.25, 16);
 
 	public LaserFieldBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(BOUNDTYPE, 1));
+		registerDefaultState(stateDefinition.any().setValue(BOUNDTYPE, 1));
 	}
 
 	@Override
@@ -48,27 +48,27 @@ public class LaserFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (!world.isRemote && entity instanceof LivingEntity && !EntityUtils.isInvisible((LivingEntity) entity)) {
+	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
+		if (!world.isClientSide && entity instanceof LivingEntity && !EntityUtils.isInvisible((LivingEntity) entity)) {
 			for (Direction facing : Direction.values()) {
 				for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
-					BlockPos offsetPos = pos.offset(facing, i);
+					BlockPos offsetPos = pos.relative(facing, i);
 					BlockState offsetState = world.getBlockState(offsetPos);
 					Block offsetBlock = offsetState.getBlock();
 
-					if (offsetBlock == SCContent.LASER_BLOCK.get() && !offsetState.get(LaserBlock.POWERED)) {
-						TileEntity te = world.getTileEntity(offsetPos);
+					if (offsetBlock == SCContent.LASER_BLOCK.get() && !offsetState.getValue(LaserBlock.POWERED)) {
+						TileEntity te = world.getBlockEntity(offsetPos);
 
 						if (te instanceof IModuleInventory && ModuleUtils.isAllowed((IModuleInventory) te, entity))
 							return;
 
-						world.setBlockState(offsetPos, offsetState.with(LaserBlock.POWERED, true));
+						world.setBlockAndUpdate(offsetPos, offsetState.setValue(LaserBlock.POWERED, true));
 						BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.LASER_BLOCK.get());
-						world.getPendingBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
+						world.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
 
 						if (te instanceof IModuleInventory && ((IModuleInventory) te).hasModule(ModuleType.HARMING)) {
 							if (!(entity instanceof PlayerEntity && ((IOwnable) te).getOwner().isOwner((PlayerEntity) entity)))
-								((LivingEntity) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
+								((LivingEntity) entity).hurt(CustomDamageSources.LASER, 10F);
 						}
 					}
 				}
@@ -77,17 +77,17 @@ public class LaserFieldBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onPlayerDestroy(IWorld world, BlockPos pos, BlockState state) {
-		if (!world.isRemote()) {
+	public void destroy(IWorld world, BlockPos pos, BlockState state) {
+		if (!world.isClientSide()) {
 			Direction[] facingArray = {
-					Direction.byIndex((state.get(LaserFieldBlock.BOUNDTYPE) - 1) * 2), Direction.byIndex((state.get(LaserFieldBlock.BOUNDTYPE) - 1) * 2).getOpposite()
+					Direction.from3DDataValue((state.getValue(LaserFieldBlock.BOUNDTYPE) - 1) * 2), Direction.from3DDataValue((state.getValue(LaserFieldBlock.BOUNDTYPE) - 1) * 2).getOpposite()
 			};
 
 			for (Direction facing : facingArray) {
 				for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
-					if (world.getBlockState(pos.offset(facing, i)).getBlock() == SCContent.LASER_BLOCK.get()) {
+					if (world.getBlockState(pos.relative(facing, i)).getBlock() == SCContent.LASER_BLOCK.get()) {
 						for (int j = 1; j < i; j++) {
-							world.destroyBlock(pos.offset(facing, j), false);
+							world.destroyBlock(pos.relative(facing, j), false);
 						}
 
 						break;
@@ -100,7 +100,7 @@ public class LaserFieldBlock extends OwnableBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
 		if (source.getBlockState(pos).getBlock() instanceof LaserFieldBlock) {
-			int boundType = source.getBlockState(pos).get(BOUNDTYPE);
+			int boundType = source.getBlockState(pos).getValue(BOUNDTYPE);
 
 			if (boundType == 1)
 				return SHAPE_Y;
@@ -115,15 +115,15 @@ public class LaserFieldBlock extends OwnableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
+		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
-		return getDefaultState().with(BOUNDTYPE, 1);
+		return defaultBlockState().setValue(BOUNDTYPE, 1);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(BOUNDTYPE);
 	}
 
@@ -139,8 +139,8 @@ public class LaserFieldBlock extends OwnableBlock {
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		int boundType = state.get(BOUNDTYPE);
+		int boundType = state.getValue(BOUNDTYPE);
 
-		return rot == Rotation.CLOCKWISE_180 ? state : state.with(BOUNDTYPE, boundType == 2 ? 3 : (boundType == 3 ? 2 : 1));
+		return rot == Rotation.CLOCKWISE_180 ? state : state.setValue(BOUNDTYPE, boundType == 2 ? 3 : (boundType == 3 ? 2 : 1));
 	}
 }

@@ -14,12 +14,12 @@ public class SCExplosivesGroup extends ItemGroup {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public ItemStack createIcon() {
+	public ItemStack makeIcon() {
 		return new ItemStack(SCContent.MINE.get().asItem());
 	}
 
 	@Override
-	public String getTabLabel() {
-		return super.getTabLabel() + ".explosives";
+	public String getLangId() {
+		return super.getLangId() + ".explosives";
 	}
 }

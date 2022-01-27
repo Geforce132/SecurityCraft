@@ -43,12 +43,12 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLoggable {
 	//@formatter:off
 	private static final VoxelShape SHAPE = Stream.of(
-			Block.makeCuboidShape(5.5, 11, 5.5, 10.5, 16, 10.5),
-			Block.makeCuboidShape(7.5, 13, 7.5, 8.5, 14, 9.5),
-			Block.makeCuboidShape(7.5, 2, 7.5, 8.5, 13, 8.5),
-			Block.makeCuboidShape(7, 1, 7, 9, 2, 9),
-			Block.makeCuboidShape(6.5, 0, 6.5, 9.5, 1, 9.5)
-			).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
+			Block.box(5.5, 11, 5.5, 10.5, 16, 10.5),
+			Block.box(7.5, 13, 7.5, 8.5, 14, 9.5),
+			Block.box(7.5, 2, 7.5, 8.5, 13, 8.5),
+			Block.box(7, 1, 7, 9, 2, 9),
+			Block.box(6.5, 0, 6.5, 9.5, 1, 9.5)
+			).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.block());
 	//@formatter:on
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -56,33 +56,33 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	public SonicSecuritySystemBlock(Properties properties) {
 		super(properties);
 
-		setDefaultState(stateContainer.getBaseState().with(POWERED, false).with(WATERLOGGED, false));
+		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader reader, BlockPos pos) {
+	public boolean isRedstoneConductor(BlockState state, IBlockReader reader, BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-		if (state.get(WATERLOGGED))
-			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
+			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 
-		return facing == Direction.DOWN && !isValidPosition(state, world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+		return facing == Direction.DOWN && !canSurvive(state, world, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-		return hasEnoughSolidSide(world, pos.down(), Direction.UP);
+	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+		return canSupportCenter(world, pos.below(), Direction.UP);
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (player.getHeldItem(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
-			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity) world.getTileEntity(pos);
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (player.getItemInHand(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
+			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity) world.getBlockEntity(pos);
 
-			if (!world.isRemote && (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)))
+			if (!world.isClientSide && (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)))
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenSSSScreen(pos)); //watch out for the creeper
 
 			return ActionResultType.SUCCESS;
@@ -92,27 +92,27 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	}
 
 	@Override
-	public boolean canProvidePower(BlockState state) {
+	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return state.get(POWERED) ? 15 : 0;
+	public int getSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+		return state.getValue(POWERED) ? 15 : 0;
 	}
 
 	@Override
-	public int getStrongPower(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return state.get(POWERED) && side == Direction.UP ? 15 : 0;
+	public int getDirectSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+		return state.getValue(POWERED) && side == Direction.UP ? 15 : 0;
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return getDefaultState().with(WATERLOGGED, context.getWorld().getFluidState(context.getPos()).getFluid() == Fluids.WATER);
+		return defaultBlockState().setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
+	public BlockRenderType getRenderShape(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 
@@ -122,18 +122,18 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(POWERED, WATERLOGGED);
 	}
 
 	@Override
 	public IFluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		return getItemStackFromBlock(world.getTileEntity(pos).getUpdateTag());
+		return getItemStackFromBlock(world.getBlockEntity(pos).getUpdateTag());
 	}
 
 	private ItemStack getItemStackFromBlock(CompoundNBT blockTag) {

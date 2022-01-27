@@ -35,21 +35,21 @@ public class UniversalOwnerChangerItem extends Item {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
-		return onItemUseFirst(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), stack, ctx.getFace(), ctx.getHand());
+		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getHand());
 	}
 
 	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction side, Hand hand) {
 		//prioritize handling the briefcase
-		if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get())
-			return handleBriefcase(player, stack).getType();
+		if (hand == Hand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get())
+			return handleBriefcase(player, stack).getResult();
 
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		TileEntity te = world.getTileEntity(pos);
-		String newOwner = stack.getDisplayName().getFormattedText();
+		TileEntity te = world.getBlockEntity(pos);
+		String newOwner = stack.getHoverName().getColoredString();
 
 		if (!(te instanceof IOwnable)) {
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
 			return ActionResultType.FAIL;
 		}
 
@@ -58,33 +58,33 @@ public class UniversalOwnerChangerItem extends Item {
 
 		if (!owner.isOwner(player) && !isDefault) {
 			if (!(block instanceof IBlockMine) && (!(te.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) te.getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}
 
 			return ActionResultType.PASS;
 		}
 
-		if (!stack.hasDisplayName() && !isDefault) {
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
+		if (!stack.hasCustomHoverName() && !isDefault) {
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
 			return ActionResultType.FAIL;
 		}
 
 		if (isDefault) {
 			if (ConfigHandler.SERVER.allowBlockClaim.get())
-				newOwner = player.getName().getFormattedText();
+				newOwner = player.getName().getColoredString();
 			else
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.noBlockClaiming"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.noBlockClaiming"), TextFormatting.RED);
 			return ActionResultType.FAIL;
 		}
 
 		if (te instanceof IOwnable) {
-			((IOwnable) te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+			((IOwnable) te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
 			((IOwnable) te).onOwnerChanged(state, world, pos, player);
 		}
 
-		if (!world.isRemote)
-			world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+		if (!world.isClientSide)
+			world.getServer().getPlayerList().broadcastAll(te.getUpdatePacket());
 		//disable this in a development environment
 		if (FMLEnvironment.production && te instanceof IModuleInventory) {
 			for (ModuleType moduleType : ((IModuleInventory) te).getInsertedModules()) {
@@ -92,46 +92,46 @@ public class UniversalOwnerChangerItem extends Item {
 
 				((IModuleInventory) te).removeModule(moduleType);
 				((IModuleInventory) te).onModuleRemoved(moduleStack, moduleType);
-				Block.spawnAsEntity(world, pos, moduleStack);
+				Block.popResource(world, pos, moduleStack);
 			}
 		}
 
-		PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
+		PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
 		return ActionResultType.SUCCESS;
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack ownerChanger = player.getHeldItem(hand);
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		ItemStack ownerChanger = player.getItemInHand(hand);
 
-		if (!ownerChanger.hasDisplayName()) {
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
-			return ActionResult.resultFail(ownerChanger);
+		if (!ownerChanger.hasCustomHoverName()) {
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
+			return ActionResult.fail(ownerChanger);
 		}
 
-		if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get())
+		if (hand == Hand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get())
 			return handleBriefcase(player, ownerChanger);
 
-		return ActionResult.resultPass(ownerChanger);
+		return ActionResult.pass(ownerChanger);
 	}
 
 	private ActionResult<ItemStack> handleBriefcase(PlayerEntity player, ItemStack ownerChanger) {
-		ItemStack briefcase = player.getHeldItemOffhand();
+		ItemStack briefcase = player.getOffhandItem();
 
 		if (BriefcaseItem.isOwnedBy(briefcase, player)) {
-			String newOwner = ownerChanger.getDisplayName().getString();
+			String newOwner = ownerChanger.getHoverName().getString();
 
 			if (!briefcase.hasTag())
 				briefcase.setTag(new CompoundNBT());
 
 			briefcase.getTag().putString("owner", newOwner);
-			briefcase.getTag().putString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID");
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
-			return ActionResult.resultSuccess(ownerChanger);
+			briefcase.getTag().putString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID");
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
+			return ActionResult.success(ownerChanger);
 		}
 		else
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.briefcase.notOwned"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.briefcase.notOwned"), TextFormatting.RED);
 
-		return ActionResult.resultConsume(ownerChanger);
+		return ActionResult.consume(ownerChanger);
 	}
 }

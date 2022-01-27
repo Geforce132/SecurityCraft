@@ -25,9 +25,9 @@ import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 @OnlyIn(Dist.CLIENT)
 public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final String ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()).getFormattedText();
-	private final String enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode").getFormattedText();
-	private final String confirmPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode").getFormattedText();
+	private final String ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()).getColoredString();
+	private final String enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode").getColoredString();
+	private final String confirmPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode").getColoredString();
 	private TextFieldWidget textboxNewPasscode;
 	private TextFieldWidget textboxConfirmPasscode;
 	private Button confirmButton;
@@ -41,55 +41,55 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	@Override
 	public void init() {
 		super.init();
-		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(confirmButton = new ExtendedButton(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm").getFormattedText(), this::confirmButtonClicked));
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
+		addButton(confirmButton = new ExtendedButton(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm").getColoredString(), this::confirmButtonClicked));
 		confirmButton.active = false;
 
 		addButton(textboxNewPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 47, 110, 12, ""));
-		textboxNewPasscode.setMaxStringLength(20);
-		setFocusedDefault(textboxNewPasscode);
-		textboxNewPasscode.setValidator(s -> s.matches("[0-9]*"));
+		textboxNewPasscode.setMaxLength(20);
+		setInitialFocus(textboxNewPasscode);
+		textboxNewPasscode.setFilter(s -> s.matches("[0-9]*"));
 		textboxNewPasscode.setResponder(s -> updateConfirmButtonState());
 
 		addButton(textboxConfirmPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 7, 110, 12, ""));
-		textboxConfirmPasscode.setMaxStringLength(20);
-		textboxConfirmPasscode.setValidator(s -> s.matches("[0-9]*"));
+		textboxConfirmPasscode.setMaxLength(20);
+		textboxConfirmPasscode.setFilter(s -> s.matches("[0-9]*"));
 		textboxConfirmPasscode.setResponder(s -> updateConfirmButtonState());
 	}
 
 	@Override
 	public void onClose() {
 		super.onClose();
-		minecraft.keyboardListener.enableRepeatEvents(false);
+		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(ukcName, xSize / 2 - font.getStringWidth(ukcName) / 2, 6, 4210752);
-		font.drawString(enterPasscode, xSize / 2 - font.getStringWidth(enterPasscode) / 2, 25, 4210752);
-		font.drawString(confirmPasscode, xSize / 2 - font.getStringWidth(confirmPasscode) / 2, 65, 4210752);
+	protected void renderLabels(int mouseX, int mouseY) {
+		font.draw(ukcName, imageWidth / 2 - font.width(ukcName) / 2, 6, 4210752);
+		font.draw(enterPasscode, imageWidth / 2 - font.width(enterPasscode) / 2, 25, 4210752);
+		font.draw(confirmPasscode, imageWidth / 2 - font.width(confirmPasscode) / 2, 65, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURE);
+		blit(leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	private void updateConfirmButtonState() {
-		String newPasscode = textboxNewPasscode.getText();
-		String confirmPasscode = textboxConfirmPasscode.getText();
+		String newPasscode = textboxNewPasscode.getValue();
+		String confirmPasscode = textboxConfirmPasscode.getValue();
 
 		confirmButton.active = confirmPasscode != null && newPasscode != null && !confirmPasscode.isEmpty() && !newPasscode.isEmpty() && newPasscode.equals(confirmPasscode);
 	}
 
 	private void confirmButtonClicked(Button button) {
-		((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getText());
-		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
+		((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getValue());
+		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), textboxNewPasscode.getValue()));
 
-		Minecraft.getInstance().player.closeScreen();
-		PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN, true);
+		Minecraft.getInstance().player.closeContainer();
+		PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN, true);
 	}
 }

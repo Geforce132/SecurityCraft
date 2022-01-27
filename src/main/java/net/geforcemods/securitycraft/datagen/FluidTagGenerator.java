@@ -11,9 +11,9 @@ public class FluidTagGenerator extends FluidTagsProvider {
 	}
 
 	@Override
-	protected void registerTags() {
-		getBuilder(FluidTags.LAVA).add(SCContent.FAKE_LAVA.get(), SCContent.FLOWING_FAKE_LAVA.get());
-		getBuilder(FluidTags.WATER).add(SCContent.FAKE_WATER.get(), SCContent.FLOWING_FAKE_WATER.get());
+	protected void addTags() {
+		tag(FluidTags.LAVA).add(SCContent.FAKE_LAVA.get(), SCContent.FLOWING_FAKE_LAVA.get());
+		tag(FluidTags.WATER).add(SCContent.FAKE_WATER.get(), SCContent.FLOWING_FAKE_WATER.get());
 	}
 
 	@Override

@@ -25,20 +25,20 @@ public interface IViewActivated {
 	 * @param pos The position of the tile entity
 	 */
 	default void checkView(World world, BlockPos pos) {
-		if (!world.isRemote) {
+		if (!world.isClientSide) {
 			if (getViewCooldown() > 0) {
 				setViewCooldown(getViewCooldown() - 1);
 				return;
 			}
 
-			List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos).grow(5), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof PlayerEntity));
+			List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(pos).inflate(5), e -> !e.isSpectator() && !EntityUtils.isInvisible(e) && (!activatedOnlyByPlayer() || e instanceof PlayerEntity));
 
 			for (LivingEntity entity : entities) {
 				double eyeHeight = entity.getEyeHeight();
-				Vec3d lookVec = new Vec3d(entity.getPosX() + (entity.getLookVec().x * 5), (eyeHeight + entity.getPosY()) + (entity.getLookVec().y * 5), entity.getPosZ() + (entity.getLookVec().z * 5));
-				BlockRayTraceResult rtr = world.rayTraceBlocks(new RayTraceContext(new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
+				Vec3d lookVec = new Vec3d(entity.getX() + (entity.getLookAngle().x * 5), (eyeHeight + entity.getY()) + (entity.getLookAngle().y * 5), entity.getZ() + (entity.getLookAngle().z * 5));
+				BlockRayTraceResult rtr = world.clip(new RayTraceContext(new Vec3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
 
-				if (rtr != null && rtr.getPos().getX() == pos.getX() && rtr.getPos().getY() == pos.getY() && rtr.getPos().getZ() == pos.getZ()) {
+				if (rtr != null && rtr.getBlockPos().getX() == pos.getX() && rtr.getBlockPos().getY() == pos.getY() && rtr.getBlockPos().getZ() == pos.getZ()) {
 					if (onEntityViewed(entity, rtr))
 						setViewCooldown(getDefaultViewCooldown());
 				}

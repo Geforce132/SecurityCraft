@@ -36,11 +36,11 @@ public class SetTrophySystemTarget {
 
 	public static void onMessage(SetTrophySystemTarget message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			TileEntity te = Minecraft.getInstance().world.getTileEntity(message.trophyPos);
+			TileEntity te = Minecraft.getInstance().level.getBlockEntity(message.trophyPos);
 
 			if (te instanceof TrophySystemTileEntity) {
 				TrophySystemTileEntity trophySystemTE = (TrophySystemTileEntity) te;
-				Entity target = Minecraft.getInstance().world.getEntityByID(message.targetID);
+				Entity target = Minecraft.getInstance().level.getEntity(message.targetID);
 
 				trophySystemTE.setTarget(target);
 			}

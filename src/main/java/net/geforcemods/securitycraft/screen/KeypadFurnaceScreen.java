@@ -19,6 +19,6 @@ public class KeypadFurnaceScreen extends AbstractFurnaceScreen<KeypadFurnaceCont
 	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/container/furnace.png");
 
 	public KeypadFurnaceScreen(KeypadFurnaceContainer container, PlayerInventory inv, ITextComponent name) {
-		super(container, new FurnaceRecipeGui(), inv, new Random().nextInt(100) < 5 ? new StringTextComponent("Keypad Gurnace") : (container.te.hasCustomName() ? container.te.getCustomName() : Utils.localize(SCContent.KEYPAD_FURNACE.get().getTranslationKey())), TEXTURE);
+		super(container, new FurnaceRecipeGui(), inv, new Random().nextInt(100) < 5 ? new StringTextComponent("Keypad Gurnace") : (container.te.hasCustomName() ? container.te.getCustomName() : Utils.localize(SCContent.KEYPAD_FURNACE.get().getDescriptionId())), TEXTURE);
 	}
 }

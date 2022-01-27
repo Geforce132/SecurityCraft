@@ -55,7 +55,7 @@ public class TogglePictureButton extends ExtendedButton {
 			GuiUtils.drawContinuousTexturedBox(WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHovered()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 
 			if (getTextureLocation() != null) {
-				Minecraft.getInstance().getTextureManager().bindTexture(getTextureLocation());
+				Minecraft.getInstance().getTextureManager().bind(getTextureLocation());
 				blit(x + drawOffset, y + drawOffset, drawWidth, drawHeight, u[currentIndex], v[currentIndex], uWidth, vHeight, textureWidth, textureHeight);
 			}
 		}

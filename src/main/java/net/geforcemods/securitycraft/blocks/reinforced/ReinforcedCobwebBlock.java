@@ -20,9 +20,9 @@ public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (entity instanceof PlayerEntity) {
-			TileEntity te = world.getTileEntity(pos);
+			TileEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof OwnableTileEntity) {
 				if (((OwnableTileEntity) te).getOwner().isOwner((PlayerEntity) entity))
@@ -30,7 +30,7 @@ public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
 			}
 		}
 
-		entity.setMotionMultiplier(state, new Vec3d(0.25D, 0.05D, 0.25D));
+		entity.makeStuckInBlock(state, new Vec3d(0.25D, 0.05D, 0.25D));
 	}
 
 	@Override

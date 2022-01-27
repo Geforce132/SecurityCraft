@@ -26,7 +26,7 @@ import net.minecraft.world.server.ChunkManager;
 public abstract class EntityTrackerMixin {
 	@Shadow
 	@Final
-	private TrackedEntity entry;
+	private TrackedEntity serverEntity;
 	@Shadow
 	@Final
 	private Entity entity;
@@ -37,10 +37,10 @@ public abstract class EntityTrackerMixin {
 	 * Checks if this entity is in range of a camera that is currently being viewed, and stores the result in the field
 	 * shouldBeSent
 	 */
-	@Inject(method = "updateTrackingState(Lnet/minecraft/entity/player/ServerPlayerEntity;)V", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/Math;min(II)I"), locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void onUpdateTrackingState(ServerPlayerEntity player, CallbackInfo callback, Vec3d unused, int viewDistance) {
+	@Inject(method = "updatePlayer(Lnet/minecraft/entity/player/ServerPlayerEntity;)V", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/Math;min(II)I"), locals = LocalCapture.CAPTURE_FAILSOFT)
+	private void onUpdatePlayer(ServerPlayerEntity player, CallbackInfo callback, Vec3d unused, int viewDistance) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			Vec3d relativePosToCamera = player.getSpectatingEntity().getPositionVec().subtract(entry.func_219456_b());
+			Vec3d relativePosToCamera = player.getCamera().position().subtract(serverEntity.sentPos());
 
 			if (relativePosToCamera.x >= -viewDistance && relativePosToCamera.x <= viewDistance && relativePosToCamera.z >= -viewDistance && relativePosToCamera.z <= viewDistance)
 				shouldBeSent = true;
@@ -50,7 +50,7 @@ public abstract class EntityTrackerMixin {
 	/**
 	 * Enables entities that should be sent as well as security camera entities to be sent to the client
 	 */
-	@ModifyVariable(method = "updateTrackingState(Lnet/minecraft/entity/player/ServerPlayerEntity;)V", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE))
+	@ModifyVariable(method = "updatePlayer(Lnet/minecraft/entity/player/ServerPlayerEntity;)V", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE))
 	public boolean modifyFlag(boolean original) {
 		boolean shouldBeSent = this.shouldBeSent;
 

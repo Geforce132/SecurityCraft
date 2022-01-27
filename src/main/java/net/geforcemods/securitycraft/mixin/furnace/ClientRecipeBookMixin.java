@@ -22,7 +22,7 @@ import net.minecraft.inventory.container.RecipeBookContainer;
  */
 @Mixin(ClientRecipeBook.class)
 public class ClientRecipeBookMixin {
-	@Inject(method = "func_216769_b", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "getCategories", at = @At("HEAD"), cancellable = true)
 	private static void provideCorrectCategories(RecipeBookContainer<?> container, CallbackInfoReturnable<List<RecipeBookCategories>> callback) {
 		if (container instanceof KeypadFurnaceContainer)
 			callback.setReturnValue(Lists.newArrayList(RecipeBookCategories.FURNACE_SEARCH, RecipeBookCategories.FURNACE_FOOD, RecipeBookCategories.FURNACE_BLOCKS, RecipeBookCategories.FURNACE_MISC));

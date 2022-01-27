@@ -21,8 +21,8 @@ import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 @OnlyIn(Dist.CLIENT)
 public class IMSScreen extends ContainerScreen<GenericTEContainer> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final String imsName = Utils.localize(SCContent.IMS.get().getTranslationKey()).getFormattedText();
-	private final String target = Utils.localize("gui.securitycraft:ims.target").getFormattedText();
+	private final String imsName = Utils.localize(SCContent.IMS.get().getDescriptionId()).getColoredString();
+	private final String target = Utils.localize("gui.securitycraft:ims.target").getColoredString();
 	private IMSTileEntity tileEntity;
 	private Button targetButton;
 	private IMSTargetingMode targetMode;
@@ -42,28 +42,28 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(imsName, xSize / 2 - font.getStringWidth(imsName) / 2, 6, 4210752);
-		font.drawString(target, xSize / 2 - font.getStringWidth(target) / 2, 30, 4210752);
+	protected void renderLabels(int mouseX, int mouseY) {
+		font.draw(imsName, imageWidth / 2 - font.width(imsName) / 2, 6, 4210752);
+		font.draw(target, imageWidth / 2 - font.width(target) / 2, 30, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURE);
+		blit(leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	protected void targetButtonClicked(Button button) {
 		targetMode = IMSTargetingMode.values()[(targetMode.ordinal() + 1) % IMSTargetingMode.values().length]; //next enum value
 		tileEntity.setTargetingMode(targetMode);
-		SecurityCraft.channel.sendToServer(new SyncIMSTargetingOption(tileEntity.getPos(), tileEntity.getTargetingMode()));
+		SecurityCraft.channel.sendToServer(new SyncIMSTargetingOption(tileEntity.getBlockPos(), tileEntity.getTargetingMode()));
 		updateButtonText();
 	}
 
 	private void updateButtonText() {
 		System.out.println(targetMode);
-		targetButton.setMessage(Utils.localize("gui.securitycraft:srat.targets" + (((targetMode.ordinal() + 2) % 3) + 1)).getFormattedText());
+		targetButton.setMessage(Utils.localize("gui.securitycraft:srat.targets" + (((targetMode.ordinal() + 2) % 3) + 1)).getColoredString());
 	}
 }

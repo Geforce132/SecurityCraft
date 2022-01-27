@@ -37,13 +37,13 @@ public class PlayerUtils {
 	 */
 	public static PlayerEntity getPlayerFromName(String name) {
 		if (EffectiveSide.get() == LogicalSide.CLIENT) {
-			List<AbstractClientPlayerEntity> players = Minecraft.getInstance().world.getPlayers();
+			List<AbstractClientPlayerEntity> players = Minecraft.getInstance().level.players();
 			Iterator<?> iterator = players.iterator();
 
 			while (iterator.hasNext()) {
 				PlayerEntity tempPlayer = (PlayerEntity) iterator.next();
 
-				if (tempPlayer.getName().getFormattedText().equals(name))
+				if (tempPlayer.getName().getColoredString().equals(name))
 					return tempPlayer;
 			}
 
@@ -56,7 +56,7 @@ public class PlayerUtils {
 			while (iterator.hasNext()) {
 				PlayerEntity tempPlayer = (PlayerEntity) iterator.next();
 
-				if (tempPlayer.getName().getFormattedText().equals(name))
+				if (tempPlayer.getName().getColoredString().equals(name))
 					return tempPlayer;
 			}
 
@@ -69,15 +69,15 @@ public class PlayerUtils {
 	 */
 	public static boolean isPlayerOnline(String name) {
 		if (EffectiveSide.get() == LogicalSide.CLIENT) {
-			for (AbstractClientPlayerEntity player : Minecraft.getInstance().world.getPlayers()) {
-				if (player != null && player.getName().getFormattedText().equals(name))
+			for (AbstractClientPlayerEntity player : Minecraft.getInstance().level.players()) {
+				if (player != null && player.getName().getColoredString().equals(name))
 					return true;
 			}
 
 			return false;
 		}
 		else
-			return (ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUsername(name) != null);
+			return (ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByName(name) != null);
 	}
 
 	public static void sendMessageToPlayer(String playerName, ITextComponent prefix, ITextComponent text, TextFormatting color) {
@@ -92,12 +92,12 @@ public class PlayerUtils {
 	}
 
 	public static void sendMessageToPlayer(PlayerEntity player, ITextComponent prefix, ITextComponent text, TextFormatting color, boolean shouldSendFromClient) {
-		if (player.world.isRemote == shouldSendFromClient) {
+		if (player.level.isClientSide == shouldSendFromClient) {
 			//@formatter:off
 			player.sendMessage(new StringTextComponent("[" + color)
-					.appendSibling(prefix)
-					.appendSibling(new StringTextComponent(TextFormatting.WHITE + "] "))
-					.appendSibling(text));
+					.append(prefix)
+					.append(new StringTextComponent(TextFormatting.WHITE + "] "))
+					.append(text));
 			//@formatter:on
 		}
 	}
@@ -108,11 +108,11 @@ public class PlayerUtils {
 	public static void sendMessageEndingWithLink(ICommandSource sender, ITextComponent prefix, ITextComponent text, String link, TextFormatting color) {
 		//@formatter:off
 		sender.sendMessage(new StringTextComponent("[" + color)
-				.appendSibling(prefix)
-				.appendSibling(new StringTextComponent(TextFormatting.WHITE + "] "))
-				.appendSibling(text)
-				.appendSibling(new StringTextComponent(": "))
-				.appendSibling(ForgeHooks.newChatWithLinks(link)));
+				.append(prefix)
+				.append(new StringTextComponent(TextFormatting.WHITE + "] "))
+				.append(text)
+				.append(new StringTextComponent(": "))
+				.append(ForgeHooks.newChatWithLinks(link)));
 		//@formatter:on
 	}
 
@@ -132,13 +132,13 @@ public class PlayerUtils {
 	 * @return true if the item was found in the mainhand or offhand, or if no item was found and item was null
 	 */
 	public static boolean isHoldingItem(PlayerEntity player, Item item, Hand hand) {
-		if (hand != Hand.OFF_HAND && !player.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
-			if (player.getHeldItem(Hand.MAIN_HAND).getItem() == item)
+		if (hand != Hand.OFF_HAND && !player.getItemInHand(Hand.MAIN_HAND).isEmpty()) {
+			if (player.getItemInHand(Hand.MAIN_HAND).getItem() == item)
 				return true;
 		}
 
-		if (hand != Hand.MAIN_HAND && !player.getHeldItem(Hand.OFF_HAND).isEmpty()) {
-			if (player.getHeldItem(Hand.OFF_HAND).getItem() == item)
+		if (hand != Hand.MAIN_HAND && !player.getItemInHand(Hand.OFF_HAND).isEmpty()) {
+			if (player.getItemInHand(Hand.OFF_HAND).getItem() == item)
 				return true;
 		}
 
@@ -164,14 +164,14 @@ public class PlayerUtils {
 	 * @return The respective item stack if it has been found, ItemStack.EMPTY if not
 	 */
 	public static ItemStack getSelectedItemStack(PlayerInventory inventory, Item item) {
-		if (!inventory.getCurrentItem().isEmpty()) {
-			if (inventory.getCurrentItem().getItem() == item)
-				return inventory.getCurrentItem();
+		if (!inventory.getSelected().isEmpty()) {
+			if (inventory.getSelected().getItem() == item)
+				return inventory.getSelected();
 		}
 
-		if (!inventory.offHandInventory.get(0).isEmpty()) {
-			if (inventory.offHandInventory.get(0).getItem() == item)
-				return inventory.offHandInventory.get(0);
+		if (!inventory.offhand.get(0).isEmpty()) {
+			if (inventory.offhand.get(0).getItem() == item)
+				return inventory.offhand.get(0);
 		}
 
 		return ItemStack.EMPTY;
@@ -186,10 +186,10 @@ public class PlayerUtils {
 
 		PlayerEntity player = (PlayerEntity) entity;
 
-		if (player.world.isRemote)
+		if (player.level.isClientSide)
 			return ClientHandler.isPlayerMountedOnCamera();
 		else
-			return ((ServerPlayerEntity) player).getSpectatingEntity() instanceof SecurityCameraEntity;
+			return ((ServerPlayerEntity) player).getCamera() instanceof SecurityCameraEntity;
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class PlayerUtils {
 
 		ScorePlayerTeam team = getPlayersTeam(name1);
 
-		return team != null && team.getMembershipCollection().contains(name2);
+		return team != null && team.getPlayers().contains(name2);
 	}
 
 	/**
@@ -220,7 +220,7 @@ public class PlayerUtils {
 		if (server != null)
 			return server.getScoreboard().getPlayersTeam(playerName);
 		else
-			return ClientHandler.getClientPlayer().getWorldScoreboard().getPlayersTeam(playerName);
+			return ClientHandler.getClientPlayer().getScoreboard().getPlayersTeam(playerName);
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class PlayerUtils {
 			ScorePlayerTeam team = getPlayersTeam(ownerName);
 
 			if (team != null)
-				return Utils.localize("messages.securitycraft:teamOwner", new StringTextComponent("").appendSibling(team.getDisplayName()).applyTextStyle(team.getColor()));
+				return Utils.localize("messages.securitycraft:teamOwner", new StringTextComponent("").append(team.getDisplayName()).withStyle(team.getColor()));
 		}
 
 		return new StringTextComponent(ownerName);
@@ -248,7 +248,7 @@ public class PlayerUtils {
 	 * @return The name of the skull owner, null if the player is not wearing a player head or the skull owner is faulty
 	 */
 	public static String getNameOfSkull(PlayerEntity player) {
-		ItemStack stack = player.getItemStackFromSlot(EquipmentSlotType.HEAD);
+		ItemStack stack = player.getItemBySlot(EquipmentSlotType.HEAD);
 
 		if (stack.getItem() == Items.PLAYER_HEAD && stack.hasTag()) {
 			CompoundNBT stackTag = stack.getTag();

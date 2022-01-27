@@ -40,25 +40,25 @@ public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<So
 		matrix.translate(0.5D, 1.5D, 0.5D);
 
 		if (recording || te.isListening()) {
-			String text = (recording ? RECORDING_TEXT : LISTENING_TEXT).getFormattedText();
-			float f1 = Minecraft.getInstance().gameSettings.getTextBackgroundOpacity(0.25F);
+			String text = (recording ? RECORDING_TEXT : LISTENING_TEXT).getColoredString();
+			float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
 			int j = (int) (f1 * 255.0F) << 24;
-			FontRenderer fontRenderer = renderDispatcher.getFontRenderer();
-			float halfWidth = -fontRenderer.getStringWidth(text) / 2;
+			FontRenderer fontRenderer = renderer.getFont();
+			float halfWidth = -fontRenderer.width(text) / 2;
 			Matrix4f positionMatrix;
 
-			matrix.push();
-			matrix.rotate(Minecraft.getInstance().getRenderManager().getCameraOrientation());
+			matrix.pushPose();
+			matrix.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
 			matrix.scale(-0.025F, -0.025F, 0.025F);
-			positionMatrix = matrix.getLast().getMatrix();
+			positionMatrix = matrix.last().pose();
 			RenderSystem.disableCull();
-			fontRenderer.renderString(text, halfWidth, 0, 16777215, false, positionMatrix, buffer, true, j, packedLight);
-			fontRenderer.renderString(text, halfWidth, 0, -1, false, positionMatrix, buffer, false, 0, packedLight);
-			matrix.pop();
+			fontRenderer.drawInBatch(text, halfWidth, 0, 16777215, false, positionMatrix, buffer, true, j, packedLight);
+			fontRenderer.drawInBatch(text, halfWidth, 0, -1, false, positionMatrix, buffer, false, 0, packedLight);
+			matrix.popPose();
 		}
 
-		matrix.rotate(POSITIVE_X_180);
+		matrix.mulPose(POSITIVE_X_180);
 		MODEL.setRadarRotation(te.radarRotationDegrees);
-		MODEL.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		MODEL.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

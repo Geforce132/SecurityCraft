@@ -18,27 +18,27 @@ public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseContainer
 	public BriefcaseInventoryScreen(BriefcaseContainer container, PlayerInventory inventory, ITextComponent name) {
 		super(container, inventory, name);
 
-		formattedTitle = name.getFormattedText();
+		formattedTitle = name.getColoredString();
 	}
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		super.render(mouseX, mouseY, partialTicks);
 
-		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
+		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
+			renderTooltip(getSlotUnderMouse().getItem(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(formattedTitle, xSize / 2 - font.getStringWidth(formattedTitle) / 2, 6, 4210752);
+	protected void renderLabels(int mouseX, int mouseY) {
+		font.draw(formattedTitle, imageWidth / 2 - font.width(formattedTitle) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURE);
+		blit(leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 }

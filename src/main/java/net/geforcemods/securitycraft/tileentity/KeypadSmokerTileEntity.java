@@ -13,12 +13,12 @@ public class KeypadSmokerTileEntity extends AbstractKeypadFurnaceTileEntity {
 	}
 
 	@Override
-	protected int getBurnTime(ItemStack fuel) {
-		return super.getBurnTime(fuel) / 2;
+	protected int getBurnDuration(ItemStack fuel) {
+		return super.getBurnDuration(fuel) / 2;
 	}
 
 	@Override
 	protected Container createMenu(int windowId, PlayerInventory inv) {
-		return new KeypadSmokerContainer(windowId, world, pos, inv, this, furnaceData);
+		return new KeypadSmokerContainer(windowId, level, worldPosition, inv, this, dataAccess);
 	}
 }

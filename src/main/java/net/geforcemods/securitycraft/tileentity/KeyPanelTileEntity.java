@@ -31,20 +31,20 @@ public class KeyPanelTileEntity extends CustomizableTileEntity implements IPassw
 		public void toggle() {
 			super.toggle();
 
-			world.setBlockState(pos, getBlockState().with(KeyPanelBlock.POWERED, get()));
-			world.notifyNeighborsOfStateChange(pos, SCContent.KEY_PANEL_BLOCK.get());
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, get()));
+			level.updateNeighborsAt(worldPosition, SCContent.KEY_PANEL_BLOCK.get());
 		}
 	};
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	public KeyPanelTileEntity() {
 		super(SCContent.teTypeKeyPanel);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
@@ -53,8 +53,8 @@ public class KeyPanelTileEntity extends CustomizableTileEntity implements IPassw
 	}
 
 	@Override
-	public void read(CompoundNBT tag) {
-		super.read(tag);
+	public void load(CompoundNBT tag) {
+		super.load(tag);
 
 		passcode = tag.getString("passcode");
 	}
@@ -75,8 +75,8 @@ public class KeyPanelTileEntity extends CustomizableTileEntity implements IPassw
 
 	@Override
 	public void activate(PlayerEntity player) {
-		if (!world.isRemote && getBlockState().getBlock() instanceof KeyPanelBlock)
-			((KeyPanelBlock) getBlockState().getBlock()).activate(getBlockState(), world, pos, signalLength.get());
+		if (!level.isClientSide && getBlockState().getBlock() instanceof KeyPanelBlock)
+			((KeyPanelBlock) getBlockState().getBlock()).activate(getBlockState(), level, worldPosition, signalLength.get());
 	}
 
 	@Override
@@ -86,14 +86,14 @@ public class KeyPanelTileEntity extends CustomizableTileEntity implements IPassw
 				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, world, pos);
+						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
 					public ITextComponent getDisplayName() {
 						return KeyPanelTileEntity.super.getDisplayName();
 					}
-				}, pos);
+				}, worldPosition);
 			}
 		}
 		else {
@@ -102,14 +102,14 @@ public class KeyPanelTileEntity extends CustomizableTileEntity implements IPassw
 					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, world, pos);
+							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override
 						public ITextComponent getDisplayName() {
 							return KeyPanelTileEntity.super.getDisplayName();
 						}
-					}, pos);
+					}, worldPosition);
 				}
 			}
 			else
@@ -119,7 +119,7 @@ public class KeyPanelTileEntity extends CustomizableTileEntity implements IPassw
 
 	@Override
 	public boolean onCodebreakerUsed(BlockState state, PlayerEntity player) {
-		if (!state.get(KeyPanelBlock.POWERED)) {
+		if (!state.getValue(KeyPanelBlock.POWERED)) {
 			activate(player);
 			return true;
 		}

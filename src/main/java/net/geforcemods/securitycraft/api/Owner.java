@@ -97,7 +97,7 @@ public class Owner {
 			return false;
 
 		String uuidToCheck = player.getGameProfile().getId().toString();
-		String nameToCheck = player.getName().getFormattedText();
+		String nameToCheck = player.getName().getColoredString();
 
 		if (ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(ownerName, nameToCheck))
 			return true;

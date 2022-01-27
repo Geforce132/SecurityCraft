@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> {
-	protected static final String OUTPUT_TEXT = Utils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText();
+	protected static final String OUTPUT_TEXT = Utils.localize("gui.securitycraft:blockReinforcer.output").getColoredString();
 	private final IDrawable background;
 	private final IDrawable icon;
 

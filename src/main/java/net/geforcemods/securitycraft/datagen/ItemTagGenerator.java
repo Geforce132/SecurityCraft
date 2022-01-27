@@ -12,7 +12,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	}
 
 	@Override
-	protected void registerTags() {
+	protected void addTags() {
 		//@formatter:off
 		//securitycraft tags
 		copy(SCTags.Blocks.REINFORCED_ACACIA_LOGS, SCTags.Items.REINFORCED_ACACIA_LOGS);
@@ -37,7 +37,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		copy(SCTags.Blocks.REINFORCED_WOODEN_SLABS, SCTags.Items.REINFORCED_WOODEN_SLABS);
 		copy(SCTags.Blocks.REINFORCED_WOODEN_STAIRS, SCTags.Items.REINFORCED_WOODEN_STAIRS);
 		copy(SCTags.Blocks.REINFORCED_WOOL, SCTags.Items.REINFORCED_WOOL);
-		getBuilder(SCTags.Items.SECRET_SIGNS).add(
+		tag(SCTags.Items.SECRET_SIGNS).add(
 				SCContent.SECRET_ACACIA_SIGN_ITEM.get(),
 				SCContent.SECRET_BIRCH_SIGN_ITEM.get(),
 				SCContent.SECRET_DARK_OAK_SIGN_ITEM.get(),
@@ -46,13 +46,13 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.SECRET_SPRUCE_SIGN_ITEM.get());
 
 		//minecraft tags
-		getBuilder(ItemTags.CARPETS).add(SCTags.Items.REINFORCED_CARPETS);
-		getBuilder(ItemTags.FENCES).add(SCContent.IRON_FENCE.get().asItem());
-		getBuilder(ItemTags.RAILS).add(SCContent.TRACK_MINE.get().asItem());
-		getBuilder(ItemTags.SLABS).add(SCTags.Items.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get().asItem());
-		getBuilder(ItemTags.STAIRS).add(SCTags.Items.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get().asItem());
-		getBuilder(ItemTags.SIGNS).add(SCTags.Items.SECRET_SIGNS);
-		getBuilder(ItemTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem());
+		tag(ItemTags.CARPETS).addTag(SCTags.Items.REINFORCED_CARPETS);
+		tag(ItemTags.FENCES).add(SCContent.IRON_FENCE.get().asItem());
+		tag(ItemTags.RAILS).add(SCContent.TRACK_MINE.get().asItem());
+		tag(ItemTags.SLABS).addTag(SCTags.Items.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get().asItem());
+		tag(ItemTags.STAIRS).addTag(SCTags.Items.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get().asItem());
+		tag(ItemTags.SIGNS).addTag(SCTags.Items.SECRET_SIGNS);
+		tag(ItemTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem());
 		//@formatter:on
 	}
 

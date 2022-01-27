@@ -28,24 +28,24 @@ public class SCCommand {
 
 	private static ArgumentBuilder<CommandSource, ?> connect() {
 		return Commands.literal("connect").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("IRC"), Utils.localize("messages.securitycraft:irc.connected"), SendTip.tipsWithLink.get("discord"), TextFormatting.GREEN);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), new StringTextComponent("IRC"), Utils.localize("messages.securitycraft:irc.connected"), SendTip.tipsWithLink.get("discord"), TextFormatting.GREEN);
 			return 0;
 		});
 	}
 
 	private static ArgumentBuilder<CommandSource, ?> help() {
 		return Commands.literal("help").executes(ctx -> {
-			ctx.getSource().asPlayer().sendMessage(new TranslationTextComponent("messages.securitycraft:sc_help",
-					new TranslationTextComponent(Blocks.CRAFTING_TABLE.getTranslationKey()),
-					new TranslationTextComponent(Items.BOOK.getTranslationKey()),
-					new TranslationTextComponent(Items.IRON_BARS.getTranslationKey())));
+			ctx.getSource().getPlayerOrException().sendMessage(new TranslationTextComponent("messages.securitycraft:sc_help",
+					new TranslationTextComponent(Blocks.CRAFTING_TABLE.getDescriptionId()),
+					new TranslationTextComponent(Items.BOOK.getDescriptionId()),
+					new TranslationTextComponent(Items.IRON_BARS.getDescriptionId())));
 			return 0;
 		});
 	}
 
 	private static ArgumentBuilder<CommandSource, ?> bug() {
 		return Commands.literal("bug").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), SendTip.tipsWithLink.get("discord"), TextFormatting.GOLD);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), SendTip.tipsWithLink.get("discord"), TextFormatting.GOLD);
 			return 0;
 		});
 	}

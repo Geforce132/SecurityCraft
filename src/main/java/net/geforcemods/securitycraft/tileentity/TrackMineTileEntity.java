@@ -14,14 +14,14 @@ public class TrackMineTileEntity extends OwnableTileEntity {
 	public void activate() {
 		if (!active) {
 			active = true;
-			markDirty();
+			setChanged();
 		}
 	}
 
 	public void deactivate() {
 		if (active) {
 			active = false;
-			markDirty();
+			setChanged();
 		}
 	}
 
@@ -30,14 +30,14 @@ public class TrackMineTileEntity extends OwnableTileEntity {
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
+	public CompoundNBT save(CompoundNBT tag) {
 		tag.putBoolean("TrackMineEnabled", active);
-		return super.write(tag);
+		return super.save(tag);
 	}
 
 	@Override
-	public void read(CompoundNBT tag) {
-		super.read(tag);
+	public void load(CompoundNBT tag) {
+		super.load(tag);
 		active = tag.getBoolean("TrackMineEnabled");
 	}
 }

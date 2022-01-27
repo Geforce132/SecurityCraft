@@ -43,11 +43,11 @@ public class SecurityCameraBlock extends OwnableBlock {
 	private static final VoxelShape SHAPE_NORTH = VoxelShapes.create(new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F));
 	private static final VoxelShape SHAPE_WEST = VoxelShapes.create(new AxisAlignedBB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F));
 	private static final VoxelShape SHAPE = VoxelShapes.create(new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F));
-	private static final VoxelShape SHAPE_DOWN = VoxelShapes.or(Block.makeCuboidShape(7, 15, 5, 9, 16, 11), VoxelShapes.or(Block.makeCuboidShape(6, 15, 6, 7, 16, 10), VoxelShapes.or(Block.makeCuboidShape(5, 15, 7, 6, 16, 9), VoxelShapes.or(Block.makeCuboidShape(9, 15, 6, 10, 16, 10), VoxelShapes.or(Block.makeCuboidShape(10, 15, 7, 11, 16, 9), Block.makeCuboidShape(7, 14, 7, 9, 15, 9))))));
+	private static final VoxelShape SHAPE_DOWN = VoxelShapes.or(Block.box(7, 15, 5, 9, 16, 11), VoxelShapes.or(Block.box(6, 15, 6, 7, 16, 10), VoxelShapes.or(Block.box(5, 15, 7, 6, 16, 9), VoxelShapes.or(Block.box(9, 15, 6, 10, 16, 10), VoxelShapes.or(Block.box(10, 15, 7, 11, 16, 9), Block.box(7, 14, 7, 9, 15, 9))))));
 
 	public SecurityCameraBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false).with(BEING_VIEWED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(BEING_VIEWED, false));
 	}
 
 	@Override
@@ -56,23 +56,23 @@ public class SecurityCameraBlock extends OwnableBlock {
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
-		return state.get(FACING) == Direction.DOWN ? BlockRenderType.MODEL : BlockRenderType.ENTITYBLOCK_ANIMATED;
+	public BlockRenderType getRenderShape(BlockState state) {
+		return state.getValue(FACING) == Direction.DOWN ? BlockRenderType.MODEL : BlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-		super.onReplaced(state, world, pos, newState, isMoving);
+	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+		super.onRemove(state, world, pos, newState, isMoving);
 
-		world.notifyNeighborsOfStateChange(pos.north(), world.getBlockState(pos).getBlock());
-		world.notifyNeighborsOfStateChange(pos.south(), world.getBlockState(pos).getBlock());
-		world.notifyNeighborsOfStateChange(pos.east(), world.getBlockState(pos).getBlock());
-		world.notifyNeighborsOfStateChange(pos.west(), world.getBlockState(pos).getBlock());
+		world.updateNeighborsAt(pos.north(), world.getBlockState(pos).getBlock());
+		world.updateNeighborsAt(pos.south(), world.getBlockState(pos).getBlock());
+		world.updateNeighborsAt(pos.east(), world.getBlockState(pos).getBlock());
+		world.updateNeighborsAt(pos.west(), world.getBlockState(pos).getBlock());
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx) {
-		Direction dir = state.get(FACING);
+		Direction dir = state.getValue(FACING);
 
 		if (dir == Direction.SOUTH)
 			return SHAPE_SOUTH;
@@ -88,17 +88,17 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return ctx.getFace() != Direction.UP ? getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer()) : null;
+		return ctx.getClickedFace() != Direction.UP ? getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer()) : null;
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
-		BlockState state = getDefaultState().with(FACING, facing);
+		BlockState state = defaultBlockState().setValue(FACING, facing);
 
-		if (!isValidPosition(state, world, pos)) {
+		if (!canSurvive(state, world, pos)) {
 			for (Direction newFacing : Plane.HORIZONTAL) {
-				state = state.with(FACING, newFacing);
+				state = state.setValue(FACING, newFacing);
 
-				if (isValidPosition(state, world, pos))
+				if (canSurvive(state, world, pos))
 					break;
 			}
 		}
@@ -107,29 +107,29 @@ public class SecurityCameraBlock extends OwnableBlock {
 	}
 
 	public void mountCamera(World world, BlockPos pos, PlayerEntity player) {
-		if (!world.isRemote) {
+		if (!world.isClientSide) {
 			ServerWorld serverWorld = (ServerWorld) world;
 			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 			SecurityCameraEntity dummyEntity;
-			SectionPos chunkPos = SectionPos.from(pos);
+			SectionPos chunkPos = SectionPos.of(pos);
 			int viewDistance = serverPlayer.server.getPlayerList().getViewDistance();
-			TileEntity te = world.getTileEntity(pos);
+			TileEntity te = world.getBlockEntity(pos);
 
-			if (serverPlayer.getSpectatingEntity() instanceof SecurityCameraEntity)
-				dummyEntity = new SecurityCameraEntity(world, pos, (SecurityCameraEntity) serverPlayer.getSpectatingEntity());
+			if (serverPlayer.getCamera() instanceof SecurityCameraEntity)
+				dummyEntity = new SecurityCameraEntity(world, pos, (SecurityCameraEntity) serverPlayer.getCamera());
 			else
 				dummyEntity = new SecurityCameraEntity(world, pos);
 
-			world.addEntity(dummyEntity);
+			world.addFreshEntity(dummyEntity);
 
 			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
 				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
-					serverWorld.forceChunk(x, z, true);
+					serverWorld.setChunkForced(x, z, true);
 				}
 			}
 
 			//can't use ServerPlayerEntity#setSpectatingEntity here because it also teleports the player
-			serverPlayer.spectatingEntity = dummyEntity;
+			serverPlayer.camera = dummyEntity;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
 
 			if (te instanceof SecurityCameraTileEntity)
@@ -138,28 +138,28 @@ public class SecurityCameraBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-		Direction facing = state.get(FACING);
+	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+		Direction facing = state.getValue(FACING);
 
-		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing);
+		return BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing);
 	}
 
 	@Override
-	public boolean canProvidePower(BlockState state) {
+	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
-		if (blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE))
+	public int getSignal(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
+		if (blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getStrongPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
-		if (blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE) && blockState.get(FACING) == side)
+	public int getDirectSignal(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
+		if (blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE) && blockState.getValue(FACING) == side)
 			return 15;
 		else
 			return 0;
@@ -167,12 +167,12 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if (!isValidPosition(world.getBlockState(pos), world, pos) && !isValidPosition(state, world, pos))
+		if (!canSurvive(world.getBlockState(pos), world, pos) && !canSurvive(state, world, pos))
 			world.destroyBlock(pos, true);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWERED, BEING_VIEWED);
 	}
 
@@ -183,21 +183,21 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
-		Direction facing = state.get(FACING);
+		Direction facing = state.getValue(FACING);
 
 		switch (mirror) {
 			case LEFT_RIGHT:
 				if (facing.getAxis() == Axis.Z)
-					return state.with(FACING, facing.getOpposite());
+					return state.setValue(FACING, facing.getOpposite());
 				break;
 			case FRONT_BACK:
 				if (facing.getAxis() == Axis.X)
-					return state.with(FACING, facing.getOpposite());
+					return state.setValue(FACING, facing.getOpposite());
 				break;
 			case NONE:
 				break;

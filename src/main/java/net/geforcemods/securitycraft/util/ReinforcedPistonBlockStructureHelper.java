@@ -29,11 +29,11 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 
 		if (extending) {
 			moveDirection = pistonFacing;
-			blockToMove = pos.offset(pistonFacing);
+			blockToMove = pos.relative(pistonFacing);
 		}
 		else {
 			moveDirection = pistonFacing.getOpposite();
-			blockToMove = pos.offset(pistonFacing, 2);
+			blockToMove = pos.relative(pistonFacing, 2);
 		}
 	}
 
@@ -44,7 +44,7 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 		toDestroy.clear();
 
 		if (!ReinforcedPistonBlock.canPush(state, world, pistonPos, blockToMove, moveDirection, false, facing)) {
-			if (extending && state.getPushReaction() == PushReaction.DESTROY) {
+			if (extending && state.getPistonPushReaction() == PushReaction.DESTROY) {
 				toDestroy.add(blockToMove);
 				return true;
 			}
@@ -68,7 +68,7 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 	private boolean addBlockLine(BlockPos origin, Direction facing) {
 		BlockState state = world.getBlockState(origin);
 
-		if (world.isAirBlock(origin))
+		if (world.isEmptyBlock(origin))
 			return true;
 		else if (!ReinforcedPistonBlock.canPush(state, world, pistonPos, origin, moveDirection, false, facing))
 			return true;
@@ -84,7 +84,7 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 				BlockState oldState;
 
 				while (state.isStickyBlock()) {
-					BlockPos blockpos = origin.offset(moveDirection.getOpposite(), i);
+					BlockPos blockpos = origin.relative(moveDirection.getOpposite(), i);
 
 					oldState = state;
 					state = world.getBlockState(blockpos);
@@ -102,14 +102,14 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 				int l = 0;
 
 				for (int i1 = i - 1; i1 >= 0; --i1) {
-					toMove.add(origin.offset(moveDirection.getOpposite(), i1));
+					toMove.add(origin.relative(moveDirection.getOpposite(), i1));
 					++l;
 				}
 
 				int j1 = 1;
 
 				while (true) {
-					BlockPos offsetPos = origin.offset(moveDirection, j1);
+					BlockPos offsetPos = origin.relative(moveDirection, j1);
 					int j = toMove.indexOf(offsetPos);
 
 					if (j > -1) {
@@ -132,7 +132,7 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 					if (!ReinforcedPistonBlock.canPush(state, world, pistonPos, offsetPos, moveDirection, true, moveDirection) || offsetPos.equals(pistonPos))
 						return false;
 
-					if (state.getPushReaction() == PushReaction.DESTROY) {
+					if (state.getPistonPushReaction() == PushReaction.DESTROY) {
 						toDestroy.add(offsetPos);
 						return true;
 					}
@@ -167,7 +167,7 @@ public class ReinforcedPistonBlockStructureHelper { //this class doesn't extend 
 
 		for (Direction direction : Direction.values()) {
 			if (direction.getAxis() != moveDirection.getAxis()) {
-				BlockPos offsetPos = fromPos.offset(direction);
+				BlockPos offsetPos = fromPos.relative(direction);
 				BlockState offsetState = world.getBlockState(offsetPos);
 
 				if (offsetState.canStickTo(state) && !addBlockLine(offsetPos, direction))

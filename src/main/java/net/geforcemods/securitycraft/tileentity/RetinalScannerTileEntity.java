@@ -48,7 +48,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 	private static MinecraftSessionService sessionService;
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private GameProfile ownerProfile;
 	private int viewCooldown = 0;
 
@@ -58,46 +58,46 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 
 	@Override
 	public void tick() {
-		checkView(world, pos);
+		checkView(level, worldPosition);
 	}
 
 	@Override
 	public boolean onEntityViewed(LivingEntity entity, BlockRayTraceResult rayTraceResult) {
 		if (!isLocked()) {
-			BlockState state = world.getBlockState(pos);
+			BlockState state = level.getBlockState(worldPosition);
 
-			if (state.get(RetinalScannerBlock.FACING) != rayTraceResult.getFace())
+			if (state.getValue(RetinalScannerBlock.FACING) != rayTraceResult.getDirection())
 				return false;
 
-			if (!state.get(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)) {
+			if (!state.getValue(RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)) {
 				String name = entity.getName().getString();
 
 				if (entity instanceof PlayerEntity) {
 					PlayerEntity player = (PlayerEntity) entity;
 
-					if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == Items.PLAYER_HEAD)
+					if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlotType.HEAD).getItem() == Items.PLAYER_HEAD)
 						name = PlayerUtils.getNameOfSkull(player);
 
 					if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
 						return true;
 					}
 				}
 				else if (activatedOnlyByPlayer())
 					return false;
 
-				world.setBlockState(pos, state.with(RetinalScannerBlock.POWERED, true));
-				BlockUtils.updateIndirectNeighbors(world, pos, SCContent.RETINAL_SCANNER.get());
-				world.getPendingBlockTicks().scheduleTick(new BlockPos(pos), SCContent.RETINAL_SCANNER.get(), getSignalLength());
+				level.setBlockAndUpdate(worldPosition, state.setValue(RetinalScannerBlock.POWERED, true));
+				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.RETINAL_SCANNER.get());
+				level.getBlockTicks().scheduleTick(new BlockPos(worldPosition), SCContent.RETINAL_SCANNER.get(), getSignalLength());
 
 				if (entity instanceof PlayerEntity && sendMessage.get())
-					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
 
 				return true;
 			}
 		}
 		else if (entity instanceof PlayerEntity && sendMessage.get()) {
-			TranslationTextComponent blockName = Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey());
+			TranslationTextComponent blockName = Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId());
 
 			PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), TextFormatting.DARK_RED, false);
 			return true;
@@ -153,8 +153,8 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 		if (!StringUtils.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner"))) {
 			if (ownerProfile == null || !getOwner().getName().equals(ownerProfile.getName()))
 				setPlayerProfile(new GameProfile((UUID) null, getOwner().getName()));
@@ -169,8 +169,8 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public void read(CompoundNBT tag) {
-		super.read(tag);
+	public void load(CompoundNBT tag) {
+		super.load(tag);
 		ownerProfile = NBTUtil.readGameProfile(tag.getCompound("ownerProfile"));
 	}
 
@@ -185,10 +185,10 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 
 	public void updatePlayerProfile() {
 		if (profileCache == null && ServerLifecycleHooks.getCurrentServer() != null)
-			setProfileCache(ServerLifecycleHooks.getCurrentServer().getPlayerProfileCache());
+			setProfileCache(ServerLifecycleHooks.getCurrentServer().getProfileCache());
 
 		if (sessionService == null && ServerLifecycleHooks.getCurrentServer() != null)
-			setSessionService(ServerLifecycleHooks.getCurrentServer().getMinecraftSessionService());
+			setSessionService(ServerLifecycleHooks.getCurrentServer().getSessionService());
 
 		ownerProfile = updateGameProfile(ownerProfile);
 	}
@@ -198,7 +198,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity implements I
 			if (input.isComplete() && input.getProperties().containsKey("textures"))
 				return input;
 			else if (profileCache != null && sessionService != null) {
-				GameProfile gameprofile = profileCache.getGameProfileForUsername(input.getName());
+				GameProfile gameprofile = profileCache.get(input.getName());
 				if (gameprofile == null)
 					return input;
 				else {

@@ -46,8 +46,8 @@ public class BlockMineModel implements IBakedModel {
 	}
 
 	@Override
-	public boolean isAmbientOcclusion() {
-		return defaultModel == null ? true : defaultModel.isAmbientOcclusion();
+	public boolean useAmbientOcclusion() {
+		return defaultModel == null ? true : defaultModel.useAmbientOcclusion();
 	}
 
 	@Override
@@ -56,18 +56,18 @@ public class BlockMineModel implements IBakedModel {
 	}
 
 	@Override
-	public boolean func_230044_c_() {
-		return defaultModel.func_230044_c_();
+	public boolean usesBlockLight() {
+		return defaultModel.usesBlockLight();
 	}
 
 	@Override
-	public boolean isBuiltInRenderer() {
-		return defaultModel == null ? false : defaultModel.isBuiltInRenderer();
+	public boolean isCustomRenderer() {
+		return defaultModel == null ? false : defaultModel.isCustomRenderer();
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return defaultModel == null ? Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(MissingTextureSprite.getLocation()) : defaultModel.getParticleTexture();
+	public TextureAtlasSprite getParticleIcon() {
+		return defaultModel == null ? Minecraft.getInstance().getTextureAtlas(AtlasTexture.LOCATION_BLOCKS).apply(MissingTextureSprite.getLocation()) : defaultModel.getParticleIcon();
 	}
 
 	@Override
