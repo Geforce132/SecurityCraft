@@ -8,10 +8,12 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -109,10 +111,16 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 			ItemStack module = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!module.isEmpty()) {
-				Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
+				BlockState disguisedState = NBTUtil.readBlockState(module.getOrCreateTag().getCompound("SavedState"));
 
-				if (block != null)
-					return Optional.of(block.defaultBlockState());
+				if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
+					return Optional.of(disguisedState);
+				else { //fallback, mainly for upgrading old worlds from before the state selector existed
+					Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
+
+					if (block != null)
+						return Optional.of(block.defaultBlockState());
+				}
 			}
 		}
 

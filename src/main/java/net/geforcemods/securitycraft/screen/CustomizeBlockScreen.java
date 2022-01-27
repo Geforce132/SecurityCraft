@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
+import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -37,7 +38,7 @@ import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
 @OnlyIn(Dist.CLIENT)
-public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> {
+public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas {
 	//@formatter:off
 	private static final ResourceLocation[] TEXTURES = {
 			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
@@ -197,7 +198,8 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> {
 			return new StringTextComponent(option.toString());
 	}
 
-	public List<Rectangle2d> getGuiExtraAreas() {
+    @Override
+	public List<Rectangle2d> getExtraAreas() {
 		return extraAreas;
 	}
 }

@@ -13,6 +13,7 @@ public class ModuleItemContainer implements IInventory {
 	public final int size = 1;
 	private final ItemStack module;
 	public NonNullList<ItemStack> moduleInventory;
+	private DisguiseModuleMenu menu;
 
 	public ModuleItemContainer(ItemStack moduleItem) {
 		module = moduleItem;
@@ -53,7 +54,7 @@ public class ModuleItemContainer implements IInventory {
 	public void writeToNBT(CompoundNBT tag) {
 		ListNBT items = new ListNBT();
 
-		for (int i = 0; i < getContainerSize(); i++)
+		for (int i = 0; i < getContainerSize(); i++) {
 			if (!getItem(i).isEmpty()) {
 				CompoundNBT item = new CompoundNBT();
 				item.putInt("Slot", i);
@@ -61,6 +62,7 @@ public class ModuleItemContainer implements IInventory {
 
 				items.add(item);
 			}
+		}
 
 		tag.put("ItemInventory", items);
 	}
@@ -83,6 +85,7 @@ public class ModuleItemContainer implements IInventory {
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
 		ItemStack stack = getItem(index);
+
 		setItem(index, ItemStack.EMPTY);
 		return stack;
 	}
@@ -110,6 +113,9 @@ public class ModuleItemContainer implements IInventory {
 		}
 
 		writeToNBT(module.getTag());
+
+		if (menu != null)
+			menu.slotsChanged(this);
 	}
 
 	@Override
@@ -139,5 +145,13 @@ public class ModuleItemContainer implements IInventory {
 		}
 
 		return true;
+	}
+
+	public void setMenu(DisguiseModuleMenu menu) {
+		this.menu = menu;
+	}
+
+	public ItemStack getModule() {
+		return module;
 	}
 }

@@ -15,11 +15,11 @@ import net.minecraft.util.math.RayTraceResult;
 @Mixin(DebugOverlayGui.class)
 public class DebugOverlayGuiMixin {
 	@Shadow
-	protected RayTraceResult rayTraceBlock;
+	protected RayTraceResult block;
 
 	@ModifyVariable(method = "getSystemInformation", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/world/ClientWorld;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
 	public BlockState spoofBlockState(BlockState originalState) {
-		return F3Spoofer.spoofBlockState(originalState, ((BlockRayTraceResult) rayTraceBlock).getBlockPos());
+		return F3Spoofer.spoofBlockState(originalState, ((BlockRayTraceResult) block).getBlockPos());
 	}
 
 	@ModifyVariable(method = "getSystemInformation", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/world/ClientWorld;getFluidState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/fluid/FluidState;"))

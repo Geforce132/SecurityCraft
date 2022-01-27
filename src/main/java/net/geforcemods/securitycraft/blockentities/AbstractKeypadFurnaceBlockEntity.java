@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -21,6 +22,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -235,21 +237,45 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	public void onModuleInserted(ItemStack stack, ModuleType module) {
 		IModuleInventory.super.onModuleInserted(stack, module);
 
-		if (!level.isClientSide && module == ModuleType.DISGUISE)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack));
+		if (module == ModuleType.DISGUISE) {
+			if (!level.isClientSide)
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack));
+			else
+				ClientHandler.putDisguisedBeRenderer(this, stack);
+		}
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+
+		if (level.isClientSide)
+			ClientHandler.putDisguisedBeRenderer(this, getModule(ModuleType.DISGUISE));
+	}
+
+	@Override
+	public void setRemoved() {
+		super.setRemoved();
+
+		if (level.isClientSide)
+			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(getTileEntity());
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module) {
 		IModuleInventory.super.onModuleRemoved(stack, module);
 
-		if (!level.isClientSide && module == ModuleType.DISGUISE)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack));
+		if (module == ModuleType.DISGUISE) {
+			if (!level.isClientSide)
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack));
+			else
+				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
+		}
 	}
 
 	@Override
 	public IModelData getModelData() {
-		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_BLOCK_RL, getBlockState().getBlock().getRegistryName()).build();
+		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_STATE_RL, Blocks.AIR.defaultBlockState()).build();
 	}
 
 	public boolean sendsMessages() {

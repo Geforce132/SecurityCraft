@@ -5,6 +5,7 @@ import java.util.Random;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.minecraft.block.BlockState;
@@ -12,11 +13,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,9 +28,11 @@ public class ProjectorRenderer extends TileEntityRenderer<ProjectorBlockEntity> 
 
 	@Override
 	public void render(ProjectorBlockEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, int combinedOverlay) {
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(te, partialTicks, stack, buffer, packedLight, combinedOverlay);
+
 		if (te.isActive() && !te.isEmpty()) {
 			Random random = new Random();
-			BlockState state = te.getProjectedBlock().defaultBlockState();
+			BlockState state = te.getProjectedState();
 			BlockPos pos;
 
 			RenderSystem.disableCull();
@@ -47,21 +47,12 @@ public class ProjectorRenderer extends TileEntityRenderer<ProjectorBlockEntity> 
 						pos = translateProjection(te.getBlockPos(), stack, te.getBlockState().getValue(ProjectorBlock.FACING), x, te.getProjectionRange() - 16, y + 1, te.getProjectionOffset());
 
 					if (pos != null && te.getLevel().isEmptyBlock(pos)) {
-						switch (state.getRenderShape()) {
-							case MODEL:
-								for (RenderType rendertype : RenderType.chunkBufferLayers()) {
-									if (RenderTypeLookup.canRenderInLayer(state, rendertype))
-										Minecraft.getInstance().getBlockRenderer().renderBatched(state, pos, te.getLevel(), stack, buffer.getBuffer(rendertype), true, random);
-								}
-
-								break;
-							case ENTITYBLOCK_ANIMATED:
-								ItemStack tileEntityStack = new ItemStack(state.getBlock());
-								tileEntityStack.getItem().getItemStackTileEntityRenderer().renderByItem(tileEntityStack, ItemCameraTransforms.TransformType.NONE, stack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
-								break;
-							default:
-								break;
+						for (RenderType renderType : RenderType.chunkBufferLayers()) {
+							if (RenderTypeLookup.canRenderInLayer(state, renderType))
+								Minecraft.getInstance().getBlockRenderer().renderBatched(state, pos, te.getLevel(), stack, buffer.getBuffer(renderType), true, random);
 						}
+
+						ClientHandler.PROJECTOR_RENDER_DELEGATE.tryRenderDelegate(te, partialTicks, stack, buffer, packedLight, combinedOverlay);
 					}
 
 					stack.popPose();

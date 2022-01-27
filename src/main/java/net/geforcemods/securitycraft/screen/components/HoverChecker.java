@@ -23,7 +23,7 @@ public class HoverChecker {
 		this.widget = widget;
 	}
 
-	public boolean checkHover(int mouseX, int mouseY) {
+	public boolean checkHover(double mouseX, double mouseY) {
 		if (widget != null) {
 			if (!widget.visible || (widget instanceof Slider && ((Slider) widget).dragging))
 				return false;
