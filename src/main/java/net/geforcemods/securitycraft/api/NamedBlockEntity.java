@@ -7,14 +7,14 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
-public class NamedTileEntity extends OwnableTileEntity implements INameSetter {
+public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter {
 	private ITextComponent customName = null;
 
-	public NamedTileEntity() {
+	public NamedBlockEntity() {
 		this(SCContent.beTypeAbstract);
 	}
 
-	public NamedTileEntity(TileEntityType<?> type) {
+	public NamedBlockEntity(TileEntityType<?> type) {
 		super(type);
 	}
 

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -194,7 +194,7 @@ public class IronFenceBlock extends OwnableBlock {
 			return;
 		//owner check
 		else if (entity instanceof PlayerEntity) {
-			if (((OwnableTileEntity) world.getBlockEntity(pos)).getOwner().isOwner((PlayerEntity) entity))
+			if (((OwnableBlockEntity) world.getBlockEntity(pos)).getOwner().isOwner((PlayerEntity) entity))
 				return;
 		}
 		else if (entity instanceof CreeperEntity) {
@@ -218,6 +218,6 @@ public class IronFenceBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity(SCContent.beTypeAbstract);
+		return new OwnableBlockEntity(SCContent.beTypeAbstract);
 	}
 }

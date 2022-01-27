@@ -14,11 +14,11 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
-public abstract class LinkableTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
+public abstract class LinkableBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity {
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private ListNBT nbtTagStorage = null;
 
-	public LinkableTileEntity(TileEntityType<?> type) {
+	public LinkableBlockEntity(TileEntityType<?> type) {
 		super(type);
 	}
 
@@ -100,7 +100,7 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	@Override
 	public void setRemoved() {
 		for (LinkedBlock block : linkedBlocks) {
-			LinkableTileEntity.unlink(block.asTileEntity(level), this);
+			LinkableBlockEntity.unlink(block.asTileEntity(level), this);
 		}
 	}
 
@@ -126,7 +126,7 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	/**
 	 * Links two blocks together. Calls onLinkedBlockAction() whenever certain events (found in {@link LinkedAction}) occur.
 	 */
-	public static void link(LinkableTileEntity tileEntity1, LinkableTileEntity tileEntity2) {
+	public static void link(LinkableBlockEntity tileEntity1, LinkableBlockEntity tileEntity2) {
 		if (isLinkedWith(tileEntity1, tileEntity2))
 			return;
 
@@ -146,7 +146,7 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	 * @param tileEntity1 The tile entity to unlink from
 	 * @param tileEntity2 The tile entity to unlink
 	 */
-	public static void unlink(LinkableTileEntity tileEntity1, LinkableTileEntity tileEntity2) {
+	public static void unlink(LinkableBlockEntity tileEntity1, LinkableBlockEntity tileEntity2) {
 		if (tileEntity1 == null || tileEntity2 == null)
 			return;
 
@@ -159,7 +159,7 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	/**
 	 * @return Are the two blocks linked together?
 	 */
-	public static boolean isLinkedWith(LinkableTileEntity tileEntity1, LinkableTileEntity tileEntity2) {
+	public static boolean isLinkedWith(LinkableBlockEntity tileEntity1, LinkableBlockEntity tileEntity2) {
 		return tileEntity1.linkedBlocks.contains(new LinkedBlock(tileEntity2)) && tileEntity2.linkedBlocks.contains(new LinkedBlock(tileEntity1));
 	}
 
@@ -171,8 +171,8 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	 * @param parameters Action-specific parameters, see comments in {@link LinkedAction}
 	 * @param excludedTE The LinkableTileEntity which called this method, prevents infinite loops.
 	 */
-	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, LinkableTileEntity excludedTE) {
-		ArrayList<LinkableTileEntity> list = new ArrayList<>();
+	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, LinkableBlockEntity excludedTE) {
+		ArrayList<LinkableBlockEntity> list = new ArrayList<>();
 
 		list.add(excludedTE);
 		createLinkedBlockAction(action, parameters, list);
@@ -186,7 +186,7 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	 * @param excludedTEs LinkableTileEntities that shouldn't have onLinkedBlockAction() called on them, prevents infinite
 	 *            loops. Always add your tile entity to the list whenever using this method
 	 */
-	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableTileEntity> excludedTEs) {
+	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedTEs) {
 		for (LinkedBlock block : linkedBlocks)
 			if (excludedTEs.contains(block.asTileEntity(level)))
 				continue;
@@ -208,5 +208,5 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 	 *            your tile entity to the list if you're going to call createLinkedBlockAction() in this method to chain-link
 	 *            multiple blocks (i.e: like Laser Blocks)
 	 */
-	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableTileEntity> excludedTEs) {}
+	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedTEs) {}
 }

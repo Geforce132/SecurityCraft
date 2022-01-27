@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -51,7 +51,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 		else if (entity instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) entity;
 
-			if (((OwnableTileEntity) world.getBlockEntity(pos)).getOwner().isOwner(player))
+			if (((OwnableBlockEntity) world.getBlockEntity(pos)).getOwner().isOwner(player))
 				return;
 		}
 		else if (entity instanceof CreeperEntity) {
@@ -98,6 +98,6 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity(SCContent.beTypeAbstract);
+		return new OwnableBlockEntity(SCContent.beTypeAbstract);
 	}
 }

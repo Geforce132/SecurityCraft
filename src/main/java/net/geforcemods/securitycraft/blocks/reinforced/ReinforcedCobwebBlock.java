@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -24,8 +24,8 @@ public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
 		if (entity instanceof PlayerEntity) {
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof OwnableTileEntity) {
-				if (((OwnableTileEntity) te).getOwner().isOwner((PlayerEntity) entity))
+			if (te instanceof OwnableBlockEntity) {
+				if (((OwnableBlockEntity) te).getOwner().isOwner((PlayerEntity) entity))
 					return;
 			}
 		}

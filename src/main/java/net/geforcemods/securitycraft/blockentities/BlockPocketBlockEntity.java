@@ -1,14 +1,14 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class BlockPocketBlockEntity extends OwnableTileEntity implements ITickableTileEntity {
+public class BlockPocketBlockEntity extends OwnableBlockEntity implements ITickableTileEntity {
 	private BlockPocketManagerBlockEntity manager;
 	private BlockPos managerPos;
 

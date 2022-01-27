@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.LinkableTileEntity;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -63,7 +63,7 @@ public class ModuleUtils {
 		return getPlayersFromModule(stack).contains(entity.getName().getColoredString().toLowerCase());
 	}
 
-	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableTileEntity te) {
+	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableBlockEntity te) {
 		if (action == LinkedAction.MODULE_INSERTED) {
 			te.createLinkedBlockAction(action, new Object[] {
 					stack, (ModuleItem) stack.getItem()

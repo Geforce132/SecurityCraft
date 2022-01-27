@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -13,7 +13,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.server.ServerWorld;
 
-public class AlarmBlockEntity extends CustomizableTileEntity implements ITickableTileEntity {
+public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
 	private IntOption delay = new IntOption(this::getBlockPos, "delay", 2, 1, 30, 1, true);
 	private int cooldown = 0;

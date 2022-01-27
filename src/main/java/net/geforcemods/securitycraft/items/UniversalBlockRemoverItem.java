@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.LinkableTileEntity;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
@@ -67,7 +67,7 @@ public class UniversalBlockRemoverItem extends Item {
 			}
 
 			if (block == SCContent.LASER_BLOCK.get()) {
-				LinkableTileEntity te = (LinkableTileEntity) world.getBlockEntity(pos);
+				LinkableBlockEntity te = (LinkableBlockEntity) world.getBlockEntity(pos);
 
 				for (ItemStack module : te.getInventory()) {
 					if (!module.isEmpty()) {
@@ -128,6 +128,6 @@ public class UniversalBlockRemoverItem extends Item {
 	}
 
 	private static boolean isOwnableBlock(Block block, TileEntity te) {
-		return (te instanceof OwnableTileEntity || te instanceof IOwnable || block instanceof OwnableBlock);
+		return (te instanceof OwnableBlockEntity || te instanceof IOwnable || block instanceof OwnableBlock);
 	}
 }

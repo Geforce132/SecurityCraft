@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 
-public class SecurityCameraBlockEntity extends CustomizableTileEntity implements ITickableTileEntity {
+public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity {
 	public double cameraRotation = 0.0D;
 	public boolean addToRotation = true;
 	public boolean down = false, downSet = false;

@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.minecraft.nbt.CompoundNBT;
 
-public class TrackMineBlockEntity extends OwnableTileEntity {
+public class TrackMineBlockEntity extends OwnableBlockEntity {
 	private boolean active = true;
 
 	public TrackMineBlockEntity() {

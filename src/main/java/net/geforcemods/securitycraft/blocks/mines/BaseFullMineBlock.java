@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -43,8 +43,8 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 			else if (entity instanceof PlayerEntity) {
 				TileEntity te = world.getBlockEntity(pos);
 
-				if (te instanceof OwnableTileEntity) {
-					OwnableTileEntity ownableTe = (OwnableTileEntity) te;
+				if (te instanceof OwnableBlockEntity) {
+					OwnableBlockEntity ownableTe = (OwnableBlockEntity) te;
 
 					if (ownableTe.getOwner().isOwner((PlayerEntity) entity))
 						return VoxelShapes.block();
@@ -127,7 +127,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity(SCContent.beTypeAbstract);
+		return new OwnableBlockEntity(SCContent.beTypeAbstract);
 	}
 
 	@Override
@@ -142,8 +142,8 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		if (world.getBlockEntity(pos) instanceof OwnableTileEntity) {
-			OwnableTileEntity te = (OwnableTileEntity) world.getBlockEntity(pos);
+		if (world.getBlockEntity(pos) instanceof OwnableBlockEntity) {
+			OwnableBlockEntity te = (OwnableBlockEntity) world.getBlockEntity(pos);
 
 			if (player.isCreative() || te.getOwner().isOwner(player))
 				return super.getPickBlock(state, target, world, pos, player);

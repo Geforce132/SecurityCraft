@@ -1,11 +1,11 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.misc.ModuleType;
 
-public class AllowlistOnlyBlockEntity extends CustomizableTileEntity {
+public class AllowlistOnlyBlockEntity extends CustomizableBlockEntity {
 	public AllowlistOnlyBlockEntity() {
 		super(SCContent.beTypeAllowlistOnly);
 	}

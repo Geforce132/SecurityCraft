@@ -10,14 +10,14 @@ import net.minecraft.tileentity.TileEntityType;
 /**
  * Used to give this tile entity an owner
  */
-public class OwnableTileEntity extends TileEntity implements IOwnable {
+public class OwnableBlockEntity extends TileEntity implements IOwnable {
 	private Owner owner = new Owner();
 
-	public OwnableTileEntity() {
+	public OwnableBlockEntity() {
 		this(SCContent.beTypeOwnable);
 	}
 
-	public OwnableTileEntity(TileEntityType<?> type) {
+	public OwnableBlockEntity(TileEntityType<?> type) {
 		super(type);
 	}
 

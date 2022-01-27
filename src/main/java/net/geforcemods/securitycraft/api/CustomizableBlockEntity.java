@@ -12,10 +12,10 @@ import net.minecraft.util.NonNullList;
  *
  * @author Geforce
  */
-public abstract class CustomizableTileEntity extends NamedTileEntity implements IModuleInventory, ICustomizable {
+public abstract class CustomizableBlockEntity extends NamedBlockEntity implements IModuleInventory, ICustomizable {
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
-	public CustomizableTileEntity(TileEntityType<?> type) {
+	public CustomizableBlockEntity(TileEntityType<?> type) {
 		super(type);
 	}
 

@@ -8,10 +8,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedCrystalQuartzPillar;
@@ -55,7 +55,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class BlockPocketManagerBlockEntity extends CustomizableTileEntity implements INamedContainerProvider, ITickableTileEntity, ILockable {
+public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity implements INamedContainerProvider, ITickableTileEntity, ILockable {
 	public static final int RENDER_DISTANCE = 100;
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
 	public boolean enabled = false;
@@ -127,8 +127,8 @@ public class BlockPocketManagerBlockEntity extends CustomizableTileEntity implem
 					te = level.getBlockEntity(pos);
 
 					//assigning the owner
-					if (te instanceof OwnableTileEntity)
-						((OwnableTileEntity) te).setOwner(getOwner().getUUID(), getOwner().getName());
+					if (te instanceof OwnableBlockEntity)
+						((OwnableBlockEntity) te).setOwner(getOwner().getUUID(), getOwner().getName());
 
 					continue;
 				}
@@ -274,7 +274,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableTileEntity implem
 							}
 						}
 
-						OwnableTileEntity te = (OwnableTileEntity) level.getBlockEntity(currentPos);
+						OwnableBlockEntity te = (OwnableBlockEntity) level.getBlockEntity(currentPos);
 
 						if (!getOwner().owns(te))
 							return new TranslationTextComponent("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));
@@ -430,8 +430,8 @@ public class BlockPocketManagerBlockEntity extends CustomizableTileEntity implem
 							}
 						}
 
-						if (level.getBlockEntity(currentPos) instanceof OwnableTileEntity) {
-							OwnableTileEntity te = (OwnableTileEntity) level.getBlockEntity(currentPos);
+						if (level.getBlockEntity(currentPos) instanceof OwnableBlockEntity) {
+							OwnableBlockEntity te = (OwnableBlockEntity) level.getBlockEntity(currentPos);
 
 							if (!getOwner().owns(te))
 								return new TranslationTextComponent("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getDescriptionId()));

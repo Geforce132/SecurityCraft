@@ -13,7 +13,7 @@ import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
 /**
- * A class that allows blocks that have {@link CustomizableTileEntity}s to have custom, "per-block" options that are separate
+ * A class that allows blocks that have {@link CustomizableBlockEntity}s to have custom, "per-block" options that are separate
  * from the main SecurityCraft configuration options.
  *
  * @author Geforce
