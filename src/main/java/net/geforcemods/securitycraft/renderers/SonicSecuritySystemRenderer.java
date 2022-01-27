@@ -22,14 +22,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<SonicSecuritySystemBlockEntity> {
+public class SonicSecuritySystemRenderer extends TileEntityRenderer<SonicSecuritySystemBlockEntity> {
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
 	private static final SonicSecuritySystemModel MODEL = new SonicSecuritySystemModel();
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/sonic_security_system.png");
 	private static final TranslationTextComponent RECORDING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.recording");
 	private static final TranslationTextComponent LISTENING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.listening");
 
-	public SonicSecuritySystemTileEntityRenderer(TileEntityRendererDispatcher terd) {
+	public SonicSecuritySystemRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 

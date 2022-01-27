@@ -23,8 +23,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorBlockEntity> {
-	public ProjectorTileEntityRenderer(TileEntityRendererDispatcher terd) {
+public class ProjectorRenderer extends TileEntityRenderer<ProjectorBlockEntity> {
+	public ProjectorRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 

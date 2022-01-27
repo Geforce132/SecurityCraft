@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class KeypadChestTileEntityRenderer extends ChestTileEntityRenderer<KeypadChestBlockEntity> {
+public class KeypadChestRenderer extends ChestTileEntityRenderer<KeypadChestBlockEntity> {
 	private static final RenderMaterial ACTIVE = createMaterial("active");
 	private static final RenderMaterial INACTIVE = createMaterial("inactive");
 	private static final RenderMaterial LEFT_ACTIVE = createMaterial("left_active");
@@ -25,7 +25,7 @@ public class KeypadChestTileEntityRenderer extends ChestTileEntityRenderer<Keypa
 	private static final RenderMaterial CHRISTMAS_RIGHT = createMaterial("christmas_right");
 	protected boolean isChristmas;
 
-	public KeypadChestTileEntityRenderer(TileEntityRendererDispatcher terd) {
+	public KeypadChestRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 
 		Calendar calendar = Calendar.getInstance();

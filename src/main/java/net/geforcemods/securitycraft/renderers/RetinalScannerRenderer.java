@@ -32,10 +32,10 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.LightType;
 
-public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<RetinalScannerBlockEntity> {
+public class RetinalScannerRenderer extends TileEntityRenderer<RetinalScannerBlockEntity> {
 	private static final float CORRECT_FACTOR = 1 / 550F;
 
-	public RetinalScannerTileEntityRenderer(TileEntityRendererDispatcher terd) {
+	public RetinalScannerRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 

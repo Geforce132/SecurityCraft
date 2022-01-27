@@ -15,8 +15,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<BlockPocketManagerBlockEntity> {
-	public BlockPocketManagerTileEntityRenderer(TileEntityRendererDispatcher terd) {
+public class BlockPocketManagerRenderer extends TileEntityRenderer<BlockPocketManagerBlockEntity> {
+	public BlockPocketManagerRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 

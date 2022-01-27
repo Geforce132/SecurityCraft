@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<SecurityCameraBlockEntity> {
+public class SecurityCameraRenderer extends TileEntityRenderer<SecurityCameraBlockEntity> {
 	private static final Quaternion POSITIVE_Y_180 = Vector3f.YP.rotationDegrees(180.0F);
 	private static final Quaternion POSITIVE_Y_90 = Vector3f.YP.rotationDegrees(90.0F);
 	private static final Quaternion NEGATIVE_Y_90 = Vector3f.YN.rotationDegrees(90.0F);
@@ -31,7 +31,7 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/security_camera.png");
 	private static final ResourceLocation BEING_VIEWED_TEXTURE = new ResourceLocation("securitycraft:textures/block/security_camera_viewing.png");
 
-	public SecurityCameraTileEntityRenderer(TileEntityRendererDispatcher terd) {
+	public SecurityCameraRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 

@@ -11,12 +11,12 @@ import net.minecraft.item.ItemStack;
 
 public class ItemKeypadChestRenderer extends ItemStackTileEntityRenderer {
 	private static final KeypadChestBlockEntity DUMMY_TE = new KeypadChestBlockEntity();
-	private static KeypadChestTileEntityRenderer dummyRenderer = null;
+	private static KeypadChestRenderer dummyRenderer = null;
 
 	@Override
 	public void renderByItem(ItemStack stack, TransformType transformType, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		if (dummyRenderer == null)
-			dummyRenderer = new KeypadChestTileEntityRenderer(TileEntityRendererDispatcher.instance);
+			dummyRenderer = new KeypadChestRenderer(TileEntityRendererDispatcher.instance);
 
 		dummyRenderer.render(DUMMY_TE, 0.0F, matrix, buffer, combinedLight, combinedOverlay);
 	}

@@ -24,10 +24,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignBlockEntity> {
+public class SecretSignRenderer extends TileEntityRenderer<SecretSignBlockEntity> {
 	private final SignModel model = new SignModel();
 
-	public SecretSignTileEntityRenderer(TileEntityRendererDispatcher terd) {
+	public SecretSignRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 
