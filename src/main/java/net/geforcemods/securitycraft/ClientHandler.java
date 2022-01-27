@@ -364,7 +364,6 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.beTypeKeypadSmoker, DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeLaserBlock, DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeProtecto, DisguisableBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeRetinalScanner, DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeUsernameLogger, DisguisableBlockEntityRenderer::new);
 	}
 
