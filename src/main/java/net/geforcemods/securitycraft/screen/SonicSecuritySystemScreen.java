@@ -3,10 +3,10 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity.NoteWrapper;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -27,7 +27,7 @@ public class SonicSecuritySystemScreen extends Screen {
 	private static final TranslationTextComponent SOUND_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.sound");
 	/** The number of ticks between each note when playing back a recording **/
 	private static final int PLAYBACK_DELAY = 10;
-	private final SonicSecuritySystemTileEntity te;
+	private final SonicSecuritySystemBlockEntity te;
 	private int xSize = 176, ySize = 166;
 	private Button recordingButton, clearButton, powerButton, playButton;
 	private TogglePictureButton soundButton;
@@ -38,7 +38,7 @@ public class SonicSecuritySystemScreen extends Screen {
 	private int currentNote = 0;
 	private boolean isOwner;
 
-	public SonicSecuritySystemScreen(SonicSecuritySystemTileEntity te) {
+	public SonicSecuritySystemScreen(SonicSecuritySystemBlockEntity te) {
 		super(te.getName());
 		this.te = te;
 		isOwner = te.getOwner().isOwner(Minecraft.getInstance().player);

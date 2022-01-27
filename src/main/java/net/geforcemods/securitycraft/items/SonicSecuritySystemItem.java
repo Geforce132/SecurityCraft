@@ -6,9 +6,9 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -96,7 +96,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 		ActionResultType returnValue = super.useOn(ctx);
 
 		if (returnValue.consumesAction())
-			((SonicSecuritySystemTileEntity) ctx.getLevel().getBlockEntity(ctx.getClickedPos().relative(ctx.getClickedFace()))).transferPositionsFromItem(ctx.getItemInHand().getTag());
+			((SonicSecuritySystemBlockEntity) ctx.getLevel().getBlockEntity(ctx.getClickedPos().relative(ctx.getClickedFace()))).transferPositionsFromItem(ctx.getItemInHand().getTag());
 
 		return returnValue;
 	}
@@ -129,8 +129,8 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 		ListNBT list = tag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
 
-		if (list.size() >= SonicSecuritySystemTileEntity.MAX_LINKED_BLOCKS) {
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.linkMaxReached", SonicSecuritySystemTileEntity.MAX_LINKED_BLOCKS), TextFormatting.DARK_RED);
+		if (list.size() >= SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS) {
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.linkMaxReached", SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS), TextFormatting.DARK_RED);
 			return false;
 		}
 

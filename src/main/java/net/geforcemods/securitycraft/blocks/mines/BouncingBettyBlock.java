@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -102,7 +102,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 		BouncingBettyEntity entitytntprimed = new BouncingBettyEntity(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
 		entitytntprimed.fuse = 15;
 		entitytntprimed.setDeltaMovement(entitytntprimed.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
-		WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(entitytntprimed));
+		LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(entitytntprimed));
 		entitytntprimed.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.tnt.primed")), 1.0F, 1.0F);
 	}
 
@@ -128,6 +128,6 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity(SCContent.teTypeAbstract);
+		return new OwnableTileEntity(SCContent.beTypeAbstract);
 	}
 }

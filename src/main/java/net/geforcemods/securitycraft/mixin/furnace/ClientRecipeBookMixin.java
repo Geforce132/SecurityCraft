@@ -9,9 +9,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.google.common.collect.Lists;
 
-import net.geforcemods.securitycraft.containers.KeypadBlastFurnaceContainer;
-import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
-import net.geforcemods.securitycraft.containers.KeypadSmokerContainer;
+import net.geforcemods.securitycraft.inventory.KeypadBlastFurnaceMenu;
+import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
+import net.geforcemods.securitycraft.inventory.KeypadSmokerMenu;
 import net.minecraft.client.util.ClientRecipeBook;
 import net.minecraft.client.util.RecipeBookCategories;
 import net.minecraft.inventory.container.RecipeBookContainer;
@@ -24,11 +24,11 @@ import net.minecraft.inventory.container.RecipeBookContainer;
 public class ClientRecipeBookMixin {
 	@Inject(method = "getCategories", at = @At("HEAD"), cancellable = true)
 	private static void provideCorrectCategories(RecipeBookContainer<?> container, CallbackInfoReturnable<List<RecipeBookCategories>> callback) {
-		if (container instanceof KeypadFurnaceContainer)
+		if (container instanceof KeypadFurnaceMenu)
 			callback.setReturnValue(Lists.newArrayList(RecipeBookCategories.FURNACE_SEARCH, RecipeBookCategories.FURNACE_FOOD, RecipeBookCategories.FURNACE_BLOCKS, RecipeBookCategories.FURNACE_MISC));
-		else if (container instanceof KeypadSmokerContainer)
+		else if (container instanceof KeypadSmokerMenu)
 			callback.setReturnValue(Lists.newArrayList(RecipeBookCategories.SMOKER_SEARCH, RecipeBookCategories.SMOKER_FOOD));
-		else if (container instanceof KeypadBlastFurnaceContainer)
+		else if (container instanceof KeypadBlastFurnaceMenu)
 			callback.setReturnValue(Lists.newArrayList(RecipeBookCategories.BLAST_FURNACE_SEARCH, RecipeBookCategories.BLAST_FURNACE_BLOCKS, RecipeBookCategories.BLAST_FURNACE_MISC));
 	}
 }

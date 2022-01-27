@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.tileentity.KeypadBlastFurnaceTileEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadBlastFurnaceBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
@@ -42,6 +42,6 @@ public class KeypadBlastFurnaceBlock extends AbstractKeypadFurnaceBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new KeypadBlastFurnaceTileEntity();
+		return new KeypadBlastFurnaceBlockEntity();
 	}
 }

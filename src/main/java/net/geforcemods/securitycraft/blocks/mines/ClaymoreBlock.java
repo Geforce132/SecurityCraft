@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.tileentity.ClaymoreTileEntity;
+import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
@@ -166,7 +166,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new ClaymoreTileEntity();
+		return new ClaymoreBlockEntity();
 	}
 
 	@Override

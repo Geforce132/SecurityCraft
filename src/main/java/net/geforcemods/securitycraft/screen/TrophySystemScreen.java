@@ -8,9 +8,9 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -27,7 +27,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
 
-public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
+public class TrophySystemScreen extends ContainerScreen<GenericTEMenu> {
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	private final String projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles").getColoredString();
@@ -36,13 +36,13 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 	private final String moddedProjectiles = Utils.localize("gui.securitycraft:trophy_system.moddedProjectiles").getColoredString();
 	private final boolean isSmart;
 	private final List<EntityType<?>> orderedFilterList;
-	private TrophySystemTileEntity tileEntity;
+	private TrophySystemBlockEntity tileEntity;
 	private ProjectileScrollList projectileList;
 
-	public TrophySystemScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
+	public TrophySystemScreen(GenericTEMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 
-		this.tileEntity = (TrophySystemTileEntity) container.te;
+		this.tileEntity = (TrophySystemBlockEntity) container.te;
 		isSmart = tileEntity.hasModule(ModuleType.SMART);
 		orderedFilterList = new ArrayList<>(tileEntity.getFilters().keySet());
 		orderedFilterList.sort((e1, e2) -> {

@@ -11,7 +11,7 @@ public class NamedTileEntity extends OwnableTileEntity implements INameSetter {
 	private ITextComponent customName = null;
 
 	public NamedTileEntity() {
-		this(SCContent.teTypeAbstract);
+		this(SCContent.beTypeAbstract);
 	}
 
 	public NamedTileEntity(TileEntityType<?> type) {

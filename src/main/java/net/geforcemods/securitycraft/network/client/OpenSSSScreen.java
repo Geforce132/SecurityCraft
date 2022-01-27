@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -31,8 +31,8 @@ public class OpenSSSScreen {
 		ctx.get().enqueueWork(() -> {
 			TileEntity te = Minecraft.getInstance().level.getBlockEntity(message.pos);
 
-			if (te instanceof SonicSecuritySystemTileEntity)
-				ClientHandler.displaySonicSecuritySystemGui((SonicSecuritySystemTileEntity) te);
+			if (te instanceof SonicSecuritySystemBlockEntity)
+				ClientHandler.displaySonicSecuritySystemGui((SonicSecuritySystemBlockEntity) te);
 		});
 		ctx.get().setPacketHandled(true);
 	}

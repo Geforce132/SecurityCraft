@@ -9,9 +9,9 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
-import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -25,14 +25,14 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
-public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer> {
+public class UsernameLoggerScreen extends ContainerScreen<GenericTEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private UsernameLoggerTileEntity tileEntity;
+	private UsernameLoggerBlockEntity tileEntity;
 	private PlayerList playerList;
 
-	public UsernameLoggerScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
+	public UsernameLoggerScreen(GenericTEMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
-		tileEntity = (UsernameLoggerTileEntity) container.te;
+		tileEntity = (UsernameLoggerBlockEntity) container.te;
 	}
 
 	@Override

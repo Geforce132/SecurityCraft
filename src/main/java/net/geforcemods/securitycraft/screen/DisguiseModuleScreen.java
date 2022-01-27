@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
+import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -13,10 +13,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleContainer> {
+public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
 
-	public DisguiseModuleScreen(DisguiseModuleContainer container, PlayerInventory inv, ITextComponent name) {
+	public DisguiseModuleScreen(DisguiseModuleMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 	}
 

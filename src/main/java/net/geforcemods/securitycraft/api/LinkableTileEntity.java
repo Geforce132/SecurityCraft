@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -52,7 +52,7 @@ public abstract class LinkableTileEntity extends CustomizableTileEntity implemen
 		if (hasLevel() && linkedBlocks.size() > 0) {
 			ListNBT tagList = new ListNBT();
 
-			WorldUtils.addScheduledTask(level, () -> {
+			LevelUtils.addScheduledTask(level, () -> {
 				for (int i = linkedBlocks.size() - 1; i >= 0; i--) {
 					LinkedBlock block = linkedBlocks.get(i);
 					CompoundNBT toAppend = new CompoundNBT();

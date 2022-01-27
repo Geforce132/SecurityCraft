@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.GenericContainer;
+import net.geforcemods.securitycraft.inventory.GenericMenu;
 import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -23,13 +23,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
+public class BriefcaseSetupScreen extends ContainerScreen<GenericMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final String setupTitle = Utils.localize("gui.securitycraft:briefcase.setupTitle").getColoredString();
 	private TextFieldWidget keycodeTextbox;
 	private Button saveAndContinueButton;
 
-	public BriefcaseSetupScreen(GenericContainer container, PlayerInventory inv, ITextComponent text) {
+	public BriefcaseSetupScreen(GenericMenu container, PlayerInventory inv, ITextComponent text) {
 		super(container, inv, text);
 	}
 
@@ -89,7 +89,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 			}
 
 			ClientUtils.syncItemNBT(briefcase);
-			SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcase.getRegistryName(), getTitle()));
+			SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcase.getRegistryName(), getTitle()));
 		}
 	}
 }

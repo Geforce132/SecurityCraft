@@ -5,8 +5,8 @@ import java.util.function.BiFunction;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -56,7 +56,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 			return VoxelShapes.empty();
 
 		World world = ctx.getEntity().getCommandSenderWorld();
-		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 		Entity entity = ctx.getEntity();
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
@@ -86,7 +86,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 
 	@Override
 	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
-		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 		if (connectedScanner == null || connectedScanner.doesFieldSolidify())
 			return;
@@ -108,7 +108,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		}
 	}
 
-	public static boolean checkInventory(PlayerEntity player, InventoryScannerTileEntity te, ItemStack stack, boolean allowInteraction) {
+	public static boolean checkInventory(PlayerEntity player, InventoryScannerBlockEntity te, ItemStack stack, boolean allowInteraction) {
 		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && te.hasModule(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && te.hasModule(ModuleType.REDSTONE);
@@ -119,7 +119,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		return loopInventory(player.inventory.items, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.armor, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.inventory.offhand, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
-	private static boolean loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+	private static boolean loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerBlockEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
 		for (int i = 1; i <= inventory.size(); i++) {
 			ItemStack itemStackChecking = inventory.get(i - 1);
 
@@ -144,7 +144,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		return false;
 	}
 
-	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerTileEntity te, ItemStack stack, boolean allowInteraction) {
+	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerBlockEntity te, ItemStack stack, boolean allowInteraction) {
 		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && te.hasModule(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && te.hasModule(ModuleType.REDSTONE);
@@ -167,7 +167,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		return checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
-	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
 		if (item != null) {
 			if (!item.isEmpty() && item.getTag() != null && Block.byItem(item.getItem()) instanceof ShulkerBoxBlock) {
 				ListNBT list = item.getTag().getCompound("BlockEntityTag").getList("Items", NBT.TAG_COMPOUND);
@@ -197,8 +197,8 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		return (hasSmartModule && areItemStacksEqual(firstItemStack, secondItemStack) && ItemStack.tagMatches(firstItemStack, secondItemStack)) || (!hasSmartModule && firstItemStack.getItem() == secondItemStack.getItem());
 	}
 
-	private static void updateInventoryScannerPower(InventoryScannerTileEntity te) {
-		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(te.getLevel(), te.getBlockPos());
+	private static void updateInventoryScannerPower(InventoryScannerBlockEntity te) {
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(te.getLevel(), te.getBlockPos());
 
 		if (connectedScanner == null)
 			return;
@@ -207,7 +207,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 		updateInvScanner(connectedScanner);
 	}
 
-	private static void updateInvScanner(InventoryScannerTileEntity te) {
+	private static void updateInvScanner(InventoryScannerBlockEntity te) {
 		te.setShouldProvidePower(true);
 		te.setCooldown(60);
 		BlockUtils.updateAndNotify(te.getLevel(), te.getBlockPos(), te.getBlockState().getBlock(), 1, true);
@@ -282,7 +282,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity(SCContent.teTypeAbstract);
+		return new OwnableTileEntity(SCContent.beTypeAbstract);
 	}
 
 	@Override

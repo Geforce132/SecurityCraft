@@ -5,8 +5,8 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDoorActivator;
+import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -39,8 +39,8 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		if (!world.isClientSide && redstoneStrength == 0 && entity instanceof PlayerEntity) {
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof AllowlistOnlyTileEntity) {
-				if (isAllowedToPress(world, pos, (AllowlistOnlyTileEntity) te, (PlayerEntity) entity))
+			if (te instanceof AllowlistOnlyBlockEntity) {
+				if (isAllowedToPress(world, pos, (AllowlistOnlyBlockEntity) te, (PlayerEntity) entity))
 					checkPressed(world, pos, state, redstoneStrength);
 			}
 		}
@@ -56,9 +56,9 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		if (!list.isEmpty()) {
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof AllowlistOnlyTileEntity) {
+			if (te instanceof AllowlistOnlyBlockEntity) {
 				for (Entity entity : list) {
-					if (entity instanceof PlayerEntity && isAllowedToPress(world, pos, (AllowlistOnlyTileEntity) te, (PlayerEntity) entity))
+					if (entity instanceof PlayerEntity && isAllowedToPress(world, pos, (AllowlistOnlyBlockEntity) te, (PlayerEntity) entity))
 						return 15;
 				}
 			}
@@ -67,7 +67,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		return 0;
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyTileEntity te, PlayerEntity entity) {
+	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyBlockEntity te, PlayerEntity entity) {
 		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
 	}
 
@@ -94,7 +94,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new AllowlistOnlyTileEntity();
+		return new AllowlistOnlyBlockEntity();
 	}
 
 	public static class DoorActivator implements IDoorActivator {

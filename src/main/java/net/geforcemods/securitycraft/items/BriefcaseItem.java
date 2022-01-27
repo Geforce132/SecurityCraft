@@ -61,9 +61,9 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 			}
 
 			if (!stack.getTag().contains("passcode"))
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), stack.getHoverName()));
+				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcaseSetup.getRegistryName(), stack.getHoverName()));
 			else
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcase.getRegistryName(), stack.getHoverName()));
+				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcase.getRegistryName(), stack.getHoverName()));
 		}
 	}
 

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
@@ -47,8 +47,8 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 			if (entity instanceof PlayerEntity) {
 				TileEntity te1 = world.getBlockEntity(pos);
 
-				if (te1 instanceof BlockPocketTileEntity) {
-					BlockPocketTileEntity te = (BlockPocketTileEntity) te1;
+				if (te1 instanceof BlockPocketBlockEntity) {
+					BlockPocketBlockEntity te = (BlockPocketBlockEntity) te1;
 
 					if (te.getManager() == null)
 						return VoxelShapes.empty();
@@ -94,6 +94,6 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new BlockPocketTileEntity();
+		return new BlockPocketBlockEntity();
 	}
 }

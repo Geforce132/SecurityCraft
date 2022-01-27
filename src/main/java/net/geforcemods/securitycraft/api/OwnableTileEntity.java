@@ -14,7 +14,7 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	private Owner owner = new Owner();
 
 	public OwnableTileEntity() {
-		this(SCContent.teTypeOwnable);
+		this(SCContent.beTypeOwnable);
 	}
 
 	public OwnableTileEntity(TileEntityType<?> type) {

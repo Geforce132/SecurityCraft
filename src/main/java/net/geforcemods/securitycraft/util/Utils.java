@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.util;
 
+import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
-import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +24,7 @@ public class Utils {
 	}
 
 	public static void setISinTEAppropriately(World world, BlockPos pos, NonNullList<ItemStack> contents) {
-		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 		if (connectedScanner == null)
 			return;

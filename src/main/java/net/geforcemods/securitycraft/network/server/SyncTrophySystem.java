@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
+import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.network.PacketBuffer;
@@ -52,10 +52,10 @@ public class SyncTrophySystem {
 				boolean allowed = message.allowed;
 				TileEntity te = world.getBlockEntity(pos);
 
-				if (te instanceof TrophySystemTileEntity && ((TrophySystemTileEntity) te).getOwner().isOwner(ctx.get().getSender())) {
+				if (te instanceof TrophySystemBlockEntity && ((TrophySystemBlockEntity) te).getOwner().isOwner(ctx.get().getSender())) {
 					BlockState state = world.getBlockState(pos);
 
-					((TrophySystemTileEntity) te).setFilter(projectileType, allowed);
+					((TrophySystemBlockEntity) te).setFilter(projectileType, allowed);
 					world.sendBlockUpdated(pos, state, state, 2);
 				}
 			}

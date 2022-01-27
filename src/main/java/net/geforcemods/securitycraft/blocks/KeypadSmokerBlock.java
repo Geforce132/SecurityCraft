@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.tileentity.KeypadSmokerTileEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadSmokerBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
@@ -24,6 +24,6 @@ public class KeypadSmokerBlock extends AbstractKeypadFurnaceBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new KeypadSmokerTileEntity();
+		return new KeypadSmokerBlockEntity();
 	}
 }

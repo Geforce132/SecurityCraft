@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.containers.KeypadBlastFurnaceContainer;
+import net.geforcemods.securitycraft.inventory.KeypadBlastFurnaceMenu;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.recipebook.BlastFurnaceRecipeGui;
 import net.minecraft.client.gui.screen.inventory.AbstractFurnaceScreen;
@@ -12,10 +12,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class KeypadBlastFurnaceScreen extends AbstractFurnaceScreen<KeypadBlastFurnaceContainer> {
+public class KeypadBlastFurnaceScreen extends AbstractFurnaceScreen<KeypadBlastFurnaceMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/container/blast_furnace.png");
 
-	public KeypadBlastFurnaceScreen(KeypadBlastFurnaceContainer container, PlayerInventory inv, ITextComponent name) {
+	public KeypadBlastFurnaceScreen(KeypadBlastFurnaceMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, new BlastFurnaceRecipeGui(), inv, container.te.hasCustomName() ? container.te.getCustomName() : Utils.localize(SCContent.KEYPAD_BLAST_FURNACE.get().getDescriptionId()), TEXTURE);
 	}
 }

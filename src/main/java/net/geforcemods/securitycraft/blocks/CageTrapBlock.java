@@ -5,12 +5,12 @@ import org.apache.logging.log4j.util.TriConsumer;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
+import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.CageTrapTileEntity;
-import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
-import net.geforcemods.securitycraft.tileentity.ReinforcedIronBarsTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -53,8 +53,8 @@ public class CageTrapBlock extends DisguisableBlock {
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
 		TileEntity tile = world.getBlockEntity(pos);
 
-		if (tile instanceof CageTrapTileEntity) {
-			CageTrapTileEntity te = (CageTrapTileEntity) tile;
+		if (tile instanceof CageTrapBlockEntity) {
+			CageTrapBlockEntity te = (CageTrapBlockEntity) tile;
 
 			if (ctx instanceof EntitySelectionContext) {
 				EntitySelectionContext esc = (EntitySelectionContext) ctx;
@@ -74,7 +74,7 @@ public class CageTrapBlock extends DisguisableBlock {
 			return VoxelShapes.empty(); //shouldn't happen
 	}
 
-	private VoxelShape getCorrectShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx, DisguisableTileEntity disguisableTe) {
+	private VoxelShape getCorrectShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx, DisguisableBlockEntity disguisableTe) {
 		ItemStack moduleStack = disguisableTe.getModule(ModuleType.DISGUISE);
 
 		if (!moduleStack.isEmpty() && (((ModuleItem) moduleStack.getItem()).getBlockAddon(moduleStack.getTag()) != null))
@@ -86,7 +86,7 @@ public class CageTrapBlock extends DisguisableBlock {
 	@Override
 	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!world.isClientSide) {
-			CageTrapTileEntity tileEntity = (CageTrapTileEntity) world.getBlockEntity(pos);
+			CageTrapBlockEntity tileEntity = (CageTrapBlockEntity) world.getBlockEntity(pos);
 			boolean isPlayer = entity instanceof PlayerEntity;
 
 			if (isPlayer || (entity instanceof MobEntity && tileEntity.capturesMobs())) {
@@ -115,8 +115,8 @@ public class CageTrapBlock extends DisguisableBlock {
 					if (te instanceof IOwnable)
 						((IOwnable) te).setOwner(o.getUUID(), o.getName());
 
-					if (te instanceof ReinforcedIronBarsTileEntity)
-						((ReinforcedIronBarsTileEntity) te).setCanDrop(false);
+					if (te instanceof ReinforcedIronBarsBlockEntity)
+						((ReinforcedIronBarsBlockEntity) te).setCanDrop(false);
 				});
 				world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 				world.playSound(null, pos, SoundEvents.ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
@@ -173,7 +173,7 @@ public class CageTrapBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new CageTrapTileEntity();
+		return new CageTrapBlockEntity();
 	}
 
 	public static class BlockModifier {

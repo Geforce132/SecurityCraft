@@ -8,7 +8,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
+import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -17,7 +18,6 @@ import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
-import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.audio.SimpleSound;
@@ -35,7 +35,7 @@ import net.minecraftforge.fml.client.gui.GuiUtils;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer> {
+public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
@@ -53,7 +53,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	private final String smartModule = Utils.localize("gui.securitycraft:keycard_reader.smartModule").getColoredString();
 	private final String levelMismatchInfo = Utils.localize("gui.securitycraft:keycard_reader.level_mismatch").getColoredString();
 	private final String limitedInfo = Utils.localize("tooltip.securitycraft:keycard.limited_info").getColoredString();
-	private final KeycardReaderTileEntity te;
+	private final KeycardReaderBlockEntity te;
 	private final boolean isSmart;
 	private final boolean isOwner;
 	private boolean isExactLevel = true;
@@ -72,7 +72,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	//fixes link and set uses buttons being on for a split second when opening the container
 	private boolean firstTick = true;
 
-	public KeycardReaderScreen(KeycardReaderContainer container, PlayerInventory inv, ITextComponent name) {
+	public KeycardReaderScreen(KeycardReaderMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 
 		te = container.te;

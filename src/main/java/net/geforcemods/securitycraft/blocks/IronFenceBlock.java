@@ -218,6 +218,6 @@ public class IronFenceBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity(SCContent.teTypeAbstract);
+		return new OwnableTileEntity(SCContent.beTypeAbstract);
 	}
 }

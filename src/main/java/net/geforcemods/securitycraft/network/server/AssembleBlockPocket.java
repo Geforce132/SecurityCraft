@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +16,7 @@ public class AssembleBlockPocket {
 
 	public AssembleBlockPocket() {}
 
-	public AssembleBlockPocket(BlockPocketManagerTileEntity te, int size) {
+	public AssembleBlockPocket(BlockPocketManagerBlockEntity te, int size) {
 		pos = te.getBlockPos();
 		dimension = te.getLevel().getDimension().getType().getId();
 		this.size = size;
@@ -39,9 +39,9 @@ public class AssembleBlockPocket {
 		ctx.get().enqueueWork(() -> {
 			TileEntity te = ServerLifecycleHooks.getCurrentServer().getLevel(DimensionType.getById(message.dimension)).getBlockEntity(message.pos);
 
-			if (te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity) te).getOwner().isOwner(ctx.get().getSender())) {
-				((BlockPocketManagerTileEntity) te).size = message.size;
-				((BlockPocketManagerTileEntity) te).autoAssembleMultiblock();
+			if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).getOwner().isOwner(ctx.get().getSender())) {
+				((BlockPocketManagerBlockEntity) te).size = message.size;
+				((BlockPocketManagerBlockEntity) te).autoAssembleMultiblock();
 			}
 		});
 		ctx.get().setPacketHandled(true);

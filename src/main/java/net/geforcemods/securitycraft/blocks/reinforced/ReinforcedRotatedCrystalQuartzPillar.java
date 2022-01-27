@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -16,6 +16,6 @@ public class ReinforcedRotatedCrystalQuartzPillar extends ReinforcedRotatedPilla
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new BlockPocketTileEntity();
+		return new BlockPocketBlockEntity();
 	}
 }

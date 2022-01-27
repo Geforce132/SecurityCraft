@@ -4,8 +4,8 @@ import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
-import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
+import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
+import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -74,7 +74,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-						return new GenericTEContainer(SCContent.cTypeTrophySystem, windowId, world, pos);
+						return new GenericTEMenu(SCContent.mTypeTrophySystem, windowId, world, pos);
 					}
 
 					@Override
@@ -102,6 +102,6 @@ public class TrophySystemBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new TrophySystemTileEntity();
+		return new TrophySystemBlockEntity();
 	}
 }

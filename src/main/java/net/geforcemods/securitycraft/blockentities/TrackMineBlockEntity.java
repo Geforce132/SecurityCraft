@@ -1,0 +1,43 @@
+package net.geforcemods.securitycraft.blockentities;
+
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.minecraft.nbt.CompoundNBT;
+
+public class TrackMineBlockEntity extends OwnableTileEntity {
+	private boolean active = true;
+
+	public TrackMineBlockEntity() {
+		super(SCContent.beTypeTrackMine);
+	}
+
+	public void activate() {
+		if (!active) {
+			active = true;
+			setChanged();
+		}
+	}
+
+	public void deactivate() {
+		if (active) {
+			active = false;
+			setChanged();
+		}
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	@Override
+	public CompoundNBT save(CompoundNBT tag) {
+		tag.putBoolean("TrackMineEnabled", active);
+		return super.save(tag);
+	}
+
+	@Override
+	public void load(CompoundNBT tag) {
+		super.load(tag);
+		active = tag.getBoolean("TrackMineEnabled");
+	}
+}

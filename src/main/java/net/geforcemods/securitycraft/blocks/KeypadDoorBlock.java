@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.KeypadDoorTileEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -27,7 +27,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 		if (state.getValue(OPEN))
 			return ActionResultType.PASS;
 		else if (!world.isClientSide) {
-			KeypadDoorTileEntity te = (KeypadDoorTileEntity) world.getBlockEntity(pos);
+			KeypadDoorBlockEntity te = (KeypadDoorBlockEntity) world.getBlockEntity(pos);
 
 			if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
@@ -59,7 +59,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new KeypadDoorTileEntity();
+		return new KeypadDoorBlockEntity();
 	}
 
 	@Override

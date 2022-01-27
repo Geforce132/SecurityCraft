@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
+import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,12 +15,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContainer> {
+public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer.png");
 	private static final ResourceLocation TEXTURE_LVL1 = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer_lvl1.png");
 	private final boolean isLvl1;
 
-	public BlockReinforcerScreen(BlockReinforcerContainer container, PlayerInventory inv, ITextComponent name) {
+	public BlockReinforcerScreen(BlockReinforcerMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 
 		this.isLvl1 = container.isLvl1;

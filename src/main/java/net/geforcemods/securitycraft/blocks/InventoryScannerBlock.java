@@ -9,8 +9,8 @@ import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -76,8 +76,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	private void checkAndPlaceAppropriately(World world, BlockPos pos) {
-		InventoryScannerTileEntity connectedScanner = getConnectedInventoryScanner(world, pos);
-		InventoryScannerTileEntity thisTe = (InventoryScannerTileEntity) world.getBlockEntity(pos);
+		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(world, pos);
+		InventoryScannerBlockEntity thisTe = (InventoryScannerBlockEntity) world.getBlockEntity(pos);
 
 		if (connectedScanner == null || !connectedScanner.getOwner().owns(thisTe))
 			return;
@@ -123,7 +123,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		if (world.isClientSide || state.getBlock() == newState.getBlock())
 			return;
 
-		InventoryScannerTileEntity connectedScanner = null;
+		InventoryScannerBlockEntity connectedScanner = null;
 
 		for (Direction facing : Direction.Plane.HORIZONTAL) {
 			for (int i = 1; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
@@ -147,7 +147,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 						}
 					}
 
-					connectedScanner = (InventoryScannerTileEntity) world.getBlockEntity(offsetIPos);
+					connectedScanner = (InventoryScannerBlockEntity) world.getBlockEntity(offsetIPos);
 					break;
 				}
 			}
@@ -155,8 +155,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 		TileEntity tile = world.getBlockEntity(pos);
 
-		if (tile instanceof InventoryScannerTileEntity) {
-			InventoryScannerTileEntity te = (InventoryScannerTileEntity) tile;
+		if (tile instanceof InventoryScannerBlockEntity) {
+			InventoryScannerBlockEntity te = (InventoryScannerBlockEntity) tile;
 
 			//first 10 slots (0-9) are the prohibited slots
 			for (int i = 10; i < te.getContainerSize(); i++) {
@@ -177,7 +177,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		return getConnectedInventoryScanner(world, pos) != null;
 	}
 
-	public static InventoryScannerTileEntity getConnectedInventoryScanner(World world, BlockPos pos) {
+	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World world, BlockPos pos) {
 		Direction facing = world.getBlockState(pos).getValue(FACING);
 
 		for (int i = 0; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
@@ -189,7 +189,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 				return null;
 
 			if (block == SCContent.INVENTORY_SCANNER.get() && state.getValue(FACING) == facing.getOpposite())
-				return (InventoryScannerTileEntity) world.getBlockEntity(offsetPos);
+				return (InventoryScannerBlockEntity) world.getBlockEntity(offsetPos);
 		}
 
 		return null;
@@ -212,10 +212,10 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 	@Override
 	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		if (!(blockAccess.getBlockEntity(pos) instanceof InventoryScannerTileEntity))
+		if (!(blockAccess.getBlockEntity(pos) instanceof InventoryScannerBlockEntity))
 			return 0;
 
-		return (((InventoryScannerTileEntity) blockAccess.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE) && ((InventoryScannerTileEntity) blockAccess.getBlockEntity(pos)).shouldProvidePower()) ? 15 : 0;
+		return (((InventoryScannerBlockEntity) blockAccess.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) blockAccess.getBlockEntity(pos)).shouldProvidePower()) ? 15 : 0;
 	}
 
 	@Override
@@ -239,7 +239,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new InventoryScannerTileEntity();
+		return new InventoryScannerBlockEntity();
 	}
 
 	@Override
@@ -257,7 +257,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 		@Override
 		public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te, Direction direction, int distance) {
-			return ((InventoryScannerTileEntity) te).hasModule(ModuleType.REDSTONE) && ((InventoryScannerTileEntity) te).shouldProvidePower();
+			return ((InventoryScannerBlockEntity) te).hasModule(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) te).shouldProvidePower();
 		}
 
 		@Override

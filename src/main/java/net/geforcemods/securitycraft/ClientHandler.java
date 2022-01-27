@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
@@ -13,20 +15,20 @@ import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
-import net.geforcemods.securitycraft.renderers.BlockPocketManagerTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.EmptyRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
-import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
-import net.geforcemods.securitycraft.renderers.ProjectorTileEntityRenderer;
-import net.geforcemods.securitycraft.renderers.ReinforcedPistonTileEntityRenderer;
-import net.geforcemods.securitycraft.renderers.RetinalScannerTileEntityRenderer;
-import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
-import net.geforcemods.securitycraft.renderers.SecurityCameraTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
+import net.geforcemods.securitycraft.renderers.ProjectorRenderer;
+import net.geforcemods.securitycraft.renderers.ReinforcedPistonRenderer;
+import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
+import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
+import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
-import net.geforcemods.securitycraft.renderers.SonicSecuritySystemTileEntityRenderer;
-import net.geforcemods.securitycraft.renderers.TrophySystemTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
+import net.geforcemods.securitycraft.renderers.TrophySystemRenderer;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcaseInventoryScreen;
@@ -52,8 +54,6 @@ import net.geforcemods.securitycraft.screen.SetPasswordScreen;
 import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
 import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
-import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -280,34 +280,34 @@ public class ClientHandler {
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSecurityCamera, EmptyRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSentry, SentryRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBullet, BulletRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeBlockPocketManager, BlockPocketManagerTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeKeypadChest, KeypadChestTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeRetinalScanner, RetinalScannerTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecurityCamera, SecurityCameraTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecretSign, SecretSignTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeTrophySystem, TrophySystemTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeProjector, ProjectorTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeReinforcedPiston, ReinforcedPistonTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSonicSecuritySystem, SonicSecuritySystemTileEntityRenderer::new);
-		ScreenManager.register(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
-		ScreenManager.register(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
-		ScreenManager.register(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
-		ScreenManager.register(SCContent.cTypeBriefcaseSetup, BriefcaseSetupScreen::new);
-		ScreenManager.register(SCContent.cTypeCustomizeBlock, CustomizeBlockScreen::new);
-		ScreenManager.register(SCContent.cTypeDisguiseModule, DisguiseModuleScreen::new);
-		ScreenManager.register(SCContent.cTypeInventoryScanner, InventoryScannerScreen::new);
-		ScreenManager.register(SCContent.cTypeKeypadFurnace, KeypadFurnaceScreen::new);
-		ScreenManager.register(SCContent.cTypeKeypadSmoker, KeypadSmokerScreen::new);
-		ScreenManager.register(SCContent.cTypeKeypadBlastFurnace, KeypadBlastFurnaceScreen::new);
-		ScreenManager.register(SCContent.cTypeCheckPassword, CheckPasswordScreen::new);
-		ScreenManager.register(SCContent.cTypeSetPassword, SetPasswordScreen::new);
-		ScreenManager.register(SCContent.cTypeUsernameLogger, UsernameLoggerScreen::new);
-		ScreenManager.register(SCContent.cTypeIMS, IMSScreen::new);
-		ScreenManager.register(SCContent.cTypeKeycardReader, KeycardReaderScreen::new);
-		ScreenManager.register(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
-		ScreenManager.register(SCContent.cTypeBlockPocketManager, BlockPocketManagerScreen::new);
-		ScreenManager.register(SCContent.cTypeProjector, ProjectorScreen::new);
-		ScreenManager.register(SCContent.cTypeTrophySystem, TrophySystemScreen::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeBlockPocketManager, BlockPocketManagerRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeKeypadChest, KeypadChestRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeRetinalScanner, RetinalScannerRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeSecurityCamera, SecurityCameraRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeSecretSign, SecretSignRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeTrophySystem, TrophySystemRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeProjector, ProjectorRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeReinforcedPiston, ReinforcedPistonRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeSonicSecuritySystem, SonicSecuritySystemRenderer::new);
+		ScreenManager.register(SCContent.mTypeBlockReinforcer, BlockReinforcerScreen::new);
+		ScreenManager.register(SCContent.mTypeBriefcase, BriefcasePasswordScreen::new);
+		ScreenManager.register(SCContent.mTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
+		ScreenManager.register(SCContent.mTypeBriefcaseSetup, BriefcaseSetupScreen::new);
+		ScreenManager.register(SCContent.mTypeCustomizeBlock, CustomizeBlockScreen::new);
+		ScreenManager.register(SCContent.mTypeDisguiseModule, DisguiseModuleScreen::new);
+		ScreenManager.register(SCContent.mTypeInventoryScanner, InventoryScannerScreen::new);
+		ScreenManager.register(SCContent.mTypeKeypadFurnace, KeypadFurnaceScreen::new);
+		ScreenManager.register(SCContent.mTypeKeypadSmoker, KeypadSmokerScreen::new);
+		ScreenManager.register(SCContent.mTypeKeypadBlastFurnace, KeypadBlastFurnaceScreen::new);
+		ScreenManager.register(SCContent.mTypeCheckPassword, CheckPasswordScreen::new);
+		ScreenManager.register(SCContent.mTypeSetPassword, SetPasswordScreen::new);
+		ScreenManager.register(SCContent.mTypeUsernameLogger, UsernameLoggerScreen::new);
+		ScreenManager.register(SCContent.mTypeIMS, IMSScreen::new);
+		ScreenManager.register(SCContent.mTypeKeycardReader, KeycardReaderScreen::new);
+		ScreenManager.register(SCContent.mTypeKeyChanger, KeyChangerScreen::new);
+		ScreenManager.register(SCContent.mTypeBlockPocketManager, BlockPocketManagerScreen::new);
+		ScreenManager.register(SCContent.mTypeProjector, ProjectorScreen::new);
+		ScreenManager.register(SCContent.mTypeTrophySystem, TrophySystemScreen::new);
 		KeyBindings.init();
 		tint();
 	}
@@ -469,11 +469,11 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new SCManualScreen());
 	}
 
-	public static void displayEditSecretSignGui(SecretSignTileEntity te) {
+	public static void displayEditSecretSignGui(SecretSignBlockEntity te) {
 		Minecraft.getInstance().setScreen(new EditSignScreen(te));
 	}
 
-	public static void displaySonicSecuritySystemGui(SonicSecuritySystemTileEntity te) {
+	public static void displaySonicSecuritySystemGui(SonicSecuritySystemBlockEntity te) {
 		Minecraft.getInstance().setScreen(new SonicSecuritySystemScreen(te));
 	}
 

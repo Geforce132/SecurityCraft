@@ -4,12 +4,12 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -46,12 +46,12 @@ public class SecurityCameraEntity extends Entity {
 
 		TileEntity te = world.getBlockEntity(pos);
 
-		if (!(te instanceof SecurityCameraTileEntity)) {
+		if (!(te instanceof SecurityCameraBlockEntity)) {
 			remove();
 			return;
 		}
 
-		SecurityCameraTileEntity cam = (SecurityCameraTileEntity) te;
+		SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
 		double x = pos.getX() + 0.5D;
 		double y = pos.getY() + 0.5D;
 		double z = pos.getZ() + 0.5D;
@@ -69,7 +69,7 @@ public class SecurityCameraEntity extends Entity {
 		oldCamera.discardCamera();
 	}
 
-	private void setInitialPitchYaw(SecurityCameraTileEntity te) {
+	private void setInitialPitchYaw(SecurityCameraBlockEntity te) {
 		xRot = 30F;
 
 		Direction facing = level.getBlockState(getCommandSenderBlockPosition()).getValue(SecurityCameraBlock.FACING);
@@ -138,7 +138,7 @@ public class SecurityCameraEntity extends Entity {
 	}
 
 	public boolean isCameraDown() {
-		return level.getBlockEntity(getCommandSenderBlockPosition()) instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity) level.getBlockEntity(getCommandSenderBlockPosition())).down;
+		return level.getBlockEntity(getCommandSenderBlockPosition()) instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) level.getBlockEntity(getCommandSenderBlockPosition())).down;
 	}
 
 	//here to make this method accessible to CameraController
@@ -159,8 +159,8 @@ public class SecurityCameraEntity extends Entity {
 		if (!level.isClientSide) {
 			TileEntity te = level.getBlockEntity(getCommandSenderBlockPosition());
 
-			if (te instanceof SecurityCameraTileEntity) {
-				((SecurityCameraTileEntity) te).stopViewing();
+			if (te instanceof SecurityCameraBlockEntity) {
+				((SecurityCameraBlockEntity) te).stopViewing();
 			}
 
 			SectionPos chunkPos = SectionPos.of(getCommandSenderBlockPosition());

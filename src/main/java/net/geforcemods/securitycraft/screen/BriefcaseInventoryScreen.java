@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.geforcemods.securitycraft.containers.BriefcaseContainer;
+import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -11,11 +11,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseContainer> {
+public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
 	private final String formattedTitle;
 
-	public BriefcaseInventoryScreen(BriefcaseContainer container, PlayerInventory inventory, ITextComponent name) {
+	public BriefcaseInventoryScreen(BriefcaseMenu container, PlayerInventory inventory, ITextComponent name) {
 		super(container, inventory, name);
 
 		formattedTitle = name.getColoredString();

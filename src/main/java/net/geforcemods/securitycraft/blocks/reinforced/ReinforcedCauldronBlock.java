@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.ReinforcedCauldronTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -35,7 +35,7 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 			PlayerEntity player = ((PlayerEntity) entity);
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof ReinforcedCauldronTileEntity && ((ReinforcedCauldronTileEntity) te).isAllowedToInteract(player))
+			if (te instanceof ReinforcedCauldronBlockEntity && ((ReinforcedCauldronBlockEntity) te).isAllowedToInteract(player))
 				return SHAPE;
 			else
 				return VoxelShapes.block();
@@ -48,7 +48,7 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		TileEntity te = world.getBlockEntity(pos);
 
-		if (te instanceof ReinforcedCauldronTileEntity && ((ReinforcedCauldronTileEntity) te).isAllowedToInteract(player))
+		if (te instanceof ReinforcedCauldronBlockEntity && ((ReinforcedCauldronBlockEntity) te).isAllowedToInteract(player))
 			return super.use(state, world, pos, player, hand, hit);
 
 		return ActionResultType.PASS;
@@ -77,6 +77,6 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new ReinforcedCauldronTileEntity();
+		return new ReinforcedCauldronBlockEntity();
 	}
 }
