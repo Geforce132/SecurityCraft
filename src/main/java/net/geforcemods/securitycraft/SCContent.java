@@ -5,8 +5,8 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AbstractKeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
-import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
@@ -14,10 +14,10 @@ import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadBlastFurnaceBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadDoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadSmokerBlockEntity;
-import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
@@ -1504,7 +1504,7 @@ public class SCContent {
 	}
 
 	private static final Block.Properties propNotSolid(Material mat) {
-		return prop(mat).noOcclusion();
+		return prop(mat).noOcclusion().dynamicShape();
 	}
 
 	private static final Item.Properties itemProp(ItemGroup itemGroup) {

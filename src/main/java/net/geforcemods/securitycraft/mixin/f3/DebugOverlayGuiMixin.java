@@ -25,14 +25,14 @@ import net.minecraft.util.math.RayTraceResult;
 @Mixin(DebugOverlayGui.class)
 public class DebugOverlayGuiMixin {
 	@Shadow
-	protected RayTraceResult rayTraceBlock;
+	protected RayTraceResult block;
 
 	@ModifyVariable(method = "getSystemInformation", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/world/ClientWorld;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
 	public BlockState spoofBlockState(BlockState originalState) {
 		Block originalBlock = originalState.getBlock();
 
 		if (originalBlock instanceof DisguisableBlock)
-			return originalBlock.getExtendedState(originalState, Minecraft.getInstance().level, ((BlockRayTraceResult) rayTraceBlock).getBlockPos());
+			return originalBlock.getExtendedState(originalState, Minecraft.getInstance().level, ((BlockRayTraceResult) block).getBlockPos());
 		else if (originalBlock instanceof BaseFullMineBlock)
 			return ((BaseFullMineBlock) originalBlock).getBlockDisguisedAs().defaultBlockState();
 		else if (originalBlock instanceof FurnaceMineBlock)

@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.api;
 import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;

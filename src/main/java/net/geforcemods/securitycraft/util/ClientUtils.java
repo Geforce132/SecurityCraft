@@ -11,7 +11,9 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
@@ -96,5 +98,18 @@ public class ClientUtils {
 		bufferBuilder.vertex(moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(0, 0).endVertex();
 		bufferBuilder.end();
 		WorldVertexBufferUploader.end(bufferBuilder);
+	}
+
+	public static Quaternion fromXYZDegrees(Vector3f degreesVector) {
+		return fromXYZ((float) Math.toRadians(degreesVector.x()), (float) Math.toRadians(degreesVector.y()), (float) Math.toRadians(degreesVector.z()));
+	}
+
+	public static Quaternion fromXYZ(float x, float y, float z) {
+		Quaternion quaternion = Quaternion.ONE.copy();
+
+		quaternion.mul(new Quaternion((float) Math.sin(x / 2.0F), 0.0F, 0.0F, (float) Math.cos(x / 2.0F)));
+		quaternion.mul(new Quaternion(0.0F, (float) Math.sin(y / 2.0F), 0.0F, (float) Math.cos(y / 2.0F)));
+		quaternion.mul(new Quaternion(0.0F, 0.0F, (float) Math.sin(z / 2.0F), (float) Math.cos(z / 2.0F)));
+		return quaternion;
 	}
 }

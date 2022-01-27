@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -23,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -276,6 +278,13 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		if (connectedScanner != null && !connectedScanner.hasModule(module))
 			connectedScanner.insertModule(stack);
+
+		if (module == ModuleType.DISGUISE) {
+			onInsertDisguiseModule(this, stack);
+
+			if (connectedScanner != null)
+				onInsertDisguiseModule(connectedScanner, stack);
+		}
 	}
 
 	@Override
@@ -299,6 +308,26 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 				}
 			}
 		}
+		else if (module == ModuleType.DISGUISE) {
+			onRemoveDisguiseModule(this, stack);
+
+			if (connectedScanner != null)
+				onRemoveDisguiseModule(connectedScanner, stack);
+		}
+	}
+
+	private void onInsertDisguiseModule(TileEntity be, ItemStack stack) {
+		if (!be.getLevel().isClientSide)
+			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
+		else
+			ClientHandler.putDisguisedBeRenderer(be, stack);
+	}
+
+	private void onRemoveDisguiseModule(TileEntity be, ItemStack stack) {
+		if (!be.getLevel().isClientSide)
+			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
+		else
+			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
 	}
 
 	@Override

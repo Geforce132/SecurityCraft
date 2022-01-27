@@ -10,6 +10,7 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
@@ -41,6 +42,9 @@ public class RetinalScannerRenderer extends TileEntityRenderer<RetinalScannerBlo
 
 	@Override
 	public void render(RetinalScannerBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(te, partialTicks, matrix, buffer, combinedLight, combinedOverlay))
+			return;
+
 		Direction direction = te.getBlockState().getValue(RetinalScannerBlock.FACING);
 
 		if (!te.hasModule(ModuleType.DISGUISE) && direction != null) {

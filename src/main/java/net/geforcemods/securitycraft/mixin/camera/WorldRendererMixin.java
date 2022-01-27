@@ -17,7 +17,7 @@ import net.minecraft.entity.Entity;
 public class WorldRendererMixin {
 	@Shadow
 	@Final
-	private Minecraft mc;
+	private Minecraft minecraft;
 
 	/**
 	 * Fixes camera chunks disappearing when the player entity moves while viewing a camera (e.g. while being in a minecart
@@ -25,7 +25,7 @@ public class WorldRendererMixin {
 	 */
 	@Redirect(method = "setupRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewFrustum;repositionCamera(DD)V"))
 	private void onRepositionCamera(ViewFrustum viewFrustum, double x, double z) {
-		if (!PlayerUtils.isPlayerMountedOnCamera(mc.player))
+		if (!PlayerUtils.isPlayerMountedOnCamera(minecraft.player))
 			viewFrustum.repositionCamera(x, z);
 	}
 
@@ -34,8 +34,8 @@ public class WorldRendererMixin {
 	 */
 	@Redirect(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ActiveRenderInfo;getEntity()Lnet/minecraft/entity/Entity;", ordinal = 3))
 	private Entity makePlayerRenderable(ActiveRenderInfo activeRenderInfo) {
-		if (PlayerUtils.isPlayerMountedOnCamera(mc.player))
-			return mc.player;
+		if (PlayerUtils.isPlayerMountedOnCamera(minecraft.player))
+			return minecraft.player;
 
 		return activeRenderInfo.getEntity();
 	}
