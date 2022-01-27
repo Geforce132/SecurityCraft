@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.blockentity.KeypadFurnaceBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;

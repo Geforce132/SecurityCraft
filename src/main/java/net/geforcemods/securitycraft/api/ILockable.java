@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.blockentity.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;

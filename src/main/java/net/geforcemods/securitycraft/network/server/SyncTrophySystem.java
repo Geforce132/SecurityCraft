@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.blockentity.TrophySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.network.PacketBuffer;

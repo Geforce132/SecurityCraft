@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blockentity.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenSSSScreen;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;

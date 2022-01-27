@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.Calendar;
 
-import net.geforcemods.securitycraft.blockentity.KeypadChestBlockEntity;
+import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.tileentity.ChestTileEntityRenderer;

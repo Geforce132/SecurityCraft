@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blockentity.ReinforcedDoorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedDoorBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;

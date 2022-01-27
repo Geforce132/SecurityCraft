@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.blockentity.ScannerDoorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ScannerDoorBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.item.Item;

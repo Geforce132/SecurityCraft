@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.blockentity.BlockPocketBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.minecraft.block.Block;

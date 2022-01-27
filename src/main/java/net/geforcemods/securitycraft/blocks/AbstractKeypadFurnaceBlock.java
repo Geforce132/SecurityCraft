@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
-import net.geforcemods.securitycraft.blockentity.AbstractKeypadFurnaceBlockEntity;
+import net.geforcemods.securitycraft.blockentities.AbstractKeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;

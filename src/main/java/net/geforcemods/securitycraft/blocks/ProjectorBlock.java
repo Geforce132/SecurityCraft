@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.blockentity.ProjectorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.Block;

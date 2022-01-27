@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
-import net.geforcemods.securitycraft.blockentity.InventoryScannerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;

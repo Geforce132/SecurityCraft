@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.blockentity.SecretSignBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;

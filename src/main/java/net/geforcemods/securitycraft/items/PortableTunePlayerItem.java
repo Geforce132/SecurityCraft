@@ -8,8 +8,8 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCEventHandler;
-import net.geforcemods.securitycraft.blockentity.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.blockentity.SonicSecuritySystemBlockEntity.NoteWrapper;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
