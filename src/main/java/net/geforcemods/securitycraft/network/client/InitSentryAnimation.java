@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.List;
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.Sentry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.network.PacketBuffer;
@@ -40,11 +40,11 @@ public class InitSentryAnimation {
 
 	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			List<CreatureEntity> sentries = Minecraft.getInstance().level.<CreatureEntity> getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(message.pos));
+			List<CreatureEntity> sentries = Minecraft.getInstance().level.<CreatureEntity> getEntitiesOfClass(Sentry.class, new AxisAlignedBB(message.pos));
 
 			if (!sentries.isEmpty()) {
-				((SentryEntity) sentries.get(0)).animateUpwards = message.animateUpwards;
-				((SentryEntity) sentries.get(0)).animate = message.animate;
+				((Sentry) sentries.get(0)).animateUpwards = message.animateUpwards;
+				((Sentry) sentries.get(0)).animate = message.animate;
 			}
 		});
 

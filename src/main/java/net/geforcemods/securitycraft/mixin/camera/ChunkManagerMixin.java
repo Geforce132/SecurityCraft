@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.IPacket;
@@ -46,7 +46,7 @@ public abstract class ChunkManagerMixin {
 	private void trackCameraLoadedChunks(ServerPlayerEntity player, CallbackInfo callback) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SectionPos pos = SectionPos.of(player.getCamera());
-			SecurityCameraEntity camera = ((SecurityCameraEntity) player.getCamera());
+			SecurityCamera camera = ((SecurityCamera) player.getCamera());
 
 			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
 				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {

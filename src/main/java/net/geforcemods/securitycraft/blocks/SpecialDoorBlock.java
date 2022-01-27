@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.LinkableTileEntity;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
@@ -40,8 +40,8 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 				((IOwnable) upperTe).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 			}
 
-			if (lowerTe instanceof LinkableTileEntity && upperTe instanceof LinkableTileEntity)
-				LinkableTileEntity.link((LinkableTileEntity) lowerTe, (LinkableTileEntity) upperTe);
+			if (lowerTe instanceof LinkableBlockEntity && upperTe instanceof LinkableBlockEntity)
+				LinkableBlockEntity.link((LinkableBlockEntity) lowerTe, (LinkableBlockEntity) upperTe);
 		}
 	}
 

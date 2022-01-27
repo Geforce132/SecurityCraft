@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -24,7 +24,7 @@ public class PlayerListMixin {
 	@Inject(method = "broadcast", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getZ()D"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
 	private void broadcastToCameras(PlayerEntity except, double x, double y, double z, double radius, RegistryKey<World> dimension, IPacket<?> packet, CallbackInfo callback, int iteration, ServerPlayerEntity player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			SecurityCameraEntity camera = (SecurityCameraEntity) player.getCamera();
+			SecurityCamera camera = (SecurityCamera) player.getCamera();
 			double dX = x - camera.getX();
 			double dY = y - camera.getY();
 			double dZ = z - camera.getZ();

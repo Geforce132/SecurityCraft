@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
@@ -71,7 +71,7 @@ public class UpdateSliderValue {
 
 				customizable.onOptionChanged(option);
 
-				if (te instanceof CustomizableTileEntity)
+				if (te instanceof CustomizableBlockEntity)
 					player.level.sendBlockUpdated(pos, te.getBlockState(), te.getBlockState(), 3);
 			}
 		});

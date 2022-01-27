@@ -14,9 +14,9 @@ import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.lycanitesmobs.LycanitesMobsCompat;
 import net.geforcemods.securitycraft.compat.quark.QuarkCompat;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
-import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
-import net.geforcemods.securitycraft.itemgroups.SCExplosivesGroup;
-import net.geforcemods.securitycraft.itemgroups.SCTechnicalGroup;
+import net.geforcemods.securitycraft.itemgroups.SCDecorationTab;
+import net.geforcemods.securitycraft.itemgroups.SCExplosivesTab;
+import net.geforcemods.securitycraft.itemgroups.SCTechnicalTab;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.SCManualPage;
@@ -58,9 +58,9 @@ public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	public static final String PROTOCOL_VERSION = "4";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-	public static ItemGroup groupSCTechnical = new SCTechnicalGroup();
-	public static ItemGroup groupSCMine = new SCExplosivesGroup();
-	public static ItemGroup groupSCDecoration = new SCDecorationGroup();
+	public static ItemGroup groupSCTechnical = new SCTechnicalTab();
+	public static ItemGroup groupSCMine = new SCExplosivesTab();
+	public static ItemGroup groupSCDecoration = new SCDecorationTab();
 	public static final LootConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootConditionManager.register(SecurityCraft.MODID + ":tile_entity_nbt", new TileEntityNBTCondition.Serializer());
 
 	public SecurityCraft() {

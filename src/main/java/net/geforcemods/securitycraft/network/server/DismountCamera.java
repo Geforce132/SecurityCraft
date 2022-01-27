@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -20,8 +20,8 @@ public class DismountCamera {
 		ctx.get().enqueueWork(() -> {
 			ServerPlayerEntity player = ctx.get().getSender();
 
-			if (player.getCamera() instanceof SecurityCameraEntity)
-				((SecurityCameraEntity) player.getCamera()).stopViewing(player);
+			if (player.getCamera() instanceof SecurityCamera)
+				((SecurityCamera) player.getCamera()).stopViewing(player);
 		});
 
 		ctx.get().setPacketHandled(true);

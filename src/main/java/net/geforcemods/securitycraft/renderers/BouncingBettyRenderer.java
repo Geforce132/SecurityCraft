@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
+import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -17,14 +17,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
+public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty> {
 	public BouncingBettyRenderer(EntityRendererManager renderManager) {
 		super(renderManager);
 		shadowRadius = 0.5F;
 	}
 
 	@Override
-	public void render(BouncingBettyEntity entity, float entityYaw, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight) {
+	public void render(BouncingBetty entity, float entityYaw, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight) {
 		matrix.pushPose();
 		matrix.translate(0.0D, 0.5D, 0.0D);
 
@@ -46,7 +46,7 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(BouncingBettyEntity entity) {
+	public ResourceLocation getTextureLocation(BouncingBetty entity) {
 		return AtlasTexture.LOCATION_BLOCKS;
 	}
 }

@@ -7,8 +7,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.blockentity.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.PlayerEntity;
@@ -80,11 +80,11 @@ public class AdminToolItem extends Item {
 					}
 				}
 
-				if (te instanceof SecretSignTileEntity) {
+				if (te instanceof SecretSignBlockEntity) {
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, new StringTextComponent(""), TextFormatting.DARK_PURPLE); //EMPTY
 
 					for (int i = 0; i < 4; i++) {
-						ITextProperties text = ((SecretSignTileEntity) te).messages[i];
+						ITextProperties text = ((SecretSignBlockEntity) te).messages[i];
 
 						if (text instanceof IFormattableTextComponent)
 							PlayerUtils.sendMessageToPlayer(player, adminToolName, (IFormattableTextComponent) text, TextFormatting.DARK_PURPLE);

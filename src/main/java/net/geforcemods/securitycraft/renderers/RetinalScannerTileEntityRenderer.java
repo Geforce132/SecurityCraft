@@ -11,9 +11,9 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.blockentity.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.LightTexture;
@@ -32,7 +32,7 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.LightType;
 
-public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<RetinalScannerTileEntity> {
+public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<RetinalScannerBlockEntity> {
 	private static final float CORRECT_FACTOR = 1 / 550F;
 
 	public RetinalScannerTileEntityRenderer(TileEntityRendererDispatcher terd) {
@@ -40,7 +40,7 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 	}
 
 	@Override
-	public void render(RetinalScannerTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+	public void render(RetinalScannerBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		Direction direction = te.getBlockState().getValue(RetinalScannerBlock.FACING);
 
 		if (!te.hasModule(ModuleType.DISGUISE) && direction != null) {

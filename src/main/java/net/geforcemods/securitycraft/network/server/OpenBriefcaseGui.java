@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.containers.BriefcaseContainer;
-import net.geforcemods.securitycraft.containers.GenericContainer;
-import net.geforcemods.securitycraft.inventory.BriefcaseInventory;
+import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
+import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
+import net.geforcemods.securitycraft.inventory.GenericMenu;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -50,11 +50,11 @@ public class OpenBriefcaseGui {
 			BlockPos pos = player.blockPosition();
 
 			if (PlayerUtils.isHoldingItem(player, SCContent.BRIEFCASE.get(), null)) {
-				if (id.equals(SCContent.cTypeBriefcaseInventory.getRegistryName())) {
+				if (id.equals(SCContent.mTypeBriefcaseInventory.getRegistryName())) {
 					NetworkHooks.openGui(player, new INamedContainerProvider() {
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-							return new BriefcaseContainer(windowId, inv, new BriefcaseInventory(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
+							return new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
 						}
 
 						@Override
@@ -63,11 +63,11 @@ public class OpenBriefcaseGui {
 						}
 					}, pos);
 				}
-				else if (id.equals(SCContent.cTypeBriefcaseSetup.getRegistryName())) {
+				else if (id.equals(SCContent.mTypeBriefcaseSetup.getRegistryName())) {
 					NetworkHooks.openGui(player, new INamedContainerProvider() {
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-							return new GenericContainer(SCContent.cTypeBriefcaseSetup, windowId);
+							return new GenericMenu(SCContent.mTypeBriefcaseSetup, windowId);
 						}
 
 						@Override
@@ -76,11 +76,11 @@ public class OpenBriefcaseGui {
 						}
 					}, pos);
 				}
-				else if (id.equals(SCContent.cTypeBriefcase.getRegistryName())) {
+				else if (id.equals(SCContent.mTypeBriefcase.getRegistryName())) {
 					NetworkHooks.openGui(player, new INamedContainerProvider() {
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-							return new GenericContainer(SCContent.cTypeBriefcase, windowId);
+							return new GenericMenu(SCContent.mTypeBriefcase, windowId);
 						}
 
 						@Override

@@ -5,8 +5,8 @@ import java.util.Random;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blockentity.IMSBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
-import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -87,7 +87,7 @@ public class IMSBlock extends OwnableBlock {
 						held.shrink(1);
 
 					world.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
-					((IMSTileEntity) world.getBlockEntity(pos)).setBombsRemaining(mines + 1);
+					((IMSBlockEntity) world.getBlockEntity(pos)).setBombsRemaining(mines + 1);
 				}
 				else if (player instanceof ServerPlayerEntity) {
 					TileEntity te = world.getBlockEntity(pos);
@@ -138,6 +138,6 @@ public class IMSBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new IMSTileEntity();
+		return new IMSBlockEntity();
 	}
 }

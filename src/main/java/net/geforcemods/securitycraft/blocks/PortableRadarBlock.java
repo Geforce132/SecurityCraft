@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.blockentity.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -121,7 +121,7 @@ public class PortableRadarBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new PortableRadarTileEntity();
+		return new PortableRadarBlockEntity();
 	}
 
 	@Override

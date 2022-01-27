@@ -9,11 +9,11 @@ import com.google.common.collect.Maps;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blockentity.ReinforcedPistonBlockEntity;
+import net.geforcemods.securitycraft.blockentity.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.ReinforcedPistonTileEntity;
-import net.geforcemods.securitycraft.tileentity.ValidationOwnableTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.ReinforcedPistonBlockStructureHelper;
 import net.geforcemods.securitycraft.util.Utils;
@@ -62,8 +62,8 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		TileEntity te = world.getBlockEntity(pos);
 
-		if (te instanceof OwnableTileEntity) {
-			Owner owner = ((OwnableTileEntity) te).getOwner();
+		if (te instanceof OwnableBlockEntity) {
+			Owner owner = ((OwnableBlockEntity) te).getOwner();
 
 			if (!owner.isValidated()) {
 				if (owner.isOwner(player)) {
@@ -86,7 +86,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		boolean hasSignal = shouldBeExtended(world, pos, direction);
 		TileEntity te = world.getBlockEntity(pos);
 
-		if (te instanceof OwnableTileEntity && !((OwnableTileEntity) te).getOwner().isValidated())
+		if (te instanceof OwnableBlockEntity && !((OwnableBlockEntity) te).getOwner().isValidated())
 			return;
 
 		if (hasSignal && !state.getValue(EXTENDED)) {
@@ -101,8 +101,8 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 			if (offsetState.is(SCContent.REINFORCED_MOVING_PISTON.get()) && offsetState.getValue(FACING) == direction) {
 				TileEntity tileentity = world.getBlockEntity(offsetPos);
 
-				if (tileentity instanceof ReinforcedPistonTileEntity) {
-					ReinforcedPistonTileEntity pistontileentity = (ReinforcedPistonTileEntity) tileentity;
+				if (tileentity instanceof ReinforcedPistonBlockEntity) {
+					ReinforcedPistonBlockEntity pistontileentity = (ReinforcedPistonBlockEntity) tileentity;
 
 					if (pistontileentity.isExtending() && (pistontileentity.getProgress(0.0F) < 0.5F || world.getGameTime() == pistontileentity.getLastTicked() || ((ServerWorld) world).isHandlingTick()))
 						i = 2;
@@ -165,8 +165,8 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 
 			TileEntity pistonTE = world.getBlockEntity(pos.relative(direction));
 
-			if (pistonTE instanceof ReinforcedPistonTileEntity)
-				((ReinforcedPistonTileEntity) pistonTE).clearPistonTileEntity();
+			if (pistonTE instanceof ReinforcedPistonBlockEntity)
+				((ReinforcedPistonBlockEntity) pistonTE).clearPistonTileEntity();
 
 			TileEntity te = world.getBlockEntity(pos);
 			BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(MovingPistonBlock.FACING, direction).setValue(MovingPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT);
@@ -184,8 +184,8 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 				if (offsetState.is(SCContent.REINFORCED_MOVING_PISTON.get())) {
 					TileEntity offsetTe = world.getBlockEntity(offsetPos);
 
-					if (offsetTe instanceof ReinforcedPistonTileEntity) {
-						ReinforcedPistonTileEntity pistonTe = (ReinforcedPistonTileEntity) offsetTe;
+					if (offsetTe instanceof ReinforcedPistonBlockEntity) {
+						ReinforcedPistonBlockEntity pistonTe = (ReinforcedPistonBlockEntity) offsetTe;
 
 						if (pistonTe.getFacing() == direction && pistonTe.isExtending()) {
 							pistonTe.clearPistonTileEntity();
@@ -311,10 +311,10 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 				PistonType type = isSticky ? PistonType.STICKY : PistonType.DEFAULT;
 				BlockState pistonHead = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.FACING, facing).setValue(PistonHeadBlock.TYPE, type);
 				BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(MovingPistonBlock.FACING, facing).setValue(MovingPistonBlock.TYPE, this.isSticky ? PistonType.STICKY : PistonType.DEFAULT);
-				OwnableTileEntity headTe = new OwnableTileEntity();
+				OwnableBlockEntity headTe = new OwnableBlockEntity();
 
-				if (pistonTe instanceof OwnableTileEntity) //synchronize owner to the piston head
-					headTe.setOwner(((OwnableTileEntity) pistonTe).getOwner().getUUID(), ((OwnableTileEntity) pistonTe).getOwner().getName());
+				if (pistonTe instanceof OwnableBlockEntity) //synchronize owner to the piston head
+					headTe.setOwner(((OwnableBlockEntity) pistonTe).getOwner().getUUID(), ((OwnableBlockEntity) pistonTe).getOwner().getName());
 
 				stateToPosMap.remove(frontPos);
 				world.setBlock(frontPos, movingPiston, 68);
@@ -364,7 +364,7 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new ValidationOwnableTileEntity();
+		return new ValidationOwnableBlockEntity();
 	}
 
 	@Override

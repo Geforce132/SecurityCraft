@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.blockentity.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
-import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -17,6 +17,6 @@ public class BlockPocketBlock extends BaseReinforcedBlock implements IBlockPocke
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new BlockPocketTileEntity();
+		return new BlockPocketBlockEntity();
 	}
 }

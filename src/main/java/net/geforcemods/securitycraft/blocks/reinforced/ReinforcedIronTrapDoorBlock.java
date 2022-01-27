@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -89,7 +89,7 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinf
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity();
+		return new OwnableBlockEntity();
 	}
 
 	@Override

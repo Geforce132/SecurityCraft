@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
+import net.geforcemods.securitycraft.blockentity.ProtectoBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -58,6 +58,6 @@ public class ProtectoBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new ProtectoTileEntity();
+		return new ProtectoBlockEntity();
 	}
 }

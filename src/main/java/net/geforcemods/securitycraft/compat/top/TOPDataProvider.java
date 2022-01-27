@@ -16,12 +16,12 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.blockentity.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
+import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -109,7 +109,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 					}
 				}
 
-				if (te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(player)) {
+				if (te instanceof IPasswordProtected && !(te instanceof KeycardReaderBlockEntity) && ((IOwnable) te).getOwner().isOwner(player)) {
 					String password = ((IPasswordProtected) te).getPassword();
 
 					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))).getString()));
@@ -131,8 +131,8 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 
 			@Override
 			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, PlayerEntity player, World world, Entity entity, IProbeHitEntityData data) {
-				if (entity instanceof SentryEntity) {
-					SentryEntity sentry = (SentryEntity) entity;
+				if (entity instanceof Sentry) {
+					Sentry sentry = (Sentry) entity;
 					SentryMode mode = sentry.getMode();
 					String ownerName = sentry.getOwner().getName();
 

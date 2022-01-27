@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
+import net.geforcemods.securitycraft.blockentity.UsernameLoggerBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
@@ -55,7 +55,7 @@ public class UpdateLogger {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			int i = message.i;
 
-			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity) Minecraft.getInstance().player.level.getBlockEntity(pos);
+			UsernameLoggerBlockEntity te = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level.getBlockEntity(pos);
 
 			if (te != null) {
 				te.players[i] = message.username;

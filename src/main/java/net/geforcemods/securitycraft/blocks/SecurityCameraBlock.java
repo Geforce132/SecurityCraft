@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.blockentity.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -111,15 +111,15 @@ public class SecurityCameraBlock extends OwnableBlock {
 		if (!world.isClientSide) {
 			ServerWorld serverWorld = (ServerWorld) world;
 			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-			SecurityCameraEntity dummyEntity;
+			SecurityCamera dummyEntity;
 			SectionPos chunkPos = SectionPos.of(pos);
 			int viewDistance = serverPlayer.server.getPlayerList().getViewDistance();
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (serverPlayer.getCamera() instanceof SecurityCameraEntity)
-				dummyEntity = new SecurityCameraEntity(world, pos, (SecurityCameraEntity) serverPlayer.getCamera());
+			if (serverPlayer.getCamera() instanceof SecurityCamera)
+				dummyEntity = new SecurityCamera(world, pos, (SecurityCamera) serverPlayer.getCamera());
 			else
-				dummyEntity = new SecurityCameraEntity(world, pos);
+				dummyEntity = new SecurityCamera(world, pos);
 
 			world.addFreshEntity(dummyEntity);
 
@@ -133,8 +133,8 @@ public class SecurityCameraBlock extends OwnableBlock {
 			serverPlayer.camera = dummyEntity;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
 
-			if (te instanceof SecurityCameraTileEntity)
-				((SecurityCameraTileEntity) te).startViewing();
+			if (te instanceof SecurityCameraBlockEntity)
+				((SecurityCameraBlockEntity) te).startViewing();
 		}
 	}
 
@@ -180,7 +180,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new SecurityCameraTileEntity();
+		return new SecurityCameraBlockEntity();
 	}
 
 	@Override

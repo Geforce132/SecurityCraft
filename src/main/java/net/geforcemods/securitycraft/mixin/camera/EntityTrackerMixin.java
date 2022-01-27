@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -55,6 +55,6 @@ public abstract class EntityTrackerMixin {
 		boolean shouldBeSent = this.shouldBeSent;
 
 		this.shouldBeSent = false;
-		return entity instanceof SecurityCameraEntity || original || shouldBeSent;
+		return entity instanceof SecurityCamera || original || shouldBeSent;
 	}
 }

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.AlarmTileEntity;
+import net.geforcemods.securitycraft.blockentity.AlarmBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -128,8 +128,8 @@ public class AlarmBlock extends OwnableBlock {
 
 		TileEntity tile = world.getBlockEntity(pos);
 
-		if (tile instanceof AlarmTileEntity) {
-			AlarmTileEntity te = (AlarmTileEntity) tile;
+		if (tile instanceof AlarmBlockEntity) {
+			AlarmBlockEntity te = (AlarmBlockEntity) tile;
 
 			if (world.getBestNeighborSignal(pos) > 0) {
 				boolean isPowered = te.isPowered();
@@ -163,7 +163,7 @@ public class AlarmBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader reader) {
-		return new AlarmTileEntity();
+		return new AlarmBlockEntity();
 	}
 
 	@Override

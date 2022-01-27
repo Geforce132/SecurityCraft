@@ -8,8 +8,8 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCEventHandler;
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity.NoteWrapper;
+import net.geforcemods.securitycraft.blockentity.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentity.SonicSecuritySystemBlockEntity.NoteWrapper;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
@@ -39,7 +39,7 @@ public class PortableTunePlayerItem extends Item {
 		BlockPos pos = ctx.getClickedPos();
 
 		if (world.getBlockState(pos).getBlock() == SCContent.SONIC_SECURITY_SYSTEM.get()) {
-			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity) world.getBlockEntity(pos);
+			SonicSecuritySystemBlockEntity te = (SonicSecuritySystemBlockEntity) world.getBlockEntity(pos);
 			PlayerEntity player = ctx.getPlayer();
 
 			if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)) {
@@ -68,7 +68,7 @@ public class PortableTunePlayerItem extends Item {
 			if (!isTunePlaying && tag.contains("Notes")) {
 				Deque<NoteWrapper> notes = new ArrayDeque<>();
 
-				SonicSecuritySystemTileEntity.loadNotes(stack.getTag(), notes);
+				SonicSecuritySystemBlockEntity.loadNotes(stack.getTag(), notes);
 				SCEventHandler.PLAYING_TUNES.put(player, MutablePair.of(0, notes));
 				return ActionResult.success(stack);
 			}

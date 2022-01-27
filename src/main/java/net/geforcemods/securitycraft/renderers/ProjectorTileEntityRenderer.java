@@ -5,8 +5,8 @@ import java.util.Random;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.geforcemods.securitycraft.blockentity.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
-import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -23,13 +23,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTileEntity> {
+public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorBlockEntity> {
 	public ProjectorTileEntityRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
 
 	@Override
-	public void render(ProjectorTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, int combinedOverlay) {
+	public void render(ProjectorBlockEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, int combinedOverlay) {
 		if (te.isActive() && !te.isEmpty()) {
 			Random random = new Random();
 			BlockState state = te.getProjectedBlock().defaultBlockState();
@@ -108,7 +108,7 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(ProjectorTileEntity te) {
+	public boolean shouldRenderOffScreen(ProjectorBlockEntity te) {
 		return true;
 	}
 }

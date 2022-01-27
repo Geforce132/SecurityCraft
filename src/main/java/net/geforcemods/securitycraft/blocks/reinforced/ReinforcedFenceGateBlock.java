@@ -1,11 +1,11 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
@@ -54,12 +54,12 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 		else if (entity instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) entity;
 
-			if (((OwnableTileEntity) world.getBlockEntity(pos)).getOwner().isOwner(player))
+			if (((OwnableBlockEntity) world.getBlockEntity(pos)).getOwner().isOwner(player))
 				return;
 		}
 		else if (!world.isClientSide && entity instanceof CreeperEntity) {
 			CreeperEntity creeper = (CreeperEntity) entity;
-			LightningBoltEntity lightning = WorldUtils.createLightning(world, Vector3d.atBottomCenterOf(pos), true);
+			LightningBoltEntity lightning = LevelUtils.createLightning(world, Vector3d.atBottomCenterOf(pos), true);
 
 			creeper.thunderHit((ServerWorld) world, lightning);
 			return;
@@ -103,6 +103,6 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity(SCContent.teTypeAbstract);
+		return new OwnableBlockEntity(SCContent.beTypeAbstract);
 	}
 }

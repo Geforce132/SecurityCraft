@@ -3,14 +3,14 @@ package net.geforcemods.securitycraft.models;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import net.geforcemods.securitycraft.entity.BulletEntity;
+import net.geforcemods.securitycraft.entity.Bullet;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BulletModel extends EntityModel<BulletEntity> {
+public class BulletModel extends EntityModel<Bullet> {
 	public ModelRenderer bullet;
 
 	public BulletModel() {
@@ -27,5 +27,5 @@ public class BulletModel extends EntityModel<BulletEntity> {
 	}
 
 	@Override
-	public void setupAnim(BulletEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+	public void setupAnim(Bullet entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 }

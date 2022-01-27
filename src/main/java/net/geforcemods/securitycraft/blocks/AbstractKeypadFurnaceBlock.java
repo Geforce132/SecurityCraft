@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
-import net.geforcemods.securitycraft.tileentity.AbstractKeypadFurnaceTileEntity;
+import net.geforcemods.securitycraft.blockentity.AbstractKeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -133,7 +133,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (!world.isClientSide) {
-			AbstractKeypadFurnaceTileEntity te = (AbstractKeypadFurnaceTileEntity) world.getBlockEntity(pos);
+			AbstractKeypadFurnaceBlockEntity te = (AbstractKeypadFurnaceBlockEntity) world.getBlockEntity(pos);
 
 			if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
@@ -212,7 +212,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 
 			furnace.clearContent();
 			world.setBlockAndUpdate(pos, AbstractKeypadFurnaceBlock.this.defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(LIT, lit));
-			((AbstractKeypadFurnaceTileEntity) world.getBlockEntity(pos)).load(world.getBlockState(pos), tag);
+			((AbstractKeypadFurnaceBlockEntity) world.getBlockEntity(pos)).load(world.getBlockState(pos), tag);
 			((IOwnable) world.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
 			return true;
 		}

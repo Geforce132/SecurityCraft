@@ -5,7 +5,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
-import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
+import net.geforcemods.securitycraft.blockentity.KeypadBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -47,7 +47,7 @@ public class KeypadBlock extends DisguisableBlock {
 		if (state.getValue(POWERED))
 			return ActionResultType.PASS;
 		else {
-			KeypadTileEntity te = (KeypadTileEntity) world.getBlockEntity(pos);
+			KeypadBlockEntity te = (KeypadBlockEntity) world.getBlockEntity(pos);
 
 			if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
@@ -125,7 +125,7 @@ public class KeypadBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new KeypadTileEntity();
+		return new KeypadBlockEntity();
 	}
 
 	@Override

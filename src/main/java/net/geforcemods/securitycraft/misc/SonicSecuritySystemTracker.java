@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
+import net.geforcemods.securitycraft.blockentity.SonicSecuritySystemBlockEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -28,7 +28,7 @@ public class SonicSecuritySystemTracker {
 	 *
 	 * @param te The Sonic Security System to track
 	 */
-	public static void track(SonicSecuritySystemTileEntity te) {
+	public static void track(SonicSecuritySystemBlockEntity te) {
 		getTrackedSonicSecuritySystems(te.getLevel()).add(te.getBlockPos().immutable());
 	}
 
@@ -37,7 +37,7 @@ public class SonicSecuritySystemTracker {
 	 *
 	 * @param te The Sonic Security System to stop tracking
 	 */
-	public static void stopTracking(SonicSecuritySystemTileEntity te) {
+	public static void stopTracking(SonicSecuritySystemBlockEntity te) {
 		getTrackedSonicSecuritySystems(te.getLevel()).remove(te.getBlockPos());
 	}
 
@@ -48,8 +48,8 @@ public class SonicSecuritySystemTracker {
 	 * @param pos The block position
 	 * @return A list of all sonic security systems that have the given block position in their range
 	 */
-	public static List<SonicSecuritySystemTileEntity> getSonicSecuritySystemsInRange(World world, BlockPos pos) {
-		return getSonicSecuritySystemsInRange(world, pos, SonicSecuritySystemTileEntity.MAX_RANGE);
+	public static List<SonicSecuritySystemBlockEntity> getSonicSecuritySystemsInRange(World world, BlockPos pos) {
+		return getSonicSecuritySystemsInRange(world, pos, SonicSecuritySystemBlockEntity.MAX_RANGE);
 	}
 
 	/**
@@ -60,9 +60,9 @@ public class SonicSecuritySystemTracker {
 	 * @param range The range to search within (in number of blocks)
 	 * @return A list of all sonic security systems that have the given block position in their range
 	 */
-	public static List<SonicSecuritySystemTileEntity> getSonicSecuritySystemsInRange(World world, BlockPos pos, int range) {
+	public static List<SonicSecuritySystemBlockEntity> getSonicSecuritySystemsInRange(World world, BlockPos pos, int range) {
 		final Collection<BlockPos> sonicSecuritySystems = getTrackedSonicSecuritySystems(world);
-		List<SonicSecuritySystemTileEntity> returnValue = new ArrayList<>();
+		List<SonicSecuritySystemBlockEntity> returnValue = new ArrayList<>();
 
 		for (Iterator<BlockPos> it = sonicSecuritySystems.iterator(); it.hasNext();) {
 			BlockPos sonicSecuritySystemPos = it.next();
@@ -70,9 +70,9 @@ public class SonicSecuritySystemTracker {
 			if (sonicSecuritySystemPos != null) {
 				TileEntity potentialSonicSecuritySystem = world.getBlockEntity(sonicSecuritySystemPos);
 
-				if (potentialSonicSecuritySystem instanceof SonicSecuritySystemTileEntity) {
-					if (canSonicSecuritySystemReach((SonicSecuritySystemTileEntity) potentialSonicSecuritySystem, pos))
-						returnValue.add((SonicSecuritySystemTileEntity) potentialSonicSecuritySystem);
+				if (potentialSonicSecuritySystem instanceof SonicSecuritySystemBlockEntity) {
+					if (canSonicSecuritySystemReach((SonicSecuritySystemBlockEntity) potentialSonicSecuritySystem, pos))
+						returnValue.add((SonicSecuritySystemBlockEntity) potentialSonicSecuritySystem);
 
 					continue;
 				}
@@ -106,8 +106,8 @@ public class SonicSecuritySystemTracker {
 	 * @param te The Sonic Security System
 	 * @param pos The block position to check
 	 */
-	public static boolean canSonicSecuritySystemReach(SonicSecuritySystemTileEntity te, BlockPos pos) {
-		AxisAlignedBB sssRange = new AxisAlignedBB(te.getBlockPos()).inflate(SonicSecuritySystemTileEntity.MAX_RANGE);
+	public static boolean canSonicSecuritySystemReach(SonicSecuritySystemBlockEntity te, BlockPos pos) {
+		AxisAlignedBB sssRange = new AxisAlignedBB(te.getBlockPos()).inflate(SonicSecuritySystemBlockEntity.MAX_RANGE);
 
 		return sssRange.minX <= pos.getX() && sssRange.minY <= pos.getY() && sssRange.minZ <= pos.getZ() && sssRange.maxX >= pos.getX() && sssRange.maxY >= pos.getY() && sssRange.maxZ >= pos.getZ();
 	}

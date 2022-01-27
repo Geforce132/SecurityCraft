@@ -3,9 +3,11 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.LinkableTileEntity;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blockentity.InventoryScannerBlockEntity;
+import net.geforcemods.securitycraft.blockentity.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
@@ -13,8 +15,6 @@ import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.blocks.SpecialDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
-import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -56,18 +56,18 @@ public class UniversalBlockRemoverItem extends Item {
 			}
 
 			if (tileEntity instanceof IModuleInventory) {
-				boolean isChest = tileEntity instanceof KeypadChestTileEntity;
+				boolean isChest = tileEntity instanceof KeypadChestBlockEntity;
 
 				for (ItemStack module : ((IModuleInventory) tileEntity).getInventory()) {
 					if (isChest)
-						((KeypadChestTileEntity) tileEntity).addOrRemoveModuleFromAttached(module, true);
+						((KeypadChestBlockEntity) tileEntity).addOrRemoveModuleFromAttached(module, true);
 
 					Block.popResource(world, pos, module);
 				}
 			}
 
 			if (block == SCContent.LASER_BLOCK.get()) {
-				LinkableTileEntity te = (LinkableTileEntity) world.getBlockEntity(pos);
+				LinkableBlockEntity te = (LinkableBlockEntity) world.getBlockEntity(pos);
 
 				for (ItemStack module : te.getInventory()) {
 					if (!module.isEmpty()) {
@@ -108,7 +108,7 @@ public class UniversalBlockRemoverItem extends Item {
 					pos = pos.below();
 
 				if (block == SCContent.INVENTORY_SCANNER.get()) {
-					InventoryScannerTileEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+					InventoryScannerBlockEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 					if (te != null)
 						te.getInventory().clear();
@@ -128,6 +128,6 @@ public class UniversalBlockRemoverItem extends Item {
 	}
 
 	private static boolean isOwnableBlock(Block block, TileEntity te) {
-		return (te instanceof OwnableTileEntity || te instanceof IOwnable || block instanceof OwnableBlock);
+		return (te instanceof OwnableBlockEntity || te instanceof IOwnable || block instanceof OwnableBlock);
 	}
 }

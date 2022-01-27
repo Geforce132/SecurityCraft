@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -68,6 +68,6 @@ public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity();
+		return new OwnableBlockEntity();
 	}
 }

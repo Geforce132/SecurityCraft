@@ -118,8 +118,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				if (stack.getItem() instanceof ModuleItem) {
 					onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
 
-					if (te instanceof LinkableTileEntity)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, (LinkableTileEntity) te);
+					if (te instanceof LinkableBlockEntity)
+						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, (LinkableBlockEntity) te);
 				}
 
 				return getInventory().set(slot, ItemStack.EMPTY).copy();
@@ -152,8 +152,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				if (stack.getItem() instanceof ModuleItem) {
 					onModuleInserted(stack, ((ModuleItem) stack.getItem()).getModuleType());
 
-					if (te instanceof LinkableTileEntity)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, copy, (LinkableTileEntity) te);
+					if (te instanceof LinkableBlockEntity)
+						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, copy, (LinkableBlockEntity) te);
 				}
 			}
 
@@ -179,8 +179,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		if (!previous.isEmpty()) {
 			onModuleRemoved(previous, ((ModuleItem) previous.getItem()).getModuleType());
 
-			if (te instanceof LinkableTileEntity)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, (LinkableTileEntity) te);
+			if (te instanceof LinkableBlockEntity)
+				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, (LinkableBlockEntity) te);
 		}
 
 		getInventory().set(slot, stack);
@@ -188,8 +188,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		if (stack.getItem() instanceof ModuleItem) {
 			onModuleInserted(stack, ((ModuleItem) stack.getItem()).getModuleType());
 
-			if (te instanceof LinkableTileEntity)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, (LinkableTileEntity) te);
+			if (te instanceof LinkableBlockEntity)
+				ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, (LinkableBlockEntity) te);
 		}
 	}
 

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.blockentity.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -26,13 +26,13 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-		if (isAllowedToPress(world, pos, (AllowlistOnlyTileEntity) world.getBlockEntity(pos), player))
+		if (isAllowedToPress(world, pos, (AllowlistOnlyBlockEntity) world.getBlockEntity(pos), player))
 			return super.use(state, world, pos, player, hand, result);
 
 		return ActionResultType.FAIL;
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyTileEntity te, PlayerEntity entity) {
+	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyBlockEntity te, PlayerEntity entity) {
 		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
 	}
 
@@ -59,6 +59,6 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new AllowlistOnlyTileEntity();
+		return new AllowlistOnlyBlockEntity();
 	}
 }

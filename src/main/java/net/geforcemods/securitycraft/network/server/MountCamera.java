@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentity.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -47,8 +47,8 @@ public class MountCamera {
 			if (world.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get()) {
 				TileEntity te = world.getBlockEntity(pos);
 
-				if (te instanceof SecurityCameraTileEntity) {
-					SecurityCameraTileEntity cam = (SecurityCameraTileEntity) te;
+				if (te instanceof SecurityCameraBlockEntity) {
+					SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
 
 					if (cam.getOwner().isOwner(player) || ModuleUtils.isAllowed(cam, player))
 						((SecurityCameraBlock) state.getBlock()).mountCamera(world, pos, player);

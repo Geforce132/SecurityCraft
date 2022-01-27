@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -152,6 +152,6 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity();
+		return new OwnableBlockEntity();
 	}
 }

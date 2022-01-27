@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
+import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.FlyingEntity;
@@ -21,9 +21,9 @@ import net.minecraft.entity.player.PlayerEntity;
  * Attacks any player who is not the owner, or any mob
  */
 public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<LivingEntity> {
-	private SentryEntity sentry;
+	private Sentry sentry;
 
-	public TargetNearestPlayerOrMobGoal(SentryEntity sentry) {
+	public TargetNearestPlayerOrMobGoal(Sentry sentry) {
 		super(sentry, LivingEntity.class, true);
 
 		this.sentry = sentry;
@@ -61,7 +61,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 					if(potentialTarget instanceof PlayerEntity
 							&& !((PlayerEntity)potentialTarget).isSpectator()
 							&& !((PlayerEntity)potentialTarget).isCreative()
-							&& !((SentryEntity)mob).getOwner().isOwner(((PlayerEntity)potentialTarget))
+							&& !((Sentry)mob).getOwner().isOwner(((PlayerEntity)potentialTarget))
 							&& !sentry.isTargetingAllowedPlayer(potentialTarget)
 							&& !EntityUtils.isInvisible(potentialTarget)) {
 						break;
@@ -108,6 +108,6 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 
 	@Override
 	protected double getFollowDistance() {
-		return SentryEntity.MAX_TARGET_DISTANCE;
+		return Sentry.MAX_TARGET_DISTANCE;
 	}
 }

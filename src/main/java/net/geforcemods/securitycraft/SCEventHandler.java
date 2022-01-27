@@ -16,15 +16,19 @@ import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.api.LinkableTileEntity;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
+import net.geforcemods.securitycraft.blockentity.PortableRadarBlockEntity;
+import net.geforcemods.securitycraft.blockentity.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.blockentity.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentity.SonicSecuritySystemBlockEntity.NoteWrapper;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
-import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -33,14 +37,10 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
 import net.geforcemods.securitycraft.network.client.SendTip;
-import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity.NoteWrapper;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -139,12 +139,12 @@ public class SCEventHandler {
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
 		ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
 
-		if (player.getCamera() instanceof SecurityCameraEntity) {
-			SecurityCameraEntity cam = (SecurityCameraEntity) player.getCamera();
+		if (player.getCamera() instanceof SecurityCamera) {
+			SecurityCamera cam = (SecurityCamera) player.getCamera();
 			TileEntity tile = player.level.getBlockEntity(cam.blockPosition());
 
-			if (tile instanceof SecurityCameraTileEntity)
-				((SecurityCameraTileEntity) tile).stopViewing();
+			if (tile instanceof SecurityCameraBlockEntity)
+				((SecurityCameraBlockEntity) tile).stopViewing();
 
 			cam.remove();
 		}
@@ -161,7 +161,7 @@ public class SCEventHandler {
 		if (!world.isClientSide && entity instanceof ServerPlayerEntity && PlayerUtils.isPlayerMountedOnCamera(entity)) {
 			ServerPlayerEntity player = (ServerPlayerEntity) entity;
 
-			((SecurityCameraEntity) player.getCamera()).stopViewing(player);
+			((SecurityCamera) player.getCamera()).stopViewing(player);
 		}
 	}
 
@@ -222,7 +222,7 @@ public class SCEventHandler {
 				return;
 			}
 
-			if (te instanceof INameSetter && (te instanceof SecurityCameraTileEntity || te instanceof PortableRadarTileEntity) && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getItemInHand(event.getHand()).hasCustomHoverName()) {
+			if (te instanceof INameSetter && (te instanceof SecurityCameraBlockEntity || te instanceof PortableRadarBlockEntity) && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getItemInHand(event.getHand()).hasCustomHoverName()) {
 				ItemStack nametag = event.getPlayer().getItemInHand(event.getHand());
 				INameSetter nameable = (INameSetter) te;
 
@@ -245,7 +245,7 @@ public class SCEventHandler {
 
 		//outside !world.isRemote for properly checking the interaction
 		//all the sentry functionality for when the sentry is diguised
-		List<SentryEntity> sentries = world.getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(event.getPos()));
+		List<Sentry> sentries = world.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(event.getPos()));
 
 		if (!sentries.isEmpty())
 			event.setCanceled(sentries.get(0).mobInteract(event.getPlayer(), event.getHand()) == ActionResultType.SUCCESS); //cancel if an action was taken
@@ -280,18 +280,18 @@ public class SCEventHandler {
 					if (!te.getInventory().get(i).isEmpty()) {
 						ItemStack stack = te.getInventory().get(i);
 						ItemEntity item = new ItemEntity((World) event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
-						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().addFreshEntity(item));
+						LevelUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().addFreshEntity(item));
 
 						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
 
-						if (te instanceof LinkableTileEntity) {
-							((LinkableTileEntity) te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {
+						if (te instanceof LinkableBlockEntity) {
+							((LinkableBlockEntity) te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {
 									stack, ((ModuleItem) stack.getItem()).getModuleType()
-							}, (LinkableTileEntity) te);
+							}, (LinkableBlockEntity) te);
 						}
 
-						if (te instanceof SecurityCameraTileEntity) {
-							SecurityCameraTileEntity cam = (SecurityCameraTileEntity) te;
+						if (te instanceof SecurityCameraBlockEntity) {
+							SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
 
 							cam.getLevel().updateNeighborsAt(cam.getBlockPos().relative(cam.getLevel().getBlockState(cam.getBlockPos()).getValue(SecurityCameraBlock.FACING), -1), cam.getLevel().getBlockState(cam.getBlockPos()).getBlock());
 						}
@@ -299,7 +299,7 @@ public class SCEventHandler {
 			}
 		}
 
-		List<SentryEntity> sentries = ((World) event.getWorld()).getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(event.getPos()));
+		List<Sentry> sentries = ((World) event.getWorld()).getEntitiesOfClass(Sentry.class, new AxisAlignedBB(event.getPos()));
 
 		//don't let people break the disguise block
 		if (!sentries.isEmpty() && !sentries.get(0).getDisguiseModule().isEmpty()) {
@@ -325,7 +325,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event) {
-		if (event.getTarget() instanceof SentryEntity)
+		if (event.getTarget() instanceof Sentry)
 			((MobEntity) event.getEntity()).setTarget(null);
 	}
 
@@ -354,9 +354,9 @@ public class SCEventHandler {
 	}
 
 	private static void handlePlayedNote(World world, BlockPos pos, int vanillaNoteId, String instrumentName) {
-		List<SonicSecuritySystemTileEntity> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange(world, pos);
+		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange(world, pos);
 
-		for (SonicSecuritySystemTileEntity te : sonicSecuritySystems) {
+		for (SonicSecuritySystemBlockEntity te : sonicSecuritySystems) {
 			// If the SSS is disabled, don't listen to any notes
 			if (!te.isActive())
 				continue;

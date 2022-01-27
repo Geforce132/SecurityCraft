@@ -7,11 +7,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blockentity.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -40,7 +40,7 @@ public class CameraMonitorScreen extends Screen {
 	private CameraButton[] cameraButtons = new CameraButton[10];
 	private CameraButton[] unbindButtons = new CameraButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
-	private SecurityCameraTileEntity[] cameraTEs = new SecurityCameraTileEntity[10];
+	private SecurityCameraBlockEntity[] cameraTEs = new SecurityCameraBlockEntity[10];
 	private ResourceLocation[] cameraViewDim = new ResourceLocation[10];
 	private int xSize = 176, ySize = 166;
 	private int page = 1;
@@ -105,7 +105,7 @@ public class CameraMonitorScreen extends Screen {
 				World world = Minecraft.getInstance().level;
 				TileEntity te = world.getBlockEntity(view.pos());
 
-				cameraTEs[button.camId - 1] = te instanceof SecurityCameraTileEntity ? (SecurityCameraTileEntity) te : null;
+				cameraTEs[button.camId - 1] = te instanceof SecurityCameraBlockEntity ? (SecurityCameraBlockEntity) te : null;
 				hoverCheckers[button.camId - 1] = new HoverChecker(button);
 			}
 			else {

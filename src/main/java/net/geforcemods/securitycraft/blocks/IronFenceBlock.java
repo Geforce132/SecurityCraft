@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
@@ -193,12 +193,12 @@ public class IronFenceBlock extends OwnableBlock {
 			return;
 		//owner check
 		else if (entity instanceof PlayerEntity) {
-			if (((OwnableTileEntity) world.getBlockEntity(pos)).getOwner().isOwner((PlayerEntity) entity))
+			if (((OwnableBlockEntity) world.getBlockEntity(pos)).getOwner().isOwner((PlayerEntity) entity))
 				return;
 		}
 		else if (!world.isClientSide && entity instanceof CreeperEntity) {
 			CreeperEntity creeper = (CreeperEntity) entity;
-			LightningBoltEntity lightning = WorldUtils.createLightning(world, Vector3d.atBottomCenterOf(pos), true);
+			LightningBoltEntity lightning = LevelUtils.createLightning(world, Vector3d.atBottomCenterOf(pos), true);
 
 			creeper.thunderHit((ServerWorld) world, lightning);
 			creeper.clearFire();
@@ -217,6 +217,6 @@ public class IronFenceBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity(SCContent.teTypeAbstract);
+		return new OwnableBlockEntity(SCContent.beTypeAbstract);
 	}
 }

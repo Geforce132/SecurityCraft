@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
@@ -162,7 +162,7 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableTileEntity();
+		return new OwnableBlockEntity();
 	}
 
 	@Override

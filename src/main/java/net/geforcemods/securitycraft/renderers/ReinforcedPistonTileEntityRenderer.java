@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.ReinforcedPistonTileEntity;
+import net.geforcemods.securitycraft.blockentity.ReinforcedPistonBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PistonBlock;
 import net.minecraft.block.PistonHeadBlock;
@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 
-public class ReinforcedPistonTileEntityRenderer extends TileEntityRenderer<ReinforcedPistonTileEntity> {
+public class ReinforcedPistonTileEntityRenderer extends TileEntityRenderer<ReinforcedPistonBlockEntity> {
 	private BlockRendererDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
 
 	public ReinforcedPistonTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcher) {
@@ -26,7 +26,7 @@ public class ReinforcedPistonTileEntityRenderer extends TileEntityRenderer<Reinf
 	}
 
 	@Override
-	public void render(ReinforcedPistonTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+	public void render(ReinforcedPistonBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		World world = te.getLevel();
 
 		if (world != null) {

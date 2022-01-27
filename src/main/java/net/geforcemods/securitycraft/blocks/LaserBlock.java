@@ -5,9 +5,9 @@ import java.util.Random;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.LinkableTileEntity;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.blockentity.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -46,7 +46,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	public void setLaser(World world, BlockPos pos) {
-		LaserBlockTileEntity thisTe = (LaserBlockTileEntity) world.getBlockEntity(pos);
+		LaserBlockBlockEntity thisTe = (LaserBlockBlockEntity) world.getBlockEntity(pos);
 
 		for (Direction facing : Direction.values()) {
 			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
@@ -59,10 +59,10 @@ public class LaserBlock extends DisguisableBlock {
 				if (!offsetState.isAir(world, offsetPos) && offsetBlock != SCContent.LASER_BLOCK.get())
 					break inner;
 				else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
-					LaserBlockTileEntity thatTe = (LaserBlockTileEntity) world.getBlockEntity(offsetPos);
+					LaserBlockBlockEntity thatTe = (LaserBlockBlockEntity) world.getBlockEntity(offsetPos);
 
 					if (thisTe.getOwner().owns(thatTe)) {
-						LinkableTileEntity.link(thisTe, thatTe);
+						LinkableBlockEntity.link(thisTe, thatTe);
 
 						for (ModuleType type : thatTe.getInsertedModules()) {
 							thisTe.insertModule(thatTe.getModule(type));
@@ -179,6 +179,6 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new LaserBlockTileEntity();
+		return new LaserBlockBlockEntity();
 	}
 }

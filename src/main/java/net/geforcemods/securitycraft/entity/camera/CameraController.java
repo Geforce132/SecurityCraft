@@ -34,8 +34,8 @@ public class CameraController {
 	public static void onClientTick(ClientTickEvent event) {
 		Entity renderViewEntity = Minecraft.getInstance().cameraEntity;
 
-		if (renderViewEntity instanceof SecurityCameraEntity) {
-			SecurityCameraEntity cam = (SecurityCameraEntity) renderViewEntity;
+		if (renderViewEntity instanceof SecurityCamera) {
+			SecurityCamera cam = (SecurityCamera) renderViewEntity;
 			GameSettings options = Minecraft.getInstance().options;
 
 			//up/down/left/right handling is split to prevent players who are viewing a camera from moving around in a boat or on a horse
@@ -106,7 +106,7 @@ public class CameraController {
 		SecurityCraft.channel.sendToServer(new DismountCamera());
 	}
 
-	public static void moveViewUp(SecurityCameraEntity cam) {
+	public static void moveViewUp(SecurityCamera cam) {
 		float next = cam.xRot - (float) cam.cameraSpeed * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
@@ -117,7 +117,7 @@ public class CameraController {
 			cam.setRot(cam.yRot, next);
 	}
 
-	public static void moveViewDown(SecurityCameraEntity cam) {
+	public static void moveViewDown(SecurityCamera cam) {
 		float next = cam.xRot + (float) cam.cameraSpeed * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
@@ -128,7 +128,7 @@ public class CameraController {
 			cam.setRot(cam.yRot, next);
 	}
 
-	public static void moveViewHorizontally(SecurityCameraEntity cam, float yRot, float next) {
+	public static void moveViewHorizontally(SecurityCamera cam, float yRot, float next) {
 		BlockState state = cam.level.getBlockState(cam.blockPosition());
 
 		if (state.hasProperty(SecurityCameraBlock.FACING)) {
@@ -165,7 +165,7 @@ public class CameraController {
 		}
 	}
 
-	public static void zoomIn(SecurityCameraEntity cam) {
+	public static void zoomIn(SecurityCamera cam) {
 		if (!cam.zooming)
 			Minecraft.getInstance().level.playLocalSound(cam.blockPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 
@@ -173,7 +173,7 @@ public class CameraController {
 		cam.zoomAmount = Math.max(cam.zoomAmount - 0.1F, 0.1F);
 	}
 
-	public static void zoomOut(SecurityCameraEntity cam) {
+	public static void zoomOut(SecurityCamera cam) {
 		if (!cam.zooming)
 			Minecraft.getInstance().level.playLocalSound(cam.blockPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 
@@ -181,14 +181,14 @@ public class CameraController {
 		cam.zoomAmount = Math.min(cam.zoomAmount + 0.1F, 1.4F);
 	}
 
-	public static void emitRedstone(SecurityCameraEntity cam) {
+	public static void emitRedstone(SecurityCamera cam) {
 		if (cam.redstoneCooldown == 0) {
 			cam.toggleRedstonePower();
 			cam.redstoneCooldown = 30;
 		}
 	}
 
-	public static void giveNightVision(SecurityCameraEntity cam) {
+	public static void giveNightVision(SecurityCamera cam) {
 		if (cam.toggleNightVisionCooldown == 0)
 			cam.toggleNightVision();
 	}
@@ -203,7 +203,7 @@ public class CameraController {
 	}
 
 	public static void setRenderPosition(Entity entity) {
-		if (entity instanceof SecurityCameraEntity) {
+		if (entity instanceof SecurityCamera) {
 			SectionPos cameraPos = SectionPos.of(entity);
 
 			cameraStorage.viewCenterX = cameraPos.x();

@@ -6,12 +6,12 @@ import java.util.List;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blockentity.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -48,7 +48,7 @@ public class CameraMonitorItem extends Item {
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
 		if (world.getBlockState(pos).getBlock() == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)) {
-			SecurityCameraTileEntity te = (SecurityCameraTileEntity) world.getBlockEntity(pos);
+			SecurityCameraBlockEntity te = (SecurityCameraBlockEntity) world.getBlockEntity(pos);
 
 			if (!te.getOwner().isOwner(player) && !ModuleUtils.isAllowed(te, player)) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
@@ -68,7 +68,7 @@ public class CameraMonitorItem extends Item {
 
 			for (int i = 1; i <= 30; i++) {
 				if (!stack.getTag().contains("Camera" + i)) {
-					stack.getTag().putString("Camera" + i, WorldUtils.toNBTString(view));
+					stack.getTag().putString("Camera" + i, LevelUtils.toNBTString(view));
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.bound", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 					break;
 				}
@@ -112,7 +112,7 @@ public class CameraMonitorItem extends Item {
 			if (tag.contains("Camera" + i)) {
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
-				if (WorldUtils.checkCoordinates(view, coords))
+				if (LevelUtils.checkCoordinates(view, coords))
 					return "Camera" + i;
 			}
 		}
@@ -137,7 +137,7 @@ public class CameraMonitorItem extends Item {
 			if (tag.contains("Camera" + i)) {
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
-				if (WorldUtils.checkCoordinates(view, coords))
+				if (LevelUtils.checkCoordinates(view, coords))
 					return true;
 			}
 		}

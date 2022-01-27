@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
+import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,7 +35,7 @@ public class UniversalBlockReinforcerItem extends Item {
 			NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 				@Override
 				public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-					return new BlockReinforcerContainer(windowId, inv, UniversalBlockReinforcerItem.this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
+					return new BlockReinforcerMenu(windowId, inv, UniversalBlockReinforcerItem.this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
 				}
 
 				@Override

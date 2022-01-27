@@ -4,8 +4,8 @@ import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blockentity.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenSSSScreen;
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -79,7 +79,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (player.getItemInHand(hand).getItem() != SCContent.PORTABLE_TUNE_PLAYER.get()) {
-			SonicSecuritySystemTileEntity te = (SonicSecuritySystemTileEntity) world.getBlockEntity(pos);
+			SonicSecuritySystemBlockEntity te = (SonicSecuritySystemBlockEntity) world.getBlockEntity(pos);
 
 			if (!world.isClientSide && (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)))
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenSSSScreen(pos)); //watch out for the creeper
@@ -149,6 +149,6 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new SonicSecuritySystemTileEntity();
+		return new SonicSecuritySystemBlockEntity();
 	}
 }

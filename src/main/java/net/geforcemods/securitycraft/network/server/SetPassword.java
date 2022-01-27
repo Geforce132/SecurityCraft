@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.blockentity.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
-import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.state.properties.ChestType;
@@ -56,21 +56,21 @@ public class SetPassword {
 			if (te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable) te).getOwner().isOwner(player))) {
 				((IPasswordProtected) te).setPassword(password);
 
-				if (te instanceof KeypadChestTileEntity)
-					checkAndUpdateAdjacentChest((KeypadChestTileEntity) te, world, pos, password, player);
+				if (te instanceof KeypadChestBlockEntity)
+					checkAndUpdateAdjacentChest((KeypadChestBlockEntity) te, world, pos, password, player);
 			}
 		});
 
 		ctx.get().setPacketHandled(true);
 	}
 
-	private static void checkAndUpdateAdjacentChest(KeypadChestTileEntity te, World world, BlockPos pos, String codeToSet, PlayerEntity player) {
+	private static void checkAndUpdateAdjacentChest(KeypadChestBlockEntity te, World world, BlockPos pos, String codeToSet, PlayerEntity player) {
 		if (te.getBlockState().getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE) {
 			BlockPos offsetPos = pos.relative(KeypadChestBlock.getConnectedDirection(te.getBlockState()));
 			TileEntity otherTe = world.getBlockEntity(offsetPos);
 
-			if (otherTe instanceof KeypadChestTileEntity && te.getOwner().owns((KeypadChestTileEntity) otherTe)) {
-				((KeypadChestTileEntity) otherTe).setPassword(codeToSet);
+			if (otherTe instanceof KeypadChestBlockEntity && te.getOwner().owns((KeypadChestBlockEntity) otherTe)) {
+				((KeypadChestBlockEntity) otherTe).setPassword(codeToSet);
 				world.sendBlockUpdated(offsetPos, otherTe.getBlockState(), otherTe.getBlockState(), 2);
 			}
 		}

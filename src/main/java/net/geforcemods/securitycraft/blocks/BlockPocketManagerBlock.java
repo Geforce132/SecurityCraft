@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
+import net.geforcemods.securitycraft.blockentity.BlockPocketManagerBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,8 +33,8 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 		if (!world.isClientSide) {
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof BlockPocketManagerTileEntity && !((BlockPocketManagerTileEntity) te).isPlacingBlocks())
-				NetworkHooks.openGui((ServerPlayerEntity) player, (BlockPocketManagerTileEntity) te, pos);
+			if (te instanceof BlockPocketManagerBlockEntity && !((BlockPocketManagerBlockEntity) te).isPlacingBlocks())
+				NetworkHooks.openGui((ServerPlayerEntity) player, (BlockPocketManagerBlockEntity) te, pos);
 		}
 
 		return ActionResultType.SUCCESS;
@@ -47,8 +47,8 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 
 		TileEntity tile = world.getBlockEntity(pos);
 
-		if (tile instanceof BlockPocketManagerTileEntity) {
-			BlockPocketManagerTileEntity te = (BlockPocketManagerTileEntity) tile;
+		if (tile instanceof BlockPocketManagerBlockEntity) {
+			BlockPocketManagerBlockEntity te = (BlockPocketManagerBlockEntity) tile;
 
 			te.getStorageHandler().ifPresent(handler -> {
 				for (int i = 0; i < handler.getSlots(); i++) {
@@ -72,7 +72,7 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new BlockPocketManagerTileEntity();
+		return new BlockPocketManagerBlockEntity();
 	}
 
 	@Override

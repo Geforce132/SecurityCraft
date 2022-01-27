@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.renderers;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.geforcemods.securitycraft.blockentity.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<SonicSecuritySystemTileEntity> {
+public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<SonicSecuritySystemBlockEntity> {
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
 	private static final SonicSecuritySystemModel MODEL = new SonicSecuritySystemModel();
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/sonic_security_system.png");
@@ -34,7 +34,7 @@ public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<So
 	}
 
 	@Override
-	public void render(SonicSecuritySystemTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay) {
+	public void render(SonicSecuritySystemBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay) {
 		boolean recording = te.isRecording();
 
 		matrix.translate(0.5D, 1.5D, 0.5D);

@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
-import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
+import net.geforcemods.securitycraft.blockentity.KeycardReaderBlockEntity;
+import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Container;
@@ -58,8 +58,8 @@ public class SyncKeycardSettings {
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity tile = player.level.getBlockEntity(pos);
 
-			if (tile instanceof KeycardReaderTileEntity) {
-				KeycardReaderTileEntity te = (KeycardReaderTileEntity) tile;
+			if (tile instanceof KeycardReaderBlockEntity) {
+				KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
 				boolean isOwner = te.getOwner().isOwner(player);
 
 				if (isOwner || ModuleUtils.isAllowed(te, player)) {
@@ -71,8 +71,8 @@ public class SyncKeycardSettings {
 					if (message.link) {
 						Container container = player.containerMenu;
 
-						if (container instanceof KeycardReaderContainer)
-							((KeycardReaderContainer) container).link();
+						if (container instanceof KeycardReaderMenu)
+							((KeycardReaderMenu) container).link();
 					}
 				}
 			}

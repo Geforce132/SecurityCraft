@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.Calendar;
 
-import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
+import net.geforcemods.securitycraft.blockentity.KeypadChestBlockEntity;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.tileentity.ChestTileEntityRenderer;
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class KeypadChestTileEntityRenderer extends ChestTileEntityRenderer<KeypadChestTileEntity> {
+public class KeypadChestTileEntityRenderer extends ChestTileEntityRenderer<KeypadChestBlockEntity> {
 	private static final RenderMaterial ACTIVE = createMaterial("active");
 	private static final RenderMaterial INACTIVE = createMaterial("inactive");
 	private static final RenderMaterial LEFT_ACTIVE = createMaterial("left_active");
@@ -35,7 +35,7 @@ public class KeypadChestTileEntityRenderer extends ChestTileEntityRenderer<Keypa
 	}
 
 	@Override
-	protected RenderMaterial getMaterial(KeypadChestTileEntity te, ChestType type) {
+	protected RenderMaterial getMaterial(KeypadChestBlockEntity te, ChestType type) {
 		if (isChristmas)
 			return getMaterialForType(type, CHRISTMAS_LEFT, CHRISTMAS_RIGHT, CHRISTMAS);
 		else if (te.getOpenNess(0.0F) >= 0.9F)

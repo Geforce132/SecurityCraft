@@ -3,10 +3,10 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blockentity.ReinforcedDoorBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
-import net.geforcemods.securitycraft.tileentity.ReinforcedDoorTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -194,8 +194,8 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		Block neighborBlock = world.getBlockState(neighbor).getBlock();
 		Owner previousOwner = null;
 
-		if (world.getBlockEntity(pos) instanceof OwnableTileEntity)
-			previousOwner = ((OwnableTileEntity) world.getBlockEntity(pos)).getOwner();
+		if (world.getBlockEntity(pos) instanceof OwnableBlockEntity)
+			previousOwner = ((OwnableBlockEntity) world.getBlockEntity(pos)).getOwner();
 
 		if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
 			BlockPos blockBelow = pos.below();
@@ -294,9 +294,9 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			}
 		}
 
-		if (previousOwner != null && world.getBlockEntity(pos) instanceof OwnableTileEntity && world.getBlockEntity(pos.above()) instanceof OwnableTileEntity) {
-			((OwnableTileEntity) world.getBlockEntity(pos)).setOwner(previousOwner.getUUID(), previousOwner.getName());
-			((OwnableTileEntity) world.getBlockEntity(pos.above())).setOwner(previousOwner.getUUID(), previousOwner.getName());
+		if (previousOwner != null && world.getBlockEntity(pos) instanceof OwnableBlockEntity && world.getBlockEntity(pos.above()) instanceof OwnableBlockEntity) {
+			((OwnableBlockEntity) world.getBlockEntity(pos)).setOwner(previousOwner.getUUID(), previousOwner.getName());
+			((OwnableBlockEntity) world.getBlockEntity(pos.above())).setOwner(previousOwner.getUUID(), previousOwner.getName());
 		}
 	}
 
@@ -354,7 +354,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new ReinforcedDoorTileEntity();
+		return new ReinforcedDoorBlockEntity();
 	}
 
 	@Override

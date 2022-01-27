@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.KeyPanelTileEntity;
+import net.geforcemods.securitycraft.blockentity.KeyPanelBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -116,7 +116,7 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 		if (state.getValue(POWERED))
 			return ActionResultType.PASS;
 		else {
-			KeyPanelTileEntity te = (KeyPanelTileEntity) world.getBlockEntity(pos);
+			KeyPanelBlockEntity te = (KeyPanelBlockEntity) world.getBlockEntity(pos);
 
 			if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
@@ -211,7 +211,7 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new KeyPanelTileEntity();
+		return new KeyPanelBlockEntity();
 	}
 
 	public void activate(BlockState state, World world, BlockPos pos, int signalLength) {

@@ -4,8 +4,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blockentity.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -38,8 +38,8 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		if (stack.hasCustomHoverName()) {
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof ReinforcedHopperTileEntity)
-				((ReinforcedHopperTileEntity) te).setCustomName(stack.getHoverName());
+			if (te instanceof ReinforcedHopperBlockEntity)
+				((ReinforcedHopperBlockEntity) te).setCustomName(stack.getHoverName());
 		}
 	}
 
@@ -48,8 +48,8 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		if (!world.isClientSide) {
 			TileEntity tileEntity = world.getBlockEntity(pos);
 
-			if (tileEntity instanceof ReinforcedHopperTileEntity) {
-				ReinforcedHopperTileEntity te = (ReinforcedHopperTileEntity) tileEntity;
+			if (tileEntity instanceof ReinforcedHopperBlockEntity) {
+				ReinforcedHopperBlockEntity te = (ReinforcedHopperBlockEntity) tileEntity;
 
 				//only allow the owner or players on the allowlist to access a reinforced hopper
 				if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
@@ -65,9 +65,9 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		if (!state.is(newState.getBlock())) {
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof ReinforcedHopperTileEntity) {
+			if (te instanceof ReinforcedHopperBlockEntity) {
 				if (!isMoving)
-					InventoryHelper.dropContents(world, pos, (ReinforcedHopperTileEntity) te);
+					InventoryHelper.dropContents(world, pos, (ReinforcedHopperBlockEntity) te);
 
 				world.updateNeighbourForOutputSignal(pos, this);
 			}
@@ -80,13 +80,13 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
 		TileEntity te = world.getBlockEntity(pos);
 
-		if (te instanceof ReinforcedHopperTileEntity)
-			((ReinforcedHopperTileEntity) te).entityInside(entity);
+		if (te instanceof ReinforcedHopperBlockEntity)
+			((ReinforcedHopperBlockEntity) te).entityInside(entity);
 	}
 
 	@Override
 	public TileEntity newBlockEntity(IBlockReader world) {
-		return new ReinforcedHopperTileEntity();
+		return new ReinforcedHopperBlockEntity();
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	public static class ExtractionBlock implements IExtractionBlock {
 		@Override
 		public boolean canExtract(IOwnable te, World world, BlockPos pos, BlockState state) {
-			ReinforcedHopperTileEntity hopperTe = (ReinforcedHopperTileEntity) world.getBlockEntity(pos);
+			ReinforcedHopperBlockEntity hopperTe = (ReinforcedHopperBlockEntity) world.getBlockEntity(pos);
 
 			if (!te.getOwner().owns(hopperTe)) {
 				if (te instanceof IModuleInventory) {

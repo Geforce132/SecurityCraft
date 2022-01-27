@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentity.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.WallSignBlock;
@@ -45,7 +45,7 @@ public class SecretWallSignBlock extends WallSignBlock {
 		if (!world.isClientSide && player.getItemInHand(hand).getItem() == SCContent.ADMIN_TOOL.get())
 			return SCContent.ADMIN_TOOL.get().useOn(new ItemUseContext(player, hand, hit));
 
-		SecretSignTileEntity te = (SecretSignTileEntity) world.getBlockEntity(pos);
+		SecretSignBlockEntity te = (SecretSignBlockEntity) world.getBlockEntity(pos);
 
 		if (te != null && te.isPlayerAllowedToSeeText(player))
 			return super.use(state, world, pos, player, hand, hit);
@@ -55,7 +55,7 @@ public class SecretWallSignBlock extends WallSignBlock {
 
 	@Override
 	public TileEntity newBlockEntity(IBlockReader world) {
-		return new SecretSignTileEntity();
+		return new SecretSignBlockEntity();
 	}
 
 	@Override

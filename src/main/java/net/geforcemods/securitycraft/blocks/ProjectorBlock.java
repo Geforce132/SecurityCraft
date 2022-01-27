@@ -5,9 +5,9 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
+import net.geforcemods.securitycraft.blockentity.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.util.Utils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -81,7 +81,7 @@ public class ProjectorBlock extends DisguisableBlock {
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		TileEntity te = world.getBlockEntity(pos);
 
-		if (!(te instanceof ProjectorTileEntity))
+		if (!(te instanceof ProjectorBlockEntity))
 			return ActionResultType.FAIL;
 
 		boolean isOwner = ((IOwnable) te).getOwner().isOwner(player);
@@ -96,10 +96,10 @@ public class ProjectorBlock extends DisguisableBlock {
 	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		TileEntity te = world.getBlockEntity(pos);
 
-		if (te instanceof ProjectorTileEntity) {
+		if (te instanceof ProjectorBlockEntity) {
 			// Drop the block being projected
-			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorTileEntity) te).getStackInSlot(36));
-			WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
+			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorBlockEntity) te).getStackInSlot(36));
+			LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
 		}
 
 		super.onRemove(state, world, pos, newState, isMoving);
@@ -110,8 +110,8 @@ public class ProjectorBlock extends DisguisableBlock {
 		if (!world.isClientSide) {
 			TileEntity tile = world.getBlockEntity(pos);
 
-			if (tile instanceof ProjectorTileEntity) {
-				ProjectorTileEntity te = (ProjectorTileEntity) tile;
+			if (tile instanceof ProjectorBlockEntity) {
+				ProjectorBlockEntity te = (ProjectorBlockEntity) tile;
 
 				if (te.isActivatedByRedstone()) {
 					te.setActive(world.hasNeighborSignal(pos));
@@ -126,8 +126,8 @@ public class ProjectorBlock extends DisguisableBlock {
 		if (!world.hasNeighborSignal(pos)) {
 			TileEntity tile = world.getBlockEntity(pos);
 
-			if (tile instanceof ProjectorTileEntity) {
-				ProjectorTileEntity te = (ProjectorTileEntity) tile;
+			if (tile instanceof ProjectorBlockEntity) {
+				ProjectorBlockEntity te = (ProjectorBlockEntity) tile;
 
 				if (te.isActivatedByRedstone())
 					te.setActive(false);
@@ -151,7 +151,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new ProjectorTileEntity();
+		return new ProjectorBlockEntity();
 	}
 
 	@Override

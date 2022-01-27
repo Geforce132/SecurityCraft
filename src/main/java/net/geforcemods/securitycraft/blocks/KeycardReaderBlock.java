@@ -4,8 +4,8 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentity.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.items.KeycardItem;
-import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -53,7 +53,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (!world.isClientSide) {
-			KeycardReaderTileEntity te = (KeycardReaderTileEntity) world.getBlockEntity(pos);
+			KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) world.getBlockEntity(pos);
 
 			if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
@@ -92,7 +92,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 		return ActionResultType.SUCCESS;
 	}
 
-	public IFormattableTextComponent insertCard(World world, BlockPos pos, KeycardReaderTileEntity te, ItemStack stack, PlayerEntity player) {
+	public IFormattableTextComponent insertCard(World world, BlockPos pos, KeycardReaderBlockEntity te, ItemStack stack, PlayerEntity player) {
 		CompoundNBT tag = stack.getTag();
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
@@ -197,7 +197,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new KeycardReaderTileEntity();
+		return new KeycardReaderBlockEntity();
 	}
 
 	@Override

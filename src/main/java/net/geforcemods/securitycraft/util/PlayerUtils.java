@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.command.ICommandSource;
@@ -192,7 +192,7 @@ public class PlayerUtils {
 		if (player.level.isClientSide)
 			return ClientHandler.isPlayerMountedOnCamera();
 		else
-			return ((ServerPlayerEntity) player).getCamera() instanceof SecurityCameraEntity;
+			return ((ServerPlayerEntity) player).getCamera() instanceof SecurityCamera;
 	}
 
 	/**

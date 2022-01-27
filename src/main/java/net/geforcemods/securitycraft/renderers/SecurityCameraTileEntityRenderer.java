@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.renderers;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentity.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<SecurityCameraTileEntity> {
+public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<SecurityCameraBlockEntity> {
 	private static final Quaternion POSITIVE_Y_180 = Vector3f.YP.rotationDegrees(180.0F);
 	private static final Quaternion POSITIVE_Y_90 = Vector3f.YP.rotationDegrees(90.0F);
 	private static final Quaternion NEGATIVE_Y_90 = Vector3f.YN.rotationDegrees(90.0F);
@@ -36,7 +36,7 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 	}
 
 	@Override
-	public void render(SecurityCameraTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay) {
+	public void render(SecurityCameraBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight, int packedOverlay) {
 		if (te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(te.getBlockPos()))
 			return;
 

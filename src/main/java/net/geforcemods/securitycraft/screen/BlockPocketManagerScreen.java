@@ -7,12 +7,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.BlockPocketManagerContainer;
+import net.geforcemods.securitycraft.blockentity.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
-import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -35,7 +35,7 @@ import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManagerContainer> {
+public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManagerMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager.png");
 	private static final ResourceLocation TEXTURE_STORAGE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager_storage.png");
 	private static final ItemStack BLOCK_POCKET_WALL = new ItemStack(SCContent.BLOCK_POCKET_WALL.get());
@@ -46,7 +46,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	private final boolean storage;
 	private final boolean isOwner;
 	private final int[] materialCounts = new int[3];
-	public BlockPocketManagerTileEntity te;
+	public BlockPocketManagerBlockEntity te;
 	private int size = 5;
 	private Button toggleButton;
 	private Button sizeButton;
@@ -62,7 +62,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	private int pillarsStillNeeded;
 	private int chiseledStillNeeded;
 
-	public BlockPocketManagerScreen(BlockPocketManagerContainer container, PlayerInventory inv, ITextComponent name) {
+	public BlockPocketManagerScreen(BlockPocketManagerMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 
 		te = container.te;

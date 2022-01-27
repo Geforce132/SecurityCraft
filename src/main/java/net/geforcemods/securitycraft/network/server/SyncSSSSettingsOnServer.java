@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
+import net.geforcemods.securitycraft.blockentity.SonicSecuritySystemBlockEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -40,8 +40,8 @@ public class SyncSSSSettingsOnServer {
 			World world = ctx.get().getSender().level;
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof SonicSecuritySystemTileEntity && ((SonicSecuritySystemTileEntity) te).getOwner().isOwner(ctx.get().getSender())) {
-				SonicSecuritySystemTileEntity sss = (SonicSecuritySystemTileEntity) te;
+			if (te instanceof SonicSecuritySystemBlockEntity && ((SonicSecuritySystemBlockEntity) te).getOwner().isOwner(ctx.get().getSender())) {
+				SonicSecuritySystemBlockEntity sss = (SonicSecuritySystemBlockEntity) te;
 
 				switch (message.dataType) {
 					case POWER_ON:

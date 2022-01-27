@@ -5,9 +5,9 @@ import java.util.List;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
+import net.geforcemods.securitycraft.blockentity.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
-import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -24,7 +24,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignTileEntity> {
+public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignBlockEntity> {
 	private final SignModel model = new SignModel();
 
 	public SecretSignTileEntityRenderer(TileEntityRendererDispatcher terd) {
@@ -32,7 +32,7 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 	}
 
 	@Override
-	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+	public void render(SecretSignBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		BlockState state = te.getBlockState();
 		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
 		FontRenderer font = renderer.getFont();

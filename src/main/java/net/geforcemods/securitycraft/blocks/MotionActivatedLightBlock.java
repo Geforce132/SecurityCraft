@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
+import net.geforcemods.securitycraft.blockentity.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -83,7 +83,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new MotionActivatedLightTileEntity();
+		return new MotionActivatedLightBlockEntity();
 	}
 
 	@Override
