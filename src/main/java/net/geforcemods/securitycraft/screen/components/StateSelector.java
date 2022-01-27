@@ -353,7 +353,7 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 
 				for (T t : values) {
 					if (i++ == getCurrentIndex()) {
-						value = property.value(t).value();
+						value = t;
 						break;
 					}
 				}
