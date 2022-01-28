@@ -62,7 +62,7 @@ public class ProjectorBlock extends DisguisableBlock {
 		if (extendedState.getBlock() != this)
 			return extendedState.getShape(world, pos, ctx);
 		else {
-			switch (state.getValue(FACING)) {
+			switch (extendedState.getValue(FACING)) {
 				case NORTH:
 					return SOUTH;
 				case EAST:
