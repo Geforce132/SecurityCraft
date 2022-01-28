@@ -266,8 +266,8 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 
 			updateButtons(true, true);
 
-			if (this.menu != null)
-				this.menu.onStateChange(state);
+			if (menu != null)
+				menu.onStateChange(state);
 		}
 	}
 

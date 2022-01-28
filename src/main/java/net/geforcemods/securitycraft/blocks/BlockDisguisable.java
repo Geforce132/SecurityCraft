@@ -179,7 +179,7 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 
 				if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
 					return disguisedState;
-				else { //fallback, mainly for upgrading old worlds from before the state selector existed 
+				else { //fallback, mainly for upgrading old worlds from before the state selector existed
 					ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddonAsStack(module.getTagCompound());
 					Block block = Block.getBlockFromItem(disguisedStack.getItem());
 					boolean hasMeta = disguisedStack.getHasSubtypes();

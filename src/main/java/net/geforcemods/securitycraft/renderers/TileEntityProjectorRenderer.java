@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -44,8 +45,11 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 
 						GlStateManager.disableCull();
 						GlStateManager.scale(0.9999D, 0.9999D, 0.9999D); //counteract z-fighting between fake blocks
-						blockRendererDispatcher.renderBlockBrightness(state, te.getWorld().getLightBrightness(pos));
-						TileEntityRenderDelegate.PROJECTOR.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha);
+
+						if (state.getRenderType() == EnumBlockRenderType.MODEL)
+							blockRendererDispatcher.renderBlockBrightness(state, te.getWorld().getLightBrightness(pos));
+
+						TileEntityRenderDelegate.PROJECTOR.tryRenderDelegate(te, 0, 0, -1, partialTicks, destroyStage, alpha);
 						GlStateManager.enableCull();
 					}
 
