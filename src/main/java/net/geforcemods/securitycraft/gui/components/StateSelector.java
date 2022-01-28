@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -22,11 +23,15 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Matrix4f;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -35,8 +40,13 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class StateSelector extends GuiScreen implements IContainerListener {
@@ -52,6 +62,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 	private final float previewXTranslation, previewYTranslation;
 	private final HoverChecker dragHoverChecker;
 	private final List<Rectangle> extraAreas = new ArrayList<>();
+	private final RenderAccess renderAccess = new RenderAccess();
 	private IBlockState state = Blocks.AIR.getDefaultState();
 	private List<IProperty<?>> properties = new ArrayList<>();
 	private TileEntity te = null;
@@ -119,7 +130,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 		renderBlockModel(state);
 
 		if (beRenderer != null)
-			beRenderer.render(te, 0.0D, 0.0D, 0.0D, partialTick, -1, 0.0F);
+			beRenderer.render(te, 0.0D, 0.0D, 0.0D, partialTick, 0, 1.0F);
 
 		GlStateManager.popMatrix();
 
@@ -219,8 +230,12 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 			//			float r = (color >> 16 & 255) / 255.0F;
 			//			float g = (color >> 8 & 255) / 255.0F;
 			//			float b = (color & 255) / 255.0F;
+			Tessellator tessellator = Tessellator.getInstance();
+			BufferBuilder buffer = tessellator.getBuffer();
 
-			//blockRenderer.getBlockModelRenderer().renderModel(mc.world, blockModel, state, BlockPos.ORIGIN, Tessellator.getInstance().getBuffer(), false);
+			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+			blockRenderer.getBlockModelRenderer().renderModel(renderAccess, blockModel, state, BlockPos.ORIGIN, buffer, false);
+			tessellator.draw();
 		}
 	}
 
@@ -336,6 +351,48 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 
 		public T getValue() {
 			return value;
+		}
+	}
+
+	public class RenderAccess implements IBlockAccess {
+		@Override
+		public TileEntity getTileEntity(BlockPos pos) {
+			return pos == BlockPos.ORIGIN ? te : null;
+		}
+
+		@Override
+		public int getCombinedLight(BlockPos pos, int lightValue) {
+			return 0;
+		}
+
+		@Override
+		public IBlockState getBlockState(BlockPos pos) {
+			return pos == BlockPos.ORIGIN ? state : Blocks.AIR.getDefaultState();
+		}
+
+		@Override
+		public boolean isAirBlock(BlockPos pos) {
+			return pos != BlockPos.ORIGIN || (state != null && state.getBlock() == Blocks.AIR);
+		}
+
+		@Override
+		public Biome getBiome(BlockPos pos) {
+			return Biomes.PLAINS;
+		}
+
+		@Override
+		public int getStrongPower(BlockPos pos, EnumFacing direction) {
+			return 0;
+		}
+
+		@Override
+		public WorldType getWorldType() {
+			return Minecraft.getMinecraft().world.getWorldType();
+		}
+
+		@Override
+		public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) {
+			return pos == BlockPos.ORIGIN ? state.isSideSolid(this, pos, side) : _default;
 		}
 	}
 }

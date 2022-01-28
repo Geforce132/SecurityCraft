@@ -101,7 +101,6 @@ public class GuiDisguiseModule extends GuiContainer {
 				module.setTagCompound(new NBTTagCompound());
 
 			moduleTag = module.getTagCompound();
-
 			moduleTag.setTag("SavedState", NBTUtil.writeBlockState(new NBTTagCompound(), stateSelector.getState()));
 			SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(module));
 		}
