@@ -109,12 +109,21 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 
 		if (te instanceof IModuleInventory && ((IModuleInventory) te).hasModule(EnumModuleType.DISGUISE)) {
 			ItemStack module = ((IModuleInventory) te).getModule(EnumModuleType.DISGUISE);
-			Block block = ((ItemModule) module.getItem()).getBlockAddon(module.getTagCompound());
 
-			if (block == null)
-				return BlockFaceShape.SOLID;
-			else
-				return block.getDefaultState().getBlockFaceShape(world, pos, face);
+			if (!module.hasTagCompound())
+				module.setTagCompound(new NBTTagCompound());
+
+			IBlockState disguisedState = NBTUtil.readBlockState(module.getTagCompound().getCompoundTag("SavedState"));
+
+			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
+				return disguisedState.getBlockFaceShape(world, pos, face);
+			else {
+				Block block = ((ItemModule) module.getItem()).getBlockAddon(module.getTagCompound());
+				if (block == null)
+					return BlockFaceShape.SOLID;
+				else
+					return block.getDefaultState().getBlockFaceShape(world, pos, face);
+			}
 		}
 
 		return BlockFaceShape.SOLID;
@@ -130,12 +139,25 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 
 		if (te.hasModule(EnumModuleType.DISGUISE)) {
 			ItemStack disguiseModule = te.getModule(EnumModuleType.DISGUISE);
-			Block blockToDisguiseAs = ((ItemModule) disguiseModule.getItem()).getBlockAddon(disguiseModule.getTagCompound());
 
-			if (blockToDisguiseAs != null) {
+			if (!disguiseModule.hasTagCompound())
+				disguiseModule.setTagCompound(new NBTTagCompound());
+
+			IBlockState disguisedState = NBTUtil.readBlockState(disguiseModule.getTagCompound().getCompoundTag("SavedState"));
+
+			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR) {
 				// If this block has a disguise module added with a transparent block inserted.
-				if (!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
+				if (!disguisedState.isOpaqueCube() || !disguisedState.isFullCube())
 					return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side), side);
+			}
+			else {
+				Block blockToDisguiseAs = ((ItemModule) disguiseModule.getItem()).getBlockAddon(disguiseModule.getTagCompound());
+
+				if (blockToDisguiseAs != null) {
+					// If this block has a disguise module added with a transparent block inserted.
+					if (!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
+						return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side), side);
+				}
 			}
 		}
 
