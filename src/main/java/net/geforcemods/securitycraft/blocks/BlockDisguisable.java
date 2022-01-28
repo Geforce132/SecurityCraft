@@ -15,8 +15,11 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -169,14 +172,23 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 			ItemStack module = te.hasModule(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!module.isEmpty()) {
-				ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddonAsStack(module.getTagCompound());
-				Block block = Block.getBlockFromItem(disguisedStack.getItem());
-				boolean hasMeta = disguisedStack.getHasSubtypes();
+				if (!module.hasTagCompound())
+					module.setTagCompound(new NBTTagCompound());
 
-				IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getItemDamage() : getMetaFromState(world.getBlockState(pos)));
+				IBlockState disguisedState = NBTUtil.readBlockState(module.getTagCompound().getCompoundTag("SavedState"));
 
-				if (block != this)
-					return disguisedModel.getActualState(world, pos);
+				if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
+					return disguisedState;
+				else { //fallback, mainly for upgrading old worlds from before the state selector existed 
+					ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddonAsStack(module.getTagCompound());
+					Block block = Block.getBlockFromItem(disguisedStack.getItem());
+					boolean hasMeta = disguisedStack.getHasSubtypes();
+
+					IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getItemDamage() : getMetaFromState(world.getBlockState(pos)));
+
+					if (block != this)
+						return disguisedModel.getActualState(world, pos);
+				}
 			}
 		}
 

@@ -4,12 +4,15 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.containers.ContainerProjector;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.minecraft.block.Block;
+import net.geforcemods.securitycraft.util.TileEntityRenderDelegate;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityProjector extends TileEntityDisguisable implements IInventory, ILockable {
@@ -28,6 +31,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	public boolean active = false;
 	private boolean horizontal = false;
 	private ItemStack projectedBlock = ItemStack.EMPTY;
+	private IBlockState projectedState = Blocks.AIR.getDefaultState();
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
@@ -45,6 +49,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 		tag.setBoolean("active", active);
 		tag.setBoolean("horizontal", horizontal);
 		tag.setTag("storedItem", projectedBlock.writeToNBT(new NBTTagCompound()));
+		tag.setTag("SavedState", NBTUtil.writeBlockState(new NBTTagCompound(), projectedState));
 		return tag;
 	}
 
@@ -60,6 +65,11 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 		active = tag.getBoolean("active");
 		horizontal = tag.getBoolean("horizontal");
 		projectedBlock = new ItemStack(tag.getCompoundTag("storedItem"));
+
+		if (!tag.hasKey("SavedState"))
+			resetSavedState();
+		else
+			setProjectedState(NBTUtil.readBlockState(tag.getCompoundTag("SavedState")));
 	}
 
 	public int getProjectionWidth() {
@@ -125,8 +135,8 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 		markDirty();
 	}
 
-	public Block getProjectedBlock() {
-		return Block.getBlockFromItem(projectedBlock.getItem());
+	public IBlockState getProjectedState() {
+		return projectedState;
 	}
 
 	@Override
@@ -160,14 +170,17 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	@Override
 	public void clear() {
 		projectedBlock = ItemStack.EMPTY;
+		resetSavedState();
 	}
 
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
 		ItemStack stack = projectedBlock;
 
-		if (count >= 1)
+		if (count >= 1) {
 			projectedBlock = ItemStack.EMPTY;
+			resetSavedState();
+		}
 
 		return stack;
 	}
@@ -200,7 +213,9 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		ItemStack stack = projectedBlock;
+
 		projectedBlock = ItemStack.EMPTY;
+		resetSavedState();
 		return stack;
 	}
 
@@ -209,7 +224,12 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
 			stack = new ItemStack(stack.getItem(), getInventoryStackLimit());
 
+		ItemStack old = projectedBlock;
+
 		projectedBlock = stack;
+
+		if (old.getItem() != projectedBlock.getItem())
+			resetSavedState();
 	}
 
 	@Override
@@ -239,5 +259,46 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	@Override
 	public int getFieldCount() {
 		return 0;
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+
+		if (world.isRemote)
+			TileEntityRenderDelegate.PROJECTOR.putDelegateFor(this, projectedState);
+	}
+
+	@Override
+	public void invalidate() {
+		super.invalidate();
+
+		if (world.isRemote)
+			TileEntityRenderDelegate.PROJECTOR.removeDelegateOf(this);
+	}
+
+	public void setProjectedState(IBlockState projectedState) {
+		if (world != null && world.isRemote) {
+			if (this.projectedState.getBlock() != projectedState.getBlock())
+				TileEntityRenderDelegate.PROJECTOR.removeDelegateOf(this);
+
+			TileEntityRenderDelegate.PROJECTOR.putDelegateFor(this, projectedState);
+		}
+
+		this.projectedState = projectedState;
+		markDirty();
+	}
+
+	public void resetSavedState() {
+		if (projectedBlock.getItem() instanceof ItemBlock)
+			setProjectedState(((ItemBlock) projectedBlock.getItem()).getBlock().getDefaultState());
+		else {
+			projectedState = Blocks.AIR.getDefaultState();
+
+			if (world != null && world.isRemote)
+				TileEntityRenderDelegate.PROJECTOR.removeDelegateOf(this);
+
+			markDirty();
+		}
 	}
 }

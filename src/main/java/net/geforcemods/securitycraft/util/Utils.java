@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.util;
 
+import java.util.function.Consumer;
+
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.minecraft.block.Block;
@@ -60,5 +62,10 @@ public class Utils {
 		}
 
 		return new TextComponentTranslation(key, params);
+	}
+
+	public static <T> T make(T instance, Consumer<T> initializer) {
+		initializer.accept(instance);
+		return instance;
 	}
 }

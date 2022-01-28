@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.renderers.RenderBullet;
 import net.geforcemods.securitycraft.renderers.RenderIMSBomb;
 import net.geforcemods.securitycraft.renderers.RenderSentry;
 import net.geforcemods.securitycraft.renderers.TileEntityBlockPocketManagerRenderer;
+import net.geforcemods.securitycraft.renderers.TileEntityDisguisableRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityProjectorRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityReinforcedPistonRenderer;
@@ -32,8 +33,16 @@ import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySonicSecuritySystemRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityTrophySystemRenderer;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
+import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
+import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
+import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
+import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
+import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
+import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
+import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
+import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPiston;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
@@ -359,6 +368,7 @@ public class ClientProxy implements IProxy {
 
 		KeyBindings.init();
 
+		//normal tile entity renderers
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRetinalScanner.class, new TileEntityRetinalScannerRenderer());
@@ -368,6 +378,15 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityProjector.class, new TileEntityProjectorRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReinforcedPiston.class, new TileEntityReinforcedPistonRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySonicSecuritySystem.class, new TileEntitySonicSecuritySystemRenderer());
+		//disguisable tile entity renderers
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCageTrap.class, new TileEntityDisguisableRenderer<>());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInventoryScanner.class, new TileEntityDisguisableRenderer<>());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeycardReader.class, new TileEntityDisguisableRenderer<>());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypad.class, new TileEntityDisguisableRenderer<>());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadFurnace.class, new TileEntityDisguisableRenderer<>());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserBlock.class, new TileEntityDisguisableRenderer<>());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityProtecto.class, new TileEntityDisguisableRenderer<>());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLogger.class, new TileEntityDisguisableRenderer<>());
 
 		Item.getItemFromBlock(SCContent.keypadChest).setTileEntityItemStackRenderer(new ItemKeypadChestRenderer());
 

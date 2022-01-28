@@ -9,8 +9,10 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
+import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
+import net.geforcemods.securitycraft.util.TileEntityRenderDelegate;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -53,13 +55,20 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 
 			insertModule(module);
 
+			if (((ItemModule) module.getItem()).getModuleType() == EnumModuleType.DISGUISE)
+				onInsertDisguiseModule(module);
+
 			excludedTEs.add(this);
 			createLinkedBlockAction(EnumLinkedAction.MODULE_INSERTED, parameters, excludedTEs);
 		}
 		else if (action == EnumLinkedAction.MODULE_REMOVED) {
 			EnumModuleType module = (EnumModuleType) parameters[1];
+			ItemStack moduleStack = getModule(module);
 
 			removeModule(module);
+
+			if (module == EnumModuleType.DISGUISE)
+				onRemoveDisguiseModule(moduleStack);
 
 			excludedTEs.add(this);
 			createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, parameters, excludedTEs);
@@ -70,18 +79,47 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
 		super.onModuleInserted(stack, module);
 
-		if (!world.isRemote && module == EnumModuleType.DISGUISE)
-			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, true, stack));
+		if (module == EnumModuleType.DISGUISE)
+			onInsertDisguiseModule(stack);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
 		super.onModuleRemoved(stack, module);
 
-		if (!world.isRemote && module == EnumModuleType.DISGUISE)
-			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, false, stack));
+		if (module == EnumModuleType.DISGUISE)
+			onRemoveDisguiseModule(stack);
 	}
 
+	private void onInsertDisguiseModule(ItemStack stack) {
+		if (!world.isRemote)
+			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, true, stack));
+		else
+			TileEntityRenderDelegate.putDisguisedTeRenderer(this, stack);
+	}
+
+	private void onRemoveDisguiseModule(ItemStack stack) {
+		if (!world.isRemote)
+			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, false, stack));
+		else
+			TileEntityRenderDelegate.DISGUISED_BLOCK.removeDelegateOf(this);
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+
+		if (world.isRemote)
+			TileEntityRenderDelegate.putDisguisedTeRenderer(this, getModule(EnumModuleType.DISGUISE));
+	}
+
+	@Override
+	public void invalidate() {
+		super.invalidate();
+
+		if (world.isRemote)
+			TileEntityRenderDelegate.DISGUISED_BLOCK.removeDelegateOf(this);
+	}
 
 	@Override
 	public EnumModuleType[] acceptedModules() {

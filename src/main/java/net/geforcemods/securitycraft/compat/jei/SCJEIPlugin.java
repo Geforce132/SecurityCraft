@@ -24,7 +24,7 @@ public class SCJEIPlugin implements IModPlugin {
 		List<ReinforcerRecipe> vtsRecipes = new ArrayList<>();
 		List<ReinforcerRecipe> stvRecipes = new ArrayList<>();
 
-		registry.addAdvancedGuiHandlers(new SlotMover());
+		registry.addAdvancedGuiHandlers(new SlotMovers.CustomizeBlock(), new SlotMovers.Projector(), new SlotMovers.DisguiseModule());
 		registry.addIngredientInfo(new ItemStack(SCContent.adminTool), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.adminTool");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypad), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypadChest), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_chest");

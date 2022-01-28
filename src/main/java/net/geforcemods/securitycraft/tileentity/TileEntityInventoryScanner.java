@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
 import net.geforcemods.securitycraft.inventory.ExtractOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.TileEntityRenderDelegate;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -265,6 +266,13 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 
 		if (connectedScanner != null && !connectedScanner.hasModule(module))
 			connectedScanner.insertModule(stack);
+
+		if (world.isRemote && module == EnumModuleType.DISGUISE) {
+			TileEntityRenderDelegate.putDisguisedTeRenderer(this, stack);
+
+			if (connectedScanner != null)
+				TileEntityRenderDelegate.putDisguisedTeRenderer(connectedScanner, stack);
+		}
 	}
 
 	@Override
@@ -287,6 +295,12 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 					connectedScanner.getContents().set(i, ItemStack.EMPTY);
 				}
 			}
+		}
+		else if (module == EnumModuleType.DISGUISE && world.isRemote) {
+			TileEntityRenderDelegate.DISGUISED_BLOCK.removeDelegateOf(this);
+
+			if (connectedScanner != null)
+				TileEntityRenderDelegate.DISGUISED_BLOCK.removeDelegateOf(connectedScanner);
 		}
 	}
 

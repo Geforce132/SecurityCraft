@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 
+- New: The Disguise Module can now be set to display a specific state of a block (e.g. corner stairs), instead of a fixed one
 - Change: The Password-protected Furnace now has a new look
 - Change: The Cage Trap is now reusable
 - Fix: Reinforced pressure plates cannot open reinforced doors/trapdoors/etc.
@@ -7,6 +8,7 @@
 - Fix: Light level of Password-protected Furnace is too high compared to the vanilla furnace
 - Fix: Changing the owner of the Inventory Scanner or doors does not change the owner of the other block/half
 - Fix: Reinforced Pistons and Reinforced Sticky Pistons cannot retract
+- Fix: Disguising blocks using certain blocks with block entity renderers (like signs and banners) doesn't work
 - Potential Fix: Entities sometimes disappear when dismounting a camera
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------

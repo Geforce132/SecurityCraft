@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.renderers;
 
 import net.geforcemods.securitycraft.blocks.BlockProjector;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
+import net.geforcemods.securitycraft.util.TileEntityRenderDelegate;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -17,6 +18,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileEntityProjector> {
 	@Override
 	public void render(TileEntityProjector te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		TileEntityRenderDelegate.DISGUISED_BLOCK.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha);
+
 		if (te.isActive() && !te.isEmpty()) {
 			EnumFacing facing = te.getWorld().getBlockState(te.getPos()).getValue(BlockProjector.FACING);
 
@@ -37,11 +40,12 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 
 					if (pos != null && te.getWorld().isAirBlock(pos)) {
 						BlockRendererDispatcher blockRendererDispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-						IBlockState state = te.getProjectedBlock().getStateFromMeta(te.getStackInSlot(36).getMetadata());
+						IBlockState state = te.getProjectedState();
 
 						GlStateManager.disableCull();
 						GlStateManager.scale(0.9999D, 0.9999D, 0.9999D); //counteract z-fighting between fake blocks
 						blockRendererDispatcher.renderBlockBrightness(state, te.getWorld().getLightBrightness(pos));
+						TileEntityRenderDelegate.PROJECTOR.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha);
 						GlStateManager.enableCull();
 					}
 
