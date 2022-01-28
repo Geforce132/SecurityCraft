@@ -260,7 +260,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 	public void sendSlotContents(Container container, int slotIndex, ItemStack newStack) {
 		if (slotIndex == slotToCheck) {
 			if (newStack.getItem() instanceof ItemBlock && (state == null || ((ItemBlock) newStack.getItem()).getBlock() != state.getBlock()))
-				state = ((ItemBlock) newStack.getItem()).getBlock().getDefaultState();
+				state = ((ItemBlock) newStack.getItem()).getBlock().getStateFromMeta(newStack.getMetadata());
 			else
 				state = Blocks.AIR.getDefaultState();
 

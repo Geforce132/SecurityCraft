@@ -291,7 +291,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 
 	public void resetSavedState() {
 		if (projectedBlock.getItem() instanceof ItemBlock)
-			setProjectedState(((ItemBlock) projectedBlock.getItem()).getBlock().getDefaultState());
+			setProjectedState(((ItemBlock) projectedBlock.getItem()).getBlock().getStateFromMeta(projectedBlock.getMetadata()));
 		else {
 			projectedState = Blocks.AIR.getDefaultState();
 
