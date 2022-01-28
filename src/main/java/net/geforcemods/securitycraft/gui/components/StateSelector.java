@@ -108,6 +108,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 		super.drawScreen(mouseX, mouseY, partialTick);
 		previousPageButton.drawButton(mc, mouseX, mouseY, partialTick);
 		nextPageButton.drawButton(mc, mouseX, mouseY, partialTick);
+		GlStateManager.pushMatrix();
 		GlStateManager.translate(previewXTranslation, previewYTranslation, 0);
 		GlStateManager.scale(1.5F, 1.5F, 1.5F);
 		GlStateManager.translate(0.5F, 0.5F, 0.5F);
@@ -121,6 +122,8 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 
 		if (beRenderer != null)
 			beRenderer.render(te, 0.0D, 0.0D, 0.0D, partialTick, -1, 0.0F);
+
+		GlStateManager.popMatrix();
 
 		for (int i = 0; i < propertyButtons.size(); i++) {
 			String propertyName = propertyButtons.get(i).getProperty().getName();
