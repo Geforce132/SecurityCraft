@@ -67,11 +67,11 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
 		else
-			return switch (state.getValue(FACING)) {
-				case NORTH -> state.getValue(OPEN) ? NORTH_OPEN : NORTH_CLOSED;
-				case EAST -> state.getValue(OPEN) ? EAST_OPEN : EAST_CLOSED;
-				case SOUTH -> state.getValue(OPEN) ? SOUTH_OPEN : SOUTH_CLOSED;
-				case WEST -> state.getValue(OPEN) ? WEST_OPEN : WEST_CLOSED;
+			return switch (disguisedState.getValue(FACING)) {
+				case NORTH -> disguisedState.getValue(OPEN) ? NORTH_OPEN : NORTH_CLOSED;
+				case EAST -> disguisedState.getValue(OPEN) ? EAST_OPEN : EAST_CLOSED;
+				case SOUTH -> disguisedState.getValue(OPEN) ? SOUTH_OPEN : SOUTH_CLOSED;
+				case WEST -> disguisedState.getValue(OPEN) ? WEST_OPEN : WEST_CLOSED;
 				default -> Shapes.block();
 			};
 	}
@@ -83,7 +83,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
 		else
-			return switch (state.getValue(FACING)) {
+			return switch (disguisedState.getValue(FACING)) {
 				case NORTH -> NORTH_COLLISION;
 				case EAST -> EAST_COLLISION;
 				case SOUTH -> SOUTH_COLLISION;
