@@ -24,7 +24,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Matrix4f;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -38,7 +37,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class StateSelector extends GuiScreen implements IContainerListener {
@@ -222,7 +220,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 			//			float g = (color >> 8 & 255) / 255.0F;
 			//			float b = (color & 255) / 255.0F;
 
-			blockRenderer.getBlockModelRenderer().renderModel(mc.world, blockModel, state, BlockPos.ORIGIN, Tessellator.getInstance().getBuffer(), false);
+			//blockRenderer.getBlockModelRenderer().renderModel(mc.world, blockModel, state, BlockPos.ORIGIN, Tessellator.getInstance().getBuffer(), false);
 		}
 	}
 
@@ -241,14 +239,16 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int button) {
-		for (int i = 0; i < propertyButtons.size(); i++) {
-			if (propertyButtons.get(i).onPress())
-				break;
-		}
+		if (button == 0) {
+			for (int i = 0; i < propertyButtons.size(); i++) {
+				if (propertyButtons.get(i).onPress())
+					break;
+			}
 
-		previousPageButton.mousePressed(mc, mouseX, mouseY);
-		nextPageButton.mousePressed(mc, mouseX, mouseY);
-		clickedInDragRegion = dragHoverChecker.checkHover(mouseX, mouseY);
+			previousPageButton.mousePressed(mc, mouseX, mouseY);
+			nextPageButton.mousePressed(mc, mouseX, mouseY);
+			clickedInDragRegion = dragHoverChecker.checkHover(mouseX, mouseY);
+		}
 	}
 
 	@Override
