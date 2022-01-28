@@ -69,24 +69,24 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(world, pos, ctx);
 
-		switch (state.getValue(FACING)) {
+		switch (disguisedState.getValue(FACING)) {
 			case NORTH:
-				if (state.getValue(OPEN))
+				if (disguisedState.getValue(OPEN))
 					return NORTH_OPEN;
 				else
 					return NORTH_CLOSED;
 			case EAST:
-				if (state.getValue(OPEN))
+				if (disguisedState.getValue(OPEN))
 					return EAST_OPEN;
 				else
 					return EAST_CLOSED;
 			case SOUTH:
-				if (state.getValue(OPEN))
+				if (disguisedState.getValue(OPEN))
 					return SOUTH_OPEN;
 				else
 					return SOUTH_CLOSED;
 			case WEST:
-				if (state.getValue(OPEN))
+				if (disguisedState.getValue(OPEN))
 					return WEST_OPEN;
 				else
 					return WEST_CLOSED;
