@@ -56,7 +56,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 	private List<IProperty<?>> properties = new ArrayList<>();
 	private TileEntity te = null;
 	@SuppressWarnings("rawtypes")
-	private TileEntitySpecialRenderer beRenderer = null;
+	private TileEntitySpecialRenderer teRenderer = null;
 	private List<BlockStatePropertyButton<?>> propertyButtons = new ArrayList<>();
 	private int page, amountOfPages;
 	private GuiButton previousPageButton, nextPageButton;
@@ -128,8 +128,8 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 		mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		renderBlockModel(state);
 
-		if (beRenderer != null)
-			beRenderer.render(te, 0.0D, 0.0D, 0.0D, partialTick, -1, 1.0F);
+		if (teRenderer != null)
+			teRenderer.render(te, 0.0D, 0.0D, 0.0D, partialTick, -1, 1.0F);
 
 		GlStateManager.popMatrix();
 
@@ -205,7 +205,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 	private void updateBlockEntityInfo(boolean reset) {
 		if (reset) {
 			te = null;
-			beRenderer = null;
+			teRenderer = null;
 		}
 
 		if (state.getBlock().hasTileEntity(state)) {
@@ -215,7 +215,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 				te = state.getBlock().createTileEntity(mc.world, state);
 				te.blockType = state.getBlock();
 				te.setWorld(mc.world);
-				beRenderer = TileEntityRendererDispatcher.instance.getRenderer(te);
+				teRenderer = TileEntityRendererDispatcher.instance.getRenderer(te);
 			}
 
 			te.blockMetadata = state.getBlock().getMetaFromState(state);
