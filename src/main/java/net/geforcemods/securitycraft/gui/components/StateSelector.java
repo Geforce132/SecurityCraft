@@ -264,8 +264,15 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 				}
 			}
 
-			previousPageButton.mousePressed(mc, mouseX, mouseY);
-			nextPageButton.mousePressed(mc, mouseX, mouseY);
+			if (previousPageButton.mousePressed(mc, mouseX, mouseY)) {
+				((ClickButton) previousPageButton).onClick();
+				previousPageButton.playPressSound(mc.getSoundHandler());
+			}
+			else if (nextPageButton.mousePressed(mc, mouseX, mouseY)) {
+				((ClickButton) nextPageButton).onClick();
+				nextPageButton.playPressSound(mc.getSoundHandler());
+			}
+
 			clickedInDragRegion = dragHoverChecker.checkHover(mouseX, mouseY);
 		}
 	}
