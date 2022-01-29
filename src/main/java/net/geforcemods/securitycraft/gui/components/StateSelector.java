@@ -46,7 +46,6 @@ import net.minecraftforge.fml.client.config.GuiButtonExt;
 public class StateSelector extends GuiScreen implements IContainerListener {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/state_selector.png");
 	private static final int PAGE_LENGTH = 5;
-	private static final float ROTATION_SENSITIVITY = 0.25F;
 	private final ContainerStateSelectorAccess menu;
 	private final int xStart, yStart, slotToCheck;
 	private final float previewXTranslation, previewYTranslation;
@@ -103,8 +102,14 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTick) {
 		if (Mouse.isButtonDown(0) && clickedInDragRegion) {
-			dragX = ROTATION_SENSITIVITY * Mouse.getDY();
-			dragY = ROTATION_SENSITIVITY * Mouse.getDX();
+			float dy = Mouse.getDY();
+			float dx = Mouse.getDX();
+
+			if (dy != 0)
+				dragX += dy;
+
+			if (dx != 0)
+				dragY += dx;
 		}
 
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
