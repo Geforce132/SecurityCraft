@@ -15,7 +15,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
@@ -31,12 +30,6 @@ public class BlockRetinalScanner extends BlockDisguisable {
 	public BlockRetinalScanner(Material par1) {
 		super(par1);
 		setSoundType(SoundType.METAL);
-	}
-
-	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) //z-fighting fix, nullifies ctm fix from superclass
-	{
-		return getRenderLayer() == layer;
 	}
 
 	@Override

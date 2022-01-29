@@ -95,12 +95,7 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
-
-	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) { //ctm fix
-		return true;
+		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
