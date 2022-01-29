@@ -129,7 +129,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 		renderBlockModel(state);
 
 		if (beRenderer != null)
-			beRenderer.render(te, 0.0D, 0.0D, 0.0D, partialTick, 0, 1.0F);
+			beRenderer.render(te, 0.0D, 0.0D, 0.0D, partialTick, -1, 1.0F);
 
 		GlStateManager.popMatrix();
 
