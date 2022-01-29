@@ -72,8 +72,8 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 		this.slotToCheck = slotToCheck;
 		dragStartX += xStart;
 		dragStartY += yStart;
-		this.previewXTranslation = dragStartX + 19;
-		this.previewYTranslation = dragStartY + 37;
+		this.previewXTranslation = dragStartX + 34;
+		this.previewYTranslation = dragStartY + 36;
 		dragHoverChecker = new HoverChecker(dragStartY, dragStartY + 47, dragStartX, dragStartX + 47);
 	}
 
@@ -120,10 +120,10 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 		nextPageButton.drawButton(mc, mouseX, mouseY, partialTick);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(previewXTranslation, previewYTranslation, 512);
-		GlStateManager.translate(-5.75F, -5.75F, -5.75F);
+		GlStateManager.translate(-12.0F, -12.0F, -12.0F);
 		GlStateManager.rotate(dragX, 1, 0, 0);
 		GlStateManager.rotate(dragY, 0, 1, 0);
-		GlStateManager.translate(5.75F, 5.75F, 5.75F);
+		GlStateManager.translate(12.0F, 12.0F, 12.0F);
 		GlStateManager.scale(-26.0F, -26.0F, -26.0F);
 		mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		renderBlockModel(state);
