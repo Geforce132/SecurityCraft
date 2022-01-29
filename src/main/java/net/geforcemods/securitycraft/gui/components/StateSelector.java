@@ -256,8 +256,12 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 	public void mouseClicked(int mouseX, int mouseY, int button) {
 		if (button == 0) {
 			for (int i = 0; i < propertyButtons.size(); i++) {
-				if (propertyButtons.get(i).onPress())
+				BlockStatePropertyButton<?> bspb = propertyButtons.get(i);
+
+				if (bspb.onPress()) {
+					bspb.playPressSound(mc.getSoundHandler());
 					break;
+				}
 			}
 
 			previousPageButton.mousePressed(mc, mouseX, mouseY);
