@@ -35,7 +35,7 @@ public class GuiDisguiseModule extends GuiContainer {
 		super.initGui();
 
 		guiLeft += 90;
-		stateSelector = new StateSelector((ContainerStateSelectorAccess) inventorySlots, guiLeft - 190, guiTop + 7, 0, 200, 15, -2.725F, -1.2F);
+		stateSelector = new StateSelector((ContainerStateSelectorAccess) inventorySlots, guiLeft - 190, guiTop + 7, 0, 200, 15);
 		stateSelector.initGui();
 	}
 
@@ -61,16 +61,6 @@ public class GuiDisguiseModule extends GuiContainer {
 
 		if (stateSelector != null)
 			stateSelector.drawScreen(mouseX, mouseY, partialTicks);
-	}
-
-	@Override
-	protected void mouseClickMove(int mouseX, int mouseY, int button, long timeSinceLastClick) {
-		if (stateSelector != null) {
-			stateSelector.mouseClickMove(mouseX, mouseY, button, timeSinceLastClick);
-			return;
-		}
-
-		super.mouseClickMove(mouseX, mouseY, button, timeSinceLastClick);
 	}
 
 	@Override

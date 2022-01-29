@@ -87,7 +87,7 @@ public class GuiProjector extends GuiContainer implements ISlider {
 
 		slotHoverChecker = new StringHoverChecker(guiTop + 22, guiTop + 39, guiLeft + 78, guiLeft + 95, SLOT_TOOLTIP);
 
-		stateSelector = new StateSelector((ContainerStateSelectorAccess) inventorySlots, guiLeft - 190, guiTop + 7, 0, 197, 0, -2.85F, -0.45F);
+		stateSelector = new StateSelector((ContainerStateSelectorAccess) inventorySlots, guiLeft - 190, guiTop + 7, 0, 197, 0);
 		stateSelector.initGui();
 	}
 
@@ -126,16 +126,6 @@ public class GuiProjector extends GuiContainer implements ISlider {
 	protected void actionPerformed(GuiButton button) {
 		if (button instanceof ClickButton)
 			((ClickButton) button).onClick();
-	}
-
-	@Override
-	protected void mouseClickMove(int mouseX, int mouseY, int button, long timeSinceLastClick) {
-		if (stateSelector != null) {
-			stateSelector.mouseClickMove(mouseX, mouseY, button, timeSinceLastClick);
-			return;
-		}
-
-		super.mouseClickMove(mouseX, mouseY, button, timeSinceLastClick);
 	}
 
 	@Override

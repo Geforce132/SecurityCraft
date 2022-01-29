@@ -1,20 +1,14 @@
 package net.geforcemods.securitycraft.gui.components;
 
 import java.awt.Rectangle;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Quaternion;
-import org.lwjgl.util.vector.Vector3f;
 
 import net.geforcemods.securitycraft.containers.ContainerStateSelectorAccess;
-import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -25,9 +19,9 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -52,11 +46,7 @@ import net.minecraftforge.fml.client.config.GuiButtonExt;
 public class StateSelector extends GuiScreen implements IContainerListener {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/state_selector.png");
 	private static final int PAGE_LENGTH = 5;
-	private static final float ROTATION_SENSITIVITY = 0.1F;
-	private static final Vector3f YN = new Vector3f(0.0F, -1.0F, 0.0F);
-	private static final Vector3f Y_DRAG_ROTATION_VECTOR = new Vector3f((float) (1.0D / Math.sqrt(2)), 0, (float) (1.0D / Math.sqrt(2)));
-	private static final Quaternion DEFAULT_ROTATION = ClientUtils.fromXYZDegrees(new Vector3f(15.0F, -135.0F, 0.0F));
-	private static final FloatBuffer BUF_FLOAT_16 = BufferUtils.createFloatBuffer(16);
+	private static final float ROTATION_SENSITIVITY = 0.25F;
 	private final ContainerStateSelectorAccess menu;
 	private final int xStart, yStart, slotToCheck;
 	private final float previewXTranslation, previewYTranslation;
@@ -71,19 +61,20 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 	private List<BlockStatePropertyButton<?>> propertyButtons = new ArrayList<>();
 	private int page, amountOfPages;
 	private GuiButton previousPageButton, nextPageButton;
-	private Matrix4f dragRotation = Utils.make(new Matrix4f(), matrix -> matrix.setIdentity());
 	private boolean clickedInDragRegion = false;
+	private float dragX = -15.0F;
+	private float dragY = -135.0F;
 
-	public StateSelector(ContainerStateSelectorAccess menu, int xStart, int yStart, int slotToCheck, int dragStartX, int dragStartY, float previewXTranslation, float previewYTranslation) {
+	public StateSelector(ContainerStateSelectorAccess menu, int xStart, int yStart, int slotToCheck, int dragStartX, int dragStartY) {
 		menu.addListener(this);
 		this.menu = menu;
 		this.xStart = xStart;
 		this.yStart = yStart;
 		this.slotToCheck = slotToCheck;
-		this.previewXTranslation = previewXTranslation;
-		this.previewYTranslation = previewYTranslation;
 		dragStartX += xStart;
 		dragStartY += yStart;
+		this.previewXTranslation = dragStartX + 19;
+		this.previewYTranslation = dragStartY + 37;
 		dragHoverChecker = new HoverChecker(dragStartY, dragStartY + 47, dragStartX, dragStartX + 47);
 	}
 
@@ -111,6 +102,11 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTick) {
+		if (Mouse.isButtonDown(0) && clickedInDragRegion) {
+			dragX = ROTATION_SENSITIVITY * Mouse.getDY();
+			dragY = ROTATION_SENSITIVITY * Mouse.getDX();
+		}
+
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
 		drawTexturedModalRect(xStart, yStart, 0, 0, 193, 150);
@@ -118,15 +114,13 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 		previousPageButton.drawButton(mc, mouseX, mouseY, partialTick);
 		nextPageButton.drawButton(mc, mouseX, mouseY, partialTick);
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(previewXTranslation, previewYTranslation, 0);
-		GlStateManager.scale(1.5F, 1.5F, 1.5F);
-		GlStateManager.translate(0.5F, 0.5F, 0.5F);
-		GlStateManager.rotate(DEFAULT_ROTATION);
-		BUF_FLOAT_16.clear();
-		dragRotation.store(BUF_FLOAT_16);
-		BUF_FLOAT_16.rewind();
-		GlStateManager.multMatrix(BUF_FLOAT_16);
-		GlStateManager.translate(-0.5F, -0.5F, -0.5F);
+		GlStateManager.translate(previewXTranslation, previewYTranslation, 512);
+		GlStateManager.translate(-5.75F, -5.75F, -5.75F);
+		GlStateManager.rotate(dragX, 1, 0, 0);
+		GlStateManager.rotate(dragY, 0, 1, 0);
+		GlStateManager.translate(5.75F, 5.75F, 5.75F);
+		GlStateManager.scale(-26.0F, -26.0F, -26.0F);
+		mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		renderBlockModel(state);
 
 		if (beRenderer != null)
@@ -149,7 +143,8 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 			amountOfPages = (int) Math.ceil(properties.size() / (float) PAGE_LENGTH);
 			page = amountOfPages == 0 ? 0 : 1;
 			updateBlockEntityInfo(true);
-			dragRotation.setIdentity();
+			dragX = -15.0F;
+			dragY = -135.0F;
 		}
 
 		int buttonY = 0;
@@ -236,19 +231,6 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 			blockRenderer.getBlockModelRenderer().renderModel(renderAccess, blockModel, state, BlockPos.ORIGIN, buffer, false);
 			tessellator.draw();
-		}
-	}
-
-	@Override
-	public void mouseClickMove(int mouseX, int mouseY, int button, long timeSinceLastClick) {
-		if (button == 0 && clickedInDragRegion) {
-			double dragX = Mouse.getDX();
-			double dragY = Mouse.getDY();
-
-			dragRotation.transpose();
-			dragRotation.rotate((float) dragX * ROTATION_SENSITIVITY, YN);
-			dragRotation.rotate((float) dragY * ROTATION_SENSITIVITY, Y_DRAG_ROTATION_VECTOR);
-			dragRotation.transpose();
 		}
 	}
 

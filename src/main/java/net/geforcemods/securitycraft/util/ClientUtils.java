@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.util;
 
-import org.lwjgl.util.vector.Quaternion;
-import org.lwjgl.util.vector.Vector3f;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
@@ -39,18 +36,5 @@ public class ClientUtils {
 	 */
 	public static void syncItemNBT(ItemStack item) {
 		SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(item));
-	}
-
-	public static Quaternion fromXYZDegrees(Vector3f degreesVector) {
-		return fromXYZ((float) Math.toRadians(degreesVector.getX()), (float) Math.toRadians(degreesVector.getY()), (float) Math.toRadians(degreesVector.getZ()));
-	}
-
-	public static Quaternion fromXYZ(float x, float y, float z) {
-		Quaternion quaternion = new Quaternion();
-
-		Quaternion.mul(new Quaternion((float) Math.sin(x / 2.0F), 0.0F, 0.0F, (float) Math.cos(x / 2.0F)), quaternion, quaternion);
-		Quaternion.mul(new Quaternion(0.0F, (float) Math.sin(y / 2.0F), 0.0F, (float) Math.cos(y / 2.0F)), quaternion, quaternion);
-		Quaternion.mul(new Quaternion(0.0F, 0.0F, (float) Math.sin(z / 2.0F), (float) Math.cos(z / 2.0F)), quaternion, quaternion);
-		return quaternion;
 	}
 }
