@@ -31,7 +31,6 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -53,12 +52,6 @@ public class BlockCageTrap extends BlockDisguisable {
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
-	}
-
-	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) //ctm fix doesn't work for the cage trap
-	{
-		return layer == getRenderLayer();
 	}
 
 	@Override

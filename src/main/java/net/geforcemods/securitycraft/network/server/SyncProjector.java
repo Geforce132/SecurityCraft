@@ -5,6 +5,8 @@ import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,6 +18,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class SyncProjector implements IMessage {
 	private BlockPos pos;
 	private int data;
+	private IBlockState state;
 	private DataType dataType;
 
 	public SyncProjector() {}
@@ -26,6 +29,12 @@ public class SyncProjector implements IMessage {
 		this.dataType = dataType;
 	}
 
+	public SyncProjector(BlockPos pos, IBlockState state) {
+		this.pos = pos;
+		this.state = state;
+		this.dataType = DataType.BLOCK_STATE;
+	}
+
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
@@ -33,6 +42,8 @@ public class SyncProjector implements IMessage {
 
 		if (dataType == DataType.HORIZONTAL)
 			data = buf.readBoolean() ? 1 : 0;
+		else if (dataType == DataType.BLOCK_STATE)
+			state = NBTUtil.readBlockState(ByteBufUtils.readTag(buf));
 		else
 			data = ByteBufUtils.readVarInt(buf, 5);
 	}
@@ -44,6 +55,8 @@ public class SyncProjector implements IMessage {
 
 		if (dataType == DataType.HORIZONTAL)
 			buf.writeBoolean(data == 1);
+		else if (dataType == DataType.BLOCK_STATE)
+			ByteBufUtils.writeTag(buf, NBTUtil.writeBlockState(new NBTTagCompound(), state));
 		else
 			ByteBufUtils.writeVarInt(buf, data, 5);
 	}
@@ -77,6 +90,9 @@ public class SyncProjector implements IMessage {
 						case HORIZONTAL:
 							projector.setHorizontal(message.data == 1);
 							break;
+						case BLOCK_STATE:
+							projector.setProjectedState(message.state);
+							break;
 						case INVALID:
 							break;
 					}
@@ -95,6 +111,7 @@ public class SyncProjector implements IMessage {
 		RANGE,
 		OFFSET,
 		HORIZONTAL,
+		BLOCK_STATE,
 		INVALID;
 	}
 }

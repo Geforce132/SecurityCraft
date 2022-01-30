@@ -74,11 +74,6 @@ public class BlockKeypadFurnace extends BlockDisguisable {
 	}
 
 	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) { //ctm fix not possible due to glass in the front of the furnace
-		return layer == getRenderLayer();
-	}
-
-	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}

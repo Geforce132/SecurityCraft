@@ -2,19 +2,22 @@ package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 
-public class ContainerDisguiseModule extends Container {
+public class ContainerDisguiseModule extends ContainerStateSelectorAccess {
 	private ModuleItemInventory inventory;
 
 	public ContainerDisguiseModule(InventoryPlayer playerInventory, ModuleItemInventory moduleInventory) {
 		inventory = moduleInventory;
+		moduleInventory.setContainer(this);
 		addSlotToContainer(new AddonSlot(inventory, 0, 79, 20));
 
 		for (int i = 0; i < 3; i++) {
@@ -56,6 +59,7 @@ public class ContainerDisguiseModule extends Container {
 				return ItemStack.EMPTY;
 
 			slot.onTake(player, slotStack);
+			detectAndSendChanges();
 		}
 
 		return slotStackCopy;
@@ -72,6 +76,25 @@ public class ContainerDisguiseModule extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return true;
+	}
+
+	@Override
+	public ItemStack getStateStack() {
+		return inventorySlots.get(0).getStack();
+	}
+
+	@Override
+	public IBlockState getSavedState() {
+		ItemStack stack = inventory.getModule();
+
+		if (!stack.hasTagCompound())
+			stack.setTagCompound(new NBTTagCompound());
+
+		return NBTUtil.readBlockState(inventory.getModule().getTagCompound().getCompoundTag("SavedState"));
+	}
+
+	public ModuleItemInventory getModuleInventory() {
+		return inventory;
 	}
 
 	public static class AddonSlot extends Slot {

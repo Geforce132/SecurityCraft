@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 
+- New: The Disguise Module can now be set to display a specific state of a block (e.g. corner stairs), instead of a fixed one
 - Change: The Password-protected Furnace now has a new look
 - Change: The Cage Trap is now reusable
 - Fix: Reinforced pressure plates cannot open reinforced doors/trapdoors/etc.

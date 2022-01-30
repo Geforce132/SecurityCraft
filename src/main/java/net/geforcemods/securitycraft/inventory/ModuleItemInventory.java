@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.inventory;
 
+import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -15,6 +16,7 @@ public class ModuleItemInventory implements IInventory {
 	public final int size = 1;
 	private final ItemStack module;
 	public NonNullList<ItemStack> moduleInventory;
+	private ContainerDisguiseModule container;
 
 	public ModuleItemInventory(ItemStack moduleItem) {
 		module = moduleItem;
@@ -127,6 +129,9 @@ public class ModuleItemInventory implements IInventory {
 		}
 
 		writeToNBT(module.getTagCompound());
+
+		if (container != null)
+			container.onCraftMatrixChanged(this);
 	}
 
 	@Override
@@ -169,5 +174,13 @@ public class ModuleItemInventory implements IInventory {
 		}
 
 		return true;
+	}
+
+	public void setContainer(ContainerDisguiseModule container) {
+		this.container = container;
+	}
+
+	public ItemStack getModule() {
+		return module;
 	}
 }

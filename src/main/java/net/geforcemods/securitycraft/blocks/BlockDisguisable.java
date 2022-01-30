@@ -15,8 +15,11 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -92,12 +95,7 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
-
-	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) { //ctm fix
-		return true;
+		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
@@ -106,12 +104,21 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 
 		if (te instanceof IModuleInventory && ((IModuleInventory) te).hasModule(EnumModuleType.DISGUISE)) {
 			ItemStack module = ((IModuleInventory) te).getModule(EnumModuleType.DISGUISE);
-			Block block = ((ItemModule) module.getItem()).getBlockAddon(module.getTagCompound());
 
-			if (block == null)
-				return BlockFaceShape.SOLID;
-			else
-				return block.getDefaultState().getBlockFaceShape(world, pos, face);
+			if (!module.hasTagCompound())
+				module.setTagCompound(new NBTTagCompound());
+
+			IBlockState disguisedState = NBTUtil.readBlockState(module.getTagCompound().getCompoundTag("SavedState"));
+
+			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
+				return disguisedState.getBlockFaceShape(world, pos, face);
+			else {
+				Block block = ((ItemModule) module.getItem()).getBlockAddon(module.getTagCompound());
+				if (block == null)
+					return BlockFaceShape.SOLID;
+				else
+					return block.getDefaultState().getBlockFaceShape(world, pos, face);
+			}
 		}
 
 		return BlockFaceShape.SOLID;
@@ -127,12 +134,25 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 
 		if (te.hasModule(EnumModuleType.DISGUISE)) {
 			ItemStack disguiseModule = te.getModule(EnumModuleType.DISGUISE);
-			Block blockToDisguiseAs = ((ItemModule) disguiseModule.getItem()).getBlockAddon(disguiseModule.getTagCompound());
 
-			if (blockToDisguiseAs != null) {
+			if (!disguiseModule.hasTagCompound())
+				disguiseModule.setTagCompound(new NBTTagCompound());
+
+			IBlockState disguisedState = NBTUtil.readBlockState(disguiseModule.getTagCompound().getCompoundTag("SavedState"));
+
+			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR) {
 				// If this block has a disguise module added with a transparent block inserted.
-				if (!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
+				if (!disguisedState.isOpaqueCube() || !disguisedState.isFullCube())
 					return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side), side);
+			}
+			else {
+				Block blockToDisguiseAs = ((ItemModule) disguiseModule.getItem()).getBlockAddon(disguiseModule.getTagCompound());
+
+				if (blockToDisguiseAs != null) {
+					// If this block has a disguise module added with a transparent block inserted.
+					if (!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
+						return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side), side);
+				}
 			}
 		}
 
@@ -169,14 +189,23 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 			ItemStack module = te.hasModule(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!module.isEmpty()) {
-				ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddonAsStack(module.getTagCompound());
-				Block block = Block.getBlockFromItem(disguisedStack.getItem());
-				boolean hasMeta = disguisedStack.getHasSubtypes();
+				if (!module.hasTagCompound())
+					module.setTagCompound(new NBTTagCompound());
 
-				IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getItemDamage() : getMetaFromState(world.getBlockState(pos)));
+				IBlockState disguisedState = NBTUtil.readBlockState(module.getTagCompound().getCompoundTag("SavedState"));
 
-				if (block != this)
-					return disguisedModel.getActualState(world, pos);
+				if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
+					return disguisedState;
+				else { //fallback, mainly for upgrading old worlds from before the state selector existed
+					ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddonAsStack(module.getTagCompound());
+					Block block = Block.getBlockFromItem(disguisedStack.getItem());
+					boolean hasMeta = disguisedStack.getHasSubtypes();
+
+					IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getItemDamage() : getMetaFromState(world.getBlockState(pos)));
+
+					if (block != this)
+						return disguisedModel.getActualState(world, pos);
+				}
 			}
 		}
 

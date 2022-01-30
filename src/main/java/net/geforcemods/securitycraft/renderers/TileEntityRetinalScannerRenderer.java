@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
+import net.geforcemods.securitycraft.util.TileEntityRenderDelegate;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -33,6 +34,9 @@ public class TileEntityRetinalScannerRenderer extends TileEntitySpecialRenderer<
 
 	@Override
 	public void render(TileEntityRetinalScanner te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		if (TileEntityRenderDelegate.DISGUISED_BLOCK.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha))
+			return;
+
 		IBlockState state = te.getWorld().getBlockState(te.getPos());
 
 		if (state.getBlock() == SCContent.retinalScanner) {

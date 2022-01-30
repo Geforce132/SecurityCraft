@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
+import net.geforcemods.securitycraft.util.TileEntityRenderDelegate;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -15,11 +16,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TileEntityTrophySystemRenderer extends TileEntitySpecialRenderer<TileEntityTrophySystem> {
 	@Override
-	public void render(TileEntityTrophySystem tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		// The code below draws a line between the trophy system and the projectile that
-		// it's targeting.
+	public void render(TileEntityTrophySystem te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		if (TileEntityRenderDelegate.DISGUISED_BLOCK.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha))
+			return;
 
-		if (tileEntityIn.entityBeingTargeted == null)
+		if (te.entityBeingTargeted == null)
 			return;
 
 		Vec3d blockpos = new Vec3d(x + 0.5D, y + 0.75D, z + 0.5D);
@@ -30,10 +31,11 @@ public class TileEntityTrophySystemRenderer extends TileEntitySpecialRenderer<Ti
 		GlStateManager.disableTexture2D();
 		GlStateManager.disableLighting();
 
+		//draws a line between the trophy system and the projectile that it's targeting
 		BufferBuilder bb = Tessellator.getInstance().getBuffer();
 		bb.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
 		bb.pos(0, 0, 0).color(1, 0, 0, 1F).endVertex();
-		bb.pos(tileEntityIn.entityBeingTargeted.posX - tileEntityIn.getPos().getX() - 0.5D, tileEntityIn.entityBeingTargeted.posY - tileEntityIn.getPos().getY() - 0.75D, tileEntityIn.entityBeingTargeted.posZ - tileEntityIn.getPos().getZ() - 0.5D).color(1, 0, 0, 1F).endVertex();
+		bb.pos(te.entityBeingTargeted.posX - te.getPos().getX() - 0.5D, te.entityBeingTargeted.posY - te.getPos().getY() - 0.75D, te.entityBeingTargeted.posZ - te.getPos().getZ() - 0.5D).color(1, 0, 0, 1F).endVertex();
 		Tessellator.getInstance().draw();
 
 		GlStateManager.enableLighting();
