@@ -31,7 +31,7 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 
 	@Override
 	public boolean shouldExecute() {
-		List<EntityLivingBase> list = taskOwner.world.<EntityLivingBase> getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> !EntityUtils.isInvisible(e));
+		List<EntityLivingBase> list = taskOwner.world.<EntityLivingBase> getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> sentry.getEntitySenses().canSee(e) && !EntityUtils.isInvisible(e));
 
 		if (list.isEmpty())
 			return false;

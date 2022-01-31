@@ -43,8 +43,7 @@ public class EntityAIAttackRangedIfEnabled extends EntityAIBase {
 	}
 
 	@Override
-	public void updateTask() //copied from vanilla to remove pathfinding code
-	{
+	public void updateTask() { //copied from vanilla to remove pathfinding code
 		double targetDistance = sentry.getDistanceSq(attackTarget.posX, attackTarget.getEntityBoundingBox().minY, attackTarget.posZ);
 
 		sentry.getLookHelper().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
