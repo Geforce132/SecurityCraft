@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.models.SentryModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -18,7 +18,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SentryRenderer extends EntityRenderer<SentryEntity> {
+public class SentryRenderer extends EntityRenderer<Sentry> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/sentry.png");
 	private static final SentryModel MODEL = new SentryModel();
 
@@ -27,20 +27,20 @@ public class SentryRenderer extends EntityRenderer<SentryEntity> {
 	}
 
 	@Override
-	public void render(SentryEntity entity, float partialTicks, float p_225623_3_, MatrixStack stack, IRenderTypeBuffer buffer, int p_225623_6_) {
+	public void render(Sentry entity, float partialTicks, float p_225623_3_, MatrixStack stack, IRenderTypeBuffer buffer, int p_225623_6_) {
 		IVertexBuilder builder = buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity)));
 
 		stack.translate(0.0D, 1.5D, 0.0D);
 		stack.scale(-1, -1, 1); //rotate model rightside up
 		Minecraft.getInstance().textureManager.bind(getTextureLocation(entity));
 		MODEL.renderBase(stack, builder, p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.mulPose(Vector3f.YP.rotationDegrees(entity.getEntityData().get(SentryEntity.HEAD_ROTATION)));
+		stack.mulPose(Vector3f.YP.rotationDegrees(entity.getEntityData().get(Sentry.HEAD_ROTATION)));
 		stack.translate(0.0F, entity.getHeadYTranslation(), 0.0F);
 		MODEL.renderToBuffer(stack, builder, p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(SentryEntity entity) {
+	public ResourceLocation getTextureLocation(Sentry entity) {
 		return TEXTURE;
 	}
 }

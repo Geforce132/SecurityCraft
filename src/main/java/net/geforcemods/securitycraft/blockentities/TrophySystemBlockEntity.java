@@ -14,9 +14,9 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.entity.BulletEntity;
-import net.geforcemods.securitycraft.entity.IMSBombEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.Bullet;
+import net.geforcemods.securitycraft.entity.IMSBomb;
+import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
@@ -91,8 +91,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 					if (shooter == null)
 						setTarget(target);
 					else {
-						UUID uuid = shooter instanceof SentryEntity ? UUID.fromString(((SentryEntity) shooter).getOwner().getUUID()) : shooter.getUUID();
-						String name = shooter instanceof SentryEntity ? ((SentryEntity) shooter).getOwner().getName() : shooter.getName().getString();
+						UUID uuid = shooter instanceof Sentry ? UUID.fromString(((Sentry) shooter).getOwner().getUUID()) : shooter.getUUID();
+						String name = shooter instanceof Sentry ? ((Sentry) shooter).getOwner().getName() : shooter.getName().getString();
 
 						//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
 						if (!((ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(shooter.getName().getString(), getOwner().getName())) || (uuid != null && uuid.toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, name)))
@@ -219,10 +219,10 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	private boolean filterSCProjectiles(Entity projectile) {
 		Owner owner = null;
 
-		if (projectile instanceof BulletEntity)
-			owner = ((BulletEntity) projectile).getSCOwner();
-		else if (projectile instanceof IMSBombEntity)
-			owner = ((IMSBombEntity) projectile).getOwner();
+		if (projectile instanceof Bullet)
+			owner = ((Bullet) projectile).getSCOwner();
+		else if (projectile instanceof IMSBomb)
+			owner = ((IMSBomb) projectile).getOwner();
 
 		return owner == null || (!owner.owns(this) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}

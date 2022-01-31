@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
-import net.geforcemods.securitycraft.entity.IMSBombEntity;
+import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.inventory.GenericTEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -89,7 +89,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements INamedCon
 				double accelerationY = target.getBoundingBox().minY + target.getBbHeight() / 2.0F - worldPosition.getY() - launchHeight;
 				double accelerationZ = target.getZ() - worldPosition.getZ();
 
-				level.addFreshEntity(new IMSBombEntity(level, worldPosition.getX() + addToX, worldPosition.getY(), worldPosition.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
+				level.addFreshEntity(new IMSBomb(level, worldPosition.getX() + addToX, worldPosition.getY(), worldPosition.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
 
 				if (!level.isClientSide)
 					level.playSound(null, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), SoundEvents.ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -106,7 +106,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements INamedCon
 	}
 
 	/**
-	 * Returns the amount of blocks the {@link IMSBombEntity} should move up before firing at an entity.
+	 * Returns the amount of blocks the {@link IMSBomb} should move up before firing at an entity.
 	 */
 	private int getLaunchHeight() {
 		int height;

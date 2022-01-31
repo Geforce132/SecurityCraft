@@ -8,8 +8,8 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -66,7 +66,7 @@ public class SCClientEventHandler {
 		PlayerEntity player = Minecraft.getInstance().player;
 
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
-			SecurityCameraEntity camera = (SecurityCameraEntity) Minecraft.getInstance().cameraEntity;
+			SecurityCamera camera = (SecurityCamera) Minecraft.getInstance().cameraEntity;
 
 			if (camera.screenshotSoundCooldown == 0) {
 				camera.screenshotSoundCooldown = 7;
@@ -156,7 +156,7 @@ public class SCClientEventHandler {
 					else if (stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get()) {
 						Entity hitEntity = Minecraft.getInstance().crosshairPickEntity;
 
-						if (hitEntity instanceof SentryEntity) {
+						if (hitEntity instanceof Sentry) {
 							uCoord = 110;
 							CompoundNBT sentries = stack.getOrCreateTag();
 

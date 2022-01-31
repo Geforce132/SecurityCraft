@@ -27,8 +27,8 @@ import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
-import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -139,8 +139,8 @@ public class SCEventHandler {
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
 		ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
 
-		if (player.getCamera() instanceof SecurityCameraEntity) {
-			SecurityCameraEntity cam = (SecurityCameraEntity) player.getCamera();
+		if (player.getCamera() instanceof SecurityCamera) {
+			SecurityCamera cam = (SecurityCamera) player.getCamera();
 			TileEntity tile = player.level.getBlockEntity(cam.getCommandSenderBlockPosition());
 
 			if (tile instanceof SecurityCameraBlockEntity)
@@ -161,7 +161,7 @@ public class SCEventHandler {
 		if (!world.isClientSide && entity instanceof ServerPlayerEntity && PlayerUtils.isPlayerMountedOnCamera(entity)) {
 			ServerPlayerEntity player = (ServerPlayerEntity) entity;
 
-			((SecurityCameraEntity) player.getCamera()).stopViewing(player);
+			((SecurityCamera) player.getCamera()).stopViewing(player);
 		}
 	}
 
@@ -245,7 +245,7 @@ public class SCEventHandler {
 
 		//outside !world.isRemote for properly checking the interaction
 		//all the sentry functionality for when the sentry is diguised
-		List<SentryEntity> sentries = world.getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(event.getPos()));
+		List<Sentry> sentries = world.getEntitiesOfClass(Sentry.class, new AxisAlignedBB(event.getPos()));
 
 		if (!sentries.isEmpty())
 			event.setCanceled(sentries.get(0).mobInteract(event.getPlayer(), event.getHand())); //cancel if an action was taken
@@ -261,9 +261,8 @@ public class SCEventHandler {
 		ItemStack stack = event.getPlayer().getMainHandItem();
 		Item held = stack.getItem();
 
-		if (held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()) {
+		if (held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
 			UniversalBlockReinforcerItem.convertBlock(stack, event.getPos(), event.getPlayer());
-		}
 	}
 
 	@SubscribeEvent
@@ -299,7 +298,7 @@ public class SCEventHandler {
 			}
 		}
 
-		List<SentryEntity> sentries = ((World) event.getWorld()).getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(event.getPos()));
+		List<Sentry> sentries = ((World) event.getWorld()).getEntitiesOfClass(Sentry.class, new AxisAlignedBB(event.getPos()));
 
 		//don't let people break the disguise block
 		if (!sentries.isEmpty() && !sentries.get(0).getDisguiseModule().isEmpty()) {
@@ -325,7 +324,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event) {
-		if (event.getTarget() instanceof SentryEntity)
+		if (event.getTarget() instanceof Sentry)
 			((MobEntity) event.getEntity()).setTarget(null);
 	}
 

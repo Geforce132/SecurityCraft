@@ -19,8 +19,8 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
+import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -127,8 +127,8 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 
 			@Override
 			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, PlayerEntity player, World world, Entity entity, IProbeHitEntityData data) {
-				if (entity instanceof SentryEntity) {
-					SentryEntity sentry = (SentryEntity) entity;
+				if (entity instanceof Sentry) {
+					Sentry sentry = (Sentry) entity;
 					SentryMode mode = sentry.getMode();
 					String ownerName = sentry.getOwner().getName();
 

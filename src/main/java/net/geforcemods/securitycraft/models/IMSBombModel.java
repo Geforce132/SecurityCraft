@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.models;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import net.geforcemods.securitycraft.entity.IMSBombEntity;
+import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * IMSBomb - Geforce Created using Tabula 4.1.1
  */
 @OnlyIn(Dist.CLIENT)
-public class IMSBombModel extends EntityModel<IMSBombEntity> {
+public class IMSBombModel extends EntityModel<IMSBomb> {
 	public ModelRenderer shape1;
 
 	public IMSBombModel() {
@@ -30,5 +30,5 @@ public class IMSBombModel extends EntityModel<IMSBombEntity> {
 	}
 
 	@Override
-	public void setupAnim(IMSBombEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+	public void setupAnim(IMSBomb entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 }

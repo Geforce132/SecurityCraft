@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.models;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * SecurityCamera - Geforce Created using Tabula 4.1.1
  */
 @OnlyIn(Dist.CLIENT)
-public class SecurityCameraModel extends EntityModel<SecurityCameraEntity> {
+public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 	public ModelRenderer shape1;
 	public ModelRenderer shape2;
 	public ModelRenderer cameraRotationPoint;
@@ -74,5 +74,5 @@ public class SecurityCameraModel extends EntityModel<SecurityCameraEntity> {
 	}
 
 	@Override
-	public void setupAnim(SecurityCameraEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+	public void setupAnim(SecurityCamera entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 }

@@ -12,15 +12,15 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class BouncingBettyEntity extends Entity {
+public class BouncingBetty extends Entity {
 	/** How long the fuse is */
 	public int fuse;
 
-	public BouncingBettyEntity(EntityType<BouncingBettyEntity> type, World world) {
+	public BouncingBetty(EntityType<BouncingBetty> type, World world) {
 		super(SCContent.eTypeBouncingBetty, world);
 	}
 
-	public BouncingBettyEntity(World world, double x, double y, double z) {
+	public BouncingBetty(World world, double x, double y, double z) {
 		this(SCContent.eTypeBouncingBetty, world);
 		setPos(x, y, z);
 		float f = (float) (Math.random() * Math.PI * 2.0D);

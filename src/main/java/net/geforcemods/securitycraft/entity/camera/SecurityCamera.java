@@ -24,7 +24,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class SecurityCameraEntity extends Entity {
+public class SecurityCamera extends Entity {
 	protected final double cameraSpeed = ConfigHandler.CLIENT.cameraSpeed.get();
 	public int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
@@ -35,13 +35,13 @@ public class SecurityCameraEntity extends Entity {
 	private int viewDistance = -1;
 	private boolean loadedChunks = false;
 
-	public SecurityCameraEntity(EntityType<SecurityCameraEntity> type, World world) {
+	public SecurityCamera(EntityType<SecurityCamera> type, World world) {
 		super(SCContent.eTypeSecurityCamera, world);
 		noPhysics = true;
 		forcedLoading = true;
 	}
 
-	public SecurityCameraEntity(World world, BlockPos pos) {
+	public SecurityCamera(World world, BlockPos pos) {
 		this(SCContent.eTypeSecurityCamera, world);
 
 		TileEntity te = world.getBlockEntity(pos);
@@ -64,7 +64,7 @@ public class SecurityCameraEntity extends Entity {
 		setInitialPitchYaw(cam);
 	}
 
-	public SecurityCameraEntity(World world, BlockPos pos, SecurityCameraEntity oldCamera) {
+	public SecurityCamera(World world, BlockPos pos, SecurityCamera oldCamera) {
 		this(world, pos);
 		oldCamera.discardCamera();
 	}

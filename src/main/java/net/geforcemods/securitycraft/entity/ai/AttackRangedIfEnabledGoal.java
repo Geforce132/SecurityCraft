@@ -3,22 +3,22 @@ package net.geforcemods.securitycraft.entity.ai;
 import java.util.EnumSet;
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
+import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.MathHelper;
 
 public class AttackRangedIfEnabledGoal extends Goal {
-	private SentryEntity sentry;
+	private Sentry sentry;
 	private LivingEntity attackTarget;
 	private int rangedAttackTime;
 	private final Supplier<Integer> maxAttackTime;
 	private final float attackRadius;
 
 	public AttackRangedIfEnabledGoal(IRangedAttackMob attacker, Supplier<Integer> maxAttackTime, float maxAttackDistance) {
-		sentry = (SentryEntity) attacker;
+		sentry = (Sentry) attacker;
 		rangedAttackTime = -1;
 		this.maxAttackTime = maxAttackTime;
 		attackRadius = maxAttackDistance;

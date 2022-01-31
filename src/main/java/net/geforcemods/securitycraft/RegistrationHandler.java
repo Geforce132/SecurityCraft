@@ -41,11 +41,11 @@ import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
-import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
-import net.geforcemods.securitycraft.entity.BulletEntity;
-import net.geforcemods.securitycraft.entity.IMSBombEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.BouncingBetty;
+import net.geforcemods.securitycraft.entity.Bullet;
+import net.geforcemods.securitycraft.entity.IMSBomb;
+import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
@@ -203,44 +203,44 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
 		//@formatter:off
-		event.getRegistry().register(EntityType.Builder.<BouncingBettyEntity>of(BouncingBettyEntity::new, EntityClassification.MISC)
+		event.getRegistry().register(EntityType.Builder.<BouncingBetty>of(BouncingBetty::new, EntityClassification.MISC)
 				.sized(0.5F, 0.2F)
 				.setTrackingRange(128)
 				.setUpdateInterval(1)
 				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> new BouncingBettyEntity(SCContent.eTypeBouncingBetty, world))
+				.setCustomClientFactory((spawnEntity, world) -> new BouncingBetty(SCContent.eTypeBouncingBetty, world))
 				.build(SecurityCraft.MODID + ":bouncingbetty")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bouncingbetty")));
-		event.getRegistry().register(EntityType.Builder.<IMSBombEntity>of(IMSBombEntity::new, EntityClassification.MISC)
+		event.getRegistry().register(EntityType.Builder.<IMSBomb>of(IMSBomb::new, EntityClassification.MISC)
 				.sized(0.25F, 0.3F)
 				.setTrackingRange(256)
 				.setUpdateInterval(1)
 				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> new IMSBombEntity(SCContent.eTypeImsBomb, world))
+				.setCustomClientFactory((spawnEntity, world) -> new IMSBomb(SCContent.eTypeImsBomb, world))
 				.build(SecurityCraft.MODID + ":imsbomb")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "imsbomb")));
-		event.getRegistry().register(EntityType.Builder.<SecurityCameraEntity>of(SecurityCameraEntity::new, EntityClassification.MISC)
+		event.getRegistry().register(EntityType.Builder.<SecurityCamera>of(SecurityCamera::new, EntityClassification.MISC)
 				.sized(0.0001F, 0.0001F)
 				.setTrackingRange(256)
 				.setUpdateInterval(20)
 				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> new SecurityCameraEntity(SCContent.eTypeSecurityCamera, world))
+				.setCustomClientFactory((spawnEntity, world) -> new SecurityCamera(SCContent.eTypeSecurityCamera, world))
 				.build(SecurityCraft.MODID + ":securitycamera")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "securitycamera")));
-		event.getRegistry().register(EntityType.Builder.<SentryEntity>of(SentryEntity::new, EntityClassification.MISC)
+		event.getRegistry().register(EntityType.Builder.<Sentry>of(Sentry::new, EntityClassification.MISC)
 				.sized(1.0F, 2.0F)
 				.setTrackingRange(256)
 				.setUpdateInterval(1)
 				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> new SentryEntity(SCContent.eTypeSentry, world))
+				.setCustomClientFactory((spawnEntity, world) -> new Sentry(SCContent.eTypeSentry, world))
 				.build(SecurityCraft.MODID + ":sentry")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sentry")));
-		event.getRegistry().register(EntityType.Builder.<BulletEntity>of(BulletEntity::new, EntityClassification.MISC)
+		event.getRegistry().register(EntityType.Builder.<Bullet>of(Bullet::new, EntityClassification.MISC)
 				.sized(0.15F, 0.1F)
 				.setTrackingRange(256)
 				.setUpdateInterval(1)
 				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> new BulletEntity(SCContent.eTypeBullet, world))
+				.setCustomClientFactory((spawnEntity, world) -> new Bullet(SCContent.eTypeBullet, world))
 				.build(SecurityCraft.MODID + ":bullet")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bullet")));
 		//@formatter:on

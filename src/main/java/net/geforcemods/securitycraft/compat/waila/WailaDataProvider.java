@@ -21,8 +21,8 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
+import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -61,7 +61,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		registrar.addSyncedConfig(SHOW_CUSTOM_NAME, true);
 		registrar.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.BODY, IOwnable.class);
 		registrar.registerStackProvider(INSTANCE, IOverlayDisplay.class);
-		registrar.registerComponentProvider((IEntityComponentProvider) INSTANCE, TooltipPosition.BODY, SentryEntity.class);
+		registrar.registerComponentProvider((IEntityComponentProvider) INSTANCE, TooltipPosition.BODY, Sentry.class);
 	}
 
 	@Override
@@ -119,8 +119,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public void appendBody(List<ITextComponent> body, IEntityAccessor data, IPluginConfig config) {
 		Entity entity = data.getEntity();
 
-		if (entity instanceof SentryEntity) {
-			SentryEntity sentry = (SentryEntity) entity;
+		if (entity instanceof Sentry) {
+			Sentry sentry = (Sentry) entity;
 			SentryMode mode = sentry.getMode();
 
 			if (config.get(SHOW_OWNER))

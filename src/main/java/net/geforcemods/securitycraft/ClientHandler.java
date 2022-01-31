@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.BlockMineModel;
@@ -503,7 +503,7 @@ public class ClientHandler {
 	}
 
 	public static boolean isPlayerMountedOnCamera() {
-		return Minecraft.getInstance().cameraEntity instanceof SecurityCameraEntity;
+		return Minecraft.getInstance().cameraEntity instanceof SecurityCamera;
 	}
 
 	public static void putDisguisedBeRenderer(TileEntity disguisableBlockEntity, ItemStack stack) {

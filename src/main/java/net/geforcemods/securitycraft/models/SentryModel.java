@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.models;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.Sentry;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * Sentry - bl4ckscor3 Created using Tabula 7.0.0
  */
 @OnlyIn(Dist.CLIENT)
-public class SentryModel extends EntityModel<SentryEntity> {
+public class SentryModel extends EntityModel<Sentry> {
 	public ModelRenderer base;
 	public ModelRenderer body;
 	public ModelRenderer neck;
@@ -68,5 +68,5 @@ public class SentryModel extends EntityModel<SentryEntity> {
 	}
 
 	@Override
-	public void setupAnim(SentryEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+	public void setupAnim(Sentry entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 }

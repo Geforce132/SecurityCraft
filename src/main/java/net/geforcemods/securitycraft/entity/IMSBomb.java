@@ -20,18 +20,18 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class IMSBombEntity extends AbstractFireballEntity {
-	private static final DataParameter<Owner> OWNER = EntityDataManager.defineId(IMSBombEntity.class, Owner.getSerializer());
+public class IMSBomb extends AbstractFireballEntity {
+	private static final DataParameter<Owner> OWNER = EntityDataManager.defineId(IMSBomb.class, Owner.getSerializer());
 	private int ticksFlying = 0;
 	private int launchTime;
 	private boolean launching = true;
 	private boolean isFast;
 
-	public IMSBombEntity(EntityType<IMSBombEntity> type, World world) {
+	public IMSBomb(EntityType<IMSBomb> type, World world) {
 		super(SCContent.eTypeImsBomb, world);
 	}
 
-	public IMSBombEntity(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSBlockEntity te) {
+	public IMSBomb(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSBlockEntity te) {
 		super(SCContent.eTypeImsBomb, x, y, z, accelerationX, accelerationY, accelerationZ, world);
 		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
 

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.List;
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.Sentry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -38,7 +38,7 @@ public class SetSentryMode {
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
 
-			List<SentryEntity> sentries = player.level.<SentryEntity> getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(message.pos));
+			List<Sentry> sentries = player.level.<Sentry> getEntitiesOfClass(Sentry.class, new AxisAlignedBB(message.pos));
 
 			if (!sentries.isEmpty() && sentries.get(0).getOwner().isOwner(player))
 				sentries.get(0).toggleMode(player, message.mode, false);

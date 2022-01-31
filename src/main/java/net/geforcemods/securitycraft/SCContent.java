@@ -116,11 +116,11 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
-import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
-import net.geforcemods.securitycraft.entity.BulletEntity;
-import net.geforcemods.securitycraft.entity.IMSBombEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.BouncingBetty;
+import net.geforcemods.securitycraft.entity.Bullet;
+import net.geforcemods.securitycraft.entity.IMSBomb;
+import net.geforcemods.securitycraft.entity.Sentry;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.fluids.FakeLavaFluid;
 import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
@@ -1433,15 +1433,15 @@ public class SCContent {
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
-	public static EntityType<BouncingBettyEntity> eTypeBouncingBetty;
+	public static EntityType<BouncingBetty> eTypeBouncingBetty;
 	@ObjectHolder(SecurityCraft.MODID + ":imsbomb")
-	public static EntityType<IMSBombEntity> eTypeImsBomb;
+	public static EntityType<IMSBomb> eTypeImsBomb;
 	@ObjectHolder(SecurityCraft.MODID + ":securitycamera")
-	public static EntityType<SecurityCameraEntity> eTypeSecurityCamera;
+	public static EntityType<SecurityCamera> eTypeSecurityCamera;
 	@ObjectHolder(SecurityCraft.MODID + ":sentry")
-	public static EntityType<SentryEntity> eTypeSentry;
+	public static EntityType<Sentry> eTypeSentry;
 	@ObjectHolder(SecurityCraft.MODID + ":bullet")
-	public static EntityType<BulletEntity> eTypeBullet;
+	public static EntityType<Bullet> eTypeBullet;
 
 	//container types
 	@ObjectHolder(SecurityCraft.MODID + ":block_reinforcer")

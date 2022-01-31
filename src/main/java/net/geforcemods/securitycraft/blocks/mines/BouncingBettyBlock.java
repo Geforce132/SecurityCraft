@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
+import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
@@ -99,7 +99,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 			return;
 
 		world.destroyBlock(pos, false);
-		BouncingBettyEntity entitytntprimed = new BouncingBettyEntity(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
+		BouncingBetty entitytntprimed = new BouncingBetty(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
 		entitytntprimed.fuse = 15;
 		entitytntprimed.setDeltaMovement(entitytntprimed.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
 		LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(entitytntprimed));

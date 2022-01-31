@@ -5,7 +5,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
-import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -43,7 +43,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 				boolean shouldDeactivate = false;
 
 				for (LivingEntity entity : entities) {
-					if (!(entity instanceof SentryEntity) && !EntityUtils.isInvisible(entity)) {
+					if (!(entity instanceof Sentry) && !EntityUtils.isInvisible(entity)) {
 						if (entity instanceof PlayerEntity) {
 							PlayerEntity player = (PlayerEntity) entity;
 

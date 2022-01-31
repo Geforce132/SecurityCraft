@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.entity.camera.CameraController;
-import net.geforcemods.securitycraft.entity.camera.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -35,7 +35,7 @@ public class SetCameraView {
 		ctx.get().enqueueWork(() -> {
 			Minecraft mc = Minecraft.getInstance();
 			Entity entity = mc.level.getEntity(message.id);
-			boolean isCamera = entity instanceof SecurityCameraEntity;
+			boolean isCamera = entity instanceof SecurityCamera;
 
 			if (isCamera || entity instanceof PlayerEntity) {
 				mc.setCameraEntity(entity);
