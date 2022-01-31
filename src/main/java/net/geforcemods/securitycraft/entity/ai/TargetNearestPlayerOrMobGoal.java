@@ -31,7 +31,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 
 	@Override
 	public boolean canUse() {
-		List<LivingEntity> list = mob.level.<LivingEntity> getEntitiesOfClass(targetType, getTargetSearchArea(getFollowDistance()), e -> !EntityUtils.isInvisible(e));
+		List<LivingEntity> list = mob.level.<LivingEntity> getEntitiesOfClass(targetType, getTargetSearchArea(getFollowDistance()), e -> sentry.getSensing().canSee(e) && !EntityUtils.isInvisible(e));
 
 		if (list.isEmpty())
 			return false;
@@ -59,11 +59,10 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 				if (mode.attacksPlayers()) {
 					//@formatter:off
 					if(potentialTarget instanceof PlayerEntity
-							&& !((PlayerEntity)potentialTarget).isSpectator()
-							&& !((PlayerEntity)potentialTarget).isCreative()
-							&& !((Sentry)mob).getOwner().isOwner(((PlayerEntity)potentialTarget))
-							&& !sentry.isTargetingAllowedPlayer(potentialTarget)
-							&& !EntityUtils.isInvisible(potentialTarget)) {
+							&& !((PlayerEntity) potentialTarget).isSpectator()
+							&& !((PlayerEntity) potentialTarget).isCreative()
+							&& !((Sentry)mob).getOwner().isOwner(((PlayerEntity) potentialTarget))
+							&& !sentry.isTargetingAllowedPlayer(potentialTarget)) {
 						break;
 					}
 					//@formatter:on
