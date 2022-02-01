@@ -186,9 +186,8 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob //needs t
 
 				setDisguiseModule(player.getMainHandItem());
 
-				if (!player.isCreative()) {
+				if (!player.isCreative())
 					player.setItemSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
-				}
 			}
 			else if (item == SCContent.ALLOWLIST_MODULE.get()) {
 				ItemStack module = getAllowlistModule();
