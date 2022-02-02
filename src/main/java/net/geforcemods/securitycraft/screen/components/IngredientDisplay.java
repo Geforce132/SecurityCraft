@@ -1,10 +1,13 @@
 package net.geforcemods.securitycraft.screen.components;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class IngredientDisplay {
+public class IngredientDisplay implements Widget {
 	private static final int DISPLAY_LENGTH = 20;
 	private final int x;
 	private final int y;
@@ -17,12 +20,13 @@ public class IngredientDisplay {
 		this.y = y;
 	}
 
-	public void render(Minecraft mc, float partialTicks) {
+	@Override
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 		if (stacks == null || stacks.length == 0)
 			return;
 
-		mc.getItemRenderer().renderAndDecorateItem(stacks[currentRenderingStack], x, y);
-		ticksToChange -= partialTicks;
+		Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(stacks[currentRenderingStack], x, y);
+		ticksToChange -= partialTick;
 
 		if (ticksToChange <= 0) {
 			if (++currentRenderingStack >= stacks.length)
