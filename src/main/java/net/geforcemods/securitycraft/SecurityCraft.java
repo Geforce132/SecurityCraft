@@ -1,6 +1,10 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
@@ -20,14 +24,18 @@ import net.geforcemods.securitycraft.itemgroups.SCExplosivesTab;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalTab;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
+import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.conditions.BlockEntityNBTCondition;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -105,6 +113,8 @@ public class SecurityCraft {
 
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event) { //stage 4
+		Map<PageGroup, List<ItemStack>> groupStacks = new EnumMap<>(PageGroup.class);
+
 		for (Field field : SCContent.class.getFields()) {
 			try {
 				if (field.isAnnotationPresent(Reinforced.class)) {
@@ -120,13 +130,31 @@ public class SecurityCraft {
 					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
 					Item item = ((ItemLike) o).asItem();
 					String key = "help.";
+					PageGroup group = hmp.value();
+					TranslatableComponent title;
+					boolean wasNotAdded = false;
 
 					if (hmp.specialInfoKey().isEmpty())
 						key += item.getDescriptionId().substring(5) + ".info";
 					else
 						key += hmp.specialInfoKey();
 
-					SCManualItem.PAGES.add(new SCManualPage(item, new TranslatableComponent(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
+					if (group != PageGroup.NONE) {
+						if (!groupStacks.containsKey(group)) {
+							groupStacks.put(group, new ArrayList<>());
+							wasNotAdded = true;
+						}
+
+						groupStacks.get(group).add(new ItemStack(item));
+					}
+
+					if (hmp.title().isEmpty())
+						title = Utils.localize(item.getDescriptionId());
+					else
+						title = Utils.localize(hmp.title());
+
+					if (group == PageGroup.NONE || wasNotAdded)
+						SCManualItem.PAGES.add(new SCManualPage(item, group, title, new TranslatableComponent(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
 				}
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {
@@ -134,6 +162,7 @@ public class SecurityCraft {
 			}
 		}
 
+		groupStacks.forEach((group, list) -> group.setItems(Ingredient.of(list.stream())));
 		ForgeChunkManager.setForcedChunkLoadingCallback(SecurityCraft.MODID, (level, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCamera) somewhere
 			ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
 				if (level.getEntity(uuid) == null)
