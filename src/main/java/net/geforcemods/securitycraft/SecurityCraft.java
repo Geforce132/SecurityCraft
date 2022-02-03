@@ -1,6 +1,10 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
@@ -19,16 +23,21 @@ import net.geforcemods.securitycraft.itemgroups.SCExplosivesTab;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalTab;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
+import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.conditions.TileEntityNBTCondition;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -101,6 +110,8 @@ public class SecurityCraft {
 
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event) { //stage 4
+		Map<PageGroup, List<ItemStack>> groupStacks = new EnumMap<>(PageGroup.class);
+
 		for (Field field : SCContent.class.getFields()) {
 			try {
 				if (field.isAnnotationPresent(Reinforced.class)) {
@@ -114,29 +125,42 @@ public class SecurityCraft {
 					Object o = ((RegistryObject<?>) field.get(null)).get();
 					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
 					Item item = ((IItemProvider) o).asItem();
-					String key = "help.";
+					PageGroup group = hmp.value();
+					boolean wasNotAdded = false;
 
-					if (hmp.specialInfoKey().isEmpty())
-						key += item.getDescriptionId().substring(5) + ".info";
-					else
-						key += hmp.specialInfoKey();
+					if (group != PageGroup.NONE) {
+						if (!groupStacks.containsKey(group)) {
+							groupStacks.put(group, new ArrayList<>());
+							wasNotAdded = true;
+						}
 
-					SCManualPage page = new SCManualPage(item, key.replace("..", "."));
-
-					if (!hmp.designedBy().isEmpty()) {
-						page.setDesignedBy(hmp.designedBy());
+						groupStacks.get(group).add(new ItemStack(item));
 					}
 
-					if (hmp.hasRecipeDescription())
-						page.setHasRecipeDescription(true);
+					if (group == PageGroup.NONE || wasNotAdded) {
+						TranslationTextComponent title;
+						String key = "help.";
 
-					SCManualItem.PAGES.add(page);
+						if (hmp.title().isEmpty())
+							title = Utils.localize(item.getDescriptionId());
+						else
+							title = Utils.localize(hmp.title());
+
+						if (hmp.specialInfoKey().isEmpty())
+							key += item.getDescriptionId().substring(5) + ".info";
+						else
+							key += hmp.specialInfoKey();
+
+						SCManualItem.PAGES.add(new SCManualPage(item, group, title, new TranslationTextComponent(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
+					}
 				}
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 		}
+
+		groupStacks.forEach((group, list) -> group.setItems(Ingredient.fromValues(list.stream().map(Ingredient.SingleItemList::new))));
 	}
 
 	public void serverStarting(FMLServerStartingEvent event) {
