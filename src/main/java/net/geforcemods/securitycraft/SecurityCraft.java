@@ -129,15 +129,8 @@ public class SecurityCraft {
 					Object o = ((RegistryObject<?>) field.get(null)).get();
 					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
 					Item item = ((ItemLike) o).asItem();
-					String key = "help.";
 					PageGroup group = hmp.value();
-					TranslatableComponent title;
 					boolean wasNotAdded = false;
-
-					if (hmp.specialInfoKey().isEmpty())
-						key += item.getDescriptionId().substring(5) + ".info";
-					else
-						key += hmp.specialInfoKey();
 
 					if (group != PageGroup.NONE) {
 						if (!groupStacks.containsKey(group)) {
@@ -148,13 +141,22 @@ public class SecurityCraft {
 						groupStacks.get(group).add(new ItemStack(item));
 					}
 
-					if (hmp.title().isEmpty())
-						title = Utils.localize(item.getDescriptionId());
-					else
-						title = Utils.localize(hmp.title());
+					if (group == PageGroup.NONE || wasNotAdded) {
+						TranslatableComponent title;
+						String key = "help.";
 
-					if (group == PageGroup.NONE || wasNotAdded)
+						if (hmp.title().isEmpty())
+							title = Utils.localize(item.getDescriptionId());
+						else
+							title = Utils.localize(hmp.title());
+
+						if (hmp.specialInfoKey().isEmpty())
+							key += item.getDescriptionId().substring(5) + ".info";
+						else
+							key += hmp.specialInfoKey();
+
 						SCManualItem.PAGES.add(new SCManualPage(item, group, title, new TranslatableComponent(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
+					}
 				}
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {
