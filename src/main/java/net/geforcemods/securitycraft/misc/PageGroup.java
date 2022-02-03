@@ -8,7 +8,10 @@ public enum PageGroup {
 	BLOCK_MINES(true),
 	BUTTONS(true),
 	PRESSURE_PLATES(true),
-	FURNACES(true);
+	FURNACES(true),
+	KEYCARDS(true),
+	SECRET_SIGNS(true),
+	BLOCK_REINFORCERS(true);
 
 	private final boolean hasRecipeGrid;
 	private Ingredient items = Ingredient.EMPTY;

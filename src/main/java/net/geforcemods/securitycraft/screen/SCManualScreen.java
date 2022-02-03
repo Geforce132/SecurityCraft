@@ -331,7 +331,6 @@ public class SCManualScreen extends Screen {
 				author.clear();
 
 			intro2 = font.split(Utils.localize("gui.securitycraft:scManual.intro.2"), 225);
-
 			patronList.fetchPatrons();
 			return;
 		}
@@ -405,10 +404,15 @@ public class SCManualScreen extends Screen {
 						NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
+							ItemStack[] items = ingredients.get(i).getItems();
+
+							if (items.length == 0)
+								continue;
+
 							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
+
 							//first item needs to suffice since multiple recipes are being cycled through
-							ItemStack itemToAdd = ingredients.get(i).getItems()[0];
-							recipeStacks.get(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()))[indexToAddAt] = itemToAdd;
+							recipeStacks.get(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()))[indexToAddAt] = items[0];
 						}
 
 						stacksLeft--;
@@ -418,29 +422,32 @@ public class SCManualScreen extends Screen {
 					ShapelessRecipe recipe = (ShapelessRecipe) object;
 
 					if (!recipe.getResultItem().isEmpty() && pageItems.contains(recipe.getResultItem().getItem())) {
+						//don't show keycard reset recipes
+						if (recipe.getId().getPath().endsWith("_reset"))
+							continue;
+
 						NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
-							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
-							//first item needs to suffice since multiple recipes are being cycled through
-							ItemStack itemToAdd = ingredients.get(i).getItems()[0];
+							ItemStack[] items = ingredients.get(i).getItems();
 
-							recipeStacks.get(i)[indexToAddAt] = itemToAdd;
+							if (items.length == 0)
+								continue;
+
+							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
+
+							//first item needs to suffice since multiple recipes are being cycled through
+							recipeStacks.get(i)[indexToAddAt] = items[0];
 						}
 
 						stacksLeft--;
 					}
 				}
 			}
-			//			for (Entry<Integer, ItemStack[]> e : recipeStacks.entrySet()) {
-			//				System.out.println(e.getKey());
-			//				System.out.println(Arrays.toString(e.getValue()));
-			//			}
+
 			recipe = NonNullList.withSize(9, Ingredient.EMPTY);
 			recipeStacks.forEach((i, stackArray) -> recipe.set(i, Ingredient.of(Arrays.stream(stackArray).map(s -> s == null ? ItemStack.EMPTY : s))));
 		}
-
-		TranslationTextComponent helpInfo = page.getHelpInfo();
 
 		if (page.hasRecipeDescription()) {
 			String name = page.getItem().getRegistryName().getPath();
@@ -555,7 +562,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		//set up subpages
-		subpages = font.getSplitter().splitLines(helpInfo, subpageLength, Style.EMPTY);
+		subpages = font.getSplitter().splitLines(page.getHelpInfo(), subpageLength, Style.EMPTY);
 		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
 		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
