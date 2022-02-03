@@ -2038,15 +2038,15 @@ public class SCContent {
 	public static final RegistryObject<Item> FAKE_LAVA_BUCKET = ITEMS.register("bucket_f_lava", () -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA, itemProp(SecurityCraft.technicalTab).stacksTo(1)));
 	@HasManualPage
 	public static final RegistryObject<Item> FAKE_WATER_BUCKET = ITEMS.register("bucket_f_water", () -> new FakeLiquidBucketItem(SCContent.FAKE_WATER, itemProp(SecurityCraft.technicalTab).stacksTo(1)));
-	@HasManualPage
+	@HasManualPage(value = PageGroup.KEYCARDS, title = "gui.securitycraft:scManual.keycards", specialInfoKey = "securitycraft.secret_signs.info")
 	public static final RegistryObject<Item> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new KeycardItem(itemProp(SecurityCraft.technicalTab), 0));
-	@HasManualPage
+	@HasManualPage(PageGroup.KEYCARDS)
 	public static final RegistryObject<Item> KEYCARD_LVL_2 = ITEMS.register("keycard_lv2", () -> new KeycardItem(itemProp(SecurityCraft.technicalTab), 1));
-	@HasManualPage
+	@HasManualPage(PageGroup.KEYCARDS)
 	public static final RegistryObject<Item> KEYCARD_LVL_3 = ITEMS.register("keycard_lv3", () -> new KeycardItem(itemProp(SecurityCraft.technicalTab), 2));
-	@HasManualPage
+	@HasManualPage(PageGroup.KEYCARDS)
 	public static final RegistryObject<Item> KEYCARD_LVL_4 = ITEMS.register("keycard_lv4", () -> new KeycardItem(itemProp(SecurityCraft.technicalTab), 3));
-	@HasManualPage
+	@HasManualPage(PageGroup.KEYCARDS)
 	public static final RegistryObject<Item> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new KeycardItem(itemProp(SecurityCraft.technicalTab), 4));
 	@HasManualPage
 	public static final RegistryObject<Item> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem(itemProp(SecurityCraft.technicalTab)));
@@ -2067,14 +2067,21 @@ public class SCContent {
 	public static final RegistryObject<Item> SCANNER_DOOR_ITEM = ITEMS.register("scanner_door_item", () -> new DoubleHighBlockItem(SCANNER_DOOR.get(), itemProp(SecurityCraft.decorationTab)));
 	@HasManualPage
 	public static final RegistryObject<Item> SC_MANUAL = ITEMS.register("sc_manual", () -> new SCManualItem(itemProp(SecurityCraft.technicalTab).stacksTo(1)));
-	@HasManualPage
+	@HasManualPage(value = PageGroup.SECRET_SIGNS, title = "gui.securitycraft:scManual.secret_signs", specialInfoKey = "securitycraft.secret_signs.info")
 	public static final RegistryObject<Item> SECRET_OAK_SIGN_ITEM = ITEMS.register("secret_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.decorationTab).stacksTo(16), SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), "item.securitycraft.secret_sign_item"));
+	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_SPRUCE_SIGN_ITEM = ITEMS.register("secret_spruce_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.decorationTab).stacksTo(16), SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get(), "item.securitycraft.secret_spruce_sign_item"));
+	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_BIRCH_SIGN_ITEM = ITEMS.register("secret_birch_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.decorationTab).stacksTo(16), SCContent.SECRET_BIRCH_SIGN.get(), SCContent.SECRET_BIRCH_WALL_SIGN.get(), "item.securitycraft.secret_birch_sign_item"));
+	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_JUNGLE_SIGN_ITEM = ITEMS.register("secret_jungle_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.decorationTab).stacksTo(16), SCContent.SECRET_JUNGLE_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_SIGN.get(), "item.securitycraft.secret_jungle_sign_item"));
+	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_ACACIA_SIGN_ITEM = ITEMS.register("secret_acacia_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.decorationTab).stacksTo(16), SCContent.SECRET_ACACIA_SIGN.get(), SCContent.SECRET_ACACIA_WALL_SIGN.get(), "item.securitycraft.secret_acacia_sign_item"));
+	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_DARK_OAK_SIGN_ITEM = ITEMS.register("secret_dark_oak_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.decorationTab).stacksTo(16), SCContent.SECRET_DARK_OAK_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_SIGN.get(), "item.securitycraft.secret_dark_oak_sign_item"));
+	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_CRIMSON_SIGN_ITEM = ITEMS.register("secret_crimson_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.decorationTab).stacksTo(16), SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get(), "item.securitycraft.secret_crimson_sign_item"));
+	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_WARPED_SIGN_ITEM = ITEMS.register("secret_warped_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.decorationTab).stacksTo(16), SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get(), "item.securitycraft.secret_warped_sign_item"));
 	@HasManualPage(designedBy = "Henzoid")
 	public static final RegistryObject<Item> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp(SecurityCraft.technicalTab)));
@@ -2084,11 +2091,11 @@ public class SCContent {
 	public static final RegistryObject<Item> TASER_POWERED = ITEMS.register("taser_powered", () -> new TaserItem(itemProp(null).defaultDurability(151), true));
 	@HasManualPage
 	public static final RegistryObject<Item> UNIVERSAL_BLOCK_MODIFIER = ITEMS.register("universal_block_modifier", () -> new UniversalBlockModifierItem(itemProp(SecurityCraft.technicalTab).stacksTo(1)));
-	@HasManualPage
+	@HasManualPage(value = PageGroup.BLOCK_REINFORCERS, title = "gui.securitycraft:scManual.block_reinforcers", specialInfoKey = "securitycraft.block_reinforcers.info")
 	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REINFORCER_LVL_1 = ITEMS.register("universal_block_reinforcer_lvl1", () -> new UniversalBlockReinforcerItem(itemProp(SecurityCraft.technicalTab).stacksTo(1).defaultDurability(300)));
-	@HasManualPage
+	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
 	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REINFORCER_LVL_2 = ITEMS.register("universal_block_reinforcer_lvl2", () -> new UniversalBlockReinforcerItem(itemProp(SecurityCraft.technicalTab).stacksTo(1).defaultDurability(2700)));
-	@HasManualPage
+	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
 	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REINFORCER_LVL_3 = ITEMS.register("universal_block_reinforcer_lvl3", () -> new UniversalBlockReinforcerItem(itemProp(SecurityCraft.technicalTab).stacksTo(1)));
 	@HasManualPage
 	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REMOVER = ITEMS.register("universal_block_remover", () -> new UniversalBlockRemoverItem(itemProp(SecurityCraft.technicalTab).stacksTo(1).defaultDurability(476)));
