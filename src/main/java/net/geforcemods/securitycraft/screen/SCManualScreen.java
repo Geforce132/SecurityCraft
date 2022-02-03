@@ -198,8 +198,7 @@ public class SCManualScreen extends Screen {
 				}
 			}
 		}
-		else //"welcome" page
-		{
+		else { //"welcome" page
 			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
 			font.draw(pose, intro1, width / 2 - font.width(intro1) / 2, 22, 0);
@@ -389,11 +388,15 @@ public class SCManualScreen extends Screen {
 						NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
-							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
-							//first item needs to suffice since multiple recipes are being cycled through
-							ItemStack itemToAdd = ingredients.get(i).getItems()[0];
+							ItemStack[] items = ingredients.get(i).getItems();
 
-							recipeStacks.get(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()))[indexToAddAt] = itemToAdd;
+							if (items.length == 0)
+								continue;
+
+							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
+
+							//first item needs to suffice since multiple recipes are being cycled through
+							recipeStacks.get(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()))[indexToAddAt] = items[0];
 						}
 
 						stacksLeft--;
@@ -401,14 +404,22 @@ public class SCManualScreen extends Screen {
 				}
 				else if (object instanceof ShapelessRecipe recipe) {
 					if (!recipe.getResultItem().isEmpty() && pageItems.contains(recipe.getResultItem().getItem())) {
+						//don't show keycard reset recipes
+						if (recipe.getId().getPath().endsWith("_reset"))
+							continue;
+
 						NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
-							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
-							//first item needs to suffice since multiple recipes are being cycled through
-							ItemStack itemToAdd = ingredients.get(i).getItems()[0];
+							ItemStack[] items = ingredients.get(i).getItems();
 
-							recipeStacks.get(i)[indexToAddAt] = itemToAdd;
+							if (items.length == 0)
+								continue;
+
+							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
+
+							//first item needs to suffice since multiple recipes are being cycled through
+							recipeStacks.get(i)[indexToAddAt] = items[0];
 						}
 
 						stacksLeft--;
@@ -419,8 +430,6 @@ public class SCManualScreen extends Screen {
 			recipe = NonNullList.withSize(9, Ingredient.EMPTY);
 			recipeStacks.forEach((i, stackArray) -> recipe.set(i, Ingredient.of(Arrays.stream(stackArray).map(s -> s == null ? ItemStack.EMPTY : s))));
 		}
-
-		TranslatableComponent helpInfo = page.helpInfo();
 
 		if (page.hasRecipeDescription()) {
 			String name = page.item().getRegistryName().getPath();
@@ -527,7 +536,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		//set up subpages
-		subpages = font.getSplitter().splitLines(helpInfo, subpageLength, Style.EMPTY);
+		subpages = font.getSplitter().splitLines(page.helpInfo(), subpageLength, Style.EMPTY);
 		nextSubpage.visible = currentPage != -1 && subpages.size() > 1;
 		previousSubpage.visible = currentPage != -1 && subpages.size() > 1;
 	}
