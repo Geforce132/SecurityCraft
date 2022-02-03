@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,6 +32,7 @@ import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
@@ -70,13 +74,16 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {
-	private static ResourceLocation infoBookTexture = new ResourceLocation("securitycraft:textures/gui/info_book_texture.png");
-	private static ResourceLocation infoBookTextureSpecial = new ResourceLocation("securitycraft:textures/gui/info_book_texture_special.png"); //for items without a recipe
-	private static ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
-	private static ResourceLocation infoBookIcons = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png");
-	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
-	private List<HoverChecker> hoverCheckers = new ArrayList<>();
+	private static final ResourceLocation PAGE = new ResourceLocation("securitycraft:textures/gui/info_book_texture.png");
+	private static final ResourceLocation PAGE_WITH_SCROLL = new ResourceLocation("securitycraft:textures/gui/info_book_texture_special.png"); //for items without a recipe
+	private static final ResourceLocation TITLE_PAGE = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
+	private static final ResourceLocation ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png");
+	private static final ResourceLocation VANILLA_BOOK = new ResourceLocation("textures/gui/book.png");
 	private static int lastPage = -1;
+	private final int subpageLength = 1285;
+	private final IFormattableTextComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.setUnderlined(true));
+	private final TranslationTextComponent ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
+	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private int currentPage = lastPage;
 	private NonNullList<Ingredient> recipe;
 	private IngredientDisplay[] displays = new IngredientDisplay[9];
@@ -84,16 +91,13 @@ public class SCManualScreen extends Screen {
 	private List<ITextProperties> subpages = new ArrayList<>();
 	private List<IReorderingProcessor> author = new ArrayList<>();
 	private int currentSubpage = 0;
-	private final int subpageLength = 1285;
-	private final IFormattableTextComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.setUnderlined(true));
-	private final TranslationTextComponent ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
 	private List<IReorderingProcessor> intro2;
 	private PatronList patronList;
 	private Button patreonLinkButton;
 	private boolean explosive, ownable, passwordProtected, viewActivated, customizable, lockable, moduleInventory;
-	private ItemStack pageStack;
-	private final TranslationTextComponent reinforcedText = Utils.localize("gui.securitycraft:scManual.reinforced");
+	private IngredientDisplay pageIcon;
 	private TranslationTextComponent pageTitle, designedBy;
+	private PageGroup pageGroup = PageGroup.NONE;
 
 	public SCManualScreen() {
 		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getDescriptionId()));
@@ -118,10 +122,11 @@ public class SCManualScreen extends Screen {
 			}
 		}
 
+		pageIcon = new IngredientDisplay(startX + 19, 22);
 		updateRecipeAndIcons();
 		SCManualItem.PAGES.sort((page1, page2) -> {
-			String key1 = Utils.localize(page1.getItem().getDescriptionId()).getString();
-			String key2 = Utils.localize(page2.getItem().getDescriptionId()).getString();
+			String key1 = page1.getTitle().getString();
+			String key2 = page2.getTitle().getString();
 
 			return key1.compareTo(key2);
 		});
@@ -133,11 +138,11 @@ public class SCManualScreen extends Screen {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		if (currentPage == -1)
-			minecraft.getTextureManager().bind(infoBookTitlePage);
+			minecraft.getTextureManager().bind(TITLE_PAGE);
 		else if (recipe != null && recipe.size() > 0)
-			minecraft.getTextureManager().bind(infoBookTexture);
+			minecraft.getTextureManager().bind(PAGE);
 		else
-			minecraft.getTextureManager().bind(infoBookTextureSpecial);
+			minecraft.getTextureManager().bind(PAGE_WITH_SCROLL);
 
 		blit(matrix, startX, 5, 0, 0, 256, 250);
 
@@ -157,8 +162,8 @@ public class SCManualScreen extends Screen {
 			font.draw(matrix, pageTitle, startX + 39, 27, 0);
 			font.drawWordWrap(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			font.draw(matrix, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
-			minecraft.getItemRenderer().renderAndDecorateItem(pageStack, startX + 19, 22);
-			minecraft.getTextureManager().bind(infoBookIcons);
+			pageIcon.render(minecraft, partialTicks);
+			minecraft.getTextureManager().bind(ICONS);
 
 			if (ownable)
 				blit(matrix, startX + 29, 118, 1, 1, 16, 16);
@@ -311,6 +316,11 @@ public class SCManualScreen extends Screen {
 		patreonLinkButton.visible = currentPage == -1;
 
 		if (currentPage < 0) {
+			for (IngredientDisplay display : displays) {
+				display.setIngredient(Ingredient.EMPTY);
+			}
+
+			pageIcon.setIngredient(Ingredient.EMPTY);
 			recipe = null;
 			buttons.get(2).visible = false;
 			buttons.get(3).visible = false;
@@ -328,6 +338,7 @@ public class SCManualScreen extends Screen {
 
 		SCManualPage page = SCManualItem.PAGES.get(currentPage);
 		String designedBy = page.getDesignedBy();
+		Item item = page.getItem();
 
 		if (designedBy != null && !designedBy.isEmpty())
 			this.designedBy = Utils.localize("gui.securitycraft:scManual.designedBy", designedBy);
@@ -335,73 +346,128 @@ public class SCManualScreen extends Screen {
 			this.designedBy = null;
 
 		recipe = null;
+		pageGroup = page.getGroup();
 
-		for (IRecipe<?> object : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
-			if (object instanceof ShapedRecipe) {
-				ShapedRecipe recipe = (ShapedRecipe) object;
+		if (pageGroup == PageGroup.NONE) {
+			for (IRecipe<?> object : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
+				if (object instanceof ShapedRecipe) {
+					ShapedRecipe recipe = (ShapedRecipe) object;
 
-				if (!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.getItem()) {
-					NonNullList<Ingredient> ingredients = recipe.getIngredients();
-					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(9, Ingredient.EMPTY);
+					if (!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.getItem()) {
+						NonNullList<Ingredient> ingredients = recipe.getIngredients();
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(9, Ingredient.EMPTY);
 
-					for (int i = 0; i < ingredients.size(); i++) {
-						recipeItems.set(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()), ingredients.get(i));
+						for (int i = 0; i < ingredients.size(); i++) {
+							recipeItems.set(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()), ingredients.get(i));
+						}
+
+						this.recipe = recipeItems;
+						break;
 					}
-
-					this.recipe = recipeItems;
-					break;
 				}
-			}
-			else if (object instanceof ShapelessRecipe) {
-				ShapelessRecipe recipe = (ShapelessRecipe) object;
+				else if (object instanceof ShapelessRecipe) {
+					ShapelessRecipe recipe = (ShapelessRecipe) object;
 
-				if (!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.getItem()) {
-					//don't show keycard reset recipes
-					if (recipe.getId().getPath().endsWith("_reset"))
-						continue;
+					if (!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.getItem()) {
+						//don't show keycard reset recipes
+						if (recipe.getId().getPath().endsWith("_reset"))
+							continue;
 
-					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
 
-					for (int i = 0; i < recipeItems.size(); i++) {
-						recipeItems.set(i, recipe.getIngredients().get(i));
+						for (int i = 0; i < recipeItems.size(); i++) {
+							recipeItems.set(i, recipe.getIngredients().get(i));
+						}
+
+						this.recipe = recipeItems;
+						break;
 					}
-
-					this.recipe = recipeItems;
-					break;
 				}
 			}
 		}
+		else if (pageGroup.hasRecipeGrid()) {
+			Map<Integer, ItemStack[]> recipeStacks = new HashMap<>();
+			List<Item> pageItems = Arrays.stream(pageGroup.getItems().getItems()).map(ItemStack::getItem).collect(Collectors.toList());
+			int stacksLeft = pageItems.size();
+
+			for (int i = 0; i < 9; i++) {
+				recipeStacks.put(i, new ItemStack[pageItems.size()]);
+			}
+
+			for (IRecipe<?> object : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
+				if (stacksLeft == 0)
+					break;
+
+				if (object instanceof ShapedRecipe) {
+					ShapedRecipe recipe = (ShapedRecipe) object;
+
+					if (!recipe.getResultItem().isEmpty() && pageItems.contains(recipe.getResultItem().getItem())) {
+						NonNullList<Ingredient> ingredients = recipe.getIngredients();
+
+						for (int i = 0; i < ingredients.size(); i++) {
+							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
+							//first item needs to suffice since multiple recipes are being cycled through
+							ItemStack itemToAdd = ingredients.get(i).getItems()[0];
+							recipeStacks.get(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()))[indexToAddAt] = itemToAdd;
+						}
+
+						stacksLeft--;
+					}
+				}
+				else if (object instanceof ShapelessRecipe) {
+					ShapelessRecipe recipe = (ShapelessRecipe) object;
+
+					if (!recipe.getResultItem().isEmpty() && pageItems.contains(recipe.getResultItem().getItem())) {
+						NonNullList<Ingredient> ingredients = recipe.getIngredients();
+
+						for (int i = 0; i < ingredients.size(); i++) {
+							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
+							//first item needs to suffice since multiple recipes are being cycled through
+							ItemStack itemToAdd = ingredients.get(i).getItems()[0];
+
+							recipeStacks.get(i)[indexToAddAt] = itemToAdd;
+						}
+
+						stacksLeft--;
+					}
+				}
+			}
+			//			for (Entry<Integer, ItemStack[]> e : recipeStacks.entrySet()) {
+			//				System.out.println(e.getKey());
+			//				System.out.println(Arrays.toString(e.getValue()));
+			//			}
+			recipe = NonNullList.withSize(9, Ingredient.EMPTY);
+			recipeStacks.forEach((i, stackArray) -> recipe.set(i, Ingredient.of(Arrays.stream(stackArray).map(s -> s == null ? ItemStack.EMPTY : s))));
+		}
 
 		TranslationTextComponent helpInfo = page.getHelpInfo();
-		boolean reinforcedPage = helpInfo.getKey().equals("help.securitycraft:reinforced.info") || helpInfo.getKey().contains("reinforced_hopper");
 
 		if (page.hasRecipeDescription()) {
 			String name = page.getItem().getRegistryName().getPath();
 
 			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.recipe." + name)));
 		}
-		else if (reinforcedPage) {
+		else if (pageGroup == PageGroup.REINFORCED || item == SCContent.REINFORCED_HOPPER.get().asItem()) {
 			recipe = null;
 			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.recipe.reinforced")));
 		}
 		else if (recipe != null) {
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < 3; j++) {
-					hoverCheckers.add(new HoverChecker(144 + (i * 19), 144 + (i * 19) + 16, (startX + 101) + (j * 19), (startX + 101) + (j * 19) + 16));
+			for (int row = 0; row < 3; row++) {
+				for (int column = 0; column < 3; column++) {
+					hoverCheckers.add(new HoverChecker(144 + (row * 19), 144 + (row * 19) + 16, (startX + 101) + (column * 19), (startX + 101) + (column * 19) + 16));
 				}
 			}
 		}
 		else
 			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.disabled")));
 
-		Item item = page.getItem();
+		pageTitle = page.getTitle();
 
-		if (page.getHelpInfo().getKey().equals("help.securitycraft:reinforced.info"))
-			pageTitle = reinforcedText;
+		if (pageGroup != PageGroup.NONE)
+			pageIcon.setIngredient(pageGroup.getItems());
 		else
-			pageTitle = Utils.localize(item.getDescriptionId());
+			pageIcon.setIngredient(Ingredient.of(item));
 
-		pageStack = new ItemStack(item);
 		resetTileEntityInfo();
 
 		if (item instanceof BlockItem) {
@@ -709,7 +775,7 @@ public class SCManualScreen extends Screen {
 				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				Minecraft.getInstance().getTextureManager().bind(bookGuiTextures);
+				Minecraft.getInstance().getTextureManager().bind(VANILLA_BOOK);
 				blit(matrix, x, y, isHovering ? 23 : 0, textureY, 23, 13);
 			}
 		}
@@ -722,7 +788,7 @@ public class SCManualScreen extends Screen {
 
 		@Override
 		public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partial) {
-			minecraft.getTextureManager().bind(infoBookIcons);
+			minecraft.getTextureManager().bind(ICONS);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 			if (isHovered)
