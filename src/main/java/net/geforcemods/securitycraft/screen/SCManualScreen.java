@@ -399,11 +399,15 @@ public class SCManualScreen extends Screen {
 						NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
-							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
-							//first item needs to suffice since multiple recipes are being cycled through
-							ItemStack itemToAdd = ingredients.get(i).getItems()[0];
+							ItemStack[] items = ingredients.get(i).getItems();
 
-							recipeStacks.get(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()))[indexToAddAt] = itemToAdd;
+							if (items.length == 0)
+								continue;
+
+							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
+
+							//first item needs to suffice since multiple recipes are being cycled through
+							recipeStacks.get(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()))[indexToAddAt] = items[0];
 						}
 
 						stacksLeft--;
@@ -413,14 +417,22 @@ public class SCManualScreen extends Screen {
 					ShapelessRecipe recipe = (ShapelessRecipe) object;
 
 					if (!recipe.getResultItem().isEmpty() && pageItems.contains(recipe.getResultItem().getItem())) {
+						//don't show keycard reset recipes
+						if (recipe.getId().getPath().endsWith("_reset"))
+							continue;
+
 						NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
-							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
-							//first item needs to suffice since multiple recipes are being cycled through
-							ItemStack itemToAdd = ingredients.get(i).getItems()[0];
+							ItemStack[] items = ingredients.get(i).getItems();
 
-							recipeStacks.get(i)[indexToAddAt] = itemToAdd;
+							if (items.length == 0)
+								continue;
+
+							int indexToAddAt = pageItems.indexOf(recipe.getResultItem().getItem());
+
+							//first item needs to suffice since multiple recipes are being cycled through
+							recipeStacks.get(i)[indexToAddAt] = items[0];
 						}
 
 						stacksLeft--;
