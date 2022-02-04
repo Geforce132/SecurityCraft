@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen.components;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
@@ -22,13 +23,16 @@ public class IngredientDisplay {
 			return;
 
 		mc.getItemRenderer().renderAndDecorateItem(stacks[currentRenderingStack], x, y);
-		ticksToChange -= partialTicks;
 
-		if (ticksToChange <= 0) {
-			if (++currentRenderingStack >= stacks.length)
-				currentRenderingStack = 0;
+		if (!Screen.hasShiftDown()) {
+			ticksToChange -= partialTicks;
 
-			ticksToChange = DISPLAY_LENGTH;
+			if (ticksToChange <= 0) {
+				if (++currentRenderingStack >= stacks.length)
+					currentRenderingStack = 0;
+
+				ticksToChange = DISPLAY_LENGTH;
+			}
 		}
 	}
 
