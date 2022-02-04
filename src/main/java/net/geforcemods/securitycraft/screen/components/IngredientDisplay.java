@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -26,13 +27,16 @@ public class IngredientDisplay implements Widget {
 			return;
 
 		Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(stacks[currentRenderingStack], x, y);
-		ticksToChange -= partialTick;
 
-		if (ticksToChange <= 0) {
-			if (++currentRenderingStack >= stacks.length)
-				currentRenderingStack = 0;
+		if (!Screen.hasShiftDown()) {
+			ticksToChange -= partialTick;
 
-			ticksToChange = DISPLAY_LENGTH;
+			if (ticksToChange <= 0) {
+				if (++currentRenderingStack >= stacks.length)
+					currentRenderingStack = 0;
+
+				ticksToChange = DISPLAY_LENGTH;
+			}
 		}
 	}
 
