@@ -597,7 +597,7 @@ public class SCManualScreen extends Screen {
 
 		@Override
 		protected int getContentHeight() {
-			int height = 50 + (patrons.size() * font.lineHeight);
+			int height = patrons.size() * (font.lineHeight + 3);
 
 			if (height < bottom - top - 8)
 				height = bottom - top - 8;
