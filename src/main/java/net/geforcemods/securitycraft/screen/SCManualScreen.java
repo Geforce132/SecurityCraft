@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -622,7 +623,7 @@ public class SCManualScreen extends Screen {
 
 						if (length >= width - 6) {
 							//6 = barWidth
-							renderTooltip(pose, new TextComponent(patron), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
+							renderTooltip(pose, List.of(new TextComponent(patron)), Optional.empty(), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
 						}
 					}
 
