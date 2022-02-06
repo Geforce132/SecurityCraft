@@ -19,6 +19,7 @@
 - Fix: Attempting to put more than one item into the Projector's slot swallows extra items
 - Fix: Sentries can target entities they cannot see
 - Fix: The Sentry's bounding box (F3+B) is not displayed correctly
+- Fix: The patron list in the SecurityCraft Manual is only capable of showing 33 patrons
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
