@@ -32,9 +32,7 @@ public class IngredientDisplay implements Widget {
 			ticksToChange -= partialTick;
 
 			if (ticksToChange <= 0) {
-				if (++currentRenderingStack >= stacks.length)
-					currentRenderingStack = 0;
-
+				changeRenderingStack(1);
 				ticksToChange = DISPLAY_LENGTH;
 			}
 		}
@@ -48,5 +46,14 @@ public class IngredientDisplay implements Widget {
 
 	public ItemStack getCurrentStack() {
 		return currentRenderingStack >= 0 && currentRenderingStack < stacks.length && stacks.length != 0 ? stacks[currentRenderingStack] : ItemStack.EMPTY;
+	}
+
+	public void changeRenderingStack(double direction) {
+		currentRenderingStack += Math.signum(direction);
+
+		if (currentRenderingStack < 0)
+			currentRenderingStack = stacks.length - 1;
+		else if (currentRenderingStack >= stacks.length)
+			currentRenderingStack = 0;
 	}
 }
