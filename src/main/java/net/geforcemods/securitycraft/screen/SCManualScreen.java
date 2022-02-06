@@ -249,7 +249,17 @@ public class SCManualScreen extends Screen {
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
-		super.mouseScrolled(mouseX, mouseY, scroll);
+		if (Screen.hasShiftDown()) {
+			for (IngredientDisplay display : displays) {
+				if (display != null)
+					display.changeRenderingStack(scroll);
+			}
+
+			if (pageIcon != null)
+				pageIcon.changeRenderingStack(scroll);
+
+			return true;
+		}
 
 		if (currentPage == -1 && patronList != null && patronList.isMouseOver(mouseX, mouseY) && !patronList.patrons.isEmpty()) {
 			patronList.mouseScrolled(mouseX, mouseY, scroll);
