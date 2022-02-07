@@ -559,7 +559,7 @@
 	"key.securitycraft.cameraZoomIn": "확대",
 	"key.securitycraft.cameraZoomOut": "축소",
 
-	"help.securitycraft:reinforced.info": "강화된 블록은 바닐라 블록으로 깨지지 않는 건축 블록입니다. 그 블록을 설치한 사람만이 만능 블록 제거제를 사용하여 그 블록을 부술 수 있습니다.",
+	"help.securitycraft.reinforced.info": "강화된 블록은 바닐라 블록으로 깨지지 않는 건축 블록입니다. 그 블록을 설치한 사람만이 만능 블록 제거제를 사용하여 그 블록을 부술 수 있습니다.",
 	"help.securitycraft.block_mines.info": "블록 지뢰는 표준 지뢰입니다. 그 안으로 들어가거나 채굴하면 폭발할 것입니다. 이 조합법의 먼지를 조약돌, 다이아몬드 광석, 화로, 자갈, 모래 또는 돌로 교체합니다.",
 	"help.securitycraft.reinforced_buttons.info": "강화된 버튼은 소유자 또는 화이트리스트에 있는 플레이어만 활성화할 수 있습니다.",
 	"help.securitycraft.reinforced_pressure_plates.info": "강화된 돌 압력판은 소유자 또는 허용목록 플레이어에 의해서만 활성화될 수 있습니다.",
