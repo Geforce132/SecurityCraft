@@ -20,6 +20,7 @@
 - Fix: The Sentry's bounding box (F3+B) is not displayed correctly
 - Fix: The patron list in the SecurityCraft Manual is only capable of showing 33 patrons
 - Fix: Patron name tooltips in the SecurityCraft Manual can extend over the border of the Minecraft window
+- Fix: Codebreaker does not work on Keypad Doors
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
