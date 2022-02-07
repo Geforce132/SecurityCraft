@@ -487,7 +487,7 @@
 	"key.securitycraft.cameraZoomIn": "Acercar",
 	"key.securitycraft.cameraZoomOut": "Alejar",
 
-	"help.securitycraft:reinforced.info": "Los bloques reforzados son indestructibles. Solo los puede quitar la persona que los puso, con el eliminador de bloques universal.",
+	"help.securitycraft.reinforced.info": "Los bloques reforzados son indestructibles. Solo los puede quitar la persona que los puso, con el eliminador de bloques universal.",
 	"help.securitycraft.block_mines.info": "Los bloques con mina funcionan como minas normales. Caminar sobre ellos o picarlos hará que exploten. Puedes sustituir la tierra de esta receta por roca, mena de diamante, horno, grava, arena o piedra para obtener esas variantes.",
 	"help.securitycraft.reinforced_buttons.info": "Los botones reforzados solo pueden ser activados por su propietario o por los jugadores de su lista de permitidos.",
 	"help.securitycraft.reinforced_pressure_plates.info": "Las placas de presión reforzadas solo pueden ser activadas por su propietario o por los jugadores de su lista de permitidos.",
