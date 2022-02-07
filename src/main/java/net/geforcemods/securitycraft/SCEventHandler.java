@@ -234,8 +234,12 @@ public class SCEventHandler {
 		if (!stack.isEmpty() && item != SCContent.universalBlockRemover && item != SCContent.universalBlockModifier && item != SCContent.universalOwnerChanger) {
 			if (!(item instanceof ItemBlock)) {
 				Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
+				boolean isKeypadDoor = block == SCContent.keypadDoor;
 
-				if (block == SCContent.keypadDoor || block == SCContent.reinforcedDoor || block == SCContent.reinforcedIronTrapdoor || block == SCContent.scannerDoor)
+				if (item == SCContent.codebreaker && isKeypadDoor)
+					return;
+
+				if (isKeypadDoor || block == SCContent.reinforcedDoor || block == SCContent.reinforcedIronTrapdoor || block == SCContent.scannerDoor)
 					event.setCanceled(true);
 			}
 		}

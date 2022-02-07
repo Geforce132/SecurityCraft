@@ -10,6 +10,7 @@
 - Fix: Reinforced Pistons and Reinforced Sticky Pistons cannot retract
 - Fix: Sentries can target entities they cannot see
 - Fix: The patron list in the SecurityCraft Manual is only capable of showing 33 patrons
+- Fix: Codebreaker does not work on Keypad Doors
 - Potential Fix: Entities sometimes disappear when dismounting a camera
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
