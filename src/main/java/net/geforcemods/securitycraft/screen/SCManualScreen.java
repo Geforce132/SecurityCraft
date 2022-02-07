@@ -631,10 +631,8 @@ public class SCManualScreen extends Screen {
 						int length = font.width(patron);
 						int baseY = top + border - (int) scrollDistance;
 
-						if (length >= width - 6) {
-							//6 = barWidth
+						if (length >= width - 6) //6 = barWidth
 							renderTooltip(pose, List.of(new TextComponent(patron)), Optional.empty(), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
-						}
 					}
 
 					if (patrons.isEmpty()) {
