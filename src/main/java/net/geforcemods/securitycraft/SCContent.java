@@ -367,15 +367,15 @@ public class SCContent {
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> QUARTZ_ORE_MINE = BLOCKS.register("quartz_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F), Blocks.NETHER_QUARTZ_ORE));
-	@HasManualPage(PageGroup.FURNACES)
+	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableTE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> FURNACE_MINE = BLOCKS.register("furnace_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F), Blocks.FURNACE));
-	@HasManualPage(PageGroup.FURNACES)
+	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableTE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> SMOKER_MINE = BLOCKS.register("smoker_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F), Blocks.SMOKER));
-	@HasManualPage(PageGroup.FURNACES)
+	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableTE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> BLAST_FURNACE_MINE = BLOCKS.register("blast_furnace_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F), Blocks.BLAST_FURNACE));
