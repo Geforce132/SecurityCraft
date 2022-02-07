@@ -257,11 +257,11 @@ public class SCManualScreen extends Screen {
 		if (Screen.hasShiftDown()) {
 			for (IngredientDisplay display : displays) {
 				if (display != null)
-					display.changeRenderingStack(scroll);
+					display.changeRenderingStack(-scroll);
 			}
 
 			if (pageIcon != null)
-				pageIcon.changeRenderingStack(scroll);
+				pageIcon.changeRenderingStack(-scroll);
 
 			return true;
 		}

@@ -336,7 +336,7 @@ public class SCContent {
 	public static final RegistryObject<Block> FAKE_LAVA_BLOCK = BLOCKS.register("fake_lava_block", () -> new FakeLavaBlock(prop(Material.LAVA).noCollission().randomTicks().lightLevel(state -> 15), FAKE_LAVA));
 
 	//block mines
-	@HasManualPage(value = PageGroup.BLOCK_MINES, title = "gui.securitycraft:scManual.block_mines", specialInfoKey = "securitycraft.block_mines.info")
+	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> STONE_MINE = BLOCKS.register("stone_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 1.5F), Blocks.STONE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
@@ -383,7 +383,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> GILDED_BLACKSTONE_MINE = BLOCKS.register("gilded_blackstone_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 1.5F).sound(SoundType.GILDED_BLACKSTONE), Blocks.GILDED_BLACKSTONE));
-	@HasManualPage(value = PageGroup.FURNACES, title = "block.securitycraft.furnace_mine", specialInfoKey = "securitycraft.furnace_mines.info")
+	@HasManualPage(PageGroup.FURNACES)
 	@OwnableTE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> FURNACE_MINE = BLOCKS.register("furnace_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F), Blocks.FURNACE));
@@ -397,7 +397,7 @@ public class SCContent {
 	public static final RegistryObject<Block> BLAST_FURNACE_MINE = BLOCKS.register("blast_furnace_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F), Blocks.BLAST_FURNACE));
 
 	//reinforced blocks (ordered by vanilla building blocks creative tab order)
-	@HasManualPage(value = PageGroup.REINFORCED, title = "gui.securitycraft:scManual.reinforced", specialInfoKey = "securitycraft.reinforced.info")
+	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_STONE = BLOCKS.register("reinforced_stone", () -> new BaseReinforcedBlock(prop(), Blocks.STONE));
@@ -1670,7 +1670,7 @@ public class SCContent {
 	@HasManualPage
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(Material.WOOD).noCollission().sound(SoundType.WOOD)));
-	@HasManualPage(value = PageGroup.PRESSURE_PLATES, title = "gui.securitycraft:scManual.reinforced_pressure_plates", specialInfoKey = "securitycraft.reinforced_pressure_plates.info")
+	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_STONE_PRESSURE_PLATE = BLOCKS.register("reinforced_stone_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().noCollission(), Blocks.STONE_PRESSURE_PLATE));
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
@@ -1704,7 +1704,7 @@ public class SCContent {
 	@OwnableTE
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_REDSTONE_LAMP = BLOCKS.register("reinforced_redstone_lamp", () -> new ReinforcedRedstoneLampBlock(prop(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(state -> state.getValue(ReinforcedRedstoneLampBlock.LIT) ? 15 : 0), Blocks.REDSTONE_LAMP));
-	@HasManualPage(value = PageGroup.BUTTONS, title = "gui.securitycraft:scManual.reinforced_buttons", specialInfoKey = "securitycraft.reinforced_buttons.info")
+	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_STONE_BUTTON = BLOCKS.register("reinforced_stone_button", () -> new ReinforcedButtonBlock(false, prop(Material.STONE).noCollission(), Blocks.STONE_BUTTON));
 	@HasManualPage(PageGroup.BUTTONS)
@@ -1798,7 +1798,7 @@ public class SCContent {
 	public static final RegistryObject<Item> FAKE_LAVA_BUCKET = ITEMS.register("bucket_f_lava", () -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA, itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
 	@HasManualPage
 	public static final RegistryObject<Item> FAKE_WATER_BUCKET = ITEMS.register("bucket_f_water", () -> new FakeLiquidBucketItem(SCContent.FAKE_WATER, itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
-	@HasManualPage(value = PageGroup.KEYCARDS, title = "gui.securitycraft:scManual.keycards", specialInfoKey = "securitycraft.secret_signs.info")
+	@HasManualPage(PageGroup.KEYCARDS)
 	public static final RegistryObject<Item> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 0));
 	@HasManualPage(PageGroup.KEYCARDS)
 	public static final RegistryObject<Item> KEYCARD_LVL_2 = ITEMS.register("keycard_lv2", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 1));
@@ -1827,7 +1827,7 @@ public class SCContent {
 	public static final RegistryObject<Item> SCANNER_DOOR_ITEM = ITEMS.register("scanner_door_item", () -> new TallBlockItem(SCANNER_DOOR.get(), itemProp(SecurityCraft.groupSCDecoration)));
 	@HasManualPage
 	public static final RegistryObject<Item> SC_MANUAL = ITEMS.register("sc_manual", () -> new SCManualItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
-	@HasManualPage(value = PageGroup.SECRET_SIGNS, title = "gui.securitycraft:scManual.secret_signs", specialInfoKey = "securitycraft.secret_signs.info")
+	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_OAK_SIGN_ITEM = ITEMS.register("secret_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.groupSCDecoration).stacksTo(16), SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), "item.securitycraft.secret_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_SPRUCE_SIGN_ITEM = ITEMS.register("secret_spruce_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.groupSCDecoration).stacksTo(16), SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get(), "item.securitycraft.secret_spruce_sign_item"));
@@ -1851,7 +1851,7 @@ public class SCContent {
 	public static final RegistryObject<Item> TASER_POWERED = ITEMS.register("taser_powered", () -> new TaserItem(itemProp(null).defaultDurability(151), true));
 	@HasManualPage
 	public static final RegistryObject<Item> UNIVERSAL_BLOCK_MODIFIER = ITEMS.register("universal_block_modifier", () -> new UniversalBlockModifierItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1)));
-	@HasManualPage(value = PageGroup.BLOCK_REINFORCERS, title = "gui.securitycraft:scManual.block_reinforcers", specialInfoKey = "securitycraft.block_reinforcers.info")
+	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
 	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REINFORCER_LVL_1 = ITEMS.register("universal_block_reinforcer_lvl1", () -> new UniversalBlockReinforcerItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).defaultDurability(300)));
 	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
 	public static final RegistryObject<Item> UNIVERSAL_BLOCK_REINFORCER_LVL_2 = ITEMS.register("universal_block_reinforcer_lvl2", () -> new UniversalBlockReinforcerItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1).defaultDurability(2700)));
