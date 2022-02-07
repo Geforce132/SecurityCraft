@@ -8,7 +8,7 @@ public enum PageGroup {
 	BLOCK_MINES(true, "gui.securitycraft:scManual.block_mines", "securitycraft.block_mines.info"),
 	BUTTONS(true, "gui.securitycraft:scManual.reinforced_buttons", "securitycraft.reinforced_buttons.info"),
 	PRESSURE_PLATES(true, "gui.securitycraft:scManual.reinforced_pressure_plates", "securitycraft.reinforced_pressure_plates.info"),
-	FURNACES(true, "block.securitycraft.furnace_mine", "securitycraft.furnace_mines.info"),
+	FURNACE_MINES(true, "block.securitycraft.furnace_mine", "securitycraft.furnace_mines.info"),
 	KEYCARDS(true, "gui.securitycraft:scManual.keycards", "securitycraft.secret_signs.info"),
 	SECRET_SIGNS(true, "gui.securitycraft:scManual.secret_signs", "securitycraft.secret_signs.info"),
 	BLOCK_REINFORCERS(true, "gui.securitycraft:scManual.block_reinforcers", "securitycraft.block_reinforcers.info");
