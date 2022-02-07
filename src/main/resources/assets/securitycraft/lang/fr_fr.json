@@ -438,7 +438,7 @@
 	"key.securitycraft.cameraZoomIn": "Zoomer",
 	"key.securitycraft.cameraZoomOut": "Dézoomer",
 
-	"help.securitycraft:reinforced.info": "Les blocs renforcés sont des blocs de construction incassable par rapport aux équivalents vanille. Seule la personne qui les a déposés peut les détruire à l´aide du déplaceur de bloc universel.",
+	"help.securitycraft.reinforced.info": "Les blocs renforcés sont des blocs de construction incassable par rapport aux équivalents vanille. Seule la personne qui les a déposés peut les détruire à l´aide du déplaceur de bloc universel.",
 	"help.securitycraft.block_mines.info": "Les mines en bloc sont des mines standard. En y pénétrant ou en l´exploitant le fera exploser. Remplacez le terre dans cette recette avec le pierres, le minerai de diamant, le fourneau, le gravier, le sable, ou le roche pour ces variations.",
 	"help.securitycraft.reinforced_buttons.info": "Les boutons renforcés peuvent être activé seulement par leurs propriétaires ou les joueurs sur la liste d’autorisation.",
 	"help.securitycraft.reinforced_pressure_plates.info": "La plaque de pression en pierre renforcée ne peut être activée que par sa propriétaire ou des joueurs sur la liste d’autorisation.",

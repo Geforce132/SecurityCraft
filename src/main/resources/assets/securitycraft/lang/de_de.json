@@ -442,7 +442,7 @@
 	"key.securitycraft.cameraZoomIn": "Reinzoomen",
 	"key.securitycraft.cameraZoomOut": "Rauszoomen",
 
-	"help.securitycraft:reinforced.info": "Verstärkte Blöcke sind unerstörbare Blöcke Varianten von Vanilla Blöcken, jedoch können sie nur von dem Besitzer mit einem Universellen Blockentferner entfernt werden.",
+	"help.securitycraft.reinforced.info": "Verstärkte Blöcke sind unerstörbare Blöcke Varianten von Vanilla Blöcken, jedoch können sie nur von dem Besitzer mit einem Universellen Blockentferner entfernt werden.",
 	"help.securitycraft.block_mines.info": "Blockminen sind Minen getarnt als normale Blöcke. Wenn man in sie reinläuft oder sie abbaut, explodieren sie. Dies passiert dem Besitzer der Blockmine jedoch nicht.",
 	"help.securitycraft.reinforced_buttons.info": "Die verstärkten Knöpfe können nur von ihrem Besitzer oder zugelassenen Spielern aktiviert werden.",
 	"help.securitycraft.reinforced_pressure_plates.info": "Die verstärkten Druckplatten können nur von ihrem Besitzer oder zugelassenen Spielern aktiviert werden.",
