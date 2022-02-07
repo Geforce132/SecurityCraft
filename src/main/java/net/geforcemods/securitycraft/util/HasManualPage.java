@@ -17,20 +17,10 @@ import net.geforcemods.securitycraft.misc.PageGroup;
 @Target(ElementType.FIELD)
 public @interface HasManualPage {
 	/**
-	 * @return The group this page belongs to. The block/item annotatated will not have a separate page, but will be included
-	 *         in the page defined by the first block/item to be in this group
+	 * @return The group this page belongs to. The block/item annotated will not have a separate page, but will be grouped
+	 *         together with the other blocks and items that define the same group
 	 */
 	PageGroup value() default PageGroup.NONE;
-
-	/**
-	 * @return A language key for the title of the page
-	 */
-	String title() default "";
-
-	/**
-	 * @return A non-standard language key for the help text
-	 */
-	String specialInfoKey() default "";
 
 	/**
 	 * @return The author who designed this block/item

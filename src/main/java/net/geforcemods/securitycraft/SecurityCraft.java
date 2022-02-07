@@ -131,32 +131,26 @@ public class SecurityCraft {
 					Item item = ((ItemLike) o).asItem();
 					PageGroup group = hmp.value();
 					boolean wasNotAdded = false;
+					TranslatableComponent title = new TranslatableComponent("");
+					String key = "help.";
 
 					if (group != PageGroup.NONE) {
 						if (!groupStacks.containsKey(group)) {
 							groupStacks.put(group, new ArrayList<>());
+							title = Utils.localize(group.getTitle());
+							key += group.getSpecialInfoKey();
 							wasNotAdded = true;
 						}
 
 						groupStacks.get(group).add(new ItemStack(item));
 					}
-
-					if (group == PageGroup.NONE || wasNotAdded) {
-						TranslatableComponent title;
-						String key = "help.";
-
-						if (hmp.title().isEmpty())
-							title = Utils.localize(item.getDescriptionId());
-						else
-							title = Utils.localize(hmp.title());
-
-						if (hmp.specialInfoKey().isEmpty())
-							key += item.getDescriptionId().substring(5) + ".info";
-						else
-							key += hmp.specialInfoKey();
-
-						SCManualItem.PAGES.add(new SCManualPage(item, group, title, new TranslatableComponent(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
+					else {
+						title = Utils.localize(item.getDescriptionId());
+						key += item.getDescriptionId().substring(5) + ".info";
 					}
+
+					if (group == PageGroup.NONE || wasNotAdded)
+						SCManualItem.PAGES.add(new SCManualPage(item, group, title, new TranslatableComponent(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
 				}
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {
