@@ -555,7 +555,7 @@
 	"key.securitycraft.cameraZoomIn": "Ingrandisci",
 	"key.securitycraft.cameraZoomOut": "Riduci",
 
-	"help.securitycraft:reinforced.info": "I blocchi rinforzati sono praticamente i blocchi da costruzione vanilla, però sono indistruttibili. Solo la persona che li ha piazzati può distruggerli utilizzando il rimuovi-blocchi universale.",
+	"help.securitycraft.reinforced.info": "I blocchi rinforzati sono praticamente i blocchi da costruzione vanilla, però sono indistruttibili. Solo la persona che li ha piazzati può distruggerli utilizzando il rimuovi-blocchi universale.",
 	"help.securitycraft.block_mines.info": "Le mine con sembianze di blocchi funzionano come le mine normali. Camminandoci sopra o distruggendole le faranno esplodere. Rimpiazza la terra in questa ricetta con pietrisco, diamante grezzo, fornace, ghiaia, sabbia o pietra per ottenere le diverse varianti.",
 	"help.securitycraft.reinforced_buttons.info": "I pulsanti rinforzati possono solo essere attivati dal loro possessore o dai giocatori nella lista consentiti.",
 	"help.securitycraft.reinforced_pressure_plates.info": "Le pedane a pressione rinforzate possono solo essere attivate dal loro possessore o dai giocatori nella lista consentiti.",
