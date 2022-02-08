@@ -392,8 +392,6 @@ public class RegistrationHandler {
 		});
 		pageTypeStacks.remove(PageType.SINGLE_ITEM);
 		pageTypeStacks.forEach((pageType, list) -> {
-			System.out.println(pageType);
-			System.out.println(list);
 			pageType.setItems(Ingredient.fromStacks(list.toArray(new ItemStack[list.size()])));
 			ItemSCManual.PAGES.add(new SCManualPage(list.get(0).getItem(), pageType, Utils.localize(pageType.getTitle()), Utils.localize(pageType.getSpecialInfoKey()), "", !pageType.hasRecipeGrid()));
 		});
