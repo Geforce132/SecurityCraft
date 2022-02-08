@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.util;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -37,11 +38,22 @@ public class Utils {
 	 * Localizes the translation key of a block with the given format
 	 *
 	 * @param block The block to localize (aka the identifier in the .lang file)
-	 * @param params The parameters to insert into the String ala String.format
+	 * @param params The parameters to insert into the String à la String.format
 	 * @return The localized String
 	 */
 	public static TextComponentTranslation localize(Block block, Object... params) {
 		return localize(block.getTranslationKey() + ".name", params);
+	}
+
+	/**
+	 * Localizes the translation key of an item with the given format
+	 *
+	 * @param item The item to localize (aka the identifier in the .lang file)
+	 * @param params The parameters to insert into the String à la String.format
+	 * @return The localized String
+	 */
+	public static TextComponentTranslation localize(Item item, Object... params) {
+		return localize(item.getTranslationKey() + ".name", params);
 	}
 
 	/**

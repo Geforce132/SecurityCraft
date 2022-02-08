@@ -1,11 +1,16 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S"
+  ],
+  "key": {
+    "S": [
 	  {
 	    "item": "securitycraft:reinforced_stone",
 	    "data": 0
 	  }
-  ],
+    ]
+  },
   "result": {
     "item": "securitycraft:reinforced_stone_button",
     "count": 1

@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.util;
 
+import org.lwjgl.input.Keyboard;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
@@ -36,5 +38,9 @@ public class ClientUtils {
 	 */
 	public static void syncItemNBT(ItemStack item) {
 		SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(item));
+	}
+
+	public static boolean hasShiftDown() {
+		return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 	}
 }

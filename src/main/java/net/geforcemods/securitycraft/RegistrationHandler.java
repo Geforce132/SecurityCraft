@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Owner;
@@ -38,6 +38,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.misc.DyeBriefcaseRecipe;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
+import net.geforcemods.securitycraft.misc.PageType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
@@ -104,6 +105,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.tileentity.TileEntityValidationOwnable;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
@@ -120,6 +122,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
@@ -148,6 +151,8 @@ public class RegistrationHandler {
 	//@formatter:on
 	private static List<Item> itemBlocks = new ArrayList<>();
 	private static List<Block> blockPages = new ArrayList<>();
+	private static Map<PageType, List<Block>> pageTypeBlocks = new EnumMap<>(PageType.class);
+	private static Map<PageType, List<ItemStack>> pageTypeStacks = new EnumMap<>(PageType.class);
 	private static Map<Block, String> blocksDesignedBy = new HashMap<>();
 	private static Map<Block, Boolean> blockConfigValues = new HashMap<>();
 
@@ -156,154 +161,154 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.laserBlock);
 		event.getRegistry().register(SCContent.laserField);
 		registerBlock(event, SCContent.keypad);
-		registerBlock(event, SCContent.mine, () -> ConfigHandler.ableToCraftMines);
+		registerBlock(event, SCContent.mine, ConfigHandler.ableToCraftMines);
 		event.getRegistry().register(SCContent.mineCut);
 		registerBlock(event, SCContent.retinalScanner);
 		event.getRegistry().register(SCContent.reinforcedDoor);
-		registerBlock(event, SCContent.fakeLava, false);
-		registerBlock(event, SCContent.bogusLavaFlowing, false);
-		registerBlock(event, SCContent.fakeWater, false);
-		registerBlock(event, SCContent.bogusWaterFlowing, false);
+		registerBlock(event, SCContent.fakeLava, PageType.NO_PAGE);
+		registerBlock(event, SCContent.bogusLavaFlowing, PageType.NO_PAGE);
+		registerBlock(event, SCContent.fakeWater, PageType.NO_PAGE);
+		registerBlock(event, SCContent.bogusWaterFlowing, PageType.NO_PAGE);
 		registerBlock(event, SCContent.keycardReader);
 		registerBlock(event, SCContent.reinforcedIronTrapdoor);
-		registerBlock(event, SCContent.bouncingBetty, () -> ConfigHandler.ableToCraftMines);
+		registerBlock(event, SCContent.bouncingBetty, ConfigHandler.ableToCraftMines);
 		registerBlock(event, SCContent.inventoryScanner);
 		event.getRegistry().register(SCContent.inventoryScannerField);
-		registerBlock(event, SCContent.trackMine, () -> ConfigHandler.ableToCraftMines);
+		registerBlock(event, SCContent.trackMine, ConfigHandler.ableToCraftMines);
 		registerBlock(event, SCContent.cageTrap);
 		event.getRegistry().register(SCContent.horizontalReinforcedIronBars);
 		registerBlock(event, SCContent.portableRadar);
-		registerBlock(event, SCContent.reinforcedIronBars, false);
+		registerBlock(event, SCContent.reinforcedIronBars, PageType.REINFORCED);
 		registerBlock(event, SCContent.keypadChest);
 		registerBlock(event, SCContent.usernameLogger);
 		registerBlock(event, SCContent.alarm);
 		event.getRegistry().register(SCContent.alarmLit);
-		registerBlock(event, SCContent.reinforcedStone, new ItemBlockReinforcedStone(SCContent.reinforcedStone), true);
-		registerBlock(event, SCContent.reinforcedSandstone, new ItemBlockReinforcedSandstone(SCContent.reinforcedSandstone), false);
-		registerBlock(event, SCContent.reinforcedDirt, new ItemBlockReinforcedDirt(SCContent.reinforcedDirt), false);
-		registerBlock(event, SCContent.reinforcedCobblestone, false);
+		registerBlock(event, SCContent.reinforcedStone, new ItemBlockReinforcedStone(SCContent.reinforcedStone), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedSandstone, new ItemBlockReinforcedSandstone(SCContent.reinforcedSandstone), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedDirt, new ItemBlockReinforcedDirt(SCContent.reinforcedDirt), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedCobblestone, PageType.REINFORCED);
 		registerBlock(event, SCContent.reinforcedFencegate);
-		registerBlock(event, SCContent.reinforcedWoodPlanks, new ItemBlockReinforcedPlanks(SCContent.reinforcedWoodPlanks), false);
+		registerBlock(event, SCContent.reinforcedWoodPlanks, new ItemBlockReinforcedPlanks(SCContent.reinforcedWoodPlanks), PageType.REINFORCED);
 		registerBlock(event, SCContent.panicButton);
 		registerBlock(event, SCContent.frame);
-		registerBlock(event, SCContent.claymore, () -> ConfigHandler.ableToCraftMines);
+		registerBlock(event, SCContent.claymore, ConfigHandler.ableToCraftMines);
 		registerBlock(event, SCContent.keypadFurnace);
 		registerBlock(event, SCContent.securityCamera);
-		registerBlock(event, SCContent.reinforcedStairsOak, false);
-		registerBlock(event, SCContent.reinforcedStairsSpruce, false);
-		registerBlock(event, SCContent.reinforcedStairsCobblestone, false);
-		registerBlock(event, SCContent.reinforcedStairsSandstone, false);
-		registerBlock(event, SCContent.reinforcedStairsBirch, false);
-		registerBlock(event, SCContent.reinforcedStairsJungle, false);
-		registerBlock(event, SCContent.reinforcedStairsAcacia, false);
-		registerBlock(event, SCContent.reinforcedStairsDarkoak, false);
-		registerBlock(event, SCContent.reinforcedStairsStone, false);
+		registerBlock(event, SCContent.reinforcedStairsOak, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsSpruce, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsCobblestone, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsSandstone, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsBirch, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsJungle, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsAcacia, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsDarkoak, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsStone, PageType.REINFORCED);
 		registerBlock(event, SCContent.ironFence);
-		registerBlock(event, SCContent.ims, () -> ConfigHandler.ableToCraftMines);
-		registerBlock(event, SCContent.reinforcedGlass, false);
-		registerBlock(event, SCContent.reinforcedStainedGlass, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedGlass), false);
-		registerBlock(event, SCContent.reinforcedWoodSlabs, new ItemBlockReinforcedWoodSlabs(SCContent.reinforcedWoodSlabs), false);
+		registerBlock(event, SCContent.ims, ConfigHandler.ableToCraftMines);
+		registerBlock(event, SCContent.reinforcedGlass, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStainedGlass, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedGlass), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedWoodSlabs, new ItemBlockReinforcedWoodSlabs(SCContent.reinforcedWoodSlabs), PageType.REINFORCED);
 		event.getRegistry().register(SCContent.reinforcedDoubleWoodSlabs);
-		registerBlock(event, SCContent.reinforcedStoneSlabs, new ItemBlockReinforcedSlabs(SCContent.reinforcedStoneSlabs), false);
+		registerBlock(event, SCContent.reinforcedStoneSlabs, new ItemBlockReinforcedSlabs(SCContent.reinforcedStoneSlabs), PageType.REINFORCED);
 		event.getRegistry().register(SCContent.reinforcedDoubleStoneSlabs);
 		registerBlock(event, SCContent.protecto);
 		event.getRegistry().register(SCContent.scannerDoor);
-		registerBlock(event, SCContent.reinforcedStoneBrick, new ItemBlockReinforcedStoneBrick(SCContent.reinforcedStoneBrick), false);
-		registerBlock(event, SCContent.reinforcedStairsStoneBrick, false);
-		registerBlock(event, SCContent.reinforcedMossyCobblestone, false);
-		registerBlock(event, SCContent.reinforcedBrick, false);
-		registerBlock(event, SCContent.reinforcedStairsBrick, false);
-		registerBlock(event, SCContent.reinforcedNetherBrick, false);
-		registerBlock(event, SCContent.reinforcedStairsNetherBrick, false);
-		registerBlock(event, SCContent.reinforcedHardenedClay, false);
-		registerBlock(event, SCContent.reinforcedStainedHardenedClay, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedHardenedClay), false);
-		registerBlock(event, SCContent.reinforcedOldLogs, new ItemBlockReinforcedLog(SCContent.reinforcedOldLogs), false);
-		registerBlock(event, SCContent.reinforcedNewLogs, new ItemBlockReinforcedLog(SCContent.reinforcedNewLogs), false);
-		registerBlock(event, SCContent.reinforcedMetals, new ItemBlockReinforcedMetals(SCContent.reinforcedMetals), false);
-		registerBlock(event, SCContent.reinforcedCompressedBlocks, new ItemBlockReinforcedCompressedBlocks(SCContent.reinforcedCompressedBlocks), false);
-		registerBlock(event, SCContent.reinforcedWool, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedWool), false);
-		registerBlock(event, SCContent.reinforcedQuartz, new ItemBlockCustomQuartz(SCContent.reinforcedQuartz), false);
-		registerBlock(event, SCContent.reinforcedStairsQuartz, false);
-		registerBlock(event, SCContent.reinforcedPrismarine, new ItemBlockReinforcedPrismarine(SCContent.reinforcedPrismarine), false);
-		registerBlock(event, SCContent.reinforcedRedSandstone, new ItemBlockReinforcedSandstone(SCContent.reinforcedRedSandstone), false);
-		registerBlock(event, SCContent.reinforcedStairsRedSandstone, false);
-		registerBlock(event, SCContent.reinforcedStoneSlabs2, new ItemBlockReinforcedSlabs2(SCContent.reinforcedStoneSlabs2), false);
+		registerBlock(event, SCContent.reinforcedStoneBrick, new ItemBlockReinforcedStoneBrick(SCContent.reinforcedStoneBrick), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsStoneBrick, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedMossyCobblestone, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedBrick, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsBrick, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedNetherBrick, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsNetherBrick, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedHardenedClay, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStainedHardenedClay, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedHardenedClay), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedOldLogs, new ItemBlockReinforcedLog(SCContent.reinforcedOldLogs), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedNewLogs, new ItemBlockReinforcedLog(SCContent.reinforcedNewLogs), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedMetals, new ItemBlockReinforcedMetals(SCContent.reinforcedMetals), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedCompressedBlocks, new ItemBlockReinforcedCompressedBlocks(SCContent.reinforcedCompressedBlocks), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedWool, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedWool), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedQuartz, new ItemBlockCustomQuartz(SCContent.reinforcedQuartz), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsQuartz, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedPrismarine, new ItemBlockReinforcedPrismarine(SCContent.reinforcedPrismarine), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedRedSandstone, new ItemBlockReinforcedSandstone(SCContent.reinforcedRedSandstone), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsRedSandstone, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStoneSlabs2, new ItemBlockReinforcedSlabs2(SCContent.reinforcedStoneSlabs2), PageType.REINFORCED);
 		event.getRegistry().register(SCContent.reinforcedDoubleStoneSlabs2);
-		registerBlock(event, SCContent.reinforcedEndStoneBricks, false);
-		registerBlock(event, SCContent.reinforcedRedNetherBrick, false);
-		registerBlock(event, SCContent.reinforcedPurpur, new ItemBlockReinforcedPurpur(SCContent.reinforcedPurpur), false);
-		registerBlock(event, SCContent.reinforcedStairsPurpur, false);
-		registerBlock(event, SCContent.reinforcedConcrete, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedConcrete), false);
+		registerBlock(event, SCContent.reinforcedEndStoneBricks, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedRedNetherBrick, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedPurpur, new ItemBlockReinforcedPurpur(SCContent.reinforcedPurpur), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStairsPurpur, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedConcrete, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedConcrete), PageType.REINFORCED);
 		event.getRegistry().register(SCContent.secretSignWall);
 		event.getRegistry().register(SCContent.secretSignStanding);
 		registerBlock(event, SCContent.motionActivatedLight);
-		registerBlock(event, SCContent.reinforcedObsidian, false);
-		registerBlock(event, SCContent.reinforcedNetherrack, false);
-		registerBlock(event, SCContent.reinforcedEndStone, false);
-		registerBlock(event, SCContent.reinforcedSeaLantern, false);
-		registerBlock(event, SCContent.reinforcedBoneBlock, false);
-		registerBlock(event, SCContent.reinforcedGlassPane, false);
-		registerBlock(event, SCContent.reinforcedStainedGlassPanes, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedGlassPanes), false);
-		registerBlock(event, SCContent.reinforcedCarpet, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedCarpet), false);
-		registerBlock(event, SCContent.reinforcedGlowstone, false);
-		registerBlock(event, SCContent.reinforcedSand, new ItemBlockReinforcedSand(SCContent.reinforcedSand), false);
-		registerBlock(event, SCContent.reinforcedGravel, false);
+		registerBlock(event, SCContent.reinforcedObsidian, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedNetherrack, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedEndStone, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedSeaLantern, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedBoneBlock, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedGlassPane, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStainedGlassPanes, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedGlassPanes), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedCarpet, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedCarpet), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedGlowstone, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedSand, new ItemBlockReinforcedSand(SCContent.reinforcedSand), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedGravel, PageType.REINFORCED);
 		registerBlock(event, SCContent.trophySystem);
-		registerBlock(event, SCContent.crystalQuartz, new ItemBlockCustomQuartz(SCContent.crystalQuartz), true);
-		registerBlock(event, SCContent.reinforcedCrystalQuartz, new ItemBlockCustomQuartz(SCContent.reinforcedCrystalQuartz), true);
-		registerBlock(event, SCContent.crystalQuartzSlab, new ItemBlockCrystalQuartzSlab(SCContent.crystalQuartzSlab), false);
+		registerBlock(event, SCContent.crystalQuartz, new ItemBlockCustomQuartz(SCContent.crystalQuartz), PageType.SINGLE_ITEM);
+		registerBlock(event, SCContent.reinforcedCrystalQuartz, new ItemBlockCustomQuartz(SCContent.reinforcedCrystalQuartz), PageType.REINFORCED);
+		registerBlock(event, SCContent.crystalQuartzSlab, new ItemBlockCrystalQuartzSlab(SCContent.crystalQuartzSlab), PageType.NO_PAGE);
 		event.getRegistry().register(SCContent.doubleCrystalQuartzSlab);
-		registerBlock(event, SCContent.reinforcedCrystalQuartzSlab, new ItemBlockReinforcedCrystalQuartzSlab(SCContent.reinforcedCrystalQuartzSlab), false);
+		registerBlock(event, SCContent.reinforcedCrystalQuartzSlab, new ItemBlockReinforcedCrystalQuartzSlab(SCContent.reinforcedCrystalQuartzSlab), PageType.REINFORCED);
 		event.getRegistry().register(SCContent.reinforcedDoubleCrystalQuartzSlab);
-		registerBlock(event, SCContent.stairsCrystalQuartz, false);
-		registerBlock(event, SCContent.reinforcedStairsCrystalQuartz, false);
+		registerBlock(event, SCContent.stairsCrystalQuartz, PageType.NO_PAGE);
+		registerBlock(event, SCContent.reinforcedStairsCrystalQuartz, PageType.REINFORCED);
 		registerBlock(event, SCContent.blockPocketWall);
 		registerBlock(event, SCContent.blockPocketManager, "Henzoid");
-		registerBlock(event, SCContent.reinforcedStonePressurePlate);
-		registerBlock(event, SCContent.reinforcedWoodenPressurePlate, false);
-		registerBlock(event, SCContent.reinforcedBookshelf, false);
-		registerBlock(event, SCContent.reinforcedWalls, new ItemBlockReinforcedWalls(SCContent.reinforcedWalls), false);
-		registerBlock(event, SCContent.reinforcedStickyPiston, false);
-		registerBlock(event, SCContent.reinforcedPiston, false);
-		registerBlock(event, SCContent.reinforcedPistonHead, null, false);
-		registerBlock(event, SCContent.reinforcedPistonExtension, null, false);
-		registerBlock(event, SCContent.reinforcedObserver, false);
-		registerBlock(event, SCContent.reinforcedRedstoneLamp, false);
-		registerBlock(event, SCContent.reinforcedCobweb, false);
-		registerBlock(event, SCContent.reinforcedGrass, false);
-		registerBlock(event, SCContent.reinforcedSnowBlock, false);
-		registerBlock(event, SCContent.reinforcedIce, false);
-		registerBlock(event, SCContent.reinforcedPackedIce, false);
-		registerBlock(event, SCContent.reinforcedMycelium, false);
-		registerBlock(event, SCContent.reinforcedClay, false);
-		registerBlock(event, SCContent.reinforcedNetherWartBlock, false);
-		registerBlock(event, SCContent.reinforcedGrassPath, false);
-		registerBlock(event, SCContent.reinforcedStoneButton);
-		registerBlock(event, SCContent.reinforcedWoodenButton, false);
+		registerBlock(event, SCContent.reinforcedStonePressurePlate, PageType.PRESSURE_PLATES);
+		registerBlock(event, SCContent.reinforcedWoodenPressurePlate, PageType.PRESSURE_PLATES);
+		registerBlock(event, SCContent.reinforcedBookshelf, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedWalls, new ItemBlockReinforcedWalls(SCContent.reinforcedWalls), PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStickyPiston, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedPiston, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedPistonHead, null, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedPistonExtension, null, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedObserver, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedRedstoneLamp, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedCobweb, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedGrass, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedSnowBlock, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedIce, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedPackedIce, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedMycelium, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedClay, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedNetherWartBlock, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedGrassPath, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedStoneButton, PageType.BUTTONS);
+		registerBlock(event, SCContent.reinforcedWoodenButton, PageType.BUTTONS);
 		registerBlock(event, SCContent.reinforcedLever);
 		registerBlock(event, SCContent.reinforcedHopper);
 		registerBlock(event, SCContent.projector);
 		event.getRegistry().register(SCContent.keypadDoor);
-		registerBlock(event, SCContent.reinforcedCauldron, false);
+		registerBlock(event, SCContent.reinforcedCauldron, PageType.REINFORCED);
 		event.getRegistry().register(SCContent.keyPanelFloorCeilingBlock);
 		event.getRegistry().register(SCContent.keyPanelWallBlock);
-		registerBlock(event, SCContent.sonicSecuritySystem, (ItemBlock) SCContent.sonicSecuritySystemItem, true);
+		registerBlock(event, SCContent.sonicSecuritySystem, (ItemBlock) SCContent.sonicSecuritySystemItem, PageType.SINGLE_ITEM);
 
 		//block mines
-		registerBlock(event, SCContent.stoneMine, false);
-		registerBlock(event, SCContent.dirtMine, () -> ConfigHandler.ableToCraftMines);
-		registerBlock(event, SCContent.cobblestoneMine, false);
-		registerBlock(event, SCContent.sandMine, false);
-		registerBlock(event, SCContent.gravelMine, false);
-		registerBlock(event, SCContent.goldOreMine, false);
-		registerBlock(event, SCContent.ironOreMine, false);
-		registerBlock(event, SCContent.coalOreMine, false);
-		registerBlock(event, SCContent.lapisOreMine, false);
-		registerBlock(event, SCContent.diamondOreMine, false);
-		registerBlock(event, SCContent.redstoneOreMine, false);
-		registerBlock(event, SCContent.emeraldOreMine, false);
-		registerBlock(event, SCContent.quartzOreMine, false);
-		registerBlock(event, SCContent.furnaceMine, () -> ConfigHandler.ableToCraftMines);
+		registerBlockMine(event, SCContent.stoneMine);
+		registerBlockMine(event, SCContent.dirtMine);
+		registerBlockMine(event, SCContent.cobblestoneMine);
+		registerBlockMine(event, SCContent.sandMine);
+		registerBlockMine(event, SCContent.gravelMine);
+		registerBlockMine(event, SCContent.goldOreMine);
+		registerBlockMine(event, SCContent.ironOreMine);
+		registerBlockMine(event, SCContent.coalOreMine);
+		registerBlockMine(event, SCContent.lapisOreMine);
+		registerBlockMine(event, SCContent.diamondOreMine);
+		registerBlockMine(event, SCContent.redstoneOreMine);
+		registerBlockMine(event, SCContent.emeraldOreMine);
+		registerBlockMine(event, SCContent.quartzOreMine);
+		registerBlock(event, SCContent.furnaceMine, ConfigHandler.ableToCraftMines);
 	}
 
 	@SubscribeEvent
@@ -315,29 +320,28 @@ public class RegistrationHandler {
 
 		//init block sc manual pages
 		for (Block block : blockPages) {
-			if (block == SCContent.reinforcedStone) {
-				ItemSCManual.PAGES.add(new SCManualPage(Item.getItemFromBlock(block), "help.securitycraft:reinforced.info"));
-			}
-			else {
-				SCManualPage page = new SCManualPage(Item.getItemFromBlock(block), "help." + block.getTranslationKey().substring(5) + ".info", blockConfigValues.getOrDefault(block, true));
-
-				if (blocksDesignedBy.containsKey(block))
-					page.setDesignedBy(blocksDesignedBy.get(block));
-
-				ItemSCManual.PAGES.add(page);
-			}
+			//@formatter:off
+			ItemSCManual.PAGES.add(new SCManualPage(
+					Item.getItemFromBlock(block),
+					PageType.SINGLE_ITEM,
+					Utils.localize(block),
+					Utils.localize("help." + block.getTranslationKey().substring(5) + ".info"),
+					blocksDesignedBy.getOrDefault(block, ""),
+					false,
+					blockConfigValues.getOrDefault(block, true)));
+			//@formatter:on
 		}
 
 		registerItem(event, SCContent.codebreaker);
 		registerItem(event, SCContent.reinforcedDoorItem);
 		registerItem(event, SCContent.scannerDoorItem);
 		registerItem(event, SCContent.universalBlockRemover);
-		registerItem(event, SCContent.keycardLvl1, ConfigHandler.ableToCraftKeycard1);
-		registerItem(event, SCContent.keycardLvl2, ConfigHandler.ableToCraftKeycard2);
-		registerItem(event, SCContent.keycardLvl3, ConfigHandler.ableToCraftKeycard3);
-		registerItem(event, SCContent.keycardLvl4, ConfigHandler.ableToCraftKeycard4);
-		registerItem(event, SCContent.keycardLvl5, ConfigHandler.ableToCraftKeycard5);
-		registerItem(event, SCContent.limitedUseKeycard, ConfigHandler.ableToCraftLUKeycard);
+		registerItem(event, SCContent.keycardLvl1, PageType.KEYCARDS, ConfigHandler.ableToCraftKeycard1);
+		registerItem(event, SCContent.keycardLvl2, PageType.KEYCARDS, ConfigHandler.ableToCraftKeycard2);
+		registerItem(event, SCContent.keycardLvl3, PageType.KEYCARDS, ConfigHandler.ableToCraftKeycard3);
+		registerItem(event, SCContent.keycardLvl4, PageType.KEYCARDS, ConfigHandler.ableToCraftKeycard4);
+		registerItem(event, SCContent.keycardLvl5, PageType.KEYCARDS, ConfigHandler.ableToCraftKeycard5);
+		registerItem(event, SCContent.limitedUseKeycard, PageType.SINGLE_ITEM, ConfigHandler.ableToCraftLUKeycard);
 		registerItem(event, SCContent.remoteAccessMine);
 		registerItem(event, SCContent.remoteAccessSentry);
 		registerItemWithCustomRecipe(event, SCContent.fWaterBucket, ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.WATER_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY);
@@ -358,23 +362,48 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.taser);
 		registerItem(event, SCContent.scManual);
 		registerItem(event, SCContent.universalOwnerChanger);
-		registerItem(event, SCContent.universalBlockReinforcerLvL1);
-		registerItem(event, SCContent.universalBlockReinforcerLvL2);
-		registerItem(event, SCContent.universalBlockReinforcerLvL3);
+		registerItem(event, SCContent.universalBlockReinforcerLvL1, PageType.BLOCK_REINFORCERS);
+		registerItem(event, SCContent.universalBlockReinforcerLvL2, PageType.BLOCK_REINFORCERS);
+		registerItem(event, SCContent.universalBlockReinforcerLvL3, PageType.BLOCK_REINFORCERS);
 		registerItem(event, SCContent.briefcase);
 		registerItem(event, SCContent.universalKeyChanger);
 		event.getRegistry().register(SCContent.taserPowered); //won't show up in the manual
 		registerItem(event, SCContent.secretSignItem);
-		registerItem(event, SCContent.sentry, "Henzoid");
+		registerItem(event, SCContent.sentry, PageType.SINGLE_ITEM, true, "Henzoid");
 		registerItem(event, SCContent.crystalQuartzItem);
 		registerItem(event, SCContent.keypadDoorItem);
 		registerItem(event, SCContent.portableTunePlayer);
 
 		SecurityCraft.proxy.registerVariants();
+		pageTypeBlocks.forEach((pageType, list) -> {
+			if (!pageTypeStacks.containsKey(pageType))
+				pageTypeStacks.put(pageType, new ArrayList<>());
+
+			list.stream().map(Item::getItemFromBlock).forEach(item -> {
+				if (item != null && item.getHasSubtypes()) {
+					NonNullList<ItemStack> subStacks = NonNullList.create();
+
+					item.getSubItems(item.getCreativeTab(), subStacks);
+					pageTypeStacks.get(pageType).addAll(subStacks);
+				}
+				else
+					pageTypeStacks.get(pageType).add(new ItemStack(item));
+			});
+		});
+		pageTypeStacks.remove(PageType.SINGLE_ITEM);
+		pageTypeStacks.forEach((pageType, list) -> {
+			System.out.println(pageType);
+			System.out.println(list);
+			pageType.setItems(Ingredient.fromStacks(list.toArray(new ItemStack[list.size()])));
+			ItemSCManual.PAGES.add(new SCManualPage(list.get(0).getItem(), pageType, Utils.localize(pageType.getTitle()), Utils.localize(pageType.getSpecialInfoKey()), "", !pageType.hasRecipeGrid()));
+		});
 		//clear unused memory
 		itemBlocks = null;
 		blockPages = null;
+		pageTypeBlocks = null;
+		pageTypeStacks = null;
 		blocksDesignedBy = null;
+		blockConfigValues = null;
 	}
 
 	@SubscribeEvent
@@ -857,7 +886,7 @@ public class RegistrationHandler {
 	 * @param block The block to register
 	 */
 	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, String designedBy) {
-		registerBlock(event, block, new ItemBlock(block), true, designedBy);
+		registerBlock(event, block, new ItemBlock(block), designedBy);
 	}
 
 	/**
@@ -866,7 +895,17 @@ public class RegistrationHandler {
 	 * @param block The block to register
 	 */
 	private static void registerBlock(RegistryEvent.Register<Block> event, Block block) {
-		registerBlock(event, block, new ItemBlock(block), true);
+		registerBlock(event, block, new ItemBlock(block), PageType.SINGLE_ITEM);
+	}
+
+	/**
+	 * Registers a block and its ItemBlock and adds the help info for the block to the SecurityCraft manual item
+	 *
+	 * @param block The block to register
+	 */
+	private static void registerBlockMine(RegistryEvent.Register<Block> event, Block block) {
+		registerBlock(event, block, new ItemBlock(block), PageType.BLOCK_MINES);
+		blockConfigValues.put(block, ConfigHandler.ableToBreakMines);
 	}
 
 	/**
@@ -876,19 +915,19 @@ public class RegistrationHandler {
 	 * @param block The block to register
 	 * @param configValue The config value
 	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, Supplier<Boolean> configValue) {
-		registerBlock(event, block, new ItemBlock(block), true);
-		blockConfigValues.put(block, configValue.get());
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, boolean configValue) {
+		registerBlock(event, block, new ItemBlock(block), PageType.SINGLE_ITEM);
+		blockConfigValues.put(block, configValue);
 	}
 
 	/**
 	 * Registers a block and its ItemBlock
 	 *
 	 * @param block The Block to register
-	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
+	 * @param pageType The type of the manual page from this block
 	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, boolean initPage) {
-		registerBlock(event, block, new ItemBlock(block), initPage);
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, PageType pageGroup) {
+		registerBlock(event, block, new ItemBlock(block), pageGroup);
 	}
 
 	/**
@@ -896,16 +935,22 @@ public class RegistrationHandler {
 	 *
 	 * @param block The Block to register
 	 * @param itemBlock The ItemBlock to register
-	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
+	 * @param pageType The type of the manual page from this block
 	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, ItemBlock itemBlock, boolean initPage) {
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, ItemBlock itemBlock, PageType pageType) {
 		event.getRegistry().register(block);
 
 		if (itemBlock != null)
 			itemBlocks.add(itemBlock.setRegistryName(block.getRegistryName().toString()));
 
-		if (initPage)
+		if (pageType == PageType.SINGLE_ITEM)
 			blockPages.add(block);
+		else if (pageType != PageType.NO_PAGE) {
+			if (!pageTypeBlocks.containsKey(pageType))
+				pageTypeBlocks.put(pageType, new ArrayList<>());
+
+			pageTypeBlocks.get(pageType).add(block);
+		}
 	}
 
 	/**
@@ -913,17 +958,15 @@ public class RegistrationHandler {
 	 *
 	 * @param block The Block to register
 	 * @param itemBlock The ItemBlock to register
-	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
 	 * @param designedBy The name of the person who designed this block
 	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, ItemBlock itemBlock, boolean initPage, String designedBy) {
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, ItemBlock itemBlock, String designedBy) {
 		event.getRegistry().register(block);
 
 		if (itemBlock != null)
 			itemBlocks.add(itemBlock.setRegistryName(block.getRegistryName().toString()));
 
-		if (initPage)
-			blockPages.add(block);
+		blockPages.add(block);
 
 		if (designedBy != null)
 			blocksDesignedBy.put(block, designedBy);
@@ -934,39 +977,54 @@ public class RegistrationHandler {
 	 * manual item.
 	 */
 	private static void registerItem(RegistryEvent.Register<Item> event, Item item) {
-		registerItem(event, item, "");
+		registerItem(event, item, PageType.SINGLE_ITEM, true, "");
 	}
 
 	/**
 	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft
 	 * manual item. Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
 	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item, boolean configValue) {
-		registerItem(event, item, configValue, "");
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item, PageType pageType, boolean configValue) {
+		registerItem(event, item, pageType, configValue, "");
 	}
 
 	/**
 	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft
 	 * manual item.
 	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item, String designedBy) {
-		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info");
-
-		event.getRegistry().register(item);
-		page.setDesignedBy(designedBy);
-		ItemSCManual.PAGES.add(page);
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item, PageType pageType) {
+		registerItem(event, item, pageType, true, "");
 	}
 
 	/**
 	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft
 	 * manual item. Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
 	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item, boolean configValue, String designedBy) {
-		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", configValue);
-
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item, PageType pageType, boolean configValue, String designedBy) {
 		event.getRegistry().register(item);
-		page.setDesignedBy(designedBy);
-		ItemSCManual.PAGES.add(page);
+
+		if (pageType == PageType.NO_PAGE)
+			return;
+
+		if (pageType != PageType.SINGLE_ITEM) {
+			if (!pageTypeStacks.containsKey(pageType))
+				pageTypeStacks.put(pageType, new ArrayList<>());
+
+			if (item != null && item.getHasSubtypes()) {
+				NonNullList<ItemStack> subStacks = NonNullList.create();
+
+				item.getSubItems(item.getCreativeTab(), subStacks);
+				pageTypeStacks.get(pageType).addAll(subStacks);
+			}
+			else
+				pageTypeStacks.get(pageType).add(new ItemStack(item));
+		}
+		else {
+			TextComponentTranslation title = Utils.localize(item);
+			TextComponentTranslation helpInfo = Utils.localize("help." + item.getTranslationKey().substring(5) + ".info");
+
+			ItemSCManual.PAGES.add(new SCManualPage(item, pageType, title, helpInfo, designedBy, false, configValue));
+		}
 	}
 
 	/**
@@ -982,6 +1040,6 @@ public class RegistrationHandler {
 			recipeItems.set(i, Ingredient.fromStacks(customRecipe[i]));
 		}
 
-		ItemSCManual.PAGES.add(new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", recipeItems));
+		ItemSCManual.PAGES.add(new SCManualPage(item, Utils.localize(item), Utils.localize("help." + item.getTranslationKey().substring(5) + ".info"), recipeItems));
 	}
 }
