@@ -79,8 +79,8 @@ public class SCManualScreen extends Screen {
 	private static final ResourceLocation TITLE_PAGE = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
 	private static final ResourceLocation ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png");
 	private static final ResourceLocation VANILLA_BOOK = new ResourceLocation("textures/gui/book.png");
+	private static final int SUBPAGE_LENGTH = 1285;
 	private static int lastPage = -1;
-	private final int subpageLength = 1285;
 	private final IFormattableTextComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.setUnderlined(true));
 	private final TranslationTextComponent ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
 	private List<HoverChecker> hoverCheckers = new ArrayList<>();
@@ -572,7 +572,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		//set up subpages
-		subpages = font.getSplitter().splitLines(page.getHelpInfo(), subpageLength, Style.EMPTY);
+		subpages = font.getSplitter().splitLines(page.getHelpInfo(), SUBPAGE_LENGTH, Style.EMPTY);
 		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
 		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
