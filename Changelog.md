@@ -1,16 +1,16 @@
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 
-- New: The Disguise Module can now be set to display a specific state of a block (e.g. corner stairs), instead of a fixed one
+- New: The Disguise Module and Projector can now be set to display a specific state of a block (e.g. corner stairs), instead of a fixed one
 - Change: The Password-protected Furnace now has a new look
 - Change: The Cage Trap is now reusable
 - Fix: Reinforced pressure plates cannot open reinforced doors/trapdoors/etc.
-- Fix: Password-protected Furnace is not shown as a recipe catalyst for furnace recipes in JEI
-- Fix: Light level of Password-protected Furnace is too high compared to the vanilla furnace
-- Fix: Changing the owner of the Inventory Scanner or doors does not change the owner of the other block/half
+- Fix: The Password-protected Furnace is not shown as a recipe catalyst for furnace recipes in JEI
+- Fix: The light level of password-protected furnaces is too high compared to the vanilla furnace
+- Fix: Changing the owner of inventory scanners and doors does not change the owner of the other block/door half
 - Fix: Reinforced Pistons and Reinforced Sticky Pistons cannot retract
 - Fix: Sentries can target entities they cannot see
 - Fix: The patron list in the SecurityCraft Manual is only capable of showing 33 patrons
-- Fix: Codebreaker does not work on Keypad Doors
+- Fix: The Codebreaker does not work on Keypad Doors
 - Potential Fix: Entities sometimes disappear when dismounting a camera
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
