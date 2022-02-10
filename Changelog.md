@@ -21,6 +21,8 @@
 - Fix: The patron list in the SecurityCraft Manual is only capable of showing 33 patrons
 - Fix: Patron name tooltips in the SecurityCraft Manual can extend over the border of the Minecraft window
 - Fix: The Codebreaker does not work on Keypad Doors
+- Fix: The Mine Remote Access Tool does not work for mines placed at x=0, y=0, z=0
+- Fix: The Sentry Remote Access Tool does not work for sentries placed at y=0
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2-beta1 of SecurityCraft--------------------------
