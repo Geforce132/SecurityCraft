@@ -32,9 +32,10 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 	public boolean onEntityViewed(EntityLivingBase entity, RayTraceResult rayTraceResult) {
 		IBlockState upperState = world.getBlockState(pos);
 		IBlockState lowerState = world.getBlockState(pos.down());
-		EnumFacing.Axis facingAxis = BlockScannerDoor.getFacingAxis(upperState);
 
 		if (upperState.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER && !EntityUtils.isInvisible(entity)) {
+			EnumFacing.Axis facingAxis = BlockScannerDoor.getFacingAxis(lowerState);
+
 			if (!(entity instanceof EntityPlayer) || facingAxis != rayTraceResult.sideHit.getAxis())
 				return false;
 
@@ -54,8 +55,8 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 				boolean open = !lowerState.getValue(BlockDoor.OPEN);
 				int length = getSignalLength();
 
-				world.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, !upperState.getValue(BlockDoor.OPEN)), 3);
-				world.setBlockState(pos.down(), lowerState.withProperty(BlockDoor.OPEN, !lowerState.getValue(BlockDoor.OPEN)), 3);
+				world.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, open), 3);
+				world.setBlockState(pos.down(), lowerState.withProperty(BlockDoor.OPEN, open), 3);
 				world.markBlockRangeForRenderUpdate(pos.down(), pos);
 				world.playEvent(null, open ? 1005 : 1011, pos, 0);
 
