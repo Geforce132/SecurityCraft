@@ -85,7 +85,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID)
 public class SCEventHandler {
-	public static final Integer NOTE_DELAY = 10;
+	private static final Integer NOTE_DELAY = 9;
 	public static final Map<PlayerEntity, MutablePair<Integer, Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
 
 	@SubscribeEvent
