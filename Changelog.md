@@ -10,8 +10,9 @@
 - Fix: Reinforced Pistons and Reinforced Sticky Pistons cannot retract
 - Fix: Sentries can target entities they cannot see
 - Fix: The patron list in the SecurityCraft Manual is only capable of showing 33 patrons
-- Fix: The Codebreaker does not work on Keypad Doors
+- Fix: The Codebreaker does not work on keypad doors
 - Fix: The Scanner Door can sometimes be opened/closed by looking at a side the scanner texture is not on
+- Fix: The Portable Tune Player plays the saved tune slightly slower than the Sonic Security System
 - Potential Fix: Entities sometimes disappear when dismounting a camera
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------

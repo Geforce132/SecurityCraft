@@ -102,7 +102,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 @EventBusSubscriber(modid = SecurityCraft.MODID)
 public class SCEventHandler {
 	public static HashMap<String, String> tipsWithLink = new HashMap<>();
-	public static final Integer NOTE_DELAY = 10;
+	private static final Integer NOTE_DELAY = 9;
 	public static final Map<EntityPlayer, MutablePair<Integer, Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
 
 	static {
