@@ -99,26 +99,22 @@ public class SentryRemoteAccessToolItem extends Item {
 			return;
 
 		for (int i = 1; i <= 12; i++) {
-			if (stack.getTag().getIntArray("sentry" + i).length > 0) {
-				int[] coords = stack.getTag().getIntArray("sentry" + i);
+			int[] coords = stack.getTag().getIntArray("sentry" + i);
 
-				if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-					tooltip.add(new TextComponent(ChatFormatting.GRAY + "---"));
-				else {
-					BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
-					List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(pos));
-					String nameToShow;
-
-					if (!sentries.isEmpty() && sentries.get(0).hasCustomName())
-						nameToShow = sentries.get(0).getCustomName().getString();
-					else
-						nameToShow = Utils.localize("tooltip.securitycraft:sentry").getString() + " " + i;
-
-					tooltip.add(new TextComponent(ChatFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));
-				}
-			}
-			else
+			if (coords.length != 3)
 				tooltip.add(new TextComponent(ChatFormatting.GRAY + "---"));
+			else {
+				BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
+				List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(pos));
+				String nameToShow;
+
+				if (!sentries.isEmpty() && sentries.get(0).hasCustomName())
+					nameToShow = sentries.get(0).getCustomName().getString();
+				else
+					nameToShow = Utils.localize("tooltip.securitycraft:sentry").getString() + " " + i;
+
+				tooltip.add(new TextComponent(ChatFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));
+			}
 		}
 	}
 
@@ -127,19 +123,15 @@ public class SentryRemoteAccessToolItem extends Item {
 			return;
 
 		for (int i = 1; i <= 12; i++) {
-			if (stack.getTag().getIntArray("sentry" + i).length > 0) {
-				int[] coords = stack.getTag().getIntArray("sentry" + i);
+			int[] coords = stack.getTag().getIntArray("sentry" + i);
 
-				if (coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
-					stack.getTag().putIntArray("sentry" + i, new int[] {
-							0, 0, 0
-					});
+			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
+				stack.getTag().remove("sentry" + i);
 
-					if (!player.level.isClientSide)
-						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+				if (!player.level.isClientSide)
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
-					return;
-				}
+				return;
 			}
 		}
 
@@ -151,12 +143,10 @@ public class SentryRemoteAccessToolItem extends Item {
 			return false;
 
 		for (int i = 1; i <= 12; i++) {
-			if (stack.getTag().getIntArray("sentry" + i).length > 0) {
-				int[] coords = stack.getTag().getIntArray("sentry" + i);
+			int[] coords = stack.getTag().getIntArray("sentry" + i);
 
-				if (coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
-					return true;
-			}
+			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
+				return true;
 		}
 
 		return false;
@@ -167,9 +157,7 @@ public class SentryRemoteAccessToolItem extends Item {
 			return 1;
 
 		for (int i = 1; i <= 12; i++) {
-			int[] pos = stack.getTag().getIntArray("sentry" + i);
-
-			if (pos.length == 0 || (pos[0] == 0 && pos[1] == 0 && pos[2] == 0))
+			if (stack.getTag().getIntArray("sentry" + i).length != 3)
 				return i;
 		}
 

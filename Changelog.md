@@ -7,7 +7,7 @@
 - Change: The Cage Trap is now reusable
 - Fix: Cannot access the recipe book for the Password-protected Furnace
 - Fix: The Password-protected Furnace is not shown as a recipe catalyst for furnace recipes in JEI
-- Fix: Changing the owner of the Inventory Scanner or doors does not change the owner of the other block/half
+- Fix: Changing the owner of inventory scanners and doors does not change the owner of the other block/door half
 - Fix: Projecting disguisable blocks (those that support the disguise module) does not work
 - Fix: Crash when trying to place a door one block below the build height
 - Fix: Door item gets removed when trying to place a door outside the build height

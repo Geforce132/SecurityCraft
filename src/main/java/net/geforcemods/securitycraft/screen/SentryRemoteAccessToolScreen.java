@@ -107,10 +107,15 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				addRenderableWidget(guiButtons[i][j]);
 			}
 
-			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
+			if (coords.length == 3) {
+				BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
 
-			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				guiButtons[i][UNBIND].active = true;
+
+				if (names[i] != null)
+					lines[i] = names[i];
+				else
+					lines[i] = Utils.getFormattedCoordinates(sentryPos);
 
 				if (Minecraft.getInstance().player.level.isLoaded(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
 					List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(sentryPos));
@@ -156,13 +161,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 					hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind")));
 				}
 			}
-
-			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-				lines[i] = notBound;
-			else if (names[i] != null)
-				lines[i] = names[i];
 			else
-				lines[i] = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
+				lines[i] = notBound;
 
 			lengths[i] = font.width(lines[i]);
 		}
@@ -211,14 +211,17 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	 */
 	protected void performSingleAction(int sentry, int mode, int targets) {
 		int[] coords = getSentryCoordinates(sentry);
-		List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(new BlockPos(coords[0], coords[1], coords[2])));
 
-		if (!sentries.isEmpty()) {
-			int resultingMode = Math.max(0, Math.min(targets + mode * 3, 6)); //bind between 0 and 6
+		if (coords.length == 3) {
+			List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(new BlockPos(coords[0], coords[1], coords[2])));
 
-			guiButtons[sentry][TARGETS].active = SentryMode.values()[resultingMode] != SentryMode.IDLE;
-			sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, false);
-			SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).blockPosition(), resultingMode));
+			if (!sentries.isEmpty()) {
+				int resultingMode = Math.max(0, Math.min(targets + mode * 3, 6)); //bind between 0 and 6
+
+				guiButtons[sentry][TARGETS].active = SentryMode.values()[resultingMode] != SentryMode.IDLE;
+				sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, false);
+				SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).blockPosition(), resultingMode));
+			}
 		}
 	}
 
@@ -235,7 +238,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private void unbindSentry(int sentry) {
 		int[] coords = getSentryCoordinates(sentry);
 
-		removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
+		if (coords.length == 3)
+			removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
 
 		for (int i = 0; i < 3; i++) {
 			guiButtons[sentry][i].active = false;
@@ -267,7 +271,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		for (int i = 0; i < guiButtons.length; i++) {
 			TogglePictureButton modeButton = (TogglePictureButton) guiButtons[i][MODE];
 
-			if (getSentryCoordinates(i)[1] != 0) {
+			if (getSentryCoordinates(i).length == 3) {
 				int sentry = i;
 				int mode = ((TogglePictureButton) button).getCurrentIndex();
 				int targets = ((TogglePictureButton) guiButtons[sentry][TARGETS]).getCurrentIndex();
@@ -282,7 +286,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		for (int i = 0; i < guiButtons.length; i++) {
 			TogglePictureButton targetsButton = (TogglePictureButton) guiButtons[i][TARGETS];
 
-			if (getSentryCoordinates(i)[1] != 0) {
+			if (getSentryCoordinates(i).length == 3) {
 				int sentry = i;
 				int mode = ((TogglePictureButton) guiButtons[sentry][MODE]).getCurrentIndex();
 				int targets = ((TogglePictureButton) button).getCurrentIndex();
@@ -299,12 +303,14 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private int[] getSentryCoordinates(int sentry) {
 		sentry++; // sentries are stored starting by sentry1 up to sentry12
 
-		if (srat.getItem() != null && srat.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get() && srat.getTag() != null && srat.getTag().getIntArray("sentry" + sentry) != null && srat.getTag().getIntArray("sentry" + sentry).length > 0)
-			return srat.getTag().getIntArray("sentry" + sentry);
+		if (srat.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get() && srat.hasTag()) {
+			int[] coords = srat.getTag().getIntArray("sentry" + sentry);
 
-		return new int[] {
-				0, 0, 0
-		};
+			if (coords.length == 3)
+				return coords;
+		}
+
+		return new int[0];
 	}
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z) {
@@ -312,16 +318,12 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			return;
 
 		for (int i = 1; i <= 12; i++) {
-			if (stack.getTag().getIntArray("sentry" + i).length > 0) {
-				int[] coords = stack.getTag().getIntArray("sentry" + i);
+			int[] coords = stack.getTag().getIntArray("sentry" + i);
 
-				if (coords[0] == x && coords[1] == y && coords[2] == z) {
-					stack.getTag().putIntArray("sentry" + i, new int[] {
-							0, 0, 0
-					});
-					SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(stack));
-					return;
-				}
+			if (coords.length == 3 && coords[0] == x && coords[1] == y && coords[2] == z) {
+				stack.getTag().remove("sentry" + i);
+				SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(stack));
+				return;
 			}
 		}
 	}

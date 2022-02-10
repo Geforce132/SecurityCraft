@@ -54,14 +54,14 @@ public class MineRemoteAccessToolScreen extends Screen {
 		int y = padding;
 		int[] coords = null;
 		int id = 0;
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
 
 		hoverCheckers.clear();
 
 		for (int i = 0; i < 6; i++) {
 			y += 30;
 			coords = getMineCoordinates(i);
-			int startX = (width - xSize) / 2;
-			int startY = (height - ySize) / 2;
 
 			// initialize buttons
 			for (int j = 0; j < 4; j++) {
@@ -94,10 +94,11 @@ public class MineRemoteAccessToolScreen extends Screen {
 				addRenderableWidget(guiButtons[i][j]);
 			}
 
-			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
+			if (coords.length == 3) {
+				BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
 
-			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				guiButtons[i][UNBIND].active = true;
+				lines[i] = Utils.localize("gui.securitycraft:mrat.mineLocations", minePos);
 
 				if (Minecraft.getInstance().player.level.isLoaded(minePos)) {
 					Block block = minecraft.level.getBlockState(minePos).getBlock();
@@ -130,11 +131,8 @@ public class MineRemoteAccessToolScreen extends Screen {
 					hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind")));
 				}
 			}
-
-			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-				lines[i] = notBound;
 			else
-				lines[i] = Utils.localize("gui.securitycraft:mrat.mineLocations", new BlockPos(coords[0], coords[1], coords[2]));
+				lines[i] = notBound;
 
 			lengths[i] = font.width(lines[i]);
 		}
@@ -165,36 +163,38 @@ public class MineRemoteAccessToolScreen extends Screen {
 	private void buttonClicked(int mine, int action) {
 		int[] coords = getMineCoordinates(mine);
 
-		switch (action) {
-			case DEFUSE:
-				((IExplosive) Minecraft.getInstance().player.level.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getInstance().player.level, new BlockPos(coords[0], coords[1], coords[2]));
-				SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "defuse"));
-				guiButtons[mine][DEFUSE].active = false;
-				guiButtons[mine][ACTIVATE].active = true;
-				guiButtons[mine][DETONATE].active = false;
-				break;
-			case ACTIVATE:
-				((IExplosive) Minecraft.getInstance().player.level.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getInstance().player.level, new BlockPos(coords[0], coords[1], coords[2]));
-				SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "activate"));
-				guiButtons[mine][DEFUSE].active = true;
-				guiButtons[mine][ACTIVATE].active = false;
-				guiButtons[mine][DETONATE].active = true;
-				break;
-			case DETONATE:
-				SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "detonate"));
-				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
+		if (coords.length == 3) {
+			switch (action) {
+				case DEFUSE:
+					((IExplosive) Minecraft.getInstance().player.level.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getInstance().player.level, new BlockPos(coords[0], coords[1], coords[2]));
+					SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "defuse"));
+					guiButtons[mine][DEFUSE].active = false;
+					guiButtons[mine][ACTIVATE].active = true;
+					guiButtons[mine][DETONATE].active = false;
+					break;
+				case ACTIVATE:
+					((IExplosive) Minecraft.getInstance().player.level.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getInstance().player.level, new BlockPos(coords[0], coords[1], coords[2]));
+					SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "activate"));
+					guiButtons[mine][DEFUSE].active = true;
+					guiButtons[mine][ACTIVATE].active = false;
+					guiButtons[mine][DETONATE].active = true;
+					break;
+				case DETONATE:
+					SecurityCraft.channel.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "detonate"));
+					removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 
-				for (int i = 0; i < 4; i++) {
-					guiButtons[mine][i].active = false;
-				}
+					for (int i = 0; i < 4; i++) {
+						guiButtons[mine][i].active = false;
+					}
 
-				break;
-			case UNBIND:
-				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
+					break;
+				case UNBIND:
+					removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 
-				for (int i = 0; i < 4; i++) {
-					guiButtons[mine][i].active = false;
-				}
+					for (int i = 0; i < 4; i++) {
+						guiButtons[mine][i].active = false;
+					}
+			}
 		}
 	}
 
@@ -204,12 +204,14 @@ public class MineRemoteAccessToolScreen extends Screen {
 	private int[] getMineCoordinates(int mine) {
 		mine++; //mines are stored starting by mine1 up to mine6
 
-		if (mrat.getItem() != null && mrat.getItem() == SCContent.REMOTE_ACCESS_MINE.get() && mrat.getTag() != null && mrat.getTag().getIntArray("mine" + mine) != null && mrat.getTag().getIntArray("mine" + mine).length > 0)
-			return mrat.getTag().getIntArray("mine" + mine);
+		if (mrat.getItem() == SCContent.REMOTE_ACCESS_MINE.get() && mrat.hasTag()) {
+			int[] coords = mrat.getTag().getIntArray("mine" + mine);
 
-		return new int[] {
-				0, 0, 0
-		};
+			if (coords.length == 3)
+				return coords;
+		}
+
+		return new int[0];
 	}
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z) {
@@ -217,16 +219,12 @@ public class MineRemoteAccessToolScreen extends Screen {
 			return;
 
 		for (int i = 1; i <= 6; i++) {
-			if (stack.getTag().getIntArray("mine" + i).length > 0) {
-				int[] coords = stack.getTag().getIntArray("mine" + i);
+			int[] coords = stack.getTag().getIntArray("mine" + i);
 
-				if (coords[0] == x && coords[1] == y && coords[2] == z && !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
-					stack.getTag().putIntArray("mine" + i, new int[] {
-							0, 0, 0
-					});
-					SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(stack));
-					return;
-				}
+			if (coords.length == 3 && coords[0] == x && coords[1] == y && coords[2] == z) {
+				stack.getTag().remove("mine" + i);
+				SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(stack));
+				return;
 			}
 		}
 	}

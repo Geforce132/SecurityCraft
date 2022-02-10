@@ -91,16 +91,12 @@ public class MineRemoteAccessToolItem extends Item {
 			return;
 
 		for (int i = 1; i <= 6; i++) {
-			if (stack.getTag().getIntArray("mine" + i).length > 0) {
-				int[] coords = stack.getTag().getIntArray("mine" + i);
+			int[] coords = stack.getTag().getIntArray("mine" + i);
 
-				if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-					list.add(new TextComponent(ChatFormatting.GRAY + "---"));
-				else
-					list.add(Utils.localize("tooltip.securitycraft:mine").append(new TextComponent(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
-			}
-			else
+			if (coords.length != 3)
 				list.add(new TextComponent(ChatFormatting.GRAY + "---"));
+			else
+				list.add(Utils.localize("tooltip.securitycraft:mine").append(new TextComponent(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
 		}
 	}
 
@@ -109,19 +105,15 @@ public class MineRemoteAccessToolItem extends Item {
 			return;
 
 		for (int i = 1; i <= 6; i++) {
-			if (stack.getTag().getIntArray("mine" + i).length > 0) {
-				int[] coords = stack.getTag().getIntArray("mine" + i);
+			int[] coords = stack.getTag().getIntArray("mine" + i);
 
-				if (coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
-					stack.getTag().putIntArray("mine" + i, new int[] {
-							0, 0, 0
-					});
+			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()) {
+				stack.getTag().remove("mine" + i);
 
-					if (!player.level.isClientSide)
-						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
+				if (!player.level.isClientSide)
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new UpdateNBTTagOnClient(stack));
 
-					return;
-				}
+				return;
 			}
 		}
 
@@ -133,12 +125,10 @@ public class MineRemoteAccessToolItem extends Item {
 			return false;
 
 		for (int i = 1; i <= 6; i++) {
-			if (stack.getTag().getIntArray("mine" + i).length > 0) {
-				int[] coords = stack.getTag().getIntArray("mine" + i);
+			int[] coords = stack.getTag().getIntArray("mine" + i);
 
-				if (coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
-					return true;
-			}
+			if (coords.length == 3 && coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
+				return true;
 		}
 
 		return false;
@@ -149,7 +139,7 @@ public class MineRemoteAccessToolItem extends Item {
 			return 1;
 
 		for (int i = 1; i <= 6; i++) {
-			if (stack.getTag().getIntArray("mine" + i).length == 0 || (stack.getTag().getIntArray("mine" + i)[0] == 0 && stack.getTag().getIntArray("mine" + i)[1] == 0 && stack.getTag().getIntArray("mine" + i)[2] == 0))
+			if (stack.getTag().getIntArray("mine" + i).length != 3)
 				return i;
 		}
 
