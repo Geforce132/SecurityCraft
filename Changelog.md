@@ -7,7 +7,7 @@
 - Change: The Cage Trap is now reusable
 - Fix: Cannot access the recipe book for the Password-protected Furnace
 - Fix: The Password-protected Furnace is not shown as a recipe catalyst for furnace recipes in JEI
-- Fix: Changing the owner of the Inventory Scanner or doors does not change the owner of the other block/half
+- Fix: Changing the owner of inventory scanners and doors does not change the owner of the other block/door half
 - Fix: Projecting disguisable blocks (those that support the disguise module) does not work
 - Fix: Crash when trying to place a door one block below the build height
 - Fix: Door item gets removed when trying to place a door outside the build height
@@ -21,6 +21,8 @@
 - Fix: The patron list in the SecurityCraft Manual is only capable of showing 33 patrons
 - Fix: Patron name tooltips in the SecurityCraft Manual can extend over the border of the Minecraft window
 - Fix: The Codebreaker does not work on Keypad Doors
+- Fix: The Mine Remote Access Tool does not work for mines placed at x=0, y=0, z=0
+- Fix: The Sentry Remote Access Tool does not work for sentries placed at y=0
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
