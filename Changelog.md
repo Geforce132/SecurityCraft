@@ -20,6 +20,7 @@
 - Fix: The patron list in the SecurityCraft Manual is only capable of showing 33 patrons
 - Fix: The Codebreaker does not work on keypad doors
 - Fix: The Portable Tune Player plays the saved tune slightly slower than the Sonic Security System
+- Fix: Navigating the SecurityCraft Manual via the tab key does not visibly select any button
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
