@@ -14,7 +14,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 /**
- * Makes sure that tickable Block Entities pushed by a Reinforced Piston are added to World#tickableTileEntities at the right time (so when the world is done ticking all other Block Entities)
+ * Makes sure that tickable block entities pushed by a reinforced piston are added to {@link World#tickableTileEntities} at
+ * the right time (so when the world is done ticking all other block entities)
  */
 @Mixin(World.class)
 public class WorldMixin {
