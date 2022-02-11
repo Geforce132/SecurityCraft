@@ -233,13 +233,13 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public boolean charTyped(char typedChar, int keyCode) {
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (keyCode == GLFW.GLFW_KEY_LEFT)
 			previousSubpage();
 		else if (keyCode == GLFW.GLFW_KEY_RIGHT)
 			nextSubpage();
 
-		return super.charTyped(typedChar, keyCode);
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	private void hideSubpageButtonsOnMainPage() {
@@ -799,11 +799,10 @@ public class SCManualScreen extends Screen {
 		@Override
 		public void render(int mouseX, int mouseY, float partialTicks) {
 			if (visible) {
-				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-
+				isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				Minecraft.getInstance().getTextureManager().bind(VANILLA_BOOK);
-				blit(x, y, isHovering ? 23 : 0, textureY, 23, 13);
+				blit(x, y, isHovered() ? 23 : 0, textureY, 23, 13);
 			}
 		}
 	}
@@ -817,11 +816,7 @@ public class SCManualScreen extends Screen {
 		public void renderButton(int mouseX, int mouseY, float partial) {
 			minecraft.getTextureManager().bind(ICONS);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-
-			if (isHovered)
-				blit(x, y, 138, 1, 16, 16);
-			else
-				blit(x, y, 122, 1, 16, 16);
+			blit(x, y, isHovered() ? 138 : 122, 1, 16, 16);
 		}
 	}
 
