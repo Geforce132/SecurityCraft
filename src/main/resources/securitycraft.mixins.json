@@ -15,7 +15,8 @@
 		"camera.ChunkManagerMixin",
 		"camera.EntityTrackerMixin",
 		"camera.PlayerListMixin",
-		"camera.ServerPlayerEntityMixin"
+		"camera.ServerPlayerEntityMixin",
+		"piston.WorldMixin"
 	],
 	"minVersion": "0.8"
 }
