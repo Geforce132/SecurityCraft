@@ -5,7 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -23,7 +23,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class KeyChangerScreen extends ContainerScreen<GenericTEMenu> {
+public class KeyChangerScreen extends ContainerScreen<GenericBEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final String ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()).getColoredString();
 	private final String enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode").getColoredString();
@@ -33,7 +33,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEMenu> {
 	private Button confirmButton;
 	private TileEntity tileEntity;
 
-	public KeyChangerScreen(GenericTEMenu container, PlayerInventory inv, ITextComponent name) {
+	public KeyChangerScreen(GenericBEMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 		tileEntity = container.te;
 	}

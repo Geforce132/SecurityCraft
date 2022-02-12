@@ -53,7 +53,7 @@ import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.inventory.KeypadBlastFurnaceMenu;
@@ -259,13 +259,13 @@ public class RegistrationHandler {
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new KeypadSmokerMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_smoker")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new KeypadBlastFurnaceMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_blast_furnace")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new ProjectorMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "projector")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEMenu(SCContent.mTypeCheckPassword, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "check_password")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEMenu(SCContent.mTypeSetPassword, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "set_password")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEMenu(SCContent.mTypeUsernameLogger, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "username_logger")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEMenu(SCContent.mTypeIMS, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericBEMenu(SCContent.mTypeCheckPassword, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "check_password")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericBEMenu(SCContent.mTypeSetPassword, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "set_password")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericBEMenu(SCContent.mTypeUsernameLogger, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "username_logger")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericBEMenu(SCContent.mTypeIMS, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new KeycardReaderMenu(windowId, inv, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keycard_setup")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEMenu(SCContent.mTypeKeyChanger, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_changer")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEMenu(SCContent.mTypeTrophySystem, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericBEMenu(SCContent.mTypeKeyChanger, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_changer")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericBEMenu(SCContent.mTypeTrophySystem, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BlockPocketManagerMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
 	}
 

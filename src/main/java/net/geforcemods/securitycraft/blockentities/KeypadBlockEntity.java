@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -71,7 +71,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-						return new GenericTEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
+						return new GenericBEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
@@ -87,7 +87,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-							return new GenericTEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
+							return new GenericBEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override

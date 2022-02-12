@@ -5,7 +5,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -21,7 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class CheckPasswordScreen extends ContainerScreen<GenericTEMenu> {
+public class CheckPasswordScreen extends ContainerScreen<GenericBEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntity tileEntity;
 	private char[] allowedChars = {
@@ -32,7 +32,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEMenu> {
 	private String currentString = "";
 	private static final int MAX_CHARS = 20;
 
-	public CheckPasswordScreen(GenericTEMenu container, PlayerInventory inv, ITextComponent name) {
+	public CheckPasswordScreen(GenericBEMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 		this.tileEntity = container.te;
 		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getDescriptionId()).getColoredString();
