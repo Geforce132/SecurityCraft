@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
@@ -200,6 +201,7 @@ public class RegistrationHandler {
 		event.getRegistry().register(BlockEntityType.Builder.of(ValidationOwnableBlockEntity::new, SCContent.REINFORCED_PISTON.get(), SCContent.REINFORCED_STICKY_PISTON.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "validation_ownable")));
 		event.getRegistry().register(BlockEntityType.Builder.of(KeyPanelBlockEntity::new, SCContent.KEY_PANEL_BLOCK.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_panel")));
 		event.getRegistry().register(BlockEntityType.Builder.of(SonicSecuritySystemBlockEntity::new, SCContent.SONIC_SECURITY_SYSTEM.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sonic_security_system")));
+		event.getRegistry().register(BlockEntityType.Builder.of(BlockChangeDetectorBlockEntity::new, SCContent.BLOCK_CHANGE_DETECTOR.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_change_detector")));
 	}
 
 	@SubscribeEvent
@@ -269,6 +271,7 @@ public class RegistrationHandler {
 		event.getRegistry().register(IForgeMenuType.create((windowId, inv, data) -> new GenericBEMenu(SCContent.mTypeKeyChanger, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_changer")));
 		event.getRegistry().register(IForgeMenuType.create((windowId, inv, data) -> new GenericBEMenu(SCContent.mTypeTrophySystem, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system")));
 		event.getRegistry().register(IForgeMenuType.create((windowId, inv, data) -> new BlockPocketManagerMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
+		event.getRegistry().register(IForgeMenuType.create((windowId, inv, data) -> new GenericBEMenu(SCContent.mTypeBlockChangeDetector, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_change_detector")));
 	}
 
 	public static void registerPackets() {

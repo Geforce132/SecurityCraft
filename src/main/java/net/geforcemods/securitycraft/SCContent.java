@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
@@ -38,6 +39,7 @@ import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
+import net.geforcemods.securitycraft.blocks.BlockChangeDetectorBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
@@ -138,8 +140,8 @@ import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
-import net.geforcemods.securitycraft.inventory.GenericMenu;
 import net.geforcemods.securitycraft.inventory.GenericBEMenu;
+import net.geforcemods.securitycraft.inventory.GenericMenu;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.inventory.KeypadBlastFurnaceMenu;
@@ -227,6 +229,9 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<Block> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop().noCollission().isRedstoneConductor((s, w, p) -> false).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation)));
+	@HasManualPage
+	@RegisterItemBlock
+	public static final RegistryObject<Block> BLOCK_CHANGE_DETECTOR = BLOCKS.register("block_change_detector", () -> new BlockChangeDetectorBlock(prop()));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(Material.DECORATION, 1.0F)));
@@ -2198,6 +2203,8 @@ public class SCContent {
 	public static BlockEntityType<KeyPanelBlockEntity> beTypeKeyPanel;
 	@ObjectHolder(SecurityCraft.MODID + ":sonic_security_system")
 	public static BlockEntityType<SonicSecuritySystemBlockEntity> beTypeSonicSecuritySystem;
+	@ObjectHolder(SecurityCraft.MODID + ":block_change_detector")
+	public static BlockEntityType<BlockChangeDetectorBlockEntity> beTypeBlockChangeDetector;
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
@@ -2250,6 +2257,8 @@ public class SCContent {
 	public static MenuType<GenericBEMenu> mTypeTrophySystem;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
 	public static MenuType<BlockPocketManagerMenu> mTypeBlockPocketManager;
+	@ObjectHolder(SecurityCraft.MODID + ":block_change_detector")
+	public static MenuType<GenericBEMenu> mTypeBlockChangeDetector;
 
 	private static final Block.Properties prop() {
 		return prop(Material.STONE);

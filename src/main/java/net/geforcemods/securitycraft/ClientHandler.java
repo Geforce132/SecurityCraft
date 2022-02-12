@@ -34,6 +34,7 @@ import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
 import net.geforcemods.securitycraft.renderers.TrophySystemRenderer;
+import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcaseInventoryScreen;
@@ -329,6 +330,7 @@ public class ClientHandler {
 			MenuScreens.register(SCContent.mTypeBlockPocketManager, BlockPocketManagerScreen::new);
 			MenuScreens.register(SCContent.mTypeProjector, ProjectorScreen::new);
 			MenuScreens.register(SCContent.mTypeTrophySystem, TrophySystemScreen::new);
+			MenuScreens.register(SCContent.mTypeBlockChangeDetector, BlockChangeDetectorScreen::new);
 		});
 		KeyBindings.init();
 		cameraOverlay = OverlayRegistry.registerOverlayTop(SecurityCraft.MODID + ":camera_overlay", SCClientEventHandler::cameraOverlay);
