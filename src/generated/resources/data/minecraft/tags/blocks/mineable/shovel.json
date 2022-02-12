@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:dirt_mine",
+    "securitycraft:sand_mine",
+    "securitycraft:gravel_mine"
+  ]
+}
