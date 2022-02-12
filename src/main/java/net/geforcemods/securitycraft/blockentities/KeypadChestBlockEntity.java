@@ -13,7 +13,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.entity.Sentry;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -163,7 +163,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 				NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-						return new GenericTEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
+						return new GenericBEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
@@ -179,7 +179,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-							return new GenericTEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
+							return new GenericBEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override

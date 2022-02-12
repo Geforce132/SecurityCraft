@@ -132,7 +132,7 @@ import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.inventory.KeypadBlastFurnaceMenu;
@@ -1994,19 +1994,19 @@ public class SCContent {
 	@ObjectHolder(SecurityCraft.MODID + ":projector")
 	public static ContainerType<ProjectorMenu> mTypeProjector;
 	@ObjectHolder(SecurityCraft.MODID + ":check_password")
-	public static ContainerType<GenericTEMenu> mTypeCheckPassword;
+	public static ContainerType<GenericBEMenu> mTypeCheckPassword;
 	@ObjectHolder(SecurityCraft.MODID + ":set_password")
-	public static ContainerType<GenericTEMenu> mTypeSetPassword;
+	public static ContainerType<GenericBEMenu> mTypeSetPassword;
 	@ObjectHolder(SecurityCraft.MODID + ":username_logger")
-	public static ContainerType<GenericTEMenu> mTypeUsernameLogger;
+	public static ContainerType<GenericBEMenu> mTypeUsernameLogger;
 	@ObjectHolder(SecurityCraft.MODID + ":ims")
-	public static ContainerType<GenericTEMenu> mTypeIMS;
+	public static ContainerType<GenericBEMenu> mTypeIMS;
 	@ObjectHolder(SecurityCraft.MODID + ":keycard_setup")
 	public static ContainerType<KeycardReaderMenu> mTypeKeycardReader;
 	@ObjectHolder(SecurityCraft.MODID + ":key_changer")
-	public static ContainerType<GenericTEMenu> mTypeKeyChanger;
+	public static ContainerType<GenericBEMenu> mTypeKeyChanger;
 	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
-	public static ContainerType<GenericTEMenu> mTypeTrophySystem;
+	public static ContainerType<GenericBEMenu> mTypeTrophySystem;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
 	public static ContainerType<BlockPocketManagerMenu> mTypeBlockPocketManager;
 

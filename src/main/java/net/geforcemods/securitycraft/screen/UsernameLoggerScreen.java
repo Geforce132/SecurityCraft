@@ -11,7 +11,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -28,14 +28,14 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
-public class UsernameLoggerScreen extends ContainerScreen<GenericTEMenu> {
+public class UsernameLoggerScreen extends ContainerScreen<GenericBEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslationTextComponent logged = Utils.localize("gui.securitycraft:logger.logged");
 	private final TranslationTextComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
 	private UsernameLoggerBlockEntity tileEntity;
 	private PlayerList playerList;
 
-	public UsernameLoggerScreen(GenericTEMenu container, PlayerInventory inv, ITextComponent name) {
+	public UsernameLoggerScreen(GenericBEMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 		tileEntity = (UsernameLoggerBlockEntity) container.te;
 	}

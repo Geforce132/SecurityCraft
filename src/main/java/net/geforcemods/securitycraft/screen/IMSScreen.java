@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.IMSTargetingMode;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class IMSScreen extends ContainerScreen<GenericTEMenu> {
+public class IMSScreen extends ContainerScreen<GenericBEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslationTextComponent imsName = Utils.localize(SCContent.IMS.get().getDescriptionId());
 	private final TranslationTextComponent target = Utils.localize("gui.securitycraft:ims.target");
@@ -30,7 +30,7 @@ public class IMSScreen extends ContainerScreen<GenericTEMenu> {
 	private Button targetButton;
 	private IMSTargetingMode targetMode;
 
-	public IMSScreen(GenericTEMenu container, PlayerInventory inv, ITextComponent name) {
+	public IMSScreen(GenericBEMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 		tileEntity = (IMSBlockEntity) container.te;
 		targetMode = tileEntity.getTargetingMode();

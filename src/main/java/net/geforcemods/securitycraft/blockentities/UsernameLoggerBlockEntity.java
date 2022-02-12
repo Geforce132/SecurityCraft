@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
@@ -115,7 +115,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-		return new GenericTEMenu(SCContent.mTypeUsernameLogger, windowId, level, worldPosition);
+		return new GenericBEMenu(SCContent.mTypeUsernameLogger, windowId, level, worldPosition);
 	}
 
 	@Override

@@ -10,7 +10,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -29,7 +29,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
 
-public class TrophySystemScreen extends ContainerScreen<GenericTEMenu> {
+public class TrophySystemScreen extends ContainerScreen<GenericBEMenu> {
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	private final TranslationTextComponent projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
@@ -41,7 +41,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEMenu> {
 	private TrophySystemBlockEntity tileEntity;
 	private ProjectileScrollList projectileList;
 
-	public TrophySystemScreen(GenericTEMenu container, PlayerInventory inv, ITextComponent name) {
+	public TrophySystemScreen(GenericBEMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 
 		this.tileEntity = (TrophySystemBlockEntity) container.te;
