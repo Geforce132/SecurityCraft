@@ -25,6 +25,7 @@
 - Fix: The Sentry Remote Access Tool does not work for sentries placed at y=0
 - Fix: The Portable Tune Player plays the saved tune slightly slower than the Sonic Security System
 - Fix: Navigating the SecurityCraft Manual via the tab key does not visibly select any button
+- Fix: Block Mines do not drop themselves when mined
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
