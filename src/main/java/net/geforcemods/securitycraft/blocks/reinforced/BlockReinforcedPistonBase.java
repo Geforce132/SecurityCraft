@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedHopper;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPiston;
 import net.geforcemods.securitycraft.tileentity.TileEntityValidationOwnable;
 import net.geforcemods.securitycraft.util.BlockReinforcedPistonStructureHelper;
@@ -258,6 +259,9 @@ public class BlockReinforcedPistonBase extends BlockPistonBase implements IReinf
 					tag = new NBTTagCompound();
 					teToMove.setPos(posToMove.offset(direction));
 					teToMove.writeToNBT(tag);
+
+					if (teToMove instanceof TileEntityReinforcedHopper)
+						tag.removeTag("Items"); //the reinforced hopper will spew out the items when pushed (and there's nothing we can do about that), so this prevents them from being added to the pushed hopper to avoid duping
 				}
 
 				world.setBlockState(posToMove, Blocks.AIR.getDefaultState(), 2);
