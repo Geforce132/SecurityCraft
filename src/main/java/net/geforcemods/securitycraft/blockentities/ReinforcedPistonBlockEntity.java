@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -32,6 +33,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.chunk.Chunk;
 
 public class ReinforcedPistonBlockEntity extends TileEntity implements ITickableTileEntity, IOwnable { //this class doesn't extend PistonTileEntity because almost all of that class' content is private
+	public static final List<TileEntity> SCHEDULED_TICKING_BLOCK_ENTITIES = new ArrayList<>();
 	private BlockState pistonState;
 	private CompoundNBT tileEntityTag;
 	private Direction pistonFacing;
@@ -321,6 +323,9 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements ITickable
 
 							te.load(tileEntityTag);
 							chunk.setBlockEntity(worldPosition, te);
+
+							if (te instanceof ITickableTileEntity)
+								SCHEDULED_TICKING_BLOCK_ENTITIES.add(te);
 						}
 					}
 
