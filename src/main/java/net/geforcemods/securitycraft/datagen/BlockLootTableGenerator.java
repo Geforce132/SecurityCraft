@@ -166,8 +166,7 @@ public class BlockLootTableGenerator implements DataProvider {
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(mine.get()))
-						.when(ExplosionCondition.survivesExplosion())
-						));
+						.when(ExplosionCondition.survivesExplosion())));
 		//@formatter:on
 	}
 

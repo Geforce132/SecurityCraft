@@ -6,7 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -21,7 +21,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
+public class CheckPasswordScreen extends AbstractContainerScreen<GenericBEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private BlockEntity be;
 	private char[] allowedChars = {
@@ -32,7 +32,7 @@ public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEMenu> 
 	private String currentString = "";
 	private static final int MAX_CHARS = 20;
 
-	public CheckPasswordScreen(GenericTEMenu menu, Inventory inv, Component title) {
+	public CheckPasswordScreen(GenericBEMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		this.be = menu.be;
 		blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());

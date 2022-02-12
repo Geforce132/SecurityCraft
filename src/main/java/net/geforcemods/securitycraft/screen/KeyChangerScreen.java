@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -23,7 +23,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-public class KeyChangerScreen extends AbstractContainerScreen<GenericTEMenu> {
+public class KeyChangerScreen extends AbstractContainerScreen<GenericBEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId());
 	private final TranslatableComponent enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode");
@@ -33,7 +33,7 @@ public class KeyChangerScreen extends AbstractContainerScreen<GenericTEMenu> {
 	private Button confirmButton;
 	private BlockEntity be;
 
-	public KeyChangerScreen(GenericTEMenu menu, Inventory inv, Component text) {
+	public KeyChangerScreen(GenericBEMenu menu, Inventory inv, Component text) {
 		super(menu, inv, text);
 		be = menu.be;
 	}
