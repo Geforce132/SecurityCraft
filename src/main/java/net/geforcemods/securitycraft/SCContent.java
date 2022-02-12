@@ -139,7 +139,7 @@ import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.inventory.KeypadBlastFurnaceMenu;
@@ -2234,19 +2234,19 @@ public class SCContent {
 	@ObjectHolder(SecurityCraft.MODID + ":projector")
 	public static MenuType<ProjectorMenu> mTypeProjector;
 	@ObjectHolder(SecurityCraft.MODID + ":check_password")
-	public static MenuType<GenericTEMenu> mTypeCheckPassword;
+	public static MenuType<GenericBEMenu> mTypeCheckPassword;
 	@ObjectHolder(SecurityCraft.MODID + ":set_password")
-	public static MenuType<GenericTEMenu> mTypeSetPassword;
+	public static MenuType<GenericBEMenu> mTypeSetPassword;
 	@ObjectHolder(SecurityCraft.MODID + ":username_logger")
-	public static MenuType<GenericTEMenu> mTypeUsernameLogger;
+	public static MenuType<GenericBEMenu> mTypeUsernameLogger;
 	@ObjectHolder(SecurityCraft.MODID + ":ims")
-	public static MenuType<GenericTEMenu> mTypeIMS;
+	public static MenuType<GenericBEMenu> mTypeIMS;
 	@ObjectHolder(SecurityCraft.MODID + ":keycard_setup")
 	public static MenuType<KeycardReaderMenu> mTypeKeycardReader;
 	@ObjectHolder(SecurityCraft.MODID + ":key_changer")
-	public static MenuType<GenericTEMenu> mTypeKeyChanger;
+	public static MenuType<GenericBEMenu> mTypeKeyChanger;
 	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
-	public static MenuType<GenericTEMenu> mTypeTrophySystem;
+	public static MenuType<GenericBEMenu> mTypeTrophySystem;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
 	public static MenuType<BlockPocketManagerMenu> mTypeBlockPocketManager;
 

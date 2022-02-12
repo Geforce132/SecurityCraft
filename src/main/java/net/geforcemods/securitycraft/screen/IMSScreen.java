@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.IMSTargetingMode;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.util.Utils;
@@ -18,14 +18,14 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class IMSScreen extends AbstractContainerScreen<GenericTEMenu> {
+public class IMSScreen extends AbstractContainerScreen<GenericBEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent imsName = Utils.localize(SCContent.IMS.get().getDescriptionId());
 	private final TranslatableComponent target = Utils.localize("gui.securitycraft:ims.target");
 	private IMSBlockEntity be;
 	private IMSTargetingMode targetMode;
 
-	public IMSScreen(GenericTEMenu menu, Inventory inv, Component text) {
+	public IMSScreen(GenericBEMenu menu, Inventory inv, Component text) {
 		super(menu, inv, text);
 		be = (IMSBlockEntity) menu.be;
 		targetMode = be.getTargetingMode();

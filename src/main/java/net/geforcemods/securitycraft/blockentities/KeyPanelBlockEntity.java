@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -87,7 +87,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 				NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-						return new GenericTEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
+						return new GenericBEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
@@ -103,7 +103,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 					NetworkHooks.openGui(serverPlayer, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-							return new GenericTEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
+							return new GenericBEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override

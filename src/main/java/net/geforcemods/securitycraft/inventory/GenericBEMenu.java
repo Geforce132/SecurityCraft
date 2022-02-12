@@ -8,11 +8,11 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class GenericTEMenu extends AbstractContainerMenu {
+public class GenericBEMenu extends AbstractContainerMenu {
 	public final BlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 
-	public GenericTEMenu(MenuType<GenericTEMenu> type, int windowId, Level level, BlockPos pos) {
+	public GenericBEMenu(MenuType<GenericBEMenu> type, int windowId, Level level, BlockPos pos) {
 		super(type, windowId);
 
 		be = level.getBlockEntity(pos);
