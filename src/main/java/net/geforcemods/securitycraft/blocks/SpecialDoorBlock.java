@@ -25,6 +25,10 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 		super(properties);
 	}
 
+	//redstone signals should not be able to open these doors
+	@Override
+	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {}
+
 	@Override
 	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(world, pos, state, placer, stack);
