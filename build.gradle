@@ -31,6 +31,8 @@ compileJava {
 minecraft {
 	version = "1.12.2-14.23.5.2826"
 	runDir = "run"
+	clientRunArgs = ["--username Dev"]
+	serverRunArgs = ["nogui"]
 	coreMod = 'net.geforcemods.securitycraft.SecurityCraftLoadingPlugin'
 	mappings = "stable_39"
 }
