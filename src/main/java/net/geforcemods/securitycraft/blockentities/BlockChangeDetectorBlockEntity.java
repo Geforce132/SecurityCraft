@@ -35,7 +35,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	public void log(Player player, DetectionMode action, BlockPos pos, BlockState state) {
-		if (action != mode)
+		if (mode != DetectionMode.BOTH && action != mode)
 			return;
 
 		if (getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player))
@@ -133,7 +133,8 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	public static enum DetectionMode {
 		BREAK,
-		PLACE;
+		PLACE,
+		BOTH;
 	}
 
 	public static record ChangeEntry(String player, UUID uuid, long timestamp, DetectionMode action, BlockPos pos, BlockState state) {
