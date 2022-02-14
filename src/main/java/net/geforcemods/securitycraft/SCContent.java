@@ -185,6 +185,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.TallBlockItem;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -333,37 +334,37 @@ public class SCContent {
 	public static final RegistryObject<Block> STONE_MINE = BLOCKS.register("stone_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 1.5F), Blocks.STONE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DIRT_MINE = BLOCKS.register("dirt_mine", () -> new BaseFullMineBlock(prop(Material.DIRT, 0.5F).sound(SoundType.GRAVEL), Blocks.DIRT));
+	public static final RegistryObject<Block> DIRT_MINE = BLOCKS.register("dirt_mine", () -> new BaseFullMineBlock(prop(Material.DIRT, 0.5F).harvestTool(ToolType.SHOVEL).sound(SoundType.GRAVEL), Blocks.DIRT));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> COBBLESTONE_MINE = BLOCKS.register("cobblestone_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 2.0F), Blocks.COBBLESTONE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> SAND_MINE = BLOCKS.register("sand_mine", () -> new FallingBlockMineBlock(prop(Material.SAND, 0.5F).sound(SoundType.SAND), Blocks.SAND));
+	public static final RegistryObject<Block> SAND_MINE = BLOCKS.register("sand_mine", () -> new FallingBlockMineBlock(prop(Material.SAND, 0.5F).harvestTool(ToolType.SHOVEL).sound(SoundType.SAND), Blocks.SAND));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> GRAVEL_MINE = BLOCKS.register("gravel_mine", () -> new FallingBlockMineBlock(prop(Material.DIRT, 0.6F).sound(SoundType.GRAVEL), Blocks.GRAVEL));
+	public static final RegistryObject<Block> GRAVEL_MINE = BLOCKS.register("gravel_mine", () -> new FallingBlockMineBlock(prop(Material.DIRT, 0.6F).harvestTool(ToolType.SHOVEL).sound(SoundType.GRAVEL), Blocks.GRAVEL));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> GOLD_ORE_MINE = BLOCKS.register("gold_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F), Blocks.GOLD_ORE));
+	public static final RegistryObject<Block> GOLD_ORE_MINE = BLOCKS.register("gold_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F).harvestLevel(2).harvestTool(ToolType.PICKAXE), Blocks.GOLD_ORE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> IRON_ORE_MINE = BLOCKS.register("iron_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F), Blocks.IRON_ORE));
+	public static final RegistryObject<Block> IRON_ORE_MINE = BLOCKS.register("iron_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F).harvestLevel(1).harvestTool(ToolType.PICKAXE), Blocks.IRON_ORE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> COAL_ORE_MINE = BLOCKS.register("coal_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F), Blocks.COAL_ORE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> LAPIS_ORE_MINE = BLOCKS.register("lapis_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F), Blocks.LAPIS_ORE));
+	public static final RegistryObject<Block> LAPIS_ORE_MINE = BLOCKS.register("lapis_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F).harvestLevel(1).harvestTool(ToolType.PICKAXE), Blocks.LAPIS_ORE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DIAMOND_ORE_MINE = BLOCKS.register("diamond_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F), Blocks.DIAMOND_ORE));
+	public static final RegistryObject<Block> DIAMOND_ORE_MINE = BLOCKS.register("diamond_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F).harvestLevel(2).harvestTool(ToolType.PICKAXE), Blocks.DIAMOND_ORE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> REDSTONE_ORE_MINE = BLOCKS.register("redstone_mine", () -> new RedstoneOreMineBlock(prop(Material.STONE, 3.0F).randomTicks(), Blocks.REDSTONE_ORE));
+	public static final RegistryObject<Block> REDSTONE_ORE_MINE = BLOCKS.register("redstone_mine", () -> new RedstoneOreMineBlock(prop(Material.STONE, 3.0F).harvestLevel(2).harvestTool(ToolType.PICKAXE).randomTicks(), Blocks.REDSTONE_ORE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> EMERALD_ORE_MINE = BLOCKS.register("emerald_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F), Blocks.EMERALD_ORE));
+	public static final RegistryObject<Block> EMERALD_ORE_MINE = BLOCKS.register("emerald_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F).harvestLevel(2).harvestTool(ToolType.PICKAXE), Blocks.EMERALD_ORE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> QUARTZ_ORE_MINE = BLOCKS.register("quartz_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F), Blocks.NETHER_QUARTZ_ORE));
