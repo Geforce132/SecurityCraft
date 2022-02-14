@@ -2,11 +2,13 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -22,7 +24,11 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!level.isClientSide && level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be) {
-			if (player.isShiftKeyDown()) {
+			if (player.getItemInHand(hand).getItem() == Items.STICK) {
+				System.out.println(be.getEntries().size());
+				be.getEntries().stream().map(ChangeEntry::toString).forEach(System.out::println);
+			}
+			else if (player.isShiftKeyDown()) {
 				be.changeMode();
 				System.out.println(be.getMode());
 			}
@@ -30,6 +36,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 				be.changeRange();
 				System.out.println(be.getRange());
 			}
+
 			//			NetworkHooks.openGui((ServerPlayer) player, be, pos);
 		}
 

@@ -299,11 +299,10 @@ public class SCEventHandler {
 				}
 			}
 
-			//@formatter:off
-			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(level, pos).stream()
-			.filter(detector -> detector.getMode() == DetectionMode.BREAK)
-			.forEach(detector -> System.out.println("detector at " + detector.getBlockPos() + " got triggered because of breaking " + event.getState() + " at " + pos));
-			//@formatter:on
+			Player player = event.getPlayer();
+			BlockState state = event.getState();
+
+			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(level, pos).forEach(detector -> detector.log(player, DetectionMode.BREAK, pos, state));
 		}
 
 		List<Sentry> sentries = ((Level) event.getWorld()).getEntitiesOfClass(Sentry.class, new AABB(event.getPos()));
@@ -323,14 +322,11 @@ public class SCEventHandler {
 		if (!(event.getWorld() instanceof Level level) || level.isClientSide())
 			return;
 
-		if (event.getEntity() instanceof Player) {
+		if (event.getEntity() instanceof Player player) {
 			BlockPos pos = event.getPos();
+			BlockState state = event.getState();
 
-			//@formatter:off
-			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(level, pos).stream()
-			.filter(detector -> detector.getMode() == DetectionMode.PLACE)
-			.forEach(detector -> System.out.println("detector at " + detector.getBlockPos() + " got triggered because of placing " + event.getState() + " at " + pos));
-			//@formatter:on
+			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(level, pos).forEach(detector -> detector.log(player, DetectionMode.PLACE, pos, state));
 		}
 	}
 
