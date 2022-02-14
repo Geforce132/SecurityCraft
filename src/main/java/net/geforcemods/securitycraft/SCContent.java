@@ -361,7 +361,7 @@ public class SCContent {
 	public static final RegistryObject<Block> DIAMOND_ORE_MINE = BLOCKS.register("diamond_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F).harvestLevel(2).harvestTool(ToolType.PICKAXE), Blocks.DIAMOND_ORE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> REDSTONE_ORE_MINE = BLOCKS.register("redstone_mine", () -> new RedstoneOreMineBlock(prop(Material.STONE, 3.0F).harvestLevel(2).harvestTool(ToolType.PICKAXE).randomTicks(), Blocks.REDSTONE_ORE));
+	public static final RegistryObject<Block> REDSTONE_ORE_MINE = BLOCKS.register("redstone_mine", () -> new RedstoneOreMineBlock(prop(Material.STONE, 3.0F).harvestLevel(2).harvestTool(ToolType.PICKAXE).randomTicks().lightLevel(9), Blocks.REDSTONE_ORE));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> EMERALD_ORE_MINE = BLOCKS.register("emerald_mine", () -> new BaseFullMineBlock(prop(Material.STONE, 3.0F).harvestLevel(2).harvestTool(ToolType.PICKAXE), Blocks.EMERALD_ORE));

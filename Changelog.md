@@ -26,6 +26,7 @@
 - Fix: Reinforced Hoppers pushed by Reinforced Pistons cannot insert/extract items
 - Fix: Block Mines do not drop themselves when mined
 - Fix: Block Mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
+- Fix: The Redstone Ore Mine does not glow when activated
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
