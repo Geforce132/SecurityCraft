@@ -28,15 +28,12 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.ConstantRange;
 import net.minecraft.world.storage.loot.ItemLootEntry;
-import net.minecraft.world.storage.loot.LootContext.EntityTarget;
 import net.minecraft.world.storage.loot.LootParameterSets;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableManager;
 import net.minecraft.world.storage.loot.StandaloneLootEntry;
 import net.minecraft.world.storage.loot.conditions.BlockStateProperty;
-import net.minecraft.world.storage.loot.conditions.EntityHasProperty;
-import net.minecraft.world.storage.loot.conditions.Inverted;
 import net.minecraft.world.storage.loot.conditions.SurvivesExplosion;
 import net.minecraft.world.storage.loot.functions.CopyNbt;
 import net.minecraft.world.storage.loot.functions.ExplosionDecay;
@@ -158,8 +155,7 @@ public class BlockLootTableGenerator implements IDataProvider {
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantRange.exactly(1))
 						.add(ItemLootEntry.lootTableItem(mine.get()))
-						.when(SurvivesExplosion.survivesExplosion())
-						.when(Inverted.invert(EntityHasProperty.entityPresent(EntityTarget.THIS)))));
+						.when(SurvivesExplosion.survivesExplosion())));
 		//@formatter:on
 	}
 
