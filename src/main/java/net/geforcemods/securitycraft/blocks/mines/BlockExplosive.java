@@ -1,28 +1,22 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import java.util.Collections;
-import java.util.List;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.util.EntityUtils;
-import net.geforcemods.securitycraft.util.IBlockWithNoDrops;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public abstract class BlockExplosive extends BlockOwnable implements IExplosive, IBlockWithNoDrops {
+public abstract class BlockExplosive extends BlockOwnable implements IExplosive {
 	public BlockExplosive(Material material) {
 		super(material);
 	}
@@ -72,10 +66,5 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive,
 	@Override
 	public boolean isDefusable() {
 		return true;
-	}
-
-	@Override
-	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		return Collections.emptyList();
 	}
 }

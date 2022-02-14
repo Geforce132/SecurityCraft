@@ -15,6 +15,7 @@
 - Fix: The Portable Tune Player plays the saved tune slightly slower than the Sonic Security System
 - Fix: Reinforced Hoppers pushed by Reinforced Pistons lose their owner
 - Fix: Block Mines are not resistant to explosions
+- Fix: Block Mines do not drop themselves when mined
 - Potential Fix: Entities sometimes disappear when dismounting a camera
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
