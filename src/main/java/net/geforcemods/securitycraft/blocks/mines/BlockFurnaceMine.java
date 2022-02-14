@@ -27,7 +27,7 @@ public class BlockFurnaceMine extends BlockFullMineBase {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	public BlockFurnaceMine(Material material) {
-		super(material, Blocks.FURNACE);
+		super(material, Blocks.FURNACE, 0);
 	}
 
 	@Override

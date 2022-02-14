@@ -26,16 +26,22 @@ import net.minecraft.world.World;
 public class BlockFullMineBase extends BlockExplosive implements IOverlayDisplay, IBlockMine {
 	private final Block blockDisguisedAs;
 
-	public BlockFullMineBase(Material material, Block disguisedBlock) {
+	public BlockFullMineBase(Material material, Block disguisedBlock, int harvestLevel) {
 		super(material);
 		blockDisguisedAs = disguisedBlock;
 
-		if (material == Material.SAND)
+		if (material == Material.SAND) {
 			setSoundType(SoundType.SAND);
-		else if (material == Material.GROUND)
+			setHarvestLevel("shovel", harvestLevel);
+		}
+		else if (material == Material.GROUND) {
 			setSoundType(SoundType.GROUND);
-		else
+			setHarvestLevel("shovel", harvestLevel);
+		}
+		else {
 			setSoundType(SoundType.STONE);
+			setHarvestLevel("pickaxe", harvestLevel);
+		}
 	}
 
 	@Override

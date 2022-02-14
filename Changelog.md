@@ -16,6 +16,7 @@
 - Fix: Reinforced Hoppers pushed by Reinforced Pistons lose their owner
 - Fix: Block Mines are not resistant to explosions
 - Fix: Block Mines do not drop themselves when mined
+- Fix: Block Mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
 - Potential Fix: Entities sometimes disappear when dismounting a camera
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------

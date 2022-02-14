@@ -21,7 +21,7 @@ public class BlockRedstoneOreMine extends BlockFullMineBase {
 	public static final PropertyBool LIT = PropertyBool.create("lit");
 
 	public BlockRedstoneOreMine() {
-		super(Material.ROCK, Blocks.REDSTONE_ORE);
+		super(Material.ROCK, Blocks.REDSTONE_ORE, 2);
 
 		setTickRandomly(true);
 		setDefaultState(getDefaultState().withProperty(LIT, false));
