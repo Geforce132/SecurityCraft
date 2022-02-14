@@ -14,6 +14,7 @@
 - Fix: The Scanner Door can sometimes be opened/closed by looking at a side the scanner texture is not on
 - Fix: The Portable Tune Player plays the saved tune slightly slower than the Sonic Security System
 - Fix: Reinforced Hoppers pushed by Reinforced Pistons lose their owner
+- Fix: Block Mines are not resistant to explosions
 - Potential Fix: Entities sometimes disappear when dismounting a camera
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
