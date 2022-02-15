@@ -67,10 +67,10 @@ public class SetPasswordScreen extends ContainerScreen<GenericBEMenu> {
 
 		if (font.width(combined) < imageWidth - 10)
 			font.draw(combined, imageWidth / 2 - font.width(combined) / 2, 6, 4210752);
-		else
+		else {
 			font.draw(blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
-
-		font.draw(setup, imageWidth / 2 - font.width(setup) / 2, 16, 4210752);
+			font.draw(setup, imageWidth / 2 - font.width(setup) / 2, 16, 4210752);
+		}
 	}
 
 	@Override

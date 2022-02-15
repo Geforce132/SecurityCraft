@@ -27,6 +27,7 @@
 - Fix: Block Mines do not drop themselves when mined
 - Fix: Block Mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
 - Fix: The Redstone Ore Mine does not glow when activated
+- Fix: The keycode setup screen's title contains the word "setup" twice
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
