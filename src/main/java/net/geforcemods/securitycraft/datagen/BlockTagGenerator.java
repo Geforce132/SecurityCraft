@@ -306,6 +306,23 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_CRIMSON_NYLIUM.get(),
 				SCContent.REINFORCED_WARPED_NYLIUM.get());
+		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(SCContent.ANCIENT_DEBRIS_MINE.get());
+		tag(BlockTags.NEEDS_IRON_TOOL).add(
+				SCContent.GOLD_ORE_MINE.get(),
+				SCContent.DEEPSLATE_GOLD_ORE_MINE.get(),
+				SCContent.REDSTONE_ORE_MINE.get(),
+				SCContent.DEEPSLATE_REDSTONE_ORE_MINE.get(),
+				SCContent.EMERALD_ORE_MINE.get(),
+				SCContent.DEEPSLATE_EMERALD_ORE_MINE.get(),
+				SCContent.DIAMOND_ORE_MINE.get(),
+				SCContent.DEEPSLATE_DIAMOND_ORE_MINE.get());
+		tag(BlockTags.NEEDS_STONE_TOOL).add(
+				SCContent.IRON_ORE_MINE.get(),
+				SCContent.DEEPSLATE_IRON_ORE_MINE.get(),
+				SCContent.COPPER_ORE_MINE.get(),
+				SCContent.DEEPSLATE_COPPER_ORE_MINE.get(),
+				SCContent.LAPIS_ORE_MINE.get(),
+				SCContent.DEEPSLATE_LAPIS_ORE_MINE.get());
 		tag(BlockTags.NYLIUM).addTag(SCTags.Blocks.REINFORCED_NYLIUM);
 		tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).addTags(SCTags.Blocks.REINFORCED_WOOL);
 		tag(BlockTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get());
