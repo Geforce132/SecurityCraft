@@ -28,6 +28,7 @@
 - Fix: Block Mines do not drop themselves when mined
 - Fix: Block Mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
 - Fix: The Scanner Door and Keypad Door can be opened with any redstone signal
+- Fix: The mine overlay on the Ancient Debris Mine item can be seen by other players if you're holding the item
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2-beta1 of SecurityCraft--------------------------
