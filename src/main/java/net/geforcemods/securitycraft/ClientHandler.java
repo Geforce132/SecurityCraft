@@ -129,6 +129,7 @@ public class ClientHandler {
 				new ResourceLocation(SecurityCraft.MODID, "laser_block")
 		};
 		String[] mines = {
+				"ancient_debris",
 				"blast_furnace",
 				"coal_ore",
 				"cobbled_deepslate",
