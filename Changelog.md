@@ -29,6 +29,7 @@
 - Fix: Block Mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
 - Fix: The Scanner Door and Keypad Door can be opened with any redstone signal
 - Fix: The mine overlay on the Ancient Debris Mine item can be seen by other players if you're holding the item
+- Fix: Removing a Laser Field with the Universal Block Remover does not destroy adjacent laser fields
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2-beta1 of SecurityCraft--------------------------
