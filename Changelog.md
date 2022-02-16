@@ -28,6 +28,7 @@
 - Fix: Block Mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
 - Fix: The Redstone Ore Mine does not glow when activated
 - Fix: The keycode setup screen's title contains the word "setup" twice
+- Fix: Removing a Laser Field with the Universal Block Remover does not destroy adjacent laser fields
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
