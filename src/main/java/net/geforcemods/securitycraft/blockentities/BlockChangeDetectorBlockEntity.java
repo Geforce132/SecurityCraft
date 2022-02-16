@@ -6,11 +6,14 @@ import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.blocks.BlockChangeDetectorBlock;
 import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -25,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements MenuProvider, ILockable, ITickingBlockEntity {
+	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private int range = 0;
 	private DetectionMode mode = DetectionMode.BREAK;
 	private boolean tracked = false;
@@ -37,11 +41,14 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	public void log(Player player, DetectionMode action, BlockPos pos, BlockState state) {
 		if (mode != DetectionMode.BOTH && action != mode)
 			return;
-
-		if (getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player))
-			return;
+		//TODO: reenable
+		//		if (getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player))
+		//			return;
 
 		entries.add(new ChangeEntry(player.getDisplayName().getString(), player.getUUID(), System.currentTimeMillis(), action, pos, state));
+		level.setBlockAndUpdate(pos, state.setValue(BlockChangeDetectorBlock.POWERED, true));
+		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.BLOCK_CHANGE_DETECTOR.get());
+		level.scheduleTick(pos, SCContent.BLOCK_CHANGE_DETECTOR.get(), signalLength.get());
 		setChanged();
 	}
 
@@ -128,6 +135,13 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
 				ModuleType.DISGUISE, ModuleType.ALLOWLIST, ModuleType.SMART
+		};
+	}
+
+	@Override
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				signalLength
 		};
 	}
 
