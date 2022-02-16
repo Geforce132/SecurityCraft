@@ -394,9 +394,11 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	public void setHorizontal(boolean isHorizontal) {
-		horizontal.setValue(isHorizontal);
-		level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, isHorizontal));
-		setChanged();
+		if (horizontal.get() != isHorizontal) {
+			horizontal.setValue(isHorizontal);
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, isHorizontal));
+			setChanged();
+		}
 	}
 
 	public boolean isHorizontal() {
