@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.util.IBlockWithNoDrops;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -35,7 +36,8 @@ public class ItemUniversalBlockRemover extends Item {
 	@Override
 	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 		TileEntity tileEntity = world.getTileEntity(pos);
-		Block block = world.getBlockState(pos).getBlock();
+		IBlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
 
 		if (isOwnableBlock(block, tileEntity)) {
 			if (!((IOwnable) tileEntity).getOwner().isOwner(player)) {
@@ -101,8 +103,8 @@ public class ItemUniversalBlockRemover extends Item {
 				else if (block instanceof IBlockWithNoDrops)
 					Block.spawnAsEntity(world, pos, ((IBlockWithNoDrops) block).getUniversalBlockRemoverDrop());
 
-				world.destroyBlock(pos, true);
-				world.removeTileEntity(pos);
+				world.destroyBlock(pos, true); //this also removes the BlockEntity
+				block.onPlayerDestroy(world, pos, state);
 				player.getHeldItem(hand).damageItem(1, player);
 			}
 

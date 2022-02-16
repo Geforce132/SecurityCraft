@@ -17,6 +17,7 @@
 - Fix: Block Mines are not resistant to explosions
 - Fix: Block Mines do not drop themselves when mined
 - Fix: Block Mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
+- Fix: Removing a Laser Field with the Universal Block Remover does not destroy adjacent laser fields
 - Potential Fix: Entities sometimes disappear when dismounting a camera
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
