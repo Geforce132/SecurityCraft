@@ -115,8 +115,8 @@ public class UniversalBlockRemoverItem extends Item {
 				}
 
 				if (!world.isClientSide) {
-					world.destroyBlock(pos, true);
-					world.removeBlockEntity(pos);
+					world.destroyBlock(pos, true); //this also removes the BlockEntity
+					block.destroy(world, pos, state);
 					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(ctx.getHand()));
 				}
 			}
