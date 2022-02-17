@@ -1,5 +1,10 @@
 package net.geforcemods.securitycraft.screen;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
@@ -7,8 +12,11 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.ClearChangeDetectorServer;
+import net.geforcemods.securitycraft.screen.components.CollapsibleTextList;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -20,6 +28,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
@@ -46,9 +55,22 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 			SecurityCraft.channel.sendToServer(new ClearChangeDetectorServer(be.getBlockPos()));
 		}));
 
+		ChangeEntry entry = new ChangeEntry(minecraft.player.getName().getString(), minecraft.player.getUUID(), System.currentTimeMillis(), DetectionMode.BREAK, be.getBlockPos(), Blocks.ANDESITE_WALL.defaultBlockState());
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
+		List<? extends Component> list = List.of(
+		//@formatter:off
+			entry.player(),
+			entry.uuid(),
+			dateFormat.format(new Date(entry.timestamp())),
+			entry.action(),
+			Utils.getFormattedCoordinates(entry.pos()).getString(),
+			"[" + entry.state().toString().split("\\[")[1].replace(",", ", ")
+		//@formatter:on
+		).stream().map(Object::toString).map(TextComponent::new).toList();
+		addRenderableWidget(new CollapsibleTextList(leftPos + 10, topPos + 30, 180, Utils.localize(Blocks.EXPOSED_CUT_COPPER_STAIRS.getDescriptionId()), list));
 		clearButton.active = be.getOwner().isOwner(minecraft.player);
-		hoverChecker = new TextHoverChecker(clearButton, CLEAR);
-		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 200, 500, topPos + 20, leftPos + 12));
+		//		hoverChecker = new TextHoverChecker(clearButton, CLEAR);
+		//		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 200, 500, topPos + 20, leftPos + 12));
 	}
 
 	@Override
