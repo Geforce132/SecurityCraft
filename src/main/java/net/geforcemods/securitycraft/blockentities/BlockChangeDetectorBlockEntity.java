@@ -46,9 +46,9 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		//			return;
 
 		entries.add(new ChangeEntry(player.getDisplayName().getString(), player.getUUID(), System.currentTimeMillis(), action, pos, state));
-		level.setBlockAndUpdate(pos, state.setValue(BlockChangeDetectorBlock.POWERED, true));
-		BlockUtils.updateIndirectNeighbors(level, pos, SCContent.BLOCK_CHANGE_DETECTOR.get());
-		level.scheduleTick(pos, SCContent.BLOCK_CHANGE_DETECTOR.get(), signalLength.get());
+		level.setBlockAndUpdate(this.worldPosition, state.setValue(BlockChangeDetectorBlock.POWERED, true));
+		BlockUtils.updateIndirectNeighbors(level, this.worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get());
+		level.scheduleTick(this.worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get(), signalLength.get());
 		setChanged();
 	}
 
