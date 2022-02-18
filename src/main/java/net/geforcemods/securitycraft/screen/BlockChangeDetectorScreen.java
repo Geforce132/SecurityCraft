@@ -121,8 +121,9 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 		private final int slotHeight = 12;
 		private List<CollapsibleTextList> entries = new ArrayList<>();
 		private CollapsibleTextList currentlyOpen = null;
-		private boolean hasChanged = false;
+		private boolean repositionEntries = false, recalculateContentHeight = false;
 		private float previousScrollDistance = 0.0F;
+		private int contentHeight = 0;
 
 		public ChangeEntryList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left, 4, 6, 0x00000000, 0x00000000);
@@ -130,22 +131,28 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 
 		@Override
 		protected int getContentHeight() {
-			int height = entries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getHeight(), (identity, accumulated) -> identity + accumulated);
+			if (recalculateContentHeight) {
+				int height = entries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getHeight(), (identity, accumulated) -> identity + accumulated);
 
-			if (height < bottom - top - 8)
-				height = bottom - top - 8;
+				if (height < bottom - top - 8)
+					height = bottom - top - 8;
 
-			return height;
+				contentHeight = height;
+				recalculateContentHeight = false;
+			}
+
+			return contentHeight;
 		}
 
 		@Override
 		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 			super.render(pose, mouseX, mouseY, partialTicks);
 
-			if (hasChanged || scrollDistance != previousScrollDistance) {
+			if (repositionEntries || scrollDistance != previousScrollDistance) {
 				int height = 0;
 
 				previousScrollDistance = scrollDistance;
+				repositionEntries = false;
 
 				for (int i = 0; i < entries.size(); i++) {
 					CollapsibleTextList entry = entries.get(i);
@@ -172,6 +179,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 			entry.x = left;
 			entry.setY(top + slotHeight * entries.size());
 			entries.add(entry);
+			recalculateContentHeight = true;
 		}
 
 		public void setOpen(CollapsibleTextList newOpenedTextList) {
@@ -191,7 +199,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 				scrollDistance = slotHeight * entries.indexOf(currentlyOpen);
 			}
 
-			hasChanged = true;
+			repositionEntries = true;
+			recalculateContentHeight = true;
 		}
 
 		@Override
