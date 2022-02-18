@@ -23,13 +23,16 @@ public class CollapsibleTextList extends Button {
 	private final Component originalDisplayString;
 	private final List<? extends Component> textLines;
 	private final List<Long> splitTextLineCount;
+	private final boolean shouldRenderLongMessageTooltip;
 	private boolean open = true;
 	private boolean isMessageTooLong = false;
+	private int initialY = -1;
 
-	public CollapsibleTextList(int xPos, int yPos, int width, Component displayString, List<? extends Component> textLines) {
-		super(xPos, yPos, width, 12, displayString, CollapsibleTextList::switchOpenStatus);
+	public CollapsibleTextList(int xPos, int yPos, int width, Component displayString, List<? extends Component> textLines, OnPress onPress, boolean shouldRenderLongMessageTooltip) {
+		super(xPos, yPos, width, 12, displayString, onPress);
+		this.shouldRenderLongMessageTooltip = shouldRenderLongMessageTooltip;
 		originalDisplayString = displayString;
-		switchOpenStatus(this); //properly sets the message as well
+		switchOpenStatus(); //properly sets the message as well
 		textCutoff = width - 5;
 
 		ImmutableList.Builder<Long> splitTextLineCountBuilder = new ImmutableList.Builder<>();
@@ -72,6 +75,11 @@ public class CollapsibleTextList extends Button {
 			}
 		}
 
+		if (shouldRenderLongMessageTooltip)
+			renderLongMessageTooltip(pose);
+	}
+
+	public void renderLongMessageTooltip(PoseStack pose) {
 		if (isMessageTooLong && isHoveredOrFocused()) {
 			Screen currentScreen = Minecraft.getInstance().screen;
 
@@ -99,10 +107,29 @@ public class CollapsibleTextList extends Button {
 		return open ? heightOpen : height;
 	}
 
-	private static void switchOpenStatus(Button button) {
-		if (button instanceof CollapsibleTextList ctl) {
-			ctl.open = !ctl.open;
-			ctl.setMessage((ctl.open ? MINUS : PLUS).copy().append(ctl.originalDisplayString));
-		}
+	@Override
+	public void onPress() {
+		switchOpenStatus();
+		super.onPress();
+	}
+
+	public void setY(int y) {
+		if (initialY == -1)
+			initialY = y;
+
+		this.y = y;
+	}
+
+	public void switchOpenStatus() {
+		open = !open;
+		setMessage((open ? MINUS : PLUS).copy().append(originalDisplayString));
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+
+	public int getInitialY() {
+		return initialY;
 	}
 }

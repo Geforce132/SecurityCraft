@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -33,7 +34,7 @@ import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBEMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/state_selector.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_change_detector.png");
 	private static final TranslatableComponent CLEAR = Utils.localize("gui.securitycraft:editModule.clear");
 	private static final TranslatableComponent BLOCK_NAME = Utils.localize(SCContent.BLOCK_CHANGE_DETECTOR.get().getDescriptionId());
 	private BlockChangeDetectorBlockEntity be;
@@ -43,6 +44,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 	public BlockChangeDetectorScreen(GenericBEMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		be = (BlockChangeDetectorBlockEntity) menu.be;
+		imageHeight = 256;
 	}
 
 	@Override
@@ -67,10 +69,12 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 			"[" + entry.state().toString().split("\\[")[1].replace(",", ", ")
 		//@formatter:on
 		).stream().map(Object::toString).map(TextComponent::new).toList();
-		addRenderableWidget(new CollapsibleTextList(leftPos + 10, topPos + 30, 180, Utils.localize(Blocks.EXPOSED_CUT_COPPER_STAIRS.getDescriptionId()), list));
 		clearButton.active = be.getOwner().isOwner(minecraft.player);
-		//		hoverChecker = new TextHoverChecker(clearButton, CLEAR);
-		//		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 200, 500, topPos + 20, leftPos + 12));
+		hoverChecker = new TextHoverChecker(clearButton, CLEAR);
+		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 160, 114, topPos + 56, leftPos + 8));
+
+		for (int i = 0; i < 10; i++)
+			changeEntryList.addEntry(addWidget(new CollapsibleTextList(0, 0, 154, Utils.localize(Blocks.EXPOSED_CUT_COPPER_STAIRS.getDescriptionId()), list, b -> changeEntryList.setOpen((CollapsibleTextList) b), false)));
 	}
 
 	@Override
@@ -114,13 +118,19 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 	}
 
 	class ChangeEntryList extends ScrollPanel {
+		private final int slotHeight = 12;
+		private List<CollapsibleTextList> entries = new ArrayList<>();
+		private CollapsibleTextList currentlyOpen = null;
+		private boolean hasChanged = false;
+		private float previousScrollDistance = 0.0F;
+
 		public ChangeEntryList(Minecraft client, int width, int height, int top, int left) {
-			super(client, width, height, top, left);
+			super(client, width, height, top, left, 4, 6, 0x00000000, 0x00000000);
 		}
 
 		@Override
 		protected int getContentHeight() {
-			int height = 50 + (be.getEntries().size() * font.lineHeight);
+			int height = entries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getHeight(), (identity, accumulated) -> identity + accumulated);
 
 			if (height < bottom - top - 8)
 				height = bottom - top - 8;
@@ -129,12 +139,59 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 		}
 
 		@Override
-		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
-			int mouseListY = (int) (mouseY - top + scrollDistance - border);
-			int slotIndex = mouseListY / 12;
+		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+			super.render(pose, mouseX, mouseY, partialTicks);
 
-			if (slotIndex >= 0 && slotIndex < be.getEntries().size())
-				font.draw(pose, be.getEntries().get(slotIndex).toString(), left + width / 2 - font.width(be.getEntries().get(slotIndex).toString()) / 2, relativeY + (12 * slotIndex), 0xc6c6c6);
+			if (hasChanged || scrollDistance != previousScrollDistance) {
+				int height = 0;
+
+				previousScrollDistance = scrollDistance;
+
+				for (int i = 0; i < entries.size(); i++) {
+					CollapsibleTextList entry = entries.get(i);
+
+					entry.renderLongMessageTooltip(pose);
+					entry.y = entry.getInitialY() - (int) scrollDistance + height;
+
+					if (entry.isOpen())
+						height += entry.getHeight() - slotHeight;
+				}
+			}
+		}
+
+		@Override
+		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
+			for (int i = 0; i < entries.size(); i++) {
+				entries.get(i).render(pose, mouseX, mouseY, 0.0F);
+			}
+		}
+
+		public void addEntry(CollapsibleTextList entry) {
+			entry.setWidth(154);
+			entry.setHeight(slotHeight);
+			entry.x = left;
+			entry.setY(top + slotHeight * entries.size());
+			entries.add(entry);
+		}
+
+		public void setOpen(CollapsibleTextList newOpenedTextList) {
+			if (currentlyOpen == null)
+				currentlyOpen = newOpenedTextList;
+			else {
+				if (currentlyOpen == newOpenedTextList)
+					currentlyOpen = null;
+				else {
+					currentlyOpen.switchOpenStatus();
+					currentlyOpen = newOpenedTextList;
+				}
+			}
+
+			if (currentlyOpen != null) {
+				previousScrollDistance = scrollDistance;
+				scrollDistance = slotHeight * entries.indexOf(currentlyOpen);
+			}
+
+			hasChanged = true;
 		}
 
 		@Override
