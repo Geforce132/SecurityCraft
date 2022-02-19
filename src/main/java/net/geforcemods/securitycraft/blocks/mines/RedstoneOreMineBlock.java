@@ -31,7 +31,7 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock {
 
 	@Override
 	public int getLightEmission(BlockState state) {
-		return state.getValue(LIT) ? super.getLightEmission(state) : 0;
+		return state.getValue(LIT) ? 9 : 0;
 	}
 
 	@Override
