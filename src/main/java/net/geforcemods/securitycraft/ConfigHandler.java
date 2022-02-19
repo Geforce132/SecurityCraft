@@ -15,7 +15,7 @@ public class ConfigHandler {
 
 	@Name("Is admin tool allowed?")
 	@LangKey("config.securitycraft:allowAdminTool")
-	public static boolean allowAdminTool = false;
+	public static boolean allowAdminTool = true;
 
 	@Name("Mine(s) spawn fire when detonated?")
 	@LangKey("config.securitycraft:shouldSpawnFire")

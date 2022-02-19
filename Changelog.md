@@ -3,6 +3,7 @@
 - New: The Disguise Module and Projector can now be set to display a specific state of a block (e.g. corner stairs), instead of a fixed one
 - Change: The Password-protected Furnace now has a new look
 - Change: The Cage Trap is now reusable
+- Change: The Admin Tool is now enabled by default. This does not affect existing config files
 - Fix: Reinforced pressure plates cannot open reinforced doors/trapdoors/etc.
 - Fix: The Password-protected Furnace is not shown as a recipe catalyst for furnace recipes in JEI
 - Fix: The light level of password-protected furnaces is too high compared to the vanilla furnace
@@ -13,11 +14,11 @@
 - Fix: The Codebreaker does not work on keypad doors
 - Fix: The Scanner Door can sometimes be opened/closed by looking at a side the scanner texture is not on
 - Fix: The Portable Tune Player plays the saved tune slightly slower than the Sonic Security System
-- Fix: Reinforced Hoppers pushed by Reinforced Pistons lose their owner
-- Fix: Block Mines are not resistant to explosions
-- Fix: Block Mines do not drop themselves when mined
-- Fix: Block Mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
-- Fix: Removing a Laser Field with the Universal Block Remover does not destroy adjacent laser fields
+- Fix: Reinforced hoppers pushed by reinforced pistons lose their owner
+- Fix: Block mines are not resistant to explosions
+- Fix: Block mines do not drop themselves when mined
+- Fix: Block mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
+- Fix: Removing a laser field with the Universal Block Remover does not destroy adjacent laser fields
 - Potential Fix: Entities sometimes disappear when dismounting a camera
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
