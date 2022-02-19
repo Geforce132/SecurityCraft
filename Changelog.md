@@ -5,6 +5,7 @@
 - New: The Disguise Module and Projector can now be set to display a specific state of a block (e.g. corner stairs), instead of a fixed one
 - Change: The Password-protected Furnace now has a new look
 - Change: The Cage Trap is now reusable
+- Change: The Admin Tool is now enabled by default. This does not affect existing config files
 - Fix: Cannot access the recipe book for the Password-protected Furnace
 - Fix: The Password-protected Furnace is not shown as a recipe catalyst for furnace recipes in JEI
 - Fix: Changing the owner of inventory scanners and doors does not change the owner of the other block/door half
@@ -25,11 +26,10 @@
 - Fix: The Sentry Remote Access Tool does not work for sentries placed at y=0
 - Fix: The Portable Tune Player plays the saved tune slightly slower than the Sonic Security System
 - Fix: Navigating the SecurityCraft Manual via the tab key does not visibly select any button
-- Fix: Block Mines do not drop themselves when mined
-- Fix: Block Mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
-- Fix: The Scanner Door and Keypad Door can be opened with any redstone signal
-- Fix: The mine overlay on the Ancient Debris Mine item can be seen by other players if you're holding the item
-- Fix: Removing a Laser Field with the Universal Block Remover does not destroy adjacent laser fields
+- Fix: Block mines do not drop themselves when mined
+- Fix: Block mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
+- Fix: The mine overlay on the Ancient Debris Mine item can be seen by other players when holding the item
+- Fix: Removing a laser field with the Universal Block Remover does not destroy adjacent laser fields
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2-beta1 of SecurityCraft--------------------------
