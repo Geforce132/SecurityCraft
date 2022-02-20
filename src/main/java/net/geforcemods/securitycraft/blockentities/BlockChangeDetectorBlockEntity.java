@@ -105,12 +105,8 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		return super.getDisplayName();
 	}
 
-	public void changeMode() {
-		if (mode == DetectionMode.BREAK)
-			mode = DetectionMode.PLACE;
-		else
-			mode = DetectionMode.BREAK;
-
+	public void setMode(DetectionMode mode) {
+		this.mode = mode;
 		setChanged();
 	}
 
@@ -141,9 +137,19 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	public static enum DetectionMode {
-		BREAK,
-		PLACE,
-		BOTH;
+		BREAK("gui.securitycraft:block_change_detector.mode.break"),
+		BOTH("gui.securitycraft:block_change_detector.mode.place"),
+		PLACE("gui.securitycraft:block_change_detector.mode.both");
+
+		private String descriptionId;
+
+		private DetectionMode(String desciptionId) {
+			this.descriptionId = desciptionId;
+		}
+
+		public String getDescriptionId() {
+			return descriptionId;
+		}
 	}
 
 	public static record ChangeEntry(String player, UUID uuid, long timestamp, DetectionMode action, BlockPos pos, BlockState state) {
