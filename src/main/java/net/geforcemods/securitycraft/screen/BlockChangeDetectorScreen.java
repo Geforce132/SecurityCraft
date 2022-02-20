@@ -183,6 +183,9 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 
 					entry.renderLongMessageTooltip(pose);
 					entry.y = entry.getInitialY() - (int) scrollDistance + height;
+					//TODO: this makes the text go gray
+					entry.active = entry.y > top - slotHeight; //if the text list is open, disable the button when it's above the scroll list so players can't click it
+					entry.visible = entry.y + entry.getHeight() > top && entry.y < bottom;
 
 					if (entry.isOpen())
 						height += entry.getHeight() - slotHeight;
