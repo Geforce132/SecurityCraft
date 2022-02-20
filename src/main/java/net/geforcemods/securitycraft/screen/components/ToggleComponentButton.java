@@ -54,7 +54,7 @@ public class ToggleComponentButton extends ExtendedButton implements IToggleable
 
 	@Override
 	public void setCurrentIndex(int newIndex) {
-		this.currentIndex = newIndex;
+		currentIndex = Math.floorMod(newIndex, toggleCount);
 	}
 
 	public void onValueChange() {

@@ -20,18 +20,21 @@ import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.ClearChangeDetectorServer;
 import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.screen.components.CollapsibleTextList;
+import net.geforcemods.securitycraft.screen.components.IToggleableButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
-import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
@@ -43,12 +46,12 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 	private BlockChangeDetectorBlockEntity be;
 	private ChangeEntryList changeEntryList;
 	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[2];
-	private ToggleComponentButton modeButton;
+	private ModeButton modeButton;
 
 	public BlockChangeDetectorScreen(GenericBEMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		be = (BlockChangeDetectorBlockEntity) menu.be;
-		imageWidth = 197;
+		imageWidth = 200;
 		imageHeight = 256;
 	}
 
@@ -77,7 +80,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 		clearButton.active = be.getOwner().isOwner(minecraft.player);
 		hoverCheckers[0] = new TextHoverChecker(clearButton, CLEAR);
 		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 160, 150, topPos + 20, leftPos + 8));
-		addRenderableWidget(modeButton = new ToggleComponentButton(leftPos + 172, topPos + 19, 20, 20, i -> TextComponent.EMPTY, be.getMode().ordinal(), DetectionMode.values().length, b -> {}));
+		addRenderableWidget(modeButton = new ModeButton(leftPos + 173, topPos + 19, 20, 20, be.getMode().ordinal(), DetectionMode.values().length));
 		hoverCheckers[1] = new TextHoverChecker(modeButton, Arrays.stream(DetectionMode.values()).map(e -> (Component) Utils.localize(e.getDescriptionId())).toList());
 
 		for (int i = 0; i < 30; i++)
@@ -237,5 +240,59 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 
 		@Override
 		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
+	}
+
+	class ModeButton extends ExtendedButton implements IToggleableButton {
+		private final ItemStack ironPickaxe = new ItemStack(Items.IRON_PICKAXE);
+		private final ItemStack grassBlock = new ItemStack(Blocks.GRASS_BLOCK);
+		private final int toggleCount;
+		private int currentIndex = 0;
+
+		public ModeButton(int xPos, int yPos, int width, int height, int initialIndex, int toggleCount) {
+			super(xPos, yPos, width, height, TextComponent.EMPTY, b -> {});
+			this.toggleCount = toggleCount;
+			currentIndex = initialIndex;
+		}
+
+		@Override
+		public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+			super.render(pose, mouseX, mouseY, partialTick);
+
+			if (currentIndex == DetectionMode.BREAK.ordinal())
+				minecraft.getItemRenderer().renderAndDecorateItem(ironPickaxe, x + 2, y + 2);
+			else if (currentIndex == DetectionMode.PLACE.ordinal())
+				minecraft.getItemRenderer().renderAndDecorateItem(grassBlock, x + 2, y + 2);
+			else if (currentIndex == DetectionMode.BOTH.ordinal()) {
+				minecraft.getItemRenderer().renderAndDecorateItem(grassBlock, x + 2, y + 2, 0, -100);
+				minecraft.getItemRenderer().renderAndDecorateItem(ironPickaxe, x + 2, y + 2);
+			}
+		}
+
+		@Override
+		public void onClick(double mouseX, double mouseY) {
+			if (Screen.hasShiftDown())
+				setCurrentIndex(currentIndex - 1);
+			else
+				setCurrentIndex(currentIndex + 1);
+
+			super.onClick(mouseX, mouseY);
+		}
+
+		@Override
+		public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+			setCurrentIndex(currentIndex - (int) Math.signum(delta));
+			onPress.onPress(this);
+			return true;
+		}
+
+		@Override
+		public int getCurrentIndex() {
+			return currentIndex;
+		}
+
+		@Override
+		public void setCurrentIndex(int newIndex) {
+			currentIndex = Math.floorMod(newIndex, toggleCount);
+		}
 	}
 }

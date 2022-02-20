@@ -779,7 +779,7 @@
 	"gui.securitycraft:customize.currentSetting": "Momentan: %s",
 	"gui.securitycraft:block_change_detector.mode.break": "Zerbrechen",
 	"gui.securitycraft:block_change_detector.mode.place": "Platzieren",
-	"gui.securitycraft:block_change_detector.mode.both": "Beides",
+	"gui.securitycraft:block_change_detector.mode.both": "Zerbrechen & Platzieren",
 	
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",

@@ -138,8 +138,8 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	public static enum DetectionMode {
 		BREAK("gui.securitycraft:block_change_detector.mode.break"),
-		BOTH("gui.securitycraft:block_change_detector.mode.place"),
-		PLACE("gui.securitycraft:block_change_detector.mode.both");
+		PLACE("gui.securitycraft:block_change_detector.mode.place"),
+		BOTH("gui.securitycraft:block_change_detector.mode.both");
 
 		private String descriptionId;
 
