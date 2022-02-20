@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-public class ToggleComponentButton extends ExtendedButton {
+public class ToggleComponentButton extends ExtendedButton implements IToggleableButton {
 	private final IntFunction<Component> onValueChange;
 	private int currentIndex = 0;
 	private final int toggleCount;
@@ -43,12 +43,18 @@ public class ToggleComponentButton extends ExtendedButton {
 	}
 
 	public void cycleIndex(int value) {
-		currentIndex = Math.floorMod(currentIndex + value, toggleCount);
+		setCurrentIndex(Math.floorMod(currentIndex + value, toggleCount));
 		onValueChange();
 	}
 
+	@Override
 	public int getCurrentIndex() {
 		return currentIndex;
+	}
+
+	@Override
+	public void setCurrentIndex(int newIndex) {
+		this.currentIndex = newIndex;
 	}
 
 	public void onValueChange() {
