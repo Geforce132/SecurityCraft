@@ -41,14 +41,18 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	public void log(Player player, DetectionMode action, BlockPos pos, BlockState state) {
 		if (mode != DetectionMode.BOTH && action != mode)
 			return;
+
 		//TODO: reenable
 		//		if (getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player))
 		//			return;
 
+		if (hasModule(ModuleType.REDSTONE)) {
+			level.setBlockAndUpdate(this.worldPosition, state.setValue(BlockChangeDetectorBlock.POWERED, true));
+			BlockUtils.updateIndirectNeighbors(level, this.worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get());
+			level.scheduleTick(this.worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get(), signalLength.get());
+		}
+
 		entries.add(new ChangeEntry(player.getDisplayName().getString(), player.getUUID(), System.currentTimeMillis(), action, pos, state));
-		level.setBlockAndUpdate(this.worldPosition, state.setValue(BlockChangeDetectorBlock.POWERED, true));
-		BlockUtils.updateIndirectNeighbors(level, this.worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get());
-		level.scheduleTick(this.worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get(), signalLength.get());
 		setChanged();
 	}
 
@@ -134,7 +138,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.DISGUISE, ModuleType.ALLOWLIST, ModuleType.SMART
+				ModuleType.DISGUISE, ModuleType.ALLOWLIST, ModuleType.SMART, ModuleType.REDSTONE
 		};
 	}
 
