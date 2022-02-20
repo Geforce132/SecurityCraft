@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements MenuProvider, ILockable, ITickingBlockEntity {
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
-	private int range = 0;
+	private IntOption range = new IntOption(this::getBlockPos, "range", 15, 1, 100, 1, true);
 	private DetectionMode mode = DetectionMode.BREAK;
 	private boolean tracked = false;
 	private List<ChangeEntry> entries = new ArrayList<>();
@@ -71,7 +71,6 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		ListTag entryList = new ListTag();
 
 		entries.stream().map(ChangeEntry::save).forEach(entryList::add);
-		tag.putInt("range", range);
 		tag.putInt("mode", mode.ordinal());
 		tag.put("entries", entryList);
 	}
@@ -85,7 +84,6 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		if (modeOrdinal < 0 || modeOrdinal >= DetectionMode.values().length)
 			modeOrdinal = 0;
 
-		range = tag.getInt("range");
 		mode = DetectionMode.values()[modeOrdinal];
 		entries = new ArrayList<>();
 		tag.getList("entries", Tag.TAG_COMPOUND).stream().map(element -> ChangeEntry.load((CompoundTag) element)).forEach(entries::add);
@@ -120,15 +118,8 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		return mode;
 	}
 
-	public void changeRange() {
-		if (++range > 15)
-			range = 0;
-
-		setChanged();
-	}
-
 	public int getRange() {
-		return range;
+		return range.get();
 	}
 
 	public List<ChangeEntry> getEntries() {
@@ -145,7 +136,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				signalLength
+				signalLength, range
 		};
 	}
 

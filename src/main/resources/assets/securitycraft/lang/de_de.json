@@ -1124,6 +1124,8 @@
 	"option.securitycraft.sonic_security_system.signalLength.description": "Wie lange soll das Schallsicherheitssystem Blöcke entsperren/ein Redstonesignal ausgeben, nachdem die korrekte Melodie gespielt wurde? (In Ticks, 20 Ticks = 1 Sekunde)",
 	"option.securitycraft.block_change_detector.signalLength": "Signallänge: %s",
 	"option.securitycraft.block_change_detector.signalLength.description": "Wie lange soll das Redstonesignal bei erfolgreicher Aktivierung sein? (In Ticks, 20 Ticks = 1 Sekunde)",
+	"option.securitycraft.block_change_detector.range": "Detektionsradius: %s",
+	"option.securitycraft.block_change_detector.range.description": "Wie weit weg soll der Detektor Blöcke, die von Spielern platziert/zerbrochen wurden, detektieren?",
 
 	"securitycraft.subtitle.alarm": "Alarm geht los",
 	"securitycraft.subtitle.electrified": "Stromschlag",

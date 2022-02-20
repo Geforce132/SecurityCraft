@@ -1125,6 +1125,8 @@
 	"option.securitycraft.sonic_security_system.signalLength.description": "How long should the sonic security system unlock blocks/give off a redstone signal after hearing the correct tune? (In ticks, 20 ticks = 1 second)",
 	"option.securitycraft.block_change_detector.signalLength": "Signal length: %s",
 	"option.securitycraft.block_change_detector.signalLength.description": "How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)",
+	"option.securitycraft.block_change_detector.range": "Detection radius: %s",
+	"option.securitycraft.block_change_detector.range.description": "How far away should the detector be able to detect block changes by players?",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",
