@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
@@ -66,42 +65,46 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 		super.init();
 
 		Button clearButton = addRenderableWidget(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, new TextComponent("x"), b -> {
+			changeEntryList.allEntries.forEach(this::removeWidget);
+			changeEntryList.allEntries.clear();
+			changeEntryList.modeFilteredEntries.clear();
 			be.getEntries().clear();
 			be.setChanged();
 			SecurityCraft.channel.sendToServer(new ClearChangeDetectorServer(be.getBlockPos()));
 		}));
-		ChangeEntry entry = new ChangeEntry(minecraft.player.getName().getString(), minecraft.player.getUUID(), System.currentTimeMillis(), DetectionMode.BREAK, be.getBlockPos(), Blocks.ANDESITE_WALL.defaultBlockState());
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
+
 		clearButton.active = be.getOwner().isOwner(minecraft.player);
-		hoverCheckers[0] = new TextHoverChecker(clearButton, CLEAR);
 		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 160, 150, topPos + 20, leftPos + 8));
 		currentMode = be.getMode();
 		addRenderableWidget(modeButton = new ModeButton(leftPos + 173, topPos + 19, 20, 20, currentMode.ordinal(), DetectionMode.values().length, b -> {
 			currentMode = DetectionMode.values()[((ModeButton) b).getCurrentIndex()];
 			changeEntryList.updateFilteredEntries();
 		}));
+		hoverCheckers[0] = new TextHoverChecker(clearButton, CLEAR);
 		hoverCheckers[1] = new TextHoverChecker(modeButton, Arrays.stream(DetectionMode.values()).map(e -> (Component) Utils.localize(e.getDescriptionId())).toList());
 		smartModuleHoverChecker = new TextHoverChecker(topPos + 44, topPos + 60, leftPos + 174, leftPos + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint"));
 
-		for (int i = 0; i < 30; i++) {
-			int x = new Random().nextInt(2);
-			TranslatableComponent name = switch (x) {
-				case 0 -> Utils.localize(Blocks.BOOKSHELF.getDescriptionId());
-				case 1 -> Utils.localize(Blocks.PACKED_ICE.getDescriptionId());
-				default -> null;
-			};
+		for (ChangeEntry entry : be.getEntries()) {
+			String stateString;
+
+			if (entry.state().getProperties().size() > 0)
+				stateString = "[" + entry.state().toString().split("\\[")[1].replace(",", ", ");
+			else
+				stateString = "[]";
+
 			List<TextComponent> list = List.of(
 			//@formatter:off
 				entry.player(),
 				entry.uuid(),
 				dateFormat.format(new Date(entry.timestamp())),
-				DetectionMode.values()[x],
+				entry.action(),
 				Utils.getFormattedCoordinates(entry.pos()).getString(),
-				"[" + entry.state().toString().split("\\[")[1].replace(",", ", ")
+				stateString
 			//@formatter:on
 			).stream().map(Object::toString).map(TextComponent::new).collect(Collectors.toList());
 
-			changeEntryList.addEntry(addWidget(new ModeSavingCollapsileTextList(0, 0, 154, name, list, b -> changeEntryList.setOpen((ModeSavingCollapsileTextList) b), false, changeEntryList::isHovered, DetectionMode.values()[x])));
+			changeEntryList.addEntry(addWidget(new ModeSavingCollapsileTextList(0, 0, 154, Utils.localize(entry.state().getBlock().getDescriptionId()), list, b -> changeEntryList.setOpen((ModeSavingCollapsileTextList) b), false, changeEntryList::isHovered, entry.action())));
 		}
 	}
 

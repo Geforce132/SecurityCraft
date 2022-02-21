@@ -61,6 +61,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 		entries.add(new ChangeEntry(player.getDisplayName().getString(), player.getUUID(), System.currentTimeMillis(), action, pos, state));
 		setChanged();
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
 	@Override
