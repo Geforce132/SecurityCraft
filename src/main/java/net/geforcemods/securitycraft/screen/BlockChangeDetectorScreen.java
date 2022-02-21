@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
+import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -49,6 +52,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[2];
 	private TextHoverChecker smartModuleHoverChecker;
 	private ModeButton modeButton;
+	private DetectionMode currentMode;
 
 	public BlockChangeDetectorScreen(GenericBEMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
@@ -68,26 +72,37 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 		}));
 		ChangeEntry entry = new ChangeEntry(minecraft.player.getName().getString(), minecraft.player.getUUID(), System.currentTimeMillis(), DetectionMode.BREAK, be.getBlockPos(), Blocks.ANDESITE_WALL.defaultBlockState());
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
-		List<? extends Component> list = List.of(
-		//@formatter:off
-				entry.player(),
-				entry.uuid(),
-				dateFormat.format(new Date(entry.timestamp())),
-				entry.action(),
-				Utils.getFormattedCoordinates(entry.pos()).getString(),
-				"[" + entry.state().toString().split("\\[")[1].replace(",", ", ")
-				//@formatter:on
-		).stream().map(Object::toString).map(TextComponent::new).toList();
-
 		clearButton.active = be.getOwner().isOwner(minecraft.player);
 		hoverCheckers[0] = new TextHoverChecker(clearButton, CLEAR);
 		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 160, 150, topPos + 20, leftPos + 8));
-		addRenderableWidget(modeButton = new ModeButton(leftPos + 173, topPos + 19, 20, 20, be.getMode().ordinal(), DetectionMode.values().length));
+		currentMode = be.getMode();
+		addRenderableWidget(modeButton = new ModeButton(leftPos + 173, topPos + 19, 20, 20, currentMode.ordinal(), DetectionMode.values().length, b -> {
+			currentMode = DetectionMode.values()[((ModeButton) b).getCurrentIndex()];
+			changeEntryList.updateFilteredEntries();
+		}));
 		hoverCheckers[1] = new TextHoverChecker(modeButton, Arrays.stream(DetectionMode.values()).map(e -> (Component) Utils.localize(e.getDescriptionId())).toList());
 		smartModuleHoverChecker = new TextHoverChecker(topPos + 44, topPos + 60, leftPos + 174, leftPos + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint"));
 
-		for (int i = 0; i < 30; i++)
-			changeEntryList.addEntry(addWidget(new CollapsibleTextList(0, 0, 154, Utils.localize(Blocks.EXPOSED_CUT_COPPER_STAIRS.getDescriptionId()), list, b -> changeEntryList.setOpen((CollapsibleTextList) b), false, changeEntryList::isHovered)));
+		for (int i = 0; i < 30; i++) {
+			int x = new Random().nextInt(2);
+			TranslatableComponent name = switch (x) {
+				case 0 -> Utils.localize(Blocks.BOOKSHELF.getDescriptionId());
+				case 1 -> Utils.localize(Blocks.PACKED_ICE.getDescriptionId());
+				default -> null;
+			};
+			List<TextComponent> list = List.of(
+			//@formatter:off
+				entry.player(),
+				entry.uuid(),
+				dateFormat.format(new Date(entry.timestamp())),
+				DetectionMode.values()[x],
+				Utils.getFormattedCoordinates(entry.pos()).getString(),
+				"[" + entry.state().toString().split("\\[")[1].replace(",", ", ")
+			//@formatter:on
+			).stream().map(Object::toString).map(TextComponent::new).collect(Collectors.toList());
+
+			changeEntryList.addEntry(addWidget(new ModeSavingCollapsileTextList(0, 0, 154, name, list, b -> changeEntryList.setOpen((ModeSavingCollapsileTextList) b), false, changeEntryList::isHovered, DetectionMode.values()[x])));
+		}
 	}
 
 	@Override
@@ -152,8 +167,9 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 
 	class ChangeEntryList extends ScrollPanel {
 		private final int slotHeight = 12;
-		private List<CollapsibleTextList> entries = new ArrayList<>();
-		private CollapsibleTextList currentlyOpen = null;
+		private List<ModeSavingCollapsileTextList> allEntries = new ArrayList<>();
+		private List<ModeSavingCollapsileTextList> modeFilteredEntries = new ArrayList<>();
+		private ModeSavingCollapsileTextList currentlyOpen = null;
 		private boolean recalculateContentHeight = false;
 		private int contentHeight = 0;
 
@@ -164,7 +180,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 		@Override
 		protected int getContentHeight() {
 			if (recalculateContentHeight) {
-				int height = entries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getHeight(), (identity, accumulated) -> identity + accumulated);
+				int height = modeFilteredEntries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getHeight(), (identity, accumulated) -> identity + accumulated);
 
 				if (height < bottom - top - 8)
 					height = bottom - top - 8;
@@ -182,37 +198,40 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 
 			int height = 0;
 
-			for (int i = 0; i < entries.size(); i++) {
-				CollapsibleTextList entry = entries.get(i);
+			for (int i = 0; i < modeFilteredEntries.size(); i++) {
+				ModeSavingCollapsileTextList entry = modeFilteredEntries.get(i);
 
 				entry.renderLongMessageTooltip(pose);
-				entry.y = entry.getInitialY() - (int) scrollDistance + height;
+				entry.y = top + height - (int) scrollDistance;
 				entry.visible = entry.y + entry.getHeight() > top && entry.y < bottom;
-
-				if (entry.isOpen())
-					height += entry.getHeight() - slotHeight;
+				height += entry.getHeight();
 			}
 
-			applyScrollLimits();
+			if (getContentHeight() > this.height)
+				applyScrollLimits();
 		}
 
 		@Override
 		protected void drawPanel(PoseStack pose, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
-			for (int i = 0; i < entries.size(); i++) {
-				entries.get(i).render(pose, mouseX, mouseY, 0.0F);
+			for (int i = 0; i < modeFilteredEntries.size(); i++) {
+				modeFilteredEntries.get(i).render(pose, mouseX, mouseY, 0.0F);
 			}
 		}
 
-		public void addEntry(CollapsibleTextList entry) {
+		public void addEntry(ModeSavingCollapsileTextList entry) {
 			entry.setWidth(154);
 			entry.setHeight(slotHeight);
 			entry.x = left;
-			entry.setY(top + slotHeight * entries.size());
-			entries.add(entry);
-			recalculateContentHeight = true;
+			entry.setY(top + slotHeight * allEntries.size());
+			allEntries.add(entry);
+
+			if (currentMode == DetectionMode.BOTH || currentMode == entry.getMode()) {
+				modeFilteredEntries.add(entry);
+				recalculateContentHeight();
+			}
 		}
 
-		public void setOpen(CollapsibleTextList newOpenedTextList) {
+		public void setOpen(ModeSavingCollapsileTextList newOpenedTextList) {
 			if (currentlyOpen == null)
 				currentlyOpen = newOpenedTextList;
 			else {
@@ -225,9 +244,9 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 			}
 
 			if (currentlyOpen != null)
-				scrollDistance = slotHeight * entries.indexOf(currentlyOpen);
+				scrollDistance = slotHeight * modeFilteredEntries.indexOf(currentlyOpen);
 
-			recalculateContentHeight = true;
+			recalculateContentHeight();
 		}
 
 		public boolean isHovered(int mouseX, int mouseY) {
@@ -247,6 +266,16 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 				scrollDistance = maxScroll;
 		}
 
+		public void updateFilteredEntries() {
+			modeFilteredEntries = new ArrayList<>();
+			modeFilteredEntries.addAll(allEntries.stream().filter(e -> currentMode == DetectionMode.BOTH || currentMode == e.getMode()).toList());
+			recalculateContentHeight();
+		}
+
+		public void recalculateContentHeight() {
+			recalculateContentHeight = true;
+		}
+
 		@Override
 		public NarrationPriority narrationPriority() {
 			return NarrationPriority.NONE;
@@ -262,8 +291,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 		private final int toggleCount;
 		private int currentIndex = 0;
 
-		public ModeButton(int xPos, int yPos, int width, int height, int initialIndex, int toggleCount) {
-			super(xPos, yPos, width, height, TextComponent.EMPTY, b -> {});
+		public ModeButton(int xPos, int yPos, int width, int height, int initialIndex, int toggleCount, OnPress onPress) {
+			super(xPos, yPos, width, height, TextComponent.EMPTY, onPress);
 			this.toggleCount = toggleCount;
 			currentIndex = initialIndex;
 		}
@@ -307,6 +336,20 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 		@Override
 		public void setCurrentIndex(int newIndex) {
 			currentIndex = Math.floorMod(newIndex, toggleCount);
+		}
+	}
+
+	class ModeSavingCollapsileTextList extends CollapsibleTextList {
+		private final DetectionMode mode;
+
+		public ModeSavingCollapsileTextList(int xPos, int yPos, int width, Component displayString, List<? extends Component> textLines, OnPress onPress, boolean shouldRenderLongMessageTooltip, BiPredicate<Integer, Integer> extraHoverCheck, DetectionMode mode) {
+			super(xPos, yPos, width, displayString, textLines, onPress, shouldRenderLongMessageTooltip, extraHoverCheck);
+
+			this.mode = mode;
+		}
+
+		public DetectionMode getMode() {
+			return mode;
 		}
 	}
 }
