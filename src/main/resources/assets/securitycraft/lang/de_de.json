@@ -780,7 +780,7 @@
 	"gui.securitycraft:block_change_detector.mode.break": "Zerbrechen",
 	"gui.securitycraft:block_change_detector.mode.place": "Platzieren",
 	"gui.securitycraft:block_change_detector.mode.both": "Zerbrechen & Platzieren",
-	
+	"gui.securitycraft:block_change_detector.smart_module_hint": "Installiere ein schlaues Modul, damit der Detektor einen bestimmten Block detektieren kann!",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
 	"messages.securitycraft:retinalScanner.hello": "Hallo %s.",

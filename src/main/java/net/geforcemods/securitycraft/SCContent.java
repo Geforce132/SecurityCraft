@@ -135,6 +135,7 @@ import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.fluids.FakeLavaFluid;
 import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
+import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
@@ -2258,7 +2259,7 @@ public class SCContent {
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
 	public static MenuType<BlockPocketManagerMenu> mTypeBlockPocketManager;
 	@ObjectHolder(SecurityCraft.MODID + ":block_change_detector")
-	public static MenuType<GenericBEMenu> mTypeBlockChangeDetector;
+	public static MenuType<BlockChangeDetectorMenu> mTypeBlockChangeDetector;
 
 	private static final Block.Properties prop() {
 		return prop(Material.STONE);

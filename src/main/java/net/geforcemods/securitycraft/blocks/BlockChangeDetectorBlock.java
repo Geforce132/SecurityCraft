@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -41,6 +42,19 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 			NetworkHooks.openGui((ServerPlayer) player, be, pos);
 
 		return InteractionResult.SUCCESS;
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (state.getBlock() != newState.getBlock()) {
+			if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be) {
+				ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), be.getStackInSlot(36));
+
+				LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(item));
+			}
+		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

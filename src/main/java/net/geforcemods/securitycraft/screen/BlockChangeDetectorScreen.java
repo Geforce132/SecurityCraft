@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntit
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.inventory.GenericBEMenu;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.ClearChangeDetectorServer;
 import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.screen.components.CollapsibleTextList;
@@ -46,6 +47,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 	private BlockChangeDetectorBlockEntity be;
 	private ChangeEntryList changeEntryList;
 	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[2];
+	private TextHoverChecker smartModuleHoverChecker;
 	private ModeButton modeButton;
 
 	public BlockChangeDetectorScreen(GenericBEMenu menu, Inventory inv, Component title) {
@@ -82,6 +84,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 160, 150, topPos + 20, leftPos + 8));
 		addRenderableWidget(modeButton = new ModeButton(leftPos + 173, topPos + 19, 20, 20, be.getMode().ordinal(), DetectionMode.values().length));
 		hoverCheckers[1] = new TextHoverChecker(modeButton, Arrays.stream(DetectionMode.values()).map(e -> (Component) Utils.localize(e.getDescriptionId())).toList());
+		smartModuleHoverChecker = new TextHoverChecker(topPos + 44, topPos + 60, leftPos + 174, leftPos + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint"));
 
 		for (int i = 0; i < 30; i++)
 			changeEntryList.addEntry(addWidget(new CollapsibleTextList(0, 0, 154, Utils.localize(Blocks.EXPOSED_CUT_COPPER_STAIRS.getDescriptionId()), list, b -> changeEntryList.setOpen((CollapsibleTextList) b), false, changeEntryList::isHovered)));
@@ -95,6 +98,9 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY))
 				renderTooltip(pose, hoverChecker.getName(), mouseX - leftPos, mouseY - topPos);
 		}
+
+		if (smartModuleHoverChecker != null && smartModuleHoverChecker.checkHover(mouseX, mouseY) && !be.hasModule(ModuleType.SMART))
+			renderComponentTooltip(pose, smartModuleHoverChecker.getLines(), mouseX - leftPos, mouseY - topPos);
 	}
 
 	@Override
