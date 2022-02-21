@@ -84,7 +84,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 		hoverCheckers[1] = new TextHoverChecker(modeButton, Arrays.stream(DetectionMode.values()).map(e -> (Component) Utils.localize(e.getDescriptionId())).toList());
 
 		for (int i = 0; i < 30; i++)
-			changeEntryList.addEntry(addWidget(new CollapsibleTextList(0, 0, 154, Utils.localize(Blocks.EXPOSED_CUT_COPPER_STAIRS.getDescriptionId()), list, b -> changeEntryList.setOpen((CollapsibleTextList) b), false)));
+			changeEntryList.addEntry(addWidget(new CollapsibleTextList(0, 0, 154, Utils.localize(Blocks.EXPOSED_CUT_COPPER_STAIRS.getDescriptionId()), list, b -> changeEntryList.setOpen((CollapsibleTextList) b), false, changeEntryList::isHovered)));
 	}
 
 	@Override
@@ -148,8 +148,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 		private final int slotHeight = 12;
 		private List<CollapsibleTextList> entries = new ArrayList<>();
 		private CollapsibleTextList currentlyOpen = null;
-		private boolean repositionEntries = false, recalculateContentHeight = false;
-		private float previousScrollDistance = 0.0F;
+		private boolean recalculateContentHeight = false;
 		private int contentHeight = 0;
 
 		public ChangeEntryList(Minecraft client, int width, int height, int top, int left) {
@@ -175,25 +174,22 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 			super.render(pose, mouseX, mouseY, partialTicks);
 
-			if (repositionEntries || scrollDistance != previousScrollDistance) {
-				int height = 0;
+			int height = 0;
 
-				previousScrollDistance = scrollDistance;
-				repositionEntries = false;
+			for (int i = 0; i < entries.size(); i++) {
+				CollapsibleTextList entry = entries.get(i);
 
-				for (int i = 0; i < entries.size(); i++) {
-					CollapsibleTextList entry = entries.get(i);
+				entry.renderLongMessageTooltip(pose);
+				entry.y = entry.getInitialY() - (int) scrollDistance + height;
+				//TODO: this makes the text go gray
+				entry.active = entry.y > top - slotHeight; //if the text list is open, disable the button when it's above the scroll list so players can't click it
+				entry.visible = entry.y + entry.getHeight() > top && entry.y < bottom;
 
-					entry.renderLongMessageTooltip(pose);
-					entry.y = entry.getInitialY() - (int) scrollDistance + height;
-					//TODO: this makes the text go gray
-					entry.active = entry.y > top - slotHeight; //if the text list is open, disable the button when it's above the scroll list so players can't click it
-					entry.visible = entry.y + entry.getHeight() > top && entry.y < bottom;
-
-					if (entry.isOpen())
-						height += entry.getHeight() - slotHeight;
-				}
+				if (entry.isOpen())
+					height += entry.getHeight() - slotHeight;
 			}
+
+			applyScrollLimits();
 		}
 
 		@Override
@@ -224,13 +220,27 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 				}
 			}
 
-			if (currentlyOpen != null) {
-				previousScrollDistance = scrollDistance;
+			if (currentlyOpen != null)
 				scrollDistance = slotHeight * entries.indexOf(currentlyOpen);
-			}
 
-			repositionEntries = true;
 			recalculateContentHeight = true;
+		}
+
+		public boolean isHovered(int mouseX, int mouseY) {
+			return mouseX >= left && mouseY >= top && mouseX < right && mouseY < bottom;
+		}
+
+		private void applyScrollLimits() {
+			int maxScroll = getContentHeight() - (height - border);
+
+			if (maxScroll < 0)
+				maxScroll /= 2;
+
+			if (scrollDistance < 0.0F)
+				scrollDistance = 0.0F;
+
+			if (scrollDistance > maxScroll)
+				scrollDistance = maxScroll;
 		}
 
 		@Override

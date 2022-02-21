@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen.components;
 
 import java.util.List;
+import java.util.function.BiPredicate;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -24,11 +25,12 @@ public class CollapsibleTextList extends Button {
 	private final List<? extends Component> textLines;
 	private final List<Long> splitTextLineCount;
 	private final boolean shouldRenderLongMessageTooltip;
+	private final BiPredicate<Integer, Integer> extraHoverCheck;
 	private boolean open = true;
 	private boolean isMessageTooLong = false;
 	private int initialY = -1;
 
-	public CollapsibleTextList(int xPos, int yPos, int width, Component displayString, List<? extends Component> textLines, OnPress onPress, boolean shouldRenderLongMessageTooltip) {
+	public CollapsibleTextList(int xPos, int yPos, int width, Component displayString, List<? extends Component> textLines, OnPress onPress, boolean shouldRenderLongMessageTooltip, BiPredicate<Integer, Integer> extraHoverCheck) {
 		super(xPos, yPos, width, 12, displayString, onPress);
 		this.shouldRenderLongMessageTooltip = shouldRenderLongMessageTooltip;
 		originalDisplayString = displayString;
@@ -53,10 +55,13 @@ public class CollapsibleTextList extends Button {
 		this.textLines = textLines;
 		this.splitTextLineCount = splitTextLineCountBuilder.build();
 		heightOpen = height + amountOfLines * font.lineHeight + textLines.size() * 3;
+		this.extraHoverCheck = extraHoverCheck;
 	}
 
 	@Override
 	public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+		isHovered &= extraHoverCheck.test(mouseX, mouseY);
+
 		Font font = Minecraft.getInstance().font;
 		int v = getYImage(isHoveredOrFocused());
 		int heightOffset = (height - 8) / 2;
@@ -111,6 +116,16 @@ public class CollapsibleTextList extends Button {
 	public void onPress() {
 		switchOpenStatus();
 		super.onPress();
+	}
+
+	@Override
+	protected boolean clicked(double mouseX, double mouseY) {
+		return isMouseOver(mouseX, mouseY);
+	}
+
+	@Override
+	public boolean isMouseOver(double mouseX, double mouseY) {
+		return extraHoverCheck.test((int) mouseX, (int) mouseY) && super.isMouseOver(mouseX, mouseY);
 	}
 
 	public void setY(int y) {
