@@ -111,14 +111,19 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 	@Override
 	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		font.draw(pose, BLOCK_NAME, imageWidth / 2 - font.width(BLOCK_NAME) / 2, 6, 0x404040);
+	}
+
+	@Override
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
+		super.render(pose, mouseX, mouseY, partialTick);
 
 		for (TextHoverChecker hoverChecker : hoverCheckers) {
 			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY))
-				renderTooltip(pose, hoverChecker.getName(), mouseX - leftPos, mouseY - topPos);
+				renderTooltip(pose, hoverChecker.getName(), mouseX, mouseY);
 		}
 
 		if (smartModuleHoverChecker != null && smartModuleHoverChecker.checkHover(mouseX, mouseY) && !be.hasModule(ModuleType.SMART))
-			renderComponentTooltip(pose, smartModuleHoverChecker.getLines(), mouseX - leftPos, mouseY - topPos);
+			renderComponentTooltip(pose, smartModuleHoverChecker.getLines(), mouseX, mouseY);
 	}
 
 	@Override
