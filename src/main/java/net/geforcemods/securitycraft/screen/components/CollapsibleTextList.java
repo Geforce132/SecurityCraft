@@ -5,6 +5,7 @@ import java.util.function.BiPredicate;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -53,7 +54,7 @@ public class CollapsibleTextList extends Button {
 		}
 
 		this.textLines = textLines;
-		this.splitTextLineCount = splitTextLineCountBuilder.build();
+		splitTextLineCount = splitTextLineCountBuilder.build();
 		heightOpen = height + amountOfLines * font.lineHeight + textLines.size() * 3;
 		this.extraHoverCheck = extraHoverCheck;
 	}
@@ -71,11 +72,17 @@ public class CollapsibleTextList extends Button {
 
 		if (open) {
 			int renderedLines = 0;
+			Matrix4f m4f = pose.last().pose();
 
-			GuiUtils.drawGradientRect(pose.last().pose(), 0, x, y + height, x + width, y + heightOpen, 0xC0101010, 0xD0101010);
+			GuiUtils.drawGradientRect(m4f, 0, x, y + height, x + width, y + heightOpen, 0xC0101010, 0xD0101010);
 
 			for (int i = 0; i < textLines.size(); i++) {
-				font.drawWordWrap(textLines.get(i), x + 2, y + 2 + height + renderedLines * font.lineHeight + (i * 12), textCutoff, getFGColor());
+				int textY = y + 2 + height + renderedLines * font.lineHeight + (i * 12);
+
+				if (i > 0)
+					GuiUtils.drawGradientRect(m4f, getBlitOffset(), x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0);
+
+				font.drawWordWrap(textLines.get(i), x + 2, textY, textCutoff, getFGColor());
 				renderedLines += splitTextLineCount.get(i) - 1;
 			}
 		}
