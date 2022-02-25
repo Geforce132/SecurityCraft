@@ -97,10 +97,10 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 			//@formatter:off
 				entry.player(),
 				entry.uuid(),
-				dateFormat.format(new Date(entry.timestamp())),
 				entry.action(),
 				Utils.getFormattedCoordinates(entry.pos()).getString(),
-				stateString
+				stateString,
+				dateFormat.format(new Date(entry.timestamp()))
 			//@formatter:on
 			).stream().map(Object::toString).filter(s -> !s.isEmpty()).map(TextComponent::new).collect(Collectors.toList());
 
