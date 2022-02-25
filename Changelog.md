@@ -30,6 +30,7 @@
 - Fix: The Redstone Ore Mine does not glow when activated
 - Fix: The keycode setup screen's title contains the word "setup" twice
 - Fix: Removing a laser field with the Universal Block Remover does not destroy adjacent laser fields
+- Fix: Crash when placing a Sonic Security System inside of any replaceable block
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------

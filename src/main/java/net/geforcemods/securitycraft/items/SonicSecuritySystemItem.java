@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -92,13 +93,15 @@ public class SonicSecuritySystemItem extends BlockItem {
 	}
 
 	@Override
-	public ActionResultType useOn(ItemUseContext ctx) {
-		ActionResultType returnValue = super.useOn(ctx);
+	protected boolean updateCustomBlockEntityTag(BlockPos pos, World level, PlayerEntity player, ItemStack stack, BlockState state) {
+		TileEntity be = level.getBlockEntity(pos);
 
-		if (returnValue.consumesAction())
-			((SonicSecuritySystemBlockEntity) ctx.getLevel().getBlockEntity(ctx.getClickedPos().relative(ctx.getClickedFace()))).transferPositionsFromItem(ctx.getItemInHand().getTag());
+		if (be instanceof SonicSecuritySystemBlockEntity) {
+			if (((SonicSecuritySystemBlockEntity) be).transferPositionsFromItem(stack.getOrCreateTag()))
+				return true;
+		}
 
-		return returnValue;
+		return super.updateCustomBlockEntityTag(pos, level, player, stack, state);
 	}
 
 	@Override
