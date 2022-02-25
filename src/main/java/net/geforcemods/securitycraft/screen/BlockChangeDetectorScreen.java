@@ -91,7 +91,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 			if (entry.state().getProperties().size() > 0)
 				stateString = "[" + entry.state().toString().split("\\[")[1].replace(",", ", ");
 			else
-				stateString = "[]";
+				stateString = "";
 
 			List<TextComponent> list = List.of(
 			//@formatter:off
@@ -102,7 +102,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<GenericBE
 				Utils.getFormattedCoordinates(entry.pos()).getString(),
 				stateString
 			//@formatter:on
-			).stream().map(Object::toString).map(TextComponent::new).collect(Collectors.toList());
+			).stream().map(Object::toString).filter(s -> !s.isEmpty()).map(TextComponent::new).collect(Collectors.toList());
 
 			changeEntryList.addEntry(addWidget(new ModeSavingCollapsileTextList(0, 0, 154, Utils.localize(entry.state().getBlock().getDescriptionId()), list, b -> changeEntryList.setOpen((ModeSavingCollapsileTextList) b), false, changeEntryList::isHovered, entry.action())));
 		}
