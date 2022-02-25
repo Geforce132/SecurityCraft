@@ -28,6 +28,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class SonicSecuritySystemItem extends BlockItem {
@@ -88,13 +89,13 @@ public class SonicSecuritySystemItem extends BlockItem {
 	}
 
 	@Override
-	public InteractionResult useOn(UseOnContext ctx) {
-		InteractionResult returnValue = super.useOn(ctx);
+	protected boolean updateCustomBlockEntityTag(BlockPos pos, Level level, Player player, ItemStack stack, BlockState state) {
+		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss) {
+			if (sss.transferPositionsFromItem(stack.getOrCreateTag()))
+				return true;
+		}
 
-		if (returnValue.consumesAction())
-			((SonicSecuritySystemBlockEntity) ctx.getLevel().getBlockEntity(ctx.getClickedPos().relative(ctx.getClickedFace()))).transferPositionsFromItem(ctx.getItemInHand().getTag());
-
-		return returnValue;
+		return super.updateCustomBlockEntityTag(pos, level, player, stack, state);
 	}
 
 	@Override
