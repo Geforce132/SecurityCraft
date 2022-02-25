@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -69,6 +70,16 @@ public class BlockSonicSecuritySystem extends BlockOwnable {
 		BlockPos downPos = pos.down();
 
 		return world.getBlockState(downPos).isSideSolid(world, downPos, EnumFacing.UP);
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(world, pos, state, placer, stack);
+
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof TileEntitySonicSecuritySystem)
+			((TileEntitySonicSecuritySystem) te).transferPositionsFromItem(stack.getTagCompound());
 	}
 
 	@Override
