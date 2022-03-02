@@ -48,8 +48,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegistryObject;
 
 @WailaPlugin(SecurityCraft.MODID)
@@ -67,7 +69,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	private static final MutableComponent SPEED_MODULE = new TextComponent("- ").append(new TranslatableComponent(ModuleType.SPEED.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
 
 	static {
-		MinecraftForge.EVENT_BUS.addListener(WailaDataProvider::onWailaRender);
+		if (FMLEnvironment.dist == Dist.CLIENT)
+			MinecraftForge.EVENT_BUS.addListener(WailaDataProvider::onWailaRender);
 	}
 
 	@Override

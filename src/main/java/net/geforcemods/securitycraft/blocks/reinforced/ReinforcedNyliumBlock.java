@@ -35,13 +35,13 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements Boneme
 		ChunkGenerator chunkGenerator = level.getChunkSource().getGenerator();
 
 		if (state.is(SCContent.REINFORCED_CRIMSON_NYLIUM.get()))
-			NetherFeatures.CRIMSON_FOREST_VEGETATION_BONEMEAL.place(level, chunkGenerator, random, upperPos);
+			NetherFeatures.CRIMSON_FOREST_VEGETATION_BONEMEAL.value().place(level, chunkGenerator, random, upperPos);
 		else if (state.is(SCContent.REINFORCED_WARPED_NYLIUM.get())) {
-			NetherFeatures.WARPED_FOREST_VEGETATION_BONEMEAL.place(level, chunkGenerator, random, upperPos);
-			NetherFeatures.NETHER_SPROUTS_BONEMEAL.place(level, chunkGenerator, random, upperPos);
+			NetherFeatures.WARPED_FOREST_VEGETATION_BONEMEAL.value().place(level, chunkGenerator, random, upperPos);
+			NetherFeatures.NETHER_SPROUTS_BONEMEAL.value().place(level, chunkGenerator, random, upperPos);
 
 			if (random.nextInt(8) == 0)
-				NetherFeatures.TWISTING_VINES_BONEMEAL.place(level, chunkGenerator, random, upperPos);
+				NetherFeatures.TWISTING_VINES_BONEMEAL.value().place(level, chunkGenerator, random, upperPos);
 		}
 	}
 }

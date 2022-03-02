@@ -10,6 +10,8 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -21,7 +23,7 @@ import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -1196,7 +1198,7 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addColoredWoolRecipe(Consumer<FinishedRecipe> consumer, Tag<Item> dye, ItemLike result) {
+	protected final void addColoredWoolRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> dye, ItemLike result) {
 		//@formatter:off
 		ShapelessRecipeBuilder.shapeless(result)
 		.group("securitycraft:reinforced_wool")
@@ -1219,7 +1221,7 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addKeycardRecipe(Consumer<FinishedRecipe> consumer, Tag<Item> specialIngredient, ItemLike result) {
+	protected final void addKeycardRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> specialIngredient, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(result)
 		.group("securitycraft:keycards")
@@ -1256,7 +1258,7 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addModuleRecipe(Consumer<FinishedRecipe> consumer, Tag<Item> specialIngredient, ItemLike result) {
+	protected final void addModuleRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> specialIngredient, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(result)
 		.group("securitycraft:modules")
@@ -1282,7 +1284,7 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addPlanksRecipe(Consumer<FinishedRecipe> consumer, Tag<Item> log, ItemLike result) {
+	protected final void addPlanksRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> log, ItemLike result) {
 		//@formatter:off
 		ShapelessRecipeBuilder.shapeless(result, 4)
 		.group("securitycraft:reinforced_planks")
@@ -1332,7 +1334,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addSimpleCookingRecipe(consumer, input, output, 0.1F, 200);
 	}
 
-	protected final void addSimpleCookingRecipe(Consumer<FinishedRecipe> consumer, Tag<Item> input, ItemLike output) {
+	protected final void addSimpleCookingRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> input, ItemLike output) {
 		addSimpleCookingRecipe(consumer, input, output, 0.1F, 200);
 	}
 
@@ -1344,7 +1346,7 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addSimpleCookingRecipe(Consumer<FinishedRecipe> consumer, Tag<Item> input, ItemLike output, float xp, int time) {
+	protected final void addSimpleCookingRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> input, ItemLike output, float xp, int time) {
 		//@formatter:off
 		SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), output, xp, time)
 		.unlockedBy("has_item", has(input))
@@ -1363,7 +1365,7 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addStainedGlassRecipe(Consumer<FinishedRecipe> consumer, Tag<Item> dye, ItemLike result) {
+	protected final void addStainedGlassRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> dye, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(result, 8)
 		.group("securitycraft:reinforced_glass")
@@ -1377,7 +1379,7 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addStainedGlassPaneRecipes(Consumer<FinishedRecipe> consumer, Tag<Item> dye, ItemLike stainedGlass, ItemLike result) {
+	protected final void addStainedGlassPaneRecipes(Consumer<FinishedRecipe> consumer, TagKey<Item> dye, ItemLike stainedGlass, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(result, 8)
 		.group("securitycraft:reinforced_glass_panes")
@@ -1398,7 +1400,7 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addStainedTerracottaRecipe(Consumer<FinishedRecipe> consumer, Tag<Item> dye, ItemLike result) {
+	protected final void addStainedTerracottaRecipe(Consumer<FinishedRecipe> consumer, TagKey<Item> dye, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(result, 8)
 		.group("securitycraft:reinforced_terracotta")
@@ -1460,6 +1462,10 @@ public class RecipeGenerator extends RecipeProvider {
 	@Override
 	public String getName() {
 		return "SecurityCraft Recipes";
+	}
+
+	private static InventoryChangeTrigger.TriggerInstance has(TagKey<Item> tag) {
+		return inventoryTrigger(ItemPredicate.Builder.item().of(tag).build());
 	}
 
 	//helper because IngredientNBT's constructor is protected

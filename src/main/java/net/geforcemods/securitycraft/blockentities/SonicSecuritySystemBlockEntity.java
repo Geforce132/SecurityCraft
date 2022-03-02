@@ -268,9 +268,9 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 *
 	 * @param itemTag The CompoundTag of the Sonic Security System item to transfer over
 	 */
-	public void transferPositionsFromItem(CompoundTag itemTag) {
+	public boolean transferPositionsFromItem(CompoundTag itemTag) {
 		if (itemTag == null || !itemTag.contains("LinkedBlocks"))
-			return;
+			return false;
 
 		ListTag blocks = itemTag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
 
@@ -284,6 +284,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		}
 
 		sync();
+		return true;
 	}
 
 	/**

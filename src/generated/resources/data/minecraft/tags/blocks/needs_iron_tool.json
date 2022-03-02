@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:gold_mine",
+    "securitycraft:deepslate_gold_mine",
+    "securitycraft:redstone_mine",
+    "securitycraft:deepslate_redstone_mine",
+    "securitycraft:emerald_mine",
+    "securitycraft:deepslate_emerald_mine",
+    "securitycraft:diamond_mine",
+    "securitycraft:deepslate_diamond_mine"
+  ]
+}
