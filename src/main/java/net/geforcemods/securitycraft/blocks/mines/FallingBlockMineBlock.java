@@ -37,7 +37,7 @@ public class FallingBlockMineBlock extends BaseFullMineBlock implements Fallable
 		if (FallingBlock.isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinBuildHeight()) {
 			BlockEntity be = level.getBlockEntity(pos);
 
-			FallingBlockEntity entity = new FallingBlockEntity(level, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, level.getBlockState(pos));
+			FallingBlockEntity entity = FallingBlockEntity.fall(level, pos, level.getBlockState(pos));
 			entity.blockData = be.saveWithoutMetadata();
 			level.addFreshEntity(entity);
 		}
