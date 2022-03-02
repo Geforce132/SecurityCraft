@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,8 +18,6 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public double cameraRotation = 0.0D;
 	public boolean addToRotation = true;
 	public boolean down = false, downSet = false;
-	public float lastPitch = Float.MAX_VALUE;
-	public float lastYaw = Float.MAX_VALUE;
 	private int playersViewing = 0;
 	private DoubleOption rotationSpeedOption = new DoubleOption(this::getBlockPos, "rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
@@ -51,20 +48,6 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 			cameraRotation -= rotationSpeedOption.get();
 		else
 			addToRotation = true;
-	}
-
-	@Override
-	public void saveAdditional(CompoundTag tag) {
-		tag.putFloat("LastPitch", lastPitch);
-		tag.putFloat("LastYaw", lastYaw);
-		super.saveAdditional(tag);
-	}
-
-	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
-		lastPitch = tag.getFloat("LastPitch");
-		lastYaw = tag.getFloat("LastYaw");
 	}
 
 	@Override

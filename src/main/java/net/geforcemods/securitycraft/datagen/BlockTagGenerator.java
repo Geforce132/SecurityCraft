@@ -11,7 +11,6 @@ import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -213,9 +212,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_POLISHED_DIORITE.get(),
 				SCContent.REINFORCED_POLISHED_GRANITE.get());
 
-		//forge tags
-		tag(Tags.Blocks.DIRT).addTag(SCTags.Blocks.REINFORCED_DIRT);
-
 		//minecraft tags
 		tag(BlockTags.BAMBOO_PLANTABLE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).add(SCContent.REINFORCED_GRAVEL.get(),
 				SCContent.REINFORCED_DIRT.get(),
@@ -273,12 +269,60 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.CHISELED_CRYSTAL_QUARTZ.get(),
 				SCContent.CRYSTAL_QUARTZ_PILLAR.get(),
 				SCContent.STAIRS_CRYSTAL_QUARTZ.get(),
-				SCContent.CRYSTAL_QUARTZ_SLAB.get());
+				SCContent.CRYSTAL_QUARTZ_SLAB.get(),
+				SCContent.STONE_MINE.get(),
+				SCContent.DEEPSLATE_MINE.get(),
+				SCContent.COBBLED_DEEPSLATE_MINE.get(),
+				SCContent.COBBLESTONE_MINE.get(),
+				SCContent.COAL_ORE_MINE.get(),
+				SCContent.DEEPSLATE_COAL_ORE_MINE.get(),
+				SCContent.IRON_ORE_MINE.get(),
+				SCContent.DEEPSLATE_IRON_ORE_MINE.get(),
+				SCContent.GOLD_ORE_MINE.get(),
+				SCContent.DEEPSLATE_GOLD_ORE_MINE.get(),
+				SCContent.COPPER_ORE_MINE.get(),
+				SCContent.DEEPSLATE_COPPER_ORE_MINE.get(),
+				SCContent.REDSTONE_ORE_MINE.get(),
+				SCContent.DEEPSLATE_REDSTONE_ORE_MINE.get(),
+				SCContent.EMERALD_ORE_MINE.get(),
+				SCContent.DEEPSLATE_EMERALD_ORE_MINE.get(),
+				SCContent.LAPIS_ORE_MINE.get(),
+				SCContent.DEEPSLATE_LAPIS_ORE_MINE.get(),
+				SCContent.DIAMOND_ORE_MINE.get(),
+				SCContent.DEEPSLATE_DIAMOND_ORE_MINE.get(),
+				SCContent.NETHER_GOLD_ORE_MINE.get(),
+				SCContent.QUARTZ_ORE_MINE.get(),
+				SCContent.ANCIENT_DEBRIS_MINE.get(),
+				SCContent.GILDED_BLACKSTONE_MINE.get(),
+				SCContent.FURNACE_MINE.get(),
+				SCContent.SMOKER_MINE.get(),
+				SCContent.BLAST_FURNACE_MINE.get());
+		tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
+				SCContent.DIRT_MINE.get(),
+				SCContent.SAND_MINE.get(),
+				SCContent.GRAVEL_MINE.get());
 		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(
 				SCContent.REINFORCED_MYCELIUM.get(),
 				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_CRIMSON_NYLIUM.get(),
 				SCContent.REINFORCED_WARPED_NYLIUM.get());
+		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(SCContent.ANCIENT_DEBRIS_MINE.get());
+		tag(BlockTags.NEEDS_IRON_TOOL).add(
+				SCContent.GOLD_ORE_MINE.get(),
+				SCContent.DEEPSLATE_GOLD_ORE_MINE.get(),
+				SCContent.REDSTONE_ORE_MINE.get(),
+				SCContent.DEEPSLATE_REDSTONE_ORE_MINE.get(),
+				SCContent.EMERALD_ORE_MINE.get(),
+				SCContent.DEEPSLATE_EMERALD_ORE_MINE.get(),
+				SCContent.DIAMOND_ORE_MINE.get(),
+				SCContent.DEEPSLATE_DIAMOND_ORE_MINE.get());
+		tag(BlockTags.NEEDS_STONE_TOOL).add(
+				SCContent.IRON_ORE_MINE.get(),
+				SCContent.DEEPSLATE_IRON_ORE_MINE.get(),
+				SCContent.COPPER_ORE_MINE.get(),
+				SCContent.DEEPSLATE_COPPER_ORE_MINE.get(),
+				SCContent.LAPIS_ORE_MINE.get(),
+				SCContent.DEEPSLATE_LAPIS_ORE_MINE.get());
 		tag(BlockTags.NYLIUM).addTag(SCTags.Blocks.REINFORCED_NYLIUM);
 		tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).addTags(SCTags.Blocks.REINFORCED_WOOL);
 		tag(BlockTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get());

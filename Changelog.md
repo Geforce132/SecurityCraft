@@ -1,1 +1,36 @@
+--------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
+
+- New: Password-protected Smoker and Password-protected Blast Furnace
+- New: Smoker and Blast Furnace mines
+- New: The Disguise Module and Projector can now be set to display a specific state of a block (e.g. corner stairs), instead of a fixed one
+- Change: The Password-protected Furnace now has a new look
+- Change: The Cage Trap is now reusable
+- Change: The Admin Tool is now enabled by default. This does not affect existing config files
+- Fix: Cannot access the recipe book for the Password-protected Furnace
+- Fix: The Password-protected Furnace is not shown as a recipe catalyst for furnace recipes in JEI
+- Fix: Changing the owner of inventory scanners and doors does not change the owner of the other block/door half
+- Fix: Projecting disguisable blocks (those that support the disguise module) does not work
+- Fix: Crash when trying to place a door one block below the build height
+- Fix: Door item gets removed when trying to place a door outside the build height
+- Fix: Some blocks' settings/inventory doesn't properly save
+- Fix: Fake Water/Lava bucket fill sounds don't play
+- Fix: Disguising blocks using certain blocks with block entity renderers (like signs and banners) doesn't work
+- Fix: It's possible to jump over disguisable blocks that are disguised as fences or walls
+- Fix: Attempting to put more than one item into the Projector's slot swallows extra items
+- Fix: Sentries can target entities they cannot see
+- Fix: The Sentry's bounding box (F3+B) is not displayed correctly
+- Fix: The patron list in the SecurityCraft Manual is only capable of showing 33 patrons
+- Fix: Patron name tooltips in the SecurityCraft Manual can extend over the border of the Minecraft window
+- Fix: The Codebreaker does not work on keypad doors
+- Fix: The Mine Remote Access Tool does not work for mines placed at x=0, y=0, z=0
+- Fix: The Sentry Remote Access Tool does not work for sentries placed at y=0
+- Fix: The Portable Tune Player plays the saved tune slightly slower than the Sonic Security System
+- Fix: Navigating the SecurityCraft Manual via the tab key does not visibly select any button
+- Fix: Block mines do not drop themselves when mined
+- Fix: Block mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
+- Fix: The mine overlay on the Ancient Debris Mine item can be seen by other players when holding the item
+- Fix: Removing a laser field with the Universal Block Remover does not destroy adjacent laser fields
+- Fix: Crash when placing a Sonic Security System inside of any replaceable block
+- Misc.: More texture changes and file renames, resource packs may need to be updated
+
 --------------------------Changelog for v1.9.0.2-beta1 of SecurityCraft--------------------------

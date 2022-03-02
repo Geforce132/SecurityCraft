@@ -15,10 +15,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class SentryRenderer extends EntityRenderer<Sentry> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/sentry.png");
 	private final SentryModel model;
@@ -33,6 +30,7 @@ public class SentryRenderer extends EntityRenderer<Sentry> {
 	public void render(Sentry entity, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight) {
 		VertexConsumer builder = buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity)));
 
+		pose.pushPose();
 		pose.translate(0.0D, 1.5D, 0.0D);
 		pose.scale(-1, -1, 1); //rotate model rightside up
 		RenderSystem._setShaderTexture(0, getTextureLocation(entity));
@@ -40,6 +38,7 @@ public class SentryRenderer extends EntityRenderer<Sentry> {
 		pose.mulPose(Vector3f.YP.rotationDegrees(entity.getEntityData().get(Sentry.HEAD_ROTATION)));
 		pose.translate(0.0F, entity.getHeadYTranslation(), 0.0F);
 		model.renderToBuffer(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		pose.popPose();
 	}
 
 	@Override

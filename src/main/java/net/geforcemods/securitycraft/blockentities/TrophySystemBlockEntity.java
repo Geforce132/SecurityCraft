@@ -146,6 +146,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	public void setTarget(Projectile target) {
 		entityBeingTargeted = target;
+		setChanged();
 
 		if (!level.isClientSide)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new SetTrophySystemTarget(worldPosition, target.getId()));
@@ -169,6 +170,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	private void resetTarget() {
 		cooldown = getCooldownTime();
 		entityBeingTargeted = null;
+		setChanged();
 	}
 
 	/**
@@ -220,6 +222,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	public void setFilter(EntityType<?> projectileType, boolean allowed) {
 		if (projectileFilter.containsKey(projectileType)) {
 			projectileFilter.put(projectileType, allowed);
+			setChanged();
 
 			if (level.isClientSide)
 				SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncTrophySystem(worldPosition, projectileType, allowed));

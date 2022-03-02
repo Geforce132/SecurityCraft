@@ -54,6 +54,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 	public void setCooldown(int cooldown) {
 		this.cooldown = cooldown;
+		setChanged();
 	}
 
 	public boolean isPowered() {
@@ -62,6 +63,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 	public void setPowered(boolean isPowered) {
 		this.isPowered = isPowered;
+		setChanged();
 	}
 
 	@Override

@@ -86,7 +86,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID)
 public class SCEventHandler {
-	public static final Integer NOTE_DELAY = 10;
+	private static final Integer NOTE_DELAY = 9;
 	public static final Map<Player, MutablePair<Integer, Deque<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
 
 	@SubscribeEvent
@@ -170,8 +170,12 @@ public class SCEventHandler {
 		if (!stack.isEmpty() && item != SCContent.UNIVERSAL_BLOCK_REMOVER.get() && item != SCContent.UNIVERSAL_BLOCK_MODIFIER.get() && item != SCContent.UNIVERSAL_OWNER_CHANGER.get() && item != SCContent.SONIC_SECURITY_SYSTEM_ITEM.get()) {
 			if (!(item instanceof BlockItem)) {
 				Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
+				boolean isKeypadDoor = block == SCContent.KEYPAD_DOOR.get();
 
-				if (block == SCContent.KEYPAD_DOOR.get() || block == SCContent.REINFORCED_DOOR.get() || block == SCContent.REINFORCED_IRON_TRAPDOOR.get() || block == SCContent.SCANNER_DOOR.get())
+				if (item == SCContent.CODEBREAKER.get() && isKeypadDoor)
+					return;
+
+				if (isKeypadDoor || block == SCContent.REINFORCED_DOOR.get() || block == SCContent.REINFORCED_IRON_TRAPDOOR.get() || block == SCContent.SCANNER_DOOR.get())
 					event.setCanceled(true);
 			}
 		}

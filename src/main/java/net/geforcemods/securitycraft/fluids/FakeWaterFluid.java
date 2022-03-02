@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.fluids;
 
+import java.util.Optional;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -10,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -26,8 +28,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidAttributes;
 
 public abstract class FakeWaterFluid extends FlowingFluid {
@@ -47,6 +47,11 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 	}
 
 	@Override
+	public Optional<SoundEvent> getPickupSound() {
+		return Optional.ofNullable(getAttributes().getFillSound());
+	}
+
+	@Override
 	protected FluidAttributes createAttributes() {
 		//@formatter:off
 		return FluidAttributes.Water.builder(
@@ -54,11 +59,12 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 				new ResourceLocation("block/water_flow"))
 				.overlay(new ResourceLocation("block/water_overlay"))
 				.translationKey("block.minecraft.water")
-				.color(0xFF3F76E4).build(this);
+				.color(0xFF3F76E4)
+                .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY)
+                .build(this);
 		//@formatter:on
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void animateTick(Level level, BlockPos pos, FluidState state, Random random) {
 		if (!state.isSource() && !state.getValue(FALLING)) {
@@ -70,7 +76,6 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 	}
 
 	@Nullable
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ParticleOptions getDripParticle() {
 		return ParticleTypes.DRIPPING_WATER;

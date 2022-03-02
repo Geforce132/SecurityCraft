@@ -8,8 +8,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BeaconBeamBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements BeaconBeamBlock {
 	private final DyeColor color;
@@ -40,7 +38,6 @@ public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 	}

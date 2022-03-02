@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import net.geforcemods.securitycraft.misc.PageGroup;
+
 /**
  * Marks the annotated block/item as having a page in the SecurityCraft manual. Also holds information that is specific to
  * the page
@@ -15,9 +17,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface HasManualPage {
 	/**
-	 * @return A non-standard language key for the help text
+	 * @return The group this page belongs to. The block/item annotated will not have a separate page, but will be grouped
+	 *         together with the other blocks and items that define the same group
 	 */
-	String specialInfoKey() default "";
+	PageGroup value() default PageGroup.NONE;
 
 	/**
 	 * @return The author who designed this block/item

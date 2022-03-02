@@ -13,6 +13,7 @@ public class ModuleItemContainer implements Container {
 	public final int size = 1;
 	private final ItemStack module;
 	public NonNullList<ItemStack> moduleInventory;
+	private DisguiseModuleMenu menu;
 
 	public ModuleItemContainer(ItemStack moduleStack) {
 		module = moduleStack;
@@ -53,7 +54,7 @@ public class ModuleItemContainer implements Container {
 	public void writeToNBT(CompoundTag tag) {
 		ListTag items = new ListTag();
 
-		for (int i = 0; i < getContainerSize(); i++)
+		for (int i = 0; i < getContainerSize(); i++) {
 			if (!getItem(i).isEmpty()) {
 				CompoundTag item = new CompoundTag();
 				item.putInt("Slot", i);
@@ -61,6 +62,7 @@ public class ModuleItemContainer implements Container {
 
 				items.add(item);
 			}
+		}
 
 		tag.put("ItemInventory", items);
 	}
@@ -70,12 +72,12 @@ public class ModuleItemContainer implements Container {
 		ItemStack stack = getItem(index);
 
 		if (!stack.isEmpty()) {
-			if (stack.getCount() > size) {
+			if (stack.getCount() > size)
 				stack = stack.split(size);
-				setChanged();
-			}
 			else
 				setItem(index, ItemStack.EMPTY);
+
+			setChanged();
 		}
 
 		return stack;
@@ -84,7 +86,9 @@ public class ModuleItemContainer implements Container {
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
 		ItemStack stack = getItem(index);
+
 		setItem(index, ItemStack.EMPTY);
+		setChanged();
 		return stack;
 	}
 
@@ -111,6 +115,9 @@ public class ModuleItemContainer implements Container {
 		}
 
 		writeToNBT(module.getTag());
+
+		if (menu != null)
+			menu.slotsChanged(this);
 	}
 
 	@Override
@@ -140,5 +147,13 @@ public class ModuleItemContainer implements Container {
 		}
 
 		return true;
+	}
+
+	public void setMenu(DisguiseModuleMenu menu) {
+		this.menu = menu;
+	}
+
+	public ItemStack getModule() {
+		return module;
 	}
 }

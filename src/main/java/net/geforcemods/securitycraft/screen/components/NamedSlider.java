@@ -14,25 +14,22 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.client.gui.widget.Slider;
 
 public class NamedSlider extends Slider {
-	public int id;
 	private String blockName;
 	private Consumer<NamedSlider> consumer;
 
-	public NamedSlider(Component initialString, Component bN, int id, int xPos, int yPos, int width, int height, Component prefix, String suf, int minVal, int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
+	public NamedSlider(Component initialString, Component bN, int xPos, int yPos, int width, int height, Component prefix, String suf, int minVal, int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
 		super(xPos, yPos, width, height, prefix, new TextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
 
 		setMessage(new TextComponent(initialString.getString()));
 		blockName = bN.getString();
-		this.id = id;
 		consumer = method;
 	}
 
-	public NamedSlider(Component initialString, Component bN, int id, int xPos, int yPos, int width, int height, Component prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
+	public NamedSlider(Component initialString, Component bN, int xPos, int yPos, int width, int height, Component prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method) {
 		super(xPos, yPos, width, height, prefix, new TextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
 
 		setMessage(new TextComponent(initialString.getString()));
 		blockName = bN.getString();
-		this.id = id;
 		consumer = method;
 	}
 

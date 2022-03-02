@@ -97,6 +97,7 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 
 				pickedUpStack.setCount(1);
 				be.getContents().set(slotId, pickedUpStack);
+				be.setChanged();
 			}
 
 			return;

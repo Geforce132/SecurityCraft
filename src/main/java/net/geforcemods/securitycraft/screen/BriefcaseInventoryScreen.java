@@ -8,10 +8,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class BriefcaseInventoryScreen extends AbstractContainerScreen<BriefcaseMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
 	private final String formattedTitle;
@@ -37,12 +34,9 @@ public class BriefcaseInventoryScreen extends AbstractContainerScreen<BriefcaseM
 
 	@Override
 	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
-		int startX = (width - imageWidth) / 2;
-		int startY = (height - imageHeight) / 2;
-
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 }

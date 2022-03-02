@@ -92,6 +92,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	@Override
 	public void setViewCooldown(int viewCooldown) {
 		this.viewCooldown = viewCooldown;
+		setChanged();
 	}
 
 	@Override

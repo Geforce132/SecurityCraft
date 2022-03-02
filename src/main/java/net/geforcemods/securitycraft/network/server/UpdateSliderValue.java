@@ -16,20 +16,20 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class UpdateSliderValue {
 	private BlockPos pos;
-	private int id;
+	private String option;
 	private double value;
 
 	public UpdateSliderValue() {}
 
-	public UpdateSliderValue(BlockPos pos, int id, double v) {
+	public UpdateSliderValue(BlockPos pos, Option<?> option, double v) {
 		this.pos = pos;
-		this.id = id;
+		this.option = option.getName();
 		value = v;
 	}
 
 	public static void encode(UpdateSliderValue message, FriendlyByteBuf buf) {
 		buf.writeBlockPos(message.pos);
-		buf.writeInt(message.id);
+		buf.writeUtf(message.option);
 		buf.writeDouble(message.value);
 	}
 
@@ -37,7 +37,7 @@ public class UpdateSliderValue {
 		UpdateSliderValue message = new UpdateSliderValue();
 
 		message.pos = buf.readBlockPos();
-		message.id = buf.readInt();
+		message.option = buf.readUtf();
 		message.value = buf.readDouble();
 		return message;
 	}
@@ -45,20 +45,30 @@ public class UpdateSliderValue {
 	public static void onMessage(UpdateSliderValue message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
-			int id = message.id;
+			String optionName = message.option;
 			double value = message.value;
 			Player player = ctx.get().getSender();
 			BlockEntity be = player.level.getBlockEntity(pos);
 
 			if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
-				Option<?> option = customizable.customOptions()[id];
+				Option<?> option = null;
+
+				for (Option<?> o : customizable.customOptions()) {
+					if (o.getName().equals(optionName)) {
+						option = o;
+						break;
+					}
+				}
+
+				if (option == null)
+					return;
 
 				if (option instanceof DoubleOption o)
 					o.setValue(value);
 				else if (option instanceof IntOption o)
 					o.setValue((int) value);
 
-				customizable.onOptionChanged(customizable.customOptions()[id]);
+				customizable.onOptionChanged(option);
 
 				if (be instanceof CustomizableBlockEntity)
 					player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);

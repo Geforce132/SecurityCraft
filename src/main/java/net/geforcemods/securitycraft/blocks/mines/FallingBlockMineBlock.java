@@ -15,8 +15,6 @@ import net.minecraft.world.level.block.Fallable;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FallingBlockMineBlock extends BaseFullMineBlock implements Fallable {
 	public FallingBlockMineBlock(Block.Properties properties, Block disguisedBlock) {
@@ -46,7 +44,6 @@ public class FallingBlockMineBlock extends BaseFullMineBlock implements Fallable
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
 		if (rand.nextInt(16) == 0) {
 			if (FallingBlock.isFree(level.getBlockState(pos.below()))) {

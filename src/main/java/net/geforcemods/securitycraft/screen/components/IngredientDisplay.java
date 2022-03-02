@@ -1,10 +1,14 @@
 package net.geforcemods.securitycraft.screen.components;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class IngredientDisplay {
+public class IngredientDisplay implements Widget {
 	private static final int DISPLAY_LENGTH = 20;
 	private final int x;
 	private final int y;
@@ -17,18 +21,20 @@ public class IngredientDisplay {
 		this.y = y;
 	}
 
-	public void render(Minecraft mc, float partialTicks) {
+	@Override
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 		if (stacks == null || stacks.length == 0)
 			return;
 
-		mc.getItemRenderer().renderAndDecorateItem(stacks[currentRenderingStack], x, y);
-		ticksToChange -= partialTicks;
+		Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(stacks[currentRenderingStack], x, y);
 
-		if (ticksToChange <= 0) {
-			if (++currentRenderingStack >= stacks.length)
-				currentRenderingStack = 0;
+		if (!Screen.hasShiftDown()) {
+			ticksToChange -= partialTick;
 
-			ticksToChange = DISPLAY_LENGTH;
+			if (ticksToChange <= 0) {
+				changeRenderingStack(1);
+				ticksToChange = DISPLAY_LENGTH;
+			}
 		}
 	}
 
@@ -40,5 +46,14 @@ public class IngredientDisplay {
 
 	public ItemStack getCurrentStack() {
 		return currentRenderingStack >= 0 && currentRenderingStack < stacks.length && stacks.length != 0 ? stacks[currentRenderingStack] : ItemStack.EMPTY;
+	}
+
+	public void changeRenderingStack(double direction) {
+		currentRenderingStack += Math.signum(direction);
+
+		if (currentRenderingStack < 0)
+			currentRenderingStack = stacks.length - 1;
+		else if (currentRenderingStack >= stacks.length)
+			currentRenderingStack = 0;
 	}
 }

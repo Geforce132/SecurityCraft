@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -52,7 +52,7 @@ public class UniversalKeyChangerItem extends Item {
 					NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-							return new GenericTEMenu(SCContent.mTypeKeyChanger, windowId, level, pos);
+							return new GenericBEMenu(SCContent.mTypeKeyChanger, windowId, level, pos);
 						}
 
 						@Override

@@ -1,12 +1,15 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
-import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock.IReinforcedCauldronInteraction;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
@@ -21,16 +24,21 @@ import net.geforcemods.securitycraft.itemgroups.SCExplosivesTab;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalTab;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
+import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.conditions.BlockEntityNBTCondition;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraftforge.common.MinecraftForge;
@@ -85,7 +93,9 @@ public class SecurityCraft {
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, ReinforcedHopperBlock.ExtractionBlock::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadBlock.Convertible::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadChestBlock.Convertible::new);
-		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadFurnaceBlock.Convertible::new);
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> SCContent.KEYPAD_FURNACE.get().new Convertible(Blocks.FURNACE));
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> SCContent.KEYPAD_SMOKER.get().new Convertible(Blocks.SMOKER));
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> SCContent.KEYPAD_BLAST_FURNACE.get().new Convertible(Blocks.BLAST_FURNACE));
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, CommonDoorActivator::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, InventoryScannerBlock.DoorActivator::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, ReinforcedPressurePlateBlock.DoorActivator::new);
@@ -103,6 +113,8 @@ public class SecurityCraft {
 
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event) { //stage 4
+		Map<PageGroup, List<ItemStack>> groupStacks = new EnumMap<>(PageGroup.class);
+
 		for (Field field : SCContent.class.getFields()) {
 			try {
 				if (field.isAnnotationPresent(Reinforced.class)) {
@@ -117,14 +129,28 @@ public class SecurityCraft {
 					Object o = ((RegistryObject<?>) field.get(null)).get();
 					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
 					Item item = ((ItemLike) o).asItem();
+					PageGroup group = hmp.value();
+					boolean wasNotAdded = false;
+					TranslatableComponent title = new TranslatableComponent("");
 					String key = "help.";
 
-					if (hmp.specialInfoKey().isEmpty())
-						key += item.getDescriptionId().substring(5) + ".info";
-					else
-						key += hmp.specialInfoKey();
+					if (group != PageGroup.NONE) {
+						if (!groupStacks.containsKey(group)) {
+							groupStacks.put(group, new ArrayList<>());
+							title = Utils.localize(group.getTitle());
+							key += group.getSpecialInfoKey();
+							wasNotAdded = true;
+						}
 
-					SCManualItem.PAGES.add(new SCManualPage(item, new TranslatableComponent(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
+						groupStacks.get(group).add(new ItemStack(item));
+					}
+					else {
+						title = Utils.localize(item.getDescriptionId());
+						key += item.getDescriptionId().substring(5) + ".info";
+					}
+
+					if (group == PageGroup.NONE || wasNotAdded)
+						SCManualItem.PAGES.add(new SCManualPage(item, group, title, new TranslatableComponent(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
 				}
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {
@@ -132,6 +158,7 @@ public class SecurityCraft {
 			}
 		}
 
+		groupStacks.forEach((group, list) -> group.setItems(Ingredient.of(list.stream())));
 		ForgeChunkManager.setForcedChunkLoadingCallback(SecurityCraft.MODID, (level, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCamera) somewhere
 			ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
 				if (level.getEntity(uuid) == null)

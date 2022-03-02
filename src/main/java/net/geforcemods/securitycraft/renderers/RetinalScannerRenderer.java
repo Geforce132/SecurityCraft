@@ -13,6 +13,7 @@ import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
@@ -39,6 +40,9 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 
 	@Override
 	public void render(RetinalScannerBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay))
+			return;
+
 		Direction direction = be.getBlockState().getValue(RetinalScannerBlock.FACING);
 
 		if (!be.hasModule(ModuleType.DISGUISE) && direction != null) {

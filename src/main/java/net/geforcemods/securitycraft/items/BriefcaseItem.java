@@ -21,8 +21,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	public BriefcaseItem(Item.Properties properties) {
@@ -62,7 +60,6 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack briefcase, Level level, List<Component> tooltip, TooltipFlag flag) {
 		String ownerName = getOwnerName(briefcase);
 

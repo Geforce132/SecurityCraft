@@ -616,6 +616,8 @@ public class RecipeGenerator extends RecipeProvider {
 		addBlockMineRecipe(consumer, Blocks.EMERALD_ORE, SCContent.EMERALD_ORE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.DEEPSLATE_EMERALD_ORE, SCContent.DEEPSLATE_EMERALD_ORE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.FURNACE, SCContent.FURNACE_MINE.get());
+		addBlockMineRecipe(consumer, Blocks.SMOKER, SCContent.SMOKER_MINE.get());
+		addBlockMineRecipe(consumer, Blocks.BLAST_FURNACE, SCContent.BLAST_FURNACE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.GRAVEL, SCContent.GRAVEL_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.GOLD_ORE, SCContent.GOLD_ORE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.DEEPSLATE_GOLD_ORE, SCContent.DEEPSLATE_GOLD_ORE_MINE.get());

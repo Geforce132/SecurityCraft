@@ -14,9 +14,8 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -27,15 +26,16 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.client.gui.ScrollPanel;
+import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu> {
+public class UsernameLoggerScreen extends AbstractContainerScreen<GenericBEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent logged = Utils.localize("gui.securitycraft:logger.logged");
 	private final TranslatableComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
 	private UsernameLoggerBlockEntity be;
 	private PlayerList playerList;
 
-	public UsernameLoggerScreen(GenericTEMenu menu, Inventory inv, Component title) {
+	public UsernameLoggerScreen(GenericBEMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		be = (UsernameLoggerBlockEntity) menu.be;
 	}
@@ -44,7 +44,7 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 	protected void init() {
 		super.init();
 
-		addRenderableWidget(new IdButton(0, leftPos + 4, topPos + 4, 8, 8, "x", b -> {
+		addRenderableWidget(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, new TextComponent("x"), b -> {
 			be.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(be.getBlockPos()));
 		})).active = be.getOwner().isOwner(minecraft.player);
@@ -61,13 +61,10 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericTEMenu>
 
 	@Override
 	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
-		int startX = (width - imageWidth) / 2;
-		int startY = (height - imageHeight) / 2;
-
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override

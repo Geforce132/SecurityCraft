@@ -31,11 +31,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-@OnlyIn(Dist.CLIENT)
 public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
@@ -95,8 +92,9 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 
 		//keycard level buttons
 		for (int i = 0; i < 5; i++) {
+			final int thisButtonId = i;
 			//@formatter:off
-			toggleButtons[i] = addRenderableWidget(new TogglePictureButton(i, leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[]{110, 88}, new int[]{219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
+			toggleButtons[i] = addRenderableWidget(new TogglePictureButton(leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[]{110, 88}, new int[]{219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
 				//@formatter:on
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
 				if (!isSmart) {
@@ -104,16 +102,16 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 						boolean active;
 
 						if (isExactLevel)
-							active = (otherButtonId == thisButton.id);
+							active = otherButtonId == thisButtonId;
 						else
-							active = (otherButtonId >= thisButton.id);
+							active = otherButtonId >= thisButtonId;
 
 						//update button state and data
 						changeLevelState(otherButtonId, active);
 					}
 				}
 				else
-					acceptedLevels[thisButton.id] = !acceptedLevels[thisButton.id];
+					acceptedLevels[thisButtonId] = !acceptedLevels[thisButtonId];
 			}));
 			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
 			toggleButtons[i].active = isOwner;
@@ -131,12 +129,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		minusThree = addRenderableWidget(new ExtendedButton(leftPos + 22, buttonY, 24, buttonHeight, new TextComponent("---"), b -> changeSignature(signature - 100)));
 		minusTwo = addRenderableWidget(new ExtendedButton(leftPos + 48, buttonY, 18, buttonHeight, new TextComponent("--"), b -> changeSignature(signature - 10)));
 		minusOne = addRenderableWidget(new ExtendedButton(leftPos + 68, buttonY, 12, buttonHeight, new TextComponent("-"), b -> changeSignature(signature - 1)));
-		reset = addRenderableWidget(new PictureButton(-1, leftPos + 82, buttonY, 12, buttonHeight, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(previousSignature)) {
-			@Override
-			public ResourceLocation getTextureLocation() {
-				return active ? RESET_TEXTURE : RESET_INACTIVE_TEXTURE;
-			}
-		});
+		reset = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 82, buttonY, 12, buttonHeight, RESET_TEXTURE, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(previousSignature)));
 		plusOne = addRenderableWidget(new ExtendedButton(leftPos + 96, buttonY, 12, buttonHeight, new TextComponent("+"), b -> changeSignature(signature + 1)));
 		plusTwo = addRenderableWidget(new ExtendedButton(leftPos + 110, buttonY, 18, buttonHeight, new TextComponent("++"), b -> changeSignature(signature + 10)));
 		plusThree = addRenderableWidget(new ExtendedButton(leftPos + 130, buttonY, 24, buttonHeight, new TextComponent("+++"), b -> changeSignature(signature + 100)));
@@ -153,12 +146,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		}));
 		linkButton.active = false;
 		//button for saving the amount of limited uses onto the keycard
-		setUsesButton = addRenderableWidget(new PictureButton(-1, leftPos + 62, topPos + 106, 16, 17, RETURN_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(be.getBlockPos(), Integer.parseInt(usesTextField.getValue())))) {
-			@Override
-			public ResourceLocation getTextureLocation() {
-				return active ? RETURN_TEXTURE : RETURN_INACTIVE_TEXTURE;
-			}
-		});
+		setUsesButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 62, topPos + 106, 16, 17, RETURN_TEXTURE, RETURN_INACTIVE_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(be.getBlockPos(), Integer.parseInt(usesTextField.getValue())))));
 		setUsesButton.active = false;
 		//text field for setting amount of limited uses
 		usesTextField = addRenderableWidget(new EditBox(font, leftPos + 28, topPos + 107, 30, 15, TextComponent.EMPTY));
@@ -284,7 +272,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, imageWidth, imageHeight);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -333,5 +321,20 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			toggleButtons[i].setCurrentIndex(active ? 1 : 0);
 
 		acceptedLevels[i] = active;
+	}
+
+	private static class ActiveBasedTextureButton extends PictureButton {
+		private final ResourceLocation inactiveTexture;
+
+		public ActiveBasedTextureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, ResourceLocation inactiveTexture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, OnPress onPress) {
+			super(xPos, yPos, width, height, texture, textureX, textureY, drawOffsetX, drawOffsetY, drawWidth, drawHeight, textureWidth, textureHeight, onPress);
+
+			this.inactiveTexture = inactiveTexture;
+		}
+
+		@Override
+		public ResourceLocation getTextureLocation() {
+			return active ? super.getTextureLocation() : inactiveTexture;
+		}
 	}
 }

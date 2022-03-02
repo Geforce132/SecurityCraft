@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * Let your TileEntity implement this to be able to add options to it
@@ -8,6 +9,13 @@ import net.minecraft.nbt.CompoundTag;
  * @author bl4ckscor3
  */
 public interface ICustomizable {
+	/**
+	 * @return The block entity this is for
+	 */
+	public default BlockEntity getTheBlockEntity() {
+		return (BlockEntity) this;
+	}
+
 	/**
 	 * @return An array of what custom {@link Option}s this TileEntity has.
 	 */
@@ -18,7 +26,9 @@ public interface ICustomizable {
 	 *
 	 * @param option The changed Option
 	 */
-	public default void onOptionChanged(Option<?> option) {}
+	public default void onOptionChanged(Option<?> option) {
+		getTheBlockEntity().setChanged();
+	}
 
 	/**
 	 * Call this from your read method. Used for reading the options from a tag. Use in conjunction with writeOptions.

@@ -16,9 +16,9 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
+import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
@@ -30,13 +30,11 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.gui.widget.ExtendedButton;
 import net.minecraftforge.client.gui.widget.Slider;
 import net.minecraftforge.client.gui.widget.Slider.ISlider;
 
-@OnlyIn(Dist.CLIENT)
-public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> {
+public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas {
 	//@formatter:off
 	private static final ResourceLocation[] TEXTURES = {
 			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
@@ -71,7 +69,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
 			int column = i % numberOfColumns;
 
-			addRenderableWidget(descriptionButtons[i] = new PictureButton(i, leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
+			addRenderableWidget(descriptionButtons[i] = new PictureButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 
@@ -83,14 +81,14 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 					TranslatableComponent translatedBlockName = Utils.localize(blockName);
 
 					if (option instanceof DoubleOption)
-						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, i, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, null);
+						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, null);
 					else if (option instanceof IntOption)
-						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, i, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, null);
+						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, null);
 
 					optionButtons[i].setFGColor(14737632);
 				}
 				else {
-					optionButtons[i] = new IdButton(i, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::actionPerformed);
+					optionButtons[i] = new ExtendedButton(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::optionButtonClicked);
 					optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
 				}
 
@@ -139,22 +137,25 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 	@Override
 	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
-		int startX = (width - imageWidth) / 2;
-		int startY = (height - imageHeight) / 2;
-
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURES[moduleInv.getMaxNumberOfModules()]);
-		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
-	protected void actionPerformed(IdButton button) {
-		Option<?> tempOption = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[button.id]; //safe cast, as this method is only called when it can be casted
+	private void optionButtonClicked(Button button) {
+		for (int i = 0; i < optionButtons.length; i++) {
+			if (button != optionButtons[i])
+				continue;
 
-		tempOption.toggle();
-		button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
-		button.setMessage(getOptionButtonTitle(tempOption));
-		SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), button.id));
+			Option<?> tempOption = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[i]; //safe cast, as this method is only called when it can be casted
+
+			tempOption.toggle();
+			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
+			button.setMessage(getOptionButtonTitle(tempOption));
+			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), i));
+			return;
+		}
 	}
 
 	private Component getModuleDescription(int buttonID) {
@@ -187,7 +188,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			return new TextComponent(option.toString());
 	}
 
-	public List<Rect2i> getGuiExtraAreas() {
+	@Override
+	public List<Rect2i> getExtraAreas() {
 		return extraAreas;
 	}
 }

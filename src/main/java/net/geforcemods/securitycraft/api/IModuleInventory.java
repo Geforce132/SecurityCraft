@@ -52,8 +52,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	public default void onModuleInserted(ItemStack stack, ModuleType module) {
 		BlockEntity be = getBlockEntity();
 
-		if (!be.getLevel().isClientSide)
+		if (!be.getLevel().isClientSide) {
+			be.setChanged();
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
+		}
 	}
 
 	/**
@@ -65,8 +67,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	public default void onModuleRemoved(ItemStack stack, ModuleType module) {
 		BlockEntity be = getBlockEntity();
 
-		if (!be.getLevel().isClientSide)
+		if (!be.getLevel().isClientSide) {
+			be.setChanged();
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
+		}
 	}
 
 	/**
@@ -245,37 +249,12 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Inserts a generic copy of the given module type into the customization inventory.
-	 *
-	 * @param module The module type to insert
-	 */
-	public default void insertModule(ModuleType module) {
-		NonNullList<ItemStack> modules = getInventory();
-
-		for (int i = 0; i < modules.size(); i++) {
-			if (!modules.get(i).isEmpty()) {
-				if (modules.get(i).getItem() == module.getItem())
-					return;
-			}
-		}
-
-		for (int i = 0; i < modules.size(); i++) {
-			if (!modules.get(i).isEmpty() && module != null) {
-				modules.set(i, new ItemStack(module.getItem()));
-				break;
-			}
-			else if (!modules.get(i).isEmpty() && module == null)
-				modules.set(i, ItemStack.EMPTY);
-		}
-	}
-
-	/**
 	 * Inserts an exact copy of the given item into the customization inventory, if it is not empty and a module.
 	 *
 	 * @param module The stack to insert
 	 */
 	public default void insertModule(ItemStack module) {
-		if (module.isEmpty() || !(module.getItem() instanceof ModuleItem))
+		if (module.isEmpty() || !(module.getItem() instanceof ModuleItem moduleItem))
 			return;
 
 		NonNullList<ItemStack> modules = getInventory();
@@ -289,7 +268,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		for (int i = 0; i < modules.size(); i++) {
 			if (modules.get(i).isEmpty()) {
-				modules.set(i, module.copy());
+				ItemStack toInsert = module.copy();
+
+				modules.set(i, toInsert);
+				onModuleInserted(toInsert, moduleItem.getModuleType());
 				break;
 			}
 		}
@@ -304,8 +286,12 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		NonNullList<ItemStack> modules = getInventory();
 
 		for (int i = 0; i < modules.size(); i++) {
-			if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ModuleItem moduleItem && moduleItem.getModuleType() == module)
+			if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ModuleItem moduleItem && moduleItem.getModuleType() == module) {
+				ItemStack removed = modules.get(i).copy();
+
 				modules.set(i, ItemStack.EMPTY);
+				onModuleRemoved(removed, module);
+			}
 		}
 	}
 

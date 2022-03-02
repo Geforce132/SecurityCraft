@@ -1,10 +1,13 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Optional;
+
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -12,6 +15,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
@@ -24,8 +28,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public static boolean isNormalCube(BlockState state, BlockGetter level, BlockPos pos) {
-		if (state.getBlock() instanceof DisguisableBlock disguisableBlock) //should not happen, but just to be safe
-		{
+		if (state.getBlock() instanceof DisguisableBlock disguisableBlock) { //should not happen, but just to be safe
 			BlockState disguisedState = disguisableBlock.getDisguisedStateOrDefault(state, level, pos);
 
 			if (disguisedState.getBlock() != state.getBlock())
@@ -36,8 +39,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public static boolean isSuffocating(BlockState state, BlockGetter level, BlockPos pos) {
-		if (state.getBlock() instanceof DisguisableBlock disguisableBlock) //should not happen, but just to be safe
-		{
+		if (state.getBlock() instanceof DisguisableBlock disguisableBlock) { //should not happen, but just to be safe
 			BlockState disguisedState = disguisableBlock.getDisguisedStateOrDefault(state, level, pos);
 
 			if (disguisedState.getBlock() != state.getBlock())
@@ -98,24 +100,28 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public final BlockState getDisguisedStateOrDefault(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = getDisguisedBlockState(level, pos);
-
-		return disguisedState != null ? disguisedState : state;
+		return getDisguisedBlockState(level, pos).orElse(state);
 	}
 
-	public BlockState getDisguisedBlockState(BlockGetter level, BlockPos pos) {
+	public Optional<BlockState> getDisguisedBlockState(BlockGetter level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof IModuleInventory be) {
 			ItemStack module = be.hasModule(ModuleType.DISGUISE) ? be.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!module.isEmpty()) {
-				Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
+				BlockState disguisedState = NbtUtils.readBlockState(module.getOrCreateTag().getCompound("SavedState"));
 
-				if (block != null)
-					return block.defaultBlockState();
+				if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
+					return Optional.of(disguisedState);
+				else { //fallback, mainly for upgrading old worlds from before the state selector existed
+					Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
+
+					if (block != null)
+						return Optional.of(block.defaultBlockState());
+				}
 			}
 		}
 
-		return null;
+		return Optional.empty();
 	}
 
 	public ItemStack getDisguisedStack(BlockGetter level, BlockPos pos) {

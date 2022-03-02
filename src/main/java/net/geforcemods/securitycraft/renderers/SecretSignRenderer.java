@@ -29,10 +29,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class SecretSignRenderer implements BlockEntityRenderer<SecretSignBlockEntity> {
 	public static final int MAX_LINE_WIDTH = 90;
 	private static final int LINE_HEIGHT = 10;

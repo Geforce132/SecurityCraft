@@ -84,6 +84,7 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 	@Override
 	public void onOptionChanged(Option<?> option) {
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+		ICustomizable.super.onOptionChanged(option);
 	}
 
 	@Override
@@ -115,5 +116,6 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 	@Override
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
+		setChanged();
 	}
 }

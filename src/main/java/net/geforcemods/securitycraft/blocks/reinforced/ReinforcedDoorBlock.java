@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blockentities.ReinforcedDoorBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -38,8 +39,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ReinforcedDoorBlock extends OwnableBlock {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -124,7 +123,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		BlockPos pos = context.getClickedPos();
 		Level level = context.getLevel();
 
-		if (pos.getY() < level.getMaxBuildHeight() - 1 && context.getLevel().getBlockState(pos.above()).canBeReplaced(context)) {
+		if (pos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(pos.above()).canBeReplaced(context)) {
 			boolean hasNeighborSignal = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
 			return defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(HINGE, getHingeSide(context)).setValue(OPEN, hasNeighborSignal).setValue(HALF, DoubleBlockHalf.LOWER);
 		}
@@ -299,11 +298,12 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		BlockPos posBelow = pos.below();
+		BlockState stateBelow = level.getBlockState(posBelow);
 
 		if (state.getValue(HALF) == DoubleBlockHalf.LOWER)
-			return state.isFaceSturdy(level, posBelow, Direction.UP);
+			return stateBelow.isFaceSturdy(level, posBelow, Direction.UP);
 		else
-			return state.getBlock() == this;
+			return stateBelow.is(this);
 	}
 
 	@Override
@@ -322,7 +322,6 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public long getSeed(BlockState state, BlockPos pos) {
 		return Mth.getSeed(pos.getX(), pos.below(state.getValue(HALF) == DoubleBlockHalf.LOWER ? 0 : 1).getY(), pos.getZ());
 	}
@@ -349,7 +348,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableBlockEntity(pos, state);
+		return new ReinforcedDoorBlockEntity(pos, state);
 	}
 
 	@Override

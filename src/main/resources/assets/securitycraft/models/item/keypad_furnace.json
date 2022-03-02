@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/ppf_n_closed_unpowered",
+    "parent": "securitycraft:block/keypad_furnace_open",
     "display": {
         "thirdperson_righthand": {
             "rotation": [ 75, 45, 0 ],

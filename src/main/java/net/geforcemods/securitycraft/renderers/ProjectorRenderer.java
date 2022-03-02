@@ -5,33 +5,29 @@ import java.util.Random;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.RenderProperties;
 
-@OnlyIn(Dist.CLIENT)
 public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEntity> {
 	public ProjectorRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(ProjectorBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int combinedOverlay) {
+	public void render(ProjectorBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay);
+
 		if (be.isActive() && !be.isEmpty()) {
 			Random random = new Random();
-			BlockState state = be.getProjectedBlock().defaultBlockState();
+			BlockState state = be.getProjectedState();
 			BlockPos pos;
 
 			RenderSystem.disableCull();
@@ -46,22 +42,12 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 						pos = translateProjection(be.getBlockPos(), pose, be.getBlockState().getValue(ProjectorBlock.FACING), x, be.getProjectionRange() - 16, y + 1, be.getProjectionOffset());
 
 					if (pos != null && be.getLevel().isEmptyBlock(pos)) {
-						switch (state.getRenderShape()) {
-							case MODEL:
-								for (RenderType renderType : RenderType.chunkBufferLayers()) {
-									if (ItemBlockRenderTypes.canRenderInLayer(state, renderType))
-										Minecraft.getInstance().getBlockRenderer().renderBatched(state, pos, be.getLevel(), pose, buffer.getBuffer(renderType), true, random);
-								}
-
-								break;
-							case ENTITYBLOCK_ANIMATED:
-								ItemStack blockEntityStack = new ItemStack(state.getBlock());
-
-								RenderProperties.get(blockEntityStack).getItemStackRenderer().renderByItem(blockEntityStack, ItemTransforms.TransformType.NONE, pose, buffer, packedLight, OverlayTexture.NO_OVERLAY);
-								break;
-							default:
-								break;
+						for (RenderType renderType : RenderType.chunkBufferLayers()) {
+							if (ItemBlockRenderTypes.canRenderInLayer(state, renderType))
+								Minecraft.getInstance().getBlockRenderer().renderBatched(state, pos, be.getLevel(), pose, buffer.getBuffer(renderType), true, random);
 						}
+
+						ClientHandler.PROJECTOR_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay);
 					}
 
 					pose.popPose();

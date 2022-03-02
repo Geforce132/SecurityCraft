@@ -9,10 +9,7 @@ import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class KeypadChestRenderer extends ChestRenderer<KeypadChestBlockEntity> {
 	private static final Material ACTIVE = createMaterial("active");
 	private static final Material INACTIVE = createMaterial("inactive");

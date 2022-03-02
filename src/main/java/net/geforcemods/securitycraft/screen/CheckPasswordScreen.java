@@ -6,9 +6,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.inventory.GenericTEMenu;
+import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
@@ -20,11 +19,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-@OnlyIn(Dist.CLIENT)
-public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEMenu> {
+public class CheckPasswordScreen extends AbstractContainerScreen<GenericBEMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private BlockEntity be;
 	private char[] allowedChars = {
@@ -35,7 +32,7 @@ public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEMenu> 
 	private String currentString = "";
 	private static final int MAX_CHARS = 20;
 
-	public CheckPasswordScreen(GenericTEMenu menu, Inventory inv, Component title) {
+	public CheckPasswordScreen(GenericBEMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		this.be = menu.be;
 		blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
@@ -46,17 +43,17 @@ public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEMenu> 
 		super.init();
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-		addRenderableWidget(new IdButton(0, width / 2 - 38, height / 2 + 30 + 10, 80, 20, "0", this::actionPerformed));
-		addRenderableWidget(new IdButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "1", this::actionPerformed));
-		addRenderableWidget(new IdButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "2", this::actionPerformed));
-		addRenderableWidget(new IdButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "3", this::actionPerformed));
-		addRenderableWidget(new IdButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "4", this::actionPerformed));
-		addRenderableWidget(new IdButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "5", this::actionPerformed));
-		addRenderableWidget(new IdButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "6", this::actionPerformed));
-		addRenderableWidget(new IdButton(7, width / 2 - 38, height / 2 + 10, 20, 20, "7", this::actionPerformed));
-		addRenderableWidget(new IdButton(8, width / 2 - 8, height / 2 + 10, 20, 20, "8", this::actionPerformed));
-		addRenderableWidget(new IdButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "9", this::actionPerformed));
-		addRenderableWidget(new IdButton(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
+		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 30 + 10, 80, 20, new TextComponent("0"), b -> addNumberToString(0)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 60 + 10, 20, 20, new TextComponent("1"), b -> addNumberToString(1)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 60 + 10, 20, 20, new TextComponent("2"), b -> addNumberToString(2)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 - 60 + 10, 20, 20, new TextComponent("3"), b -> addNumberToString(3)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 30 + 10, 20, 20, new TextComponent("4"), b -> addNumberToString(4)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 30 + 10, 20, 20, new TextComponent("5"), b -> addNumberToString(5)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 - 30 + 10, 20, 20, new TextComponent("6"), b -> addNumberToString(6)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 10, 20, 20, new TextComponent("7"), b -> addNumberToString(7)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 10, 20, 20, new TextComponent("8"), b -> addNumberToString(8)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 + 10, 20, 20, new TextComponent("9"), b -> addNumberToString(9)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 48, height / 2 + 30 + 10, 25, 20, new TextComponent("<-"), b -> removeLastCharacter()));
 
 		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 67, 77, 12, TextComponent.EMPTY));
 		keycodeTextbox.setMaxLength(MAX_CHARS);
@@ -77,13 +74,10 @@ public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEMenu> 
 
 	@Override
 	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
-		int startX = (width - imageWidth) / 2;
-		int startY = (height - imageHeight) / 2;
-
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
-		blit(pose, startX, startY, 0, 0, imageWidth, imageHeight);
+		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -122,13 +116,16 @@ public class CheckPasswordScreen extends AbstractContainerScreen<GenericTEMenu> 
 		return false;
 	}
 
-	protected void actionPerformed(IdButton button) {
-		if (currentString.length() < MAX_CHARS && button.id >= 0 && button.id <= 9) {
-			currentString += "" + button.id;
+	private void addNumberToString(int number) {
+		if (currentString.length() < MAX_CHARS) {
+			currentString += "" + number;
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);
 		}
-		else if (button.id == 10 && currentString.length() > 0) {
+	}
+
+	private void removeLastCharacter() {
+		if (currentString.length() > 0) {
 			currentString = Utils.removeLastChar(currentString);
 			setTextboxCensoredText(keycodeTextbox, currentString);
 		}

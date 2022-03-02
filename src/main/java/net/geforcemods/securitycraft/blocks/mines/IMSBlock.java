@@ -31,8 +31,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
 public class IMSBlock extends OwnableBlock {
@@ -98,7 +96,6 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
 		if (state.getValue(MINES) == 0) {
 			double x = pos.getX() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;

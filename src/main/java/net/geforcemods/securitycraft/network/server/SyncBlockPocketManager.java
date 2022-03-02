@@ -54,6 +54,7 @@ public class SyncBlockPocketManager {
 				bpm.size = message.size;
 				bpm.showOutline = message.showOutline;
 				bpm.autoBuildOffset = message.autoBuildOffset;
+				bpm.setChanged();
 				level.sendBlockUpdated(pos, state, state, 2);
 			}
 		});

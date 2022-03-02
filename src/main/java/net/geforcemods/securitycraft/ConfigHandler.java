@@ -73,7 +73,7 @@ public class ConfigHandler {
 
 			allowAdminTool = builder
 					.comment("Can the admin tool be used?")
-					.define("allowAdminTool", false);
+					.define("allowAdminTool", true);
 
 			shouldSpawnFire = builder
 					.comment("Should mines spawn fire after exploding?")

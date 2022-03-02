@@ -1,23 +1,23 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import java.util.function.Consumer;
 import java.util.function.IntFunction;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-public class ToggleComponentButton extends IdButton {
+public class ToggleComponentButton extends ExtendedButton {
 	private final IntFunction<Component> onValueChange;
 	private int currentIndex = 0;
 	private final int toggleCount;
 
-	public ToggleComponentButton(int id, int xPos, int yPos, int width, int height, IntFunction<Component> onValueChange, int initialValue, int toggleCount, Consumer<IdButton> onClick) {
-		super(id, xPos, yPos, width, height, "", onClick);
+	public ToggleComponentButton(int xPos, int yPos, int width, int height, IntFunction<Component> onValueChange, int initialValue, int toggleCount, OnPress onPress) {
+		super(xPos, yPos, width, height, TextComponent.EMPTY, onPress);
 
 		this.onValueChange = onValueChange;
 		this.currentIndex = initialValue;
 		this.toggleCount = toggleCount;
-
 		onValueChange();
 	}
 
@@ -33,9 +33,13 @@ public class ToggleComponentButton extends IdButton {
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		cycleIndex(-(int) Math.signum(delta));
-		onPress.onPress(this);
-		return true;
+		if (clicked(mouseX, mouseY)) {
+			cycleIndex(-(int) Math.signum(delta));
+			onPress();
+			return true;
+		}
+
+		return false;
 	}
 
 	public void cycleIndex(int value) {
