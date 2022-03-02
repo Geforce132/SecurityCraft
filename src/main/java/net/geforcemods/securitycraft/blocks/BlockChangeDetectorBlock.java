@@ -34,6 +34,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 	public BlockChangeDetectorBlock(Properties properties) {
 		super(properties);
+		registerDefaultState(stateDefinition.any().setValue(POWERED, false));
 	}
 
 	@Override
