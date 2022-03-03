@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.compat.jei;
 
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.category.IRecipeCategory;
@@ -17,7 +18,7 @@ public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> 
 
 	public BaseCategory(IGuiHelper helper) {
 		background = helper.createDrawable(new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png"), 25, 19, 126, 43);
-		icon = helper.createDrawableIngredient(new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()));
+		icon = helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()));
 	}
 
 	@Override
