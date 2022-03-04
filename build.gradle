@@ -107,7 +107,7 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
 	implementation fg.deobf("mezz.jei:jei-1.18.2:9.4.1.116")
-    //implementation fg.deobf("curse.maven:the-one-probe-245211:3606616"1)
+    implementation fg.deobf("curse.maven:the-one-probe-245211:3671753")
     implementation fg.deobf("curse.maven:jade-324717:3671210")
     //implementation fg.deobf("curse.maven:betterf3-401648:3551266")
     //implementation fg.deobf("curse.maven:cloth-config-forge-348521:3559639") //betterf3 dependency
