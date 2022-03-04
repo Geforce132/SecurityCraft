@@ -26,12 +26,9 @@ import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.misc.conditions.BlockEntityNBTCondition;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.core.MappedRegistry;
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -41,8 +38,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -72,16 +67,6 @@ public class SecurityCraft {
 	public static CreativeModeTab technicalTab = new SCTechnicalTab();
 	public static CreativeModeTab mineTab = new SCExplosivesTab();
 	public static CreativeModeTab decorationTab = new SCDecorationTab();
-	public static final LootItemConditionType BLOCK_ENTITY_NBT_LOOT_CONDITION;
-
-	//TODO: if possible, find better way to register this
-	static {
-		MappedRegistry<LootItemConditionType> lctRegistry = (MappedRegistry<LootItemConditionType>) Registry.LOOT_CONDITION_TYPE;
-
-		lctRegistry.unfreeze();
-		BLOCK_ENTITY_NBT_LOOT_CONDITION = LootItemConditions.register(SecurityCraft.MODID + ":tile_entity_nbt", new BlockEntityNBTCondition.ConditionSerializer());
-		lctRegistry.freeze();
-	}
 
 	public SecurityCraft() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
