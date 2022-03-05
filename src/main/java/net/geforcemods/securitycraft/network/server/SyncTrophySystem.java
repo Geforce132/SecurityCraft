@@ -21,8 +21,7 @@ public class SyncTrophySystem implements IMessage {
 	private String projectileType;
 	private boolean allowed;
 
-	public SyncTrophySystem() {
-	}
+	public SyncTrophySystem() {}
 
 	public SyncTrophySystem(BlockPos pos, EntityEntry projectileType, boolean allowed) {
 		this.pos = pos;

@@ -20,8 +20,7 @@ public class SetPassword implements IMessage {
 	private String password;
 	private int x, y, z;
 
-	public SetPassword() {
-	}
+	public SetPassword() {}
 
 	public SetPassword(int x, int y, int z, String code) {
 		this.x = x;

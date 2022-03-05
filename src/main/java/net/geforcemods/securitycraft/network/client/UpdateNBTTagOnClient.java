@@ -14,8 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class UpdateNBTTagOnClient implements IMessage {
 	private ItemStack stack;
 
-	public UpdateNBTTagOnClient() {
-	}
+	public UpdateNBTTagOnClient() {}
 
 	public UpdateNBTTagOnClient(ItemStack stack) {
 		if (!stack.isEmpty() && stack.hasTagCompound()) {

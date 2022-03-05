@@ -16,8 +16,7 @@ public class SyncTENBTTag implements IMessage {
 	private int x, y, z;
 	private NBTTagCompound tag;
 
-	public SyncTENBTTag() {
-	}
+	public SyncTENBTTag() {}
 
 	public SyncTENBTTag(int x, int y, int z, NBTTagCompound tag) {
 		this.x = x;
