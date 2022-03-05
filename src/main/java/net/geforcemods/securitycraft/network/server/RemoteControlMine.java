@@ -16,8 +16,7 @@ public class RemoteControlMine {
 	private int x, y, z;
 	private String state;
 
-	public RemoteControlMine() {
-	}
+	public RemoteControlMine() {}
 
 	public RemoteControlMine(int x, int y, int z, String state) {
 		this.x = x;
