@@ -14,8 +14,7 @@ public class UpdateLogger {
 	private String uuid;
 	private long timestamp;
 
-	public UpdateLogger() {
-	}
+	public UpdateLogger() {}
 
 	public UpdateLogger(int x, int y, int z, int i, String username, String uuid, long timestamp) {
 		this.x = x;
