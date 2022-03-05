@@ -12,8 +12,7 @@ public class CheckPassword {
 	private String password;
 	private int x, y, z;
 
-	public CheckPassword() {
-	}
+	public CheckPassword() {}
 
 	public CheckPassword(int x, int y, int z, String code) {
 		this.x = x;

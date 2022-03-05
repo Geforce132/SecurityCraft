@@ -4,17 +4,16 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SyncProjector {
 	private BlockPos pos;
 	private int data;
-	private BlockState state;
 	private DataType dataType;
 
 	public SyncProjector() {}
@@ -27,7 +26,7 @@ public class SyncProjector {
 
 	public SyncProjector(BlockPos pos, BlockState state) {
 		this.pos = pos;
-		this.state = state;
+		this.data = Block.getId(state);
 		this.dataType = DataType.BLOCK_STATE;
 	}
 
@@ -37,8 +36,6 @@ public class SyncProjector {
 
 		if (message.dataType == DataType.HORIZONTAL)
 			buf.writeBoolean(message.data == 1);
-		else if (message.dataType == DataType.BLOCK_STATE)
-			buf.writeNbt(NbtUtils.writeBlockState(message.state));
 		else
 			buf.writeVarInt(message.data);
 	}
@@ -51,8 +48,6 @@ public class SyncProjector {
 
 		if (message.dataType == DataType.HORIZONTAL)
 			message.data = buf.readBoolean() ? 1 : 0;
-		else if (message.dataType == DataType.BLOCK_STATE)
-			message.state = NbtUtils.readBlockState(buf.readNbt());
 		else
 			message.data = buf.readVarInt();
 
@@ -85,7 +80,7 @@ public class SyncProjector {
 						be.setHorizontal(message.data == 1);
 						break;
 					case BLOCK_STATE:
-						be.setProjectedState(message.state);
+						be.setProjectedState(Block.stateById(message.data));
 						break;
 					case INVALID:
 						break;
