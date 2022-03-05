@@ -18,8 +18,7 @@ public class SyncTrophySystem {
 	private ResourceLocation projectileType;
 	private boolean allowed;
 
-	public SyncTrophySystem() {
-	}
+	public SyncTrophySystem() {}
 
 	public SyncTrophySystem(BlockPos pos, EntityType<?> projectileType, boolean allowed) {
 		this.pos = pos;
