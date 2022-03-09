@@ -1,5 +1,8 @@
 package net.geforcemods.securitycraft.datagen;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
@@ -46,6 +49,37 @@ public class ItemModelGenerator extends ItemModelProvider {
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 
+		List<RegistryObject<Item>> singleTextureItems = new ArrayList<>(SCContent.ITEMS.getEntries());
+		//@formatter:off
+		List<RegistryObject<Item>> handheldItems = List.of(
+				SCContent.UNIVERSAL_BLOCK_MODIFIER,
+				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1,
+				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2,
+				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3,
+				SCContent.UNIVERSAL_KEY_CHANGER);
+
+		singleTextureItems.removeAll(List.of(
+				SCContent.ANCIENT_DEBRIS_MINE_ITEM,
+				SCContent.BRIEFCASE,
+				SCContent.KEYPAD_CHEST_ITEM,
+				SCContent.REDSTONE_MODULE,
+				SCContent.SPEED_MODULE,
+				SCContent.TASER,
+				SCContent.TASER_POWERED,
+				SCContent.UNIVERSAL_BLOCK_REMOVER,
+				SCContent.UNIVERSAL_OWNER_CHANGER,
+				SCContent.WIRE_CUTTERS));
+		singleTextureItems.removeAll(handheldItems);
+		//@formatter:on
+
+		for (RegistryObject<Item> obj : singleTextureItems) {
+			simpleItem(obj.get(), "item/generated");
+		}
+
+		for (RegistryObject<Item> obj : handheldItems) {
+			simpleItem(obj.get(), "item/handheld");
+		}
+
 		//@formatter:off
 		//gui block mine model
 		getBuilder("template_block_mine")
@@ -75,6 +109,12 @@ public class ItemModelGenerator extends ItemModelProvider {
 		reinforcedWallInventory(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get(), "polished_blackstone_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_DEEPSLATE_BRICK_WALL.get(), "deepslate_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get(), "deepslate_tiles");
+	}
+
+	public ItemModelBuilder simpleItem(Item item, String parent) {
+		String path = item.getRegistryName().getPath();
+
+		return singleTexture(path, mcLoc(parent), "layer0", modLoc(ITEM_FOLDER + "/" + path));
 	}
 
 	public ItemModelBuilder reinforcedPane(Block block) {
