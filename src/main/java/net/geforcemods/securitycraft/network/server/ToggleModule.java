@@ -45,10 +45,14 @@ public class ToggleModule {
 			if (be instanceof IModuleInventory moduleInv && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
 				ModuleType moduleType = message.moduleType;
 
-				if (moduleInv.isModuleEnabled(moduleType))
+				if (moduleInv.isModuleEnabled(moduleType)) {
 					moduleInv.disableModule(moduleType);
-				else if (moduleInv.hasModule(moduleType))
+					moduleInv.onModuleDisabled(moduleInv.getModule(moduleType), moduleType);
+				}
+				else if (moduleInv.hasModule(moduleType)) {
 					moduleInv.enableModule(moduleType);
+					moduleInv.onModuleEnabled(moduleInv.getModule(moduleType), moduleType);
+				}
 
 				if (be instanceof CustomizableBlockEntity)
 					player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
