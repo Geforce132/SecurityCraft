@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.EnumMap;
+
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -58,6 +60,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	private Owner owner = new Owner();
 	private String passcode;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
 	public AbstractKeypadFurnaceBlockEntity(BlockEntityType<?> beType, BlockPos pos, BlockState state, RecipeType<? extends AbstractCookingRecipe> recipeType) {
@@ -68,8 +71,9 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 
-		writeModuleInventory(tag);
-		writeOptions(tag);
+		saveModuleInventory(tag);
+		saveModuleStates(tag);
+		saveOptions(tag);
 
 		if (owner != null)
 			owner.save(tag, false);
@@ -82,8 +86,9 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		modules = readModuleInventory(tag);
-		readOptions(tag);
+		modules = loadModuleInventory(tag);
+		moduleStates = loadModuleStates(tag);
+		loadOptions(tag);
 		owner.load(tag);
 		passcode = tag.getString("passcode");
 	}
@@ -220,6 +225,23 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	@Override
+	public boolean isModuleEnabled(ModuleType module) {
+		return hasModule(module) && moduleStates.get(module);
+	}
+
+	@Override
+	public void enableModule(ModuleType module) {
+		moduleStates.put(module, hasModule(module)); //only enable if the module is present
+		setChanged();
+	}
+
+	@Override
+	public void disableModule(ModuleType module) {
+		moduleStates.put(module, false);
+		setChanged();
+	}
+
+	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
 				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE
@@ -234,8 +256,8 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		IModuleInventory.super.onModuleInserted(stack, module);
+	public void onModuleEnabled(ItemStack stack, ModuleType module) {
+		IModuleInventory.super.onModuleEnabled(stack, module);
 
 		if (module == ModuleType.DISGUISE) {
 			if (!level.isClientSide)
@@ -262,8 +284,8 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		IModuleInventory.super.onModuleRemoved(stack, module);
+	public void onModuleDisabled(ItemStack stack, ModuleType module) {
+		IModuleInventory.super.onModuleDisabled(stack, module);
 
 		if (module == ModuleType.DISGUISE) {
 			if (!level.isClientSide)

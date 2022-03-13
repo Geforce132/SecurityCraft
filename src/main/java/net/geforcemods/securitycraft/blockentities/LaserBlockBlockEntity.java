@@ -78,16 +78,16 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleEnabled(ItemStack stack, ModuleType module) {
+		super.onModuleEnabled(stack, module);
 
 		if (module == ModuleType.DISGUISE)
 			onInsertDisguiseModule(stack);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleDisabled(ItemStack stack, ModuleType module) {
+		super.onModuleDisabled(stack, module);
 
 		if (module == ModuleType.DISGUISE)
 			onRemoveDisguiseModule(stack);

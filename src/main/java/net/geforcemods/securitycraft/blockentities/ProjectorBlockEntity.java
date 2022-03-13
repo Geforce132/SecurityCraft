@@ -72,7 +72,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		projectionHeight = tag.getInt("height");
 		projectionRange = tag.getInt("range");
 		projectionOffset = tag.getInt("offset");
-		activatedByRedstone = hasModule(ModuleType.REDSTONE);
+		activatedByRedstone = isModuleEnabled(ModuleType.REDSTONE);
 		active = tag.getBoolean("active");
 		horizontal = tag.getBoolean("horizontal");
 		projectedBlock = ItemStack.of(tag.getCompound("storedItem"));
@@ -151,16 +151,16 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleEnabled(ItemStack stack, ModuleType module) {
+		super.onModuleEnabled(stack, module);
 
 		if (module == ModuleType.REDSTONE)
 			setActivatedByRedstone(true);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleDisabled(ItemStack stack, ModuleType module) {
+		super.onModuleDisabled(stack, module);
 
 		if (module == ModuleType.REDSTONE)
 			setActivatedByRedstone(false);

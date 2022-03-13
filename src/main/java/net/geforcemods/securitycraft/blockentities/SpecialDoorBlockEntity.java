@@ -41,15 +41,15 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
+	public void onModuleEnabled(ItemStack stack, ModuleType module) {
 		handleModule(stack, module, false);
-		super.onModuleInserted(stack, module);
+		super.onModuleEnabled(stack, module);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
+	public void onModuleDisabled(ItemStack stack, ModuleType module) {
 		handleModule(stack, module, true);
-		super.onModuleRemoved(stack, module);
+		super.onModuleDisabled(stack, module);
 	}
 
 	private void handleModule(ItemStack stack, ModuleType module, boolean removed) {

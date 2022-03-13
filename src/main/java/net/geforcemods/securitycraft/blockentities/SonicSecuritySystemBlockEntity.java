@@ -154,13 +154,13 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
+	public void onModuleDisabled(ItemStack stack, ModuleType module) {
 		if (module == ModuleType.REDSTONE) {
 			level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(SonicSecuritySystemBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
 		}
 
-		super.onModuleRemoved(stack, module);
+		super.onModuleDisabled(stack, module);
 	}
 
 	@Override

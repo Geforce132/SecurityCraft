@@ -256,7 +256,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	public boolean shouldProvidePower() {
-		return hasModule(ModuleType.REDSTONE) && isProvidingPower;
+		return isModuleEnabled(ModuleType.REDSTONE) && isProvidingPower;
 	}
 
 	public void setShouldProvidePower(boolean isProvidingPower) {
@@ -279,8 +279,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleEnabled(ItemStack stack, ModuleType module) {
+		super.onModuleEnabled(stack, module);
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
@@ -296,8 +296,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleDisabled(ItemStack stack, ModuleType module) {
+		super.onModuleDisabled(stack, module);
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 

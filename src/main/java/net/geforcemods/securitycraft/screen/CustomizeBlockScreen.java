@@ -14,6 +14,8 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
@@ -24,6 +26,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -69,7 +72,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
 			int column = i % numberOfColumns;
 
-			addRenderableWidget(descriptionButtons[i] = new PictureButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
+			addRenderableWidget(descriptionButtons[i] = new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 
@@ -143,6 +146,10 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
+	private void moduleButtonClicked(Button button) {
+		SecurityCraft.channel.sendToServer(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), ((ModuleButton) button).getModule().getModuleType()));
+	}
+
 	private void optionButtonClicked(Button button) {
 		for (int i = 0; i < optionButtons.length; i++) {
 			if (button != optionButtons[i])
@@ -191,5 +198,19 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	@Override
 	public List<Rect2i> getExtraAreas() {
 		return extraAreas;
+	}
+
+	private class ModuleButton extends PictureButton {
+		private final ModuleItem module;
+
+		public ModuleButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ModuleItem itemToRender, OnPress onPress) {
+			super(xPos, yPos, width, height, itemRenderer, new ItemStack(itemToRender), onPress);
+
+			module = itemToRender;
+		}
+
+		public ModuleItem getModule() {
+			return module;
+		}
 	}
 }

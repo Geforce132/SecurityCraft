@@ -275,9 +275,11 @@ public class SCEventHandler {
 				if (!be.getInventory().get(i).isEmpty()) {
 					ItemStack stack = be.getInventory().get(i);
 					ItemEntity item = new ItemEntity(level, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
-
+					ModuleType moduleType = ((ModuleItem) stack.getItem()).getModuleType();
+					
 					LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(item));
-					be.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
+					be.disableModule(moduleType);
+					be.onModuleDisabled(stack, moduleType);
 
 					if (be instanceof LinkableBlockEntity lbe) {
 						lbe.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {

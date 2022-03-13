@@ -22,8 +22,8 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleEnabled(ItemStack stack, ModuleType module) {
+		super.onModuleEnabled(stack, module);
 
 		if (module == ModuleType.DISGUISE) {
 			if (!level.isClientSide)
@@ -34,8 +34,8 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleDisabled(ItemStack stack, ModuleType module) {
+		super.onModuleDisabled(stack, module);
 
 		if (module == ModuleType.DISGUISE) {
 			if (!level.isClientSide)

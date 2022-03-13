@@ -1,6 +1,9 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -30,6 +33,29 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	public ModuleType[] acceptedModules();
 
 	/**
+	 * Checks whether the given module's functionality is enabled
+	 *
+	 * @param module The module
+	 * @return true if the given module is enabled, false otherwise. If the module does not exist, this should return false
+	 *         as well.
+	 */
+	public boolean isModuleEnabled(ModuleType module);
+
+	/**
+	 * Enables the given module's functionality
+	 *
+	 * @param module The module
+	 */
+	public void enableModule(ModuleType module);
+
+	/**
+	 * Disables the given module's functionality
+	 *
+	 * @param module The module
+	 */
+	public void disableModule(ModuleType module);
+
+	/**
 	 * @return The block entity this inventory is for
 	 */
 	public default BlockEntity getBlockEntity() {
@@ -44,12 +70,12 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Called whenever a module is inserted into a slot in the "Customize" GUI.
+	 * Called whenever a module is enabled in the "Customize" GUI.
 	 *
-	 * @param stack The raw ItemStack being inserted.
+	 * @param stack The raw ItemStack of the module being enabled.
 	 * @param module The ModuleType variant of stack.
 	 */
-	public default void onModuleInserted(ItemStack stack, ModuleType module) {
+	public default void onModuleEnabled(ItemStack stack, ModuleType module) {
 		BlockEntity be = getBlockEntity();
 
 		if (!be.getLevel().isClientSide) {
@@ -59,12 +85,12 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Called whenever a module is removed from a slot in the "Customize" GUI.
+	 * Called whenever a module is disabled in the "Customize" GUI.
 	 *
-	 * @param stack The raw ItemStack being removed.
+	 * @param stack The raw ItemStack of the module being disabled.
 	 * @param module The ModuleType variant of stack.
 	 */
-	public default void onModuleRemoved(ItemStack stack, ModuleType module) {
+	public default void onModuleDisabled(ItemStack stack, ModuleType module) {
 		BlockEntity be = getBlockEntity();
 
 		if (!be.getLevel().isClientSide) {
@@ -120,7 +146,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		else {
 			if (!simulate) {
 				if (stack.getItem() instanceof ModuleItem module) {
-					onModuleRemoved(stack, module.getModuleType());
+					disableModule(module.getModuleType());
+					onModuleDisabled(stack, module.getModuleType());
 
 					if (getBlockEntity() instanceof LinkableBlockEntity be)
 						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, be);
@@ -153,7 +180,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				getInventory().set(slot, copy);
 
 				if (stack.getItem() instanceof ModuleItem module) {
-					onModuleInserted(stack, module.getModuleType());
+					enableModule(module.getModuleType());
+					onModuleEnabled(stack, module.getModuleType());
 
 					if (getBlockEntity() instanceof LinkableBlockEntity be)
 						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, copy, be);
@@ -179,7 +207,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		//call the correct methods, should there have been a module in the slot previously
 		if (!previous.isEmpty()) {
-			onModuleRemoved(previous, ((ModuleItem) previous.getItem()).getModuleType());
+			ModuleType moduleType = ((ModuleItem) previous.getItem()).getModuleType();
+
+			disableModule(moduleType);
+			onModuleDisabled(previous, moduleType);
 
 			if (getBlockEntity() instanceof LinkableBlockEntity be)
 				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, be);
@@ -188,7 +219,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		getInventory().set(slot, stack);
 
 		if (stack.getItem() instanceof ModuleItem module) {
-			onModuleInserted(stack, module.getModuleType());
+			enableModule(module.getModuleType());
+			onModuleEnabled(stack, module.getModuleType());
 
 			if (getBlockEntity() instanceof LinkableBlockEntity be)
 				ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, be);
@@ -271,7 +303,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				ItemStack toInsert = module.copy();
 
 				modules.set(i, toInsert);
-				onModuleInserted(toInsert, moduleItem.getModuleType());
+				enableModule(moduleItem.getModuleType());
+				onModuleEnabled(toInsert, moduleItem.getModuleType());
 				break;
 			}
 		}
@@ -290,7 +323,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				ItemStack removed = modules.get(i).copy();
 
 				modules.set(i, ItemStack.EMPTY);
-				onModuleRemoved(removed, module);
+				disableModule(module);
+				onModuleDisabled(removed, module);
 			}
 		}
 	}
@@ -319,13 +353,13 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Call this from your read method. Used for reading the module inventory from a tag. Use in conjunction with
-	 * writeModuleInventory.
+	 * Call this from your load method. Used for loading the module inventory from a tag. Use in conjunction with
+	 * saveModuleInventory.
 	 *
 	 * @param tag The tag to read the inventory from
 	 * @return A NonNullList of ItemStacks that were read from the given tag
 	 */
-	public default NonNullList<ItemStack> readModuleInventory(CompoundTag tag) {
+	public default NonNullList<ItemStack> loadModuleInventory(CompoundTag tag) {
 		ListTag list = tag.getList("Modules", Tag.TAG_COMPOUND);
 		NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
@@ -341,13 +375,40 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Call this from your write method. Used for writing the module inventory to a tag. Use in conjunction with
-	 * readModuleInventory.
+	 * Call this from your load method after loadModuleInventory. Used for loading which modules are enabled from a tag. Use
+	 * in conjunction with saveModuleStates.
 	 *
-	 * @param tag The tag to write the inventory to
-	 * @return The modified CompoundNBT
+	 * @param tag The tag to read the states from
+	 * @return An EnumMap of all module types with the enabled flag set as read from the tag
 	 */
-	public default CompoundTag writeModuleInventory(CompoundTag tag) {
+	public default EnumMap<ModuleType, Boolean> loadModuleStates(CompoundTag tag) {
+		EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
+		List<ModuleType> acceptedModules = Arrays.asList(acceptedModules());
+
+		for (ModuleType module : ModuleType.values()) {
+			if (acceptedModules.contains(module)) {
+				String key = module.name().toLowerCase() + "Enabled";
+
+				if (tag.contains(key))
+					moduleStates.put(module, tag.getBoolean(key));
+				else
+					moduleStates.put(module, hasModule(module)); //if the module is accepted, but no state was saved yet, revert to whether the module is installed
+			}
+			else
+				moduleStates.put(module, false); //module is not accepted, so disable it right away
+		}
+
+		return moduleStates;
+	}
+
+	/**
+	 * Call this from your save method. Used for writing the module inventory to a tag. Use in conjunction with
+	 * loadModuleInventory.
+	 *
+	 * @param tag The tag to save the inventory to
+	 * @return The modified tag
+	 */
+	public default CompoundTag saveModuleInventory(CompoundTag tag) {
 		ListTag list = new ListTag();
 		NonNullList<ItemStack> modules = getInventory();
 
@@ -362,6 +423,21 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		}
 
 		tag.put("Modules", list);
+		return tag;
+	}
+
+	/**
+	 * Call this from your save method. Used for writing which modules are enabled to a tag. Use in conjunction with
+	 * loadModuleStates.
+	 *
+	 * @param tag The tag to save the module enabled states to
+	 * @return The modified tag
+	 */
+	public default CompoundTag saveModuleStates(CompoundTag tag) {
+		for (ModuleType module : acceptedModules()) {
+			tag.putBoolean(module.name().toLowerCase() + "Enabled", isModuleEnabled(module));
+		}
+
 		return tag;
 	}
 }

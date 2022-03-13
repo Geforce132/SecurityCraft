@@ -62,7 +62,6 @@ public class ModuleItem extends Item {
 
 			if (inv.getAcceptedModules().contains(type) && !inv.hasModule(type)) {
 				inv.insertModule(stack);
-				inv.onModuleInserted(stack, type);
 
 				if (!ctx.getPlayer().isCreative())
 					stack.shrink(1);

@@ -91,7 +91,6 @@ public class UniversalOwnerChangerItem extends Item {
 				ItemStack moduleStack = inv.getModule(moduleType);
 
 				inv.removeModule(moduleType);
-				inv.onModuleRemoved(moduleStack, moduleType);
 				Block.popResource(level, pos, moduleStack);
 			}
 		}

@@ -29,10 +29,6 @@ public class PictureButton extends ExtendedButton {
 	private int textureWidth;
 	private int textureHeight;
 
-	public PictureButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ItemStack itemToRender) {
-		this(xPos, yPos, width, height, itemRenderer, itemToRender, b -> {});
-	}
-
 	public PictureButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ItemStack itemToRender, OnPress onPress) {
 		super(xPos, yPos, width, height, TextComponent.EMPTY, onPress);
 		this.itemRenderer = itemRenderer;
