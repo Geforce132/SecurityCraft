@@ -65,9 +65,9 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity {
 
 		if (other.getValue(DoorBlock.HALF) != myHalf) {
 			if (level.getBlockEntity(otherPos) instanceof SpecialDoorBlockEntity otherDoorBe) {
-				if (!removed && !otherDoorBe.hasModule(module))
+				if (!removed && !otherDoorBe.isModuleEnabled(module))
 					otherDoorBe.insertModule(stack);
-				else if (removed && otherDoorBe.hasModule(module))
+				else if (removed && otherDoorBe.isModuleEnabled(module))
 					otherDoorBe.removeModule(module);
 			}
 		}

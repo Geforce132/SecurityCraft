@@ -257,7 +257,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 		@Override
 		public boolean isPowering(Level level, BlockPos pos, BlockState state, BlockEntity be, Direction direction, int distance) {
-			return ((InventoryScannerBlockEntity) be).hasModule(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) be).shouldProvidePower();
+			return ((InventoryScannerBlockEntity) be).isModuleEnabled(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) be).shouldProvidePower();
 		}
 
 		@Override
