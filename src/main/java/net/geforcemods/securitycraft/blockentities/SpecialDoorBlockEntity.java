@@ -52,7 +52,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity {
 		super.onModuleDisabled(stack, module);
 	}
 
-	private void handleModule(ItemStack stack, ModuleType module, boolean removed) {
+	private void handleModule(ItemStack stack, ModuleType module, boolean disabled) {
 		DoubleBlockHalf myHalf = getBlockState().getValue(DoorBlock.HALF);
 		BlockPos otherPos;
 
@@ -65,10 +65,18 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity {
 
 		if (other.getValue(DoorBlock.HALF) != myHalf) {
 			if (level.getBlockEntity(otherPos) instanceof SpecialDoorBlockEntity otherDoorBe) {
-				if (!removed && !otherDoorBe.isModuleEnabled(module))
-					otherDoorBe.insertModule(stack);
-				else if (removed && otherDoorBe.isModuleEnabled(module))
-					otherDoorBe.removeModule(module);
+				if (!disabled) {
+					if (otherDoorBe.hasModule(module))
+						otherDoorBe.enableModule(module);
+					else
+						otherDoorBe.insertModule(stack);
+				}
+				else if (disabled) {
+					if (hasModule(module))
+						otherDoorBe.disableModule(module);
+					else
+						otherDoorBe.removeModule(module);
+				}
 			}
 		}
 	}
