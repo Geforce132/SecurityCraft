@@ -33,12 +33,14 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 import net.minecraftforge.client.gui.widget.Slider;
 import net.minecraftforge.client.gui.widget.Slider.ISlider;
 
-public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas {
+public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
 	//@formatter:off
 	private static final ResourceLocation[] TEXTURES = {
 			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
@@ -62,6 +64,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		moduleInv = menu.moduleInv;
 		blockName = menu.moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId().substring(5);
 		name = Utils.localize(moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId());
+		menu.addSlotListener(this);
 	}
 
 	@Override
@@ -74,6 +77,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			int column = i % numberOfColumns;
 
 			addRenderableWidget(descriptionButtons[i] = new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
+			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 
@@ -147,6 +151,18 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
+	@Override
+	public void slotChanged(AbstractContainerMenu menu, int slotIndex, ItemStack stack) {
+		if (slotIndex < 36)
+			return;
+
+		//when removing a stack from a slot, it's not possible to reliably get the module type, so just loop through all possible types
+		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
+			if (descriptionButtons[i] != null)
+				descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
+		}
+	}
+
 	private void moduleButtonClicked(Button button) {
 		ModuleType moduleType = ((ModuleButton) button).getModule().getModuleType();
 
@@ -211,6 +227,9 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	public List<Rect2i> getExtraAreas() {
 		return extraAreas;
 	}
+
+	@Override
+	public void dataChanged(AbstractContainerMenu menu, int slotIndex, int value) {}
 
 	private class ModuleButton extends PictureButton {
 		private final ModuleItem module;

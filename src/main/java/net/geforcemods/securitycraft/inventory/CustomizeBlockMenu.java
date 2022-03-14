@@ -130,7 +130,25 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 
 				if (moduleInv instanceof LinkableBlockEntity lbe)
 					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, lbe);
+
+				broadcastChanges();
 			}
+		}
+
+		@Override
+		public void set(ItemStack stack) {
+			super.set(stack);
+			broadcastChanges();
+		}
+
+		@Override
+		public ItemStack remove(int amount) {
+			ItemStack stack = super.remove(amount);
+
+			if (!stack.isEmpty())
+				broadcastChanges();
+
+			return stack;
 		}
 	}
 }
