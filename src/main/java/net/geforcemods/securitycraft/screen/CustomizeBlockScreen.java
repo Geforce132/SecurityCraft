@@ -35,6 +35,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 import net.minecraftforge.client.gui.widget.Slider;
@@ -51,6 +52,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			new ResourceLocation("securitycraft:textures/gui/container/customize5.png")
 	};
 	//@formatter:on
+	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private final List<Rect2i> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
@@ -124,6 +126,17 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
+
+		for (int i = 36; i < menu.maxSlots; i++) {
+			Slot slot = menu.slots.get(i);
+
+			if (!slot.getItem().isEmpty()) {
+				boolean isEnabled = moduleInv.isModuleEnabled(((ModuleItem) slot.getItem().getItem()).getModuleType());
+
+				RenderSystem._setShaderTexture(0, BEACON_GUI);
+				blit(pose, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, isEnabled ? 88 : 110, 219, 21, 22, 256, 256);
+			}
+		}
 
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
 			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
