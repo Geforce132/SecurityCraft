@@ -127,13 +127,14 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
 
+		RenderSystem._setShaderTexture(0, BEACON_GUI);
+		
 		for (int i = 36; i < menu.maxSlots; i++) {
 			Slot slot = menu.slots.get(i);
 
 			if (!slot.getItem().isEmpty()) {
 				boolean isEnabled = moduleInv.isModuleEnabled(((ModuleItem) slot.getItem().getItem()).getModuleType());
 
-				RenderSystem._setShaderTexture(0, BEACON_GUI);
 				blit(pose, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, isEnabled ? 88 : 110, 219, 21, 22, 256, 256);
 			}
 		}
