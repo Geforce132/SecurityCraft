@@ -321,12 +321,14 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	public void enableModule(ModuleType module) {
 		moduleStates.put(module, hasModule(module)); //only enable if the module is present
 		setChanged();
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 	}
 
 	@Override
 	public void disableModule(ModuleType module) {
 		moduleStates.put(module, false);
 		setChanged();
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 	}
 
 	@Override
