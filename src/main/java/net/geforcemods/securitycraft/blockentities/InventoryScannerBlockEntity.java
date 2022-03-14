@@ -284,8 +284,12 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-		if (connectedScanner != null && !connectedScanner.hasModule(module))
-			connectedScanner.insertModule(stack);
+		if (connectedScanner != null) {
+			if (connectedScanner.hasModule(module))
+				connectedScanner.enableModule(module);
+			else
+				connectedScanner.insertModule(stack);
+		}
 
 		if (module == ModuleType.DISGUISE) {
 			onInsertDisguiseModule(this, stack);
@@ -301,8 +305,12 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-		if (connectedScanner != null && connectedScanner.hasModule(module))
-			connectedScanner.removeModule(module);
+		if (connectedScanner != null) {
+			if (hasModule(module))
+				connectedScanner.disableModule(module);
+			else
+				connectedScanner.removeModule(module);
+		}
 
 		if (module == ModuleType.STORAGE) {
 			//first 10 slots (0-9) are the prohibited slots

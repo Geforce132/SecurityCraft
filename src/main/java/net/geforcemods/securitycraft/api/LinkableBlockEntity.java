@@ -96,13 +96,13 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	@Override
 	public void onModuleEnabled(ItemStack stack, ModuleType module) {
 		super.onModuleEnabled(stack, module);
-		ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, this);
+		ModuleUtils.createLinkedAction(LinkedAction.MODULE_ENABLED, stack, this);
 	}
 
 	@Override
 	public void onModuleDisabled(ItemStack stack, ModuleType module) {
 		super.onModuleDisabled(stack, module);
-		ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, this);
+		ModuleUtils.createLinkedAction(LinkedAction.MODULE_DISABLED, stack, this);
 	}
 
 	private void readLinkedBlocks(ListTag list) {

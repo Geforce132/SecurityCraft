@@ -80,5 +80,15 @@ public class ModuleUtils {
 					stack, ((ModuleItem) stack.getItem()).getModuleType()
 			}, be);
 		}
+		else if (action == LinkedAction.MODULE_ENABLED) {
+			be.createLinkedBlockAction(action, new Object[] {
+					stack
+			}, be);
+		}
+		else if (action == LinkedAction.MODULE_DISABLED) {
+			be.createLinkedBlockAction(action, new Object[] {
+					stack
+			}, be);
+		}
 	}
 }

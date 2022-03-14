@@ -58,7 +58,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			insertModule(module);
 
 			if (((ModuleItem) module.getItem()).getModuleType() == ModuleType.DISGUISE)
-				onInsertDisguiseModule(module);
+				onEnableDisguiseModule(module);
 
 			excludedBEs.add(this);
 			createLinkedBlockAction(LinkedAction.MODULE_INSERTED, parameters, excludedBEs);
@@ -70,10 +70,34 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			removeModule(module);
 
 			if (module == ModuleType.DISGUISE)
-				onRemoveDisguiseModule(moduleStack);
+				onDisableDisguiseModule(moduleStack);
 
 			excludedBEs.add(this);
 			createLinkedBlockAction(LinkedAction.MODULE_REMOVED, parameters, excludedBEs);
+		}
+		else if (action == LinkedAction.MODULE_ENABLED) {
+			ItemStack moduleStack = (ItemStack) parameters[0];
+			ModuleType module = ((ModuleItem) moduleStack.getItem()).getModuleType();
+
+			enableModule(module);
+
+			if (module == ModuleType.DISGUISE)
+				onEnableDisguiseModule(moduleStack);
+
+			excludedBEs.add(this);
+			createLinkedBlockAction(LinkedAction.MODULE_ENABLED, parameters, excludedBEs);
+		}
+		else if (action == LinkedAction.MODULE_DISABLED) {
+			ItemStack moduleStack = (ItemStack) parameters[0];
+			ModuleType module = ((ModuleItem) moduleStack.getItem()).getModuleType();
+
+			disableModule(module);
+
+			if (module == ModuleType.DISGUISE)
+				onDisableDisguiseModule(moduleStack);
+
+			excludedBEs.add(this);
+			createLinkedBlockAction(LinkedAction.MODULE_DISABLED, parameters, excludedBEs);
 		}
 	}
 
@@ -82,7 +106,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		super.onModuleEnabled(stack, module);
 
 		if (module == ModuleType.DISGUISE)
-			onInsertDisguiseModule(stack);
+			onEnableDisguiseModule(stack);
 	}
 
 	@Override
@@ -90,17 +114,17 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		super.onModuleDisabled(stack, module);
 
 		if (module == ModuleType.DISGUISE)
-			onRemoveDisguiseModule(stack);
+			onDisableDisguiseModule(stack);
 	}
 
-	private void onInsertDisguiseModule(ItemStack stack) {
+	private void onEnableDisguiseModule(ItemStack stack) {
 		if (!level.isClientSide)
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 		else
 			ClientHandler.putDisguisedBeRenderer(this, stack);
 	}
 
-	private void onRemoveDisguiseModule(ItemStack stack) {
+	private void onDisableDisguiseModule(ItemStack stack) {
 		if (!level.isClientSide)
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 		else
