@@ -514,7 +514,12 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob //needs t
 
 	public boolean isTargetingAllowedPlayer(LivingEntity potentialTarget) {
 		if (potentialTarget != null) {
-			List<String> players = ModuleUtils.getPlayersFromModule(getAllowlistModule());
+			ItemStack allowlistModule = getAllowlistModule();
+
+			if (allowlistModule.hasTag() && allowlistModule.getTag().getBoolean("affectEveryone"))
+				return true;
+
+			List<String> players = ModuleUtils.getPlayersFromModule(allowlistModule);
 
 			for (String s : players) {
 				if (potentialTarget.getName().getContents().equalsIgnoreCase(s))

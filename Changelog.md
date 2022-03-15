@@ -28,6 +28,7 @@
 - Fix: The mine overlay on the Ancient Debris Mine item can be seen by other players when holding the item
 - Fix: Removing a laser field with the Universal Block Remover does not destroy adjacent laser fields
 - Fix: Crash when placing a Sonic Security System inside of any replaceable block
+- Fix: Sentries ignore the Allowlist Module's "Affect every player" setting
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
