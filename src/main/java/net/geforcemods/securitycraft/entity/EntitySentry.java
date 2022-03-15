@@ -519,7 +519,12 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 	public boolean isTargetingAllowedPlayer(EntityLivingBase potentialTarget) {
 		if (potentialTarget != null) {
-			List<String> players = ModuleUtils.getPlayersFromModule(getAllowlistModule());
+			ItemStack allowlistModule = getAllowlistModule();
+
+			if (allowlistModule.hasTagCompound() && allowlistModule.getTagCompound().getBoolean("affectEveryone"))
+				return true;
+
+			List<String> players = ModuleUtils.getPlayersFromModule(allowlistModule);
 
 			for (String s : players) {
 				if (potentialTarget.getName().equalsIgnoreCase(s))

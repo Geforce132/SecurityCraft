@@ -20,6 +20,7 @@
 - Fix: Block mines cannot be mined quickly with the appropriate tool of their vanilla counterpart
 - Fix: Removing a laser field with the Universal Block Remover does not destroy adjacent laser fields
 - Fix: Crash when placing a Sonic Security System inside of any replaceable block
+- Fix: Sentries ignore the Allowlist Module's "Affect every player" setting
 - Potential Fix: Entities sometimes disappear when dismounting a camera
 
 --------------------------Changelog for v1.9.0.2 of SecurityCraft--------------------------
