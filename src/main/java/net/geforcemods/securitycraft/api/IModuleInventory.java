@@ -145,7 +145,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			return ItemStack.EMPTY;
 		else {
 			if (!simulate) {
-				if (stack.getItem() instanceof ModuleItem module) {
+				if (!getBlockEntity().getLevel().isClientSide && stack.getItem() instanceof ModuleItem module) {
 					disableModule(module.getModuleType());
 					onModuleDisabled(stack, module.getModuleType());
 
@@ -179,7 +179,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				copy.setCount(1);
 				getInventory().set(slot, copy);
 
-				if (stack.getItem() instanceof ModuleItem module) {
+				if (!getBlockEntity().getLevel().isClientSide && stack.getItem() instanceof ModuleItem module) {
 					enableModule(module.getModuleType());
 					onModuleEnabled(stack, module.getModuleType());
 
@@ -206,7 +206,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		ItemStack previous = getModuleInSlot(slot);
 
 		//call the correct methods, should there have been a module in the slot previously
-		if (!previous.isEmpty()) {
+		if (!getBlockEntity().getLevel().isClientSide && stack.isEmpty() && !previous.isEmpty()) {
 			ModuleType moduleType = ((ModuleItem) previous.getItem()).getModuleType();
 
 			disableModule(moduleType);
@@ -218,7 +218,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		getInventory().set(slot, stack);
 
-		if (stack.getItem() instanceof ModuleItem module) {
+		if (!getBlockEntity().getLevel().isClientSide && stack.getItem() instanceof ModuleItem module) {
 			enableModule(module.getModuleType());
 			onModuleEnabled(stack, module.getModuleType());
 
