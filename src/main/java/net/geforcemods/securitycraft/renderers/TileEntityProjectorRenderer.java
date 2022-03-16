@@ -22,7 +22,12 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 		TileEntityRenderDelegate.DISGUISED_BLOCK.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha);
 
 		if (te.isActive() && !te.isEmpty()) {
-			EnumFacing facing = te.getWorld().getBlockState(te.getPos()).getValue(BlockProjector.FACING);
+			IBlockState state = te.getWorld().getBlockState(te.getPos());
+
+			if (!state.getPropertyKeys().contains(BlockProjector.FACING))
+				return;
+
+			EnumFacing facing = state.getValue(BlockProjector.FACING);
 
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x, y, z + 1); //everything's offset by one on z, no idea why
@@ -41,13 +46,13 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 
 					if (pos != null && te.getWorld().isAirBlock(pos)) {
 						BlockRendererDispatcher blockRendererDispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-						IBlockState state = te.getProjectedState();
+						IBlockState projectedState = te.getProjectedState();
 
 						GlStateManager.disableCull();
 						GlStateManager.scale(0.9999D, 0.9999D, 0.9999D); //counteract z-fighting between fake blocks
 
-						if (state.getRenderType() == EnumBlockRenderType.MODEL)
-							blockRendererDispatcher.renderBlockBrightness(state, te.getWorld().getLightBrightness(pos));
+						if (projectedState.getRenderType() == EnumBlockRenderType.MODEL)
+							blockRendererDispatcher.renderBlockBrightness(projectedState, te.getWorld().getLightBrightness(pos));
 
 						TileEntityRenderDelegate.PROJECTOR.tryRenderDelegate(te, 0, 0, -1, partialTicks, destroyStage, alpha);
 						GlStateManager.enableCull();
