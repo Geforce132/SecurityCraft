@@ -12,7 +12,7 @@
 - Fix: Projecting disguisable blocks (those that support the disguise module) does not work
 - Fix: Crash when trying to place a door one block below the build height
 - Fix: Door item gets removed when trying to place a door outside the build height
-- Fix: Some blocks' settings/inventory doesn't properly save
+- Fix: Some blocks' settings/inventory don't properly save
 - Fix: Fake Water/Lava bucket fill sounds don't play
 - Fix: Disguising blocks using certain blocks with block entity renderers (like signs and banners) doesn't work
 - Fix: It's possible to jump over disguisable blocks that are disguised as fences or walls
