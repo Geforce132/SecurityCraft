@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 
@@ -106,11 +107,17 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
-	public void onLoad() {
-		super.onLoad();
+	public void handleUpdateTag(CompoundNBT tag) {
+		load(tag);
 
-		if (level.isClientSide)
-			ClientHandler.putDisguisedBeRenderer(this, getModule(ModuleType.DISGUISE));
+		if (level != null && level.isClientSide) {
+			ItemStack stack = getModule(ModuleType.DISGUISE);
+
+			if (!stack.isEmpty())
+				ClientHandler.putDisguisedBeRenderer(this, stack);
+			else
+				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
+		}
 	}
 
 	@Override
