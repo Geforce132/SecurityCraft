@@ -1,6 +1,6 @@
 {
-	"version": "v1.9.0.2",
-	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/3577167",
-	"fileName": "[1.17.1] SecurityCraft v1.9.0.2",
-	"changelog": "The Texture Update"
+	"version": "v1.9.1",
+	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/3696872",
+	"fileName": "[1.17.1] SecurityCraft v1.9.1",
+	"changelog": "State selector, block mines/password-protected smoker & blast furnace, fixes"
 }
