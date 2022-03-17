@@ -20,7 +20,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'eclipse'
 
-version = '1.9.0.2-beta1'
+version = '1.9.1'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
@@ -100,7 +100,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.0.2'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.0.18'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
 	implementation fg.deobf("mezz.jei:jei-1.18.2:9.4.1.116")

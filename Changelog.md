@@ -12,7 +12,7 @@
 - Fix: Projecting disguisable blocks (those that support the disguise module) does not work
 - Fix: Crash when trying to place a door one block below the build height
 - Fix: Door item gets removed when trying to place a door outside the build height
-- Fix: Some blocks' settings/inventory doesn't properly save
+- Fix: Some blocks' settings/inventory don't properly save
 - Fix: Fake Water/Lava bucket fill sounds don't play
 - Fix: Disguising blocks using certain blocks with block entity renderers (like signs and banners) doesn't work
 - Fix: It's possible to jump over disguisable blocks that are disguised as fences or walls
@@ -31,6 +31,7 @@
 - Fix: The mine overlay on the Ancient Debris Mine item can be seen by other players when holding the item
 - Fix: Removing a laser field with the Universal Block Remover does not destroy adjacent laser fields
 - Fix: Crash when placing a Sonic Security System inside of any replaceable block
+- Fix: Sentries ignore the Allowlist Module's "Affect every player" setting
 - Misc.: More texture changes and file renames, resource packs may need to be updated
 
 --------------------------Changelog for v1.9.0.2-beta1 of SecurityCraft--------------------------
