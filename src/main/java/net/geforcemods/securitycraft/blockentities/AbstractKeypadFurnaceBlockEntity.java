@@ -107,6 +107,15 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	@Override
 	public void handleUpdateTag(CompoundTag tag) {
 		load(tag);
+
+		if (level != null && level.isClientSide) {
+			ItemStack stack = getModule(ModuleType.DISGUISE);
+
+			if (!stack.isEmpty())
+				ClientHandler.putDisguisedBeRenderer(this, stack);
+			else
+				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
+		}
 	}
 
 	@Override
@@ -243,14 +252,6 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 			else
 				ClientHandler.putDisguisedBeRenderer(this, stack);
 		}
-	}
-
-	@Override
-	public void onLoad() {
-		super.onLoad();
-
-		if (level.isClientSide)
-			ClientHandler.putDisguisedBeRenderer(this, getModule(ModuleType.DISGUISE));
 	}
 
 	@Override

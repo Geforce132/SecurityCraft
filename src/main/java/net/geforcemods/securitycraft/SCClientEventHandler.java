@@ -86,7 +86,13 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void onClickInput(InputEvent.ClickInputEvent event) {
-		if (event.isAttack() && ClientHandler.isPlayerMountedOnCamera()) {
+		if (ClientHandler.isPlayerMountedOnCamera()) {
+			Minecraft mc = Minecraft.getInstance();
+			InteractionHand hand = event.getHand();
+
+			if (mc.player.getItemInHand(hand).is(SCContent.CAMERA_MONITOR.get()))
+				SCContent.CAMERA_MONITOR.get().use(mc.level, mc.player, hand);
+
 			event.setCanceled(true);
 			event.setSwingHand(false);
 		}

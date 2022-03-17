@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+'
         classpath 'org.parchmentmc:librarian:1.+'
     }
 }
@@ -20,7 +20,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'eclipse'
 
-version = '1.9.0.2-beta1'
+version = '1.9.1'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
@@ -44,7 +44,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-    mappings channel: 'official', version: '1.18.2'
+    mappings channel: 'parchment', version: '2022.03.13-1.18.2'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
 	runs {
@@ -52,9 +52,6 @@ minecraft {
             workingDirectory project.file('run/client')
             property 'forge.logging.console.level', 'debug'
             args '-mixin.config=securitycraft.mixins.json'
-            //fixes refmap of deps
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
                 securitycraft {
@@ -103,14 +100,14 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.0.1'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.0.18'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
-	implementation fg.deobf("mezz.jei:jei-1.18.1:9.2.1.69")
-    implementation fg.deobf("curse.maven:the-one-probe-245211:3606616")
-    implementation fg.deobf("curse.maven:jade-324717:3614180")
-    implementation fg.deobf("curse.maven:betterf3-401648:3551266")
-    implementation fg.deobf("curse.maven:cloth-config-forge-348521:3559639")
+	implementation fg.deobf("mezz.jei:jei-1.18.2:9.4.1.116")
+    implementation fg.deobf("curse.maven:the-one-probe-245211:3671753")
+    implementation fg.deobf("curse.maven:jade-324717:3671210")
+    //implementation fg.deobf("curse.maven:betterf3-401648:3551266")
+    //implementation fg.deobf("curse.maven:cloth-config-forge-348521:3559639") //betterf3 dependency
 	//compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
 }
 
