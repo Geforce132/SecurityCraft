@@ -106,6 +106,20 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	}
 
 	@Override
+	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+		load(state, tag);
+
+		if (level != null && level.isClientSide) {
+			ItemStack stack = getModule(ModuleType.DISGUISE);
+
+			if (!stack.isEmpty())
+				ClientHandler.putDisguisedBeRenderer(this, stack);
+			else
+				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
+		}
+	}
+
+	@Override
 	public Owner getOwner() {
 		return owner;
 	}
@@ -243,14 +257,6 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 			else
 				ClientHandler.putDisguisedBeRenderer(this, stack);
 		}
-	}
-
-	@Override
-	public void onLoad() {
-		super.onLoad();
-
-		if (level.isClientSide)
-			ClientHandler.putDisguisedBeRenderer(this, getModule(ModuleType.DISGUISE));
 	}
 
 	@Override
