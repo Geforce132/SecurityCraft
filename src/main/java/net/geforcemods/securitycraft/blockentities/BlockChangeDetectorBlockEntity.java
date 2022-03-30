@@ -50,7 +50,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		//		if (getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player))
 		//			return;
 
-		if (hasModule(ModuleType.SMART) && (!(filter.getItem() instanceof BlockItem item) || item.getBlock() != state.getBlock()))
+		if (hasModule(ModuleType.SMART) && (filter.getItem() instanceof BlockItem item && item.getBlock() != state.getBlock()))
 			return;
 
 		if (hasModule(ModuleType.REDSTONE)) {
