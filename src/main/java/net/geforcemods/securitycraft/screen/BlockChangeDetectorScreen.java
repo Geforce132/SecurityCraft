@@ -121,6 +121,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	@Override
 	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		font.draw(pose, BLOCK_NAME, imageWidth / 2 - font.width(BLOCK_NAME) / 2, 6, 0x404040);
+		renderTooltip(pose, mouseX - leftPos, mouseY - topPos);
 	}
 
 	@Override
