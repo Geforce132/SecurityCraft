@@ -10,6 +10,7 @@
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_glass_pane"
+    "item": "securitycraft:reinforced_glass_pane",
+    "count": 16
   }
 }
