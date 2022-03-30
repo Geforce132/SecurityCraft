@@ -252,8 +252,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 				height += entry.getHeight();
 			}
 
-			if (getContentHeight() > this.height)
-				applyScrollLimits();
+			applyScrollLimits();
 		}
 
 		@Override
@@ -299,11 +298,11 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			if (maxScroll < 0)
 				maxScroll /= 2;
 
-			if (scrollDistance < 0.0F)
-				scrollDistance = 0.0F;
-
 			if (scrollDistance > maxScroll)
 				scrollDistance = maxScroll;
+
+			if (scrollDistance < 0.0F)
+				scrollDistance = 0.0F;
 		}
 
 		public void updateFilteredEntries() {
@@ -311,13 +310,13 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			filteredEntries = new ArrayList<>(allEntries);
 
 			if (!showAllCheckbox.selected()) {
-			//@formatter:off
+				//@formatter:off
 				filteredEntries = filteredEntries
-					.stream()
-					.filter(e -> currentMode == DetectionMode.BOTH || currentMode == e.getMode())
-					.filter(e -> filteredBlock == Blocks.AIR || filteredBlock == e.getBlock())
+						.stream()
+						.filter(e -> currentMode == DetectionMode.BOTH || currentMode == e.getMode())
+						.filter(e -> filteredBlock == Blocks.AIR || filteredBlock == e.getBlock())
 						.toList();
-			//@formatter:on
+				//@formatter:on
 			}
 
 			filteredEntries.forEach(e -> e.active = true);
@@ -326,6 +325,22 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 		public void recalculateContentHeight() {
 			recalculateContentHeight = true;
+		}
+
+		@Override
+		public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+			if (getContentHeight() < height)
+				return false;
+
+			return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+		}
+
+		@Override
+		public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
+			if (getContentHeight() < height)
+				return false;
+
+			return super.mouseScrolled(mouseX, mouseY, scroll);
 		}
 
 		@Override
