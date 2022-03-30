@@ -534,7 +534,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('I', Tags.Items.INGOTS_IRON)
 		.unlockedBy("has_mine", has(SCContent.MINE.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_GLASS_PANE.get())
+		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_GLASS_PANE.get(), 16)
 		.pattern("GGG")
 		.pattern("GGG")
 		.define('G', SCContent.REINFORCED_GLASS.get())

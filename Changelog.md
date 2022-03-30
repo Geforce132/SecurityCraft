@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
+
+- Fix: The recipe for reinforced glass panes is incorrect
+
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 
 - New: Password-protected Smoker and Password-protected Blast Furnace
