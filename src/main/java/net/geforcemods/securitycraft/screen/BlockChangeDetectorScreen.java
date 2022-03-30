@@ -111,6 +111,11 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 			changeEntryList.addEntry(addWidget(new ContentSavingCollapsileTextList(0, 0, 154, Utils.localize(entry.state().getBlock().getDescriptionId()), list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), false, changeEntryList::isHovered, entry.action(), entry.state().getBlock())));
 		}
+
+		ItemStack filteredStack = menu.getSlot(0).getItem();
+
+		changeEntryList.filteredBlock = filteredStack == ItemStack.EMPTY ? Blocks.AIR : ((BlockItem) filteredStack.getItem()).getBlock();
+		changeEntryList.updateFilteredEntries();
 	}
 
 	@Override
@@ -180,12 +185,12 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 	@Override
 	public void slotChanged(AbstractContainerMenu menu, int slotIndex, ItemStack stack) {
-		if (slotIndex == 36) {
+		if (slotIndex == 0 && changeEntryList != null) {
 			if (stack.isEmpty())
 				changeEntryList.filteredBlock = Blocks.AIR;
 			else
 				changeEntryList.filteredBlock = ((BlockItem) stack.getItem()).getBlock();
-			System.out.println("hi");
+
 			changeEntryList.updateFilteredEntries();
 		}
 	}
@@ -253,11 +258,6 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			entry.x = left;
 			entry.setY(top + slotHeight * allEntries.size());
 			allEntries.add(entry);
-
-			if (currentMode == DetectionMode.BOTH || currentMode == entry.getMode()) {
-				filteredEntries.add(entry);
-				recalculateContentHeight();
-			}
 		}
 
 		public void setOpen(ContentSavingCollapsileTextList newOpenedTextList) {
