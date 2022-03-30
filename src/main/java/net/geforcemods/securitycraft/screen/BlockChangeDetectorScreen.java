@@ -114,7 +114,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 		ItemStack filteredStack = menu.getSlot(0).getItem();
 
-		changeEntryList.filteredBlock = filteredStack == ItemStack.EMPTY ? Blocks.AIR : ((BlockItem) filteredStack.getItem()).getBlock();
+		changeEntryList.filteredBlock = filteredStack.isEmpty() ? Blocks.AIR : ((BlockItem) filteredStack.getItem()).getBlock();
 		changeEntryList.updateFilteredEntries();
 	}
 
