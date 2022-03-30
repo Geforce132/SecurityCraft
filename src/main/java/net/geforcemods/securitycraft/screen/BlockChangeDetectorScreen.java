@@ -307,6 +307,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		public void updateFilteredEntries() {
+			allEntries.forEach(e -> e.active = false);
 			filteredEntries = new ArrayList<>(allEntries);
 
 			if (!showAllCheckbox.selected()) {
@@ -319,6 +320,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			//@formatter:on
 			}
 
+			filteredEntries.forEach(e -> e.active = true);
 			recalculateContentHeight();
 		}
 
