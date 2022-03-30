@@ -781,6 +781,7 @@
 	"gui.securitycraft:block_change_detector.mode.place": "Place",
 	"gui.securitycraft:block_change_detector.mode.both": "Break & Place",
 	"gui.securitycraft:block_change_detector.smart_module_hint": "Install a Smart Module to allow the detector to only detect a specific block type!",
+	"gui.securitycraft:block_change_detector.show_all_checkbox": "Show all entries",
 
 	"messages.securitycraft:bugReport": "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please",
 	"messages.securitycraft:retinalScanner.hello": "Hello %s.",

@@ -28,6 +28,7 @@ import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -52,9 +53,10 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	private static final TranslatableComponent BLOCK_NAME = Utils.localize(SCContent.BLOCK_CHANGE_DETECTOR.get().getDescriptionId());
 	private BlockChangeDetectorBlockEntity be;
 	private ChangeEntryList changeEntryList;
-	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[2];
+	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[3];
 	private TextHoverChecker smartModuleHoverChecker;
 	private ModeButton modeButton;
+	private Checkbox showAllCheckbox;
 	private DetectionMode currentMode;
 
 	public BlockChangeDetectorScreen(BlockChangeDetectorMenu menu, Inventory inv, Component title) {
@@ -86,8 +88,16 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			currentMode = DetectionMode.values()[((ModeButton) b).getCurrentIndex()];
 			changeEntryList.updateFilteredEntries();
 		}));
+		addRenderableWidget(showAllCheckbox = new Checkbox(leftPos + 173, topPos + 65, 20, 20, TextComponent.EMPTY, false, false) {
+			@Override
+			public void onPress() {
+				super.onPress();
+				changeEntryList.updateFilteredEntries();
+			}
+		});
 		hoverCheckers[0] = new TextHoverChecker(clearButton, CLEAR);
 		hoverCheckers[1] = new TextHoverChecker(modeButton, Arrays.stream(DetectionMode.values()).map(e -> (Component) Utils.localize(e.getDescriptionId())).toList());
+		hoverCheckers[2] = new TextHoverChecker(showAllCheckbox, Utils.localize("gui.securitycraft:block_change_detector.show_all_checkbox"));
 		smartModuleHoverChecker = new TextHoverChecker(topPos + 44, topPos + 60, leftPos + 174, leftPos + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint"));
 
 		for (ChangeEntry entry : be.getEntries()) {
@@ -297,14 +307,18 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		public void updateFilteredEntries() {
-			filteredEntries = new ArrayList<>();
+			filteredEntries = new ArrayList<>(allEntries);
+
+			if (!showAllCheckbox.selected()) {
 			//@formatter:off
-			filteredEntries.addAll(allEntries
+				filteredEntries = filteredEntries
 					.stream()
 					.filter(e -> currentMode == DetectionMode.BOTH || currentMode == e.getMode())
 					.filter(e -> filteredBlock == Blocks.AIR || filteredBlock == e.getBlock())
-					.toList());
+						.toList();
 			//@formatter:on
+			}
+
 			recalculateContentHeight();
 		}
 
