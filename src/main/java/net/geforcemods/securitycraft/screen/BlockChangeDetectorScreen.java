@@ -307,17 +307,18 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 		public void updateFilteredEntries() {
 			allEntries.forEach(e -> e.active = false);
-			filteredEntries = new ArrayList<>(allEntries);
 
 			if (!showAllCheckbox.selected()) {
 				//@formatter:off
-				filteredEntries = filteredEntries
+				filteredEntries = new ArrayList<>(allEntries
 						.stream()
 						.filter(e -> currentMode == DetectionMode.BOTH || currentMode == e.getMode())
 						.filter(e -> filteredBlock == Blocks.AIR || filteredBlock == e.getBlock())
-						.toList();
+						.toList());
 				//@formatter:on
 			}
+			else
+				filteredEntries = new ArrayList<>(allEntries);
 
 			filteredEntries.forEach(e -> e.active = true);
 			recalculateContentHeight();
