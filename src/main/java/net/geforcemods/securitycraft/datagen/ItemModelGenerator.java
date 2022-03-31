@@ -71,6 +71,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				SCContent.WIRE_CUTTERS));
 		singleTextureItems.removeAll(handheldItems);
 		//@formatter:on
+		simpleParent(SCContent.BLOCK_CHANGE_DETECTOR.get());
 
 		for (RegistryObject<Item> obj : singleTextureItems) {
 			simpleItem(obj.get(), "item/generated");
