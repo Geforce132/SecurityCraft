@@ -232,6 +232,9 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 				contentHeight = height;
 				recalculateContentHeight = false;
+
+				if (contentHeight >= this.height && currentlyOpen != null)
+					scrollDistance = slotHeight * filteredEntries.indexOf(currentlyOpen);
 			}
 
 			return contentHeight;
@@ -281,9 +284,6 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 					currentlyOpen = newOpenedTextList;
 				}
 			}
-
-			if (currentlyOpen != null)
-				scrollDistance = slotHeight * filteredEntries.indexOf(currentlyOpen);
 
 			recalculateContentHeight();
 		}
