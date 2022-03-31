@@ -214,7 +214,6 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		private List<ContentSavingCollapsileTextList> allEntries = new ArrayList<>();
 		private List<ContentSavingCollapsileTextList> filteredEntries = new ArrayList<>();
 		private ContentSavingCollapsileTextList currentlyOpen = null;
-		private boolean recalculateContentHeight = false;
 		private int contentHeight = 0;
 		private Block filteredBlock = Blocks.AIR;
 
@@ -224,19 +223,6 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 		@Override
 		protected int getContentHeight() {
-			if (recalculateContentHeight) {
-				int height = filteredEntries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getHeight(), (identity, accumulated) -> identity + accumulated);
-
-				if (height < bottom - top - 8)
-					height = bottom - top - 8;
-
-				contentHeight = height;
-				recalculateContentHeight = false;
-
-				if (contentHeight >= this.height && currentlyOpen != null)
-					scrollDistance = slotHeight * filteredEntries.indexOf(currentlyOpen);
-			}
-
 			return contentHeight;
 		}
 
@@ -325,7 +311,15 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		public void recalculateContentHeight() {
-			recalculateContentHeight = true;
+			int height = filteredEntries.stream().reduce(0, (accumulated, ctl) -> accumulated + ctl.getHeight(), (identity, accumulated) -> identity + accumulated);
+
+			if (height < bottom - top - 8)
+				height = bottom - top - 8;
+
+			contentHeight = height;
+
+			if (currentlyOpen != null)
+				scrollDistance = slotHeight * filteredEntries.indexOf(currentlyOpen);
 		}
 
 		@Override
