@@ -228,20 +228,22 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 		@Override
 		public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-			super.render(pose, mouseX, mouseY, partialTicks);
-
 			int height = 0;
 
 			for (int i = 0; i < filteredEntries.size(); i++) {
 				ContentSavingCollapsileTextList entry = filteredEntries.get(i);
 
-				entry.renderLongMessageTooltip(pose);
 				entry.y = top + height - (int) scrollDistance;
 				entry.visible = entry.y + entry.getHeight() > top && entry.y < bottom;
 				height += entry.getHeight();
 			}
 
 			applyScrollLimits();
+			super.render(pose, mouseX, mouseY, partialTicks);
+
+			for (int i = 0; i < filteredEntries.size(); i++) {
+				filteredEntries.get(i).renderLongMessageTooltip(pose);
+			}
 		}
 
 		@Override
@@ -320,6 +322,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 			if (currentlyOpen != null)
 				scrollDistance = slotHeight * filteredEntries.indexOf(currentlyOpen);
+
+			applyScrollLimits();
 		}
 
 		@Override
