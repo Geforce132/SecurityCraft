@@ -835,7 +835,7 @@ option.securitycraft:securityCamera.customRotation.description=Angle statique pe
 option.securitycraft:keypad.isAlwaysActive=Toujours actif: #
 option.securitycraft:keypad.isAlwaysActive.description=Est-ce que le clavier reste actif et déverrouillé?
 option.securitycraft:keypad.sendMessage=Message : #
-option.securitycraft:keypad.sendMessage.description=Ce clavier à code envoie-t-il un message lors de l`activation (quand utilisant des modules de liste d´autorisation/de refus) ?
+option.securitycraft:keypad.sendMessage.description=Ce clavier à code envoie-t-il un message lors de son activation (en utilisant un module de liste d´autorisation/de refus) ?
 option.securitycraft:keypad.signalLength=Largeur du signal : #
 option.securitycraft:keypad.signalLength.description=Pour combien de temps resterait le signal de redstone en cas de succès ? (En ticks, 20 ticks = 1 seconde)
 option.securitycraft:laserBlock.enabled=Activé : #
@@ -843,11 +843,11 @@ option.securitycraft:laserBlock.enabled.description=Est-ce que le laser doit êt
 option.securitycraft:retinalScanner.activatedByEntities=Activation NPC: #
 option.securitycraft:retinalScanner.activatedByEntities.description=Est-ce que ce scanner peut être activé par des mobs NPC qui le regardent ?
 option.securitycraft:retinalScanner.sendMessage=Message: #
-option.securitycraft:retinalScanner.sendMessage.description=Est-ce que ce scanner envoie un message à l‘activation?
+option.securitycraft:retinalScanner.sendMessage.description=Ce scanner rétinien envoie-t-il un message à son activation ?
 option.securitycraft:retinalScanner.signalLength=Largeur du signal : #
 option.securitycraft:retinalScanner.signalLength.description=Pour combien de temps resterait le signal de redstone en cas de succès ? (En ticks, 20 ticks = 1 seconde)
 option.securitycraft:scannerDoor.sendMessage=Message: #
-option.securitycraft:scannerDoor.sendMessage.description=Est-ce que ce scanner de porte envoie un message à l‘activation?
+option.securitycraft:scannerDoor.sendMessage.description=Cette porte du scanner envoie-t-elle un message à son activation ?
 option.securitycraft:scannerDoor.signalLength=Temps jusqu`à ferme : #
 option.securitycraft:scannerDoor.signalLength.description=Pour combien de temps la porte resterait ouverte ? (En Ticks, 20 ticks = 1 seconde. Régler à 0 pour que la porte reste ouverte)
 option.securitycraft:alarm.range=Portée: #
@@ -859,13 +859,13 @@ option.securitycraft:cageTrap.captureMobs.description=Est ce que cette cage doit
 option.securitycraft:motionActivatedLight.searchRadius=Rayon de recherche: #
 option.securitycraft:motionActivatedLight.searchRadius.description=A quelle distance la lumière pourra détecter une entité?
 option.securitycraft:keycardReader.sendMessage=Message : #
-option.securitycraft:keycardReader.sendMessage.description=Cette carte d`accès envoie-t-elle un message lors de l`activation (quand utilisant des modules de liste d´autorisation/de refus) ?
+option.securitycraft:keycardReader.sendMessage.description=Cette carte d´accès envoie-t-elle un message lors de son activation (en utilisant un module de liste d´autorisation/de refus) ?"
 option.securitycraft:keycardReader.signalLength=Largeur du signal : #
 option.securitycraft:keycardReader.signalLength.description=Pour combien de temps resterait le signal de redstone en cas de succès ? (En ticks, 20 ticks = 1 seconde)
 option.securitycraft:keypadChest.sendMessage=Message : #
-option.securitycraft:keypadChest.sendMessage.description=Ce coffre protégé par un clavier à code envoie-t-il un message lors de l`activation (quand utilisant des modules de liste d´autorisation/de refus) ?
+option.securitycraft:keypadChest.sendMessage.description=Ce coffre protégé par un clavier à code envoie-t-il un message lors de son activation (en utilisant un module de liste d´autorisation/de refus) ?
 option.securitycraft:keypadFurnace.sendMessage=Message : #
-option.securitycraft:keypadFurnace.sendMessage.description=Ce fourneau protégé par un clavier à code envoie-t-il un message lors de l`activation (quand utilisant des modules de liste d´autorisation/de refus) ?
+option.securitycraft:keypadFurnace.sendMessage.description=Ce fourneau protégé par un clavier à code envoie-t-il un message lors de son activation (en utilisant un module de liste d´autorisation/de refus) ?
 option.securitycraft:inventoryScanner.horizontal=Horizontale: #
 option.securitycraft:inventoryScanner.horizontal.description=Les champs crée par ce scanner d`inventaire doivent-ils être horizontaux ?
 option.securitycraft:inventoryScanner.solidifyField=Remplir du champ : #
@@ -879,7 +879,7 @@ option.securitycraft:ims.range.description=À partir de combien de blocs la S.M.
 option.securitycraft:usernameLogger.searchRadius=Rayon de recherche : #
 option.securitycraft:usernameLogger.searchRadius.description=La portée en blocs dans laquelle l`enregistreur de nom d`utilisateur cherche pour des joueurs.
 option.securitycraft:keypad_door.sendMessage=Message : #
-option.securitycraft:keypad_door.sendMessage.description=Cette porte de clavier à code envoie-t-elle une message lors de l`activation (en utilisant des modules de liste d´autorisation/de refus) ?
+option.securitycraft:keypad_door.sendMessage.description=Cette porte de clavier à code envoie-t-elle un message lors de son activation (en utilisant un module de liste d´autorisation/de refus) ?
 option.securitycraft:keypad_door.signalLength=Largeur du signal : #
 option.securitycraft:keypad_door.signalLength.description=Pour combien de temps la porte resterait ouverte ? (En Ticks, 20 ticks = 1 seconde. Régler à 0 pour que la porte reste ouverte)
 option.securitycraft:reinforced_cauldron.isPublic=Publique : #
@@ -887,7 +887,7 @@ option.securitycraft:reinforced_cauldron.isPublic.description=Chaque joueur devr
 option.securitycraft:key_panel.isAlwaysActive=Est toujours actif : #
 option.securitycraft:key_panel.isAlwaysActive.description=Le panneau à touches devrait-il rester actif et déverrouillé ?
 option.securitycraft:key_panel.sendMessage=Message : #
-option.securitycraft:key_panel.sendMessage.description=Ce panneau à touches envoie-t-il une message lors de l'activation (en utilisant les modules d'authorisation/de refus) ?
+option.securitycraft:key_panel.sendMessage.description=Ce panneau à touches envoie-t-il un message lors de son activation (en utilisant un module de liste d'authorisation/de refus) ?
 option.securitycraft:key_panel.signalLength=Largeur du signal : #
 option.securitycraft:key_panel.signalLength.description=Pour combien de temps resterait le signal de redstone en cas de succès ? (En ticks, 20 ticks = 1 seconde)
 option.securitycraft:sonic_security_system.signalLength=Temps actif : #
