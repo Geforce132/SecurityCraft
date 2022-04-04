@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -187,6 +188,19 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 			world.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 
 		return getConnectedDirection(state).getOpposite() == facing && !state.canSurvive(world, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, world, pos, facingPos);
+	}
+
+	@Override
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof IModuleInventory)
+				((IModuleInventory) te).dropAllModules();
+
+			if (!newState.hasTileEntity())
+				level.removeBlockEntity(pos);
+		}
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.player.PlayerEntity;
@@ -222,6 +223,23 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 			if (offsetTe != null)
 				offsetTe.setSendsMessages(((BooleanOption) option).get());
 		}
+	}
+
+	@Override
+	public void dropAllModules() {
+		KeypadChestBlockEntity offsetBe = findOther();
+
+		for (ItemStack module : getInventory()) {
+			if (!(module.getItem() instanceof ModuleItem))
+				continue;
+
+			if (offsetBe != null)
+				offsetBe.removeModule(((ModuleItem) module.getItem()).getModuleType());
+
+			Block.popResource(level, worldPosition, module);
+		}
+
+		getInventory().clear();
 	}
 
 	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove) {

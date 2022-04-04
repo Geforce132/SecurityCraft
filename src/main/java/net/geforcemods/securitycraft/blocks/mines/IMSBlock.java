@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
@@ -73,6 +74,19 @@ public class IMSBlock extends OwnableBlock {
 			return;
 		else
 			world.destroyBlock(pos, true);
+	}
+
+	@Override
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof IModuleInventory)
+				((IModuleInventory) te).dropAllModules();
+
+			if (!newState.hasTileEntity())
+				level.removeBlockEntity(pos);
+		}
 	}
 
 	@Override

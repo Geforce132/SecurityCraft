@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
@@ -38,6 +39,19 @@ public class SecretWallSignBlock extends WallSignBlock {
 	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));
+	}
+
+	@Override
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof IModuleInventory)
+				((IModuleInventory) te).dropAllModules();
+
+			if (!newState.hasTileEntity())
+				level.removeBlockEntity(pos);
+		}
 	}
 
 	@Override

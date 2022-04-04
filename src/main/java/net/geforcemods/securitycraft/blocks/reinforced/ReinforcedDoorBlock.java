@@ -333,14 +333,6 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-		super.onRemove(state, world, pos, newState, isMoving);
-
-		if (state.getBlock() != newState.getBlock())
-			world.removeBlockEntity(pos);
-	}
-
-	@Override
 	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param) {
 		super.triggerEvent(state, world, pos, id, param);
 		TileEntity tileentity = world.getBlockEntity(pos);

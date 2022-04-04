@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -44,6 +45,24 @@ public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinf
 			return super.use(state, world, pos, player, hand, rayTrace);
 
 		return ActionResultType.FAIL;
+	}
+
+	@Override
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof IModuleInventory)
+				((IModuleInventory) te).dropAllModules();
+
+			if (!isMoving && state.getValue(POWERED)) {
+				level.updateNeighborsAt(pos, this);
+				level.updateNeighborsAt(pos.relative(getConnectedDirection(state).getOpposite()), this);
+			}
+
+			if (!newState.hasTileEntity())
+				level.removeBlockEntity(pos);
+		}
 	}
 
 	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyBlockEntity te, PlayerEntity entity) {

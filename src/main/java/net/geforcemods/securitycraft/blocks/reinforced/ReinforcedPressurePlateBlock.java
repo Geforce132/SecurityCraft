@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDoorActivator;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -65,6 +66,24 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		}
 
 		return 0;
+	}
+
+	@Override
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof IModuleInventory)
+				((IModuleInventory) te).dropAllModules();
+
+			if (!isMoving && getSignalForState(state) > 0) {
+				level.updateNeighborsAt(pos, this);
+				level.updateNeighborsAt(pos.below(), this);
+			}
+
+			if (!newState.hasTileEntity())
+				level.removeBlockEntity(pos);
+		}
 	}
 
 	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyBlockEntity te, PlayerEntity entity) {

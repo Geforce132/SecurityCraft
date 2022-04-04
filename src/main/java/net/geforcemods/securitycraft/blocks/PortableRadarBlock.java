@@ -83,6 +83,19 @@ public class PortableRadarBlock extends OwnableBlock {
 			world.destroyBlock(pos, true);
 	}
 
+	@Override
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof IModuleInventory)
+				((IModuleInventory) te).dropAllModules();
+
+			if (!newState.hasTileEntity())
+				level.removeBlockEntity(pos);
+		}
+	}
+
 	public static void togglePowerOutput(World world, BlockPos pos, boolean shouldPower) {
 		BlockState state = world.getBlockState(pos);
 

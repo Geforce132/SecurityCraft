@@ -4,6 +4,7 @@ import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenSSSScreen;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -74,6 +75,19 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 	@Override
 	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
 		return canSupportCenter(world, pos.below(), Direction.UP);
+	}
+
+	@Override
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof IModuleInventory)
+				((IModuleInventory) te).dropAllModules();
+
+			if (!newState.hasTileEntity())
+				level.removeBlockEntity(pos);
+		}
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.minecraft.block.Block;
@@ -72,11 +73,16 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-		super.onRemove(state, world, pos, newState, isMoving);
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			TileEntity te = level.getBlockEntity(pos);
 
-		if (state.getBlock() != newState.getBlock())
-			world.removeBlockEntity(pos);
+			if (te instanceof IModuleInventory && state.getValue(HALF) == DoubleBlockHalf.LOWER)
+				((IModuleInventory) te).dropAllModules();
+
+			if (!newState.hasTileEntity())
+				level.removeBlockEntity(pos);
+		}
 	}
 
 	@Override
