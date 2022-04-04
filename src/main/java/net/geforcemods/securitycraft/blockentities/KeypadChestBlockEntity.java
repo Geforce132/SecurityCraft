@@ -36,6 +36,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -231,17 +232,34 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		ICustomizable.super.onOptionChanged(o);
 	}
 
+	@Override
+	public void dropAllModules() {
+		KeypadChestBlockEntity offsetBe = findOther();
+
+		for (ItemStack module : getInventory()) {
+			if (!(module.getItem() instanceof ModuleItem item))
+				return;
+
+			if (offsetBe != null)
+				offsetBe.removeModule(item.getModuleType());
+
+			Block.popResource(level, worldPosition, module);
+		}
+
+		getInventory().clear();
+	}
+
 	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove) {
 		if (module.isEmpty() || !(module.getItem() instanceof ModuleItem moduleItem))
 			return;
 
-		KeypadChestBlockEntity offsetTe = findOther();
+		KeypadChestBlockEntity offsetBe = findOther();
 
-		if (offsetTe != null) {
+		if (offsetBe != null) {
 			if (remove)
-				offsetTe.removeModule(moduleItem.getModuleType());
+				offsetBe.removeModule(moduleItem.getModuleType());
 			else
-				offsetTe.insertModule(module);
+				offsetBe.insertModule(module);
 		}
 	}
 

@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -92,6 +95,24 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 */
 	public default int fixSlotId(int id) {
 		return id >= 100 ? id - 100 : id;
+	}
+
+	public default void dropAllModules() {
+		BlockEntity be = getBlockEntity();
+		Level level = be.getLevel();
+		BlockPos pos = be.getBlockPos();
+
+		for (ItemStack module : getInventory()) {
+			if (!(module.getItem() instanceof ModuleItem))
+				return;
+
+			if (be instanceof LinkableBlockEntity linkable)
+				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, module, linkable);
+
+			Block.popResource(level, pos, module);
+		}
+
+		getInventory().clear();
 	}
 
 	@Override

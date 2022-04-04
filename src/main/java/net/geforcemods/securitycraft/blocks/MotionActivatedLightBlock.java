@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
@@ -73,6 +74,17 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
 		if (!canSurvive(state, level, pos))
 			level.destroyBlock(pos, true);
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			if (level.getBlockEntity(pos) instanceof IModuleInventory inv)
+				inv.dropAllModules();
+
+			if (!newState.hasBlockEntity())
+				level.removeBlockEntity(pos);
+		}
 	}
 
 	@Override

@@ -40,9 +40,6 @@ public class LaserBlock extends DisguisableBlock {
 		registerDefaultState(stateDefinition.any().setValue(POWERED, false));
 	}
 
-	/**
-	 * Called when the block is placed in the world.
-	 */
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, entity, stack);

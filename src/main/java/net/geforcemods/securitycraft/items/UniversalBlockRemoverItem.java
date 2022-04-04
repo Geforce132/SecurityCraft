@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
-import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
@@ -55,16 +54,8 @@ public class UniversalBlockRemoverItem extends Item {
 				return InteractionResult.FAIL;
 			}
 
-			if (be instanceof IModuleInventory inv) {
-				boolean isChest = be instanceof KeypadChestBlockEntity;
-
-				for (ItemStack module : inv.getInventory()) {
-					if (isChest)
-						((KeypadChestBlockEntity) be).addOrRemoveModuleFromAttached(module, true);
-
-					Block.popResource(level, pos, module);
-				}
-			}
+			if (be instanceof IModuleInventory inv)
+				inv.dropAllModules();
 
 			if (block == SCContent.LASER_BLOCK.get()) {
 				LinkableBlockEntity laser = (LinkableBlockEntity) level.getBlockEntity(pos);
