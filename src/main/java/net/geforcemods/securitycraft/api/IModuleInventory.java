@@ -104,7 +104,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		for (ItemStack module : getInventory()) {
 			if (!(module.getItem() instanceof ModuleItem))
-				return;
+				continue;
 
 			if (be instanceof LinkableBlockEntity linkable)
 				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, module, linkable);

@@ -238,7 +238,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 		for (ItemStack module : getInventory()) {
 			if (!(module.getItem() instanceof ModuleItem item))
-				return;
+				continue;
 
 			if (offsetBe != null)
 				offsetBe.removeModule(item.getModuleType());
