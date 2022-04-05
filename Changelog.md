@@ -2,6 +2,7 @@
 
 - Fix: The recipe for reinforced glass panes is incorrect
 - Fix: Breaking the block another block with modules is attached to does not drop the modules
+- Misc.: The minimum Forge version is now 40.0.35
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 
