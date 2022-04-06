@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -81,6 +82,19 @@ public class PortableRadarBlock extends OwnableBlock {
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
 		if (!canSurvive(state, world, pos))
 			world.destroyBlock(pos, true);
+	}
+
+	@Override
+	public void playerWillDestroy(World level, BlockPos pos, BlockState state, PlayerEntity player) {
+		//prevents dropping twice the amount of modules when breaking the block in creative mode
+		if (player.isCreative()) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof IModuleInventory)
+				((IModuleInventory) te).getInventory().clear();
+		}
+
+		super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
