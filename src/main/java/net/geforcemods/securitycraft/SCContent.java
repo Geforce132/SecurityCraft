@@ -231,15 +231,15 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> ALARM = BLOCKS.register("alarm", () -> new AlarmBlock(prop(Material.METAL).randomTicks().lightLevel(state -> state.getValue(AlarmBlock.LIT) ? 15 : 0)));
+	@HasManualPage
+	@RegisterItemBlock
+	public static final RegistryObject<Block> BLOCK_CHANGE_DETECTOR = BLOCKS.register("block_change_detector", () -> new BlockChangeDetectorBlock(propDisguisable()));
 	@HasManualPage(designedBy = "Henzoid")
 	@RegisterItemBlock
 	public static final RegistryObject<Block> BLOCK_POCKET_MANAGER = BLOCKS.register("block_pocket_manager", () -> new BlockPocketManagerBlock(prop()));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<Block> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop().noCollission().isRedstoneConductor((s, w, p) -> false).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation)));
-	@HasManualPage
-	@RegisterItemBlock
-	public static final RegistryObject<Block> BLOCK_CHANGE_DETECTOR = BLOCKS.register("block_change_detector", () -> new BlockChangeDetectorBlock(prop()));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(Material.DECORATION, 1.0F)));

@@ -47,7 +47,12 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		return SHAPE;
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getShape(level, pos, ctx);
+		else
+			return SHAPE;
 	}
 
 	@Override
