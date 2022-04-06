@@ -90,6 +90,16 @@ public class BlockPortableRadar extends BlockOwnable {
 			world.destroyBlock(pos, true);
 	}
 
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof IModuleInventory)
+			((IModuleInventory) te).dropAllModules();
+
+		super.breakBlock(world, pos, state);
+	}
+
 	public static void togglePowerOutput(World world, BlockPos pos, boolean shouldPower) {
 		IBlockState state = world.getBlockState(pos);
 		boolean powered = state.getValue(POWERED);

@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.IBlockWithNoDrops;
@@ -49,16 +48,8 @@ public class ItemUniversalBlockRemover extends Item {
 				return EnumActionResult.PASS;
 			}
 
-			if (tileEntity instanceof IModuleInventory) {
-				boolean isChest = tileEntity instanceof TileEntityKeypadChest;
-
-				for (ItemStack module : ((IModuleInventory) tileEntity).getInventory()) {
-					if (isChest)
-						((TileEntityKeypadChest) tileEntity).addOrRemoveModuleFromAttached(module, true);
-
-					Block.spawnAsEntity(world, pos, module);
-				}
-			}
+			if (tileEntity instanceof IModuleInventory)
+				((IModuleInventory) tileEntity).dropAllModules();
 
 			if (block == SCContent.laserBlock) {
 				TileEntityLaserBlock te = (TileEntityLaserBlock) world.getTileEntity(pos);

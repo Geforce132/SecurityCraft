@@ -6,6 +6,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
@@ -60,6 +61,16 @@ public class BlockIMS extends BlockOwnable {
 			return;
 		else
 			world.destroyBlock(pos, true);
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof IModuleInventory)
+			((IModuleInventory) te).dropAllModules();
+
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override

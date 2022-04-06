@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -67,6 +68,16 @@ public class BlockClaymore extends BlockExplosive {
 			return;
 		else
 			world.destroyBlock(pos, true);
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof IModuleInventory)
+			((IModuleInventory) te).dropAllModules();
+
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override

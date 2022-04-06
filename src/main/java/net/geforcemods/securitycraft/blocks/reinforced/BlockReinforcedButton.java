@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Arrays;
 import java.util.List;
 
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityAllowlistOnly;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -63,6 +64,16 @@ public class BlockReinforcedButton extends BlockButton implements IReinforcedBlo
 	@Override
 	protected void playReleaseSound(World world, BlockPos pos) {
 		world.playSound(null, pos, isWooden ? SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF : SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof IModuleInventory)
+			((IModuleInventory) te).dropAllModules();
+
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override

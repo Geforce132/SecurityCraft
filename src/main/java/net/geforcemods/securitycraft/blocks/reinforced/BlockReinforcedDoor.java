@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedDoor;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -172,7 +173,11 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		super.breakBlock(world, pos, state);
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof IModuleInventory)
+			((IModuleInventory) te).dropAllModules();
+
 		world.removeTileEntity(pos);
 	}
 

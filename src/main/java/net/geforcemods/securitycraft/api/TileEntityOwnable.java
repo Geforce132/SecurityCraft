@@ -34,7 +34,7 @@ public class TileEntityOwnable extends TileEntity implements IOwnable {
 
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-		return oldState.getBlock() != newState.getBlock() && oldState.getBlock() != SCContent.reinforcedPistonExtension; //prevent this TileEntity from getting removed when the previous block was a Reinforced Moving Piston to make Reinforced Pistons work
+		return oldState.getBlock() != newState.getBlock() && oldState.getBlock() != SCContent.reinforcedPistonExtension; //prevent this TileEntity from getting removed when the previous block was a Reinforced Moving Piston to make reinforced pistons work
 	}
 
 	@Override

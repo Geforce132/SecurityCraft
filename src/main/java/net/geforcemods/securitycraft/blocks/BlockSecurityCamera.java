@@ -74,8 +74,12 @@ public class BlockSecurityCamera extends BlockOwnable {
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		super.breakBlock(world, pos, state);
+		TileEntity te = world.getTileEntity(pos);
 
+		if (te instanceof IModuleInventory)
+			((IModuleInventory) te).dropAllModules();
+
+		super.breakBlock(world, pos, state);
 		world.notifyNeighborsOfStateChange(pos.north(), world.getBlockState(pos).getBlock(), true);
 		world.notifyNeighborsOfStateChange(pos.south(), world.getBlockState(pos).getBlock(), true);
 		world.notifyNeighborsOfStateChange(pos.east(), world.getBlockState(pos).getBlock(), true);

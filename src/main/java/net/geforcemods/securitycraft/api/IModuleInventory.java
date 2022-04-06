@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -100,6 +103,25 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 */
 	public default int fixSlotId(int id) {
 		return id >= 100 ? id - 100 : id;
+	}
+
+	public default void dropAllModules() {
+		TileEntity te = getTileEntity();
+		World level = te.getWorld();
+		BlockPos pos = te.getPos();
+		TileEntityLinkable linkable = te instanceof TileEntityLinkable ? (TileEntityLinkable) te : null;
+
+		for (ItemStack module : getInventory()) {
+			if (!(module.getItem() instanceof ItemModule))
+				continue;
+
+			if (linkable != null)
+				ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, module, linkable);
+
+			Block.spawnAsEntity(level, pos, module);
+		}
+
+		getInventory().clear();
 	}
 
 	@Override

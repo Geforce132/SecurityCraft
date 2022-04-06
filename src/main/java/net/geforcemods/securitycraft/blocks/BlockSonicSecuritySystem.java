@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -97,6 +98,16 @@ public class BlockSonicSecuritySystem extends BlockOwnable {
 	}
 
 	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof IModuleInventory)
+			((IModuleInventory) te).dropAllModules();
+
+		super.breakBlock(world, pos, state);
+	}
+
+	@Override
 	public boolean canProvidePower(IBlockState state) {
 		return state.getValue(POWERED);
 	}
@@ -123,10 +134,7 @@ public class BlockSonicSecuritySystem extends BlockOwnable {
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return getItemStackFromBlock(world.getTileEntity(pos).getUpdateTag());
-	}
-
-	private ItemStack getItemStackFromBlock(NBTTagCompound blockTag) {
+		NBTTagCompound blockTag = world.getTileEntity(pos).getUpdateTag();
 		ItemStack stack = new ItemStack(SCContent.sonicSecuritySystem);
 
 		if (!blockTag.hasKey("LinkedBlocks"))

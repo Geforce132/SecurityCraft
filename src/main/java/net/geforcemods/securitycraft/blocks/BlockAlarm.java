@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -94,6 +95,16 @@ public class BlockAlarm extends BlockOwnable {
 			dropBlockAsItem((world), pos, world.getBlockState(pos), 0);
 			world.setBlockToAir(pos);
 		}
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof IModuleInventory)
+			((IModuleInventory) te).dropAllModules();
+
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override
@@ -257,38 +268,32 @@ public class BlockAlarm extends BlockOwnable {
 			try {
 				FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 
 			try {
 				FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 
 			try {
 				FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 
 			try {
 				FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 
 			try {
 				FACING_LOOKUP[EnumFacing.UP.ordinal()] = 5;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 
 			try {
 				FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 6;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 		}
 	}
 }

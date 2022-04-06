@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
@@ -43,6 +44,16 @@ public class BlockSecretSign extends BlockContainer {
 		}
 		else
 			return false;
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof IModuleInventory)
+			((IModuleInventory) te).dropAllModules();
+
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override

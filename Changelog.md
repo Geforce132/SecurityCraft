@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
+
+- Fix: Breaking the block another block with modules is attached to does not drop the modules
+
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 
 - New: The Disguise Module and Projector can now be set to display a specific state of a block (e.g. corner stairs), instead of a fixed one

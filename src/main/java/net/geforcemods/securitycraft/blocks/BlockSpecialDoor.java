@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
@@ -109,7 +110,11 @@ public abstract class BlockSpecialDoor extends BlockDoor implements ITileEntityP
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		super.breakBlock(world, pos, state);
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof IModuleInventory)
+			((IModuleInventory) te).dropAllModules();
+
 		world.removeTileEntity(pos);
 	}
 

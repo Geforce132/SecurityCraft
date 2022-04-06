@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeyPanel;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -101,6 +102,16 @@ public abstract class BlockKeyPanel extends BlockOwnable {
 	}
 
 	protected abstract EnumFacing getConnectedDirection(IBlockState state);
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof IModuleInventory)
+			((IModuleInventory) te).dropAllModules();
+
+		super.breakBlock(world, pos, state);
+	}
 
 	@Override
 	public boolean canProvidePower(IBlockState state) {

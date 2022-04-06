@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -173,6 +174,23 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 			if (offsetTe != null)
 				offsetTe.setSendsMessages(((OptionBoolean) option).get());
 		}
+	}
+
+	@Override
+	public void dropAllModules() {
+		TileEntityKeypadChest offsetTe = findOther();
+
+		for (ItemStack module : getInventory()) {
+			if (!(module.getItem() instanceof ItemModule))
+				continue;
+
+			if (offsetTe != null)
+				offsetTe.removeModule(((ItemModule) module.getItem()).getModuleType());
+
+			Block.spawnAsEntity(world, pos, module);
+		}
+
+		getInventory().clear();
 	}
 
 	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove) {
