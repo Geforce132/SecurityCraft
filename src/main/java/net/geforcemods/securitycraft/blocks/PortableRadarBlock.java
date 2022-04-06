@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -76,6 +77,15 @@ public class PortableRadarBlock extends OwnableBlock {
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
 		if (!canSurvive(state, level, pos))
 			level.destroyBlock(pos, true);
+	}
+
+	@Override
+	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		//prevents dropping twice the amount of modules when breaking the block in creative mode
+		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
+			inv.getInventory().clear();
+
+		super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
