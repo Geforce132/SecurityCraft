@@ -76,6 +76,7 @@ public class SecurityCraft {
 		SCContent.BLOCKS.register(modEventBus);
 		SCContent.FLUIDS.register(modEventBus);
 		SCContent.ITEMS.register(modEventBus);
+		SCContent.LOOT_ITEM_CONDITION_TYPES.register(modEventBus);
 	}
 
 	@SubscribeEvent

@@ -10,8 +10,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -116,7 +114,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.group("securitycraft:fake_liquids")
 		.pattern("P")
 		.pattern("B")
-		.define('P', new CustomNBTIngredient(healingStack))
+		.define('P', NBTIngredient.of(healingStack))
 		.define('B', Items.LAVA_BUCKET)
 		.unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
 		.save(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava_normal"));
@@ -124,7 +122,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.group("securitycraft:fake_liquids")
 		.pattern("P")
 		.pattern("B")
-		.define('P', new CustomNBTIngredient(strongHealingStack))
+		.define('P', NBTIngredient.of(strongHealingStack))
 		.define('B', Items.LAVA_BUCKET)
 		.unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
 		.save(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava_strong"));
@@ -132,7 +130,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.group("securitycraft:fake_liquids")
 		.pattern("P")
 		.pattern("B")
-		.define('P', new CustomNBTIngredient(harmingStack))
+		.define('P', NBTIngredient.of(harmingStack))
 		.define('B', Items.WATER_BUCKET)
 		.unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
 		.save(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_water_normal"));
@@ -140,7 +138,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.group("securitycraft:fake_liquids")
 		.pattern("P")
 		.pattern("B")
-		.define('P', new CustomNBTIngredient(strongHarmingStack))
+		.define('P', NBTIngredient.of(strongHarmingStack))
 		.define('B', Items.WATER_BUCKET)
 		.unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
 		.save(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_water_strong"));
@@ -1473,16 +1471,5 @@ public class RecipeGenerator extends RecipeProvider {
 	@Override
 	public String getName() {
 		return "SecurityCraft Recipes";
-	}
-
-	private static InventoryChangeTrigger.TriggerInstance has(TagKey<Item> tag) {
-		return inventoryTrigger(ItemPredicate.Builder.item().of(tag).build());
-	}
-
-	//helper because IngredientNBT's constructor is protected
-	private static class CustomNBTIngredient extends NBTIngredient {
-		public CustomNBTIngredient(ItemStack stack) {
-			super(stack);
-		}
 	}
 }
