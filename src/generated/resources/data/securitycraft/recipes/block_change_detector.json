@@ -1,25 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "PRI",
-    "LBI",
+    "IRI",
+    "ILI",
     "III"
   ],
   "key": {
-    "P": {
-      "item": "securitycraft:reinforced_pink_concrete"
-    },
     "R": {
-      "item": "securitycraft:portable_radar"
+      "item": "minecraft:redstone_torch"
     },
     "I": {
       "tag": "forge:ingots/iron"
     },
     "L": {
       "item": "securitycraft:username_logger"
-    },
-    "B": {
-      "item": "securitycraft:reinforced_black_concrete"
     }
   },
   "result": {

@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "has_redstone_block": {
+    "has_iron": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_redstone_block",
+      "has_iron",
       "has_the_recipe"
     ]
   ]
