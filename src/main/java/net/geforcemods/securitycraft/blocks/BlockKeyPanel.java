@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -136,6 +137,16 @@ public abstract class BlockKeyPanel extends BlockOwnable {
 	@Override
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
 		return world.getBlockState(pos).isSideSolid(world, pos, side);
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		EnumFacing connectedDirection = getConnectedDirection(state);
+
+		if (!canPlaceBlockOnSide(world, pos.offset(connectedDirection.getOpposite()), connectedDirection)) {
+			dropBlockAsItem(world, pos, state, 0);
+			world.setBlockToAir(pos);
+		}
 	}
 
 	@Override
