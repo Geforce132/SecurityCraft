@@ -1,4 +1,5 @@
 {
+	"ambientocclusion": false,
 	"textures": {
 		"bottom": "block/furnace_top",
 		"top": "securitycraft:block/block_change_detector_top",
