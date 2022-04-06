@@ -12,6 +12,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -88,6 +89,19 @@ public class BlockPortableRadar extends BlockOwnable {
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (!canPlaceBlockOnSide(world, pos, state.getValue(FACING)))
 			world.destroyBlock(pos, true);
+	}
+
+	@Override
+	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		//prevents dropping twice the amount of modules when breaking the block in creative mode
+		if (player.isCreative()) {
+			TileEntity te = world.getTileEntity(pos);
+
+			if (te instanceof IModuleInventory)
+				((IModuleInventory) te).getInventory().clear();
+		}
+
+		super.onBlockHarvested(world, pos, state, player);
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
@@ -81,6 +82,19 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 			dropBlockAsItem(world, pos, state, 0);
 			world.setBlockToAir(pos);
 		}
+	}
+
+	@Override
+	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		//prevents dropping twice the amount of modules when breaking the block in creative mode
+		if (player.isCreative()) {
+			TileEntity te = world.getTileEntity(pos);
+
+			if (te instanceof IModuleInventory)
+				((IModuleInventory) te).getInventory().clear();
+		}
+
+		super.onBlockHarvested(world, pos, state, player);
 	}
 
 	@Override

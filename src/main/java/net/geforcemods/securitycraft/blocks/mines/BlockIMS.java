@@ -64,6 +64,19 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
+	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		//prevents dropping twice the amount of modules when breaking the block in creative mode
+		if (player.isCreative()) {
+			TileEntity te = world.getTileEntity(pos);
+
+			if (te instanceof IModuleInventory)
+				((IModuleInventory) te).getInventory().clear();
+		}
+
+		super.onBlockHarvested(world, pos, state, player);
+	}
+
+	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
