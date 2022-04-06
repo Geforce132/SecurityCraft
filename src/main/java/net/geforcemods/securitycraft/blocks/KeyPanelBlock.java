@@ -171,6 +171,15 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	}
 
 	@Override
+	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		//prevents dropping twice the amount of modules when breaking the block in creative mode
+		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
+			inv.getInventory().clear();
+
+		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
 			if (level.getBlockEntity(pos) instanceof IModuleInventory inv)
