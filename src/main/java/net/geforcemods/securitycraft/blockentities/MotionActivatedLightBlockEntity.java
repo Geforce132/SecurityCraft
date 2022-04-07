@@ -22,7 +22,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	public MotionActivatedLightBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeMotionLight, pos, state);
+		super(SCContent.MOTION_LIGHT_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

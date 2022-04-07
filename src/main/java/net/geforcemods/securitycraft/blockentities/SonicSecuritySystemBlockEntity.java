@@ -67,7 +67,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	private boolean tracked = false;
 
 	public SonicSecuritySystemBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeSonicSecuritySystem, pos, state);
+		super(SCContent.SONIC_SECURITY_SYSTEM_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

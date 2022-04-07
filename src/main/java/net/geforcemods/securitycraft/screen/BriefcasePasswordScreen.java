@@ -5,39 +5,46 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.inventory.GenericMenu;
-import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
+import net.geforcemods.securitycraft.network.server.OpenBriefcaseInventory;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fmlclient.gui.widget.ExtendedButton;
 
-public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericMenu> {
+public class BriefcasePasswordScreen extends Screen {
 	public static final String UP_ARROW = "\u2191";
 	public static final String DOWN_ARROW = "\u2193";
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent enterPasscode = Utils.localize("gui.securitycraft:briefcase.enterPasscode");
+	private int imageWidth = 176;
+	private int imageHeight = 166;
+	private int leftPos;
+	private int topPos;
 	private EditBox[] keycodeTextboxes = new EditBox[4];
 	private int[] digits = {
 			0, 0, 0, 0
 	};
 
-	public BriefcasePasswordScreen(GenericMenu menu, Inventory inv, Component title) {
-		super(menu, inv, title);
+	public BriefcasePasswordScreen(Component title) {
+		super(title);
 	}
 
 	@Override
 	public void init() {
 		super.init();
+
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
 
 		for (int i = 0; i < 4; i++) {
 			final int id = i;
@@ -54,30 +61,29 @@ public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericMenu
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, enterPasscode, imageWidth / 2 - font.width(enterPasscode) / 2, 6, 4210752);
-	}
-
-	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(pose, mouseX, mouseY, partialTick);
+		font.draw(pose, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 6, 4210752);
 	}
 
 	private void continueButtonClicked(Button button) {
 		if (PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
-			CompoundTag nbt = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get()).getTag();
+			ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
+			CompoundTag nbt = briefcase.getTag();
 			String code = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];
 
 			if (nbt.getString("passcode").equals(code)) {
 				if (!nbt.contains("owner")) {
 					nbt.putString("owner", Minecraft.getInstance().player.getName().getString());
 					nbt.putString("ownerUUID", Minecraft.getInstance().player.getUUID().toString());
+					ClientUtils.syncItemNBT(briefcase);
 				}
 
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcaseInventory.getRegistryName(), getTitle()));
+				SecurityCraft.channel.sendToServer(new OpenBriefcaseInventory(getTitle()));
 			}
 		}
 	}

@@ -174,7 +174,7 @@ public class AlarmBlock extends OwnableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return level.isClientSide ? null : createTickerHelper(type, SCContent.beTypeAlarm, LevelUtils::blockEntityTicker);
+		return level.isClientSide ? null : createTickerHelper(type, SCContent.ALARM_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 
 	@Override

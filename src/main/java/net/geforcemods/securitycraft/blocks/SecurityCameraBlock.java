@@ -201,7 +201,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeSecurityCamera, LevelUtils::blockEntityTicker);
+		return createTickerHelper(type, SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 
 	@Override

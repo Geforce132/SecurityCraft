@@ -108,7 +108,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return BaseEntityBlock.createTickerHelper(type, SCContent.beTypeMotionLight, LevelUtils::blockEntityTicker);
+		return BaseEntityBlock.createTickerHelper(type, SCContent.MOTION_LIGHT_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 
 	@Override

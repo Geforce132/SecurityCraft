@@ -2,9 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
@@ -53,9 +51,9 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 			}
 
 			if (!stack.getTag().contains("passcode"))
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcaseSetup.getRegistryName(), stack.getHoverName()));
+				ClientHandler.displayBriefcaseSetupScreen(stack.getHoverName());
 			else
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcase.getRegistryName(), stack.getHoverName()));
+				ClientHandler.displayBriefcasePasswordScreen(stack.getHoverName());
 		}
 	}
 

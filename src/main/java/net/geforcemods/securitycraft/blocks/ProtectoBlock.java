@@ -67,6 +67,6 @@ public class ProtectoBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeProtecto, LevelUtils::blockEntityTicker);
+		return createTickerHelper(type, SCContent.PROTECTO_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 }

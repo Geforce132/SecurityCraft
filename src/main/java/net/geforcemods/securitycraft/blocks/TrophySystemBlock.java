@@ -3,22 +3,19 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -32,7 +29,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class TrophySystemBlock extends DisguisableBlock {
 	//@formatter:off
@@ -65,20 +62,9 @@ public class TrophySystemBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (((IOwnable) level.getBlockEntity(pos)).getOwner().isOwner(player)) {
-			if (!level.isClientSide) {
-				NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
-					@Override
-					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-						return new GenericBEMenu(SCContent.mTypeTrophySystem, windowId, level, pos);
-					}
-
-					@Override
-					public Component getDisplayName() {
-						return new TranslatableComponent(getDescriptionId());
-					}
-				}, pos);
-			}
+		if (level.getBlockEntity(pos) instanceof IOwnable ownable && ownable .getOwner().isOwner(player)) {
+			if (!level.isClientSide)
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.TROPHY_SYSTEM, pos));
 
 			return InteractionResult.SUCCESS;
 		}
@@ -103,6 +89,6 @@ public class TrophySystemBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeTrophySystem, LevelUtils::blockEntityTicker);
+		return createTickerHelper(type, SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 }

@@ -24,7 +24,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	private DoubleOption customRotationOption = new DoubleOption(this::getBlockPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
 
 	public SecurityCameraBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeSecurityCamera, pos, state);
+		super(SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

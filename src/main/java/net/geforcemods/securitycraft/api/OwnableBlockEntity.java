@@ -13,7 +13,7 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 	private Owner owner = new Owner();
 
 	public OwnableBlockEntity(BlockPos pos, BlockState state) {
-		this(SCContent.beTypeOwnable, pos, state);
+		this(SCContent.OWNABLE_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	public OwnableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {

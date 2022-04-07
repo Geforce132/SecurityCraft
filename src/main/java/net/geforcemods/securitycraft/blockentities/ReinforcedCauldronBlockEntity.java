@@ -14,7 +14,7 @@ public class ReinforcedCauldronBlockEntity extends CustomizableBlockEntity {
 	private final BooleanOption isPublic = new BooleanOption("isPublic", false);
 
 	public ReinforcedCauldronBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeReinforcedCauldron, pos, state);
+		super(SCContent.REINFORCED_CAULDRON_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	public boolean isAllowedToInteract(Player player) {

@@ -84,7 +84,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	private long previousTargetId = Long.MIN_VALUE;
 
 	public Sentry(EntityType<Sentry> type, Level level) {
-		super(SCContent.eTypeSentry, level);
+		super(SCContent.SENTRY_ENTITY.get(), level);
 	}
 
 	public void setupSentry(Player owner) {

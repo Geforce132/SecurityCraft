@@ -116,7 +116,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeBlockChangeDetector, LevelUtils::blockEntityTicker);
+		return createTickerHelper(type, SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 
 	@Override

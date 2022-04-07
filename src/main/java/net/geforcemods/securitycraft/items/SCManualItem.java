@@ -22,7 +22,7 @@ public class SCManualItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		if (level.isClientSide)
-			ClientHandler.displaySCManualGui();
+			ClientHandler.displaySCManualScreen();
 
 		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}

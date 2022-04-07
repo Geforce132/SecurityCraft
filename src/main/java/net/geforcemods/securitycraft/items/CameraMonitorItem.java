@@ -90,7 +90,7 @@ public class CameraMonitorItem extends Item {
 		}
 
 		if (stack.getItem() == SCContent.CAMERA_MONITOR.get() && level.isClientSide)
-			ClientHandler.displayCameraMonitorGui(player.getInventory(), (CameraMonitorItem) stack.getItem(), stack.getTag());
+			ClientHandler.displayCameraMonitorScreen(player.getInventory(), (CameraMonitorItem) stack.getItem(), stack.getTag());
 
 		return InteractionResultHolder.consume(stack);
 	}

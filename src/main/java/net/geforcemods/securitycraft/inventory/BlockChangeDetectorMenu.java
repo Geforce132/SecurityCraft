@@ -7,16 +7,25 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class BlockChangeDetectorMenu extends GenericBEMenu {
+public class BlockChangeDetectorMenu extends AbstractContainerMenu {
+	public final BlockEntity be;
+	private ContainerLevelAccess containerLevelAccess;
+
 	public BlockChangeDetectorMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
-		super(SCContent.mTypeBlockChangeDetector, windowId, level, pos);
+		super(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), windowId);
 
-		if(level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.getOwner().isOwner(inventory.player)) {
+		containerLevelAccess = ContainerLevelAccess.create(level, pos);
+		be = level.getBlockEntity(pos);
+
+		if (level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.getOwner().isOwner(inventory.player)) {
 			addSlot(new Slot(new BlockEntityInventoryWrapper<>((BlockChangeDetectorBlockEntity) be, this), 36, 175, 44) {
 				@Override
 				public boolean mayPlace(ItemStack stack) {
@@ -74,5 +83,10 @@ public class BlockChangeDetectorMenu extends GenericBEMenu {
 		}
 
 		return slotStackCopy;
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return stillValid(containerLevelAccess, player, be.getBlockState().getBlock());
 	}
 }

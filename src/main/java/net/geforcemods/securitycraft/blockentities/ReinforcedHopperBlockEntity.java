@@ -25,7 +25,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 
 	@Override
 	public BlockEntityType<?> getType() {
-		return SCContent.beTypeReinforcedHopper;
+		return SCContent.REINFORCED_HOPPER_BLOCK_ENTITY.get();
 	}
 
 	@Override

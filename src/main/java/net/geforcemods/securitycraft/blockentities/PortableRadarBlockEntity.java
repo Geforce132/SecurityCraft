@@ -37,7 +37,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	private int ticksUntilNextSearch = getSearchDelay();
 
 	public PortableRadarBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypePortableRadar, pos, state);
+		super(SCContent.PORTABLE_RADAR_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

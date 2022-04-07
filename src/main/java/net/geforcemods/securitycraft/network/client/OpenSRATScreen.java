@@ -8,28 +8,28 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-public class OpenSRATGui {
+public class OpenSRATScreen {
 	private int viewDistance;
 
-	public OpenSRATGui() {}
+	public OpenSRATScreen() {}
 
-	public OpenSRATGui(int viewDistance) {
+	public OpenSRATScreen(int viewDistance) {
 		this.viewDistance = viewDistance;
 	}
 
-	public static void encode(OpenSRATGui message, FriendlyByteBuf buf) {
+	public static void encode(OpenSRATScreen message, FriendlyByteBuf buf) {
 		buf.writeInt(message.viewDistance);
 	}
 
-	public static OpenSRATGui decode(FriendlyByteBuf buf) {
-		OpenSRATGui message = new OpenSRATGui();
+	public static OpenSRATScreen decode(FriendlyByteBuf buf) {
+		OpenSRATScreen message = new OpenSRATScreen();
 
 		message.viewDistance = buf.readInt();
 		return message;
 	}
 
-	public static void onMessage(OpenSRATGui message, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> ClientHandler.displaySRATGui(PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.REMOTE_ACCESS_SENTRY.get()), message.viewDistance));
+	public static void onMessage(OpenSRATScreen message, Supplier<NetworkEvent.Context> ctx) {
+		ctx.get().enqueueWork(() -> ClientHandler.displaySRATScreen(PlayerUtils.getSelectedItemStack(ClientHandler.getClientPlayer(), SCContent.REMOTE_ACCESS_SENTRY.get()), message.viewDistance));
 		ctx.get().setPacketHandled(true);
 	}
 }

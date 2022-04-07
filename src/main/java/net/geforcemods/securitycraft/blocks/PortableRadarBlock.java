@@ -142,7 +142,7 @@ public class PortableRadarBlock extends OwnableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return !level.isClientSide ? BaseEntityBlock.createTickerHelper(type, SCContent.beTypePortableRadar, LevelUtils::blockEntityTicker) : null;
+		return !level.isClientSide ? BaseEntityBlock.createTickerHelper(type, SCContent.PORTABLE_RADAR_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker) : null;
 	}
 
 	@Override

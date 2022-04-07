@@ -93,6 +93,6 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableBlockEntity(SCContent.beTypeAbstract, pos, state);
+		return new OwnableBlockEntity(SCContent.ABSTRACT_BLOCK_ENTITY.get(), pos, state);
 	}
 }

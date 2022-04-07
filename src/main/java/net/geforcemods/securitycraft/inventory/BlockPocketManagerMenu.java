@@ -20,7 +20,7 @@ public class BlockPocketManagerMenu extends AbstractContainerMenu {
 	public final boolean isOwner;
 
 	public BlockPocketManagerMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
-		super(SCContent.mTypeBlockPocketManager, windowId);
+		super(SCContent.BLOCK_POCKET_MANAGER_MENU.get(), windowId);
 
 		if (level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be) {
 			this.be = be;

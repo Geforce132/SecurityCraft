@@ -1,28 +1,26 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswordProtected, ILockable {
 	private String passcode;
@@ -39,7 +37,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	public KeypadBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeKeypad, pos, state);
+		super(SCContent.KEYPAD_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override
@@ -67,40 +65,16 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 
 	@Override
 	public void openPasswordGUI(Player player) {
-		if (getPassword() != null) {
-			if (player instanceof ServerPlayer serverPlayer) {
-				NetworkHooks.openGui(serverPlayer, new MenuProvider() {
-					@Override
-					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-						return new GenericBEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
-					}
-
-					@Override
-					public Component getDisplayName() {
-						return KeypadBlockEntity.super.getDisplayName();
-					}
-				}, worldPosition);
-			}
-		}
-		else {
-			if (getOwner().isOwner(player)) {
-				if (player instanceof ServerPlayer serverPlayer) {
-					NetworkHooks.openGui(serverPlayer, new MenuProvider() {
-						@Override
-						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-							return new GenericBEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
-						}
-
-						@Override
-						public Component getDisplayName() {
-							return KeypadBlockEntity.super.getDisplayName();
-						}
-					}, worldPosition);
-				}
-			}
+		if (!level.isClientSide) {
+			if (getPassword() != null)
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.CHECK_PASSWORD, worldPosition));
 			else {
-				PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
+				if (getOwner().isOwner(player))
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SET_PASSWORD, worldPosition));
+				else
+					PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
 			}
+
 		}
 	}
 

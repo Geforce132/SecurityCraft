@@ -81,7 +81,7 @@ public class ModuleItem extends Item {
 		if (canBeCustomized()) {
 			if (module == ModuleType.ALLOWLIST || module == ModuleType.DENYLIST) {
 				if (level.isClientSide)
-					ClientHandler.displayEditModuleGui(stack);
+					ClientHandler.displayEditModuleScreen(stack);
 
 				return InteractionResultHolder.consume(stack);
 			}

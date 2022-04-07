@@ -42,7 +42,7 @@ public class SecretSignItem extends StandingAndWallBlockItem {
 			be.setAllowedPlayerEditor(player.getUUID());
 
 			if (level.isClientSide)
-				ClientHandler.displayEditSecretSignGui(be);
+				ClientHandler.displayEditSecretSignScreen(be);
 		}
 
 		return flag;

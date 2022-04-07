@@ -26,7 +26,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	public KeycardReaderBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeKeycardReader, pos, state);
+		super(SCContent.KEYCARD_READER_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

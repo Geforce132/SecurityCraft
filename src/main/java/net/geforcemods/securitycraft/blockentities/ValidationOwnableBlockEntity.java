@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ValidationOwnableBlockEntity extends OwnableBlockEntity {
 	public ValidationOwnableBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeValidationOwnable, pos, state);
+		super(SCContent.VALIDATION_OWNABLE_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override
