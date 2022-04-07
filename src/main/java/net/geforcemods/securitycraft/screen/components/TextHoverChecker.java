@@ -9,7 +9,7 @@ import net.minecraft.network.chat.TextComponent;
 
 public class TextHoverChecker extends HoverChecker {
 	private List<Component> lines;
-	private final TogglePictureButton button;
+	private final IToggleableButton button;
 
 	public TextHoverChecker(int top, int bottom, int left, int right, Component line) {
 		this(top, bottom, left, right, Arrays.asList(line));
@@ -28,7 +28,7 @@ public class TextHoverChecker extends HoverChecker {
 	public TextHoverChecker(AbstractWidget widget, List<Component> lines) {
 		super(widget);
 		this.lines = lines;
-		this.button = widget instanceof TogglePictureButton tpb ? tpb : null;
+		this.button = widget instanceof IToggleableButton tb ? tb : null;
 	}
 
 	public Component getName() {

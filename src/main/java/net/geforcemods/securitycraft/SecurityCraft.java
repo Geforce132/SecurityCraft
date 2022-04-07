@@ -62,8 +62,7 @@ import net.minecraftforge.registries.RegistryObject;
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
-	public static final String PROTOCOL_VERSION = "4";
-	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
 	public static CreativeModeTab technicalTab = new SCTechnicalTab();
 	public static CreativeModeTab mineTab = new SCExplosivesTab();
 	public static CreativeModeTab decorationTab = new SCDecorationTab();

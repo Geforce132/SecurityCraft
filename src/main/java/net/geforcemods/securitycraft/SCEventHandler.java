@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
@@ -31,11 +32,11 @@ import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
@@ -270,24 +271,38 @@ public class SCEventHandler {
 		if (!(event.getWorld() instanceof Level level))
 			return;
 
-		if (!level.isClientSide() && level.getBlockEntity(event.getPos()) instanceof IModuleInventory be) {
-			for (int i = 0; i < be.getMaxNumberOfModules(); i++)
-				if (!be.getInventory().get(i).isEmpty()) {
-					ItemStack stack = be.getInventory().get(i);
-					ItemEntity item = new ItemEntity(level, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
+		if (!level.isClientSide()) {
+			BlockPos pos = event.getPos();
 
-					LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(item));
-					be.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
+			if (level.getBlockEntity(pos) instanceof IModuleInventory be) {
+				for (int i = 0; i < be.getMaxNumberOfModules(); i++) {
+					if (!be.getInventory().get(i).isEmpty()) {
+						ItemStack stack = be.getInventory().get(i);
+						ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
 
-					if (be instanceof LinkableBlockEntity lbe) {
-						lbe.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {
-								stack, ((ModuleItem) stack.getItem()).getModuleType()
-						}, lbe);
+						LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(item));
+						be.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
+
+						if (be instanceof LinkableBlockEntity lbe) {
+							lbe.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {
+									stack, ((ModuleItem) stack.getItem()).getModuleType()
+							}, lbe);
+						}
+
+						if (be instanceof SecurityCameraBlockEntity cam) {
+							BlockPos camPos = cam.getBlockPos();
+							BlockState camState = level.getBlockState(camPos);
+
+							level.updateNeighborsAt(camPos.relative(camState.getValue(SecurityCameraBlock.FACING), -1), camState.getBlock());
+						}
 					}
-
-					if (be instanceof SecurityCameraBlockEntity cam)
-						level.updateNeighborsAt(cam.getBlockPos().relative(level.getBlockState(cam.getBlockPos()).getValue(SecurityCameraBlock.FACING), -1), level.getBlockState(cam.getBlockPos()).getBlock());
 				}
+			}
+
+			Player player = event.getPlayer();
+			BlockState state = event.getState();
+
+			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(level, pos).forEach(detector -> detector.log(player, DetectionMode.BREAK, pos, state));
 		}
 
 		List<Sentry> sentries = ((Level) event.getWorld()).getEntitiesOfClass(Sentry.class, new AABB(event.getPos()));
@@ -299,6 +314,19 @@ public class SCEventHandler {
 
 			if (block == event.getWorld().getBlockState(event.getPos()).getBlock())
 				event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onBlockEventPlace(BlockEvent.EntityPlaceEvent event) {
+		if (!(event.getWorld() instanceof Level level) || level.isClientSide())
+			return;
+
+		if (event.getEntity() instanceof Player player) {
+			BlockPos pos = event.getPos();
+			BlockState state = event.getState();
+
+			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(level, pos).forEach(detector -> detector.log(player, DetectionMode.PLACE, pos, state));
 		}
 	}
 
@@ -355,7 +383,7 @@ public class SCEventHandler {
 	}
 
 	private static void handlePlayedNote(Level level, BlockPos pos, int vanillaNoteId, String instrumentName) {
-		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange(level, pos);
+		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(level, pos);
 
 		for (SonicSecuritySystemBlockEntity be : sonicSecuritySystems) {
 			// If the SSS is disabled, don't listen to any notes
