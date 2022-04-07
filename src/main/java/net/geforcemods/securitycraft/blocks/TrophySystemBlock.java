@@ -70,7 +70,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 				NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-						return new GenericBEMenu(SCContent.mTypeTrophySystem, windowId, level, pos);
+						return new GenericBEMenu(SCContent.TROPHY_SYSTEM_MENU.get(), windowId, level, pos);
 					}
 
 					@Override

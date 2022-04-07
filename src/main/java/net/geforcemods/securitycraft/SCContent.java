@@ -138,6 +138,7 @@ import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
 import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
+import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
@@ -148,6 +149,7 @@ import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.inventory.KeypadBlastFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.KeypadSmokerMenu;
+import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.items.AdminToolItem;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
@@ -176,13 +178,16 @@ import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.conditions.BlockEntityNBTCondition;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableBE;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -207,6 +212,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ObjectHolder;
@@ -218,6 +224,7 @@ public class SCContent {
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, SecurityCraft.MODID);
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SecurityCraft.MODID);
 	public static final DeferredRegister<LootItemConditionType> LOOT_ITEM_CONDITION_TYPES = DeferredRegister.create(Registry.LOOT_ITEM_REGISTRY, SecurityCraft.MODID);
+	public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, SecurityCraft.MODID);
 	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
 
 	//loot item condition types
@@ -2256,46 +2263,26 @@ public class SCContent {
 	//@formatter:on
 
 	//container types
-	@ObjectHolder(SecurityCraft.MODID + ":block_reinforcer")
-	public static MenuType<BlockReinforcerMenu> mTypeBlockReinforcer;
-	@ObjectHolder(SecurityCraft.MODID + ":briefcase")
-	public static MenuType<GenericMenu> mTypeBriefcase;
-	@ObjectHolder(SecurityCraft.MODID + ":briefcase_inventory")
-	public static MenuType<BriefcaseMenu> mTypeBriefcaseInventory;
-	@ObjectHolder(SecurityCraft.MODID + ":briefcase_setup")
-	public static MenuType<GenericMenu> mTypeBriefcaseSetup;
-	@ObjectHolder(SecurityCraft.MODID + ":customize_block")
-	public static MenuType<CustomizeBlockMenu> mTypeCustomizeBlock;
-	@ObjectHolder(SecurityCraft.MODID + ":disguise_module")
-	public static MenuType<DisguiseModuleMenu> mTypeDisguiseModule;
-	@ObjectHolder(SecurityCraft.MODID + ":inventory_scanner")
-	public static MenuType<InventoryScannerMenu> mTypeInventoryScanner;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
-	public static MenuType<KeypadFurnaceMenu> mTypeKeypadFurnace;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_smoker")
-	public static MenuType<KeypadSmokerMenu> mTypeKeypadSmoker;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_blast_furnace")
-	public static MenuType<KeypadBlastFurnaceMenu> mTypeKeypadBlastFurnace;
-	@ObjectHolder(SecurityCraft.MODID + ":projector")
-	public static MenuType<ProjectorMenu> mTypeProjector;
-	@ObjectHolder(SecurityCraft.MODID + ":check_password")
-	public static MenuType<GenericBEMenu> mTypeCheckPassword;
-	@ObjectHolder(SecurityCraft.MODID + ":set_password")
-	public static MenuType<GenericBEMenu> mTypeSetPassword;
-	@ObjectHolder(SecurityCraft.MODID + ":username_logger")
-	public static MenuType<GenericBEMenu> mTypeUsernameLogger;
-	@ObjectHolder(SecurityCraft.MODID + ":ims")
-	public static MenuType<GenericBEMenu> mTypeIMS;
-	@ObjectHolder(SecurityCraft.MODID + ":keycard_setup")
-	public static MenuType<KeycardReaderMenu> mTypeKeycardReader;
-	@ObjectHolder(SecurityCraft.MODID + ":key_changer")
-	public static MenuType<GenericBEMenu> mTypeKeyChanger;
-	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
-	public static MenuType<GenericBEMenu> mTypeTrophySystem;
-	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
-	public static MenuType<BlockPocketManagerMenu> mTypeBlockPocketManager;
-	@ObjectHolder(SecurityCraft.MODID + ":block_change_detector")
-	public static MenuType<BlockChangeDetectorMenu> mTypeBlockChangeDetector;
+	public static final RegistryObject<MenuType<BlockReinforcerMenu>> BLOCK_REINFORCER_MENU = MENU_TYPES.register("block_reinforcer", () -> IForgeMenuType.create((windowId, inv, data) -> new BlockReinforcerMenu(windowId, inv, data.readBoolean())));
+	public static final RegistryObject<MenuType<GenericMenu>> BRIEFCASE_MENU = MENU_TYPES.register("briefcase", () -> IForgeMenuType.create(SCContent::briefcaseMenu));
+	public static final RegistryObject<MenuType<BriefcaseMenu>> BRIEFCASE_INVENTORY_MENU = MENU_TYPES.register("briefcase_inventory", () -> IForgeMenuType.create((windowId, inv, data) -> new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(inv, SCContent.BRIEFCASE.get())))));
+	public static final RegistryObject<MenuType<GenericMenu>> BRIEFCASE_SETUP_MENU = MENU_TYPES.register("briefcase_setup", () -> IForgeMenuType.create(SCContent::briefcaseSetupMenu));
+	public static final RegistryObject<MenuType<CustomizeBlockMenu>> CUSTOMIZE_BLOCK_MENU = MENU_TYPES.register("customize_block", () -> IForgeMenuType.create((windowId, inv, data) -> new CustomizeBlockMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<MenuType<DisguiseModuleMenu>> DISGUISE_MODULE_MENU = MENU_TYPES.register("disguise_module", () -> IForgeMenuType.create((windowId, inv, data) -> new DisguiseModuleMenu(windowId, inv, new ModuleItemContainer(PlayerUtils.getSelectedItemStack(inv, SCContent.DISGUISE_MODULE.get())))));
+	public static final RegistryObject<MenuType<InventoryScannerMenu>> INVNETORY_SCANNER_MENU = MENU_TYPES.register("inventory_scanner", () -> IForgeMenuType.create((windowId, inv, data) -> new InventoryScannerMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<MenuType<KeypadFurnaceMenu>> KEYPAD_FURNACE_MENU = MENU_TYPES.register("keypad_furnace", () -> IForgeMenuType.create((windowId, inv, data) -> new KeypadFurnaceMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<MenuType<KeypadSmokerMenu>> KEYPAD_SMOKER_MENU = MENU_TYPES.register("keypad_smoker", () -> IForgeMenuType.create((windowId, inv, data) -> new KeypadSmokerMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<MenuType<KeypadBlastFurnaceMenu>> KEYPAD_BLAST_FURNACE_MENU = MENU_TYPES.register("keypad_blast_furnace", () -> IForgeMenuType.create((windowId, inv, data) -> new KeypadBlastFurnaceMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<MenuType<ProjectorMenu>> PROJECTOR_MENU = MENU_TYPES.register("projector", () -> IForgeMenuType.create((windowId, inv, data) -> new ProjectorMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<MenuType<GenericBEMenu>> CHECK_PASSWORD_MENU = MENU_TYPES.register("check_password", () -> IForgeMenuType.create(SCContent::checkPasswordMenu));
+	public static final RegistryObject<MenuType<GenericBEMenu>> SET_PASSWORD_MENU = MENU_TYPES.register("set_password", () -> IForgeMenuType.create(SCContent::setPasswordMenu));
+	public static final RegistryObject<MenuType<GenericBEMenu>> USERNAME_LOGGER_MENU = MENU_TYPES.register("username_logger", () -> IForgeMenuType.create(SCContent::usernameLoggerMenu));
+	public static final RegistryObject<MenuType<GenericBEMenu>> IMS_MENU = MENU_TYPES.register("ims", () -> IForgeMenuType.create(SCContent::imsMenu));
+	public static final RegistryObject<MenuType<KeycardReaderMenu>> KEYCARD_READER_MENU = MENU_TYPES.register("keycard_setup", () -> IForgeMenuType.create((windowId, inv, data) -> new KeycardReaderMenu(windowId, inv, inv.player.level, data.readBlockPos())));
+	public static final RegistryObject<MenuType<GenericBEMenu>> KEY_CHANGER_MENU = MENU_TYPES.register("key_changer", () -> IForgeMenuType.create(SCContent::keyChangerMenu));
+	public static final RegistryObject<MenuType<GenericBEMenu>> TROPHY_SYSTEM_MENU = MENU_TYPES.register("trophy_system", () -> IForgeMenuType.create(SCContent::trophySystemMenu));
+	public static final RegistryObject<MenuType<BlockPocketManagerMenu>> BLOCK_POCKET_MANAGER_MENU = MENU_TYPES.register("block_pocket_manager", () -> IForgeMenuType.create((windowId, inv, data) -> new BlockPocketManagerMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<MenuType<BlockChangeDetectorMenu>> BLOCK_CHANGE_DETECTOR_MENU = MENU_TYPES.register("block_change_detector", () -> IForgeMenuType.create((windowId, inv, data) -> new BlockChangeDetectorMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
 
 	private static final Block.Properties prop() {
 		return prop(Material.STONE);
@@ -2339,5 +2326,37 @@ public class SCContent {
 
 	private static boolean never(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {
 		return false;
+	}
+
+	private static final GenericMenu briefcaseMenu(int windowId, Inventory inv, FriendlyByteBuf data) {
+		return new GenericMenu(SCContent.BRIEFCASE_MENU.get(), windowId);
+	}
+
+	private static final GenericMenu briefcaseSetupMenu(int windowId, Inventory inv, FriendlyByteBuf data) {
+		return new GenericMenu(SCContent.BRIEFCASE_SETUP_MENU.get(), windowId);
+	}
+
+	private static final GenericBEMenu checkPasswordMenu(int windowId, Inventory inv, FriendlyByteBuf data) {
+		return new GenericBEMenu(SCContent.CHECK_PASSWORD_MENU.get(), windowId, inv.player.level, data.readBlockPos());
+	}
+
+	private static final GenericBEMenu setPasswordMenu(int windowId, Inventory inv, FriendlyByteBuf data) {
+		return new GenericBEMenu(SCContent.SET_PASSWORD_MENU.get(), windowId, inv.player.level, data.readBlockPos());
+	}
+
+	private static final GenericBEMenu usernameLoggerMenu(int windowId, Inventory inv, FriendlyByteBuf data) {
+		return new GenericBEMenu(SCContent.USERNAME_LOGGER_MENU.get(), windowId, inv.player.level, data.readBlockPos());
+	}
+
+	private static final GenericBEMenu imsMenu(int windowId, Inventory inv, FriendlyByteBuf data) {
+		return new GenericBEMenu(SCContent.IMS_MENU.get(), windowId, inv.player.level, data.readBlockPos());
+	}
+
+	private static final GenericBEMenu keyChangerMenu(int windowId, Inventory inv, FriendlyByteBuf data) {
+		return new GenericBEMenu(SCContent.KEY_CHANGER_MENU.get(), windowId, inv.player.level, data.readBlockPos());
+	}
+
+	private static final GenericBEMenu trophySystemMenu(int windowId, Inventory inv, FriendlyByteBuf data) {
+		return new GenericBEMenu(SCContent.TROPHY_SYSTEM_MENU.get(), windowId, inv.player.level, data.readBlockPos());
 	}
 }

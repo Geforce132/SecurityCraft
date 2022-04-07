@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class BriefcaseMenu extends AbstractContainerMenu {
 	public BriefcaseMenu(int windowId, Inventory playerInventory, BriefcaseContainer briefcaseInventory) {
-		super(SCContent.mTypeBriefcaseInventory, windowId);
+		super(SCContent.BRIEFCASE_INVENTORY_MENU.get(), windowId);
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {

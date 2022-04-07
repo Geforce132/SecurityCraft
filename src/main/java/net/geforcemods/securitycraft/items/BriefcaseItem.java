@@ -53,9 +53,9 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 			}
 
 			if (!stack.getTag().contains("passcode"))
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcaseSetup.getRegistryName(), stack.getHoverName()));
+				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.BRIEFCASE_SETUP_MENU.get().getRegistryName(), stack.getHoverName()));
 			else
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcase.getRegistryName(), stack.getHoverName()));
+				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.BRIEFCASE_MENU.get().getRegistryName(), stack.getHoverName()));
 		}
 	}
 

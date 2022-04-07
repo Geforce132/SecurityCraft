@@ -52,7 +52,7 @@ public class UniversalKeyChangerItem extends Item {
 					NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-							return new GenericBEMenu(SCContent.mTypeKeyChanger, windowId, level, pos);
+							return new GenericBEMenu(SCContent.KEY_CHANGER_MENU.get(), windowId, level, pos);
 						}
 
 						@Override

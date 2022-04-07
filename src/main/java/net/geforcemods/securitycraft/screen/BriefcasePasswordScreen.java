@@ -77,7 +77,7 @@ public class BriefcasePasswordScreen extends AbstractContainerScreen<GenericMenu
 					nbt.putString("ownerUUID", Minecraft.getInstance().player.getUUID().toString());
 				}
 
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcaseInventory.getRegistryName(), getTitle()));
+				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.BRIEFCASE_INVENTORY_MENU.get().getRegistryName(), getTitle()));
 			}
 		}
 	}

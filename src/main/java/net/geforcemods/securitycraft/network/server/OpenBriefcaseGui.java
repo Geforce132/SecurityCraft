@@ -50,7 +50,7 @@ public class OpenBriefcaseGui {
 			BlockPos pos = player.blockPosition();
 
 			if (PlayerUtils.isHoldingItem(player, SCContent.BRIEFCASE.get(), null)) {
-				if (id.equals(SCContent.mTypeBriefcaseInventory.getRegistryName())) {
+				if (id.equals(SCContent.BRIEFCASE_INVENTORY_MENU.get().getRegistryName())) {
 					NetworkHooks.openGui(player, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
@@ -63,11 +63,11 @@ public class OpenBriefcaseGui {
 						}
 					}, pos);
 				}
-				else if (id.equals(SCContent.mTypeBriefcaseSetup.getRegistryName())) {
+				else if (id.equals(SCContent.BRIEFCASE_SETUP_MENU.get().getRegistryName())) {
 					NetworkHooks.openGui(player, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-							return new GenericMenu(SCContent.mTypeBriefcaseSetup, windowId);
+							return new GenericMenu(SCContent.BRIEFCASE_SETUP_MENU.get(), windowId);
 						}
 
 						@Override
@@ -76,11 +76,11 @@ public class OpenBriefcaseGui {
 						}
 					}, pos);
 				}
-				else if (id.equals(SCContent.mTypeBriefcase.getRegistryName())) {
+				else if (id.equals(SCContent.BRIEFCASE_MENU.get().getRegistryName())) {
 					NetworkHooks.openGui(player, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-							return new GenericMenu(SCContent.mTypeBriefcase, windowId);
+							return new GenericMenu(SCContent.BRIEFCASE_MENU.get(), windowId);
 						}
 
 						@Override

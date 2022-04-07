@@ -87,7 +87,7 @@ public class BriefcaseSetupScreen extends AbstractContainerScreen<GenericMenu> {
 			}
 
 			ClientUtils.syncItemNBT(briefcase);
-			SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcase.getRegistryName(), getTitle()));
+			SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.BRIEFCASE_MENU.get().getRegistryName(), getTitle()));
 		}
 	}
 }

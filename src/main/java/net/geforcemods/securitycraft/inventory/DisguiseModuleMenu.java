@@ -15,7 +15,7 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 	private ModuleItemContainer inventory;
 
 	public DisguiseModuleMenu(int windowId, Inventory playerInventory, ModuleItemContainer moduleInventory) {
-		super(SCContent.mTypeDisguiseModule, windowId);
+		super(SCContent.DISGUISE_MODULE_MENU.get(), windowId);
 		inventory = moduleInventory;
 		moduleInventory.setMenu(this);
 		addSlot(new AddonSlot(inventory, 0, 79, 20));

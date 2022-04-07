@@ -174,7 +174,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-		return new GenericBEMenu(SCContent.mTypeIMS, windowId, level, worldPosition);
+		return new GenericBEMenu(SCContent.IMS_MENU.get(), windowId, level, worldPosition);
 	}
 
 	@Override

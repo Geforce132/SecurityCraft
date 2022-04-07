@@ -114,7 +114,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-		return new GenericBEMenu(SCContent.mTypeUsernameLogger, windowId, level, worldPosition);
+		return new GenericBEMenu(SCContent.USERNAME_LOGGER_MENU.get(), windowId, level, worldPosition);
 	}
 
 	@Override

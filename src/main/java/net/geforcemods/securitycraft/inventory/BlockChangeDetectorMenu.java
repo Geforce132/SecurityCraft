@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 
 public class BlockChangeDetectorMenu extends GenericBEMenu {
 	public BlockChangeDetectorMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
-		super(SCContent.mTypeBlockChangeDetector, windowId, level, pos);
+		super(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), windowId, level, pos);
 
 		if(level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.getOwner().isOwner(inventory.player)) {
 			addSlot(new Slot(new BlockEntityInventoryWrapper<>((BlockChangeDetectorBlockEntity) be, this), 36, 175, 44) {
