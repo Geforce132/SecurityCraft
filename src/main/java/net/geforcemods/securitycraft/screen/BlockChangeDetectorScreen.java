@@ -80,8 +80,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			SecurityCraft.channel.sendToServer(new ClearChangeDetectorServer(be.getBlockPos()));
 		}));
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
+		boolean isOwner = be.getOwner().isOwner(minecraft.player);
 
-		clearButton.active = be.getOwner().isOwner(minecraft.player);
 		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 160, 150, topPos + 20, leftPos + 8));
 		currentMode = be.getMode();
 		addRenderableWidget(modeButton = new ModeButton(leftPos + 173, topPos + 19, 20, 20, currentMode.ordinal(), DetectionMode.values().length, b -> {
@@ -98,7 +98,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		hoverCheckers[0] = new TextHoverChecker(clearButton, CLEAR);
 		hoverCheckers[1] = new TextHoverChecker(modeButton, Arrays.stream(DetectionMode.values()).map(e -> (Component) Utils.localize(e.getDescriptionId())).toList());
 		hoverCheckers[2] = new TextHoverChecker(showAllCheckbox, Utils.localize("gui.securitycraft:block_change_detector.show_all_checkbox"));
-		smartModuleHoverChecker = new TextHoverChecker(topPos + 44, topPos + 60, leftPos + 174, leftPos + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint"));
+		smartModuleHoverChecker = isOwner ? new TextHoverChecker(topPos + 44, topPos + 60, leftPos + 174, leftPos + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint")) : null;
+		clearButton.active = modeButton.active = isOwner;
 
 		for (ChangeEntry entry : be.getEntries()) {
 			String stateString;
@@ -109,15 +110,15 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 				stateString = "";
 
 			List<TextComponent> list = List.of(
-			//@formatter:off
-				entry.player(),
-				entry.uuid(),
-				entry.action(),
-				Utils.getFormattedCoordinates(entry.pos()).getString(),
-				stateString,
-				dateFormat.format(new Date(entry.timestamp()))
-			//@formatter:on
-			).stream().map(Object::toString).filter(s -> !s.isEmpty()).map(TextComponent::new).collect(Collectors.toList());
+					//@formatter:off
+					entry.player(),
+					entry.uuid(),
+					entry.action(),
+					Utils.getFormattedCoordinates(entry.pos()).getString(),
+					stateString,
+					dateFormat.format(new Date(entry.timestamp()))
+					//@formatter:on
+					).stream().map(Object::toString).filter(s -> !s.isEmpty()).map(TextComponent::new).collect(Collectors.toList());
 
 			changeEntryList.addEntry(addWidget(new ContentSavingCollapsileTextList(0, 0, 154, Utils.localize(entry.state().getBlock().getDescriptionId()), list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), false, changeEntryList::isHovered, entry.action(), entry.state().getBlock())));
 		}

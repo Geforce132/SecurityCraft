@@ -1025,7 +1025,7 @@
 	"module.securitycraft.sonic_security_system.whitelist_module.description": "Adding an allowlist module to a sonic security system will allow listed players to save the system's tune onto a portable tune player, as well as listen to the tune in the system's GUI.",
 	"module.securitycraft.sonic_security_system.redstone_module.description": "Adding a redstone module to a sonic security system lets the system emit a redstone signal when the correct tune was played.",
 	"module.securitycraft.block_change_detector.disguise_module.description": "Adding a disguise module to a block change detector will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
-	"module.securitycraft.block_change_detector.whitelist_module.description": "Adding an allowlist module to a block change detector will allow listed players to place/break blocks in the block's vicinity, without getting logged.",
+	"module.securitycraft.block_change_detector.whitelist_module.description": "Adding an allowlist module to a block change detector will allow listed players to place/break blocks in the block's vicinity, without getting logged. They will also be able to view all logged entries, however they cannot clear them, or change the block's settings.",
 	"module.securitycraft.block_change_detector.redstone_module.description": "Adding a redstone module to a block change detector makes it emit a redstone signal each time it detectes a block was changed by a player in its vicinity.",
 	"module.securitycraft.block_change_detector.smart_module.description": "Adding a smart module to a block change detector allows it to only log changes of one specific type of block. The block can be set in the GUI.",
 

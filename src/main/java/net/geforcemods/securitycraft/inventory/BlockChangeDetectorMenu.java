@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
@@ -15,17 +16,19 @@ public class BlockChangeDetectorMenu extends GenericBEMenu {
 	public BlockChangeDetectorMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.mTypeBlockChangeDetector, windowId, level, pos);
 
-		addSlot(new Slot(new BlockEntityInventoryWrapper<>((BlockChangeDetectorBlockEntity) be, this), 36, 175, 44) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return ((BlockChangeDetectorBlockEntity) be).hasModule(ModuleType.SMART) && stack.getItem() instanceof BlockItem;
-			}
+		if(level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.getOwner().isOwner(inventory.player)) {
+			addSlot(new Slot(new BlockEntityInventoryWrapper<>((BlockChangeDetectorBlockEntity) be, this), 36, 175, 44) {
+				@Override
+				public boolean mayPlace(ItemStack stack) {
+					return ((BlockChangeDetectorBlockEntity) be).hasModule(ModuleType.SMART) && stack.getItem() instanceof BlockItem;
+				}
 
-			@Override
-			public int getMaxStackSize() {
-				return 1;
-			}
-		});
+				@Override
+				public int getMaxStackSize() {
+					return 1;
+				}
+			});
+		}
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; ++x) {
