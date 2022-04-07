@@ -344,11 +344,11 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerEntityRenderer(SCContent.eTypeBouncingBetty, BouncingBettyRenderer::new);
-		event.registerEntityRenderer(SCContent.eTypeImsBomb, IMSBombRenderer::new);
-		event.registerEntityRenderer(SCContent.eTypeSecurityCamera, NoopRenderer::new);
-		event.registerEntityRenderer(SCContent.eTypeSentry, SentryRenderer::new);
-		event.registerEntityRenderer(SCContent.eTypeBullet, BulletRenderer::new);
+		event.registerEntityRenderer(SCContent.BOUNCING_BETTY_ENTITY.get(), BouncingBettyRenderer::new);
+		event.registerEntityRenderer(SCContent.IMS_BOMB_ENTITY.get(), IMSBombRenderer::new);
+		event.registerEntityRenderer(SCContent.SECURITY_CAMERA_ENTITY.get(), NoopRenderer::new);
+		event.registerEntityRenderer(SCContent.SENTRY_ENTITY.get(), SentryRenderer::new);
+		event.registerEntityRenderer(SCContent.BULLET_ENTITY.get(), BulletRenderer::new);
 		//normal renderers
 		event.registerBlockEntityRenderer(SCContent.beTypeBlockPocketManager, BlockPocketManagerRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.beTypeKeypadChest, KeypadChestRenderer::new);

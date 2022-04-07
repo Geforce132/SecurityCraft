@@ -57,11 +57,11 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		super(SCContent.beTypeTrophySystem, pos, state);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
 		//ordering is done in TrophySystemScreen based on the user's current language
-		projectileFilter.put(SCContent.eTypeBullet, true);
+		projectileFilter.put(SCContent.BULLET_ENTITY.get(), true);
 		projectileFilter.put(EntityType.SPECTRAL_ARROW, true);
 		projectileFilter.put(EntityType.ARROW, true);
 		projectileFilter.put(EntityType.SMALL_FIREBALL, true);
-		projectileFilter.put(SCContent.eTypeImsBomb, true);
+		projectileFilter.put(SCContent.IMS_BOMB_ENTITY.get(), true);
 		projectileFilter.put(EntityType.FIREBALL, true);
 		projectileFilter.put(EntityType.DRAGON_FIREBALL, true);
 		projectileFilter.put(EntityType.WITHER_SKULL, true);

@@ -182,6 +182,7 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -213,6 +214,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class SCContent {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SecurityCraft.MODID);
+	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, SecurityCraft.MODID);
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, SecurityCraft.MODID);
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SecurityCraft.MODID);
 	public static final DeferredRegister<LootItemConditionType> LOOT_ITEM_CONDITION_TYPES = DeferredRegister.create(Registry.LOOT_ITEM_REGISTRY, SecurityCraft.MODID);
@@ -2215,16 +2217,43 @@ public class SCContent {
 	public static BlockEntityType<BlockChangeDetectorBlockEntity> beTypeBlockChangeDetector;
 
 	//entity types
-	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
-	public static EntityType<BouncingBetty> eTypeBouncingBetty;
-	@ObjectHolder(SecurityCraft.MODID + ":imsbomb")
-	public static EntityType<IMSBomb> eTypeImsBomb;
-	@ObjectHolder(SecurityCraft.MODID + ":securitycamera")
-	public static EntityType<SecurityCamera> eTypeSecurityCamera;
-	@ObjectHolder(SecurityCraft.MODID + ":sentry")
-	public static EntityType<Sentry> eTypeSentry;
-	@ObjectHolder(SecurityCraft.MODID + ":bullet")
-	public static EntityType<Bullet> eTypeBullet;
+	//@formatter:off
+	public static final RegistryObject<EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
+			() -> EntityType.Builder.<BouncingBetty>of(BouncingBetty::new, MobCategory.MISC)
+			.sized(0.5F, 0.2F)
+			.setTrackingRange(128)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(SecurityCraft.MODID + ":bouncingbetty"));
+	public static final RegistryObject<EntityType<IMSBomb>> IMS_BOMB_ENTITY = ENTITY_TYPES.register("imsbomb",
+			() -> EntityType.Builder.<IMSBomb>of(IMSBomb::new, MobCategory.MISC)
+			.sized(0.25F, 0.3F)
+			.setTrackingRange(256)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(SecurityCraft.MODID + ":imsbomb"));
+	public static final RegistryObject<EntityType<SecurityCamera>> SECURITY_CAMERA_ENTITY = ENTITY_TYPES.register("securitycamera",
+			() -> EntityType.Builder.<SecurityCamera>of(SecurityCamera::new, MobCategory.MISC)
+			.sized(0.0001F, 0.0001F)
+			.setTrackingRange(256)
+			.setUpdateInterval(20)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(SecurityCraft.MODID + ":securitycamera"));
+	public static final RegistryObject<EntityType<Sentry>> SENTRY_ENTITY = ENTITY_TYPES.register("sentry",
+			() -> EntityType.Builder.<Sentry>of(Sentry::new, MobCategory.MISC)
+			.sized(1.0F, 2.0F)
+			.setTrackingRange(256)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(SecurityCraft.MODID + ":sentry"));
+	public static final RegistryObject<EntityType<Bullet>> BULLET_ENTITY = ENTITY_TYPES.register("bullet",
+			() -> EntityType.Builder.<Bullet>of(Bullet::new, MobCategory.MISC)
+			.sized(0.15F, 0.1F)
+			.setTrackingRange(256)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(SecurityCraft.MODID + ":bullet"));
+	//@formatter:on
 
 	//container types
 	@ObjectHolder(SecurityCraft.MODID + ":block_reinforcer")

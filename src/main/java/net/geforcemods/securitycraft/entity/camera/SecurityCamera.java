@@ -36,12 +36,12 @@ public class SecurityCamera extends Entity {
 	private boolean loadedChunks = false;
 
 	public SecurityCamera(EntityType<SecurityCamera> type, Level level) {
-		super(SCContent.eTypeSecurityCamera, level);
+		super(SCContent.SECURITY_CAMERA_ENTITY.get(), level);
 		noPhysics = true;
 	}
 
 	public SecurityCamera(Level level, BlockPos pos) {
-		this(SCContent.eTypeSecurityCamera, level);
+		this(SCContent.SECURITY_CAMERA_ENTITY.get(), level);
 
 		if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity cam)) {
 			discard();

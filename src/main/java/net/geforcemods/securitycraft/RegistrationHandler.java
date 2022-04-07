@@ -42,11 +42,6 @@ import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
-import net.geforcemods.securitycraft.entity.BouncingBetty;
-import net.geforcemods.securitycraft.entity.Bullet;
-import net.geforcemods.securitycraft.entity.IMSBomb;
-import net.geforcemods.securitycraft.entity.Sentry;
-import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
@@ -109,9 +104,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -208,49 +201,8 @@ public class RegistrationHandler {
 	}
 
 	@SubscribeEvent
-	public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
-		//@formatter:off
-		event.getRegistry().register(EntityType.Builder.<BouncingBetty>of(BouncingBetty::new, MobCategory.MISC)
-				.sized(0.5F, 0.2F)
-				.setTrackingRange(128)
-				.setUpdateInterval(1)
-				.setShouldReceiveVelocityUpdates(true)
-				.build(SecurityCraft.MODID + ":bouncingbetty")
-				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bouncingbetty")));
-		event.getRegistry().register(EntityType.Builder.<IMSBomb>of(IMSBomb::new, MobCategory.MISC)
-				.sized(0.25F, 0.3F)
-				.setTrackingRange(256)
-				.setUpdateInterval(1)
-				.setShouldReceiveVelocityUpdates(true)
-				.build(SecurityCraft.MODID + ":imsbomb")
-				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "imsbomb")));
-		event.getRegistry().register(EntityType.Builder.<SecurityCamera>of(SecurityCamera::new, MobCategory.MISC)
-				.sized(0.0001F, 0.0001F)
-				.setTrackingRange(256)
-				.setUpdateInterval(20)
-				.setShouldReceiveVelocityUpdates(true)
-				.build(SecurityCraft.MODID + ":securitycamera")
-				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "securitycamera")));
-		event.getRegistry().register(EntityType.Builder.<Sentry>of(Sentry::new, MobCategory.MISC)
-				.sized(1.0F, 2.0F)
-				.setTrackingRange(256)
-				.setUpdateInterval(1)
-				.setShouldReceiveVelocityUpdates(true)
-				.build(SecurityCraft.MODID + ":sentry")
-				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sentry")));
-		event.getRegistry().register(EntityType.Builder.<Bullet>of(Bullet::new, MobCategory.MISC)
-				.sized(0.15F, 0.1F)
-				.setTrackingRange(256)
-				.setUpdateInterval(1)
-				.setShouldReceiveVelocityUpdates(true)
-				.build(SecurityCraft.MODID + ":bullet")
-				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bullet")));
-		//@formatter:on
-	}
-
-	@SubscribeEvent
 	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-		event.put(SCContent.eTypeSentry, Mob.createMobAttributes().build());
+		event.put(SCContent.SENTRY_ENTITY.get(), Mob.createMobAttributes().build());
 	}
 
 	@SubscribeEvent

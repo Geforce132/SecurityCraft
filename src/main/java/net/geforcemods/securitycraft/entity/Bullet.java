@@ -29,11 +29,11 @@ public class Bullet extends AbstractArrow {
 	private Collection<MobEffectInstance> potionEffects = Sets.newHashSet();
 
 	public Bullet(EntityType<Bullet> type, Level level) {
-		super(SCContent.eTypeBullet, level);
+		super(SCContent.BULLET_ENTITY.get(), level);
 	}
 
 	public Bullet(Level level, Sentry shooter) {
-		super(SCContent.eTypeBullet, shooter, level);
+		super(SCContent.BULLET_ENTITY.get(), shooter, level);
 
 		Owner owner = shooter.getOwner();
 
