@@ -6,8 +6,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -77,12 +80,16 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GrassColor;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -315,24 +322,16 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.PROTECTO.get(), cutoutMipped);
 		event.enqueueWork(() -> {
 			MenuScreens.register(SCContent.BLOCK_REINFORCER_MENU.get(), BlockReinforcerScreen::new);
-			MenuScreens.register(SCContent.BRIEFCASE_MENU.get(), BriefcasePasswordScreen::new);
 			MenuScreens.register(SCContent.BRIEFCASE_INVENTORY_MENU.get(), BriefcaseInventoryScreen::new);
-			MenuScreens.register(SCContent.BRIEFCASE_SETUP_MENU.get(), BriefcaseSetupScreen::new);
 			MenuScreens.register(SCContent.CUSTOMIZE_BLOCK_MENU.get(), CustomizeBlockScreen::new);
 			MenuScreens.register(SCContent.DISGUISE_MODULE_MENU.get(), DisguiseModuleScreen::new);
 			MenuScreens.register(SCContent.INVNETORY_SCANNER_MENU.get(), InventoryScannerScreen::new);
 			MenuScreens.register(SCContent.KEYPAD_FURNACE_MENU.get(), KeypadFurnaceScreen::new);
 			MenuScreens.register(SCContent.KEYPAD_SMOKER_MENU.get(), KeypadSmokerScreen::new);
 			MenuScreens.register(SCContent.KEYPAD_BLAST_FURNACE_MENU.get(), KeypadBlastFurnaceScreen::new);
-			MenuScreens.register(SCContent.CHECK_PASSWORD_MENU.get(), CheckPasswordScreen::new);
-			MenuScreens.register(SCContent.SET_PASSWORD_MENU.get(), SetPasswordScreen::new);
-			MenuScreens.register(SCContent.USERNAME_LOGGER_MENU.get(), UsernameLoggerScreen::new);
-			MenuScreens.register(SCContent.IMS_MENU.get(), IMSScreen::new);
 			MenuScreens.register(SCContent.KEYCARD_READER_MENU.get(), KeycardReaderScreen::new);
-			MenuScreens.register(SCContent.KEY_CHANGER_MENU.get(), KeyChangerScreen::new);
 			MenuScreens.register(SCContent.BLOCK_POCKET_MANAGER_MENU.get(), BlockPocketManagerScreen::new);
 			MenuScreens.register(SCContent.PROJECTOR_MENU.get(), ProjectorScreen::new);
-			MenuScreens.register(SCContent.TROPHY_SYSTEM_MENU.get(), TrophySystemScreen::new);
 			MenuScreens.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
 		});
 		KeyBindings.init();
@@ -545,6 +544,43 @@ public class ClientHandler {
 
 	public static void displaySonicSecuritySystemGui(SonicSecuritySystemBlockEntity te) {
 		Minecraft.getInstance().setScreen(new SonicSecuritySystemScreen(te));
+	}
+
+	public static void displayBriefcasePasswordGui(Component title) {
+		Minecraft.getInstance().setScreen(new BriefcasePasswordScreen(title));
+	}
+
+	public static void displayBriefcaseSetupGui(Component title) {
+		Minecraft.getInstance().setScreen(new BriefcaseSetupScreen(title));
+	}
+
+	public static void displayUsernameLoggerGui(Level level, BlockPos pos) {
+		if(Minecraft.getInstance().level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be)
+			Minecraft.getInstance().setScreen(new UsernameLoggerScreen(be));
+	}
+
+	public static void displayIMSGui(IMSBlockEntity te) {
+		Minecraft.getInstance().setScreen(new IMSScreen(te));
+	}
+
+	public static void displayUniversalKeyChangerGui(BlockEntity be) {
+		Minecraft.getInstance().setScreen(new KeyChangerScreen(be));
+	}
+
+	public static void displayTrophySystemGui(TrophySystemBlockEntity te) {
+		Minecraft.getInstance().setScreen(new TrophySystemScreen(te));
+	}
+
+	public static void displayCheckPasswordGui(BlockEntity te) {
+		Component displayName = te instanceof Nameable nameable ? nameable.getDisplayName() : new TranslatableComponent(te.getBlockState().getBlock().getDescriptionId());
+
+		Minecraft.getInstance().setScreen(new CheckPasswordScreen(te, displayName));
+	}
+
+	public static void displaySetPasswordGui(BlockEntity te) {
+		Component displayName = te instanceof Nameable nameable ? nameable.getDisplayName() : new TranslatableComponent(te.getBlockState().getBlock().getDescriptionId());
+
+		Minecraft.getInstance().setScreen(new SetPasswordScreen(te, displayName));
 	}
 
 	public static void refreshModelData(BlockEntity te) {

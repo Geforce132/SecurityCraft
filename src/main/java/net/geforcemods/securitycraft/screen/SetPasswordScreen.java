@@ -5,33 +5,35 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-public class SetPasswordScreen extends AbstractContainerScreen<GenericBEMenu> {
+public class SetPasswordScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private int imageWidth = 176;
+	private int imageHeight = 166;
+	private int leftPos;
+	private int topPos;
 	private BlockEntity be;
 	private TranslatableComponent blockName;
 	private TranslatableComponent setup;
 	private MutableComponent combined;
 	private EditBox keycodeTextbox;
 
-	public SetPasswordScreen(GenericBEMenu menu, Inventory inv, Component title) {
-		super(menu, inv, title);
-		be = menu.be;
+	public SetPasswordScreen(BlockEntity be, Component title) {
+		super(title);
+		this.be = be;
 		blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
 		setup = Utils.localize("gui.securitycraft:password.setup");
 		combined = blockName.plainCopy().append(new TextComponent(" ")).append(setup);
@@ -40,6 +42,9 @@ public class SetPasswordScreen extends AbstractContainerScreen<GenericBEMenu> {
 	@Override
 	public void init() {
 		super.init();
+
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
 
 		Button saveAndContinueButton = addRenderableWidget(new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::saveAndContinueButtonClicked));
 
@@ -61,26 +66,19 @@ public class SetPasswordScreen extends AbstractContainerScreen<GenericBEMenu> {
 
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		super.render(pose, mouseX, mouseY, partialTicks);
-		drawString(pose, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
-	}
-
-	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		if (font.width(combined) < imageWidth - 10)
-			font.draw(pose, combined, imageWidth / 2 - font.width(combined) / 2, 6, 4210752);
-		else {
-			font.draw(pose, blockName, imageWidth / 2 - font.width(blockName) / 2, 6.0F, 4210752);
-			font.draw(pose, setup, imageWidth / 2 - font.width(setup) / 2, 16, 4210752);
-		}
-	}
-
-	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(pose, mouseX, mouseY, partialTicks);
+		drawString(pose, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+
+		if (font.width(combined) < width - 10)
+			font.draw(pose, combined, width / 2 - font.width(combined) / 2, topPos + 6, 4210752);
+		else {
+			font.draw(pose, blockName, width / 2 - font.width(blockName) / 2, topPos + 6, 4210752);
+			font.draw(pose, setup, width / 2 - font.width(setup) / 2, topPos + 16, 4210752);
+		}
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {

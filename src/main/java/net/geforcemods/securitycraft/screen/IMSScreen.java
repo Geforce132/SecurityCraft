@@ -7,27 +7,29 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity.IMSTargetingMode;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
 
-public class IMSScreen extends AbstractContainerScreen<GenericBEMenu> {
+public class IMSScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent imsName = Utils.localize(SCContent.IMS.get().getDescriptionId());
 	private final TranslatableComponent target = Utils.localize("gui.securitycraft:ims.target");
+	private int imageWidth = 176;
+	private int imageHeight = 166;
+	private int leftPos;
+	private int topPos;
 	private IMSBlockEntity be;
 	private IMSTargetingMode targetMode;
 
-	public IMSScreen(GenericBEMenu menu, Inventory inv, Component text) {
-		super(menu, inv, text);
-		be = (IMSBlockEntity) menu.be;
+	public IMSScreen(IMSBlockEntity be) {
+		super(be.getDisplayName());
+		this.be = be;
 		targetMode = be.getTargetingMode();
 	}
 
@@ -35,21 +37,21 @@ public class IMSScreen extends AbstractContainerScreen<GenericBEMenu> {
 	public void init() {
 		super.init();
 
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
 		addRenderableWidget(new ToggleComponentButton(width / 2 - 75, height / 2 - 38, 150, 20, this::updateButtonText, targetMode.ordinal(), 3, this::modeButtonClicked));
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, imsName, imageWidth / 2 - font.width(imsName) / 2, 6, 4210752);
-		font.draw(pose, target, imageWidth / 2 - font.width(target) / 2, 30, 4210752);
-	}
-
-	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick)
+	{
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(pose, mouseX, mouseY, partialTick);
+		font.draw(pose, imsName, width / 2 - font.width(imsName) / 2, topPos + 6, 4210752);
+		font.draw(pose, target, width / 2 - font.width(target) / 2, topPos + 30, 4210752);
 	}
 
 	private void modeButtonClicked(Button button) {

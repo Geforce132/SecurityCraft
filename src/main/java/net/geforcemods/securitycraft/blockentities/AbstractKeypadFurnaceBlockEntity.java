@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -13,10 +12,11 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
+import net.geforcemods.securitycraft.network.client.OpenCheckPasswordScreen;
+import net.geforcemods.securitycraft.network.client.OpenSetPasswordScreen;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -33,9 +33,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
@@ -50,7 +48,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 
 public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity implements IPasswordProtected, MenuProvider, IOwnable, INameSetter, IModuleInventory, ICustomizable, ILockable {
@@ -161,39 +158,15 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	@Override
 	public void openPasswordGUI(Player player) {
-		if (getPassword() != null) {
-			if (player instanceof ServerPlayer serverPlayer) {
-				NetworkHooks.openGui(serverPlayer, new MenuProvider() {
-					@Override
-					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-						return new GenericBEMenu(SCContent.CHECK_PASSWORD_MENU.get(), windowId, level, worldPosition);
-					}
-
-					@Override
-					public Component getDisplayName() {
-						return AbstractKeypadFurnaceBlockEntity.super.getDisplayName();
-					}
-				}, worldPosition);
+		if (!level.isClientSide) {
+			if (getPassword() != null)
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenCheckPasswordScreen(worldPosition));
+			else {
+				if (getOwner().isOwner(player))
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenSetPasswordScreen(worldPosition));
+				else
+					PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
 			}
-		}
-		else {
-			if (getOwner().isOwner(player)) {
-				if (player instanceof ServerPlayer serverPlayer) {
-					NetworkHooks.openGui(serverPlayer, new MenuProvider() {
-						@Override
-						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-							return new GenericBEMenu(SCContent.SET_PASSWORD_MENU.get(), windowId, level, worldPosition);
-						}
-
-						@Override
-						public Component getDisplayName() {
-							return AbstractKeypadFurnaceBlockEntity.super.getDisplayName();
-						}
-					}, worldPosition);
-				}
-			}
-			else
-				PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
 		}
 	}
 

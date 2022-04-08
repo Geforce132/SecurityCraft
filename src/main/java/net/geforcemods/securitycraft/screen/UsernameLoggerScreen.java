@@ -14,36 +14,39 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-public class UsernameLoggerScreen extends AbstractContainerScreen<GenericBEMenu> {
+public class UsernameLoggerScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslatableComponent logged = Utils.localize("gui.securitycraft:logger.logged");
 	private final TranslatableComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
+	private int imageWidth = 176;
+	private int imageHeight = 166;
+	private int leftPos;
+	private int topPos;
 	private UsernameLoggerBlockEntity be;
 	private PlayerList playerList;
 
-	public UsernameLoggerScreen(GenericBEMenu menu, Inventory inv, Component title) {
-		super(menu, inv, title);
-		be = (UsernameLoggerBlockEntity) menu.be;
+	public UsernameLoggerScreen(UsernameLoggerBlockEntity be) {
+		super(be.getDisplayName());
+		this.be = be;
 	}
 
 	@Override
 	protected void init() {
 		super.init();
 
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
 		addRenderableWidget(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, new TextComponent("x"), b -> {
 			be.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(be.getBlockPos()));
@@ -52,19 +55,17 @@ public class UsernameLoggerScreen extends AbstractContainerScreen<GenericBEMenu>
 	}
 
 	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, logged, imageWidth / 2 - font.width(logged) / 2, 6, 4210752);
-
-		if (mouseX >= leftPos + 4 && mouseY >= topPos + 4 && mouseX < leftPos + 4 + 8 && mouseY < topPos + 4 + 8)
-			renderTooltip(pose, clear, mouseX - leftPos, mouseY - topPos);
-	}
-
-	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
+	public void render(PoseStack pose, int mouseX, int mouseY, float partialTick)
+	{
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(pose, mouseX, mouseY, partialTick);
+		font.draw(pose, logged, width / 2 - font.width(logged) / 2, topPos + 6, 4210752);
+
+		if (mouseX >= leftPos + 4 && mouseY >= topPos + 4 && mouseX < leftPos + 4 + 8 && mouseY < topPos + 4 + 8)
+			renderTooltip(pose, clear, mouseX, mouseY);
 	}
 
 	@Override

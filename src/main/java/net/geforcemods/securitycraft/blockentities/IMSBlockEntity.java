@@ -8,27 +8,22 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.entity.IMSBomb;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvider, ITickingBlockEntity {
+public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 12, 1, 30, 1, true);
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
@@ -170,16 +165,6 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 		return new Option[] {
 				range
 		};
-	}
-
-	@Override
-	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-		return new GenericBEMenu(SCContent.IMS_MENU.get(), windowId, level, worldPosition);
-	}
-
-	@Override
-	public Component getDisplayName() {
-		return super.getDisplayName();
 	}
 
 	public int getAttackInterval() {
