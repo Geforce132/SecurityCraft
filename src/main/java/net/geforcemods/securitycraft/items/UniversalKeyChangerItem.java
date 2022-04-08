@@ -5,7 +5,8 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
-import net.geforcemods.securitycraft.network.client.OpenUKCScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -45,7 +46,7 @@ public class UniversalKeyChangerItem extends Item {
 		if (be instanceof IPasswordProtected) {
 			if (((IOwnable) be).getOwner().isOwner(player)) {
 				if (!level.isClientSide)
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenUKCScreen(pos));
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.UNIVERSAL_KEY_CHANGER, pos));
 
 				return InteractionResult.SUCCESS;
 			}
