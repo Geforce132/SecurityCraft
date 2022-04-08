@@ -52,12 +52,14 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private final String blockName;
 	private final TranslatableComponent name;
+	private final int maxNumberOfModules;
 
 	public CustomizeBlockScreen(CustomizeBlockMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		moduleInv = menu.moduleInv;
 		blockName = menu.moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId().substring(5);
 		name = Utils.localize(moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId());
+		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
 	}
 
 	@Override
@@ -122,7 +124,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
 			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
-				if (i < moduleInv.getMaxNumberOfModules())
+				if (i < maxNumberOfModules)
 					renderTooltip(pose, minecraft.font.split(getModuleDescription(i), 150), mouseX, mouseY);
 				else
 					renderTooltip(pose, minecraft.font.split(getOptionDescription(i), 150), mouseX, mouseY);
@@ -139,7 +141,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem._setShaderTexture(0, TEXTURES[moduleInv.getMaxNumberOfModules()]);
+		RenderSystem._setShaderTexture(0, TEXTURES[maxNumberOfModules]);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
