@@ -13,7 +13,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 	private Component customName = TextComponent.EMPTY;
 
 	public NamedBlockEntity(BlockPos pos, BlockState state) {
-		this(SCContent.beTypeAbstract, pos, state);
+		this(SCContent.ABSTRACT_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	public NamedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {

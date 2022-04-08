@@ -128,7 +128,7 @@ public class LaserFieldBlock extends OwnableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableBlockEntity(SCContent.beTypeAbstract, pos, state);
+		return new OwnableBlockEntity(SCContent.ABSTRACT_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

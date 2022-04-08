@@ -37,7 +37,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	public KeypadBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeKeypad, pos, state);
+		super(SCContent.KEYPAD_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	private String passcode;
 
 	public KeypadDoorBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeKeypadDoor, pos, state);
+		super(SCContent.KEYPAD_DOOR_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

@@ -239,7 +239,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeInventoryScanner, LevelUtils::blockEntityTicker);
+		return createTickerHelper(type, SCContent.INVENTORY_SCANNER_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 
 	@Override

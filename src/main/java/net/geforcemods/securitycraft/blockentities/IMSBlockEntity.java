@@ -36,7 +36,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	private int attackTime = getAttackInterval();
 
 	public IMSBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeIms, pos, state);
+		super(SCContent.IMS_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

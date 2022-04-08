@@ -38,7 +38,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	public KeyPanelBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeKeyPanel, pos, state);
+		super(SCContent.KEY_PANEL_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

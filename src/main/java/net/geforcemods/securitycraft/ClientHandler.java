@@ -349,27 +349,27 @@ public class ClientHandler {
 		event.registerEntityRenderer(SCContent.SENTRY_ENTITY.get(), SentryRenderer::new);
 		event.registerEntityRenderer(SCContent.BULLET_ENTITY.get(), BulletRenderer::new);
 		//normal renderers
-		event.registerBlockEntityRenderer(SCContent.beTypeBlockPocketManager, BlockPocketManagerRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeKeypadChest, KeypadChestRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeProjector, ProjectorRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeReinforcedPiston, ReinforcedPistonHeadRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeRetinalScanner, RetinalScannerRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeSecurityCamera, SecurityCameraRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeSecretSign, SecretSignRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeSonicSecuritySystem, SonicSecuritySystemRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeTrophySystem, TrophySystemRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.BLOCK_POCKET_MANAGER_BLOCK_ENTITY.get(), BlockPocketManagerRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), KeypadChestRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.PROJECTOR_BLOCK_ENTITY.get(), ProjectorRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.REINFORCED_PISTON_BLOCK_ENTITY.get(), ReinforcedPistonHeadRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.RETINAL_SCANNER_BLOCK_ENTITY.get(), RetinalScannerRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.SECRET_SIGN_BLOCK_ENTITY.get(), SecretSignRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.SONIC_SECURITY_SYSTEM_BLOCK_ENTITY.get(), SonicSecuritySystemRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), TrophySystemRenderer::new);
 		//disguisable block entity renderers
-		event.registerBlockEntityRenderer(SCContent.beTypeBlockChangeDetector, DisguisableBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeCageTrap, DisguisableBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeInventoryScanner, DisguisableBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeKeycardReader, DisguisableBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeKeypad, DisguisableBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeKeypadBlastFurnace, DisguisableBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeKeypadFurnace, DisguisableBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeKeypadSmoker, DisguisableBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeLaserBlock, DisguisableBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeProtecto, DisguisableBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(SCContent.beTypeUsernameLogger, DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.CAGE_TRAP_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.INVENTORY_SCANNER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.KEYCARD_READER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.KEYPAD_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.KEYPAD_BLAST_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.KEYPAD_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.KEYPAD_SMOKER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.PROTECTO_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 	}
 
 	@SubscribeEvent

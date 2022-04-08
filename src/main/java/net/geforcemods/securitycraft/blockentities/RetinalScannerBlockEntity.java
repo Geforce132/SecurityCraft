@@ -53,7 +53,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	private int viewCooldown = 0;
 
 	public RetinalScannerBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeRetinalScanner, pos, state);
+		super(SCContent.RETINAL_SCANNER_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

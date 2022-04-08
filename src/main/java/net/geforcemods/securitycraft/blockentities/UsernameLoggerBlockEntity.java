@@ -28,7 +28,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	public UsernameLoggerBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeUsernameLogger, pos, state);
+		super(SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

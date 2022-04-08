@@ -54,7 +54,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
 	public KeypadChestBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeKeypadChest, pos, state);
+		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

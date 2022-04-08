@@ -36,7 +36,7 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeReinforcedPiston, ReinforcedPistonMovingBlockEntity::tick);
+		return createTickerHelper(type, SCContent.REINFORCED_PISTON_BLOCK_ENTITY.get(), ReinforcedPistonMovingBlockEntity::tick);
 	}
 
 	@Override

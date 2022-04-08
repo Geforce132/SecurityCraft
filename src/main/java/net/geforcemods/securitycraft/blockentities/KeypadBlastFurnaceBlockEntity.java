@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class KeypadBlastFurnaceBlockEntity extends AbstractKeypadFurnaceBlockEntity {
 	public KeypadBlastFurnaceBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeKeypadBlastFurnace, pos, state, RecipeType.BLASTING);
+		super(SCContent.KEYPAD_BLAST_FURNACE_BLOCK_ENTITY.get(), pos, state, RecipeType.BLASTING);
 	}
 
 	@Override

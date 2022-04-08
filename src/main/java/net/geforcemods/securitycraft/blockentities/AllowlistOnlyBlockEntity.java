@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class AllowlistOnlyBlockEntity extends CustomizableBlockEntity {
 	public AllowlistOnlyBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeAllowlistOnly, pos, state);
+		super(SCContent.ALLOWLIST_ONLY_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

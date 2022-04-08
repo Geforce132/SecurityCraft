@@ -74,6 +74,7 @@ public class SecurityCraft {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
 		SCContent.BLOCKS.register(modEventBus);
+		SCContent.BLOCK_ENTITY_TYPES.register(modEventBus);
 		SCContent.ENTITY_TYPES.register(modEventBus);
 		SCContent.FLUIDS.register(modEventBus);
 		SCContent.ITEMS.register(modEventBus);

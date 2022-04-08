@@ -89,6 +89,6 @@ public class TrophySystemBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeTrophySystem, LevelUtils::blockEntityTicker);
+		return createTickerHelper(type, SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 }

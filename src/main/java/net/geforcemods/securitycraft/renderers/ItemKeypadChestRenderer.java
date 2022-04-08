@@ -14,7 +14,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer {
-	private static final KeypadChestBlockEntity DUMMY_BE = new KeypadChestBlockEntity(BlockPos.ZERO, SCContent.KEYPAD_CHEST.get().defaultBlockState());
+	private static KeypadChestBlockEntity dummyBe;
 	private static KeypadChestRenderer dummyRenderer = null;
 
 	public ItemKeypadChestRenderer() {
@@ -24,6 +24,7 @@ public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer {
 	@Override
 	public void onResourceManagerReload(ResourceManager resourceManager) {
 		dummyRenderer = null;
+		dummyBe = null;
 	}
 
 	@Override
@@ -34,6 +35,9 @@ public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer {
 			dummyRenderer = new KeypadChestRenderer(new BlockEntityRendererProvider.Context(mc.getBlockEntityRenderDispatcher(), mc.getBlockRenderer(), mc.getEntityModels(), mc.font));
 		}
 
-		dummyRenderer.render(DUMMY_BE, 0.0F, pose, buffer, combinedLight, combinedOverlay);
+		if(dummyBe == null)
+			dummyBe = new KeypadChestBlockEntity(BlockPos.ZERO, SCContent.KEYPAD_CHEST.get().defaultBlockState());
+
+		dummyRenderer.render(dummyBe, 0.0F, pose, buffer, combinedLight, combinedOverlay);
 	}
 }

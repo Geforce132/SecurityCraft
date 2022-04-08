@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class KeypadSmokerBlockEntity extends AbstractKeypadFurnaceBlockEntity {
 	public KeypadSmokerBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeKeypadSmoker, pos, state, RecipeType.SMOKING);
+		super(SCContent.KEYPAD_SMOKER_BLOCK_ENTITY.get(), pos, state, RecipeType.SMOKING);
 	}
 
 	@Override

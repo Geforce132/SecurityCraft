@@ -52,7 +52,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	private Owner owner = new Owner();
 
 	public ReinforcedPistonMovingBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeReinforcedPiston, pos, state);
+		super(SCContent.REINFORCED_PISTON_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	public ReinforcedPistonMovingBlockEntity(BlockPos pos, BlockState state, BlockState movedState, CompoundTag tag, Direction direction, boolean extending, boolean shouldHeadBeRendered) {

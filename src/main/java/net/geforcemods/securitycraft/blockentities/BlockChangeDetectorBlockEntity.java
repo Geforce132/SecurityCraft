@@ -40,7 +40,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	private ItemStack filter = ItemStack.EMPTY;
 
 	public BlockChangeDetectorBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeBlockChangeDetector, pos, state);
+		super(SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	public void log(Player player, DetectionMode action, BlockPos pos, BlockState state) {

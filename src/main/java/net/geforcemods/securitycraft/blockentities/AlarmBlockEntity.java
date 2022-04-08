@@ -23,7 +23,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	private boolean isPowered = false;
 
 	public AlarmBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeAlarm, pos, state);
+		super(SCContent.ALARM_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

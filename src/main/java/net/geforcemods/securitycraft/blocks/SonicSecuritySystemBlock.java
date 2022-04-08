@@ -178,6 +178,6 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeSonicSecuritySystem, LevelUtils::blockEntityTicker);
+		return createTickerHelper(type, SCContent.SONIC_SECURITY_SYSTEM_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 }
