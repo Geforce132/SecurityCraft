@@ -53,6 +53,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private final String blockName;
 	private final TranslatableComponent name;
 	private final int maxNumberOfModules;
+	private Component[] moduleDescriptions;
+	private TranslatableComponent[] optionDescriptions;
 
 	public CustomizeBlockScreen(CustomizeBlockMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
@@ -73,29 +75,35 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 			addRenderableWidget(descriptionButtons[i] = new PictureButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
+			moduleDescriptions[i] = getModuleDescription(i);
 		}
 
-		if (moduleInv.getBlockEntity() instanceof ICustomizable customizable && customizable.customOptions() != null) {
-			for (int i = 0; i < customizable.customOptions().length; i++) {
-				Option<?> option = customizable.customOptions()[i];
+		if (moduleInv.getBlockEntity() instanceof ICustomizable customizable) {
+			Option<?>[] options = customizable.customOptions();
 
-				if (option instanceof ISlider && option.isSlider()) {
-					TranslatableComponent translatedBlockName = Utils.localize(blockName);
+			if(options != null) {
+				for (int i = 0; i < options.length; i++) {
+					Option<?> option = options[i];
 
-					if (option instanceof DoubleOption)
-						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, null);
-					else if (option instanceof IntOption)
-						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, null);
+					if (option instanceof ISlider && option.isSlider()) {
+						TranslatableComponent translatedBlockName = Utils.localize(blockName);
 
-					optionButtons[i].setFGColor(14737632);
+						if (option instanceof DoubleOption)
+							optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, null);
+						else if (option instanceof IntOption)
+							optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, null);
+
+						optionButtons[i].setFGColor(14737632);
+					}
+					else {
+						optionButtons[i] = new ExtendedButton(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::optionButtonClicked);
+						optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
+					}
+
+					addRenderableWidget(optionButtons[i]);
+					hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i]);
+					optionDescriptions[i] = getOptionDescription(i);
 				}
-				else {
-					optionButtons[i] = new ExtendedButton(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::optionButtonClicked);
-					optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
-				}
-
-				addRenderableWidget(optionButtons[i]);
-				hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i]);
 			}
 		}
 
@@ -125,9 +133,9 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		for (int i = 0; i < hoverCheckers.length; i++) {
 			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
 				if (i < maxNumberOfModules)
-					renderTooltip(pose, minecraft.font.split(getModuleDescription(i), 150), mouseX, mouseY);
+					renderTooltip(pose, minecraft.font.split(moduleDescriptions[i], 150), mouseX, mouseY);
 				else
-					renderTooltip(pose, minecraft.font.split(getOptionDescription(i), 150), mouseX, mouseY);
+					renderTooltip(pose, minecraft.font.split(optionDescriptions[i], 150), mouseX, mouseY);
 		}
 	}
 
