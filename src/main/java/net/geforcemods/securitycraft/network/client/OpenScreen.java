@@ -41,32 +41,32 @@ public class OpenScreen {
 			switch(message.dataType) {
 				case CHECK_PASSWORD:
 					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IPasswordProtected be)
-						ClientHandler.displayCheckPasswordGui((BlockEntity) be);
+						ClientHandler.displayCheckPasswordScreen((BlockEntity) be);
 
 					break;
 				case IMS:
 					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IMSBlockEntity ims)
-						ClientHandler.displayIMSGui(ims);
+						ClientHandler.displayIMSScreen(ims);
 
 					break;
 				case SET_PASSWORD:
 					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IPasswordProtected be)
-						ClientHandler.displaySetPasswordGui((BlockEntity) be);
+						ClientHandler.displaySetPasswordScreen((BlockEntity) be);
 
 					break;
 				case SONIC_SECURITY_SYSTEM:
 					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof SonicSecuritySystemBlockEntity sss)
-						ClientHandler.displaySonicSecuritySystemGui(sss);
+						ClientHandler.displaySonicSecuritySystemScreen(sss);
 
 					break;
 				case TROPHY_SYSTEM:
 					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof TrophySystemBlockEntity trophySystem)
-						ClientHandler.displayTrophySystemGui(trophySystem);
+						ClientHandler.displayTrophySystemScreen(trophySystem);
 
 					break;
 				case UNIVERSAL_KEY_CHANGER:
 					if (Minecraft.getInstance().level.getBlockEntity(message.pos) instanceof IPasswordProtected passwordProtected)
-						ClientHandler.displayUniversalKeyChangerGui((BlockEntity) passwordProtected);
+						ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) passwordProtected);
 			}
 		});
 		ctx.get().setPacketHandled(true);

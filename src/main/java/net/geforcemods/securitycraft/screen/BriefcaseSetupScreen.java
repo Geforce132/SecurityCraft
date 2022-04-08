@@ -84,7 +84,7 @@ public class BriefcaseSetupScreen extends Screen {
 			}
 
 			ClientUtils.syncItemNBT(briefcase);
-			ClientHandler.displayBriefcasePasswordGui(getTitle());
+			ClientHandler.displayBriefcasePasswordScreen(getTitle());
 		}
 	}
 }

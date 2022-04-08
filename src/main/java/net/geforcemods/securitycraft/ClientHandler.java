@@ -518,75 +518,75 @@ public class ClientHandler {
 		return Minecraft.getInstance().player;
 	}
 
-	public static void displayMRATGui(ItemStack stack) {
+	public static void displayMRATScreen(ItemStack stack) {
 		Minecraft.getInstance().setScreen(new MineRemoteAccessToolScreen(stack));
 	}
 
-	public static void displaySRATGui(ItemStack stack, int viewDistance) {
+	public static void displaySRATScreen(ItemStack stack, int viewDistance) {
 		Minecraft.getInstance().setScreen(new SentryRemoteAccessToolScreen(stack, viewDistance));
 	}
 
-	public static void displayEditModuleGui(ItemStack stack) {
+	public static void displayEditModuleScreen(ItemStack stack) {
 		Minecraft.getInstance().setScreen(new EditModuleScreen(stack));
 	}
 
-	public static void displayCameraMonitorGui(Inventory inv, CameraMonitorItem item, CompoundTag stackTag) {
+	public static void displayCameraMonitorScreen(Inventory inv, CameraMonitorItem item, CompoundTag stackTag) {
 		Minecraft.getInstance().setScreen(new CameraMonitorScreen(inv, item, stackTag));
 	}
 
-	public static void displaySCManualGui() {
+	public static void displaySCManualScreen() {
 		Minecraft.getInstance().setScreen(new SCManualScreen());
 	}
 
-	public static void displayEditSecretSignGui(SecretSignBlockEntity te) {
-		Minecraft.getInstance().setScreen(new SignEditScreen(te, Minecraft.getInstance().isTextFilteringEnabled()));
+	public static void displayEditSecretSignScreen(SecretSignBlockEntity be) {
+		Minecraft.getInstance().setScreen(new SignEditScreen(be, Minecraft.getInstance().isTextFilteringEnabled()));
 	}
 
-	public static void displaySonicSecuritySystemGui(SonicSecuritySystemBlockEntity te) {
-		Minecraft.getInstance().setScreen(new SonicSecuritySystemScreen(te));
+	public static void displaySonicSecuritySystemScreen(SonicSecuritySystemBlockEntity be) {
+		Minecraft.getInstance().setScreen(new SonicSecuritySystemScreen(be));
 	}
 
-	public static void displayBriefcasePasswordGui(Component title) {
+	public static void displayBriefcasePasswordScreen(Component title) {
 		Minecraft.getInstance().setScreen(new BriefcasePasswordScreen(title));
 	}
 
-	public static void displayBriefcaseSetupGui(Component title) {
+	public static void displayBriefcaseSetupScreen(Component title) {
 		Minecraft.getInstance().setScreen(new BriefcaseSetupScreen(title));
 	}
 
-	public static void displayUsernameLoggerGui(Level level, BlockPos pos) {
+	public static void displayUsernameLoggerScreen(Level level, BlockPos pos) {
 		if(Minecraft.getInstance().level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be)
 			Minecraft.getInstance().setScreen(new UsernameLoggerScreen(be));
 	}
 
-	public static void displayIMSGui(IMSBlockEntity te) {
-		Minecraft.getInstance().setScreen(new IMSScreen(te));
+	public static void displayIMSScreen(IMSBlockEntity be) {
+		Minecraft.getInstance().setScreen(new IMSScreen(be));
 	}
 
-	public static void displayUniversalKeyChangerGui(BlockEntity be) {
+	public static void displayUniversalKeyChangerScreen(BlockEntity be) {
 		Minecraft.getInstance().setScreen(new KeyChangerScreen(be));
 	}
 
-	public static void displayTrophySystemGui(TrophySystemBlockEntity te) {
-		Minecraft.getInstance().setScreen(new TrophySystemScreen(te));
+	public static void displayTrophySystemScreen(TrophySystemBlockEntity be) {
+		Minecraft.getInstance().setScreen(new TrophySystemScreen(be));
 	}
 
-	public static void displayCheckPasswordGui(BlockEntity te) {
-		Component displayName = te instanceof Nameable nameable ? nameable.getDisplayName() : new TranslatableComponent(te.getBlockState().getBlock().getDescriptionId());
+	public static void displayCheckPasswordScreen(BlockEntity be) {
+		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : new TranslatableComponent(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new CheckPasswordScreen(te, displayName));
+		Minecraft.getInstance().setScreen(new CheckPasswordScreen(be, displayName));
 	}
 
-	public static void displaySetPasswordGui(BlockEntity te) {
-		Component displayName = te instanceof Nameable nameable ? nameable.getDisplayName() : new TranslatableComponent(te.getBlockState().getBlock().getDescriptionId());
+	public static void displaySetPasswordScreen(BlockEntity be) {
+		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : new TranslatableComponent(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new SetPasswordScreen(te, displayName));
+		Minecraft.getInstance().setScreen(new SetPasswordScreen(be, displayName));
 	}
 
-	public static void refreshModelData(BlockEntity te) {
-		BlockPos pos = te.getBlockPos();
+	public static void refreshModelData(BlockEntity be) {
+		BlockPos pos = be.getBlockPos();
 
-		ModelDataManager.requestModelDataRefresh(te);
+		ModelDataManager.requestModelDataRefresh(be);
 		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
 	}
 

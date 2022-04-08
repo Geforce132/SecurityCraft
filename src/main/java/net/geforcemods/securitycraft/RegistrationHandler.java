@@ -46,7 +46,7 @@ import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
-import net.geforcemods.securitycraft.network.client.OpenSRATGui;
+import net.geforcemods.securitycraft.network.client.OpenSRATScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.network.client.SendTip;
@@ -193,7 +193,7 @@ public class RegistrationHandler {
 		SecurityCraft.channel.registerMessage(index++, ClearLoggerClient.class, ClearLoggerClient::encode, ClearLoggerClient::decode, ClearLoggerClient::onMessage);
 		SecurityCraft.channel.registerMessage(index++, InitSentryAnimation.class, InitSentryAnimation::encode, InitSentryAnimation::decode, InitSentryAnimation::onMessage);
 		SecurityCraft.channel.registerMessage(index++, OpenScreen.class, OpenScreen::encode, OpenScreen::decode, OpenScreen::onMessage);
-		SecurityCraft.channel.registerMessage(index++, OpenSRATGui.class, OpenSRATGui::encode, OpenSRATGui::decode, OpenSRATGui::onMessage);
+		SecurityCraft.channel.registerMessage(index++, OpenSRATScreen.class, OpenSRATScreen::encode, OpenSRATScreen::decode, OpenSRATScreen::onMessage);
 		SecurityCraft.channel.registerMessage(index++, RefreshDisguisableModel.class, RefreshDisguisableModel::encode, RefreshDisguisableModel::decode, RefreshDisguisableModel::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SendTip.class, SendTip::encode, SendTip::decode, SendTip::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SetCameraView.class, SetCameraView::encode, SetCameraView::decode, SetCameraView::onMessage);
