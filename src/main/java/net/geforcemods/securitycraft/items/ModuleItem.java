@@ -60,7 +60,7 @@ public class ModuleItem extends Item {
 			if (inv instanceof IOwnable ownable && !ownable.getOwner().isOwner(ctx.getPlayer()))
 				return InteractionResult.PASS;
 
-			if (inv.getAcceptedModules().contains(type) && !inv.hasModule(type)) {
+			if (inv.acceptsModule(type) && !inv.hasModule(type)) {
 				inv.insertModule(stack);
 				inv.onModuleInserted(stack, type);
 

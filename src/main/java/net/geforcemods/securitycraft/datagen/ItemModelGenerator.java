@@ -96,6 +96,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		blockMine(Blocks.FURNACE, SCContent.FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/furnace_side"), mcLoc(BLOCK_FOLDER + "/furnace_front"), mcLoc(BLOCK_FOLDER + "/furnace_top"));
 		blockMine(Blocks.SMOKER, SCContent.SMOKER_MINE.get(), mcLoc(BLOCK_FOLDER + "/smoker_side"), mcLoc(BLOCK_FOLDER + "/smoker_front"), mcLoc(BLOCK_FOLDER + "/smoker_top"));
 		blockMine(Blocks.BLAST_FURNACE, SCContent.BLAST_FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/blast_furnace_side"), mcLoc(BLOCK_FOLDER + "/blast_furnace_front"), mcLoc(BLOCK_FOLDER + "/blast_furnace_top"));
+		simpleParent(SCContent.BLOCK_CHANGE_DETECTOR.get());
 		simpleParent(SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		simpleParent(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
 		simpleParent(SCContent.REINFORCED_GLASS.get());

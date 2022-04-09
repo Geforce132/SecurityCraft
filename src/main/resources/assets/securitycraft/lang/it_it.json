@@ -1113,6 +1113,7 @@
 	"option.securitycraft.key_panel.signalLength.description": "Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)",
 	"option.securitycraft.sonic_security_system.signalLength": "Tempo di attività: %s",
 	"option.securitycraft.sonic_security_system.signalLength.description": "Quanto dovrebbe stare attivo il sistema di sicurezza soncico dopo aver sentito la melodia corretta? (In tick, 20 tick = 1 secondo)",
+	"option.securitycraft.block_change_detector.signalLength": "Lunghezza segnale: %s",
 
 	"securitycraft.subtitle.alarm": "L'allarme sta suonando",
 	"securitycraft.subtitle.electrified": "Entità folgorata",

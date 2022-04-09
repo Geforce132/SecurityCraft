@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
 import net.minecraftforge.fmlclient.gui.widget.ExtendedButton;
 
-public class TogglePictureButton extends ExtendedButton {
+public class TogglePictureButton extends ExtendedButton implements IToggleableButton {
 	private ResourceLocation textureLocation;
 	private int[] u;
 	private int[] v;
@@ -79,10 +79,12 @@ public class TogglePictureButton extends ExtendedButton {
 		return true;
 	}
 
+	@Override
 	public int getCurrentIndex() {
 		return currentIndex;
 	}
 
+	@Override
 	public void setCurrentIndex(int newIndex) {
 		currentIndex = Math.floorMod(newIndex, toggleCount);
 	}

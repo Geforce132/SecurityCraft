@@ -470,8 +470,8 @@ public class SCManualScreen extends Screen {
 
 		resetBlockEntityInfo();
 
-		if (item instanceof BlockItem) {
-			Block block = ((BlockItem) item).getBlock();
+		if (item instanceof BlockItem blockItem) {
+			Block block = blockItem.getBlock();
 
 			if (explosive = block instanceof IExplosive)
 				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));

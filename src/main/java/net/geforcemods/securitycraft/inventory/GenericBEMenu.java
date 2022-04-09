@@ -12,7 +12,7 @@ public class GenericBEMenu extends AbstractContainerMenu {
 	public final BlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
 
-	public GenericBEMenu(MenuType<GenericBEMenu> type, int windowId, Level level, BlockPos pos) {
+	public GenericBEMenu(MenuType<? extends GenericBEMenu> type, int windowId, Level level, BlockPos pos) {
 		super(type, windowId);
 
 		be = level.getBlockEntity(pos);
