@@ -176,7 +176,9 @@ import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.items.UniversalBlockRemoverItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
+import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.OwnerDataSerializer;
 import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.conditions.BlockEntityNBTCondition;
 import net.geforcemods.securitycraft.util.HasManualPage;
@@ -195,6 +197,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -215,22 +219,32 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistries.Keys;
 import net.minecraftforge.registries.RegistryObject;
 
 public class SCContent {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SecurityCraft.MODID);
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, SecurityCraft.MODID);
+	public static final DeferredRegister<DataSerializerEntry> DATA_SERIALIZER_ENTRIES = DeferredRegister.create(Keys.DATA_SERIALIZERS, SecurityCraft.MODID);
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, SecurityCraft.MODID);
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, SecurityCraft.MODID);
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SecurityCraft.MODID);
 	public static final DeferredRegister<LootItemConditionType> LOOT_ITEM_CONDITION_TYPES = DeferredRegister.create(Registry.LOOT_ITEM_REGISTRY, SecurityCraft.MODID);
 	public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, SecurityCraft.MODID);
+	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registry.RECIPE_SERIALIZER_REGISTRY, SecurityCraft.MODID);
 	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
 
 	//loot item condition types
 	public static final RegistryObject<LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(new BlockEntityNBTCondition.ConditionSerializer()));
+
+	//recipe serializers
+	public static final RegistryObject<SimpleRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleRecipeSerializer<>(LimitedUseKeycardRecipe::new));
+
+	//data serializer entries
+	public static final RegistryObject<DataSerializerEntry> OWNER_SERIALIZER = DATA_SERIALIZER_ENTRIES.register("owner", () -> new DataSerializerEntry(new OwnerDataSerializer()));
 
 	//fluids
 	public static final RegistryObject<FlowingFluid> FLOWING_FAKE_WATER = FLUIDS.register("flowing_fake_water", () -> new FakeWaterFluid.Flowing());
@@ -2150,6 +2164,7 @@ public class SCContent {
 	public static final RegistryObject<ModuleItem> SPEED_MODULE = ITEMS.register("speed_module", () -> new ModuleItem(itemProp(SecurityCraft.technicalTab).stacksTo(1), ModuleType.SPEED, false));
 
 	//block entity types
+	//@formatter:off
 	public static final RegistryObject<BlockEntityType<OwnableBlockEntity>> OWNABLE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("ownable", () -> {
 		List<Block> beOwnableBlocks = Arrays.stream(SCContent.class.getFields())
 				.filter(field -> field.isAnnotationPresent(OwnableBE.class))
@@ -2167,7 +2182,6 @@ public class SCContent {
 
 		return BlockEntityType.Builder.of(OwnableBlockEntity::new, beOwnableBlocks.toArray(new Block[beOwnableBlocks.size()])).build(null);
 	});
-	//formatter:off
 	public static final RegistryObject<BlockEntityType<NamedBlockEntity>> ABSTRACT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("abstract", () -> BlockEntityType.Builder.of(NamedBlockEntity::new,
 			SCContent.LASER_FIELD.get(),
 			SCContent.INVENTORY_SCANNER_FIELD.get(),

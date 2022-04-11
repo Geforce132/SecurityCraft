@@ -2,8 +2,6 @@ package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 
-import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
@@ -42,23 +40,16 @@ import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.RegistryObject;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
@@ -138,39 +129,5 @@ public class RegistrationHandler {
 		for (int i = 0; i < SCSounds.values().length; i++) {
 			event.getRegistry().register(SCSounds.values()[i].event);
 		}
-	}
-
-	@SubscribeEvent
-	public static void registerRecipeSerializer(RegistryEvent.Register<RecipeSerializer<?>> event) {
-		event.getRegistry().register(new SimpleRecipeSerializer<>(LimitedUseKeycardRecipe::new).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_recipe")));
-	}
-
-	@SubscribeEvent
-	public static void registerDataSerializerEntries(RegistryEvent.Register<DataSerializerEntry> event) {
-		event.getRegistry().register(new DataSerializerEntry(new EntityDataSerializer<Owner>() {
-			@Override
-			public void write(FriendlyByteBuf buf, Owner value) {
-				buf.writeUtf(value.getName());
-				buf.writeUtf(value.getUUID());
-			}
-
-			@Override
-			public Owner read(FriendlyByteBuf buf) {
-				String name = buf.readUtf(Integer.MAX_VALUE / 4);
-				String uuid = buf.readUtf(Integer.MAX_VALUE / 4);
-
-				return new Owner(name, uuid);
-			}
-
-			@Override
-			public EntityDataAccessor<Owner> createAccessor(int id) {
-				return new EntityDataAccessor<>(id, this);
-			}
-
-			@Override
-			public Owner copy(Owner value) {
-				return new Owner(value.getName(), value.getUUID());
-			}
-		}).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "owner")));
 	}
 }

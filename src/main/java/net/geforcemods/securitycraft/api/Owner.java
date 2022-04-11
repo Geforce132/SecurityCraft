@@ -1,13 +1,11 @@
 package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.DataSerializerEntry;
-import net.minecraftforge.registries.ObjectHolder;
 
 /**
  * This class is used with {@link IOwnable} to get the player of the block. Allows for easy access to the player's IGN and
@@ -16,8 +14,6 @@ import net.minecraftforge.registries.ObjectHolder;
  * @author Geforce
  */
 public class Owner {
-	@ObjectHolder(SecurityCraft.MODID + ":owner")
-	public static final DataSerializerEntry SERIALIZER = null;
 	private String ownerName = "owner";
 	private String ownerUUID = "ownerUUID";
 	private boolean validated = true;
@@ -179,6 +175,6 @@ public class Owner {
 	}
 
 	public static EntityDataSerializer<Owner> getSerializer() {
-		return (EntityDataSerializer<Owner>) SERIALIZER.getSerializer();
+		return (EntityDataSerializer<Owner>) SCContent.OWNER_SERIALIZER.get().getSerializer();
 	}
 }

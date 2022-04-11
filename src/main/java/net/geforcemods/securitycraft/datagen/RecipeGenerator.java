@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.data.DataGenerator;
@@ -60,7 +59,7 @@ public class RecipeGenerator extends RecipeProvider {
 		strongHarmingStack.setTag(strongHarmingNBT);
 
 		//combine keycard with limited use keycard to get keycards with the a configurable limited amount of uses
-		SpecialRecipeBuilder.special(LimitedUseKeycardRecipe.serializer).save(consumer, "limited_use_keycards");
+		SpecialRecipeBuilder.special(SCContent.LIMITED_USE_KEYCARD_RECIPE_SERIALIZER.get()).save(consumer, "limited_use_keycards");
 
 		//@formatter:off
 		//shaped recipes
