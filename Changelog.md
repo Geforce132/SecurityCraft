@@ -3,6 +3,7 @@
 - New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity
 - Fix: The recipe for reinforced glass panes is incorrect
 - Fix: Breaking the block another block with modules is attached to does not drop the modules
+- Misc.: More texture changes
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 
