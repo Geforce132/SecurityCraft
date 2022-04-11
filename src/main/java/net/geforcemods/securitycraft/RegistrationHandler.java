@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
@@ -46,6 +47,7 @@ import net.geforcemods.securitycraft.entity.Bullet;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
@@ -75,6 +77,7 @@ import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
+import net.geforcemods.securitycraft.network.server.ClearChangeDetectorServer;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.geforcemods.securitycraft.network.server.GiveNightVision;
@@ -86,6 +89,7 @@ import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
+import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
@@ -122,6 +126,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.registries.DataSerializerEntry;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
@@ -200,6 +205,7 @@ public class RegistrationHandler {
 		event.getRegistry().register(TileEntityType.Builder.of(ValidationOwnableBlockEntity::new, SCContent.REINFORCED_PISTON.get(), SCContent.REINFORCED_STICKY_PISTON.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "validation_ownable")));
 		event.getRegistry().register(TileEntityType.Builder.of(KeyPanelBlockEntity::new, SCContent.KEY_PANEL_BLOCK.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_panel")));
 		event.getRegistry().register(TileEntityType.Builder.of(SonicSecuritySystemBlockEntity::new, SCContent.SONIC_SECURITY_SYSTEM.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sonic_security_system")));
+		event.getRegistry().register(TileEntityType.Builder.of(BlockChangeDetectorBlockEntity::new, SCContent.BLOCK_CHANGE_DETECTOR.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_change_detector")));
 	}
 
 	@SubscribeEvent
@@ -274,25 +280,28 @@ public class RegistrationHandler {
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericBEMenu(SCContent.mTypeKeyChanger, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_changer")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericBEMenu(SCContent.mTypeTrophySystem, windowId, inv.player.level, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BlockPocketManagerMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BlockChangeDetectorMenu(windowId, inv.player.level, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_change_detector")));
 	}
 
 	public static void registerPackets() {
 		int index = 0;
 
+		SecurityCraft.channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(SecurityCraft.MODID, SecurityCraft.MODID), SecurityCraft::getVersion, SecurityCraft.getVersion()::equals, SecurityCraft.getVersion()::equals);
 		//client
 		SecurityCraft.channel.registerMessage(index++, ClearLoggerClient.class, ClearLoggerClient::encode, ClearLoggerClient::decode, ClearLoggerClient::onMessage);
 		SecurityCraft.channel.registerMessage(index++, InitSentryAnimation.class, InitSentryAnimation::encode, InitSentryAnimation::decode, InitSentryAnimation::onMessage);
 		SecurityCraft.channel.registerMessage(index++, OpenSRATGui.class, OpenSRATGui::encode, OpenSRATGui::decode, OpenSRATGui::onMessage);
+		SecurityCraft.channel.registerMessage(index++, OpenSSSScreen.class, OpenSSSScreen::encode, OpenSSSScreen::decode, OpenSSSScreen::onMessage);
 		SecurityCraft.channel.registerMessage(index++, RefreshDisguisableModel.class, RefreshDisguisableModel::encode, RefreshDisguisableModel::decode, RefreshDisguisableModel::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SendTip.class, SendTip::encode, SendTip::decode, SendTip::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SetCameraView.class, SetCameraView::encode, SetCameraView::decode, SetCameraView::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SetTrophySystemTarget.class, SetTrophySystemTarget::encode, SetTrophySystemTarget::decode, SetTrophySystemTarget::onMessage);
 		SecurityCraft.channel.registerMessage(index++, UpdateLogger.class, UpdateLogger::encode, UpdateLogger::decode, UpdateLogger::onMessage);
 		SecurityCraft.channel.registerMessage(index++, UpdateNBTTagOnClient.class, UpdateNBTTagOnClient::encode, UpdateNBTTagOnClient::decode, UpdateNBTTagOnClient::onMessage);
-		SecurityCraft.channel.registerMessage(index++, OpenSSSScreen.class, OpenSSSScreen::encode, OpenSSSScreen::decode, OpenSSSScreen::onMessage);
 		//server
 		SecurityCraft.channel.registerMessage(index++, AssembleBlockPocket.class, AssembleBlockPocket::encode, AssembleBlockPocket::decode, AssembleBlockPocket::onMessage);
 		SecurityCraft.channel.registerMessage(index++, CheckPassword.class, CheckPassword::encode, CheckPassword::decode, CheckPassword::onMessage);
+		SecurityCraft.channel.registerMessage(index++, ClearChangeDetectorServer.class, ClearChangeDetectorServer::encode, ClearChangeDetectorServer::decode, ClearChangeDetectorServer::onMessage);
 		SecurityCraft.channel.registerMessage(index++, ClearLoggerServer.class, ClearLoggerServer::encode, ClearLoggerServer::decode, ClearLoggerServer::onMessage);
 		SecurityCraft.channel.registerMessage(index++, DismountCamera.class, DismountCamera::encode, DismountCamera::decode, DismountCamera::onMessage);
 		SecurityCraft.channel.registerMessage(index++, GiveNightVision.class, GiveNightVision::encode, GiveNightVision::decode, GiveNightVision::onMessage);
@@ -304,16 +313,17 @@ public class RegistrationHandler {
 		SecurityCraft.channel.registerMessage(index++, SetKeycardUses.class, SetKeycardUses::encode, SetKeycardUses::decode, SetKeycardUses::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SetPassword.class, SetPassword::encode, SetPassword::decode, SetPassword::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SetSentryMode.class, SetSentryMode::encode, SetSentryMode::decode, SetSentryMode::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncBlockChangeDetector.class, SyncBlockChangeDetector::encode, SyncBlockChangeDetector::decode, SyncBlockChangeDetector::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SyncBlockPocketManager.class, SyncBlockPocketManager::encode, SyncBlockPocketManager::decode, SyncBlockPocketManager::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SyncProjector.class, SyncProjector::encode, SyncProjector::decode, SyncProjector::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SyncTrophySystem.class, SyncTrophySystem::encode, SyncTrophySystem::decode, SyncTrophySystem::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SyncIMSTargetingOption.class, SyncIMSTargetingOption::encode, SyncIMSTargetingOption::decode, SyncIMSTargetingOption::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SyncKeycardSettings.class, SyncKeycardSettings::encode, SyncKeycardSettings::decode, SyncKeycardSettings::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncProjector.class, SyncProjector::encode, SyncProjector::decode, SyncProjector::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncSSSSettingsOnServer.class, SyncSSSSettingsOnServer::encode, SyncSSSSettingsOnServer::decode, SyncSSSSettingsOnServer::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncTrophySystem.class, SyncTrophySystem::encode, SyncTrophySystem::decode, SyncTrophySystem::onMessage);
 		SecurityCraft.channel.registerMessage(index++, ToggleBlockPocketManager.class, ToggleBlockPocketManager::encode, ToggleBlockPocketManager::decode, ToggleBlockPocketManager::onMessage);
 		SecurityCraft.channel.registerMessage(index++, ToggleOption.class, ToggleOption::encode, ToggleOption::decode, ToggleOption::onMessage);
 		SecurityCraft.channel.registerMessage(index++, UpdateNBTTagOnServer.class, UpdateNBTTagOnServer::encode, UpdateNBTTagOnServer::decode, UpdateNBTTagOnServer::onMessage);
 		SecurityCraft.channel.registerMessage(index++, UpdateSliderValue.class, UpdateSliderValue::encode, UpdateSliderValue::decode, UpdateSliderValue::onMessage);
-		SecurityCraft.channel.registerMessage(index++, SyncSSSSettingsOnServer.class, SyncSSSSettingsOnServer::encode, SyncSSSSettingsOnServer::decode, SyncSSSSettingsOnServer::onMessage);
 	}
 
 	@SubscribeEvent

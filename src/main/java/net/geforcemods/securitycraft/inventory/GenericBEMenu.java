@@ -12,7 +12,7 @@ public class GenericBEMenu extends Container {
 	public final TileEntity te;
 	private IWorldPosCallable worldPosCallable;
 
-	public GenericBEMenu(ContainerType<GenericBEMenu> type, int windowId, World world, BlockPos pos) {
+	public GenericBEMenu(ContainerType<? extends GenericBEMenu> type, int windowId, World world, BlockPos pos) {
 		super(type, windowId);
 
 		te = world.getBlockEntity(pos);

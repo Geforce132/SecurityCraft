@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.api;
 import java.util.List;
 
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +27,7 @@ public interface ILockable {
 	 */
 	public default boolean isLocked() {
 		TileEntity thisTe = getTileEntity();
-		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange(thisTe.getLevel(), thisTe.getBlockPos());
+		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(thisTe.getLevel(), thisTe.getBlockPos());
 
 		for (SonicSecuritySystemBlockEntity te : sonicSecuritySystems) {
 			if (te.isActive() && te.isLinkedToBlock(thisTe.getBlockPos()))

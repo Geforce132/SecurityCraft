@@ -73,6 +73,15 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
 		.save(consumer);
+		ShapedRecipeBuilder.shaped(SCContent.BLOCK_CHANGE_DETECTOR.get())
+		.pattern("IRI")
+		.pattern("ILI")
+		.pattern("III")
+		.define('R', Items.REDSTONE_TORCH)
+		.define('I', Tags.Items.INGOTS_IRON)
+		.define('L', SCContent.USERNAME_LOGGER.get())
+		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.BLOCK_POCKET_MANAGER.get())
 		.pattern("CIC")
 		.pattern("IRI")

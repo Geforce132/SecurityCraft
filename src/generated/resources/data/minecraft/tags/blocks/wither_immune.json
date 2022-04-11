@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "securitycraft:alarm",
+    "securitycraft:block_change_detector",
     "securitycraft:block_pocket_manager",
     "securitycraft:block_pocket_wall",
     "securitycraft:bouncing_betty",

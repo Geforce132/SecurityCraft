@@ -194,9 +194,10 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 		if (count >= 1) {
 			projectedBlock = ItemStack.EMPTY;
 			resetSavedState();
+			return stack;
 		}
 
-		return stack;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

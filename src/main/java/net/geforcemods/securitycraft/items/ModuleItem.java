@@ -66,7 +66,7 @@ public class ModuleItem extends Item {
 			if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(ctx.getPlayer()))
 				return ActionResultType.PASS;
 
-			if (inv.getAcceptedModules().contains(type) && !inv.hasModule(type)) {
+			if (inv.acceptsModule(type) && !inv.hasModule(type)) {
 				inv.insertModule(stack);
 				inv.onModuleInserted(stack, type);
 

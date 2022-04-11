@@ -223,20 +223,19 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	@Override
 	public default boolean isItemValid(int slot, ItemStack stack) {
 		slot = fixSlotId(slot);
-		return getModuleInSlot(slot).isEmpty() && !stack.isEmpty() && stack.getItem() instanceof ModuleItem && getAcceptedModules().contains(((ModuleItem) stack.getItem()).getModuleType()) && !hasModule(((ModuleItem) stack.getItem()).getModuleType());
+		return getModuleInSlot(slot).isEmpty() && !stack.isEmpty() && stack.getItem() instanceof ModuleItem && acceptsModule(((ModuleItem) stack.getItem()).getModuleType()) && !hasModule(((ModuleItem) stack.getItem()).getModuleType());
 	}
 
 	/**
-	 * @return A list of all {@link ModuleType} that can be inserted into this inventory
+	 * @return true if the inventory accepts the given {@link ModuleType}, false otherwise
 	 */
-	public default ArrayList<ModuleType> getAcceptedModules() {
-		ArrayList<ModuleType> list = new ArrayList<>();
-
+	public default boolean acceptsModule(ModuleType type) {
 		for (ModuleType module : acceptedModules()) {
-			list.add(module);
+			if (module == type)
+				return true;
 		}
 
-		return list;
+		return false;
 	}
 
 	/**

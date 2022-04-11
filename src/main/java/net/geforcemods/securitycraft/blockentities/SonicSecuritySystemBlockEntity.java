@@ -12,9 +12,9 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -73,7 +73,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	public void tick() {
 		// Add this SSS to the global tracker if it has not already been added
 		if (!tracked) {
-			SonicSecuritySystemTracker.track(this);
+			BlockEntityTracker.SONIC_SECURITY_SYSTEM.track(this);
 			tracked = true;
 		}
 
@@ -151,7 +151,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		super.setRemoved();
 
 		// Stop tracking SSSs when they are removed from the world
-		SonicSecuritySystemTracker.stopTracking(this);
+		BlockEntityTracker.SONIC_SECURITY_SYSTEM.stopTracking(this);
 	}
 
 	@Override

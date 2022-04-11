@@ -1045,7 +1045,8 @@
 	"option.securitycraft.key_panel.signalLength.description": "Pour combien de temps resterait le signal de redstone en cas de succès ? (En ticks, 20 ticks = 1 seconde)",
 	"option.securitycraft.sonic_security_system.signalLength": "Temps actif : %s",
 	"option.securitycraft.sonic_security_system.signalLength.description": "Pour combien de temps resterait le systéme de sécurité sonique actif après avoir écouté la mélodie correcte ? (En ticks, 20 ticks = 1 seconde)",
-
+	"option.securitycraft.block_change_detector.signalLength": "Largeur du signal : %s",
+	
 	"securitycraft.subtitle.alarm": "Sonnerie d‘alarme",
 	"securitycraft.subtitle.electrified": "Entité électrocuté",
 	"securitycraft.subtitle.camerazoomin": "Zoom de la caméra",

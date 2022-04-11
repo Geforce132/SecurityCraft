@@ -30,6 +30,7 @@ import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
 import net.geforcemods.securitycraft.renderers.TrophySystemRenderer;
+import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcaseInventoryScreen;
@@ -103,6 +104,7 @@ public class ClientHandler {
 		};
 		//@formatter:off
 		ResourceLocation[] facingPoweredBlocks = {
+				new ResourceLocation(SecurityCraft.MODID, "block_change_detector"),
 				new ResourceLocation(SecurityCraft.MODID, "keycard_reader"),
 				new ResourceLocation(SecurityCraft.MODID, "keypad"),
 				new ResourceLocation(SecurityCraft.MODID, "retinal_scanner")
@@ -217,6 +219,7 @@ public class ClientHandler {
 		RenderType cutoutMipped = RenderType.cutoutMipped();
 		RenderType translucent = RenderType.translucent();
 
+		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_CHANGE_DETECTOR.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_POCKET_MANAGER.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_POCKET_WALL.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.CAGE_TRAP.get(), cutoutMipped);
@@ -300,6 +303,7 @@ public class ClientHandler {
 		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeReinforcedPiston, ReinforcedPistonRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeSonicSecuritySystem, SonicSecuritySystemRenderer::new);
 		//disguisable block entity renderers
+		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeBlockChangeDetector, DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeCageTrap, DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeInventoryScanner, DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.beTypeKeycardReader, DisguisableBlockEntityRenderer::new);
@@ -329,6 +333,7 @@ public class ClientHandler {
 		ScreenManager.register(SCContent.mTypeBlockPocketManager, BlockPocketManagerScreen::new);
 		ScreenManager.register(SCContent.mTypeProjector, ProjectorScreen::new);
 		ScreenManager.register(SCContent.mTypeTrophySystem, TrophySystemScreen::new);
+		ScreenManager.register(SCContent.mTypeBlockChangeDetector, BlockChangeDetectorScreen::new);
 		KeyBindings.init();
 		tint();
 	}
@@ -421,7 +426,8 @@ public class ClientHandler {
 
 			return noTint;
 			//@formatter:off
-		}, SCContent.CAGE_TRAP.get(),
+		}, SCContent.BLOCK_CHANGE_DETECTOR.get(),
+				SCContent.CAGE_TRAP.get(),
 				SCContent.INVENTORY_SCANNER.get(),
 				SCContent.KEYCARD_READER.get(),
 				SCContent.KEYPAD.get(),

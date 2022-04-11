@@ -99,6 +99,7 @@ public class ProjectorBlock extends DisguisableBlock {
 		if (te instanceof ProjectorBlockEntity) {
 			// Drop the block being projected
 			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorBlockEntity) te).getStackInSlot(36));
+
 			LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
 		}
 

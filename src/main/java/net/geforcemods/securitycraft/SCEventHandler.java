@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
@@ -31,11 +32,11 @@ import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
@@ -276,15 +277,20 @@ public class SCEventHandler {
 		if (!(event.getWorld() instanceof World))
 			return;
 
-		if (!event.getWorld().isClientSide()) {
-			if (event.getWorld().getBlockEntity(event.getPos()) instanceof IModuleInventory) {
-				IModuleInventory te = (IModuleInventory) event.getWorld().getBlockEntity(event.getPos());
+		World world = (World) event.getWorld();
+
+		if (!world.isClientSide()) {
+			BlockPos pos = event.getPos();
+			TileEntity tile = world.getBlockEntity(pos);
+
+			if (tile instanceof IModuleInventory) {
+				IModuleInventory te = (IModuleInventory) tile;
 
 				for (int i = 0; i < te.getMaxNumberOfModules(); i++)
 					if (!te.getInventory().get(i).isEmpty()) {
 						ItemStack stack = te.getInventory().get(i);
-						ItemEntity item = new ItemEntity((World) event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
-						LevelUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().addFreshEntity(item));
+						ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+						LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
 
 						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
 
@@ -296,11 +302,18 @@ public class SCEventHandler {
 
 						if (te instanceof SecurityCameraBlockEntity) {
 							SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
+							BlockPos camPos = cam.getBlockPos();
+							BlockState camState = cam.getLevel().getBlockState(camPos);
 
-							cam.getLevel().updateNeighborsAt(cam.getBlockPos().relative(cam.getLevel().getBlockState(cam.getBlockPos()).getValue(SecurityCameraBlock.FACING), -1), cam.getLevel().getBlockState(cam.getBlockPos()).getBlock());
+							cam.getLevel().updateNeighborsAt(camPos.relative(camState.getValue(SecurityCameraBlock.FACING), -1), camState.getBlock());
 						}
 					}
 			}
+
+			PlayerEntity player = event.getPlayer();
+			BlockState state = event.getState();
+
+			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(world, pos).forEach(detector -> detector.log(player, DetectionMode.BREAK, pos, state));
 		}
 
 		List<Sentry> sentries = ((World) event.getWorld()).getEntitiesOfClass(Sentry.class, new AxisAlignedBB(event.getPos()));
@@ -312,6 +325,21 @@ public class SCEventHandler {
 
 			if (block == event.getWorld().getBlockState(event.getPos()).getBlock())
 				event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onBlockEventPlace(BlockEvent.EntityPlaceEvent event) {
+		if (!(event.getWorld() instanceof World))
+			return;
+
+		World world = (World) event.getWorld();
+
+		if (!world.isClientSide && event.getEntity() instanceof PlayerEntity) {
+			BlockPos pos = event.getPos();
+			BlockState state = event.getState();
+
+			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(world, pos).forEach(detector -> detector.log((PlayerEntity) event.getEntity(), DetectionMode.PLACE, pos, state));
 		}
 	}
 
@@ -358,7 +386,7 @@ public class SCEventHandler {
 	}
 
 	private static void handlePlayedNote(World world, BlockPos pos, int vanillaNoteId, String instrumentName) {
-		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange(world, pos);
+		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(world, pos);
 
 		for (SonicSecuritySystemBlockEntity te : sonicSecuritySystems) {
 			// If the SSS is disabled, don't listen to any notes

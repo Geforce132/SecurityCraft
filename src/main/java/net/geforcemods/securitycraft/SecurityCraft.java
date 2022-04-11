@@ -38,7 +38,6 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.loot.conditions.LootConditionManager;
 import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.ForgeChunkManager;
@@ -57,15 +56,13 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 @Mod(SecurityCraft.MODID)
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
-	public static final String PROTOCOL_VERSION = "4";
-	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+	public static SimpleChannel channel;
 	public static ItemGroup groupSCTechnical = new SCTechnicalTab();
 	public static ItemGroup groupSCMine = new SCExplosivesTab();
 	public static ItemGroup groupSCDecoration = new SCDecorationTab();
