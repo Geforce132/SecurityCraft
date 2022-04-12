@@ -54,11 +54,16 @@ public class SetCameraView {
 					mc.options.setCameraType(CameraController.previousCameraType);
 
 				mc.levelRenderer.allChanged();
-				OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, !isCamera);
-				OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, !isCamera);
-				OverlayRegistry.enableOverlay(ForgeIngameGui.POTION_ICONS_ELEMENT, !isCamera);
-				OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, isCamera);
-				OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, !isCamera);
+
+				if (isCamera) {
+					CameraController.resetOverlaysAfterDismount = true;
+					CameraController.saveOverlayStates();
+					OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, false);
+					OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, false);
+					OverlayRegistry.enableOverlay(ForgeIngameGui.POTION_ICONS_ELEMENT, false);
+					OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, true);
+					OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, false);
+				}
 			}
 		});
 		ctx.get().setPacketHandled(true);
