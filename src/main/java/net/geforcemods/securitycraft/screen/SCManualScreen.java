@@ -504,15 +504,16 @@ public class SCManualScreen extends Screen {
 
 				if (te instanceof ICustomizable) {
 					ICustomizable scte = (ICustomizable) te;
+					Option<?>[] options = scte.customOptions();
 
-					if (scte.customOptions() != null && scte.customOptions().length > 0) {
+					if (options != null && options.length > 0) {
 						List<ITextComponent> display = new ArrayList<>();
 
 						customizable = true;
 						display.add(Utils.localize("gui.securitycraft:scManual.options"));
 						display.add(new StringTextComponent("---"));
 
-						for (Option<?> option : scte.customOptions()) {
+						for (Option<?> option : options) {
 							display.add(new StringTextComponent("- ").append(Utils.localize("option" + block.getDescriptionId().substring(5) + "." + option.getName() + ".description")));
 							display.add(StringTextComponent.EMPTY);
 						}
