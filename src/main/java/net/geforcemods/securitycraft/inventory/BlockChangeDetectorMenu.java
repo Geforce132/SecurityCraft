@@ -22,6 +22,7 @@ public class BlockChangeDetectorMenu extends Container {
 		super(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), windowId);
 
 		te = level.getBlockEntity(pos);
+		containerLevelAccess = IWorldPosCallable.create(level, pos);
 
 		if (te instanceof BlockChangeDetectorBlockEntity) {
 			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) te;
