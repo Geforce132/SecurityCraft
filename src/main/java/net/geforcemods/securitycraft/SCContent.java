@@ -2142,21 +2142,55 @@ public class SCContent {
 	public static final RegistryObject<ModuleItem> SPEED_MODULE = ITEMS.register("speed_module", () -> new ModuleItem(itemProp(SecurityCraft.technicalTab).stacksTo(1), ModuleType.SPEED, false));
 
 	//block entity types
+	//@formatter:off
 	public static final RegistryObject<BlockEntityType<OwnableBlockEntity>> OWNABLE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("ownable", () -> {
-		List<Block> beOwnableBlocks = Arrays.stream(SCContent.class.getFields()).filter(field -> field.isAnnotationPresent(OwnableBE.class)).map(field -> {
-			try {
-				return ((RegistryObject<Block>) field.get(null)).get();
-			}
-			catch (IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}).filter(Predicates.notNull()).toList();
+		List<Block> beOwnableBlocks = Arrays.stream(SCContent.class.getFields())
+				.filter(field -> field.isAnnotationPresent(OwnableBE.class))
+				.map(field -> {
+					try {
+						return ((RegistryObject<Block>) field.get(null)).get();
+					}
+					catch (IllegalArgumentException | IllegalAccessException e) {
+						e.printStackTrace();
+						return null;
+					}
+				})
+				.filter(Predicates.notNull())
+				.toList();
 
 		return BlockEntityType.Builder.of(OwnableBlockEntity::new, beOwnableBlocks.toArray(new Block[beOwnableBlocks.size()])).build(null);
 	});
-	//formatter:off
-	public static final RegistryObject<BlockEntityType<NamedBlockEntity>> ABSTRACT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("abstract", () -> BlockEntityType.Builder.of(NamedBlockEntity::new, SCContent.LASER_FIELD.get(), SCContent.INVENTORY_SCANNER_FIELD.get(), SCContent.IRON_FENCE.get(), SCContent.COBBLESTONE_MINE.get(), SCContent.DIAMOND_ORE_MINE.get(), SCContent.DIRT_MINE.get(), SCContent.GRAVEL_MINE.get(), SCContent.SAND_MINE.get(), SCContent.STONE_MINE.get(), SCContent.BOUNCING_BETTY.get(), SCContent.REINFORCED_FENCEGATE.get(), SCContent.ANCIENT_DEBRIS_MINE.get(), SCContent.COAL_ORE_MINE.get(), SCContent.EMERALD_ORE_MINE.get(), SCContent.GOLD_ORE_MINE.get(), SCContent.GILDED_BLACKSTONE_MINE.get(), SCContent.IRON_ORE_MINE.get(), SCContent.LAPIS_ORE_MINE.get(), SCContent.NETHER_GOLD_ORE_MINE.get(), SCContent.QUARTZ_ORE_MINE.get(), SCContent.REDSTONE_ORE_MINE.get(), SCContent.DEEPSLATE_COAL_ORE_MINE.get(), SCContent.DEEPSLATE_COPPER_ORE_MINE.get(), SCContent.DEEPSLATE_DIAMOND_ORE_MINE.get(), SCContent.DEEPSLATE_EMERALD_ORE_MINE.get(), SCContent.DEEPSLATE_GOLD_ORE_MINE.get(), SCContent.DEEPSLATE_IRON_ORE_MINE.get(), SCContent.DEEPSLATE_LAPIS_ORE_MINE.get(), SCContent.DEEPSLATE_REDSTONE_ORE_MINE.get(), SCContent.COPPER_ORE_MINE.get()).build(null));
+	public static final RegistryObject<BlockEntityType<NamedBlockEntity>> ABSTRACT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("abstract", () -> BlockEntityType.Builder.of(NamedBlockEntity::new,
+			SCContent.LASER_FIELD.get(),
+			SCContent.INVENTORY_SCANNER_FIELD.get(),
+			SCContent.IRON_FENCE.get(),
+			SCContent.COBBLESTONE_MINE.get(),
+			SCContent.DIAMOND_ORE_MINE.get(),
+			SCContent.DIRT_MINE.get(),
+			SCContent.GRAVEL_MINE.get(),
+			SCContent.SAND_MINE.get(),
+			SCContent.STONE_MINE.get(),
+			SCContent.BOUNCING_BETTY.get(),
+			SCContent.REINFORCED_FENCEGATE.get(),
+			SCContent.ANCIENT_DEBRIS_MINE.get(),
+			SCContent.COAL_ORE_MINE.get(),
+			SCContent.EMERALD_ORE_MINE.get(),
+			SCContent.GOLD_ORE_MINE.get(),
+			SCContent.GILDED_BLACKSTONE_MINE.get(),
+			SCContent.IRON_ORE_MINE.get(),
+			SCContent.LAPIS_ORE_MINE.get(),
+			SCContent.NETHER_GOLD_ORE_MINE.get(),
+			SCContent.QUARTZ_ORE_MINE.get(),
+			SCContent.REDSTONE_ORE_MINE.get(),
+			SCContent.DEEPSLATE_COAL_ORE_MINE.get(),
+			SCContent.DEEPSLATE_COPPER_ORE_MINE.get(),
+			SCContent.DEEPSLATE_DIAMOND_ORE_MINE.get(),
+			SCContent.DEEPSLATE_EMERALD_ORE_MINE.get(),
+			SCContent.DEEPSLATE_GOLD_ORE_MINE.get(),
+			SCContent.DEEPSLATE_IRON_ORE_MINE.get(),
+			SCContent.DEEPSLATE_LAPIS_ORE_MINE.get(),
+			SCContent.DEEPSLATE_REDSTONE_ORE_MINE.get(),
+			SCContent.COPPER_ORE_MINE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<KeypadBlockEntity>> KEYPAD_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad", () -> BlockEntityType.Builder.of(KeypadBlockEntity::new, SCContent.KEYPAD.get()).build(null));
 	public static final RegistryObject<BlockEntityType<LaserBlockBlockEntity>> LASER_BLOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("laser_block", () -> BlockEntityType.Builder.of(LaserBlockBlockEntity::new, SCContent.LASER_BLOCK.get()).build(null));
 	public static final RegistryObject<BlockEntityType<CageTrapBlockEntity>> CAGE_TRAP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("cage_trap", () -> BlockEntityType.Builder.of(CageTrapBlockEntity::new, SCContent.CAGE_TRAP.get()).build(null));
@@ -2175,30 +2209,107 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<IMSBlockEntity>> IMS_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("ims", () -> BlockEntityType.Builder.of(IMSBlockEntity::new, SCContent.IMS.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ProtectoBlockEntity>> PROTECTO_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("protecto", () -> BlockEntityType.Builder.of(ProtectoBlockEntity::new, SCContent.PROTECTO.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ScannerDoorBlockEntity>> SCANNER_DOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("scanner_door", () -> BlockEntityType.Builder.of(ScannerDoorBlockEntity::new, SCContent.SCANNER_DOOR.get()).build(null));
-	public static final RegistryObject<BlockEntityType<SecretSignBlockEntity>> SECRET_SIGN_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secret_sign", () -> BlockEntityType.Builder.of(SecretSignBlockEntity::new, SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get(), SCContent.SECRET_BIRCH_SIGN.get(), SCContent.SECRET_BIRCH_WALL_SIGN.get(), SCContent.SECRET_JUNGLE_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_SIGN.get(), SCContent.SECRET_ACACIA_SIGN.get(), SCContent.SECRET_ACACIA_WALL_SIGN.get(), SCContent.SECRET_DARK_OAK_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_SIGN.get(), SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get(), SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get()).build(null));
+	public static final RegistryObject<BlockEntityType<SecretSignBlockEntity>> SECRET_SIGN_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secret_sign", () -> BlockEntityType.Builder.of(SecretSignBlockEntity::new,
+			SCContent.SECRET_OAK_SIGN.get(),
+			SCContent.SECRET_OAK_WALL_SIGN.get(),
+			SCContent.SECRET_SPRUCE_SIGN.get(),
+			SCContent.SECRET_SPRUCE_WALL_SIGN.get(),
+			SCContent.SECRET_BIRCH_SIGN.get(),
+			SCContent.SECRET_BIRCH_WALL_SIGN.get(),
+			SCContent.SECRET_JUNGLE_SIGN.get(),
+			SCContent.SECRET_JUNGLE_WALL_SIGN.get(),
+			SCContent.SECRET_ACACIA_SIGN.get(),
+			SCContent.SECRET_ACACIA_WALL_SIGN.get(),
+			SCContent.SECRET_DARK_OAK_SIGN.get(),
+			SCContent.SECRET_DARK_OAK_WALL_SIGN.get(),
+			SCContent.SECRET_CRIMSON_SIGN.get(),
+			SCContent.SECRET_CRIMSON_WALL_SIGN.get(),
+			SCContent.SECRET_WARPED_SIGN.get(),
+			SCContent.SECRET_WARPED_WALL_SIGN.get()).build(null));
 	public static final RegistryObject<BlockEntityType<MotionActivatedLightBlockEntity>> MOTION_LIGHT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("motion_light", () -> BlockEntityType.Builder.of(MotionActivatedLightBlockEntity::new, SCContent.MOTION_ACTIVATED_LIGHT.get()).build(null));
 	public static final RegistryObject<BlockEntityType<TrackMineBlockEntity>> TRACK_MINE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("track_mine", () -> BlockEntityType.Builder.of(TrackMineBlockEntity::new, SCContent.TRACK_MINE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<TrophySystemBlockEntity>> TROPHY_SYSTEM_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("trophy_system", () -> BlockEntityType.Builder.of(TrophySystemBlockEntity::new, SCContent.TROPHY_SYSTEM.get()).build(null));
 	public static final RegistryObject<BlockEntityType<BlockPocketManagerBlockEntity>> BLOCK_POCKET_MANAGER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_pocket_manager", () -> BlockEntityType.Builder.of(BlockPocketManagerBlockEntity::new, SCContent.BLOCK_POCKET_MANAGER.get()).build(null));
-	public static final RegistryObject<BlockEntityType<BlockPocketBlockEntity>> BLOCK_POCKET_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_pocket", () -> BlockEntityType.Builder.of(BlockPocketBlockEntity::new, SCContent.BLOCK_POCKET_WALL.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).build(null));
-	public static final RegistryObject<BlockEntityType<AllowlistOnlyBlockEntity>> ALLOWLIST_ONLY_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_pressure_plate", () -> BlockEntityType.Builder.of(AllowlistOnlyBlockEntity::new, SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(), SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(), SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(), SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(), SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(), SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(), SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(), SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get(), SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get(), SCContent.REINFORCED_STONE_BUTTON.get(), SCContent.REINFORCED_ACACIA_BUTTON.get(), SCContent.REINFORCED_BIRCH_BUTTON.get(), SCContent.REINFORCED_CRIMSON_BUTTON.get(), SCContent.REINFORCED_DARK_OAK_BUTTON.get(), SCContent.REINFORCED_JUNGLE_BUTTON.get(), SCContent.REINFORCED_OAK_BUTTON.get(), SCContent.REINFORCED_SPRUCE_BUTTON.get(), SCContent.REINFORCED_WARPED_BUTTON.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get(), SCContent.REINFORCED_LEVER.get()).build(null));
+	public static final RegistryObject<BlockEntityType<BlockPocketBlockEntity>> BLOCK_POCKET_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_pocket", () -> BlockEntityType.Builder.of(BlockPocketBlockEntity::new,
+			SCContent.BLOCK_POCKET_WALL.get(),
+			SCContent.REINFORCED_CRYSTAL_QUARTZ.get(),
+			SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get(),
+			SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).build(null));
+	public static final RegistryObject<BlockEntityType<AllowlistOnlyBlockEntity>> ALLOWLIST_ONLY_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_pressure_plate", () -> BlockEntityType.Builder.of(AllowlistOnlyBlockEntity::new,
+			SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_STONE_BUTTON.get(),
+			SCContent.REINFORCED_ACACIA_BUTTON.get(),
+			SCContent.REINFORCED_BIRCH_BUTTON.get(),
+			SCContent.REINFORCED_CRIMSON_BUTTON.get(),
+			SCContent.REINFORCED_DARK_OAK_BUTTON.get(),
+			SCContent.REINFORCED_JUNGLE_BUTTON.get(),
+			SCContent.REINFORCED_OAK_BUTTON.get(),
+			SCContent.REINFORCED_SPRUCE_BUTTON.get(),
+			SCContent.REINFORCED_WARPED_BUTTON.get(),
+			SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get(),
+			SCContent.REINFORCED_LEVER.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ReinforcedHopperBlockEntity>> REINFORCED_HOPPER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_hopper", () -> BlockEntityType.Builder.of(ReinforcedHopperBlockEntity::new, SCContent.REINFORCED_HOPPER.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ProjectorBlockEntity>> PROJECTOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("projector", () -> BlockEntityType.Builder.of(ProjectorBlockEntity::new, SCContent.PROJECTOR.get()).build(null));
 	public static final RegistryObject<BlockEntityType<KeypadDoorBlockEntity>> KEYPAD_DOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_door", () -> BlockEntityType.Builder.of(KeypadDoorBlockEntity::new, SCContent.KEYPAD_DOOR.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ReinforcedIronBarsBlockEntity>> REINFORCED_IRON_BARS_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_iron_bars", () -> BlockEntityType.Builder.of(ReinforcedIronBarsBlockEntity::new, SCContent.REINFORCED_IRON_BARS.get()).build(null));
-	public static final RegistryObject<BlockEntityType<ReinforcedCauldronBlockEntity>> REINFORCED_CAULDRON_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_cauldron", () -> BlockEntityType.Builder.of(ReinforcedCauldronBlockEntity::new, SCContent.REINFORCED_CAULDRON.get(), SCContent.REINFORCED_WATER_CAULDRON.get(), SCContent.REINFORCED_LAVA_CAULDRON.get(), SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get()).build(null));
+	public static final RegistryObject<BlockEntityType<ReinforcedCauldronBlockEntity>> REINFORCED_CAULDRON_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_cauldron", () -> BlockEntityType.Builder.of(ReinforcedCauldronBlockEntity::new,
+			SCContent.REINFORCED_CAULDRON.get(),
+			SCContent.REINFORCED_WATER_CAULDRON.get(),
+			SCContent.REINFORCED_LAVA_CAULDRON.get(),
+			SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ReinforcedPistonMovingBlockEntity>> REINFORCED_PISTON_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_piston", () -> BlockEntityType.Builder.of(ReinforcedPistonMovingBlockEntity::new, SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
-	public static final RegistryObject<BlockEntityType<ValidationOwnableBlockEntity>> VALIDATION_OWNABLE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("validation_ownable", () -> BlockEntityType.Builder.of(ValidationOwnableBlockEntity::new, SCContent.REINFORCED_PISTON.get(), SCContent.REINFORCED_STICKY_PISTON.get()).build(null));
+	public static final RegistryObject<BlockEntityType<ValidationOwnableBlockEntity>> VALIDATION_OWNABLE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("validation_ownable", () -> BlockEntityType.Builder.of(ValidationOwnableBlockEntity::new,
+			SCContent.REINFORCED_PISTON.get(),
+			SCContent.REINFORCED_STICKY_PISTON.get()).build(null));
 	public static final RegistryObject<BlockEntityType<KeyPanelBlockEntity>> KEY_PANEL_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("key_panel", () -> BlockEntityType.Builder.of(KeyPanelBlockEntity::new, SCContent.KEY_PANEL_BLOCK.get()).build(null));
 	public static final RegistryObject<BlockEntityType<SonicSecuritySystemBlockEntity>> SONIC_SECURITY_SYSTEM_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("sonic_security_system", () -> BlockEntityType.Builder.of(SonicSecuritySystemBlockEntity::new, SCContent.SONIC_SECURITY_SYSTEM.get()).build(null));
 	public static final RegistryObject<BlockEntityType<BlockChangeDetectorBlockEntity>> BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_change_detector", () -> BlockEntityType.Builder.of(BlockChangeDetectorBlockEntity::new, SCContent.BLOCK_CHANGE_DETECTOR.get()).build(null));
 
 	//entity types
-	public static final RegistryObject<EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty", () -> EntityType.Builder.<BouncingBetty> of(BouncingBetty::new, MobCategory.MISC).sized(0.5F, 0.2F).setTrackingRange(128).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).build(SecurityCraft.MODID + ":bouncingbetty"));
-	public static final RegistryObject<EntityType<IMSBomb>> IMS_BOMB_ENTITY = ENTITY_TYPES.register("imsbomb", () -> EntityType.Builder.<IMSBomb> of(IMSBomb::new, MobCategory.MISC).sized(0.25F, 0.3F).setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).build(SecurityCraft.MODID + ":imsbomb"));
-	public static final RegistryObject<EntityType<SecurityCamera>> SECURITY_CAMERA_ENTITY = ENTITY_TYPES.register("securitycamera", () -> EntityType.Builder.<SecurityCamera> of(SecurityCamera::new, MobCategory.MISC).sized(0.0001F, 0.0001F).setTrackingRange(256).setUpdateInterval(20).setShouldReceiveVelocityUpdates(true).build(SecurityCraft.MODID + ":securitycamera"));
-	public static final RegistryObject<EntityType<Sentry>> SENTRY_ENTITY = ENTITY_TYPES.register("sentry", () -> EntityType.Builder.<Sentry> of(Sentry::new, MobCategory.MISC).sized(1.0F, 2.0F).setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).build(SecurityCraft.MODID + ":sentry"));
-	public static final RegistryObject<EntityType<Bullet>> BULLET_ENTITY = ENTITY_TYPES.register("bullet", () -> EntityType.Builder.<Bullet> of(Bullet::new, MobCategory.MISC).sized(0.15F, 0.1F).setTrackingRange(256).setUpdateInterval(1).setShouldReceiveVelocityUpdates(true).build(SecurityCraft.MODID + ":bullet"));
+	public static final RegistryObject<EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
+			() -> EntityType.Builder.<BouncingBetty>of(BouncingBetty::new, MobCategory.MISC)
+			.sized(0.5F, 0.2F)
+			.setTrackingRange(128)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(SecurityCraft.MODID + ":bouncingbetty"));
+	public static final RegistryObject<EntityType<IMSBomb>> IMS_BOMB_ENTITY = ENTITY_TYPES.register("imsbomb",
+			() -> EntityType.Builder.<IMSBomb>of(IMSBomb::new, MobCategory.MISC)
+			.sized(0.25F, 0.3F)
+			.setTrackingRange(256)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(SecurityCraft.MODID + ":imsbomb"));
+	public static final RegistryObject<EntityType<SecurityCamera>> SECURITY_CAMERA_ENTITY = ENTITY_TYPES.register("securitycamera",
+			() -> EntityType.Builder.<SecurityCamera>of(SecurityCamera::new, MobCategory.MISC)
+			.sized(0.0001F, 0.0001F)
+			.setTrackingRange(256)
+			.setUpdateInterval(20)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(SecurityCraft.MODID + ":securitycamera"));
+	public static final RegistryObject<EntityType<Sentry>> SENTRY_ENTITY = ENTITY_TYPES.register("sentry",
+			() -> EntityType.Builder.<Sentry>of(Sentry::new, MobCategory.MISC)
+			.sized(1.0F, 2.0F)
+			.setTrackingRange(256)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(SecurityCraft.MODID + ":sentry"));
+	public static final RegistryObject<EntityType<Bullet>> BULLET_ENTITY = ENTITY_TYPES.register("bullet",
+			() -> EntityType.Builder.<Bullet>of(Bullet::new, MobCategory.MISC)
+			.sized(0.15F, 0.1F)
+			.setTrackingRange(256)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.build(SecurityCraft.MODID + ":bullet"));
 	//@formatter:on
 
 	//container types
