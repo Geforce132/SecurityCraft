@@ -3,18 +3,15 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.inventory.GenericMenu;
-import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -26,19 +23,27 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class BriefcaseSetupScreen extends ContainerScreen<GenericMenu> {
+public class BriefcaseSetupScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslationTextComponent setupTitle = Utils.localize("gui.securitycraft:briefcase.setupTitle");
 	private TextFieldWidget keycodeTextbox;
 	private Button saveAndContinueButton;
+	private int imageWidth = 176;
+	private int imageHeight = 166;
+	private int leftPos;
+	private int topPos;
 
-	public BriefcaseSetupScreen(GenericMenu container, PlayerInventory inv, ITextComponent text) {
-		super(container, inv, text);
+	public BriefcaseSetupScreen(ITextComponent title) {
+		super(title);
 	}
 
 	@Override
 	public void init() {
 		super.init();
+
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
+
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addButton(saveAndContinueButton = new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::saveAndContinueButtonClicked));
 		saveAndContinueButton.active = false;
@@ -58,21 +63,13 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericMenu> {
 
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrix, mouseX, mouseY, partialTicks);
-		drawString(matrix, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
-	}
-
-	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, setupTitle, imageWidth / 2 - font.width(setupTitle) / 2, 6, 4210752);
-	}
-
-	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
 		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(matrix, mouseX, mouseY, partialTicks);
+		drawString(matrix, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+		font.draw(matrix, setupTitle, width / 2 - font.width(setupTitle) / 2, topPos + 6, 4210752);
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {
@@ -90,7 +87,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericMenu> {
 			}
 
 			ClientUtils.syncItemNBT(briefcase);
-			SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcase.getRegistryName(), getTitle()));
+			ClientHandler.displayBriefcasePasswordScreen(getTitle());
 		}
 	}
 }

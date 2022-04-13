@@ -5,14 +5,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.IFormattableTextComponent;
@@ -24,17 +22,21 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class SetPasswordScreen extends ContainerScreen<GenericBEMenu> {
+public class SetPasswordScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private int imageWidth = 176;
+	private int imageHeight = 166;
+	private int leftPos;
+	private int topPos;
 	private TileEntity tileEntity;
 	private TranslationTextComponent blockName;
 	private TranslationTextComponent setup;
 	private IFormattableTextComponent combined;
 	private TextFieldWidget keycodeTextbox;
 
-	public SetPasswordScreen(GenericBEMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, inv, name);
-		tileEntity = container.te;
+	public SetPasswordScreen(TileEntity te, ITextComponent title) {
+		super(title);
+		tileEntity = te;
 		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getDescriptionId());
 		setup = Utils.localize("gui.securitycraft:password.setup");
 		combined = blockName.plainCopy().append(new StringTextComponent(" ")).append(setup);
@@ -43,6 +45,9 @@ public class SetPasswordScreen extends ContainerScreen<GenericBEMenu> {
 	@Override
 	public void init() {
 		super.init();
+
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
 
 		Button saveAndContinueButton = addButton(new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::saveAndContinueButtonClicked));
 
@@ -64,26 +69,19 @@ public class SetPasswordScreen extends ContainerScreen<GenericBEMenu> {
 
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrix, mouseX, mouseY, partialTicks);
-		drawString(matrix, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
-	}
-
-	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		if (font.width(combined) < imageWidth - 10)
-			font.draw(matrix, combined, imageWidth / 2 - font.width(combined) / 2, 6, 4210752);
-		else {
-			font.draw(matrix, blockName, imageWidth / 2 - font.width(blockName) / 2, 6.0F, 4210752);
-			font.draw(matrix, setup, imageWidth / 2 - font.width(setup) / 2, 16, 4210752);
-		}
-	}
-
-	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
 		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(matrix, mouseX, mouseY, partialTicks);
+		drawString(matrix, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+
+		if (font.width(combined) < imageWidth - 10)
+			font.draw(matrix, combined, width / 2 - font.width(combined) / 2, topPos + 6, 4210752);
+		else {
+			font.draw(matrix, blockName, width / 2 - font.width(blockName) / 2, topPos + 6, 4210752);
+			font.draw(matrix, setup, width / 2 - font.width(setup) / 2, topPos + 16, 4210752);
+		}
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {

@@ -1,5 +1,9 @@
 package net.geforcemods.securitycraft;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
@@ -131,16 +135,16 @@ import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
 import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
+import net.geforcemods.securitycraft.inventory.BriefcaseContainer;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
-import net.geforcemods.securitycraft.inventory.GenericMenu;
 import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.inventory.KeypadBlastFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.KeypadSmokerMenu;
+import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.items.AdminToolItem;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
@@ -168,6 +172,7 @@ import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableTE;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
@@ -182,6 +187,7 @@ import net.minecraft.block.StairsBlock;
 import net.minecraft.block.WoodType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
@@ -193,15 +199,18 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.TallBlockItem;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ObjectHolder;
 
 public class SCContent {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SecurityCraft.MODID);
+	public static final DeferredRegister<TileEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, SecurityCraft.MODID);
+	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, SecurityCraft.MODID);
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, SecurityCraft.MODID);
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SecurityCraft.MODID);
+	public static final DeferredRegister<ContainerType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, SecurityCraft.MODID);
 	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
 
 	//fluids
@@ -1892,134 +1901,180 @@ public class SCContent {
 	public static final RegistryObject<ModuleItem> SPEED_MODULE = ITEMS.register("speed_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).stacksTo(1), ModuleType.SPEED, false));
 
 	//tile entity types
-	@ObjectHolder(SecurityCraft.MODID + ":ownable")
-	public static TileEntityType<OwnableBlockEntity> beTypeOwnable;
-	@ObjectHolder(SecurityCraft.MODID + ":abstract")
-	public static TileEntityType<NamedBlockEntity> beTypeAbstract;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad")
-	public static TileEntityType<KeypadBlockEntity> beTypeKeypad;
-	@ObjectHolder(SecurityCraft.MODID + ":laser_block")
-	public static TileEntityType<LaserBlockBlockEntity> beTypeLaserBlock;
-	@ObjectHolder(SecurityCraft.MODID + ":cage_trap")
-	public static TileEntityType<CageTrapBlockEntity> beTypeCageTrap;
-	@ObjectHolder(SecurityCraft.MODID + ":keycard_reader")
-	public static TileEntityType<KeycardReaderBlockEntity> beTypeKeycardReader;
-	@ObjectHolder(SecurityCraft.MODID + ":inventory_scanner")
-	public static TileEntityType<InventoryScannerBlockEntity> beTypeInventoryScanner;
-	@ObjectHolder(SecurityCraft.MODID + ":portable_radar")
-	public static TileEntityType<PortableRadarBlockEntity> beTypePortableRadar;
-	@ObjectHolder(SecurityCraft.MODID + ":security_camera")
-	public static TileEntityType<SecurityCameraBlockEntity> beTypeSecurityCamera;
-	@ObjectHolder(SecurityCraft.MODID + ":username_logger")
-	public static TileEntityType<UsernameLoggerBlockEntity> beTypeUsernameLogger;
-	@ObjectHolder(SecurityCraft.MODID + ":retinal_scanner")
-	public static TileEntityType<RetinalScannerBlockEntity> beTypeRetinalScanner;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_chest")
-	public static TileEntityType<KeypadChestBlockEntity> beTypeKeypadChest;
-	@ObjectHolder(SecurityCraft.MODID + ":alarm")
-	public static TileEntityType<AlarmBlockEntity> beTypeAlarm;
-	@ObjectHolder(SecurityCraft.MODID + ":claymore")
-	public static TileEntityType<ClaymoreBlockEntity> beTypeClaymore;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
-	public static TileEntityType<KeypadFurnaceBlockEntity> beTypeKeypadFurnace;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_smoker")
-	public static TileEntityType<KeypadSmokerBlockEntity> beTypeKeypadSmoker;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_blast_furnace")
-	public static TileEntityType<KeypadBlastFurnaceBlockEntity> beTypeKeypadBlastFurnace;
-	@ObjectHolder(SecurityCraft.MODID + ":ims")
-	public static TileEntityType<IMSBlockEntity> beTypeIms;
-	@ObjectHolder(SecurityCraft.MODID + ":protecto")
-	public static TileEntityType<ProtectoBlockEntity> beTypeProtecto;
-	@ObjectHolder(SecurityCraft.MODID + ":scanner_door")
-	public static TileEntityType<ScannerDoorBlockEntity> beTypeScannerDoor;
-	@ObjectHolder(SecurityCraft.MODID + ":secret_sign")
-	public static TileEntityType<SecretSignBlockEntity> beTypeSecretSign;
-	@ObjectHolder(SecurityCraft.MODID + ":motion_light")
-	public static TileEntityType<MotionActivatedLightBlockEntity> beTypeMotionLight;
-	@ObjectHolder(SecurityCraft.MODID + ":track_mine")
-	public static TileEntityType<TrackMineBlockEntity> beTypeTrackMine;
-	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
-	public static TileEntityType<TrophySystemBlockEntity> beTypeTrophySystem;
-	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
-	public static TileEntityType<BlockPocketManagerBlockEntity> beTypeBlockPocketManager;
-	@ObjectHolder(SecurityCraft.MODID + ":block_pocket")
-	public static TileEntityType<BlockPocketBlockEntity> beTypeBlockPocket;
-	@ObjectHolder(SecurityCraft.MODID + ":reinforced_pressure_plate")
-	public static TileEntityType<AllowlistOnlyBlockEntity> beTypeAllowlistOnly;
-	@ObjectHolder(SecurityCraft.MODID + ":reinforced_hopper")
-	public static TileEntityType<ReinforcedHopperBlockEntity> beTypeReinforcedHopper;
-	@ObjectHolder(SecurityCraft.MODID + ":projector")
-	public static TileEntityType<ProjectorBlockEntity> beTypeProjecto;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_door")
-	public static TileEntityType<KeypadDoorBlockEntity> beTypeKeypadDoor;
-	@ObjectHolder(SecurityCraft.MODID + ":reinforced_iron_bars")
-	public static TileEntityType<ReinforcedIronBarsBlockEntity> beTypeReinforcedIronBars;
-	@ObjectHolder(SecurityCraft.MODID + ":reinforced_cauldron")
-	public static TileEntityType<ReinforcedCauldronBlockEntity> beTypeReinforcedCauldron;
-	@ObjectHolder(SecurityCraft.MODID + ":reinforced_piston")
-	public static TileEntityType<ReinforcedPistonBlockEntity> beTypeReinforcedPiston;
-	@ObjectHolder(SecurityCraft.MODID + ":validation_ownable")
-	public static TileEntityType<ValidationOwnableBlockEntity> beTypeValidationOwnable;
-	@ObjectHolder(SecurityCraft.MODID + ":key_panel")
-	public static TileEntityType<KeyPanelBlockEntity> beTypeKeyPanel;
-	@ObjectHolder(SecurityCraft.MODID + ":sonic_security_system")
-	public static TileEntityType<SonicSecuritySystemBlockEntity> beTypeSonicSecuritySystem;
-	@ObjectHolder(SecurityCraft.MODID + ":block_change_detector")
-	public static TileEntityType<BlockChangeDetectorBlockEntity> beTypeBlockChangeDetector;
+	//@formatter:off
+	public static final RegistryObject<TileEntityType<OwnableBlockEntity>> OWNABLE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("ownable", () -> {
+		List<Block> teOwnableBlocks = new ArrayList<>();
+
+		//find all blocks whose tile entity is TileEntityOwnable
+		for (Field field : SCContent.class.getFields()) {
+			try {
+				if (field.isAnnotationPresent(OwnableTE.class))
+					teOwnableBlocks.add(((RegistryObject<Block>) field.get(null)).get());
+			}
+			catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return TileEntityType.Builder.of(OwnableBlockEntity::new, teOwnableBlocks.toArray(new Block[teOwnableBlocks.size()])).build(null);
+	});
+	public static final RegistryObject<TileEntityType<NamedBlockEntity>> ABSTRACT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("abstract", () -> TileEntityType.Builder.of(NamedBlockEntity::new,
+			SCContent.LASER_FIELD.get(),
+			SCContent.INVENTORY_SCANNER_FIELD.get(),
+			SCContent.IRON_FENCE.get(),
+			SCContent.COBBLESTONE_MINE.get(),
+			SCContent.DIAMOND_ORE_MINE.get(),
+			SCContent.DIRT_MINE.get(),
+			SCContent.GRAVEL_MINE.get(),
+			SCContent.SAND_MINE.get(),
+			SCContent.STONE_MINE.get(),
+			SCContent.BOUNCING_BETTY.get(),
+			SCContent.REINFORCED_FENCEGATE.get(),
+			SCContent.ANCIENT_DEBRIS_MINE.get(),
+			SCContent.COAL_ORE_MINE.get(),
+			SCContent.EMERALD_ORE_MINE.get(),
+			SCContent.GOLD_ORE_MINE.get(),
+			SCContent.GILDED_BLACKSTONE_MINE.get(),
+			SCContent.IRON_ORE_MINE.get(),
+			SCContent.LAPIS_ORE_MINE.get(),
+			SCContent.NETHER_GOLD_ORE_MINE.get(),
+			SCContent.QUARTZ_ORE_MINE.get(),
+			SCContent.REDSTONE_ORE_MINE.get()).build(null));
+	public static final RegistryObject<TileEntityType<KeypadBlockEntity>> KEYPAD_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad", () -> TileEntityType.Builder.of(KeypadBlockEntity::new, SCContent.KEYPAD.get()).build(null));
+	public static final RegistryObject<TileEntityType<LaserBlockBlockEntity>> LASER_BLOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("laser_block", () -> TileEntityType.Builder.of(LaserBlockBlockEntity::new, SCContent.LASER_BLOCK.get()).build(null));
+	public static final RegistryObject<TileEntityType<CageTrapBlockEntity>> CAGE_TRAP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("cage_trap", () -> TileEntityType.Builder.of(CageTrapBlockEntity::new, SCContent.CAGE_TRAP.get()).build(null));
+	public static final RegistryObject<TileEntityType<KeycardReaderBlockEntity>> KEYCARD_READER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keycard_reader", () -> TileEntityType.Builder.of(KeycardReaderBlockEntity::new, SCContent.KEYCARD_READER.get()).build(null));
+	public static final RegistryObject<TileEntityType<InventoryScannerBlockEntity>> INVENTORY_SCANNER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("inventory_scanner", () -> TileEntityType.Builder.of(InventoryScannerBlockEntity::new, SCContent.INVENTORY_SCANNER.get()).build(null));
+	public static final RegistryObject<TileEntityType<PortableRadarBlockEntity>> PORTABLE_RADAR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("portable_radar", () -> TileEntityType.Builder.of(PortableRadarBlockEntity::new, SCContent.PORTABLE_RADAR.get()).build(null));
+	public static final RegistryObject<TileEntityType<SecurityCameraBlockEntity>> SECURITY_CAMERA_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("security_camera", () -> TileEntityType.Builder.of(SecurityCameraBlockEntity::new, SCContent.SECURITY_CAMERA.get()).build(null));
+	public static final RegistryObject<TileEntityType<UsernameLoggerBlockEntity>> USERNAME_LOGGER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("username_logger", () -> TileEntityType.Builder.of(UsernameLoggerBlockEntity::new, SCContent.USERNAME_LOGGER.get()).build(null));
+	public static final RegistryObject<TileEntityType<RetinalScannerBlockEntity>> RETINAL_SCANNER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("retinal_scanner", () -> TileEntityType.Builder.of(RetinalScannerBlockEntity::new, SCContent.RETINAL_SCANNER.get()).build(null));
+	public static final RegistryObject<TileEntityType<KeypadChestBlockEntity>> KEYPAD_CHEST_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_chest", () -> TileEntityType.Builder.of(KeypadChestBlockEntity::new, SCContent.KEYPAD_CHEST.get()).build(null));
+	public static final RegistryObject<TileEntityType<AlarmBlockEntity>> ALARM_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("alarm", () -> TileEntityType.Builder.of(AlarmBlockEntity::new, SCContent.ALARM.get()).build(null));
+	public static final RegistryObject<TileEntityType<ClaymoreBlockEntity>> CLAYMORE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("claymore", () -> TileEntityType.Builder.of(ClaymoreBlockEntity::new, SCContent.CLAYMORE.get()).build(null));
+	public static final RegistryObject<TileEntityType<KeypadFurnaceBlockEntity>> KEYPAD_FURNACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_furnace", () -> TileEntityType.Builder.of(KeypadFurnaceBlockEntity::new, SCContent.KEYPAD_FURNACE.get()).build(null));
+	public static final RegistryObject<TileEntityType<KeypadSmokerBlockEntity>> KEYPAD_SMOKER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_smoker", () -> TileEntityType.Builder.of(KeypadSmokerBlockEntity::new, SCContent.KEYPAD_SMOKER.get()).build(null));
+	public static final RegistryObject<TileEntityType<KeypadBlastFurnaceBlockEntity>> KEYPAD_BLAST_FURNACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_blast_furnace", () -> TileEntityType.Builder.of(KeypadBlastFurnaceBlockEntity::new, SCContent.KEYPAD_BLAST_FURNACE.get()).build(null));
+	public static final RegistryObject<TileEntityType<IMSBlockEntity>> IMS_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("ims", () -> TileEntityType.Builder.of(IMSBlockEntity::new, SCContent.IMS.get()).build(null));
+	public static final RegistryObject<TileEntityType<ProtectoBlockEntity>> PROTECTO_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("protecto", () -> TileEntityType.Builder.of(ProtectoBlockEntity::new, SCContent.PROTECTO.get()).build(null));
+	public static final RegistryObject<TileEntityType<ScannerDoorBlockEntity>> SCANNER_DOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("scanner_door", () -> TileEntityType.Builder.of(ScannerDoorBlockEntity::new, SCContent.SCANNER_DOOR.get()).build(null));
+	public static final RegistryObject<TileEntityType<SecretSignBlockEntity>> SECRET_SIGN_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secret_sign", () -> TileEntityType.Builder.of(SecretSignBlockEntity::new,
+			SCContent.SECRET_OAK_SIGN.get(),
+			SCContent.SECRET_OAK_WALL_SIGN.get(),
+			SCContent.SECRET_SPRUCE_SIGN.get(),
+			SCContent.SECRET_SPRUCE_WALL_SIGN.get(),
+			SCContent.SECRET_BIRCH_SIGN.get(),
+			SCContent.SECRET_BIRCH_WALL_SIGN.get(),
+			SCContent.SECRET_JUNGLE_SIGN.get(),
+			SCContent.SECRET_JUNGLE_WALL_SIGN.get(),
+			SCContent.SECRET_ACACIA_SIGN.get(),
+			SCContent.SECRET_ACACIA_WALL_SIGN.get(),
+			SCContent.SECRET_DARK_OAK_SIGN.get(),
+			SCContent.SECRET_DARK_OAK_WALL_SIGN.get(),
+			SCContent.SECRET_CRIMSON_SIGN.get(),
+			SCContent.SECRET_CRIMSON_WALL_SIGN.get(),
+			SCContent.SECRET_WARPED_SIGN.get(),
+			SCContent.SECRET_WARPED_WALL_SIGN.get()).build(null));
+	public static final RegistryObject<TileEntityType<MotionActivatedLightBlockEntity>> MOTION_LIGHT_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("motion_light", () -> TileEntityType.Builder.of(MotionActivatedLightBlockEntity::new, SCContent.MOTION_ACTIVATED_LIGHT.get()).build(null));
+	public static final RegistryObject<TileEntityType<TrackMineBlockEntity>> TRACK_MINE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("track_mine", () -> TileEntityType.Builder.of(TrackMineBlockEntity::new, SCContent.TRACK_MINE.get()).build(null));
+	public static final RegistryObject<TileEntityType<TrophySystemBlockEntity>> TROPHY_SYSTEM_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("trophy_system", () -> TileEntityType.Builder.of(TrophySystemBlockEntity::new, SCContent.TROPHY_SYSTEM.get()).build(null));
+	public static final RegistryObject<TileEntityType<BlockPocketManagerBlockEntity>> BLOCK_POCKET_MANAGER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_pocket_manager", () -> TileEntityType.Builder.of(BlockPocketManagerBlockEntity::new, SCContent.BLOCK_POCKET_MANAGER.get()).build(null));
+	public static final RegistryObject<TileEntityType<BlockPocketBlockEntity>> BLOCK_POCKET_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_pocket", () -> TileEntityType.Builder.of(BlockPocketBlockEntity::new,
+			SCContent.BLOCK_POCKET_WALL.get(),
+			SCContent.REINFORCED_CRYSTAL_QUARTZ.get(),
+			SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get(),
+			SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).build(null));
+	public static final RegistryObject<TileEntityType<AllowlistOnlyBlockEntity>> ALLOWLIST_ONLY_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_pressure_plate", () -> TileEntityType.Builder.of(AllowlistOnlyBlockEntity::new,
+			SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_STONE_BUTTON.get(),
+			SCContent.REINFORCED_ACACIA_BUTTON.get(),
+			SCContent.REINFORCED_BIRCH_BUTTON.get(),
+			SCContent.REINFORCED_CRIMSON_BUTTON.get(),
+			SCContent.REINFORCED_DARK_OAK_BUTTON.get(),
+			SCContent.REINFORCED_JUNGLE_BUTTON.get(),
+			SCContent.REINFORCED_OAK_BUTTON.get(),
+			SCContent.REINFORCED_SPRUCE_BUTTON.get(),
+			SCContent.REINFORCED_WARPED_BUTTON.get(),
+			SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get(),
+			SCContent.REINFORCED_LEVER.get()).build(null));
+	public static final RegistryObject<TileEntityType<ReinforcedHopperBlockEntity>> REINFORCED_HOPPER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_hopper", () -> TileEntityType.Builder.of(ReinforcedHopperBlockEntity::new, SCContent.REINFORCED_HOPPER.get()).build(null));
+	public static final RegistryObject<TileEntityType<ProjectorBlockEntity>> PROJECTOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("projector", () -> TileEntityType.Builder.of(ProjectorBlockEntity::new, SCContent.PROJECTOR.get()).build(null));
+	public static final RegistryObject<TileEntityType<KeypadDoorBlockEntity>> KEYPAD_DOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_door", () -> TileEntityType.Builder.of(KeypadDoorBlockEntity::new, SCContent.KEYPAD_DOOR.get()).build(null));
+	public static final RegistryObject<TileEntityType<ReinforcedIronBarsBlockEntity>> REINFORCED_IRON_BARS_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_iron_bars", () -> TileEntityType.Builder.of(ReinforcedIronBarsBlockEntity::new, SCContent.REINFORCED_IRON_BARS.get()).build(null));
+	public static final RegistryObject<TileEntityType<ReinforcedCauldronBlockEntity>> REINFORCED_CAULDRON_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_cauldron", () -> TileEntityType.Builder.of(ReinforcedCauldronBlockEntity::new, SCContent.REINFORCED_CAULDRON.get()).build(null));
+	public static final RegistryObject<TileEntityType<ReinforcedPistonBlockEntity>> REINFORCED_PISTON_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_piston", () -> TileEntityType.Builder.of(ReinforcedPistonBlockEntity::new, SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
+	public static final RegistryObject<TileEntityType<ValidationOwnableBlockEntity>> VALIDATION_OWNABLE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("validation_ownable", () -> TileEntityType.Builder.of(ValidationOwnableBlockEntity::new,
+			SCContent.REINFORCED_PISTON.get(),
+			SCContent.REINFORCED_STICKY_PISTON.get()).build(null));
+	public static final RegistryObject<TileEntityType<KeyPanelBlockEntity>> KEY_PANEL_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("key_panel", () -> TileEntityType.Builder.of(KeyPanelBlockEntity::new, SCContent.KEY_PANEL_BLOCK.get()).build(null));
+	public static final RegistryObject<TileEntityType<SonicSecuritySystemBlockEntity>> SONIC_SECURITY_SYSTEM_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("sonic_security_system", () -> TileEntityType.Builder.of(SonicSecuritySystemBlockEntity::new, SCContent.SONIC_SECURITY_SYSTEM.get()).build(null));
+	public static final RegistryObject<TileEntityType<BlockChangeDetectorBlockEntity>> BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_change_detector", () -> TileEntityType.Builder.of(BlockChangeDetectorBlockEntity::new, SCContent.BLOCK_CHANGE_DETECTOR.get()).build(null));
 
 	//entity types
-	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
-	public static EntityType<BouncingBetty> eTypeBouncingBetty;
-	@ObjectHolder(SecurityCraft.MODID + ":imsbomb")
-	public static EntityType<IMSBomb> eTypeImsBomb;
-	@ObjectHolder(SecurityCraft.MODID + ":securitycamera")
-	public static EntityType<SecurityCamera> eTypeSecurityCamera;
-	@ObjectHolder(SecurityCraft.MODID + ":sentry")
-	public static EntityType<Sentry> eTypeSentry;
-	@ObjectHolder(SecurityCraft.MODID + ":bullet")
-	public static EntityType<Bullet> eTypeBullet;
+	public static final RegistryObject<EntityType<BouncingBetty>> eTypeBouncingBetty = ENTITY_TYPES.register("bouncingbetty",
+			() -> EntityType.Builder.<BouncingBetty>of(BouncingBetty::new, EntityClassification.MISC)
+			.sized(0.5F, 0.2F)
+			.setTrackingRange(128)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.setCustomClientFactory((spawnEntity, world) -> new BouncingBetty(world))
+			.build(SecurityCraft.MODID + ":bouncingbetty"));
+	public static final RegistryObject<EntityType<IMSBomb>> eTypeImsBomb = ENTITY_TYPES.register("imsbomb",
+			() -> EntityType.Builder.<IMSBomb>of(IMSBomb::new, EntityClassification.MISC)
+			.sized(0.25F, 0.3F)
+			.setTrackingRange(256)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.setCustomClientFactory((spawnEntity, world) -> new IMSBomb(world))
+			.build(SecurityCraft.MODID + ":imsbomb"));
+	public static final RegistryObject<EntityType<SecurityCamera>> eTypeSecurityCamera = ENTITY_TYPES.register("securitycamera",
+			() -> EntityType.Builder.<SecurityCamera>of(SecurityCamera::new, EntityClassification.MISC)
+			.sized(0.0001F, 0.0001F)
+			.setTrackingRange(256)
+			.setUpdateInterval(20)
+			.setShouldReceiveVelocityUpdates(true)
+			.setCustomClientFactory((spawnEntity, world) -> new SecurityCamera(world))
+			.build(SecurityCraft.MODID + ":securitycamera"));
+	public static final RegistryObject<EntityType<Sentry>> eTypeSentry = ENTITY_TYPES.register("sentry",
+			() -> EntityType.Builder.<Sentry>of(Sentry::new, EntityClassification.MISC)
+			.sized(1.0F, 2.0F)
+			.setTrackingRange(256)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.setCustomClientFactory((spawnEntity, world) -> new Sentry(world))
+			.build(SecurityCraft.MODID + ":sentry"));
+	public static final RegistryObject<EntityType<Bullet>> eTypeBullet = ENTITY_TYPES.register("bullet",
+			() -> EntityType.Builder.<Bullet>of(Bullet::new, EntityClassification.MISC)
+			.sized(0.15F, 0.1F)
+			.setTrackingRange(256)
+			.setUpdateInterval(1)
+			.setShouldReceiveVelocityUpdates(true)
+			.setCustomClientFactory((spawnEntity, world) -> new Bullet(world))
+			.build(SecurityCraft.MODID + ":bullet"));
+	//@formatter:off
 
 	//container types
-	@ObjectHolder(SecurityCraft.MODID + ":block_reinforcer")
-	public static ContainerType<BlockReinforcerMenu> mTypeBlockReinforcer;
-	@ObjectHolder(SecurityCraft.MODID + ":briefcase")
-	public static ContainerType<GenericMenu> mTypeBriefcase;
-	@ObjectHolder(SecurityCraft.MODID + ":briefcase_inventory")
-	public static ContainerType<BriefcaseMenu> mTypeBriefcaseInventory;
-	@ObjectHolder(SecurityCraft.MODID + ":briefcase_setup")
-	public static ContainerType<GenericMenu> mTypeBriefcaseSetup;
-	@ObjectHolder(SecurityCraft.MODID + ":customize_block")
-	public static ContainerType<CustomizeBlockMenu> mTypeCustomizeBlock;
-	@ObjectHolder(SecurityCraft.MODID + ":disguise_module")
-	public static ContainerType<DisguiseModuleMenu> mTypeDisguiseModule;
-	@ObjectHolder(SecurityCraft.MODID + ":inventory_scanner")
-	public static ContainerType<InventoryScannerMenu> mTypeInventoryScanner;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
-	public static ContainerType<KeypadFurnaceMenu> mTypeKeypadFurnace;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_smoker")
-	public static ContainerType<KeypadSmokerMenu> mTypeKeypadSmoker;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_blast_furnace")
-	public static ContainerType<KeypadBlastFurnaceMenu> mTypeKeypadBlastFurnace;
-	@ObjectHolder(SecurityCraft.MODID + ":projector")
-	public static ContainerType<ProjectorMenu> mTypeProjector;
-	@ObjectHolder(SecurityCraft.MODID + ":check_password")
-	public static ContainerType<GenericBEMenu> mTypeCheckPassword;
-	@ObjectHolder(SecurityCraft.MODID + ":set_password")
-	public static ContainerType<GenericBEMenu> mTypeSetPassword;
-	@ObjectHolder(SecurityCraft.MODID + ":username_logger")
-	public static ContainerType<GenericBEMenu> mTypeUsernameLogger;
-	@ObjectHolder(SecurityCraft.MODID + ":ims")
-	public static ContainerType<GenericBEMenu> mTypeIMS;
-	@ObjectHolder(SecurityCraft.MODID + ":keycard_setup")
-	public static ContainerType<KeycardReaderMenu> mTypeKeycardReader;
-	@ObjectHolder(SecurityCraft.MODID + ":key_changer")
-	public static ContainerType<GenericBEMenu> mTypeKeyChanger;
-	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
-	public static ContainerType<GenericBEMenu> mTypeTrophySystem;
-	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
-	public static ContainerType<BlockPocketManagerMenu> mTypeBlockPocketManager;
-	@ObjectHolder(SecurityCraft.MODID + ":block_change_detector")
-	public static ContainerType<BlockChangeDetectorMenu> mTypeBlockChangeDetector;
+	public static final RegistryObject<ContainerType<BlockReinforcerMenu>> BLOCK_REINFORCER_MENU = MENU_TYPES.register("block_reinforcer", () -> IForgeContainerType.create((windowId, inv, data) -> new BlockReinforcerMenu(windowId, inv, data.readBoolean())));
+	public static final RegistryObject<ContainerType<BriefcaseMenu>> BRIEFCASE_INVENTORY_MENU = MENU_TYPES.register("briefcase_inventory", () -> IForgeContainerType.create((windowId, inv, data) -> new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(inv, SCContent.BRIEFCASE.get())))));
+	public static final RegistryObject<ContainerType<CustomizeBlockMenu>> CUSTOMIZE_BLOCK_MENU = MENU_TYPES.register("customize_block", () -> IForgeContainerType.create((windowId, inv, data) -> new CustomizeBlockMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<ContainerType<DisguiseModuleMenu>> DISGUISE_MODULE_MENU = MENU_TYPES.register("disguise_module", () -> IForgeContainerType.create((windowId, inv, data) -> new DisguiseModuleMenu(windowId, inv, new ModuleItemContainer(PlayerUtils.getSelectedItemStack(inv, SCContent.DISGUISE_MODULE.get())))));
+	public static final RegistryObject<ContainerType<InventoryScannerMenu>> INVENTORY_SCANNER_MENU = MENU_TYPES.register("inventory_scanner", () -> IForgeContainerType.create((windowId, inv, data) -> new InventoryScannerMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<ContainerType<KeypadFurnaceMenu>> KEYPAD_FURNACE_MENU = MENU_TYPES.register("keypad_furnace", () -> IForgeContainerType.create((windowId, inv, data) -> new KeypadFurnaceMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<ContainerType<KeypadSmokerMenu>> KEYPAD_SMOKER_MENU = MENU_TYPES.register("keypad_smoker", () -> IForgeContainerType.create((windowId, inv, data) -> new KeypadSmokerMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<ContainerType<KeypadBlastFurnaceMenu>> KEYPAD_BLAST_FURNACE_MENU = MENU_TYPES.register("keypad_blast_furnace", () -> IForgeContainerType.create((windowId, inv, data) -> new KeypadBlastFurnaceMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<ContainerType<ProjectorMenu>> PROJECTOR_MENU = MENU_TYPES.register("projector", () -> IForgeContainerType.create((windowId, inv, data) -> new ProjectorMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<ContainerType<KeycardReaderMenu>> KEYCARD_READER_MENU = MENU_TYPES.register("keycard_setup", () -> IForgeContainerType.create((windowId, inv, data) -> new KeycardReaderMenu(windowId, inv, inv.player.level, data.readBlockPos())));
+	public static final RegistryObject<ContainerType<BlockPocketManagerMenu>> BLOCK_POCKET_MANAGER_MENU = MENU_TYPES.register("block_pocket_manager", () -> IForgeContainerType.create((windowId, inv, data) -> new BlockPocketManagerMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
+	public static final RegistryObject<ContainerType<BlockChangeDetectorMenu>> BLOCK_CHANGE_DETECTOR_MENU = MENU_TYPES.register("block_change_detector", () -> IForgeContainerType.create((windowId, inv, data) -> new BlockChangeDetectorMenu(windowId, inv.player.level, data.readBlockPos(), inv)));
 
 	private static final Block.Properties prop() {
 		return prop(Material.STONE);

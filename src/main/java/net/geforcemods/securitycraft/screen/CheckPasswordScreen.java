@@ -6,13 +6,11 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
@@ -24,26 +22,33 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class CheckPasswordScreen extends ContainerScreen<GenericBEMenu> {
+public class CheckPasswordScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntity tileEntity;
 	private char[] allowedChars = {
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '\u0008', '\u001B'
 	}; //0-9, backspace and escape
+	private int imageWidth = 176;
+	private int imageHeight = 166;
+	private int leftPos;
+	private int topPos;
 	private TranslationTextComponent blockName;
 	private TextFieldWidget keycodeTextbox;
 	private String currentString = "";
 	private static final int MAX_CHARS = 20;
 
-	public CheckPasswordScreen(GenericBEMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, inv, name);
-		this.tileEntity = container.te;
+	public CheckPasswordScreen(TileEntity te, ITextComponent title) {
+		super(title);
+		this.tileEntity = te;
 		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getDescriptionId());
 	}
 
 	@Override
 	public void init() {
 		super.init();
+
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
 		addButton(new ExtendedButton(width / 2 - 38, height / 2 + 30 + 10, 80, 20, new StringTextComponent("0"), b -> addNumberToString(0)));
@@ -71,16 +76,13 @@ public class CheckPasswordScreen extends ContainerScreen<GenericBEMenu> {
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
-	}
-
-	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
 		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(matrix, mouseX, mouseY, partialTicks);
+		font.draw(matrix, blockName, width / 2 - font.width(blockName) / 2, topPos + 6, 4210752);
 	}
 
 	@Override

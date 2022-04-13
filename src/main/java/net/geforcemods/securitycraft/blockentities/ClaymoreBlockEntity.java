@@ -22,7 +22,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	private int cooldown = -1;
 
 	public ClaymoreBlockEntity() {
-		super(SCContent.beTypeClaymore);
+		super(SCContent.CLAYMORE_BLOCK_ENTITY.get());
 	}
 
 	@Override

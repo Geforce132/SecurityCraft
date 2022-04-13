@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.entity.IMSBomb;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -16,17 +15,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.ITextComponent;
 
-public class IMSBlockEntity extends CustomizableBlockEntity implements INamedContainerProvider, ITickableTileEntity {
+public class IMSBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 12, 1, 30, 1, true);
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
@@ -39,7 +34,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements INamedCon
 	private int attackTime = getAttackInterval();
 
 	public IMSBlockEntity() {
-		super(SCContent.beTypeIms);
+		super(SCContent.IMS_BLOCK_ENTITY.get());
 	}
 
 	@Override
@@ -166,16 +161,6 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements INamedCon
 		return new Option[] {
 				range
 		};
-	}
-
-	@Override
-	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-		return new GenericBEMenu(SCContent.mTypeIMS, windowId, level, worldPosition);
-	}
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return super.getDisplayName();
 	}
 
 	public int getAttackInterval() {

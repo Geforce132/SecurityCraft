@@ -49,11 +49,11 @@ public class ReinforcedPistonBlockEntity extends TileEntity implements ITickable
 	private Owner owner = new Owner();
 
 	public ReinforcedPistonBlockEntity() {
-		super(SCContent.beTypeReinforcedPiston);
+		super(SCContent.REINFORCED_PISTON_BLOCK_ENTITY.get());
 	}
 
 	public ReinforcedPistonBlockEntity(BlockState pistonState, CompoundNBT tag, Direction pistonFacing, boolean extending, boolean shouldHeadBeRendered) {
-		super(SCContent.beTypeReinforcedPiston);
+		super(SCContent.REINFORCED_PISTON_BLOCK_ENTITY.get());
 		this.pistonState = pistonState;
 		this.tileEntityTag = tag;
 		this.pistonFacing = pistonFacing;

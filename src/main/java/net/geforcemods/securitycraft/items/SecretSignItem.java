@@ -42,7 +42,7 @@ public class SecretSignItem extends WallOrFloorItem {
 			te.setAllowedPlayerEditor(player);
 
 			if (world.isClientSide)
-				ClientHandler.displayEditSecretSignGui(te);
+				ClientHandler.displayEditSecretSignScreen(te);
 		}
 
 		return flag;

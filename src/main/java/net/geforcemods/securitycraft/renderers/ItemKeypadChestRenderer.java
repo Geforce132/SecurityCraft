@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 
 public class ItemKeypadChestRenderer extends ItemStackTileEntityRenderer {
-	private static final KeypadChestBlockEntity DUMMY_TE = new KeypadChestBlockEntity();
+	private static KeypadChestBlockEntity dummyTe;
 	private static KeypadChestRenderer dummyRenderer = null;
 
 	@Override
@@ -18,6 +18,9 @@ public class ItemKeypadChestRenderer extends ItemStackTileEntityRenderer {
 		if (dummyRenderer == null)
 			dummyRenderer = new KeypadChestRenderer(TileEntityRendererDispatcher.instance);
 
-		dummyRenderer.render(DUMMY_TE, 0.0F, matrix, buffer, combinedLight, combinedOverlay);
+		if (dummyTe == null)
+			dummyTe = new KeypadChestBlockEntity();
+
+		dummyRenderer.render(dummyTe, 0.0F, matrix, buffer, combinedLight, combinedOverlay);
 	}
 }

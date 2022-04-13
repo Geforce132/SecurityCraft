@@ -23,7 +23,7 @@ public class KeypadSmokerMenu extends AbstractFurnaceContainer {
 	}
 
 	public KeypadSmokerMenu(int windowId, World world, BlockPos pos, PlayerInventory inventory, IInventory furnaceInv, IIntArray furnaceData) {
-		super(SCContent.mTypeKeypadSmoker, IRecipeType.SMOKING, RecipeBookCategory.SMOKER, windowId, inventory, furnaceInv, furnaceData);
+		super(SCContent.KEYPAD_SMOKER_MENU.get(), IRecipeType.SMOKING, RecipeBookCategory.SMOKER, windowId, inventory, furnaceInv, furnaceData);
 		te = (AbstractKeypadFurnaceBlockEntity) world.getBlockEntity(pos);
 		worldPosCallable = IWorldPosCallable.create(world, pos);
 	}

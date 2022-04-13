@@ -4,16 +4,18 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
@@ -32,7 +34,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class IMSBlock extends OwnableBlock {
 	public static final IntegerProperty MINES = IntegerProperty.create("mines", 0, 4);
@@ -116,12 +118,8 @@ public class IMSBlock extends OwnableBlock {
 					world.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
 					((IMSBlockEntity) world.getBlockEntity(pos)).setBombsRemaining(mines + 1);
 				}
-				else if (player instanceof ServerPlayerEntity) {
-					TileEntity te = world.getBlockEntity(pos);
-
-					if (te instanceof INamedContainerProvider)
-						NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
-				}
+				else
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.IMS, pos));
 			}
 		}
 

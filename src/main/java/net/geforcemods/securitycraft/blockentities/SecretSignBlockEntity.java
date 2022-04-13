@@ -27,7 +27,7 @@ public class SecretSignBlockEntity extends SignTileEntity implements IOwnable, I
 
 	@Override
 	public TileEntityType<?> getType() {
-		return SCContent.beTypeSecretSign;
+		return SCContent.SECRET_SIGN_BLOCK_ENTITY.get();
 	}
 
 	@Override

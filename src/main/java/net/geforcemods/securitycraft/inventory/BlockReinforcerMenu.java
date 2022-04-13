@@ -22,7 +22,7 @@ public class BlockReinforcerMenu extends Container {
 	public final boolean isLvl1;
 
 	public BlockReinforcerMenu(int windowId, PlayerInventory inventory, boolean isLvl1) {
-		super(SCContent.mTypeBlockReinforcer, windowId);
+		super(SCContent.BLOCK_REINFORCER_MENU.get(), windowId);
 
 		blockReinforcer = inventory.getSelected().getItem() instanceof UniversalBlockReinforcerItem ? inventory.getSelected() : inventory.offhand.get(0);
 		this.isLvl1 = isLvl1;

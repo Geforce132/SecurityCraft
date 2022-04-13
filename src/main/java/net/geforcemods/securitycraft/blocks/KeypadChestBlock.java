@@ -84,7 +84,7 @@ public class KeypadChestBlock extends ChestBlock {
 	};
 
 	public KeypadChestBlock(Block.Properties properties) {
-		super(properties, () -> SCContent.beTypeKeypadChest);
+		super(properties, () -> SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get());
 	}
 
 	@Override

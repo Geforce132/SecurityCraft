@@ -9,7 +9,7 @@ import net.minecraft.item.crafting.IRecipeType;
 
 public class KeypadBlastFurnaceBlockEntity extends AbstractKeypadFurnaceBlockEntity {
 	public KeypadBlastFurnaceBlockEntity() {
-		super(SCContent.beTypeKeypadBlastFurnace, IRecipeType.BLASTING);
+		super(SCContent.KEYPAD_BLAST_FURNACE_BLOCK_ENTITY.get(), IRecipeType.BLASTING);
 	}
 
 	@Override

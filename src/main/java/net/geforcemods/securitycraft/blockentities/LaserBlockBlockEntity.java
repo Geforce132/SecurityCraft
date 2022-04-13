@@ -30,7 +30,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	};
 
 	public LaserBlockBlockEntity() {
-		super(SCContent.beTypeLaserBlock);
+		super(SCContent.LASER_BLOCK_BLOCK_ENTITY.get());
 	}
 
 	private void toggleLaser(BooleanOption option) {

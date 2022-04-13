@@ -15,7 +15,7 @@ public class OwnableBlockEntity extends TileEntity implements IOwnable {
 	private Owner owner = new Owner();
 
 	public OwnableBlockEntity() {
-		this(SCContent.beTypeOwnable);
+		this(SCContent.OWNABLE_BLOCK_ENTITY.get());
 	}
 
 	public OwnableBlockEntity(TileEntityType<?> type) {

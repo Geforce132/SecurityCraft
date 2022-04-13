@@ -21,7 +21,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 	private boolean isPowered = false;
 
 	public AlarmBlockEntity() {
-		super(SCContent.beTypeAlarm);
+		super(SCContent.ALARM_BLOCK_ENTITY.get());
 	}
 
 	@Override

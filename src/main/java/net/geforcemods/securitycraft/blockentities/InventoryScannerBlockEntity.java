@@ -46,7 +46,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	private int cooldown;
 
 	public InventoryScannerBlockEntity() {
-		super(SCContent.beTypeInventoryScanner);
+		super(SCContent.INVENTORY_SCANNER_BLOCK_ENTITY.get());
 	}
 
 	@Override

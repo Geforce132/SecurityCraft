@@ -5,20 +5,26 @@ import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntit
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockChangeDetectorMenu extends GenericBEMenu {
-	public BlockChangeDetectorMenu(int windowId, World level, BlockPos pos, PlayerInventory inventory) {
-		super(SCContent.mTypeBlockChangeDetector, windowId, level, pos);
-		TileEntity tile = level.getBlockEntity(pos);
+public class BlockChangeDetectorMenu extends Container {
+	public final TileEntity te;
+	private IWorldPosCallable containerLevelAccess;
 
-		if (tile instanceof BlockChangeDetectorBlockEntity) {
-			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) tile;
+	public BlockChangeDetectorMenu(int windowId, World level, BlockPos pos, PlayerInventory inventory) {
+		super(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), windowId);
+
+		te = level.getBlockEntity(pos);
+
+		if (te instanceof BlockChangeDetectorBlockEntity) {
+			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) te;
 
 			if (be.getOwner().isOwner(inventory.player)) {
 				addSlot(new Slot(new BlockEntityInventoryWrapper<>(be, this), 36, 175, 44) {
@@ -79,5 +85,10 @@ public class BlockChangeDetectorMenu extends GenericBEMenu {
 		}
 
 		return slotStackCopy;
+	}
+
+	@Override
+	public boolean stillValid(PlayerEntity player) {
+		return stillValid(containerLevelAccess, player, te.getBlockState().getBlock());
 	}
 }

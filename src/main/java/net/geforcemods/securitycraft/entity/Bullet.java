@@ -28,12 +28,16 @@ public class Bullet extends AbstractArrowEntity {
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner> defineId(Bullet.class, Owner.getSerializer());
 	private Collection<EffectInstance> potionEffects = Sets.newHashSet();
 
-	public Bullet(EntityType<Bullet> type, World world) {
-		super(SCContent.eTypeBullet, world);
+	public Bullet(EntityType<? extends Bullet> type, World world) {
+		super(type, world);
+	}
+
+	public Bullet(World world) {
+		this(SCContent.eTypeBullet.get(), world);
 	}
 
 	public Bullet(World world, Sentry shooter) {
-		super(SCContent.eTypeBullet, shooter, world);
+		super(SCContent.eTypeBullet.get(), shooter, world);
 
 		Owner owner = shooter.getOwner();
 

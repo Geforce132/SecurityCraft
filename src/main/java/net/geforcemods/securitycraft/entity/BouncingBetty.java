@@ -16,12 +16,16 @@ public class BouncingBetty extends Entity {
 	/** How long the fuse is */
 	public int fuse;
 
-	public BouncingBetty(EntityType<BouncingBetty> type, World world) {
-		super(SCContent.eTypeBouncingBetty, world);
+	public BouncingBetty(EntityType<? extends BouncingBetty> type, World world) {
+		super(type, world);
+	}
+
+	public BouncingBetty(World world) {
+		this(SCContent.eTypeBouncingBetty.get(), world);
 	}
 
 	public BouncingBetty(World world, double x, double y, double z) {
-		this(SCContent.eTypeBouncingBetty, world);
+		this(world);
 		setPos(x, y, z);
 		float f = (float) (Math.random() * Math.PI * 2.0D);
 		setDeltaMovement(-((float) Math.sin(f)) * 0.02F, 0.20000000298023224D, -((float) Math.cos(f)) * 0.02F);

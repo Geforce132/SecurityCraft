@@ -83,8 +83,12 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob //needs t
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
 
-	public Sentry(EntityType<Sentry> type, World world) {
-		super(SCContent.eTypeSentry, world);
+	public Sentry(EntityType<? extends Sentry> type, World world) {
+		super(type, world);
+	}
+
+	public Sentry(World world) {
+		this(SCContent.eTypeSentry.get(), world);
 	}
 
 	public void setupSentry(PlayerEntity owner) {

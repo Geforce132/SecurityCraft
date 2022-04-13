@@ -36,14 +36,18 @@ public class SecurityCamera extends Entity {
 	private int viewDistance = -1;
 	private boolean loadedChunks = false;
 
-	public SecurityCamera(EntityType<SecurityCamera> type, World world) {
-		super(SCContent.eTypeSecurityCamera, world);
+	public SecurityCamera(EntityType<? extends SecurityCamera> type, World world) {
+		super(SCContent.eTypeSecurityCamera.get(), world);
 		noPhysics = true;
 		forcedLoading = true;
 	}
 
+	public SecurityCamera(World world) {
+		this(SCContent.eTypeSecurityCamera.get(), world);
+	}
+
 	public SecurityCamera(World world, BlockPos pos) {
-		this(SCContent.eTypeSecurityCamera, world);
+		this(SCContent.eTypeSecurityCamera.get(), world);
 
 		TileEntity te = world.getBlockEntity(pos);
 

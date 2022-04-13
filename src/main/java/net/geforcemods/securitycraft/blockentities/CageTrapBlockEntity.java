@@ -9,7 +9,7 @@ public class CageTrapBlockEntity extends DisguisableBlockEntity {
 	private BooleanOption shouldCaptureMobsOption = new BooleanOption("captureMobs", false);
 
 	public CageTrapBlockEntity() {
-		super(SCContent.beTypeCageTrap);
+		super(SCContent.CAGE_TRAP_BLOCK_ENTITY.get());
 	}
 
 	@Override

@@ -5,15 +5,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.inventory.GenericMenu;
-import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
+import net.geforcemods.securitycraft.network.server.OpenBriefcaseInventory;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -24,23 +24,30 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class BriefcasePasswordScreen extends ContainerScreen<GenericMenu> {
+public class BriefcasePasswordScreen extends Screen {
 	public static final String UP_ARROW = "\u2191";
 	public static final String DOWN_ARROW = "\u2193";
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslationTextComponent enterPasscode = Utils.localize("gui.securitycraft:briefcase.enterPasscode");
+	private int imageWidth = 176;
+	private int imageHeight = 166;
+	private int leftPos;
+	private int topPos;
 	private TextFieldWidget[] keycodeTextboxes = new TextFieldWidget[4];
 	private int[] digits = {
 			0, 0, 0, 0
 	};
 
-	public BriefcasePasswordScreen(GenericMenu container, PlayerInventory inv, ITextComponent text) {
-		super(container, inv, text);
+	public BriefcasePasswordScreen(ITextComponent title) {
+		super(title);
 	}
 
 	@Override
 	public void init() {
 		super.init();
+
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
 
 		for (int i = 0; i < 4; i++) {
 			final int id = i;
@@ -58,39 +65,34 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericMenu> {
 
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(matrix);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bind(TEXTURE);
+		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 
 		for (TextFieldWidget textfield : keycodeTextboxes) {
 			textfield.render(matrix, mouseX, mouseY, partialTicks);
 		}
-	}
 
-	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, enterPasscode, imageWidth / 2 - font.width(enterPasscode) / 2, 6, 4210752);
-	}
-
-	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bind(TEXTURE);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		font.draw(matrix, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 6, 4210752);
 	}
 
 	protected void continueButtonClicked(Button button) {
 		if (PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
-			CompoundNBT nbt = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get()).getTag();
+			ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
+			CompoundNBT nbt = briefcase.getTag();
 			String code = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];
 
 			if (nbt.getString("passcode").equals(code)) {
 				if (!nbt.contains("owner")) {
 					nbt.putString("owner", Minecraft.getInstance().player.getName().getString());
 					nbt.putString("ownerUUID", Minecraft.getInstance().player.getUUID().toString());
+					ClientUtils.syncItemNBT(briefcase);
 				}
 
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.mTypeBriefcaseInventory.getRegistryName(), getTitle()));
+				SecurityCraft.channel.sendToServer(new OpenBriefcaseInventory(getTitle()));
 			}
 		}
 	}

@@ -11,39 +11,42 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
-public class UsernameLoggerScreen extends ContainerScreen<GenericBEMenu> {
+public class UsernameLoggerScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslationTextComponent logged = Utils.localize("gui.securitycraft:logger.logged");
 	private final TranslationTextComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
+	private int imageWidth = 176;
+	private int imageHeight = 166;
+	private int leftPos;
+	private int topPos;
 	private UsernameLoggerBlockEntity tileEntity;
 	private PlayerList playerList;
 
-	public UsernameLoggerScreen(GenericBEMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, inv, name);
-		tileEntity = (UsernameLoggerBlockEntity) container.te;
+	public UsernameLoggerScreen(UsernameLoggerBlockEntity te) {
+		super(te.getDisplayName());
+		tileEntity = te;
 	}
 
 	@Override
 	protected void init() {
 		super.init();
 
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
 		addButton(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, new StringTextComponent("x"), b -> {
 			tileEntity.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getBlockPos()));
@@ -52,27 +55,20 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericBEMenu> {
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, logged, imageWidth / 2 - font.width(logged) / 2, 6, 4210752);
-
-		if (mouseX >= leftPos + 4 && mouseY >= topPos + 4 && mouseX < leftPos + 4 + 8 && mouseY < topPos + 4 + 8)
-			renderTooltip(matrix, clear, mouseX - leftPos, mouseY - topPos);
-	}
-
-	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrix, mouseX, mouseY, partialTicks);
-
-		if (playerList != null)
-			playerList.render(matrix, mouseX, mouseY, partialTicks);
-	}
-
-	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
 		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(matrix, mouseX, mouseY, partialTicks);
+
+		if (playerList != null)
+			playerList.render(matrix, mouseX, mouseY, partialTicks);
+
+		font.draw(matrix, logged, width / 2 - font.width(logged) / 2, topPos + 6, 4210752);
+
+		if (mouseX >= leftPos + 4 && mouseY >= topPos + 4 && mouseX < leftPos + 4 + 8 && mouseY < topPos + 4 + 8)
+			renderTooltip(matrix, clear, mouseX, mouseY);
 	}
 
 	@Override

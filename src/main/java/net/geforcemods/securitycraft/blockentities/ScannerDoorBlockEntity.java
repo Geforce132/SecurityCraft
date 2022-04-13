@@ -26,7 +26,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	private int viewCooldown = 0;
 
 	public ScannerDoorBlockEntity() {
-		super(SCContent.beTypeScannerDoor);
+		super(SCContent.SCANNER_DOOR_BLOCK_ENTITY.get());
 	}
 
 	@Override

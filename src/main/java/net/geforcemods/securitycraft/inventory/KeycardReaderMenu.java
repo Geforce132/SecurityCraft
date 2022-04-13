@@ -24,7 +24,7 @@ public class KeycardReaderMenu extends Container {
 	private IWorldPosCallable worldPosCallable;
 
 	public KeycardReaderMenu(int windowId, PlayerInventory inventory, World world, BlockPos pos) {
-		super(SCContent.mTypeKeycardReader, windowId);
+		super(SCContent.KEYCARD_READER_MENU.get(), windowId);
 
 		TileEntity tile = world.getBlockEntity(pos);
 

@@ -9,7 +9,7 @@ public class TrackMineBlockEntity extends OwnableBlockEntity {
 	private boolean active = true;
 
 	public TrackMineBlockEntity() {
-		super(SCContent.beTypeTrackMine);
+		super(SCContent.TRACK_MINE_BLOCK_ENTITY.get());
 	}
 
 	public void activate() {

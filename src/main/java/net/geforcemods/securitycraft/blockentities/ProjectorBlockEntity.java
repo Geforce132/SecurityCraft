@@ -41,7 +41,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 	private BlockState projectedState = Blocks.AIR.defaultBlockState();
 
 	public ProjectorBlockEntity() {
-		super(SCContent.beTypeProjecto);
+		super(SCContent.PROJECTOR_BLOCK_ENTITY.get());
 	}
 
 	@Override

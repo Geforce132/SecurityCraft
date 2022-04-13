@@ -6,18 +6,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -26,24 +23,32 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 @OnlyIn(Dist.CLIENT)
-public class KeyChangerScreen extends ContainerScreen<GenericBEMenu> {
+public class KeyChangerScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final TranslationTextComponent ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId());
 	private final TranslationTextComponent enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode");
 	private final TranslationTextComponent confirmPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode");
+	private int imageWidth = 176;
+	private int imageHeight = 166;
+	private int leftPos;
+	private int topPos;
 	private TextFieldWidget textboxNewPasscode;
 	private TextFieldWidget textboxConfirmPasscode;
 	private Button confirmButton;
 	private TileEntity tileEntity;
 
-	public KeyChangerScreen(GenericBEMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, inv, name);
-		tileEntity = container.te;
+	public KeyChangerScreen(TileEntity te) {
+		super(new TranslationTextComponent(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()));
+		tileEntity = te;
 	}
 
 	@Override
 	public void init() {
 		super.init();
+
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
+
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addButton(confirmButton = new ExtendedButton(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::confirmButtonClicked));
 		confirmButton.active = false;
@@ -67,18 +72,15 @@ public class KeyChangerScreen extends ContainerScreen<GenericBEMenu> {
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, ukcName, imageWidth / 2 - font.width(ukcName) / 2, 6, 4210752);
-		font.draw(matrix, enterPasscode, imageWidth / 2 - font.width(enterPasscode) / 2, 25, 4210752);
-		font.draw(matrix, confirmPasscode, imageWidth / 2 - font.width(confirmPasscode) / 2, 65, 4210752);
-	}
-
-	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
 		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(matrix, mouseX, mouseY, partialTicks);
+		font.draw(matrix, ukcName, width / 2 - font.width(ukcName) / 2, topPos + 6, 4210752);
+		font.draw(matrix, enterPasscode, width / 2 - font.width(enterPasscode) / 2, topPos + 25, 4210752);
+		font.draw(matrix, confirmPasscode, width / 2 - font.width(confirmPasscode) / 2, topPos + 65, 4210752);
 	}
 
 	private void updateConfirmButtonState() {

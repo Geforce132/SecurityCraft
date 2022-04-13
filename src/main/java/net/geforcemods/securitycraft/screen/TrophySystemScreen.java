@@ -8,43 +8,46 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
 
-public class TrophySystemScreen extends ContainerScreen<GenericBEMenu> {
+public class TrophySystemScreen extends Screen {
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	private final TranslationTextComponent projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
 	private final TranslationTextComponent moduleRequired = Utils.localize("gui.securitycraft:trophy_system.moduleRequired");
 	private final TranslationTextComponent toggle = Utils.localize("gui.securitycraft:trophy_system.toggle");
 	private final TranslationTextComponent moddedProjectiles = Utils.localize("gui.securitycraft:trophy_system.moddedProjectiles");
+	private int imageWidth = 176;
+	private int imageHeight = 166;
+	private int leftPos;
+	private int topPos;
 	private final boolean isSmart;
 	private final List<EntityType<?>> orderedFilterList;
 	private TrophySystemBlockEntity tileEntity;
 	private ProjectileScrollList projectileList;
 
-	public TrophySystemScreen(GenericBEMenu container, PlayerInventory inv, ITextComponent name) {
-		super(container, inv, name);
+	public TrophySystemScreen(TrophySystemBlockEntity te) {
+		super(new TranslationTextComponent(SCContent.TROPHY_SYSTEM.get().getDescriptionId()));
 
-		this.tileEntity = (TrophySystemBlockEntity) container.te;
+		this.tileEntity = te;
 		isSmart = tileEntity.hasModule(ModuleType.SMART);
 		orderedFilterList = new ArrayList<>(tileEntity.getFilters().keySet());
 		orderedFilterList.sort((e1, e2) -> {
@@ -62,31 +65,25 @@ public class TrophySystemScreen extends ContainerScreen<GenericBEMenu> {
 	protected void init() {
 		super.init();
 
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
 		children.add(projectileList = new ProjectileScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
 	}
 
 	@Override
-	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
-		font.draw(matrix, title, imageWidth / 2 - font.width(title) / 2, titleLabelY, 4210752);
-		font.draw(matrix, projectiles, imageWidth / 2 - font.width(projectiles) / 2, titleLabelY + 25, 4210752);
-	}
-
-	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(matrix);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bind(GUI_TEXTURE);
+		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
 		if (projectileList != null)
 			projectileList.render(matrix, mouseX, mouseY, partialTicks);
 
+		font.draw(matrix, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
+		font.draw(matrix, projectiles, width / 2 - font.width(projectiles) / 2, topPos + 31, 4210752);
 		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, toggle, moduleRequired, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
-	}
-
-	@Override
-	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		renderBackground(matrix);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bind(GUI_TEXTURE);
-		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override

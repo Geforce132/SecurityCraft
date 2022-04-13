@@ -43,7 +43,7 @@ public class SentryItem extends Item {
 			}
 		}
 
-		Sentry entity = SCContent.eTypeSentry.create(world);
+		Sentry entity = SCContent.eTypeSentry.get().create(world);
 
 		entity.setupSentry(player);
 		entity.setPos(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);

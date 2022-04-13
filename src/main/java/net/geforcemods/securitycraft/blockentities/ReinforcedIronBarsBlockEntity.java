@@ -9,7 +9,7 @@ public class ReinforcedIronBarsBlockEntity extends OwnableBlockEntity {
 	private boolean canDrop = true;
 
 	public ReinforcedIronBarsBlockEntity() {
-		super(SCContent.beTypeReinforcedIronBars);
+		super(SCContent.REINFORCED_IRON_BARS_BLOCK_ENTITY.get());
 	}
 
 	@Override

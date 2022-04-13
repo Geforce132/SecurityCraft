@@ -23,7 +23,7 @@ public class CustomizeBlockMenu extends Container {
 	private final int maxSlots;
 
 	public CustomizeBlockMenu(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
-		super(SCContent.mTypeCustomizeBlock, windowId);
+		super(SCContent.CUSTOMIZE_BLOCK_MENU.get(), windowId);
 		this.moduleInv = (IModuleInventory) world.getBlockEntity(pos);
 		worldPosCallable = IWorldPosCallable.create(world, pos);
 

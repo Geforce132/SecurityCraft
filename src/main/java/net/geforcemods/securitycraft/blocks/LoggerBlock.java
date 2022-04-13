@@ -1,11 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
@@ -20,7 +19,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 public class LoggerBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -32,12 +30,8 @@ public class LoggerBlock extends DisguisableBlock {
 
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (!world.isClientSide && player instanceof ServerPlayerEntity) {
-			TileEntity te = world.getBlockEntity(pos);
-
-			if (te instanceof INamedContainerProvider)
-				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
-		}
+		if (world.isClientSide)
+			ClientHandler.displayUsernameLoggerScreen(world, pos);
 
 		return ActionResultType.SUCCESS;
 	}

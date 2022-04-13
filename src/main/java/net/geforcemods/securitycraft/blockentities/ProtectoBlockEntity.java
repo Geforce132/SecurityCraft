@@ -24,7 +24,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	private int ticksBetweenAttacks = hasModule(ModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
 
 	public ProtectoBlockEntity() {
-		super(SCContent.beTypeProtecto);
+		super(SCContent.PROTECTO_BLOCK_ENTITY.get());
 	}
 
 	@Override

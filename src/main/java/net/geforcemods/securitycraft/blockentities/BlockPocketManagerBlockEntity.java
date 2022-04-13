@@ -73,7 +73,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	private boolean shouldPlaceBlocks = false;
 
 	public BlockPocketManagerBlockEntity() {
-		super(SCContent.beTypeBlockPocketManager);
+		super(SCContent.BLOCK_POCKET_MANAGER_BLOCK_ENTITY.get());
 	}
 
 	@Override

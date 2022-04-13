@@ -22,7 +22,7 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 	private Slot projectedBlockSlot;
 
 	public ProjectorMenu(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
-		super(SCContent.mTypeProjector, windowId);
+		super(SCContent.PROJECTOR_MENU.get(), windowId);
 
 		if (world.getBlockEntity(pos) instanceof ProjectorBlockEntity)
 			be = (ProjectorBlockEntity) world.getBlockEntity(pos);

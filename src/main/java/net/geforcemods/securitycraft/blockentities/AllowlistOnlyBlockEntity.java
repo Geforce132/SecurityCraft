@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 
 public class AllowlistOnlyBlockEntity extends CustomizableBlockEntity {
 	public AllowlistOnlyBlockEntity() {
-		super(SCContent.beTypeAllowlistOnly);
+		super(SCContent.ALLOWLIST_ONLY_BLOCK_ENTITY.get());
 	}
 
 	@Override

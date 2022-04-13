@@ -21,7 +21,7 @@ public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOw
 
 	@Override
 	public TileEntityType<?> getType() {
-		return SCContent.beTypeReinforcedHopper;
+		return SCContent.REINFORCED_HOPPER_BLOCK_ENTITY.get();
 	}
 
 	@Override

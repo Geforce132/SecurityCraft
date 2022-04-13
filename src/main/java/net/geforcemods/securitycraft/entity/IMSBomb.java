@@ -27,12 +27,16 @@ public class IMSBomb extends AbstractFireballEntity {
 	private boolean launching = true;
 	private boolean isFast;
 
-	public IMSBomb(EntityType<IMSBomb> type, World world) {
-		super(SCContent.eTypeImsBomb, world);
+	public IMSBomb(EntityType<? extends IMSBomb> type, World world) {
+		super(type, world);
+	}
+
+	public IMSBomb(World world) {
+		this(SCContent.eTypeImsBomb.get(), world);
 	}
 
 	public IMSBomb(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSBlockEntity te) {
-		super(SCContent.eTypeImsBomb, x, y, z, accelerationX, accelerationY, accelerationZ, world);
+		super(SCContent.eTypeImsBomb.get(), x, y, z, accelerationX, accelerationY, accelerationZ, world);
 		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
 
 		Owner owner = te.getOwner();

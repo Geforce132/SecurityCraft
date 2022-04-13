@@ -23,7 +23,7 @@ public class KeypadBlastFurnaceMenu extends AbstractFurnaceContainer {
 	}
 
 	public KeypadBlastFurnaceMenu(int windowId, World world, BlockPos pos, PlayerInventory inventory, IInventory furnaceInv, IIntArray furnaceData) {
-		super(SCContent.mTypeKeypadBlastFurnace, IRecipeType.BLASTING, RecipeBookCategory.BLAST_FURNACE, windowId, inventory, furnaceInv, furnaceData);
+		super(SCContent.KEYPAD_BLAST_FURNACE_MENU.get(), IRecipeType.BLASTING, RecipeBookCategory.BLAST_FURNACE, windowId, inventory, furnaceInv, furnaceData);
 		te = (AbstractKeypadFurnaceBlockEntity) world.getBlockEntity(pos);
 		worldPosCallable = IWorldPosCallable.create(world, pos);
 	}

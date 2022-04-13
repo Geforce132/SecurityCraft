@@ -20,7 +20,7 @@ public class InventoryScannerMenu extends Container {
 	private IWorldPosCallable worldPosCallable;
 
 	public InventoryScannerMenu(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
-		super(SCContent.mTypeInventoryScanner, windowId);
+		super(SCContent.INVENTORY_SCANNER_MENU.get(), windowId);
 		te = (InventoryScannerBlockEntity) world.getBlockEntity(pos);
 		numRows = te.getContainerSize() / 9;
 		worldPosCallable = IWorldPosCallable.create(world, pos);

@@ -103,6 +103,6 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new OwnableBlockEntity(SCContent.beTypeAbstract);
+		return new OwnableBlockEntity(SCContent.ABSTRACT_BLOCK_ENTITY.get());
 	}
 }

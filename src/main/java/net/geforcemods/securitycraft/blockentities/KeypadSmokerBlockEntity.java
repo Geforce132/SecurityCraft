@@ -9,7 +9,7 @@ import net.minecraft.item.crafting.IRecipeType;
 
 public class KeypadSmokerBlockEntity extends AbstractKeypadFurnaceBlockEntity {
 	public KeypadSmokerBlockEntity() {
-		super(SCContent.beTypeKeypadSmoker, IRecipeType.SMOKING);
+		super(SCContent.KEYPAD_SMOKER_BLOCK_ENTITY.get(), IRecipeType.SMOKING);
 	}
 
 	@Override

@@ -53,14 +53,14 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	private final Random random = new Random();
 
 	public TrophySystemBlockEntity() {
-		super(SCContent.beTypeTrophySystem);
+		super(SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get());
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
 		//ordering is done in TrophySystemScreen based on the user's current language
-		projectileFilter.put(SCContent.eTypeBullet, true);
+		projectileFilter.put(SCContent.eTypeBullet.get(), true);
 		projectileFilter.put(EntityType.SPECTRAL_ARROW, true);
 		projectileFilter.put(EntityType.ARROW, true);
 		projectileFilter.put(EntityType.SMALL_FIREBALL, true);
-		projectileFilter.put(SCContent.eTypeImsBomb, true);
+		projectileFilter.put(SCContent.eTypeImsBomb.get(), true);
 		projectileFilter.put(EntityType.FIREBALL, true);
 		projectileFilter.put(EntityType.DRAGON_FIREBALL, true);
 		projectileFilter.put(EntityType.WITHER_SKULL, true);

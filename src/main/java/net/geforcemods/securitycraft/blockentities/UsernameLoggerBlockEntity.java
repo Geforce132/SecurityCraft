@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
@@ -13,16 +12,12 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements INamedContainerProvider, ITickableTileEntity, ILockable {
+public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements ITickableTileEntity, ILockable {
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private IntOption searchRadius = new IntOption(this::getBlockPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
@@ -31,7 +26,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	public UsernameLoggerBlockEntity() {
-		super(SCContent.beTypeUsernameLogger);
+		super(SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get());
 	}
 
 	@Override
@@ -111,16 +106,6 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 
 	public void clearLoggedPlayersOnClient() {
 		SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new ClearLoggerClient(worldPosition));
-	}
-
-	@Override
-	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-		return new GenericBEMenu(SCContent.mTypeUsernameLogger, windowId, level, worldPosition);
-	}
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return super.getDisplayName();
 	}
 
 	@Override

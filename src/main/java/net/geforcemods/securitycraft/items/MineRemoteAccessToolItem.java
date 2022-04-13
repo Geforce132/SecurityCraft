@@ -40,7 +40,7 @@ public class MineRemoteAccessToolItem extends Item {
 	@Override
 	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 		if (world.isClientSide) {
-			ClientHandler.displayMRATGui(player.getItemInHand(hand));
+			ClientHandler.displayMRATScreen(player.getItemInHand(hand));
 		}
 
 		return ActionResult.consume(player.getItemInHand(hand));
@@ -65,7 +65,7 @@ public class MineRemoteAccessToolItem extends Item {
 
 				if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player)) {
 					if (world.isClientSide)
-						ClientHandler.displayMRATGui(stack);
+						ClientHandler.displayMRATScreen(stack);
 
 					return ActionResultType.SUCCESS;
 				}

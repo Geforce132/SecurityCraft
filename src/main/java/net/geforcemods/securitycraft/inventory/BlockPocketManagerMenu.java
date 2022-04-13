@@ -21,7 +21,7 @@ public class BlockPocketManagerMenu extends Container {
 	public final boolean isOwner;
 
 	public BlockPocketManagerMenu(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
-		super(SCContent.mTypeBlockPocketManager, windowId);
+		super(SCContent.BLOCK_POCKET_MANAGER_MENU.get(), windowId);
 
 		TileEntity tile = world.getBlockEntity(pos);
 

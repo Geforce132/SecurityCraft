@@ -14,7 +14,7 @@ public class BlockPocketBlockEntity extends OwnableBlockEntity implements ITicka
 	private BlockPos managerPos;
 
 	public BlockPocketBlockEntity() {
-		super(SCContent.beTypeBlockPocket);
+		super(SCContent.BLOCK_POCKET_BLOCK_ENTITY.get());
 	}
 
 	public void setManager(BlockPocketManagerBlockEntity manager) {
