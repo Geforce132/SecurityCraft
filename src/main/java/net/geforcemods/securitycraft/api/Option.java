@@ -2,15 +2,9 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
-import net.geforcemods.securitycraft.screen.components.NamedSlider;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.client.gui.widget.Slider;
-import net.minecraftforge.client.gui.widget.Slider.ISlider;
 
 /**
  * A class that allows blocks that have {@link ICustomizable} block entities to have custom, per-block options that are
@@ -149,7 +143,7 @@ public abstract class Option<T> {
 	/**
 	 * A subclass of {@link Option}, set up to handle integers.
 	 */
-	public static class IntOption extends Option<Integer> implements ISlider {
+	public static class IntOption extends Option<Integer> {
 		private boolean slider;
 		private Supplier<BlockPos> pos;
 
@@ -203,21 +197,15 @@ public abstract class Option<T> {
 			return slider;
 		}
 
-		@Override
-		public void onChangeSliderValue(Slider slider) {
-			if (!isSlider() || !(slider instanceof NamedSlider namedSlider))
-				return;
-
-			setValue((int) slider.getValue());
-			slider.setMessage(Utils.localize("option" + namedSlider.getBlockName() + "." + getName(), toString()));
-			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), this, get()));
+		public BlockPos getPos() {
+			return pos.get();
 		}
 	}
 
 	/**
 	 * A subclass of {@link Option}, set up to handle doubles.
 	 */
-	public static class DoubleOption extends Option<Double> implements ISlider {
+	public static class DoubleOption extends Option<Double> {
 		private boolean slider;
 		private Supplier<BlockPos> pos;
 
@@ -278,14 +266,8 @@ public abstract class Option<T> {
 			return slider;
 		}
 
-		@Override
-		public void onChangeSliderValue(Slider slider) {
-			if (!isSlider() || !(slider instanceof NamedSlider namedSlider))
-				return;
-
-			setValue(slider.getValue());
-			slider.setMessage(Utils.localize("option" + namedSlider.getBlockName() + "." + getName(), toString()));
-			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), this, get()));
+		public BlockPos getPos() {
+			return pos.get();
 		}
 	}
 

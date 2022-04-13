@@ -100,7 +100,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.0.40'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.0.48'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
 	implementation fg.deobf("mezz.jei:jei-1.18.2:9.4.1.116")

@@ -15,12 +15,14 @@ import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
-import net.geforcemods.securitycraft.screen.components.NamedSlider;
+import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
+import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
@@ -31,8 +33,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
-import net.minecraftforge.client.gui.widget.Slider;
-import net.minecraftforge.client.gui.widget.Slider.ISlider;
 
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas {
 	//@formatter:off
@@ -48,7 +48,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private final List<Rect2i> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
-	private Button[] optionButtons = new Button[5];
+	private AbstractWidget[] optionButtons = new AbstractWidget[5];
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 	private final String blockName;
 	private final TranslatableComponent name;
@@ -82,13 +82,17 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 				for (int i = 0; i < options.length; i++) {
 					Option<?> option = options[i];
 
-					if (option instanceof ISlider && option.isSlider()) {
-						TranslatableComponent translatedBlockName = Utils.localize(blockName);
-
-						if (option instanceof DoubleOption)
-							optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, null);
-						else if (option instanceof IntOption)
-							optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, null);
+					if (option.isSlider()) {
+						if (option instanceof DoubleOption doubleOption)
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize("option" + blockName + "." + option.getName(), ""), TextComponent.EMPTY, doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
+								doubleOption.setValue(slider.getValue());
+								SecurityCraft.channel.sendToServer(new UpdateSliderValue(doubleOption.getPos(), option, doubleOption.get()));
+							});
+						else if (option instanceof IntOption intOption)
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize("option" + blockName + "." + option.getName(), ""), TextComponent.EMPTY, intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
+								intOption.setValue(slider.getValueInt());
+								SecurityCraft.channel.sendToServer(new UpdateSliderValue(intOption.getPos(), option, intOption.get()));
+							});
 
 						optionButtons[i].setFGColor(14737632);
 					}
@@ -103,20 +107,10 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			}
 		}
 
-		for (Button button : optionButtons) {
+		for (AbstractWidget button : optionButtons) {
 			if (button != null)
 				extraAreas.add(new Rect2i(button.x, button.y, button.getWidth(), button.getHeight()));
 		}
-	}
-
-	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		for (Button b : optionButtons) {
-			if (b instanceof Slider slider && slider.dragging)
-				slider.mouseReleased(mouseX, mouseY, button);
-		}
-
-		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
 	@Override
@@ -127,7 +121,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
 
 		for (TextHoverChecker hoverChecker : hoverCheckers) {
-			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY))
+			//last check hides the tooltip when a slider is being dragged
+			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY) && (!(hoverChecker.getWidget() instanceof CallbackSlider) || !isDragging()))
 				renderTooltip(pose, minecraft.font.split(hoverChecker.getName(), 150), mouseX, mouseY);
 		}
 	}
@@ -144,6 +139,11 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, TEXTURES[maxNumberOfModules]);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+	}
+
+	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+		return (getFocused() != null && isDragging() && button == 0 ? getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY) : false) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
 	}
 
 	private void optionButtonClicked(Button button) {
