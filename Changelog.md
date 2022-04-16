@@ -4,7 +4,7 @@
 - Fix: The recipe for reinforced glass panes is incorrect
 - Fix: Breaking the block another block with modules is attached to does not drop the modules
 - Removed: Some unnecessary menu types. This may result in a "missing registry entries" message showing up, which can be accepted
-- Misc.: More texture changes
+- Misc.: More texture and model changes
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 

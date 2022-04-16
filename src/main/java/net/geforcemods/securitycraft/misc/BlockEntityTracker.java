@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Tracks all blocks entities of the given class in the world Modified from
+ * Tracks all block entities of the given class in the world. Modified from
  * https://github.com/bl4ckscor3/The-Plopper/blob/1.16/src/main/java/bl4ckscor3/mod/theplopper/tracking/PlopperTracker.java
  */
 public final class BlockEntityTracker<BE extends TileEntity> {
