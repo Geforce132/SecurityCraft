@@ -4,6 +4,7 @@
 - Fix: The recipe for reinforced glass panes is incorrect
 - Fix: Breaking the block another block with modules is attached to does not drop the modules
 - Fix: Compatibility issues with other mods that add overlays (e.g. Stylish Effects)
+- Fix: Some logs have an incorrect side texture
 - Removed: Some unnecessary menu types. This may result in a "missing registry entries" message showing up, which can be accepted
 - Misc.: More texture and model changes
 
