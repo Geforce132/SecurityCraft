@@ -5,6 +5,7 @@
 - Fix: Breaking the block another block with modules is attached to does not drop the modules
 - Fix: Compatibility issues with other mods that add overlays (e.g. Stylish Effects)
 - Fix: Some logs have an incorrect side texture
+- Fix: Reinforced Iron Trapdoor textures do not rotate and aren't oriented the same way open as closed
 - Removed: Some unnecessary menu types. This may result in a "missing registry entries" message showing up, which can be accepted
 - Misc.: The minimum Forge version is now 40.0.48
 - Misc.: More texture and model changes
