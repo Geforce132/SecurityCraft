@@ -52,7 +52,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 		List<RegistryObject<Item>> singleTextureItems = new ArrayList<>(SCContent.ITEMS.getEntries());
 		//@formatter:off
 		List<RegistryObject<Item>> handheldItems = List.of(
-				SCContent.UNIVERSAL_BLOCK_MODIFIER,
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1,
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2,
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3,
@@ -66,6 +65,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				SCContent.SPEED_MODULE,
 				SCContent.TASER,
 				SCContent.TASER_POWERED,
+				SCContent.UNIVERSAL_BLOCK_MODIFIER,
 				SCContent.UNIVERSAL_BLOCK_REMOVER,
 				SCContent.UNIVERSAL_OWNER_CHANGER,
 				SCContent.WIRE_CUTTERS));
