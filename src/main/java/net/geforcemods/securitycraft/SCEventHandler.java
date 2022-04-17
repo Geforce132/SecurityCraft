@@ -11,12 +11,12 @@ import java.util.Random;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
+import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
@@ -586,13 +586,13 @@ public class SCEventHandler {
 		World world = event.getEntityPlayer().world;
 		TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
 
-		if (tileEntity instanceof IPasswordProtected && ((IPasswordProtected) tileEntity).isCodebreakable()) {
+		if (tileEntity instanceof ICodebreakable) {
 			if (ConfigHandler.allowCodebreakerItem) {
 				if (event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker)
 					event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());
 
 				if (event.getEntityPlayer().isCreative() || new Random().nextInt(3) == 1)
-					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer());
+					return ((ICodebreakable) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer());
 				else {
 					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize("item.securitycraft:codebreaker.name"), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 					return true;

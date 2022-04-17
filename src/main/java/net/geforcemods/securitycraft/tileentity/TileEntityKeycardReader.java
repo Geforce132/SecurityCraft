@@ -1,14 +1,19 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
+import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class TileEntityKeycardReader extends TileEntityDisguisable implements ILockable {
+public class TileEntityKeycardReader extends TileEntityDisguisable implements ILockable, ICodebreakable {
 	private boolean[] acceptedLevels = {
 			true, false, false, false, false
 	};
@@ -58,6 +63,21 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IL
 		}
 
 		signature = tag.getInteger("signature");
+	}
+
+	@Override
+	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
+		if (!state.getValue(BlockKeypad.POWERED)) {
+			activate(player);
+			return true;
+		}
+
+		return false;
+	}
+
+	public void activate(EntityPlayer player) {
+		if (!world.isRemote)
+			((BlockKeycardReader) getBlockType()).activate(world, pos, world.getBlockState(pos), signalLength.get());
 	}
 
 	public void setAcceptedLevels(boolean[] acceptedLevels) {
