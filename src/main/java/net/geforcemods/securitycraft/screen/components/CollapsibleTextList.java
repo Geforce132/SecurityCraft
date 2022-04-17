@@ -12,7 +12,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.fmlclient.gui.GuiUtils;
 
@@ -25,15 +24,13 @@ public class CollapsibleTextList extends Button {
 	private final Component originalDisplayString;
 	private final List<? extends Component> textLines;
 	private final List<Long> splitTextLineCount;
-	private final boolean shouldRenderLongMessageTooltip;
 	private final BiPredicate<Integer, Integer> extraHoverCheck;
 	private boolean open = true;
 	private boolean isMessageTooLong = false;
 	private int initialY = -1;
 
-	public CollapsibleTextList(int xPos, int yPos, int width, Component displayString, List<? extends Component> textLines, OnPress onPress, boolean shouldRenderLongMessageTooltip, BiPredicate<Integer, Integer> extraHoverCheck) {
+	public CollapsibleTextList(int xPos, int yPos, int width, Component displayString, List<? extends Component> textLines, OnPress onPress, BiPredicate<Integer, Integer> extraHoverCheck) {
 		super(xPos, yPos, width, 12, displayString, onPress);
-		this.shouldRenderLongMessageTooltip = shouldRenderLongMessageTooltip;
 		originalDisplayString = displayString;
 		switchOpenStatus(); //properly sets the message as well
 		textCutoff = width - 5;
@@ -43,11 +40,7 @@ public class CollapsibleTextList extends Button {
 		int amountOfLines = 0;
 
 		for (Component line : textLines) {
-			//@formatter:off
-			long count = font.getSplitter().splitLines(line, textCutoff, line.getStyle()).stream()
-			.map(FormattedText::getString)
-			.map(TextComponent::new).count();
-			//@formatter:on
+			long count = font.getSplitter().splitLines(line, textCutoff, line.getStyle()).size();
 
 			amountOfLines += count;
 			splitTextLineCountBuilder.add(count);
@@ -86,9 +79,6 @@ public class CollapsibleTextList extends Button {
 				renderedLines += splitTextLineCount.get(i) - 1;
 			}
 		}
-
-		if (shouldRenderLongMessageTooltip)
-			renderLongMessageTooltip(pose);
 	}
 
 	public void renderLongMessageTooltip(PoseStack pose) {

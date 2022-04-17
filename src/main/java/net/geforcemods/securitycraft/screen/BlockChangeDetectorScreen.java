@@ -111,16 +111,16 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 			List<TextComponent> list = List.of(
 			//@formatter:off
-					entry.player(),
-					entry.uuid(),
-					entry.action(),
-					Utils.getFormattedCoordinates(entry.pos()).getString(),
-					stateString,
-					dateFormat.format(new Date(entry.timestamp()))
-					//@formatter:on
+				entry.player(),
+				entry.uuid(),
+				entry.action(),
+				Utils.getFormattedCoordinates(entry.pos()).getString(),
+				stateString,
+				dateFormat.format(new Date(entry.timestamp()))
+			//@formatter:on
 			).stream().map(Object::toString).filter(s -> !s.isEmpty()).map(TextComponent::new).collect(Collectors.toList());
 
-			changeEntryList.addEntry(addWidget(new ContentSavingCollapsileTextList(0, 0, 154, Utils.localize(entry.state().getBlock().getDescriptionId()), list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), false, changeEntryList::isHovered, entry.action(), entry.state().getBlock())));
+			changeEntryList.addEntry(addWidget(new ContentSavingCollapsileTextList(0, 0, 154, Utils.localize(entry.state().getBlock().getDescriptionId()), list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), changeEntryList::isHovered, entry.action(), entry.state().getBlock())));
 		}
 
 		ItemStack filteredStack = menu.getSlot(0).getItem();
@@ -418,8 +418,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		private final DetectionMode mode;
 		private final Block block;
 
-		public ContentSavingCollapsileTextList(int xPos, int yPos, int width, Component displayString, List<? extends Component> textLines, OnPress onPress, boolean shouldRenderLongMessageTooltip, BiPredicate<Integer, Integer> extraHoverCheck, DetectionMode mode, Block block) {
-			super(xPos, yPos, width, displayString, textLines, onPress, shouldRenderLongMessageTooltip, extraHoverCheck);
+		public ContentSavingCollapsileTextList(int xPos, int yPos, int width, Component displayString, List<? extends Component> textLines, OnPress onPress, BiPredicate<Integer, Integer> extraHoverCheck, DetectionMode mode, Block block) {
+			super(xPos, yPos, width, displayString, textLines, onPress, extraHoverCheck);
 
 			this.mode = mode;
 			this.block = block;
