@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.containers.ContainerBlockChangeDetector;
 import net.geforcemods.securitycraft.containers.ContainerBlockPocketManager;
 import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
 import net.geforcemods.securitycraft.containers.ContainerBriefcase;
@@ -16,6 +17,7 @@ import net.geforcemods.securitycraft.inventory.BriefcaseInventory;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
@@ -56,6 +58,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int BLOCK_POCKET_MANAGER = 105;
 	public static final int PROJECTOR = 106;
 	public static final int SONIC_SECURITY_SYSTEM = 107;
+	public static final int BLOCK_CHANGE_DETECTOR = 108;
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -121,6 +124,10 @@ public class GuiHandler implements IGuiHandler {
 			case SONIC_SECURITY_SYSTEM:
 				if (te instanceof TileEntitySonicSecuritySystem)
 					return new ContainerGeneric(player.inventory, te);
+				return null;
+			case BLOCK_CHANGE_DETECTOR:
+				if (te instanceof TileEntityBlockChangeDetector)
+					return new ContainerBlockChangeDetector(player.inventory, (TileEntityBlockChangeDetector) te);
 				return null;
 			default:
 				return null;
@@ -203,6 +210,10 @@ public class GuiHandler implements IGuiHandler {
 			case SONIC_SECURITY_SYSTEM:
 				if (te instanceof TileEntitySonicSecuritySystem)
 					return new GuiSonicSecuritySystem(player.inventory, (TileEntitySonicSecuritySystem) te);
+				return null;
+			case BLOCK_CHANGE_DETECTOR:
+				if (te instanceof TileEntityBlockChangeDetector)
+					return new GuiBlockChangeDetector(player.inventory, (TileEntityBlockChangeDetector) te);
 				return null;
 			default:
 				return null;

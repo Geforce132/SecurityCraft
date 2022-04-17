@@ -32,6 +32,7 @@ import net.geforcemods.securitycraft.renderers.TileEntitySecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySonicSecuritySystemRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityTrophySystemRenderer;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
@@ -379,6 +380,7 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReinforcedPiston.class, new TileEntityReinforcedPistonRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySonicSecuritySystem.class, new TileEntitySonicSecuritySystemRenderer());
 		//disguisable tile entity renderers
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlockChangeDetector.class, new TileEntityDisguisableRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCageTrap.class, new TileEntityDisguisableRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInventoryScanner.class, new TileEntityDisguisableRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeycardReader.class, new TileEntityDisguisableRenderer<>());

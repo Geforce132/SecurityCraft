@@ -50,6 +50,7 @@ import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
+import net.geforcemods.securitycraft.network.server.ClearChangeDetectorServer;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.geforcemods.securitycraft.network.server.GiveNightVision;
@@ -61,6 +62,7 @@ import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
+import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
@@ -73,6 +75,7 @@ import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.tileentity.TileEntityAllowlistOnly;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
@@ -293,6 +296,7 @@ public class RegistrationHandler {
 		event.getRegistry().register(SCContent.keyPanelFloorCeilingBlock);
 		event.getRegistry().register(SCContent.keyPanelWallBlock);
 		registerBlock(event, SCContent.sonicSecuritySystem, (ItemBlock) SCContent.sonicSecuritySystemItem, PageType.SINGLE_ITEM);
+		registerBlock(event, SCContent.blockChangeDetector);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -443,6 +447,7 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(TileEntityKeyPanel.class, new ResourceLocation("securitycraft:key_panel"));
 		GameRegistry.registerTileEntity(TileEntitySonicSecuritySystem.class, new ResourceLocation("securitycraft:sonic_security_system"));
 		GameRegistry.registerTileEntity(TileEntityReinforcedDoor.class, new ResourceLocation("securitycraft:reinforced_door"));
+		GameRegistry.registerTileEntity(TileEntityBlockChangeDetector.class, new ResourceLocation("securitycraft:block_change_detector"));
 	}
 
 	@SubscribeEvent
@@ -507,6 +512,8 @@ public class RegistrationHandler {
 		network.registerMessage(SetCameraView.Handler.class, SetCameraView.class, 36, Side.CLIENT);
 		network.registerMessage(DismountCamera.Handler.class, DismountCamera.class, 37, Side.SERVER);
 		network.registerMessage(SyncSSSSettingsOnServer.Handler.class, SyncSSSSettingsOnServer.class, 38, Side.SERVER);
+		network.registerMessage(ClearChangeDetectorServer.Handler.class, ClearChangeDetectorServer.class, 39, Side.SERVER);
+		network.registerMessage(SyncBlockChangeDetector.Handler.class, SyncBlockChangeDetector.class, 40, Side.SERVER);
 	}
 
 	@SubscribeEvent
@@ -811,6 +818,7 @@ public class RegistrationHandler {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.projector), 0, new ModelResourceLocation("securitycraft:projector", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.keypadDoor), 0, new ModelResourceLocation("securitycraft:keypad_door", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCauldron), 0, new ModelResourceLocation("securitycraft:reinforced_cauldron", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.blockChangeDetector), 0, new ModelResourceLocation("securitycraft:block_change_detector", "inventory"));
 
 		//items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));

@@ -14,7 +14,7 @@ import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockSonicSecuritySystem;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
+import net.geforcemods.securitycraft.misc.TileEntityTracker;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -70,7 +70,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	public void update() {
 		// Add this SSS to the global tracker if it has not already been added
 		if (!tracked) {
-			SonicSecuritySystemTracker.track(this);
+			TileEntityTracker.SONIC_SECURITY_SYSTEM.track(this);
 			tracked = true;
 		}
 
@@ -148,7 +148,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 		super.invalidate();
 
 		// Stop tracking SSSs when they are removed from the world
-		SonicSecuritySystemTracker.stopTracking(this);
+		TileEntityTracker.SONIC_SECURITY_SYSTEM.stopTracking(this);
 	}
 
 	@Override

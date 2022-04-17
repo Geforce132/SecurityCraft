@@ -289,6 +289,7 @@ tile.securitycraft:reinforced_piston_head.name=Reinforced Piston Head
 tile.securitycraft:reinforced_moving_piston.name=Reinforced Moving Piston
 tile.securitycraft:key_panel.name=Key Panel
 tile.securitycraft:sonic_security_system.name=Sonic Security System
+tile.securitycraft.block_change_detector.name=Block Change Detector
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -395,6 +396,7 @@ help.securitycraft:scannerDoor.info=The Scanner Door acts like a Retinal Scanner
 help.securitycraft:keypad_door.info=The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.
 help.securitycraft:sonic_security_system.info=The Sonic Security System, inspired by the similarly-named device in the game "Metroid Prime 2: Echoes", is able to lock certain SecurityCraft blocks and prevent them from being used or interacted with. Right-clicking a supported block while sneaking will bind it to the Sonic Security System. Once it is placed down, right-clicking it will open a GUI where you can enable, disable, or reset the Sonic Security System. The blocks can be unlocked by playing a tune nearby, either via the Portable Tune Player, or note blocks. To set such a tune, toggle note recording on in the Sonic Security System's GUI then play the tune that you want using note blocks played nearby. Toggle the recording off once you are finished. Any time that tune is played nearby the Sonic Security System, blocks locked by it will become accessible for a short while.
 help.securitycraft:key_panel.info=The key panel can be placed down for a smaller version of the keypad. It is also used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.
+help.securitycraft:block_change_detector.info=The Block Change Detector detects players breaking and/or placing blocks in its vicinity (5 blocks by default, can be changed with the universal block modifier). Right-clicking the block will open its interface a list of detected changes can be seen, as well as whether it only detects breaking or placing blocks, or both.
 
 help.securitycraft:codebreaker.info=The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)
 help.securitycraft:universalBlockRemover.info=The universal block remover is used to destroy "reinforced" blocks by rightclicking it. Only the person who placed the block down can destroy it.
@@ -554,6 +556,11 @@ gui.securitycraft:sonic_security_system.sound=Sound:
 gui.securitycraft:sonic_security_system.recording=Recording...
 gui.securitycraft:sonic_security_system.listening=Listening...
 gui.securitycraft:customize.currentSetting=Currently: %s
+gui.securitycraft:block_change_detector.mode.break=Break
+gui.securitycraft:block_change_detector.mode.place=Place
+gui.securitycraft:block_change_detector.mode.both=Break & Place
+gui.securitycraft:block_change_detector.smart_module_hint=Install a Smart Module to allow the detector to only detect a specific block type!
+gui.securitycraft:block_change_detector.show_all_checkbox=Show all entries
 
 messages.securitycraft:bugReport=Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please
 messages.securitycraft:retinalScanner.hello=Hello %s.
@@ -763,6 +770,10 @@ module.securitycraft:key_panel.whitelistModule.description=Adding an allowlist m
 module.securitycraft:key_panel.blacklistModule.description=Adding a denylist module to a key panel will ban listed players from interacting with the block.
 module.securitycraft:sonic_security_system.whitelistModule.description=Adding an allowlist module to a sonic security system will allow listed players to save the system's tune onto a portable tune player, as well as listen to the tune in the system's GUI.
 module.securitycraft:sonic_security_system.redstoneModule.description=Adding a redstone module to a sonic security system lets the system emit a redstone signal when the correct tune was played.
+module.securitycraft:block_change_detector.disguiseModule.description=Adding a disguise module to a block change detector will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.
+module.securitycraft:block_change_detector.whitelistModule.description=Adding an allowlist module to a block change detector will allow listed players to place/break blocks in the block's vicinity, without getting logged. They will also be able to view all logged entries, however they cannot clear them, or change the block's settings.
+module.securitycraft:block_change_detector.redstoneModule.description=Adding a redstone module to a block change detector makes it emit a redstone signal each time it detectes a block was changed by a player in its vicinity.
+module.securitycraft:block_change_detector.smartModule.description=Adding a smart module to a block change detector allows it to only log changes of one specific type of block. The block can be set in the GUI.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
 config.securitycraft:isCodebreakerAllowed.tooltip=Can the codebreaker be used?
@@ -901,6 +912,10 @@ option.securitycraft:key_panel.signalLength=Signal length: #
 option.securitycraft:key_panel.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)
 option.securitycraft:sonic_security_system.signalLength=Time active: #
 option.securitycraft:sonic_security_system.signalLength.description=How long should the sonic security system unlock blocks/give off a redstone signal after hearing the correct tune? (In ticks, 20 ticks = 1 second)
+option.securitycraft:block_change_detector.signalLength=Signal length: #
+option.securitycraft:block_change_detector.signalLength.description=How long should the redstone signal after detecting a block change be? (In ticks, 20 ticks = 1 second)
+option.securitycraft:block_change_detector.range=Detection radius: #
+option.securitycraft:block_change_detector.range.description=How far away should the detector be able to detect block changes by players?
 
 securitycraft.subtitle.alarm=Alarm sounding
 securitycraft.subtitle.electrified=Entity electrocuted

@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
-public class TogglePictureButton extends ClickButton {
+public class TogglePictureButton extends ClickButton implements IToggleableButton {
 	private ResourceLocation textureLocation;
 	private int[] u;
 	private int[] v;
@@ -64,10 +64,12 @@ public class TogglePictureButton extends ClickButton {
 		super.onClick();
 	}
 
+	@Override
 	public int getCurrentIndex() {
 		return currentIndex;
 	}
 
+	@Override
 	public void setCurrentIndex(int newIndex) {
 		currentIndex = newIndex % toggleCount;
 	}

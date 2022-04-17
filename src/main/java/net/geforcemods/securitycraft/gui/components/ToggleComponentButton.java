@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.gui.components;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 
-public class ToggleComponentButton extends ClickButton {
+public class ToggleComponentButton extends ClickButton implements IToggleableButton {
 	private final IntFunction<String> onValueChange;
 	private int currentIndex = 0;
 	private final int toggleCount;
@@ -18,12 +18,19 @@ public class ToggleComponentButton extends ClickButton {
 	}
 
 	public void cycleIndex(int value) {
-		currentIndex = Math.floorMod(currentIndex + value, toggleCount);
+		setCurrentIndex(Math.floorMod(currentIndex + value, toggleCount));
 		onValueChange();
 	}
 
+	@Override
 	public int getCurrentIndex() {
 		return currentIndex;
+	}
+
+	@Override
+	public void setCurrentIndex(int newIndex) {
+		currentIndex = newIndex % toggleCount;
+		onValueChange();
 	}
 
 	public void onValueChange() {

@@ -60,7 +60,7 @@ public class ItemModule extends Item {
 			if (te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player))
 				return EnumActionResult.PASS;
 
-			if (inv.getAcceptedModules().contains(type) && !inv.hasModule(type)) {
+			if (inv.acceptsModule(type) && !inv.hasModule(type)) {
 				inv.insertModule(stack);
 				inv.onModuleInserted(stack, type);
 

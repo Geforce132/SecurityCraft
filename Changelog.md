@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
 
+- New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity
 - Fix: Breaking the block another block with modules is attached to does not drop the modules
 - Fix: Breaking the block a Key Panel is attached to, does not drop the Key Panel
 
