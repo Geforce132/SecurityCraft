@@ -44,7 +44,7 @@ public class CodebreakerItem extends Item {
 			else {
 				codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				if (!world.isClientSide && new Random().nextInt(3) == 1) {
+				if (!world.isClientSide && (player.isCreative() || new Random().nextInt(3) == 1)) {
 					ItemStack briefcase = player.getOffhandItem();
 
 					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {

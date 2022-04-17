@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
 
 - New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity
+- Change: Codebreakers will now always open briefcases when in Creative mode without a chance of failing
 - Fix: The recipe for reinforced glass panes is incorrect
 - Fix: Breaking the block another block with modules is attached to does not drop the modules
 - Fix: Some logs have an incorrect side texture
