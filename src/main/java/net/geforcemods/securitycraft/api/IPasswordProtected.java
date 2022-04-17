@@ -2,17 +2,18 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 
 /**
- * Implementing this interface designates a TileEntity as being password-protected. Implementing this allows you to use
- * {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set your block's password.
+ * Implementing this interface designates a block entity as being password-protected. Implementing 
+ * this allows you to use {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set 
+ * your block's password. Extends {@link ICodebreakable} as most password-protected blocks are likely 
+ * able to be hacked using the Codebreaker by default.
  *
  * @author Geforce
  */
-public interface IPasswordProtected {
+public interface IPasswordProtected extends ICodebreakable {
 	/**
 	 * Called whenever a player correctly enters this block's password in the password GUI.<p> World, and x, y, and z
 	 * variables are not given, as they are already provided in {@link TileEntity}. This runs on both the CLIENT and SERVER
@@ -39,24 +40,6 @@ public interface IPasswordProtected {
 	 * @param player The player who the GUI should be opened to.
 	 */
 	public void openPasswordGUI(PlayerEntity player);
-
-	/**
-	 * Can the codebreaker be used on that password-protected block?
-	 *
-	 * @return Return true if the codebreaker can be used on the block
-	 */
-	public default boolean isCodebreakable() {
-		return true;
-	}
-
-	/**
-	 * Called when a codebreaker is used on a password-protected block.
-	 *
-	 * @param blockState The BlockState of the block.
-	 * @param player The player who used the codebreaker.
-	 * @return Return true if the codebreaker "hack" was successful, false otherwise.
-	 */
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player);
 
 	/**
 	 * Return your TileEntity's password variable here. If the password is empty or not set yet, return null.

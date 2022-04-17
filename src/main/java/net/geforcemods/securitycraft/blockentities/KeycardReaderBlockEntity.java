@@ -1,10 +1,13 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
+import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.BlockState;
@@ -16,7 +19,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements INamedContainerProvider, ILockable {
+public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements INamedContainerProvider, ILockable, ICodebreakable {
 	private boolean[] acceptedLevels = {
 			true, false, false, false, false
 	};
@@ -70,6 +73,21 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		}
 
 		signature = tag.getInt("signature");
+	}
+	
+	@Override
+	public boolean onCodebreakerUsed(BlockState state, PlayerEntity player) {
+		if (!state.getValue(KeycardReaderBlock.POWERED)) {
+			activate(player);
+			return true;
+		}
+
+		return false;
+	}
+	
+	public void activate(PlayerEntity player) {
+		if (!level.isClientSide && getBlockState().getBlock() instanceof KeycardReaderBlock)
+			((KeypadBlock) getBlockState().getBlock()).activate(getBlockState(), level, worldPosition, signalLength.get());
 	}
 
 	public void setAcceptedLevels(boolean[] acceptedLevels) {
