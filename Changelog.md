@@ -1,8 +1,8 @@
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
 
 - New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity
+- New: Codebreakers can now hack Keycard Readers
 - Change: Codebreakers will now always open briefcases when in Creative mode without a chance of failing
-- Change: Codebreakers can now hack Keycard Readers
 - Fix: The recipe for reinforced glass panes is incorrect
 - Fix: Breaking the block another block with modules is attached to does not drop the modules
 - Fix: Compatibility issues with other mods that add overlays (e.g. Stylish Effects)

@@ -10,15 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public interface ICodebreakable {
 	/**
-	 * Can the Codebreaker be used on this block?
-	 *
-	 * @return Return true if the Codebreaker can be used on the block
-	 */
-	public default boolean isCodebreakable() {
-		return true;
-	}
-	
-	/**
 	 * Called when a Codebreaker is used on a block.
 	 *
 	 * @param state The block state of the block.
