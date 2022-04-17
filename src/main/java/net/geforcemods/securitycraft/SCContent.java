@@ -102,7 +102,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGrassPathBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronBarsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLanternBlock;
@@ -884,7 +883,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ICE = BLOCKS.register("reinforced_ice", () -> new ReinforcedIceBlock(prop(Material.ICE).friction(0.98F).sound(SoundType.GLASS).noOcclusion(), Blocks.ICE));
+	public static final RegistryObject<Block> REINFORCED_ICE = BLOCKS.register("reinforced_ice", () -> new BaseReinforcedBlock(prop(Material.ICE).friction(0.98F).sound(SoundType.GLASS).noOcclusion(), Blocks.ICE));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced
