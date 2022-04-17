@@ -42,7 +42,7 @@ public class CodebreakerItem extends Item {
 			else {
 				codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				if (!level.isClientSide && new Random().nextInt(3) == 1) {
+				if (!level.isClientSide && (player.isCreative() || new Random().nextInt(3) == 1)) {
 					ItemStack briefcase = player.getOffhandItem();
 
 					NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
