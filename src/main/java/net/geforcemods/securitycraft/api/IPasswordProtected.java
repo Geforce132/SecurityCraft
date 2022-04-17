@@ -3,22 +3,16 @@ package net.geforcemods.securitycraft.api;
 import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Implementing this interface designates a block entity as being password-protected. Implementing this allows you to use
- * {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set your block's password.
+ * Implementing this interface designates a block entity as being password-protected. Implementing 
+ * this allows you to use {@link SetPasswordScreen} and {@link CheckPasswordScreen} to easily set 
+ * your block's password. Extends {@link ICodebreakable} as most password-protected blocks are likely 
+ * able to be hacked using the Codebreaker by default.
  *
  * @author Geforce
  */
-public interface IPasswordProtected {
-	/**
-	 * Called whenever a player correctly enters this block's password in the password GUI.<p>
-	 *
-	 * @param player The player who entered the password.
-	 */
-	public void activate(Player player);
-
+public interface IPasswordProtected extends ICodebreakable {
 	/**
 	 * Open the correct password GUI depending on if a password is already set or not. <p>
 	 *
@@ -27,22 +21,11 @@ public interface IPasswordProtected {
 	public void openPasswordGUI(Player player);
 
 	/**
-	 * Can the codebreaker be used on that password-protected block?
+	 * Called whenever a player correctly enters this block's password in the password GUI.<p>
 	 *
-	 * @return Return true if the codebreaker can be used on the block
+	 * @param player The player who entered the password.
 	 */
-	public default boolean isCodebreakable() {
-		return true;
-	}
-
-	/**
-	 * Called when a codebreaker is used on a password-protected block.
-	 *
-	 * @param state The block state of the block.
-	 * @param player The player who used the codebreaker.
-	 * @return Return true if the codebreaker "hack" was successful, false otherwise.
-	 */
-	public boolean onCodebreakerUsed(BlockState state, Player player);
+	public void activate(Player player);
 
 	/**
 	 * Return your block entity's password variable here. If the password is empty or not set yet, return null.

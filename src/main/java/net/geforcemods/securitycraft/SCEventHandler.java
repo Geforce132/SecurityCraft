@@ -10,12 +10,12 @@ import java.util.Random;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
@@ -410,13 +410,13 @@ public class SCEventHandler {
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
 		Level level = event.getPlayer().level;
 
-		if (level.getBlockEntity(event.getPos()) instanceof IPasswordProtected passwordProtected && passwordProtected.isCodebreakable()) {
+		if (level.getBlockEntity(event.getPos()) instanceof ICodebreakable codebreakable && codebreakable.isCodebreakable()) {
 			if (ConfigHandler.SERVER.allowCodebreakerItem.get()) {
 				if (event.getPlayer().getItemInHand(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
 					event.getPlayer().getItemInHand(event.getHand()).hurtAndBreak(1, event.getPlayer(), p -> p.broadcastBreakEvent(event.getHand()));
 
 				if (event.getPlayer().isCreative() || new Random().nextInt(3) == 1)
-					return passwordProtected.onCodebreakerUsed(level.getBlockState(event.getPos()), event.getPlayer());
+					return codebreakable.onCodebreakerUsed(level.getBlockState(event.getPos()), event.getPlayer());
 				else {
 					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
 					return true;
