@@ -410,7 +410,7 @@ public class SCEventHandler {
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
 		Level level = event.getPlayer().level;
 
-		if (level.getBlockEntity(event.getPos()) instanceof ICodebreakable codebreakable && codebreakable.isCodebreakable()) {
+		if (level.getBlockEntity(event.getPos()) instanceof ICodebreakable codebreakable) {
 			if (ConfigHandler.SERVER.allowCodebreakerItem.get()) {
 				if (event.getPlayer().getItemInHand(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
 					event.getPlayer().getItemInHand(event.getHand()).hurtAndBreak(1, event.getPlayer(), p -> p.broadcastBreakEvent(event.getHand()));
