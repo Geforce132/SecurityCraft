@@ -39,7 +39,7 @@ public class ItemCodebreaker extends Item {
 			else {
 				codebreaker.damageItem(1, player);
 
-				if (!world.isRemote && new Random().nextInt(3) == 1)
+				if (!world.isRemote && (player.isCreative() || new Random().nextInt(3) == 1))
 					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:codebreaker.name"), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
