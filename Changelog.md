@@ -3,6 +3,8 @@
 - New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity
 - New: Codebreakers can now hack Keycard Readers
 - Change: Codebreakers will now always open briefcases when in Creative mode without a chance of failing
+- API: Split IPasswordProtected into two interfaces (IPasswordProtected and ICodebreakable), meaning blocks can now be hacked by the codebreaker without needing to be password protected
+- API: Removed IPasswordProtected#isCodebreakable
 - Fix: The recipe for reinforced glass panes is incorrect
 - Fix: Breaking the block another block with modules is attached to does not drop the modules
 - Fix: Some logs have an incorrect side texture
