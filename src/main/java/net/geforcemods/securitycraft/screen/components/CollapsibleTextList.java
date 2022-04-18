@@ -13,7 +13,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextComponent;
 import net.minecraftforge.fml.client.gui.GuiUtils;
@@ -27,15 +26,13 @@ public class CollapsibleTextList extends Button implements IGuiEventListener {
 	private final ITextComponent originalDisplayString;
 	private final List<? extends ITextComponent> textLines;
 	private final List<Long> splitTextLineCount;
-	private final boolean shouldRenderLongMessageTooltip;
 	private final BiPredicate<Integer, Integer> extraHoverCheck;
 	private boolean open = true;
 	private boolean isMessageTooLong = false;
 	private int initialY = -1;
 
-	public CollapsibleTextList(int xPos, int yPos, int width, ITextComponent displayString, List<? extends ITextComponent> textLines, IPressable onPress, boolean shouldRenderLongMessageTooltip, BiPredicate<Integer, Integer> extraHoverCheck) {
+	public CollapsibleTextList(int xPos, int yPos, int width, ITextComponent displayString, List<? extends ITextComponent> textLines, IPressable onPress, BiPredicate<Integer, Integer> extraHoverCheck) {
 		super(xPos, yPos, width, 12, displayString, onPress);
-		this.shouldRenderLongMessageTooltip = shouldRenderLongMessageTooltip;
 		originalDisplayString = displayString;
 		switchOpenStatus(); //properly sets the message as well
 		textCutoff = width - 5;
@@ -45,11 +42,7 @@ public class CollapsibleTextList extends Button implements IGuiEventListener {
 		int amountOfLines = 0;
 
 		for (ITextComponent line : textLines) {
-			//@formatter:off
-			long count = font.getSplitter().splitLines(line, textCutoff, line.getStyle()).stream()
-			.map(ITextProperties::getString)
-			.map(StringTextComponent::new).count();
-			//@formatter:on
+			long count = font.getSplitter().splitLines(line, textCutoff, line.getStyle()).size();
 
 			amountOfLines += count;
 			splitTextLineCountBuilder.add(count);
@@ -88,9 +81,6 @@ public class CollapsibleTextList extends Button implements IGuiEventListener {
 				renderedLines += splitTextLineCount.get(i) - 1;
 			}
 		}
-
-		if (shouldRenderLongMessageTooltip)
-			renderLongMessageTooltip(pose);
 	}
 
 	public void renderLongMessageTooltip(MatrixStack pose) {
