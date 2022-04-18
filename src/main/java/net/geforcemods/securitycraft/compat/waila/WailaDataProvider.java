@@ -6,8 +6,9 @@ import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.EntityAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.IEntityComponentProvider;
-import mcp.mobius.waila.api.IRegistrar;
 import mcp.mobius.waila.api.ITooltip;
+import mcp.mobius.waila.api.IWailaClientRegistration;
+import mcp.mobius.waila.api.IWailaCommonRegistration;
 import mcp.mobius.waila.api.IWailaPlugin;
 import mcp.mobius.waila.api.TooltipPosition;
 import mcp.mobius.waila.api.WailaPlugin;
@@ -74,33 +75,36 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	}
 
 	@Override
-	public void register(IRegistrar registrar) {
-		registrar.addSyncedConfig(SHOW_OWNER, true);
-		registrar.addSyncedConfig(SHOW_MODULES, true);
-		registrar.addSyncedConfig(SHOW_PASSWORDS, true);
-		registrar.addSyncedConfig(SHOW_CUSTOM_NAME, true);
+	public void register(IWailaCommonRegistration registration) {
+		registration.addSyncedConfig(SHOW_OWNER, true);
+		registration.addSyncedConfig(SHOW_MODULES, true);
+		registration.addSyncedConfig(SHOW_PASSWORDS, true);
+		registration.addSyncedConfig(SHOW_CUSTOM_NAME, true);
+	}
 
+	@Override
+	public void registerClient(IWailaClientRegistration registration) {
 		for (RegistryObject<Block> registryObject : SCContent.BLOCKS.getEntries()) {
 			Block block = registryObject.get();
 
 			if (!(block instanceof OwnableBlock) && !block.getRegistryName().getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock))
-				registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
+				registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
 
 			if (block instanceof IOverlayDisplay)
-				registrar.usePickedResult(block);
+				registration.usePickedResult(block);
 		}
 
-		registrar.registerComponentProvider(INSTANCE, TooltipPosition.HEAD, BaseFullMineBlock.class);
-		registrar.registerComponentProvider(INSTANCE, TooltipPosition.HEAD, FurnaceMineBlock.class);
-		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, OwnableBlock.class);
-		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedCauldronBlock.class);
-		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedPaneBlock.class);
-		registrar.registerIconProvider(INSTANCE, DisguisableBlock.class);
-		registrar.registerIconProvider(INSTANCE, BaseFullMineBlock.class);
-		registrar.registerIconProvider(INSTANCE, FurnaceMineBlock.class);
-		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, Sentry.class);
-		registrar.registerComponentProvider(INSTANCE, TooltipPosition.TAIL, BaseFullMineBlock.class);
-		registrar.registerComponentProvider(INSTANCE, TooltipPosition.TAIL, FurnaceMineBlock.class);
+		registration.registerComponentProvider(INSTANCE, TooltipPosition.HEAD, BaseFullMineBlock.class);
+		registration.registerComponentProvider(INSTANCE, TooltipPosition.HEAD, FurnaceMineBlock.class);
+		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, OwnableBlock.class);
+		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedCauldronBlock.class);
+		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedPaneBlock.class);
+		registration.registerIconProvider(INSTANCE, DisguisableBlock.class);
+		registration.registerIconProvider(INSTANCE, BaseFullMineBlock.class);
+		registration.registerIconProvider(INSTANCE, FurnaceMineBlock.class);
+		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, Sentry.class);
+		registration.registerComponentProvider(INSTANCE, TooltipPosition.TAIL, BaseFullMineBlock.class);
+		registration.registerComponentProvider(INSTANCE, TooltipPosition.TAIL, FurnaceMineBlock.class);
 	}
 
 	@Override

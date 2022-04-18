@@ -27,6 +27,13 @@ issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
     versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"
+    
+[[dependencies.securitycraft]]
+    modId="jade"
+    mandatory=false
+    versionRange="[4.2.0,)"
+    ordering="NONE"
+    side="BOTH"
 
 [modproperties.securitycraft]
     catalogueImageIcon="sc_logo.png"
