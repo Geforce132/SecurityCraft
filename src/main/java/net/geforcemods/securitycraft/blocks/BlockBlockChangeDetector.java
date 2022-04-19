@@ -52,11 +52,6 @@ public class BlockBlockChangeDetector extends BlockDisguisable {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return SHAPE;
 	}
