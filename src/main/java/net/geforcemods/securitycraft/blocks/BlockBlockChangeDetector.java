@@ -150,4 +150,9 @@ public class BlockBlockChangeDetector extends BlockDisguisable {
 	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileEntityBlockChangeDetector();
+	}
 }
