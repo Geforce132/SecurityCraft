@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 public class BlockBlockChangeDetector extends BlockDisguisable {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
-	public static final AxisAlignedBB SHAPE = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
+	public static final AxisAlignedBB SHAPE = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 9.0D / 16.0D, 1.0D);
 
 	public BlockBlockChangeDetector(Material material) {
 		super(material);
