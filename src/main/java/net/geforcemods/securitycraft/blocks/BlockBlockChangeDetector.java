@@ -63,18 +63,18 @@ public class BlockBlockChangeDetector extends BlockDisguisable {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (!world.isRemote) {
-			TileEntity tile = world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-			if (tile instanceof TileEntityBlockChangeDetector) {
-				TileEntityBlockChangeDetector te = (TileEntityBlockChangeDetector) tile;
+		if (!(tile instanceof TileEntityBlockChangeDetector))
+			return false;
 
-				if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
-					player.openGui(SecurityCraft.instance, GuiHandler.BLOCK_CHANGE_DETECTOR, world, pos.getX(), pos.getY(), pos.getZ());
-			}
-		}
+		TileEntityBlockChangeDetector te = (TileEntityBlockChangeDetector) tile;
+		boolean isOwner = te.getOwner().isOwner(player);
 
-		return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
+		if (isOwner || ModuleUtils.isAllowed(te, player))
+			player.openGui(SecurityCraft.instance, GuiHandler.BLOCK_CHANGE_DETECTOR, world, pos.getX(), pos.getY(), pos.getZ());
+
+		return isOwner;
 	}
 
 	@Override
