@@ -1,12 +1,12 @@
 {
     "variants": {
-        "facing=north,powered=false": { "model": "securitycraft:block/block_change_detector" },
-        "facing=south,powered=false": { "model": "securitycraft:block/block_change_detector", "y": 180 },
-        "facing=west,powered=false":  { "model": "securitycraft:block/block_change_detector", "y": 270 },
-        "facing=east,powered=false":  { "model": "securitycraft:block/block_change_detector", "y": 90 },
-        "facing=north,powered=true": { "model": "securitycraft:block/block_change_detector_active" },
-        "facing=south,powered=true": { "model": "securitycraft:block/block_change_detector_active", "y": 180 },
-        "facing=west,powered=true":  { "model": "securitycraft:block/block_change_detector_active", "y": 270 },
-        "facing=east,powered=true":  { "model": "securitycraft:block/block_change_detector_active", "y": 90 }
+        "facing=north,powered=false": { "model": "securitycraft:block_change_detector" },
+        "facing=south,powered=false": { "model": "securitycraft:block_change_detector", "y": 180 },
+        "facing=west,powered=false":  { "model": "securitycraft:block_change_detector", "y": 270 },
+        "facing=east,powered=false":  { "model": "securitycraft:block_change_detector", "y": 90 },
+        "facing=north,powered=true": { "model": "securitycraft:block_change_detector_active" },
+        "facing=south,powered=true": { "model": "securitycraft:block_change_detector_active", "y": 180 },
+        "facing=west,powered=true":  { "model": "securitycraft:block_change_detector_active", "y": 270 },
+        "facing=east,powered=true":  { "model": "securitycraft:block_change_detector_active", "y": 90 }
     }
 }
