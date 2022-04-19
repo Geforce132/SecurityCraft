@@ -392,6 +392,12 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		}
 
 		@Override
+		public void onClick() {
+			super.onClick();
+			setCurrentIndex(currentIndex + 1);
+		}
+
+		@Override
 		public int getCurrentIndex() {
 			return currentIndex;
 		}
