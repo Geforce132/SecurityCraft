@@ -289,7 +289,7 @@ tile.securitycraft:reinforced_piston_head.name=Reinforced Piston Head
 tile.securitycraft:reinforced_moving_piston.name=Reinforced Moving Piston
 tile.securitycraft:key_panel.name=Key Panel
 tile.securitycraft:sonic_security_system.name=Sonic Security System
-tile.securitycraft.block_change_detector.name=Block Change Detector
+tile.securitycraft:block_change_detector.name=Block Change Detector
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
