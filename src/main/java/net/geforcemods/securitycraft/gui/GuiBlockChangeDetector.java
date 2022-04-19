@@ -48,7 +48,7 @@ import net.minecraftforge.fml.client.config.GuiCheckBox;
 
 public class GuiBlockChangeDetector extends GuiContainer implements IContainerListener {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_change_detector.png");
-	private final String blockName = Utils.localize(SCContent.blockChangeDetector.getTranslationKey()).getFormattedText();
+	private final String blockName = Utils.localize(SCContent.blockChangeDetector).getFormattedText();
 	private TileEntityBlockChangeDetector be;
 	private ChangeEntryList changeEntryList;
 	private StringHoverChecker[] hoverCheckers = new StringHoverChecker[3];
@@ -133,7 +133,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(blockName, ySize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 0x404040);
+		fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 0x404040);
 		renderHoveredToolTip(mouseX - guiLeft, mouseY - guiTop);
 	}
 
