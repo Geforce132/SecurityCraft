@@ -2,9 +2,9 @@
 	"parent": "block/block",
 	"ambientocclusion": false,
 	"textures": {
-		"keypad": "securitycraft:block/keypad_furnace_top_inactive",
-		"side": "securitycraft:block/keypad_furnace_side",
-		"bottom": "securitycraft:block/keypad_furnace_bottom",
+		"keypad": "securitycraft:blocks/keypad_furnace_top_inactive",
+		"side": "securitycraft:blocks/keypad_furnace_side",
+		"bottom": "securitycraft:blocks/keypad_furnace_bottom",
 		"ironBlock": "blocks/iron_block",
 		"particle": "blocks/iron_block"
 	},
