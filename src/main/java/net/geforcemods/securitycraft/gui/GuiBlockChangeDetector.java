@@ -166,7 +166,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int button) throws IOException {
-		if (changeEntryList != null && !changeEntryList.mouseClicked(mouseX, mouseY, button))
+		if (changeEntryList != null && changeEntryList.mouseClicked(mouseX, mouseY, button))
 			return;
 
 		super.mouseClicked(mouseX, mouseY, button);
@@ -197,6 +197,12 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 
 			changeEntryList.updateFilteredEntries();
 		}
+	}
+
+	@Override
+	protected void actionPerformed(GuiButton button) {
+		if (button instanceof ClickButton)
+			((ClickButton) button).onClick();
 	}
 
 	@Override
@@ -328,7 +334,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		}
 
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
-			if (mouseY < top || mouseY > bottom)
+			if (mouseY < top || mouseY > bottom || mouseX < left || mouseX > right)
 				return false;
 
 			return true;
