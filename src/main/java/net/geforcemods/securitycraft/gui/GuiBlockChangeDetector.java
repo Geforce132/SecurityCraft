@@ -113,13 +113,13 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 
 			List<ITextComponent> list = Arrays.asList(
 			//@formatter:off
-					entry.player,
-					entry.uuid,
-					entry.action,
-					Utils.getFormattedCoordinates(entry.pos).getFormattedText(),
-					stateString,
-					dateFormat.format(new Date(entry.timestamp))
-					//@formatter:on
+				entry.player,
+				entry.uuid,
+				entry.action,
+				Utils.getFormattedCoordinates(entry.pos).getFormattedText(),
+				stateString,
+				dateFormat.format(new Date(entry.timestamp))
+			//@formatter:on
 			).stream().map(Object::toString).filter(s -> !s.isEmpty()).map(TextComponentString::new).collect(Collectors.toList());
 
 			changeEntryList.addEntry(new ContentSavingCollapsileTextList(-1, 0, 0, 154, Utils.localize(entry.state.getBlock().getTranslationKey()).getFormattedText(), list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), changeEntryList::isHovered, entry.action, entry.state.getBlock()));
