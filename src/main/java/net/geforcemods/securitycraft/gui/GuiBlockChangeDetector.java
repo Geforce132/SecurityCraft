@@ -85,7 +85,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			currentMode = EnumDetectionMode.values()[((ModeButton) b).getCurrentIndex()];
 			changeEntryList.updateFilteredEntries();
 		}));
-		addButton(showAllCheckbox = new GuiCheckBox(2, guiLeft + 173, guiTop + 65, "", false) {
+		addButton(showAllCheckbox = new GuiCheckBox(2, guiLeft + 177, guiTop + 65, "", false) {
 			@Override
 			public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
 				boolean returnValue = super.mousePressed(mc, mouseX, mouseY);
