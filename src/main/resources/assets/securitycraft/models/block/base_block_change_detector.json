@@ -2,7 +2,7 @@
 	"ambientocclusion": false,
 	"textures": {
 		"bottom": "block/furnace_top",
-		"top": "securitycraft:block/block_change_detector_top",
+		"top": "securitycraft:blocks/block_change_detector_top",
 		"particle": "#side"
 	},
 	"elements": [

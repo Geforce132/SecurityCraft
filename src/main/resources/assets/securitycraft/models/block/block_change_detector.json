@@ -1,6 +1,6 @@
 {
 	"parent": "securitycraft:block/base_block_change_detector",
     "textures": {
-        "side": "securitycraft:block/block_change_detector"
+        "side": "securitycraft:blocks/block_change_detector"
     }
 }
