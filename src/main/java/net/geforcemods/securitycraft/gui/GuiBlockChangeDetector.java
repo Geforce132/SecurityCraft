@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector.ChangeEntry;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector.EnumDetectionMode;
+import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -377,17 +378,17 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			super.drawButton(mc, mouseX, mouseY, partial);
 
 			if (currentIndex == EnumDetectionMode.BREAK.ordinal())
-				mc.getRenderItem().renderItemAndEffectIntoGUI(ironPickaxe, x + 2, y + 2);
+				GuiUtils.drawItemStackToGui(ironPickaxe, x + 2, y + 2, false);
 			else if (currentIndex == EnumDetectionMode.PLACE.ordinal())
-				mc.getRenderItem().renderItemAndEffectIntoGUI(grassBlock, x + 2, y + 2);
+				GuiUtils.drawItemStackToGui(grassBlock, x + 2, y + 2, true);
 			else if (currentIndex == EnumDetectionMode.BOTH.ordinal()) {
 				//changing zLevel so the grass block is rendered completely behind the pickaxe
 				float blitOffset = mc.getRenderItem().zLevel;
 
 				mc.getRenderItem().zLevel = -50.0F;
-				mc.getRenderItem().renderItemAndEffectIntoGUI(grassBlock, x + 2, y + 2);
+				GuiUtils.drawItemStackToGui(grassBlock, x + 2, y + 2, true);
 				mc.getRenderItem().zLevel = blitOffset;
-				mc.getRenderItem().renderItemAndEffectIntoGUI(ironPickaxe, x + 2, y + 2);
+				GuiUtils.drawItemStackToGui(ironPickaxe, x + 2, y + 2, false);
 			}
 		}
 
