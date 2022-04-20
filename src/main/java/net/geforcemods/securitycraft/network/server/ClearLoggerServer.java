@@ -34,9 +34,13 @@ public class ClearLoggerServer {
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.level.getBlockEntity(message.pos);
 
-			if (te instanceof UsernameLoggerBlockEntity && ((UsernameLoggerBlockEntity) te).getOwner().isOwner(player)) {
-				((UsernameLoggerBlockEntity) te).players = new String[100];
-				((UsernameLoggerBlockEntity) te).clearLoggedPlayersOnClient();
+			if (te instanceof UsernameLoggerBlockEntity) {
+				UsernameLoggerBlockEntity logger = (UsernameLoggerBlockEntity) te;
+
+				if (logger.getOwner().isOwner(player)) {
+					logger.players = new String[100];
+					logger.getLevel().sendBlockUpdated(logger.getBlockPos(), logger.getBlockState(), logger.getBlockState(), 2);
+				}
 			}
 		});
 
