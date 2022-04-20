@@ -335,10 +335,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		}
 
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
-			if (mouseY < top || mouseY > bottom || mouseX < left || mouseX > right)
-				return false;
-
-			return true;
+			return !(mouseY < top || mouseY > bottom || mouseX < right - 6 || mouseX > right);
 		}
 
 		public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
