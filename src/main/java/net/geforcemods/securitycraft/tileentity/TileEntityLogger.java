@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -95,10 +94,6 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 			if (players[i] != null)
 				SecurityCraft.network.sendToAll(new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
 		}
-	}
-
-	public void clearLoggedPlayersOnClient() {
-		SecurityCraft.network.sendToAll(new ClearLoggerClient(pos));
 	}
 
 	@Override
