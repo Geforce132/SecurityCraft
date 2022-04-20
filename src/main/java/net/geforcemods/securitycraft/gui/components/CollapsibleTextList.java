@@ -53,7 +53,7 @@ public class CollapsibleTextList extends ClickButton {
 
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
-		hovered &= extraHoverCheck.test(mouseX, mouseY);
+		hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height && extraHoverCheck.test(mouseX, mouseY);
 
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		int v = getHoverState(isMouseOver());
