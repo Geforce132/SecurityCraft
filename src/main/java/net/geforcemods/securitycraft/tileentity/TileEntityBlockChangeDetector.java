@@ -58,7 +58,7 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 
 		entries.add(new ChangeEntry(player.getDisplayName().toString(), player.getGameProfile().getId(), System.currentTimeMillis(), action, pos, state));
 		markDirty();
-		world.notifyBlockUpdate(pos, thisState, thisState, 2);
+		sync();
 	}
 
 	@Override
