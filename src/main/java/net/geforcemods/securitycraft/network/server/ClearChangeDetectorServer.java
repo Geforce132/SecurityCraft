@@ -35,6 +35,7 @@ public class ClearChangeDetectorServer {
 			if (player.level.getBlockEntity(message.pos) instanceof BlockChangeDetectorBlockEntity be && be.getOwner().isOwner(player)) {
 				be.getEntries().clear();
 				be.setChanged();
+				be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 2);
 			}
 		});
 
