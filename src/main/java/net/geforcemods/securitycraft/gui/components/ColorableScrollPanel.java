@@ -40,6 +40,11 @@ public abstract class ColorableScrollPanel {
 	protected final int right;
 	protected final int left;
 	protected final int slotHeight;
+	protected final int scrollBarWidth = 6;
+	protected final int scrollBarRight;
+	protected final int scrollBarLeft;
+	protected final int viewHeight;
+	protected final int border = 4;
 	protected int mouseX;
 	protected int mouseY;
 	private float initialMouseClickY = -2.0F;
@@ -75,6 +80,9 @@ public abstract class ColorableScrollPanel {
 		this.scrollbarBackground = scrollbarBackground;
 		this.scrollbarBorder = scrollbarBorder;
 		this.scrollbar = scrollbar;
+		scrollBarRight = left + listWidth;
+		scrollBarLeft = scrollBarRight - scrollBarWidth;
+		viewHeight = bottom - top;
 	}
 
 	public abstract int getSize();
@@ -82,44 +90,9 @@ public abstract class ColorableScrollPanel {
 	public abstract void drawPanel(int entryRight, int relativeY, Tessellator tesselator, int mouseX, int mouseY);
 
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		int scrollBarWidth = 6;
-		int scrollBarRight = left + listWidth;
-		int scrollBarLeft = scrollBarRight - scrollBarWidth;
-		int viewHeight = bottom - top;
-		int border = 4;
-
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;
 		isHovering = mouseX >= left && mouseX <= left + listWidth && mouseY >= top && mouseY <= bottom;
-
-		if (Mouse.isButtonDown(0)) {
-			if (initialMouseClickY == -1.0F) {
-				if (isHovering) {
-					if (mouseX >= scrollBarLeft && mouseX <= scrollBarRight) {
-						int scrollHeight = getContentHeight() - viewHeight - border;
-
-						scrollFactor = -1.0F;
-
-						if (scrollHeight < 1)
-							scrollHeight = 1;
-
-						scrollFactor /= (float) (viewHeight - getBarHeight(viewHeight, border)) / (float) scrollHeight;
-					}
-					else
-						scrollFactor = 1.0F;
-
-					initialMouseClickY = mouseY;
-				}
-				else
-					initialMouseClickY = -2.0F;
-			}
-			else if (initialMouseClickY >= 0.0F) {
-				scrollDistance -= (mouseY - initialMouseClickY) * scrollFactor;
-				initialMouseClickY = mouseY;
-			}
-		}
-		else
-			initialMouseClickY = -1.0F;
 
 		Tessellator tess = Tessellator.getInstance();
 		BufferBuilder worldr = tess.getBuffer();
@@ -190,13 +163,43 @@ public abstract class ColorableScrollPanel {
 	}
 
 	public void handleMouseInput(int mouseX, int mouseY) throws IOException {
-		if (!isHovering)
-			return;
+		if (isHovering) {
+			int scroll = Mouse.getEventDWheel();
 
-		int scroll = Mouse.getEventDWheel();
+			if (scroll != 0)
+				scrollDistance += (-scroll / 120.0F) * slotHeight / 2;
+		}
 
-		if (scroll != 0)
-			scrollDistance += (-1 * scroll / 120.0F) * slotHeight / 2;
+		if (Mouse.isButtonDown(0)) {
+			if (initialMouseClickY == -1.0F) {
+				if (isHovering) {
+					if (mouseX >= scrollBarLeft && mouseX <= scrollBarRight) {
+						int scrollHeight = getContentHeight() - viewHeight - border;
+
+						scrollFactor = -1.0F;
+
+						if (scrollHeight < 1)
+							scrollHeight = 1;
+
+						scrollFactor /= (float) (viewHeight - getBarHeight(viewHeight, border)) / (float) scrollHeight;
+					}
+					else
+						scrollFactor = 1.0F;
+
+					initialMouseClickY = mouseY;
+				}
+				else
+					initialMouseClickY = -2.0F;
+			}
+			else if (initialMouseClickY >= 0.0F) {
+				scrollDistance -= (mouseY - initialMouseClickY) * scrollFactor;
+				initialMouseClickY = mouseY;
+			}
+		}
+		else
+			initialMouseClickY = -1.0F;
+
+		applyScrollLimits();
 	}
 
 	public int getBarHeight(int viewHeight, int border) {

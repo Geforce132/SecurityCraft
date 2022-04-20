@@ -298,20 +298,6 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			return mouseX >= left && mouseY >= top && mouseX < right && mouseY < bottom;
 		}
 
-		@Override
-		public void applyScrollLimits() {
-			int maxScroll = getContentHeight() - (height - 4);
-
-			if (maxScroll < 0)
-				maxScroll /= 2;
-
-			if (scrollDistance > maxScroll)
-				scrollDistance = maxScroll;
-
-			if (scrollDistance < 0.0F)
-				scrollDistance = 0.0F;
-		}
-
 		public void updateFilteredEntries() {
 			allEntries.forEach(e -> e.enabled = false);
 
@@ -364,21 +350,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 				}
 			}
 
-			return !(mouseY < top || mouseY > bottom || mouseX < right - 6 || mouseX > right);
-		}
-
-		public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-			if (getContentHeight() < height)
-				return false;
-
-			return true;
-		}
-
-		public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
-			if (getContentHeight() < height)
-				return false;
-
-			return true;
+			return !(mouseY < top || mouseY > bottom || mouseX < right - scrollBarWidth || mouseX > right);
 		}
 
 		@Override
