@@ -42,6 +42,7 @@ public class ClearChangeDetectorServer implements IMessage {
 					if (te.getOwner().isOwner(player)) {
 						te.getEntries().clear();
 						te.markDirty();
+						te.sync();
 					}
 				}
 			});
