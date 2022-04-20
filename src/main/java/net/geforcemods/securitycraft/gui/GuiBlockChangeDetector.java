@@ -123,7 +123,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			//@formatter:on
 			).stream().map(Object::toString).filter(s -> !s.isEmpty()).map(TextComponentString::new).collect(Collectors.toList());
 
-			changeEntryList.addEntry(new ContentSavingCollapsileTextList(-1, 0, 0, 154, Utils.localize(entry.state.getBlock().getTranslationKey()).getFormattedText(), list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), changeEntryList::isHovered, entry.action, entry.state.getBlock()));
+			changeEntryList.addEntry(addButton(new ContentSavingCollapsileTextList(-1, 0, 0, 154, Utils.localize(entry.state.getBlock()).getFormattedText(), list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), changeEntryList::isHovered, entry.action, entry.state.getBlock())));
 		}
 
 		ItemStack filteredStack = inventorySlots.getSlot(0).getStack();
