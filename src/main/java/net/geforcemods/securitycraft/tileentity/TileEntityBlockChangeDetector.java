@@ -56,7 +56,7 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 			world.scheduleUpdate(pos, SCContent.blockChangeDetector, signalLength.get());
 		}
 
-		entries.add(new ChangeEntry(player.getDisplayName().toString(), player.getGameProfile().getId(), System.currentTimeMillis(), action, pos, state));
+		entries.add(new ChangeEntry(player.getName(), player.getGameProfile().getId(), System.currentTimeMillis(), action, pos, state));
 		markDirty();
 		sync();
 	}
