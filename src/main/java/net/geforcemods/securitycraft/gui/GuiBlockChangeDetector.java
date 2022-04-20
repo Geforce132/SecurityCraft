@@ -420,8 +420,8 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 
 		@Override
 		public void onClick() {
-			super.onClick();
 			setCurrentIndex(currentIndex + 1);
+			super.onClick();
 		}
 
 		@Override
