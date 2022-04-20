@@ -11,6 +11,8 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.lwjgl.input.Mouse;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerBlockChangeDetector;
@@ -45,6 +47,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.config.GuiCheckBox;
 
 public class GuiBlockChangeDetector extends GuiContainer implements IContainerListener {
@@ -71,7 +75,6 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		super.initGui();
 
 		GuiButton clearButton = addButton(new ClickButton(0, guiLeft + 4, guiTop + 4, 8, 8, "x", b -> {
-			changeEntryList.allEntries.forEach(e -> buttonList.removeIf(e::equals));
 			changeEntryList.allEntries.clear();
 			changeEntryList.filteredEntries.clear();
 			be.getEntries().clear();
@@ -123,7 +126,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			//@formatter:on
 			).stream().map(Object::toString).filter(s -> !s.isEmpty()).map(TextComponentString::new).collect(Collectors.toList());
 
-			changeEntryList.addEntry(addButton(new ContentSavingCollapsileTextList(-1, 0, 0, 154, Utils.localize(entry.state.getBlock()).getFormattedText(), list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), changeEntryList::isHovered, entry.action, entry.state.getBlock())));
+			changeEntryList.addEntry(new ContentSavingCollapsileTextList(-1, 0, 0, 154, Utils.localize(entry.state.getBlock()).getFormattedText(), list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), changeEntryList::isHovered, entry.action, entry.state.getBlock()));
 		}
 
 		ItemStack filteredStack = inventorySlots.getSlot(0).getStack();
@@ -204,6 +207,14 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 	protected void actionPerformed(GuiButton button) {
 		if (button instanceof ClickButton)
 			((ClickButton) button).onClick();
+	}
+
+	@Override
+	public void handleMouseInput() throws IOException {
+		super.handleMouseInput();
+
+		if (changeEntryList != null)
+			changeEntryList.handleMouseInput(Mouse.getEventX() * width / mc.displayWidth, height - Mouse.getEventY() * height / mc.displayHeight - 1);
 	}
 
 	@Override
@@ -334,7 +345,25 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			applyScrollLimits();
 		}
 
-		public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		public boolean mouseClicked(int mouseX, int mouseY, int button) {
+			if (button == 0) {
+				for (GuiButton entry : filteredEntries) {
+					if (entry.mousePressed(mc, mouseX, mouseY)) {
+						GuiScreenEvent.ActionPerformedEvent.Pre event = new GuiScreenEvent.ActionPerformedEvent.Pre(GuiBlockChangeDetector.this, entry, buttonList);
+
+						if (MinecraftForge.EVENT_BUS.post(event))
+							break;
+
+						entry = event.getButton();
+						entry.playPressSound(mc.getSoundHandler());
+						actionPerformed(entry);
+
+						if (GuiBlockChangeDetector.this.equals(mc.currentScreen))
+							MinecraftForge.EVENT_BUS.post(new GuiScreenEvent.ActionPerformedEvent.Post(GuiBlockChangeDetector.this, entry, buttonList));
+					}
+				}
+			}
+
 			return !(mouseY < top || mouseY > bottom || mouseX < right - 6 || mouseX > right);
 		}
 
