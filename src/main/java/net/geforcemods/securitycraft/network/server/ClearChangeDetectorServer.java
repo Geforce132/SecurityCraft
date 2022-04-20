@@ -40,6 +40,7 @@ public class ClearChangeDetectorServer {
 				if (be.getOwner().isOwner(player)) {
 					be.getEntries().clear();
 					be.setChanged();
+				    be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 2);
 				}
 			}
 		});
