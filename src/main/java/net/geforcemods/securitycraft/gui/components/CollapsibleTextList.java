@@ -60,7 +60,7 @@ public class CollapsibleTextList extends ClickButton {
 		int heightOffset = (height - 8) / 2;
 
 		GuiUtils.drawContinuousTexturedBox(BUTTON_TEXTURES, x, y, 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2, zLevel);
-		drawCenteredString(font, displayString, x + font.getStringWidth(displayString) / 2 + 3, y + heightOffset, packedFGColour);
+		drawCenteredString(font, displayString, x + font.getStringWidth(displayString) / 2 + 3, y + heightOffset, 0xE0E0E0);
 
 		if (open) {
 			int renderedLines = 0;
@@ -73,7 +73,7 @@ public class CollapsibleTextList extends ClickButton {
 				if (i > 0)
 					GuiUtils.drawGradientRect((int) zLevel, x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0);
 
-				font.drawSplitString(textLines.get(i), x + 2, textY, textCutoff, packedFGColour);
+				font.drawSplitString(textLines.get(i), x + 2, textY, textCutoff, 0xE0E0E0);
 				renderedLines += splitTextLineCount.get(i) - 1;
 			}
 		}
