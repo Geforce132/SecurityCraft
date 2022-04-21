@@ -204,11 +204,14 @@ public class ClientHandler {
 
 		ResourceLocation cageTrapRl = new ResourceLocation(SecurityCraft.MODID, "cage_trap");
 		ResourceLocation protectoRl = new ResourceLocation(SecurityCraft.MODID, "protecto");
+		ResourceLocation sentryDisguiseRl = new ResourceLocation(SecurityCraft.MODID, "sentry_disguise");
 
 		registerDisguisedModel(event, cageTrapRl, "deactivated=true");
 		registerDisguisedModel(event, cageTrapRl, "deactivated=false");
 		registerDisguisedModel(event, protectoRl, "enabled=true");
 		registerDisguisedModel(event, protectoRl, "enabled=false");
+		registerDisguisedModel(event, sentryDisguiseRl, "invisible=true");
+		registerDisguisedModel(event, sentryDisguiseRl, "invisible=false");
 		registerDisguisedModel(event, new ResourceLocation(SecurityCraft.MODID, "trophy_system"), "");
 
 		for (String mine : mines) {
@@ -268,6 +271,8 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.KEYPAD_BLAST_FURNACE.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.LASER_BLOCK.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.LASER_FIELD.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.PROJECTOR.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.PROTECTO.get(), cutoutMipped);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLUE_STAINED_GLASS.get(), translucent);
@@ -315,11 +320,10 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.RETINAL_SCANNER.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.SCANNER_DOOR.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.SENTRY_DISGUISE.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.TRACK_MINE.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.TROPHY_SYSTEM.get(), cutoutMipped);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.USERNAME_LOGGER.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.PROJECTOR.get(), cutoutMipped);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.PROTECTO.get(), cutoutMipped);
 		event.enqueueWork(() -> {
 			MenuScreens.register(SCContent.BLOCK_REINFORCER_MENU.get(), BlockReinforcerScreen::new);
 			MenuScreens.register(SCContent.BRIEFCASE_INVENTORY_MENU.get(), BriefcaseInventoryScreen::new);
@@ -361,6 +365,7 @@ public class ClientHandler {
 		//disguisable block entity renderers
 		event.registerBlockEntityRenderer(SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.CAGE_TRAP_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.DISGUISABLE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.INVENTORY_SCANNER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYCARD_READER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
@@ -479,6 +484,7 @@ public class ClientHandler {
 				SCContent.PROJECTOR.get(),
 				SCContent.PROTECTO.get(),
 				SCContent.RETINAL_SCANNER.get(),
+				SCContent.SENTRY_DISGUISE.get(),
 				SCContent.TROPHY_SYSTEM.get(),
 				SCContent.USERNAME_LOGGER.get());
 		//@formatter:on
