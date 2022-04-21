@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -18,6 +19,10 @@ import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.network.PacketDistributor;
 
 public class DisguisableBlockEntity extends CustomizableBlockEntity {
+	public DisguisableBlockEntity(BlockPos pos, BlockState state) {
+		this(SCContent.DISGUISABLE_BLOCK_ENTITY.get(), pos, state);
+	}
+
 	public DisguisableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
