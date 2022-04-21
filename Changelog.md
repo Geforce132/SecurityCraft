@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
 
+- New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity
 - New: Codebreakers can now hack Keycard Readers
 - Change: Codebreakers will now always open briefcases when in Creative mode without a chance of failing
 - API: Split IPasswordProtected into two interfaces (IPasswordProtected and ICodebreakable), meaning blocks can now be hacked by the codebreaker without needing to be password protected

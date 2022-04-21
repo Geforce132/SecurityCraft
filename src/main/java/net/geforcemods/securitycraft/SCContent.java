@@ -13,6 +13,7 @@ public class SCContent {
 	public static Block alarm;
 	@Deprecated //use alarm and its lit property
 	public static Block alarmLit;
+	public static Block blockChangeDetector;
 	@Tinted(customTint = 0x15b3a2)
 	public static Block blockPocketManager;
 	@Tinted(customTint = 0x15b3a2)
@@ -33,6 +34,8 @@ public class SCContent {
 	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
 	public static Block doubleCrystalQuartzSlab;
 	public static Block emeraldOreMine;
+	public static BlockStaticLiquid fakeLava;
+	public static BlockStaticLiquid fakeWater;
 	public static Block frame;
 	public static Block furnaceMine;
 	public static Block goldOreMine;
@@ -52,6 +55,8 @@ public class SCContent {
 	public static Block lapisOreMine;
 	public static Block laserBlock;
 	public static Block laserField;
+	public static BlockMine mine;
+	public static BlockMine mineCut;
 	public static Block motionActivatedLight;
 	public static Block panicButton;
 	public static Block portableRadar;
@@ -321,10 +326,6 @@ public class SCContent {
 	public static Block trackMine;
 	public static Block trophySystem;
 	public static Block usernameLogger;
-	public static BlockMine mine;
-	public static BlockMine mineCut;
-	public static BlockStaticLiquid fakeLava;
-	public static BlockStaticLiquid fakeWater;
 
 	//Items
 	public static Item adminTool;

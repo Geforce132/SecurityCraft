@@ -34,8 +34,9 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
-import net.geforcemods.securitycraft.misc.SonicSecuritySystemTracker;
+import net.geforcemods.securitycraft.misc.TileEntityTracker;
 import net.geforcemods.securitycraft.tileentity.IEMPAffected;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector.EnumDetectionMode;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
@@ -47,6 +48,7 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNote;
 import net.minecraft.block.BlockPortal;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityWither;
@@ -358,12 +360,14 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onBlockEventBreak(BlockEvent.BreakEvent event) {
-		if (!event.getWorld().isRemote) {
-			BlockPos pos = event.getPos();
-			World world = event.getWorld();
+		World world = event.getWorld();
+		BlockPos pos = event.getPos();
 
-			if (world.getTileEntity(pos) instanceof IModuleInventory) {
-				IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
+		if (!world.isRemote) {
+			TileEntity tile = world.getTileEntity(pos);
+
+			if (tile instanceof IModuleInventory) {
+				IModuleInventory te = (IModuleInventory) tile;
 
 				for (int i = 100; i - 100 < te.getMaxNumberOfModules(); i++) {
 					if (!te.getStackInSlot(i).isEmpty()) {
@@ -387,16 +391,21 @@ public class SCEventHandler {
 					}
 				}
 			}
+
+			EntityPlayer player = event.getPlayer();
+			IBlockState state = event.getState();
+
+			TileEntityTracker.BLOCK_CHANGE_DETECTOR.getTileEntitiesInRange(world, pos).forEach(detector -> detector.log(player, EnumDetectionMode.BREAK, pos, state));
 		}
 
-		List<EntitySentry> sentries = event.getWorld().getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
+		List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(pos));
 
 		//don't let people break the disguise block
 		if (!sentries.isEmpty() && !sentries.get(0).getDisguiseModule().isEmpty()) {
 			ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
 			Block block = ((ItemModule) disguiseModule.getItem()).getBlockAddon(disguiseModule.getTagCompound());
 
-			if (block == event.getWorld().getBlockState(event.getPos()).getBlock())
+			if (block == world.getBlockState(pos).getBlock())
 				event.setCanceled(true);
 		}
 	}
@@ -421,8 +430,10 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onBlockPlaced(PlaceEvent event) {
+		World world = event.getWorld();
+
 		//reinforced obsidian portal handling
-		if (event.getState().getBlock() == Blocks.FIRE && event.getWorld().getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian) {
+		if (event.getState().getBlock() == Blocks.FIRE && world.getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian) {
 			PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.X);
 
 			if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
@@ -433,6 +444,13 @@ public class SCEventHandler {
 				if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
 					portalSize.placePortalBlocks();
 			}
+		}
+
+		if (!world.isRemote && event.getEntity() instanceof EntityPlayer) {
+			BlockPos pos = event.getPos();
+			IBlockState state = event.getState();
+
+			TileEntityTracker.BLOCK_CHANGE_DETECTOR.getTileEntitiesInRange(world, pos).forEach(detector -> detector.log((EntityPlayer) event.getEntity(), EnumDetectionMode.PLACE, pos, state));
 		}
 	}
 
@@ -557,7 +575,7 @@ public class SCEventHandler {
 	}
 
 	private static void handlePlayedNote(World world, BlockPos pos, int vanillaNoteId, String instrumentName) {
-		List<TileEntitySonicSecuritySystem> sonicSecuritySystems = SonicSecuritySystemTracker.getSonicSecuritySystemsInRange(world, pos);
+		List<TileEntitySonicSecuritySystem> sonicSecuritySystems = TileEntityTracker.SONIC_SECURITY_SYSTEM.getTileEntitiesInRange(world, pos);
 
 		for (TileEntitySonicSecuritySystem te : sonicSecuritySystems) {
 			// If the SSS is disabled, don't listen to any notes

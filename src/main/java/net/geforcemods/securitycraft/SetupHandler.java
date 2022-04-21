@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
+import net.geforcemods.securitycraft.blocks.BlockBlockChangeDetector;
 import net.geforcemods.securitycraft.blocks.BlockBlockPocketManager;
 import net.geforcemods.securitycraft.blocks.BlockBlockPocketWall;
 import net.geforcemods.securitycraft.blocks.BlockCageTrap;
@@ -265,6 +266,7 @@ public class SetupHandler {
 		SCContent.keyPanelFloorCeilingBlock = new BlockFloorCeilingKeyPanel(Material.IRON).setCreativeTab(SecurityCraft.tabSCTechnical).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("floor_ceiling_key_panel").setTranslationKey("securitycraft:key_panel");
 		SCContent.keyPanelWallBlock = new BlockWallKeyPanel(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("wall_key_panel").setTranslationKey("securitycraft:key_panel");
 		SCContent.sonicSecuritySystem = new BlockSonicSecuritySystem(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("sonic_security_system").setTranslationKey("securitycraft:sonic_security_system");
+		SCContent.blockChangeDetector = new BlockBlockChangeDetector(Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("block_change_detector").setTranslationKey("securitycraft:block_change_detector");
 	}
 
 	public static void setupMines() {

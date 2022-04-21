@@ -226,10 +226,6 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 		if (state.getRenderType() == EnumBlockRenderType.MODEL) {
 			BlockRendererDispatcher blockRenderer = mc.getBlockRendererDispatcher();
 			IBakedModel blockModel = blockRenderer.getModelForState(state);
-			//			int color = mc.getBlockColors().getColor(state, null, null);
-			//			float r = (color >> 16 & 255) / 255.0F;
-			//			float g = (color >> 8 & 255) / 255.0F;
-			//			float b = (color & 255) / 255.0F;
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder buffer = tessellator.getBuffer();
 

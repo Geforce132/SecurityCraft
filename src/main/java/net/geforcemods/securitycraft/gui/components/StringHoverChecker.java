@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiButton;
 
 public class StringHoverChecker extends HoverChecker {
 	private List<String> lines;
-	private final TogglePictureButton button;
+	private final IToggleableButton button;
 
 	public StringHoverChecker(int top, int bottom, int left, int right, String line) {
 		this(top, bottom, left, right, Arrays.asList(line));
@@ -26,7 +26,7 @@ public class StringHoverChecker extends HoverChecker {
 	public StringHoverChecker(GuiButton button, List<String> lines) {
 		super(button);
 		this.lines = lines;
-		this.button = button instanceof TogglePictureButton ? (TogglePictureButton) button : null;
+		this.button = button instanceof IToggleableButton ? (IToggleableButton) button : null;
 	}
 
 	public String getName() {

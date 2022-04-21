@@ -27,9 +27,9 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.gui.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.gui.components.HoverChecker;
 import net.geforcemods.securitycraft.gui.components.IngredientDisplay;
-import net.geforcemods.securitycraft.gui.components.PatronScrollList;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -618,7 +618,7 @@ public class GuiSCManual extends GuiScreen {
 		moduleInventory = false;
 	}
 
-	class PatronList extends PatronScrollList {
+	class PatronList extends ColorableScrollPanel {
 		private final int slotHeight = 12;
 		private final ExecutorService executor = Executors.newSingleThreadExecutor();
 		private Future<List<String>> patronRequestFuture;
@@ -633,7 +633,7 @@ public class GuiSCManual extends GuiScreen {
 		private final int border = 4;
 
 		public PatronList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight) {
-			super(client, width, height, top, top + height, left, 12, screenWidth, screenHeight);
+			super(client, width, height, top, top + height, left, 12, screenWidth, screenHeight, new Color(0xC0, 0xBF, 0xBB, 0xB2), new Color(0xD0, 0xBF, 0xBB, 0xB2), new Color(0x8E, 0x82, 0x70, 0xFF), new Color(0x80, 0x70, 0x55, 0xFF), new Color(0xD1, 0xBF, 0xA1, 0xFF));
 
 			fetchErrorLines = fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:scManual.patreon.error").getFormattedText(), listWidth);
 			noPatronsLines = fontRenderer.listFormattedStringToWidth(Utils.localize("advancements.empty").getFormattedText(), listWidth - 10);
