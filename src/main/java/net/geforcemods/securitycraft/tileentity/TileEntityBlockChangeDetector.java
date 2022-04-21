@@ -51,9 +51,9 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 		IBlockState thisState = world.getBlockState(pos);
 
 		if (hasModule(EnumModuleType.REDSTONE)) {
-			world.setBlockState(pos, thisState.withProperty(BlockBlockChangeDetector.POWERED, true));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.blockChangeDetector);
-			world.scheduleUpdate(pos, SCContent.blockChangeDetector, signalLength.get());
+			world.setBlockState(this.pos, thisState.withProperty(BlockBlockChangeDetector.POWERED, true));
+			BlockUtils.updateIndirectNeighbors(world, this.pos, SCContent.blockChangeDetector);
+			world.scheduleUpdate(this.pos, SCContent.blockChangeDetector, signalLength.get());
 		}
 
 		entries.add(new ChangeEntry(player.getName(), player.getGameProfile().getId(), System.currentTimeMillis(), action, pos, state));
