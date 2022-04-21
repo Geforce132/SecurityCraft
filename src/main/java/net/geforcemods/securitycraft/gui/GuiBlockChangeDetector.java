@@ -125,8 +125,17 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 				dateFormat.format(new Date(entry.timestamp))
 			//@formatter:on
 			).stream().map(Object::toString).filter(s -> !s.isEmpty()).map(TextComponentString::new).collect(Collectors.toList());
+			Block block = entry.state.getBlock();
+			int meta = block.getMetaFromState(entry.state);
+			ItemStack stack = new ItemStack(block, 1, meta);
+			String blockName;
 
-			changeEntryList.addEntry(new ContentSavingCollapsileTextList(-1, 0, 0, 154, Utils.localize(entry.state.getBlock()).getFormattedText(), list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), changeEntryList::isHovered, entry.action, entry.state.getBlock()));
+			if (stack.isEmpty())
+				blockName = Utils.localize(block).getFormattedText();
+			else
+				blockName = Utils.localize(stack.getTranslationKey() + ".name").getFormattedText();
+
+			changeEntryList.addEntry(new ContentSavingCollapsileTextList(-1, 0, 0, 154, blockName, list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), changeEntryList::isHovered, entry.action, entry.state.getBlock()));
 		}
 
 		ItemStack filteredStack = inventorySlots.getSlot(0).getStack();
