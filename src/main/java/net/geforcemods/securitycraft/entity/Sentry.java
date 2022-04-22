@@ -410,7 +410,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 			if (tag.contains("InstalledModule")) {
 				ItemStack module = ItemStack.of(tag.getCompound("InstalledModule"));
 
-				if (!module.isEmpty() && module.getItem() instanceof ModuleItem) {
+				if (!module.isEmpty() && module.getItem() instanceof ModuleItem moduleItem && moduleItem.getBlockAddon(module.getOrCreateTag()) != null) {
 					be.insertModule(module);
 					level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
 				}
