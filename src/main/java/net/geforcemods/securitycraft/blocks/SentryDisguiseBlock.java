@@ -29,6 +29,11 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+		return state.getValue(INVISIBLE);
+	}
+
+	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		return state.getValue(INVISIBLE) ? Shapes.empty() : Shapes.block();
 	}
