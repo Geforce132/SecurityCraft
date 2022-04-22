@@ -271,6 +271,16 @@ public class SCEventHandler {
 		if (!(event.getWorld() instanceof Level level))
 			return;
 
+		//don't let players in creative mode break the disguise block. it's not possible to break it in other gamemodes
+		if (event.getPlayer().isCreative()) {
+			List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(event.getPos()));
+
+			if (!sentries.isEmpty()) {
+				event.setCanceled(true);
+				return;
+			}
+		}
+
 		if (!level.isClientSide()) {
 			BlockPos pos = event.getPos();
 
@@ -303,14 +313,6 @@ public class SCEventHandler {
 			BlockState state = event.getState();
 
 			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(level, pos).forEach(detector -> detector.log(player, DetectionMode.BREAK, pos, state));
-		}
-
-		//don't let players in creative mode break the disguise block. it's not possible to break it in other gamemodes
-		if (event.getPlayer().isCreative()) {
-			List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(event.getPos()));
-
-			if (!sentries.isEmpty())
-				event.setCanceled(true);
 		}
 	}
 
