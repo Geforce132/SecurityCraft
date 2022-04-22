@@ -35,7 +35,7 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		return state.getValue(INVISIBLE) ? Shapes.empty() : Shapes.block();
+		return state.getValue(INVISIBLE) ? Shapes.empty() : super.getShape(state, level, pos, ctx);
 	}
 
 	@Override
@@ -45,12 +45,12 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		return Shapes.block();
+		return state.getValue(INVISIBLE) ? Shapes.block() : super.getShape(state, level, pos, ctx);
 	}
 
 	@Override
 	public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-		return state.getValue(INVISIBLE) ? Shapes.empty() : Shapes.block();
+		return state.getValue(INVISIBLE) ? Shapes.empty() : super.getOcclusionShape(state, level, pos);
 	}
 
 	@Override
