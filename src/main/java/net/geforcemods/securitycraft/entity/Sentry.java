@@ -410,9 +410,12 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 
 		entityData.set(OWNER, owner);
 		getSentryDisguiseBlockEntity().ifPresent(be -> {
-			if (!be.hasModule(ModuleType.DISGUISE)) {
-				if (tag.contains("InstalledModule")) {
-					be.insertModule(ItemStack.of(tag.getCompound("InstalledModule")));
+			//put the old module, if it exists, into the new disguise block
+			if (tag.contains("InstalledModule")) {
+				ItemStack module = ItemStack.of(tag.getCompound("InstalledModule"));
+
+				if (!module.isEmpty() && module.getItem() instanceof ModuleItem) {
+					be.insertModule(module);
 					level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
 				}
 			}
