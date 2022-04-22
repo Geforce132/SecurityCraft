@@ -6,6 +6,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
@@ -68,8 +69,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
 
-public class Sentry extends PathfinderMob implements RangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
-{
+public class Sentry extends PathfinderMob implements RangedAttackMob { //needs to be a creature so it can target a player, ai is also only given to living entities
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner> defineId(Sentry.class, Owner.getSerializer());
 	private static final EntityDataAccessor<CompoundTag> ALLOWLIST = SynchedEntityData.<CompoundTag> defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
 	private static final EntityDataAccessor<Boolean> HAS_SPEED_MODULE = SynchedEntityData.<Boolean> defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
@@ -89,14 +89,12 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	}
 
 	public void setupSentry(Player player) {
-		Owner owner = new Owner(player.getName().getString(), Player.createPlayerUUID(player.getGameProfile()).toString());
-
-		entityData.set(OWNER, owner);
+		entityData.set(OWNER, new Owner(player.getName().getString(), Player.createPlayerUUID(player.getGameProfile()).toString()));
 		entityData.set(ALLOWLIST, new CompoundTag());
 		entityData.set(HAS_SPEED_MODULE, false);
 		entityData.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
 		entityData.set(HEAD_ROTATION, 0.0F);
-		getSentryDisguiseBlockEntity().ifPresent(be -> be.setOwner(owner.getUUID(), owner.getName()));
+		getSentryDisguiseBlockEntity(); //here to set the disguise block and its owner
 	}
 
 	@Override
@@ -131,8 +129,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 				animate = true;
 			}
 
-			if (animate) //no else if because animate can be changed in the above if statement
-			{
+			if (animate) { //no else if because animate can be changed in the above if statement
 				if (animateUpwards && headYTranslation > UPWARDS_ANIMATION_LIMIT) {
 					headYTranslation -= ANIMATION_STEP_SIZE;
 
@@ -315,8 +312,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	}
 
 	@Override
-	public float getEyeHeight(Pose pose) //the sentry's eyes are higher so that it can see players even if it's inside a block when disguised - this also makes bullets spawn higher
-	{
+	public float getEyeHeight(Pose pose) { //the sentry's eyes are higher so that it can see players even if it's inside a block when disguised - this also makes bullets spawn higher
 		return 1.5F;
 	}
 
@@ -518,10 +514,20 @@ public class Sentry extends PathfinderMob implements RangedAttackMob //needs to 
 	 *         optional if it doesn't exist
 	 */
 	public Optional<DisguisableBlockEntity> getSentryDisguiseBlockEntity() {
-		if (level.getBlockState(blockPosition()).getBlock() != SCContent.SENTRY_DISGUISE.get())
-			level.setBlockAndUpdate(blockPosition(), SCContent.SENTRY_DISGUISE.get().defaultBlockState());
+		BlockEntity be;
 
-		BlockEntity be = level.getBlockEntity(blockPosition());
+		if (level.getBlockState(blockPosition()).getBlock() != SCContent.SENTRY_DISGUISE.get()) {
+			level.setBlockAndUpdate(blockPosition(), SCContent.SENTRY_DISGUISE.get().defaultBlockState());
+			be = level.getBlockEntity(blockPosition());
+
+			if (be instanceof IOwnable ownable) {
+				Owner owner = getOwner();
+
+				ownable.setOwner(owner.getUUID(), owner.getName());
+			}
+		}
+		else
+			be = level.getBlockEntity(blockPosition());
 
 		if (be instanceof DisguisableBlockEntity dbe)
 			return Optional.of(dbe);
