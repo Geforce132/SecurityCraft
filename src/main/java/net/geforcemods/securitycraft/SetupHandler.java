@@ -37,6 +37,7 @@ import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.blocks.BlockSentryDisguise;
 import net.geforcemods.securitycraft.blocks.BlockSonicSecuritySystem;
 import net.geforcemods.securitycraft.blocks.BlockTrophySystem;
 import net.geforcemods.securitycraft.blocks.BlockWallKeyPanel;
@@ -267,6 +268,7 @@ public class SetupHandler {
 		SCContent.keyPanelWallBlock = new BlockWallKeyPanel(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("wall_key_panel").setTranslationKey("securitycraft:key_panel");
 		SCContent.sonicSecuritySystem = new BlockSonicSecuritySystem(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("sonic_security_system").setTranslationKey("securitycraft:sonic_security_system");
 		SCContent.blockChangeDetector = new BlockBlockChangeDetector(Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("block_change_detector").setTranslationKey("securitycraft:block_change_detector");
+		SCContent.sentryDisguise = new BlockSentryDisguise(Material.AIR).setBlockUnbreakable().setHardness(3600000.8F).setRegistryName("sentry_disguise");
 	}
 
 	public static void setupMines() {

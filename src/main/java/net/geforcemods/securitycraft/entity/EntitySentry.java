@@ -1,15 +1,20 @@
 package net.geforcemods.securitycraft.entity;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blocks.BlockSentryDisguise;
 import net.geforcemods.securitycraft.entity.ai.EntityAIAttackRangedIfEnabled;
 import net.geforcemods.securitycraft.entity.ai.EntityAITargetNearestPlayerOrMob;
 import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
+import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -57,10 +62,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class EntitySentry extends EntityCreature implements IRangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
-{
+public class EntitySentry extends EntityCreature implements IRangedAttackMob { //needs to be a creature so it can target a player, ai is also only given to living entities
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner> createKey(EntitySentry.class, Owner.getSerializer());
-	private static final DataParameter<NBTTagCompound> DISGUISE_MODULE = EntityDataManager.<NBTTagCompound> createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
 	private static final DataParameter<NBTTagCompound> ALLOWLIST = EntityDataManager.<NBTTagCompound> createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
 	private static final DataParameter<Boolean> HAS_SPEED_MODULE = EntityDataManager.<Boolean> createKey(EntitySentry.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer> createKey(EntitySentry.class, DataSerializers.VARINT);
@@ -73,6 +76,11 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	public boolean animateUpwards = true;
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
+	/**
+	 * @deprecated Only used for upgrading old sentries
+	 */
+	@Deprecated
+	private ItemStack oldModule = ItemStack.EMPTY;
 
 	public EntitySentry(World world) {
 		super(world);
@@ -87,18 +95,17 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		super(world);
 		setSize(1.0F, 1.0F);
 		dataManager.set(OWNER, owner);
-		dataManager.set(DISGUISE_MODULE, new NBTTagCompound());
 		dataManager.set(ALLOWLIST, new NBTTagCompound());
 		dataManager.set(HAS_SPEED_MODULE, false);
 		dataManager.set(MODE, EnumSentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
+		getSentryDisguiseBlockEntity(); //here to set the disguise block and its owner
 	}
 
 	@Override
 	protected void entityInit() {
 		super.entityInit();
 		dataManager.register(OWNER, new Owner());
-		dataManager.register(DISGUISE_MODULE, new NBTTagCompound());
 		dataManager.register(ALLOWLIST, new NBTTagCompound());
 		dataManager.register(HAS_SPEED_MODULE, false);
 		dataManager.register(MODE, EnumSentryMode.CAMOUFLAGE_HP.ordinal());
@@ -121,6 +128,18 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 			if (state.getBlock().isAir(state, world, downPos) || world.getCollisionBoxes(null, new AxisAlignedBB(downPos)).isEmpty())
 				remove();
+
+			if (!oldModule.isEmpty()) {
+				getSentryDisguiseBlockEntity().ifPresent(be -> {
+					//put the old module, if it exists, into the new disguise block
+					if (!oldModule.isEmpty() && oldModule.getItem() instanceof ItemModule && ((ItemModule) oldModule.getItem()).getBlockAddon(oldModule.getTagCompound()) != null) {
+						be.insertModule(oldModule);
+						world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(BlockSentryDisguise.INVISIBLE, false));
+					}
+
+					oldModule = ItemStack.EMPTY;
+				});
+			}
 		}
 		else {
 			if (!animate && headYTranslation > 0.0F && getMode().isAggressive()) {
@@ -174,16 +193,10 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 			else if (item == SCContent.disguiseModule) {
 				ItemStack module = getDisguiseModule();
 
-				if (!module.isEmpty()) { //drop the old module as to not override it with the new one
+				if (!module.isEmpty()) //drop the old module as to not override it with the new one
 					Block.spawnAsEntity(world, pos, module);
 
-					Block block = ((ItemModule) module.getItem()).getBlockAddon(module.getTagCompound());
-
-					if (block == world.getBlockState(pos).getBlock())
-						world.setBlockState(pos, Blocks.AIR.getDefaultState());
-				}
-
-				setDisguiseModule(player.getHeldItemMainhand());
+				addDisguiseModule(player.getHeldItemMainhand());
 
 				if (!player.isCreative())
 					player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
@@ -221,7 +234,8 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				if (hasSpeedModule())
 					Block.spawnAsEntity(world, pos, new ItemStack(SCContent.speedModule));
 
-				dataManager.set(DISGUISE_MODULE, new NBTTagCompound());
+				getSentryDisguiseBlockEntity().ifPresent(be -> be.removeModule(EnumModuleType.DISGUISE));
+				world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(BlockSentryDisguise.INVISIBLE, true));
 				dataManager.set(ALLOWLIST, new NBTTagCompound());
 				dataManager.set(HAS_SPEED_MODULE, false);
 			}
@@ -258,16 +272,10 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	public void remove() {
 		BlockPos pos = getPosition();
 
-		if (!getDisguiseModule().isEmpty()) {
-			Block block = ((ItemModule) getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTagCompound());
-
-			if (block == world.getBlockState(pos).getBlock())
-				world.setBlockState(pos, Blocks.AIR.getDefaultState());
-		}
-
 		Block.spawnAsEntity(world, pos, new ItemStack(SCContent.sentry));
 		Block.spawnAsEntity(world, pos, getDisguiseModule()); //if there is none, nothing will drop
 		Block.spawnAsEntity(world, pos, getAllowlistModule()); //if there is none, nothing will drop
+		world.setBlockState(pos, Blocks.AIR.getDefaultState());
 
 		if (hasSpeedModule())
 			Block.spawnAsEntity(world, pos, new ItemStack(SCContent.speedModule));
@@ -399,7 +407,6 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tag) {
 		tag.setTag("TileEntityData", getOwnerTag());
-		tag.setTag("InstalledModule", getDisguiseModule().writeToNBT(new NBTTagCompound()));
 		tag.setTag("InstalledWhitelist", getAllowlistModule().writeToNBT(new NBTTagCompound()));
 		tag.setBoolean("HasSpeedModule", hasSpeedModule());
 		tag.setInteger("SentryMode", dataManager.get(MODE));
@@ -421,7 +428,12 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		Owner owner = Owner.fromCompound(teTag);
 
 		dataManager.set(OWNER, owner);
-		dataManager.set(DISGUISE_MODULE, tag.getCompoundTag("InstalledModule"));
+
+		if (tag.hasKey("InstalledModule"))
+			oldModule = new ItemStack(tag.getCompoundTag("InstalledModule"));
+		else
+			oldModule = ItemStack.EMPTY;
+
 		dataManager.set(ALLOWLIST, tag.getCompoundTag("InstalledWhitelist"));
 		dataManager.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		dataManager.set(MODE, tag.getInteger("SentryMode"));
@@ -437,21 +449,19 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	/**
-	 * Sets the sentry's disguise module and places a block if possible
+	 * Adds a disguise module to the sentry and places a block if possible
 	 *
 	 * @param module The module to set
 	 */
-	public void setDisguiseModule(ItemStack module) {
-		ItemStack disguiseStack = ((ItemModule) module.getItem()).getAddonAsStack(module.getTagCompound());
-
-		if (!disguiseStack.isEmpty()) {
-			IBlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getStateFromMeta(disguiseStack.getHasSubtypes() ? disguiseStack.getItemDamage() : 0);
-
-			if (world.isAirBlock(getPosition()))
-				world.setBlockState(getPosition(), state.isFullBlock() ? state : Blocks.AIR.getDefaultState());
+	public void addDisguiseModule(ItemStack module) {
+		if (((ItemModule) module.getItem()).getBlockAddon(module.getTagCompound()) != null) {
+			getSentryDisguiseBlockEntity().ifPresent(be -> {
+				//remove a possibly existing old disguise module
+				be.removeModule(EnumModuleType.DISGUISE);
+				be.insertModule(module);
+				world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(BlockSentryDisguise.INVISIBLE, false));
+			});
 		}
-
-		dataManager.set(DISGUISE_MODULE, module.writeToNBT(new NBTTagCompound()));
 	}
 
 	/**
@@ -476,12 +486,12 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	 * @return The disguise module that is added to this sentry. ItemStack.EMPTY if none available
 	 */
 	public ItemStack getDisguiseModule() {
-		NBTTagCompound tag = dataManager.get(DISGUISE_MODULE);
+		Optional<TileEntityDisguisable> be = getSentryDisguiseBlockEntity();
 
-		if (tag == null || tag.isEmpty())
-			return ItemStack.EMPTY;
+		if (be.isPresent())
+			return be.get().getModule(EnumModuleType.DISGUISE);
 		else
-			return new ItemStack(tag);
+			return ItemStack.EMPTY;
 	}
 
 	/**
@@ -515,6 +525,32 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	 */
 	public float getHeadYTranslation() {
 		return headYTranslation;
+	}
+
+	/**
+	 * @return An optional containing the block entity of the block that the sentry uses to disguise itself, or an empty
+	 *         optional if it doesn't exist
+	 */
+	public Optional<TileEntityDisguisable> getSentryDisguiseBlockEntity() {
+		TileEntity be;
+
+		if (world.getBlockState(getPosition()).getBlock() != SCContent.sentryDisguise) {
+			world.setBlockState(getPosition(), SCContent.sentryDisguise.getDefaultState());
+			be = world.getTileEntity(getPosition());
+
+			if (be instanceof IOwnable) {
+				Owner owner = getOwner();
+
+				((IOwnable) be).setOwner(owner.getUUID(), owner.getName());
+			}
+		}
+		else
+			be = world.getTileEntity(getPosition());
+
+		if (be instanceof TileEntityDisguisable)
+			return Optional.of((TileEntityDisguisable) be);
+		else
+			return Optional.empty();
 	}
 
 	public boolean isTargetingAllowedPlayer(EntityLivingBase potentialTarget) {

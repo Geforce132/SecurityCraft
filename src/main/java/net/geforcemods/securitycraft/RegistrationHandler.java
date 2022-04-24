@@ -79,6 +79,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
+import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityIronFence;
@@ -290,6 +291,7 @@ public class RegistrationHandler {
 		event.getRegistry().register(SCContent.keyPanelWallBlock);
 		registerBlock(event, SCContent.sonicSecuritySystem, (ItemBlock) SCContent.sonicSecuritySystemItem, PageType.SINGLE_ITEM);
 		registerBlock(event, SCContent.blockChangeDetector);
+		event.getRegistry().register(SCContent.sentryDisguise);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -441,6 +443,7 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(TileEntitySonicSecuritySystem.class, new ResourceLocation("securitycraft:sonic_security_system"));
 		GameRegistry.registerTileEntity(TileEntityReinforcedDoor.class, new ResourceLocation("securitycraft:reinforced_door"));
 		GameRegistry.registerTileEntity(TileEntityBlockChangeDetector.class, new ResourceLocation("securitycraft:block_change_detector"));
+		GameRegistry.registerTileEntity(TileEntityDisguisable.class, new ResourceLocation("securitycraft:disguisable"));
 	}
 
 	@SubscribeEvent

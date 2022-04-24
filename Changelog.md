@@ -3,10 +3,12 @@
 - New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity
 - New: Codebreakers can now hack Keycard Readers
 - Change: Codebreakers will now always open briefcases when in Creative mode without a chance of failing
+- Change: The Sentry's body is now solid
 - API: Split IPasswordProtected into two interfaces (IPasswordProtected and ICodebreakable), meaning blocks can now be hacked by the codebreaker without needing to be password protected
 - API: Removed IPasswordProtected#isCodebreakable
 - Fix: Breaking the block another block with modules is attached to does not drop the modules
 - Fix: Breaking the block a Key Panel is attached to, does not drop the Key Panel
+- Fix: Disguised blocks from sentries can be retrieved by using pistons or other means
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 

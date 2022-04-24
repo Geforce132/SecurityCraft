@@ -363,6 +363,16 @@ public class SCEventHandler {
 		World world = event.getWorld();
 		BlockPos pos = event.getPos();
 
+		//don't let players in creative mode break the disguise block. it's not possible to break it in other gamemodes
+		if (event.getPlayer().isCreative()) {
+			List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
+
+			if (!sentries.isEmpty()) {
+				event.setCanceled(true);
+				return;
+			}
+		}
+
 		if (!world.isRemote) {
 			TileEntity tile = world.getTileEntity(pos);
 
@@ -396,17 +406,6 @@ public class SCEventHandler {
 			IBlockState state = event.getState();
 
 			TileEntityTracker.BLOCK_CHANGE_DETECTOR.getTileEntitiesInRange(world, pos).forEach(detector -> detector.log(player, EnumDetectionMode.BREAK, pos, state));
-		}
-
-		List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(pos));
-
-		//don't let people break the disguise block
-		if (!sentries.isEmpty() && !sentries.get(0).getDisguiseModule().isEmpty()) {
-			ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
-			Block block = ((ItemModule) disguiseModule.getItem()).getBlockAddon(disguiseModule.getTagCompound());
-
-			if (block == world.getBlockState(pos).getBlock())
-				event.setCanceled(true);
 		}
 	}
 
