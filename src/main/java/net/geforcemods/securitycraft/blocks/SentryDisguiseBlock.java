@@ -45,7 +45,7 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		return state.getValue(INVISIBLE) ? Shapes.block() : super.getShape(state, level, pos, ctx);
+		return state.getValue(INVISIBLE) ? Shapes.block() : super.getCollisionShape(state, level, pos, ctx);
 	}
 
 	@Override
