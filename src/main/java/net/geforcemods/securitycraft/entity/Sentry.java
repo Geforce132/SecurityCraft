@@ -224,13 +224,6 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 				}
 			}
 			else if (item == SCContent.UNIVERSAL_BLOCK_MODIFIER.get()) {
-				if (!getDisguiseModule().isEmpty()) {
-					Block block = ((ModuleItem) getDisguiseModule().getItem()).getBlockAddon(getDisguiseModule().getTag());
-
-					if (block == level.getBlockState(pos).getBlock())
-						level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-				}
-
 				Block.popResource(level, pos, getDisguiseModule());
 				Block.popResource(level, pos, getAllowlistModule());
 
@@ -279,7 +272,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 		Block.popResource(level, pos, new ItemStack(SCContent.SENTRY.get()));
 		Block.popResource(level, pos, getDisguiseModule()); //if there is none, nothing will drop
 		Block.popResource(level, pos, getAllowlistModule()); //if there is none, nothing will drop
-		level.setBlockAndUpdate(blockPosition(), Blocks.AIR.defaultBlockState());
+		level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 
 		if (hasSpeedModule())
 			Block.popResource(level, pos, new ItemStack(SCContent.SPEED_MODULE.get()));
