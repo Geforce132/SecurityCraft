@@ -110,7 +110,7 @@ public class SCManualScreen extends Screen {
 		startX = (width - 256) / 2;
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addRenderableWidget(new ChangePageButton(startX + 210, startY + 188, true, b -> nextPage()));
-		addRenderableWidget(new ChangePageButton(startX + 16, startY + 188, false, b -> previousPage()));
+		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, false, b -> previousPage()));
 		addRenderableWidget(nextSubpage = new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
 		addRenderableWidget(previousSubpage = new ChangePageButton(startX + 155, startY + 97, false, b -> previousSubpage()));
 		addRenderableWidget(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, TextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
