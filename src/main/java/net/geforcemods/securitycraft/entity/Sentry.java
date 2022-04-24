@@ -97,23 +97,6 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 		this(SCContent.eTypeSentry.get(), world);
 	}
 
-	@Override
-	public void baseTick() {
-		super.baseTick();
-
-		if (!oldModule.isEmpty()) {
-			getSentryDisguiseBlockEntity().ifPresent(be -> {
-				//put the old module, if it exists, into the new disguise block
-				if (!oldModule.isEmpty() && oldModule.getItem() instanceof ModuleItem && ((ModuleItem) oldModule.getItem()).getBlockAddon(oldModule.getOrCreateTag()) != null) {
-					be.insertModule(oldModule);
-					level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
-				}
-
-				oldModule = ItemStack.EMPTY;
-			});
-		}
-	}
-
 	public void setupSentry(PlayerEntity player) {
 		entityData.set(OWNER, new Owner(player.getName().getString(), PlayerEntity.createPlayerUUID(player.getGameProfile()).toString()));
 		entityData.set(ALLOWLIST, new CompoundNBT());
@@ -148,6 +131,18 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 
 			if (level.getBlockState(downPos).isAir() || level.noCollision(new AxisAlignedBB(downPos)))
 				remove();
+
+			if (!oldModule.isEmpty()) {
+				getSentryDisguiseBlockEntity().ifPresent(be -> {
+					//put the old module, if it exists, into the new disguise block
+					if (!oldModule.isEmpty() && oldModule.getItem() instanceof ModuleItem && ((ModuleItem) oldModule.getItem()).getBlockAddon(oldModule.getOrCreateTag()) != null) {
+						be.insertModule(oldModule);
+						level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
+					}
+
+					oldModule = ItemStack.EMPTY;
+				});
+			}
 		}
 		else {
 			if (!animate && headYTranslation > 0.0F && getMode().isAggressive()) {
