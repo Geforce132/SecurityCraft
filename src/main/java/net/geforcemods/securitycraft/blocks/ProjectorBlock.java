@@ -41,10 +41,10 @@ import net.minecraftforge.fmllegacy.network.NetworkHooks;
 public class ProjectorBlock extends DisguisableBlock {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("tooltip.securitycraft:projector").setStyle(Utils.GRAY_STYLE);
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	private static final VoxelShape NORTH = Stream.of(Block.box(3, 5, 0.9, 6, 8, 1.9), Block.box(0, 3, 1, 16, 10, 16), Block.box(2, 8, 0.5, 7, 9, 1), Block.box(2, 4, 0.5, 7, 5, 1), Block.box(6, 5, 0.5, 7, 8, 1), Block.box(2, 5, 0.5, 3, 8, 1), Block.box(0, 0, 1, 2, 3, 3), Block.box(14, 0, 1, 16, 3, 3), Block.box(14, 0, 14, 16, 3, 16), Block.box(0, 0, 14, 2, 3, 16)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElse(Shapes.block());
-	private static final VoxelShape SOUTH = Stream.of(Block.box(0, 3, 0, 16, 10, 15), Block.box(10, 5, 14.1, 13, 8, 15.100000000000001), Block.box(9, 8, 15, 14, 9, 15.5), Block.box(9, 4, 15, 14, 5, 15.5), Block.box(9, 5, 15, 10, 8, 15.5), Block.box(13, 5, 15, 14, 8, 15.5), Block.box(14, 0, 13, 16, 3, 15), Block.box(0, 0, 13, 2, 3, 15), Block.box(0, 0, 0, 2, 3, 2), Block.box(14, 0, 0, 16, 3, 2)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElse(Shapes.block());
-	private static final VoxelShape WEST = Stream.of(Block.box(0.5, 5, 13, 1, 8, 14), Block.box(0.5, 5, 9, 1, 8, 10), Block.box(0.5, 4, 9, 1, 5, 14), Block.box(0.5, 8, 9, 1, 9, 14), Block.box(0.75, 5, 10, 1.75, 8, 13), Block.box(1, 0, 14, 3, 3, 16), Block.box(14, 0, 14, 16, 3, 16), Block.box(14, 0, 0, 16, 3, 2), Block.box(1, 0, 0, 3, 3, 2), Block.box(1, 3, 0, 16, 10, 16)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElse(Shapes.block());
-	private static final VoxelShape EAST = Stream.of(Block.box(15, 5, 2, 15.5, 8, 3), Block.box(15, 5, 6, 15.5, 8, 7), Block.box(15, 4, 2, 15.5, 5, 7), Block.box(15, 8, 2, 15.5, 9, 7), Block.box(14.25, 5, 3, 15.25, 8, 6), Block.box(13, 0, 0, 15, 3, 2), Block.box(0, 0, 0, 2, 3, 2), Block.box(0, 0, 14, 2, 3, 16), Block.box(13, 0, 14, 15, 3, 16), Block.box(0, 3, 0, 15, 10, 16)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElse(Shapes.block());
+	private static final VoxelShape NORTH = Stream.of(Block.box(12, 0, 12, 15, 2, 15), Block.box(1, 2, 1, 15, 7, 15), Block.box(9, 2, 15, 14, 7, 16), Block.box(12, 0, 1, 15, 2, 4), Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 0, 12, 4, 2, 15)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+	private static final VoxelShape SOUTH = Stream.of(Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 2, 1, 15, 7, 15), Block.box(2, 2, 0, 7, 7, 1), Block.box(1, 0, 12, 4, 2, 15), Block.box(12, 0, 12, 15, 2, 15), Block.box(12, 0, 1, 15, 2, 4)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+	private static final VoxelShape WEST = Stream.of(Block.box(12, 0, 1, 15, 2, 4), Block.box(1, 2, 1, 15, 7, 15), Block.box(15, 2, 2, 16, 7, 7), Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 0, 12, 4, 2, 15), Block.box(12, 0, 12, 15, 2, 15)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+	private static final VoxelShape EAST = Stream.of(Block.box(1, 0, 12, 4, 2, 15), Block.box(1, 2, 1, 15, 7, 15), Block.box(0, 2, 9, 1, 7, 14), Block.box(12, 0, 12, 15, 2, 15), Block.box(12, 0, 1, 15, 2, 4), Block.box(1, 0, 1, 4, 2, 4)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
 	public ProjectorBlock(Block.Properties properties) {
 		super(properties);
@@ -59,10 +59,10 @@ public class ProjectorBlock extends DisguisableBlock {
 			return disguisedState.getShape(level, pos, ctx);
 		else
 			return switch (disguisedState.getValue(FACING)) {
-				case NORTH -> SOUTH;
-				case EAST -> WEST;
-				case SOUTH -> NORTH;
-				case WEST -> EAST;
+				case NORTH -> NORTH;
+				case EAST -> EAST;
+				case SOUTH -> SOUTH;
+				case WEST -> WEST;
 				default -> Shapes.block();
 			};
 	}
