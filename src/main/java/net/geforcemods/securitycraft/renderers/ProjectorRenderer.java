@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.renderers;
 
-import java.util.Random;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -26,7 +24,6 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay);
 
 		if (be.isActive() && !be.isEmpty()) {
-			Random random = new Random();
 			BlockState state = be.getProjectedState();
 			BlockPos pos;
 
@@ -44,7 +41,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 					if (pos != null && be.getLevel().isEmptyBlock(pos)) {
 						for (RenderType renderType : RenderType.chunkBufferLayers()) {
 							if (ItemBlockRenderTypes.canRenderInLayer(state, renderType))
-								Minecraft.getInstance().getBlockRenderer().renderBatched(state, pos, be.getLevel(), pose, buffer.getBuffer(renderType), true, random);
+								Minecraft.getInstance().getBlockRenderer().renderBatched(state, pos, be.getLevel(), pose, buffer.getBuffer(renderType), true, be.getLevel().random);
 						}
 
 						ClientHandler.PROJECTOR_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay);
