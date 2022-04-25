@@ -404,21 +404,23 @@ public class SCEventHandler {
 		Level level = event.getPlayer().level;
 
 		if (level.getBlockEntity(event.getPos()) instanceof ICodebreakable codebreakable) {
-			if (ConfigHandler.SERVER.allowCodebreakerItem.get()) {
+			double chance = ConfigHandler.SERVER.codebreakerChance.get();
+
+			if (chance < 0.0D) {
+				Block block = level.getBlockState(event.getPos()).getBlock();
+
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
+			}
+			else {
 				if (event.getPlayer().getItemInHand(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
 					event.getPlayer().getItemInHand(event.getHand()).hurtAndBreak(1, event.getPlayer(), p -> p.broadcastBreakEvent(event.getHand()));
 
-				if (event.getPlayer().isCreative() || new Random().nextInt(3) == 1)
+				if (event.getPlayer().isCreative() || new Random().nextDouble() < chance)
 					return codebreakable.onCodebreakerUsed(level.getBlockState(event.getPos()), event.getPlayer());
 				else {
 					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
 					return true;
 				}
-			}
-			else {
-				Block block = level.getBlockState(event.getPos()).getBlock();
-
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
 			}
 		}
 
