@@ -45,6 +45,7 @@ public class SCTags {
 	}
 
 	public static class Items {
+		public static final TagKey<Item> CAN_INTERACT_WITH_DOORS = tag("can_interact_with_doors");
 		public static final TagKey<Item> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final TagKey<Item> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final TagKey<Item> REINFORCED_BUTTONS = tag("reinforced/buttons");
