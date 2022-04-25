@@ -10,6 +10,7 @@
 - Fix: Breaking the block a Key Panel is attached to, does not drop the Key Panel
 - Fix: Disguised blocks from sentries can be retrieved by using pistons or other means
 - Fix: The Admin Tool and Universal Key Changer do not work on doors
+- Fix: The Keypad Door can only be accessed with an empty hand
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 

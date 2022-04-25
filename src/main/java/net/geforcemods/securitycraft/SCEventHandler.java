@@ -237,7 +237,9 @@ public class SCEventHandler {
 			if (!(item instanceof ItemBlock)) {
 				Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
 
-				if (block == SCContent.keypadDoor || block == SCContent.reinforcedDoor || block == SCContent.reinforcedIronTrapdoor || block == SCContent.scannerDoor)
+				if (block == SCContent.keypadDoor)
+					event.setUseItem(Result.DENY);
+				else if (block == SCContent.reinforcedDoor || block == SCContent.reinforcedIronTrapdoor || block == SCContent.scannerDoor)
 					event.setCanceled(true);
 			}
 		}
