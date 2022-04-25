@@ -18,6 +18,14 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	protected void addTags() {
 		//@formatter:off
 		//securitycraft tags
+		tag(SCTags.Items.CAN_INTERACT_WITH_DOORS).add(
+				SCContent.ADMIN_TOOL.get(),
+				SCContent.CODEBREAKER.get(),
+				SCContent.SONIC_SECURITY_SYSTEM_ITEM.get(),
+				SCContent.UNIVERSAL_BLOCK_MODIFIER.get(),
+				SCContent.UNIVERSAL_BLOCK_REMOVER.get(),
+				SCContent.UNIVERSAL_KEY_CHANGER.get(),
+				SCContent.UNIVERSAL_OWNER_CHANGER.get());
 		copy(SCTags.Blocks.REINFORCED_ACACIA_LOGS, SCTags.Items.REINFORCED_ACACIA_LOGS);
 		copy(SCTags.Blocks.REINFORCED_BIRCH_LOGS, SCTags.Items.REINFORCED_BIRCH_LOGS);
 		copy(SCTags.Blocks.REINFORCED_BUTTONS, SCTags.Items.REINFORCED_BUTTONS);

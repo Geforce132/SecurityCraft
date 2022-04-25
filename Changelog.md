@@ -2,6 +2,7 @@
 
 - New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity
 - New: Codebreakers can now hack Keycard Readers
+- New: Item tag to control which items can interact with reinforced doors, scanner doors, keypad doors, and reinforced iron trapdoors: securitycraft:can_interact_with_doors
 - Change: Codebreakers will now always open briefcases when in Creative mode without a chance of failing
 - Change: The Sentry's body is now solid
 - API: Split IPasswordProtected into two interfaces (IPasswordProtected and ICodebreakable), meaning blocks can now be hacked by the codebreaker without needing to be password protected
@@ -12,6 +13,7 @@
 - Fix: Reinforced Iron Trapdoor textures do not rotate and aren't oriented the same way open as closed
 - Fix: Reinforced Ice blocks melt unintentionally
 - Fix: Disguised blocks from sentries can be retrieved by using pistons or other means
+- Fix: The Admin Tool and Universal Key Changer do not work on doors
 - Removed: Some unnecessary menu types. This may result in a "missing registry entries" message showing up, which can be accepted
 - Misc.: More texture and model changes
 
