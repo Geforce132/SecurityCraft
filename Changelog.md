@@ -2,9 +2,10 @@
 
 - New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity
 - New: Codebreakers can now hack Keycard Readers
-- New: Item tag to control which items can interact with reinforced doors, scanner doors, keypad doors, and reinforced iron trapdoors: securitycraft:can_interact_with_doors
+- New: Item tag "securitycraft:can_interact_with_doors" to control which items can interact with reinforced doors, scanner doors, keypad doors, and reinforced iron trapdoors
+- New: Config option "codebreaker_chance" to set the chance of the codebreaker successfully hacking a block
 - Change: Codebreakers will now always open briefcases when in Creative mode without a chance of failing
-- Change: The Sentry's body is now solid
+- Change: The Sentry's body is now solid if the sentry is not disguised
 - API: Split IPasswordProtected into two interfaces (IPasswordProtected and ICodebreakable), meaning blocks can now be hacked by the codebreaker without needing to be password protected
 - API: Removed IPasswordProtected#isCodebreakable
 - Fix: The recipe for reinforced glass panes is incorrect
@@ -16,6 +17,7 @@
 - Fix: The Admin Tool and Universal Key Changer do not work on doors
 - Fix: The Keypad Door can only be accessed with an empty hand
 - Removed: Some unnecessary menu types. This may result in a "missing registry entries" message showing up, which can be accepted
+- Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 - Misc.: More texture and model changes
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------

@@ -70,14 +70,21 @@ public class KeycardReaderBlock extends DisguisableBlock {
 					if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
 						NetworkHooks.openGui((ServerPlayerEntity) player, te, pos);
 				}
-				else if (item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
-				{
+				else if (item != SCContent.LIMITED_USE_KEYCARD.get()) { //limited use keycards are only crafting components now
 					if (isCodebreaker) {
-						if (!player.isCreative())
-							stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+						double chance = ConfigHandler.SERVER.codebreakerChance.get();
 
-						if (new Random().nextInt(3) == 1)
-							activate(world, pos, te.getSignalLength());
+						if (chance < 0.0D)
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYCARD_READER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+						else {
+							if (!player.isCreative())
+								stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+
+							if (player.isCreative() || new Random().nextDouble() < chance)
+								activate(world, pos, te.getSignalLength());
+							else
+								PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+						}
 					}
 					else {
 						IFormattableTextComponent feedback = insertCard(world, pos, te, stack, player);

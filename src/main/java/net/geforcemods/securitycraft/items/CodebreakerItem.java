@@ -37,14 +37,14 @@ public class CodebreakerItem extends Item {
 		ItemStack codebreaker = player.getItemInHand(hand);
 
 		if (hand == Hand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
-			if (!ConfigHandler.SERVER.allowCodebreakerItem.get()) {
+			double chance = ConfigHandler.SERVER.codebreakerChance.get();
+
+			if (chance < 0.0D)
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.BRIEFCASE.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-				return ActionResult.success(codebreaker);
-			}
 			else {
 				codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				if (!world.isClientSide && (player.isCreative() || new Random().nextInt(3) == 1)) {
+				if (!world.isClientSide && (player.isCreative() || new Random().nextDouble() < chance)) {
 					ItemStack briefcase = player.getOffhandItem();
 
 					NetworkHooks.openGui((ServerPlayerEntity) player, new INamedContainerProvider() {
