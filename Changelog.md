@@ -9,6 +9,7 @@
 - Fix: Breaking the block another block with modules is attached to does not drop the modules
 - Fix: Breaking the block a Key Panel is attached to, does not drop the Key Panel
 - Fix: Disguised blocks from sentries can be retrieved by using pistons or other means
+- Fix: The Admin Tool and Universal Key Changer do not work on doors
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 
