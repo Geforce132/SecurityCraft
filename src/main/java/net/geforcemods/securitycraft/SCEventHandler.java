@@ -602,21 +602,23 @@ public class SCEventHandler {
 		TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
 
 		if (tileEntity instanceof ICodebreakable) {
-			if (ConfigHandler.allowCodebreakerItem) {
+			double chance = ConfigHandler.codebreakerChance;
+
+			if (chance < 0.0D) {
+				Block block = world.getBlockState(event.getPos()).getBlock();
+
+				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+			}
+			else {
 				if (event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker)
 					event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());
 
-				if (event.getEntityPlayer().isCreative() || new Random().nextInt(3) == 1)
+				if (event.getEntityPlayer().isCreative() || new Random().nextDouble() < chance)
 					return ((ICodebreakable) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer());
 				else {
 					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize("item.securitycraft:codebreaker.name"), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 					return true;
 				}
-			}
-			else {
-				Block block = world.getBlockState(event.getPos()).getBlock();
-
-				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 			}
 		}
 

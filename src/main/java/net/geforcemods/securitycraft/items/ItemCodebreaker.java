@@ -32,14 +32,14 @@ public class ItemCodebreaker extends Item {
 		ItemStack codebreaker = player.getHeldItem(hand);
 
 		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {
-			if (!ConfigHandler.allowCodebreakerItem) {
+			double chance = ConfigHandler.codebreakerChance;
+
+			if (chance < 0.0D)
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.briefcase.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-				return ActionResult.newResult(EnumActionResult.SUCCESS, codebreaker);
-			}
 			else {
 				codebreaker.damageItem(1, player);
 
-				if (!world.isRemote && (player.isCreative() || new Random().nextInt(3) == 1))
+				if (!world.isRemote && (player.isCreative() || new Random().nextDouble() < chance))
 					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:codebreaker.name"), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);

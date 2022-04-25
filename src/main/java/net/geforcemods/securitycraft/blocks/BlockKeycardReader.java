@@ -95,20 +95,27 @@ public class BlockKeycardReader extends BlockDisguisable {
 					if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
 						player.openGui(SecurityCraft.instance, GuiHandler.KEYCARD_READER_ID, world, pos.getX(), pos.getY(), pos.getZ());
 				}
-				else if (item != SCContent.limitedUseKeycard) //limited use keycards are only crafting components now
-				{
+				else if (item != SCContent.limitedUseKeycard) { //limited use keycards are only crafting components now
 					if (isCodebreaker) {
-						if (!player.isCreative())
-							stack.damageItem(1, player);
+						double chance = ConfigHandler.codebreakerChance;
 
-						if (new Random().nextInt(3) == 1)
-							activate(world, pos, state, te.getSignalLength());
+						if (chance < 0.0D)
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(this), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+						else {
+							if (!player.isCreative())
+								stack.damageItem(1, player);
+
+							if (player.isCreative() || new Random().nextDouble() < chance)
+								activate(world, pos, state, te.getSignalLength());
+							else
+								PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+						}
 					}
 					else {
 						ITextComponent feedback = insertCard(world, pos, state, te, stack, player);
 
 						if (feedback != null)
-							PlayerUtils.sendMessageToPlayer(player, new TextComponentTranslation(getTranslationKey() + ".name"), feedback, TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize(this), feedback, TextFormatting.RED);
 					}
 				}
 			}

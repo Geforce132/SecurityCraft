@@ -2,6 +2,7 @@
 
 - New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity
 - New: Codebreakers can now hack Keycard Readers
+- New: Config option "codebreaker_chance" to set the chance of the codebreaker successfully hacking a block
 - Change: Codebreakers will now always open briefcases when in Creative mode without a chance of failing
 - Change: The Sentry's body is now solid
 - API: Split IPasswordProtected into two interfaces (IPasswordProtected and ICodebreakable), meaning blocks can now be hacked by the codebreaker without needing to be password protected
@@ -11,6 +12,7 @@
 - Fix: Disguised blocks from sentries can be retrieved by using pistons or other means
 - Fix: The Admin Tool and Universal Key Changer do not work on doors
 - Fix: The Keypad Door can only be accessed with an empty hand
+- Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 

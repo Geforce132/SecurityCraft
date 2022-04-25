@@ -1,17 +1,21 @@
 package net.geforcemods.securitycraft;
 
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.LangKey;
 import net.minecraftforge.common.config.Config.Name;
+import net.minecraftforge.common.config.Config.RangeDouble;
 import net.minecraftforge.common.config.Config.RangeInt;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
 
 @Config(modid = SecurityCraft.MODID, category = "options")
 public class ConfigHandler {
 	//@formatter:off
-	@Name("Is codebreaker allowed?")
-	@LangKey("config.securitycraft:isCodebreakerAllowed")
-	public static boolean allowCodebreakerItem = true;
+	@Name("codebreaker_chance")
+	@RangeDouble(min = -1.0D, max = 1.0D)
+	@Comment({"The chance for the codebreaker to successfully hack a block. 0.33 is 33%. Set to a negative value to disable the codebreaker.",
+		"Using the codebreaker when this is set to 0.0 will still damage the item, while negative values do not damage it."})
+	public static double codebreakerChance = 0.33D;
 
 	@Name("Is admin tool allowed?")
 	@LangKey("config.securitycraft:allowAdminTool")
