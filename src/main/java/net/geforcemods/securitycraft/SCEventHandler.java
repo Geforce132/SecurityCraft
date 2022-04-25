@@ -167,7 +167,6 @@ public class SCEventHandler {
 	}
 
 	//disallow rightclicking doors, fixes wrenches from other mods being able to switch their state
-	//side effect for keypad door: it is now only openable with an empty hand
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void highestPriorityOnRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
 		ItemStack stack = event.getItemStack();
@@ -175,7 +174,9 @@ public class SCEventHandler {
 		if (!stack.isEmpty() && !stack.getItem().is(SCTags.Items.CAN_INTERACT_WITH_DOORS)) {
 			Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
 
-			if (block == SCContent.KEYPAD_DOOR.get() || block == SCContent.REINFORCED_DOOR.get() || block == SCContent.REINFORCED_IRON_TRAPDOOR.get() || block == SCContent.SCANNER_DOOR.get())
+			if (block == SCContent.KEYPAD_DOOR.get())
+				event.setUseItem(Result.DENY);
+			else if (block == SCContent.REINFORCED_DOOR.get() || block == SCContent.REINFORCED_IRON_TRAPDOOR.get() || block == SCContent.SCANNER_DOOR.get())
 				event.setCanceled(true);
 		}
 	}
