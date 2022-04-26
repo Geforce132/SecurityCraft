@@ -20,18 +20,14 @@ import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.data.SingleItemRecipeBuilder;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.Potions;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
-import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 
 public class RecipeGenerator extends RecipeProvider {
@@ -41,25 +37,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	@Override
 	protected final void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
-		ItemStack healingStack = new ItemStack(Items.POTION);
-		ItemStack strongHealingStack = new ItemStack(Items.POTION);
-		ItemStack harmingStack = new ItemStack(Items.POTION);
-		ItemStack strongHarmingStack = new ItemStack(Items.POTION);
-		CompoundNBT healingNBT = new CompoundNBT();
-		CompoundNBT strongHealingNBT = new CompoundNBT();
-		CompoundNBT harmingNBT = new CompoundNBT();
-		CompoundNBT strongHarmingNBT = new CompoundNBT();
-
-		healingNBT.putString("Potion", Potions.HEALING.getRegistryName().toString());
-		strongHealingNBT.putString("Potion", Potions.STRONG_HEALING.getRegistryName().toString());
-		harmingNBT.putString("Potion", Potions.HARMING.getRegistryName().toString());
-		strongHarmingNBT.putString("Potion", Potions.STRONG_HARMING.getRegistryName().toString());
-		healingStack.setTag(healingNBT);
-		strongHealingStack.setTag(strongHealingNBT);
-		harmingStack.setTag(harmingNBT);
-		strongHarmingStack.setTag(strongHarmingNBT);
-
-		//combine keycard with limited use keycard to get keycards with the a configurable limited amount of uses
+		//combine keycard with limited use keycard to get keycards with a configurable limited amount of uses
 		CustomRecipeBuilder.special(LimitedUseKeycardRecipe.serializer).save(consumer, "limited_use_keycards");
 
 		//@formatter:off
@@ -108,38 +86,6 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('C', SCContent.KEYPAD_CHEST.get())
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.FAKE_LAVA_BUCKET.get())
-		.group("securitycraft:fake_liquids")
-		.pattern("P")
-		.pattern("B")
-		.define('P', new CustomNBTIngredient(healingStack))
-		.define('B', Items.LAVA_BUCKET)
-		.unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava_normal"));
-		ShapedRecipeBuilder.shaped(SCContent.FAKE_LAVA_BUCKET.get())
-		.group("securitycraft:fake_liquids")
-		.pattern("P")
-		.pattern("B")
-		.define('P', new CustomNBTIngredient(strongHealingStack))
-		.define('B', Items.LAVA_BUCKET)
-		.unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava_strong"));
-		ShapedRecipeBuilder.shaped(SCContent.FAKE_WATER_BUCKET.get())
-		.group("securitycraft:fake_liquids")
-		.pattern("P")
-		.pattern("B")
-		.define('P', new CustomNBTIngredient(harmingStack))
-		.define('B', Items.WATER_BUCKET)
-		.unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_water_normal"));
-		ShapedRecipeBuilder.shaped(SCContent.FAKE_WATER_BUCKET.get())
-		.group("securitycraft:fake_liquids")
-		.pattern("P")
-		.pattern("B")
-		.define('P', new CustomNBTIngredient(strongHarmingStack))
-		.define('B', Items.WATER_BUCKET)
-		.unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_water_strong"));
 		ShapedRecipeBuilder.shaped(SCContent.CAGE_TRAP.get())
 		.pattern("BBB")
 		.pattern("GRG")
@@ -1351,12 +1297,5 @@ public class RecipeGenerator extends RecipeProvider {
 	@Override
 	public String getName() {
 		return "SecurityCraft Recipes";
-	}
-
-	//helper because IngredientNBT's constructor is protected
-	private static class CustomNBTIngredient extends NBTIngredient {
-		public CustomNBTIngredient(ItemStack stack) {
-			super(stack);
-		}
 	}
 }

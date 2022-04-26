@@ -45,13 +45,20 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.IDataSerializer;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.Potions;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -89,6 +96,47 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
 		event.put(SCContent.eTypeSentry.get(), MobEntity.createMobAttributes().build());
+	}
+
+	@SubscribeEvent
+	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+		for (int i = 0; i < SCSounds.values().length; i++) {
+			event.getRegistry().register(SCSounds.values()[i].event);
+		}
+	}
+
+	@SubscribeEvent
+	public static void registerRecipeSerializer(RegistryEvent.Register<IRecipeSerializer<?>> event) {
+		event.getRegistry().register(new SpecialRecipeSerializer<>(LimitedUseKeycardRecipe::new).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_recipe")));
+	}
+
+	@SubscribeEvent
+	public static void registerDataSerializerEntries(RegistryEvent.Register<DataSerializerEntry> event) {
+		event.getRegistry().register(new DataSerializerEntry(new IDataSerializer<Owner>() {
+			@Override
+			public void write(PacketBuffer buf, Owner value) {
+				buf.writeUtf(value.getName());
+				buf.writeUtf(value.getUUID());
+			}
+
+			@Override
+			public Owner read(PacketBuffer buf) {
+				String name = buf.readUtf(Integer.MAX_VALUE / 4);
+				String uuid = buf.readUtf(Integer.MAX_VALUE / 4);
+
+				return new Owner(name, uuid);
+			}
+
+			@Override
+			public DataParameter<Owner> createAccessor(int id) {
+				return new DataParameter<>(id, this);
+			}
+
+			@Override
+			public Owner copy(Owner value) {
+				return new Owner(value.getName(), value.getUUID());
+			}
+		}).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "owner")));
 	}
 
 	public static void registerPackets() {
@@ -133,44 +181,28 @@ public class RegistrationHandler {
 		SecurityCraft.channel.registerMessage(index++, UpdateSliderValue.class, UpdateSliderValue::encode, UpdateSliderValue::decode, UpdateSliderValue::onMessage);
 	}
 
-	@SubscribeEvent
-	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
-		for (int i = 0; i < SCSounds.values().length; i++) {
-			event.getRegistry().register(SCSounds.values()[i].event);
-		}
+	public static void registerFakeLiquidRecipes() {
+		BrewingRecipeRegistry.addRecipe(Ingredient.of(Items.WATER_BUCKET), getPotionIngredient(Potions.HARMING, Potions.STRONG_HARMING), new ItemStack(SCContent.FAKE_WATER_BUCKET.get()));
+		BrewingRecipeRegistry.addRecipe(Ingredient.of(Items.LAVA_BUCKET), getPotionIngredient(Potions.HEALING, Potions.STRONG_HEALING), new ItemStack(SCContent.FAKE_LAVA_BUCKET.get()));
 	}
 
-	@SubscribeEvent
-	public static void registerRecipeSerializer(RegistryEvent.Register<IRecipeSerializer<?>> event) {
-		event.getRegistry().register(new SpecialRecipeSerializer<>(LimitedUseKeycardRecipe::new).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_recipe")));
-	}
-
-	@SubscribeEvent
-	public static void registerDataSerializerEntries(RegistryEvent.Register<DataSerializerEntry> event) {
-		event.getRegistry().register(new DataSerializerEntry(new IDataSerializer<Owner>() {
-			@Override
-			public void write(PacketBuffer buf, Owner value) {
-				buf.writeUtf(value.getName());
-				buf.writeUtf(value.getUUID());
-			}
-
-			@Override
-			public Owner read(PacketBuffer buf) {
-				String name = buf.readUtf(Integer.MAX_VALUE / 4);
-				String uuid = buf.readUtf(Integer.MAX_VALUE / 4);
-
-				return new Owner(name, uuid);
-			}
-
-			@Override
-			public DataParameter<Owner> createAccessor(int id) {
-				return new DataParameter<>(id, this);
-			}
-
-			@Override
-			public Owner copy(Owner value) {
-				return new Owner(value.getName(), value.getUUID());
-			}
-		}).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "owner")));
+	private static Ingredient getPotionIngredient(Potion normalPotion, Potion strongPotion) {
+		ItemStack normalPotionStack = new ItemStack(Items.POTION);
+		ItemStack strongPotionStack = new ItemStack(Items.POTION);
+		ItemStack normalSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
+		ItemStack strongSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
+		ItemStack normalLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
+		ItemStack strongLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
+		CompoundNBT normalNBT = new CompoundNBT();
+		CompoundNBT strongNBT = new CompoundNBT();
+		normalNBT.putString("Potion", normalPotion.getRegistryName().toString());
+		strongNBT.putString("Potion", strongPotion.getRegistryName().toString());
+		normalPotionStack.setTag(normalNBT.copy());
+		strongPotionStack.setTag(strongNBT.copy());
+		normalSplashPotionStack.setTag(normalNBT.copy());
+		strongSplashPotionStack.setTag(strongNBT.copy());
+		normalLingeringPotionStack.setTag(normalNBT.copy());
+		strongLingeringPotionStack.setTag(strongNBT.copy());
+		return Ingredient.of(normalPotionStack, strongPotionStack, normalSplashPotionStack, strongSplashPotionStack, normalLingeringPotionStack, strongLingeringPotionStack);
 	}
 }
