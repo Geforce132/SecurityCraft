@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.misc;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextComponentTranslation;
 
 public class SCManualPage {
@@ -12,7 +10,6 @@ public class SCManualPage {
 	private final TextComponentTranslation helpInfo;
 	private final String designedBy;
 	private final boolean hasRecipeDescription;
-	private final NonNullList<Ingredient> customRecipe;
 	private final boolean configValue;
 
 	public SCManualPage(Item item, PageType pageType, TextComponentTranslation title, TextComponentTranslation helpInfo, String designedBy, boolean hasRecipeDescription) {
@@ -23,7 +20,6 @@ public class SCManualPage {
 		this.designedBy = designedBy;
 		this.hasRecipeDescription = hasRecipeDescription;
 		configValue = true;
-		customRecipe = null;
 	}
 
 	public SCManualPage(Item item, PageType pageType, TextComponentTranslation title, TextComponentTranslation helpInfo, String designedBy, boolean hasRecipeDescription, boolean configValue) {
@@ -34,18 +30,6 @@ public class SCManualPage {
 		this.designedBy = designedBy;
 		this.hasRecipeDescription = hasRecipeDescription;
 		this.configValue = configValue;
-		customRecipe = null;
-	}
-
-	public SCManualPage(Item item, TextComponentTranslation title, TextComponentTranslation helpInfo, NonNullList<Ingredient> customRecipe) {
-		this.item = item;
-		this.pageType = PageType.SINGLE_ITEM;
-		this.title = title;
-		this.helpInfo = helpInfo;
-		this.designedBy = "";
-		this.hasRecipeDescription = false;
-		this.configValue = true;
-		this.customRecipe = customRecipe;
 	}
 
 	public Item getItem() {
@@ -70,14 +54,6 @@ public class SCManualPage {
 
 	public boolean hasRecipeDescription() {
 		return hasRecipeDescription;
-	}
-
-	public NonNullList<Ingredient> getRecipe() {
-		return customRecipe;
-	}
-
-	public boolean hasCustomRecipe() {
-		return customRecipe != null;
 	}
 
 	public boolean isRecipeDisabled() {

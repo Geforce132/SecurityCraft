@@ -118,16 +118,18 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializer;
-import net.minecraft.potion.PotionUtils;
+import net.minecraft.potion.PotionType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -142,10 +144,6 @@ import net.minecraftforge.registries.DataSerializerEntry;
 
 @EventBusSubscriber
 public class RegistrationHandler {
-	//@formatter:off
-	private static ItemStack harmingPotion = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HARMING);
-	private static ItemStack healingPotion = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HEALING);
-	//@formatter:on
 	private static List<Item> itemBlocks = new ArrayList<>();
 	private static List<Block> blockPages = new ArrayList<>();
 	private static Map<PageType, List<Block>> pageTypeBlocks = new EnumMap<>(PageType.class);
@@ -343,8 +341,8 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.limitedUseKeycard, PageType.SINGLE_ITEM, ConfigHandler.ableToCraftLUKeycard);
 		registerItem(event, SCContent.remoteAccessMine);
 		registerItem(event, SCContent.remoteAccessSentry);
-		registerItemWithCustomRecipe(event, SCContent.fWaterBucket, ItemStack.EMPTY, harmingPotion, ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.WATER_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY);
-		registerItemWithCustomRecipe(event, SCContent.fLavaBucket, ItemStack.EMPTY, healingPotion, ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.LAVA_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY);
+		registerItem(event, SCContent.fWaterBucket);
+		registerItem(event, SCContent.fLavaBucket);
 		registerItem(event, SCContent.universalBlockModifier);
 		registerItem(event, SCContent.redstoneModule);
 		registerItem(event, SCContent.allowlistModule);
@@ -551,6 +549,8 @@ public class RegistrationHandler {
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 		event.getRegistry().register(new DyeBriefcaseRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dye_briefcase")));
 		event.getRegistry().register(new LimitedUseKeycardRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_conversion")));
+		registerFakeLiquidRecipes(new ItemStack(Items.WATER_BUCKET), PotionTypes.HARMING, PotionTypes.STRONG_HARMING, new ItemStack(SCContent.fWaterBucket));
+		registerFakeLiquidRecipes(new ItemStack(Items.LAVA_BUCKET), PotionTypes.HEALING, PotionTypes.STRONG_HEALING, new ItemStack(SCContent.fLavaBucket));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -1028,19 +1028,29 @@ public class RegistrationHandler {
 		}
 	}
 
-	/**
-	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft
-	 * manual item. Also overrides the default recipe that would've been drawn in the manual with a new recipe.
-	 */
-	private static void registerItemWithCustomRecipe(RegistryEvent.Register<Item> event, Item item, ItemStack... customRecipe) {
-		event.getRegistry().register(item);
+	private static void registerFakeLiquidRecipes(ItemStack input, PotionType normalPotion, PotionType strongPotion, ItemStack output) {
+		ItemStack normalPotionStack = new ItemStack(Items.POTIONITEM);
+		ItemStack strongPotionStack = new ItemStack(Items.POTIONITEM);
+		ItemStack normalSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
+		ItemStack strongSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
+		ItemStack normalLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
+		ItemStack strongLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
+		NBTTagCompound normalNBT = new NBTTagCompound();
+		NBTTagCompound strongNBT = new NBTTagCompound();
+		normalNBT.setString("Potion", normalPotion.getRegistryName().toString());
+		strongNBT.setString("Potion", strongPotion.getRegistryName().toString());
+		normalPotionStack.setTagCompound(normalNBT.copy());
+		strongPotionStack.setTagCompound(strongNBT.copy());
+		normalSplashPotionStack.setTagCompound(normalNBT.copy());
+		strongSplashPotionStack.setTagCompound(strongNBT.copy());
+		normalLingeringPotionStack.setTagCompound(normalNBT.copy());
+		strongLingeringPotionStack.setTagCompound(strongNBT.copy());
 
-		NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(customRecipe.length, Ingredient.EMPTY);
-
-		for (int i = 0; i < recipeItems.size(); i++) {
-			recipeItems.set(i, Ingredient.fromStacks(customRecipe[i]));
-		}
-
-		ItemSCManual.PAGES.add(new SCManualPage(item, Utils.localize(item), Utils.localize("help." + item.getTranslationKey().substring(5) + ".info"), recipeItems));
+		BrewingRecipeRegistry.addRecipe(input, normalPotionStack, output);
+		BrewingRecipeRegistry.addRecipe(input, strongPotionStack, output);
+		BrewingRecipeRegistry.addRecipe(input, normalSplashPotionStack, output);
+		BrewingRecipeRegistry.addRecipe(input, strongSplashPotionStack, output);
+		BrewingRecipeRegistry.addRecipe(input, normalLingeringPotionStack, output);
+		BrewingRecipeRegistry.addRecipe(input, strongLingeringPotionStack, output);
 	}
 }

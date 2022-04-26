@@ -361,119 +361,114 @@ public class GuiSCManual extends GuiScreen {
 			this.designedBy = null;
 
 		pageType = page.getPageType();
+		recipe = null;
 
-		if (page.hasCustomRecipe())
-			recipe = page.getRecipe();
-		else {
+		if (pageType == PageType.SINGLE_ITEM) {
+			for (int o = 0; o < CraftingManager.REGISTRY.getKeys().size(); o++) {
+				IRecipe object = CraftingManager.REGISTRY.getObjectById(o);
+
+				if (object instanceof ShapedRecipes) {
+					ShapedRecipes recipe = (ShapedRecipes) object;
+
+					if (!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()) {
+						NonNullList<Ingredient> ingredients = recipe.getIngredients();
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(9, Ingredient.EMPTY);
+
+						for (int i = 0; i < ingredients.size(); i++) {
+							recipeItems.set(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()), ingredients.get(i));
+						}
+
+						this.recipe = recipeItems;
+						break;
+					}
+				}
+				else if (object instanceof ShapelessRecipes) {
+					ShapelessRecipes recipe = (ShapelessRecipes) object;
+
+					if (!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()) {
+						//don't show keycard reset recipes
+						if (recipe.getRegistryName().getPath().endsWith("_reset"))
+							continue;
+
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(recipe.recipeItems.size(), Ingredient.EMPTY);
+
+						for (int i = 0; i < recipeItems.size(); i++) {
+							recipeItems.set(i, recipe.recipeItems.get(i));
+						}
+
+						this.recipe = recipeItems;
+						break;
+					}
+				}
+			}
+		}
+		else if (pageType.hasRecipeGrid()) {
 			recipe = null;
 
-			if (pageType == PageType.SINGLE_ITEM) {
-				for (int o = 0; o < CraftingManager.REGISTRY.getKeys().size(); o++) {
-					IRecipe object = CraftingManager.REGISTRY.getObjectById(o);
+			Map<Integer, ItemStack[]> recipeStacks = new HashMap<>();
+			List<Item> pageItems = Arrays.stream(pageType.getItems().getMatchingStacks()).map(ItemStack::getItem).collect(Collectors.toList());
+			int stacksLeft = pageItems.size();
 
-					if (object instanceof ShapedRecipes) {
-						ShapedRecipes recipe = (ShapedRecipes) object;
+			for (int i = 0; i < 9; i++) {
+				recipeStacks.put(i, new ItemStack[pageItems.size()]);
+			}
 
-						if (!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()) {
-							NonNullList<Ingredient> ingredients = recipe.getIngredients();
-							NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(9, Ingredient.EMPTY);
+			for (int o = 0; o < CraftingManager.REGISTRY.getKeys().size(); o++) {
+				if (stacksLeft == 0)
+					break;
 
-							for (int i = 0; i < ingredients.size(); i++) {
-								recipeItems.set(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()), ingredients.get(i));
-							}
+				IRecipe object = CraftingManager.REGISTRY.getObjectById(o);
 
-							this.recipe = recipeItems;
-							break;
-						}
-					}
-					else if (object instanceof ShapelessRecipes) {
-						ShapelessRecipes recipe = (ShapelessRecipes) object;
+				if (object instanceof ShapedRecipes) {
+					ShapedRecipes recipe = (ShapedRecipes) object;
 
-						if (!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()) {
-							//don't show keycard reset recipes
-							if (recipe.getRegistryName().getPath().endsWith("_reset"))
+					if (!recipe.getRecipeOutput().isEmpty() && pageItems.contains(recipe.getRecipeOutput().getItem())) {
+						NonNullList<Ingredient> ingredients = recipe.getIngredients();
+
+						for (int i = 0; i < ingredients.size(); i++) {
+							ItemStack[] items = ingredients.get(i).getMatchingStacks();
+
+							if (items.length == 0)
 								continue;
 
-							NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient> withSize(recipe.recipeItems.size(), Ingredient.EMPTY);
+							int indexToAddAt = pageItems.indexOf(recipe.getRecipeOutput().getItem());
 
-							for (int i = 0; i < recipeItems.size(); i++) {
-								recipeItems.set(i, recipe.recipeItems.get(i));
-							}
-
-							this.recipe = recipeItems;
-							break;
+							//first item needs to suffice since multiple recipes are being cycled through
+							recipeStacks.get(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()))[indexToAddAt] = items[0];
 						}
+
+						stacksLeft--;
+					}
+				}
+				else if (object instanceof ShapelessRecipes) {
+					ShapelessRecipes recipe = (ShapelessRecipes) object;
+
+					if (!recipe.getRecipeOutput().isEmpty() && pageItems.contains(recipe.getRecipeOutput().getItem())) {
+						//don't show keycard reset recipes
+						if (recipe.getRegistryName().getPath().endsWith("_reset"))
+							continue;
+
+						NonNullList<Ingredient> ingredients = recipe.getIngredients();
+
+						for (int i = 0; i < ingredients.size(); i++) {
+							ItemStack[] items = ingredients.get(i).getMatchingStacks();
+
+							if (items.length == 0)
+								continue;
+
+							int indexToAddAt = pageItems.indexOf(recipe.getRecipeOutput().getItem());
+
+							//first item needs to suffice since multiple recipes are being cycled through
+							recipeStacks.get(i)[indexToAddAt] = items[0];
+						}
+
+						stacksLeft--;
 					}
 				}
 			}
-			else if (pageType.hasRecipeGrid()) {
-				recipe = null;
 
-				Map<Integer, ItemStack[]> recipeStacks = new HashMap<>();
-				List<Item> pageItems = Arrays.stream(pageType.getItems().getMatchingStacks()).map(ItemStack::getItem).collect(Collectors.toList());
-				int stacksLeft = pageItems.size();
-
-				for (int i = 0; i < 9; i++) {
-					recipeStacks.put(i, new ItemStack[pageItems.size()]);
-				}
-
-				for (int o = 0; o < CraftingManager.REGISTRY.getKeys().size(); o++) {
-					if (stacksLeft == 0)
-						break;
-
-					IRecipe object = CraftingManager.REGISTRY.getObjectById(o);
-
-					if (object instanceof ShapedRecipes) {
-						ShapedRecipes recipe = (ShapedRecipes) object;
-
-						if (!recipe.getRecipeOutput().isEmpty() && pageItems.contains(recipe.getRecipeOutput().getItem())) {
-							NonNullList<Ingredient> ingredients = recipe.getIngredients();
-
-							for (int i = 0; i < ingredients.size(); i++) {
-								ItemStack[] items = ingredients.get(i).getMatchingStacks();
-
-								if (items.length == 0)
-									continue;
-
-								int indexToAddAt = pageItems.indexOf(recipe.getRecipeOutput().getItem());
-
-								//first item needs to suffice since multiple recipes are being cycled through
-								recipeStacks.get(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()))[indexToAddAt] = items[0];
-							}
-
-							stacksLeft--;
-						}
-					}
-					else if (object instanceof ShapelessRecipes) {
-						ShapelessRecipes recipe = (ShapelessRecipes) object;
-
-						if (!recipe.getRecipeOutput().isEmpty() && pageItems.contains(recipe.getRecipeOutput().getItem())) {
-							//don't show keycard reset recipes
-							if (recipe.getRegistryName().getPath().endsWith("_reset"))
-								continue;
-
-							NonNullList<Ingredient> ingredients = recipe.getIngredients();
-
-							for (int i = 0; i < ingredients.size(); i++) {
-								ItemStack[] items = ingredients.get(i).getMatchingStacks();
-
-								if (items.length == 0)
-									continue;
-
-								int indexToAddAt = pageItems.indexOf(recipe.getRecipeOutput().getItem());
-
-								//first item needs to suffice since multiple recipes are being cycled through
-								recipeStacks.get(i)[indexToAddAt] = items[0];
-							}
-
-							stacksLeft--;
-						}
-					}
-				}
-
-				recipe = NonNullList.withSize(9, Ingredient.EMPTY);
-				recipeStacks.forEach((i, stackArray) -> recipe.set(i, Ingredient.fromStacks(Arrays.stream(stackArray).map(s -> s == null ? ItemStack.EMPTY : s).collect(Collectors.toList()).toArray(stackArray))));
-			}
+			recipe = NonNullList.withSize(9, Ingredient.EMPTY);
+			recipeStacks.forEach((i, stackArray) -> recipe.set(i, Ingredient.fromStacks(Arrays.stream(stackArray).map(s -> s == null ? ItemStack.EMPTY : s).collect(Collectors.toList()).toArray(stackArray))));
 		}
 
 		if (pageType == PageType.REINFORCED || item == Item.getItemFromBlock(SCContent.reinforcedHopper)) {
