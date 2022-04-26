@@ -41,6 +41,7 @@ import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -49,9 +50,15 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -88,6 +95,47 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
 		event.put(SCContent.SENTRY_ENTITY.get(), Mob.createMobAttributes().build());
+	}
+
+	@SubscribeEvent
+	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+		for (int i = 0; i < SCSounds.values().length; i++) {
+			event.getRegistry().register(SCSounds.values()[i].event);
+		}
+	}
+
+	@SubscribeEvent
+	public static void registerRecipeSerializer(RegistryEvent.Register<RecipeSerializer<?>> event) {
+		event.getRegistry().register(new SimpleRecipeSerializer<>(LimitedUseKeycardRecipe::new).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_recipe")));
+	}
+
+	@SubscribeEvent
+	public static void registerDataSerializerEntries(RegistryEvent.Register<DataSerializerEntry> event) {
+		event.getRegistry().register(new DataSerializerEntry(new EntityDataSerializer<Owner>() {
+			@Override
+			public void write(FriendlyByteBuf buf, Owner value) {
+				buf.writeUtf(value.getName());
+				buf.writeUtf(value.getUUID());
+			}
+
+			@Override
+			public Owner read(FriendlyByteBuf buf) {
+				String name = buf.readUtf(Integer.MAX_VALUE / 4);
+				String uuid = buf.readUtf(Integer.MAX_VALUE / 4);
+
+				return new Owner(name, uuid);
+			}
+
+			@Override
+			public EntityDataAccessor<Owner> createAccessor(int id) {
+				return new EntityDataAccessor<>(id, this);
+			}
+
+			@Override
+			public Owner copy(Owner value) {
+				return new Owner(value.getName(), value.getUUID());
+			}
+		}).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "owner")));
 	}
 
 	public static void registerPackets() {
@@ -131,44 +179,30 @@ public class RegistrationHandler {
 		SecurityCraft.channel.registerMessage(index++, UpdateSliderValue.class, UpdateSliderValue::encode, UpdateSliderValue::decode, UpdateSliderValue::onMessage);
 	}
 
-	@SubscribeEvent
-	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
-		for (int i = 0; i < SCSounds.values().length; i++) {
-			event.getRegistry().register(SCSounds.values()[i].event);
-		}
+	public static void registerFakeLiquidRecipes() {
+		BrewingRecipeRegistry.addRecipe(Ingredient.of(Items.WATER_BUCKET), getPotionIngredient(Potions.HARMING, Potions.STRONG_HARMING), new ItemStack(SCContent.FAKE_WATER_BUCKET.get()));
+		BrewingRecipeRegistry.addRecipe(Ingredient.of(Items.LAVA_BUCKET), getPotionIngredient(Potions.HEALING, Potions.STRONG_HEALING), new ItemStack(SCContent.FAKE_LAVA_BUCKET.get()));
 	}
 
-	@SubscribeEvent
-	public static void registerRecipeSerializer(RegistryEvent.Register<RecipeSerializer<?>> event) {
-		event.getRegistry().register(new SimpleRecipeSerializer<>(LimitedUseKeycardRecipe::new).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_recipe")));
-	}
+	private static Ingredient getPotionIngredient(Potion normalPotion, Potion strongPotion) {
+		ItemStack normalPotionStack = new ItemStack(Items.POTION);
+		ItemStack strongPotionStack = new ItemStack(Items.POTION);
+		ItemStack normalSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
+		ItemStack strongSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
+		ItemStack normalLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
+		ItemStack strongLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
+		CompoundTag normalNBT = new CompoundTag();
+		CompoundTag strongNBT = new CompoundTag();
 
-	@SubscribeEvent
-	public static void registerDataSerializerEntries(RegistryEvent.Register<DataSerializerEntry> event) {
-		event.getRegistry().register(new DataSerializerEntry(new EntityDataSerializer<Owner>() {
-			@Override
-			public void write(FriendlyByteBuf buf, Owner value) {
-				buf.writeUtf(value.getName());
-				buf.writeUtf(value.getUUID());
-			}
+		normalNBT.putString("Potion", normalPotion.getRegistryName().toString());
+		strongNBT.putString("Potion", strongPotion.getRegistryName().toString());
+		normalPotionStack.setTag(normalNBT.copy());
+		strongPotionStack.setTag(strongNBT.copy());
+		normalSplashPotionStack.setTag(normalNBT.copy());
+		strongSplashPotionStack.setTag(strongNBT.copy());
+		normalLingeringPotionStack.setTag(normalNBT.copy());
+		strongLingeringPotionStack.setTag(strongNBT.copy());
 
-			@Override
-			public Owner read(FriendlyByteBuf buf) {
-				String name = buf.readUtf(Integer.MAX_VALUE / 4);
-				String uuid = buf.readUtf(Integer.MAX_VALUE / 4);
-
-				return new Owner(name, uuid);
-			}
-
-			@Override
-			public EntityDataAccessor<Owner> createAccessor(int id) {
-				return new EntityDataAccessor<>(id, this);
-			}
-
-			@Override
-			public Owner copy(Owner value) {
-				return new Owner(value.getName(), value.getUUID());
-			}
-		}).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "owner")));
+		return Ingredient.of(normalPotionStack, strongPotionStack, normalSplashPotionStack, strongSplashPotionStack, normalLingeringPotionStack, strongLingeringPotionStack);
 	}
 }
