@@ -31,6 +31,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector.En
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -125,12 +126,12 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			else
 				blockName = Utils.localize(stack.getTranslationKey() + ".name").getFormattedText();
 
-			changeEntryList.addEntry(new ContentSavingCollapsileTextList(-1, 0, 0, 154, blockName, list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), changeEntryList::isHovered, entry.action, entry.state.getBlock()));
+			changeEntryList.addEntry(new ContentSavingCollapsileTextList(-1, 0, 0, 154, blockName, list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), changeEntryList::isHovered, entry.action, entry.state));
 		}
 
 		ItemStack filteredStack = inventorySlots.getSlot(0).getStack();
 
-		changeEntryList.filteredBlock = filteredStack.isEmpty() ? Blocks.AIR : ((ItemBlock) filteredStack.getItem()).getBlock();
+		changeEntryList.filteredStack = filteredStack;
 		changeEntryList.updateFilteredEntries();
 	}
 
@@ -193,11 +194,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 	@Override
 	public void sendSlotContents(Container container, int slotIndex, ItemStack stack) {
 		if (slotIndex == 0 && changeEntryList != null) {
-			if (stack.isEmpty())
-				changeEntryList.filteredBlock = Blocks.AIR;
-			else
-				changeEntryList.filteredBlock = ((ItemBlock) stack.getItem()).getBlock();
-
+			changeEntryList.filteredStack = stack;
 			changeEntryList.updateFilteredEntries();
 		}
 	}
@@ -230,7 +227,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		private List<ContentSavingCollapsileTextList> filteredEntries = new ArrayList<>();
 		private ContentSavingCollapsileTextList currentlyOpen = null;
 		private int contentHeight = 0;
-		private Block filteredBlock = Blocks.AIR;
+		private ItemStack filteredStack = ItemStack.EMPTY;
 
 		public ChangeEntryList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight) {
 			super(client, width, height, top, top + height, left, 12, screenWidth, screenHeight, new Color(0x00, 0x00, 0x00, 0x00), new Color(0x00, 0x00, 0x00, 0x00));
@@ -305,7 +302,8 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 				filteredEntries = new ArrayList<>(allEntries
 						.stream()
 						.filter(e -> currentMode == EnumDetectionMode.BOTH || currentMode == e.getMode())
-						.filter(e -> filteredBlock == Blocks.AIR || filteredBlock == e.getBlock())
+						.filter(e -> filteredStack.getItem() instanceof ItemBlock && ((ItemBlock) filteredStack.getItem()).getBlock() == e.getBlock())
+						.filter(e -> e.getBlock().getMetaFromState(e.getState()) == filteredStack.getMetadata())
 						.collect(Collectors.toList()));
 				//@formatter:on
 			}
@@ -408,13 +406,13 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 
 	class ContentSavingCollapsileTextList extends CollapsibleTextList {
 		private final EnumDetectionMode mode;
-		private final Block block;
+		private final IBlockState state;
 
-		public ContentSavingCollapsileTextList(int id, int xPos, int yPos, int width, String displayString, List<? extends ITextComponent> textLines, Consumer<CollapsibleTextList> onPress, BiPredicate<Integer, Integer> extraHoverCheck, EnumDetectionMode mode, Block block) {
+		public ContentSavingCollapsileTextList(int id, int xPos, int yPos, int width, String displayString, List<? extends ITextComponent> textLines, Consumer<CollapsibleTextList> onPress, BiPredicate<Integer, Integer> extraHoverCheck, EnumDetectionMode mode, IBlockState state) {
 			super(id, xPos, yPos, width, displayString, textLines, onPress, extraHoverCheck);
 
 			this.mode = mode;
-			this.block = block;
+			this.state = state;
 		}
 
 		public EnumDetectionMode getMode() {
@@ -422,7 +420,11 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		}
 
 		public Block getBlock() {
-			return block;
+			return state.getBlock();
+		}
+
+		public IBlockState getState() {
+			return state;
 		}
 	}
 }
