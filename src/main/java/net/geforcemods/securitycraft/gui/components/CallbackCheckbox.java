@@ -3,26 +3,26 @@ package net.geforcemods.securitycraft.gui.components;
 import java.util.function.Consumer;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-public class CallbackCheckbox extends GuiButton {
+public class CallbackCheckbox extends ClickButton {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft", "textures/gui/checkbox.png");
 	private boolean selected;
 	private final Consumer<Boolean> onChange;
 	private final int textColor;
 
 	public CallbackCheckbox(int id, int x, int y, int width, int height, String message, boolean selected, Consumer<Boolean> onChange, int textColor) {
-		super(id, x, y, width, height, message);
+		super(id, x, y, width, height, message, null);
 
 		this.selected = selected;
 		this.onChange = onChange;
 		this.textColor = textColor;
 	}
 
-	public void onPress() {
+	@Override
+	public void onClick() {
 		selected = !selected;
 		onChange.accept(selected);
 	}

@@ -16,6 +16,7 @@ import org.lwjgl.input.Mouse;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerBlockChangeDetector;
+import net.geforcemods.securitycraft.gui.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.gui.components.ClickButton;
 import net.geforcemods.securitycraft.gui.components.CollapsibleTextList;
 import net.geforcemods.securitycraft.gui.components.ColorableScrollPanel;
@@ -49,7 +50,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.config.GuiCheckBox;
 
 public class GuiBlockChangeDetector extends GuiContainer implements IContainerListener {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_change_detector.png");
@@ -59,7 +59,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 	private StringHoverChecker[] hoverCheckers = new StringHoverChecker[3];
 	private StringHoverChecker smartModuleHoverChecker;
 	private ModeButton modeButton;
-	private GuiCheckBox showAllCheckbox;
+	private CallbackCheckbox showAllCheckbox;
 	private EnumDetectionMode currentMode;
 
 	public GuiBlockChangeDetector(InventoryPlayer inv, TileEntityBlockChangeDetector te) {
@@ -89,17 +89,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			currentMode = EnumDetectionMode.values()[((ModeButton) b).getCurrentIndex()];
 			changeEntryList.updateFilteredEntries();
 		}));
-		addButton(showAllCheckbox = new GuiCheckBox(2, guiLeft + 177, guiTop + 65, "", false) {
-			@Override
-			public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
-				boolean returnValue = super.mousePressed(mc, mouseX, mouseY);
-
-				if (returnValue)
-					changeEntryList.updateFilteredEntries();
-
-				return returnValue;
-			}
-		});
+		addButton(showAllCheckbox = new CallbackCheckbox(2, guiLeft + 173, guiTop + 65, 20, 20, "", false, isSelected -> changeEntryList.updateFilteredEntries(), 0x404040));
 		hoverCheckers[0] = new StringHoverChecker(clearButton, Utils.localize("gui.securitycraft:editModule.clear").getFormattedText());
 		hoverCheckers[1] = new StringHoverChecker(modeButton, Arrays.stream(EnumDetectionMode.values()).map(e -> Utils.localize(e.getDescriptionId()).getFormattedText()).collect(Collectors.toList()));
 		hoverCheckers[2] = new StringHoverChecker(showAllCheckbox, Utils.localize("gui.securitycraft:block_change_detector.show_all_checkbox").getFormattedText());
@@ -310,7 +300,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		public void updateFilteredEntries() {
 			allEntries.forEach(e -> e.enabled = false);
 
-			if (!showAllCheckbox.isChecked()) {
+			if (!showAllCheckbox.selected()) {
 				//@formatter:off
 				filteredEntries = new ArrayList<>(allEntries
 						.stream()

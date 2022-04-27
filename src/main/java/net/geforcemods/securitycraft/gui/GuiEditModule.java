@@ -189,7 +189,7 @@ public class GuiEditModule extends GuiContainer implements GuiResponder {
 				inputField.setText("");
 				break;
 			case 5: //checkbox
-				((CallbackCheckbox) button).onPress();
+				((CallbackCheckbox) button).onClick();
 				break;
 			default:
 				return;
