@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.screen;
 
 import java.util.ArrayDeque;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -19,7 +21,6 @@ import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -27,6 +28,9 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -43,6 +47,8 @@ public class EditModuleScreen extends Screen {
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private final TranslatableComponent editModule = Utils.localize("gui.securitycraft:editModule");
 	private final ItemStack module;
+	private final List<PlayerTeam> availableTeams;
+	private final Map<PlayerTeam, Boolean> teamsListedStatus = new HashMap<>();
 	private EditBox inputField;
 	private Button addPlayerButton, editTeamsButton, removePlayerButton, copyButton, pasteButton, clearButton;
 	private int xSize = 247, ySize = 211;
@@ -53,7 +59,22 @@ public class EditModuleScreen extends Screen {
 	public EditModuleScreen(ItemStack item) {
 		super(new TranslatableComponent(item.getDescriptionId()));
 
+		availableTeams = new ArrayList<>(Minecraft.getInstance().player.getScoreboard().getPlayerTeams());
 		module = item;
+
+		if (!module.hasTag())
+			availableTeams.forEach(team -> teamsListedStatus.put(team, false));
+		else {
+			//@formatter:off
+			List<String> teamNames = module.getTag().getList("ListedTeams", Tag.TAG_STRING)
+					.stream()
+					.filter(tag -> tag instanceof StringTag)
+					.map(tag -> ((StringTag) tag).getAsString())
+					.toList();
+			//@formatter:on
+
+			availableTeams.forEach(team -> teamsListedStatus.put(team, teamNames.contains(team.getName())));
+		}
 	}
 
 	@Override
@@ -123,8 +144,17 @@ public class EditModuleScreen extends Screen {
 	}
 
 	@Override
-	public void removed() {
-		super.removed();
+	public void onClose() {
+		super.onClose();
+
+		ListTag listedTeams = new ListTag();
+
+		teamsListedStatus.forEach((team, allowed) -> {
+			if (allowed)
+				listedTeams.add(StringTag.valueOf(team.getName()));
+		});
+		module.getOrCreateTag().put("ListedTeams", listedTeams);
+		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 
 		if (minecraft != null)
 			minecraft.keyboardHandler.setSendRepeatsToGui(false);
@@ -242,9 +272,6 @@ public class EditModuleScreen extends Screen {
 	}
 
 	private void updateButtonStates() {
-		if (module.getTag() != null)
-			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
-
 		addPlayerButton.active = module.getTag() != null && !module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getValue().isEmpty();
 		removePlayerButton.active = !(module.getTag() == null || module.getTag().isEmpty() || inputField.getValue().isEmpty());
 		copyButton.active = !(module.getTag() == null || module.getTag().isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));
@@ -259,6 +286,10 @@ public class EditModuleScreen extends Screen {
 		}
 
 		return 0;
+	}
+
+	private void toggleTeam(PlayerTeam team) {
+		teamsListedStatus.put(team, !teamsListedStatus.get(team));
 	}
 
 	private void defragmentTag(CompoundTag tag) {
@@ -355,23 +386,12 @@ public class EditModuleScreen extends Screen {
 	class TeamList extends ScrollPanel {
 		private final int slotHeight = 12, listLength;
 		private int selectedIndex = -1;
-		private final List<Component> teamDisplayNames;
 		public boolean active = true;
-		@Deprecated
-		private final boolean[] enabled; //TODO: remove, this is only for testing purposes
 
 		public TeamList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left);
 
-			Collection<PlayerTeam> teams = minecraft.player.getScoreboard().getPlayerTeams();
-
-			this.teamDisplayNames = teams.stream().map(team -> team.getDisplayName()).toList();
-			listLength = teams.size();
-			enabled = new boolean[listLength];
-
-			for (int i = 0; i < enabled.length; i++) {
-				enabled[i] = false;
-			}
+			listLength = availableTeams.size();
 		}
 
 		@Override
@@ -389,9 +409,7 @@ public class EditModuleScreen extends Screen {
 			int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
 
 			if (slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
-				//TODO: toggle team
-				enabled[slotIndex] = !enabled[slotIndex];
-				minecraft.player.sendMessage(teamDisplayNames.get(slotIndex), Util.NIL_UUID);
+				toggleTeam(availableTeams.get(slotIndex));
 				minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 				return true;
 			}
@@ -409,7 +427,7 @@ public class EditModuleScreen extends Screen {
 				int slotIndex = mouseListY / slotHeight;
 
 				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
-					Component name = teamDisplayNames.get(slotIndex);
+					Component name = availableTeams.get(slotIndex).getDisplayName();
 					int length = font.width(name);
 					int baseY = top + border - (int) scrollDistance;
 
@@ -432,10 +450,11 @@ public class EditModuleScreen extends Screen {
 			//draw entry strings and indicators whether the filter is enabled
 			for (int i = 0; i < listLength; i++) {
 				int yStart = relativeY + (slotHeight * i);
+				PlayerTeam team = availableTeams.get(i);
 
-				font.draw(pose, teamDisplayNames.get(i), left + 15, yStart, 0xC6C6C6);
+				font.draw(pose, team.getDisplayName(), left + 15, yStart, 0xC6C6C6);
 				RenderSystem._setShaderTexture(0, BEACON_GUI);
-				blit(pose, left, yStart - 3, 14, 14, enabled[i] ? 88 : 110, 219, 21, 22, 256, 256);
+				blit(pose, left, yStart - 3, 14, 14, teamsListedStatus.get(team) ? 88 : 110, 219, 21, 22, 256, 256);
 			}
 		}
 

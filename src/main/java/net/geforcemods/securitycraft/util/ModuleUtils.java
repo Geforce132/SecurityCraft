@@ -9,9 +9,13 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.scores.PlayerTeam;
 
 public class ModuleUtils {
 	public static List<String> getPlayersFromModule(ItemStack stack) {
@@ -38,7 +42,7 @@ public class ModuleUtils {
 			return true;
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return getPlayersFromModule(stack).contains(name.toLowerCase());
+		return doesModuleHaveTeamOf(name, inv.getBlockEntity().getLevel(), stack) && getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
 	public static boolean isDenied(IModuleInventory inv, Entity entity) {
@@ -59,8 +63,10 @@ public class ModuleUtils {
 				return true;
 		}
 
+		String name = entity.getName().getString();
+
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return getPlayersFromModule(stack).contains(entity.getName().getString().toLowerCase());
+		return doesModuleHaveTeamOf(name, inv.getBlockEntity().getLevel(), stack) && getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
 	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableBlockEntity be) {
@@ -74,5 +80,17 @@ public class ModuleUtils {
 					stack, ((ModuleItem) stack.getItem()).getModuleType()
 			}, be);
 		}
+	}
+
+	public static boolean doesModuleHaveTeamOf(String name, Level level, ItemStack module) {
+		PlayerTeam team = level.getScoreboard().getPlayersTeam(name);
+
+		//@formatter:off
+		return team != null && module.getOrCreateTag().getList("ListedTeams", Tag.TAG_STRING)
+				.stream()
+				.filter(tag -> tag instanceof StringTag)
+				.map(tag -> ((StringTag) tag).getAsString())
+				.anyMatch(team.getName()::equals);
+		//@formatter:on
 	}
 }
