@@ -42,7 +42,7 @@ public class ModuleUtils {
 			return true;
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return doesModuleHaveTeamOf(name, inv.getBlockEntity().getLevel(), stack) && getPlayersFromModule(stack).contains(name.toLowerCase());
+		return doesModuleHaveTeamOf(name, inv.getBlockEntity().getLevel(), stack) || getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
 	public static boolean isDenied(IModuleInventory inv, Entity entity) {
@@ -66,7 +66,7 @@ public class ModuleUtils {
 		String name = entity.getName().getString();
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return doesModuleHaveTeamOf(name, inv.getBlockEntity().getLevel(), stack) && getPlayersFromModule(stack).contains(name.toLowerCase());
+		return doesModuleHaveTeamOf(name, inv.getBlockEntity().getLevel(), stack) || getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
 	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableBlockEntity be) {

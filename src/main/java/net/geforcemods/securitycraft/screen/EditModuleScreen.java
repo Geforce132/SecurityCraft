@@ -149,8 +149,8 @@ public class EditModuleScreen extends Screen {
 
 		ListTag listedTeams = new ListTag();
 
-		teamsListedStatus.forEach((team, allowed) -> {
-			if (allowed)
+		teamsListedStatus.forEach((team, listed) -> {
+			if (listed)
 				listedTeams.add(StringTag.valueOf(team.getName()));
 		});
 		module.getOrCreateTag().put("ListedTeams", listedTeams);
