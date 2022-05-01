@@ -59,7 +59,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	@Override
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
-		saveOptions(tag);
+		writeOptions(tag);
 		tag.putInt("cooldown", cooldown);
 	}
 
@@ -67,7 +67,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		loadOptions(tag);
+		readOptions(tag);
 		cooldown = tag.getInt("cooldown");
 	}
 

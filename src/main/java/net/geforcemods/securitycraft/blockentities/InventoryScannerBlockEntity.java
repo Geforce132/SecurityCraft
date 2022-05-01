@@ -256,7 +256,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	public boolean shouldProvidePower() {
-		return isModuleEnabled(ModuleType.REDSTONE) && isProvidingPower;
+		return hasModule(ModuleType.REDSTONE) && isProvidingPower;
 	}
 
 	public void setShouldProvidePower(boolean isProvidingPower) {
@@ -279,17 +279,13 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void onModuleEnabled(ItemStack stack, ModuleType module) {
-		super.onModuleEnabled(stack, module);
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
+		super.onModuleInserted(stack, module);
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-		if (connectedScanner != null) {
-			if (connectedScanner.hasModule(module))
-				connectedScanner.enableModule(module);
-			else
-				connectedScanner.insertModule(stack);
-		}
+		if (connectedScanner != null && !connectedScanner.hasModule(module))
+			connectedScanner.insertModule(stack);
 
 		if (module == ModuleType.DISGUISE) {
 			onInsertDisguiseModule(this, stack);
@@ -300,17 +296,13 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void onModuleDisabled(ItemStack stack, ModuleType module) {
-		super.onModuleDisabled(stack, module);
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
+		super.onModuleRemoved(stack, module);
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-		if (connectedScanner != null) {
-			if (hasModule(module))
-				connectedScanner.disableModule(module);
-			else
-				connectedScanner.removeModule(module);
-		}
+		if (connectedScanner != null && connectedScanner.hasModule(module))
+			connectedScanner.removeModule(module);
 
 		if (module == ModuleType.STORAGE) {
 			//first 10 slots (0-9) are the prohibited slots

@@ -8,22 +8,26 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 
 public class RefreshDisguisableModel {
 	private BlockPos pos;
 	private boolean insert;
+	private ItemStack stack;
 
 	public RefreshDisguisableModel() {}
 
-	public RefreshDisguisableModel(BlockPos pos, boolean insert) {
+	public RefreshDisguisableModel(BlockPos pos, boolean insert, ItemStack stack) {
 		this.pos = pos;
 		this.insert = insert;
+		this.stack = stack;
 	}
 
 	public static void encode(RefreshDisguisableModel message, FriendlyByteBuf buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeBoolean(message.insert);
+		buf.writeItem(message.stack);
 	}
 
 	public static RefreshDisguisableModel decode(FriendlyByteBuf buf) {
@@ -31,6 +35,7 @@ public class RefreshDisguisableModel {
 
 		message.pos = buf.readBlockPos();
 		message.insert = buf.readBoolean();
+		message.stack = buf.readItem();
 		return message;
 	}
 
@@ -40,9 +45,9 @@ public class RefreshDisguisableModel {
 
 			if (be != null) {
 				if (message.insert)
-					be.enableModule(ModuleType.DISGUISE);
+					be.insertModule(message.stack);
 				else
-					be.disableModule(ModuleType.DISGUISE);
+					be.removeModule(ModuleType.DISGUISE);
 
 				ClientHandler.refreshModelData(be.getBlockEntity());
 			}

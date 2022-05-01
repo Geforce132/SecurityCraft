@@ -183,7 +183,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements MenuProvi
 	}
 
 	public int getAttackInterval() {
-		return isModuleEnabled(ModuleType.SPEED) ? 40 : 80;
+		return hasModule(ModuleType.SPEED) ? 40 : 80;
 	}
 
 	public static enum IMSTargetingMode {

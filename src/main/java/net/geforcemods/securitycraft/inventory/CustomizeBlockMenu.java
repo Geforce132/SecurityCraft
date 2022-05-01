@@ -20,7 +20,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class CustomizeBlockMenu extends AbstractContainerMenu {
 	public IModuleInventory moduleInv;
 	private ContainerLevelAccess worldPosCallable;
-	public final int maxSlots;
+	private final int maxSlots;
 
 	public CustomizeBlockMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.mTypeCustomizeBlock, windowId);
@@ -124,31 +124,12 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 
 		@Override
 		public void onQuickCraft(ItemStack newStack, ItemStack oldStack) {
-			if ((index >= 36 || index < maxSlots) && oldStack.getItem() instanceof ModuleItem oldModule) {
-				moduleInv.disableModule(oldModule.getModuleType());
-				moduleInv.onModuleDisabled(oldStack, oldModule.getModuleType());
+			if ((index >= 36 || index < maxSlots) && oldStack.getItem() instanceof ModuleItem) {
+				moduleInv.onModuleRemoved(oldStack, ((ModuleItem) oldStack.getItem()).getModuleType());
 
 				if (moduleInv instanceof LinkableBlockEntity lbe)
 					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, lbe);
-
-				broadcastChanges();
 			}
-		}
-
-		@Override
-		public void set(ItemStack stack) {
-			super.set(stack);
-			broadcastChanges();
-		}
-
-		@Override
-		public ItemStack remove(int amount) {
-			ItemStack stack = super.remove(amount);
-
-			if (!stack.isEmpty())
-				broadcastChanges();
-
-			return stack;
 		}
 	}
 }

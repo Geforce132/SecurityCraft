@@ -32,9 +32,6 @@ public class ModuleUtils {
 	}
 
 	public static boolean isAllowed(IModuleInventory inv, String name) {
-		if (!inv.isModuleEnabled(ModuleType.ALLOWLIST))
-			return false;
-
 		ItemStack stack = inv.getModule(ModuleType.ALLOWLIST);
 
 		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone"))
@@ -45,9 +42,6 @@ public class ModuleUtils {
 	}
 
 	public static boolean isDenied(IModuleInventory inv, Entity entity) {
-		if (!inv.isModuleEnabled(ModuleType.DENYLIST))
-			return false;
-
 		ItemStack stack = inv.getModule(ModuleType.DENYLIST);
 
 		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone")) {
@@ -78,16 +72,6 @@ public class ModuleUtils {
 		else if (action == LinkedAction.MODULE_REMOVED) {
 			be.createLinkedBlockAction(action, new Object[] {
 					stack, ((ModuleItem) stack.getItem()).getModuleType()
-			}, be);
-		}
-		else if (action == LinkedAction.MODULE_ENABLED) {
-			be.createLinkedBlockAction(action, new Object[] {
-					stack
-			}, be);
-		}
-		else if (action == LinkedAction.MODULE_DISABLED) {
-			be.createLinkedBlockAction(action, new Object[] {
-					stack
 			}, be);
 		}
 	}

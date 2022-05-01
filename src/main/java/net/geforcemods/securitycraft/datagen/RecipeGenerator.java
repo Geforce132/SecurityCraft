@@ -1464,10 +1464,6 @@ public class RecipeGenerator extends RecipeProvider {
 		return "SecurityCraft Recipes";
 	}
 
-	private static InventoryChangeTrigger.TriggerInstance has(TagKey<Item> tag) {
-		return inventoryTrigger(ItemPredicate.Builder.item().of(tag).build());
-	}
-
 	//helper because IngredientNBT's constructor is protected
 	private static class CustomNBTIngredient extends NBTIngredient {
 		public CustomNBTIngredient(ItemStack stack) {

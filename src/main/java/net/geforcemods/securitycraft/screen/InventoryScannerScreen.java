@@ -35,8 +35,8 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 		super(menu, inv, title);
 		be = menu.be;
 		owns = be.getOwner().isOwner(inv.player);
-		hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
-		hasStorageModule = be.isModuleEnabled(ModuleType.STORAGE);
+		hasRedstoneModule = be.hasModule(ModuleType.REDSTONE);
+		hasStorageModule = be.hasModule(ModuleType.STORAGE);
 		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no")));
 		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")));
 

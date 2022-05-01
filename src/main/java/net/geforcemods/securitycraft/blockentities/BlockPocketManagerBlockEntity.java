@@ -146,7 +146,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 					placeQueue.clear();
 				//no more blocks left to place, assembling must be done
 				else {
-					setWalls(!isModuleEnabled(ModuleType.DISGUISE));
+					setWalls(!hasModule(ModuleType.DISGUISE));
 					PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getDescriptionId()), new TranslatableComponent("messages.securitycraft:blockpocket.assembled"), ChatFormatting.DARK_AQUA);
 				}
 
@@ -313,7 +313,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 				level.setBlockAndUpdate(blockPos, level.getBlockState(blockPos).setValue(BlockPocketWallBlock.SOLID, true));
 			}
 
-			setWalls(!isModuleEnabled(ModuleType.DISGUISE));
+			setWalls(!hasModule(ModuleType.DISGUISE));
 			return new TranslatableComponent("messages.securitycraft:blockpocket.activated");
 		}
 
@@ -551,7 +551,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 					level.setBlockAndUpdate(pos, state.setValue(BlockPocketWallBlock.SOLID, false));
 			}
 
-			if (isModuleEnabled(ModuleType.DISGUISE))
+			if (hasModule(ModuleType.DISGUISE))
 				setWalls(true);
 
 			blocks.clear();
@@ -635,16 +635,16 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	@Override
-	public void onModuleEnabled(ItemStack stack, ModuleType module) {
-		super.onModuleEnabled(stack, module);
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
+		super.onModuleInserted(stack, module);
 
 		if (enabled && module == ModuleType.DISGUISE)
 			setWalls(false);
 	}
 
 	@Override
-	public void onModuleDisabled(ItemStack stack, ModuleType module) {
-		super.onModuleDisabled(stack, module);
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
+		super.onModuleRemoved(stack, module);
 
 		if (enabled && module == ModuleType.DISGUISE)
 			setWalls(true);

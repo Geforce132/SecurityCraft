@@ -35,7 +35,7 @@ public interface ICustomizable {
 	 *
 	 * @param tag The tag to read the options from
 	 */
-	public default void loadOptions(CompoundTag tag) {
+	public default void readOptions(CompoundTag tag) {
 		if (customOptions() != null) {
 			for (Option<?> option : customOptions()) {
 				option.readFromNBT(tag);
@@ -49,7 +49,7 @@ public interface ICustomizable {
 	 * @param tag The tag to write the options to
 	 * @return The modified CompoundNBT
 	 */
-	public default CompoundTag saveOptions(CompoundTag tag) {
+	public default CompoundTag writeOptions(CompoundTag tag) {
 		if (customOptions() != null) {
 			for (Option<?> option : customOptions()) {
 				option.writeToNBT(tag);

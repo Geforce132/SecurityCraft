@@ -38,7 +38,7 @@ public class IMSBomb extends Fireball {
 
 		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
 		entityData.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
-		isFast = be.isModuleEnabled(ModuleType.SPEED);
+		isFast = be.hasModule(ModuleType.SPEED);
 	}
 
 	@Override

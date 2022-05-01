@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 
 /**
  * Simple enum that is supposed to be used in conjunction with {@link CustomizableBlockEntity}. Gives easy access to the
- * module item and name.
+ * module ItemStack and name.
  *
  * @author Geforce
  */

@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.EnumMap;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -19,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IOwnable, IModuleInventory {
 	private NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
-	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 	private Owner owner = new Owner();
 
 	public ReinforcedHopperBlockEntity(BlockPos pos, BlockState state) {
@@ -36,8 +33,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 		super.load(tag);
 
 		owner.load(tag);
-		modules = loadModuleInventory(tag);
-		moduleStates = loadModuleStates(tag);
+		modules = readModuleInventory(tag);
 	}
 
 	@Override
@@ -47,8 +43,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 		if (owner != null)
 			owner.save(tag, false);
 
-		saveModuleInventory(tag);
-		saveModuleStates(tag);
+		writeModuleInventory(tag);
 	}
 
 	@Override
@@ -108,24 +103,5 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	@Override
 	public NonNullList<ItemStack> getInventory() {
 		return modules;
-	}
-
-	@Override
-	public boolean isModuleEnabled(ModuleType module) {
-		return hasModule(module) && moduleStates.get(module);
-	}
-
-	@Override
-	public void enableModule(ModuleType module) {
-		moduleStates.put(module, hasModule(module)); //only enable if the module is present
-		setChanged();
-		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-	}
-
-	@Override
-	public void disableModule(ModuleType module) {
-		moduleStates.put(module, false);
-		setChanged();
-		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 	}
 }

@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.EnumMap;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -52,7 +51,6 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	private String passcode;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
-	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
 	public KeypadChestBlockEntity(BlockPos pos, BlockState state) {
@@ -63,9 +61,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 
-		saveModuleInventory(tag);
-		saveModuleStates(tag);
-		saveOptions(tag);
+		writeModuleInventory(tag);
+		writeOptions(tag);
 
 		if (passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
@@ -78,9 +75,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	public void load(CompoundTag tag) {
 		super.load(tag);
 
-		modules = loadModuleInventory(tag);
-		moduleStates = loadModuleStates(tag);
-		loadOptions(tag);
+		modules = readModuleInventory(tag);
+		readOptions(tag);
 		passcode = tag.getString("passcode");
 		owner.load(tag);
 	}
@@ -115,7 +111,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	protected void signalOpenCount(Level level, BlockPos pos, BlockState state, int i, int j) {
 		super.signalOpenCount(level, pos, state, i, j);
 
-		if (isModuleEnabled(ModuleType.REDSTONE))
+		if (hasModule(ModuleType.REDSTONE))
 			BlockUtils.updateIndirectNeighbors(level, pos, state.getBlock(), Direction.DOWN);
 	}
 
@@ -210,15 +206,15 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
-	public void onModuleEnabled(ItemStack stack, ModuleType module) {
-		IModuleInventory.super.onModuleEnabled(stack, module);
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
+		IModuleInventory.super.onModuleInserted(stack, module);
 
 		addOrRemoveModuleFromAttached(stack, false);
 	}
 
 	@Override
-	public void onModuleDisabled(ItemStack stack, ModuleType module) {
-		IModuleInventory.super.onModuleDisabled(stack, module);
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
+		IModuleInventory.super.onModuleRemoved(stack, module);
 
 		addOrRemoveModuleFromAttached(stack, true);
 	}
@@ -310,25 +306,6 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	@Override
 	public NonNullList<ItemStack> getInventory() {
 		return modules;
-	}
-
-	@Override
-	public boolean isModuleEnabled(ModuleType module) {
-		return hasModule(module) && moduleStates.get(module);
-	}
-
-	@Override
-	public void enableModule(ModuleType module) {
-		moduleStates.put(module, hasModule(module)); //only enable if the module is present
-		setChanged();
-		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-	}
-
-	@Override
-	public void disableModule(ModuleType module) {
-		moduleStates.put(module, false);
-		setChanged();
-		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 	}
 
 	@Override

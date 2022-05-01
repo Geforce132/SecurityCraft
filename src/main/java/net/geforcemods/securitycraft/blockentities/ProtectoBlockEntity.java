@@ -24,7 +24,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	private static final int SLOW_SPEED = 200;
 	private static final int FAST_SPEED = 100;
 	private int cooldown = 0;
-	private int ticksBetweenAttacks = isModuleEnabled(ModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
+	private int ticksBetweenAttacks = hasModule(ModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
 
 	public ProtectoBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.beTypeProtecto, pos, state);
@@ -69,16 +69,16 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	}
 
 	@Override
-	public void onModuleEnabled(ItemStack stack, ModuleType module) {
-		super.onModuleEnabled(stack, module);
+	public void onModuleInserted(ItemStack stack, ModuleType module) {
+		super.onModuleInserted(stack, module);
 
 		if (module == ModuleType.SPEED)
 			ticksBetweenAttacks = FAST_SPEED;
 	}
 
 	@Override
-	public void onModuleDisabled(ItemStack stack, ModuleType module) {
-		super.onModuleDisabled(stack, module);
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
+		super.onModuleRemoved(stack, module);
 
 		if (module == ModuleType.SPEED)
 			ticksBetweenAttacks = SLOW_SPEED;

@@ -11,27 +11,20 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 public enum LinkedAction {
 
 	/**
-	 * Used when an {@link Option} in a block entity is changed
+	 * Used when an {@link Option} in a block entity is changed. <p> Parameters: [0] The Option which changed
 	 */
 	OPTION_CHANGED,
 
 	/**
-	 * Used when a {@link ModuleType} is inserted into an IModuleInventory
+	 * Used when a {@link ModuleType} is inserted into an IModuleInventory. <p> Parameters: [0] The module's ItemStack, [1]
+	 * the module in ModuleType-form
 	 */
 	MODULE_INSERTED,
 
 	/**
-	 * Used when a {@link ModuleType} is removed from an IModuleInventory
+	 * Used when a {@link ModuleType} is removed from an IModuleInventory. <p> Parameters: [0] The module's ItemStack, [1]
+	 * the module in ModuleType-form
 	 */
-	MODULE_REMOVED,
+	MODULE_REMOVED;
 
-	/**
-	 * Used when a {@link ModuleType} is enabled
-	 */
-	MODULE_ENABLED,
-
-	/**
-	 * Used when a {@link ModuleType} is disabled
-	 */
-	MODULE_DISABLED;
 }

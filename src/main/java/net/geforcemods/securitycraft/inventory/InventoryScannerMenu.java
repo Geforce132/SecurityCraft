@@ -31,7 +31,7 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 		}
 
 		//inventory scanner storage
-		if (be.getOwner().isOwner(inventory.player) && be.isModuleEnabled(ModuleType.STORAGE)) {
+		if (be.getOwner().isOwner(inventory.player) && be.hasModule(ModuleType.STORAGE)) {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 3; j++) {
 					addSlot(new Slot(be, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));
