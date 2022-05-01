@@ -238,8 +238,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == ModuleType.SMART) {
 			for (EntityType<?> projectileType : projectileFilter.keySet()) {
@@ -264,6 +264,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	 * @return The number of ticks that the trophy takes to charge
 	 */
 	public int getCooldownTime() {
-		return hasModule(ModuleType.SPEED) ? 4 : 8;
+		return isModuleEnabled(ModuleType.SPEED) ? 4 : 8;
 	}
 }

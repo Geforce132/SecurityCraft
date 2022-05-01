@@ -60,7 +60,7 @@ public class UniversalBlockRemoverItem extends Item {
 
 				for (ItemStack module : inv.getInventory()) {
 					if (isChest)
-						((KeypadChestBlockEntity) be).addOrRemoveModuleFromAttached(module, true);
+						((KeypadChestBlockEntity) be).addOrRemoveModuleFromAttached(module, true, false);
 
 					Block.popResource(level, pos, module);
 				}

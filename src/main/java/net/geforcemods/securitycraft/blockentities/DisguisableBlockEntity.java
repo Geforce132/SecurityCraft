@@ -23,24 +23,24 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
 
 		if (module == ModuleType.DISGUISE) {
 			if (!level.isClientSide)
-				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack));
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
 			else
 				ClientHandler.putDisguisedBeRenderer(this, stack);
 		}
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == ModuleType.DISGUISE) {
 			if (!level.isClientSide)
-				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack));
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
 			else
 				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
 		}

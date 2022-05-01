@@ -20,7 +20,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class CustomizeBlockMenu extends AbstractContainerMenu {
 	public IModuleInventory moduleInv;
 	private ContainerLevelAccess worldPosCallable;
-	private final int maxSlots;
+	public final int maxSlots;
 
 	public CustomizeBlockMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.mTypeCustomizeBlock, windowId);
@@ -125,7 +125,7 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 		@Override
 		public void onQuickCraft(ItemStack newStack, ItemStack oldStack) {
 			if ((index >= 36 || index < maxSlots) && oldStack.getItem() instanceof ModuleItem) {
-				moduleInv.onModuleRemoved(oldStack, ((ModuleItem) oldStack.getItem()).getModuleType());
+				moduleInv.onModuleRemoved(oldStack, ((ModuleItem) oldStack.getItem()).getModuleType(), false);
 
 				if (moduleInv instanceof LinkableBlockEntity lbe)
 					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, lbe);
