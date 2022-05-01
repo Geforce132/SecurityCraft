@@ -45,7 +45,7 @@ public class ToggleModule {
 			if (be instanceof IModuleInventory moduleInv && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(player))) {
 				ModuleType moduleType = message.moduleType;
 
-				if (moduleInv.hasModule(moduleType))
+				if (moduleInv.isModuleEnabled(moduleType))
 					moduleInv.removeModule(moduleType, true);
 				else
 					moduleInv.insertModule(moduleInv.getModule(moduleType), true);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -289,23 +290,30 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		NonNullList<ItemStack> modules = getInventory();
 
-		for (int i = 0; i < modules.size(); i++) {
-			if (!modules.get(i).isEmpty()) {
-				if (modules.get(i).getItem() == module.getItem())
-					return;
+		//if the module is being toggled, then there should not be a check for whether the module already exists
+		if (!toggled) {
+			for (int i = 0; i < modules.size(); i++) {
+				if (!modules.get(i).isEmpty()) {
+					if (modules.get(i).getItem() == moduleItem)
+						return;
+				}
 			}
 		}
 
+		//if the module is being toggled, the test should be for the stack that matches the module. if not, the test should look for the first empty slot
+		Predicate<ItemStack> predicate = toggled ? stack -> stack.getItem() == moduleItem : stack -> stack.isEmpty();
+
 		for (int i = 0; i < modules.size(); i++) {
-			if (modules.get(i).isEmpty()) {
+			if (predicate.test(modules.get(i))) {
 				ItemStack toInsert = module.copy();
 
 				if (toggled)
 					toggleModuleState(moduleItem.getModuleType(), true);
-				else
+				else {
 					modules.set(i, toInsert);
+					onModuleInserted(toInsert, moduleItem.getModuleType(), toggled);
+				}
 
-				onModuleInserted(toInsert, moduleItem.getModuleType(), toggled);
 				break;
 			}
 		}
@@ -326,10 +334,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 				if (toggled)
 					toggleModuleState(module, false);
-				else
+				else {
 					modules.set(i, ItemStack.EMPTY);
-
-				onModuleRemoved(removed, module, toggled);
+					onModuleRemoved(removed, module, toggled);
+				}
 			}
 		}
 	}
