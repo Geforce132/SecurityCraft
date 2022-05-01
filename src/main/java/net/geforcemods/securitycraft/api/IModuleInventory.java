@@ -75,6 +75,9 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		BlockEntity be = getBlockEntity();
 
 		if (!be.getLevel().isClientSide) {
+			if (!toggled)
+				toggleModuleState(module, true);
+
 			be.setChanged();
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		}
@@ -91,6 +94,9 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		BlockEntity be = getBlockEntity();
 
 		if (!be.getLevel().isClientSide) {
+			if (!toggled)
+				toggleModuleState(module, false);
+
 			be.setChanged();
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		}
