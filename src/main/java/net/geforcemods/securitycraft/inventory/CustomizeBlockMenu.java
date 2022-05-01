@@ -124,12 +124,30 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 
 		@Override
 		public void onQuickCraft(ItemStack newStack, ItemStack oldStack) {
-			if ((index >= 36 || index < maxSlots) && oldStack.getItem() instanceof ModuleItem) {
-				moduleInv.onModuleRemoved(oldStack, ((ModuleItem) oldStack.getItem()).getModuleType(), false);
+			if ((index >= 36 || index < maxSlots) && oldStack.getItem() instanceof ModuleItem module) {
+				moduleInv.onModuleRemoved(oldStack, module.getModuleType(), false);
 
 				if (moduleInv instanceof LinkableBlockEntity lbe)
 					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, lbe);
+
+				broadcastChanges();
 			}
+		}
+
+		@Override
+		public void set(ItemStack stack) {
+			super.set(stack);
+			broadcastChanges();
+		}
+
+		@Override
+		public ItemStack remove(int amount) {
+			ItemStack stack = super.remove(amount);
+
+			if (!stack.isEmpty())
+				broadcastChanges();
+
+			return stack;
 		}
 	}
 }
