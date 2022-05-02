@@ -106,6 +106,7 @@ public class EditModuleScreen extends Screen {
 
 		addPlayerButton.active = false;
 		removePlayerButton.active = false;
+		editTeamsButton.active = availableTeams.size() > 0;
 		teamList.active = false;
 
 		if (module.getTag() == null || module.getTag().isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)))
