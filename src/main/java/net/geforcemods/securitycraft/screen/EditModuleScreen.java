@@ -484,6 +484,17 @@ public class EditModuleScreen extends Screen {
 		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 	}
 
+	class NonScrollableToggleComponentButton extends ToggleComponentButton {
+		public NonScrollableToggleComponentButton(int xPos, int yPos, int width, int height, IntFunction<Component> onValueChange, int initialValue, int toggleCount, OnPress onPress) {
+			super(xPos, yPos, width, height, onValueChange, initialValue, toggleCount, onPress);
+		}
+
+		@Override
+		public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+			return false;
+		}
+	}
+
 	private void renderBox(BufferBuilder bufferBuilder, int min, int max, int slotTop, int slotBuffer, int borderColor) {
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
