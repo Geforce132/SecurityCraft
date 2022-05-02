@@ -21,9 +21,9 @@ public class ModuleUtils {
 	public static List<String> getPlayersFromModule(ItemStack stack) {
 		List<String> list = new ArrayList<>();
 
-		if (stack.getItem() instanceof ModuleItem) {
+		if (stack.getItem() instanceof ModuleItem && stack.hasTag()) {
 			for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
-				if (stack.getTag() != null && stack.getTag().getString("Player" + i) != null && !stack.getTag().getString("Player" + i).isEmpty())
+				if (stack.getTag().getString("Player" + i) != null && !stack.getTag().getString("Player" + i).isEmpty())
 					list.add(stack.getTag().getString("Player" + i).toLowerCase());
 			}
 		}
