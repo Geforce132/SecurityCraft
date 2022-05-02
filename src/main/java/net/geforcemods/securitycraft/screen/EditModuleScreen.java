@@ -233,7 +233,6 @@ public class EditModuleScreen extends Screen {
 		boolean buttonState = ((ToggleComponentButton) button).getCurrentIndex() == 0;
 
 		copyButton.visible = pasteButton.visible = clearButton.visible = buttonState;
-		copyButton.active = pasteButton.active = clearButton.active = buttonState;
 		teamList.active = !buttonState;
 	}
 
