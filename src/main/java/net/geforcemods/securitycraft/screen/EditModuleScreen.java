@@ -423,12 +423,14 @@ public class EditModuleScreen extends Screen {
 
 		@Override
 		protected boolean clickPanel(double mouseX, double mouseY, int button) {
-			int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
+			if (active) {
+				int slotIndex = (int) (mouseY + (border / 2)) / slotHeight;
 
-			if (slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
-				toggleTeam(availableTeams.get(slotIndex));
-				minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-				return true;
+				if (slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
+					toggleTeam(availableTeams.get(slotIndex));
+					minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+					return true;
+				}
 			}
 
 			return false;
