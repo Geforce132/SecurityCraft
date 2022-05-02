@@ -6,6 +6,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.IntFunction;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -61,20 +62,7 @@ public class EditModuleScreen extends Screen {
 
 		availableTeams = new ArrayList<>(Minecraft.getInstance().player.getScoreboard().getPlayerTeams());
 		module = item;
-
-		if (!module.hasTag())
-			availableTeams.forEach(team -> teamsListedStatus.put(team, false));
-		else {
-			//@formatter:off
-			List<String> teamNames = module.getTag().getList("ListedTeams", Tag.TAG_STRING)
-					.stream()
-					.filter(tag -> tag instanceof StringTag)
-					.map(tag -> ((StringTag) tag).getAsString())
-					.toList();
-			//@formatter:on
-
-			availableTeams.forEach(team -> teamsListedStatus.put(team, teamNames.contains(team.getName())));
-		}
+		refreshTeamsFromNbt();
 	}
 
 	@Override
@@ -93,7 +81,7 @@ public class EditModuleScreen extends Screen {
 		addRenderableWidget(inputField = new EditBox(font, controlsStartX, height / 2 - 88, 107, 15, TextComponent.EMPTY));
 		addRenderableWidget(addPlayerButton = new ExtendedButton(controlsStartX, height / 2 - 68, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.add_player"), this::addPlayerButtonClicked));
 		addRenderableWidget(removePlayerButton = new ExtendedButton(controlsStartX, height / 2 - 43, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.remove_player"), this::removePlayerButtonClicked));
-		addRenderableWidget(editTeamsButton = new ToggleComponentButton(controlsStartX, height / 2 - 18, controlsWidth, 20, i -> Utils.localize("gui.securitycraft:editModule.edit_teams"), 0, 2, this::editTeamsButtonClicked));
+		addRenderableWidget(editTeamsButton = new NonScrollableToggleComponentButton(controlsStartX, height / 2 - 18, controlsWidth, 20, i -> Utils.localize("gui.securitycraft:editModule.edit_teams"), 0, 2, this::editTeamsButtonClicked));
 		addRenderableWidget(copyButton = new ExtendedButton(controlsStartX, height / 2 + 7, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.copy"), this::copyButtonClicked));
 		addRenderableWidget(pasteButton = new ExtendedButton(controlsStartX, height / 2 + 32, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.paste"), this::pasteButtonClicked));
 		addRenderableWidget(clearButton = new ExtendedButton(controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::clearButtonClicked));
@@ -263,20 +251,49 @@ public class EditModuleScreen extends Screen {
 	private void pasteButtonClicked(Button button) {
 		module.setTag(savedModule.copy());
 		updateButtonStates();
+		refreshTeamsFromNbt();
 	}
 
 	private void clearButtonClicked(Button button) {
 		module.setTag(new CompoundTag());
 		inputField.setValue("");
 		updateButtonStates();
+		refreshTeamsFromNbt();
 	}
 
 	private void updateButtonStates() {
-		addPlayerButton.active = module.getTag() != null && !module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getValue().isEmpty();
-		removePlayerButton.active = !(module.getTag() == null || module.getTag().isEmpty() || inputField.getValue().isEmpty());
-		copyButton.active = !(module.getTag() == null || module.getTag().isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));
-		pasteButton.active = !(savedModule == null || savedModule.isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));
-		clearButton.active = !(module.getTag() == null || module.getTag().isEmpty());
+		if (!module.hasTag()) {
+			addPlayerButton.active = true;
+			removePlayerButton.active = false;
+			copyButton.active = false;
+			pasteButton.active = false;
+			clearButton.active = false;
+		}
+		else {
+			CompoundTag tag = module.getTag();
+
+			addPlayerButton.active = !tag.contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getValue().isEmpty();
+			removePlayerButton.active = !inputField.getValue().isEmpty();
+			copyButton.active = !tag.equals(savedModule);
+			pasteButton.active = savedModule != null && !savedModule.isEmpty() && !tag.equals(savedModule);
+			clearButton.active = !tag.isEmpty();
+		}
+	}
+
+	private void refreshTeamsFromNbt() {
+		if (!module.hasTag())
+			availableTeams.forEach(team -> teamsListedStatus.put(team, false));
+		else {
+			//@formatter:off
+			List<String> teamNames = module.getTag().getList("ListedTeams", Tag.TAG_STRING)
+					.stream()
+					.filter(tag -> tag instanceof StringTag)
+					.map(tag -> ((StringTag) tag).getAsString())
+					.toList();
+			//@formatter:on
+
+			availableTeams.forEach(team -> teamsListedStatus.put(team, teamNames.contains(team.getName())));
+		}
 	}
 
 	private int getNextFreeSlot(CompoundTag tag) {
