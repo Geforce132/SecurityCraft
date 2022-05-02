@@ -173,7 +173,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		//when removing a stack from a slot, it's not possible to reliably get the module type, so just loop through all possible types
 		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
 			if (descriptionButtons[i] != null)
-				descriptionButtons[i].active = moduleInv.isModuleEnabled(moduleInv.acceptedModules()[i]);
+				descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 	}
 
