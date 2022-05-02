@@ -281,7 +281,7 @@ public class SCEventHandler {
 
 					if (be instanceof LinkableBlockEntity lbe) {
 						lbe.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {
-								stack, ((ModuleItem) stack.getItem()).getModuleType()
+								stack, ((ModuleItem) stack.getItem()).getModuleType(), false
 						}, lbe);
 					}
 

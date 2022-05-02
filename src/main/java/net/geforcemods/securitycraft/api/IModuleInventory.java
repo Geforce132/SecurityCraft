@@ -153,7 +153,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					onModuleRemoved(stack, module.getModuleType(), false);
 
 					if (getBlockEntity() instanceof LinkableBlockEntity be)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, be);
+						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, be, false);
 				}
 
 				return getInventory().set(slot, ItemStack.EMPTY).copy();
@@ -186,7 +186,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					onModuleInserted(stack, module.getModuleType(), false);
 
 					if (getBlockEntity() instanceof LinkableBlockEntity be)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, copy, be);
+						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, copy, be, false);
 				}
 			}
 
@@ -212,7 +212,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			onModuleRemoved(previous, ((ModuleItem) previous.getItem()).getModuleType(), false);
 
 			if (getBlockEntity() instanceof LinkableBlockEntity be)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, be);
+				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, be, false);
 		}
 
 		getInventory().set(slot, stack);
@@ -221,7 +221,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			onModuleInserted(stack, module.getModuleType(), false);
 
 			if (getBlockEntity() instanceof LinkableBlockEntity be)
-				ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, be);
+				ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, be, false);
 		}
 	}
 

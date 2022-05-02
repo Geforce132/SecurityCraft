@@ -23,15 +23,5 @@ public enum LinkedAction {
 	/**
 	 * Used when a {@link ModuleType} is removed from an IModuleInventory
 	 */
-	MODULE_REMOVED,
-
-	/**
-	 * Used when a {@link ModuleType} is enabled
-	 */
-	MODULE_ENABLED,
-
-	/**
-	 * Used when a {@link ModuleType} is disabled
-	 */
-	MODULE_DISABLED;
+	MODULE_REMOVED;
 }

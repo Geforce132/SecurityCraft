@@ -53,10 +53,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 					option
 			}, excludedBEs);
 		}
-		else if (action == LinkedAction.MODULE_INSERTED || action == LinkedAction.MODULE_ENABLED) {
+		else if (action == LinkedAction.MODULE_INSERTED) {
 			ItemStack module = (ItemStack) parameters[0];
 
-			insertModule(module, action == LinkedAction.MODULE_ENABLED);
+			insertModule(module, (boolean) parameters[2]);
 
 			if (((ModuleItem) module.getItem()).getModuleType() == ModuleType.DISGUISE)
 				onInsertDisguiseModule(module);
@@ -64,11 +64,11 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 			excludedBEs.add(this);
 			createLinkedBlockAction(action, parameters, excludedBEs);
 		}
-		else if (action == LinkedAction.MODULE_REMOVED || action == LinkedAction.MODULE_DISABLED) {
+		else if (action == LinkedAction.MODULE_REMOVED) {
 			ModuleType module = (ModuleType) parameters[1];
 			ItemStack moduleStack = getModule(module);
 
-			removeModule(module, action == LinkedAction.MODULE_DISABLED);
+			removeModule(module, (boolean) parameters[2]);
 
 			if (module == ModuleType.DISGUISE)
 				onRemoveDisguiseModule(moduleStack);

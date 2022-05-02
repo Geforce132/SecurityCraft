@@ -72,7 +72,7 @@ public class UniversalBlockRemoverItem extends Item {
 				for (ItemStack module : laser.getInventory()) {
 					if (!module.isEmpty()) {
 						laser.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {
-								module, ((ModuleItem) module.getItem()).getModuleType()
+								module, ((ModuleItem) module.getItem()).getModuleType(), false
 						}, laser);
 					}
 				}

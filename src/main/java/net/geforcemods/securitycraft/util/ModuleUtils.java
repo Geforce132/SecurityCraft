@@ -69,25 +69,15 @@ public class ModuleUtils {
 		return getPlayersFromModule(stack).contains(entity.getName().getString().toLowerCase());
 	}
 
-	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableBlockEntity be) {
+	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableBlockEntity be, boolean toggled) {
 		if (action == LinkedAction.MODULE_INSERTED) {
 			be.createLinkedBlockAction(action, new Object[] {
-					stack, (ModuleItem) stack.getItem()
+					stack, (ModuleItem) stack.getItem(), toggled
 			}, be);
 		}
 		else if (action == LinkedAction.MODULE_REMOVED) {
 			be.createLinkedBlockAction(action, new Object[] {
-					stack, ((ModuleItem) stack.getItem()).getModuleType()
-			}, be);
-		}
-		else if (action == LinkedAction.MODULE_ENABLED) {
-			be.createLinkedBlockAction(action, new Object[] {
-					stack, (ModuleItem) stack.getItem()
-			}, be);
-		}
-		else if (action == LinkedAction.MODULE_DISABLED) {
-			be.createLinkedBlockAction(action, new Object[] {
-					stack, ((ModuleItem) stack.getItem()).getModuleType()
+					stack, ((ModuleItem) stack.getItem()).getModuleType(), toggled
 			}, be);
 		}
 	}
