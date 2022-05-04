@@ -248,7 +248,9 @@ public class EditModuleScreen extends Screen {
 	}
 
 	private void updateButtonStates(boolean cleared) {
-		if (!cleared && !module.hasTag()) {
+		CompoundTag tag = module.getOrCreateTag();
+
+		if (!cleared && (tag.isEmpty() || (tag.size() == 1 && tag.contains("affectEveryone")))) {
 			addPlayerButton.active = true;
 			removePlayerButton.active = false;
 			copyButton.active = false;
@@ -256,8 +258,6 @@ public class EditModuleScreen extends Screen {
 			clearButton.active = false;
 		}
 		else {
-			CompoundTag tag = module.getTag();
-
 			addPlayerButton.active = !tag.contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getValue().isEmpty();
 			removePlayerButton.active = !inputField.getValue().isEmpty();
 			copyButton.active = !tag.isEmpty() && !tag.equals(savedModule);
