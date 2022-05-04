@@ -249,21 +249,20 @@ public class EditModuleScreen extends Screen {
 
 	private void updateButtonStates(boolean cleared) {
 		CompoundTag tag = module.getOrCreateTag();
+		boolean tagIsConsideredEmpty = tag.isEmpty() || (tag.size() == 1 && tag.contains("affectEveryone"));
 
-		if (!cleared && (tag.isEmpty() || (tag.size() == 1 && tag.contains("affectEveryone")))) {
+		if (!cleared && tagIsConsideredEmpty) {
 			addPlayerButton.active = false;
 			removePlayerButton.active = false;
-			copyButton.active = false;
-			pasteButton.active = false;
-			clearButton.active = false;
 		}
 		else {
 			addPlayerButton.active = !tag.contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getValue().isEmpty();
 			removePlayerButton.active = !inputField.getValue().isEmpty();
-			copyButton.active = !tag.isEmpty() && !tag.equals(savedModule);
-			pasteButton.active = savedModule != null && !savedModule.isEmpty() && !tag.equals(savedModule);
-			clearButton.active = !tag.isEmpty();
 		}
+
+		copyButton.active = !tagIsConsideredEmpty && !tag.equals(savedModule);
+		pasteButton.active = savedModule != null && !savedModule.isEmpty() && !tag.equals(savedModule);
+		clearButton.active = !tagIsConsideredEmpty;
 	}
 
 	private void refreshFromNbt() {
