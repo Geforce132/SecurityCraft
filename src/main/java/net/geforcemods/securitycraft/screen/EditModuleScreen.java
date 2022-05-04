@@ -239,7 +239,7 @@ public class EditModuleScreen extends Screen {
 	private void clearButtonClicked(Button button) {
 		module.setTag(new CompoundTag());
 		inputField.setValue("");
-		updateButtonStates();
+		updateButtonStates(true);
 		refreshFromNbt();
 	}
 
