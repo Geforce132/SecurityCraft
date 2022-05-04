@@ -251,7 +251,7 @@ public class EditModuleScreen extends Screen {
 		CompoundTag tag = module.getOrCreateTag();
 
 		if (!cleared && (tag.isEmpty() || (tag.size() == 1 && tag.contains("affectEveryone")))) {
-			addPlayerButton.active = true;
+			addPlayerButton.active = false;
 			removePlayerButton.active = false;
 			copyButton.active = false;
 			pasteButton.active = false;
