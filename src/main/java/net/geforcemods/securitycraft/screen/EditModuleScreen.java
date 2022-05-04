@@ -52,6 +52,7 @@ public class EditModuleScreen extends Screen {
 	private final Map<PlayerTeam, Boolean> teamsListedStatus = new HashMap<>();
 	private EditBox inputField;
 	private Button addPlayerButton, editTeamsButton, removePlayerButton, copyButton, pasteButton, clearButton;
+	private CallbackCheckbox affectEveryPlayerCheckbox;
 	private int xSize = 247, ySize = 211;
 	private PlayerList playerList;
 	private TeamList teamList;
@@ -62,7 +63,6 @@ public class EditModuleScreen extends Screen {
 
 		availableTeams = new ArrayList<>(Minecraft.getInstance().player.getScoreboard().getPlayerTeams());
 		module = item;
-		refreshTeamsFromNbt();
 	}
 
 	@Override
@@ -87,25 +87,14 @@ public class EditModuleScreen extends Screen {
 		addRenderableWidget(clearButton = new ExtendedButton(controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::clearButtonClicked));
 		addRenderableWidget(playerList = new PlayerList(minecraft, 110, 165, height / 2 - 88, guiLeft + 10));
 		addRenderableWidget(teamList = new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.y + editTeamsButton.getHeight(), editTeamsButton.x));
-		addRenderableWidget(new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTag() && module.getTag().getBoolean("affectEveryone"), newState -> {
+		addRenderableWidget(affectEveryPlayerCheckbox = new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTag() && module.getTag().getBoolean("affectEveryone"), newState -> {
 			module.getOrCreateTag().putBoolean("affectEveryone", newState);
 			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 		}, 0x404040));
 
-		addPlayerButton.active = false;
-		removePlayerButton.active = false;
-		editTeamsButton.active = availableTeams.size() > 0;
 		teamList.active = false;
-
-		if (module.getTag() == null || module.getTag().isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)))
-			copyButton.active = false;
-
-		if (savedModule == null || savedModule.isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)))
-			pasteButton.active = false;
-
-		if (module.getTag() == null || module.getTag().isEmpty())
-			clearButton.active = false;
-
+		refreshFromNbt();
+		updateButtonStates();
 		inputField.setMaxLength(16);
 		inputField.setFilter(s -> !s.contains(" "));
 		inputField.setResponder(s -> {
@@ -136,13 +125,6 @@ public class EditModuleScreen extends Screen {
 	public void onClose() {
 		super.onClose();
 
-		ListTag listedTeams = new ListTag();
-
-		teamsListedStatus.forEach((team, listed) -> {
-			if (listed)
-				listedTeams.add(StringTag.valueOf(team.getName()));
-		});
-		module.getOrCreateTag().put("ListedTeams", listedTeams);
 		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 
 		if (minecraft != null)
@@ -251,18 +233,22 @@ public class EditModuleScreen extends Screen {
 	private void pasteButtonClicked(Button button) {
 		module.setTag(savedModule.copy());
 		updateButtonStates();
-		refreshTeamsFromNbt();
+		refreshFromNbt();
 	}
 
 	private void clearButtonClicked(Button button) {
 		module.setTag(new CompoundTag());
 		inputField.setValue("");
 		updateButtonStates();
-		refreshTeamsFromNbt();
+		refreshFromNbt();
 	}
 
 	private void updateButtonStates() {
-		if (!module.hasTag()) {
+		updateButtonStates(false);
+	}
+
+	private void updateButtonStates(boolean cleared) {
+		if (!cleared && !module.hasTag()) {
 			addPlayerButton.active = true;
 			removePlayerButton.active = false;
 			copyButton.active = false;
@@ -274,25 +260,29 @@ public class EditModuleScreen extends Screen {
 
 			addPlayerButton.active = !tag.contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getValue().isEmpty();
 			removePlayerButton.active = !inputField.getValue().isEmpty();
-			copyButton.active = !tag.equals(savedModule);
+			copyButton.active = !tag.isEmpty() && !tag.equals(savedModule);
 			pasteButton.active = savedModule != null && !savedModule.isEmpty() && !tag.equals(savedModule);
 			clearButton.active = !tag.isEmpty();
 		}
 	}
 
-	private void refreshTeamsFromNbt() {
-		if (!module.hasTag())
+	private void refreshFromNbt() {
+		if (!module.hasTag()) {
 			availableTeams.forEach(team -> teamsListedStatus.put(team, false));
+			affectEveryPlayerCheckbox.setSelected(false);
+		}
 		else {
+			CompoundTag tag = module.getTag();
 			//@formatter:off
-			List<String> teamNames = module.getTag().getList("ListedTeams", Tag.TAG_STRING)
+			List<String> teamNames = tag.getList("ListedTeams", Tag.TAG_STRING)
 					.stream()
-					.filter(tag -> tag instanceof StringTag)
-					.map(tag -> ((StringTag) tag).getAsString())
+					.filter(e -> e instanceof StringTag)
+					.map(e -> ((StringTag) e).getAsString())
 					.toList();
 			//@formatter:on
 
 			availableTeams.forEach(team -> teamsListedStatus.put(team, teamNames.contains(team.getName())));
+			affectEveryPlayerCheckbox.setSelected(tag.getBoolean("affectEveryone"));
 		}
 	}
 
@@ -305,8 +295,16 @@ public class EditModuleScreen extends Screen {
 		return 0;
 	}
 
-	private void toggleTeam(PlayerTeam team) {
-		teamsListedStatus.put(team, !teamsListedStatus.get(team));
+	private void toggleTeam(PlayerTeam teamToAdd) {
+		ListTag listedTeams = new ListTag();
+
+		teamsListedStatus.put(teamToAdd, !teamsListedStatus.get(teamToAdd));
+		teamsListedStatus.forEach((team, listed) -> {
+			if (listed)
+				listedTeams.add(StringTag.valueOf(team.getName()));
+		});
+		module.getOrCreateTag().put("ListedTeams", listedTeams);
+		updateButtonStates();
 	}
 
 	private void defragmentTag(CompoundTag tag) {
