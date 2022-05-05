@@ -93,6 +93,7 @@ public class EditModuleScreen extends Screen {
 		}, 0x404040));
 
 		teamList.active = false;
+		editTeamsButton.active = !availableTeams.isEmpty();
 		refreshFromNbt();
 		updateButtonStates();
 		inputField.setMaxLength(16);
