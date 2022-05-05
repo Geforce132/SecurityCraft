@@ -308,7 +308,7 @@
 	"gui.securitycraft:universalKeyChanger.confirm": "hyväksy",
 	"gui.securitycraft:editModule": "muokkaa moduulia",
 	"gui.securitycraft:editModule.add_player": "lisää",
-	"gui.securitycraft:editModule.remove": "poista",
+	"gui.securitycraft:editModule.remove_player": "poista",
 	"gui.securitycraft:editModule.copy": "kopioi lista",
 	"gui.securitycraft:editModule.paste": "sijoita lista",
 	"gui.securitycraft:editModule.clear": "tyhjennä Lista",
