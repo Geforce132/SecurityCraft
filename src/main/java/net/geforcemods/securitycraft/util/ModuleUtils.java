@@ -12,14 +12,18 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.StringNBT;
+import net.minecraft.scoreboard.ScorePlayerTeam;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 public class ModuleUtils {
 	public static List<String> getPlayersFromModule(ItemStack stack) {
 		List<String> list = new ArrayList<>();
 
-		if (stack.getItem() instanceof ModuleItem) {
+		if (stack.getItem() instanceof ModuleItem && stack.hasTag()) {
 			for (int i = 1; i <= ModuleItem.MAX_PLAYERS; i++) {
-				if (stack.getTag() != null && stack.getTag().getString("Player" + i) != null && !stack.getTag().getString("Player" + i).isEmpty()) {
+				if (stack.getTag().getString("Player" + i) != null && !stack.getTag().getString("Player" + i).isEmpty()) {
 					list.add(stack.getTag().getString("Player" + i).toLowerCase());
 				}
 			}
@@ -39,7 +43,7 @@ public class ModuleUtils {
 			return true;
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return getPlayersFromModule(stack).contains(name.toLowerCase());
+		return doesModuleHaveTeamOf(name, inv.getTileEntity().getLevel(), stack) || getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
 	public static boolean isDenied(IModuleInventory inv, Entity entity) {
@@ -60,8 +64,10 @@ public class ModuleUtils {
 				return true;
 		}
 
+		String name = entity.getName().getString();
+
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return getPlayersFromModule(stack).contains(entity.getName().getString().toLowerCase());
+		return doesModuleHaveTeamOf(name, inv.getTileEntity().getLevel(), stack) || getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
 	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableBlockEntity te) {
@@ -75,5 +81,17 @@ public class ModuleUtils {
 					stack, ((ModuleItem) stack.getItem()).getModuleType()
 			}, te);
 		}
+	}
+
+	public static boolean doesModuleHaveTeamOf(String name, World level, ItemStack module) {
+		ScorePlayerTeam team = level.getScoreboard().getPlayersTeam(name);
+
+		//@formatter:off
+		return team != null && module.getOrCreateTag().getList("ListedTeams", Constants.NBT.TAG_STRING)
+				.stream()
+				.filter(tag -> tag instanceof StringNBT)
+				.map(tag -> ((StringNBT) tag).getAsString())
+				.anyMatch(team.getName()::equals);
+		//@formatter:on
 	}
 }

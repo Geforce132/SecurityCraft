@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -126,6 +127,30 @@ public class ModuleItem extends Item {
 
 			if (addon != null)
 				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getDescriptionId())).setStyle(Utils.GRAY_STYLE));
+		}
+
+		if (containsCustomData) {
+			boolean affectsEveryone = false;
+			int playerCount = 0;
+			int teamCount = 0;
+
+			if (stack.hasTag()) {
+				CompoundNBT tag = stack.getTag();
+
+				affectsEveryone = tag.getBoolean("affectEveryone");
+
+				if (!affectsEveryone) {
+					playerCount = ModuleUtils.getPlayersFromModule(stack).size();
+					teamCount = tag.getList("ListedTeams", Constants.NBT.TAG_STRING).size();
+				}
+			}
+
+			if (affectsEveryone)
+				list.add(Utils.localize("tooltip.securitycraft:module.affects_everyone").setStyle(Utils.GRAY_STYLE));
+			else {
+				list.add(Utils.localize("tooltip.securitycraft:module.added_players", playerCount).setStyle(Utils.GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft:module.added_teams", teamCount).setStyle(Utils.GRAY_STYLE));
+			}
 		}
 	}
 

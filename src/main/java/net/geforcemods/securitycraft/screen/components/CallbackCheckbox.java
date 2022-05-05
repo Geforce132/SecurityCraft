@@ -29,8 +29,7 @@ public class CallbackCheckbox extends AbstractButton {
 
 	@Override
 	public void onPress() {
-		selected = !selected;
-		onChange.accept(selected);
+		setSelected(!selected);
 	}
 
 	@Override
@@ -46,6 +45,11 @@ public class CallbackCheckbox extends AbstractButton {
 		blit(matrix, x, y, isFocused() ? 20.0F : 0.0F, selected ? 20.0F : 0.0F, 20, height, 64, 64);
 		renderBg(matrix, minecraft, mouseX, mouseY);
 		minecraft.font.draw(matrix, getMessage(), x + 24, y + (height - 8) / 2, textColor | MathHelper.ceil(alpha * 255.0F) << 24);
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+		onChange.accept(selected);
 	}
 
 	public boolean selected() {

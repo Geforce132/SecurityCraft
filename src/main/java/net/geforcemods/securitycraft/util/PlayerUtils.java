@@ -238,7 +238,7 @@ public class PlayerUtils {
 			ScorePlayerTeam team = getPlayersTeam(ownerName);
 
 			if (team != null)
-				return Utils.localize("messages.securitycraft:teamOwner", new StringTextComponent("").append(team.getDisplayName()).withStyle(team.getColor()));
+				return Utils.localize("messages.securitycraft:teamOwner", team.getDisplayName().copy().withStyle(team.getColor()));
 		}
 
 		return new StringTextComponent(ownerName);

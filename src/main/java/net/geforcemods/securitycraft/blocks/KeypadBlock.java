@@ -46,7 +46,7 @@ public class KeypadBlock extends DisguisableBlock {
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (state.getValue(POWERED))
 			return ActionResultType.PASS;
-		else {
+		else if (!world.isClientSide) {
 			KeypadBlockEntity te = (KeypadBlockEntity) world.getBlockEntity(pos);
 
 			if (ModuleUtils.isDenied(te, player)) {

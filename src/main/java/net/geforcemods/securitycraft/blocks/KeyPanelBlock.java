@@ -116,7 +116,7 @@ public class KeyPanelBlock extends OwnableBlock implements IWaterLoggable {
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (state.getValue(POWERED))
 			return ActionResultType.PASS;
-		else {
+		else if (!world.isClientSide) {
 			KeyPanelBlockEntity te = (KeyPanelBlockEntity) world.getBlockEntity(pos);
 
 			if (ModuleUtils.isDenied(te, player)) {
