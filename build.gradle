@@ -5,6 +5,7 @@ buildscript {
         maven { url = 'https://repo.spongepowered.org/maven' }
         mavenCentral()
     }
+
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+'
