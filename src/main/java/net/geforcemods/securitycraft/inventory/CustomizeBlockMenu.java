@@ -135,6 +135,15 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 		}
 
 		@Override
+		public void setChanged() {
+			super.setChanged();
+
+			//prevent the X flashing before the client receives the update from the server, by already enabling the module in the inventory
+			if (moduleInv.getBlockEntity().getLevel().isClientSide && getItem().getItem() instanceof ModuleItem module)
+				moduleInv.toggleModuleState(module.getModuleType(), true);
+		}
+
+		@Override
 		public void set(ItemStack stack) {
 			super.set(stack);
 			broadcastChanges();
