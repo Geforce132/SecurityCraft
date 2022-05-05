@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -12,14 +13,19 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.scoreboard.ScorePlayerTeam;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 public class ModuleUtils {
 	public static List<String> getPlayersFromModule(ItemStack stack) {
 		List<String> list = new ArrayList<>();
 
-		if (stack.getItem() instanceof ItemModule) {
+		if (stack.getItem() instanceof ItemModule && stack.hasTagCompound()) {
 			for (int i = 1; i <= ItemModule.MAX_PLAYERS; i++) {
-				if (stack.getTagCompound() != null && stack.getTagCompound().getString("Player" + i) != null && !stack.getTagCompound().getString("Player" + i).isEmpty())
+				if (stack.getTagCompound().getString("Player" + i) != null && !stack.getTagCompound().getString("Player" + i).isEmpty())
 					list.add(stack.getTagCompound().getString("Player" + i).toLowerCase());
 			}
 		}
@@ -38,7 +44,7 @@ public class ModuleUtils {
 			return true;
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return getPlayersFromModule(stack).contains(name.toLowerCase());
+		return doesModuleHaveTeamOf(name, inv.getTileEntity().getWorld(), stack) || getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
 	public static boolean isDenied(IModuleInventory inv, Entity entity) {
@@ -59,8 +65,10 @@ public class ModuleUtils {
 				return true;
 		}
 
+		String name = entity.getName();
+
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
-		return getPlayersFromModule(stack).contains(entity.getName().toLowerCase());
+		return doesModuleHaveTeamOf(name, inv.getTileEntity().getWorld(), stack) || getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
 	public static void createLinkedAction(EnumLinkedAction action, ItemStack stack, TileEntityLinkable te) {
@@ -74,5 +82,19 @@ public class ModuleUtils {
 					stack, ((ItemModule) stack.getItem()).getModuleType()
 			}, te);
 		}
+	}
+
+	public static boolean doesModuleHaveTeamOf(String name, World level, ItemStack module) {
+		ScorePlayerTeam team = level.getScoreboard().getPlayersTeam(name);
+
+		if (!module.hasTagCompound())
+			module.setTagCompound(new NBTTagCompound());
+
+		//@formatter:off
+		return team != null && StreamSupport.stream(module.getTagCompound().getTagList("ListedTeams", Constants.NBT.TAG_STRING).spliterator(), false)
+				.filter(tag -> tag instanceof NBTTagString)
+				.map(tag -> ((NBTTagString) tag).getString())
+				.anyMatch(team.getName()::equals);
+		//@formatter:on
 	}
 }

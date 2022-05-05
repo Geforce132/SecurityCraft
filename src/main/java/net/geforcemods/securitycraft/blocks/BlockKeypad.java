@@ -44,7 +44,7 @@ public class BlockKeypad extends BlockDisguisable {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (state.getValue(POWERED))
 			return false;
-		else {
+		else if (!world.isRemote) {
 			TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
 
 			if (ModuleUtils.isDenied(te, player)) {

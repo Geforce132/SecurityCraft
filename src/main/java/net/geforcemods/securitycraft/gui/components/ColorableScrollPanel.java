@@ -60,6 +60,10 @@ public abstract class ColorableScrollPanel {
 	private Color scrollbarBorder;
 	private Color scrollbar;
 
+	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight) {
+		this(client, width, height, top, top + height, left, 12, screenWidth, screenHeight, new Color(0xC0, 0x10, 0x10, 0x10), new Color(0xD0, 0x10, 0x10, 0x10), new Color(0x00, 0x00, 0x00, 0xFF), new Color(0x80, 0x80, 0x80, 0xFF), new Color(0xC0, 0xC0, 0xC0, 0xFF));
+	}
+
 	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, int screenWidth, int screenHeight, Color backgroundFrom, Color backgroundTo) {
 		this(client, width, height, top, bottom, left, entryHeight, screenWidth, screenHeight, backgroundFrom, backgroundTo, new Color(0x00, 0x00, 0x00, 0xFF), new Color(0x80, 0x80, 0x80, 0xFF), new Color(0xC0, 0xC0, 0xC0, 0xFF));
 	}

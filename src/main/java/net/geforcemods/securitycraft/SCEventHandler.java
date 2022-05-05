@@ -454,8 +454,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
 		//fix for spawning under the portal
-		if (event.getEntity() instanceof EntityPlayer && !event.getWorld().isRemote) //nether
-		{
+		if (event.getEntity() instanceof EntityPlayer && !event.getWorld().isRemote) { //nether
 			BlockPos pos = event.getEntity().getPosition();
 
 			//check for obsidian or reinforced obsidian from the player's position up to the world height
@@ -488,8 +487,7 @@ public class SCEventHandler {
 						}
 					}
 				}
-				else if (event.getWorld().getBlockState(pos).getBlock() == SCContent.reinforcedObsidian) //analogous to if check above
-				{
+				else if (event.getWorld().getBlockState(pos).getBlock() == SCContent.reinforcedObsidian) { //analogous to if check above
 					PortalSize portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.X);
 
 					if (portalSize.isValid()) {
