@@ -32,8 +32,7 @@ public class CallbackCheckbox extends AbstractButton {
 
 	@Override
 	public void onPress() {
-		selected = !selected;
-		onChange.accept(selected);
+		setSelected(!selected);
 	}
 
 	@Override
@@ -61,6 +60,11 @@ public class CallbackCheckbox extends AbstractButton {
 			else
 				narrationElementOutput.add(NarratedElementType.USAGE, new TranslatableComponent("narration.checkbox.usage.hovered"));
 		}
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+		onChange.accept(selected);
 	}
 
 	public boolean selected() {

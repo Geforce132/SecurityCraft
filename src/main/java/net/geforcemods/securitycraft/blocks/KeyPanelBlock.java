@@ -96,7 +96,7 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (state.getValue(POWERED))
 			return InteractionResult.PASS;
-		else {
+		else if (!level.isClientSide) {
 			KeyPanelBlockEntity be = (KeyPanelBlockEntity) level.getBlockEntity(pos);
 
 			if (ModuleUtils.isDenied(be, player)) {
