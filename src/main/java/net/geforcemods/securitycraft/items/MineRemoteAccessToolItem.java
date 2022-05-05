@@ -37,7 +37,7 @@ public class MineRemoteAccessToolItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		if (level.isClientSide)
-			ClientHandler.displayMRATGui(player.getItemInHand(hand));
+			ClientHandler.displayMRATScreen(player.getItemInHand(hand));
 
 		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}
@@ -59,7 +59,7 @@ public class MineRemoteAccessToolItem extends Item {
 
 				if (level.getBlockEntity(pos) instanceof IOwnable ownable && !ownable.getOwner().isOwner(player)) {
 					if (level.isClientSide)
-						ClientHandler.displayMRATGui(stack);
+						ClientHandler.displayMRATScreen(stack);
 
 					return InteractionResult.SUCCESS;
 				}

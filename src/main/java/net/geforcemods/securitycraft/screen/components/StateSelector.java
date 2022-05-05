@@ -260,9 +260,10 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 			dragRotation.multiply(Vector3f.YN.rotation((float) dragX * ROTATION_SENSITIVITY));
 			dragRotation.multiply(Y_DRAG_ROTATION_VECTOR.rotation((float) dragY * ROTATION_SENSITIVITY));
 			dragRotation.transpose();
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class ConfigHandler {
 	}
 
 	public static class Server {
-		public BooleanValue allowCodebreakerItem;
+		public DoubleValue codebreakerChance;
 		public BooleanValue allowAdminTool;
 		public BooleanValue shouldSpawnFire;
 		public BooleanValue ableToBreakMines;
@@ -67,9 +67,10 @@ public class ConfigHandler {
 
 		Server(ForgeConfigSpec.Builder builder) {
 			//@formatter:off
-			allowCodebreakerItem = builder
-					.comment("Can the codebreaker be used?")
-					.define("allowCodebreakerItem", true);
+			codebreakerChance = builder
+					.comment("The chance for the codebreaker to successfully hack a block. 0.33 is 33%. Set to a negative value to disable the codebreaker.",
+							"Using the codebreaker when this is set to 0.0 will still damage the item, while negative values do not damage it.")
+					.defineInRange("codebreaker_chance", 0.33D, -1.0D, 1.0D);
 
 			allowAdminTool = builder
 					.comment("Can the admin tool be used?")

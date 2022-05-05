@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -14,10 +15,11 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.entity.Sentry;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -31,12 +33,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,7 +45,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 
 public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable, ILockable {
 	private LazyOptional<IItemHandler> insertOnlyHandler;
@@ -56,7 +56,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public KeypadChestBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeKeypadChest, pos, state);
+		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override
@@ -163,42 +163,17 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	@Override
 	public void openPasswordGUI(Player player) {
-		if (isBlocked())
-			return;
+		if (!level.isClientSide) {
+			if (isBlocked())
+				return;
 
-		if (getPassword() != null) {
-			if (player instanceof ServerPlayer) {
-				NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
-					@Override
-					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-						return new GenericBEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
-					}
-
-					@Override
-					public Component getDisplayName() {
-						return KeypadChestBlockEntity.super.getDisplayName();
-					}
-				}, worldPosition);
-			}
-		}
-		else {
-			if (getOwner().isOwner(player)) {
-				if (player instanceof ServerPlayer) {
-					NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
-						@Override
-						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-							return new GenericBEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
-						}
-
-						@Override
-						public Component getDisplayName() {
-							return KeypadChestBlockEntity.super.getDisplayName();
-						}
-					}, worldPosition);
-				}
-			}
+			if (getPassword() != null)
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.CHECK_PASSWORD, worldPosition));
 			else {
-				PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
+				if (getOwner().isOwner(player))
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SET_PASSWORD, worldPosition));
+				else
+					PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
 			}
 		}
 	}
@@ -235,17 +210,34 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		ICustomizable.super.onOptionChanged(o);
 	}
 
+	@Override
+	public void dropAllModules() {
+		KeypadChestBlockEntity offsetBe = findOther();
+
+		for (ItemStack module : getInventory()) {
+			if (!(module.getItem() instanceof ModuleItem item))
+				continue;
+
+			if (offsetBe != null)
+				offsetBe.removeModule(item.getModuleType(), false);
+
+			Block.popResource(level, worldPosition, module);
+		}
+
+		getInventory().clear();
+	}
+
 	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove, boolean toggled) {
 		if (module.isEmpty() || !(module.getItem() instanceof ModuleItem moduleItem))
 			return;
 
-		KeypadChestBlockEntity offsetTe = findOther();
+		KeypadChestBlockEntity offsetBe = findOther();
 
-		if (offsetTe != null) {
+		if (offsetBe != null) {
 			if (remove)
-				offsetTe.removeModule(moduleItem.getModuleType(), toggled);
+				offsetBe.removeModule(moduleItem.getModuleType(), toggled);
 			else
-				offsetTe.insertModule(module, toggled);
+				offsetBe.insertModule(module, toggled);
 		}
 	}
 

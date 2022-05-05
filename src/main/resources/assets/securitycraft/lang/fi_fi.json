@@ -307,7 +307,7 @@
 	"gui.securitycraft:universalKeyChanger.confirmNewPasscode": "syötä UUSI salasana uudestaan:",
 	"gui.securitycraft:universalKeyChanger.confirm": "hyväksy",
 	"gui.securitycraft:editModule": "muokkaa moduulia",
-	"gui.securitycraft:editModule.add": "lisää",
+	"gui.securitycraft:editModule.add_player": "lisää",
 	"gui.securitycraft:editModule.remove": "poista",
 	"gui.securitycraft:editModule.copy": "kopioi lista",
 	"gui.securitycraft:editModule.paste": "sijoita lista",

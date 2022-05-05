@@ -18,7 +18,7 @@ public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> 
 
 	public BaseCategory(IGuiHelper helper) {
 		background = helper.createDrawable(new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png"), 25, 19, 126, 43);
-		icon = helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()));
+		icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()));
 	}
 
 	@Override
@@ -32,7 +32,12 @@ public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> 
 	}
 
 	@Override
+	public ResourceLocation getUid() {
+		return null; //unused by jei
+	}
+
+	@Override
 	public Class<? extends ReinforcerRecipe> getRecipeClass() {
-		return ReinforcerRecipe.class;
+		return null; //unused by jei
 	}
 }

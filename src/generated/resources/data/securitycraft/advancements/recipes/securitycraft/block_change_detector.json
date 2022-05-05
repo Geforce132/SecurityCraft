@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:bucket_f_water_strong"
+      "securitycraft:block_change_detector"
     ]
   },
   "criteria": {
-    "has_water_bucket": {
+    "has_iron": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:water_bucket"
-            ]
+            "tag": "forge:ingots/iron"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:bucket_f_water_strong"
+        "recipe": "securitycraft:block_change_detector"
       }
     }
   },
   "requirements": [
     [
-      "has_water_bucket",
+      "has_iron",
       "has_the_recipe"
     ]
   ]

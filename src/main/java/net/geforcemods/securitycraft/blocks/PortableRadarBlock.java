@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -78,6 +79,26 @@ public class PortableRadarBlock extends OwnableBlock {
 			level.destroyBlock(pos, true);
 	}
 
+	@Override
+	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		//prevents dropping twice the amount of modules when breaking the block in creative mode
+		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
+			inv.getInventory().clear();
+
+		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			if (level.getBlockEntity(pos) instanceof IModuleInventory inv)
+				inv.dropAllModules();
+
+			if (!newState.hasBlockEntity())
+				level.removeBlockEntity(pos);
+		}
+	}
+
 	public static void togglePowerOutput(Level level, BlockPos pos, boolean shouldPower) {
 		BlockState state = level.getBlockState(pos);
 
@@ -121,7 +142,7 @@ public class PortableRadarBlock extends OwnableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return !level.isClientSide ? BaseEntityBlock.createTickerHelper(type, SCContent.beTypePortableRadar, LevelUtils::blockEntityTicker) : null;
+		return !level.isClientSide ? BaseEntityBlock.createTickerHelper(type, SCContent.PORTABLE_RADAR_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker) : null;
 	}
 
 	@Override

@@ -11,40 +11,43 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.client.gui.ScrollPanel;
 
-public class TrophySystemScreen extends AbstractContainerScreen<GenericBEMenu> {
+public class TrophySystemScreen extends Screen {
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	private final TranslatableComponent projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
 	private final TranslatableComponent moduleRequired = Utils.localize("gui.securitycraft:trophy_system.moduleRequired");
 	private final TranslatableComponent toggle = Utils.localize("gui.securitycraft:trophy_system.toggle");
 	private final TranslatableComponent moddedProjectiles = Utils.localize("gui.securitycraft:trophy_system.moddedProjectiles");
+	private int imageWidth = 176;
+	private int imageHeight = 166;
+	private int leftPos;
+	private int topPos;
 	private final boolean isSmart;
 	private final List<EntityType<?>> orderedFilterList;
 	private TrophySystemBlockEntity be;
 	private ProjectileScrollList projectileList;
 
-	public TrophySystemScreen(GenericBEMenu menu, Inventory inv, Component title) {
-		super(menu, inv, title);
+	public TrophySystemScreen(TrophySystemBlockEntity be) {
+		super(new TranslatableComponent(SCContent.TROPHY_SYSTEM.get().getDescriptionId()));
 
-		be = (TrophySystemBlockEntity) menu.be;
+		this.be = be;
 		isSmart = be.isModuleEnabled(ModuleType.SMART);
 		orderedFilterList = new ArrayList<>(be.getFilters().keySet());
 		orderedFilterList.sort((e1, e2) -> {
@@ -62,28 +65,22 @@ public class TrophySystemScreen extends AbstractContainerScreen<GenericBEMenu> {
 	protected void init() {
 		super.init();
 
+		leftPos = (width - imageWidth) / 2;
+		topPos = (height - imageHeight) / 2;
 		addRenderableWidget(projectileList = new ProjectileScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
 	}
 
-	@Override
-	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
-		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, titleLabelY, 4210752);
-		font.draw(pose, projectiles, imageWidth / 2 - font.width(projectiles) / 2, titleLabelY + 25, 4210752);
-	}
 
 	@Override
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-		super.render(pose, mouseX, mouseY, partialTicks);
-
-		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, toggle, moduleRequired, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
-	}
-
-	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem._setShaderTexture(0, GUI_TEXTURE);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		super.render(pose, mouseX, mouseY, partialTicks);
+		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752);
+		font.draw(pose, projectiles, width / 2 - font.width(projectiles) / 2, topPos + 31, 4210752);
+		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, toggle, moduleRequired, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override

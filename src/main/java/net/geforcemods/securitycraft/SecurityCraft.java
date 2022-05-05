@@ -62,8 +62,7 @@ import net.minecraftforge.registries.RegistryObject;
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
-	public static final String PROTOCOL_VERSION = "4";
-	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
 	public static CreativeModeTab technicalTab = new SCTechnicalTab();
 	public static CreativeModeTab mineTab = new SCExplosivesTab();
 	public static CreativeModeTab decorationTab = new SCDecorationTab();
@@ -75,13 +74,20 @@ public class SecurityCraft {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
 		SCContent.BLOCKS.register(modEventBus);
+		SCContent.BLOCK_ENTITY_TYPES.register(modEventBus);
+		SCContent.DATA_SERIALIZER_ENTRIES.register(modEventBus);
+		SCContent.ENTITY_TYPES.register(modEventBus);
 		SCContent.FLUIDS.register(modEventBus);
 		SCContent.ITEMS.register(modEventBus);
+		SCContent.LOOT_ITEM_CONDITION_TYPES.register(modEventBus);
+		SCContent.MENU_TYPES.register(modEventBus);
+		SCContent.RECIPE_SERIALIZERS.register(modEventBus);
 	}
 
 	@SubscribeEvent
 	public static void onFMLCommonSetup(FMLCommonSetupEvent event) { //stage 1
 		RegistrationHandler.registerPackets();
+		RegistrationHandler.registerFakeLiquidRecipes();
 	}
 
 	@SubscribeEvent

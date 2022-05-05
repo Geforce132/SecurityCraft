@@ -110,7 +110,7 @@ public class SCManualScreen extends Screen {
 		startX = (width - 256) / 2;
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addRenderableWidget(new ChangePageButton(startX + 210, startY + 188, true, b -> nextPage()));
-		addRenderableWidget(new ChangePageButton(startX + 16, startY + 188, false, b -> previousPage()));
+		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, false, b -> previousPage()));
 		addRenderableWidget(nextSubpage = new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
 		addRenderableWidget(previousSubpage = new ChangePageButton(startX + 155, startY + 97, false, b -> previousSubpage()));
 		addRenderableWidget(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, TextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
@@ -470,8 +470,8 @@ public class SCManualScreen extends Screen {
 
 		resetBlockEntityInfo();
 
-		if (item instanceof BlockItem) {
-			Block block = ((BlockItem) item).getBlock();
+		if (item instanceof BlockItem blockItem) {
+			Block block = blockItem.getBlock();
 
 			if (explosive = block instanceof IExplosive)
 				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));
@@ -488,20 +488,24 @@ public class SCManualScreen extends Screen {
 				if (viewActivated = te instanceof IViewActivated)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
-				if (te instanceof ICustomizable customizableBe && customizableBe.customOptions() != null && customizableBe.customOptions().length > 0) {
-					List<Component> display = new ArrayList<>();
+				if (te instanceof ICustomizable customizableBe) {
+					Option<?>[] options = customizableBe.customOptions();
 
-					customizable = true;
-					display.add(Utils.localize("gui.securitycraft:scManual.options"));
-					display.add(new TextComponent("---"));
+					if (options != null && options.length > 0) {
+						List<Component> display = new ArrayList<>();
 
-					for (Option<?> option : customizableBe.customOptions()) {
-						display.add(new TextComponent("- ").append(Utils.localize("option" + block.getDescriptionId().substring(5) + "." + option.getName() + ".description")));
-						display.add(TextComponent.EMPTY);
+						customizable = true;
+						display.add(Utils.localize("gui.securitycraft:scManual.options"));
+						display.add(new TextComponent("---"));
+
+						for (Option<?> option : options) {
+							display.add(new TextComponent("- ").append(Utils.localize("option" + block.getDescriptionId().substring(5) + "." + option.getName() + ".description")));
+							display.add(TextComponent.EMPTY);
+						}
+
+						display.remove(display.size() - 1);
+						hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, display));
 					}
-
-					display.remove(display.size() - 1);
-					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, display));
 				}
 
 				if (te instanceof IModuleInventory moduleInv && moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0) {

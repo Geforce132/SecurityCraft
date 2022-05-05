@@ -1,34 +1,32 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
-import net.geforcemods.securitycraft.inventory.GenericBEMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 
 public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected, ILockable {
 	private String passcode;
 
 	public KeypadDoorBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeKeypadDoor, pos, state);
+		super(SCContent.KEYPAD_DOOR_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override
@@ -54,39 +52,14 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 
 	@Override
 	public void openPasswordGUI(Player player) {
-		if (getPassword() != null) {
-			if (player instanceof ServerPlayer serverPlayer) {
-				NetworkHooks.openGui(serverPlayer, new MenuProvider() {
-					@Override
-					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-						return new GenericBEMenu(SCContent.mTypeCheckPassword, windowId, level, worldPosition);
-					}
-
-					@Override
-					public Component getDisplayName() {
-						return KeypadDoorBlockEntity.super.getDisplayName();
-					}
-				}, worldPosition);
-			}
-		}
-		else {
-			if (getOwner().isOwner(player)) {
-				if (player instanceof ServerPlayer serverPlayer) {
-					NetworkHooks.openGui(serverPlayer, new MenuProvider() {
-						@Override
-						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-							return new GenericBEMenu(SCContent.mTypeSetPassword, windowId, level, worldPosition);
-						}
-
-						@Override
-						public Component getDisplayName() {
-							return KeypadDoorBlockEntity.super.getDisplayName();
-						}
-					}, worldPosition);
-				}
-			}
+		if (!level.isClientSide) {
+			if (getPassword() != null)
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.CHECK_PASSWORD, worldPosition));
 			else {
-				PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
+				if (getOwner().isOwner(player))
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SET_PASSWORD, worldPosition));
+				else
+					PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), ChatFormatting.DARK_RED);
 			}
 		}
 	}

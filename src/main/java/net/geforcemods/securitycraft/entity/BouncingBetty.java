@@ -17,11 +17,11 @@ public class BouncingBetty extends Entity {
 	public int fuse;
 
 	public BouncingBetty(EntityType<BouncingBetty> type, Level level) {
-		super(SCContent.eTypeBouncingBetty, level);
+		super(SCContent.BOUNCING_BETTY_ENTITY.get(), level);
 	}
 
 	public BouncingBetty(Level level, double x, double y, double z) {
-		this(SCContent.eTypeBouncingBetty, level);
+		this(SCContent.BOUNCING_BETTY_ENTITY.get(), level);
 		setPos(x, y, z);
 		float f = (float) (Math.random() * Math.PI * 2.0D);
 		setDeltaMovement(-((float) Math.sin(f)) * 0.02F, 0.20000000298023224D, -((float) Math.cos(f)) * 0.02F);

@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "securitycraft:alarm",
+    "securitycraft:block_change_detector",
     "securitycraft:block_pocket_manager",
     "securitycraft:block_pocket_wall",
     "securitycraft:bouncing_betty",
@@ -488,6 +489,7 @@
     "securitycraft:horizontal_reinforced_iron_bars",
     "securitycraft:reinforced_grass_path",
     "securitycraft:reinforced_moving_piston",
-    "securitycraft:reinforced_piston_head"
+    "securitycraft:reinforced_piston_head",
+    "securitycraft:sentry_disguise"
   ]
 }

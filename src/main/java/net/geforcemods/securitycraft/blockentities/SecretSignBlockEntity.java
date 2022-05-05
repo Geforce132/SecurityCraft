@@ -34,7 +34,7 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 
 	@Override
 	public BlockEntityType<?> getType() {
-		return SCContent.beTypeSecretSign;
+		return SCContent.SECRET_SIGN_BLOCK_ENTITY.get();
 	}
 
 	@Override

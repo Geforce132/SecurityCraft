@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -63,26 +64,26 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		return switch (state.getValue(FACE)) {
 			case FLOOR -> switch (state.getValue(FACING)) {
-					case NORTH -> FLOOR_NS;
-					case EAST -> FLOOR_EW;
-					case SOUTH -> FLOOR_NS;
-					case WEST -> FLOOR_EW;
-					default -> Shapes.empty();
-				};
+				case NORTH -> FLOOR_NS;
+				case EAST -> FLOOR_EW;
+				case SOUTH -> FLOOR_NS;
+				case WEST -> FLOOR_EW;
+				default -> Shapes.empty();
+			};
 			case CEILING -> switch (state.getValue(FACING)) {
-					case NORTH -> CEILING_NS;
-					case EAST -> CEILING_EW;
-					case SOUTH -> CEILING_NS;
-					case WEST -> CEILING_EW;
-					default -> Shapes.empty();
-				};
+				case NORTH -> CEILING_NS;
+				case EAST -> CEILING_EW;
+				case SOUTH -> CEILING_NS;
+				case WEST -> CEILING_EW;
+				default -> Shapes.empty();
+			};
 			case WALL -> switch (state.getValue(FACING)) {
-					case NORTH -> WALL_N;
-					case EAST -> WALL_E;
-					case SOUTH -> WALL_S;
-					case WEST -> WALL_W;
-					default -> Shapes.empty();
-				};
+				case NORTH -> WALL_N;
+				case EAST -> WALL_E;
+				case SOUTH -> WALL_S;
+				case WEST -> WALL_W;
+				default -> Shapes.empty();
+			};
 		};
 	}
 
@@ -95,7 +96,7 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (state.getValue(POWERED))
 			return InteractionResult.PASS;
-		else {
+		else if (!level.isClientSide) {
 			KeyPanelBlockEntity be = (KeyPanelBlockEntity) level.getBlockEntity(pos);
 
 			if (ModuleUtils.isDenied(be, player)) {
@@ -167,6 +168,26 @@ public class KeyPanelBlock extends OwnableBlock implements SimpleWaterloggedBloc
 			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
 		return getConnectedDirection(state).getOpposite() == facing && !state.canSurvive(level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, pos, facingPos);
+	}
+
+	@Override
+	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		//prevents dropping twice the amount of modules when breaking the block in creative mode
+		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
+			inv.getInventory().clear();
+
+		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			if (level.getBlockEntity(pos) instanceof IModuleInventory inv)
+				inv.dropAllModules();
+
+			if (!newState.hasBlockEntity())
+				level.removeBlockEntity(pos);
+		}
 	}
 
 	@Override

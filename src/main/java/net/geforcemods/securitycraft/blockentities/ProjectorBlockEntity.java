@@ -42,7 +42,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	private BlockState projectedState = Blocks.AIR.defaultBlockState();
 
 	public ProjectorBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.beTypeProjector, pos, state);
+		super(SCContent.PROJECTOR_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override
@@ -201,9 +201,10 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		if (count >= 1) {
 			projectedBlock = ItemStack.EMPTY;
 			resetSavedState();
+			return stack;
 		}
 
-		return stack;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

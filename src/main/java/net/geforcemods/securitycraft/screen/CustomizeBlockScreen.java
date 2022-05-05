@@ -18,12 +18,14 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
-import net.geforcemods.securitycraft.screen.components.HoverChecker;
-import net.geforcemods.securitycraft.screen.components.NamedSlider;
+import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
+import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
+import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
@@ -38,8 +40,6 @@ import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
-import net.minecraftforge.client.gui.widget.Slider;
-import net.minecraftforge.client.gui.widget.Slider.ISlider;
 
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
 	//@formatter:off
@@ -56,16 +56,18 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private final List<Rect2i> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
-	private Button[] optionButtons = new Button[5];
-	private HoverChecker[] hoverCheckers = new HoverChecker[10];
+	private AbstractWidget[] optionButtons = new AbstractWidget[5];
+	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 	private final String blockName;
 	private final TranslatableComponent name;
+	private final int maxNumberOfModules;
 
 	public CustomizeBlockScreen(CustomizeBlockMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		moduleInv = menu.moduleInv;
 		blockName = menu.moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId().substring(5);
 		name = Utils.localize(moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId());
+		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
 		menu.addSlotListener(this);
 	}
 
@@ -75,52 +77,50 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 		final int numberOfColumns = 2;
 
-		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
+		for (int i = 0; i < maxNumberOfModules; i++) {
 			int column = i % numberOfColumns;
 
 			addRenderableWidget(descriptionButtons[i] = new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
+			hoverCheckers.add(new TextHoverChecker(descriptionButtons[i], getModuleDescription(i)));
 			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
-			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 
-		if (moduleInv.getBlockEntity() instanceof ICustomizable customizable && customizable.customOptions() != null) {
-			for (int i = 0; i < customizable.customOptions().length; i++) {
-				Option<?> option = customizable.customOptions()[i];
+		if (moduleInv.getBlockEntity() instanceof ICustomizable customizable) {
+			Option<?>[] options = customizable.customOptions();
 
-				if (option instanceof ISlider && option.isSlider()) {
-					TranslatableComponent translatedBlockName = Utils.localize(blockName);
+			if (options != null) {
+				for (int i = 0; i < options.length; i++) {
+					Option<?> option = options[i];
 
-					if (option instanceof DoubleOption)
-						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, null);
-					else if (option instanceof IntOption)
-						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, TextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, null);
+					if (option.isSlider()) {
+						if (option instanceof DoubleOption doubleOption)
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize("option" + blockName + "." + option.getName(), ""), TextComponent.EMPTY, doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
+								doubleOption.setValue(slider.getValue());
+								SecurityCraft.channel.sendToServer(new UpdateSliderValue(doubleOption.getPos(), option, doubleOption.get()));
+							});
+						else if (option instanceof IntOption intOption)
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize("option" + blockName + "." + option.getName(), ""), TextComponent.EMPTY, intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
+								intOption.setValue(slider.getValueInt());
+								SecurityCraft.channel.sendToServer(new UpdateSliderValue(intOption.getPos(), option, intOption.get()));
+							});
 
-					optionButtons[i].setFGColor(14737632);
+						optionButtons[i].setFGColor(14737632);
+					}
+					else {
+						optionButtons[i] = new ExtendedButton(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::optionButtonClicked);
+						optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
+					}
+
+					addRenderableWidget(optionButtons[i]);
+					hoverCheckers.add(new TextHoverChecker(optionButtons[i], getOptionDescription(i)));
 				}
-				else {
-					optionButtons[i] = new ExtendedButton(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::optionButtonClicked);
-					optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
-				}
-
-				addRenderableWidget(optionButtons[i]);
-				hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i]);
 			}
 		}
 
-		for (Button button : optionButtons) {
+		for (AbstractWidget button : optionButtons) {
 			if (button != null)
 				extraAreas.add(new Rect2i(button.x, button.y, button.getWidth(), button.getHeight()));
 		}
-	}
-
-	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		for (Button b : optionButtons) {
-			if (b instanceof Slider slider && slider.dragging)
-				slider.mouseReleased(mouseX, mouseY, button);
-		}
-
-		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
 	@Override
@@ -142,12 +142,10 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
 			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
 
-		for (int i = 0; i < hoverCheckers.length; i++) {
-			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
-				if (i < moduleInv.getMaxNumberOfModules())
-					renderTooltip(pose, minecraft.font.split(getModuleDescription(i), 150), mouseX, mouseY);
-				else
-					renderTooltip(pose, minecraft.font.split(getOptionDescription(i), 150), mouseX, mouseY);
+		for (TextHoverChecker hoverChecker : hoverCheckers) {
+			//last check hides the tooltip when a slider is being dragged
+			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY) && (!(hoverChecker.getWidget() instanceof CallbackSlider) || !isDragging()))
+				renderTooltip(pose, minecraft.font.split(hoverChecker.getName(), 150), mouseX, mouseY);
 		}
 	}
 
@@ -161,8 +159,13 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(pose);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem._setShaderTexture(0, TEXTURES[moduleInv.getMaxNumberOfModules()]);
+		RenderSystem._setShaderTexture(0, TEXTURES[maxNumberOfModules]);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+	}
+
+	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+		return (getFocused() != null && isDragging() && button == 0 ? getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY) : false) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
 	}
 
 	@Override
@@ -203,11 +206,11 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		}
 	}
 
-	private Component getModuleDescription(int buttonID) {
+	private Component getModuleDescription(int moduleId) {
 		//@formatter:off
-		String moduleDescription = "module" + blockName + "." + descriptionButtons[buttonID].getItemStack().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description";
+		String moduleDescription = "module" + blockName + "." + descriptionButtons[moduleId].getItemStack().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description";
 
-		return Utils.localize(descriptionButtons[buttonID].getItemStack().getDescriptionId())
+		return Utils.localize(descriptionButtons[moduleId].getItemStack().getDescriptionId())
 				.append(new TextComponent(":"))
 				.withStyle(ChatFormatting.RESET)
 				.append(new TextComponent("\n\n"))
@@ -215,8 +218,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		//@formatter:on
 	}
 
-	private TranslatableComponent getOptionDescription(int buttonID) {
-		Option<?> option = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[buttonID - moduleInv.getSlots()];
+	private TranslatableComponent getOptionDescription(int optionId) {
+		Option<?> option = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[optionId];
 		String optionDescription = "option" + blockName + "." + option.getName() + ".description";
 
 		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslatableComponent(optionDescription), new TranslatableComponent("gui.securitycraft:customize.currentSetting", getValueText(option)));

@@ -28,11 +28,11 @@ public class IMSBomb extends Fireball {
 	private boolean isFast;
 
 	public IMSBomb(EntityType<IMSBomb> type, Level level) {
-		super(SCContent.eTypeImsBomb, level);
+		super(SCContent.IMS_BOMB_ENTITY.get(), level);
 	}
 
 	public IMSBomb(Level level, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, IMSBlockEntity be) {
-		super(SCContent.eTypeImsBomb, x, y, z, accelerationX, accelerationY, accelerationZ, level);
+		super(SCContent.IMS_BOMB_ENTITY.get(), x, y, z, accelerationX, accelerationY, accelerationZ, level);
 
 		Owner owner = be.getOwner();
 

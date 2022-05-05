@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.screen.components;
 
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraftforge.client.gui.widget.Slider;
 
 public class HoverChecker {
 	private int top;
@@ -25,12 +24,16 @@ public class HoverChecker {
 
 	public boolean checkHover(double mouseX, double mouseY) {
 		if (widget != null) {
-			if (!widget.visible || (widget instanceof Slider slider && slider.dragging))
+			if (!widget.visible)
 				return false;
 			else
 				return widget.isHoveredOrFocused();
 		}
 		else
 			return mouseX >= left && mouseX <= right && mouseY >= top && mouseY <= bottom;
+	}
+
+	public AbstractWidget getWidget() {
+		return widget;
 	}
 }

@@ -23,7 +23,7 @@ public class KeypadSmokerMenu extends AbstractFurnaceMenu {
 	}
 
 	public KeypadSmokerMenu(int windowId, Level level, BlockPos pos, Inventory inventory, Container furnaceInv, ContainerData furnaceData) {
-		super(SCContent.mTypeKeypadSmoker, RecipeType.SMOKING, RecipeBookType.SMOKER, windowId, inventory, furnaceInv, furnaceData);
+		super(SCContent.KEYPAD_SMOKER_MENU.get(), RecipeType.SMOKING, RecipeBookType.SMOKER, windowId, inventory, furnaceInv, furnaceData);
 		this.be = (AbstractKeypadFurnaceBlockEntity) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 	}

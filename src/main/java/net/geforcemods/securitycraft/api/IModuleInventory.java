@@ -9,11 +9,14 @@ import java.util.function.Predicate;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -122,6 +125,24 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 */
 	public default int fixSlotId(int id) {
 		return id >= 100 ? id - 100 : id;
+	}
+
+	public default void dropAllModules() {
+		BlockEntity be = getBlockEntity();
+		Level level = be.getLevel();
+		BlockPos pos = be.getBlockPos();
+
+		for (ItemStack module : getInventory()) {
+			if (!(module.getItem() instanceof ModuleItem))
+				continue;
+
+			if (be instanceof LinkableBlockEntity linkable)
+				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, module, linkable, false);
+
+			Block.popResource(level, pos, module);
+		}
+
+		getInventory().clear();
 	}
 
 	@Override
@@ -233,20 +254,19 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	@Override
 	public default boolean isItemValid(int slot, ItemStack stack) {
 		slot = fixSlotId(slot);
-		return getModuleInSlot(slot).isEmpty() && !stack.isEmpty() && stack.getItem() instanceof ModuleItem module && getAcceptedModules().contains(module.getModuleType()) && !hasModule(module.getModuleType());
+		return getModuleInSlot(slot).isEmpty() && !stack.isEmpty() && stack.getItem() instanceof ModuleItem module && acceptsModule(module.getModuleType()) && !hasModule(module.getModuleType());
 	}
 
 	/**
-	 * @return A list of all {@link ModuleType} that can be inserted into this inventory
+	 * @return true if the inventory accepts the given {@link ModuleType}, false otherwise
 	 */
-	public default ArrayList<ModuleType> getAcceptedModules() {
-		ArrayList<ModuleType> list = new ArrayList<>();
-
+	public default boolean acceptsModule(ModuleType type) {
 		for (ModuleType module : acceptedModules()) {
-			list.add(module);
+			if (module == type)
+				return true;
 		}
 
-		return list;
+		return false;
 	}
 
 	/**

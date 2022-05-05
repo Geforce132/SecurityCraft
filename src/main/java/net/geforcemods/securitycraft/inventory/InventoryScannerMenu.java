@@ -20,7 +20,7 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 	private ContainerLevelAccess worldPosCallable;
 
 	public InventoryScannerMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
-		super(SCContent.mTypeInventoryScanner, windowId);
+		super(SCContent.INVNETORY_SCANNER_MENU.get(), windowId);
 		be = (InventoryScannerBlockEntity) level.getBlockEntity(pos);
 		numRows = be.getContainerSize() / 9;
 		worldPosCallable = ContainerLevelAccess.create(level, pos);

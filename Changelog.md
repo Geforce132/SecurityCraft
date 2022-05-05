@@ -1,3 +1,30 @@
+--------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
+
+- New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity
+- New: Codebreakers can now hack Keycard Readers
+- New: Item tag "securitycraft:can_interact_with_doors" to control which items can interact with reinforced doors, scanner doors, keypad doors, and reinforced iron trapdoors
+- New: Config option "codebreaker_chance" to set the chance of the codebreaker successfully hacking a block
+- Change: Codebreakers will now always open briefcases when in Creative mode without a chance of failing
+- Change: The Sentry's body is now solid if the sentry is not disguised
+- Change: The Fake Lava/Water Buckets are now created in a brewing stand, by putting the potion in the top slot, and the bucket(s) in the bottom slot(s)
+- API: Split IPasswordProtected into two interfaces (IPasswordProtected and ICodebreakable), meaning blocks can now be hacked by the codebreaker without needing to be password protected
+- API: Removed IPasswordProtected#isCodebreakable
+- Fix: The recipe for reinforced glass panes is incorrect
+- Fix: Breaking the block another block with modules is attached to does not drop the modules
+- Fix: Compatibility issues with other mods that add overlays (e.g. Stylish Effects)
+- Fix: Some logs have an incorrect side texture
+- Fix: Reinforced Iron Trapdoor textures do not rotate and aren't oriented the same way open as closed
+- Fix: Reinforced Ice blocks melt unintentionally
+- Fix: Disguised blocks from sentries can be retrieved by using pistons or other means
+- Fix: The Admin Tool and Universal Key Changer do not work on doors
+- Fix: The Keypad Door can only be accessed with an empty hand
+- Removed: Some unnecessary menu types. This may result in a "missing registry entries" message showing up, which can be accepted
+- Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
+- Misc.: More texture and model changes
+- Misc.: The minimum Forge version is now 40.0.48
+- Misc.: If using Jade, the minimum supported version is now 4.2.0
+- Misc.: If using JEI, the minimum supported version is now 9.7.0
+
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
 
 - New: Password-protected Smoker and Password-protected Blast Furnace

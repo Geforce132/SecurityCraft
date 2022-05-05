@@ -12,7 +12,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
-import net.geforcemods.securitycraft.screen.components.NamedSlider;
+import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
@@ -34,7 +34,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
-import net.minecraftforge.client.gui.widget.Slider;
 import net.minecraftforge.network.PacketDistributor;
 
 public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocketManagerMenu> {
@@ -57,7 +56,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	private Button sizeButton;
 	private Button assembleButton;
 	private Button outlineButton;
-	private Slider offsetSlider;
+	private CallbackSlider offsetSlider;
 	private StackHoverChecker[] hoverCheckers = new StackHoverChecker[3];
 	private TextHoverChecker assembleHoverChecker;
 	private int wallsNeededOverall = (size - 2) * (size - 2) * 6;
@@ -96,8 +95,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		addRenderableWidget(sizeButton = new ToggleComponentButton(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[1], widgetWidth, 20, this::updateSizeButtonText, ArrayUtils.indexOf(allowedSizes, size), allowedSizes.length, this::sizeButtonClicked));
 		addRenderableWidget(assembleButton = new ExtendedButton(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[2], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked));
 		addRenderableWidget(outlineButton = new ExtendedButton(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!be.showOutline ? "show" : "hide")), this::outlineButtonClicked));
-		addRenderableWidget(offsetSlider = new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", be.autoBuildOffset), TextComponent.EMPTY, leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", (-size + 2) / 2, (size - 2) / 2, be.autoBuildOffset, false, true, null, this::offsetSliderReleased));
-		offsetSlider.updateSlider();
+		addRenderableWidget(offsetSlider = new CallbackSlider(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), TextComponent.EMPTY, (-size + 2) / 2, (size - 2) / 2, be.autoBuildOffset, true, this::offsetSliderReleased));
 
 		if (!be.getOwner().isOwner(Minecraft.getInstance().player))
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active = offsetSlider.active = false;
@@ -186,20 +184,17 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	}
 
 	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+		return (getFocused() != null && isDragging() && button == 0 ? getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY) : false) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+	}
+
+	@Override
 	protected void slotClicked(Slot slot, int slotId, int mouseButton, ClickType type) {
 		//the super call needs to be before calculating the stored materials, as it is responsible for putting the stack inside the slot
 		super.slotClicked(slot, slotId, mouseButton, type);
 		//every time items are added/removed, the mouse is clicking a slot and these values are recomputed
 		//not the best place, as this code will run when an empty slot is clicked while not holding any item, but it's good enough
 		updateMaterialInformation(true);
-	}
-
-	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		if (offsetSlider.dragging)
-			offsetSlider.mouseReleased(mouseX, mouseY, button);
-
-		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
 	private void updateMaterialInformation(boolean recalculateStoredStacks) {
@@ -264,11 +259,10 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 		updateMaterialInformation(false);
 		be.size = size;
-		offsetSlider.minValue = newMin;
-		offsetSlider.maxValue = newMax;
+		offsetSlider.setMinValue(newMin);
+		offsetSlider.setMaxValue(newMax);
 		be.autoBuildOffset = newOffset;
 		offsetSlider.setValue(newOffset);
-		offsetSlider.updateSlider();
 		sync();
 		((ToggleComponentButton) button).onValueChange();
 	}
@@ -295,7 +289,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		sync();
 	}
 
-	public void offsetSliderReleased(Slider slider) {
+	public void offsetSliderReleased(CallbackSlider slider) {
 		be.autoBuildOffset = slider.getValueInt();
 		sync();
 	}

@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.network.server.SyncProjector.DataType;
-import net.geforcemods.securitycraft.screen.components.NamedSlider;
+import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.geforcemods.securitycraft.screen.components.StateSelector;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
@@ -32,10 +32,10 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 	private TranslatableComponent blockName;
 	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[5];
 	private TextHoverChecker slotHoverChecker;
-	private NamedSlider projectionWidthSlider;
-	private NamedSlider projectionHeightSlider;
-	private NamedSlider projectionRangeSlider;
-	private NamedSlider projectionOffsetSlider;
+	private CallbackSlider projectionWidthSlider;
+	private CallbackSlider projectionHeightSlider;
+	private CallbackSlider projectionRangeSlider;
+	private CallbackSlider projectionOffsetSlider;
 	private StateSelector stateSelector;
 	private int sliderWidth = 120;
 
@@ -55,35 +55,35 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		int left = leftPos + ((imageWidth - sliderWidth) / 2);
 		TogglePictureButton toggleButton;
 
-		projectionWidthSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.width", be.getProjectionWidth()), blockName, left, topPos + 57, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", ""), "", ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionWidth(), false, true, null, this::sliderReleased));
+		projectionWidthSlider = addRenderableWidget(new CallbackSlider(left, topPos + 57, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", ""), TextComponent.EMPTY, ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionWidth(), true, this::applySliderValue));
 		projectionWidthSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionWidthSlider, Utils.localize("gui.securitycraft:projector.width.description"));
 
-		projectionHeightSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.height", be.getProjectionHeight()), blockName, left, topPos + 78, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.height", ""), "", ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionHeight(), false, true, null, this::sliderReleased));
+		projectionHeightSlider = addRenderableWidget(new CallbackSlider(left, topPos + 78, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.height", ""), TextComponent.EMPTY, ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionHeight(), true, this::applySliderValue));
 		projectionHeightSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionHeightSlider, Utils.localize("gui.securitycraft:projector.height.description"));
 
-		projectionRangeSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.range", be.getProjectionRange()), blockName, left, topPos + 99, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", ""), "", ProjectorBlockEntity.MIN_RANGE, ProjectorBlockEntity.MAX_RANGE, be.getProjectionRange(), false, true, slider -> {
-			//show a different number so it makes sense within the world
-			if (be.isHorizontal())
-				slider.setMessage(new TextComponent("").append(slider.dispString).append(Integer.toString((int) Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
-		}, this::sliderReleased));
+		projectionRangeSlider = addRenderableWidget(new CallbackSlider(left, topPos + 99, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", ""), TextComponent.EMPTY, ProjectorBlockEntity.MIN_RANGE - (be.isHorizontal() ? 16 : 0), ProjectorBlockEntity.MAX_RANGE - (be.isHorizontal() ? 16 : 0), be.getProjectionRange() - (be.isHorizontal() ? 16 : 0), true, this::applySliderValue));
 		projectionRangeSlider.setFGColor(0xE0E0E0);
 		hoverCheckers[id++] = new TextHoverChecker(projectionRangeSlider, Utils.localize("gui.securitycraft:projector.range.description"));
 
-		projectionOffsetSlider = addRenderableWidget(new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", be.getProjectionOffset()), blockName, left, topPos + 120, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", ProjectorBlockEntity.MIN_OFFSET, ProjectorBlockEntity.MAX_OFFSET, be.getProjectionOffset(), false, true, null, this::sliderReleased));
+		projectionOffsetSlider = addRenderableWidget(new CallbackSlider(left, topPos + 120, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), TextComponent.EMPTY, ProjectorBlockEntity.MIN_OFFSET, ProjectorBlockEntity.MAX_OFFSET, be.getProjectionOffset(), true, this::applySliderValue));
 		projectionOffsetSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionOffsetSlider, Utils.localize("gui.securitycraft:projector.offset.description"));
 		//@formatter:off
-		toggleButton = addRenderableWidget(new TogglePictureButton(left + sliderWidth - 20, topPos + 36, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, b -> {
+		toggleButton = addRenderableWidget(new TogglePictureButton(left + sliderWidth - 20, topPos + 36, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, slider -> {
 			//@formatter:on
-			be.setHorizontal(!be.isHorizontal());
-			projectionRangeSlider.updateSlider();
+			boolean horizontal = !be.isHorizontal();
+
+			be.setHorizontal(horizontal);
+			projectionRangeSlider.setMinValue(projectionRangeSlider.getMinValue() - (horizontal ? 16 : -16));
+			projectionRangeSlider.setMaxValue(projectionRangeSlider.getMaxValue() - (horizontal ? 16 : -16));
+			projectionRangeSlider.setValue(projectionRangeSlider.getValue() - (horizontal ? 16 : -16));
+			applySliderValue(projectionRangeSlider);
 			SecurityCraft.channel.sendToServer(new SyncProjector(be.getBlockPos(), be.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
 		}));
 		toggleButton.setCurrentIndex(be.isHorizontal() ? 1 : 0);
 		hoverCheckers[id++] = new TextHoverChecker(toggleButton, Arrays.asList(Utils.localize("gui.securitycraft:projector.vertical"), Utils.localize("gui.securitycraft:projector.horizontal")));
-		projectionRangeSlider.updateSlider();
 
 		slotHoverChecker = new TextHoverChecker(topPos + 22, topPos + 39, leftPos + 78, leftPos + 95, SLOT_TOOLTIP);
 
@@ -98,7 +98,8 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		renderTooltip(pose, mouseX, mouseY);
 
 		for (TextHoverChecker thc : hoverCheckers) {
-			if (thc.checkHover(mouseX, mouseY))
+			//last check hides the tooltip when a slider is being dragged
+			if (thc.checkHover(mouseX, mouseY) && (!(thc.getWidget() instanceof CallbackSlider) || !isDragging()))
 				renderTooltip(pose, thc.getName(), mouseX, mouseY);
 		}
 
@@ -120,28 +121,11 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		if (projectionWidthSlider.dragging)
-			projectionWidthSlider.mouseReleased(mouseX, mouseY, button);
-
-		if (projectionHeightSlider.dragging)
-			projectionHeightSlider.mouseReleased(mouseX, mouseY, button);
-
-		if (projectionRangeSlider.dragging)
-			projectionRangeSlider.mouseReleased(mouseX, mouseY, button);
-
-		if (projectionOffsetSlider.dragging)
-			projectionOffsetSlider.mouseReleased(mouseX, mouseY, button);
-
-		return super.mouseReleased(mouseX, mouseY, button);
-	}
-
-	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		if (stateSelector != null && stateSelector.mouseDragged(mouseX, mouseY, button, dragX, dragY))
 			return true;
 
-		return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+		return (getFocused() != null && isDragging() && button == 0 ? getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY) : false) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
 	}
 
 	@Override
@@ -162,7 +146,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		}
 	}
 
-	public void sliderReleased(NamedSlider slider) {
+	public void applySliderValue(CallbackSlider slider) {
 		int data = 0;
 		DataType dataType = DataType.INVALID;
 
@@ -175,7 +159,12 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 			dataType = DataType.HEIGHT;
 		}
 		else if (slider == projectionRangeSlider) {
-			be.setProjectionRange(data = slider.getValueInt());
+			data = slider.getValueInt();
+
+			if (be.isHorizontal())
+				data += 16;
+
+			be.setProjectionRange(data);
 			dataType = DataType.RANGE;
 		}
 		else if (slider == projectionOffsetSlider) {

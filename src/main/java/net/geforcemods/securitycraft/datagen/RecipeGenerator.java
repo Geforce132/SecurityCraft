@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.data.DataGenerator;
@@ -18,20 +17,16 @@ import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
-import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 
 public class RecipeGenerator extends RecipeProvider {
@@ -41,26 +36,8 @@ public class RecipeGenerator extends RecipeProvider {
 
 	@Override
 	protected final void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-		ItemStack healingStack = new ItemStack(Items.POTION);
-		ItemStack strongHealingStack = new ItemStack(Items.POTION);
-		ItemStack harmingStack = new ItemStack(Items.POTION);
-		ItemStack strongHarmingStack = new ItemStack(Items.POTION);
-		CompoundTag healingNBT = new CompoundTag();
-		CompoundTag strongHealingNBT = new CompoundTag();
-		CompoundTag harmingNBT = new CompoundTag();
-		CompoundTag strongHarmingNBT = new CompoundTag();
-
-		healingNBT.putString("Potion", Potions.HEALING.getRegistryName().toString());
-		strongHealingNBT.putString("Potion", Potions.STRONG_HEALING.getRegistryName().toString());
-		harmingNBT.putString("Potion", Potions.HARMING.getRegistryName().toString());
-		strongHarmingNBT.putString("Potion", Potions.STRONG_HARMING.getRegistryName().toString());
-		healingStack.setTag(healingNBT);
-		strongHealingStack.setTag(strongHealingNBT);
-		harmingStack.setTag(harmingNBT);
-		strongHarmingStack.setTag(strongHarmingNBT);
-
-		//combine keycard with limited use keycard to get keycards with the a configurable limited amount of uses
-		SpecialRecipeBuilder.special(LimitedUseKeycardRecipe.serializer).save(consumer, "limited_use_keycards");
+		//combine keycard with limited use keycard to get keycards with a configurable limited amount of uses
+		SpecialRecipeBuilder.special(SCContent.LIMITED_USE_KEYCARD_RECIPE_SERIALIZER.get()).save(consumer, "limited_use_keycards");
 
 		//@formatter:off
 		//shaped recipes
@@ -72,6 +49,15 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('N', Blocks.NOTE_BLOCK)
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE))
+		.save(consumer);
+		ShapedRecipeBuilder.shaped(SCContent.BLOCK_CHANGE_DETECTOR.get())
+		.pattern("IRI")
+		.pattern("ILI")
+		.pattern("III")
+		.define('R', Items.REDSTONE_TORCH)
+		.define('I', Tags.Items.INGOTS_IRON)
+		.define('L', SCContent.USERNAME_LOGGER.get())
+		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.BLOCK_POCKET_MANAGER.get())
 		.pattern("CIC")
@@ -99,38 +85,6 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('C', SCContent.KEYPAD_CHEST.get())
 		.unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.FAKE_LAVA_BUCKET.get())
-		.group("securitycraft:fake_liquids")
-		.pattern("P")
-		.pattern("B")
-		.define('P', new CustomNBTIngredient(healingStack))
-		.define('B', Items.LAVA_BUCKET)
-		.unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava_normal"));
-		ShapedRecipeBuilder.shaped(SCContent.FAKE_LAVA_BUCKET.get())
-		.group("securitycraft:fake_liquids")
-		.pattern("P")
-		.pattern("B")
-		.define('P', new CustomNBTIngredient(strongHealingStack))
-		.define('B', Items.LAVA_BUCKET)
-		.unlockedBy("has_lava_bucket", has(Items.LAVA_BUCKET))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava_strong"));
-		ShapedRecipeBuilder.shaped(SCContent.FAKE_WATER_BUCKET.get())
-		.group("securitycraft:fake_liquids")
-		.pattern("P")
-		.pattern("B")
-		.define('P', new CustomNBTIngredient(harmingStack))
-		.define('B', Items.WATER_BUCKET)
-		.unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_water_normal"));
-		ShapedRecipeBuilder.shaped(SCContent.FAKE_WATER_BUCKET.get())
-		.group("securitycraft:fake_liquids")
-		.pattern("P")
-		.pattern("B")
-		.define('P', new CustomNBTIngredient(strongHarmingStack))
-		.define('B', Items.WATER_BUCKET)
-		.unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_water_strong"));
 		ShapedRecipeBuilder.shaped(SCContent.CAGE_TRAP.get())
 		.pattern("BBB")
 		.pattern("GRG")
@@ -532,7 +486,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('I', Tags.Items.INGOTS_IRON)
 		.unlockedBy("has_mine", has(SCContent.MINE.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_GLASS_PANE.get())
+		ShapedRecipeBuilder.shaped(SCContent.REINFORCED_GLASS_PANE.get(), 16)
 		.pattern("GGG")
 		.pattern("GGG")
 		.define('G', SCContent.REINFORCED_GLASS.get())
@@ -1460,12 +1414,5 @@ public class RecipeGenerator extends RecipeProvider {
 	@Override
 	public String getName() {
 		return "SecurityCraft Recipes";
-	}
-
-	//helper because IngredientNBT's constructor is protected
-	private static class CustomNBTIngredient extends NBTIngredient {
-		public CustomNBTIngredient(ItemStack stack) {
-			super(stack);
-		}
 	}
 }

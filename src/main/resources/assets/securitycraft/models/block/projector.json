@@ -1,169 +1,115 @@
 {
-	"parent": "block/block",
-	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
 	"textures": {
-		"particle": "block/iron_block",
-		"iron": "block/iron_block",
-		"lense_frame": "block/black_concrete",
-		"lense": "block/light_blue_concrete"
+		"projector": "securitycraft:block/projector",
+		"particle": "minecraft:block/iron_block"
 	},
 	"elements": [
 		{
-			"name": "base",
-			"from": [0, 3, 1],
-			"to": [16, 10, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 9.5, 8.5]},
+			"from": [1, 2, 1],
+			"to": [15, 7, 15],
 			"faces": {
-				"north": {"uv": [0, 0, 16, 7], "texture": "#iron"},
-				"east": {"uv": [0, 0, 16, 7], "texture": "#iron"},
-				"south": {"uv": [0, 0, 16, 7], "texture": "#iron"},
-				"west": {"uv": [0, 0, 16, 7], "texture": "#iron"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#iron"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#iron"}
+				"north": {"uv": [3.5, 3.5, 7, 4.75], "texture": "#projector"},
+				"east": {"uv": [0, 3.5, 3.5, 4.75], "texture": "#projector"},
+				"south": {"uv": [10.5, 3.5, 14, 4.75], "texture": "#projector"},
+				"west": {"uv": [7, 3.5, 10.5, 4.75], "texture": "#projector"},
+				"up": {"uv": [7, 3.5, 3.5, 0], "texture": "#projector"},
+				"down": {"uv": [10.5, 0, 7, 3.5], "texture": "#projector"}
 			}
 		},
 		{
-			"name": "leg1",
-			"from": [0, 0, 1],
-			"to": [2, 3, 3],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 9]},
+			"from": [2, 2, 0],
+			"to": [7, 7, 1],
 			"faces": {
-				"north": {"uv": [14, 13, 16, 16], "texture": "#iron"},
-				"east": {"uv": [12, 13, 14, 16], "texture": "#iron"},
-				"south": {"uv": [12, 13, 14, 16], "texture": "#iron"},
-				"west": {"uv": [0, 13, 2, 16], "texture": "#iron"},
-				"up": {"uv": [13, 13, 15, 15], "texture": "#iron"},
-				"down": {"uv": [13, 13, 15, 15], "texture": "#iron"}
+				"north": {"uv": [0.25, 0.25, 1.5, 1.5], "texture": "#projector"},
+				"east": {"uv": [0, 0.25, 0.25, 1.5], "texture": "#projector"},
+				"south": {"uv": [1.75, 0.25, 3, 1.5], "texture": "#projector"},
+				"west": {"uv": [1.5, 0.25, 1.75, 1.5], "texture": "#projector"},
+				"up": {"uv": [1.5, 0.25, 0.25, 0], "texture": "#projector"},
+				"down": {"uv": [2.75, 0, 1.5, 0.25], "texture": "#projector"}
 			}
 		},
 		{
-			"name": "leg2",
-			"from": [14, 0, 1],
-			"to": [16, 3, 3],
-			"rotation": {"angle": 0, "axis": "y", "origin": [22, 8, 9]},
+			"from": [1, 0, 12],
+			"to": [4, 2, 15],
 			"faces": {
-				"north": {"uv": [0, 13, 2, 16], "texture": "#iron"},
-				"east": {"uv": [14, 13, 16, 16], "texture": "#iron"},
-				"south": {"uv": [12, 13, 14, 16], "texture": "#iron"},
-				"west": {"uv": [13, 13, 15, 16], "texture": "#iron"},
-				"up": {"uv": [13, 13, 15, 15], "texture": "#iron"},
-				"down": {"uv": [13, 13, 15, 15], "texture": "#iron"}
+				"north": {"uv": [0.75, 2.25, 1.5, 2.75], "texture": "#projector"},
+				"east": {"uv": [0, 2.25, 0.75, 2.75], "texture": "#projector"},
+				"south": {"uv": [2.25, 2.25, 3, 2.75], "texture": "#projector"},
+				"west": {"uv": [1.5, 2.25, 2.25, 2.75], "texture": "#projector"},
+				"up": {"uv": [1.5, 2.25, 0.75, 1.5], "texture": "#projector"},
+				"down": {"uv": [2.25, 1.5, 1.5, 2.25], "texture": "#projector"}
 			}
 		},
 		{
-			"name": "leg3",
-			"from": [14, 0, 14],
-			"to": [16, 3, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [22, 8, 22]},
+			"from": [12, 0, 12],
+			"to": [15, 2, 15],
 			"faces": {
-				"north": {"uv": [8, 13, 10, 16], "texture": "#iron"},
-				"east": {"uv": [0, 13, 2, 16], "texture": "#iron"},
-				"south": {"uv": [14, 13, 16, 16], "texture": "#iron"},
-				"west": {"uv": [13, 13, 15, 16], "texture": "#iron"},
-				"up": {"uv": [13, 13, 15, 15], "texture": "#iron"},
-				"down": {"uv": [13, 13, 15, 15], "texture": "#iron"}
+				"north": {"uv": [0.75, 2.25, 1.5, 2.75], "texture": "#projector"},
+				"east": {"uv": [0, 2.25, 0.75, 2.75], "texture": "#projector"},
+				"south": {"uv": [2.25, 2.25, 3, 2.75], "texture": "#projector"},
+				"west": {"uv": [1.5, 2.25, 2.25, 2.75], "texture": "#projector"},
+				"up": {"uv": [1.5, 2.25, 0.75, 1.5], "texture": "#projector"},
+				"down": {"uv": [2.25, 1.5, 1.5, 2.25], "texture": "#projector"}
 			}
 		},
 		{
-			"name": "leg4",
-			"from": [0, 0, 14],
-			"to": [2, 3, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 22]},
+			"from": [12, 0, 1],
+			"to": [15, 2, 4],
 			"faces": {
-				"north": {"uv": [8, 10, 10, 16], "texture": "#iron"},
-				"east": {"uv": [12, 13, 14, 16], "texture": "#iron"},
-				"south": {"uv": [0, 13, 2, 16], "texture": "#iron"},
-				"west": {"uv": [14, 13, 16, 16], "texture": "#iron"},
-				"up": {"uv": [13, 13, 15, 15], "texture": "#iron"},
-				"down": {"uv": [13, 13, 15, 15], "texture": "#iron"}
+				"north": {"uv": [0.75, 2.25, 1.5, 2.75], "texture": "#projector"},
+				"east": {"uv": [0, 2.25, 0.75, 2.75], "texture": "#projector"},
+				"south": {"uv": [2.25, 2.25, 3, 2.75], "texture": "#projector"},
+				"west": {"uv": [1.5, 2.25, 2.25, 2.75], "texture": "#projector"},
+				"up": {"uv": [1.5, 2.25, 0.75, 1.5], "texture": "#projector"},
+				"down": {"uv": [2.25, 1.5, 1.5, 2.25], "texture": "#projector"}
 			}
 		},
 		{
-			"name": "lense",
-			"from": [3, 5, 0.9],
-			"to": [6, 8, 1.9],
-			"rotation": {"angle": 0, "axis": "y", "origin": [14, 15, 9.8]},
+			"from": [1, 0, 1],
+			"to": [4, 2, 4],
 			"faces": {
-				"north": {"uv": [0, 0, 5, 5], "texture": "#lense"},
-				"east": {"uv": [0, 0, 1, 5], "texture": "#lense"},
-				"south": {"uv": [0, 0, 5, 5], "texture": "#lense"},
-				"west": {"uv": [0, 0, 1, 5], "texture": "#lense"},
-				"up": {"uv": [0, 0, 5, 1], "texture": "#lense"},
-				"down": {"uv": [0, 0, 5, 1], "texture": "#lense"}
-			}
-		},
-		{
-			"name": "top",
-			"from": [2, 8, 0.5],
-			"to": [7, 9, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [14, 19, 8.5]},
-			"faces": {
-				"north": {"uv": [0, 0, 5, 1], "texture": "#lense_frame"},
-				"east": {"uv": [0, 0, 0.5, 1], "texture": "#lense_frame"},
-				"south": {"uv": [0, 0, 5, 1], "texture": "#lense_frame"},
-				"west": {"uv": [0, 0, 0.5, 1], "texture": "#lense_frame"},
-				"up": {"uv": [0, 0, 5, 0.5], "texture": "#lense_frame"},
-				"down": {"uv": [0, 0, 5, 0.5], "texture": "#lense_frame"}
-			}
-		},
-		{
-			"name": "bottom",
-			"from": [2, 4, 0.5],
-			"to": [7, 5, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [14, 15, 8.5]},
-			"faces": {
-				"north": {"uv": [0, 0, 5, 1], "texture": "#lense_frame"},
-				"east": {"uv": [0, 0, 0.5, 1], "texture": "#lense_frame"},
-				"south": {"uv": [0, 0, 5, 1], "texture": "#lense_frame"},
-				"west": {"uv": [0, 0, 0.5, 1], "texture": "#lense_frame"},
-				"up": {"uv": [0, 0, 5, 0.5], "texture": "#lense_frame"},
-				"down": {"uv": [0, 0, 5, 0.5], "texture": "#lense_frame"}
-			}
-		},
-		{
-			"name": "left",
-			"from": [6, 5, 0.5],
-			"to": [7, 8, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [18, 16, 8.5]},
-			"faces": {
-				"north": {"uv": [0, 0, 1, 3], "texture": "#lense_frame"},
-				"east": {"uv": [0, 0, 0.5, 3], "texture": "#lense_frame"},
-				"south": {"uv": [0, 0, 1, 3], "texture": "#lense_frame"},
-				"west": {"uv": [0, 0, 0.5, 3], "texture": "#lense_frame"},
-				"up": {"uv": [0, 0, 1, 0.5], "texture": "#lense_frame"},
-				"down": {"uv": [0, 0, 1, 0.5], "texture": "#lense_frame"}
-			}
-		},
-		{
-			"name": "right",
-			"from": [2, 5, 0.5],
-			"to": [3, 8, 1],
-			"rotation": {"angle": 0, "axis": "y", "origin": [14, 16, 8.5]},
-			"faces": {
-				"north": {"uv": [0, 0, 1, 3], "texture": "#lense_frame"},
-				"east": {"uv": [0, 0, 0.5, 3], "texture": "#lense_frame"},
-				"south": {"uv": [0, 0, 1, 3], "texture": "#lense_frame"},
-				"west": {"uv": [0, 0, 0.5, 3], "texture": "#lense_frame"},
-				"up": {"uv": [0, 0, 1, 0.5], "texture": "#lense_frame"},
-				"down": {"uv": [0, 0, 1, 0.5], "texture": "#lense_frame"}
+				"north": {"uv": [0.75, 2.25, 1.5, 2.75], "texture": "#projector"},
+				"east": {"uv": [0, 2.25, 0.75, 2.75], "texture": "#projector"},
+				"south": {"uv": [2.25, 2.25, 3, 2.75], "texture": "#projector"},
+				"west": {"uv": [1.5, 2.25, 2.25, 2.75], "texture": "#projector"},
+				"up": {"uv": [1.5, 2.25, 0.75, 1.5], "texture": "#projector"},
+				"down": {"uv": [2.25, 1.5, 1.5, 2.25], "texture": "#projector"}
 			}
 		}
 	],
 	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 225, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"scale": [0.625, 0.625, 0.625]
+		},
 		"head": {
-			"rotation": [-91, -180, -180]
+			"translation": [0, 8, 0]
+		},
+		"fixed": {
+			"scale": [0.5, 0.5, 0.5]
 		}
-	},
-	"groups": [0,
-		{
-			"name": "legs",
-			"origin": [8, 8, 8],
-			"children": [1, 2, 3, 4]
-		}, 5,
-		{
-			"name": "lense_frame",
-			"origin": [14, 15, 9.8],
-			"children": [6, 7, 8, 9]
-		}
-	]
+	}
 }

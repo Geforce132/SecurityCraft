@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:admin_tool",
+    "securitycraft:codebreaker",
+    "securitycraft:sonic_security_system",
+    "securitycraft:universal_block_modifier",
+    "securitycraft:universal_block_remover",
+    "securitycraft:universal_key_changer",
+    "securitycraft:universal_owner_changer"
+  ]
+}

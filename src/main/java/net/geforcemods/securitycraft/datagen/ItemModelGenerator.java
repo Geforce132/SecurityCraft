@@ -52,7 +52,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 		List<RegistryObject<Item>> singleTextureItems = new ArrayList<>(SCContent.ITEMS.getEntries());
 		//@formatter:off
 		List<RegistryObject<Item>> handheldItems = List.of(
-				SCContent.UNIVERSAL_BLOCK_MODIFIER,
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1,
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2,
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3,
@@ -66,6 +65,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				SCContent.SPEED_MODULE,
 				SCContent.TASER,
 				SCContent.TASER_POWERED,
+				SCContent.UNIVERSAL_BLOCK_MODIFIER,
 				SCContent.UNIVERSAL_BLOCK_REMOVER,
 				SCContent.UNIVERSAL_OWNER_CHANGER,
 				SCContent.WIRE_CUTTERS));
@@ -96,6 +96,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		blockMine(Blocks.FURNACE, SCContent.FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/furnace_side"), mcLoc(BLOCK_FOLDER + "/furnace_front"), mcLoc(BLOCK_FOLDER + "/furnace_top"));
 		blockMine(Blocks.SMOKER, SCContent.SMOKER_MINE.get(), mcLoc(BLOCK_FOLDER + "/smoker_side"), mcLoc(BLOCK_FOLDER + "/smoker_front"), mcLoc(BLOCK_FOLDER + "/smoker_top"));
 		blockMine(Blocks.BLAST_FURNACE, SCContent.BLAST_FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/blast_furnace_side"), mcLoc(BLOCK_FOLDER + "/blast_furnace_front"), mcLoc(BLOCK_FOLDER + "/blast_furnace_top"));
+		simpleParent(SCContent.BLOCK_CHANGE_DETECTOR.get());
 		simpleParent(SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		simpleParent(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
 		simpleParent(SCContent.REINFORCED_GLASS.get());

@@ -23,7 +23,7 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 	private ContainerLevelAccess worldPosCallable;
 
 	public KeycardReaderMenu(int windowId, Inventory inventory, Level level, BlockPos pos) {
-		super(SCContent.mTypeKeycardReader, windowId);
+		super(SCContent.KEYCARD_READER_MENU.get(), windowId);
 
 		if (level.getBlockEntity(pos) instanceof KeycardReaderBlockEntity be)
 			this.be = be;

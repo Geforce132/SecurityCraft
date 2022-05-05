@@ -26,6 +26,6 @@ public class ReinforcedRotatedCrystalQuartzPillar extends ReinforcedRotatedPilla
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, SCContent.beTypeBlockPocket, LevelUtils::blockEntityTicker);
+		return createTickerHelper(type, SCContent.BLOCK_POCKET_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 }

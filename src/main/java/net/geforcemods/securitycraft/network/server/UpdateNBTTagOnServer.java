@@ -14,9 +14,8 @@ public class UpdateNBTTagOnServer {
 	public UpdateNBTTagOnServer() {}
 
 	public UpdateNBTTagOnServer(ItemStack stack) {
-		if (!stack.isEmpty() && stack.getTag() != null) {
+		if (!stack.isEmpty() && stack.getTag() != null)
 			this.stack = stack;
-		}
 	}
 
 	public static void encode(UpdateNBTTagOnServer message, FriendlyByteBuf buf) {
