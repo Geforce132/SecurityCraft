@@ -65,7 +65,7 @@ public class LaserBlock extends DisguisableBlock {
 						LinkableBlockEntity.link(thisTe, thatTe);
 
 						for (ModuleType type : thatTe.getInsertedModules()) {
-							thisTe.insertModule(thatTe.getModule(type));
+							thisTe.insertModule(thatTe.getModule(type), false);
 						}
 
 						if (thisTe.isEnabled() && thatTe.isEnabled()) {

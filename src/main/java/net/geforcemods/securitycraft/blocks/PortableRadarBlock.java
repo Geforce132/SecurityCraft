@@ -130,7 +130,7 @@ public class PortableRadarBlock extends OwnableBlock {
 
 	@Override
 	public int getSignal(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
-		if (blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
+		if (blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
@@ -138,7 +138,7 @@ public class PortableRadarBlock extends OwnableBlock {
 
 	@Override
 	public int getDirectSignal(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return state.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE) && state.getValue(FACING) == side ? 15 : 0;
+		return state.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE) && state.getValue(FACING) == side ? 15 : 0;
 	}
 
 	@Override

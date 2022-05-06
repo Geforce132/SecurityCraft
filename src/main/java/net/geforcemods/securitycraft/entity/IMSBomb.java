@@ -42,7 +42,7 @@ public class IMSBomb extends AbstractFireballEntity {
 		Owner owner = te.getOwner();
 
 		entityData.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
-		isFast = te.hasModule(ModuleType.SPEED);
+		isFast = te.isModuleEnabled(ModuleType.SPEED);
 	}
 
 	@Override

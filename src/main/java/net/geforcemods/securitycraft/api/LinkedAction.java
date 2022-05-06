@@ -7,22 +7,18 @@ package net.geforcemods.securitycraft.api;
  * @author Geforce
  */
 public enum LinkedAction {
-
 	/**
-	 * Used when an {@link Option} in a TileEntity is changed. <p> Parameters: [0] The Option which changed
+	 * Used when an {@link Option} in a TileEntity is changed.
 	 */
 	OPTION_CHANGED,
 
 	/**
-	 * Used when a {@link EnumCustomModules} is inserted into a CustomizableSCTE. <p> Parameters: [0] The module's ItemStack,
-	 * [1] the module in EnumCustomModules-form
+	 * Used when a {@link EnumCustomModules} is inserted into an IModuleInventory.
 	 */
 	MODULE_INSERTED,
 
 	/**
-	 * Used when a {@link EnumCustomModules} is removed from a CustomizableSCTE. <p> Parameters: [0] The module's ItemStack,
-	 * [1] the module in EnumCustomModules-form
+	 * Used when a {@link EnumCustomModules} is removed from an IModuleInventory.
 	 */
 	MODULE_REMOVED;
-
 }

@@ -136,7 +136,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 				getSentryDisguiseBlockEntity().ifPresent(be -> {
 					//put the old module, if it exists, into the new disguise block
 					if (!oldModule.isEmpty() && oldModule.getItem() instanceof ModuleItem && ((ModuleItem) oldModule.getItem()).getBlockAddon(oldModule.getOrCreateTag()) != null) {
-						be.insertModule(oldModule);
+						be.insertModule(oldModule, false);
 						level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
 					}
 
@@ -230,7 +230,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 				if (hasSpeedModule())
 					Block.popResource(level, pos, new ItemStack(SCContent.SPEED_MODULE.get()));
 
-				getSentryDisguiseBlockEntity().ifPresent(be -> be.removeModule(ModuleType.DISGUISE));
+				getSentryDisguiseBlockEntity().ifPresent(be -> be.removeModule(ModuleType.DISGUISE, false));
 				level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, true));
 				entityData.set(ALLOWLIST, new CompoundNBT());
 				entityData.set(HAS_SPEED_MODULE, false);
@@ -447,8 +447,8 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 		if (((ModuleItem) module.getItem()).getBlockAddon(module.getTag()) != null) {
 			getSentryDisguiseBlockEntity().ifPresent(be -> {
 				//remove a possibly existing old disguise module
-				be.removeModule(ModuleType.DISGUISE);
-				be.insertModule(module);
+				be.removeModule(ModuleType.DISGUISE, false);
+				be.insertModule(module, false);
 				level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
 			});
 		}

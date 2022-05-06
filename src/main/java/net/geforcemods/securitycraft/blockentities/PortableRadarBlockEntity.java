@@ -48,13 +48,13 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			List<PlayerEntity> entities = level.getEntitiesOfClass(PlayerEntity.class, area, e -> {
 				boolean isNotAllowed = true;
 
-				if (hasModule(ModuleType.ALLOWLIST))
+				if (isModuleEnabled(ModuleType.ALLOWLIST))
 					isNotAllowed = !ModuleUtils.isAllowed(this, e);
 
 				return e != owner && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
-			if (hasModule(ModuleType.REDSTONE))
+			if (isModuleEnabled(ModuleType.REDSTONE))
 				PortableRadarBlock.togglePowerOutput(level, worldPosition, !entities.isEmpty());
 
 			if (owner != null) {
@@ -77,8 +77,8 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == ModuleType.REDSTONE)
 			PortableRadarBlock.togglePowerOutput(level, worldPosition, false);

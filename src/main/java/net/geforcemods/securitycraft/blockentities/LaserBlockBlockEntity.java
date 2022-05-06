@@ -55,39 +55,38 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		else if (action == LinkedAction.MODULE_INSERTED) {
 			ItemStack module = (ItemStack) parameters[0];
 
-			insertModule(module);
+			insertModule(module, (boolean) parameters[2]);
 
 			if (((ModuleItem) module.getItem()).getModuleType() == ModuleType.DISGUISE)
 				onInsertDisguiseModule(module);
 
 			excludedTEs.add(this);
-			createLinkedBlockAction(LinkedAction.MODULE_INSERTED, parameters, excludedTEs);
+			createLinkedBlockAction(action, parameters, excludedTEs);
 		}
 		else if (action == LinkedAction.MODULE_REMOVED) {
 			ModuleType module = (ModuleType) parameters[1];
 			ItemStack moduleStack = getModule(module);
 
-			removeModule(module);
+			removeModule(module, (boolean) parameters[2]);
 
 			if (module == ModuleType.DISGUISE)
 				onRemoveDisguiseModule(moduleStack);
 
 			excludedTEs.add(this);
-			createLinkedBlockAction(LinkedAction.MODULE_REMOVED, parameters, excludedTEs);
+			createLinkedBlockAction(action, parameters, excludedTEs);
 		}
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		super.onModuleInserted(stack, module);
-
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
 		if (module == ModuleType.DISGUISE)
 			onInsertDisguiseModule(stack);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == ModuleType.DISGUISE)
 			onRemoveDisguiseModule(stack);

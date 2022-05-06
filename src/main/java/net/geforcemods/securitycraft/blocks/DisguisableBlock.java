@@ -108,7 +108,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	public Optional<BlockState> getDisguisedBlockState(IBlockReader world, BlockPos pos) {
 		if (world.getBlockEntity(pos) instanceof IModuleInventory) {
 			IModuleInventory te = (IModuleInventory) world.getBlockEntity(pos);
-			ItemStack module = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
+			ItemStack module = te.isModuleEnabled(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!module.isEmpty()) {
 				BlockState disguisedState = NBTUtil.readBlockState(module.getOrCreateTag().getCompound("SavedState"));
@@ -130,7 +130,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	public ItemStack getDisguisedStack(IBlockReader world, BlockPos pos) {
 		if (world != null && world.getBlockEntity(pos) instanceof IModuleInventory) {
 			IModuleInventory te = (IModuleInventory) world.getBlockEntity(pos);
-			ItemStack stack = te.hasModule(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
+			ItemStack stack = te.isModuleEnabled(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!stack.isEmpty()) {
 				Block block = ((ModuleItem) stack.getItem()).getBlockAddon(stack.getTag());

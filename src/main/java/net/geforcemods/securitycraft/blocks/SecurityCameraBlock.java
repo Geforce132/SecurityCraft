@@ -173,7 +173,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public int getSignal(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
-		if (blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
+		if (blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
@@ -181,7 +181,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public int getDirectSignal(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
-		if (blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE) && blockState.getValue(FACING) == side)
+		if (blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE) && blockState.getValue(FACING) == side)
 			return 15;
 		else
 			return 0;

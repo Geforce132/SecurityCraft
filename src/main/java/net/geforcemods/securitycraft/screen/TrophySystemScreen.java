@@ -48,7 +48,7 @@ public class TrophySystemScreen extends Screen {
 		super(new TranslationTextComponent(SCContent.TROPHY_SYSTEM.get().getDescriptionId()));
 
 		this.tileEntity = te;
-		isSmart = tileEntity.hasModule(ModuleType.SMART);
+		isSmart = tileEntity.isModuleEnabled(ModuleType.SMART);
 		orderedFilterList = new ArrayList<>(tileEntity.getFilters().keySet());
 		orderedFilterList.sort((e1, e2) -> {
 			//the entry for modded projectiles always shows at the bottom of the list

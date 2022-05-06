@@ -223,7 +223,7 @@ public class SCClientEventHandler {
 		FontRenderer font = Minecraft.getInstance().font;
 		GameSettings settings = mc.options;
 		SecurityCameraBlockEntity te = (SecurityCameraBlockEntity) tile;
-		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
+		boolean hasRedstoneModule = te.isModuleEnabled(ModuleType.REDSTONE);
 		BlockState state = world.getBlockState(pos);
 		ITextComponent lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyUp.getTranslatedKeyMessage(), settings.keyLeft.getTranslatedKeyMessage(), settings.keyDown.getTranslatedKeyMessage(), settings.keyRight.getTranslatedKeyMessage());
 		ITextComponent exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyShift.getTranslatedKeyMessage());

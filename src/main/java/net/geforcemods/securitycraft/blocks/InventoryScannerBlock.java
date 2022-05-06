@@ -111,7 +111,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		}
 
 		for (ModuleType type : connectedScanner.getInsertedModules()) {
-			thisTe.insertModule(connectedScanner.getModule(type));
+			thisTe.insertModule(connectedScanner.getModule(type), false);
 		}
 
 		((BooleanOption) customOptions[0]).setValue(connectedScanner.isHorizontal());
@@ -212,10 +212,12 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 	@Override
 	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		if (!(blockAccess.getBlockEntity(pos) instanceof InventoryScannerBlockEntity))
+		TileEntity te = blockAccess.getBlockEntity(pos);
+
+		if (!(te instanceof InventoryScannerBlockEntity))
 			return 0;
 
-		return (((InventoryScannerBlockEntity) blockAccess.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) blockAccess.getBlockEntity(pos)).shouldProvidePower()) ? 15 : 0;
+		return (((InventoryScannerBlockEntity) te).isModuleEnabled(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) te).shouldProvidePower()) ? 15 : 0;
 	}
 
 	@Override
@@ -257,7 +259,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 		@Override
 		public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te, Direction direction, int distance) {
-			return ((InventoryScannerBlockEntity) te).hasModule(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) te).shouldProvidePower();
+			return ((InventoryScannerBlockEntity) te).isModuleEnabled(ModuleType.REDSTONE) && ((InventoryScannerBlockEntity) te).shouldProvidePower();
 		}
 
 		@Override

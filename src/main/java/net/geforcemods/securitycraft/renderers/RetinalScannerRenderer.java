@@ -47,7 +47,7 @@ public class RetinalScannerRenderer extends TileEntityRenderer<RetinalScannerBlo
 
 		Direction direction = te.getBlockState().getValue(RetinalScannerBlock.FACING);
 
-		if (!te.hasModule(ModuleType.DISGUISE) && direction != null) {
+		if (!te.isModuleEnabled(ModuleType.DISGUISE) && direction != null) {
 			matrix.pushPose();
 
 			switch (direction) {

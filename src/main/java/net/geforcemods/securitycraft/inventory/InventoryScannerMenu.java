@@ -31,7 +31,7 @@ public class InventoryScannerMenu extends Container {
 		}
 
 		//inventory scanner storage
-		if (te.getOwner().isOwner(inventory.player) && te.hasModule(ModuleType.STORAGE)) {
+		if (te.getOwner().isOwner(inventory.player) && te.isModuleEnabled(ModuleType.STORAGE)) {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 3; j++) {
 					addSlot(new Slot(te, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));

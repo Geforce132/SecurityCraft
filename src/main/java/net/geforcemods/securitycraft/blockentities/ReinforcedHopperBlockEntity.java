@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.EnumMap;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -18,6 +20,7 @@ import net.minecraft.util.NonNullList;
 public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOwnable, IModuleInventory {
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
+	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	@Override
 	public TileEntityType<?> getType() {
@@ -30,6 +33,7 @@ public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOw
 
 		owner.read(tag);
 		modules = readModuleInventory(tag);
+		moduleStates = readModuleStates(tag);
 	}
 
 	@Override
@@ -40,6 +44,7 @@ public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOw
 			owner.write(tag, false);
 
 		writeModuleInventory(tag);
+		writeModuleStates(tag);
 		return tag;
 	}
 
@@ -93,5 +98,20 @@ public class ReinforcedHopperBlockEntity extends HopperTileEntity implements IOw
 	@Override
 	public TileEntity getTileEntity() {
 		return this;
+	}
+
+	@Override
+	public boolean isModuleEnabled(ModuleType module) {
+		return hasModule(module) && moduleStates.get(module);
+	}
+
+	@Override
+	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled) {
+		moduleStates.put(module, shouldBeEnabled);
+
+		if (shouldBeEnabled)
+			onModuleInserted(getModule(module), module, true);
+		else
+			onModuleRemoved(getModule(module), module, true);
 	}
 }

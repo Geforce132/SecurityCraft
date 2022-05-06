@@ -73,21 +73,19 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
 
-		if (module == ModuleType.SPEED) {
+		if (module == ModuleType.SPEED)
 			ticksBetweenAttacks = FAST_SPEED;
-		}
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
-		if (module == ModuleType.SPEED) {
+		if (module == ModuleType.SPEED)
 			ticksBetweenAttacks = SLOW_SPEED;
-		}
 	}
 
 	@Override

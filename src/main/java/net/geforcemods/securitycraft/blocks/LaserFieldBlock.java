@@ -66,7 +66,7 @@ public class LaserFieldBlock extends OwnableBlock {
 						BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.LASER_BLOCK.get());
 						world.getBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
 
-						if (te instanceof IModuleInventory && ((IModuleInventory) te).hasModule(ModuleType.HARMING)) {
+						if (te instanceof IModuleInventory && ((IModuleInventory) te).isModuleEnabled(ModuleType.HARMING)) {
 							if (!(entity instanceof PlayerEntity && ((IOwnable) te).getOwner().isOwner((PlayerEntity) entity)))
 								((LivingEntity) entity).hurt(CustomDamageSources.LASER, 10F);
 						}

@@ -296,11 +296,11 @@ public class SCEventHandler {
 						ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
 						LevelUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
 
-						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
+						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
 						if (te instanceof LinkableBlockEntity) {
 							((LinkableBlockEntity) te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {
-									stack, ((ModuleItem) stack.getItem()).getModuleType()
+									stack, ((ModuleItem) stack.getItem()).getModuleType(), false
 							}, (LinkableBlockEntity) te);
 						}
 
@@ -395,7 +395,7 @@ public class SCEventHandler {
 				te.correctTuneWasPlayed = true;
 				te.powerCooldown = te.signalLength.get();
 
-				if (te.hasModule(ModuleType.REDSTONE)) {
+				if (te.isModuleEnabled(ModuleType.REDSTONE)) {
 					world.setBlockAndUpdate(te.getBlockPos(), te.getLevel().getBlockState(te.getBlockPos()).setValue(SonicSecuritySystemBlock.POWERED, true));
 					BlockUtils.updateIndirectNeighbors(te.getLevel(), te.getBlockPos(), SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
 				}

@@ -2,11 +2,8 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
 
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -105,20 +102,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		super.onModuleInserted(stack, module);
-		ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, this);
-	}
-
-	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
-		ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, this);
-	}
-
-	@Override
 	public void onOptionChanged(Option<?> option) {
-		createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[] {
+		createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Object[] {
 				option
 		}, this);
 	}
@@ -187,15 +172,14 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *            loops. Always add your tile entity to the list whenever using this method
 	 */
 	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedTEs) {
-		for (LinkedBlock block : linkedBlocks)
-			if (excludedTEs.contains(block.asTileEntity(level)))
-				continue;
-			else {
+		for (LinkedBlock block : linkedBlocks) {
+			if (!excludedTEs.contains(block.asTileEntity(level))) {
 				BlockState state = level.getBlockState(block.blockPos);
 
 				block.asTileEntity(level).onLinkedBlockAction(action, parameters, excludedTEs);
 				level.sendBlockUpdated(worldPosition, state, state, 3);
 			}
+		}
 	}
 
 	/**

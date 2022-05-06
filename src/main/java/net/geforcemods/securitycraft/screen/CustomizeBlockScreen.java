@@ -14,6 +14,9 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
@@ -22,10 +25,15 @@ import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.IContainerListener;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -38,7 +46,7 @@ import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
 @OnlyIn(Dist.CLIENT)
-public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas {
+public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, IContainerListener {
 	//@formatter:off
 	private static final ResourceLocation[] TEXTURES = {
 			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
@@ -49,6 +57,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			new ResourceLocation("securitycraft:textures/gui/container/customize5.png")
 	};
 	//@formatter:on
+	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private final List<Rectangle2d> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
@@ -62,6 +71,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 		moduleInv = container.moduleInv;
 		blockName = container.moduleInv.getTileEntity().getBlockState().getBlock().getDescriptionId().substring(5);
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
+		container.addSlotListener(this);
 	}
 
 	@Override
@@ -73,8 +83,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 		for (int i = 0; i < maxNumberOfModules; i++) {
 			int column = i % numberOfColumns;
 
-			addButton(descriptionButtons[i] = new PictureButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
+			addButton(descriptionButtons[i] = new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
 			hoverCheckers.add(new TextHoverChecker(descriptionButtons[i], getModuleDescription(i)));
+			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 
 		TileEntity te = moduleInv.getTileEntity();
@@ -130,6 +141,18 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
+		minecraft.textureManager.bind(BEACON_GUI);
+
+		for (int i = 36; i < menu.maxSlots; i++) {
+			Slot slot = menu.slots.get(i);
+
+			if (!slot.getItem().isEmpty()) {
+				boolean isEnabled = moduleInv.isModuleEnabled(((ModuleItem) slot.getItem().getItem()).getModuleType());
+
+				blit(matrix, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, isEnabled ? 88 : 110, 219, 21, 22, 256, 256);
+			}
+		}
+
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
 			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
 
@@ -153,6 +176,29 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURES[maxNumberOfModules]);
 		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+	}
+
+	@Override
+	public void slotChanged(Container menu, int slotIndex, ItemStack stack) {
+		if (slotIndex < 36)
+			return;
+
+		//when removing a stack from a slot, it's not possible to reliably get the module type, so just loop through all possible types
+		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
+			if (descriptionButtons[i] != null)
+				descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
+		}
+	}
+
+	private void moduleButtonClicked(Button button) {
+		ModuleType moduleType = ((ModuleButton) button).getModule().getModuleType();
+
+		if (moduleInv.isModuleEnabled(moduleType))
+			moduleInv.removeModule(moduleType, true);
+		else
+			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
+
+		SecurityCraft.channel.sendToServer(new ToggleModule(moduleInv.getTileEntity().getBlockPos(), moduleType));
 	}
 
 	protected void optionButtonClicked(Button button) {
@@ -203,5 +249,25 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	@Override
 	public List<Rectangle2d> getExtraAreas() {
 		return extraAreas;
+	}
+
+	@Override
+	public void setContainerData(Container menu, int slotIndex, int value) {}
+
+	@Override
+	public void refreshContainer(Container menu, NonNullList<ItemStack> stacks) {}
+
+	private class ModuleButton extends PictureButton {
+		private final ModuleItem module;
+
+		public ModuleButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ModuleItem itemToRender, IPressable onPress) {
+			super(xPos, yPos, width, height, itemRenderer, new ItemStack(itemToRender), onPress);
+
+			module = itemToRender;
+		}
+
+		public ModuleItem getModule() {
+			return module;
+		}
 	}
 }

@@ -38,8 +38,8 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerMenu
 		super(container, inv, name);
 		tileEntity = container.te;
 		owns = tileEntity.getOwner().isOwner(inv.player);
-		hasRedstoneModule = tileEntity.hasModule(ModuleType.REDSTONE);
-		hasStorageModule = tileEntity.hasModule(ModuleType.STORAGE);
+		hasRedstoneModule = tileEntity.isModuleEnabled(ModuleType.REDSTONE);
+		hasStorageModule = tileEntity.isModuleEnabled(ModuleType.STORAGE);
 		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no")));
 		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")));
 

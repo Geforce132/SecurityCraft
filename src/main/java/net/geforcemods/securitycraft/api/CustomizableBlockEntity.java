@@ -1,5 +1,8 @@
 package net.geforcemods.securitycraft.api;
 
+import java.util.EnumMap;
+
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -15,6 +18,7 @@ import net.minecraft.util.NonNullList;
  */
 public abstract class CustomizableBlockEntity extends NamedBlockEntity implements IModuleInventory, ICustomizable {
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public CustomizableBlockEntity(TileEntityType<?> type) {
 		super(type);
@@ -24,6 +28,7 @@ public abstract class CustomizableBlockEntity extends NamedBlockEntity implement
 	public void load(BlockState state, CompoundNBT tag) {
 		super.load(state, tag);
 		modules = readModuleInventory(tag);
+		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 	}
 
@@ -31,6 +36,7 @@ public abstract class CustomizableBlockEntity extends NamedBlockEntity implement
 	public CompoundNBT save(CompoundNBT tag) {
 		super.save(tag);
 		writeModuleInventory(tag);
+		writeModuleStates(tag);
 		writeOptions(tag);
 		return tag;
 	}
@@ -43,5 +49,20 @@ public abstract class CustomizableBlockEntity extends NamedBlockEntity implement
 	@Override
 	public NonNullList<ItemStack> getInventory() {
 		return modules;
+	}
+
+	@Override
+	public boolean isModuleEnabled(ModuleType module) {
+		return hasModule(module) && moduleStates.get(module);
+	}
+
+	@Override
+	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled) {
+		moduleStates.put(module, shouldBeEnabled);
+
+		if (shouldBeEnabled)
+			onModuleInserted(getModule(module), module, true);
+		else
+			onModuleRemoved(getModule(module), module, true);
 	}
 }

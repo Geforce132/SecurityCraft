@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.EnumMap;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -24,6 +26,7 @@ public class SecretSignBlockEntity extends SignTileEntity implements IOwnable, I
 	private Owner owner = new Owner();
 	private BooleanOption isSecret = new BooleanOption("isSecret", true);
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	@Override
 	public TileEntityType<?> getType() {
@@ -35,6 +38,7 @@ public class SecretSignBlockEntity extends SignTileEntity implements IOwnable, I
 		super.save(tag);
 
 		writeModuleInventory(tag);
+		writeModuleStates(tag);
 		writeOptions(tag);
 
 		if (owner != null)
@@ -48,6 +52,7 @@ public class SecretSignBlockEntity extends SignTileEntity implements IOwnable, I
 		super.load(state, tag);
 
 		modules = readModuleInventory(tag);
+		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		owner.read(tag);
 	}
@@ -109,5 +114,20 @@ public class SecretSignBlockEntity extends SignTileEntity implements IOwnable, I
 	@Override
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
+	}
+
+	@Override
+	public boolean isModuleEnabled(ModuleType module) {
+		return hasModule(module) && moduleStates.get(module);
+	}
+
+	@Override
+	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled) {
+		moduleStates.put(module, shouldBeEnabled);
+
+		if (shouldBeEnabled)
+			onModuleInserted(getModule(module), module, true);
+		else
+			onModuleRemoved(getModule(module), module, true);
 	}
 }

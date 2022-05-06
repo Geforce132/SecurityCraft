@@ -72,7 +72,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 		projectionHeight = tag.getInt("height");
 		projectionRange = tag.getInt("range");
 		projectionOffset = tag.getInt("offset");
-		activatedByRedstone = hasModule(ModuleType.REDSTONE);
+		activatedByRedstone = isModuleEnabled(ModuleType.REDSTONE);
 		active = tag.getBoolean("active");
 		horizontal = tag.getBoolean("horizontal");
 		projectedBlock = ItemStack.of(tag.getCompound("storedItem"));
@@ -144,16 +144,16 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
 
 		if (module == ModuleType.REDSTONE)
 			setActivatedByRedstone(true);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == ModuleType.REDSTONE)
 			setActivatedByRedstone(false);

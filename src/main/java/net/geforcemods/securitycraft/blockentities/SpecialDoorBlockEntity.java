@@ -43,18 +43,18 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		super.onModuleInserted(stack, module);
-		handleModule(stack, module, false);
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
+		handleModule(stack, module, false, toggled);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
-		handleModule(stack, module, true);
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
+		handleModule(stack, module, true, toggled);
 	}
 
-	private void handleModule(ItemStack stack, ModuleType module, boolean removed) {
+	private void handleModule(ItemStack stack, ModuleType module, boolean removed, boolean toggled) {
 		DoubleBlockHalf myHalf = getBlockState().getValue(DoorBlock.HALF);
 		BlockPos otherPos;
 
@@ -72,9 +72,9 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity {
 				SpecialDoorBlockEntity otherDoorTe = (SpecialDoorBlockEntity) otherTe;
 
 				if (!removed && !otherDoorTe.hasModule(module))
-					otherDoorTe.insertModule(stack);
+					otherDoorTe.insertModule(stack, toggled);
 				else if (removed && otherDoorTe.hasModule(module))
-					otherDoorTe.removeModule(module);
+					otherDoorTe.removeModule(module, toggled);
 			}
 		}
 	}
