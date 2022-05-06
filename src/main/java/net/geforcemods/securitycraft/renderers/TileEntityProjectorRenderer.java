@@ -52,7 +52,7 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 						GlStateManager.scale(0.9999D, 0.9999D, 0.9999D); //counteract z-fighting between fake blocks
 
 						if (projectedState.getRenderType() == EnumBlockRenderType.MODEL)
-							blockRendererDispatcher.renderBlockBrightness(projectedState, te.getWorld().getLightBrightness(pos));
+							blockRendererDispatcher.renderBlockBrightness(projectedState, 1.0F);
 
 						TileEntityRenderDelegate.PROJECTOR.tryRenderDelegate(te, 0, 0, -1, partialTicks, destroyStage, alpha);
 						GlStateManager.enableCull();
