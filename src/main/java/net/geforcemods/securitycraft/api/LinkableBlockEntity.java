@@ -2,15 +2,12 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
 
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -89,22 +86,10 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[] {
+		createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Object[] {
 				option
 		}, this);
 		super.onOptionChanged(option);
-	}
-
-	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		super.onModuleInserted(stack, module);
-		ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, this);
-	}
-
-	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		super.onModuleRemoved(stack, module);
-		ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, this);
 	}
 
 	private void readLinkedBlocks(ListTag list) {
@@ -195,15 +180,14 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *            loops. Always add your block entity to the list whenever using this method
 	 */
 	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {
-		for (LinkedBlock block : linkedBlocks)
-			if (excludedBEs.contains(block.asBlockEntity(level)))
-				continue;
-			else {
+		for (LinkedBlock block : linkedBlocks) {
+			if (!excludedBEs.contains(block.asBlockEntity(level))) {
 				BlockState state = level.getBlockState(block.getPos());
 
 				block.asBlockEntity(level).onLinkedBlockAction(action, parameters, excludedBEs);
 				level.sendBlockUpdated(block.getPos(), state, state, 3);
 			}
+		}
 	}
 
 	/**

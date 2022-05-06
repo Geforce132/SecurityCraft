@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.EnumMap;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -52,6 +53,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public KeypadChestBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), pos, state);
@@ -62,6 +64,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		super.save(tag);
 
 		writeModuleInventory(tag);
+		writeModuleStates(tag);
 		writeOptions(tag);
 
 		if (passcode != null && !passcode.isEmpty())
@@ -78,6 +81,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		super.load(tag);
 
 		modules = readModuleInventory(tag);
+		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		passcode = tag.getString("passcode");
 		owner.load(tag);
@@ -107,7 +111,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	protected void signalOpenCount(Level level, BlockPos pos, BlockState state, int i, int j) {
 		super.signalOpenCount(level, pos, state, i, j);
 
-		if (hasModule(ModuleType.REDSTONE))
+		if (isModuleEnabled(ModuleType.REDSTONE))
 			BlockUtils.updateIndirectNeighbors(level, pos, state.getBlock(), Direction.DOWN);
 	}
 
@@ -177,17 +181,17 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		IModuleInventory.super.onModuleInserted(stack, module);
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		IModuleInventory.super.onModuleInserted(stack, module, toggled);
 
-		addOrRemoveModuleFromAttached(stack, false);
+		addOrRemoveModuleFromAttached(stack, false, toggled);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		IModuleInventory.super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
 
-		addOrRemoveModuleFromAttached(stack, true);
+		addOrRemoveModuleFromAttached(stack, true, toggled);
 	}
 
 	@Override
@@ -211,7 +215,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 				continue;
 
 			if (offsetBe != null)
-				offsetBe.removeModule(item.getModuleType());
+				offsetBe.removeModule(item.getModuleType(), false);
 
 			Block.popResource(level, worldPosition, module);
 		}
@@ -219,7 +223,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		getInventory().clear();
 	}
 
-	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove) {
+	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove, boolean toggled) {
 		if (module.isEmpty() || !(module.getItem() instanceof ModuleItem moduleItem))
 			return;
 
@@ -227,9 +231,9 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 		if (offsetBe != null) {
 			if (remove)
-				offsetBe.removeModule(moduleItem.getModuleType());
+				offsetBe.removeModule(moduleItem.getModuleType(), toggled);
 			else
-				offsetBe.insertModule(module);
+				offsetBe.insertModule(module, toggled);
 		}
 	}
 
@@ -308,6 +312,21 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 		return new Option[] {
 				sendMessage
 		};
+	}
+
+	@Override
+	public boolean isModuleEnabled(ModuleType module) {
+		return hasModule(module) && moduleStates.get(module);
+	}
+
+	@Override
+	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled) {
+		moduleStates.put(module, shouldBeEnabled);
+
+		if (shouldBeEnabled)
+			onModuleInserted(getModule(module), module, true);
+		else
+			onModuleRemoved(getModule(module), module, true);
 	}
 
 	public boolean sendsMessages() {

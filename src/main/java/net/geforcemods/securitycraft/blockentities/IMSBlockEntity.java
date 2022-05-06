@@ -169,7 +169,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	}
 
 	public int getAttackInterval() {
-		return hasModule(ModuleType.SPEED) ? 40 : 80;
+		return isModuleEnabled(ModuleType.SPEED) ? 40 : 80;
 	}
 
 	public static enum IMSTargetingMode {

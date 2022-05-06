@@ -76,7 +76,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		previousSignature = be.getSignature();
 		signature = previousSignature;
 		acceptedLevels = be.getAcceptedLevels();
-		isSmart = be.hasModule(ModuleType.SMART);
+		isSmart = be.isModuleEnabled(ModuleType.SMART);
 		isOwner = be.getOwner().isOwner(inv.player);
 		imageHeight = 249;
 	}

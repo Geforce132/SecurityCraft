@@ -56,14 +56,13 @@ public class UniversalBlockRemoverItem extends Item {
 
 			if (be instanceof IModuleInventory inv)
 				inv.dropAllModules();
-
 			if (block == SCContent.LASER_BLOCK.get()) {
 				LinkableBlockEntity laser = (LinkableBlockEntity) level.getBlockEntity(pos);
 
 				for (ItemStack module : laser.getInventory()) {
 					if (!module.isEmpty()) {
 						laser.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {
-								module, ((ModuleItem) module.getItem()).getModuleType()
+								module, ((ModuleItem) module.getItem()).getModuleType(), false
 						}, laser);
 					}
 				}

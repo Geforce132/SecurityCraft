@@ -5,6 +5,7 @@
 - New: Item tag "securitycraft:can_interact_with_doors" to control which items can interact with reinforced doors, scanner doors, keypad doors, and reinforced iron trapdoors
 - New: Config option "codebreaker_chance" to set the chance of the codebreaker successfully hacking a block
 - New: The Allowlist and Denylist Module can now contain teams, meaning every player on a team that is on the list will be allowed/denied
+- New: Modules can now be toggled off or on without removing them from the block, by clicking the respective button in the Universal Block Modifier screen
 - Change: Codebreakers will now always open briefcases when in Creative mode without a chance of failing
 - Change: The Sentry's body is now solid if the sentry is not disguised
 - Change: The Fake Lava/Water Buckets are now created in a brewing stand, by putting the potion in the top slot, and the bucket(s) in the bottom slot(s)

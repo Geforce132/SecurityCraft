@@ -210,7 +210,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 				if (hasSpeedModule())
 					Block.popResource(level, pos, new ItemStack(SCContent.SPEED_MODULE.get()));
 
-				getSentryDisguiseBlockEntity().ifPresent(be -> be.removeModule(ModuleType.DISGUISE));
+				getSentryDisguiseBlockEntity().ifPresent(be -> be.removeModule(ModuleType.DISGUISE, false));
 				level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, true));
 				entityData.set(ALLOWLIST, new CompoundTag());
 				entityData.set(HAS_SPEED_MODULE, false);
@@ -404,7 +404,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 				ItemStack module = ItemStack.of(tag.getCompound("InstalledModule"));
 
 				if (!module.isEmpty() && module.getItem() instanceof ModuleItem moduleItem && moduleItem.getBlockAddon(module.getOrCreateTag()) != null) {
-					be.insertModule(module);
+					be.insertModule(module, false);
 					level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
 				}
 			}
@@ -432,8 +432,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 		if (((ModuleItem) module.getItem()).getBlockAddon(module.getTag()) != null) {
 			getSentryDisguiseBlockEntity().ifPresent(be -> {
 				//remove a possibly existing old disguise module
-				be.removeModule(ModuleType.DISGUISE);
-				be.insertModule(module);
+				be.removeModule(ModuleType.DISGUISE, false);
+				be.insertModule(module, false);
 				level.setBlockAndUpdate(blockPosition(), level.getBlockState(blockPosition()).setValue(SentryDisguiseBlock.INVISIBLE, false));
 			});
 		}

@@ -106,9 +106,9 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	public static boolean checkInventory(Player player, InventoryScannerBlockEntity be, ItemStack stack, boolean allowInteraction) {
-		boolean hasSmartModule = be.hasModule(ModuleType.SMART);
-		boolean hasStorageModule = allowInteraction && be.hasModule(ModuleType.STORAGE);
-		boolean hasRedstoneModule = allowInteraction && be.hasModule(ModuleType.REDSTONE);
+		boolean hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
+		boolean hasStorageModule = allowInteraction && be.isModuleEnabled(ModuleType.STORAGE);
+		boolean hasRedstoneModule = allowInteraction && be.isModuleEnabled(ModuleType.REDSTONE);
 
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || be.getOwner().isOwner(player))
 			return false;
@@ -142,9 +142,9 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	}
 
 	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerBlockEntity be, ItemStack stack, boolean allowInteraction) {
-		boolean hasSmartModule = be.hasModule(ModuleType.SMART);
-		boolean hasStorageModule = allowInteraction && be.hasModule(ModuleType.STORAGE);
-		boolean hasRedstoneModule = allowInteraction && be.hasModule(ModuleType.REDSTONE);
+		boolean hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
+		boolean hasStorageModule = allowInteraction && be.isModuleEnabled(ModuleType.STORAGE);
+		boolean hasRedstoneModule = allowInteraction && be.isModuleEnabled(ModuleType.REDSTONE);
 
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction))
 			return false;

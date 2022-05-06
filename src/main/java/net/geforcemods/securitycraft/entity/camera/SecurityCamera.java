@@ -108,7 +108,7 @@ public class SecurityCamera extends Entity {
 	public void toggleRedstonePower() {
 		BlockPos pos = blockPosition();
 
-		if (((IModuleInventory) level.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
+		if (((IModuleInventory) level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
 			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
