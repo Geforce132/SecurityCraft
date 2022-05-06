@@ -148,7 +148,7 @@ public class KeypadChestBlock extends ChestBlock {
 	@Override
 	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
 		if (level.getBlockEntity(pos) instanceof KeypadChestBlockEntity be)
-			return be.hasModule(ModuleType.REDSTONE) ? Mth.clamp(be.getNumPlayersUsing(), 0, 15) : 0;
+			return be.isModuleEnabled(ModuleType.REDSTONE) ? Mth.clamp(be.getNumPlayersUsing(), 0, 15) : 0;
 		else
 			return 0;
 	}

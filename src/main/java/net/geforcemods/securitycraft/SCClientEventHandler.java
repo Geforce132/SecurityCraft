@@ -107,7 +107,7 @@ public class SCClientEventHandler {
 
 		Font font = Minecraft.getInstance().font;
 		Options settings = Minecraft.getInstance().options;
-		boolean hasRedstoneModule = be.hasModule(ModuleType.REDSTONE);
+		boolean hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
 		BlockState state = level.getBlockState(pos);
 		Component lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyUp.getTranslatedKeyMessage(), settings.keyLeft.getTranslatedKeyMessage(), settings.keyDown.getTranslatedKeyMessage(), settings.keyRight.getTranslatedKeyMessage());
 		Component exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyShift.getTranslatedKeyMessage());

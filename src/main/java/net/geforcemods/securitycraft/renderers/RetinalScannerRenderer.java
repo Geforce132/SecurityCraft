@@ -45,7 +45,7 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 
 		Direction direction = be.getBlockState().getValue(RetinalScannerBlock.FACING);
 
-		if (!be.hasModule(ModuleType.DISGUISE) && direction != null) {
+		if (!be.isModuleEnabled(ModuleType.DISGUISE) && direction != null) {
 			pose.pushPose();
 
 			switch (direction) {

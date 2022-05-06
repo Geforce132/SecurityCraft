@@ -70,12 +70,14 @@ public class CageTrapBlock extends DisguisableBlock {
 	}
 
 	private VoxelShape getCorrectShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx, DisguisableBlockEntity disguisableTe) {
-		ItemStack moduleStack = disguisableTe.getModule(ModuleType.DISGUISE);
+		if (disguisableTe.isModuleEnabled(ModuleType.DISGUISE)) {
+			ItemStack moduleStack = disguisableTe.getModule(ModuleType.DISGUISE);
 
-		if (!moduleStack.isEmpty() && (((ModuleItem) moduleStack.getItem()).getBlockAddon(moduleStack.getTag()) != null))
-			return super.getCollisionShape(state, level, pos, ctx);
-		else
-			return Shapes.block();
+			if (!moduleStack.isEmpty() && (((ModuleItem) moduleStack.getItem()).getBlockAddon(moduleStack.getTag()) != null))
+				return super.getCollisionShape(state, level, pos, ctx);
+		}
+
+		return Shapes.block();
 	}
 
 	@Override

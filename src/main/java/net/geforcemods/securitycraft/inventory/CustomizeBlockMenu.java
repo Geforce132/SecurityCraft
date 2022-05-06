@@ -20,7 +20,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class CustomizeBlockMenu extends AbstractContainerMenu {
 	public IModuleInventory moduleInv;
 	private ContainerLevelAccess worldPosCallable;
-	private final int maxSlots;
+	public final int maxSlots;
 
 	public CustomizeBlockMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.CUSTOMIZE_BLOCK_MENU.get(), windowId);
@@ -124,12 +124,39 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 
 		@Override
 		public void onQuickCraft(ItemStack newStack, ItemStack oldStack) {
-			if ((index >= 36 || index < maxSlots) && oldStack.getItem() instanceof ModuleItem) {
-				moduleInv.onModuleRemoved(oldStack, ((ModuleItem) oldStack.getItem()).getModuleType());
+			if ((index >= 36 || index < maxSlots) && oldStack.getItem() instanceof ModuleItem module) {
+				moduleInv.onModuleRemoved(oldStack, module.getModuleType(), false);
 
 				if (moduleInv instanceof LinkableBlockEntity lbe)
-					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, lbe);
+					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, lbe, false);
+
+				broadcastChanges();
 			}
+		}
+
+		@Override
+		public void setChanged() {
+			super.setChanged();
+
+			//prevent the X flashing before the client receives the update from the server, by already enabling the module in the inventory
+			if (moduleInv.getBlockEntity().getLevel().isClientSide && getItem().getItem() instanceof ModuleItem module)
+				moduleInv.toggleModuleState(module.getModuleType(), true);
+		}
+
+		@Override
+		public void set(ItemStack stack) {
+			super.set(stack);
+			broadcastChanges();
+		}
+
+		@Override
+		public ItemStack remove(int amount) {
+			ItemStack stack = super.remove(amount);
+
+			if (!stack.isEmpty())
+				broadcastChanges();
+
+			return stack;
 		}
 	}
 }

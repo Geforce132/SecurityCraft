@@ -62,8 +62,7 @@ public class ModuleItem extends Item {
 				return InteractionResult.PASS;
 
 			if (inv.acceptsModule(type) && !inv.hasModule(type)) {
-				inv.insertModule(stack);
-				inv.onModuleInserted(stack, type);
+				inv.insertModule(stack, false);
 
 				if (!ctx.getPlayer().isCreative())
 					stack.shrink(1);

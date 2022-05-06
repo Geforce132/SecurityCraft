@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.EnumMap;
+
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -56,6 +58,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	private String passcode;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public AbstractKeypadFurnaceBlockEntity(BlockEntityType<?> beType, BlockPos pos, BlockState state, RecipeType<? extends AbstractCookingRecipe> recipeType) {
 		super(beType, pos, state, recipeType);
@@ -66,6 +69,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		super.saveAdditional(tag);
 
 		writeModuleInventory(tag);
+		writeModuleStates(tag);
 		writeOptions(tag);
 
 		if (owner != null)
@@ -80,6 +84,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		super.load(tag);
 
 		modules = readModuleInventory(tag);
+		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		owner.load(tag);
 		passcode = tag.getString("passcode");
@@ -216,12 +221,12 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module) {
-		IModuleInventory.super.onModuleInserted(stack, module);
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		IModuleInventory.super.onModuleInserted(stack, module, toggled);
 
 		if (module == ModuleType.DISGUISE) {
 			if (!level.isClientSide)
-				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack));
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
 			else
 				ClientHandler.putDisguisedBeRenderer(this, stack);
 		}
@@ -236,15 +241,30 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module) {
-		IModuleInventory.super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
 
 		if (module == ModuleType.DISGUISE) {
 			if (!level.isClientSide)
-				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack));
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
 			else
 				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
 		}
+	}
+
+	@Override
+	public boolean isModuleEnabled(ModuleType module) {
+		return hasModule(module) && moduleStates.get(module);
+	}
+
+	@Override
+	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled) {
+		moduleStates.put(module, shouldBeEnabled);
+
+		if (shouldBeEnabled)
+			onModuleInserted(getModule(module), module, true);
+		else
+			onModuleRemoved(getModule(module), module, true);
 	}
 
 	@Override

@@ -14,6 +14,9 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.screen.components.CallbackSlider;
@@ -26,15 +29,19 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerListener;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
-public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas {
+public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
 	//@formatter:off
 	private static final ResourceLocation[] TEXTURES = {
 			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
@@ -45,6 +52,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			new ResourceLocation("securitycraft:textures/gui/container/customize5.png")
 	};
 	//@formatter:on
+	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private final List<Rect2i> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
@@ -60,6 +68,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		blockName = menu.moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId().substring(5);
 		name = Utils.localize(moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId());
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
+		menu.addSlotListener(this);
 	}
 
 	@Override
@@ -71,8 +80,9 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		for (int i = 0; i < maxNumberOfModules; i++) {
 			int column = i % numberOfColumns;
 
-			addRenderableWidget(descriptionButtons[i] = new PictureButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
+			addRenderableWidget(descriptionButtons[i] = new ModuleButton(leftPos + 127 + column * 22, (topPos + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked));
 			hoverCheckers.add(new TextHoverChecker(descriptionButtons[i], getModuleDescription(i)));
+			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 
 		if (moduleInv.getBlockEntity() instanceof ICustomizable customizable) {
@@ -117,6 +127,18 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
 		super.render(pose, mouseX, mouseY, partialTicks);
 
+		RenderSystem._setShaderTexture(0, BEACON_GUI);
+
+		for (int i = 36; i < menu.maxSlots; i++) {
+			Slot slot = menu.slots.get(i);
+
+			if (!slot.getItem().isEmpty()) {
+				boolean isEnabled = moduleInv.isModuleEnabled(((ModuleItem) slot.getItem().getItem()).getModuleType());
+
+				blit(pose, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, isEnabled ? 88 : 110, 219, 21, 22, 256, 256);
+			}
+		}
+
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
 			renderTooltip(pose, getSlotUnderMouse().getItem(), mouseX, mouseY);
 
@@ -144,6 +166,29 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		return (getFocused() != null && isDragging() && button == 0 ? getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY) : false) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+	}
+
+	@Override
+	public void slotChanged(AbstractContainerMenu menu, int slotIndex, ItemStack stack) {
+		if (slotIndex < 36)
+			return;
+
+		//when removing a stack from a slot, it's not possible to reliably get the module type, so just loop through all possible types
+		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
+			if (descriptionButtons[i] != null)
+				descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
+		}
+	}
+
+	private void moduleButtonClicked(Button button) {
+		ModuleType moduleType = ((ModuleButton) button).getModule().getModuleType();
+
+		if (moduleInv.isModuleEnabled(moduleType))
+			moduleInv.removeModule(moduleType, true);
+		else
+			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
+
+		SecurityCraft.channel.sendToServer(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), moduleType));
 	}
 
 	private void optionButtonClicked(Button button) {
@@ -194,5 +239,22 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	@Override
 	public List<Rect2i> getExtraAreas() {
 		return extraAreas;
+	}
+
+	@Override
+	public void dataChanged(AbstractContainerMenu menu, int slotIndex, int value) {}
+
+	private class ModuleButton extends PictureButton {
+		private final ModuleItem module;
+
+		public ModuleButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ModuleItem itemToRender, OnPress onPress) {
+			super(xPos, yPos, width, height, itemRenderer, new ItemStack(itemToRender), onPress);
+
+			module = itemToRender;
+		}
+
+		public ModuleItem getModule() {
+			return module;
+		}
 	}
 }

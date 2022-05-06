@@ -36,6 +36,9 @@ public class ModuleUtils {
 	}
 
 	public static boolean isAllowed(IModuleInventory inv, String name) {
+		if (!inv.isModuleEnabled(ModuleType.ALLOWLIST))
+			return false;
+
 		ItemStack stack = inv.getModule(ModuleType.ALLOWLIST);
 
 		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone"))
@@ -46,6 +49,9 @@ public class ModuleUtils {
 	}
 
 	public static boolean isDenied(IModuleInventory inv, Entity entity) {
+		if (!inv.isModuleEnabled(ModuleType.DENYLIST))
+			return false;
+
 		ItemStack stack = inv.getModule(ModuleType.DENYLIST);
 
 		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone")) {
@@ -69,15 +75,15 @@ public class ModuleUtils {
 		return doesModuleHaveTeamOf(name, inv.getBlockEntity().getLevel(), stack) || getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
-	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableBlockEntity be) {
+	public static void createLinkedAction(LinkedAction action, ItemStack stack, LinkableBlockEntity be, boolean toggled) {
 		if (action == LinkedAction.MODULE_INSERTED) {
 			be.createLinkedBlockAction(action, new Object[] {
-					stack, (ModuleItem) stack.getItem()
+					stack, (ModuleItem) stack.getItem(), toggled
 			}, be);
 		}
 		else if (action == LinkedAction.MODULE_REMOVED) {
 			be.createLinkedBlockAction(action, new Object[] {
-					stack, ((ModuleItem) stack.getItem()).getModuleType()
+					stack, ((ModuleItem) stack.getItem()).getModuleType(), toggled
 			}, be);
 		}
 	}
