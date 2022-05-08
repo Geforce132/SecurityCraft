@@ -29,7 +29,7 @@ public class BlockChangeDetectorMenu extends AbstractContainerMenu {
 			addSlot(new Slot(new BlockEntityInventoryWrapper<>((BlockChangeDetectorBlockEntity) be, this), 36, 175, 44) {
 				@Override
 				public boolean mayPlace(ItemStack stack) {
-					return ((BlockChangeDetectorBlockEntity) be).hasModule(ModuleType.SMART) && stack.getItem() instanceof BlockItem;
+					return ((BlockChangeDetectorBlockEntity) be).isModuleEnabled(ModuleType.SMART) && stack.getItem() instanceof BlockItem;
 				}
 
 				@Override

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
@@ -65,9 +66,12 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity {
 
 		if (other.getValue(DoorBlock.HALF) != myHalf) {
 			if (level.getBlockEntity(otherPos) instanceof SpecialDoorBlockEntity otherDoorBe) {
-				if (!removed && !otherDoorBe.hasModule(module))
+				Predicate<ModuleType> test = toggled ? otherDoorBe::isModuleEnabled : otherDoorBe::hasModule;
+				boolean result = test.test(module);
+
+				if (!removed && !result)
 					otherDoorBe.insertModule(stack, toggled);
-				else if (removed && otherDoorBe.hasModule(module))
+				else if (removed && result)
 					otherDoorBe.removeModule(module, toggled);
 			}
 		}
