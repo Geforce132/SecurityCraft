@@ -54,10 +54,10 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		if (pos.equals(getBlockPos()))
 			return;
 
-		if (hasModule(ModuleType.SMART) && (filter.getItem() instanceof BlockItem item && item.getBlock() != state.getBlock()))
+		if (isModuleEnabled(ModuleType.SMART) && (filter.getItem() instanceof BlockItem item && item.getBlock() != state.getBlock()))
 			return;
 
-		if (hasModule(ModuleType.REDSTONE)) {
+		if (isModuleEnabled(ModuleType.REDSTONE)) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockChangeDetectorBlock.POWERED, true));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get());
 			level.scheduleTick(worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get(), signalLength.get());

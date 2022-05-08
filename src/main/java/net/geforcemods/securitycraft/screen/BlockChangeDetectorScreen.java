@@ -144,7 +144,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 				renderTooltip(pose, hoverChecker.getName(), mouseX, mouseY);
 		}
 
-		if (smartModuleHoverChecker != null && smartModuleHoverChecker.checkHover(mouseX, mouseY) && !be.hasModule(ModuleType.SMART))
+		if (smartModuleHoverChecker != null && smartModuleHoverChecker.checkHover(mouseX, mouseY) && !be.isModuleEnabled(ModuleType.SMART))
 			renderComponentTooltip(pose, smartModuleHoverChecker.getLines(), mouseX, mouseY);
 	}
 
