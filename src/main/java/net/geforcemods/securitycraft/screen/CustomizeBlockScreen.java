@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -65,6 +66,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 	private final String blockName;
 	private final int maxNumberOfModules;
+	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
 	public CustomizeBlockScreen(CustomizeBlockMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
@@ -72,6 +74,13 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 		blockName = container.moduleInv.getTileEntity().getBlockState().getBlock().getDescriptionId().substring(5);
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
 		container.addSlotListener(this);
+
+		for (ModuleType type : ModuleType.values()) {
+			if (moduleInv.hasModule(type))
+				indicators.put(type, moduleInv.isModuleEnabled(type));
+			else //newly inserted modules will be true by default
+				indicators.put(type, true);
+		}
 	}
 
 	@Override
@@ -147,9 +156,10 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			Slot slot = menu.slots.get(i);
 
 			if (!slot.getItem().isEmpty()) {
-				boolean isEnabled = moduleInv.isModuleEnabled(((ModuleItem) slot.getItem().getItem()).getModuleType());
+				ModuleType type = ((ModuleItem) slot.getItem().getItem()).getModuleType();
 
-				blit(matrix, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, isEnabled ? 88 : 110, 219, 21, 22, 256, 256);
+				if (indicators.containsKey(type))
+					blit(matrix, leftPos + slot.x - 2, topPos + slot.y + 16, 20, 20, indicators.get(type) ? 88 : 110, 219, 21, 22, 256, 256);
 			}
 		}
 
@@ -185,18 +195,28 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 
 		//when removing a stack from a slot, it's not possible to reliably get the module type, so just loop through all possible types
 		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
-			if (descriptionButtons[i] != null)
+			if (descriptionButtons[i] != null) {
 				descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
+
+				if (!descriptionButtons[i].active)
+					indicators.remove(moduleInv.acceptedModules()[i]);
+				else
+					indicators.put(moduleInv.acceptedModules()[i], true);
+			}
 		}
 	}
 
 	private void moduleButtonClicked(Button button) {
 		ModuleType moduleType = ((ModuleButton) button).getModule().getModuleType();
 
-		if (moduleInv.isModuleEnabled(moduleType))
+		if (moduleInv.isModuleEnabled(moduleType)) {
+			indicators.put(moduleType, false);
 			moduleInv.removeModule(moduleType, true);
-		else
+		}
+		else {
+			indicators.put(moduleType, true);
 			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
+		}
 
 		SecurityCraft.channel.sendToServer(new ToggleModule(moduleInv.getTileEntity().getBlockPos(), moduleType));
 	}
