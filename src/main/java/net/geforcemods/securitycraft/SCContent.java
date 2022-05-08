@@ -99,6 +99,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChainBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCobwebBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCryingObsidianBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedEndRodBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
@@ -1456,6 +1457,10 @@ public class SCContent {
 	@OwnableTE
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new ReinforcedCobwebBlock(Block.Properties.of(Material.WEB).noCollission(), Blocks.COBWEB));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableTE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_END_ROD = BLOCKS.register("reinforced_end_rod", () -> new ReinforcedEndRodBlock(prop(Material.DECORATION).lightLevel(state -> 14).sound(SoundType.WOOD).noOcclusion()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableTE
 	@Reinforced(hasReinforcedTint = false)

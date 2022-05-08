@@ -95,6 +95,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (this.getVanillaBlock() instanceof BreakableBlock)
 			return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
+
 		return false;
 	}
 
