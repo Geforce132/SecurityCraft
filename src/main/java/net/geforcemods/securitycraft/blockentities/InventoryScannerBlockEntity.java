@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.function.Predicate;
+
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -275,8 +277,9 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		super.onModuleInserted(stack, module, toggled);
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
+		Predicate<ModuleType> test = toggled ? connectedScanner::isModuleEnabled : connectedScanner::hasModule;
 
-		if (connectedScanner != null && !connectedScanner.hasModule(module))
+		if (connectedScanner != null && !test.test(module))
 			connectedScanner.insertModule(stack, toggled);
 
 		if (module == ModuleType.DISGUISE) {
@@ -292,8 +295,9 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		super.onModuleRemoved(stack, module, toggled);
 
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
+		Predicate<ModuleType> test = toggled ? connectedScanner::isModuleEnabled : connectedScanner::hasModule;
 
-		if (connectedScanner != null && connectedScanner.hasModule(module))
+		if (connectedScanner != null && test.test(module))
 			connectedScanner.removeModule(module, toggled);
 
 		if (module == ModuleType.STORAGE) {

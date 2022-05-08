@@ -31,7 +31,7 @@ public class BlockChangeDetectorMenu extends Container {
 				addSlot(new Slot(new BlockEntityInventoryWrapper<>(be, this), 36, 175, 44) {
 					@Override
 					public boolean mayPlace(ItemStack stack) {
-						return be.hasModule(ModuleType.SMART) && stack.getItem() instanceof BlockItem;
+						return be.isModuleEnabled(ModuleType.SMART) && stack.getItem() instanceof BlockItem;
 					}
 
 					@Override

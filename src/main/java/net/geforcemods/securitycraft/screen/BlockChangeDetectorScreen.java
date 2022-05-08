@@ -148,7 +148,7 @@ public class BlockChangeDetectorScreen extends ContainerScreen<BlockChangeDetect
 				renderTooltip(pose, hoverChecker.getName(), mouseX, mouseY);
 		}
 
-		if (smartModuleHoverChecker != null && smartModuleHoverChecker.checkHover(mouseX, mouseY) && !be.hasModule(ModuleType.SMART))
+		if (smartModuleHoverChecker != null && smartModuleHoverChecker.checkHover(mouseX, mouseY) && !be.isModuleEnabled(ModuleType.SMART))
 			renderComponentTooltip(pose, smartModuleHoverChecker.getLines(), mouseX, mouseY);
 
 		if (changeEntryList != null)
