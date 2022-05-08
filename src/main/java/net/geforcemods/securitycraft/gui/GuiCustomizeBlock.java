@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.gui;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -61,6 +62,7 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private final String blockName;
 	private final String title;
+	private EnumMap<EnumModuleType, Boolean> indicators = new EnumMap<>(EnumModuleType.class);
 
 	public GuiCustomizeBlock(InventoryPlayer inventory, IModuleInventory te) {
 		super(new ContainerCustomizeBlock(inventory, te));
@@ -71,6 +73,13 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 		blockName = tlKey.substring(5);
 		title = Utils.localize(tlKey + ".name").getFormattedText();
 		inventorySlots.addListener(this);
+
+		for (EnumModuleType type : EnumModuleType.values()) {
+			if (moduleInv.hasModule(type))
+				indicators.put(type, moduleInv.isModuleEnabled(type));
+			else //newly inserted modules will be true by default
+				indicators.put(type, true);
+		}
 	}
 
 	@Override
@@ -134,9 +143,10 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 			Slot slot = inventorySlots.inventorySlots.get(i);
 
 			if (!slot.getStack().isEmpty()) {
-				boolean isEnabled = moduleInv.isModuleEnabled(((ItemModule) slot.getStack().getItem()).getModuleType());
+				EnumModuleType type = ((ItemModule) slot.getStack().getItem()).getModuleType();
 
-				drawScaledCustomSizeModalRect(guiLeft + slot.xPos - 2, guiTop + slot.yPos + 16, isEnabled ? 88 : 110, 219, 21, 22, 20, 20, 256, 256);
+				if (indicators.containsKey(type))
+					drawScaledCustomSizeModalRect(guiLeft + slot.xPos - 2, guiTop + slot.yPos + 16, indicators.get(type) ? 88 : 110, 219, 21, 22, 20, 20, 256, 256);
 			}
 		}
 
@@ -175,18 +185,28 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 
 		//when removing a stack from a slot, it's not possible to reliably get the module type, so just loop through all possible types
 		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
-			if (descriptionButtons[i] != null)
+			if (descriptionButtons[i] != null) {
 				descriptionButtons[i].enabled = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
+
+				if (!descriptionButtons[i].enabled)
+					indicators.remove(moduleInv.acceptedModules()[i]);
+				else
+					indicators.put(moduleInv.acceptedModules()[i], true);
+			}
 		}
 	}
 
 	private void moduleButtonClicked(ClickButton button) {
 		EnumModuleType moduleType = ((ModuleButton) button).getModule().getModuleType();
 
-		if (moduleInv.isModuleEnabled(moduleType))
+		if (moduleInv.isModuleEnabled(moduleType)) {
+			indicators.put(moduleType, false);
 			moduleInv.removeModule(moduleType, true);
-		else
+		}
+		else {
+			indicators.put(moduleType, true);
 			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
+		}
 
 		SecurityCraft.network.sendToServer(new ToggleModule(moduleInv.getTileEntity().getPos(), moduleType));
 	}
