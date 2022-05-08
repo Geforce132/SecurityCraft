@@ -34,15 +34,17 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 	private List<ChangeEntry> entries = new ArrayList<>();
 	private ItemStack filter = ItemStack.EMPTY;
 
-	public void log(EntityPlayer player, EnumDetectionMode action, BlockPos pos, IBlockState state) {
+	public void log(EntityPlayer player, EnumDetectionMode action, BlockPos changedPos, IBlockState state) {
 		if (mode != EnumDetectionMode.BOTH && action != mode)
 			return;
 
 		if (getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player))
 			return;
 
+		BlockPos thisPos = getPos();
+
 		//don't detect self
-		if (pos.equals(getPos()))
+		if (changedPos.equals(thisPos))
 			return;
 
 		if (isModuleEnabled(EnumModuleType.SMART) && filter.getItem() instanceof ItemBlock) {
@@ -55,15 +57,15 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 				return;
 		}
 
-		IBlockState thisState = world.getBlockState(pos);
+		IBlockState thisState = world.getBlockState(thisPos);
 
 		if (isModuleEnabled(EnumModuleType.REDSTONE)) {
-			world.setBlockState(this.pos, thisState.withProperty(BlockBlockChangeDetector.POWERED, true));
-			BlockUtils.updateIndirectNeighbors(world, this.pos, SCContent.blockChangeDetector);
-			world.scheduleUpdate(this.pos, SCContent.blockChangeDetector, signalLength.get());
+			world.setBlockState(thisPos, thisState.withProperty(BlockBlockChangeDetector.POWERED, true));
+			BlockUtils.updateIndirectNeighbors(world, thisPos, SCContent.blockChangeDetector);
+			world.scheduleUpdate(thisPos, SCContent.blockChangeDetector, signalLength.get());
 		}
 
-		entries.add(new ChangeEntry(player.getName(), player.getGameProfile().getId(), System.currentTimeMillis(), action, pos, state));
+		entries.add(new ChangeEntry(player.getName(), player.getGameProfile().getId(), System.currentTimeMillis(), action, changedPos, state));
 		markDirty();
 		sync();
 	}
