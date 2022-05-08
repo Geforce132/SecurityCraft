@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.lwjgl.input.Mouse;
 
@@ -126,7 +127,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			else
 				blockName = Utils.localize(stack.getTranslationKey() + ".name").getFormattedText();
 
-			changeEntryList.addEntry(new ContentSavingCollapsileTextList(-1, 0, 0, 154, blockName, list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), changeEntryList::isHovered, entry.action, entry.state));
+			changeEntryList.addEntry(new ContentSavingCollapsibleTextList(-1, 0, 0, 154, blockName, list, b -> changeEntryList.setOpen((ContentSavingCollapsibleTextList) b), changeEntryList::isHovered, entry.action, entry.state));
 		}
 
 		ItemStack filteredStack = inventorySlots.getSlot(0).getStack();
@@ -223,9 +224,9 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 	public void sendAllWindowProperties(Container container, IInventory inventory) {}
 
 	class ChangeEntryList extends ColorableScrollPanel {
-		private List<ContentSavingCollapsileTextList> allEntries = new ArrayList<>();
-		private List<ContentSavingCollapsileTextList> filteredEntries = new ArrayList<>();
-		private ContentSavingCollapsileTextList currentlyOpen = null;
+		private List<ContentSavingCollapsibleTextList> allEntries = new ArrayList<>();
+		private List<ContentSavingCollapsibleTextList> filteredEntries = new ArrayList<>();
+		private ContentSavingCollapsibleTextList currentlyOpen = null;
 		private int contentHeight = 0;
 		private ItemStack filteredStack = ItemStack.EMPTY;
 
@@ -243,7 +244,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			int height = 0;
 
 			for (int i = 0; i < filteredEntries.size(); i++) {
-				ContentSavingCollapsileTextList entry = filteredEntries.get(i);
+				ContentSavingCollapsibleTextList entry = filteredEntries.get(i);
 
 				entry.y = top + height - (int) scrollDistance;
 				entry.visible = entry.y + entry.getHeight() > top && entry.y < bottom;
@@ -267,7 +268,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			}
 		}
 
-		public void addEntry(ContentSavingCollapsileTextList entry) {
+		public void addEntry(ContentSavingCollapsibleTextList entry) {
 			entry.setWidth(154);
 			entry.setHeight(slotHeight);
 			entry.x = left;
@@ -275,7 +276,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 			allEntries.add(entry);
 		}
 
-		public void setOpen(ContentSavingCollapsileTextList newOpenedTextList) {
+		public void setOpen(ContentSavingCollapsibleTextList newOpenedTextList) {
 			if (currentlyOpen == null)
 				currentlyOpen = newOpenedTextList;
 			else {
@@ -299,13 +300,21 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 
 			if (!showAllCheckbox.selected()) {
 				//@formatter:off
-				filteredEntries = new ArrayList<>(allEntries
+				Stream<ContentSavingCollapsibleTextList> stream = allEntries
 						.stream()
-						.filter(e -> currentMode == EnumDetectionMode.BOTH || currentMode == e.getMode())
-						.filter(e -> filteredStack.getItem() instanceof ItemBlock && ((ItemBlock) filteredStack.getItem()).getBlock() == e.getBlock())
-						.filter(e -> e.getBlock().getMetaFromState(e.getState()) == filteredStack.getMetadata())
-						.collect(Collectors.toList()));
+						.filter(e -> currentMode == EnumDetectionMode.BOTH || currentMode == e.getMode());
 				//@formatter:on
+
+				//no need for further filtering if no stack is present to filter by
+				if (!filteredStack.isEmpty()) {
+					//@formatter:off
+					stream = stream
+							.filter(e -> filteredStack.getItem() instanceof ItemBlock && ((ItemBlock) filteredStack.getItem()).getBlock() == e.getBlock())
+							.filter(e -> e.getBlock().getMetaFromState(e.getState()) == filteredStack.getMetadata());
+					//@formatter:on
+				}
+
+				filteredEntries = new ArrayList<>(stream.collect(Collectors.toList()));
 			}
 			else
 				filteredEntries = new ArrayList<>(allEntries);
@@ -404,11 +413,11 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		}
 	}
 
-	class ContentSavingCollapsileTextList extends CollapsibleTextList {
+	class ContentSavingCollapsibleTextList extends CollapsibleTextList {
 		private final EnumDetectionMode mode;
 		private final IBlockState state;
 
-		public ContentSavingCollapsileTextList(int id, int xPos, int yPos, int width, String displayString, List<? extends ITextComponent> textLines, Consumer<CollapsibleTextList> onPress, BiPredicate<Integer, Integer> extraHoverCheck, EnumDetectionMode mode, IBlockState state) {
+		public ContentSavingCollapsibleTextList(int id, int xPos, int yPos, int width, String displayString, List<? extends ITextComponent> textLines, Consumer<CollapsibleTextList> onPress, BiPredicate<Integer, Integer> extraHoverCheck, EnumDetectionMode mode, IBlockState state) {
 			super(id, xPos, yPos, width, displayString, textLines, onPress, extraHoverCheck);
 
 			this.mode = mode;
