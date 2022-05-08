@@ -64,6 +64,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQua
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartzSlab;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDirt;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedEndRod;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFalling;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFenceGate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlass;
@@ -269,6 +270,7 @@ public class SetupHandler {
 		SCContent.sonicSecuritySystem = new BlockSonicSecuritySystem(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("sonic_security_system").setTranslationKey("securitycraft:sonic_security_system");
 		SCContent.blockChangeDetector = new BlockBlockChangeDetector(Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("block_change_detector").setTranslationKey("securitycraft:block_change_detector");
 		SCContent.sentryDisguise = new BlockSentryDisguise(Material.AIR).setBlockUnbreakable().setHardness(3600000.8F).setRegistryName("sentry_disguise");
+		SCContent.reinforcedEndRod = new BlockReinforcedEndRod().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_end_rod").setTranslationKey("securitycraft:reinforced_end_rod");
 	}
 
 	public static void setupMines() {

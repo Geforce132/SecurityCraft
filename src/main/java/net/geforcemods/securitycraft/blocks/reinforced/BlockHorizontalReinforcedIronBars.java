@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -31,7 +30,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockHorizontalReinforcedIronBars extends BlockContainer implements ITileEntityProvider, IReinforcedBlock {
+public class BlockHorizontalReinforcedIronBars extends BlockContainer implements IReinforcedBlock {
 	protected static final AxisAlignedBB SHAPE = new AxisAlignedBB(-8.0D / 16D, 14.0D / 16D, -8.0D / 16D, 24.0D / 16D, 16.0D / 16D, 24.0D / 16D);
 
 	public BlockHorizontalReinforcedIronBars() {

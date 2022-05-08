@@ -291,6 +291,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.sonicSecuritySystem, (ItemBlock) SCContent.sonicSecuritySystemItem, PageType.SINGLE_ITEM);
 		registerBlock(event, SCContent.blockChangeDetector);
 		event.getRegistry().register(SCContent.sentryDisguise);
+		registerBlock(event, SCContent.reinforcedEndRod, PageType.REINFORCED);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -816,6 +817,7 @@ public class RegistrationHandler {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.keypadDoor), 0, new ModelResourceLocation("securitycraft:keypad_door", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCauldron), 0, new ModelResourceLocation("securitycraft:reinforced_cauldron", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.blockChangeDetector), 0, new ModelResourceLocation("securitycraft:block_change_detector", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedEndRod), 0, new ModelResourceLocation("securitycraft:reinforced_end_rod", "inventory"));
 
 		//items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));

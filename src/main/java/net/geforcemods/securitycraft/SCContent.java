@@ -113,6 +113,9 @@ public class SCContent {
 	public static Block reinforcedDoubleWoodSlabs;
 	@Reinforced
 	@Tinted
+	public static Block reinforcedEndRod;
+	@Reinforced
+	@Tinted
 	public static Block reinforcedEndStone;
 	@Reinforced
 	@Tinted

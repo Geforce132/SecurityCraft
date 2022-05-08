@@ -290,6 +290,7 @@ tile.securitycraft:reinforced_moving_piston.name=Verstärkter bewegter Block
 tile.securitycraft:key_panel.name=Nummernfeld
 tile.securitycraft:sonic_security_system.name=Schallsicherheitssystem
 tile.securitycraft:block_change_detector.name=Block-Änderungsdetektor
+tile.securitycraft:reinforced_end_rod.name=Verstärkter Endstab
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür
