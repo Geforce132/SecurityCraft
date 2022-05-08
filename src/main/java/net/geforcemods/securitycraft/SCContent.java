@@ -104,6 +104,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCobwebBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCryingObsidianBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDirtPathBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedEndRodBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
@@ -1698,6 +1699,10 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_MOSS_BLOCK = BLOCKS.register("reinforced_moss_block", () -> new BaseReinforcedBlock(prop(Material.MOSS).sound(SoundType.MOSS), Blocks.MOSS_BLOCK));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<Block> REINFORCED_END_ROD = BLOCKS.register("reinforced_end_rod", () -> new ReinforcedEndRodBlock(prop(Material.DECORATION).lightLevel(state -> 14).sound(SoundType.WOOD).noOcclusion()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
