@@ -39,7 +39,7 @@ public class GuiTrophySystem extends GuiContainer {
 		super(new ContainerGeneric(inventory, te));
 
 		tileEntity = te;
-		isSmart = tileEntity.hasModule(EnumModuleType.SMART);
+		isSmart = tileEntity.isModuleEnabled(EnumModuleType.SMART);
 		orderedFilterList = new ArrayList<>(tileEntity.getFilters().keySet());
 		orderedFilterList.sort((e1, e2) -> {
 			//the entry for modded projectiles always shows at the bottom of the list

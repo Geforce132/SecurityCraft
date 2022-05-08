@@ -17,7 +17,7 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerCustomizeBlock extends Container {
 	private IModuleInventory moduleInv;
-	private final int maxSlots;
+	public final int maxSlots;
 
 	public ContainerCustomizeBlock(InventoryPlayer inventory, IModuleInventory tileEntity) {
 		this.moduleInv = tileEntity;
@@ -119,11 +119,29 @@ public class ContainerCustomizeBlock extends Container {
 		@Override
 		public void onSlotChange(ItemStack newStack, ItemStack oldStack) {
 			if ((slotNumber >= 36 || slotNumber < maxSlots) && oldStack.getItem() instanceof ItemModule) {
-				moduleInv.onModuleRemoved(oldStack, ((ItemModule) oldStack.getItem()).getModuleType());
+				moduleInv.onModuleRemoved(oldStack, ((ItemModule) oldStack.getItem()).getModuleType(), false);
 
 				if (moduleInv instanceof TileEntityLinkable)
-					ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, oldStack, (TileEntityLinkable) moduleInv);
+					ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, oldStack, (TileEntityLinkable) moduleInv, false);
+
+				detectAndSendChanges();
 			}
+		}
+
+		@Override
+		public void putStack(ItemStack stack) {
+			super.putStack(stack);
+			detectAndSendChanges();
+		}
+
+		@Override
+		public ItemStack decrStackSize(int amount) {
+			ItemStack stack = super.decrStackSize(amount);
+
+			if (!stack.isEmpty())
+				detectAndSendChanges();
+
+			return stack;
 		}
 	}
 }

@@ -143,9 +143,9 @@ public class BlockInventoryScannerField extends BlockContainer {
 	}
 
 	public static boolean checkInventory(EntityPlayer player, TileEntityInventoryScanner te, ItemStack stack, boolean allowInteraction) {
-		boolean hasSmartModule = te.hasModule(EnumModuleType.SMART);
-		boolean hasStorageModule = allowInteraction && te.hasModule(EnumModuleType.STORAGE);
-		boolean hasRedstoneModule = allowInteraction && te.hasModule(EnumModuleType.REDSTONE);
+		boolean hasSmartModule = te.isModuleEnabled(EnumModuleType.SMART);
+		boolean hasStorageModule = allowInteraction && te.isModuleEnabled(EnumModuleType.STORAGE);
+		boolean hasRedstoneModule = allowInteraction && te.isModuleEnabled(EnumModuleType.REDSTONE);
 
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || te.getOwner().isOwner(player))
 			return false;
@@ -178,9 +178,9 @@ public class BlockInventoryScannerField extends BlockContainer {
 	}
 
 	public static boolean checkEntityItem(EntityItem entity, TileEntityInventoryScanner te, ItemStack stack, boolean allowInteraction) {
-		boolean hasSmartModule = te.hasModule(EnumModuleType.SMART);
-		boolean hasStorageModule = allowInteraction && te.hasModule(EnumModuleType.STORAGE);
-		boolean hasRedstoneModule = allowInteraction && te.hasModule(EnumModuleType.REDSTONE);
+		boolean hasSmartModule = te.isModuleEnabled(EnumModuleType.SMART);
+		boolean hasStorageModule = allowInteraction && te.isModuleEnabled(EnumModuleType.STORAGE);
+		boolean hasRedstoneModule = allowInteraction && te.isModuleEnabled(EnumModuleType.REDSTONE);
 
 		if (!hasRedstoneModule && !hasStorageModule && allowInteraction)
 			return false;

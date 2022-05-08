@@ -136,7 +136,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IT
 				if (!placeQueue.isEmpty())
 					placeQueue.clear();
 				else { //no more blocks left to place, assembling must be done
-					setWalls(!hasModule(EnumModuleType.DISGUISE));
+					setWalls(!isModuleEnabled(EnumModuleType.DISGUISE));
 					PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), new TextComponentTranslation("messages.securitycraft:blockpocket.assembled"), TextFormatting.DARK_AQUA);
 				}
 
@@ -206,7 +206,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IT
 
 						//checking the lowest and highest level of the cube
 						//if (y level is lowest AND it's not the block pocket manager's position) OR (y level is highest)
-						if ((yi == lowest && !currentPos.equals(getPos())) || yi == highest) {							//checking the corners
+						if ((yi == lowest && !currentPos.equals(getPos())) || yi == highest) { //checking the corners
 							if (((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest))) {
 								if (!(currentState.getBlock() instanceof BlockReinforcedCrystalQuartz) || currentState.getValue(BlockReinforcedCrystalQuartz.VARIANT) != EnumType.CHISELED)
 									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CHISELED_CRYSTAL_QUARTZ.getTranslationKey() + ".name"));
@@ -306,7 +306,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IT
 				world.setBlockState(blockPos, world.getBlockState(blockPos).withProperty(BlockBlockPocketWall.SOLID, true));
 			}
 
-			setWalls(!hasModule(EnumModuleType.DISGUISE));
+			setWalls(!isModuleEnabled(EnumModuleType.DISGUISE));
 			return new TextComponentTranslation("messages.securitycraft:blockpocket.activated");
 		}
 
@@ -543,7 +543,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IT
 					world.setBlockState(pos, state.withProperty(BlockBlockPocketWall.SOLID, false));
 			}
 
-			if (hasModule(EnumModuleType.DISGUISE))
+			if (isModuleEnabled(EnumModuleType.DISGUISE))
 				setWalls(true);
 
 			blocks.clear();
@@ -633,16 +633,16 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IT
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleInserted(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
 
 		if (enabled && module == EnumModuleType.DISGUISE)
 			setWalls(false);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (enabled && module == EnumModuleType.DISGUISE)
 			setWalls(true);

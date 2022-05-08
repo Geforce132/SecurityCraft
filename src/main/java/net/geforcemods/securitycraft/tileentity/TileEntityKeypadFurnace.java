@@ -1,9 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
@@ -40,7 +38,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class TileEntityKeypadFurnace extends TileEntityDisguisable implements ISidedInventory, IPasswordProtected, ITickable, IModuleInventory, ICustomizable, INameSetter, ILockable {
+public class TileEntityKeypadFurnace extends TileEntityDisguisable implements ISidedInventory, IPasswordProtected, ITickable, INameSetter, ILockable {
 	private IItemHandler insertOnlyHandler;
 	private static final int[] slotsTop = {
 			0

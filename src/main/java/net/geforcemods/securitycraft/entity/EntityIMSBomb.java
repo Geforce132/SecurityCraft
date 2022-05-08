@@ -34,7 +34,7 @@ public class EntityIMSBomb extends EntityFireball {
 		Owner owner = te.getOwner();
 
 		dataManager.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
-		isFast = te.hasModule(EnumModuleType.SPEED);
+		isFast = te.isModuleEnabled(EnumModuleType.SPEED);
 	}
 
 	@Override

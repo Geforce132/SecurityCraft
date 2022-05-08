@@ -78,7 +78,7 @@ public class GuiKeycardReader extends GuiContainer {
 		previousSignature = te.getSignature();
 		signature = previousSignature;
 		acceptedLevels = te.getAcceptedLevels();
-		isSmart = te.hasModule(EnumModuleType.SMART);
+		isSmart = te.isModuleEnabled(EnumModuleType.SMART);
 		isOwner = te.getOwner().isOwner(inv.player);
 		ySize = 249;
 	}

@@ -45,7 +45,7 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 		if (pos.equals(getPos()))
 			return;
 
-		if (hasModule(EnumModuleType.SMART) && filter.getItem() instanceof ItemBlock) {
+		if (isModuleEnabled(EnumModuleType.SMART) && filter.getItem() instanceof ItemBlock) {
 			if (((ItemBlock) filter.getItem()).getBlock() == state.getBlock()) {
 				//only return if the filter block's metadata is different from the metadata of the block that was placed
 				if (filter.getMetadata() != state.getBlock().getMetaFromState(state))
@@ -57,7 +57,7 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 
 		IBlockState thisState = world.getBlockState(pos);
 
-		if (hasModule(EnumModuleType.REDSTONE)) {
+		if (isModuleEnabled(EnumModuleType.REDSTONE)) {
 			world.setBlockState(this.pos, thisState.withProperty(BlockBlockChangeDetector.POWERED, true));
 			BlockUtils.updateIndirectNeighbors(world, this.pos, SCContent.blockChangeDetector);
 			world.scheduleUpdate(this.pos, SCContent.blockChangeDetector, signalLength.get());
@@ -217,7 +217,7 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return hasModule(EnumModuleType.SMART) && stack.getItem() instanceof ItemBlock;
+		return isModuleEnabled(EnumModuleType.SMART) && stack.getItem() instanceof ItemBlock;
 	}
 
 	public static enum EnumDetectionMode {

@@ -156,7 +156,7 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 	}
 
 	public int getAttackInterval() {
-		return hasModule(EnumModuleType.SPEED) ? 40 : 80;
+		return isModuleEnabled(EnumModuleType.SPEED) ? 40 : 80;
 	}
 
 	public static enum EnumIMSTargetingMode {

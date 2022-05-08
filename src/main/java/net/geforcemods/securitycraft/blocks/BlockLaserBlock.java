@@ -76,7 +76,7 @@ public class BlockLaserBlock extends BlockDisguisable {
 						TileEntityLinkable.link(thisTe, thatTe);
 
 						for (EnumModuleType type : thatTe.getInsertedModules()) {
-							thisTe.insertModule(thatTe.getModule(type));
+							thisTe.insertModule(thatTe.getModule(type), false);
 						}
 
 						if (thisTe.isEnabled() && thatTe.isEnabled()) {

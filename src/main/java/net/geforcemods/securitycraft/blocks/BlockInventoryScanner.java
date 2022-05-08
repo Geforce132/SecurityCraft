@@ -144,7 +144,7 @@ public class BlockInventoryScanner extends BlockDisguisable {
 		}
 
 		for (EnumModuleType type : connectedScanner.getInsertedModules()) {
-			thisTe.insertModule(connectedScanner.getModule(type));
+			thisTe.insertModule(connectedScanner.getModule(type), false);
 		}
 
 		((OptionBoolean) customOptions[0]).setValue(connectedScanner.isHorizontal());
@@ -241,10 +241,12 @@ public class BlockInventoryScanner extends BlockDisguisable {
 
 	@Override
 	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-		if (!(blockAccess.getTileEntity(pos) instanceof TileEntityInventoryScanner))
+		TileEntity te = blockAccess.getTileEntity(pos);
+
+		if (!(te instanceof TileEntityInventoryScanner))
 			return 0;
 
-		return (((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE) && ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).shouldProvidePower()) ? 15 : 0;
+		return (((TileEntityInventoryScanner) te).isModuleEnabled(EnumModuleType.REDSTONE) && ((TileEntityInventoryScanner) te).shouldProvidePower()) ? 15 : 0;
 	}
 
 	@Override
@@ -297,7 +299,7 @@ public class BlockInventoryScanner extends BlockDisguisable {
 
 		@Override
 		public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te, EnumFacing direction, int distance) {
-			return ((TileEntityInventoryScanner) te).hasModule(EnumModuleType.REDSTONE) && ((TileEntityInventoryScanner) te).shouldProvidePower();
+			return ((TileEntityInventoryScanner) te).isModuleEnabled(EnumModuleType.REDSTONE) && ((TileEntityInventoryScanner) te).shouldProvidePower();
 		}
 
 		@Override

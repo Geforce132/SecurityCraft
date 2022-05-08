@@ -74,8 +74,8 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == EnumModuleType.REDSTONE) {
 			IBlockState newState = world.getBlockState(pos).withProperty(BlockSecurityCamera.POWERED, false);

@@ -38,6 +38,9 @@ public class ModuleUtils {
 	}
 
 	public static boolean isAllowed(IModuleInventory inv, String name) {
+		if (!inv.isModuleEnabled(EnumModuleType.ALLOWLIST))
+			return false;
+
 		ItemStack stack = inv.getModule(EnumModuleType.ALLOWLIST);
 
 		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("affectEveryone"))
@@ -48,6 +51,9 @@ public class ModuleUtils {
 	}
 
 	public static boolean isDenied(IModuleInventory inv, Entity entity) {
+		if (!inv.isModuleEnabled(EnumModuleType.DENYLIST))
+			return false;
+
 		ItemStack stack = inv.getModule(EnumModuleType.DENYLIST);
 
 		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("affectEveryone")) {
@@ -71,15 +77,15 @@ public class ModuleUtils {
 		return doesModuleHaveTeamOf(name, inv.getTileEntity().getWorld(), stack) || getPlayersFromModule(stack).contains(name.toLowerCase());
 	}
 
-	public static void createLinkedAction(EnumLinkedAction action, ItemStack stack, TileEntityLinkable te) {
+	public static void createLinkedAction(EnumLinkedAction action, ItemStack stack, TileEntityLinkable te, boolean toggled) {
 		if (action == EnumLinkedAction.MODULE_INSERTED) {
 			te.createLinkedBlockAction(action, new Object[] {
-					stack, (ItemModule) stack.getItem()
+					stack, (ItemModule) stack.getItem(), toggled
 			}, te);
 		}
 		else if (action == EnumLinkedAction.MODULE_REMOVED) {
 			te.createLinkedBlockAction(action, new Object[] {
-					stack, ((ItemModule) stack.getItem()).getModuleType()
+					stack, ((ItemModule) stack.getItem()).getModuleType(), toggled
 			}, te);
 		}
 	}

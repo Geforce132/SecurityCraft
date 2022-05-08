@@ -25,17 +25,17 @@ public class GuiPictureButton extends ClickButton {
 	private int textureWidth;
 	private int textureHeight;
 
-	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, RenderItem par7, ItemStack itemToRender) {
-		this(id, xPos, yPos, width, height, par7, itemToRender, null);
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, RenderItem renderItem, ItemStack itemToRender) {
+		this(id, xPos, yPos, width, height, renderItem, itemToRender, null);
 	}
 
 	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight) {
 		this(id, xPos, yPos, width, height, texture, textureX, textureY, drawOffsetX, drawOffsetY, drawWidth, drawHeight, textureWidth, textureHeight, null);
 	}
 
-	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, RenderItem par7, ItemStack itemToRender, Consumer<ClickButton> onClick) {
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, RenderItem renderItem, ItemStack itemToRender, Consumer<ClickButton> onClick) {
 		super(id, xPos, yPos, width, height, "", onClick);
-		itemRenderer = par7;
+		itemRenderer = renderItem;
 
 		if (!itemToRender.isEmpty() && itemToRender.getItem().getTranslationKey().startsWith("tile."))
 			blockToRender = Block.getBlockFromItem(itemToRender.getItem());

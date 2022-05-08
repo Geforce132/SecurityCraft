@@ -41,13 +41,13 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 			List<EntityPlayer> entities = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> {
 				boolean isNotAllowed = true;
 
-				if (hasModule(EnumModuleType.ALLOWLIST))
+				if (isModuleEnabled(EnumModuleType.ALLOWLIST))
 					isNotAllowed = !ModuleUtils.isAllowed(this, e);
 
 				return e != owner && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
-			if (hasModule(EnumModuleType.REDSTONE)) {
+			if (isModuleEnabled(EnumModuleType.REDSTONE)) {
 				BlockPortableRadar.togglePowerOutput(world, pos, !entities.isEmpty());
 			}
 
@@ -63,8 +63,8 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == EnumModuleType.REDSTONE)
 			BlockPortableRadar.togglePowerOutput(world, pos, false);

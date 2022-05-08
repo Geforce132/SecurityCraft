@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import java.util.function.Predicate;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -239,7 +241,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	}
 
 	public boolean shouldProvidePower() {
-		return hasModule(EnumModuleType.REDSTONE) && isProvidingPower;
+		return isModuleEnabled(EnumModuleType.REDSTONE) && isProvidingPower;
 	}
 
 	public void setShouldProvidePower(boolean isProvidingPower) {
@@ -259,13 +261,14 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleInserted(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
 
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+		Predicate<EnumModuleType> test = toggled ? connectedScanner::isModuleEnabled : connectedScanner::hasModule;
 
-		if (connectedScanner != null && !connectedScanner.hasModule(module))
-			connectedScanner.insertModule(stack);
+		if (connectedScanner != null && !test.test(module))
+			connectedScanner.insertModule(stack, toggled);
 
 		if (world.isRemote && module == EnumModuleType.DISGUISE) {
 			TileEntityRenderDelegate.putDisguisedTeRenderer(this, stack);
@@ -276,13 +279,14 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+		Predicate<EnumModuleType> test = toggled ? connectedScanner::isModuleEnabled : connectedScanner::hasModule;
 
-		if (connectedScanner != null && connectedScanner.hasModule(module))
-			connectedScanner.removeModule(module);
+		if (connectedScanner != null && test.test(module))
+			connectedScanner.removeModule(module, toggled);
 
 		if (module == EnumModuleType.STORAGE) {
 			//first 10 slots (0-9) are the prohibited slots

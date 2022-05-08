@@ -21,7 +21,7 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 	private static final int SLOW_SPEED = 200;
 	private static final int FAST_SPEED = 100;
 	private int cooldown = 0;
-	private int ticksBetweenAttacks = hasModule(EnumModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
+	private int ticksBetweenAttacks = isModuleEnabled(EnumModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
 
 	@Override
 	public void update() {
@@ -65,16 +65,16 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleInserted(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
 
 		if (module == EnumModuleType.SPEED)
 			ticksBetweenAttacks = FAST_SPEED;
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == EnumModuleType.SPEED)
 			ticksBetweenAttacks = SLOW_SPEED;

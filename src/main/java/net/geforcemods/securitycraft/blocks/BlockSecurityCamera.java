@@ -196,7 +196,7 @@ public class BlockSecurityCamera extends BlockOwnable {
 
 	@Override
 	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		if (state.getValue(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
+		if (state.getValue(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).isModuleEnabled(EnumModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
@@ -204,7 +204,7 @@ public class BlockSecurityCamera extends BlockOwnable {
 
 	@Override
 	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		if (state.getValue(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE) && state.getValue(FACING) == side)
+		if (state.getValue(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).isModuleEnabled(EnumModuleType.REDSTONE) && state.getValue(FACING) == side)
 			return 15;
 		else
 			return 0;

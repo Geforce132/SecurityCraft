@@ -270,8 +270,8 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == EnumModuleType.SMART) {
 			for (EntityEntry projectileType : projectileFilter.keySet()) {
@@ -296,6 +296,6 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	 * @return The number of ticks that the trophy takes to "charge"
 	 */
 	public int getCooldownTime() {
-		return hasModule(EnumModuleType.SPEED) ? 4 : 8;
+		return isModuleEnabled(EnumModuleType.SPEED) ? 4 : 8;
 	}
 }

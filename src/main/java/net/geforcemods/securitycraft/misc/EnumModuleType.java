@@ -2,14 +2,14 @@ package net.geforcemods.securitycraft.misc;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 /**
- * Simple enum that is supposed to be used in conjunction with {@link CustomizableSCTE}. Gives easy access to the module
- * ItemStack and name.
+ * Simple enum that is supposed to be used in conjunction with {@link IModuleInventory}. Gives easy access to the module item
+ * and name.
  *
  * @author Geforce
  */

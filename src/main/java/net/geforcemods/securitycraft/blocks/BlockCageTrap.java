@@ -94,12 +94,14 @@ public class BlockCageTrap extends BlockDisguisable {
 	}
 
 	private void addCorrectShape(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState, TileEntityDisguisable disguisableTe) {
-		ItemStack moduleStack = disguisableTe.getModule(EnumModuleType.DISGUISE);
+		if (disguisableTe.isModuleEnabled(EnumModuleType.DISGUISE)) {
+			ItemStack moduleStack = disguisableTe.getModule(EnumModuleType.DISGUISE);
 
-		if (!moduleStack.isEmpty() && (((ItemModule) moduleStack.getItem()).getBlockAddon(moduleStack.getTagCompound()) != null))
-			super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
-		else
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+			if (!moduleStack.isEmpty() && (((ItemModule) moduleStack.getItem()).getBlockAddon(moduleStack.getTagCompound()) != null))
+				super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
+		}
+
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
 	}
 
 	@Override

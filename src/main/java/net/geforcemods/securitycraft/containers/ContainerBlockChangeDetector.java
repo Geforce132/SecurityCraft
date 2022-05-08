@@ -21,7 +21,7 @@ public class ContainerBlockChangeDetector extends ContainerGeneric {
 			addSlotToContainer(new Slot(new TileEntityInventoryWrapper<>(te, this), 36, 175, 44) {
 				@Override
 				public boolean isItemValid(ItemStack stack) {
-					return te.hasModule(EnumModuleType.SMART) && stack.getItem() instanceof ItemBlock;
+					return te.isModuleEnabled(EnumModuleType.SMART) && stack.getItem() instanceof ItemBlock;
 				}
 
 				@Override

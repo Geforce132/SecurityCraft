@@ -42,7 +42,7 @@ public class TileEntityRetinalScannerRenderer extends TileEntitySpecialRenderer<
 		if (state.getBlock() == SCContent.retinalScanner) {
 			EnumFacing direction = state.getValue(BlockRetinalScanner.FACING);
 
-			if (!te.hasModule(EnumModuleType.DISGUISE))
+			if (!te.isModuleEnabled(EnumModuleType.DISGUISE))
 				render((float) x, (float) y, (float) z, direction, te.getPlayerProfile(), destroyStage);
 		}
 	}

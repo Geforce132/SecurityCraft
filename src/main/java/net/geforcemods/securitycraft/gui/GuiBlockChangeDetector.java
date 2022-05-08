@@ -150,7 +150,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 				drawHoveringText(hoverChecker.getName(), mouseX, mouseY);
 		}
 
-		if (smartModuleHoverChecker != null && smartModuleHoverChecker.checkHover(mouseX, mouseY) && !be.hasModule(EnumModuleType.SMART))
+		if (smartModuleHoverChecker != null && smartModuleHoverChecker.checkHover(mouseX, mouseY) && !be.isModuleEnabled(EnumModuleType.SMART))
 			drawHoveringText(smartModuleHoverChecker.getLines(), mouseX, mouseY);
 
 		if (changeEntryList != null)

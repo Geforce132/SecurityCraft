@@ -17,13 +17,15 @@ public class RefreshDiguisedModel implements IMessage {
 	private BlockPos pos;
 	private boolean insert;
 	private ItemStack stack;
+	private boolean toggled;
 
 	public RefreshDiguisedModel() {}
 
-	public RefreshDiguisedModel(BlockPos pos, boolean insert, ItemStack stack) {
+	public RefreshDiguisedModel(BlockPos pos, boolean insert, ItemStack stack, boolean toggled) {
 		this.pos = pos;
 		this.insert = insert;
 		this.stack = stack;
+		this.toggled = toggled;
 	}
 
 	@Override
@@ -31,6 +33,7 @@ public class RefreshDiguisedModel implements IMessage {
 		buf.writeLong(pos.toLong());
 		buf.writeBoolean(insert);
 		ByteBufUtils.writeItemStack(buf, stack);
+		buf.writeBoolean(toggled);
 	}
 
 	@Override
@@ -38,6 +41,7 @@ public class RefreshDiguisedModel implements IMessage {
 		pos = BlockPos.fromLong(buf.readLong());
 		insert = buf.readBoolean();
 		stack = ByteBufUtils.readItemStack(buf);
+		toggled = buf.readBoolean();
 	}
 
 	public static class Handler implements IMessageHandler<RefreshDiguisedModel, IMessage> {
@@ -49,9 +53,9 @@ public class RefreshDiguisedModel implements IMessage {
 
 				if (te != null) {
 					if (message.insert)
-						te.insertModule(message.stack);
+						te.insertModule(message.stack, message.toggled);
 					else
-						te.removeModule(EnumModuleType.DISGUISE);
+						te.removeModule(EnumModuleType.DISGUISE, message.toggled);
 
 					Minecraft.getMinecraft().world.markBlockRangeForRenderUpdate(message.pos, message.pos);
 				}

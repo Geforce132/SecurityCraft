@@ -10,24 +10,24 @@ import net.minecraft.item.ItemStack;
 
 public class TileEntityDisguisable extends CustomizableSCTE {
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleInserted(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
 
 		if (module == EnumModuleType.DISGUISE) {
 			if (!world.isRemote)
-				SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, true, stack));
+				SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, true, stack, toggled));
 			else
 				TileEntityRenderDelegate.putDisguisedTeRenderer(this, stack);
 		}
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == EnumModuleType.DISGUISE) {
 			if (!world.isRemote)
-				SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, false, stack));
+				SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, false, stack, toggled));
 			else
 				TileEntityRenderDelegate.DISGUISED_BLOCK.removeDelegateOf(this);
 		}

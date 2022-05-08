@@ -152,13 +152,13 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
 		if (module == EnumModuleType.REDSTONE) {
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockSonicSecuritySystem.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.sonicSecuritySystem, EnumFacing.DOWN);
 		}
 
-		super.onModuleRemoved(stack, module);
+		super.onModuleRemoved(stack, module, toggled);
 	}
 
 	@Override

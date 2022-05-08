@@ -62,8 +62,7 @@ public class ItemModule extends Item {
 				return EnumActionResult.PASS;
 
 			if (inv.acceptsModule(type) && !inv.hasModule(type)) {
-				inv.insertModule(stack);
-				inv.onModuleInserted(stack, type);
+				inv.insertModule(stack, false);
 
 				if (!player.isCreative())
 					stack.shrink(1);

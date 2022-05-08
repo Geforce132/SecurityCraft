@@ -20,7 +20,7 @@ public class ContainerBlockPocketManager extends Container {
 	public ContainerBlockPocketManager(InventoryPlayer inventory, TileEntityBlockPocketManager te) {
 		this.te = te;
 		isOwner = te.getOwner().isOwner(inventory.player);
-		storage = te != null && te.hasModule(EnumModuleType.STORAGE) && isOwner;
+		storage = te != null && te.isModuleEnabled(EnumModuleType.STORAGE) && isOwner;
 
 		if (storage) {
 			for (int y = 0; y < 3; y++) {

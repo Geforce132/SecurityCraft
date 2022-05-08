@@ -67,7 +67,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider {
 		playerInventory = inventory;
 		size = te.size;
 		isOwner = te.getOwner().isOwner(inventory.player);
-		storage = te != null && te.hasModule(EnumModuleType.STORAGE) && isOwner;
+		storage = te != null && te.isModuleEnabled(EnumModuleType.STORAGE) && isOwner;
 
 		if (storage)
 			xSize = 256;

@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import java.util.EnumMap;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -46,12 +48,14 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
+	private EnumMap<EnumModuleType, Boolean> moduleStates = new EnumMap<>(EnumModuleType.class);
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 
 		writeModuleInventory(tag);
+		writeModuleStates(tag);
 		writeOptions(tag);
 
 		if (passcode != null && !passcode.isEmpty())
@@ -73,6 +77,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		super.readFromNBT(tag);
 
 		modules = readModuleInventory(tag);
+		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		passcode = tag.getString("passcode");
 		owner.readFromNBT(tag);
@@ -153,17 +158,32 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
-		IModuleInventory.super.onModuleInserted(stack, module);
+	public void onModuleInserted(ItemStack stack, EnumModuleType module, boolean toggled) {
+		IModuleInventory.super.onModuleInserted(stack, module, toggled);
 
-		addOrRemoveModuleFromAttached(stack, false);
+		addOrRemoveModuleFromAttached(stack, false, toggled);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
-		IModuleInventory.super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
+		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
 
-		addOrRemoveModuleFromAttached(stack, true);
+		addOrRemoveModuleFromAttached(stack, true, toggled);
+	}
+
+	@Override
+	public boolean isModuleEnabled(EnumModuleType module) {
+		return hasModule(module) && moduleStates.get(module);
+	}
+
+	@Override
+	public void toggleModuleState(EnumModuleType module, boolean shouldBeEnabled) {
+		moduleStates.put(module, shouldBeEnabled);
+
+		if (shouldBeEnabled)
+			onModuleInserted(getModule(module), module, true);
+		else
+			onModuleRemoved(getModule(module), module, true);
 	}
 
 	@Override
@@ -185,7 +205,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 				continue;
 
 			if (offsetTe != null)
-				offsetTe.removeModule(((ItemModule) module.getItem()).getModuleType());
+				offsetTe.removeModule(((ItemModule) module.getItem()).getModuleType(), false);
 
 			Block.spawnAsEntity(world, pos, module);
 		}
@@ -193,7 +213,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		getInventory().clear();
 	}
 
-	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove) {
+	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove, boolean toggled) {
 		if (module.isEmpty() || !(module.getItem() instanceof ItemModule))
 			return;
 
@@ -201,9 +221,9 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 
 		if (offsetTe != null) {
 			if (remove)
-				offsetTe.removeModule(((ItemModule) module.getItem()).getModuleType());
+				offsetTe.removeModule(((ItemModule) module.getItem()).getModuleType(), toggled);
 			else
-				offsetTe.insertModule(module);
+				offsetTe.insertModule(module, toggled);
 		}
 	}
 
@@ -278,8 +298,8 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 			world.addBlockEvent(pos, getBlockType(), 1, numPlayersUsing);
 			world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
 
-			if (hasModule(EnumModuleType.REDSTONE))
-				this.world.notifyNeighborsOfStateChange(pos.down(), getBlockType(), false);
+			if (isModuleEnabled(EnumModuleType.REDSTONE))
+				world.notifyNeighborsOfStateChange(pos.down(), getBlockType(), false);
 		}
 	}
 
@@ -290,7 +310,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 			world.addBlockEvent(pos, getBlockType(), 1, numPlayersUsing);
 			world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
 
-			if (hasModule(EnumModuleType.REDSTONE))
+			if (isModuleEnabled(EnumModuleType.REDSTONE))
 				world.notifyNeighborsOfStateChange(pos.down(), getBlockType(), false);
 		}
 	}

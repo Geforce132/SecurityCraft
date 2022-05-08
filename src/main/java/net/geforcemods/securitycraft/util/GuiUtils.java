@@ -61,7 +61,7 @@ public class GuiUtils {
 
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		TileEntitySecurityCamera te = (TileEntitySecurityCamera) tile;
-		boolean hasRedstoneModule = te.hasModule(EnumModuleType.REDSTONE);
+		boolean hasRedstoneModule = te.isModuleEnabled(EnumModuleType.REDSTONE);
 		GameSettings settings = Minecraft.getMinecraft().gameSettings;
 		IBlockState state = world.getBlockState(pos);
 		String lookAround = GameSettings.getKeyDisplayString(settings.keyBindForward.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindLeft.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindBack.getKeyCode()) + GameSettings.getKeyDisplayString(settings.keyBindRight.getKeyCode()) + " - " + Utils.localize("gui.securitycraft:camera.lookAround").getFormattedText();

@@ -104,7 +104,7 @@ public class BlockLaserField extends BlockContainer {
 						BlockUtils.updateIndirectNeighbors(world, offsetPos, SCContent.laserBlock);
 						world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
 
-						if (te instanceof IModuleInventory && ((IModuleInventory) te).hasModule(EnumModuleType.HARMING)) {
+						if (te instanceof IModuleInventory && ((IModuleInventory) te).isModuleEnabled(EnumModuleType.HARMING)) {
 							if (!(entity instanceof EntityPlayer && ((IOwnable) te).getOwner().isOwner((EntityPlayer) entity)))
 								((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
 						}

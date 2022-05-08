@@ -2,10 +2,7 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
 
-import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
@@ -99,20 +96,8 @@ public abstract class TileEntityLinkable extends CustomizableSCTE implements ITi
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
-		super.onModuleInserted(stack, module);
-		ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, stack, this);
-	}
-
-	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
-		super.onModuleRemoved(stack, module);
-		ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, stack, this);
-	}
-
-	@Override
 	public void onOptionChanged(Option<?> option) {
-		createLinkedBlockAction(EnumLinkedAction.OPTION_CHANGED, new Option[] {
+		createLinkedBlockAction(EnumLinkedAction.OPTION_CHANGED, new Object[] {
 				option
 		}, this);
 	}
@@ -183,9 +168,7 @@ public abstract class TileEntityLinkable extends CustomizableSCTE implements ITi
 	 */
 	public void createLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<TileEntityLinkable> excludedTEs) {
 		for (LinkedBlock block : linkedBlocks)
-			if (excludedTEs.contains(block.asTileEntity(world)))
-				continue;
-			else {
+			if (!excludedTEs.contains(block.asTileEntity(world))) {
 				block.asTileEntity(world).onLinkedBlockAction(action, parameters, excludedTEs);
 				block.asTileEntity(world).sync();
 			}

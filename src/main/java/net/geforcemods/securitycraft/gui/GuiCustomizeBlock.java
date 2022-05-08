@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.gui;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -12,18 +13,28 @@ import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
+import net.geforcemods.securitycraft.gui.components.ClickButton;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
 import net.geforcemods.securitycraft.gui.components.HoverChecker;
+import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -31,7 +42,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiCustomizeBlock extends GuiContainer {
+public class GuiCustomizeBlock extends GuiContainer implements IContainerListener {
 	//@formatter:off
 	private static final ResourceLocation[] TEXTURES = {
 			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
@@ -42,6 +53,7 @@ public class GuiCustomizeBlock extends GuiContainer {
 			new ResourceLocation("securitycraft:textures/gui/container/customize5.png")
 	};
 	//@formatter:on
+	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private final List<Rectangle> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private GuiPictureButton[] descriptionButtons = new GuiPictureButton[5];
@@ -58,6 +70,7 @@ public class GuiCustomizeBlock extends GuiContainer {
 		moduleInv = te;
 		blockName = tlKey.substring(5);
 		title = Utils.localize(tlKey + ".name").getFormattedText();
+		inventorySlots.addListener(this);
 	}
 
 	@Override
@@ -69,9 +82,10 @@ public class GuiCustomizeBlock extends GuiContainer {
 		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
 			int column = i % numberOfColumns;
 
-			descriptionButtons[i] = new GuiPictureButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRender, new ItemStack(moduleInv.acceptedModules()[i].getItem()));
+			descriptionButtons[i] = new ModuleButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRender, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked);
 			buttonList.add(descriptionButtons[i]);
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
+			descriptionButtons[i].enabled = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 
 		TileEntity te = moduleInv.getTileEntity();
@@ -112,6 +126,20 @@ public class GuiCustomizeBlock extends GuiContainer {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
+		GlStateManager.color(1.0F, 1.0F, 1.0F);
+		GlStateManager.disableLighting();
+		mc.getTextureManager().bindTexture(BEACON_GUI);
+
+		for (int i = 36; i < ((ContainerCustomizeBlock) inventorySlots).maxSlots; i++) {
+			Slot slot = inventorySlots.inventorySlots.get(i);
+
+			if (!slot.getStack().isEmpty()) {
+				boolean isEnabled = moduleInv.isModuleEnabled(((ItemModule) slot.getStack().getItem()).getModuleType());
+
+				drawScaledCustomSizeModalRect(guiLeft + slot.xPos - 2, guiTop + slot.yPos + 16, isEnabled ? 88 : 110, 219, 21, 22, 20, 20, 256, 256);
+			}
+		}
+
 		if (getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);
 
@@ -131,12 +159,36 @@ public class GuiCustomizeBlock extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURES[moduleInv.getMaxNumberOfModules()]);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+	}
+
+	@Override
+	public void sendSlotContents(Container menu, int slotIndex, ItemStack stack) {
+		if (slotIndex < 36)
+			return;
+
+		//when removing a stack from a slot, it's not possible to reliably get the module type, so just loop through all possible types
+		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
+			if (descriptionButtons[i] != null)
+				descriptionButtons[i].enabled = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
+		}
+	}
+
+	private void moduleButtonClicked(ClickButton button) {
+		EnumModuleType moduleType = ((ModuleButton) button).getModule().getModuleType();
+
+		if (moduleInv.isModuleEnabled(moduleType))
+			moduleInv.removeModule(moduleType, true);
+		else
+			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
+
+		SecurityCraft.network.sendToServer(new ToggleModule(moduleInv.getTileEntity().getPos(), moduleType));
 	}
 
 	@Override
@@ -148,6 +200,8 @@ public class GuiCustomizeBlock extends GuiContainer {
 			button.displayString = getOptionButtonTitle(tempOption);
 			SecurityCraft.network.sendToServer(new ToggleOption(moduleInv.getTileEntity().getPos().getX(), moduleInv.getTileEntity().getPos().getY(), moduleInv.getTileEntity().getPos().getZ(), button.id));
 		}
+		else
+			((GuiPictureButton) button).onClick();
 	}
 
 	private String getModuleDescription(int buttonID) {
@@ -176,5 +230,28 @@ public class GuiCustomizeBlock extends GuiContainer {
 
 	public List<Rectangle> getGuiExtraAreas() {
 		return extraAreas;
+	}
+
+	@Override
+	public void sendAllContents(Container container, NonNullList<ItemStack> stacks) {}
+
+	@Override
+	public void sendWindowProperty(Container container, int varToUpdate, int newValue) {}
+
+	@Override
+	public void sendAllWindowProperties(Container container, IInventory inventory) {}
+
+	private class ModuleButton extends GuiPictureButton {
+		private final ItemModule module;
+
+		public ModuleButton(int id, int xPos, int yPos, int width, int height, RenderItem renderItem, ItemModule itemToRender, Consumer<ClickButton> onClick) {
+			super(id, xPos, yPos, width, height, renderItem, new ItemStack(itemToRender), onClick);
+
+			module = itemToRender;
+		}
+
+		public ItemModule getModule() {
+			return module;
+		}
 	}
 }

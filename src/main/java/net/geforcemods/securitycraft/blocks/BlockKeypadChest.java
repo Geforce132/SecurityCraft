@@ -388,7 +388,7 @@ public class BlockKeypadChest extends BlockContainer {
 			TileEntity te = world.getTileEntity(pos);
 			int numPlayersUsing = 0;
 
-			if (te instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) te).hasModule(EnumModuleType.REDSTONE))
+			if (te instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) te).isModuleEnabled(EnumModuleType.REDSTONE))
 				numPlayersUsing = ((TileEntityKeypadChest) te).numPlayersUsing;
 
 			return MathHelper.clamp(numPlayersUsing, 0, 15);

@@ -34,8 +34,8 @@ public class GuiInventoryScanner extends GuiContainer {
 		tileEntity = te;
 		playerObj = player;
 		owns = tileEntity.getOwner().isOwner(playerObj);
-		hasRedstoneModule = tileEntity.hasModule(EnumModuleType.REDSTONE);
-		hasStorageModule = tileEntity.hasModule(EnumModuleType.STORAGE);
+		hasRedstoneModule = tileEntity.isModuleEnabled(EnumModuleType.REDSTONE);
+		hasStorageModule = tileEntity.isModuleEnabled(EnumModuleType.STORAGE);
 		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no"))).getFormattedText();
 		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no"))).getFormattedText();
 

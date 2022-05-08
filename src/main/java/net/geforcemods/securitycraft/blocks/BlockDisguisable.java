@@ -102,7 +102,7 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof IModuleInventory && ((IModuleInventory) te).hasModule(EnumModuleType.DISGUISE)) {
+		if (te instanceof IModuleInventory && ((IModuleInventory) te).isModuleEnabled(EnumModuleType.DISGUISE)) {
 			ItemStack module = ((IModuleInventory) te).getModule(EnumModuleType.DISGUISE);
 
 			if (!module.hasTagCompound())
@@ -132,7 +132,7 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 
 		IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
 
-		if (te.hasModule(EnumModuleType.DISGUISE)) {
+		if (te.isModuleEnabled(EnumModuleType.DISGUISE)) {
 			ItemStack disguiseModule = te.getModule(EnumModuleType.DISGUISE);
 
 			if (!disguiseModule.hasTagCompound())
@@ -186,7 +186,7 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 	public IBlockState getDisguisedBlockState(IBlockAccess world, BlockPos pos) {
 		if (world.getTileEntity(pos) instanceof IModuleInventory) {
 			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
-			ItemStack module = te.hasModule(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
+			ItemStack module = te.isModuleEnabled(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!module.isEmpty()) {
 				if (!module.hasTagCompound())
@@ -215,7 +215,7 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 	public ItemStack getDisguisedStack(IBlockAccess world, BlockPos pos) {
 		if (world.getTileEntity(pos) instanceof IModuleInventory) {
 			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
-			ItemStack stack = te.hasModule(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
+			ItemStack stack = te.isModuleEnabled(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!stack.isEmpty()) {
 				ItemStack disguisedStack = ((ItemModule) stack.getItem()).getAddonAsStack(stack.getTagCompound());

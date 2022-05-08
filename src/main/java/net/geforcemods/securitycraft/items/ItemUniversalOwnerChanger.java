@@ -91,8 +91,7 @@ public class ItemUniversalOwnerChanger extends Item {
 			for (EnumModuleType moduleType : ((IModuleInventory) te).getInsertedModules()) {
 				ItemStack moduleStack = ((IModuleInventory) te).getModule(moduleType);
 
-				((IModuleInventory) te).removeModule(moduleType);
-				((IModuleInventory) te).onModuleRemoved(moduleStack, moduleType);
+				((IModuleInventory) te).removeModule(moduleType, false);
 				Block.spawnAsEntity(world, pos, moduleStack);
 			}
 		}

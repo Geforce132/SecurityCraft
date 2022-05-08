@@ -26,7 +26,7 @@ public class ContainerInventoryScanner extends Container {
 		}
 
 		//inventory scanner storage
-		if (te.getOwner().isOwner(inventory.player) && te.hasModule(EnumModuleType.STORAGE)) {
+		if (te.getOwner().isOwner(inventory.player) && te.isModuleEnabled(EnumModuleType.STORAGE)) {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 3; j++) {
 					addSlotToContainer(new Slot(te, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));

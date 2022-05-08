@@ -61,7 +61,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 		projectionHeight = tag.getInteger("height");
 		projectionRange = tag.getInteger("range");
 		projectionOffset = tag.getInteger("offset");
-		activatedByRedstone = hasModule(EnumModuleType.REDSTONE);
+		activatedByRedstone = isModuleEnabled(EnumModuleType.REDSTONE);
 		active = tag.getBoolean("active");
 		horizontal = tag.getBoolean("horizontal");
 		projectedBlock = new ItemStack(tag.getCompoundTag("storedItem"));
@@ -140,16 +140,16 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleInserted(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
 
 		if (module == EnumModuleType.REDSTONE)
 			setActivatedByRedstone(true);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == EnumModuleType.REDSTONE)
 			setActivatedByRedstone(false);

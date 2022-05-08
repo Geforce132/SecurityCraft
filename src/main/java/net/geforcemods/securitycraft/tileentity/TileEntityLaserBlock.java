@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
-import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.util.TileEntityRenderDelegate;
@@ -53,54 +52,45 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 		else if (action == EnumLinkedAction.MODULE_INSERTED) {
 			ItemStack module = (ItemStack) parameters[0];
 
-			insertModule(module);
-
-			if (((ItemModule) module.getItem()).getModuleType() == EnumModuleType.DISGUISE)
-				onInsertDisguiseModule(module);
-
+			insertModule(module, (boolean) parameters[2]);
 			excludedTEs.add(this);
-			createLinkedBlockAction(EnumLinkedAction.MODULE_INSERTED, parameters, excludedTEs);
+			createLinkedBlockAction(action, parameters, excludedTEs);
 		}
 		else if (action == EnumLinkedAction.MODULE_REMOVED) {
 			EnumModuleType module = (EnumModuleType) parameters[1];
-			ItemStack moduleStack = getModule(module);
 
-			removeModule(module);
-
-			if (module == EnumModuleType.DISGUISE)
-				onRemoveDisguiseModule(moduleStack);
-
+			removeModule(module, (boolean) parameters[2]);
 			excludedTEs.add(this);
-			createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, parameters, excludedTEs);
+			createLinkedBlockAction(action, parameters, excludedTEs);
 		}
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumModuleType module) {
-		super.onModuleInserted(stack, module);
+	public void onModuleInserted(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
 
 		if (module == EnumModuleType.DISGUISE)
-			onInsertDisguiseModule(stack);
+			onInsertDisguiseModule(stack, toggled);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {
-		super.onModuleRemoved(stack, module);
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == EnumModuleType.DISGUISE)
-			onRemoveDisguiseModule(stack);
+			onRemoveDisguiseModule(stack, toggled);
 	}
 
-	private void onInsertDisguiseModule(ItemStack stack) {
+	private void onInsertDisguiseModule(ItemStack stack, boolean toggled) {
 		if (!world.isRemote)
-			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, true, stack));
+			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, true, stack, toggled));
 		else
 			TileEntityRenderDelegate.putDisguisedTeRenderer(this, stack);
 	}
 
-	private void onRemoveDisguiseModule(ItemStack stack) {
+	private void onRemoveDisguiseModule(ItemStack stack, boolean toggled) {
 		if (!world.isRemote)
-			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, false, stack));
+			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, false, stack, toggled));
 		else
 			TileEntityRenderDelegate.DISGUISED_BLOCK.removeDelegateOf(this);
 	}

@@ -133,7 +133,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob { /
 				getSentryDisguiseBlockEntity().ifPresent(be -> {
 					//put the old module, if it exists, into the new disguise block
 					if (!oldModule.isEmpty() && oldModule.getItem() instanceof ItemModule && ((ItemModule) oldModule.getItem()).getBlockAddon(oldModule.getTagCompound()) != null) {
-						be.insertModule(oldModule);
+						be.insertModule(oldModule, false);
 						world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(BlockSentryDisguise.INVISIBLE, false));
 					}
 
@@ -234,7 +234,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob { /
 				if (hasSpeedModule())
 					Block.spawnAsEntity(world, pos, new ItemStack(SCContent.speedModule));
 
-				getSentryDisguiseBlockEntity().ifPresent(be -> be.removeModule(EnumModuleType.DISGUISE));
+				getSentryDisguiseBlockEntity().ifPresent(be -> be.removeModule(EnumModuleType.DISGUISE, false));
 				world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(BlockSentryDisguise.INVISIBLE, true));
 				dataManager.set(ALLOWLIST, new NBTTagCompound());
 				dataManager.set(HAS_SPEED_MODULE, false);
@@ -457,8 +457,8 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob { /
 		if (((ItemModule) module.getItem()).getBlockAddon(module.getTagCompound()) != null) {
 			getSentryDisguiseBlockEntity().ifPresent(be -> {
 				//remove a possibly existing old disguise module
-				be.removeModule(EnumModuleType.DISGUISE);
-				be.insertModule(module);
+				be.removeModule(EnumModuleType.DISGUISE, false);
+				be.insertModule(module, false);
 				world.setBlockState(getPosition(), world.getBlockState(getPosition()).withProperty(BlockSentryDisguise.INVISIBLE, false));
 			});
 		}
