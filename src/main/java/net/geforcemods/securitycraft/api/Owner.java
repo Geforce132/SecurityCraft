@@ -74,8 +74,8 @@ public class Owner {
 			String uuidToCheck = ownable.getOwner().getUUID();
 			String nameToCheck = ownable.getOwner().getName();
 
-			if (ConfigHandler.enableTeamOwnership && !PlayerUtils.areOnSameTeam(ownerName, nameToCheck))
-				return false;
+			if (ConfigHandler.enableTeamOwnership && PlayerUtils.areOnSameTeam(ownerName, nameToCheck))
+				continue;
 
 			// Check the player's UUID first.
 			if (uuidToCheck != null && !uuidToCheck.equals(ownerUUID))

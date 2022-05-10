@@ -47,7 +47,7 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 				if (ConfigHandler.trickScannersWithPlayerHeads && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.SKULL)
 					name = PlayerUtils.getNameOfSkull(player);
 
-				if (name == null || (!getOwner().getName().equals(name) && !ModuleUtils.isAllowed(this, name))) {
+				if (!getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, player)) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.retinalScanner), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
 					return true;
 				}

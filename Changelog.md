@@ -17,6 +17,7 @@
 - Fix: The Admin Tool and Universal Key Changer do not work on doors
 - Fix: The Keypad Door can only be accessed with an empty hand
 - Fix: Projected blocks are completely dark in unlit caves
+- Fix: Several blocks do not respect team ownership
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
