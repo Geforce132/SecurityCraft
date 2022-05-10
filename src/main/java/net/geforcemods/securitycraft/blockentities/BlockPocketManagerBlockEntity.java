@@ -80,6 +80,14 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	public void tick() {
 		if (!level.isClientSide && shouldPlaceBlocks) {
 			PlayerEntity owner = PlayerUtils.getPlayerFromName(getOwner().getName());
+
+			//if the owner left the server, stop building the block pocket
+			if (owner == null) {
+				placeQueue.clear();
+				shouldPlaceBlocks = false;
+				return;
+			}
+
 			boolean isCreative = owner.isCreative();
 			boolean placed4 = true;
 
@@ -159,8 +167,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	 * @return The feedback message. null if none should be sent.
 	 */
 	public TranslationTextComponent enableMultiblock() {
-		if (!enabled) //multiblock detection
-		{
+		if (!enabled) { //multiblock detection
 			if (level.isClientSide)
 				SecurityCraft.channel.sendToServer(new ToggleBlockPocketManager(this, true, size));
 
