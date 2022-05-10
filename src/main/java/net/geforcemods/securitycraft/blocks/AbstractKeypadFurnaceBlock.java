@@ -23,6 +23,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
@@ -131,7 +132,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 			level.setBlockAndUpdate(pos, state.setValue(AbstractKeypadFurnaceBlock.OPEN, true));
 
 		if (player instanceof ServerPlayer serverPlayer) {
-			level.levelEvent((Player) null, 1006, pos, 0);
+			level.levelEvent(null, LevelEvent.SOUND_OPEN_IRON_DOOR, pos, 0);
 			NetworkHooks.openGui(serverPlayer, be, pos);
 		}
 	}
