@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -18,6 +19,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.util.Constants;
 
 public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IViewActivated, ILockable {
 	private int viewCooldown = 0;
@@ -42,12 +44,12 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 			EntityPlayer player = (EntityPlayer) entity;
 
 			if (!isLocked()) {
-				String name = entity.getName();
+				Owner viewingPlayer = new Owner(player);
 
 				if (ConfigHandler.trickScannersWithPlayerHeads && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.SKULL)
-					name = PlayerUtils.getNameOfSkull(player);
+					viewingPlayer = PlayerUtils.getSkullOwner(player);
 
-				if (!getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, player)) {
+				if (!getOwner().isOwner(viewingPlayer) && !ModuleUtils.isAllowed(this, viewingPlayer.getName())) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.retinalScanner), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
 					return true;
 				}
@@ -58,13 +60,13 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 				world.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, open), 3);
 				world.setBlockState(pos.down(), lowerState.withProperty(BlockDoor.OPEN, open), 3);
 				world.markBlockRangeForRenderUpdate(pos.down(), pos);
-				world.playEvent(null, open ? 1005 : 1011, pos, 0);
+				world.playEvent(null, open ? Constants.WorldEvents.IRON_DOOR_OPEN_SOUND : Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, pos, 0);
 
 				if (open && length > 0)
 					world.scheduleUpdate(pos, SCContent.scannerDoor, length);
 
 				if (open && sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:scannerDoorItem.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:scannerDoorItem.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", viewingPlayer.getName()), TextFormatting.GREEN);
 
 				return true;
 			}

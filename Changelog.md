@@ -19,6 +19,7 @@
 - Fix: Projected blocks are completely dark in unlit caves
 - Fix: Several blocks do not respect team ownership
 - Fix: Server crash involving automatically building a Block Pocket
+- Fix: Tricking scanners with player heads does not work if the player head owner is on the allowlist of the block
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------

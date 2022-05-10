@@ -3,8 +3,11 @@ package net.geforcemods.securitycraft.util;
 import java.util.Iterator;
 import java.util.List;
 
+import com.mojang.authlib.GameProfile;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.camera.EntitySecurityCamera;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.minecraft.client.Minecraft;
@@ -18,6 +21,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumHand;
@@ -233,19 +237,26 @@ public class PlayerUtils {
 	 * @param player The player to check
 	 * @return The name of the skull owner, null if the player is not wearing a player head or the skull owner is faulty
 	 */
-	public static String getNameOfSkull(EntityPlayer player) {
+	public static Owner getSkullOwner(EntityPlayer player) {
 		ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
 
 		if (stack.getItem() == Items.SKULL && stack.hasTagCompound()) {
 			NBTTagCompound stackTag = stack.getTagCompound();
 
 			if (stackTag.hasKey("SkullOwner", Constants.NBT.TAG_STRING))
-				return stackTag.getString("SkullOwner");
+				return new Owner(stackTag.getString("SkullOwner"), "ownerUUID");
 			else if (stackTag.hasKey("SkullOwner", Constants.NBT.TAG_COMPOUND)) {
-				NBTTagCompound skullOwnerTag = stackTag.getCompoundTag("SkullOwner");
+				GameProfile profile = NBTUtil.readGameProfileFromNBT(stackTag.getCompoundTag("SkullOwner"));
+				String name = "ownerName";
+				String uuid = "ownerUUID";
 
-				if (skullOwnerTag.hasKey("Name", Constants.NBT.TAG_STRING))
-					return skullOwnerTag.getString("Name");
+				if (profile.getName() != null)
+					name = profile.getName();
+
+				if (profile.getId() != null)
+					uuid = profile.getId().toString();
+
+				return new Owner(name, uuid);
 			}
 		}
 

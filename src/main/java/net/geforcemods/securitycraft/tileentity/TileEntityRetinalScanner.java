@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -64,18 +65,20 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 				return false;
 
 			if (!state.getValue(BlockRetinalScanner.POWERED) && !EntityUtils.isInvisible(entity)) {
-				String name = entity.getName();
-
 				if (entity instanceof EntityPlayer) {
 					EntityPlayer player = (EntityPlayer) entity;
+					Owner viewingPlayer = new Owner(player);
 
 					if (ConfigHandler.trickScannersWithPlayerHeads && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.SKULL)
-						name = PlayerUtils.getNameOfSkull(player);
+						viewingPlayer = PlayerUtils.getSkullOwner(player);
 
-					if (!getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, player)) {
+					if (!getOwner().isOwner(viewingPlayer) && !ModuleUtils.isAllowed(this, viewingPlayer.getName())) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.retinalScanner), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner().getName())), TextFormatting.RED);
 						return true;
 					}
+
+					if (sendMessage.get())
+						PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize("tile.securitycraft:retinalScanner.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", viewingPlayer.getName()), TextFormatting.GREEN);
 				}
 				else if (activatedOnlyByPlayer())
 					return false;
@@ -83,10 +86,6 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 				world.setBlockState(pos, state.withProperty(BlockRetinalScanner.POWERED, true));
 				BlockUtils.updateIndirectNeighbors(world, pos, SCContent.retinalScanner);
 				world.scheduleUpdate(pos, SCContent.retinalScanner, getSignalLength());
-
-				if (entity instanceof EntityPlayer && sendMessage.get())
-					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize("tile.securitycraft:retinalScanner.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", name), TextFormatting.GREEN);
-
 				return true;
 			}
 		}
