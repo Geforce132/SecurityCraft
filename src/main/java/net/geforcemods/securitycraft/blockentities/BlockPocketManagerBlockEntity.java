@@ -81,6 +81,14 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	public void tick(Level level, BlockPos pos, BlockState state) {
 		if (shouldPlaceBlocks) {
 			Player owner = PlayerUtils.getPlayerFromName(getOwner().getName());
+
+			//if the owner left the server, stop building the block pocket
+			if (owner == null) {
+				placeQueue.clear();
+				shouldPlaceBlocks = false;
+				return;
+			}
+
 			boolean isCreative = owner.isCreative();
 			boolean placed4Blocks = true;
 
@@ -161,8 +169,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	 * @return The feedback message. null if none should be sent.
 	 */
 	public TranslatableComponent enableMultiblock() {
-		if (!enabled) //multiblock detection
-		{
+		if (!enabled) { //multiblock detection
 			if (level.isClientSide)
 				SecurityCraft.channel.sendToServer(new ToggleBlockPocketManager(this, true, size));
 
@@ -217,8 +224,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 							return new TranslatableComponent("messages.securitycraft:blockpocket.multipleManagers");
 
 						//checking the lowest and highest level of the cube
-						if ((yi == lowest && !currentPos.equals(getBlockPos())) || yi == highest) //if (y level is lowest AND it's not the block pocket manager's position) OR (y level is highest)
-						{
+						if ((yi == lowest && !currentPos.equals(getBlockPos())) || yi == highest) { //if (y level is lowest AND it's not the block pocket manager's position) OR (y level is highest)
 							//checking the corners
 							if (((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest))) {
 								if (currentState.getBlock() != SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
