@@ -38,6 +38,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
@@ -160,7 +161,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 			TileEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof INamedContainerProvider) {
-				world.levelEvent((PlayerEntity) null, 1006, pos, 0);
+				world.levelEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
 				NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
 			}
 		}
