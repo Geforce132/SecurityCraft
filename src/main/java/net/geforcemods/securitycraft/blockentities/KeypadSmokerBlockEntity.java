@@ -19,6 +19,6 @@ public class KeypadSmokerBlockEntity extends AbstractKeypadFurnaceBlockEntity {
 
 	@Override
 	protected Container createMenu(int windowId, PlayerInventory inv) {
-		return new KeypadSmokerMenu(windowId, level, worldPosition, inv, this, dataAccess);
+		return new KeypadSmokerMenu(windowId, inv, this);
 	}
 }

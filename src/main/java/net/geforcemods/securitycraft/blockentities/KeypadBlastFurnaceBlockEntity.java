@@ -19,6 +19,6 @@ public class KeypadBlastFurnaceBlockEntity extends AbstractKeypadFurnaceBlockEnt
 
 	@Override
 	protected Container createMenu(int windowId, PlayerInventory inv) {
-		return new KeypadBlastFurnaceMenu(windowId, level, worldPosition, inv, this, dataAccess);
+		return new KeypadBlastFurnaceMenu(windowId, inv, this);
 	}
 }
