@@ -68,6 +68,14 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IT
 	public void update() {
 		if (!world.isRemote && shouldPlaceBlocks) {
 			EntityPlayer owner = PlayerUtils.getPlayerFromName(getOwner().getName());
+
+			//if the owner left the server, stop building the block pocket
+			if (owner == null) {
+				placeQueue.clear();
+				shouldPlaceBlocks = false;
+				return;
+			}
+
 			boolean isCreative = owner.isCreative();
 			boolean placed4 = true;
 
@@ -151,8 +159,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IT
 	 * @return The feedback message. null if none should be sent.
 	 */
 	public TextComponentTranslation enableMultiblock() {
-		if (!enabled) //multiblock detection
-		{
+		if (!enabled) { //multiblock detection
 			if (world.isRemote)
 				SecurityCraft.network.sendToServer(new ToggleBlockPocketManager(this, true, size));
 
