@@ -105,14 +105,18 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				TileEntity te = world.getTileEntity(data.getPos());
 
 				if (te instanceof IOwnable) {
-					String ownerName = TextFormatting.GRAY + ((IOwnable) te).getOwner().getName();
+					String ownerName = ((IOwnable) te).getOwner().getName();
 
 					if (ConfigHandler.enableTeamOwnership) {
 						ScorePlayerTeam team = PlayerUtils.getPlayersTeam(ownerName);
 
 						if (team != null)
-							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName() + TextFormatting.GRAY).getFormattedText();
+							ownerName = Utils.localize("messages.securitycraft:teamOwner", team.getColor() + team.getDisplayName()).getFormattedText();
+						else
+							ownerName = TextFormatting.GRAY + ownerName;
 					}
+					else
+						ownerName = TextFormatting.GRAY + ownerName;
 
 					probeInfo.vertical().text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ownerName).getFormattedText());
 				}
@@ -131,7 +135,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				if (te instanceof IPasswordProtected && !(te instanceof TileEntityKeycardReader) && ((IOwnable) te).getOwner().isOwner(player)) {
 					String password = ((IPasswordProtected) te).getPassword();
 
-					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText()));
+					probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:password").getFormattedText() + TextFormatting.GRAY + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText()));
 				}
 
 				if (te instanceof IWorldNameable && ((IWorldNameable) te).hasCustomName()) {
