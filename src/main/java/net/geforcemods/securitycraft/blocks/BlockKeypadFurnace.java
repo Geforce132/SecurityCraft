@@ -36,6 +36,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 public class BlockKeypadFurnace extends BlockDisguisable {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
@@ -128,7 +129,7 @@ public class BlockKeypadFurnace extends BlockDisguisable {
 		if (!state.getValue(OPEN))
 			world.setBlockState(pos, state.withProperty(OPEN, true));
 
-		world.playEvent(null, 1006, pos, 0);
+		world.playEvent(null, Constants.WorldEvents.IRON_DOOR_OPEN_SOUND, pos, 0);
 		player.openGui(SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 	}
 

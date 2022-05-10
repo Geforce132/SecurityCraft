@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerFurnace;
+import net.minecraftforge.common.util.Constants;
 
 public class ContainerKeypadFurnace extends ContainerFurnace {
 	private TileEntityKeypadFurnace te;
@@ -23,6 +24,7 @@ public class ContainerKeypadFurnace extends ContainerFurnace {
 
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
+		te.getWorld().playEvent(null, Constants.WorldEvents.IRON_DOOR_CLOSE_SOUND, te.getPos(), 0);
 		te.getWorld().setBlockState(te.getPos(), te.getWorld().getBlockState(te.getPos()).withProperty(BlockKeypadFurnace.OPEN, false));
 	}
 }
