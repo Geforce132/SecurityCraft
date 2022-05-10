@@ -21,6 +21,7 @@
 - Fix: Disguised blocks from sentries can be retrieved by using pistons or other means
 - Fix: The Admin Tool and Universal Key Changer do not work on doors
 - Fix: The Keypad Door can only be accessed with an empty hand
+- Fix: Several blocks do not respect team ownership
 - Removed: Some unnecessary menu types. This may result in a "missing registry entries" message showing up, which can be accepted
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 - Misc.: More texture and model changes
