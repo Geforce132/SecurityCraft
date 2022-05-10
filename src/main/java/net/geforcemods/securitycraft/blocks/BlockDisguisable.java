@@ -213,17 +213,10 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 	}
 
 	public ItemStack getDisguisedStack(IBlockAccess world, BlockPos pos) {
-		if (world.getTileEntity(pos) instanceof IModuleInventory) {
-			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
-			ItemStack stack = te.isModuleEnabled(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
+		IBlockState disguisedState = getDisguisedBlockState(world, pos);
 
-			if (!stack.isEmpty()) {
-				ItemStack disguisedStack = ((ItemModule) stack.getItem()).getAddonAsStack(stack.getTagCompound());
-
-				if (!disguisedStack.isEmpty())
-					return disguisedStack.copy();
-			}
-		}
+		if (disguisedState != null)
+			return new ItemStack(disguisedState.getBlock(), 1, disguisedState.getBlock().getMetaFromState(disguisedState));
 
 		return new ItemStack(this);
 	}

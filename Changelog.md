@@ -22,6 +22,7 @@
 - Fix: Tricking scanners with player heads does not work if the player head owner is on the allowlist of the block
 - Fix: The Password-protected Furnace/Smoker/Blast Furnace don't have a closing sound
 - Fix: The One Probe does not properly show team ownership
+- Fix: Pick block, The One Probe, and Waila do not properly work for blocks disguised as another block that has metadata
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
