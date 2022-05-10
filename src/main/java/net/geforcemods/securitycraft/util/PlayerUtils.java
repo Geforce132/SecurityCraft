@@ -4,8 +4,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.mojang.authlib.GameProfile;
+
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
@@ -19,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Hand;
@@ -250,19 +254,26 @@ public class PlayerUtils {
 	 * @param player The player to check
 	 * @return The name of the skull owner, null if the player is not wearing a player head or the skull owner is faulty
 	 */
-	public static String getNameOfSkull(PlayerEntity player) {
+	public static Owner getSkullOwner(PlayerEntity player) {
 		ItemStack stack = player.getItemBySlot(EquipmentSlotType.HEAD);
 
 		if (stack.getItem() == Items.PLAYER_HEAD && stack.hasTag()) {
 			CompoundNBT stackTag = stack.getTag();
 
 			if (stackTag.contains("SkullOwner", Constants.NBT.TAG_STRING))
-				return stackTag.getString("SkullOwner");
+				return new Owner(stackTag.getString("SkullOwner"), "ownerUUID");
 			else if (stackTag.contains("SkullOwner", Constants.NBT.TAG_COMPOUND)) {
-				CompoundNBT skullOwnerTag = stackTag.getCompound("SkullOwner");
+				GameProfile profile = NBTUtil.readGameProfile(stackTag.getCompound("SkullOwner"));
+				String name = "ownerName";
+				String uuid = "ownerUUID";
 
-				if (skullOwnerTag.contains("Name", Constants.NBT.TAG_STRING))
-					return skullOwnerTag.getString("Name");
+				if (profile.getName() != null)
+					name = profile.getName();
+
+				if (profile.getId() != null)
+					uuid = profile.getId().toString();
+
+				return new Owner(name, uuid);
 			}
 		}
 

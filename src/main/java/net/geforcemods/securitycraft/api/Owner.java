@@ -24,6 +24,11 @@ public class Owner {
 
 	public Owner() {}
 
+	public Owner(PlayerEntity player) {
+		ownerName = player.getName().getString();
+		ownerUUID = player.getGameProfile().getId().toString();
+	}
+
 	public Owner(String playerName, String playerUUID) {
 		this.ownerName = playerName;
 		this.ownerUUID = playerUUID;
@@ -97,8 +102,15 @@ public class Owner {
 		if (player == null)
 			return false;
 
-		String uuidToCheck = player.getGameProfile().getId().toString();
-		String nameToCheck = player.getName().getString();
+		return isOwner(new Owner(player));
+	}
+
+	/**
+	 * @return If this person is the same person as the given owner.
+	 */
+	public boolean isOwner(Owner owner) {
+		String uuidToCheck = owner.getUUID();
+		String nameToCheck = owner.getName();
 
 		if (ConfigHandler.SERVER.enableTeamOwnership.get() && PlayerUtils.areOnSameTeam(ownerName, nameToCheck))
 			return true;
