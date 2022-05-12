@@ -134,8 +134,16 @@ public class KeypadChestBlock extends ChestBlock {
 				KeypadChestBlockEntity thisTe = (KeypadChestBlockEntity) world.getBlockEntity(pos);
 				TileEntity otherTe = world.getBlockEntity(pos.relative(getConnectedDirection(state)));
 
-				if (otherTe instanceof KeypadChestBlockEntity && thisTe.getOwner().owns((KeypadChestBlockEntity) otherTe))
-					thisTe.setPassword(((KeypadChestBlockEntity) otherTe).getPassword());
+				if (otherTe instanceof KeypadChestBlockEntity && thisTe.getOwner().owns((KeypadChestBlockEntity) otherTe)) {
+					KeypadChestBlockEntity te = (KeypadChestBlockEntity) otherTe;
+
+					for (ModuleType type : te.getInsertedModules()) {
+						thisTe.insertModule(te.getModule(type), false);
+					}
+
+					thisTe.readOptions(te.writeOptions(new CompoundNBT()));
+					thisTe.setPassword(te.getPassword());
+				}
 			}
 		}
 	}
