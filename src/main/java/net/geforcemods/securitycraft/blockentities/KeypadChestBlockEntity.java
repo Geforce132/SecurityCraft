@@ -183,15 +183,13 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 	@Override
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		IModuleInventory.super.onModuleInserted(stack, module, toggled);
-
 		addOrRemoveModuleFromAttached(stack, false, toggled);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
-		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
-
 		addOrRemoveModuleFromAttached(stack, true, toggled);
+		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
 	}
 
 	@Override
@@ -228,8 +226,15 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 		KeypadChestBlockEntity offsetTe = findOther();
 
 		if (offsetTe != null) {
+			ModuleType moduleType = ((ModuleItem) module.getItem()).getModuleType();
+
+			if (toggled && offsetTe.isModuleEnabled(moduleType) != remove)
+				return;
+			else if (!toggled && offsetTe.hasModule(moduleType) != remove)
+				return;
+
 			if (remove)
-				offsetTe.removeModule(((ModuleItem) module.getItem()).getModuleType(), toggled);
+				offsetTe.removeModule(moduleType, toggled);
 			else
 				offsetTe.insertModule(module, toggled);
 		}
