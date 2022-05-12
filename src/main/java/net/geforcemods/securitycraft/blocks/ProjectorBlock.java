@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
@@ -30,9 +29,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -41,14 +40,19 @@ import net.minecraftforge.fmllegacy.network.NetworkHooks;
 public class ProjectorBlock extends DisguisableBlock {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("tooltip.securitycraft:projector").setStyle(Utils.GRAY_STYLE);
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	private static final VoxelShape NORTH = Stream.of(Block.box(12, 0, 12, 15, 2, 15), Block.box(1, 2, 1, 15, 7, 15), Block.box(9, 2, 15, 14, 7, 16), Block.box(12, 0, 1, 15, 2, 4), Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 0, 12, 4, 2, 15)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-	private static final VoxelShape SOUTH = Stream.of(Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 2, 1, 15, 7, 15), Block.box(2, 2, 0, 7, 7, 1), Block.box(1, 0, 12, 4, 2, 15), Block.box(12, 0, 12, 15, 2, 15), Block.box(12, 0, 1, 15, 2, 4)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-	private static final VoxelShape WEST = Stream.of(Block.box(12, 0, 1, 15, 2, 4), Block.box(1, 2, 1, 15, 7, 15), Block.box(15, 2, 2, 16, 7, 7), Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 0, 12, 4, 2, 15), Block.box(12, 0, 12, 15, 2, 15)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-	private static final VoxelShape EAST = Stream.of(Block.box(1, 0, 12, 4, 2, 15), Block.box(1, 2, 1, 15, 7, 15), Block.box(0, 2, 9, 1, 7, 14), Block.box(12, 0, 12, 15, 2, 15), Block.box(12, 0, 1, 15, 2, 4), Block.box(1, 0, 1, 4, 2, 4)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+	public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
+	private static final VoxelShape FLOOR_NORTH = Shapes.or(Block.box(12, 0, 12, 15, 2, 15), Block.box(1, 2, 1, 15, 7, 15), Block.box(9, 2, 15, 14, 7, 16), Block.box(12, 0, 1, 15, 2, 4), Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 0, 12, 4, 2, 15));
+	private static final VoxelShape FLOOR_SOUTH = Shapes.or(Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 2, 1, 15, 7, 15), Block.box(2, 2, 0, 7, 7, 1), Block.box(1, 0, 12, 4, 2, 15), Block.box(12, 0, 12, 15, 2, 15), Block.box(12, 0, 1, 15, 2, 4));
+	private static final VoxelShape FLOOR_WEST = Shapes.or(Block.box(12, 0, 1, 15, 2, 4), Block.box(1, 2, 1, 15, 7, 15), Block.box(15, 2, 2, 16, 7, 7), Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 0, 12, 4, 2, 15), Block.box(12, 0, 12, 15, 2, 15));
+	private static final VoxelShape FLOOR_EAST = Shapes.or(Block.box(1, 0, 12, 4, 2, 15), Block.box(1, 2, 1, 15, 7, 15), Block.box(0, 2, 9, 1, 7, 14), Block.box(12, 0, 12, 15, 2, 15), Block.box(12, 0, 1, 15, 2, 4), Block.box(1, 0, 1, 4, 2, 4));
+	private static final VoxelShape CEILING_NORTH = Shapes.or(Block.box(1, 6, 1, 15, 11, 15), Block.box(9, 6, 15, 14, 11, 16), Block.box(7, 11, 4, 9, 16, 6));
+	private static final VoxelShape CEILING_SOUTH = Shapes.or(Block.box(1, 6, 1, 15, 11, 15), Block.box(2, 6, 0, 7, 11, 1), Block.box(7, 11, 10, 9, 16, 12));
+	private static final VoxelShape CEILING_WEST = Shapes.or(Block.box(1, 6, 1, 15, 11, 15), Block.box(15, 6, 2, 16, 11, 7), Block.box(4, 11, 7, 6, 16, 9));
+	private static final VoxelShape CEILING_EAST = Shapes.or(Block.box(1, 6, 1, 15, 11, 15), Block.box(0, 6, 9, 1, 11, 14), Block.box(10, 11, 7, 12, 16, 9));
 
 	public ProjectorBlock(Block.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HANGING, false));
 	}
 
 	@Override
@@ -57,12 +61,20 @@ public class ProjectorBlock extends DisguisableBlock {
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
+		else if (!disguisedState.getValue(HANGING))
+			return switch (disguisedState.getValue(FACING)) {
+				case NORTH -> FLOOR_NORTH;
+				case EAST -> FLOOR_EAST;
+				case SOUTH -> FLOOR_SOUTH;
+				case WEST -> FLOOR_WEST;
+				default -> Shapes.block();
+			};
 		else
 			return switch (disguisedState.getValue(FACING)) {
-				case NORTH -> NORTH;
-				case EAST -> EAST;
-				case SOUTH -> SOUTH;
-				case WEST -> WEST;
+				case NORTH -> CEILING_NORTH;
+				case EAST -> CEILING_EAST;
+				case SOUTH -> CEILING_SOUTH;
+				case WEST -> CEILING_WEST;
 				default -> Shapes.block();
 			};
 	}
@@ -115,13 +127,13 @@ public class ProjectorBlock extends DisguisableBlock {
 		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
-	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player placer) {
-		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
+	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction clickedFace, double hitX, double hitY, double hitZ, Player placer) {
+		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()).setValue(HANGING, clickedFace == Direction.DOWN);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING);
+		builder.add(FACING, HANGING);
 	}
 
 	@Override
