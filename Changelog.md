@@ -23,6 +23,7 @@
 - Fix: The Password-protected Furnace/Smoker/Blast Furnace don't have a closing sound
 - Fix: The One Probe does not properly show team ownership
 - Fix: Pick block, The One Probe, and Waila do not properly work for blocks disguised as another block that has metadata
+- Fix: When placing a Password-protected Chest next to another one creating a double chest, modules and options are not synchronized to the newly placed one
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------

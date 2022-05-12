@@ -183,10 +183,10 @@ public class BlockKeypadChest extends BlockContainer {
 			world.setBlockState(pos, state, 3);
 		}
 
-		TileEntityKeypadChest te = (TileEntityKeypadChest) world.getTileEntity(pos);
+		TileEntityKeypadChest thisTe = (TileEntityKeypadChest) world.getTileEntity(pos);
 
 		if (stack.hasDisplayName())
-			te.setCustomName(stack.getDisplayName());
+			thisTe.setCustomName(stack.getDisplayName());
 
 		if (entity instanceof EntityPlayer) {
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) entity));
@@ -194,8 +194,16 @@ public class BlockKeypadChest extends BlockContainer {
 			if (otherChestPos != null) {
 				TileEntity otherTe = world.getTileEntity(otherChestPos);
 
-				if (otherTe instanceof TileEntityKeypadChest && te.getOwner().owns((TileEntityKeypadChest) otherTe))
-					te.setPassword(((TileEntityKeypadChest) otherTe).getPassword());
+				if (otherTe instanceof TileEntityKeypadChest && thisTe.getOwner().owns((TileEntityKeypadChest) otherTe)) {
+					TileEntityKeypadChest te = (TileEntityKeypadChest) otherTe;
+
+					for (EnumModuleType type : te.getInsertedModules()) {
+						thisTe.insertModule(te.getModule(type), false);
+					}
+
+					thisTe.setSendsMessages(te.sendsMessages());
+					thisTe.setPassword(te.getPassword());
+				}
 			}
 		}
 	}
