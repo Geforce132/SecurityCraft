@@ -75,8 +75,8 @@ public class KeypadChestBlock extends ChestBlock {
 		}
 
 		@Override
-		public Optional<MenuProvider> acceptSingle(ChestBlockEntity te) {
-			return Optional.of(te);
+		public Optional<MenuProvider> acceptSingle(ChestBlockEntity be) {
+			return Optional.of(be);
 		}
 
 		@Override
@@ -134,8 +134,14 @@ public class KeypadChestBlock extends ChestBlock {
 				KeypadChestBlockEntity thisBe = (KeypadChestBlockEntity) level.getBlockEntity(pos);
 				BlockEntity otherBe = level.getBlockEntity(pos.relative(getConnectedDirection(state)));
 
-				if (otherBe instanceof KeypadChestBlockEntity te && thisBe.getOwner().owns(te))
-					thisBe.setPassword(te.getPassword());
+				if (otherBe instanceof KeypadChestBlockEntity be && thisBe.getOwner().owns(be)) {
+					for (ModuleType type : be.getInsertedModules()) {
+						thisBe.insertModule(be.getModule(type), false);
+					}
+
+					thisBe.readOptions(be.writeOptions(new CompoundTag()));
+					thisBe.setPassword(be.getPassword());
+				}
 			}
 		}
 	}
