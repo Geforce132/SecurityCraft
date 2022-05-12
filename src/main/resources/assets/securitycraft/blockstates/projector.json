@@ -1,8 +1,12 @@
 {
     "variants": {
-        "facing=south": { "model": "securitycraft:block/projector" },
-        "facing=north": { "model": "securitycraft:block/projector", "y": 180 },
-        "facing=east":  { "model": "securitycraft:block/projector", "y": 270 },
-        "facing=west":  { "model": "securitycraft:block/projector", "y": 90 }
+        "facing=south,hanging=false": { "model": "securitycraft:block/projector" },
+        "facing=north,hanging=false": { "model": "securitycraft:block/projector", "y": 180 },
+        "facing=east,hanging=false":  { "model": "securitycraft:block/projector", "y": 270 },
+        "facing=west,hanging=false":  { "model": "securitycraft:block/projector", "y": 90 },
+        "facing=south,hanging=true": { "model": "securitycraft:block/ceiling_projector" },
+        "facing=north,hanging=true": { "model": "securitycraft:block/ceiling_projector", "y": 180 },
+        "facing=east,hanging=true":  { "model": "securitycraft:block/ceiling_projector", "y": 270 },
+        "facing=west,hanging=true":  { "model": "securitycraft:block/ceiling_projector", "y": 90 }
     }
 }
