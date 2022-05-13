@@ -116,7 +116,6 @@ public class ClientHandler {
 				new ResourceLocation(SecurityCraft.MODID, "retinal_scanner")
 		};
 		ResourceLocation[] facingBlocks = {
-				new ResourceLocation(SecurityCraft.MODID, "projector"),
 				new ResourceLocation(SecurityCraft.MODID, "username_logger")
 		};
 		ResourceLocation[] poweredBlocks = {
@@ -149,6 +148,7 @@ public class ClientHandler {
 		};
 		//@formatter:on
 		ResourceLocation invScanRL = new ResourceLocation(SecurityCraft.MODID, "inventory_scanner");
+		ResourceLocation projectorRL = new ResourceLocation(SecurityCraft.MODID, "projector");
 
 		for (String facing : facings) {
 			for (ResourceLocation facingPoweredBlock : facingPoweredBlocks) {
@@ -169,6 +169,8 @@ public class ClientHandler {
 
 			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=true");
 			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=false");
+			registerDisguisedModel(event, projectorRL, "facing=" + facing + ",hanging=true");
+			registerDisguisedModel(event, projectorRL, "facing=" + facing + ",hanging=false");
 		}
 
 		for (ResourceLocation poweredBlock : poweredBlocks) {
