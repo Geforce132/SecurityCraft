@@ -17,9 +17,12 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.TriPredicate;
 
 @OnlyIn(Dist.CLIENT)
 public class ProjectorRenderer extends TileEntityRenderer<ProjectorBlockEntity> {
+	private final TriPredicate<ProjectorBlockEntity, Boolean, Integer> yLoopBoundary = (te, hanging, y) -> hanging ? y > -te.getProjectionHeight() : y < te.getProjectionHeight();
+
 	public ProjectorRenderer(TileEntityRendererDispatcher terd) {
 		super(terd);
 	}
@@ -30,12 +33,13 @@ public class ProjectorRenderer extends TileEntityRenderer<ProjectorBlockEntity> 
 
 		if (te.isActive() && !te.isEmpty()) {
 			BlockState state = te.getProjectedState();
+			boolean hanging = te.getBlockState().getValue(ProjectorBlock.HANGING);
 			BlockPos pos;
 
 			RenderSystem.disableCull();
 
 			for (int x = 0; x < te.getProjectionWidth(); x++) {
-				for (int y = 0; y < te.getProjectionHeight(); y++) {
+				for (int y = 0; yLoopBoundary.test(te, hanging, y);) { //increment is done at the end of the loop
 					stack.pushPose();
 
 					if (!te.isHorizontal())
@@ -53,6 +57,7 @@ public class ProjectorRenderer extends TileEntityRenderer<ProjectorBlockEntity> 
 					}
 
 					stack.popPose();
+					y = hanging ? y - 1 : y + 1;
 				}
 			}
 
