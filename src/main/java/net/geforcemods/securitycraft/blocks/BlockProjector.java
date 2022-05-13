@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -33,31 +34,37 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockProjector extends BlockDisguisable {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	private static final AxisAlignedBB NORTH = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 10.0F / 16.0F, 15.0F / 16.0F);
-	private static final AxisAlignedBB EAST = new AxisAlignedBB(1.0F / 16.0F, 0.0F, 0.0F, 1.0F, 10.0F / 16.0F, 1.0F);
-	private static final AxisAlignedBB SOUTH = new AxisAlignedBB(0.0F, 0.0F, 1.0F / 16.0F, 1.0F, 10.0F / 16.0F, 1.0F);
-	private static final AxisAlignedBB WEST = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 15.0F / 16.0F, 10.0F / 16.0F, 1.0F);
+	public static final PropertyBool HANGING = PropertyBool.create("hanging");
+	private static final AxisAlignedBB FLOOR_NORTH = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 10.0F / 16.0F, 15.0F / 16.0F);
+	private static final AxisAlignedBB FLOOR_EAST = new AxisAlignedBB(1.0F / 16.0F, 0.0F, 0.0F, 1.0F, 10.0F / 16.0F, 1.0F);
+	private static final AxisAlignedBB FLOOR_SOUTH = new AxisAlignedBB(0.0F, 0.0F, 1.0F / 16.0F, 1.0F, 10.0F / 16.0F, 1.0F);
+	private static final AxisAlignedBB FLOOR_WEST = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 15.0F / 16.0F, 10.0F / 16.0F, 1.0F);
+	private static final AxisAlignedBB CEILING = new AxisAlignedBB(1.0F / 16.0F, 6.0F / 16.0F, 1.0F / 16.0F, 15.0F / 16.0F, 11.0F / 16.0F, 15.0F / 16.0F);
 
 	public BlockProjector() {
 		super(Material.IRON);
-		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(HANGING, false));
 		setSoundType(SoundType.METAL);
 	}
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		switch (state.getValue(FACING)) {
-			case NORTH:
-				return NORTH;
-			case EAST:
-				return EAST;
-			case SOUTH:
-				return SOUTH;
-			case WEST:
-				return WEST;
-			default:
-				return super.getBoundingBox(state, world, pos);
+		if (!state.getValue(HANGING)) {
+			switch (state.getValue(FACING)) {
+				case NORTH:
+					return FLOOR_NORTH;
+				case EAST:
+					return FLOOR_EAST;
+				case SOUTH:
+					return FLOOR_SOUTH;
+				case WEST:
+					return FLOOR_WEST;
+				default:
+					return super.getBoundingBox(state, world, pos);
+			}
 		}
+		else
+			return CEILING;
 	}
 
 	@Override
@@ -130,23 +137,23 @@ public class BlockProjector extends BlockDisguisable {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing clickedFace, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(HANGING, clickedFace == EnumFacing.DOWN);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getHorizontalIndex();
+		return state.getValue(FACING).getHorizontalIndex() + (state.getValue(HANGING) ? 4 : 0);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
+		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta)).withProperty(HANGING, meta > 3);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, FACING, HANGING);
 	}
 
 	@Override

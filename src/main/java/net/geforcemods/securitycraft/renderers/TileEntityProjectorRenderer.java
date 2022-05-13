@@ -17,6 +17,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileEntityProjector> {
+	private final TriPredicate<TileEntityProjector, Boolean, Integer> yLoopBoundary = (te, hanging, y) -> hanging ? y > -te.getProjectionHeight() : y < te.getProjectionHeight();
+
 	@Override
 	public void render(TileEntityProjector te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		TileEntityRenderDelegate.DISGUISED_BLOCK.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha);
@@ -24,17 +26,20 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 		if (te.isActive() && !te.isEmpty()) {
 			IBlockState state = te.getWorld().getBlockState(te.getPos());
 
-			if (!state.getPropertyKeys().contains(BlockProjector.FACING))
+			if (!state.getPropertyKeys().contains(BlockProjector.FACING) || !state.getPropertyKeys().contains(BlockProjector.HANGING))
 				return;
 
+			BlockRendererDispatcher blockRendererDispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 			EnumFacing facing = state.getValue(BlockProjector.FACING);
+			IBlockState projectedState = te.getProjectedState();
+			boolean hanging = state.getValue(BlockProjector.HANGING);
 
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x, y, z + 1); //everything's offset by one on z, no idea why
 			Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
 			for (int fakeX = 0; fakeX < te.getProjectionWidth(); fakeX++) {
-				for (int fakeY = 0; fakeY < te.getProjectionHeight(); fakeY++) {
+				for (int fakeY = 0; yLoopBoundary.test(te, hanging, fakeY);) { //increment is done at the end of the loop
 					GlStateManager.pushMatrix();
 
 					BlockPos pos;
@@ -45,9 +50,6 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 						pos = translateProjection(te.getPos(), facing, fakeX, te.getProjectionRange() - 16, fakeY + 1, te.getProjectionOffset());
 
 					if (pos != null && te.getWorld().isAirBlock(pos)) {
-						BlockRendererDispatcher blockRendererDispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-						IBlockState projectedState = te.getProjectedState();
-
 						GlStateManager.disableCull();
 						GlStateManager.scale(0.9999D, 0.9999D, 0.9999D); //counteract z-fighting between fake blocks
 
@@ -59,6 +61,7 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 					}
 
 					GlStateManager.popMatrix();
+					fakeY = hanging ? fakeY - 1 : fakeY + 1;
 				}
 			}
 
@@ -104,5 +107,10 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 	@Override
 	public boolean isGlobalRenderer(TileEntityProjector te) {
 		return true;
+	}
+
+	@FunctionalInterface
+	public interface TriPredicate<T, U, V> {
+		boolean test(T t, U u, V v);
 	}
 }

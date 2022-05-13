@@ -1,0 +1,59 @@
+{
+	"texture_size": [64, 64],
+	"textures": {
+		"projector": "securitycraft:blocks/ceiling_projector",
+		"particle": "securitycraft:blocks/ceiling_projector"
+	},
+	"elements": [
+		{
+			"from": [2, 6, 0],
+			"to": [7, 11, 1],
+			"faces": {
+				"north": {"uv": [0.25, 0.25, 1.5, 1.5], "texture": "#projector"},
+				"east": {"uv": [0, 0.25, 0.25, 1.5], "texture": "#projector"},
+				"south": {"uv": [1.75, 0.25, 3, 1.5], "texture": "#projector"},
+				"west": {"uv": [1.5, 0.25, 1.75, 1.5], "texture": "#projector"},
+				"up": {"uv": [1.5, 0.25, 0.25, 0], "texture": "#projector"},
+				"down": {"uv": [2.75, 0, 1.5, 0.25], "texture": "#projector"}
+			}
+		},
+		{
+			"from": [1, 6, 1],
+			"to": [15, 11, 15],
+			"faces": {
+				"north": {"uv": [3.5, 3.5, 7, 4.75], "texture": "#projector"},
+				"east": {"uv": [0, 3.5, 3.5, 4.75], "texture": "#projector"},
+				"south": {"uv": [10.5, 3.5, 14, 4.75], "texture": "#projector"},
+				"west": {"uv": [7, 3.5, 10.5, 4.75], "texture": "#projector"},
+				"up": {"uv": [7, 3.5, 3.5, 0], "texture": "#projector"},
+				"down": {"uv": [10.5, 0, 7, 3.5], "texture": "#projector"}
+			}
+		},
+		{
+			"from": [7, 11, 10],
+			"to": [9, 15, 12],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 13, 8]},
+			"faces": {
+				"north": {"uv": [0.5, 5.25, 1, 6.25], "texture": "#projector"},
+				"east": {"uv": [0, 5.25, 0.5, 6.25], "texture": "#projector"},
+				"south": {"uv": [1.5, 5.25, 2, 6.25], "texture": "#projector"},
+				"west": {"uv": [1, 5.25, 1.5, 6.25], "texture": "#projector"},
+				"up": {"uv": [1, 5.25, 0.5, 4.75], "texture": "#projector"},
+				"down": {"uv": [1.5, 4.75, 1, 5.25], "texture": "#projector"}
+			}
+		},
+		{
+			"from": [7, 12.91761, 10.61313],
+			"to": [9, 17.91761, 12.61313],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [7, 12.91761, 11.61313]},
+			"faces": {
+				"north": {"uv": [0.5, 2, 1, 3.25], "texture": "#projector"},
+				"east": {"uv": [0, 2, 0.5, 3.25], "texture": "#projector"},
+				"south": {"uv": [1.5, 2, 2, 3.25], "texture": "#projector"},
+				"west": {"uv": [1, 2, 1.5, 3.25], "texture": "#projector"},
+				"up": {"uv": [1, 2, 0.5, 1.5], "texture": "#projector"},
+				"down": {"uv": [1.5, 1.5, 1, 2], "texture": "#projector"}
+			}
+		}
+	]
+}
