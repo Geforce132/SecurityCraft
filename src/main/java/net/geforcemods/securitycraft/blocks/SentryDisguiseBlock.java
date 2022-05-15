@@ -20,7 +20,7 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 
 	public SentryDisguiseBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(INVISIBLE, true));
+		registerDefaultState(stateDefinition.any().setValue(INVISIBLE, true).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -65,6 +65,6 @@ public class SentryDisguiseBlock extends DisguisableBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(INVISIBLE);
+		builder.add(INVISIBLE, WATERLOGGED);
 	}
 }

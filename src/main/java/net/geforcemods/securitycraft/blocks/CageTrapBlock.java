@@ -16,7 +16,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -46,7 +45,7 @@ public class CageTrapBlock extends DisguisableBlock {
 
 	public CageTrapBlock(Block.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false));
+		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -156,16 +155,12 @@ public class CageTrapBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
-
-	public BlockState getStateForPlacement(Level level, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, Player player) {
-		return defaultBlockState().setValue(DEACTIVATED, false);
+		return super.getStateForPlacement(ctx).setValue(DEACTIVATED, false);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(DEACTIVATED);
+		builder.add(DEACTIVATED, WATERLOGGED);
 	}
 
 	@Override

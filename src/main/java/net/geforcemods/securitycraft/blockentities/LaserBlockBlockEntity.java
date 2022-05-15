@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
@@ -12,13 +13,17 @@ import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
+import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
+import net.minecraftforge.network.PacketDistributor;
 
 public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	private BooleanOption enabledOption = new BooleanOption("enabled", true) {
@@ -55,11 +60,12 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		}
 		else if (action == LinkedAction.MODULE_INSERTED) {
 			ItemStack module = (ItemStack) parameters[0];
+			boolean toggled = (boolean) parameters[2];
 
-			insertModule(module, (boolean) parameters[2]);
+			insertModule(module, toggled);
 
 			if (((ModuleItem) module.getItem()).getModuleType() == ModuleType.DISGUISE)
-				onInsertDisguiseModule(module);
+				onInsertDisguiseModule(module, toggled);
 
 			excludedBEs.add(this);
 			createLinkedBlockAction(action, parameters, excludedBEs);
@@ -67,11 +73,12 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		else if (action == LinkedAction.MODULE_REMOVED) {
 			ModuleType module = (ModuleType) parameters[1];
 			ItemStack moduleStack = getModule(module);
+			boolean toggled = (boolean) parameters[2];
 
-			removeModule(module, (boolean) parameters[2]);
+			removeModule(module, toggled);
 
 			if (module == ModuleType.DISGUISE)
-				onRemoveDisguiseModule(moduleStack);
+				onRemoveDisguiseModule(moduleStack, toggled);
 
 			excludedBEs.add(this);
 			createLinkedBlockAction(action, parameters, excludedBEs);
@@ -83,7 +90,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		super.onModuleInserted(stack, module, toggled);
 
 		if (module == ModuleType.DISGUISE)
-			onInsertDisguiseModule(stack);
+			onInsertDisguiseModule(stack, toggled);
 	}
 
 	@Override
@@ -91,19 +98,31 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == ModuleType.DISGUISE)
-			onRemoveDisguiseModule(stack);
+			onRemoveDisguiseModule(stack, toggled);
 	}
 
-	private void onInsertDisguiseModule(ItemStack stack) {
-		if (!level.isClientSide)
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+	private void onInsertDisguiseModule(ItemStack stack, boolean toggled) {
+		if (!level.isClientSide) {
+			BlockState state = getBlockState();
+
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
+
+			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED))
+				level.updateNeighborsAt(worldPosition, state.getBlock());
+		}
 		else
 			ClientHandler.putDisguisedBeRenderer(this, stack);
 	}
 
-	private void onRemoveDisguiseModule(ItemStack stack) {
-		if (!level.isClientSide)
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+	private void onRemoveDisguiseModule(ItemStack stack, boolean toggled) {
+		if (!level.isClientSide) {
+			BlockState state = getBlockState();
+
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
+
+			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED))
+				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+		}
 		else
 			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
 	}
