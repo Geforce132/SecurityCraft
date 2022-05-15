@@ -8,6 +8,7 @@
 - New: Modules can now be toggled off or on without removing them from the block, by clicking the respective button in the Universal Block Modifier screen
 - New: Reinforced End Rod
 - New: The Projector can now be placed on the ceiling, allowing for downwards projection
+- New: All disguisable blocks (those that accept the Disguise Module) are now waterloggable, allowing for waterlogged disguises
 - Change: Codebreakers will now always open briefcases when in Creative mode without a chance of failing
 - Change: The Sentry's body is now solid if the sentry is not disguised
 - Change: The Fake Lava/Water Buckets are now created in a brewing stand, by putting the potion in the top slot, and the bucket(s) in the bottom slot(s)

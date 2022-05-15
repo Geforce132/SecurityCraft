@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -47,6 +48,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 	//@formatter:on
 	public TrophySystemBlock(Block.Properties properties) {
 		super(properties);
+		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -62,7 +64,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (level.getBlockEntity(pos) instanceof IOwnable ownable && ownable .getOwner().isOwner(player)) {
+		if (level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.getOwner().isOwner(player)) {
 			if (!level.isClientSide)
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.TROPHY_SYSTEM, pos));
 
@@ -90,5 +92,10 @@ public class TrophySystemBlock extends DisguisableBlock {
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
+	}
+
+	@Override
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+		builder.add(WATERLOGGED);
 	}
 }

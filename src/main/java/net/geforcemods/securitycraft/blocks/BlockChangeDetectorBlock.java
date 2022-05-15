@@ -42,7 +42,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 	public BlockChangeDetectorBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getHorizontalDirection().getOpposite());
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING, POWERED);
+		builder.add(FACING, POWERED, WATERLOGGED);
 	}
 
 	@Override

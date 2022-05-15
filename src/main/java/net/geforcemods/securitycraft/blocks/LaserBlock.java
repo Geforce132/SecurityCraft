@@ -37,7 +37,7 @@ public class LaserBlock extends DisguisableBlock {
 
 	public LaserBlock(Block.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(POWERED, false));
+		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -169,7 +169,7 @@ public class LaserBlock extends DisguisableBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(POWERED);
+		builder.add(POWERED, WATERLOGGED);
 	}
 
 	@Override
