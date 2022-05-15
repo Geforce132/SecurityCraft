@@ -14,6 +14,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class SentryItem extends Item {
@@ -29,18 +31,20 @@ public class SentryItem extends Item {
 	public InteractionResult onItemUse(Player player, Level level, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
 		boolean replacesTargetedBlock = level.getBlockState(pos).getMaterial().isReplaceable();
 
-		if (!replacesTargetedBlock)
+		if (!replacesTargetedBlock) {
 			pos = pos.relative(facing); //if the block is not replaceable, place sentry next to targeted block
 
-		if (!level.isEmptyBlock(pos) && !replacesTargetedBlock)
-			return InteractionResult.PASS;
-		else {
-			BlockPos downPos = pos.below();
+			BlockState stateAtPlacePos = level.getBlockState(pos);
 
-			if (level.isEmptyBlock(downPos) || level.noCollision(new AABB(downPos))) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), ChatFormatting.DARK_RED);
-				return InteractionResult.FAIL;
-			}
+			if (!stateAtPlacePos.isAir() && !(stateAtPlacePos.getBlock() instanceof LiquidBlock))
+				return InteractionResult.PASS;
+		}
+
+		BlockPos downPos = pos.below();
+
+		if (level.isEmptyBlock(downPos) || level.noCollision(new AABB(downPos))) {
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), ChatFormatting.DARK_RED);
+			return InteractionResult.FAIL;
 		}
 
 		Sentry entity = SCContent.SENTRY_ENTITY.get().create(level);
