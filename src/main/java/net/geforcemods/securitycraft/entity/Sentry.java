@@ -508,9 +508,10 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 	 */
 	public Optional<DisguisableBlockEntity> getSentryDisguiseBlockEntity() {
 		BlockEntity be;
+		Block blockAtSentryPos = level.getBlockState(blockPosition()).getBlock();
 
-		if (level.getBlockState(blockPosition()).getBlock() != SCContent.SENTRY_DISGUISE.get()) {
-			level.setBlockAndUpdate(blockPosition(), SCContent.SENTRY_DISGUISE.get().defaultBlockState());
+		if (blockAtSentryPos != SCContent.SENTRY_DISGUISE.get()) {
+			level.setBlockAndUpdate(blockPosition(), SCContent.SENTRY_DISGUISE.get().defaultBlockState().setValue(SentryDisguiseBlock.WATERLOGGED, blockAtSentryPos == Blocks.WATER));
 			be = level.getBlockEntity(blockPosition());
 
 			if (be instanceof IOwnable ownable) {
