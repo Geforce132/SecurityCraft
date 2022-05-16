@@ -29,7 +29,8 @@
 - Fix: Tricking scanners with player heads does not work if the player head owner is on the allowlist of the block
 - Fix: The Password-protected Furnace/Smoker/Blast Furnace don't have a closing sound
 - Fix: When placing a Password-protected Chest next to another one creating a double chest, modules and options are not synchronized to the newly placed one
-- Fix: Reinforced Cobweb can be removed by flowing fluids
+- Fix: The Reinforced Cobweb can be removed by flowing fluids
+- Fix: The Reinforced Cobweb can be destroyed by hand as well as explosions
 - Removed: Some unnecessary menu types. This may result in a "missing registry entries" message showing up, which can be accepted
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 - Misc.: More texture and model changes
