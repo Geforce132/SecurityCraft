@@ -232,19 +232,18 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 		IModuleInventory.super.onModuleInserted(stack, module, toggled);
 
 		if (module == ModuleType.DISGUISE) {
-			if (!level.isClientSide)
-				if (!level.isClientSide) {
-					BlockState state = getBlockState();
+			if (!level.isClientSide) {
+				BlockState state = getBlockState();
 
-					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
 
-					if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
-						level.getLiquidTicks().scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-						level.updateNeighborsAt(worldPosition, state.getBlock());
-					}
+				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
+					level.getLiquidTicks().scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+					level.updateNeighborsAt(worldPosition, state.getBlock());
 				}
-				else
-					ClientHandler.putDisguisedBeRenderer(this, stack);
+			}
+			else
+				ClientHandler.putDisguisedBeRenderer(this, stack);
 		}
 	}
 
