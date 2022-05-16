@@ -5,6 +5,8 @@ import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,18 +31,20 @@ public class SentryItem extends Item {
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
 		boolean replacesTargetedBlock = world.getBlockState(pos).getMaterial().isReplaceable();
 
-		if (!replacesTargetedBlock)
+		if (!replacesTargetedBlock) {
 			pos = pos.relative(facing); //if the block is not replaceable, place sentry next to targeted block
 
-		if (!world.isEmptyBlock(pos) && !replacesTargetedBlock)
-			return ActionResultType.PASS;
-		else {
-			BlockPos downPos = pos.below();
+			BlockState stateAtPlacePos = world.getBlockState(pos);
 
-			if (world.isEmptyBlock(downPos) || world.noCollision(new AxisAlignedBB(downPos))) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
-				return ActionResultType.FAIL;
-			}
+			if (!stateAtPlacePos.isAir() && !(stateAtPlacePos.getBlock() instanceof FlowingFluidBlock))
+				return ActionResultType.PASS;
+		}
+
+		BlockPos downPos = pos.below();
+
+		if (world.isEmptyBlock(downPos) || world.noCollision(new AxisAlignedBB(downPos))) {
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
+			return ActionResultType.FAIL;
 		}
 
 		Sentry entity = SCContent.eTypeSentry.get().create(world);

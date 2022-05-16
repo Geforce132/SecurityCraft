@@ -272,7 +272,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 		Block.popResource(level, pos, new ItemStack(SCContent.SENTRY.get()));
 		Block.popResource(level, pos, getDisguiseModule()); //if there is none, nothing will drop
 		Block.popResource(level, pos, getAllowlistModule()); //if there is none, nothing will drop
-		level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+		level.setBlockAndUpdate(pos, level.getFluidState(pos).createLegacyBlock());
 
 		if (hasSpeedModule())
 			Block.popResource(level, pos, new ItemStack(SCContent.SPEED_MODULE.get()));
@@ -523,9 +523,10 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 	 */
 	public Optional<DisguisableBlockEntity> getSentryDisguiseBlockEntity() {
 		TileEntity be;
+		Block blockAtSentryPos = level.getBlockState(blockPosition()).getBlock();
 
-		if (level.getBlockState(blockPosition()).getBlock() != SCContent.SENTRY_DISGUISE.get()) {
-			level.setBlockAndUpdate(blockPosition(), SCContent.SENTRY_DISGUISE.get().defaultBlockState());
+		if (blockAtSentryPos != SCContent.SENTRY_DISGUISE.get()) {
+			level.setBlockAndUpdate(blockPosition(), SCContent.SENTRY_DISGUISE.get().defaultBlockState().setValue(SentryDisguiseBlock.WATERLOGGED, blockAtSentryPos == Blocks.WATER));
 			be = level.getBlockEntity(blockPosition());
 
 			if (be instanceof IOwnable) {
