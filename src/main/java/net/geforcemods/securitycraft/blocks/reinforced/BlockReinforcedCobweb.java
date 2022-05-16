@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -15,7 +16,7 @@ import net.minecraft.world.World;
 
 public class BlockReinforcedCobweb extends BlockReinforcedBase {
 	public BlockReinforcedCobweb() {
-		super(Material.WEB, 1, Blocks.WEB);
+		super(Material.CACTUS, 1, Blocks.WEB);
 	}
 
 	@Override
@@ -43,5 +44,10 @@ public class BlockReinforcedCobweb extends BlockReinforcedBase {
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		return MapColor.CLOTH;
 	}
 }
