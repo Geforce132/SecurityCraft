@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
@@ -61,6 +62,7 @@ import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -70,6 +72,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -77,6 +80,7 @@ import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.state.StateHolder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.INameable;
 import net.minecraft.util.ResourceLocation;
@@ -105,22 +109,7 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onModelBake(ModelBakeEvent event) {
-		String[] facings = {
-				"east", "north", "south", "west"
-		};
 		//@formatter:off
-		ResourceLocation[] facingPoweredBlocks = {
-				new ResourceLocation(SecurityCraft.MODID, "block_change_detector"),
-				new ResourceLocation(SecurityCraft.MODID, "keycard_reader"),
-				new ResourceLocation(SecurityCraft.MODID, "keypad"),
-				new ResourceLocation(SecurityCraft.MODID, "retinal_scanner")
-		};
-		ResourceLocation[] facingBlocks = {
-				new ResourceLocation(SecurityCraft.MODID, "username_logger")
-		};
-		ResourceLocation[] poweredBlocks = {
-				new ResourceLocation(SecurityCraft.MODID, "laser_block")
-		};
 		String[] mines = {
 				"ancient_debris",
 				"blast_furnace",
@@ -141,55 +130,32 @@ public class ClientHandler {
 				"smoker",
 				"stone"
 		};
-		ResourceLocation[] furnaces = {
-				new ResourceLocation(SecurityCraft.MODID, "keypad_furnace"),
-				new ResourceLocation(SecurityCraft.MODID, "keypad_smoker"),
-				new ResourceLocation(SecurityCraft.MODID, "keypad_blast_furnace")
+		Block[] disguisableBlocks = {
+				SCContent.BLOCK_CHANGE_DETECTOR.get(),
+				SCContent.CAGE_TRAP.get(),
+				SCContent.INVENTORY_SCANNER.get(),
+				SCContent.KEYCARD_READER.get(),
+				SCContent.KEYPAD.get(),
+				SCContent.KEYPAD_BLAST_FURNACE.get(),
+				SCContent.KEYPAD_FURNACE.get(),
+				SCContent.KEYPAD_SMOKER.get(),
+				SCContent.LASER_BLOCK.get(),
+				SCContent.PROJECTOR.get(),
+				SCContent.PROTECTO.get(),
+				SCContent.RETINAL_SCANNER.get(),
+				SCContent.SENTRY_DISGUISE.get(),
+				SCContent.TROPHY_SYSTEM.get(),
+				SCContent.USERNAME_LOGGER.get()
 		};
 		//@formatter:on
-		ResourceLocation invScanRL = new ResourceLocation(SecurityCraft.MODID, "inventory_scanner");
-		ResourceLocation projectorRL = new ResourceLocation(SecurityCraft.MODID, "projector");
 
-		for (String facing : facings) {
-			for (ResourceLocation facingPoweredBlock : facingPoweredBlocks) {
-				registerDisguisedModel(event, facingPoweredBlock, "facing=" + facing + ",powered=true");
-				registerDisguisedModel(event, facingPoweredBlock, "facing=" + facing + ",powered=false");
+		Map<ResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
+
+		for (Block block : disguisableBlocks) {
+			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
+				registerDisguisedModel(modelRegistry, block.getRegistryName(), state.getValues().entrySet().stream().map(StateHolder.PROPERTY_ENTRY_TO_STRING_FUNCTION).collect(Collectors.joining(",")));
 			}
-
-			for (ResourceLocation facingBlock : facingBlocks) {
-				registerDisguisedModel(event, facingBlock, "facing=" + facing);
-			}
-
-			for (ResourceLocation furnace : furnaces) {
-				registerDisguisedModel(event, furnace, "facing=" + facing + ",lit=false,open=false");
-				registerDisguisedModel(event, furnace, "facing=" + facing + ",lit=false,open=true");
-				registerDisguisedModel(event, furnace, "facing=" + facing + ",lit=true,open=false");
-				registerDisguisedModel(event, furnace, "facing=" + facing + ",lit=true,open=true");
-			}
-
-			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=true");
-			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=false");
-			registerDisguisedModel(event, projectorRL, "facing=" + facing + ",hanging=true");
-			registerDisguisedModel(event, projectorRL, "facing=" + facing + ",hanging=false");
 		}
-
-		for (ResourceLocation poweredBlock : poweredBlocks) {
-			registerDisguisedModel(event, poweredBlock, "powered=false");
-			registerDisguisedModel(event, poweredBlock, "powered=true");
-		}
-
-		ResourceLocation cageTrapRl = new ResourceLocation(SecurityCraft.MODID, "cage_trap");
-		ResourceLocation protectoRl = new ResourceLocation(SecurityCraft.MODID, "protecto");
-		ResourceLocation sentryDisguiseRl = new ResourceLocation(SecurityCraft.MODID, "sentry_disguise");
-
-		registerDisguisedModel(event, cageTrapRl, "deactivated=true");
-		registerDisguisedModel(event, cageTrapRl, "deactivated=false");
-		registerDisguisedModel(event, protectoRl, "enabled=true");
-		registerDisguisedModel(event, protectoRl, "enabled=false");
-		registerDisguisedModel(event, sentryDisguiseRl, "invisible=true");
-		registerDisguisedModel(event, sentryDisguiseRl, "invisible=false");
-		registerDisguisedModel(event, new ResourceLocation(SecurityCraft.MODID, "trophy_system"), "");
-
 		for (String mine : mines) {
 			registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, mine.replace("_ore", "") + "_mine"), new ResourceLocation(mine));
 		}
@@ -197,10 +163,10 @@ public class ClientHandler {
 		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "quartz_mine"), new ResourceLocation("nether_quartz_ore"));
 	}
 
-	private static void registerDisguisedModel(ModelBakeEvent event, ResourceLocation rl, String stateString) {
+	private static void registerDisguisedModel(Map<ResourceLocation, IBakedModel> modelRegistry, ResourceLocation rl, String stateString) {
 		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
 
-		event.getModelRegistry().put(mrl, new DisguisableDynamicBakedModel(event.getModelRegistry().get(mrl)));
+		modelRegistry.put(mrl, new DisguisableDynamicBakedModel(modelRegistry.get(mrl)));
 	}
 
 	private static void registerBlockMineModel(ModelBakeEvent event, ResourceLocation mineRl, ResourceLocation realBlockRl) {

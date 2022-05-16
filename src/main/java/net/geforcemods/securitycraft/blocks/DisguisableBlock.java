@@ -9,20 +9,30 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public abstract class DisguisableBlock extends OwnableBlock implements IOverlayDisplay {
+public abstract class DisguisableBlock extends OwnableBlock implements IOverlayDisplay, IWaterLoggable {
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
 	public DisguisableBlock(Block.Properties properties) {
 		super(properties);
 	}
@@ -49,6 +59,11 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		}
 
 		return state.getMaterial().blocksMotion() && state.isCollisionShapeFullBlock(world, pos);
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		return defaultBlockState().setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
 	}
 
 	@Override
@@ -92,6 +107,14 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld level, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED))
+			level.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	}
+
+	@Override
 	public float getShadeBrightness(BlockState state, IBlockReader world, BlockPos pos) {
 		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
@@ -99,6 +122,11 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 			return disguisedState.getShadeBrightness(world, pos);
 		else
 			return super.getShadeBrightness(state, world, pos);
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	public final BlockState getDisguisedStateOrDefault(BlockState state, IBlockReader world, BlockPos pos) {

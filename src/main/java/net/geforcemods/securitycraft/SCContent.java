@@ -66,7 +66,7 @@ import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.KeypadSmokerBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
-import net.geforcemods.securitycraft.blocks.LoggerBlock;
+import net.geforcemods.securitycraft.blocks.UsernameLoggerBlock;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.blocks.PanicButtonBlock;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
@@ -224,7 +224,7 @@ public class SCContent {
 	//blocks
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> ALARM = BLOCKS.register("alarm", () -> new AlarmBlock(prop(Material.METAL).randomTicks().lightLevel(state -> state.getValue(AlarmBlock.LIT) ? 15 : 0)));
+	public static final RegistryObject<Block> ALARM = BLOCKS.register("alarm", () -> new AlarmBlock(prop(Material.METAL).lightLevel(state -> state.getValue(AlarmBlock.LIT) ? 15 : 0)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> BLOCK_CHANGE_DETECTOR = BLOCKS.register("block_change_detector", () -> new BlockChangeDetectorBlock(propDisguisable()));
@@ -287,7 +287,7 @@ public class SCContent {
 	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_BLAST_FURNACE = BLOCKS.register("keypad_blast_furnace", () -> new KeypadBlastFurnaceBlock(prop(Material.METAL).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> LASER_BLOCK = BLOCKS.register("laser_block", () -> new LaserBlock(propDisguisable(Material.METAL).randomTicks().sound(SoundType.METAL)));
+	public static final RegistryObject<Block> LASER_BLOCK = BLOCKS.register("laser_block", () -> new LaserBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
 	public static final RegistryObject<Block> LASER_FIELD = BLOCKS.register("laser", () -> new LaserFieldBlock(prop()));
 	@HasManualPage
 	@RegisterItemBlock
@@ -302,7 +302,7 @@ public class SCContent {
 	@HasManualPage
 	@OwnableTE
 	@RegisterItemBlock
-	public static final RegistryObject<Block> PROJECTOR = BLOCKS.register("projector", () -> new ProjectorBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).randomTicks()));
+	public static final RegistryObject<Block> PROJECTOR = BLOCKS.register("projector", () -> new ProjectorBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> PROTECTO = BLOCKS.register("protecto", () -> new ProtectoBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).lightLevel(state -> 7)));
@@ -345,7 +345,7 @@ public class SCContent {
 	public static final RegistryObject<Block> TROPHY_SYSTEM = BLOCKS.register("trophy_system", () -> new TrophySystemBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> USERNAME_LOGGER = BLOCKS.register("username_logger", () -> new LoggerBlock(propDisguisable()));
+	public static final RegistryObject<Block> USERNAME_LOGGER = BLOCKS.register("username_logger", () -> new UsernameLoggerBlock(propDisguisable()));
 	@HasManualPage
 	@OwnableTE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)

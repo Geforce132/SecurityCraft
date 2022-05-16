@@ -27,6 +27,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.AbstractCookingRecipe;
@@ -34,6 +35,7 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -231,9 +233,16 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 
 		if (module == ModuleType.DISGUISE) {
 			if (!level.isClientSide)
-				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
-			else
-				ClientHandler.putDisguisedBeRenderer(this, stack);
+				if (!level.isClientSide) {
+					BlockState state = getBlockState();
+
+					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
+
+					if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED))
+						level.updateNeighborsAt(worldPosition, state.getBlock());
+				}
+				else
+					ClientHandler.putDisguisedBeRenderer(this, stack);
 		}
 	}
 
@@ -250,8 +259,14 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
 
 		if (module == ModuleType.DISGUISE) {
-			if (!level.isClientSide)
+			if (!level.isClientSide) {
+				BlockState state = getBlockState();
+
 				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
+
+				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED))
+					level.getLiquidTicks().scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			}
 			else
 				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
 		}

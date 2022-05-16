@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
@@ -16,7 +15,6 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
 
 public class ProtectoBlock extends DisguisableBlock {
 	public static final BooleanProperty ACTIVATED = BlockStateProperties.ENABLED;
@@ -24,7 +22,7 @@ public class ProtectoBlock extends DisguisableBlock {
 
 	public ProtectoBlock(Block.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(ACTIVATED, false));
+		registerDefaultState(stateDefinition.any().setValue(ACTIVATED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -44,16 +42,12 @@ public class ProtectoBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
-
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer) {
-		return defaultBlockState().setValue(ACTIVATED, false);
+		return super.getStateForPlacement(ctx).setValue(ACTIVATED, false);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(ACTIVATED);
+		builder.add(ACTIVATED, WATERLOGGED);
 	}
 
 	@Override

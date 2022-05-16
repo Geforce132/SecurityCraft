@@ -56,7 +56,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	public ProjectorBlock(Block.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HANGING, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HANGING, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -156,16 +156,11 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
+		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getPlayer().getDirection().getOpposite()).setValue(HANGING, ctx.getClickedFace() == Direction.DOWN);
 	}
-
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction clickedFace, double hitX, double hitY, double hitZ, PlayerEntity placer) {
-		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()).setValue(HANGING, clickedFace == Direction.DOWN);
-	}
-
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING, HANGING);
+		builder.add(FACING, HANGING, WATERLOGGED);
 	}
 
 	@Override

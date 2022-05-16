@@ -27,7 +27,6 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -46,7 +45,7 @@ public class CageTrapBlock extends DisguisableBlock {
 
 	public CageTrapBlock(Block.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false));
+		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -162,16 +161,12 @@ public class CageTrapBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
-	}
-
-	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity player) {
-		return defaultBlockState().setValue(DEACTIVATED, false);
+		return super.getStateForPlacement(ctx).setValue(DEACTIVATED, false);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(DEACTIVATED);
+		builder.add(DEACTIVATED, WATERLOGGED);
 	}
 
 	@Override

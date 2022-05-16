@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -43,6 +44,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 	//@formatter:on
 	public TrophySystemBlock(Block.Properties properties) {
 		super(properties);
+		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -83,5 +85,10 @@ public class TrophySystemBlock extends DisguisableBlock {
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new TrophySystemBlockEntity();
+	}
+
+	@Override
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+		builder.add(WATERLOGGED);
 	}
 }
