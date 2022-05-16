@@ -47,7 +47,7 @@ public class BlockReinforcedCobweb extends BlockReinforcedBase {
 	}
 
 	@Override
-	public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return MapColor.CLOTH;
 	}
 }
