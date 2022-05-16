@@ -233,8 +233,10 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
 
-					if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED))
+					if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
+						level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 						level.updateNeighborsAt(worldPosition, state.getBlock());
+					}
 				}
 				else
 					ClientHandler.putDisguisedBeRenderer(this, stack);
@@ -259,8 +261,10 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
 
-				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED))
+				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
 					level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+					level.updateNeighborsAt(worldPosition, state.getBlock());
+				}
 			}
 			else
 				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
