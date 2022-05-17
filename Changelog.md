@@ -27,6 +27,7 @@
 - Fix: When placing a Password-protected Chest next to another one creating a double chest, modules and options are not synchronized to the newly placed one
 - Fix: Entities sometimes don't show up for some time or at all after dismounting a camera
 - Fix: The Reinforced Cobweb can be removed by flowing fluids
+- Fix: Disguisable blocks that are disguised as blocks that emit light (e.g. Glowstone) don't emit light
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------

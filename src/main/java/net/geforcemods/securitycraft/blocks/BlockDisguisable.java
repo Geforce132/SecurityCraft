@@ -43,11 +43,21 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 	}
 
 	@Override
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+		IBlockState actualState = getDisguisedBlockState(world, pos);
+
+		if (actualState != null && actualState.getBlock() != this)
+			return actualState.getLightValue(world, pos);
+		else
+			return super.getLightValue(state, world, pos);
+	}
+
+	@Override
 	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) {
 		IBlockState actualState = getDisguisedBlockState(world, pos);
 
 		if (actualState != null && actualState.getBlock() != this)
-			return actualState.getBlock().getSoundType(state, world, pos, entity);
+			return actualState.getBlock().getSoundType(actualState, world, pos, entity);
 		else
 			return blockSoundType;
 	}
@@ -184,28 +194,35 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 	}
 
 	public IBlockState getDisguisedBlockState(IBlockAccess world, BlockPos pos) {
-		if (world.getTileEntity(pos) instanceof IModuleInventory) {
-			IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
-			ItemStack module = te.isModuleEnabled(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
+		TileEntity tile = world.getTileEntity(pos);
 
-			if (!module.isEmpty()) {
-				if (!module.hasTagCompound())
-					module.setTagCompound(new NBTTagCompound());
+		if (tile instanceof IModuleInventory) {
+			IModuleInventory te = (IModuleInventory) tile;
 
-				IBlockState disguisedState = NBTUtil.readBlockState(module.getTagCompound().getCompoundTag("SavedState"));
+			return getDisguisedBlockStateFromStack(world, pos, te.isModuleEnabled(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY);
+		}
 
-				if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
-					return disguisedState;
-				else { //fallback, mainly for upgrading old worlds from before the state selector existed
-					ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddonAsStack(module.getTagCompound());
-					Block block = Block.getBlockFromItem(disguisedStack.getItem());
-					boolean hasMeta = disguisedStack.getHasSubtypes();
+		return null;
+	}
 
-					IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getItemDamage() : getMetaFromState(world.getBlockState(pos)));
+	public IBlockState getDisguisedBlockStateFromStack(IBlockAccess world, BlockPos pos, ItemStack module) {
+		if (!module.isEmpty()) {
+			if (!module.hasTagCompound())
+				module.setTagCompound(new NBTTagCompound());
 
-					if (block != this)
-						return disguisedModel.getActualState(world, pos);
-				}
+			IBlockState disguisedState = NBTUtil.readBlockState(module.getTagCompound().getCompoundTag("SavedState"));
+
+			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
+				return disguisedState;
+			else if (world != null && pos != null) { //fallback, mainly for upgrading old worlds from before the state selector existed
+				ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddonAsStack(module.getTagCompound());
+				Block block = Block.getBlockFromItem(disguisedStack.getItem());
+				boolean hasMeta = disguisedStack.getHasSubtypes();
+
+				IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getItemDamage() : getMetaFromState(world.getBlockState(pos)));
+
+				if (block != this)
+					return disguisedModel.getActualState(world, pos);
 			}
 		}
 
