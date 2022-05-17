@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -100,9 +101,9 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	private void onInsertDisguiseModule(ItemStack stack, boolean toggled) {
-		if (!level.isClientSide) {
-			BlockState state = getBlockState();
+		BlockState state = getBlockState();
 
+		if (!level.isClientSide) {
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
@@ -110,8 +111,12 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 				level.updateNeighborsAt(worldPosition, state.getBlock());
 			}
 		}
-		else
+		else {
 			ClientHandler.putDisguisedBeRenderer(this, stack);
+
+			if (state.getLightValue(level, worldPosition) > 0)
+				level.getChunkSource().getLightEngine().checkBlock(worldPosition);
+		}
 	}
 
 	private void onRemoveDisguiseModule(ItemStack stack, boolean toggled) {
@@ -125,8 +130,13 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 				level.updateNeighborsAt(worldPosition, state.getBlock());
 			}
 		}
-		else
+		else {
 			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
+			DisguisableBlock.getDisguisedBlockStateFromStack(stack).ifPresent(disguisedState -> {
+				if (disguisedState.getLightValue(level, worldPosition) > 0)
+					level.getChunkSource().getLightEngine().checkBlock(worldPosition);
+			});
+		}
 	}
 
 	@Override

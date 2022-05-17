@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -59,6 +60,16 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		}
 
 		return state.getMaterial().blocksMotion() && state.isCollisionShapeFullBlock(world, pos);
+	}
+
+	@Override
+	public int getLightValue(BlockState state, IBlockReader level, BlockPos pos) {
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getLightValue(level, pos);
+		else
+			return super.getLightValue(state, level, pos);
 	}
 
 	@Override
@@ -134,21 +145,28 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public Optional<BlockState> getDisguisedBlockState(IBlockReader world, BlockPos pos) {
-		if (world.getBlockEntity(pos) instanceof IModuleInventory) {
-			IModuleInventory te = (IModuleInventory) world.getBlockEntity(pos);
-			ItemStack module = te.isModuleEnabled(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
+		TileEntity tile = world.getBlockEntity(pos);
 
-			if (!module.isEmpty()) {
-				BlockState disguisedState = NBTUtil.readBlockState(module.getOrCreateTag().getCompound("SavedState"));
+		if (tile instanceof IModuleInventory) {
+			IModuleInventory te = (IModuleInventory) tile;
 
-				if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
-					return Optional.of(disguisedState);
-				else { //fallback, mainly for upgrading old worlds from before the state selector existed
-					Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
+			return getDisguisedBlockStateFromStack(te.isModuleEnabled(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY);
+		}
 
-					if (block != null)
-						return Optional.of(block.defaultBlockState());
-				}
+		return Optional.empty();
+	}
+
+	public static Optional<BlockState> getDisguisedBlockStateFromStack(ItemStack module) {
+		if (!module.isEmpty()) {
+			BlockState disguisedState = NBTUtil.readBlockState(module.getOrCreateTag().getCompound("SavedState"));
+
+			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
+				return Optional.of(disguisedState);
+			else { //fallback, mainly for upgrading old worlds from before the state selector existed
+				Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
+
+				if (block != null)
+					return Optional.of(block.defaultBlockState());
 			}
 		}
 
