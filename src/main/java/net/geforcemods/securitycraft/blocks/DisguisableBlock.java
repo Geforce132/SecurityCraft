@@ -60,6 +60,16 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	@Override
+	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getLightEmission(level, pos);
+		else
+			return super.getLightEmission(state, level, pos);
+	}
+
+	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		return defaultBlockState().setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
 	}
@@ -132,20 +142,23 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public Optional<BlockState> getDisguisedBlockState(BlockGetter level, BlockPos pos) {
-		if (level.getBlockEntity(pos) instanceof IModuleInventory be) {
-			ItemStack module = be.isModuleEnabled(ModuleType.DISGUISE) ? be.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
+		if (level.getBlockEntity(pos) instanceof IModuleInventory be)
+			return getDisguisedBlockStateFromStack(be.isModuleEnabled(ModuleType.DISGUISE) ? be.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY);
 
-			if (!module.isEmpty()) {
-				BlockState disguisedState = NbtUtils.readBlockState(module.getOrCreateTag().getCompound("SavedState"));
+		return Optional.empty();
+	}
 
-				if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
-					return Optional.of(disguisedState);
-				else { //fallback, mainly for upgrading old worlds from before the state selector existed
-					Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
+	public static Optional<BlockState> getDisguisedBlockStateFromStack(ItemStack module) {
+		if (!module.isEmpty()) {
+			BlockState disguisedState = NbtUtils.readBlockState(module.getOrCreateTag().getCompound("SavedState"));
 
-					if (block != null)
-						return Optional.of(block.defaultBlockState());
-				}
+			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
+				return Optional.of(disguisedState);
+			else { //fallback, mainly for upgrading old worlds from before the state selector existed
+				Block block = ((ModuleItem) module.getItem()).getBlockAddon(module.getTag());
+
+				if (block != null)
+					return Optional.of(block.defaultBlockState());
 			}
 		}
 

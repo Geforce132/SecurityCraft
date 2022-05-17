@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
@@ -34,9 +35,9 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		super.onModuleInserted(stack, module, toggled);
 
 		if (module == ModuleType.DISGUISE) {
-			if (!level.isClientSide) {
-				BlockState state = getBlockState();
+			BlockState state = getBlockState();
 
+			if (!level.isClientSide) {
 				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
 
 				if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
@@ -44,8 +45,12 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 					level.updateNeighborsAt(worldPosition, state.getBlock());
 				}
 			}
-			else
+			else {
 				ClientHandler.putDisguisedBeRenderer(this, stack);
+
+				if (state.getLightEmission(level, worldPosition) > 0)
+					level.getChunkSource().getLightEngine().checkBlock(worldPosition);
+			}
 		}
 	}
 
@@ -64,8 +69,13 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 					level.updateNeighborsAt(worldPosition, state.getBlock());
 				}
 			}
-			else
+			else {
 				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(this);
+				DisguisableBlock.getDisguisedBlockStateFromStack(stack).ifPresent(disguisedState -> {
+					if (disguisedState.getLightEmission(level, worldPosition) > 0)
+						level.getChunkSource().getLightEngine().checkBlock(worldPosition);
+				});
+			}
 		}
 	}
 
