@@ -834,36 +834,16 @@ public class RecipeGenerator extends RecipeProvider {
 		addWallRecipes(consumer, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_STONE_BRICK_WALL.get());
 
 		//furnace recipes
-		CookingRecipeBuilder.smelting(Ingredient.of(SCContent.REINFORCED_CLAY.get()), SCContent.REINFORCED_TERRACOTTA.get(), 0.35F, 200)
-		.unlockedBy("has_reinforced_clay", has(SCContent.REINFORCED_CLAY.get()))
-		.save(consumer);
-		CookingRecipeBuilder.smelting(Ingredient.of(SCContent.REINFORCED_COBBLESTONE.get()), SCContent.REINFORCED_STONE.get(), 0.1F, 200)
-		.unlockedBy("has_reinforced_cobblestone", has(SCContent.REINFORCED_COBBLESTONE.get()))
-		.save(consumer);
-		CookingRecipeBuilder.smelting(Ingredient.of(SCContent.REINFORCED_NETHER_BRICKS.get()), SCContent.REINFORCED_CRACKED_NETHER_BRICKS.get(), 0.1F, 200)
-		.unlockedBy("has_reinforced_nether_bricks", has(SCContent.REINFORCED_NETHER_BRICKS.get()))
-		.save(consumer);
-		CookingRecipeBuilder.smelting(Ingredient.of(SCContent.REINFORCED_QUARTZ.get()), SCContent.REINFORCED_SMOOTH_QUARTZ.get(), 0.1F, 200)
-		.unlockedBy("has_reinforced_quartz", has(SCContent.REINFORCED_QUARTZ.get()))
-		.save(consumer);
-		CookingRecipeBuilder.smelting(Ingredient.of(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICKS.get()), SCContent.REINFORCED_CRACKED_POLISHED_BLACKSTONE_BRICKS.get(), 0.1F, 200)
-		.unlockedBy("has_reinforced_blackstone_bricks", has(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICKS.get()))
-		.save(consumer);
-		CookingRecipeBuilder.smelting(Ingredient.of(SCContent.REINFORCED_RED_SANDSTONE.get()), SCContent.REINFORCED_SMOOTH_RED_SANDSTONE.get(), 0.1F, 200)
-		.unlockedBy("has_reinforced_red_sandstone", has(SCContent.REINFORCED_RED_SANDSTONE.get()))
-		.save(consumer);
-		CookingRecipeBuilder.smelting(Ingredient.of(SCTags.Items.REINFORCED_SAND), SCContent.REINFORCED_GLASS.get(), 0.1F, 200)
-		.unlockedBy("has_reinforced_sand", has(SCContent.REINFORCED_SAND.get()))
-		.save(consumer);
-		CookingRecipeBuilder.smelting(Ingredient.of(SCContent.REINFORCED_SANDSTONE.get()), SCContent.REINFORCED_SMOOTH_SANDSTONE.get(), 0.1F, 200)
-		.unlockedBy("has_reinforced_sandstone", has(SCContent.REINFORCED_SANDSTONE.get()))
-		.save(consumer);
-		CookingRecipeBuilder.smelting(Ingredient.of(SCContent.REINFORCED_STONE.get()), SCContent.REINFORCED_SMOOTH_STONE.get(), 0.1F, 200)
-		.unlockedBy("has_reinforced_stone", has(SCContent.REINFORCED_STONE.get()))
-		.save(consumer);
-		CookingRecipeBuilder.smelting(Ingredient.of(SCContent.REINFORCED_STONE_BRICKS.get()), SCContent.REINFORCED_CRACKED_STONE_BRICKS.get(), 0.1F, 200)
-		.unlockedBy("has_reinforced_stone_bricks", has(SCContent.REINFORCED_STONE_BRICKS.get()))
-		.save(consumer);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_CLAY.get(), SCContent.REINFORCED_TERRACOTTA.get(), 0.35F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_COBBLESTONE.get(), SCContent.REINFORCED_STONE.get());
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_CRACKED_NETHER_BRICKS.get());
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_QUARTZ.get(), SCContent.REINFORCED_SMOOTH_QUARTZ.get());
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICKS.get(), SCContent.REINFORCED_CRACKED_POLISHED_BLACKSTONE_BRICKS.get());
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_RED_SANDSTONE.get(), SCContent.REINFORCED_SMOOTH_RED_SANDSTONE.get());
+		addSimpleCookingRecipe(consumer, SCTags.Items.REINFORCED_SAND, SCContent.REINFORCED_GLASS.get());
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_SANDSTONE.get(), SCContent.REINFORCED_SMOOTH_SANDSTONE.get());
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_SMOOTH_STONE.get());
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_CRACKED_STONE_BRICKS.get());
 
 		//stonecutter recipes (ordered by the ingredient's sort in creative building tab)
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_CHISELED_STONE_BRICKS.get(), 1);
@@ -1198,6 +1178,30 @@ public class RecipeGenerator extends RecipeProvider {
 				new ResourceLocation(id.getNamespace(), "recipes/" + resultItem.getItemCategory().getRecipeFolderName() + "/" + id.getPath()));
 		//@formatter:on
 		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(consumer, id);
+	}
+
+	protected final void addSimpleCookingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider output) {
+		addSimpleCookingRecipe(consumer, input, output, 0.1F, 200);
+	}
+
+	protected final void addSimpleCookingRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> input, IItemProvider output) {
+		addSimpleCookingRecipe(consumer, input, output, 0.1F, 200);
+	}
+
+	protected final void addSimpleCookingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider output, float xp, int time) {
+		//@formatter:off
+		CookingRecipeBuilder.smelting(Ingredient.of(input), output, xp, time)
+		.unlockedBy("has_item", has(input))
+		.save(consumer);
+		//@formatter:on
+	}
+
+	protected final void addSimpleCookingRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> input, IItemProvider output, float xp, int time) {
+		//@formatter:off
+		CookingRecipeBuilder.smelting(Ingredient.of(input), output, xp, time)
+		.unlockedBy("has_item", has(input))
+		.save(consumer);
+		//@formatter:on
 	}
 
 	protected final void addSlabRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result) {
