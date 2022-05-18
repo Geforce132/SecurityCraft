@@ -892,6 +892,22 @@ public class RecipeGenerator extends RecipeProvider {
 		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_SANDSTONE.get(), SCContent.REINFORCED_SMOOTH_SANDSTONE.get());
 		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_SMOOTH_STONE.get());
 		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_CRACKED_STONE_BRICKS.get());
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_BLACK_TERRACOTTA.get(), SCContent.REINFORCED_BLACK_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_BLUE_TERRACOTTA.get(), SCContent.REINFORCED_BLUE_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_BROWN_TERRACOTTA.get(), SCContent.REINFORCED_BROWN_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_CYAN_TERRACOTTA.get(), SCContent.REINFORCED_CYAN_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_GRAY_TERRACOTTA.get(), SCContent.REINFORCED_GRAY_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_GREEN_TERRACOTTA.get(), SCContent.REINFORCED_GREEN_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get(), SCContent.REINFORCED_LIGHT_BLUE_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get(), SCContent.REINFORCED_LIGHT_GRAY_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_LIME_TERRACOTTA.get(), SCContent.REINFORCED_LIME_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_MAGENTA_TERRACOTTA.get(), SCContent.REINFORCED_MAGENTA_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_ORANGE_TERRACOTTA.get(), SCContent.REINFORCED_ORANGE_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_PINK_TERRACOTTA.get(), SCContent.REINFORCED_PINK_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_PURPLE_TERRACOTTA.get(), SCContent.REINFORCED_PURPLE_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_RED_TERRACOTTA.get(), SCContent.REINFORCED_RED_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_WHITE_TERRACOTTA.get(), SCContent.REINFORCED_WHITE_GLAZED_TERRACOTTA.get(), 0.1F, 200);
+		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_YELLOW_TERRACOTTA.get(), SCContent.REINFORCED_YELLOW_GLAZED_TERRACOTTA.get(), 0.1F, 200);
 
 		//stonecutter recipes (ordered alphabetically by the ingredient)
 		addStonecuttingRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.CHISELED_CRYSTAL_QUARTZ.get(), 1);
