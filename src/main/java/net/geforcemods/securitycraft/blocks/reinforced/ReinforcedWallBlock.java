@@ -31,11 +31,6 @@ public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock {
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(UP, vanillaState.getValue(UP)).setValue(NORTH_WALL, vanillaState.getValue(NORTH_WALL)).setValue(EAST_WALL, vanillaState.getValue(EAST_WALL)).setValue(SOUTH_WALL, vanillaState.getValue(SOUTH_WALL)).setValue(WEST_WALL, vanillaState.getValue(WEST_WALL)).setValue(WATERLOGGED, vanillaState.getValue(WATERLOGGED));
-	}
-
-	@Override
 	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));

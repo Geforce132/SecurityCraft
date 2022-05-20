@@ -135,11 +135,6 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(SNOWY, vanillaState.getValue(SNOWY));
-	}
-
-	@Override
 	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity) placer));

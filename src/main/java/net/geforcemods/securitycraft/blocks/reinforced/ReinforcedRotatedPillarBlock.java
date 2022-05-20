@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
@@ -51,10 +50,5 @@ public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		return defaultBlockState().setValue(AXIS, context.getClickedFace().getAxis());
-	}
-
-	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(AXIS, vanillaState.getValue(RotatedPillarBlock.AXIS));
 	}
 }

@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.SlabBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -70,11 +69,6 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	@Override
 	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
 		return false;
-	}
-
-	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(WATERLOGGED, vanillaState.getValue(SlabBlock.WATERLOGGED));
 	}
 
 	@Override

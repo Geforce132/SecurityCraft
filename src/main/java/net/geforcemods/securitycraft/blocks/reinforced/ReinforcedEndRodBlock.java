@@ -40,9 +40,4 @@ public class ReinforcedEndRodBlock extends EndRodBlock implements IReinforcedBlo
 	public Block getVanillaBlock() {
 		return Blocks.END_ROD;
 	}
-
-	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(FACING, vanillaState.getValue(FACING));
-	}
 }
