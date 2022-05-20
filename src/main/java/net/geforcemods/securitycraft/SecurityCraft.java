@@ -27,6 +27,7 @@ import net.geforcemods.securitycraft.tabs.CreativeTabSCTechnical;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.datafix.FixTypes;
@@ -116,6 +117,22 @@ public class SecurityCraft {
 		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedSand, 1, 1), new ItemStack(SCContent.reinforcedGlass, 1, 0), 0.1F);
 		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStoneBrick, 1, 0), new ItemStack(SCContent.reinforcedStoneBrick, 1, 2), 0.1F);
 		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedClay, 1, 0), new ItemStack(SCContent.reinforcedHardenedClay, 1, 0), 0.35F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.WHITE.getMetadata()), new ItemStack(SCContent.reinforcedWhiteGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.ORANGE.getMetadata()), new ItemStack(SCContent.reinforcedOrangeGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.MAGENTA.getMetadata()), new ItemStack(SCContent.reinforcedMagentaGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.LIGHT_BLUE.getMetadata()), new ItemStack(SCContent.reinforcedLightBlueGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.YELLOW.getMetadata()), new ItemStack(SCContent.reinforcedYellowGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.LIME.getMetadata()), new ItemStack(SCContent.reinforcedLimeGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.PINK.getMetadata()), new ItemStack(SCContent.reinforcedPinkGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.GRAY.getMetadata()), new ItemStack(SCContent.reinforcedGrayGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.SILVER.getMetadata()), new ItemStack(SCContent.reinforcedSilverGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.CYAN.getMetadata()), new ItemStack(SCContent.reinforcedCyanGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.PURPLE.getMetadata()), new ItemStack(SCContent.reinforcedPurpleGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.BLUE.getMetadata()), new ItemStack(SCContent.reinforcedBlueGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.BROWN.getMetadata()), new ItemStack(SCContent.reinforcedBrownGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.GREEN.getMetadata()), new ItemStack(SCContent.reinforcedGreenGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.RED.getMetadata()), new ItemStack(SCContent.reinforcedRedGlazedTerracotta), 0.1F);
+		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStainedHardenedClay, 1, EnumDyeColor.BLACK.getMetadata()), new ItemStack(SCContent.reinforcedBlackGlazedTerracotta), 0.1F);
 	}
 
 	@EventHandler

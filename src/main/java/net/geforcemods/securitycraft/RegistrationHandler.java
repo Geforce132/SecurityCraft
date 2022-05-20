@@ -292,6 +292,22 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.blockChangeDetector);
 		event.getRegistry().register(SCContent.sentryDisguise);
 		registerBlock(event, SCContent.reinforcedEndRod, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedWhiteGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedOrangeGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedMagentaGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedLightBlueGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedYellowGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedLimeGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedPinkGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedGrayGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedSilverGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedCyanGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedPurpleGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedBlueGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedBrownGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedGreenGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedRedGlazedTerracotta, PageType.REINFORCED);
+		registerBlock(event, SCContent.reinforcedBlackGlazedTerracotta, PageType.REINFORCED);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -818,6 +834,22 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.reinforcedCauldron, 0, "reinforced_cauldron");
 		registerInventoryModel(SCContent.blockChangeDetector, 0, "block_change_detector");
 		registerInventoryModel(SCContent.reinforcedEndRod, 0, "reinforced_end_rod");
+		registerInventoryModel(SCContent.reinforcedWhiteGlazedTerracotta, 0, "reinforced_white_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedOrangeGlazedTerracotta, 0, "reinforced_orange_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedMagentaGlazedTerracotta, 0, "reinforced_magenta_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedLightBlueGlazedTerracotta, 0, "reinforced_light_blue_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedYellowGlazedTerracotta, 0, "reinforced_yellow_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedLimeGlazedTerracotta, 0, "reinforced_lime_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedPinkGlazedTerracotta, 0, "reinforced_pink_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedGrayGlazedTerracotta, 0, "reinforced_gray_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedSilverGlazedTerracotta, 0, "reinforced_silver_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedCyanGlazedTerracotta, 0, "reinforced_cyan_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedPurpleGlazedTerracotta, 0, "reinforced_purple_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedBlueGlazedTerracotta, 0, "reinforced_blue_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedBrownGlazedTerracotta, 0, "reinforced_brown_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedGreenGlazedTerracotta, 0, "reinforced_green_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedRedGlazedTerracotta, 0, "reinforced_red_glazed_terracotta");
+		registerInventoryModel(SCContent.reinforcedBlackGlazedTerracotta, 0, "reinforced_black_glazed_terracotta");
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");

@@ -69,6 +69,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFalling;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFenceGate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlass;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlassPane;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlazedTerracotta;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGrass;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGrassPath;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
@@ -135,6 +136,7 @@ import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 
 public class SetupHandler {
@@ -271,6 +273,22 @@ public class SetupHandler {
 		SCContent.blockChangeDetector = new BlockBlockChangeDetector(Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("block_change_detector").setTranslationKey("securitycraft:block_change_detector");
 		SCContent.sentryDisguise = new BlockSentryDisguise(Material.AIR).setBlockUnbreakable().setHardness(3600000.8F).setRegistryName("sentry_disguise");
 		SCContent.reinforcedEndRod = new BlockReinforcedEndRod().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_end_rod").setTranslationKey("securitycraft:reinforced_end_rod");
+		SCContent.reinforcedWhiteGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.WHITE, Blocks.WHITE_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_white_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_white");
+		SCContent.reinforcedOrangeGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.ORANGE, Blocks.ORANGE_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_orange_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_orange");
+		SCContent.reinforcedMagentaGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.MAGENTA, Blocks.MAGENTA_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_magenta_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_magenta");
+		SCContent.reinforcedLightBlueGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_light_blue_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_light_blue");
+		SCContent.reinforcedYellowGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.YELLOW, Blocks.YELLOW_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_yellow_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_yellow");
+		SCContent.reinforcedLimeGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.LIME, Blocks.LIME_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_lime_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_lime");
+		SCContent.reinforcedPinkGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.PINK, Blocks.PINK_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_pink_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_pink");
+		SCContent.reinforcedGrayGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.GRAY, Blocks.GRAY_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_gray_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_gray");
+		SCContent.reinforcedSilverGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.SILVER, Blocks.SILVER_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_silver_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_silver");
+		SCContent.reinforcedCyanGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.CYAN, Blocks.CYAN_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_cyan_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_cyan");
+		SCContent.reinforcedPurpleGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.PURPLE, Blocks.PURPLE_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_purple_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_purple");
+		SCContent.reinforcedBlueGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.BLUE, Blocks.BLUE_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_blue_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_blue");
+		SCContent.reinforcedBrownGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.BROWN, Blocks.BROWN_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_brown_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_brown");
+		SCContent.reinforcedGreenGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.GREEN, Blocks.GREEN_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_green_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_green");
+		SCContent.reinforcedRedGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.RED, Blocks.RED_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_red_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_red");
+		SCContent.reinforcedBlackGlazedTerracotta = new BlockReinforcedGlazedTerracotta(EnumDyeColor.BLACK, Blocks.BLACK_GLAZED_TERRACOTTA).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_black_glazed_terracotta").setTranslationKey("securitycraft:reinforced_glazed_terracotta_black");
 	}
 
 	public static void setupMines() {

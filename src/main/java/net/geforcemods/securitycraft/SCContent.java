@@ -127,6 +127,54 @@ public class SCContent {
 	public static Block reinforcedGlassPane;
 	@Reinforced
 	@Tinted
+	public static Block reinforcedWhiteGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedOrangeGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedMagentaGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedLightBlueGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedYellowGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedLimeGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedPinkGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedGrayGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedSilverGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedCyanGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedPurpleGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedBlueGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedBrownGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedGreenGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedRedGlazedTerracotta;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedBlackGlazedTerracotta;
+	@Reinforced
+	@Tinted
 	public static Block reinforcedGrassPath;
 	@Reinforced
 	@Tinted
