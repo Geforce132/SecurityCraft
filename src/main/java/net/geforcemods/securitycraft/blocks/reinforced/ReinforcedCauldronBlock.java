@@ -138,11 +138,6 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState();
-	}
-
-	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));

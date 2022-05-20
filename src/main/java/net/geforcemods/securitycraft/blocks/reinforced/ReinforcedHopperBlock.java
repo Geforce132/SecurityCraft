@@ -90,11 +90,6 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		return Blocks.HOPPER;
 	}
 
-	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(ENABLED, vanillaState.getValue(ENABLED)).setValue(FACING, vanillaState.getValue(FACING));
-	}
-
 	public static class ExtractionBlock implements IExtractionBlock {
 		@Override
 		public boolean canExtract(IOwnable be, Level level, BlockPos pos, BlockState state) {

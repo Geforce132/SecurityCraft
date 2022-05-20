@@ -61,9 +61,4 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements Entity
 	public Block getVanillaBlock() {
 		return Blocks.PISTON_HEAD;
 	}
-
-	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(FACING, vanillaState.getValue(FACING)).setValue(TYPE, vanillaState.getValue(TYPE)).setValue(SHORT, vanillaState.getValue(SHORT));
-	}
 }

@@ -52,11 +52,6 @@ public class ReinforcedPaneBlock extends IronBarsBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(NORTH, vanillaState.getValue(IronBarsBlock.NORTH)).setValue(EAST, vanillaState.getValue(IronBarsBlock.EAST)).setValue(WEST, vanillaState.getValue(IronBarsBlock.WEST)).setValue(SOUTH, vanillaState.getValue(IronBarsBlock.SOUTH)).setValue(WATERLOGGED, vanillaState.getValue(IronBarsBlock.WATERLOGGED));
-	}
-
-	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));

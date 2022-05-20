@@ -67,11 +67,6 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(FACE, vanillaState.getValue(FACE)).setValue(FACING, vanillaState.getValue(FACING)).setValue(POWERED, vanillaState.getValue(POWERED));
-	}
-
-	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));

@@ -82,11 +82,6 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(LEVEL, vanillaState.getValue(LEVEL));
-	}
-
-	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ReinforcedCauldronBlockEntity(pos, state);
 	}

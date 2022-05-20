@@ -364,11 +364,6 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 		return isSticky ? Blocks.STICKY_PISTON : Blocks.PISTON;
 	}
 
-	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(FACING, vanillaState.getValue(FACING)).setValue(EXTENDED, vanillaState.getValue(EXTENDED));
-	}
-
 	private static boolean isSameOwner(BlockPos blockPos, BlockPos pistonPos, Level level) {
 		BlockEntity pistonBe = level.getBlockEntity(pistonPos);
 		IOwnable blockBe = (IOwnable) level.getBlockEntity(blockPos);

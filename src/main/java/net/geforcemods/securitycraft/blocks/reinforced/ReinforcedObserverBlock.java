@@ -33,11 +33,6 @@ public class ReinforcedObserverBlock extends ObserverBlock implements IReinforce
 	}
 
 	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(FACING, vanillaState.getValue(FACING)).setValue(POWERED, vanillaState.getValue(POWERED));
-	}
-
-	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
