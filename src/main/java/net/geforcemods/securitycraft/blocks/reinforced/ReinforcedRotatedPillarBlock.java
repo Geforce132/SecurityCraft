@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -45,10 +44,5 @@ public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return defaultBlockState().setValue(AXIS, context.getClickedFace().getAxis());
-	}
-
-	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(AXIS, vanillaState.getValue(RotatedPillarBlock.AXIS));
 	}
 }

@@ -147,9 +147,4 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 			default -> false;
 		};
 	}
-
-	@Override
-	public BlockState getConvertedState(BlockState vanillaState) {
-		return defaultBlockState().setValue(TYPE, vanillaState.getValue(TYPE)).setValue(WATERLOGGED, vanillaState.getValue(WATERLOGGED));
-	}
 }
