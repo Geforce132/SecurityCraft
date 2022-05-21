@@ -7,9 +7,11 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
+import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 
@@ -27,7 +29,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 		if (cooldown-- > 0)
 			return;
 
-		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.isSpectator());
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !(e instanceof Sentry || e instanceof ArmorStandEntity));
 		boolean shouldBeOn = !entities.isEmpty();
 
 		if (getBlockState().getValue(MotionActivatedLightBlock.LIT) != shouldBeOn)
@@ -44,7 +46,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option<?>[] {
-				searchRadiusOption
+			searchRadiusOption
 		};
 	}
 }
