@@ -29,6 +29,7 @@
 - Fix: Entities sometimes don't show up for some time or at all after dismounting a camera
 - Fix: The Reinforced Cobweb can be removed by flowing fluids
 - Fix: Disguisable blocks that are disguised as blocks that emit light (e.g. Glowstone) don't emit light
+- Fix: The Motion Activated Light is constantly turned on when placed near a Sentry or armor stand
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------

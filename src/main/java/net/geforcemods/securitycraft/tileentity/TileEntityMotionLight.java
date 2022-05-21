@@ -6,10 +6,12 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.blocks.BlockMotionActivatedLight;
+import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -24,7 +26,7 @@ public class TileEntityMotionLight extends CustomizableSCTE implements ITickable
 		if (cooldown-- > 0)
 			return;
 
-		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && (!(e instanceof EntityPlayer) || !((EntityPlayer) e).isSpectator()));
+		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && (!(e instanceof EntityPlayer) || !((EntityPlayer) e).isSpectator()) && !(e instanceof EntitySentry || e instanceof EntityArmorStand));
 		IBlockState state = world.getBlockState(pos);
 		boolean shouldBeOn = !entities.isEmpty();
 
