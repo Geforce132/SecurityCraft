@@ -46,6 +46,7 @@ import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.EditModuleScreen;
 import net.geforcemods.securitycraft.screen.IMSScreen;
+import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.KeyChangerScreen;
 import net.geforcemods.securitycraft.screen.KeycardReaderScreen;
 import net.geforcemods.securitycraft.screen.KeypadBlastFurnaceScreen;
@@ -293,17 +294,18 @@ public class ClientHandler {
 		ClientRegistry.bindTileEntityRenderer(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.PROTECTO_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		ScreenManager.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
+		ScreenManager.register(SCContent.BLOCK_POCKET_MANAGER_MENU.get(), BlockPocketManagerScreen::new);
 		ScreenManager.register(SCContent.BLOCK_REINFORCER_MENU.get(), BlockReinforcerScreen::new);
 		ScreenManager.register(SCContent.BRIEFCASE_INVENTORY_MENU.get(), BriefcaseInventoryScreen::new);
 		ScreenManager.register(SCContent.CUSTOMIZE_BLOCK_MENU.get(), CustomizeBlockScreen::new);
 		ScreenManager.register(SCContent.DISGUISE_MODULE_MENU.get(), DisguiseModuleScreen::new);
+		ScreenManager.register(SCContent.INVENTORY_SCANNER_MENU.get(), InventoryScannerScreen::new);
 		ScreenManager.register(SCContent.KEYPAD_FURNACE_MENU.get(), KeypadFurnaceScreen::new);
 		ScreenManager.register(SCContent.KEYPAD_SMOKER_MENU.get(), KeypadSmokerScreen::new);
 		ScreenManager.register(SCContent.KEYPAD_BLAST_FURNACE_MENU.get(), KeypadBlastFurnaceScreen::new);
 		ScreenManager.register(SCContent.KEYCARD_READER_MENU.get(), KeycardReaderScreen::new);
-		ScreenManager.register(SCContent.BLOCK_POCKET_MANAGER_MENU.get(), BlockPocketManagerScreen::new);
 		ScreenManager.register(SCContent.PROJECTOR_MENU.get(), ProjectorScreen::new);
-		ScreenManager.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
 		KeyBindings.init();
 		tint();
 	}
