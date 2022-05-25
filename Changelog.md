@@ -14,6 +14,7 @@
 - Change: The Sentry's body is now solid if the sentry is not disguised
 - Change: The Fake Lava/Water Buckets are now created in a brewing stand, by putting the potion in the top slot, and the bucket(s) in the bottom slot(s)
 - Change: Sentries can now be placed in water
+- Change: Massively increased explosion resistance of all blocks to hopefully prevent them from being broken by modded explosions
 - API: Split IPasswordProtected into two interfaces (IPasswordProtected and ICodebreakable), meaning blocks can now be hacked by the codebreaker without needing to be password protected
 - API: Removed IPasswordProtected#isCodebreakable
 - Fix: The recipe for reinforced glass panes is incorrect
