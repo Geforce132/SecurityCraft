@@ -2131,7 +2131,7 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop(Material.PISTON).dynamicShape().noDrops().noOcclusion().isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> false).isViewBlocking((s, w, p) -> false)));
 	@Reinforced(registerBlockItem = false)
 	public static final RegistryObject<Block> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop(Material.PISTON).noDrops()));
-	public static final RegistryObject<Block> SENTRY_DISGUISE = BLOCKS.register("sentry_disguise", () -> new SentryDisguiseBlock(propDisguisable(Material.AIR).strength(-1.0F, 3600000.8F).noDrops()));
+	public static final RegistryObject<Block> SENTRY_DISGUISE = BLOCKS.register("sentry_disguise", () -> new SentryDisguiseBlock(propDisguisable(Material.AIR).strength(-1.0F, Float.MAX_VALUE).noDrops()));
 
 	//items
 	@HasManualPage(hasRecipeDescription = true)
@@ -2426,15 +2426,15 @@ public class SCContent {
 	}
 
 	private static final Block.Properties prop(Material mat) {
-		return Block.Properties.of(mat).strength(-1.0F, 6000000.0F);
+		return Block.Properties.of(mat).strength(-1.0F, Float.MAX_VALUE);
 	}
 
 	private static final Block.Properties prop(Material mat, float hardness) {
-		return Block.Properties.of(mat).strength(hardness, 6000000.0F);
+		return Block.Properties.of(mat).strength(hardness, Float.MAX_VALUE);
 	}
 
 	private static final Block.Properties prop(Material mat, MaterialColor color) {
-		return Block.Properties.of(mat, color).strength(-1.0F, 6000000.0F);
+		return Block.Properties.of(mat, color).strength(-1.0F, Float.MAX_VALUE);
 	}
 
 	private static final Block.Properties propDisguisable() {
@@ -2450,7 +2450,7 @@ public class SCContent {
 	}
 
 	private static Block.Properties mineProp(Block block) {
-		return Block.Properties.copy(block).explosionResistance(6000000.0F);
+		return Block.Properties.copy(block).explosionResistance(Float.MAX_VALUE);
 	}
 
 	private static final Item.Properties itemProp(CreativeModeTab itemGroup) {
