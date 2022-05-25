@@ -2,16 +2,17 @@ package net.geforcemods.securitycraft.datagen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -33,17 +34,32 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
+		Map<Block, String> flatReinforcedItems = new HashMap<>();
+
+		flatReinforcedItems.put(SCContent.REINFORCED_CAULDRON.get(), "item/cauldron");
+		flatReinforcedItems.put(SCContent.REINFORCED_CHAIN.get(), "item/chain");
+		flatReinforcedItems.put(SCContent.REINFORCED_COBWEB.get(), "block/cobweb");
+		flatReinforcedItems.put(SCContent.REINFORCED_HOPPER.get(), "item/hopper");
+		flatReinforcedItems.put(SCContent.REINFORCED_IRON_BARS.get(), "securitycraft:block/reinforced_iron_bars");
+		flatReinforcedItems.put(SCContent.REINFORCED_LANTERN.get(), "item/lantern");
+		flatReinforcedItems.put(SCContent.REINFORCED_LEVER.get(), "block/lever");
+		flatReinforcedItems.put(SCContent.REINFORCED_SOUL_LANTERN.get(), "item/soul_lantern");
+
 		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
 			Block block = obj.get();
 			Item item = block.asItem();
 
 			if (item.getCreativeTabs().contains(SecurityCraft.groupSCDecoration)) {
-				if (block instanceof ReinforcedCarpetBlock || block instanceof ReinforcedSlabBlock || block instanceof ReinforcedStainedGlassBlock || block instanceof ReinforcedStairsBlock)
-					simpleParent(block);
+				if (flatReinforcedItems.containsKey(block))
+					flatReinforcedItem(block, flatReinforcedItems.get(block));
 				else if (block instanceof ReinforcedStainedGlassPaneBlock)
 					reinforcedPane(block);
 				else if (block instanceof ReinforcedWallBlock)
 					reinforcedWallInventory(block, ((ReinforcedWallBlock) block).getVanillaBlock());
+				else if (block instanceof ReinforcedButtonBlock || block instanceof ReinforcedPistonBlock)
+					reinforcedBlockInventory(block);
+				else if (block instanceof IReinforcedBlock)
+					simpleReinforcedParent(block);
 			}
 			else if (item.getCreativeTabs().contains(SecurityCraft.groupSCMine) && block instanceof BaseFullMineBlock)
 				blockMine(((BaseFullMineBlock) block).getBlockDisguisedAs(), block);
@@ -101,6 +117,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		simpleParent(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
 		simpleParent(SCContent.REINFORCED_GLASS.get());
 		reinforcedPane(SCContent.REINFORCED_GLASS_PANE.get());
+		simpleParent(SCContent.REINFORCED_IRON_TRAPDOOR.get(), "reinforced_iron_trapdoor_bottom");
 		reinforcedWallInventory(SCContent.REINFORCED_BRICK_WALL.get(), "bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_MOSSY_STONE_BRICK_WALL.get(), "mossy_stone_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_STONE_BRICK_WALL.get(), "stone_bricks");
@@ -116,6 +133,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		return singleTexture(path, mcLoc(parent), "layer0", modLoc(ITEM_FOLDER + "/" + path));
 	}
 
+	public ItemModelBuilder flatReinforcedItem(Block block, String texturePath) {
+		return singleTexture(name(block), mcLoc("item/generated"), "layer0", new ResourceLocation(texturePath));
+	}
+
 	public ItemModelBuilder reinforcedPane(Block block) {
 		String name = name(block);
 
@@ -128,6 +149,12 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, String textureName) {
 		return uncheckedSingleTexture(block.getRegistryName().toString(), modLoc(BLOCK_FOLDER + "/reinforced_wall_inventory"), "wall", new ResourceLocation("block/" + textureName));
+	}
+
+	public ItemModelBuilder reinforcedBlockInventory(Block block) {
+		String path = name(block);
+
+		return parent(path, modLoc(BLOCK_FOLDER + "/" + path + "_inventory"));
 	}
 
 	public ItemModelBuilder uncheckedSingleTexture(String name, ResourceLocation parent, String textureKey, ResourceLocation texture) {
@@ -152,10 +179,18 @@ public class ItemModelGenerator extends ItemModelProvider {
 		//@formatter:on
 	}
 
-	public ItemModelBuilder simpleParent(Block block) {
+	public ItemModelBuilder simpleReinforcedParent(Block block) {
 		String name = name(block);
 
-		return parent(name, modLoc(BLOCK_FOLDER + "/" + name));
+		return parent(name, modLoc(BLOCK_FOLDER + "/" + name.replace("crystal_", "")));
+	}
+
+	public ItemModelBuilder simpleParent(Block block) {
+		return simpleParent(block, name(block));
+	}
+
+	public ItemModelBuilder simpleParent(Block block, String parent) {
+		return parent(name(block), modLoc(BLOCK_FOLDER + "/" + parent));
 	}
 
 	public ItemModelBuilder parent(String name, ResourceLocation parent) {
