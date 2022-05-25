@@ -1,6 +1,7 @@
 tile.securitycraft:laserBlock.name=Laserblock
 tile.securitycraft:laser.name=Laser
 tile.securitycraft:laserActive.name=Aktivierter Laser
+tile.securitycraft:laserField.name=Laserfeld
 tile.securitycraft:keypad.name=Nummernschloss
 tile.securitycraft:ironDoorReinforced.name=Verstärkte Tür
 tile.securitycraft:keycardReader.name=Schlüsselkartenleser

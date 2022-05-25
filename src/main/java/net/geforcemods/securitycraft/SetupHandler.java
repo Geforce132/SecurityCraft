@@ -142,7 +142,7 @@ import net.minecraft.item.Item;
 public class SetupHandler {
 	public static void setupBlocks() {
 		SCContent.laserBlock = new BlockLaserBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("laser_block").setTranslationKey("securitycraft:laserBlock");
-		SCContent.laserField = new BlockLaserField(Material.ROCK).setBlockUnbreakable().setRegistryName("laser");
+		SCContent.laserField = new BlockLaserField(Material.ROCK).setBlockUnbreakable().setRegistryName("laser").setTranslationKey("securitycraft:laserField");
 		SCContent.keypad = new BlockKeypad(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad").setTranslationKey("securitycraft:keypad");
 		SCContent.retinalScanner = new BlockRetinalScanner(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("retinal_scanner").setTranslationKey("securitycraft:retinalScanner");
 		SCContent.reinforcedDoor = new BlockReinforcedDoor(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("iron_door_reinforced").setTranslationKey("securitycraft:ironDoorReinforced");

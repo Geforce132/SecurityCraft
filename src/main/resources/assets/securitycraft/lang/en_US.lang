@@ -1,6 +1,7 @@
 tile.securitycraft:laserBlock.name=Laser Block 
-tile.securitycraft:laser.name=Laser 
+tile.securitycraft:laser.name=Laser
 tile.securitycraft:laserActive.name=Active Laser
+tile.securitycraft:laserField.name=Laser Field
 tile.securitycraft:keypad.name=Keypad
 tile.securitycraft:ironDoorReinforced.name=Reinforced Door
 tile.securitycraft:keycardReader.name=Keycard Reader
