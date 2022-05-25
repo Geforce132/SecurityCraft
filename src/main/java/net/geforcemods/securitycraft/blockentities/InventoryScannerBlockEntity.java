@@ -307,7 +307,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			}
 
 			if (connectedScanner != null) {
-				for (int i = 0; i < connectedScanner.getContents().size(); i++) {
+				for (int i = 10; i < connectedScanner.getContainerSize(); i++) {
 					connectedScanner.getContents().set(i, ItemStack.EMPTY);
 				}
 			}
