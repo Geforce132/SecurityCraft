@@ -283,7 +283,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	@Override
 	public boolean isModuleEnabled(ModuleType module) {
-		return hasModule(module) && moduleStates.get(module);
+		return hasModule(module) && moduleStates.get(module) == Boolean.TRUE; //prevent NPE
 	}
 
 	@Override
