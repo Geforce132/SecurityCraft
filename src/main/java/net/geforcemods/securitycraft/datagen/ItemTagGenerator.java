@@ -25,7 +25,17 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.UNIVERSAL_BLOCK_MODIFIER.get(),
 				SCContent.UNIVERSAL_BLOCK_REMOVER.get(),
 				SCContent.UNIVERSAL_KEY_CHANGER.get(),
-				SCContent.UNIVERSAL_OWNER_CHANGER.get());
+				SCContent.UNIVERSAL_OWNER_CHANGER.get())
+		.addTag(SCTags.Items.MODULES);
+		tag(SCTags.Items.MODULES).add(
+				SCContent.ALLOWLIST_MODULE.get(),
+				SCContent.DENYLIST_MODULE.get(),
+				SCContent.DISGUISE_MODULE.get(),
+				SCContent.HARMING_MODULE.get(),
+				SCContent.REDSTONE_MODULE.get(),
+				SCContent.SMART_MODULE.get(),
+				SCContent.SPEED_MODULE.get(),
+				SCContent.STORAGE_MODULE.get());
 		copy(SCTags.Blocks.REINFORCED_ACACIA_LOGS, SCTags.Items.REINFORCED_ACACIA_LOGS);
 		copy(SCTags.Blocks.REINFORCED_BIRCH_LOGS, SCTags.Items.REINFORCED_BIRCH_LOGS);
 		copy(SCTags.Blocks.REINFORCED_BUTTONS, SCTags.Items.REINFORCED_BUTTONS);
