@@ -23,6 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -34,6 +35,16 @@ public class BlockReinforcedPressurePlate extends BlockPressurePlate implements 
 
 		setSoundType(soundType);
 		this.vanillaBlock = vanillaBlock;
+	}
+
+	@Override
+	public float getExplosionResistance(Entity exploder) {
+		return Float.MAX_VALUE;
+	}
+
+	@Override
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+		return Float.MAX_VALUE;
 	}
 
 	@Override

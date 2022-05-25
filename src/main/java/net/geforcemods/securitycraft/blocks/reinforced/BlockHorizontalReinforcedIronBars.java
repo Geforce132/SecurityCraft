@@ -4,10 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.TileEntityOwnable;
+import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -16,9 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -30,7 +27,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockHorizontalReinforcedIronBars extends BlockContainer implements IReinforcedBlock {
+public class BlockHorizontalReinforcedIronBars extends BlockOwnable implements IReinforcedBlock {
 	protected static final AxisAlignedBB SHAPE = new AxisAlignedBB(-8.0D / 16D, 14.0D / 16D, -8.0D / 16D, 24.0D / 16D, 16.0D / 16D, 24.0D / 16D);
 
 	public BlockHorizontalReinforcedIronBars() {
@@ -60,11 +57,6 @@ public class BlockHorizontalReinforcedIronBars extends BlockContainer implements
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT_MIPPED;
@@ -83,11 +75,6 @@ public class BlockHorizontalReinforcedIronBars extends BlockContainer implements
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityOwnable();
 	}
 
 	@Override

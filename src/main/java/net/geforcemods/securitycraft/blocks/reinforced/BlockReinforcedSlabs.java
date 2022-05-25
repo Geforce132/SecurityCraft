@@ -15,6 +15,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -24,6 +25,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -41,6 +43,16 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 
 		setSoundType(SoundType.STONE);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.STONE));
+	}
+
+	@Override
+	public float getExplosionResistance(Entity exploder) {
+		return Float.MAX_VALUE;
+	}
+
+	@Override
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+		return Float.MAX_VALUE;
 	}
 
 	@Override

@@ -1,9 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.Arrays;
-import java.util.List;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.properties.PropertyEnum;
@@ -18,6 +14,7 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class, type -> type.getMetadata() < 4);
 
 	public BlockReinforcedOldLog() {
+		super(4, Blocks.LOG);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.OAK).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
 	}
 
@@ -79,16 +76,6 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 		return state.getValue(VARIANT).getMetadata();
 	}
 
-	@Override
-	public List<Block> getVanillaBlocks() {
-		return Arrays.asList(Blocks.LOG);
-	}
-
-	@Override
-	public int getAmount() {
-		return 4;
-	}
-
 	static final class SwitchEnumAxis {
 		static final int[] AXIS_LOOKUP = new int[BlockLog.EnumAxis.values().length];
 
@@ -96,20 +83,17 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 			try {
 				AXIS_LOOKUP[BlockLog.EnumAxis.X.ordinal()] = 1;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 
 			try {
 				AXIS_LOOKUP[BlockLog.EnumAxis.Z.ordinal()] = 2;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 
 			try {
 				AXIS_LOOKUP[BlockLog.EnumAxis.NONE.ordinal()] = 3;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 		}
 	}
 }

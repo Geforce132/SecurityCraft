@@ -23,6 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
@@ -33,6 +34,16 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 		super(BlockPlanks.EnumType.OAK);
 		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Material.IRON, 18);
 		setSoundType(SoundType.METAL);
+	}
+
+	@Override
+	public float getExplosionResistance(Entity exploder) {
+		return Float.MAX_VALUE;
+	}
+
+	@Override
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+		return Float.MAX_VALUE;
 	}
 
 	@Override

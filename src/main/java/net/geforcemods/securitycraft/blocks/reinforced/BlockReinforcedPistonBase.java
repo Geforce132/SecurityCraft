@@ -25,6 +25,7 @@ import net.minecraft.block.BlockSnow;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -37,12 +38,23 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedPistonBase extends BlockPistonBase implements IReinforcedBlock, ITileEntityProvider {
 	public BlockReinforcedPistonBase(boolean isSticky) {
 		super(isSticky);
+	}
+
+	@Override
+	public float getExplosionResistance(Entity exploder) {
+		return Float.MAX_VALUE;
+	}
+
+	@Override
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+		return Float.MAX_VALUE;
 	}
 
 	@Override

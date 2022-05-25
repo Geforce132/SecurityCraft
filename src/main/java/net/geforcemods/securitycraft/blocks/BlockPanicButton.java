@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -15,6 +16,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,6 +24,16 @@ import net.minecraftforge.common.MinecraftForge;
 public class BlockPanicButton extends BlockButton implements ITileEntityProvider {
 	public BlockPanicButton() {
 		super(false);
+	}
+
+	@Override
+	public float getExplosionResistance(Entity exploder) {
+		return Float.MAX_VALUE;
+	}
+
+	@Override
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+		return Float.MAX_VALUE;
 	}
 
 	@Override
@@ -104,38 +116,32 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			try {
 				FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 
 			try {
 				FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 
 			try {
 				FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 
 			try {
 				FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 
 			try {
 				FACING_LOOKUP[EnumFacing.UP.ordinal()] = 5;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 
 			try {
 				FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 6;
 			}
-			catch (NoSuchFieldError e) {
-			}
+			catch (NoSuchFieldError e) {}
 		}
 	}
 

@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog.EnumAxis;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -16,12 +16,11 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockReinforcedLog extends BlockOwnable implements IOverlayDisplay {
+public abstract class BlockReinforcedLog extends BlockReinforcedBase implements IOverlayDisplay {
 	public static final PropertyEnum<EnumAxis> LOG_AXIS = PropertyEnum.create("axis", EnumAxis.class);
 
-	protected BlockReinforcedLog() {
-		super(Material.WOOD);
-		setSoundType(SoundType.WOOD);
+	protected BlockReinforcedLog(int a, Block... vB) {
+		super(Material.WOOD, a, SoundType.WOOD, vB);
 	}
 
 	@Override
