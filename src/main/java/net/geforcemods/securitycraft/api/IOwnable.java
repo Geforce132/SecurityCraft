@@ -57,5 +57,7 @@ public interface IOwnable {
 			getOwner().setValidated(false);
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), TextFormatting.GREEN);
 		}
+
+		((BlockEntity) this).setChanged();
 	}
 }

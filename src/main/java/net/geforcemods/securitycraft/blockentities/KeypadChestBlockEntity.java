@@ -270,6 +270,8 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 
 		if (otherHalf != null)
 			otherHalf.setOwner(getOwner().getUUID(), getOwner().getName());
+
+		IOwnable.super.onOwnerChanged(state, level, pos, player);
 	}
 
 	@Override
