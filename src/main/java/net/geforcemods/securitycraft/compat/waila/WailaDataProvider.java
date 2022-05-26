@@ -26,6 +26,8 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
+import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
@@ -97,6 +99,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		registration.registerComponentProvider(INSTANCE, TooltipPosition.HEAD, BaseFullMineBlock.class);
 		registration.registerComponentProvider(INSTANCE, TooltipPosition.HEAD, FurnaceMineBlock.class);
 		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, OwnableBlock.class);
+		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, InventoryScannerFieldBlock.class);
+		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, LaserFieldBlock.class);
 		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedCauldronBlock.class);
 		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedPaneBlock.class);
 		registration.registerIconProvider(INSTANCE, DisguisableBlock.class);
