@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:whitelist_module",
+    "securitycraft:blacklist_module",
+    "securitycraft:disguise_module",
+    "securitycraft:harming_module",
+    "securitycraft:redstone_module",
+    "securitycraft:smart_module",
+    "securitycraft:speed_module",
+    "securitycraft:storage_module"
+  ]
+}
