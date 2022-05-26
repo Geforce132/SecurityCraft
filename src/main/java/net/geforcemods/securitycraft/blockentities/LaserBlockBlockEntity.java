@@ -82,7 +82,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		}
 
 		excludedBEs.add(this);
-		createLinkedBlockAction(LinkedAction.OPTION_CHANGED, parameters, excludedBEs);
+		createLinkedBlockAction(action, parameters, excludedBEs);
 	}
 
 	@Override
