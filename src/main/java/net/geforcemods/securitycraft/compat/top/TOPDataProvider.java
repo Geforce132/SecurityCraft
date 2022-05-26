@@ -54,8 +54,12 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 
 			if (blockState.getBlock() instanceof DisguisableBlock)
 				disguisedAs = ((DisguisableBlock) blockState.getBlock()).getDisguisedStack(world, data.getPos());
-			else if (blockState.getBlock() instanceof IOverlayDisplay)
-				disguisedAs = ((IOverlayDisplay) blockState.getBlock()).getDisplayStack(world, blockState, data.getPos());
+			else if (blockState.getBlock() instanceof IOverlayDisplay) {
+				ItemStack displayStack = ((IOverlayDisplay) blockState.getBlock()).getDisplayStack(world, blockState, data.getPos());
+
+				if (displayStack != null)
+					disguisedAs = displayStack;
+			}
 
 			if (!disguisedAs.isEmpty()) {
 				//@formatter:off

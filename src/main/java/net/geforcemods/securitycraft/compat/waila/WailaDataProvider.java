@@ -73,12 +73,20 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 	@Override
 	public ItemStack getStack(IDataAccessor data, IPluginConfig config) {
-		return ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
+		ItemStack displayStack = ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
+
+		if (displayStack != null)
+			return displayStack;
+		else
+			return IComponentProvider.super.getStack(data, config);
 	}
 
 	@Override
 	public void appendHead(List<ITextComponent> head, IDataAccessor data, IPluginConfig config) {
-		head.set(0, new TranslationTextComponent(((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition()).getDescriptionId()).setStyle(ITEM_NAME_STYLE));
+		ItemStack displayStack = ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
+
+		if (displayStack != null)
+			head.set(0, new TranslationTextComponent(displayStack.getDescriptionId()).setStyle(ITEM_NAME_STYLE));
 	}
 
 	@Override
@@ -128,7 +136,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public void appendTail(List<ITextComponent> tail, IDataAccessor data, IPluginConfig config) {
 		ItemStack disguisedAs = ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
 
-		tail.set(0, new StringTextComponent(ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()).setStyle(MOD_NAME_STYLE));
+		if (disguisedAs != null)
+			tail.set(0, new StringTextComponent(ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()).setStyle(MOD_NAME_STYLE));
 	}
 
 	@Override
