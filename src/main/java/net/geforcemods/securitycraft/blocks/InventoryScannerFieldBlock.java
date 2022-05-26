@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -37,7 +38,7 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class InventoryScannerFieldBlock extends OwnableBlock {
+public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlayDisplay {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty HORIZONTAL = BooleanProperty.create("horizontal");
 	private static final VoxelShape SHAPE_EW = Block.box(0, 0, 6, 16, 16, 10);
@@ -295,5 +296,15 @@ public class InventoryScannerFieldBlock extends OwnableBlock {
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
+	}
+
+	@Override
+	public ItemStack getDisplayStack(Level level, BlockState state, BlockPos pos) {
+		return null;
+	}
+
+	@Override
+	public boolean shouldShowSCInfo(Level level, BlockState state, BlockPos pos) {
+		return false;
 	}
 }
