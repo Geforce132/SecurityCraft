@@ -38,6 +38,7 @@
 - Fix: The Motion Activated Light is constantly turned on when placed near a Sentry or armor stand
 - Fix: Prohibited items get removed from an Inventory Scanner if a Storage Module is added/removed
 - Fix: Changing the owner of an Inventory Scanner doesn't change the owner of the corresponding fields
+- Fix: Taking out modules from some blocks voids the module
 - Removed: Some unnecessary menu types. This may result in a "missing registry entries" message showing up, which can be accepted
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 - Misc.: More texture and model changes
