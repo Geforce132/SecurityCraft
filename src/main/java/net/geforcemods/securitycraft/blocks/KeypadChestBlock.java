@@ -23,6 +23,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.ChestType;
@@ -146,6 +147,19 @@ public class KeypadChestBlock extends ChestBlock {
 				}
 			}
 		}
+	}
+
+	@Override
+	public Direction candidatePartnerFacing(BlockItemUseContext ctx, Direction dir) {
+		Direction returnValue = super.candidatePartnerFacing(ctx, dir);
+
+		if (returnValue != null) {
+			TileEntity te = ctx.getLevel().getBlockEntity(ctx.getClickedPos().relative(dir));
+			//only connect to chests which have the same owner
+			if (te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner(ctx.getPlayer()))
+				return returnValue;
+		}
+		return null;
 	}
 
 	@Override
