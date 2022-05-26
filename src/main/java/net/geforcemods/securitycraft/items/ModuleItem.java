@@ -5,6 +5,8 @@ import java.util.List;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -69,6 +71,9 @@ public class ModuleItem extends Item {
 
 			if (inv.acceptsModule(type) && !inv.hasModule(type)) {
 				inv.insertModule(stack, false);
+
+				if (inv instanceof LinkableBlockEntity)
+					ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, (LinkableBlockEntity) inv, false);
 
 				if (!ctx.getPlayer().isCreative())
 					stack.shrink(1);
