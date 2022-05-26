@@ -20,5 +20,10 @@ public enum LinkedAction {
 	/**
 	 * Used when a {@link EnumCustomModules} is removed from an IModuleInventory.
 	 */
-	MODULE_REMOVED;
+	MODULE_REMOVED,
+
+	/**
+	 * Used when the {@link Owner} of a block entity changes;
+	 */
+	OWNER_CHANGED;
 }

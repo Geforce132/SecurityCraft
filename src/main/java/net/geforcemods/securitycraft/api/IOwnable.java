@@ -58,6 +58,14 @@ public interface IOwnable {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), TextFormatting.GREEN);
 		}
 
-		((BlockEntity) this).setChanged();
+		TileEntity te = (TileEntity) this;
+
+		if (te instanceof LinkableBlockEntity) {
+			((LinkableBlockEntity) te).createLinkedBlockAction(LinkedAction.OWNER_CHANGED, new Object[] {
+					getOwner()
+			}, (LinkableBlockEntity) te);
+		}
+
+		te.setChanged();
 	}
 }
