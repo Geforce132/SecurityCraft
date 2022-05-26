@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -54,10 +55,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 			enabledOption.copy(option);
 			toggleLaser((BooleanOption) option);
-			excludedBEs.add(this);
-			createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[] {
-					option
-			}, excludedBEs);
 		}
 		else if (action == LinkedAction.MODULE_INSERTED) {
 			ItemStack module = (ItemStack) parameters[0];
@@ -67,9 +64,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 			if (((ModuleItem) module.getItem()).getModuleType() == ModuleType.DISGUISE)
 				onInsertDisguiseModule(module, toggled);
-
-			excludedBEs.add(this);
-			createLinkedBlockAction(action, parameters, excludedBEs);
 		}
 		else if (action == LinkedAction.MODULE_REMOVED) {
 			ModuleType module = (ModuleType) parameters[1];
@@ -80,10 +74,15 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 
 			if (module == ModuleType.DISGUISE)
 				onRemoveDisguiseModule(moduleStack, toggled);
-
-			excludedBEs.add(this);
-			createLinkedBlockAction(action, parameters, excludedBEs);
 		}
+		else if (action == LinkedAction.OWNER_CHANGED) {
+			Owner owner = (Owner) parameters[0];
+
+			setOwner(owner.getUUID(), owner.getName());
+		}
+
+		excludedBEs.add(this);
+		createLinkedBlockAction(action, parameters, excludedBEs);
 	}
 
 	@Override

@@ -18,6 +18,7 @@
 - Change: Massively increased explosion resistance of all blocks to hopefully prevent them from being broken by modded explosions
 - API: Split IPasswordProtected into two interfaces (IPasswordProtected and ICodebreakable), meaning blocks can now be hacked by the codebreaker without needing to be password protected
 - API: Removed IPasswordProtected#isCodebreakable
+- API: New linked action: OWNER_CHANGED
 - Fix: The recipe for reinforced glass panes is incorrect
 - Fix: Breaking the block another block with modules is attached to does not drop the modules
 - Fix: Compatibility issues with other mods that add overlays (e.g. Stylish Effects)
@@ -40,6 +41,7 @@
 - Fix: Changing the owner of an Inventory Scanner doesn't change the owner of the corresponding fields
 - Fix: Taking out modules from some blocks voids the module
 - Fix: Changing the owner of a double Password-protected Chest does not change the owner of the other half
+- Fix: Changing the owner of a laser block does not change the owner of connected laser blocks
 - Removed: Some unnecessary menu types. This may result in a "missing registry entries" message showing up, which can be accepted
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 - Misc.: More texture and model changes
