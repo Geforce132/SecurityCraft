@@ -271,6 +271,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 		if (otherHalf != null)
 			otherHalf.setOwner(getOwner().getUUID(), getOwner().getName());
+
+		IOwnable.super.onOwnerChanged(state, level, pos, player);
 	}
 
 	@Override
