@@ -41,7 +41,8 @@
 - Fix: Changing the owner of an Inventory Scanner doesn't change the owner of the corresponding fields
 - Fix: Taking out modules from some blocks voids the module
 - Fix: Changing the owner of a double Password-protected Chest does not change the owner of the other half
-- Fix: Changing the owner of a laser block does not change the owner of connected laser blocks
+- Fix: Changing the owner of a Laser Block does not change the owner of connected laser blocks
+- Fix: Adding a module to a Laser Block by rightclicking the block does not add the module to connected laser blocks
 - Removed: Some unnecessary menu types. This may result in a "missing registry entries" message showing up, which can be accepted
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 - Misc.: More texture and model changes
