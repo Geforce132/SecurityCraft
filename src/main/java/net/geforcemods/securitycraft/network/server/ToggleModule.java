@@ -5,7 +5,10 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -45,17 +48,24 @@ public class ToggleModule {
 			if (be instanceof IModuleInventory && (!(be instanceof IOwnable) || ((IOwnable) be).getOwner().isOwner(player))) {
 				IModuleInventory moduleInv = (IModuleInventory) be;
 				ModuleType moduleType = message.moduleType;
+				LinkedAction linkedAction;
 
-				if (moduleInv.isModuleEnabled(moduleType))
+				if (moduleInv.isModuleEnabled(moduleType)) {
 					moduleInv.removeModule(moduleType, true);
-				else
+					linkedAction = LinkedAction.MODULE_REMOVED;
+				}
+				else {
 					moduleInv.insertModule(moduleInv.getModule(moduleType), true);
+					linkedAction = LinkedAction.MODULE_INSERTED;
+				}
+
+				if (be instanceof LinkableBlockEntity)
+					ModuleUtils.createLinkedAction(linkedAction, moduleInv.getModule(moduleType), (LinkableBlockEntity) be, true);
 
 				if (be instanceof CustomizableBlockEntity)
 					player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 			}
 		});
-
 		ctx.get().setPacketHandled(true);
 	}
 }
