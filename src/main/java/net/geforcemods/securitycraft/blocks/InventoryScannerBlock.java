@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -9,6 +11,7 @@ import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -178,18 +181,31 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World world, BlockPos pos) {
+		return getConnectedInventoryScanner(world, pos, null);
+	}
+
+	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World world, BlockPos pos, Consumer<OwnableBlockEntity> fieldModifier) {
 		Direction facing = world.getBlockState(pos).getValue(FACING);
+		List<BlockPos> fields = new ArrayList<>();
 
 		for (int i = 0; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
 			BlockPos offsetPos = pos.relative(facing, i);
 			BlockState state = world.getBlockState(offsetPos);
 			Block block = state.getBlock();
+			boolean isField = block == SCContent.INVENTORY_SCANNER_FIELD.get();
 
-			if (!state.isAir(world, offsetPos) && block != SCContent.INVENTORY_SCANNER_FIELD.get() && block != SCContent.INVENTORY_SCANNER.get())
+			if (!isField && !state.isAir(world, offsetPos) && block != SCContent.INVENTORY_SCANNER.get())
 				return null;
 
-			if (block == SCContent.INVENTORY_SCANNER.get() && state.getValue(FACING) == facing.getOpposite())
+			if (isField)
+				fields.add(offsetPos);
+
+			if (block == SCContent.INVENTORY_SCANNER.get() && state.getValue(FACING) == facing.getOpposite()) {
+				if (fieldModifier != null)
+					fields.stream().map(world::getBlockEntity).forEach(be -> fieldModifier.accept((OwnableBlockEntity) be));
+
 				return (InventoryScannerBlockEntity) world.getBlockEntity(offsetPos);
+			}
 		}
 
 		return null;
