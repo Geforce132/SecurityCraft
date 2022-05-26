@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.ArrayList;
-import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
@@ -13,7 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -42,42 +40,6 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
-		handleModule(stack, module, false, toggled);
-		super.onModuleInserted(stack, module, toggled);
-	}
-
-	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
-		handleModule(stack, module, true, toggled);
-		super.onModuleRemoved(stack, module, toggled);
-	}
-
-	private void handleModule(ItemStack stack, ModuleType module, boolean removed, boolean toggled) {
-		DoubleBlockHalf myHalf = getBlockState().getValue(DoorBlock.HALF);
-		BlockPos otherPos;
-
-		if (myHalf == DoubleBlockHalf.UPPER)
-			otherPos = getBlockPos().below();
-		else
-			otherPos = getBlockPos().above();
-
-		BlockState other = level.getBlockState(otherPos);
-
-		if (other.getValue(DoorBlock.HALF) != myHalf) {
-			if (level.getBlockEntity(otherPos) instanceof SpecialDoorBlockEntity otherDoorBe) {
-				Predicate<ModuleType> test = toggled ? otherDoorBe::isModuleEnabled : otherDoorBe::hasModule;
-				boolean result = test.test(module);
-
-				if (!removed && !result)
-					otherDoorBe.insertModule(stack, toggled);
-				else if (removed && result)
-					otherDoorBe.removeModule(module, toggled);
-			}
-		}
-	}
-
-	@Override
 	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<LinkableBlockEntity> excludedBEs) {
 		if (action == LinkedAction.OPTION_CHANGED) {
 			Option<?> option = (Option<?>) parameters[0];
@@ -89,6 +51,10 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity {
 
 			setChanged();
 		}
+		else if (action == LinkedAction.MODULE_INSERTED)
+			insertModule((ItemStack) parameters[0], (boolean) parameters[2]);
+		else if (action == LinkedAction.MODULE_REMOVED)
+			removeModule((ModuleType) parameters[1], (boolean) parameters[2]);
 	}
 
 	@Override
