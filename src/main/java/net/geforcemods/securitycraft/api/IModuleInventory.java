@@ -354,14 +354,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		for (int i = 0; i < modules.size(); i++) {
 			if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ModuleItem && ((ModuleItem) modules.get(i).getItem()).getModuleType() == module) {
-				ItemStack removed = modules.get(i).copy();
-
 				if (toggled)
 					toggleModuleState(module, false);
-				else {
+				else
 					modules.set(i, ItemStack.EMPTY);
-					onModuleRemoved(removed, module, toggled);
-				}
 			}
 		}
 	}
