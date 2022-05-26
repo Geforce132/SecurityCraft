@@ -41,6 +41,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -261,6 +262,14 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 		}
 
 		return null;
+	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, World level, BlockPos pos, PlayerEntity player) {
+		KeypadChestBlockEntity otherHalf = findOther();
+
+		if (otherHalf != null)
+			otherHalf.setOwner(getOwner().getUUID(), getOwner().getName());
 	}
 
 	@Override
