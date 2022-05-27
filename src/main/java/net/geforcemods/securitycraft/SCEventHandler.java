@@ -233,7 +233,7 @@ public class SCEventHandler {
 		ItemStack stack = event.getItemStack();
 		Item item = stack.getItem();
 
-		if (!stack.isEmpty() && item != SCContent.adminTool && item != SCContent.codebreaker && item != SCContent.universalBlockRemover && item != SCContent.universalBlockModifier && item != SCContent.universalKeyChanger && item != SCContent.universalOwnerChanger) {
+		if (!stack.isEmpty() && item != SCContent.adminTool && item != SCContent.codebreaker && item != SCContent.universalBlockRemover && item != SCContent.universalBlockModifier && item != SCContent.universalKeyChanger && item != SCContent.universalOwnerChanger && !(item instanceof ItemModule)) {
 			if (!(item instanceof ItemBlock)) {
 				Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
 
