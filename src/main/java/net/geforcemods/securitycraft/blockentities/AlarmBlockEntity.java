@@ -30,8 +30,10 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) { //server only as per AlarmBlock
 		if (isPowered && --cooldown <= 0) {
-			for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= Math.pow(range.get(), 2))) {
-				float volume = (float) (1.0F - ((player.blockPosition().distSqr(pos)) / Math.pow(range.get(), 2)));
+			double rangeSqr = Math.pow(range.get(), 2);
+
+			for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= rangeSqr)) {
+				float volume = (float) (1.0F - ((player.blockPosition().distSqr(pos)) / rangeSqr));
 
 				player.connection.send(new ClientboundSoundPacket(SCSounds.ALARM.event, SoundSource.BLOCKS, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), volume, 1.0F));
 			}
