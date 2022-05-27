@@ -34,6 +34,7 @@
 - Fix: Prohibited items get removed from an Inventory Scanner if a Storage Module is added/removed
 - Fix: Changing the owner of an Inventory Scanner doesn't change the owner of the corresponding fields
 - Fix: Taking out modules from some blocks voids the module
+- Fix: Changing the owner of a double Password-protected Chest does not change the owner of the other half
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------

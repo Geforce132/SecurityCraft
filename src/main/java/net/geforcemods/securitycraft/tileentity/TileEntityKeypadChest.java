@@ -253,6 +253,16 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
+	public void onOwnerChanged(IBlockState state, World level, BlockPos pos, EntityPlayer player) {
+		TileEntityKeypadChest otherHalf = findOther();
+
+		if (otherHalf != null)
+			otherHalf.setOwner(getOwner().getUUID(), getOwner().getName());
+
+		IOwnable.super.onOwnerChanged(state, level, pos, player);
+	}
+
+	@Override
 	public String getPassword() {
 		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
 	}
