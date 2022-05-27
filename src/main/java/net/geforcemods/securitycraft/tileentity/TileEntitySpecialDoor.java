@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import java.util.ArrayList;
-import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.Option;
@@ -38,45 +37,6 @@ public abstract class TileEntitySpecialDoor extends TileEntityLinkable {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumModuleType module, boolean toggled) {
-		super.onModuleInserted(stack, module, toggled);
-		handleModule(stack, module, false, toggled);
-	}
-
-	@Override
-	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
-		super.onModuleRemoved(stack, module, toggled);
-		handleModule(stack, module, true, toggled);
-	}
-
-	private void handleModule(ItemStack stack, EnumModuleType module, boolean removed, boolean toggled) {
-		EnumDoorHalf myHalf = world.getBlockState(pos).getValue(BlockDoor.HALF);
-		BlockPos otherPos;
-
-		if (myHalf == EnumDoorHalf.UPPER)
-			otherPos = getPos().down();
-		else
-			otherPos = getPos().up();
-
-		IBlockState other = world.getBlockState(otherPos);
-
-		if (other.getValue(BlockDoor.HALF) != myHalf) {
-			TileEntity otherTe = world.getTileEntity(otherPos);
-
-			if (otherTe instanceof TileEntitySpecialDoor) {
-				TileEntitySpecialDoor otherDoorTe = (TileEntitySpecialDoor) otherTe;
-				Predicate<EnumModuleType> test = toggled ? otherDoorTe::isModuleEnabled : otherDoorTe::hasModule;
-				boolean result = test.test(module);
-
-				if (!removed && !result)
-					otherDoorTe.insertModule(stack, toggled);
-				else if (removed && result)
-					otherDoorTe.removeModule(module, toggled);
-			}
-		}
-	}
-
-	@Override
 	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<TileEntityLinkable> excludedTEs) {
 		if (action == EnumLinkedAction.OPTION_CHANGED) {
 			Option<?> option = (Option<?>) parameters[0];
@@ -86,6 +46,10 @@ public abstract class TileEntitySpecialDoor extends TileEntityLinkable {
 			else if (option.getName().equals(signalLength.getName()))
 				signalLength.copy(option);
 		}
+		else if (action == EnumLinkedAction.MODULE_INSERTED)
+			insertModule((ItemStack) parameters[0], (boolean) parameters[2]);
+		else if (action == EnumLinkedAction.MODULE_REMOVED)
+			removeModule((EnumModuleType) parameters[1], (boolean) parameters[2]);
 	}
 
 	@Override
