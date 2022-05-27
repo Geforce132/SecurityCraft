@@ -97,7 +97,7 @@ public class TileEntityReinforcedHopper extends TileEntityHopper implements IOwn
 
 	@Override
 	public boolean isModuleEnabled(EnumModuleType module) {
-		return hasModule(module) && moduleStates.get(module);
+		return hasModule(module) && moduleStates.get(module) == Boolean.TRUE; //prevent NPE
 	}
 
 	@Override
