@@ -3,8 +3,10 @@ package net.geforcemods.securitycraft.items;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -63,6 +65,9 @@ public class ItemModule extends Item {
 
 			if (inv.acceptsModule(type) && !inv.hasModule(type)) {
 				inv.insertModule(stack, false);
+
+				if (inv instanceof TileEntityLinkable)
+					ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, stack, (TileEntityLinkable) inv, false);
 
 				if (!player.isCreative())
 					stack.shrink(1);
