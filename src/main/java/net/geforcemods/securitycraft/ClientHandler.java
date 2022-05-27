@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -95,6 +96,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelDataManager;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -107,6 +109,25 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientHandler {
 	public static final BlockEntityRenderDelegate DISGUISED_BLOCK_RENDER_DELEGATE = new BlockEntityRenderDelegate();
 	public static final BlockEntityRenderDelegate PROJECTOR_RENDER_DELEGATE = new BlockEntityRenderDelegate();
+	//@formatter:off
+	private static LazyOptional<Block[]> disguisableBlocks = LazyOptional.of(() -> new Block[] {
+			SCContent.BLOCK_CHANGE_DETECTOR.get(),
+			SCContent.CAGE_TRAP.get(),
+			SCContent.INVENTORY_SCANNER.get(),
+			SCContent.KEYCARD_READER.get(),
+			SCContent.KEYPAD.get(),
+			SCContent.KEYPAD_BLAST_FURNACE.get(),
+			SCContent.KEYPAD_FURNACE.get(),
+			SCContent.KEYPAD_SMOKER.get(),
+			SCContent.LASER_BLOCK.get(),
+			SCContent.PROJECTOR.get(),
+			SCContent.PROTECTO.get(),
+			SCContent.RETINAL_SCANNER.get(),
+			SCContent.SENTRY_DISGUISE.get(),
+			SCContent.TROPHY_SYSTEM.get(),
+			SCContent.USERNAME_LOGGER.get()
+	});
+	//@formatter:on
 
 	@SubscribeEvent
 	public static void onModelBake(ModelBakeEvent event) {
@@ -131,28 +152,11 @@ public class ClientHandler {
 				"smoker",
 				"stone"
 		};
-		Block[] disguisableBlocks = {
-				SCContent.BLOCK_CHANGE_DETECTOR.get(),
-				SCContent.CAGE_TRAP.get(),
-				SCContent.INVENTORY_SCANNER.get(),
-				SCContent.KEYCARD_READER.get(),
-				SCContent.KEYPAD.get(),
-				SCContent.KEYPAD_BLAST_FURNACE.get(),
-				SCContent.KEYPAD_FURNACE.get(),
-				SCContent.KEYPAD_SMOKER.get(),
-				SCContent.LASER_BLOCK.get(),
-				SCContent.PROJECTOR.get(),
-				SCContent.PROTECTO.get(),
-				SCContent.RETINAL_SCANNER.get(),
-				SCContent.SENTRY_DISGUISE.get(),
-				SCContent.TROPHY_SYSTEM.get(),
-				SCContent.USERNAME_LOGGER.get()
-		};
 		//@formatter:on
 
 		Map<ResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
 
-		for (Block block : disguisableBlocks) {
+		for (Block block : disguisableBlocks.orElse(null)) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
 				registerDisguisedModel(modelRegistry, block.getRegistryName(), state.getValues().entrySet().stream().map(StateHolder.PROPERTY_ENTRY_TO_STRING_FUNCTION).collect(Collectors.joining(",")));
 			}
@@ -197,25 +201,14 @@ public class ClientHandler {
 		RenderType cutoutMipped = RenderType.cutoutMipped();
 		RenderType translucent = RenderType.translucent();
 
-		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_CHANGE_DETECTOR.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_POCKET_MANAGER.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_POCKET_WALL.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.CAGE_TRAP.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(SCContent.FAKE_WATER.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get(), cutoutMipped);
-		RenderTypeLookup.setRenderLayer(SCContent.INVENTORY_SCANNER.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.INVENTORY_SCANNER_FIELD.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.KEYCARD_READER.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD_DOOR.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD_FURNACE.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD_SMOKER.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD_BLAST_FURNACE.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.LASER_BLOCK.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.LASER_FIELD.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.PROJECTOR.get(), cutoutMipped);
-		RenderTypeLookup.setRenderLayer(SCContent.PROTECTO.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLUE_STAINED_GLASS.get(), translucent);
@@ -260,12 +253,9 @@ public class ClientHandler {
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get(), translucent);
-		RenderTypeLookup.setRenderLayer(SCContent.RETINAL_SCANNER.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.SCANNER_DOOR.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.SENTRY_DISGUISE.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.TRACK_MINE.get(), cutout);
-		RenderTypeLookup.setRenderLayer(SCContent.TROPHY_SYSTEM.get(), cutoutMipped);
-		RenderTypeLookup.setRenderLayer(SCContent.USERNAME_LOGGER.get(), cutout);
+		Arrays.stream(disguisableBlocks.orElse(null)).forEach(block -> RenderTypeLookup.setRenderLayer(block, cutout));
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBouncingBetty.get(), BouncingBettyRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeImsBomb.get(), IMSBombRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSecurityCamera.get(), EmptyRenderer::new);
@@ -343,7 +333,6 @@ public class ClientHandler {
 		toTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), crystalQuartzTint);
 		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
 		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
-
 		specialBlockTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (state, world, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
 				int grassTint = world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
@@ -359,7 +348,6 @@ public class ClientHandler {
 
 			return noTint;
 		});
-
 		specialItemTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (stack, tintIndex) -> {
 			if (tintIndex == 1) {
 				int grassTint = GrassColors.get(0.5D, 1.0D);
@@ -369,7 +357,6 @@ public class ClientHandler {
 
 			return noTint;
 		});
-
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
 			if (tintIndex == 0)
 				return reinforcedTint.contains(block) ? mixWithReinforcedTintIfEnabled(tint) : tint;
@@ -397,23 +384,7 @@ public class ClientHandler {
 			}
 
 			return noTint;
-			//@formatter:off
-		}, SCContent.BLOCK_CHANGE_DETECTOR.get(),
-				SCContent.CAGE_TRAP.get(),
-				SCContent.INVENTORY_SCANNER.get(),
-				SCContent.KEYCARD_READER.get(),
-				SCContent.KEYPAD.get(),
-				SCContent.KEYPAD_FURNACE.get(),
-				SCContent.KEYPAD_SMOKER.get(),
-				SCContent.KEYPAD_BLAST_FURNACE.get(),
-				SCContent.LASER_BLOCK.get(),
-				SCContent.PROJECTOR.get(),
-				SCContent.PROTECTO.get(),
-				SCContent.RETINAL_SCANNER.get(),
-				SCContent.SENTRY_DISGUISE.get(),
-				SCContent.TROPHY_SYSTEM.get(),
-				SCContent.USERNAME_LOGGER.get());
-		//@formatter:on
+		}, disguisableBlocks.orElse(null));
 		Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
 			if (tintIndex == 0) {
 				IDyeableArmorItem item = ((IDyeableArmorItem) stack.getItem());
