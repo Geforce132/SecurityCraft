@@ -58,8 +58,12 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 
 	@Override
 	public ItemStack getWailaStack(IWailaDataAccessor data, IWailaConfigHandler config) {
-		if (data.getBlock() instanceof IOverlayDisplay)
-			return ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
+		if (data.getBlock() instanceof IOverlayDisplay) {
+			ItemStack displayStack = ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
+
+			if (displayStack != null)
+				return displayStack;
+		}
 
 		return ItemStack.EMPTY;
 	}

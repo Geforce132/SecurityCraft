@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -37,7 +38,7 @@ import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockInventoryScannerField extends BlockOwnable {
+public class BlockInventoryScannerField extends BlockOwnable implements IOverlayDisplay {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool HORIZONTAL = PropertyBool.create("horizontal");
 	public static final AxisAlignedBB EAST_WEST_SHAPE = new AxisAlignedBB(0.000F, 0.000F, 6F / 16F, 1.000F, 1.000F, 10F / 16F);
@@ -329,5 +330,15 @@ public class BlockInventoryScannerField extends BlockOwnable {
 	@Override
 	public IBlockState withRotation(IBlockState state, Rotation rot) {
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	}
+
+	@Override
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
+		return null;
+	}
+
+	@Override
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
+		return false;
 	}
 }

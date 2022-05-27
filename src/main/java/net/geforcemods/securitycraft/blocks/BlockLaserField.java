@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -30,7 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockLaserField extends BlockOwnable {
+public class BlockLaserField extends BlockOwnable implements IOverlayDisplay {
 	public static final PropertyInteger BOUNDTYPE = PropertyInteger.create("boundtype", 1, 3);
 	private static final AxisAlignedBB BOUNDTYPE_1_AABB, BOUNDTYPE_2_AABB, BOUNDTYPE_3_AABB;
 
@@ -170,5 +171,15 @@ public class BlockLaserField extends BlockOwnable {
 		int boundType = state.getValue(BOUNDTYPE);
 
 		return rot == Rotation.CLOCKWISE_180 ? state : state.withProperty(BOUNDTYPE, boundType == 2 ? 3 : (boundType == 3 ? 2 : 1));
+	}
+
+	@Override
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
+		return null;
+	}
+
+	@Override
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
+		return false;
 	}
 }
