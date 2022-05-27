@@ -26,6 +26,7 @@ public class FakeLavaBlock extends LiquidBlock {
 
 		if (entity instanceof LivingEntity lEntity) {
 			lEntity.clearFire();
+			lEntity.setSharedFlagOnFire(false);
 
 			if (!level.isClientSide) {
 				lEntity.addEffect(SHORT_FIRE_RESISTANCE);
