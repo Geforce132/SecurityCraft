@@ -185,13 +185,15 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 
 		//when removing a stack from a slot, it's not possible to reliably get the module type, so just loop through all possible types
 		for (int i = 0; i < moduleInv.getMaxNumberOfModules(); i++) {
+			EnumModuleType type = moduleInv.acceptedModules()[i];
+
 			if (descriptionButtons[i] != null) {
-				descriptionButtons[i].enabled = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
+				descriptionButtons[i].enabled = moduleInv.hasModule(type);
 
 				if (!descriptionButtons[i].enabled)
-					indicators.remove(moduleInv.acceptedModules()[i]);
-				else
-					indicators.put(moduleInv.acceptedModules()[i], true);
+					indicators.remove(type);
+				else if (!indicators.containsKey(type))
+					indicators.put(type, true);
 			}
 		}
 	}
