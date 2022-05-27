@@ -2,9 +2,12 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -48,11 +51,19 @@ public class ToggleModule implements IMessage {
 				if (be instanceof IModuleInventory && (!(be instanceof IOwnable) || ((IOwnable) be).getOwner().isOwner(player))) {
 					IModuleInventory moduleInv = (IModuleInventory) be;
 					EnumModuleType moduleType = message.moduleType;
+					EnumLinkedAction linkedAction;
 
-					if (moduleInv.isModuleEnabled(moduleType))
+					if (moduleInv.isModuleEnabled(moduleType)) {
 						moduleInv.removeModule(moduleType, true);
-					else
+						linkedAction = EnumLinkedAction.MODULE_REMOVED;
+					}
+					else {
 						moduleInv.insertModule(moduleInv.getModule(moduleType), true);
+						linkedAction = EnumLinkedAction.MODULE_INSERTED;
+					}
+
+					if (be instanceof TileEntityLinkable)
+						ModuleUtils.createLinkedAction(linkedAction, moduleInv.getModule(moduleType), (TileEntityLinkable) be, true);
 
 					if (be instanceof CustomizableSCTE)
 						((CustomizableSCTE) be).sync();
