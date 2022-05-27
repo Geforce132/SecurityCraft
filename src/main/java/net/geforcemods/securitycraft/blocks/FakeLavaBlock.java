@@ -10,6 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.SharedConstants;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -28,6 +29,7 @@ public class FakeLavaBlock extends FlowingFluidBlock {
 			LivingEntity lEntity = (LivingEntity) entity;
 
 			lEntity.clearFire();
+			lEntity.setSharedFlag(0, false);
 
 			if (!world.isClientSide) {
 				lEntity.addEffect(SHORT_FIRE_RESISTANCE);
