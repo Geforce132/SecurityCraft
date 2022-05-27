@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import net.geforcemods.securitycraft.ConfigHandler;
@@ -11,6 +13,7 @@ import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
@@ -217,18 +220,31 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	}
 
 	public static TileEntityInventoryScanner getConnectedInventoryScanner(World world, BlockPos pos) {
+		return getConnectedInventoryScanner(world, pos, null);
+	}
+
+	public static TileEntityInventoryScanner getConnectedInventoryScanner(World world, BlockPos pos, Consumer<TileEntityOwnable> fieldModifier) {
 		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+		List<BlockPos> fields = new ArrayList<>();
 
 		for (int i = 0; i <= ConfigHandler.inventoryScannerRange; i++) {
 			BlockPos offsetPos = pos.offset(facing, i);
 			IBlockState state = world.getBlockState(offsetPos);
 			Block block = state.getBlock();
+			boolean isField = block == SCContent.inventoryScannerField;
 
-			if (!state.getBlock().isAir(state, world, offsetPos) && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
+			if (!isField && !state.getBlock().isAir(state, world, offsetPos) && block != SCContent.inventoryScanner)
 				return null;
 
-			if (block == SCContent.inventoryScanner && state.getValue(FACING) == facing.getOpposite())
+			if (isField)
+				fields.add(offsetPos);
+
+			if (block == SCContent.inventoryScanner && state.getValue(FACING) == facing.getOpposite()) {
+				if (fieldModifier != null)
+					fields.stream().map(world::getTileEntity).forEach(be -> fieldModifier.accept((TileEntityOwnable) be));
+
 				return (TileEntityInventoryScanner) world.getTileEntity(offsetPos);
+			}
 		}
 
 		return null;

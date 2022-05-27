@@ -32,6 +32,7 @@
 - Fix: Disguisable blocks that are disguised as blocks that emit light (e.g. Glowstone) don't emit light
 - Fix: The Motion Activated Light is constantly turned on when placed near a Sentry or armor stand
 - Fix: Prohibited items get removed from an Inventory Scanner if a Storage Module is added/removed
+- Fix: Changing the owner of an Inventory Scanner doesn't change the owner of the corresponding fields
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------
