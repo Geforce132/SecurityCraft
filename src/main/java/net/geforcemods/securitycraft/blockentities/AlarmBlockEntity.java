@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -29,8 +30,12 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) { //server only as per AlarmBlock
 		if (isPowered && --cooldown <= 0) {
-			for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= Math.pow(range.get(), 2))) {
-				player.playNotifySound(SCSounds.ALARM.event, SoundSource.BLOCKS, 0.3F, 1.0F);
+			double rangeSqr = Math.pow(range.get(), 2);
+
+			for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= rangeSqr)) {
+				float volume = (float) (1.0F - ((player.blockPosition().distSqr(pos)) / rangeSqr));
+
+				player.connection.send(new ClientboundSoundPacket(SCSounds.ALARM.event, SoundSource.BLOCKS, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), volume, 1.0F));
 			}
 
 			setCooldown(delay.get() * 20);
