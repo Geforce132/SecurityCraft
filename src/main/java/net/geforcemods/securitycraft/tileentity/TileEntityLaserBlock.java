@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
@@ -45,18 +46,11 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 			Option<?> option = (Option<?>) parameters[0];
 			enabledOption.copy(option);
 			toggleLaser((OptionBoolean) option);
-
-			excludedTEs.add(this);
-			createLinkedBlockAction(EnumLinkedAction.OPTION_CHANGED, new Option[] {
-					option
-			}, excludedTEs);
 		}
 		else if (action == EnumLinkedAction.MODULE_INSERTED) {
 			ItemStack module = (ItemStack) parameters[0];
 
 			insertModule(module, (boolean) parameters[2]);
-			excludedTEs.add(this);
-			createLinkedBlockAction(action, parameters, excludedTEs);
 		}
 		else if (action == EnumLinkedAction.MODULE_REMOVED) {
 			EnumModuleType module = (EnumModuleType) parameters[1];
@@ -65,6 +59,14 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 			excludedTEs.add(this);
 			createLinkedBlockAction(action, parameters, excludedTEs);
 		}
+		else if (action == EnumLinkedAction.OWNER_CHANGED) {
+			Owner owner = (Owner) parameters[0];
+
+			setOwner(owner.getUUID(), owner.getName());
+		}
+
+		excludedTEs.add(this);
+		createLinkedBlockAction(action, parameters, excludedTEs);
 	}
 
 	@Override
