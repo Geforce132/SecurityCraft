@@ -295,7 +295,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 			}
 
 			if (connectedScanner != null) {
-				for (int i = 0; i < connectedScanner.getContents().size(); i++) {
+				for (int i = 10; i < connectedScanner.getSizeInventory(); i++) {
 					connectedScanner.getContents().set(i, ItemStack.EMPTY);
 				}
 			}
