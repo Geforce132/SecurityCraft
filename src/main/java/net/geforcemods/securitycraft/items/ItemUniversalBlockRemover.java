@@ -62,27 +62,31 @@ public class ItemUniversalBlockRemover extends Item {
 					}
 				}
 
-				world.destroyBlock(pos, true);
-				BlockLaserBlock.destroyAdjacentLasers(world, pos);
-				player.getHeldItem(hand).damageItem(1, player);
+				if (!world.isRemote) {
+					world.destroyBlock(pos, true);
+					BlockLaserBlock.destroyAdjacentLasers(world, pos);
+					player.getHeldItem(hand).damageItem(1, player);
+				}
 			}
 			else if (block == SCContent.cageTrap && world.getBlockState(pos).getValue(BlockCageTrap.DEACTIVATED)) {
 				BlockPos originalPos = pos;
 				BlockPos middlePos = originalPos.up(4);
 
-				new BlockCageTrap.BlockModifier(world, new MutableBlockPos(originalPos), ((IOwnable) tileEntity).getOwner()).loop((w, p, o) -> {
-					TileEntity te = w.getTileEntity(p);
+				if (!world.isRemote) {
+					new BlockCageTrap.BlockModifier(world, new MutableBlockPos(originalPos), ((IOwnable) tileEntity).getOwner()).loop((w, p, o) -> {
+						TileEntity te = w.getTileEntity(p);
 
-					if (te instanceof IOwnable && ((IOwnable) te).getOwner().owns((IOwnable) te)) {
-						Block b = w.getBlockState(p).getBlock();
+						if (te instanceof IOwnable && ((IOwnable) te).getOwner().owns((IOwnable) te)) {
+							Block b = w.getBlockState(p).getBlock();
 
-						if (b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
-							w.destroyBlock(p, false);
-					}
-				});
+							if (b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
+								w.destroyBlock(p, false);
+						}
+					});
 
-				world.destroyBlock(originalPos, true);
-				player.getHeldItem(hand).damageItem(1, player);
+					world.destroyBlock(originalPos, true);
+					player.getHeldItem(hand).damageItem(1, player);
+				}
 			}
 			else {
 				if (block == SCContent.inventoryScanner) {
@@ -94,9 +98,11 @@ public class ItemUniversalBlockRemover extends Item {
 				else if (block instanceof IBlockWithNoDrops)
 					Block.spawnAsEntity(world, pos, ((IBlockWithNoDrops) block).getUniversalBlockRemoverDrop());
 
-				world.destroyBlock(pos, true); //this also removes the BlockEntity
-				block.onPlayerDestroy(world, pos, state);
-				player.getHeldItem(hand).damageItem(1, player);
+				if (!world.isRemote) {
+					world.destroyBlock(pos, true); //this also removes the BlockEntity
+					block.onPlayerDestroy(world, pos, state);
+					player.getHeldItem(hand).damageItem(1, player);
+				}
 			}
 
 			return EnumActionResult.SUCCESS;
