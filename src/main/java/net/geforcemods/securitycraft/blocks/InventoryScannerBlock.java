@@ -194,7 +194,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			Block block = state.getBlock();
 			boolean isField = block == SCContent.INVENTORY_SCANNER_FIELD.get();
 
-			if (!isField && !state.isAir(world, offsetPos) && block != SCContent.INVENTORY_SCANNER.get())
+			if (!isField && !state.isAir(world, offsetPos) && !state.getMaterial().isReplaceable() && block != SCContent.INVENTORY_SCANNER.get())
 				return null;
 
 			if (isField)
@@ -245,6 +245,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getPlayer().getDirection().getOpposite());
 	}
+
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, HORIZONTAL, WATERLOGGED);

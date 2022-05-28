@@ -56,7 +56,7 @@ public class LaserBlock extends DisguisableBlock {
 				BlockState offsetState = world.getBlockState(offsetPos);
 				Block offsetBlock = offsetState.getBlock();
 
-				if (!offsetState.isAir(world, offsetPos) && offsetBlock != SCContent.LASER_BLOCK.get())
+				if (!offsetState.isAir(world, offsetPos) && !offsetState.getMaterial().isReplaceable() && offsetBlock != SCContent.LASER_BLOCK.get())
 					break inner;
 				else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
 					LaserBlockBlockEntity thatTe = (LaserBlockBlockEntity) world.getBlockEntity(offsetPos);
@@ -71,8 +71,9 @@ public class LaserBlock extends DisguisableBlock {
 						if (thisTe.isEnabled() && thatTe.isEnabled()) {
 							for (int j = 1; j < i; j++) {
 								offsetPos = pos.relative(facing, j);
+								offsetState = world.getBlockState(offsetPos);
 
-								if (world.getBlockState(offsetPos).isAir(world, offsetPos)) {
+								if (world.getBlockState(offsetPos).isAir(world, offsetPos) || offsetState.getMaterial().isReplaceable()) {
 									world.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
 
 									TileEntity te = world.getBlockEntity(offsetPos);
