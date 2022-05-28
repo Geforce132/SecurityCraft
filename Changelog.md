@@ -41,6 +41,7 @@
 - Fix: Adding a module to a Laser Block by rightclicking the block does not add the module to connected laser blocks
 - Fix: Module dupe involving doors
 - Fix: Alarm sound plays from the player's position instead of the alarm's position
+- Fix: Players hear a constant fire extinguishing sound when being in fake lava while it's raining
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------

@@ -50,6 +50,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IOverlayDisp
 			EntityLivingBase lEntity = (EntityLivingBase) entity;
 
 			lEntity.extinguish();
+			lEntity.setFlag(0, false);
 
 			if (!world.isRemote) {
 				lEntity.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 1));
