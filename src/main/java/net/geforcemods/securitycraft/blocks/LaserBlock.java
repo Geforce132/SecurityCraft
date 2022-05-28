@@ -59,7 +59,7 @@ public class LaserBlock extends DisguisableBlock {
 				BlockState offsetState = level.getBlockState(offsetPos);
 				Block offsetBlock = offsetState.getBlock();
 
-				if (!offsetState.isAir() && offsetBlock != SCContent.LASER_BLOCK.get())
+				if (!offsetState.isAir() && !offsetState.getMaterial().isReplaceable() && offsetBlock != SCContent.LASER_BLOCK.get())
 					break inner;
 				else if (offsetBlock == SCContent.LASER_BLOCK.get()) {
 					LaserBlockBlockEntity thatBe = (LaserBlockBlockEntity) level.getBlockEntity(offsetPos);
@@ -74,8 +74,9 @@ public class LaserBlock extends DisguisableBlock {
 						if (thisBe.isEnabled() && thatBe.isEnabled()) {
 							for (int j = 1; j < i; j++) {
 								offsetPos = pos.relative(facing, j);
+								offsetState = level.getBlockState(offsetPos);
 
-								if (level.getBlockState(offsetPos).isAir()) {
+								if (offsetState.isAir() || offsetState.getMaterial().isReplaceable()) {
 									level.setBlockAndUpdate(offsetPos, SCContent.LASER_FIELD.get().defaultBlockState().setValue(LaserFieldBlock.BOUNDTYPE, boundType));
 
 									if (level.getBlockEntity(offsetPos) instanceof IOwnable ownable)
