@@ -233,7 +233,7 @@ public class BlockInventoryScanner extends BlockDisguisable {
 			Block block = state.getBlock();
 			boolean isField = block == SCContent.inventoryScannerField;
 
-			if (!isField && !state.getBlock().isAir(state, world, offsetPos) && block != SCContent.inventoryScanner)
+			if (!isField && !state.getBlock().isAir(state, world, offsetPos) && !state.getBlock().isReplaceable(world, pos) && block != SCContent.inventoryScanner)
 				return null;
 
 			if (isField)

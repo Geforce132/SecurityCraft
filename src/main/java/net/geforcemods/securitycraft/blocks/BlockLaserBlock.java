@@ -19,7 +19,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -65,9 +64,10 @@ public class BlockLaserBlock extends BlockDisguisable {
 
 			inner: for (int i = 1; i <= ConfigHandler.laserBlockRange; i++) {
 				BlockPos offsetPos = pos.offset(facing, i);
-				Block offsetBlock = world.getBlockState(offsetPos).getBlock();
+				IBlockState offsetState = world.getBlockState(offsetPos);
+				Block offsetBlock = offsetState.getBlock();
 
-				if (offsetBlock != Blocks.AIR && offsetBlock != SCContent.laserBlock)
+				if (!offsetBlock.isAir(offsetState, world, offsetPos) && !offsetBlock.isReplaceable(world, offsetPos) && offsetBlock != SCContent.laserBlock)
 					break inner;
 				else if (offsetBlock == SCContent.laserBlock) {
 					TileEntityLaserBlock thatTe = (TileEntityLaserBlock) world.getTileEntity(offsetPos);
@@ -82,8 +82,9 @@ public class BlockLaserBlock extends BlockDisguisable {
 						if (thisTe.isEnabled() && thatTe.isEnabled()) {
 							for (int j = 1; j < i; j++) {
 								offsetPos = pos.offset(facing, j);
+								offsetState = world.getBlockState(offsetPos);
 
-								if (world.getBlockState(offsetPos).getBlock() == Blocks.AIR) {
+								if (offsetState.getBlock().isAir(offsetState, world, offsetPos) || offsetState.getBlock().isReplaceable(world, offsetPos)) {
 									world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, boundType));
 
 									TileEntity te = world.getTileEntity(offsetPos);
