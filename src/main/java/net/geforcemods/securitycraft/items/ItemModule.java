@@ -64,13 +64,15 @@ public class ItemModule extends Item {
 				return EnumActionResult.PASS;
 
 			if (inv.acceptsModule(type) && !inv.hasModule(type)) {
-				inv.insertModule(stack, false);
+				if (!world.isRemote) {
+					inv.insertModule(stack, false);
 
-				if (inv instanceof TileEntityLinkable)
-					ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, stack, (TileEntityLinkable) inv, false);
+					if (inv instanceof TileEntityLinkable)
+						ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, stack, (TileEntityLinkable) inv, false);
 
-				if (!player.isCreative())
-					stack.shrink(1);
+					if (!player.isCreative())
+						stack.shrink(1);
+				}
 
 				return EnumActionResult.SUCCESS;
 			}
