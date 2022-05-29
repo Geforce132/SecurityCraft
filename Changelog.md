@@ -43,6 +43,7 @@
 - Fix: Alarm sound plays from the player's position instead of the alarm's position
 - Fix: Players hear a constant fire extinguishing sound when being in fake lava while it's raining
 - Fix: Block breaking sound plays twice when destroying a reinforced block with the Universal Block Remover
+- Fix: Opening a Keypad Door using the top half while on the door's allowlist doesn't open the door
 - Removed: "allowCodebreakerItem" config option. Disabling the Codebreaker is now achieveable by setting "codebreaker_chance" to a negative value
 
 --------------------------Changelog for v1.9.1 of SecurityCraft--------------------------

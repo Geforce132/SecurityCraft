@@ -52,11 +52,13 @@ public class BlockKeypadDoor extends BlockSpecialDoor {
 
 	public void activate(IBlockState state, World world, BlockPos pos, int signalLength) {
 		boolean open = !state.getValue(OPEN);
+		EnumDoorHalf half = state.getValue(HALF);
+		BlockPos otherHalfPos = pos.offset(half == EnumDoorHalf.UPPER ? EnumFacing.DOWN : EnumFacing.UP);
 
 		world.playEvent(null, open ? 1005 : 1011, pos, 0);
 		world.setBlockState(pos, state.withProperty(OPEN, open));
-		world.markBlockRangeForRenderUpdate(pos, pos);
-		world.notifyNeighborsOfStateChange(pos, this, false);
+		world.setBlockState(otherHalfPos, world.getBlockState(otherHalfPos).withProperty(OPEN, open));
+		world.markBlockRangeForRenderUpdate(pos, otherHalfPos);
 
 		if (open && signalLength > 0)
 			world.scheduleUpdate(pos, this, signalLength);

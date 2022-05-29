@@ -44,9 +44,8 @@ public abstract class BlockSpecialDoor extends BlockDoor implements ITileEntityP
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if (placer instanceof EntityPlayer) {
+		if (placer instanceof EntityPlayer)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
-		}
 	}
 
 	@Override
@@ -63,38 +62,41 @@ public abstract class BlockSpecialDoor extends BlockDoor implements ITileEntityP
 	 */
 	public void onNeighborChanged(IBlockAccess access, BlockPos pos, BlockPos neighbor) {
 		World world = (World) access;
-		IBlockState state = world.getBlockState(pos);
-		Block neighborBlock = world.getBlockState(neighbor).getBlock();
 
-		if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER) {
-			BlockPos blockBelow = pos.down();
-			IBlockState stateBelow = world.getBlockState(blockBelow);
+		if (!world.isRemote) {
+			IBlockState state = world.getBlockState(pos);
+			Block neighborBlock = world.getBlockState(neighbor).getBlock();
 
-			if (stateBelow.getBlock() != this)
-				world.setBlockToAir(pos);
-			else if (neighborBlock != this)
-				onNeighborChanged(world, blockBelow, neighbor);
-		}
-		else {
-			boolean drop = false;
-			BlockPos blockBelow = pos.up();
-			IBlockState stateBelow = world.getBlockState(blockBelow);
+			if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER) {
+				BlockPos blockBelow = pos.down();
+				IBlockState stateBelow = world.getBlockState(blockBelow);
 
-			if (stateBelow.getBlock() != this) {
-				world.setBlockToAir(pos);
-				drop = true;
+				if (stateBelow.getBlock() != this)
+					world.setBlockToAir(pos);
+				else if (neighborBlock != this)
+					onNeighborChanged(world, blockBelow, neighbor);
 			}
+			else {
+				boolean drop = false;
+				BlockPos blockAbove = pos.up();
+				IBlockState stateAbove = world.getBlockState(blockAbove);
 
-			if (!world.isSideSolid(pos.down(), EnumFacing.UP)) {
-				world.setBlockToAir(pos);
-				drop = true;
+				if (stateAbove.getBlock() != this) {
+					world.setBlockToAir(pos);
+					drop = true;
+				}
 
-				if (stateBelow.getBlock() == this)
-					world.setBlockToAir(blockBelow);
+				if (!world.isSideSolid(pos.down(), EnumFacing.UP)) {
+					world.setBlockToAir(pos);
+					drop = true;
+
+					if (stateAbove.getBlock() == this)
+						world.setBlockToAir(blockAbove);
+				}
+
+				if (drop && !world.isRemote)
+					dropBlockAsItem(world, pos, state, 0);
 			}
-
-			if (drop && !world.isRemote)
-				dropBlockAsItem(world, pos, state, 0);
 		}
 	}
 
