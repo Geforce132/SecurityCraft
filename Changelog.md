@@ -29,7 +29,7 @@
 - Fix: The One Probe does not properly show team ownership
 - Fix: Pick block, The One Probe, and Waila do not properly work for blocks disguised as another block that has metadata
 - Fix: When placing a Password-protected Chest next to another one creating a double chest, modules and options are not synchronized to the newly placed one
-- Fix: Entities sometimes don't show up for some time or at all after dismounting a camera
+- Fix: Entities sometimes don't show up for some time or at all after dismounting a camera (if this is still happening, remove OptiFine)
 - Fix: The Reinforced Cobweb can be removed by flowing fluids
 - Fix: Disguisable blocks that are disguised as blocks that emit light (e.g. Glowstone) don't emit light
 - Fix: The Motion Activated Light is constantly turned on when placed near a Sentry or armor stand
