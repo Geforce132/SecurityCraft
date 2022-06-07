@@ -79,7 +79,7 @@ public class SCManualScreen extends Screen {
 	private static final ResourceLocation VANILLA_BOOK = new ResourceLocation("textures/gui/book.png");
 	private static final int SUBPAGE_LENGTH = 1285;
 	private static int lastPage = -1;
-	private final MutableComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.setUnderlined(true));
+	private final MutableComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.withUnderlined(true));
 	private final TranslatableComponent ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
 	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private int currentPage = lastPage;
