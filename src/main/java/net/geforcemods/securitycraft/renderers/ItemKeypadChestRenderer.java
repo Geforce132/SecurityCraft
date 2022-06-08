@@ -32,7 +32,7 @@ public class ItemKeypadChestRenderer extends BlockEntityWithoutLevelRenderer {
 		if (dummyRenderer == null) {
 			Minecraft mc = Minecraft.getInstance();
 
-			dummyRenderer = new KeypadChestRenderer(new BlockEntityRendererProvider.Context(mc.getBlockEntityRenderDispatcher(), mc.getBlockRenderer(), mc.getEntityModels(), mc.font));
+			dummyRenderer = new KeypadChestRenderer(new BlockEntityRendererProvider.Context(mc.getBlockEntityRenderDispatcher(), mc.getBlockRenderer(), mc.getItemRenderer(), mc.getEntityRenderDispatcher(), mc.getEntityModels(), mc.font));
 		}
 
 		if(dummyBe == null)

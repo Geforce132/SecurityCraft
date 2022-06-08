@@ -153,7 +153,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 
 			level.setBlock(pos, state.setValue(EXTENDED, true), 67);
 			level.playSound(null, pos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.25F + 0.6F);
-			level.gameEvent(GameEvent.PISTON_EXTEND, pos);
+			level.gameEvent(null, GameEvent.PISTON_EXTEND, pos);
 		}
 		else if (id == 1 || id == 2) {
 			if (ForgeEventFactory.onPistonMovePre(level, pos, direction, false))
@@ -195,6 +195,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				level.removeBlock(pos.relative(direction), false);
 
 			level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.15F + 0.6F);
+			level.gameEvent(null, GameEvent.PISTON_CONTRACT, pos);
 		}
 
 		ForgeEventFactory.onPistonMovePost(level, pos, direction, id == 0);

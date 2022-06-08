@@ -22,6 +22,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSourceImpl;
 import net.minecraft.core.Direction;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
@@ -59,7 +60,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.levelgen.SingleThreadedRandomSource;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -90,7 +91,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 	}
 
 	public void setupSentry(Player player) {
-		entityData.set(OWNER, new Owner(player.getName().getString(), Player.createPlayerUUID(player.getGameProfile()).toString()));
+		entityData.set(OWNER, new Owner(player.getName().getString(), UUIDUtil.getOrCreatePlayerUUID(player.getGameProfile()).toString()));
 		entityData.set(ALLOWLIST, new CompoundTag());
 		entityData.set(HAS_SPEED_MODULE, false);
 		entityData.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
@@ -540,7 +541,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 			List<String> players = ModuleUtils.getPlayersFromModule(allowlistModule);
 
 			for (String s : players) {
-				if (potentialTarget.getName().getContents().equalsIgnoreCase(s))
+				if (potentialTarget.getName().getString().equalsIgnoreCase(s))
 					return true;
 			}
 		}
