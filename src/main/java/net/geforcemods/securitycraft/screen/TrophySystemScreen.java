@@ -146,8 +146,7 @@ public class TrophySystemScreen extends Screen {
 				bufferBuilder.vertex(max - 1, slotTop + slotBuffer + 1, 0).uv(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 				bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 				bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-				bufferBuilder.end();
-				BufferUploader.end(bufferBuilder);
+				BufferUploader.drawWithShader(bufferBuilder.end());
 				RenderSystem.enableTexture();
 				RenderSystem.disableBlend();
 			}

@@ -94,7 +94,6 @@ public class ClientUtils {
 		bufferBuilder.vertex(m4f, moduleRight, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(1, 1).endVertex();
 		bufferBuilder.vertex(m4f, moduleRight, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(1, 0).endVertex();
 		bufferBuilder.vertex(m4f, moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(0, 0).endVertex();
-		bufferBuilder.end();
-		BufferUploader.end(bufferBuilder);
+		BufferUploader.drawWithShader(bufferBuilder.end());
 	}
 }
