@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Random;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.AbstractKeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadBlastFurnaceBlockEntity;
@@ -10,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -22,7 +21,7 @@ public class KeypadBlastFurnaceBlock extends AbstractKeypadFurnaceBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		if (state.getValue(LIT) && getDisguisedStateOrDefault(state, level, pos).getBlock() == this) {
 			double x = pos.getX() + 0.5D;
 			double y = pos.getY();

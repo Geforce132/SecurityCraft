@@ -1,11 +1,10 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -67,19 +66,19 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock {
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
 		if (state.getValue(LIT))
 			level.setBlock(pos, state.setValue(LIT, false), 3);
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		if (state.getValue(LIT))
 			spawnParticles(level, pos);
 	}
 
 	private static void spawnParticles(Level level, BlockPos pos) {
-		Random random = level.random;
+		RandomSource random = level.random;
 
 		for (Direction direction : Direction.values()) {
 			BlockPos offsetPos = pos.relative(direction);

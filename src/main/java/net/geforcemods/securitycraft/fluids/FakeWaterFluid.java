@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.fluids;
 
 import java.util.Optional;
-import java.util.Random;
 
 import javax.annotation.Nullable;
 
@@ -15,6 +14,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -66,7 +66,7 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 	}
 
 	@Override
-	public void animateTick(Level level, BlockPos pos, FluidState state, Random random) {
+	public void animateTick(Level level, BlockPos pos, FluidState state, RandomSource random) {
 		if (!state.isSource() && !state.getValue(FALLING)) {
 			if (random.nextInt(64) == 0)
 				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, random.nextFloat() * 0.25F + 0.75F, random.nextFloat() + 0.5F, false);

@@ -1,12 +1,11 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Random;
-
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -48,7 +47,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock 
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
 		BlockState upperState = level.getBlockState(pos);
 
 		if (!upperState.getValue(DoorBlock.OPEN))

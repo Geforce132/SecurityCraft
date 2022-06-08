@@ -1,10 +1,9 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,7 +14,7 @@ public class ReinforcedCryingObsidianBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		if (rand.nextInt(5) == 0) {
 			Direction direction = Direction.getRandom(rand);
 

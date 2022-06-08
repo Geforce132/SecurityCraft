@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -15,6 +14,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ForgeHooksClient;
 
@@ -41,7 +41,7 @@ public class BlockMineModel implements BakedModel {
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
+	public List<BakedQuad> getQuads(BlockState state, Direction side, RandomSource rand) {
 		return defaultModel == null ? new ArrayList<>() : defaultModel.getQuads(state, side, rand);
 	}
 

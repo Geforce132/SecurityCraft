@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.fluids;
 
 import java.util.Optional;
-import java.util.Random;
 
 import javax.annotation.Nullable;
 
@@ -15,6 +14,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
@@ -67,7 +67,7 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 	}
 
 	@Override
-	public void animateTick(Level level, BlockPos pos, FluidState state, Random random) {
+	public void animateTick(Level level, BlockPos pos, FluidState state, RandomSource random) {
 		BlockPos posAbove = pos.above();
 
 		if (level.getBlockState(posAbove).isAir() && !level.getBlockState(posAbove).isSolidRender(level, posAbove)) {
@@ -86,7 +86,7 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 	}
 
 	@Override
-	public void randomTick(Level level, BlockPos pos, FluidState state, Random random) {
+	public void randomTick(Level level, BlockPos pos, FluidState state, RandomSource random) {
 		if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
 			int i = random.nextInt(3);
 

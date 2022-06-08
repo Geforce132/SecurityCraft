@@ -1,9 +1,8 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -22,12 +21,12 @@ public class ReinforcedRootedDirtBlock extends BaseReinforcedBlock implements Bo
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level level, Random random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel level, Random random, BlockPos pos, BlockState state) {
+	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
 		level.setBlockAndUpdate(pos.below(), Blocks.HANGING_ROOTS.defaultBlockState());
 	}
 }

@@ -1,12 +1,11 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -33,7 +32,7 @@ public class FallingBlockMineBlock extends BaseFullMineBlock implements Fallable
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (FallingBlock.isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinBuildHeight()) {
 			BlockEntity be = level.getBlockEntity(pos);
 
@@ -44,7 +43,7 @@ public class FallingBlockMineBlock extends BaseFullMineBlock implements Fallable
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		if (rand.nextInt(16) == 0) {
 			if (FallingBlock.isFree(level.getBlockState(pos.below()))) {
 				double particleX = pos.getX() + rand.nextFloat();

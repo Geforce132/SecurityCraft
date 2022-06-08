@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.entity;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -35,6 +34,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -59,6 +59,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.levelgen.SingleThreadedRandomSource;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -632,7 +633,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 
 	//this last code is here so the ai task gets executed, which it doesn't for some weird reason
 	@Override
-	public Random getRandom() {
+	public RandomSource getRandom() {
 		return notRandom;
 	}
 
@@ -641,9 +642,13 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 		return new ClientboundAddEntityPacket(this);
 	}
 
-	private static Random notRandom = new NotRandom();
+	private static RandomSource notRandom = new NotRandom();
 
-	private static class NotRandom extends Random {
+	private static class NotRandom extends SingleThreadedRandomSource {
+		public NotRandom() {
+			super(0);
+		}
+
 		@Override
 		public int nextInt(int bound) {
 			return 0;
