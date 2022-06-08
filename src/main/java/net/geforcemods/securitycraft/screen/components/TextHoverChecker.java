@@ -14,9 +14,9 @@ public class TextHoverChecker extends HoverChecker {
 		this(top, bottom, left, right, Arrays.asList(line));
 	}
 
-	public TextHoverChecker(int top, int bottom, int left, int right, List<Component> lines) {
+	public TextHoverChecker(int top, int bottom, int left, int right, List<? extends Component> lines) {
 		super(top, bottom, left, right);
-		this.lines = lines;
+		this.lines = lines.stream().map(component -> (Component) component).toList();
 		button = null;
 	}
 
@@ -24,9 +24,9 @@ public class TextHoverChecker extends HoverChecker {
 		this(widget, Arrays.asList(line));
 	}
 
-	public TextHoverChecker(AbstractWidget widget, List<Component> lines) {
+	public TextHoverChecker(AbstractWidget widget, List<? extends Component> lines) {
 		super(widget);
-		this.lines = lines;
+		this.lines = lines.stream().map(component -> (Component) component).toList();
 		this.button = widget instanceof IToggleableButton tb ? tb : null;
 	}
 
