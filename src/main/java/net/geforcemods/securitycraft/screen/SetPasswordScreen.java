@@ -13,8 +13,6 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
@@ -26,8 +24,8 @@ public class SetPasswordScreen extends Screen {
 	private int leftPos;
 	private int topPos;
 	private BlockEntity be;
-	private TranslatableComponent blockName;
-	private TranslatableComponent setup;
+	private Component blockName;
+	private Component setup;
 	private MutableComponent combined;
 	private EditBox keycodeTextbox;
 
@@ -36,7 +34,7 @@ public class SetPasswordScreen extends Screen {
 		this.be = be;
 		blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
 		setup = Utils.localize("gui.securitycraft:password.setup");
-		combined = blockName.plainCopy().append(new TextComponent(" ")).append(setup);
+		combined = blockName.plainCopy().append(Component.literal(" ")).append(setup);
 	}
 
 	@Override
@@ -51,7 +49,7 @@ public class SetPasswordScreen extends Screen {
 		saveAndContinueButton.active = false;
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 47, 77, 12, TextComponent.EMPTY));
+		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 47, 77, 12, Component.empty()));
 		keycodeTextbox.setMaxLength(20);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = !text.isEmpty());

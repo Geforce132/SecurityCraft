@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -94,9 +93,9 @@ public class MineRemoteAccessToolItem extends Item {
 			int[] coords = stack.getTag().getIntArray("mine" + i);
 
 			if (coords.length != 3)
-				list.add(new TextComponent(ChatFormatting.GRAY + "---"));
+				list.add(Component.literal(ChatFormatting.GRAY + "---"));
 			else
-				list.add(Utils.localize("tooltip.securitycraft:mine").append(new TextComponent(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft:mine").append(Component.literal(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
 		}
 	}
 

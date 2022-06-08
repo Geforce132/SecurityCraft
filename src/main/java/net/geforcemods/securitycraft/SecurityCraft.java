@@ -29,7 +29,7 @@ import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -133,7 +133,7 @@ public class SecurityCraft {
 					Item item = ((ItemLike) o).asItem();
 					PageGroup group = hmp.value();
 					boolean wasNotAdded = false;
-					TranslatableComponent title = new TranslatableComponent("");
+					Component title = Component.translatable("");
 					String key = "help.";
 
 					if (group != PageGroup.NONE) {
@@ -152,7 +152,7 @@ public class SecurityCraft {
 					}
 
 					if (group == PageGroup.NONE || wasNotAdded)
-						SCManualItem.PAGES.add(new SCManualPage(item, group, title, new TranslatableComponent(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
+						SCManualItem.PAGES.add(new SCManualPage(item, group, title, Component.translatable(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
 				}
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {

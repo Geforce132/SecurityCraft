@@ -13,10 +13,9 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -73,7 +72,7 @@ public class AdminToolItem extends Item {
 						PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.equippedModules"), ChatFormatting.DARK_PURPLE);
 
 						for (ModuleType module : modules) {
-							PlayerUtils.sendMessageToPlayer(player, adminToolName, new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())), ChatFormatting.DARK_PURPLE);
+							PlayerUtils.sendMessageToPlayer(player, adminToolName, Component.literal("- ").append(Component.translatable(module.getTranslationKey())), ChatFormatting.DARK_PURPLE);
 						}
 
 						hasInfo = true;
@@ -81,7 +80,7 @@ public class AdminToolItem extends Item {
 				}
 
 				if (be instanceof SecretSignBlockEntity signTe) {
-					PlayerUtils.sendMessageToPlayer(player, adminToolName, new TextComponent(""), ChatFormatting.DARK_PURPLE); //EMPTY
+					PlayerUtils.sendMessageToPlayer(player, adminToolName, Component.literal(""), ChatFormatting.DARK_PURPLE); //EMPTY
 
 					for (int i = 0; i < 4; i++) {
 						FormattedText text = signTe.getMessage(i, false);

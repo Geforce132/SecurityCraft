@@ -85,7 +85,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Inventory;
@@ -521,13 +520,13 @@ public class ClientHandler {
 	}
 
 	public static void displayCheckPasswordScreen(BlockEntity be) {
-		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : new TranslatableComponent(be.getBlockState().getBlock().getDescriptionId());
+		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
 		Minecraft.getInstance().setScreen(new CheckPasswordScreen(be, displayName));
 	}
 
 	public static void displaySetPasswordScreen(BlockEntity be) {
-		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : new TranslatableComponent(be.getBlockState().getBlock().getDescriptionId());
+		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
 		Minecraft.getInstance().setScreen(new SetPasswordScreen(be, displayName));
 	}

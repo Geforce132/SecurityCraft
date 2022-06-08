@@ -22,7 +22,6 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
@@ -31,10 +30,10 @@ import net.minecraftforge.client.gui.ScrollPanel;
 public class TrophySystemScreen extends Screen {
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
-	private final TranslatableComponent projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
-	private final TranslatableComponent moduleRequired = Utils.localize("gui.securitycraft:trophy_system.moduleRequired");
-	private final TranslatableComponent toggle = Utils.localize("gui.securitycraft:trophy_system.toggle");
-	private final TranslatableComponent moddedProjectiles = Utils.localize("gui.securitycraft:trophy_system.moddedProjectiles");
+	private final Component projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
+	private final Component moduleRequired = Utils.localize("gui.securitycraft:trophy_system.moduleRequired");
+	private final Component toggle = Utils.localize("gui.securitycraft:trophy_system.toggle");
+	private final Component moddedProjectiles = Utils.localize("gui.securitycraft:trophy_system.moddedProjectiles");
 	private int imageWidth = 176;
 	private int imageHeight = 166;
 	private int leftPos;
@@ -45,7 +44,7 @@ public class TrophySystemScreen extends Screen {
 	private ProjectileScrollList projectileList;
 
 	public TrophySystemScreen(TrophySystemBlockEntity be) {
-		super(new TranslatableComponent(SCContent.TROPHY_SYSTEM.get().getDescriptionId()));
+		super(Component.translatable(SCContent.TROPHY_SYSTEM.get().getDescriptionId()));
 
 		this.be = be;
 		isSmart = be.isModuleEnabled(ModuleType.SMART);

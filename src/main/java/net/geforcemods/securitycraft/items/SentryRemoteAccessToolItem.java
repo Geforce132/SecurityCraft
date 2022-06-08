@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -102,7 +101,7 @@ public class SentryRemoteAccessToolItem extends Item {
 			int[] coords = stack.getTag().getIntArray("sentry" + i);
 
 			if (coords.length != 3)
-				tooltip.add(new TextComponent(ChatFormatting.GRAY + "---"));
+				tooltip.add(Component.literal(ChatFormatting.GRAY + "---"));
 			else {
 				BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
 				List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(pos));
@@ -113,7 +112,7 @@ public class SentryRemoteAccessToolItem extends Item {
 				else
 					nameToShow = Utils.localize("tooltip.securitycraft:sentry").getString() + " " + i;
 
-				tooltip.add(new TextComponent(ChatFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));
+				tooltip.add(Component.literal(ChatFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));
 			}
 		}
 	}

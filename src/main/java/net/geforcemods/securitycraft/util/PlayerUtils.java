@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.commands.CommandSource;
@@ -21,7 +20,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -100,12 +98,13 @@ public class PlayerUtils {
 	}
 
 	public static void sendMessageToPlayer(Player player, MutableComponent prefix, MutableComponent text, ChatFormatting color, boolean shouldSendFromClient) {
+		//TODO: is this still formatted with color etc.?
 		if (player.level.isClientSide == shouldSendFromClient) {
 			//@formatter:off
-			player.sendMessage(new TextComponent("[")
+			player.sendSystemMessage(Component.literal("[")
 					.append(prefix.setStyle(Style.EMPTY.withColor(color)))
-					.append(new TextComponent("] ")).setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE))
-					.append(text), Util.NIL_UUID); //appendSibling
+					.append(Component.literal("] ")).setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE))
+					.append(text));
 			//@formatter:on
 		}
 	}
@@ -114,13 +113,14 @@ public class PlayerUtils {
 	 * Sends the given {@link ICommandSource} a chat message, followed by a link prefixed with a colon. <p>
 	 */
 	public static void sendMessageEndingWithLink(CommandSource sender, MutableComponent prefix, MutableComponent text, String link, ChatFormatting color) {
+		//TODO: is this still formatted with color etc.?
 		//@formatter:off
-		sender.sendMessage(new TextComponent("[")
+		sender.sendSystemMessage(Component.literal("[")
 				.append(prefix.setStyle(Style.EMPTY.withColor(color)))
-				.append(new TextComponent("] ")).setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE))
+				.append(Component.literal("] ")).setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE))
 				.append(text)
-				.append(new TextComponent(": "))
-				.append(ForgeHooks.newChatWithLinks(link)), Util.NIL_UUID); //appendSibling
+				.append(Component.literal(": "))
+				.append(ForgeHooks.newChatWithLinks(link)));
 		//@formatter:on
 	}
 
@@ -244,7 +244,7 @@ public class PlayerUtils {
 				return Utils.localize("messages.securitycraft:teamOwner", team.getDisplayName().copy().withStyle(team.getColor()));
 		}
 
-		return new TextComponent(ownerName);
+		return Component.literal(ownerName);
 	}
 
 	/**

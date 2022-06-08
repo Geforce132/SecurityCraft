@@ -4,7 +4,6 @@ import java.util.function.IntFunction;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class ToggleComponentButton extends ExtendedButton implements IToggleableButton {
@@ -13,7 +12,7 @@ public class ToggleComponentButton extends ExtendedButton implements IToggleable
 	private final int toggleCount;
 
 	public ToggleComponentButton(int xPos, int yPos, int width, int height, IntFunction<Component> onValueChange, int initialValue, int toggleCount, OnPress onPress) {
-		super(xPos, yPos, width, height, TextComponent.EMPTY, onPress);
+		super(xPos, yPos, width, height, Component.empty(), onPress);
 
 		this.onValueChange = onValueChange;
 		this.currentIndex = initialValue;

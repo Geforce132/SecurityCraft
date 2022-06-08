@@ -5,12 +5,11 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter {
-	private Component customName = TextComponent.EMPTY;
+	private Component customName = Component.empty();
 
 	public NamedBlockEntity(BlockPos pos, BlockState state) {
 		this(SCContent.ABSTRACT_BLOCK_ENTITY.get(), pos, state);
@@ -34,7 +33,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 			String name = tag.getString("customName");
 
 			if (!name.equals("name"))
-				customName = new TextComponent(name);
+				customName = Component.literal(name);
 		}
 	}
 
@@ -47,7 +46,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 	public boolean hasCustomName() {
 		Component name = getCustomName();
 
-		return name != null && !TextComponent.EMPTY.equals(name) && !getDefaultName().equals(name);
+		return name != null && !Component.empty().equals(name) && !getDefaultName().equals(name);
 	}
 
 	@Override

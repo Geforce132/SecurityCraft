@@ -13,13 +13,12 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public class IMSScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslatableComponent imsName = Utils.localize(SCContent.IMS.get().getDescriptionId());
-	private final TranslatableComponent target = Utils.localize("gui.securitycraft:ims.target");
+	private final Component imsName = Utils.localize(SCContent.IMS.get().getDescriptionId());
+	private final Component target = Utils.localize("gui.securitycraft:ims.target");
 	private int imageWidth = 176;
 	private int imageHeight = 166;
 	private int leftPos;

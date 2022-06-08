@@ -17,14 +17,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSecuritySystemBlockEntity> {
 	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/sonic_security_system.png");
-	private static final TranslatableComponent RECORDING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.recording");
-	private static final TranslatableComponent LISTENING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.listening");
+	private static final Component RECORDING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.recording");
+	private static final Component LISTENING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.listening");
 	private final SonicSecuritySystemModel model;
 
 	public SonicSecuritySystemRenderer(BlockEntityRendererProvider.Context ctx) {
@@ -38,7 +38,7 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 		pose.translate(0.5D, 1.5D, 0.5D);
 
 		if (recording || be.isListening()) {
-			TranslatableComponent text = recording ? RECORDING_TEXT : LISTENING_TEXT;
+			Component text = recording ? RECORDING_TEXT : LISTENING_TEXT;
 			float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
 			int j = (int) (f1 * 255.0F) << 24;
 			Font fontRenderer = Minecraft.getInstance().font;

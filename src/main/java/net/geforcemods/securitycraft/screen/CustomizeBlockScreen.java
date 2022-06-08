@@ -32,8 +32,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -60,7 +58,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private AbstractWidget[] optionButtons = new AbstractWidget[5];
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 	private final String blockName;
-	private final TranslatableComponent name;
+	private final Component name;
 	private final int maxNumberOfModules;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
@@ -103,12 +101,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 					if (option.isSlider()) {
 						if (option instanceof DoubleOption doubleOption)
-							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize("option" + blockName + "." + option.getName(), ""), TextComponent.EMPTY, doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize("option" + blockName + "." + option.getName(), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
 								SecurityCraft.channel.sendToServer(new UpdateSliderValue(doubleOption.getPos(), option, doubleOption.get()));
 							});
 						else if (option instanceof IntOption intOption)
-							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize("option" + blockName + "." + option.getName(), ""), TextComponent.EMPTY, intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize("option" + blockName + "." + option.getName(), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
 								SecurityCraft.channel.sendToServer(new UpdateSliderValue(intOption.getPos(), option, intOption.get()));
 							});
@@ -233,18 +231,18 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		String moduleDescription = "module" + blockName + "." + descriptionButtons[moduleId].getItemStack().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description";
 
 		return Utils.localize(descriptionButtons[moduleId].getItemStack().getDescriptionId())
-				.append(new TextComponent(":"))
+				.append(Component.literal(":"))
 				.withStyle(ChatFormatting.RESET)
-				.append(new TextComponent("\n\n"))
+				.append(Component.literal("\n\n"))
 				.append(Utils.localize(moduleDescription));
 		//@formatter:on
 	}
 
-	private TranslatableComponent getOptionDescription(int optionId) {
+	private Component getOptionDescription(int optionId) {
 		Option<?> option = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[optionId];
 		String optionDescription = "option" + blockName + "." + option.getName() + ".description";
 
-		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslatableComponent(optionDescription), new TranslatableComponent("gui.securitycraft:customize.currentSetting", getValueText(option)));
+		return Utils.localize("gui.securitycraft:customize.tooltip", Component.translatable(optionDescription), Component.translatable("gui.securitycraft:customize.currentSetting", getValueText(option)));
 	}
 
 	private Component getOptionButtonTitle(Option<?> option) {
@@ -253,9 +251,9 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 	private Component getValueText(Option<?> option) {
 		if (option instanceof BooleanOption booleanOption)
-			return new TranslatableComponent(booleanOption.get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
+			return Component.translatable(booleanOption.get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
 		else
-			return new TextComponent(option.toString());
+			return Component.literal(option.toString());
 	}
 
 	@Override

@@ -19,16 +19,15 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class UsernameLoggerScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslatableComponent logged = Utils.localize("gui.securitycraft:logger.logged");
-	private final TranslatableComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
+	private final Component logged = Utils.localize("gui.securitycraft:logger.logged");
+	private final Component clear = Utils.localize("gui.securitycraft:editModule.clear");
 	private int imageWidth = 176;
 	private int imageHeight = 166;
 	private int leftPos;
@@ -47,7 +46,7 @@ public class UsernameLoggerScreen extends Screen {
 
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
-		addRenderableWidget(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, new TextComponent("x"), b -> {
+		addRenderableWidget(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, Component.literal("x"), b -> {
 			be.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(be.getBlockPos()));
 		})).active = be.getOwner().isOwner(minecraft.player);
@@ -120,10 +119,10 @@ public class UsernameLoggerScreen extends Screen {
 
 				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
 					if (be.players[slotIndex] != null && !be.players[slotIndex].isEmpty()) {
-						TranslatableComponent localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(be.timestamps[slotIndex])));
+						Component localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(be.timestamps[slotIndex])));
 
 						if (be.uuids[slotIndex] != null && !be.uuids[slotIndex].isEmpty())
-							renderTooltip(pose, new TextComponent(be.uuids[slotIndex]), mouseX, mouseY);
+							renderTooltip(pose, Component.literal(be.uuids[slotIndex]), mouseX, mouseY);
 
 						font.draw(pose, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752);
 					}

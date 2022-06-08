@@ -45,7 +45,8 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -190,7 +191,7 @@ public class SCEventHandler {
 
 		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), event.getPlayer())) {
 			if (event.getHand() == InteractionHand.MAIN_HAND) {
-				TranslatableComponent blockName = Utils.localize(block.getDescriptionId());
+				MutableComponent blockName = Utils.localize(block.getDescriptionId());
 
 				PlayerUtils.sendMessageToPlayer(event.getPlayer(), blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
 			}
@@ -223,7 +224,7 @@ public class SCEventHandler {
 				event.setCancellationResult(InteractionResult.SUCCESS);
 
 				if (nameable.getCustomName().equals(nametag.getHoverName())) {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getCustomName()), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), Component.translatable(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getCustomName()), ChatFormatting.RED);
 					return;
 				}
 
@@ -231,7 +232,7 @@ public class SCEventHandler {
 					nametag.shrink(1);
 
 				nameable.setCustomName(nametag.getHoverName());
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomName()), ChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Component.translatable(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomName()), ChatFormatting.RED);
 				return;
 			}
 		}
@@ -418,7 +419,7 @@ public class SCEventHandler {
 				if (event.getPlayer().isCreative() || new Random().nextDouble() < chance)
 					return codebreakable.onCodebreakerUsed(level.getBlockState(event.getPos()), event.getPlayer());
 				else {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslatableComponent(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
 					return true;
 				}
 			}

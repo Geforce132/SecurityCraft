@@ -20,15 +20,13 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class CameraMonitorScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslatableComponent selectCameras = Utils.localize("gui.securitycraft:monitor.selectCameras");
+	private final Component selectCameras = Utils.localize("gui.securitycraft:monitor.selectCameras");
 	private Inventory playerInventory;
 	private CameraMonitorItem cameraMonitor;
 	private CompoundTag nbtTag;
@@ -41,7 +39,7 @@ public class CameraMonitorScreen extends Screen {
 	private int page = 1;
 
 	public CameraMonitorScreen(Inventory inventory, CameraMonitorItem item, CompoundTag itemNBTTag) {
-		super(new TranslatableComponent(SCContent.CAMERA_MONITOR.get().getDescriptionId()));
+		super(Component.translatable(SCContent.CAMERA_MONITOR.get().getDescriptionId()));
 		playerInventory = inventory;
 		cameraMonitor = item;
 		nbtTag = itemNBTTag;
@@ -56,20 +54,20 @@ public class CameraMonitorScreen extends Screen {
 	public void init() {
 		super.init();
 
-		Button prevPageButton = addRenderableWidget(new ExtendedButton(width / 2 - 68, height / 2 + 40, 20, 20, new TextComponent("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1))));
-		Button nextPageButton = addRenderableWidget(new ExtendedButton(width / 2 + 52, height / 2 + 40, 20, 20, new TextComponent(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1))));
-		TextComponent x = new TextComponent("x");
+		Button prevPageButton = addRenderableWidget(new ExtendedButton(width / 2 - 68, height / 2 + 40, 20, 20, Component.literal("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1))));
+		Button nextPageButton = addRenderableWidget(new ExtendedButton(width / 2 + 52, height / 2 + 40, 20, 20, Component.literal(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1))));
+		Component x = Component.literal("x");
 
-		cameraButtons[0] = new CameraButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[1] = new CameraButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[2] = new CameraButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[3] = new CameraButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[4] = new CameraButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[5] = new CameraButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[6] = new CameraButton(7, width / 2 - 38, height / 2 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[7] = new CameraButton(8, width / 2 - 8, height / 2 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[8] = new CameraButton(9, width / 2 + 22, height / 2 + 10, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked);
-		cameraButtons[9] = new CameraButton(10, width / 2 - 38, height / 2 + 40, 80, 20, TextComponent.EMPTY, this::cameraButtonClicked);
+		cameraButtons[0] = new CameraButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, Component.empty(), this::cameraButtonClicked);
+		cameraButtons[1] = new CameraButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, Component.empty(), this::cameraButtonClicked);
+		cameraButtons[2] = new CameraButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, Component.empty(), this::cameraButtonClicked);
+		cameraButtons[3] = new CameraButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, Component.empty(), this::cameraButtonClicked);
+		cameraButtons[4] = new CameraButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, Component.empty(), this::cameraButtonClicked);
+		cameraButtons[5] = new CameraButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, Component.empty(), this::cameraButtonClicked);
+		cameraButtons[6] = new CameraButton(7, width / 2 - 38, height / 2 + 10, 20, 20, Component.empty(), this::cameraButtonClicked);
+		cameraButtons[7] = new CameraButton(8, width / 2 - 8, height / 2 + 10, 20, 20, Component.empty(), this::cameraButtonClicked);
+		cameraButtons[8] = new CameraButton(9, width / 2 + 22, height / 2 + 10, 20, 20, Component.empty(), this::cameraButtonClicked);
+		cameraButtons[9] = new CameraButton(10, width / 2 - 38, height / 2 + 40, 80, 20, Component.empty(), this::cameraButtonClicked);
 
 		unbindButtons[0] = new CameraButton(1, width / 2 - 19, height / 2 - 68 + 10, 8, 8, x, this::unbindButtonClicked);
 		unbindButtons[1] = new CameraButton(2, width / 2 + 11, height / 2 - 68 + 10, 8, 8, x, this::unbindButtonClicked);
@@ -88,7 +86,7 @@ public class CameraMonitorScreen extends Screen {
 			ArrayList<GlobalPos> views = cameraMonitor.getCameraPositions(nbtTag);
 			GlobalPos view = views.get(camID - 1);
 
-			button.setMessage(button.getMessage().plainCopy().append(new TextComponent("" + camID)));
+			button.setMessage(button.getMessage().plainCopy().append(Component.literal("" + camID)));
 			addRenderableWidget(button);
 
 			if (view != null) {

@@ -21,7 +21,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -68,11 +68,11 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 			if (!owner.isValidated()) {
 				if (owner.isOwner(player)) {
 					owner.setValidated(true);
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), new TranslatableComponent("messages.securitycraft:ownable.validate"), ChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Component.translatable("messages.securitycraft:ownable.validate"), ChatFormatting.GREEN);
 					return InteractionResult.SUCCESS;
 				}
 
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), new TranslatableComponent("messages.securitycraft:ownable.ownerNotValidated"), ChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Component.translatable("messages.securitycraft:ownable.ownerNotValidated"), ChatFormatting.RED);
 				return InteractionResult.SUCCESS;
 			}
 		}

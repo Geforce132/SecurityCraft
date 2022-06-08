@@ -9,10 +9,9 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.VersionChecker;
@@ -43,9 +42,9 @@ public class SendTip {
 
 			//@formatter:off
 			String tipKey = getRandomTip();
-			MutableComponent message = new TextComponent("[")
-					.append(new TextComponent("SecurityCraft").withStyle(ChatFormatting.GOLD))
-					.append(new TextComponent("] "))
+			MutableComponent message = Component.literal("[")
+					.append(Component.literal("SecurityCraft").withStyle(ChatFormatting.GOLD))
+					.append(Component.literal("] "))
 					.append(Utils.localize("messages.securitycraft:thanks",
 							SecurityCraft.getVersion(),
 							Utils.localize("messages.securitycraft:tip"),
@@ -55,7 +54,7 @@ public class SendTip {
 			if (tipsWithLink.containsKey(tipKey.split("\\.")[2]))
 				message = message.append(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 
-			ClientHandler.getClientPlayer().sendMessage(message, Util.NIL_UUID);
+			ClientHandler.getClientPlayer().sendSystemMessage(message);
 		});
 
 		ctx.get().setPacketHandled(true);

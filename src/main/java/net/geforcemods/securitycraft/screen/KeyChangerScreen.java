@@ -14,17 +14,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class KeyChangerScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslatableComponent ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId());
-	private final TranslatableComponent enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode");
-	private final TranslatableComponent confirmPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode");
+	private final Component ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId());
+	private final Component enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode");
+	private final Component confirmPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode");
 	private int imageWidth = 176;
 	private int imageHeight = 166;
 	private int leftPos;
@@ -35,7 +34,7 @@ public class KeyChangerScreen extends Screen {
 	private BlockEntity be;
 
 	public KeyChangerScreen(BlockEntity be) {
-		super(new TranslatableComponent(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()));
+		super(Component.translatable(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()));
 		this.be = be;
 	}
 
@@ -50,13 +49,13 @@ public class KeyChangerScreen extends Screen {
 		addRenderableWidget(confirmButton = new ExtendedButton(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::confirmButtonClicked));
 		confirmButton.active = false;
 
-		addRenderableWidget(textboxNewPasscode = new EditBox(font, width / 2 - 57, height / 2 - 47, 110, 12, TextComponent.EMPTY));
+		addRenderableWidget(textboxNewPasscode = new EditBox(font, width / 2 - 57, height / 2 - 47, 110, 12, Component.empty()));
 		textboxNewPasscode.setMaxLength(20);
 		setInitialFocus(textboxNewPasscode);
 		textboxNewPasscode.setFilter(s -> s.matches("[0-9]*"));
 		textboxNewPasscode.setResponder(s -> updateConfirmButtonState());
 
-		addRenderableWidget(textboxConfirmPasscode = new EditBox(font, width / 2 - 57, height / 2 - 7, 110, 12, TextComponent.EMPTY));
+		addRenderableWidget(textboxConfirmPasscode = new EditBox(font, width / 2 - 57, height / 2 - 7, 110, 12, Component.empty()));
 		textboxConfirmPasscode.setMaxLength(20);
 		textboxConfirmPasscode.setFilter(s -> s.matches("[0-9]*"));
 		textboxConfirmPasscode.setResponder(s -> updateConfirmButtonState());

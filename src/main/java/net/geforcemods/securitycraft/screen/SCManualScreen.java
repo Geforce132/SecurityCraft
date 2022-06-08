@@ -53,8 +53,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.BlockItem;
@@ -80,7 +78,7 @@ public class SCManualScreen extends Screen {
 	private static final int SUBPAGE_LENGTH = 1285;
 	private static int lastPage = -1;
 	private final MutableComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.withUnderlined(true));
-	private final TranslatableComponent ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
+	private final Component ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
 	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private int currentPage = lastPage;
 	private NonNullList<Ingredient> recipe;
@@ -96,11 +94,11 @@ public class SCManualScreen extends Screen {
 	private Button previousSubpage;
 	private boolean explosive, ownable, passwordProtected, viewActivated, customizable, lockable, moduleInventory;
 	private IngredientDisplay pageIcon;
-	private TranslatableComponent pageTitle, designedBy;
+	private Component pageTitle, designedBy;
 	private PageGroup pageGroup = PageGroup.NONE;
 
 	public SCManualScreen() {
-		super(new TranslatableComponent(SCContent.SC_MANUAL.get().getDescriptionId()));
+		super(Component.translatable(SCContent.SC_MANUAL.get().getDescriptionId()));
 	}
 
 	@Override
@@ -113,7 +111,7 @@ public class SCManualScreen extends Screen {
 		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, false, b -> previousPage()));
 		addRenderableWidget(nextSubpage = new ChangePageButton(startX + 180, startY + 97, true, b -> nextSubpage()));
 		addRenderableWidget(previousSubpage = new ChangePageButton(startX + 155, startY + 97, false, b -> previousSubpage()));
-		addRenderableWidget(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, TextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
+		addRenderableWidget(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, Component.empty(), b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
 		addRenderableWidget(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
 
 		for (int i = 0; i < 3; i++) {
@@ -496,11 +494,11 @@ public class SCManualScreen extends Screen {
 
 						customizable = true;
 						display.add(Utils.localize("gui.securitycraft:scManual.options"));
-						display.add(new TextComponent("---"));
+						display.add(Component.literal("---"));
 
 						for (Option<?> option : options) {
-							display.add(new TextComponent("- ").append(Utils.localize("option" + block.getDescriptionId().substring(5) + "." + option.getName() + ".description")));
-							display.add(TextComponent.EMPTY);
+							display.add(Component.literal("- ").append(Utils.localize("option" + block.getDescriptionId().substring(5) + "." + option.getName() + ".description")));
+							display.add(Component.empty());
 						}
 
 						display.remove(display.size() - 1);
@@ -513,11 +511,11 @@ public class SCManualScreen extends Screen {
 
 					moduleInventory = true;
 					display.add(Utils.localize("gui.securitycraft:scManual.modules"));
-					display.add(new TextComponent("---"));
+					display.add(Component.literal("---"));
 
 					for (ModuleType module : moduleInv.acceptedModules()) {
-						display.add(new TextComponent("- ").append(Utils.localize("module" + block.getDescriptionId().substring(5) + "." + module.getItem().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description")));
-						display.add(TextComponent.EMPTY);
+						display.add(Component.literal("- ").append(Utils.localize("module" + block.getDescriptionId().substring(5) + "." + module.getItem().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description")));
+						display.add(Component.empty());
 					}
 
 					display.remove(display.size() - 1);
@@ -636,7 +634,7 @@ public class SCManualScreen extends Screen {
 						int baseY = top + border - (int) scrollDistance;
 
 						if (length >= width - 6) //6 = barWidth
-							renderTooltip(pose, List.of(new TextComponent(patron)), Optional.empty(), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
+							renderTooltip(pose, List.of(Component.literal(patron)), Optional.empty(), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
 					}
 
 					if (patrons.isEmpty()) {
@@ -709,7 +707,7 @@ public class SCManualScreen extends Screen {
 		private final int textureY;
 
 		public ChangePageButton(int xPos, int yPos, boolean forward, OnPress onPress) {
-			super(xPos, yPos, 23, 13, TextComponent.EMPTY, onPress);
+			super(xPos, yPos, 23, 13, Component.empty(), onPress);
 			textureY = forward ? 192 : 205;
 		}
 

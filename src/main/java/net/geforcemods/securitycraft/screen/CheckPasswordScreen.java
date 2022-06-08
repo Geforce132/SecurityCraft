@@ -12,8 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,7 +27,7 @@ public class CheckPasswordScreen extends Screen {
 	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
-	private TranslatableComponent blockName;
+	private Component blockName;
 	private EditBox keycodeTextbox;
 	private String currentString = "";
 	private static final int MAX_CHARS = 20;
@@ -48,19 +46,19 @@ public class CheckPasswordScreen extends Screen {
 		topPos = (height - imageHeight) / 2;
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 30 + 10, 80, 20, new TextComponent("0"), b -> addNumberToString(0)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 60 + 10, 20, 20, new TextComponent("1"), b -> addNumberToString(1)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 60 + 10, 20, 20, new TextComponent("2"), b -> addNumberToString(2)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 - 60 + 10, 20, 20, new TextComponent("3"), b -> addNumberToString(3)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 30 + 10, 20, 20, new TextComponent("4"), b -> addNumberToString(4)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 30 + 10, 20, 20, new TextComponent("5"), b -> addNumberToString(5)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 - 30 + 10, 20, 20, new TextComponent("6"), b -> addNumberToString(6)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 10, 20, 20, new TextComponent("7"), b -> addNumberToString(7)));
-		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 10, 20, 20, new TextComponent("8"), b -> addNumberToString(8)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 + 10, 20, 20, new TextComponent("9"), b -> addNumberToString(9)));
-		addRenderableWidget(new ExtendedButton(width / 2 + 48, height / 2 + 30 + 10, 25, 20, new TextComponent("<-"), b -> removeLastCharacter()));
+		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 30 + 10, 80, 20, Component.literal("0"), b -> addNumberToString(0)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 60 + 10, 20, 20, Component.literal("1"), b -> addNumberToString(1)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 60 + 10, 20, 20, Component.literal("2"), b -> addNumberToString(2)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 - 60 + 10, 20, 20, Component.literal("3"), b -> addNumberToString(3)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 - 30 + 10, 20, 20, Component.literal("4"), b -> addNumberToString(4)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 - 30 + 10, 20, 20, Component.literal("5"), b -> addNumberToString(5)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 - 30 + 10, 20, 20, Component.literal("6"), b -> addNumberToString(6)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 38, height / 2 + 10, 20, 20, Component.literal("7"), b -> addNumberToString(7)));
+		addRenderableWidget(new ExtendedButton(width / 2 - 8, height / 2 + 10, 20, 20, Component.literal("8"), b -> addNumberToString(8)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 22, height / 2 + 10, 20, 20, Component.literal("9"), b -> addNumberToString(9)));
+		addRenderableWidget(new ExtendedButton(width / 2 + 48, height / 2 + 30 + 10, 25, 20, Component.literal("<-"), b -> removeLastCharacter()));
 
-		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 67, 77, 12, TextComponent.EMPTY));
+		addRenderableWidget(keycodeTextbox = new EditBox(font, width / 2 - 37, height / 2 - 67, 77, 12, Component.empty()));
 		keycodeTextbox.setMaxLength(MAX_CHARS);
 		keycodeTextbox.setFilter(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
 		setInitialFocus(keycodeTextbox);

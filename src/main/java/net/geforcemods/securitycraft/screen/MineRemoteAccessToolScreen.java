@@ -19,8 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -30,18 +29,18 @@ import net.minecraftforge.client.gui.widget.ExtendedButton;
 public class MineRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
-	private final TranslatableComponent mratName = Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId());
+	private final Component mratName = Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId());
 	private ItemStack mrat;
 	private Button[][] guiButtons = new Button[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 	private int xSize = 256, ySize = 184;
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
-	private final TranslatableComponent notBound = Utils.localize("gui.securitycraft:mrat.notBound");
-	private final TranslatableComponent[] lines = new TranslatableComponent[6];
+	private final Component notBound = Utils.localize("gui.securitycraft:mrat.notBound");
+	private final Component[] lines = new Component[6];
 	private final int[] lengths = new int[6];
 
 	public MineRemoteAccessToolScreen(ItemStack item) {
-		super(new TranslatableComponent(item.getDescriptionId()));
+		super(Component.translatable(item.getDescriptionId()));
 
 		mrat = item;
 	}
@@ -86,7 +85,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
-						guiButtons[i][j] = new ExtendedButton(btnX, btnY, 20, 20, new TextComponent("X"), b -> buttonClicked(mine, action));
+						guiButtons[i][j] = new ExtendedButton(btnX, btnY, 20, 20, Component.literal("X"), b -> buttonClicked(mine, action));
 						guiButtons[i][j].active = false;
 						break;
 				}

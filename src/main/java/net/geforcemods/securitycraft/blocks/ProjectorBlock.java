@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -38,7 +37,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 
 public class ProjectorBlock extends DisguisableBlock {
-	private static final MutableComponent TOOLTIP = new TranslatableComponent("tooltip.securitycraft:projector").setStyle(Utils.GRAY_STYLE);
+	private static final MutableComponent TOOLTIP = Component.translatable("tooltip.securitycraft:projector").setStyle(Utils.GRAY_STYLE);
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
 	private static final VoxelShape FLOOR_NORTH = Shapes.or(Block.box(12, 0, 12, 15, 2, 15), Block.box(1, 2, 1, 15, 7, 15), Block.box(9, 2, 15, 14, 7, 16), Block.box(12, 0, 1, 15, 2, 4), Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 0, 12, 4, 2, 15));
@@ -69,14 +68,14 @@ public class ProjectorBlock extends DisguisableBlock {
 				case WEST -> FLOOR_WEST;
 				default -> Shapes.block();
 			};
-		else
-			return switch (disguisedState.getValue(FACING)) {
-				case NORTH -> CEILING_NORTH;
-				case EAST -> CEILING_EAST;
-				case SOUTH -> CEILING_SOUTH;
-				case WEST -> CEILING_WEST;
-				default -> Shapes.block();
-			};
+			else
+				return switch (disguisedState.getValue(FACING)) {
+					case NORTH -> CEILING_NORTH;
+					case EAST -> CEILING_EAST;
+					case SOUTH -> CEILING_SOUTH;
+					case WEST -> CEILING_WEST;
+					default -> Shapes.block();
+				};
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -17,8 +16,8 @@ import net.minecraft.world.item.ItemStack;
 public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforcerMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer.png");
 	private static final ResourceLocation TEXTURE_LVL1 = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer_lvl1.png");
-	private final TranslatableComponent ubr = Utils.localize("gui.securitycraft:blockReinforcer.title");
-	private final TranslatableComponent output = Utils.localize("gui.securitycraft:blockReinforcer.output");
+	private final Component ubr = Utils.localize("gui.securitycraft:blockReinforcer.title");
+	private final Component output = Utils.localize("gui.securitycraft:blockReinforcer.output");
 	private final boolean isLvl1;
 
 	public BlockReinforcerScreen(BlockReinforcerMenu menu, Inventory inv, Component title) {

@@ -33,8 +33,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
@@ -46,7 +44,7 @@ public class EditModuleScreen extends Screen {
 	private static CompoundTag savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
-	private final TranslatableComponent editModule = Utils.localize("gui.securitycraft:editModule");
+	private final Component editModule = Utils.localize("gui.securitycraft:editModule");
 	private final ItemStack module;
 	private final List<PlayerTeam> availableTeams;
 	private final Map<PlayerTeam, Boolean> teamsListedStatus = new HashMap<>();
@@ -59,7 +57,7 @@ public class EditModuleScreen extends Screen {
 	private int guiLeft;
 
 	public EditModuleScreen(ItemStack item) {
-		super(new TranslatableComponent(item.getDescriptionId()));
+		super(Component.translatable(item.getDescriptionId()));
 
 		availableTeams = new ArrayList<>(Minecraft.getInstance().player.getScoreboard().getPlayerTeams());
 		module = item;
@@ -74,11 +72,11 @@ public class EditModuleScreen extends Screen {
 		int guiTop = (height - ySize) / 2;
 		int controlsStartX = (int) (guiLeft + xSize * (3.0F / 4.0F)) - 57;
 		int controlsWidth = 107;
-		TranslatableComponent checkboxText = Utils.localize("gui.securitycraft:editModule.affectEveryone");
+		Component checkboxText = Utils.localize("gui.securitycraft:editModule.affectEveryone");
 		int length = font.width(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
 
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		addRenderableWidget(inputField = new EditBox(font, controlsStartX, height / 2 - 88, 107, 15, TextComponent.EMPTY));
+		addRenderableWidget(inputField = new EditBox(font, controlsStartX, height / 2 - 88, 107, 15, Component.empty()));
 		addRenderableWidget(addPlayerButton = new ExtendedButton(controlsStartX, height / 2 - 68, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.add_player"), this::addPlayerButtonClicked));
 		addRenderableWidget(removePlayerButton = new ExtendedButton(controlsStartX, height / 2 - 43, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.remove_player"), this::removePlayerButtonClicked));
 		addRenderableWidget(editTeamsButton = new NonScrollableToggleComponentButton(controlsStartX, height / 2 - 18, controlsWidth, 20, i -> Utils.localize("gui.securitycraft:editModule.edit_teams"), 0, 2, this::editTeamsButtonClicked));

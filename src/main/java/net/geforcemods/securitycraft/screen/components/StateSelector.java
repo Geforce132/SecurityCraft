@@ -30,7 +30,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
@@ -108,8 +107,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 			this.blockItem = blockItem;
 		}
 
-		previousPageButton = new Button(xStart + 69, yStart + 125, 20, 20, new TextComponent("<"), button -> turnPage(-1));
-		nextPageButton = new Button(xStart + 126, yStart + 125, 20, 20, new TextComponent(">"), button -> turnPage(1));
+		previousPageButton = new Button(xStart + 69, yStart + 125, 20, 20, Component.literal("<"), button -> turnPage(-1));
+		nextPageButton = new Button(xStart + 126, yStart + 125, 20, 20, Component.literal(">"), button -> turnPage(1));
 		updateButtons(true, false);
 		extraAreas.add(new Rect2i(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight()));
 	}
@@ -206,8 +205,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		if (previousPageButton != null)
 			previousPageButton.active = page > 1;
 
-		if (nextPageButton != null)
-			nextPageButton.active = page != amountOfPages;
+			if (nextPageButton != null)
+				nextPageButton.active = page != amountOfPages;
 	}
 
 	public void turnPage(int direction) {
@@ -370,7 +369,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 					}
 				}
 
-				setMessage(new TextComponent(property.getName(value)));
+				setMessage(Component.literal(property.getName(value)));
 			}
 		}
 

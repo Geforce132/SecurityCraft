@@ -26,8 +26,6 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -41,8 +39,8 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	private static final ResourceLocation RETURN_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return.png");
 	private static final ResourceLocation RETURN_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return_inactive.png");
 	private static final ResourceLocation WORLD_SELECTION_ICONS = new ResourceLocation("textures/gui/world_selection.png");
-	private static final Component EQUALS = new TextComponent("=");
-	private static final Component GREATER_THAN_EQUALS = new TextComponent(">=");
+	private static final Component EQUALS = Component.literal("=");
+	private static final Component GREATER_THAN_EQUALS = Component.literal(">=");
 	private final Component blockName = Utils.localize(SCContent.KEYCARD_READER.get().getDescriptionId());
 	private final Component keycardLevelsText = Utils.localize("gui.securitycraft:keycard_reader.keycard_levels");
 	private final Component linkText = Utils.localize("gui.securitycraft:keycard_reader.link");
@@ -57,7 +55,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	private int previousSignature;
 	private int signature;
 	private boolean[] acceptedLevels;
-	private TranslatableComponent signatureText;
+	private Component signatureText;
 	private int signatureTextLength;
 	private int signatureTextStartX;
 	private Button minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
@@ -106,8 +104,8 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 						else
 							active = otherButtonId >= thisButtonId;
 
-						//update button state and data
-						changeLevelState(otherButtonId, active);
+							//update button state and data
+							changeLevelState(otherButtonId, active);
 					}
 				}
 				else
@@ -126,13 +124,13 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			}
 		}
 
-		minusThree = addRenderableWidget(new ExtendedButton(leftPos + 22, buttonY, 24, buttonHeight, new TextComponent("---"), b -> changeSignature(signature - 100)));
-		minusTwo = addRenderableWidget(new ExtendedButton(leftPos + 48, buttonY, 18, buttonHeight, new TextComponent("--"), b -> changeSignature(signature - 10)));
-		minusOne = addRenderableWidget(new ExtendedButton(leftPos + 68, buttonY, 12, buttonHeight, new TextComponent("-"), b -> changeSignature(signature - 1)));
+		minusThree = addRenderableWidget(new ExtendedButton(leftPos + 22, buttonY, 24, buttonHeight, Component.literal("---"), b -> changeSignature(signature - 100)));
+		minusTwo = addRenderableWidget(new ExtendedButton(leftPos + 48, buttonY, 18, buttonHeight, Component.literal("--"), b -> changeSignature(signature - 10)));
+		minusOne = addRenderableWidget(new ExtendedButton(leftPos + 68, buttonY, 12, buttonHeight, Component.literal("-"), b -> changeSignature(signature - 1)));
 		reset = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 82, buttonY, 12, buttonHeight, RESET_TEXTURE, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(previousSignature)));
-		plusOne = addRenderableWidget(new ExtendedButton(leftPos + 96, buttonY, 12, buttonHeight, new TextComponent("+"), b -> changeSignature(signature + 1)));
-		plusTwo = addRenderableWidget(new ExtendedButton(leftPos + 110, buttonY, 18, buttonHeight, new TextComponent("++"), b -> changeSignature(signature + 10)));
-		plusThree = addRenderableWidget(new ExtendedButton(leftPos + 130, buttonY, 24, buttonHeight, new TextComponent("+++"), b -> changeSignature(signature + 100)));
+		plusOne = addRenderableWidget(new ExtendedButton(leftPos + 96, buttonY, 12, buttonHeight, Component.literal("+"), b -> changeSignature(signature + 1)));
+		plusTwo = addRenderableWidget(new ExtendedButton(leftPos + 110, buttonY, 18, buttonHeight, Component.literal("++"), b -> changeSignature(signature + 10)));
+		plusThree = addRenderableWidget(new ExtendedButton(leftPos + 130, buttonY, 24, buttonHeight, Component.literal("+++"), b -> changeSignature(signature + 100)));
 		//set correct signature
 		changeSignature(signature);
 		//link button
@@ -149,7 +147,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		setUsesButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 62, topPos + 106, 16, 17, RETURN_TEXTURE, RETURN_INACTIVE_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(be.getBlockPos(), Integer.parseInt(usesTextField.getValue())))));
 		setUsesButton.active = false;
 		//text field for setting amount of limited uses
-		usesTextField = addRenderableWidget(new EditBox(font, leftPos + 28, topPos + 107, 30, 15, TextComponent.EMPTY));
+		usesTextField = addRenderableWidget(new EditBox(font, leftPos + 28, topPos + 107, 30, 15, Component.empty()));
 		usesTextField.setFilter(s -> s.matches("[0-9]*"));
 		usesTextField.setMaxLength(3);
 		//info text when hovering over text field
@@ -302,7 +300,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		if (isOwner)
 			signature = Math.max(0, Math.min(newSignature, Short.MAX_VALUE)); //keep between 0 and 32767 (disallow negative numbers)
 
-		signatureText = new TranslatableComponent("gui.securitycraft:keycard_reader.signature", StringUtils.leftPad("" + signature, 5, "0"));
+		signatureText = Component.translatable("gui.securitycraft:keycard_reader.signature", StringUtils.leftPad("" + signature, 5, "0"));
 		signatureTextLength = font.width(signatureText);
 		signatureTextStartX = imageWidth / 2 - signatureTextLength / 2;
 		enablePlusButtons = isOwner && signature != Short.MAX_VALUE;

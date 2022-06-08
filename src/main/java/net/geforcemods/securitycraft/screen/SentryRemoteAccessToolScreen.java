@@ -22,8 +22,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +31,7 @@ import net.minecraftforge.client.gui.widget.ExtendedButton;
 public class SentryRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
 	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
-	private final TranslatableComponent modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll");
+	private final Component modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll");
 	private ItemStack srat;
 	private Button[][] guiButtons = new Button[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)
 	private Component[] names = new Component[12];
@@ -43,12 +41,12 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering SentryEntity
 	private int viewDistance;
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
-	private final TranslatableComponent notBound = Utils.localize("gui.securitycraft:srat.notBound");
+	private final Component notBound = Utils.localize("gui.securitycraft:srat.notBound");
 	private final Component[] lines = new Component[12];
 	private final int[] lengths = new int[12];
 
 	public SentryRemoteAccessToolScreen(ItemStack item, int viewDistance) {
-		super(new TranslatableComponent(item.getDescriptionId()));
+		super(Component.translatable(item.getDescriptionId()));
 
 		srat = item;
 		this.viewDistance = viewDistance;
@@ -99,7 +97,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
-						guiButtons[i][j] = new ExtendedButton(btnX, btnY, 20, 20, new TextComponent("X"), b -> unbindButtonClicked(index));
+						guiButtons[i][j] = new ExtendedButton(btnX, btnY, 20, 20, Component.literal("X"), b -> unbindButtonClicked(index));
 						guiButtons[i][j].active = false;
 						break;
 				}
@@ -125,7 +123,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						SentryMode mode = sentry.getMode();
 
 						if (sentry.hasCustomName()) {
-							TranslatableComponent line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
+							Component line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 							int nameWidth = font.width(sentry.getCustomName());
 							int nameX = startX + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
 							int nameY = startY + (i % 6) * 30 + 7;
@@ -170,7 +168,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		//Add buttons for global operation (all sentries)
 		guiButtonsGlobal[0] = new TogglePictureButton(startX + 260, startY + 188, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 2, 3, this::globalModeButtonClicked);
 		guiButtonsGlobal[1] = new TogglePictureButton(startX + 22 + 260, startY + 188, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 2, 3, this::globalTargetsButtonClicked);
-		guiButtonsGlobal[2] = new ExtendedButton(startX + 44 + 260, startY + 188, 20, 20, new TextComponent("X"), this::globalUnbindButtonClicked);
+		guiButtonsGlobal[2] = new ExtendedButton(startX + 44 + 260, startY + 188, 20, 20, Component.literal("X"), this::globalUnbindButtonClicked);
 
 		for (int j = 0; j < 3; j++) {
 			guiButtonsGlobal[j].active = foundSentry;

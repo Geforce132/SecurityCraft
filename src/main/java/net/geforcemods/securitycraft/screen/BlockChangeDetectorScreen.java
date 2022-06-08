@@ -33,8 +33,6 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -49,8 +47,8 @@ import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChangeDetectorMenu> implements ContainerListener {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_change_detector.png");
-	private static final TranslatableComponent CLEAR = Utils.localize("gui.securitycraft:editModule.clear");
-	private static final TranslatableComponent BLOCK_NAME = Utils.localize(SCContent.BLOCK_CHANGE_DETECTOR.get().getDescriptionId());
+	private static final Component CLEAR = Utils.localize("gui.securitycraft:editModule.clear");
+	private static final Component BLOCK_NAME = Utils.localize(SCContent.BLOCK_CHANGE_DETECTOR.get().getDescriptionId());
 	private BlockChangeDetectorBlockEntity be;
 	private ChangeEntryList changeEntryList;
 	private TextHoverChecker[] hoverCheckers = new TextHoverChecker[3];
@@ -71,7 +69,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	protected void init() {
 		super.init();
 
-		Button clearButton = addRenderableWidget(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, new TextComponent("x"), b -> {
+		Button clearButton = addRenderableWidget(new ExtendedButton(leftPos + 4, topPos + 4, 8, 8, Component.literal("x"), b -> {
 			changeEntryList.allEntries.forEach(this::removeWidget);
 			changeEntryList.allEntries.clear();
 			changeEntryList.filteredEntries.clear();
@@ -87,7 +85,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			currentMode = DetectionMode.values()[((ModeButton) b).getCurrentIndex()];
 			changeEntryList.updateFilteredEntries();
 		}));
-		addRenderableWidget(showAllCheckbox = new Checkbox(leftPos + 173, topPos + 65, 20, 20, TextComponent.EMPTY, false, false) {
+		addRenderableWidget(showAllCheckbox = new Checkbox(leftPos + 173, topPos + 65, 20, 20, Component.empty(), false, false) {
 			@Override
 			public void onPress() {
 				super.onPress();
@@ -95,7 +93,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			}
 		});
 		hoverCheckers[0] = new TextHoverChecker(clearButton, CLEAR);
-		hoverCheckers[1] = new TextHoverChecker(modeButton, Arrays.stream(DetectionMode.values()).map(e -> (Component) Utils.localize(e.getDescriptionId())).toList());
+		hoverCheckers[1] = new TextHoverChecker(modeButton, Arrays.stream(DetectionMode.values()).map(e -> Utils.localize(e.getDescriptionId())).toList());
 		hoverCheckers[2] = new TextHoverChecker(showAllCheckbox, Utils.localize("gui.securitycraft:block_change_detector.show_all_checkbox"));
 		smartModuleHoverChecker = isOwner ? new TextHoverChecker(topPos + 44, topPos + 60, leftPos + 174, leftPos + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint")) : null;
 		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 160, 150, topPos + 20, leftPos + 8));
@@ -109,16 +107,16 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			else
 				stateString = "";
 
-			List<TextComponent> list = List.of(
-			//@formatter:off
-				entry.player(),
-				entry.uuid(),
-				entry.action(),
-				Utils.getFormattedCoordinates(entry.pos()).getString(),
-				stateString,
-				dateFormat.format(new Date(entry.timestamp()))
-			//@formatter:on
-			).stream().map(Object::toString).filter(s -> !s.isEmpty()).map(TextComponent::new).collect(Collectors.toList());
+			List<Component> list = List.of(
+					//@formatter:off
+					entry.player(),
+					entry.uuid(),
+					entry.action(),
+					Utils.getFormattedCoordinates(entry.pos()).getString(),
+					stateString,
+					dateFormat.format(new Date(entry.timestamp()))
+					//@formatter:on
+					).stream().map(Object::toString).filter(s -> !s.isEmpty()).map(Component::literal).collect(Collectors.toList());
 
 			changeEntryList.addEntry(addWidget(new ContentSavingCollapsileTextList(0, 0, 154, Utils.localize(entry.state().getBlock().getDescriptionId()), list, b -> changeEntryList.setOpen((ContentSavingCollapsileTextList) b), changeEntryList::isHovered, entry.action(), entry.state().getBlock())));
 		}
@@ -367,7 +365,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		private int currentIndex = 0;
 
 		public ModeButton(int xPos, int yPos, int width, int height, int initialIndex, int toggleCount, OnPress onPress) {
-			super(xPos, yPos, width, height, TextComponent.EMPTY, onPress);
+			super(xPos, yPos, width, height, Component.empty(), onPress);
 			this.toggleCount = toggleCount;
 			currentIndex = initialIndex;
 		}

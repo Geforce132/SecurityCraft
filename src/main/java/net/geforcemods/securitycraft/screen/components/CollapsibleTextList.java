@@ -12,12 +12,11 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.client.gui.GuiUtils;
 
 public class CollapsibleTextList extends Button {
-	private static final TextComponent PLUS = new TextComponent("+ ");
-	private static final TextComponent MINUS = new TextComponent("- ");
+	private static final Component PLUS = Component.literal("+ ");
+	private static final Component MINUS = Component.literal("- ");
 	private final int threeDotsWidth = Minecraft.getInstance().font.width("...");
 	private final int heightOpen;
 	private final int textCutoff;
@@ -98,7 +97,7 @@ public class CollapsibleTextList extends Button {
 
 		if (stringWidth > cutoff && stringWidth > threeDotsWidth) {
 			isMessageTooLong = true;
-			message = new TextComponent(font.substrByWidth(message, cutoff - threeDotsWidth).getString() + "...");
+			message = Component.literal(font.substrByWidth(message, cutoff - threeDotsWidth).getString() + "...");
 		}
 
 		super.setMessage(message);

@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +34,7 @@ public class PictureButton extends ExtendedButton {
 	}
 
 	public PictureButton(int xPos, int yPos, int width, int height, ItemRenderer itemRenderer, ItemStack itemToRender, OnPress onPress) {
-		super(xPos, yPos, width, height, TextComponent.EMPTY, onPress);
+		super(xPos, yPos, width, height, Component.empty(), onPress);
 		this.itemRenderer = itemRenderer;
 
 		if (!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
@@ -44,7 +44,7 @@ public class PictureButton extends ExtendedButton {
 	}
 
 	public PictureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, OnPress onPress) {
-		super(xPos, yPos, width, height, TextComponent.EMPTY, onPress);
+		super(xPos, yPos, width, height, Component.empty(), onPress);
 
 		itemRenderer = null;
 		textureLocation = texture;

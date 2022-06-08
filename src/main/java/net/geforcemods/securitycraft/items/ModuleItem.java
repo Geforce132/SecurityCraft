@@ -17,7 +17,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -36,8 +35,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.network.NetworkHooks;
 
 public class ModuleItem extends Item {
-	private static final MutableComponent MODIFIABLE = new TranslatableComponent("tooltip.securitycraft:module.modifiable").setStyle(Utils.GRAY_STYLE);
-	private static final MutableComponent NOT_MODIFIABLE = new TranslatableComponent("tooltip.securitycraft:module.notModifiable").setStyle(Utils.GRAY_STYLE);
+	private static final MutableComponent MODIFIABLE = Component.translatable("tooltip.securitycraft:module.modifiable").setStyle(Utils.GRAY_STYLE);
+	private static final MutableComponent NOT_MODIFIABLE = Component.translatable("tooltip.securitycraft:module.notModifiable").setStyle(Utils.GRAY_STYLE);
 	public static final int MAX_PLAYERS = 50;
 	private final ModuleType module;
 	private final boolean containsCustomData;
@@ -100,7 +99,7 @@ public class ModuleItem extends Item {
 
 						@Override
 						public Component getDisplayName() {
-							return new TranslatableComponent(getDescriptionId());
+							return Component.translatable(getDescriptionId());
 						}
 					});
 				}

@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.GuiUtils;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
@@ -29,7 +29,7 @@ public class TogglePictureButton extends ExtendedButton implements IToggleableBu
 	}
 
 	public TogglePictureButton(int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int drawWidth, int drawHeight, int uWidth, int vHeight, int textureWidth, int textureHeight, int toggleCount, OnPress onPress) {
-		super(xPos, yPos, width, height, TextComponent.EMPTY, onPress);
+		super(xPos, yPos, width, height, Component.empty(), onPress);
 
 		if (textureX.length != toggleCount || textureY.length != toggleCount)
 			throw new RuntimeException("TogglePictureButton was set up incorrectly. Array lengths must match toggleCount!");

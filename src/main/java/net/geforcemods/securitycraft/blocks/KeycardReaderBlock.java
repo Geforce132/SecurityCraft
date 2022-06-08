@@ -17,8 +17,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -57,7 +57,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 			if (ModuleUtils.isDenied(be, player)) {
 				if (be.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}
 			else {
 				ItemStack stack = player.getItemInHand(hand);
@@ -90,7 +90,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 						MutableComponent feedback = insertCard(level, pos, be, stack, player);
 
 						if (feedback != null)
-							PlayerUtils.sendMessageToPlayer(player, new TranslatableComponent(getDescriptionId()), feedback, ChatFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), feedback, ChatFormatting.RED);
 					}
 				}
 			}
@@ -104,17 +104,17 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
 		if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !PlayerUtils.areOnSameTeam(te.getOwner().getName(), tag.getString("ownerName"))) || !te.getOwner().getUUID().equals(tag.getString("ownerUUID")))
-			return new TranslatableComponent("messages.securitycraft:keycardReader.differentOwner");
+			return Component.translatable("messages.securitycraft:keycardReader.differentOwner");
 
 		//the keycard's signature does not match this keycard reader's
 		if (te.getSignature() != tag.getInt("signature"))
-			return new TranslatableComponent("messages.securitycraft:keycardReader.wrongSignature");
+			return Component.translatable("messages.securitycraft:keycardReader.wrongSignature");
 
 		int keycardLevel = ((KeycardItem) stack.getItem()).getLevel();
 
 		//the keycard's level
 		if (!te.getAcceptedLevels()[keycardLevel]) //both are 0 indexed, so it's ok
-			return new TranslatableComponent("messages.securitycraft:keycardReader.wrongLevel", keycardLevel + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
+			return Component.translatable("messages.securitycraft:keycardReader.wrongLevel", keycardLevel + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
 
 		boolean powered = level.getBlockState(pos).getValue(POWERED);
 
@@ -122,7 +122,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 			int uses = tag.getInt("uses");
 
 			if (uses <= 0)
-				return new TranslatableComponent("messages.securitycraft:keycardReader.noUses");
+				return Component.translatable("messages.securitycraft:keycardReader.noUses");
 
 			if (!player.isCreative() && !powered)
 				tag.putInt("uses", --uses);

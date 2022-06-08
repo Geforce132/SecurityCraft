@@ -8,15 +8,14 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
 public class KeycardItem extends Item {
-	private static final Component LINK_INFO = new TranslatableComponent("tooltip.securitycraft:keycard.link_info").setStyle(Utils.GRAY_STYLE);
-	public static final Component LIMITED_INFO = new TranslatableComponent("tooltip.securitycraft:keycard.limited_info").setStyle(Utils.GRAY_STYLE);
+	private static final Component LINK_INFO = Component.translatable("tooltip.securitycraft:keycard.link_info").setStyle(Utils.GRAY_STYLE);
+	public static final Component LIMITED_INFO = Component.translatable("tooltip.securitycraft:keycard.limited_info").setStyle(Utils.GRAY_STYLE);
 	private final int level; //0-indexed
 
 	public KeycardItem(Item.Properties properties, int level) {
@@ -40,14 +39,14 @@ public class KeycardItem extends Item {
 		CompoundTag tag = stack.getOrCreateTag();
 
 		if (tag.getBoolean("linked")) {
-			list.add(new TranslatableComponent("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + tag.getInt("signature"), 5, "0")).setStyle(Utils.GRAY_STYLE));
-			list.add(new TranslatableComponent("tooltip.securitycraft:keycard.reader_owner", tag.getString("ownerName")).setStyle(Utils.GRAY_STYLE));
+			list.add(Component.translatable("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + tag.getInt("signature"), 5, "0")).setStyle(Utils.GRAY_STYLE));
+			list.add(Component.translatable("tooltip.securitycraft:keycard.reader_owner", tag.getString("ownerName")).setStyle(Utils.GRAY_STYLE));
 		}
 		else
 			list.add(LINK_INFO);
 
 		if (tag.getBoolean("limited"))
-			list.add(new TranslatableComponent("tooltip.securitycraft:keycard.uses", tag.getInt("uses")).setStyle(Utils.GRAY_STYLE));
+			list.add(Component.translatable("tooltip.securitycraft:keycard.uses", tag.getInt("uses")).setStyle(Utils.GRAY_STYLE));
 		else
 			list.add(LIMITED_INFO);
 	}

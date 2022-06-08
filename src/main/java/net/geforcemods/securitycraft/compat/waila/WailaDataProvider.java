@@ -43,8 +43,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -67,9 +65,9 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	private static final Style MOD_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.BLUE).withItalic(true);
 	private static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.WHITE);
 	private static final MutableComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(Utils.GRAY_STYLE);
-	private static final MutableComponent ALLOWLIST_MODULE = new TextComponent("- ").append(new TranslatableComponent(ModuleType.ALLOWLIST.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
-	private static final MutableComponent DISGUISE_MODULE = new TextComponent("- ").append(new TranslatableComponent(ModuleType.DISGUISE.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
-	private static final MutableComponent SPEED_MODULE = new TextComponent("- ").append(new TranslatableComponent(ModuleType.SPEED.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
+	private static final MutableComponent ALLOWLIST_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.ALLOWLIST.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
+	private static final MutableComponent DISGUISE_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.DISGUISE.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
+	private static final MutableComponent SPEED_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.SPEED.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
 
 	static {
 		if (FMLEnvironment.dist == Dist.CLIENT)
@@ -124,7 +122,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		switch (data.getTooltipPosition()) {
 			case HEAD: {
 				if (tooltip instanceof Tooltip head)
-					head.lines.get(0).getAlignedElements(Align.LEFT).set(0, new TextElement(new TranslatableComponent(((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition()).getDescriptionId()).setStyle(ITEM_NAME_STYLE)));
+					head.lines.get(0).getAlignedElements(Align.LEFT).set(0, new TextElement(Component.translatable(((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition()).getDescriptionId()).setStyle(ITEM_NAME_STYLE)));
 
 				break;
 			}
@@ -160,7 +158,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 							tooltip.add(EQUIPPED);
 
 						for (ModuleType module : inv.getInsertedModules()) {
-							tooltip.add(new TextComponent("- ").append(new TranslatableComponent(module.getTranslationKey())));
+							tooltip.add(Component.literal("- ").append(Component.translatable(module.getTranslationKey())));
 						}
 					}
 
@@ -176,7 +174,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			case TAIL: {
 				if (tooltip instanceof Tooltip tail) {
 					ItemStack disguisedAs = ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition());
-					Component modName = new TextComponent(ModList.get().getModContainerById(Utils.getRegistryName(disguisedAs.getItem()).getNamespace()).get().getModInfo().getDisplayName()).setStyle(MOD_NAME_STYLE);
+					Component modName = Component.literal(ModList.get().getModContainerById(Utils.getRegistryName(disguisedAs.getItem()).getNamespace()).get().getModInfo().getDisplayName()).setStyle(MOD_NAME_STYLE);
 
 					tail.lines.get(tail.lines.size() - 1).getAlignedElements(Align.LEFT).set(0, new TextElement(modName));
 				}
