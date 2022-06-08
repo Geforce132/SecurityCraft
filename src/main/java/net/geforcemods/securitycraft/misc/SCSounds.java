@@ -21,6 +21,5 @@ public enum SCSounds {
 		this.path = path;
 		location = new ResourceLocation(path);
 		event = new SoundEvent(new ResourceLocation(path));
-		event.setRegistryName(path);
 	}
 }
