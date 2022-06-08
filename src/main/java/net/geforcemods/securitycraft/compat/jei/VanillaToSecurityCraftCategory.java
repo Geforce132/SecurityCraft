@@ -37,8 +37,8 @@ public class VanillaToSecurityCraftCategory extends BaseCategory {
 
 	@Override
 	public void setIngredients(ReinforcerRecipe recipe, IIngredients ingredients) {
-		ingredients.setInput(VanillaTypes.ITEM, new ItemStack(recipe.getVanillaBlock()));
-		ingredients.setOutput(VanillaTypes.ITEM, new ItemStack(recipe.getSecurityCraftBlock()));
+		ingredients.setInput(VanillaTypes.ITEM, new ItemStack(recipe.vanillaBlock()));
+		ingredients.setOutput(VanillaTypes.ITEM, new ItemStack(recipe.securityCraftBlock()));
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class VanillaToSecurityCraftCategory extends BaseCategory {
 
 		group.init(0, true, 0, 0);
 		group.init(1, false, 90, 0);
-		group.set(0, new ItemStack(recipe.getVanillaBlock()));
-		group.set(1, new ItemStack(recipe.getSecurityCraftBlock()));
+		group.set(0, new ItemStack(recipe.vanillaBlock()));
+		group.set(1, new ItemStack(recipe.securityCraftBlock()));
 	}
 }
