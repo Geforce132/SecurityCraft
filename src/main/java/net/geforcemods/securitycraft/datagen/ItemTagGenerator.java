@@ -73,7 +73,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.SECRET_WARPED_SIGN_ITEM.get());
 
 		//minecraft tags
-		tag(ItemTags.CARPETS).addTag(SCTags.Items.REINFORCED_CARPETS);
 		tag(ItemTags.FENCES).add(SCContent.IRON_FENCE.get().asItem());
 		tag(ItemTags.PIGLIN_LOVED).add(
 				SCContent.DEEPSLATE_GOLD_ORE_MINE.get().asItem(),
@@ -88,6 +87,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(ItemTags.STAIRS).addTag(SCTags.Items.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get().asItem());
 		tag(ItemTags.SIGNS).addTag(SCTags.Items.SECRET_SIGNS);
 		tag(ItemTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem());
+		tag(ItemTags.WOOL_CARPETS).addTag(SCTags.Items.REINFORCED_CARPETS);
 		//@formatter:on
 	}
 

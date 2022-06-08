@@ -15,9 +15,9 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.misc.conditions.BlockEntityNBTCondition;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -185,7 +185,7 @@ public class BlockLootTableGenerator implements DataProvider {
 	}
 
 	@Override
-	public void run(HashCache cache) throws IOException {
+	public void run(CachedOutput cache) throws IOException {
 		Map<ResourceLocation, LootTable> tables = new HashMap<>();
 
 		addTables();
@@ -196,7 +196,7 @@ public class BlockLootTableGenerator implements DataProvider {
 
 		tables.forEach((key, lootTable) -> {
 			try {
-				DataProvider.save(GSON, cache, LootTables.serialize(lootTable), generator.getOutputFolder().resolve("data/" + key.getNamespace() + "/loot_tables/" + key.getPath() + ".json"));
+				DataProvider.saveStable(cache, LootTables.serialize(lootTable), generator.getOutputFolder().resolve("data/" + key.getNamespace() + "/loot_tables/" + key.getPath() + ".json"));
 			}
 			catch (IOException e) {
 				e.printStackTrace();

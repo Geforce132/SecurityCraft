@@ -18,12 +18,12 @@ public class DataGenRegistrar {
 		ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.EMPTY_LIST, Collections.EMPTY_SET, false, null, null);
 		BlockTagGenerator blockTagGenerator = new BlockTagGenerator(generator, existingFileHelper);
 
-		generator.addProvider(new BlockLootTableGenerator(generator));
-		generator.addProvider(new BlockModelAndStateGenerator(generator, existingFileHelper));
-		generator.addProvider(blockTagGenerator);
-		generator.addProvider(new ItemModelGenerator(generator, existingFileHelper));
-		generator.addProvider(new FluidTagGenerator(generator, existingFileHelper));
-		generator.addProvider(new ItemTagGenerator(generator, blockTagGenerator, existingFileHelper));
-		generator.addProvider(new RecipeGenerator(generator));
+		generator.addProvider(event.includeClient(), new BlockModelAndStateGenerator(generator, existingFileHelper));
+		generator.addProvider(event.includeClient(), new ItemModelGenerator(generator, existingFileHelper));
+		generator.addProvider(event.includeServer(), new BlockLootTableGenerator(generator));
+		generator.addProvider(event.includeServer(), blockTagGenerator);
+		generator.addProvider(event.includeServer(), new FluidTagGenerator(generator, existingFileHelper));
+		generator.addProvider(event.includeServer(), new ItemTagGenerator(generator, blockTagGenerator, existingFileHelper));
+		generator.addProvider(event.includeServer(), new RecipeGenerator(generator));
 	}
 }
