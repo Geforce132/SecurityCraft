@@ -7,6 +7,7 @@ import com.google.common.base.Predicates;
 
 import net.geforcemods.securitycraft.api.NamedBlockEntity;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
@@ -192,6 +193,7 @@ import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.inventory.MenuType;
@@ -222,7 +224,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistries.Keys;
@@ -231,7 +232,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class SCContent {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SecurityCraft.MODID);
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, SecurityCraft.MODID);
-	public static final DeferredRegister<DataSerializerEntry> DATA_SERIALIZER_ENTRIES = DeferredRegister.create(Keys.DATA_SERIALIZERS, SecurityCraft.MODID);
+	public static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(Keys.DATA_SERIALIZERS, SecurityCraft.MODID);
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, SecurityCraft.MODID);
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, SecurityCraft.MODID);
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SecurityCraft.MODID);
@@ -247,7 +248,7 @@ public class SCContent {
 	public static final RegistryObject<SimpleRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleRecipeSerializer<>(LimitedUseKeycardRecipe::new));
 
 	//data serializer entries
-	public static final RegistryObject<DataSerializerEntry> OWNER_SERIALIZER = DATA_SERIALIZER_ENTRIES.register("owner", () -> new DataSerializerEntry(new OwnerDataSerializer()));
+	public static final RegistryObject<EntityDataSerializer<Owner>> OWNER_SERIALIZER = DATA_SERIALIZERS.register("owner", () -> new OwnerDataSerializer());
 
 	//fluids
 	public static final RegistryObject<FlowingFluid> FLOWING_FAKE_WATER = FLUIDS.register("flowing_fake_water", () -> new FakeWaterFluid.Flowing());
@@ -2128,10 +2129,10 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_DIRT_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedDirtPathBlock(prop(Material.DIRT).sound(SoundType.GRASS), Blocks.DIRT_PATH));
-	public static final RegistryObject<Block> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop(Material.PISTON).dynamicShape().noDrops().noOcclusion().isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> false).isViewBlocking((s, w, p) -> false)));
+	public static final RegistryObject<Block> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop(Material.PISTON).dynamicShape().noLootTable().noOcclusion().isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> false).isViewBlocking((s, w, p) -> false)));
 	@Reinforced(registerBlockItem = false)
-	public static final RegistryObject<Block> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop(Material.PISTON).noDrops()));
-	public static final RegistryObject<Block> SENTRY_DISGUISE = BLOCKS.register("sentry_disguise", () -> new SentryDisguiseBlock(propDisguisable(Material.AIR).strength(-1.0F, Float.MAX_VALUE).noDrops()));
+	public static final RegistryObject<Block> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop(Material.PISTON).noLootTable()));
+	public static final RegistryObject<Block> SENTRY_DISGUISE = BLOCKS.register("sentry_disguise", () -> new SentryDisguiseBlock(propDisguisable(Material.AIR).strength(-1.0F, Float.MAX_VALUE).noLootTable()));
 
 	//items
 	@HasManualPage(hasRecipeDescription = true)

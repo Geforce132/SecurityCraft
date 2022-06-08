@@ -8,21 +8,21 @@ import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class QuarkCompat {
-	@ObjectHolder("quark:oak_chest")
+	@ObjectHolder(registryName = "minecraft:block", value = "quark:oak_chest")
 	private static Block oakChest;
-	@ObjectHolder("quark:spruce_chest")
+	@ObjectHolder(registryName = "minecraft:block", value = "quark:spruce_chest")
 	private static Block spruceChest;
-	@ObjectHolder("quark:birch_chest")
+	@ObjectHolder(registryName = "minecraft:block", value = "quark:birch_chest")
 	private static Block birchChest;
-	@ObjectHolder("quark:jungle_chest")
+	@ObjectHolder(registryName = "minecraft:block", value = "quark:jungle_chest")
 	private static Block jungleChest;
-	@ObjectHolder("quark:acacia_chest")
+	@ObjectHolder(registryName = "minecraft:block", value = "quark:acacia_chest")
 	private static Block acaciaChest;
-	@ObjectHolder("quark:dark_oak_chest")
+	@ObjectHolder(registryName = "minecraft:block", value = "quark:dark_oak_chest")
 	private static Block darkOakChest;
-	@ObjectHolder("quark:crimson_chest")
+	@ObjectHolder(registryName = "minecraft:block", value = "quark:crimson_chest")
 	private static Block crimsonChest;
-	@ObjectHolder("quark:warped_chest")
+	@ObjectHolder(registryName = "minecraft:block", value = "quark:warped_chest")
 	private static Block warpedChest;
 
 	public static void registerChestConversions() {

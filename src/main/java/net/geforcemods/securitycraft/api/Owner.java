@@ -187,6 +187,6 @@ public class Owner {
 	}
 
 	public static EntityDataSerializer<Owner> getSerializer() {
-		return (EntityDataSerializer<Owner>) SCContent.OWNER_SERIALIZER.get().getSerializer();
+		return SCContent.OWNER_SERIALIZER.get();
 	}
 }
