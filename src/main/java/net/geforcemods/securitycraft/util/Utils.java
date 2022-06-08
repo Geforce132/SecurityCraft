@@ -8,8 +8,11 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class Utils {
 	public static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
@@ -54,5 +57,9 @@ public class Utils {
 		}
 
 		return new TranslatableComponent(key, params);
+	}
+
+	public static ResourceLocation getRegistryName(Block block) {
+		return ForgeRegistries.BLOCKS.getKey(block);
 	}
 }

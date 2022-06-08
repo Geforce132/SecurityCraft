@@ -40,8 +40,8 @@ import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -52,48 +52,52 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.registries.ForgeRegistries.Keys;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class RegistrationHandler {
 	@SubscribeEvent
-	public static void registerItems(RegistryEvent.Register<Item> event) {
-		//register item blocks from annotated fields
-		for (Field field : SCContent.class.getFields()) {
-			try {
-				if (field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem()) {
-					Block block = ((RegistryObject<Block>) field.get(null)).get();
+	public static void onRegister(RegisterEvent event) {
+		event.register(Keys.ITEMS, helper -> {
+			//register item blocks from annotated fields
+			for (Field field : SCContent.class.getFields()) {
+				try {
+					if (field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem()) {
+						Block block = ((RegistryObject<Block>) field.get(null)).get();
 
-					event.getRegistry().register(new BlockItem(block, new Item.Properties().tab(SecurityCraft.decorationTab).fireResistant()).setRegistryName(block.getRegistryName()));
+						helper.register(Utils.getRegistryName(block), new BlockItem(block, new Item.Properties().tab(SecurityCraft.decorationTab).fireResistant()));
+					}
+					else if (field.isAnnotationPresent(RegisterItemBlock.class)) {
+						int tab = field.getAnnotation(RegisterItemBlock.class).value().ordinal();
+						Block block = ((RegistryObject<Block>) field.get(null)).get();
+
+						helper.register(Utils.getRegistryName(block), new BlockItem(block, new Item.Properties().tab(tab == 0 ? SecurityCraft.technicalTab : (tab == 1 ? SecurityCraft.mineTab : SecurityCraft.decorationTab))));
+					}
 				}
-				else if (field.isAnnotationPresent(RegisterItemBlock.class)) {
-					int tab = field.getAnnotation(RegisterItemBlock.class).value().ordinal();
-					RegistryObject<Block> block = (RegistryObject<Block>) field.get(null);
-
-					event.getRegistry().register(new BlockItem(block.get(), new Item.Properties().tab(tab == 0 ? SecurityCraft.technicalTab : (tab == 1 ? SecurityCraft.mineTab : SecurityCraft.decorationTab))).setRegistryName(block.get().getRegistryName()));
+				catch (IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
 				}
 			}
-			catch (IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
+		});
+
+		event.register(Keys.SOUND_EVENTS, helper -> {
+			for (int i = 0; i < SCSounds.values().length; i++) {
+				SCSounds sound = SCSounds.values()[i];
+
+				helper.register(sound.location, sound.event);
 			}
-		}
+		});
 	}
 
 	@SubscribeEvent
 	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
 		event.put(SCContent.SENTRY_ENTITY.get(), Mob.createMobAttributes().build());
-	}
-
-	@SubscribeEvent
-	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
-		for (int i = 0; i < SCSounds.values().length; i++) {
-			event.getRegistry().register(SCSounds.values()[i].event);
-		}
 	}
 
 	public static void registerPackets() {
