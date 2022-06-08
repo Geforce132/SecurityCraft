@@ -68,7 +68,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void> {
 				.item(disguisedAs)
 				.vertical()
 				.itemLabel(disguisedAs)
-				.text(new TextComponent("" + ChatFormatting.BLUE + ChatFormatting.ITALIC + ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()));
+				.text(new TextComponent("" + ChatFormatting.BLUE + ChatFormatting.ITALIC + ModList.get().getModContainerById(Utils.getRegistryName(disguisedAs.getItem()).getNamespace()).get().getModInfo().getDisplayName()));
 				return true;
 				//@formatter:on
 			}

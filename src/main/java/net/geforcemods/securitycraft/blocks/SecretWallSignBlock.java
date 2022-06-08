@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -81,6 +82,6 @@ public class SecretWallSignBlock extends WallSignBlock {
 
 	@Override
 	public String getDescriptionId() {
-		return Util.makeDescriptionId("block", getRegistryName()).replace("_wall", "");
+		return Util.makeDescriptionId("block", Utils.getRegistryName(this)).replace("_wall", "");
 	}
 }

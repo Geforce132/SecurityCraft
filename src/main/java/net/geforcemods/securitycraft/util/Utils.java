@@ -9,7 +9,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -61,5 +64,17 @@ public class Utils {
 
 	public static ResourceLocation getRegistryName(Block block) {
 		return ForgeRegistries.BLOCKS.getKey(block);
+	}
+
+	public static ResourceLocation getRegistryName(EntityType<?> entityType) {
+		return ForgeRegistries.ENTITIES.getKey(entityType);
+	}
+
+	public static ResourceLocation getRegistryName(Item item) {
+		return ForgeRegistries.ITEMS.getKey(item);
+	}
+
+	public static ResourceLocation getRegistryName(Potion potion) {
+		return ForgeRegistries.POTIONS.getKey(potion);
 	}
 }

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +22,7 @@ public class SyncTrophySystem {
 
 	public SyncTrophySystem(BlockPos pos, EntityType<?> projectileType, boolean allowed) {
 		this.pos = pos;
-		this.projectileType = projectileType.getRegistryName();
+		this.projectileType = Utils.getRegistryName(projectileType);
 		this.allowed = allowed;
 	}
 

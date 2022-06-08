@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.compat.jei;
 
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.world.level.block.Block;
 
 public class ReinforcerRecipe {
@@ -21,6 +22,6 @@ public class ReinforcerRecipe {
 
 	@Override
 	public String toString() {
-		return "Reinforcer Recipe - Vanilla Block: " + getVanillaBlock().getRegistryName().toString() + " - Reinforced Block: " + getSecurityCraftBlock().getRegistryName().toString();
+		return "Reinforcer Recipe - Vanilla Block: " + Utils.getRegistryName(getVanillaBlock()).toString() + " - Reinforced Block: " + Utils.getRegistryName(getSecurityCraftBlock()).toString();
 	}
 }

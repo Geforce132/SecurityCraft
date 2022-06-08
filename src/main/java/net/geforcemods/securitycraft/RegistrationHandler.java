@@ -157,8 +157,8 @@ public class RegistrationHandler {
 		CompoundTag normalNBT = new CompoundTag();
 		CompoundTag strongNBT = new CompoundTag();
 
-		normalNBT.putString("Potion", normalPotion.getRegistryName().toString());
-		strongNBT.putString("Potion", strongPotion.getRegistryName().toString());
+		normalNBT.putString("Potion", Utils.getRegistryName(normalPotion).toString());
+		strongNBT.putString("Potion", Utils.getRegistryName(strongPotion).toString());
 		normalPotionStack.setTag(normalNBT.copy());
 		strongPotionStack.setTag(strongNBT.copy());
 		normalSplashPotionStack.setTag(normalNBT.copy());

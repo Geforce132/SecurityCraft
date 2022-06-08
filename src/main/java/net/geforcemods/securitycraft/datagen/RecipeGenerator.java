@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.data.DataGenerator;
@@ -1207,7 +1208,7 @@ public class RecipeGenerator extends RecipeProvider {
 		ShapelessRecipeBuilder.shapeless(keycard)
 		.requires(keycard)
 		.unlockedBy("has_keycard", has(keycard))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, keycard.asItem().getRegistryName().getPath() + "_reset"));
+		.save(consumer, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(keycard.asItem()).getPath() + "_reset"));
 		//@formatter:on
 	}
 
@@ -1288,7 +1289,7 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:off
 		ShapelessRecipeBuilder.Result recipe;
 		Item resultItem = result.asItem();
-		ResourceLocation id = resultItem.getRegistryName();
+		ResourceLocation id = Utils.getRegistryName(resultItem);
 
 		recipe = new ShapelessRecipeBuilder.Result(id,
 				resultItem, amount, group, ingredients.stream().map(item -> Ingredient.of(item)).collect(Collectors.toList()),
@@ -1357,14 +1358,14 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', SCContent.REINFORCED_GLASS_PANE.get())
 		.define('D', dye)
 		.unlockedBy("has_glass", has(Tags.Items.GLASS))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, result.asItem().getRegistryName().getPath() + "_from_dye"));
+		.save(consumer, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(result.asItem()).getPath() + "_from_dye"));
 		ShapedRecipeBuilder.shaped(result, 16)
 		.group("securitycraft:reinforced_glass_panes")
 		.pattern("GGG")
 		.pattern("GGG")
 		.define('G', stainedGlass)
 		.unlockedBy("has_glass", has(Tags.Items.GLASS))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, result.asItem().getRegistryName().getPath() + "_from_glass"));
+		.save(consumer, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(result.asItem()).getPath() + "_from_glass"));
 		//@formatter:on
 	}
 
@@ -1398,8 +1399,8 @@ public class RecipeGenerator extends RecipeProvider {
 	protected final void addStonecuttingRecipe(Consumer<FinishedRecipe> consumer, ItemLike ingredient, ItemLike result, int count) {
 		//@formatter:off
 		SingleItemRecipeBuilder.stonecutting(Ingredient.of(ingredient), result, count)
-		.unlockedBy("has_" + ingredient.asItem().getRegistryName().getPath(), has(ingredient))
-		.save(consumer, result.asItem().getRegistryName() + "_from_" + ingredient.asItem().getRegistryName().getPath() + "_stonecutting");
+		.unlockedBy("has_" + Utils.getRegistryName(ingredient.asItem()).getPath(), has(ingredient))
+		.save(consumer, Utils.getRegistryName(result.asItem()) + "_from_" + Utils.getRegistryName(ingredient.asItem()).getPath() + "_stonecutting");
 		//@formatter:on
 	}
 

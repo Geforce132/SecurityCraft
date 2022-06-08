@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -167,7 +168,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 
 	public void blockMine(Block vanillaBlock, Block block) {
 		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {
-				new ConfiguredModel(new UncheckedModelFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/" + vanillaBlock.getRegistryName().getPath())))
+				new ConfiguredModel(new UncheckedModelFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/" + Utils.getRegistryName(vanillaBlock).getPath())))
 		});
 	}
 
@@ -241,17 +242,17 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 	public void reinforcedStairsBlock(Block block, String texture) {
 		ResourceLocation textureLocation = mcLoc(ModelProvider.BLOCK_FOLDER + "/" + texture);
 
-		reinforcedStairsBlock(block, block.getRegistryName().toString(), textureLocation, textureLocation, textureLocation);
+		reinforcedStairsBlock(block, Utils.getRegistryName(block).toString(), textureLocation, textureLocation, textureLocation);
 	}
 
 	public void reinforcedStairsBlock(Block block, String side, String end) {
 		ResourceLocation textureLocationEnd = mcLoc(ModelProvider.BLOCK_FOLDER + "/" + end);
 
-		reinforcedStairsBlock(block, block.getRegistryName().toString(), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), textureLocationEnd, textureLocationEnd);
+		reinforcedStairsBlock(block, Utils.getRegistryName(block).toString(), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), textureLocationEnd, textureLocationEnd);
 	}
 
 	public void reinforcedStairsBlock(Block block, String side, String bottom, String top) {
-		reinforcedStairsBlock(block, block.getRegistryName().toString(), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + bottom), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + top));
+		reinforcedStairsBlock(block, Utils.getRegistryName(block).toString(), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + bottom), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + top));
 	}
 
 	public void reinforcedStairsBlock(Block block, String baseName, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
@@ -290,7 +291,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 
 	public void reinforcedWallBlock(Block block, String textureName) {
 		ResourceLocation texture = new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/" + textureName);
-		String baseName = block.getRegistryName().toString();
+		String baseName = Utils.getRegistryName(block).toString();
 		ModelFile post = models().reinforcedWallPost(baseName + "_post", texture);
 		ModelFile side = models().reinforcedWallSide(baseName + "_side", texture, false);
 		ModelFile sideTall = models().reinforcedWallSide(baseName + "_side_tall", texture, true);
@@ -336,6 +337,6 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 	}
 
 	private String name(Block block) {
-		return block.getRegistryName().getPath();
+		return Utils.getRegistryName(block).getPath();
 	}
 }

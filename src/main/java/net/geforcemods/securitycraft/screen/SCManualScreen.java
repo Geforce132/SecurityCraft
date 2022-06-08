@@ -443,7 +443,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		if (page.hasRecipeDescription()) {
-			String name = page.item().getRegistryName().getPath();
+			String name = Utils.getRegistryName(page.item()).getPath();
 
 			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.recipe." + name)));
 		}

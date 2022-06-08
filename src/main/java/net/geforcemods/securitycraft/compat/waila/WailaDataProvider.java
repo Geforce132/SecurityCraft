@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.compat.waila;
 
 import java.util.Optional;
 
+import mcjty.theoneprobe.api.IElement;
 import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.EntityAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
@@ -14,7 +15,6 @@ import mcp.mobius.waila.api.TooltipPosition;
 import mcp.mobius.waila.api.WailaPlugin;
 import mcp.mobius.waila.api.config.IPluginConfig;
 import mcp.mobius.waila.api.event.WailaRenderEvent;
-import mcp.mobius.waila.api.ui.IElement;
 import mcp.mobius.waila.api.ui.IElement.Align;
 import mcp.mobius.waila.impl.Tooltip;
 import mcp.mobius.waila.impl.ui.ItemStackElement;
@@ -89,7 +89,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		for (RegistryObject<Block> registryObject : SCContent.BLOCKS.getEntries()) {
 			Block block = registryObject.get();
 
-			if (!(block instanceof OwnableBlock) && !block.getRegistryName().getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock))
+			if (!(block instanceof OwnableBlock) && !Utils.getRegistryName(block).getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock))
 				registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
 
 			if (block instanceof IOverlayDisplay)
@@ -148,7 +148,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 				if (be != null) {
 					//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
-					if (config.get(SHOW_OWNER) && be instanceof IOwnable ownable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
+					if (config.get(SHOW_OWNER) && be instanceof IOwnable ownable && Utils.getRegistryName(block).getNamespace().equals(SecurityCraft.MODID))
 						tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner().getName())));
 
 					if (disguised)
@@ -176,7 +176,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			case TAIL: {
 				if (tooltip instanceof Tooltip tail) {
 					ItemStack disguisedAs = ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition());
-					Component modName = new TextComponent(ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()).setStyle(MOD_NAME_STYLE);
+					Component modName = new TextComponent(ModList.get().getModContainerById(Utils.getRegistryName(disguisedAs.getItem()).getNamespace()).get().getModInfo().getDisplayName()).setStyle(MOD_NAME_STYLE);
 
 					tail.lines.get(tail.lines.size() - 1).getAlignedElements(Align.LEFT).set(0, new TextElement(modName));
 				}

@@ -4,7 +4,6 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -19,6 +18,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
 
 @JeiPlugin
 public class SCJEIPlugin implements IModPlugin {
@@ -28,11 +28,11 @@ public class SCJEIPlugin implements IModPlugin {
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
 		registration.addIngredientInfo(new ItemStack(SCContent.ADMIN_TOOL.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe.admin_tool"));
-		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + SCContent.KEYPAD.get().getRegistryName().getPath()));
-		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_CHEST.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_CHEST.get().getRegistryName().getPath()));
-		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_FURNACE.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_FURNACE.get().getRegistryName().getPath()));
-		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_SMOKER.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_SMOKER.get().getRegistryName().getPath()));
-		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_BLAST_FURNACE.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_BLAST_FURNACE.get().getRegistryName().getPath()));
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + Utils.getRegistryName(SCContent.KEYPAD.get()).getPath()));
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_CHEST.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + Utils.getRegistryName(SCContent.KEYPAD_CHEST.get()).getPath()));
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_FURNACE.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + Utils.getRegistryName(SCContent.KEYPAD_FURNACE.get()).getPath()));
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_SMOKER.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + Utils.getRegistryName(SCContent.KEYPAD_SMOKER.get()).getPath()));
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_BLAST_FURNACE.get()), VanillaTypes.ITEM_STACK, Utils.localize("gui.securitycraft:scManual.recipe." + Utils.getRegistryName(SCContent.KEYPAD_BLAST_FURNACE.get()).getPath()));
 		//@formatter:off
 		registration.addRecipes(VTS, IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.entrySet().stream()
 				.filter(entry -> entry.getKey().asItem() != Items.AIR && entry.getValue().asItem() != Items.AIR)

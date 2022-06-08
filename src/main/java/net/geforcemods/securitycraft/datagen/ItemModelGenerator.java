@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -130,7 +131,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder simpleItem(Item item, String parent) {
-		String path = item.getRegistryName().getPath();
+		String path = Utils.getRegistryName(item).getPath();
 
 		return singleTexture(path, mcLoc(parent), "layer0", modLoc(ITEM_FOLDER + "/" + path));
 	}
@@ -146,11 +147,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, Block vanillaBlock) {
-		return reinforcedWallInventory(block, vanillaBlock.getRegistryName().getPath().replace("reinforced_", "").replace("_wall", ""));
+		return reinforcedWallInventory(block, Utils.getRegistryName(vanillaBlock).getPath().replace("reinforced_", "").replace("_wall", ""));
 	}
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, String textureName) {
-		return uncheckedSingleTexture(block.getRegistryName().toString(), modLoc(BLOCK_FOLDER + "/reinforced_wall_inventory"), "wall", new ResourceLocation("block/" + textureName));
+		return uncheckedSingleTexture(Utils.getRegistryName(block).toString(), modLoc(BLOCK_FOLDER + "/reinforced_wall_inventory"), "wall", new ResourceLocation("block/" + textureName));
 	}
 
 	public ItemModelBuilder reinforcedBlockInventory(Block block) {
@@ -164,14 +165,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder blockMine(Block vanillaBlock, Block block) {
-		ResourceLocation texture = mcLoc(BLOCK_FOLDER + "/" + vanillaBlock.getRegistryName().getPath());
+		ResourceLocation texture = mcLoc(BLOCK_FOLDER + "/" + Utils.getRegistryName(vanillaBlock).getPath());
 
 		return blockMine(vanillaBlock, block, texture, texture, texture);
 	}
 
 	public ItemModelBuilder blockMine(Block vanillaBlock, Block block, ResourceLocation sideTexture, ResourceLocation frontTexture, ResourceLocation bottomTopTexture) {
 		//@formatter:off
-		return parent(block.getRegistryName().toString(), modLoc(ITEM_FOLDER + "/template_block_mine"))
+		return parent(Utils.getRegistryName(block).toString(), modLoc(ITEM_FOLDER + "/template_block_mine"))
 				.texture("down", bottomTopTexture)
 				.texture("up", bottomTopTexture)
 				.texture("north", frontTexture)
@@ -205,6 +206,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private String name(Block block) {
-		return block.getRegistryName().getPath();
+		return Utils.getRegistryName(block).getPath();
 	}
 }
