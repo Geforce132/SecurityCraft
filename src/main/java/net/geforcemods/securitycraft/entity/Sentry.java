@@ -644,7 +644,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 
 	private static RandomSource notRandom = new NotRandom();
 
-	private static class NotRandom extends SingleThreadedRandomSource {
+	private static class NotRandom extends LegacyRandomSource {
 		public NotRandom() {
 			super(0);
 		}

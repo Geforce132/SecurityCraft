@@ -31,6 +31,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.players.GameProfileCache;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -94,7 +95,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 			}
 		}
 		else if (entity instanceof Player player && sendMessage.get()) {
-			Component blockName = Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId());
+			MutableComponent blockName = Utils.localize(SCContent.RETINAL_SCANNER.get().getDescriptionId());
 
 			PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
 			return true;

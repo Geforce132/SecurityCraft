@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -75,7 +76,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 				return true;
 			}
 			else if (sendsMessages()) {
-				Component blockName = Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId());
+				MutableComponent blockName = Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId());
 
 				PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
 				return true;
