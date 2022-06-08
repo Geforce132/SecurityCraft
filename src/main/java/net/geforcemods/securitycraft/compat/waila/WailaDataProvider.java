@@ -2,23 +2,6 @@ package net.geforcemods.securitycraft.compat.waila;
 
 import java.util.Optional;
 
-import mcjty.theoneprobe.api.IElement;
-import mcp.mobius.waila.api.BlockAccessor;
-import mcp.mobius.waila.api.EntityAccessor;
-import mcp.mobius.waila.api.IComponentProvider;
-import mcp.mobius.waila.api.IEntityComponentProvider;
-import mcp.mobius.waila.api.ITooltip;
-import mcp.mobius.waila.api.IWailaClientRegistration;
-import mcp.mobius.waila.api.IWailaCommonRegistration;
-import mcp.mobius.waila.api.IWailaPlugin;
-import mcp.mobius.waila.api.TooltipPosition;
-import mcp.mobius.waila.api.WailaPlugin;
-import mcp.mobius.waila.api.config.IPluginConfig;
-import mcp.mobius.waila.api.event.WailaRenderEvent;
-import mcp.mobius.waila.api.ui.IElement.Align;
-import mcp.mobius.waila.impl.Tooltip;
-import mcp.mobius.waila.impl.ui.ItemStackElement;
-import mcp.mobius.waila.impl.ui.TextElement;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -49,15 +32,29 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegistryObject;
+import snownee.jade.api.BlockAccessor;
+import snownee.jade.api.EntityAccessor;
+import snownee.jade.api.IBlockComponentProvider;
+import snownee.jade.api.IEntityComponentProvider;
+import snownee.jade.api.ITooltip;
+import snownee.jade.api.IWailaClientRegistration;
+import snownee.jade.api.IWailaPlugin;
+import snownee.jade.api.TooltipPosition;
+import snownee.jade.api.WailaPlugin;
+import snownee.jade.api.config.IPluginConfig;
+import snownee.jade.api.ui.IElement;
+import snownee.jade.api.ui.IElement.Align;
+import snownee.jade.impl.Tooltip;
+import snownee.jade.impl.ui.ItemStackElement;
+import snownee.jade.impl.ui.TextElement;
 
 @WailaPlugin(SecurityCraft.MODID)
-public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider {
-	public static final WailaDataProvider INSTANCE = new WailaDataProvider();
+public class WailaDataProvider implements IWailaPlugin, IBlockComponentProvider, IEntityComponentProvider {
+	public static final WailaDataProvider HEAD_INSTANCE = new Head();
+	public static final WailaDataProvider BODY_INSTANCE = new WailaDataProvider();
+	public static final WailaDataProvider TAIL_INSTANCE = new Tail();
 	public static final ResourceLocation SHOW_OWNER = new ResourceLocation(SecurityCraft.MODID, "showowner");
 	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
 	public static final ResourceLocation SHOW_PASSWORDS = new ResourceLocation(SecurityCraft.MODID, "showpasswords");
@@ -69,44 +66,39 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	private static final MutableComponent DISGUISE_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.DISGUISE.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
 	private static final MutableComponent SPEED_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.SPEED.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
 
-	static {
-		if (FMLEnvironment.dist == Dist.CLIENT)
-			MinecraftForge.EVENT_BUS.addListener(WailaDataProvider::onWailaRender);
-	}
-
-	@Override
-	public void register(IWailaCommonRegistration registration) {
-		registration.addSyncedConfig(SHOW_OWNER, true);
-		registration.addSyncedConfig(SHOW_MODULES, true);
-		registration.addSyncedConfig(SHOW_PASSWORDS, true);
-		registration.addSyncedConfig(SHOW_CUSTOM_NAME, true);
-	}
-
 	@Override
 	public void registerClient(IWailaClientRegistration registration) {
+		registration.addConfig(SHOW_OWNER, true);
+		registration.addConfig(SHOW_MODULES, true);
+		registration.addConfig(SHOW_PASSWORDS, true);
+		registration.addConfig(SHOW_CUSTOM_NAME, true);
+
 		for (RegistryObject<Block> registryObject : SCContent.BLOCKS.getEntries()) {
 			Block block = registryObject.get();
 
-			if (!(block instanceof OwnableBlock) && !Utils.getRegistryName(block).getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock))
-				registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, block.getClass());
+			if (!(block instanceof OwnableBlock) && !Utils.getRegistryName(block).getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock)) {
+				registration.registerBlockComponent(HEAD_INSTANCE, block.getClass());
+				registration.registerBlockComponent(BODY_INSTANCE, block.getClass());
+				registration.registerBlockComponent(TAIL_INSTANCE, block.getClass());
+			}
 
 			if (block instanceof IOverlayDisplay)
 				registration.usePickedResult(block);
 		}
-
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.HEAD, BaseFullMineBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.HEAD, FurnaceMineBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, OwnableBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, InventoryScannerFieldBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, LaserFieldBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedCauldronBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, ReinforcedPaneBlock.class);
-		registration.registerIconProvider(INSTANCE, DisguisableBlock.class);
-		registration.registerIconProvider(INSTANCE, BaseFullMineBlock.class);
-		registration.registerIconProvider(INSTANCE, FurnaceMineBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.BODY, Sentry.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.TAIL, BaseFullMineBlock.class);
-		registration.registerComponentProvider(INSTANCE, TooltipPosition.TAIL, FurnaceMineBlock.class);
+		registration.addBeforeRenderCallback((tooltip, rect, poseStack, accessor, color) -> !ClientHandler.isPlayerMountedOnCamera());
+		registration.registerBlockComponent(HEAD_INSTANCE, BaseFullMineBlock.class);
+		registration.registerBlockComponent(HEAD_INSTANCE, FurnaceMineBlock.class);
+		registration.registerBlockComponent(BODY_INSTANCE, OwnableBlock.class);
+		registration.registerBlockComponent(BODY_INSTANCE, InventoryScannerFieldBlock.class);
+		registration.registerBlockComponent(BODY_INSTANCE, LaserFieldBlock.class);
+		registration.registerBlockComponent(BODY_INSTANCE, ReinforcedCauldronBlock.class);
+		registration.registerBlockComponent(BODY_INSTANCE, ReinforcedPaneBlock.class);
+		registration.registerBlockIcon(BODY_INSTANCE, DisguisableBlock.class);
+		registration.registerBlockIcon(BODY_INSTANCE, BaseFullMineBlock.class);
+		registration.registerBlockIcon(BODY_INSTANCE, FurnaceMineBlock.class);
+		registration.registerEntityComponent(BODY_INSTANCE, Sentry.class);
+		registration.registerBlockComponent(TAIL_INSTANCE, BaseFullMineBlock.class);
+		registration.registerBlockComponent(TAIL_INSTANCE, FurnaceMineBlock.class);
 	}
 
 	@Override
@@ -119,107 +111,125 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 	@Override
 	public void appendTooltip(ITooltip tooltip, BlockAccessor data, IPluginConfig config) {
-		switch (data.getTooltipPosition()) {
-			case HEAD: {
-				if (tooltip instanceof Tooltip head)
-					head.lines.get(0).getAlignedElements(Align.LEFT).set(0, new TextElement(Component.translatable(((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition()).getDescriptionId()).setStyle(ITEM_NAME_STYLE)));
+		Block block = data.getBlock();
+		boolean disguised = false;
 
-				break;
+		if (block instanceof DisguisableBlock disguisedBlock) {
+			Optional<BlockState> disguisedBlockState = disguisedBlock.getDisguisedBlockState(data.getLevel(), data.getPosition());
+
+			if (disguisedBlockState.isPresent()) {
+				disguised = true;
+				block = disguisedBlockState.get().getBlock();
 			}
-			case BODY: {
-				Block block = data.getBlock();
-				boolean disguised = false;
+		}
 
-				if (block instanceof DisguisableBlock disguisedBlock) {
-					Optional<BlockState> disguisedBlockState = disguisedBlock.getDisguisedBlockState(data.getLevel(), data.getPosition());
+		if (block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(data.getLevel(), data.getBlockState(), data.getPosition()))
+			return;
 
-					if (disguisedBlockState.isPresent()) {
-						disguised = true;
-						block = disguisedBlockState.get().getBlock();
-					}
+		BlockEntity be = data.getBlockEntity();
+
+		if (be != null) {
+			//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
+			if (config.get(SHOW_OWNER) && be instanceof IOwnable ownable && Utils.getRegistryName(block).getNamespace().equals(SecurityCraft.MODID))
+				tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner().getName())));
+
+			if (disguised)
+				return;
+
+			//if the te is ownable, show modules only when it's owned, otherwise always show
+			if (config.get(SHOW_MODULES) && be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(data.getPlayer()))) {
+				if (!inv.getInsertedModules().isEmpty())
+					tooltip.add(EQUIPPED);
+
+				for (ModuleType module : inv.getInsertedModules()) {
+					tooltip.add(Component.literal("- ").append(Component.translatable(module.getTranslationKey())));
 				}
-
-				if (block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(data.getLevel(), data.getBlockState(), data.getPosition()))
-					return;
-
-				BlockEntity be = data.getBlockEntity();
-
-				if (be != null) {
-					//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
-					if (config.get(SHOW_OWNER) && be instanceof IOwnable ownable && Utils.getRegistryName(block).getNamespace().equals(SecurityCraft.MODID))
-						tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner().getName())));
-
-					if (disguised)
-						return;
-
-					//if the te is ownable, show modules only when it's owned, otherwise always show
-					if (config.get(SHOW_MODULES) && be instanceof IModuleInventory inv && (!(be instanceof IOwnable ownable) || ownable.getOwner().isOwner(data.getPlayer()))) {
-						if (!inv.getInsertedModules().isEmpty())
-							tooltip.add(EQUIPPED);
-
-						for (ModuleType module : inv.getInsertedModules()) {
-							tooltip.add(Component.literal("- ").append(Component.translatable(module.getTranslationKey())));
-						}
-					}
-
-					if (config.get(SHOW_PASSWORDS) && be instanceof IPasswordProtected ipp && ((IOwnable) be).getOwner().isOwner(data.getPlayer())) {
-						String password = ipp.getPassword();
-
-						tooltip.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
-					}
-				}
-
-				break;
 			}
-			case TAIL: {
-				if (tooltip instanceof Tooltip tail) {
-					ItemStack disguisedAs = ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition());
-					Component modName = Component.literal(ModList.get().getModContainerById(Utils.getRegistryName(disguisedAs.getItem()).getNamespace()).get().getModInfo().getDisplayName()).setStyle(MOD_NAME_STYLE);
 
-					tail.lines.get(tail.lines.size() - 1).getAlignedElements(Align.LEFT).set(0, new TextElement(modName));
-				}
+			if (config.get(SHOW_PASSWORDS) && be instanceof IPasswordProtected ipp && ((IOwnable) be).getOwner().isOwner(data.getPlayer())) {
+				String password = ipp.getPassword();
+
+				tooltip.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
 			}
 		}
 	}
 
 	@Override
 	public void appendTooltip(ITooltip tooltip, EntityAccessor data, IPluginConfig config) {
-		if (data.getTooltipPosition() == TooltipPosition.BODY) {
-			Entity entity = data.getEntity();
+		Entity entity = data.getEntity();
 
-			if (entity instanceof Sentry sentry) {
-				SentryMode mode = sentry.getMode();
+		if (entity instanceof Sentry sentry) {
+			SentryMode mode = sentry.getMode();
 
-				if (config.get(SHOW_OWNER))
-					tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())));
+			if (config.get(SHOW_OWNER))
+				tooltip.add(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner().getName())));
 
-				if (config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())) {
-					if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
-						tooltip.add(EQUIPPED);
+			if (config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())) {
+				if (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule()) {
+					tooltip.add(EQUIPPED);
 
-						if (!sentry.getAllowlistModule().isEmpty())
-							tooltip.add(ALLOWLIST_MODULE);
+					if (!sentry.getAllowlistModule().isEmpty())
+						tooltip.add(ALLOWLIST_MODULE);
 
-						if (!sentry.getDisguiseModule().isEmpty())
-							tooltip.add(DISGUISE_MODULE);
+					if (!sentry.getDisguiseModule().isEmpty())
+						tooltip.add(DISGUISE_MODULE);
 
-						if (sentry.hasSpeedModule())
-							tooltip.add(SPEED_MODULE);
-					}
+					if (sentry.hasSpeedModule())
+						tooltip.add(SPEED_MODULE);
 				}
-
-				MutableComponent modeDescription = Utils.localize(mode.getModeKey());
-
-				if (mode != SentryMode.IDLE)
-					modeDescription.append("- ").append(Utils.localize(mode.getTargetKey()));
-
-				tooltip.add(modeDescription);
 			}
+
+			MutableComponent modeDescription = Utils.localize(mode.getModeKey());
+
+			if (mode != SentryMode.IDLE)
+				modeDescription.append("- ").append(Utils.localize(mode.getTargetKey()));
+
+			tooltip.add(modeDescription);
 		}
 	}
 
-	public static void onWailaRender(WailaRenderEvent.Pre event) {
-		if (ClientHandler.isPlayerMountedOnCamera())
-			event.setCanceled(true);
+	@Override
+	public ResourceLocation getUid() {
+		return new ResourceLocation(SecurityCraft.MODID, SecurityCraft.MODID + "_body");
+	}
+
+	private static class Head extends WailaDataProvider {
+		@Override
+		public void appendTooltip(ITooltip tooltip, BlockAccessor data, IPluginConfig config) {
+			if (tooltip instanceof Tooltip head)
+				head.lines.get(0).getAlignedElements(Align.LEFT).set(0, new TextElement(Component.translatable(((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition()).getDescriptionId()).setStyle(ITEM_NAME_STYLE)));
+		}
+
+		@Override
+		public int getDefaultPriority() {
+			return TooltipPosition.HEAD;
+		}
+
+		@Override
+		public ResourceLocation getUid() {
+			return new ResourceLocation(SecurityCraft.MODID, SecurityCraft.MODID + "_head");
+		}
+	}
+
+	private static class Tail extends WailaDataProvider {
+		@Override
+		public void appendTooltip(ITooltip tooltip, BlockAccessor data, IPluginConfig config) {
+			if (tooltip instanceof Tooltip tail) {
+				ItemStack disguisedAs = ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getLevel(), data.getBlockState(), data.getPosition());
+				Component modName = Component.literal(ModList.get().getModContainerById(Utils.getRegistryName(disguisedAs.getItem()).getNamespace()).get().getModInfo().getDisplayName()).setStyle(MOD_NAME_STYLE);
+
+				tail.lines.get(tail.lines.size() - 1).getAlignedElements(Align.LEFT).set(0, new TextElement(modName));
+			}
+		}
+
+		@Override
+		public int getDefaultPriority() {
+			return TooltipPosition.TAIL;
+		}
+
+		@Override
+		public ResourceLocation getUid() {
+			return new ResourceLocation(SecurityCraft.MODID, SecurityCraft.MODID + "_tail");
+		}
 	}
 }
