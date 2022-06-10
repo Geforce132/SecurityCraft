@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 2,
   "ingredient": {
     "item": "securitycraft:reinforced_prismarine"
   },
-  "result": "securitycraft:reinforced_prismarine_slab",
-  "count": 2
+  "result": "securitycraft:reinforced_prismarine_slab"
 }

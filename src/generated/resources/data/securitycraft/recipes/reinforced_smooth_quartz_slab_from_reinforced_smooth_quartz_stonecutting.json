@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 2,
   "ingredient": {
     "item": "securitycraft:reinforced_smooth_quartz"
   },
-  "result": "securitycraft:reinforced_smooth_quartz_slab",
-  "count": 2
+  "result": "securitycraft:reinforced_smooth_quartz_slab"
 }

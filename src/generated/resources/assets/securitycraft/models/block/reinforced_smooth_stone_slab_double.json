@@ -1,7 +1,7 @@
 {
   "parent": "securitycraft:block/reinforced_cube_column",
   "textures": {
-    "side": "minecraft:block/smooth_stone_slab_side",
-    "end": "minecraft:block/smooth_stone"
+    "end": "minecraft:block/smooth_stone",
+    "side": "minecraft:block/smooth_stone_slab_side"
   }
 }

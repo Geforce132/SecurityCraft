@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " I ",
-    "IBI",
-    " R "
-  ],
   "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
-    },
     "B": {
       "item": "minecraft:stone_button"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
     },
     "R": {
       "tag": "forge:dusts/redstone"
     }
   },
+  "pattern": [
+    " I ",
+    "IBI",
+    " R "
+  ],
   "result": {
     "item": "securitycraft:panic_button"
   }

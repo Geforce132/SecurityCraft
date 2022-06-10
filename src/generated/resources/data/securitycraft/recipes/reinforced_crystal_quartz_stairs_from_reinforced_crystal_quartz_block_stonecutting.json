@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 1,
   "ingredient": {
     "item": "securitycraft:reinforced_crystal_quartz_block"
   },
-  "result": "securitycraft:reinforced_crystal_quartz_stairs",
-  "count": 1
+  "result": "securitycraft:reinforced_crystal_quartz_stairs"
 }

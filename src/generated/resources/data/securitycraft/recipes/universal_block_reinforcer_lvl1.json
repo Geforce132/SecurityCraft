@@ -1,28 +1,28 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "securitycraft:universal_block_reinforcer",
-  "pattern": [
-    " DG",
-    "RLD",
-    "SR "
-  ],
   "key": {
-    "G": {
-      "tag": "forge:glass/colorless"
-    },
     "D": {
       "tag": "forge:gems/diamond"
     },
-    "R": {
-      "tag": "forge:dusts/redstone"
+    "G": {
+      "tag": "forge:glass/colorless"
     },
     "L": {
       "item": "securitycraft:laser_block"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
     },
     "S": {
       "tag": "forge:rods/wooden"
     }
   },
+  "pattern": [
+    " DG",
+    "RLD",
+    "SR "
+  ],
   "result": {
     "item": "securitycraft:universal_block_reinforcer_lvl1"
   }

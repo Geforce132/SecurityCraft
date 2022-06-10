@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 1,
   "ingredient": {
     "item": "securitycraft:reinforced_diorite"
   },
-  "result": "securitycraft:reinforced_diorite_wall",
-  "count": 1
+  "result": "securitycraft:reinforced_diorite_wall"
 }

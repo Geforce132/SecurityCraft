@@ -1,5 +1,9 @@
 {
   "variants": {
+    "facing=east": {
+      "model": "securitycraft:block/furnace_mine",
+      "y": 90
+    },
     "facing=north": {
       "model": "securitycraft:block/furnace_mine"
     },
@@ -10,10 +14,6 @@
     "facing=west": {
       "model": "securitycraft:block/furnace_mine",
       "y": 270
-    },
-    "facing=east": {
-      "model": "securitycraft:block/furnace_mine",
-      "y": 90
     }
   }
 }

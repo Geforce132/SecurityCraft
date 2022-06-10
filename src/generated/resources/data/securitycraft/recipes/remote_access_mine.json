@@ -1,14 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " T ",
-    " DG",
-    "S  "
-  ],
   "key": {
-    "T": {
-      "item": "minecraft:redstone_torch"
-    },
     "D": {
       "tag": "forge:gems/diamond"
     },
@@ -17,8 +9,16 @@
     },
     "S": {
       "tag": "forge:rods/wooden"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
     }
   },
+  "pattern": [
+    " T ",
+    " DG",
+    "S  "
+  ],
   "result": {
     "item": "securitycraft:remote_access_mine"
   }

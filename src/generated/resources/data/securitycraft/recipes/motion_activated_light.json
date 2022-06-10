@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "L",
-    "R",
-    "S"
-  ],
   "key": {
     "L": {
       "item": "minecraft:redstone_lamp"
@@ -16,6 +11,11 @@
       "tag": "forge:rods/wooden"
     }
   },
+  "pattern": [
+    "L",
+    "R",
+    "S"
+  ],
   "result": {
     "item": "securitycraft:motion_activated_light"
   }

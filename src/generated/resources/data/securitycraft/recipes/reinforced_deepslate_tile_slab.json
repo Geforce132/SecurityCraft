@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "securitycraft:slabs",
-  "pattern": [
-    "BBB"
-  ],
   "key": {
     "B": {
       "item": "securitycraft:reinforced_deepslate_tiles"
     }
   },
+  "pattern": [
+    "BBB"
+  ],
   "result": {
-    "item": "securitycraft:reinforced_deepslate_tile_slab",
-    "count": 6
+    "count": 6,
+    "item": "securitycraft:reinforced_deepslate_tile_slab"
   }
 }

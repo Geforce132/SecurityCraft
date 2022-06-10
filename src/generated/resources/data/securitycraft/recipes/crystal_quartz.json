@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "CC",
-    "CC"
-  ],
   "key": {
     "C": {
       "item": "securitycraft:crystal_quartz_item"
     }
   },
+  "pattern": [
+    "CC",
+    "CC"
+  ],
   "result": {
     "item": "securitycraft:crystal_quartz"
   }

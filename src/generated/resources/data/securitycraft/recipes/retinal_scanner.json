@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "S": {
+      "tag": "securitycraft:reinforced/stone"
+    }
+  },
   "pattern": [
     "SSS",
     "SES",
     "SSS"
   ],
-  "key": {
-    "S": {
-      "tag": "securitycraft:reinforced/stone"
-    },
-    "E": {
-      "item": "minecraft:ender_eye"
-    }
-  },
   "result": {
     "item": "securitycraft:retinal_scanner"
   }

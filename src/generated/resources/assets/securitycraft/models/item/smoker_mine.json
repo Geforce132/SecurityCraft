@@ -2,10 +2,10 @@
   "parent": "securitycraft:item/template_block_mine",
   "textures": {
     "down": "minecraft:block/smoker_top",
-    "up": "minecraft:block/smoker_top",
-    "north": "minecraft:block/smoker_front",
     "east": "minecraft:block/smoker_side",
+    "north": "minecraft:block/smoker_front",
     "south": "minecraft:block/smoker_side",
+    "up": "minecraft:block/smoker_top",
     "west": "minecraft:block/smoker_side"
   }
 }

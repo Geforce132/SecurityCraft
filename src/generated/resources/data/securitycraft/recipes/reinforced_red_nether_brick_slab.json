@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "securitycraft:slabs",
-  "pattern": [
-    "BBB"
-  ],
   "key": {
     "B": {
       "item": "securitycraft:reinforced_red_nether_bricks"
     }
   },
+  "pattern": [
+    "BBB"
+  ],
   "result": {
-    "item": "securitycraft:reinforced_red_nether_brick_slab",
-    "count": 6
+    "count": 6,
+    "item": "securitycraft:reinforced_red_nether_brick_slab"
   }
 }

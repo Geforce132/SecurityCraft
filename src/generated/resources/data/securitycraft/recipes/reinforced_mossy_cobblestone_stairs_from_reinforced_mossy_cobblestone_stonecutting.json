@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 1,
   "ingredient": {
     "item": "securitycraft:reinforced_mossy_cobblestone"
   },
-  "result": "securitycraft:reinforced_mossy_cobblestone_stairs",
-  "count": 1
+  "result": "securitycraft:reinforced_mossy_cobblestone_stairs"
 }

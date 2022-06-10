@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "S": {
+      "tag": "securitycraft:reinforced/stone"
+    }
+  },
   "pattern": [
     "SSS",
     "SHS",
     "SSS"
   ],
-  "key": {
-    "S": {
-      "tag": "securitycraft:reinforced/stone"
-    },
-    "H": {
-      "item": "minecraft:hopper"
-    }
-  },
   "result": {
     "item": "securitycraft:keycard_reader"
   }

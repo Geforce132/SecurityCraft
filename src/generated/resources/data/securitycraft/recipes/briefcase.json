@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "securitycraft:keypad_chest"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
   "pattern": [
     "SSS",
     "ICI",
     "III"
   ],
-  "key": {
-    "S": {
-      "tag": "forge:rods/wooden"
-    },
-    "I": {
-      "tag": "forge:ingots/iron"
-    },
-    "C": {
-      "item": "securitycraft:keypad_chest"
-    }
-  },
   "result": {
     "item": "securitycraft:briefcase"
   }

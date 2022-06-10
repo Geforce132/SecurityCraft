@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "SPS",
-    "SRS",
-    "SSS"
-  ],
   "key": {
-    "S": {
-      "tag": "securitycraft:reinforced/stone"
-    },
     "P": {
       "item": "securitycraft:portable_radar"
     },
     "R": {
       "tag": "forge:dusts/redstone"
+    },
+    "S": {
+      "tag": "securitycraft:reinforced/stone"
     }
   },
+  "pattern": [
+    "SPS",
+    "SRS",
+    "SSS"
+  ],
   "result": {
     "item": "securitycraft:username_logger"
   }

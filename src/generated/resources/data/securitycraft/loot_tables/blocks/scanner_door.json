@@ -2,15 +2,14 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "conditions": [
             {
-              "condition": "minecraft:block_state_property",
               "block": "securitycraft:scanner_door",
+              "condition": "minecraft:block_state_property",
               "properties": {
                 "half": "lower"
               }
@@ -21,7 +20,8 @@
           ],
           "name": "securitycraft:scanner_door_item"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

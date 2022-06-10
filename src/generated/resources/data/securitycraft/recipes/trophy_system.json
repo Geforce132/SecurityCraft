@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " T ",
-    " B ",
-    "S S"
-  ],
   "key": {
-    "T": {
-      "item": "securitycraft:sentry"
-    },
     "B": {
       "item": "securitycraft:reinforced_iron_block"
     },
     "S": {
       "tag": "forge:rods/wooden"
+    },
+    "T": {
+      "item": "securitycraft:sentry"
     }
   },
+  "pattern": [
+    " T ",
+    " B ",
+    "S S"
+  ],
   "result": {
     "item": "securitycraft:trophy_system"
   }

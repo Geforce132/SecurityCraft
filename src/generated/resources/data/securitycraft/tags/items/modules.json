@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     "securitycraft:whitelist_module",
     "securitycraft:blacklist_module",

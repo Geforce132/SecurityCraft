@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/template_glass_pane_side",
   "textures": {
-    "pane": "securitycraft:block/reinforced_light_gray_stained_glass",
-    "edge": "securitycraft:block/reinforced_light_gray_stained_glass_pane_top"
+    "edge": "securitycraft:block/reinforced_light_gray_stained_glass_pane_top",
+    "pane": "securitycraft:block/reinforced_light_gray_stained_glass"
   }
 }

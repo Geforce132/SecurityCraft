@@ -1,11 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "securitycraft:modules",
-  "pattern": [
-    "III",
-    "IPI",
-    "ISI"
-  ],
   "key": {
     "I": {
       "tag": "forge:ingots/iron"
@@ -17,6 +12,11 @@
       "tag": "forge:ender_pearls"
     }
   },
+  "pattern": [
+    "III",
+    "IPI",
+    "ISI"
+  ],
   "result": {
     "item": "securitycraft:smart_module"
   }

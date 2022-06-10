@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "tag": "forge:gunpowder"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
   "pattern": [
     " I ",
     "IGI"
   ],
-  "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
-    },
-    "G": {
-      "tag": "forge:gunpowder"
-    }
-  },
   "result": {
-    "item": "securitycraft:mine",
-    "count": 3
+    "count": 3,
+    "item": "securitycraft:mine"
   }
 }

@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "S": {
+      "item": "minecraft:shears"
+    }
+  },
   "pattern": [
     "SII"
   ],
-  "key": {
-    "S": {
-      "item": "minecraft:shears"
-    },
-    "I": {
-      "tag": "forge:ingots/iron"
-    }
-  },
   "result": {
     "item": "securitycraft:universal_block_remover"
   }

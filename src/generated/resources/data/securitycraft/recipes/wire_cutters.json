@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "S": {
+      "item": "minecraft:shears"
+    }
+  },
   "pattern": [
     "SI ",
     "I I",
     " I "
   ],
-  "key": {
-    "S": {
-      "item": "minecraft:shears"
-    },
-    "I": {
-      "tag": "forge:ingots/iron"
-    }
-  },
   "result": {
     "item": "securitycraft:wire_cutters"
   }

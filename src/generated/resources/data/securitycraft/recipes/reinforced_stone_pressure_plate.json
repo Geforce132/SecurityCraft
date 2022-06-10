@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "securitycraft:reinforced_pressure_plates",
-  "pattern": [
-    "SS"
-  ],
   "key": {
     "S": {
       "item": "securitycraft:reinforced_stone"
     }
   },
+  "pattern": [
+    "SS"
+  ],
   "result": {
     "item": "securitycraft:reinforced_stone_pressure_plate"
   }

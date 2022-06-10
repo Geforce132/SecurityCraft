@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "CIC",
-    "IRI",
-    "CIC"
-  ],
   "key": {
     "C": {
       "item": "securitycraft:reinforced_crystal_quartz_block"
@@ -16,6 +11,11 @@
       "item": "securitycraft:reinforced_redstone_block"
     }
   },
+  "pattern": [
+    "CIC",
+    "IRI",
+    "CIC"
+  ],
   "result": {
     "item": "securitycraft:block_pocket_manager"
   }

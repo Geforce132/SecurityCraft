@@ -1,9 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "CQ",
-    "QC"
-  ],
   "key": {
     "C": {
       "item": "securitycraft:reinforced_cobblestone"
@@ -12,8 +8,12 @@
       "tag": "forge:gems/quartz"
     }
   },
+  "pattern": [
+    "CQ",
+    "QC"
+  ],
   "result": {
-    "item": "securitycraft:reinforced_diorite",
-    "count": 2
+    "count": 2,
+    "item": "securitycraft:reinforced_diorite"
   }
 }

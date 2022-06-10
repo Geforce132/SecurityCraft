@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "securitycraft:slabs",
-  "pattern": [
-    "BBB"
-  ],
   "key": {
     "B": {
       "item": "securitycraft:crystal_quartz"
     }
   },
+  "pattern": [
+    "BBB"
+  ],
   "result": {
-    "item": "securitycraft:crystal_quartz_slab",
-    "count": 6
+    "count": 6,
+    "item": "securitycraft:crystal_quartz_slab"
   }
 }

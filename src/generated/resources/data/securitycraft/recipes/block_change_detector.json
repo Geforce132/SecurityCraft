@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "IRI",
-    "ILI",
-    "III"
-  ],
   "key": {
-    "R": {
-      "item": "minecraft:redstone_torch"
-    },
     "I": {
       "tag": "forge:ingots/iron"
     },
     "L": {
       "item": "securitycraft:username_logger"
+    },
+    "R": {
+      "item": "minecraft:redstone_torch"
     }
   },
+  "pattern": [
+    "IRI",
+    "ILI",
+    "III"
+  ],
   "result": {
     "item": "securitycraft:block_change_detector"
   }

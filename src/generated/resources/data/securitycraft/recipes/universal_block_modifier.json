@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " RE",
-    " IR",
-    "I  "
-  ],
   "key": {
-    "R": {
-      "tag": "forge:dusts/redstone"
-    },
     "E": {
       "tag": "forge:gems/emerald"
     },
     "I": {
       "tag": "forge:ingots/iron"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
     }
   },
+  "pattern": [
+    " RE",
+    " IR",
+    "I  "
+  ],
   "result": {
     "item": "securitycraft:universal_block_modifier"
   }

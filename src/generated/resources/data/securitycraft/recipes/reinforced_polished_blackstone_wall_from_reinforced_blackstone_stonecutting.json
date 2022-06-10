@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 1,
   "ingredient": {
     "item": "securitycraft:reinforced_blackstone"
   },
-  "result": "securitycraft:reinforced_polished_blackstone_wall",
-  "count": 1
+  "result": "securitycraft:reinforced_polished_blackstone_wall"
 }

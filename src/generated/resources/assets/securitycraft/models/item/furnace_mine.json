@@ -2,10 +2,10 @@
   "parent": "securitycraft:item/template_block_mine",
   "textures": {
     "down": "minecraft:block/furnace_top",
-    "up": "minecraft:block/furnace_top",
-    "north": "minecraft:block/furnace_front",
     "east": "minecraft:block/furnace_side",
+    "north": "minecraft:block/furnace_front",
     "south": "minecraft:block/furnace_side",
+    "up": "minecraft:block/furnace_top",
     "west": "minecraft:block/furnace_side"
   }
 }

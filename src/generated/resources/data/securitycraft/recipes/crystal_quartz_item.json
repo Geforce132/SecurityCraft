@@ -1,20 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "forge:gems/prismarine"
+    },
+    "Q": {
+      "tag": "forge:gems/quartz"
+    }
+  },
   "pattern": [
     "CQC",
     "QCQ",
     "CQC"
   ],
-  "key": {
-    "Q": {
-      "tag": "forge:gems/quartz"
-    },
-    "C": {
-      "tag": "forge:gems/prismarine"
-    }
-  },
   "result": {
-    "item": "securitycraft:crystal_quartz_item",
-    "count": 9
+    "count": 9,
+    "item": "securitycraft:crystal_quartz_item"
   }
 }

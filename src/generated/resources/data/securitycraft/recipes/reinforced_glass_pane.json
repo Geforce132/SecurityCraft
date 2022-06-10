@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "GGG",
-    "GGG"
-  ],
   "key": {
     "G": {
       "item": "securitycraft:reinforced_glass"
     }
   },
+  "pattern": [
+    "GGG",
+    "GGG"
+  ],
   "result": {
-    "item": "securitycraft:reinforced_glass_pane",
-    "count": 16
+    "count": 16,
+    "item": "securitycraft:reinforced_glass_pane"
   }
 }

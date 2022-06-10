@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "forge:chests/ender"
+    },
+    "L": {
+      "item": "securitycraft:laser_block"
+    },
+    "S": {
+      "tag": "securitycraft:reinforced/stone"
+    }
+  },
   "pattern": [
     "SSS",
     "SLS",
     "SCS"
   ],
-  "key": {
-    "S": {
-      "tag": "securitycraft:reinforced/stone"
-    },
-    "L": {
-      "item": "securitycraft:laser_block"
-    },
-    "C": {
-      "tag": "forge:chests/ender"
-    }
-  },
   "result": {
     "item": "securitycraft:inventory_scanner"
   }

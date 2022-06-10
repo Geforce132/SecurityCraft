@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "BGI",
-    "RSG",
-    "  S"
-  ],
   "key": {
     "B": {
       "item": "minecraft:bow"
@@ -22,6 +17,11 @@
       "tag": "forge:rods/wooden"
     }
   },
+  "pattern": [
+    "BGI",
+    "RSG",
+    "  S"
+  ],
   "result": {
     "item": "securitycraft:taser"
   }

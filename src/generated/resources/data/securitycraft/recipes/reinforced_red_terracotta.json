@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "securitycraft:reinforced_terracotta",
+  "key": {
+    "D": {
+      "tag": "forge:dyes/red"
+    },
+    "T": {
+      "item": "securitycraft:reinforced_hardened_clay"
+    }
+  },
   "pattern": [
     "TTT",
     "TDT",
     "TTT"
   ],
-  "key": {
-    "T": {
-      "item": "securitycraft:reinforced_hardened_clay"
-    },
-    "D": {
-      "tag": "forge:dyes/red"
-    }
-  },
   "result": {
-    "item": "securitycraft:reinforced_red_terracotta",
-    "count": 8
+    "count": 8,
+    "item": "securitycraft:reinforced_red_terracotta"
   }
 }

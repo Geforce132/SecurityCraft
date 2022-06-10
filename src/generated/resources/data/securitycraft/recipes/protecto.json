@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ODO",
-    "OEO",
-    "OOO"
-  ],
   "key": {
-    "O": {
-      "item": "securitycraft:reinforced_obsidian"
-    },
     "D": {
       "item": "minecraft:daylight_detector"
     },
     "E": {
       "item": "minecraft:ender_eye"
+    },
+    "O": {
+      "item": "securitycraft:reinforced_obsidian"
     }
   },
+  "pattern": [
+    "ODO",
+    "OEO",
+    "OOO"
+  ],
   "result": {
     "item": "securitycraft:protecto"
   }

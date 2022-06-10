@@ -1,20 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " P ",
-    "IGI"
-  ],
   "key": {
-    "P": {
-      "item": "minecraft:heavy_weighted_pressure_plate"
+    "G": {
+      "tag": "forge:gunpowder"
     },
     "I": {
       "tag": "forge:ingots/iron"
     },
-    "G": {
-      "tag": "forge:gunpowder"
+    "P": {
+      "item": "minecraft:heavy_weighted_pressure_plate"
     }
   },
+  "pattern": [
+    " P ",
+    "IGI"
+  ],
   "result": {
     "item": "securitycraft:bouncing_betty"
   }

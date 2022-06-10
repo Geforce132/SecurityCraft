@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 2,
   "ingredient": {
     "item": "securitycraft:reinforced_polished_granite"
   },
-  "result": "securitycraft:reinforced_polished_granite_slab",
-  "count": 2
+  "result": "securitycraft:reinforced_polished_granite_slab"
 }
