@@ -46,7 +46,12 @@ public class BlockPocketManagerMenu extends AbstractContainerMenu {
 
 				for (int y = 0; y < 8; y++) {
 					for (int x = 0; x < 7; x++) {
-						addSlot(new SlotItemHandler(storage, slotId++, 124 + x * 18, 8 + y * 18));
+						addSlot(new SlotItemHandler(storage, slotId++, 124 + x * 18, 8 + y * 18) {
+							@Override
+							public void initialize(ItemStack stack) {
+								set(stack);
+							}
+						});
 					}
 				}
 			});

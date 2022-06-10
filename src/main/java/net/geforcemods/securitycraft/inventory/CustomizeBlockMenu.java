@@ -135,6 +135,11 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 		}
 
 		@Override
+		public void initialize(ItemStack stack) {
+			set(stack);
+		}
+
+		@Override
 		public void set(ItemStack stack) {
 			super.set(stack);
 			broadcastChanges();
