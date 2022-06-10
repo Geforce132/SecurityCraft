@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.compat.waila;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import net.geforcemods.securitycraft.ClientHandler;
@@ -66,6 +68,7 @@ public class WailaDataProvider implements IWailaPlugin {
 	private static final MutableComponent ALLOWLIST_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.ALLOWLIST.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
 	private static final MutableComponent DISGUISE_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.DISGUISE.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
 	private static final MutableComponent SPEED_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.SPEED.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
+	private final List<Class<?>> isRegistered = new ArrayList<>();
 
 	@Override
 	public void registerClient(IWailaClientRegistration registration) {
@@ -77,8 +80,12 @@ public class WailaDataProvider implements IWailaPlugin {
 		for (RegistryObject<Block> registryObject : SCContent.BLOCKS.getEntries()) {
 			Block block = registryObject.get();
 
-			if (!(block instanceof OwnableBlock) && !Utils.getRegistryName(block).getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock))
-				registration.registerBlockComponent(SECURITYCRAFT_INFO, block.getClass());
+			if (!(block instanceof OwnableBlock) && !Utils.getRegistryName(block).getPath().matches("(?!(reinforced_)).*?crystal_.*") && !(block instanceof ReinforcedCauldronBlock) && !(block instanceof ReinforcedPaneBlock)) {
+				if (!isRegistered.contains(block.getClass())) {
+					registration.registerBlockComponent(SECURITYCRAFT_INFO, block.getClass());
+					isRegistered.add(block.getClass());
+				}
+			}
 
 			if (block instanceof IOverlayDisplay)
 				registration.usePickedResult(block);
@@ -98,6 +105,7 @@ public class WailaDataProvider implements IWailaPlugin {
 		registration.registerEntityComponent(SECURITYCRAFT_INFO, Sentry.class);
 		registration.registerBlockComponent(SPOOF_MOD_NAME, BaseFullMineBlock.class);
 		registration.registerBlockComponent(SPOOF_MOD_NAME, FurnaceMineBlock.class);
+		isRegistered.clear();
 	}
 
 	private static class SpoofBlockIcon implements IBlockComponentProvider {
