@@ -20,7 +20,7 @@ public class F3Spoofer {
 	public static BlockState spoofBlockState(BlockState originalState, BlockPos pos) {
 		Block originalBlock = originalState.getBlock();
 
-		if (FMLEnvironment.production) {
+		if (!FMLEnvironment.production) {
 			if (originalBlock instanceof DisguisableBlock disguisableBlock)
 				return disguisableBlock.getDisguisedStateOrDefault(originalState, Minecraft.getInstance().level, pos);
 			else if (originalBlock instanceof BaseFullMineBlock)
@@ -35,7 +35,7 @@ public class F3Spoofer {
 	public static FluidState spoofFluidState(FluidState originalState) {
 		Fluid originalFluid = originalState.getType();
 
-		if (FMLEnvironment.production) {
+		if (!FMLEnvironment.production) {
 			if (originalFluid == SCContent.FAKE_WATER.get())
 				return Fluids.WATER.defaultFluidState().setValue(FlowingFluid.FALLING, originalState.getValue(FlowingFluid.FALLING));
 			else if (originalFluid == SCContent.FLOWING_FAKE_WATER.get())
