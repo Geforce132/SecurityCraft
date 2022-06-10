@@ -39,7 +39,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		copy(SCTags.Blocks.REINFORCED_ACACIA_LOGS, SCTags.Items.REINFORCED_ACACIA_LOGS);
 		copy(SCTags.Blocks.REINFORCED_BIRCH_LOGS, SCTags.Items.REINFORCED_BIRCH_LOGS);
 		copy(SCTags.Blocks.REINFORCED_BUTTONS, SCTags.Items.REINFORCED_BUTTONS);
-		copy(SCTags.Blocks.REINFORCED_CARPETS, SCTags.Items.REINFORCED_CARPETS);
+		copy(SCTags.Blocks.REINFORCED_WOOL_CARPETS, SCTags.Items.REINFORCED_WOOL_CARPETS);
 		copy(SCTags.Blocks.REINFORCED_COBBLESTONE, SCTags.Items.REINFORCED_COBBLESTONE);
 		copy(SCTags.Blocks.REINFORCED_CRIMSON_STEMS, SCTags.Items.REINFORCED_CRIMSON_STEMS);
 		copy(SCTags.Blocks.REINFORCED_DARK_OAK_LOGS, SCTags.Items.REINFORCED_DARK_OAK_LOGS);
@@ -87,7 +87,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(ItemTags.STAIRS).addTag(SCTags.Items.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get().asItem());
 		tag(ItemTags.SIGNS).addTag(SCTags.Items.SECRET_SIGNS);
 		tag(ItemTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem());
-		tag(ItemTags.WOOL_CARPETS).addTag(SCTags.Items.REINFORCED_CARPETS);
+		tag(ItemTags.WOOL_CARPETS).addTag(SCTags.Items.REINFORCED_WOOL_CARPETS);
 		//@formatter:on
 	}
 
