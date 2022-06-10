@@ -35,7 +35,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -60,7 +59,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -632,28 +630,9 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 	@Override
 	public void tickLeash() {} //no leashing for sentry
 
-	//this last code is here so the ai task gets executed, which it doesn't for some weird reason
-	@Override
-	public RandomSource getRandom() {
-		return notRandom;
-	}
-
 	@Override
 	public Packet<?> getAddEntityPacket() {
 		return new ClientboundAddEntityPacket(this);
-	}
-
-	private static RandomSource notRandom = new NotRandom();
-
-	private static class NotRandom extends LegacyRandomSource {
-		public NotRandom() {
-			super(0);
-		}
-
-		@Override
-		public int nextInt(int bound) {
-			return 0;
-		}
 	}
 
 	public static enum SentryMode {
