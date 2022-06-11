@@ -1,5 +1,5 @@
 {
-    "parent": "block/door_top",
+    "parent": "block/door_bottom_right_open",
     "textures": {
         "bottom": "securitycraft:block/keypad_door_lower",
         "top": "securitycraft:block/reinforced_door_upper"
