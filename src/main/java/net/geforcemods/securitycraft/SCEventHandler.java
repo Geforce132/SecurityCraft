@@ -66,6 +66,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
@@ -111,6 +112,7 @@ public class SCEventHandler {
 
 						player.level.playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
 						handlePlayedNote(player.level, player.blockPosition(), note.noteID(), note.instrumentName());
+						player.gameEvent(GameEvent.NOTE_BLOCK_PLAY);
 						pair.setLeft(NOTE_DELAY);
 					}
 					else

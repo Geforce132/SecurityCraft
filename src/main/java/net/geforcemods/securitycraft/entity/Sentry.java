@@ -59,6 +59,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -165,7 +166,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 			player.closeContainer();
 
 			if (player.isCrouching())
-				discard();
+				kill();
 			else if (item == SCContent.UNIVERSAL_BLOCK_REMOVER.get()) {
 				kill();
 
@@ -261,6 +262,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 	@Override
 	public void kill() {
 		remove(RemovalReason.KILLED);
+		gameEvent(GameEvent.ENTITY_DIE);
 	}
 
 	/**

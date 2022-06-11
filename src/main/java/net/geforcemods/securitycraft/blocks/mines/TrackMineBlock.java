@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -92,6 +93,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	public boolean activateMine(Level level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && !be.isActive()) {
 			be.activate();
+			level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 			return true;
 		}
 		else
@@ -102,6 +104,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	public boolean defuseMine(Level level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && be.isActive()) {
 			be.deactivate();
+			level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 			return true;
 		}
 		else

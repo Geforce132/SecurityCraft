@@ -99,12 +99,12 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			if (precipitation == Precipitation.RAIN) {
 				level.setBlockAndUpdate(pos, SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState());
 				level.setBlockEntity(be);
-				level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
+				level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 			}
 			else if (precipitation == Precipitation.SNOW) {
 				level.setBlockAndUpdate(pos, SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get().defaultBlockState());
 				level.setBlockEntity(be);
-				level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
+				level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 			}
 		}
 	}
@@ -122,13 +122,13 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			level.setBlockAndUpdate(pos, SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState());
 			level.setBlockEntity(be);
 			level.levelEvent(LevelEvent.SOUND_DRIP_WATER_INTO_CAULDRON, pos, 0);
-			level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
+			level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 		}
 		else if (fluid == Fluids.LAVA) {
 			level.setBlockAndUpdate(pos, SCContent.REINFORCED_LAVA_CAULDRON.get().defaultBlockState());
 			level.setBlockEntity(be);
 			level.levelEvent(LevelEvent.SOUND_DRIP_LAVA_INTO_CAULDRON, pos, 0);
-			level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
+			level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 		}
 	}
 

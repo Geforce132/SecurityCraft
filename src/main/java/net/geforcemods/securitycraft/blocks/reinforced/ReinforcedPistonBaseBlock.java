@@ -276,6 +276,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 
 				dropResources(stateToDestroy, level, posToDestroy, beToDestroy);
 				level.setBlock(posToDestroy, Blocks.AIR.defaultBlockState(), 18);
+				level.gameEvent(GameEvent.BLOCK_DESTROY, posToDestroy, GameEvent.Context.of(stateToDestroy));
 
 				if (!stateToDestroy.is(BlockTags.FIRE))
 					level.addDestroyBlockEffect(posToDestroy, stateToDestroy);
