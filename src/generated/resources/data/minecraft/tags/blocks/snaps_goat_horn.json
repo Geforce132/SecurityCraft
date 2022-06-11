@@ -1,0 +1,16 @@
+{
+  "values": [
+    "securitycraft:reinforced_acacia_log",
+    "securitycraft:reinforced_birch_log",
+    "securitycraft:reinforced_oak_log",
+    "securitycraft:reinforced_jungle_log",
+    "securitycraft:reinforced_spruce_log",
+    "securitycraft:reinforced_dark_oak_log",
+    "securitycraft:reinforced_stone",
+    "securitycraft:reinforced_packed_ice",
+    "securitycraft:iron_mine",
+    "securitycraft:coal_mine",
+    "securitycraft:copper_mine",
+    "securitycraft:emerald_mine"
+  ]
+}

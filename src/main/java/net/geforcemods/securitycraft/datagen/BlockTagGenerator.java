@@ -227,13 +227,13 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_GOLD_BLOCK.get(),
 				SCContent.REINFORCED_IRON_BLOCK.get(),
 				SCContent.REINFORCED_NETHERITE_BLOCK.get());
-		tag(BlockTags.WOOL_CARPETS).addTag(SCTags.Blocks.REINFORCED_WOOL_CARPETS);
 		tag(BlockTags.CAULDRONS).add(
 				SCContent.REINFORCED_CAULDRON.get(),
 				SCContent.REINFORCED_LAVA_CAULDRON.get(),
 				SCContent.REINFORCED_WATER_CAULDRON.get(),
 				SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get());
 		tag(BlockTags.CRYSTAL_SOUND_BLOCKS).add(SCContent.REINFORCED_AMETHYST_BLOCK.get());
+		tag(BlockTags.DAMPENS_VIBRATIONS).addTag(SCTags.Blocks.REINFORCED_WOOL);
 		tag(BlockTags.DIRT).addTag(SCTags.Blocks.REINFORCED_DIRT);
 		tag(BlockTags.DOORS).add(SCContent.KEYPAD_DOOR.get(), SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
 		tag(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
@@ -333,6 +333,20 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.STAIRS).addTag(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
 		tag(BlockTags.STRIDER_WARM_BLOCKS).add(SCContent.FAKE_LAVA_BLOCK.get());
 		tag(BlockTags.SIGNS).addTag(SCTags.Blocks.SECRET_SIGNS);
+		tag(BlockTags.SNAPS_GOAT_HORN).add(
+				SCContent.REINFORCED_ACACIA_LOG.get(),
+				SCContent.REINFORCED_BIRCH_LOG.get(),
+				SCContent.REINFORCED_OAK_LOG.get(),
+				SCContent.REINFORCED_JUNGLE_LOG.get(),
+				SCContent.REINFORCED_SPRUCE_LOG.get(),
+				SCContent.REINFORCED_DARK_OAK_LOG.get(),
+				//TODO: SCContent.REINFORCED_MANGROVE_LOG.get(),
+				SCContent.REINFORCED_STONE.get(),
+				SCContent.REINFORCED_PACKED_ICE.get(),
+				SCContent.IRON_ORE_MINE.get(),
+				SCContent.COAL_ORE_MINE.get(),
+				SCContent.COPPER_ORE_MINE.get(),
+				SCContent.EMERALD_ORE_MINE.get());
 		tag(BlockTags.SNOW).add(SCContent.REINFORCED_SNOW_BLOCK.get());
 		tag(BlockTags.SOUL_FIRE_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
 		tag(BlockTags.SOUL_SPEED_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
@@ -340,6 +354,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get());
 		tag(BlockTags.WALL_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_SIGNS);
 		tag(BlockTags.WITHER_SUMMON_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
+		tag(BlockTags.WOOL_CARPETS).addTag(SCTags.Blocks.REINFORCED_WOOL_CARPETS);
 		//@formatter:on
 
 		//automatic
