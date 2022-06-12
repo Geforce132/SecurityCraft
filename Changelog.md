@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.3 of SecurityCraft--------------------------
+
+- Change: Reduced the Rail Mine's explosion size by 25% to make it comparable to other mines' explosions
+
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
 
 - New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity

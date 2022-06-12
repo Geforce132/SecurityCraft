@@ -87,7 +87,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 
 		if (te instanceof TileEntityTrackMine && ((TileEntityTrackMine) te).isActive()) {
 			world.destroyBlock(pos, false);
-			world.newExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.smallerMineExplosion ? 4.0F : 8.0F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
+			world.newExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.smallerMineExplosion ? 3.0F : 6.0F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
 			cart.setDead();
 		}
 	}
@@ -104,7 +104,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 
 		if (te instanceof TileEntityTrackMine && ((TileEntityTrackMine) te).isActive()) {
 			world.destroyBlock(pos, false);
-			world.newExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), ConfigHandler.smallerMineExplosion ? 4.0F : 8.0F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
+			world.newExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), ConfigHandler.smallerMineExplosion ? 3.0F : 6.0F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
 		}
 	}
 
