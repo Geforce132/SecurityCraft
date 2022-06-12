@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.3 of SecurityCraft--------------------------
+
+- Fix: Water doesn't render correctly while a Sonic Security System is recording within the player's view
+
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
 
 - New: Block Change Detector. Detects and logs players breaking and/or placing blocks in its vicinity
