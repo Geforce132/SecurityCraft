@@ -52,6 +52,7 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 			RenderSystem.disableCull();
 			fontRenderer.drawInBatch(text, halfWidth, 0, 16777215, false, positionMatrix, buffer, true, j, packedLight);
 			fontRenderer.drawInBatch(text, halfWidth, 0, -1, false, positionMatrix, buffer, false, 0, packedLight);
+			RenderSystem.enableCull();
 			pose.popPose();
 		}
 
