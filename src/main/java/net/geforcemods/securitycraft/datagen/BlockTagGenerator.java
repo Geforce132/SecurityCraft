@@ -191,6 +191,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.SECRET_CRIMSON_SIGN.get(),
 				SCContent.SECRET_DARK_OAK_SIGN.get(),
 				SCContent.SECRET_JUNGLE_SIGN.get(),
+				SCContent.SECRET_MANGROVE_SIGN.get(),
 				SCContent.SECRET_OAK_SIGN.get(),
 				SCContent.SECRET_SPRUCE_SIGN.get(),
 				SCContent.SECRET_WARPED_SIGN.get());
@@ -200,6 +201,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.SECRET_CRIMSON_WALL_SIGN.get(),
 				SCContent.SECRET_DARK_OAK_WALL_SIGN.get(),
 				SCContent.SECRET_JUNGLE_WALL_SIGN.get(),
+				SCContent.SECRET_MANGROVE_WALL_SIGN.get(),
 				SCContent.SECRET_OAK_WALL_SIGN.get(),
 				SCContent.SECRET_SPRUCE_WALL_SIGN.get(),
 				SCContent.SECRET_WARPED_WALL_SIGN.get());

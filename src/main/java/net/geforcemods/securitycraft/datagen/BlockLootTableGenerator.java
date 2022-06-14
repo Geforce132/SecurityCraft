@@ -104,6 +104,8 @@ public class BlockLootTableGenerator implements DataProvider {
 		putStandardBlockLootTable(SCContent.SECRET_DARK_OAK_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_JUNGLE_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_JUNGLE_WALL_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_MANGROVE_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_MANGROVE_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_OAK_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_OAK_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_SIGN);
