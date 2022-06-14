@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.inventory.InventoryScannerMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class SetGhostSlot {
 	private int slotIndex;
