@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
+import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.resources.ResourceLocation;
@@ -66,6 +67,7 @@ public class SCJEIPlugin implements IModPlugin {
 		registration.addGuiContainerHandler(CustomizeBlockScreen.class, new SlotMover<>());
 		registration.addGuiContainerHandler(DisguiseModuleScreen.class, new SlotMover<>());
 		registration.addGuiContainerHandler(ProjectorScreen.class, new SlotMover<>());
+		registration.addGhostIngredientHandler(InventoryScannerScreen.class, new InventoryScannerGhostIngredientHandler());
 	}
 
 	@Override
