@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class InventoryScannerScreen extends ContainerScreen<InventoryScannerMenu> {
 	private static final ResourceLocation REGULAR_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_gui.png");
 	private static final ResourceLocation ENHANCED_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
-	private InventoryScannerBlockEntity tileEntity;
+	public InventoryScannerBlockEntity tileEntity;
 	private boolean owns = false;
 	private boolean hasRedstoneModule = false, hasStorageModule = false;
 	private ITextComponent infoStringRedstone, infoStringStorage;
