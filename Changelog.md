@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.9.3 of SecurityCraft--------------------------
 
+- New: Items can now be dragged from JEI into the Inventory Scanner's ghost slots
 - Change: Reduced the Rail Mine's explosion size by 25% to make it comparable to other mines' explosions
 
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------

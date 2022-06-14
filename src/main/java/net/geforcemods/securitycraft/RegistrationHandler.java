@@ -58,6 +58,7 @@ import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
+import net.geforcemods.securitycraft.network.server.SetGhostSlot;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
@@ -526,6 +527,7 @@ public class RegistrationHandler {
 		network.registerMessage(ClearChangeDetectorServer.Handler.class, ClearChangeDetectorServer.class, 39, Side.SERVER);
 		network.registerMessage(SyncBlockChangeDetector.Handler.class, SyncBlockChangeDetector.class, 40, Side.SERVER);
 		network.registerMessage(ToggleModule.Handler.class, ToggleModule.class, 41, Side.SERVER);
+		network.registerMessage(SetGhostSlot.Handler.class, SetGhostSlot.class, 42, Side.SERVER);
 	}
 
 	@SubscribeEvent

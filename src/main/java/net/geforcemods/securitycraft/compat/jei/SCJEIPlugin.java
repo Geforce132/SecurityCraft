@@ -12,6 +12,7 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.gui.GuiInventoryScanner;
 import net.minecraft.item.ItemStack;
 
 @JEIPlugin
@@ -53,6 +54,7 @@ public class SCJEIPlugin implements IModPlugin {
 		registry.addRecipeCatalyst(new ItemStack(SCContent.universalBlockReinforcerLvL1), VTS_ID);
 		registry.addRecipeCatalyst(new ItemStack(SCContent.universalBlockReinforcerLvL2), VTS_ID, STV_ID);
 		registry.addRecipeCatalyst(new ItemStack(SCContent.universalBlockReinforcerLvL3), VTS_ID, STV_ID);
+		registry.addGhostIngredientHandler(GuiInventoryScanner.class, new InventoryScannerGhostIngredientHandler());
 	}
 
 	@Override

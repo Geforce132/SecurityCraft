@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerInventoryScanner extends Container {
 	private final int numRows;
-	private final TileEntityInventoryScanner te;
+	public final TileEntityInventoryScanner te;
 
 	public ContainerInventoryScanner(InventoryPlayer inventory, TileEntityInventoryScanner te) {
 		numRows = te.getSizeInventory() / 9;
