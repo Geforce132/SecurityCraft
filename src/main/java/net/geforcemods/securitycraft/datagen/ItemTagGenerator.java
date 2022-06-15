@@ -48,6 +48,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		copy(SCTags.Blocks.REINFORCED_ICE, SCTags.Items.REINFORCED_ICE);
 		copy(SCTags.Blocks.REINFORCED_JUNGLE_LOGS, SCTags.Items.REINFORCED_JUNGLE_LOGS);
 		copy(SCTags.Blocks.REINFORCED_LOGS, SCTags.Items.REINFORCED_LOGS);
+		copy(SCTags.Blocks.REINFORCED_MANGROVE_LOGS, SCTags.Items.REINFORCED_MANGROVE_LOGS);
 		copy(SCTags.Blocks.REINFORCED_NYLIUM, SCTags.Items.REINFORCED_NYLIUM);
 		copy(SCTags.Blocks.REINFORCED_OAK_LOGS, SCTags.Items.REINFORCED_OAK_LOGS);
 		copy(SCTags.Blocks.REINFORCED_PLANKS, SCTags.Items.REINFORCED_PLANKS);
@@ -68,6 +69,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.SECRET_CRIMSON_SIGN_ITEM.get(),
 				SCContent.SECRET_DARK_OAK_SIGN_ITEM.get(),
 				SCContent.SECRET_JUNGLE_SIGN_ITEM.get(),
+				SCContent.SECRET_MANGROVE_SIGN_ITEM.get(),
 				SCContent.SECRET_OAK_SIGN_ITEM.get(),
 				SCContent.SECRET_SPRUCE_SIGN_ITEM.get(),
 				SCContent.SECRET_WARPED_SIGN_ITEM.get());

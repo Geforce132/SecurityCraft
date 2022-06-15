@@ -44,23 +44,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_CRIMSON_BUTTON.get(),
 				SCContent.REINFORCED_WARPED_BUTTON.get(),
 				SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get());
-		tag(SCTags.Blocks.REINFORCED_WOOL_CARPETS).add(
-				SCContent.REINFORCED_WHITE_CARPET.get(),
-				SCContent.REINFORCED_ORANGE_CARPET.get(),
-				SCContent.REINFORCED_MAGENTA_CARPET.get(),
-				SCContent.REINFORCED_LIGHT_BLUE_CARPET.get(),
-				SCContent.REINFORCED_YELLOW_CARPET.get(),
-				SCContent.REINFORCED_LIME_CARPET.get(),
-				SCContent.REINFORCED_PINK_CARPET.get(),
-				SCContent.REINFORCED_GRAY_CARPET.get(),
-				SCContent.REINFORCED_LIGHT_GRAY_CARPET.get(),
-				SCContent.REINFORCED_CYAN_CARPET.get(),
-				SCContent.REINFORCED_PURPLE_CARPET.get(),
-				SCContent.REINFORCED_BLUE_CARPET.get(),
-				SCContent.REINFORCED_BROWN_CARPET.get(),
-				SCContent.REINFORCED_GREEN_CARPET.get(),
-				SCContent.REINFORCED_RED_CARPET.get(),
-				SCContent.REINFORCED_BLACK_CARPET.get());
 		tag(SCTags.Blocks.REINFORCED_COBBLESTONE).add(
 				SCContent.REINFORCED_COBBLESTONE.get(),
 				SCContent.REINFORCED_MOSSY_COBBLESTONE.get());
@@ -78,6 +61,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_GRASS_BLOCK.get(),
 				SCContent.REINFORCED_DIRT.get(),
 				SCContent.REINFORCED_COARSE_DIRT.get(),
+				SCContent.REINFORCED_MUD.get(),
 				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_MOSS_BLOCK.get(),
 				SCContent.REINFORCED_MYCELIUM.get());
@@ -98,10 +82,16 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		.addTag(SCTags.Blocks.REINFORCED_CRIMSON_STEMS)
 		.addTag(SCTags.Blocks.REINFORCED_DARK_OAK_LOGS)
 		.addTag(SCTags.Blocks.REINFORCED_JUNGLE_LOGS)
+		.addTag(SCTags.Blocks.REINFORCED_MANGROVE_LOGS)
 		.addTag(SCTags.Blocks.REINFORCED_OAK_LOGS)
 		.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS)
 		.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS)
 		.addTag(SCTags.Blocks.REINFORCED_WARPED_STEMS);
+		tag(SCTags.Blocks.REINFORCED_MANGROVE_LOGS).add(
+				SCContent.REINFORCED_MANGROVE_LOG.get(),
+				SCContent.REINFORCED_MANGROVE_WOOD.get(),
+				SCContent.REINFORCED_STRIPPED_MANGROVE_LOG.get(),
+				SCContent.REINFORCED_STRIPPED_MANGROVE_WOOD.get());
 		tag(SCTags.Blocks.REINFORCED_NYLIUM).add(
 				SCContent.REINFORCED_CRIMSON_NYLIUM.get(),
 				SCContent.REINFORCED_WARPED_NYLIUM.get());
@@ -116,6 +106,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_CRIMSON_PLANKS.get(),
 				SCContent.REINFORCED_DARK_OAK_PLANKS.get(),
 				SCContent.REINFORCED_JUNGLE_PLANKS.get(),
+				SCContent.REINFORCED_MANGROVE_PLANKS.get(),
 				SCContent.REINFORCED_OAK_PLANKS.get(),
 				SCContent.REINFORCED_SPRUCE_PLANKS.get(),
 				SCContent.REINFORCED_WARPED_PLANKS.get());
@@ -126,6 +117,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_MANGROVE_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get());
@@ -156,6 +148,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_JUNGLE_SLAB.get(),
 				SCContent.REINFORCED_ACACIA_SLAB.get(),
 				SCContent.REINFORCED_DARK_OAK_SLAB.get(),
+				SCContent.REINFORCED_MANGROVE_SLAB.get(),
 				SCContent.REINFORCED_CRIMSON_SLAB.get(),
 				SCContent.REINFORCED_WARPED_SLAB.get());
 		tag(SCTags.Blocks.REINFORCED_WOODEN_STAIRS).add(
@@ -165,6 +158,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_JUNGLE_STAIRS.get(),
 				SCContent.REINFORCED_ACACIA_STAIRS.get(),
 				SCContent.REINFORCED_DARK_OAK_STAIRS.get(),
+				SCContent.REINFORCED_MANGROVE_STAIRS.get(),
 				SCContent.REINFORCED_CRIMSON_STAIRS.get(),
 				SCContent.REINFORCED_WARPED_STAIRS.get());
 		tag(SCTags.Blocks.REINFORCED_WOOL).add(
@@ -213,11 +207,29 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_POLISHED_ANDESITE.get(),
 				SCContent.REINFORCED_POLISHED_DIORITE.get(),
 				SCContent.REINFORCED_POLISHED_GRANITE.get());
+		tag(SCTags.Blocks.REINFORCED_WOOL_CARPETS).add(
+				SCContent.REINFORCED_WHITE_CARPET.get(),
+				SCContent.REINFORCED_ORANGE_CARPET.get(),
+				SCContent.REINFORCED_MAGENTA_CARPET.get(),
+				SCContent.REINFORCED_LIGHT_BLUE_CARPET.get(),
+				SCContent.REINFORCED_YELLOW_CARPET.get(),
+				SCContent.REINFORCED_LIME_CARPET.get(),
+				SCContent.REINFORCED_PINK_CARPET.get(),
+				SCContent.REINFORCED_GRAY_CARPET.get(),
+				SCContent.REINFORCED_LIGHT_GRAY_CARPET.get(),
+				SCContent.REINFORCED_CYAN_CARPET.get(),
+				SCContent.REINFORCED_PURPLE_CARPET.get(),
+				SCContent.REINFORCED_BLUE_CARPET.get(),
+				SCContent.REINFORCED_BROWN_CARPET.get(),
+				SCContent.REINFORCED_GREEN_CARPET.get(),
+				SCContent.REINFORCED_RED_CARPET.get(),
+				SCContent.REINFORCED_BLACK_CARPET.get());
 
 		//minecraft tags
 		tag(BlockTags.BAMBOO_PLANTABLE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).add(SCContent.REINFORCED_GRAVEL.get(),
 				SCContent.REINFORCED_DIRT.get(),
 				SCContent.REINFORCED_GRASS_BLOCK.get(),
+				SCContent.REINFORCED_MUD.get(),
 				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_COARSE_DIRT.get(),
 				SCContent.REINFORCED_MOSS_BLOCK.get(),
@@ -342,7 +354,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_JUNGLE_LOG.get(),
 				SCContent.REINFORCED_SPRUCE_LOG.get(),
 				SCContent.REINFORCED_DARK_OAK_LOG.get(),
-				//TODO: SCContent.REINFORCED_MANGROVE_LOG.get(),
+				SCContent.REINFORCED_MANGROVE_LOG.get(),
 				SCContent.REINFORCED_STONE.get(),
 				SCContent.REINFORCED_PACKED_ICE.get(),
 				SCContent.IRON_ORE_MINE.get(),
