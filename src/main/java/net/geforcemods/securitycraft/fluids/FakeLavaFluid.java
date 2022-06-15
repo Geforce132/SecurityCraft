@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.fluids;
 
-import java.util.Optional;
-
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -9,8 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -26,12 +22,15 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
 
-public abstract class FakeLavaFluid extends FlowingFluid {
+public abstract class FakeLavaFluid extends ForgeFlowingFluid {
+	protected FakeLavaFluid(Properties properties) {
+		super(properties);
+	}
+
 	@Override
 	public Fluid getFlowing() {
 		return SCContent.FLOWING_FAKE_LAVA.get();
@@ -45,25 +44,6 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 	@Override
 	public Item getBucket() {
 		return SCContent.FAKE_LAVA_BUCKET.get();
-	}
-
-	@Override
-	public Optional<SoundEvent> getPickupSound() {
-		return Optional.ofNullable(getAttributes().getFillSound());
-	}
-
-	@Override
-	protected FluidAttributes createAttributes() {
-		//@formatter:off
-		return FluidAttributes.builder(
-				new ResourceLocation("block/lava_still"),
-				new ResourceLocation("block/lava_flow"))
-				.translationKey("block.minecraft.lava")
-				.sound(null, null)
-				.luminosity(15).density(3000).viscosity(6000).temperature(1300)
-                .sound(SoundEvents.BUCKET_FILL_LAVA, SoundEvents.BUCKET_EMPTY_LAVA)
-                .build(this);
-		//@formatter:on
 	}
 
 	@Override
@@ -224,6 +204,10 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 	}
 
 	public static class Flowing extends FakeLavaFluid {
+		public Flowing(Properties properties) {
+			super(properties);
+		}
+
 		@Override
 		protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
 			super.createFluidStateDefinition(builder);
@@ -242,6 +226,10 @@ public abstract class FakeLavaFluid extends FlowingFluid {
 	}
 
 	public static class Source extends FakeLavaFluid {
+		public Source(Properties properties) {
+			super(properties);
+		}
+
 		@Override
 		public int getAmount(FluidState state) {
 			return 8;

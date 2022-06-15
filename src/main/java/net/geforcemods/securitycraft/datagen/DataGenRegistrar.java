@@ -22,7 +22,6 @@ public class DataGenRegistrar {
 		generator.addProvider(event.includeClient(), new ItemModelGenerator(generator, existingFileHelper));
 		generator.addProvider(event.includeServer(), new BlockLootTableGenerator(generator));
 		generator.addProvider(event.includeServer(), blockTagGenerator);
-		generator.addProvider(event.includeServer(), new FluidTagGenerator(generator, existingFileHelper));
 		generator.addProvider(event.includeServer(), new ItemTagGenerator(generator, blockTagGenerator, existingFileHelper));
 		generator.addProvider(event.includeServer(), new RecipeGenerator(generator));
 	}
