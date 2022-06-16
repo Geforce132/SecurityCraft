@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.2-beta3 of SecurityCraft--------------------------
+
+- New: Readd JEI integration
+
 --------------------------Changelog for v1.9.2-beta2 of SecurityCraft--------------------------
 
 - Fix: Compatibility with Forge 41.0.28+
