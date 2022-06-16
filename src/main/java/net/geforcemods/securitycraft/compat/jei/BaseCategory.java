@@ -30,14 +30,4 @@ public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> 
 	public IDrawable getIcon() {
 		return icon;
 	}
-
-	@Override
-	public ResourceLocation getUid() {
-		return null; //unused by jei
-	}
-
-	@Override
-	public Class<? extends ReinforcerRecipe> getRecipeClass() {
-		return null; //unused by jei
-	}
 }

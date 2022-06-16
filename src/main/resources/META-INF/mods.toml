@@ -1,15 +1,15 @@
-modLoader="javafml" #mandatory
-loaderVersion="[41,)" #mandatory
+modLoader="javafml"
+loaderVersion="[41,)"
 logoFile="sc_banner.png"
 license="GNU GPL v3.0 https://github.com/Geforce132/SecurityCraft/blob/1.19/LICENSE"
 issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 
-[[mods]] #mandatory
-	modId="securitycraft" #mandatory
-	version="${file.jarVersion}" #mandatory
-	displayName="SecurityCraft" #mandatory
+[[mods]]
+	modId="securitycraft"
+	version="${file.jarVersion}"
+	displayName="SecurityCraft"
 	updateJSONURL="https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json"
-	description='''Adds a load of things to keep your house safe with and defend yourself from attackers.''' #mandatory
+	description='''Adds a load of things to keep your house safe with and defend yourself from attackers.'''
 	displayURL="https://discord.gg/U8DvBAW"
 	credits="Thanks to all of you guys for your support!"
 	authors="Geforce132, bl4ckscor3, Redstone_Dubstep"
@@ -17,7 +17,7 @@ issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 [[dependencies.securitycraft]]
     modId="forge"
     mandatory=true
-    versionRange="[41.0.4,)"
+    versionRange="[41.0.28,)"
     ordering="NONE"
     side="BOTH"
 

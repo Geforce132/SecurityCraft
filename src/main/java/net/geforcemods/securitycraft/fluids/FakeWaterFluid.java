@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.fluids;
 
-import java.util.Optional;
-
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -9,8 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -25,12 +21,15 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.ForgeFlowingFluid;
 
-public abstract class FakeWaterFluid extends FlowingFluid {
+public abstract class FakeWaterFluid extends ForgeFlowingFluid {
+	protected FakeWaterFluid(Properties properties) {
+		super(properties);
+	}
+
 	@Override
 	public Fluid getFlowing() {
 		return SCContent.FLOWING_FAKE_WATER.get();
@@ -44,25 +43,6 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 	@Override
 	public Item getBucket() {
 		return SCContent.FAKE_WATER_BUCKET.get();
-	}
-
-	@Override
-	public Optional<SoundEvent> getPickupSound() {
-		return Optional.ofNullable(getAttributes().getFillSound());
-	}
-
-	@Override
-	protected FluidAttributes createAttributes() {
-		//@formatter:off
-		return FluidAttributes.Water.builder(
-				new ResourceLocation("block/water_still"),
-				new ResourceLocation("block/water_flow"))
-				.overlay(new ResourceLocation("block/water_overlay"))
-				.translationKey("block.minecraft.water")
-				.color(0xFF3F76E4)
-                .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY)
-                .build(this);
-		//@formatter:on
 	}
 
 	@Override
@@ -129,6 +109,10 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 	}
 
 	public static class Flowing extends FakeWaterFluid {
+		public Flowing(Properties properties) {
+			super(properties);
+		}
+
 		@Override
 		protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
 			super.createFluidStateDefinition(builder);
@@ -147,6 +131,10 @@ public abstract class FakeWaterFluid extends FlowingFluid {
 	}
 
 	public static class Source extends FakeWaterFluid {
+		public Source(Properties properties) {
+			super(properties);
+		}
+
 		@Override
 		public int getAmount(FluidState state) {
 			return 8;
