@@ -102,7 +102,7 @@ dependencies {
     
     implementation fg.deobf("curse.maven:jei-238222:3834070")
     implementation fg.deobf("curse.maven:the-one-probe-245211:3822185")
-    implementation fg.deobf("curse.maven:jade-324717:3822958")
+    implementation fg.deobf("curse.maven:jade-324717:3834997")
     implementation fg.deobf("curse.maven:betterf3-401648:3825939")
     implementation fg.deobf("curse.maven:cloth-config-348521:3822832") //betterf3 dependency
 	//compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
