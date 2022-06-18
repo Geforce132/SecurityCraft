@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "securitycraft:reinforced_mud_bricks"
+  },
+  "result": "securitycraft:reinforced_mud_brick_stairs"
+}

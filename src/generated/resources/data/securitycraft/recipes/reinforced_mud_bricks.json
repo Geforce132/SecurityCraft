@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_packed_mud"
+    }
+  },
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "result": {
+    "count": 4,
+    "item": "securitycraft:reinforced_mud_bricks"
+  }
+}

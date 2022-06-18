@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "securitycraft:reinforced_planks",
+  "ingredients": [
+    {
+      "tag": "securitycraft:reinforced/mangrove_logs"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "securitycraft:reinforced_mangrove_planks"
+  }
+}

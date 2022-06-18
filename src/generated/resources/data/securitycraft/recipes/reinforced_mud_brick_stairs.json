@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:stairs",
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_mud_bricks"
+    }
+  },
+  "pattern": [
+    "B  ",
+    "BB ",
+    "BBB"
+  ],
+  "result": {
+    "count": 4,
+    "item": "securitycraft:reinforced_mud_brick_stairs"
+  }
+}

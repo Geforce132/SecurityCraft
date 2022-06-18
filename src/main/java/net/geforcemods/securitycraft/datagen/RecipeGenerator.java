@@ -514,6 +514,11 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(SCContent.KEYPAD.get())
 		.unlockedBy("has_reinforced_door", has(SCContent.REINFORCED_DOOR_ITEM.get()))
 		.save(consumer);
+		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_PACKED_MUD.get())
+		.requires(SCContent.REINFORCED_MUD.get())
+		.requires(Items.WHEAT)
+		.unlockedBy("has_wheat", has(Items.WHEAT))
+		.save(consumer);
 		ShapelessRecipeBuilder.shapeless(SCContent.REINFORCED_ANDESITE.get(), 2)
 		.requires(SCContent.REINFORCED_DIORITE.get())
 		.requires(SCTags.Items.REINFORCED_COBBLESTONE)
@@ -550,6 +555,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addBarkRecipe(consumer, SCContent.REINFORCED_CRIMSON_STEM.get(), SCContent.REINFORCED_CRIMSON_HYPHAE.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_DARK_OAK_LOG.get(), SCContent.REINFORCED_DARK_OAK_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_JUNGLE_LOG.get(), SCContent.REINFORCED_JUNGLE_WOOD.get());
+		addBarkRecipe(consumer, SCContent.REINFORCED_MANGROVE_LOG.get(), SCContent.REINFORCED_MANGROVE_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_OAK_LOG.get(), SCContent.REINFORCED_OAK_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_SPRUCE_LOG.get(), SCContent.REINFORCED_SPRUCE_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_WARPED_STEM.get(), SCContent.REINFORCED_WARPED_HYPHAE.get());
@@ -558,6 +564,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_CRIMSON_STEM.get(), SCContent.REINFORCED_STRIPPED_CRIMSON_HYPHAE.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_DARK_OAK_LOG.get(), SCContent.REINFORCED_STRIPPED_DARK_OAK_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_JUNGLE_LOG.get(), SCContent.REINFORCED_STRIPPED_JUNGLE_WOOD.get());
+		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_MANGROVE_LOG.get(), SCContent.REINFORCED_STRIPPED_MANGROVE_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_SPRUCE_LOG.get(), SCContent.REINFORCED_STRIPPED_SPRUCE_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_OAK_LOG.get(), SCContent.REINFORCED_STRIPPED_OAK_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_WARPED_STEM.get(), SCContent.REINFORCED_STRIPPED_WARPED_HYPHAE.get());
@@ -598,6 +605,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addButtonRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_BUTTON.get());
 		addButtonRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_BUTTON.get());
 		addButtonRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_BUTTON.get());
+		addButtonRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_BUTTON.get());
 		addButtonRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_BUTTON.get());
 		addButtonRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_BUTTON.get());
 		addButtonRecipe(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get());
@@ -672,6 +680,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_CRIMSON_STEMS, SCContent.REINFORCED_CRIMSON_PLANKS.get());
 		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_DARK_OAK_LOGS, SCContent.REINFORCED_DARK_OAK_PLANKS.get());
 		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_JUNGLE_LOGS, SCContent.REINFORCED_JUNGLE_PLANKS.get());
+		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_MANGROVE_LOGS, SCContent.REINFORCED_MANGROVE_PLANKS.get());
 		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_OAK_LOGS, SCContent.REINFORCED_OAK_PLANKS.get());
 		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_SPRUCE_LOGS, SCContent.REINFORCED_SPRUCE_PLANKS.get());
 		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_WARPED_STEMS, SCContent.REINFORCED_WARPED_PLANKS.get());
@@ -682,6 +691,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get());
+		addPressurePlateRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get());
@@ -690,7 +700,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addSecretSignRecipe(consumer, Items.CRIMSON_SIGN, SCContent.SECRET_CRIMSON_SIGN.get());
 		addSecretSignRecipe(consumer, Items.DARK_OAK_SIGN, SCContent.SECRET_DARK_OAK_SIGN.get());
 		addSecretSignRecipe(consumer, Items.JUNGLE_SIGN, SCContent.SECRET_JUNGLE_SIGN.get());
-		addSecretSignRecipe(consumer, Items.JUNGLE_SIGN, SCContent.SECRET_MANGROVE_SIGN.get());
+		addSecretSignRecipe(consumer, Items.MANGROVE_SIGN, SCContent.SECRET_MANGROVE_SIGN.get());
 		addSecretSignRecipe(consumer, Items.OAK_SIGN, SCContent.SECRET_OAK_SIGN.get());
 		addSecretSignRecipe(consumer, Items.SPRUCE_SIGN, SCContent.SECRET_SPRUCE_SIGN.get());
 		addSecretSignRecipe(consumer, Items.WARPED_SIGN, SCContent.SECRET_WARPED_SIGN.get());
@@ -716,8 +726,10 @@ public class RecipeGenerator extends RecipeProvider {
 		addSlabRecipe(consumer, SCContent.REINFORCED_EXPOSED_CUT_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_GRANITE.get(), SCContent.REINFORCED_GRANITE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_SLAB.get());
+		addSlabRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_MOSSY_COBBLESTONE.get(), SCContent.REINFORCED_MOSSY_COBBLESTONE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(), SCContent.REINFORCED_MOSSY_STONE_BRICK_SLAB.get());
+		addSlabRecipe(consumer, SCContent.REINFORCED_MUD_BRICKS.get(), SCContent.REINFORCED_MUD_BRICK_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_NETHER_BRICK_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_OXIDIZED_CUT_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER_SLAB.get());
@@ -811,8 +823,10 @@ public class RecipeGenerator extends RecipeProvider {
 		addStairsRecipe(consumer, SCContent.REINFORCED_EXPOSED_CUT_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_GRANITE.get(), SCContent.REINFORCED_GRANITE_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_STAIRS.get());
+		addStairsRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_MOSSY_COBBLESTONE.get(), SCContent.REINFORCED_MOSSY_COBBLESTONE_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(), SCContent.REINFORCED_MOSSY_STONE_BRICK_STAIRS.get());
+		addStairsRecipe(consumer, SCContent.REINFORCED_MUD_BRICKS.get(), SCContent.REINFORCED_MUD_BRICK_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_NETHER_BRICK_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_OXIDIZED_CUT_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER_STAIRS.get());
@@ -847,6 +861,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addTwoByTwoRecipe(consumer, SCContent.REINFORCED_END_STONE.get(), SCContent.REINFORCED_END_STONE_BRICKS.get());
 		addTwoByTwoRecipe(consumer, SCContent.REINFORCED_EXPOSED_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER.get());
 		addTwoByTwoRecipe(consumer, SCContent.REINFORCED_GRANITE.get(), SCContent.REINFORCED_POLISHED_GRANITE.get());
+		addTwoByTwoRecipe(consumer, SCContent.REINFORCED_PACKED_MUD.get(), SCContent.REINFORCED_MUD_BRICKS.get());
 		addTwoByTwoRecipe(consumer, SCContent.REINFORCED_OXIDIZED_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER.get());
 		addTwoByTwoRecipe(consumer, SCContent.REINFORCED_QUARTZ.get(), SCContent.REINFORCED_QUARTZ_BRICKS.get());
 		addTwoByTwoRecipe(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICKS.get());
@@ -869,6 +884,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addWallRecipes(consumer, SCContent.REINFORCED_GRANITE.get(), SCContent.REINFORCED_GRANITE_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_MOSSY_COBBLESTONE.get(), SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(), SCContent.REINFORCED_MOSSY_STONE_BRICK_WALL.get());
+		addWallRecipes(consumer, SCContent.REINFORCED_MUD_BRICKS.get(), SCContent.REINFORCED_MUD_BRICK_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_NETHER_BRICK_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICKS.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get());
@@ -998,6 +1014,8 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_MOSSY_COBBLESTONE.get(), SCContent.REINFORCED_MOSSY_COBBLESTONE_STAIRS.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(), SCContent.REINFORCED_MOSSY_STONE_BRICK_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(), SCContent.REINFORCED_MOSSY_STONE_BRICK_STAIRS.get(), 1);
+		addStonecuttingRecipe(consumer, SCContent.REINFORCED_MUD_BRICKS.get(), SCContent.REINFORCED_MUD_BRICK_SLAB.get(), 2);
+		addStonecuttingRecipe(consumer, SCContent.REINFORCED_MUD_BRICKS.get(), SCContent.REINFORCED_MUD_BRICK_STAIRS.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_CHISELED_NETHER_BRICKS.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_NETHER_BRICK_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_NETHER_BRICK_STAIRS.get(), 1);
