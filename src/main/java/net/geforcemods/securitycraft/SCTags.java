@@ -31,6 +31,7 @@ public class SCTags {
 		public static final TagKey<Block> REINFORCED_STAIRS = tag("reinforced/stairs");
 		public static final TagKey<Block> REINFORCED_STONE = tag("reinforced/stone");
 		public static final TagKey<Block> REINFORCED_STONE_BRICKS = tag("reinforced/stone_bricks");
+		public static final TagKey<Block> REINFORCED_TERRACOTTA = tag("reinforced/terracotta");
 		public static final TagKey<Block> REINFORCED_WARPED_STEMS = tag("reinforced/warped_stems");
 		public static final TagKey<Block> REINFORCED_WOODEN_SLABS = tag("reinforced/wooden_slabs");
 		public static final TagKey<Block> REINFORCED_WOODEN_STAIRS = tag("reinforced/wooden_stairs");
@@ -70,6 +71,7 @@ public class SCTags {
 		public static final TagKey<Item> REINFORCED_STAIRS = tag("reinforced/stairs");
 		public static final TagKey<Item> REINFORCED_STONE = tag("reinforced/stone");
 		public static final TagKey<Item> REINFORCED_STONE_BRICKS = tag("reinforced/stone_bricks");
+		public static final TagKey<Item> REINFORCED_TERRACOTTA = tag("reinforced/terracotta");
 		public static final TagKey<Item> REINFORCED_WARPED_STEMS = tag("reinforced/warped_stems");
 		public static final TagKey<Item> REINFORCED_WOODEN_SLABS = tag("reinforced/wooden_slabs");
 		public static final TagKey<Item> REINFORCED_WOODEN_STAIRS = tag("reinforced/wooden_stairs");
