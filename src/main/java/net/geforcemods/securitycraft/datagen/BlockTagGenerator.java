@@ -128,6 +128,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get());
 		tag(SCTags.Blocks.REINFORCED_SAND).add(
 				SCContent.REINFORCED_RED_SAND.get(),
@@ -144,6 +145,23 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(),
 				SCContent.REINFORCED_CRACKED_STONE_BRICKS.get(),
 				SCContent.REINFORCED_CHISELED_STONE_BRICKS.get());
+		tag(SCTags.Blocks.REINFORCED_TERRACOTTA).add(
+				SCContent.REINFORCED_WHITE_TERRACOTTA.get(),
+				SCContent.REINFORCED_ORANGE_TERRACOTTA.get(),
+				SCContent.REINFORCED_MAGENTA_TERRACOTTA.get(),
+				SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get(),
+				SCContent.REINFORCED_YELLOW_TERRACOTTA.get(),
+				SCContent.REINFORCED_LIME_TERRACOTTA.get(),
+				SCContent.REINFORCED_PINK_TERRACOTTA.get(),
+				SCContent.REINFORCED_GRAY_TERRACOTTA.get(),
+				SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get(),
+				SCContent.REINFORCED_CYAN_TERRACOTTA.get(),
+				SCContent.REINFORCED_PURPLE_TERRACOTTA.get(),
+				SCContent.REINFORCED_BLUE_TERRACOTTA.get(),
+				SCContent.REINFORCED_BROWN_TERRACOTTA.get(),
+				SCContent.REINFORCED_GREEN_TERRACOTTA.get(),
+				SCContent.REINFORCED_RED_TERRACOTTA.get(),
+				SCContent.REINFORCED_BLACK_TERRACOTTA.get());
 		tag(SCTags.Blocks.REINFORCED_WARPED_STEMS).add(
 				SCContent.REINFORCED_WARPED_STEM.get(),
 				SCContent.REINFORCED_WARPED_HYPHAE.get(),
@@ -264,6 +282,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get());
 		tag(BlockTags.PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_PRESSURE_PLATES);
 		tag(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
+		tag(BlockTags.SAND).addTag(SCTags.Blocks.REINFORCED_SAND);
 		tag(BlockTags.SLABS).addTag(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		tag(BlockTags.STAIRS).addTag(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
 		tag(BlockTags.STRIDER_WARM_BLOCKS).add(SCContent.FAKE_LAVA_BLOCK.get());
