@@ -38,6 +38,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
@@ -57,6 +58,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private AbstractWidget[] optionButtons = new AbstractWidget[5];
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
+	private final Block block;
 	private final String blockName;
 	private final Component name;
 	private final int maxNumberOfModules;
@@ -65,8 +67,9 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	public CustomizeBlockScreen(CustomizeBlockMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		moduleInv = menu.moduleInv;
-		blockName = menu.moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId().substring(5);
-		name = Utils.localize(moduleInv.getBlockEntity().getBlockState().getBlock().getDescriptionId());
+		block = menu.moduleInv.getBlockEntity().getBlockState().getBlock();
+		blockName = block.getDescriptionId().substring(5);
+		name = Utils.localize(block.getDescriptionId());
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
 		menu.addSlotListener(this);
 
@@ -101,12 +104,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 					if (option.isSlider()) {
 						if (option instanceof DoubleOption doubleOption)
-							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize("option" + blockName + "." + option.getName(), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
 								SecurityCraft.channel.sendToServer(new UpdateSliderValue(doubleOption.getPos(), option, doubleOption.get()));
 							});
 						else if (option instanceof IntOption intOption)
-							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize("option" + blockName + "." + option.getName(), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
 								SecurityCraft.channel.sendToServer(new UpdateSliderValue(intOption.getPos(), option, intOption.get()));
 							});
@@ -240,13 +243,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 	private Component getOptionDescription(int optionId) {
 		Option<?> option = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[optionId];
-		String optionDescription = "option" + blockName + "." + option.getName() + ".description";
 
-		return Utils.localize("gui.securitycraft:customize.tooltip", Component.translatable(optionDescription), Component.translatable("gui.securitycraft:customize.currentSetting", getValueText(option)));
+		return Utils.localize("gui.securitycraft:customize.tooltip", Component.translatable(option.getDescriptionKey(block)), Component.translatable("gui.securitycraft:customize.currentSetting", getValueText(option)));
 	}
 
 	private Component getOptionButtonTitle(Option<?> option) {
-		return Utils.localize("option" + blockName + "." + option.getName(), getValueText(option));
+		return Utils.localize(option.getKey(block), getValueText(option));
 	}
 
 	private Component getValueText(Option<?> option) {

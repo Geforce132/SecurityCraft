@@ -56,7 +56,9 @@ public class KeycardReaderBlock extends DisguisableBlock {
 		if (!level.isClientSide) {
 			KeycardReaderBlockEntity be = (KeycardReaderBlockEntity) level.getBlockEntity(pos);
 
-			if (ModuleUtils.isDenied(be, player)) {
+			if (be.isDisabled())
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (ModuleUtils.isDenied(be, player)) {
 				if (be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}

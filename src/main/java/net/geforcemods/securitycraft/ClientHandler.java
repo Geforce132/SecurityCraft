@@ -503,8 +503,12 @@ public class ClientHandler {
 	}
 
 	public static void displayUsernameLoggerScreen(Level level, BlockPos pos) {
-		if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be)
-			Minecraft.getInstance().setScreen(new UsernameLoggerScreen(be));
+		if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be) {
+			if (be.isDisabled())
+				getClientPlayer().displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else
+				Minecraft.getInstance().setScreen(new UsernameLoggerScreen(be));
+		}
 	}
 
 	public static void displayIMSScreen(IMSBlockEntity be) {

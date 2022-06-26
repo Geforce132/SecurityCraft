@@ -4,6 +4,8 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -29,6 +31,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated, ITickingBlockEntity, ILockable {
+	private DisabledOption disabled = new DisabledOption(false);
 	private int viewCooldown = 0;
 
 	public ScannerDoorBlockEntity(BlockPos pos, BlockState state) {
@@ -50,7 +53,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 			if (!(entity instanceof Player player) || facingAxis != hitResult.getDirection().getAxis())
 				return false;
 
-			if (!isLocked()) {
+			if (!isLocked() && !isDisabled()) {
 				Owner viewingPlayer = new Owner(player);
 
 				if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.PLAYER_HEAD)
@@ -74,15 +77,18 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 
 				if (open && sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", viewingPlayer.getName()), ChatFormatting.GREEN);
-
-				return true;
 			}
-			else if (sendsMessages()) {
-				MutableComponent blockName = Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId());
+			else {
+				if (isLocked() && sendsMessages()) {
+					MutableComponent blockName = Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId());
 
-				PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
-				return true;
+					PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
+				}
+				else if (isDisabled())
+					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			}
+
+			return true;
 		}
 
 		return false;
@@ -99,10 +105,21 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 		setChanged();
 	}
 
+	public boolean isDisabled() {
+		return disabled.get();
+	}
+
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
 				ModuleType.ALLOWLIST
+		};
+	}
+
+	@Override
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				disabled
 		};
 	}
 

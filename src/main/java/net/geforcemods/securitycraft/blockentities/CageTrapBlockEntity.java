@@ -3,12 +3,14 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CageTrapBlockEntity extends DisguisableBlockEntity {
 	private BooleanOption shouldCaptureMobsOption = new BooleanOption("captureMobs", false);
+	private DisabledOption disabled = new DisabledOption(false);
 
 	public CageTrapBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.CAGE_TRAP_BLOCK_ENTITY.get(), pos, state);
@@ -25,10 +27,14 @@ public class CageTrapBlockEntity extends DisguisableBlockEntity {
 		return shouldCaptureMobsOption.get();
 	}
 
+	public boolean isDisabled() {
+		return disabled.get();
+	}
+
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				shouldCaptureMobsOption
+				shouldCaptureMobsOption, disabled
 		};
 	}
 }
