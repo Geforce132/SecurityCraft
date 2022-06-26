@@ -2,10 +2,7 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
-import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -30,8 +27,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated, ITickingBlockEntity, ILockable {
-	private DisabledOption disabled = new DisabledOption(false);
+public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated, ITickingBlockEntity {
 	private int viewCooldown = 0;
 
 	public ScannerDoorBlockEntity(BlockPos pos, BlockState state) {
@@ -105,21 +101,10 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 		setChanged();
 	}
 
-	public boolean isDisabled() {
-		return disabled.get();
-	}
-
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
 				ModuleType.ALLOWLIST
-		};
-	}
-
-	@Override
-	public Option<?>[] customOptions() {
-		return new Option[] {
-				disabled
 		};
 	}
 
