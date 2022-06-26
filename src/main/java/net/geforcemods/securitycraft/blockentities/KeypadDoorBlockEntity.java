@@ -2,10 +2,7 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -24,8 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraftforge.network.PacketDistributor;
 
-public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected, ILockable {
-	private DisabledOption disabled = new DisabledOption(false);
+public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected {
 	private String passcode;
 
 	public KeypadDoorBlockEntity(BlockPos pos, BlockState state) {
@@ -109,21 +105,10 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 		setChanged();
 	}
 
-	public boolean isDisabled() {
-		return disabled.get();
-	}
-
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
 				ModuleType.ALLOWLIST, ModuleType.DENYLIST
-		};
-	}
-
-	@Override
-	public Option<?>[] customOptions() {
-		return new Option[] {
-				disabled
 		};
 	}
 

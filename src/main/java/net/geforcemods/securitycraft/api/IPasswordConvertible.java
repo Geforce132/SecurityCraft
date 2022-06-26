@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
-import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
+import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
