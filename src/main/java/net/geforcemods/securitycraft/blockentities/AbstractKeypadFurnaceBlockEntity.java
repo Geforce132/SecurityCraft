@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
@@ -41,6 +42,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -61,10 +63,16 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	private String passcode;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private DisabledOption disabled = new DisabledOption(false);
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public AbstractKeypadFurnaceBlockEntity(BlockEntityType<?> beType, BlockPos pos, BlockState state, RecipeType<? extends AbstractCookingRecipe> recipeType) {
 		super(beType, pos, state, recipeType);
+	}
+
+	public static void serverTick(Level level, BlockPos pos, BlockState state, AbstractKeypadFurnaceBlockEntity be) {
+		if (!be.isDisabled())
+			AbstractFurnaceBlockEntity.serverTick(level, pos, state, be);
 	}
 
 	@Override
@@ -180,8 +188,14 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	@Override
 	public boolean onCodebreakerUsed(BlockState state, Player player) {
-		activate(player);
-		return true;
+		if (isDisabled())
+			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+		else {
+			activate(player);
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -219,7 +233,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage
+				sendMessage, disabled
 		};
 	}
 
@@ -302,5 +316,9 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	public boolean sendsMessages() {
 		return sendMessage.get();
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 }
