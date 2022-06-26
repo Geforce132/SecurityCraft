@@ -7,6 +7,7 @@ import java.util.UUID;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.BlockChangeDetectorBlock;
 import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
@@ -34,6 +35,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable, ITickingBlockEntity {
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 15, 1, true);
+	private DisabledOption disabled = new DisabledOption(false);
 	private DetectionMode mode = DetectionMode.BOTH;
 	private boolean tracked = false;
 	private List<ChangeEntry> entries = new ArrayList<>();
@@ -44,6 +46,9 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	public void log(Player player, DetectionMode action, BlockPos pos, BlockState state) {
+		if (isDisabled())
+			return;
+
 		if (mode != DetectionMode.BOTH && action != mode)
 			return;
 
@@ -133,6 +138,10 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		return range.get();
 	}
 
+	public boolean isDisabled() {
+		return disabled.get();
+	}
+
 	public List<ChangeEntry> getEntries() {
 		return entries;
 	}
@@ -147,7 +156,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				signalLength, range
+				signalLength, range, disabled
 		};
 	}
 

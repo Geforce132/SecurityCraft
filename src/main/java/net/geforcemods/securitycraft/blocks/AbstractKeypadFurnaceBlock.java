@@ -110,7 +110,9 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		if (!level.isClientSide) {
 			AbstractKeypadFurnaceBlockEntity be = (AbstractKeypadFurnaceBlockEntity) level.getBlockEntity(pos);
 
-			if (ModuleUtils.isDenied(be, player)) {
+			if (be.isDisabled())
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (ModuleUtils.isDenied(be, player)) {
 				if (be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 			}

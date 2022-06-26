@@ -1050,6 +1050,8 @@
 	"module.securitycraft.block_change_detector.redstone_module.description": "Ein Redstone-Modul in einem Block-Änderungsdetektor lässt ihn ein Redstonesignal abgeben, wenn ein Spieler einen Block in seiner Nähte platziert/zerbricht.",
 	"module.securitycraft.block_change_detector.smart_module.description": "Ein schlaues Modul in einem Block-Änderungsdetektor macht es möglich, das Platzieren/Zerbrechen eines bestimmten Blockes zu detektieren. Welcher Block dies ist, kann im Interface des Block-Änderungsdetektors festgelegt werden.",
 
+	"option.generic.disabled": "Deaktiviert: %s",
+	"option.generic.disabled.description": "Wenn dieser Block deaktiviert wird, funktioniert er bis zum Reaktivieren nicht mehr.",
 	"option.securitycraft.portable_radar.searchRadius": "Suchradius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "Der Radius, in dem der Radar sucht.",
 	"option.securitycraft.portable_radar.searchDelay": "Suchintervall: %s Sek.",

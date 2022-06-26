@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -99,6 +100,9 @@ public class CameraMonitorScreen extends Screen {
 
 				cameraBEs[button.camId - 1] = Minecraft.getInstance().level.getBlockEntity(view.pos()) instanceof SecurityCameraBlockEntity camera ? camera : null;
 				hoverCheckers[button.camId - 1] = new HoverChecker(button);
+
+				if (cameraBEs[button.camId - 1] != null && cameraBEs[button.camId - 1].isDisabled())
+					button.active = false;
 			}
 			else {
 				button.active = false;
@@ -137,16 +141,26 @@ public class CameraMonitorScreen extends Screen {
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
 			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
-				if (cameraBEs[i] != null && cameraBEs[i].hasCustomName())
-					renderTooltip(pose, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
+				if (cameraBEs[i] != null) {
+					if (cameraBEs[i].isDisabled())
+						renderTooltip(pose, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
+					else if (cameraBEs[i].hasCustomName())
+						renderTooltip(pose, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
+				}
 			}
 		}
 	}
 
 	private void cameraButtonClicked(Button button) {
 		int camID = ((CameraButton) button).camId + (page - 1) * 10;
+		BlockPos cameraPos = cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).pos();
 
-		SecurityCraft.channel.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).pos()));
+		if (minecraft.level.getBlockEntity(cameraPos) instanceof SecurityCameraBlockEntity camera && camera.isDisabled()) {
+			button.active = false;
+			return;
+		}
+
+		SecurityCraft.channel.sendToServer(new MountCamera(cameraPos));
 		Minecraft.getInstance().player.closeContainer();
 	}
 

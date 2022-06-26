@@ -6,12 +6,12 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -94,21 +94,23 @@ public class IMSBlock extends OwnableBlock {
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!level.isClientSide) {
-			BlockEntity be = level.getBlockEntity(pos);
+			if (level.getBlockEntity(pos) instanceof IMSBlockEntity be) {
+				if (be.isDisabled())
+					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				else if (be.getOwner().isOwner(player)) {
+					ItemStack held = player.getItemInHand(hand);
+					int mines = state.getValue(MINES);
 
-			if (((IOwnable) be).getOwner().isOwner(player)) {
-				ItemStack held = player.getItemInHand(hand);
-				int mines = state.getValue(MINES);
+					if (held.getItem() == SCContent.BOUNCING_BETTY.get().asItem() && mines < 4) {
+						if (!player.isCreative())
+							held.shrink(1);
 
-				if (held.getItem() == SCContent.BOUNCING_BETTY.get().asItem() && mines < 4) {
-					if (!player.isCreative())
-						held.shrink(1);
-
-					level.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
-					((IMSBlockEntity) be).setBombsRemaining(mines + 1);
+						level.setBlockAndUpdate(pos, state.setValue(MINES, mines + 1));
+						be.setBombsRemaining(mines + 1);
+					}
+					else
+						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.IMS, pos));
 				}
-				else
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.IMS, pos));
 			}
 		}
 

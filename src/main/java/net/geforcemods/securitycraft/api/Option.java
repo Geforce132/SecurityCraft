@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fmlclient.gui.widget.Slider;
 import net.minecraftforge.fmlclient.gui.widget.Slider.ISlider;
 
@@ -114,6 +115,22 @@ public abstract class Option<T> {
 		return false;
 	}
 
+	/**
+	 * @param block The block this option is a part of
+	 * @return The language key for this option
+	 */
+	public String getKey(Block block) {
+		return "option." + block.getDescriptionId().substring(6) + "." + getName();
+	}
+
+	/**
+	 * @param block The block this option is a part of
+	 * @return The language key for the description of this option
+	 */
+	public String getDescriptionKey(Block block) {
+		return getKey(block) + ".description";
+	}
+
 	@Override
 	public String toString() {
 		return (value) + "";
@@ -143,6 +160,17 @@ public abstract class Option<T> {
 		@Override
 		public void writeToNBT(CompoundTag tag) {
 			tag.putBoolean(getName(), value);
+		}
+	}
+
+	public static class DisabledOption extends BooleanOption {
+		public DisabledOption(Boolean value) {
+			super("disabled", value);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.disabled";
 		}
 	}
 

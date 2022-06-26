@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.ClientHandler;
@@ -8,6 +10,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.inventory.ExtractOnlyItemStackHandler;
@@ -41,6 +44,7 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ITickingBlockEntity, ILockable {
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
+	private DisabledOption disabled = new DisabledOption(false);
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> EmptyHandler.INSTANCE);
 	private LazyOptional<IItemHandler> storageHandler;
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack> withSize(37, ItemStack.EMPTY);
@@ -363,27 +367,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	public void onOptionChanged(Option<?> option) {
 		if (option.getName().equals("horizontal")) {
 			BooleanOption bo = (BooleanOption) option;
-			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-			if (connectedScanner != null) {
-				Direction facing = getBlockState().getValue(InventoryScannerBlock.FACING);
-
-				for (int i = 0; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
-					BlockPos offsetPos = worldPosition.relative(facing, i);
-					BlockState state = level.getBlockState(offsetPos);
-					Block block = state.getBlock();
-
-					if (block == SCContent.INVENTORY_SCANNER_FIELD.get())
-						level.setBlockAndUpdate(offsetPos, state.setValue(InventoryScannerFieldBlock.HORIZONTAL, bo.get()));
-					else if (!state.isAir() && block != SCContent.INVENTORY_SCANNER_FIELD.get() && block != SCContent.INVENTORY_SCANNER.get())
-						break;
-					else if (block == SCContent.INVENTORY_SCANNER.get() && state.getValue(InventoryScannerBlock.FACING) == facing.getOpposite())
-						break;
-				}
-
-				connectedScanner.setHorizontal(bo.get());
-			}
-
+			modifyFields((offsetPos, state) -> level.setBlockAndUpdate(offsetPos, state.setValue(InventoryScannerFieldBlock.HORIZONTAL, bo.get())), connectedScanner -> connectedScanner.setHorizontal(bo.get()));
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, bo.get()));
 		}
 		else if (option.getName().equals("solidifyField")) {
@@ -393,8 +378,39 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			if (connectedScanner != null)
 				connectedScanner.setSolidifyField(bo.get());
 		}
+		else if (option.getName().equals("disabled")) {
+			BooleanOption bo = (BooleanOption) option;
+
+			if (!bo.get())
+				InventoryScannerBlock.checkAndPlaceAppropriately(level, worldPosition, true);
+			else
+				modifyFields((offsetPos, state) -> level.destroyBlock(offsetPos, false), connectedScanner -> connectedScanner.setDisabled(true));
+		}
 
 		super.onOptionChanged(option);
+	}
+
+	private void modifyFields(BiConsumer<BlockPos, BlockState> blockSetter, Consumer<InventoryScannerBlockEntity> connectedScannerModifier) {
+		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
+
+		if (connectedScanner != null) {
+			Direction facing = getBlockState().getValue(InventoryScannerBlock.FACING);
+
+			connectedScannerModifier.accept(connectedScanner);
+
+			for (int i = 0; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
+				BlockPos offsetPos = worldPosition.relative(facing, i);
+				BlockState state = level.getBlockState(offsetPos);
+				Block block = state.getBlock();
+
+				if (block == SCContent.INVENTORY_SCANNER_FIELD.get())
+					blockSetter.accept(offsetPos, state);
+				else if (!state.isAir() && block != SCContent.INVENTORY_SCANNER_FIELD.get() && block != SCContent.INVENTORY_SCANNER.get())
+					break;
+				else if (block == SCContent.INVENTORY_SCANNER.get() && state.getValue(InventoryScannerBlock.FACING) == facing.getOpposite())
+					break;
+			}
+		}
 	}
 
 	public void setHorizontal(boolean isHorizontal) {
@@ -414,15 +430,29 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	public void setSolidifyField(boolean shouldSolidify) {
-		solidifyField.setValue(shouldSolidify);
-		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
-		setChanged();
+		if (doesFieldSolidify() != shouldSolidify) {
+			solidifyField.setValue(shouldSolidify);
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+			setChanged();
+		}
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
+	}
+
+	public void setDisabled(boolean disabled) {
+		if (isDisabled() != disabled) {
+			this.disabled.setValue(disabled);
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+			setChanged();
+		}
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				horizontal, solidifyField
+				horizontal, solidifyField, disabled
 		};
 	}
 

@@ -5,6 +5,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.entity.IMSBomb;
@@ -25,6 +26,7 @@ import net.minecraft.world.phys.AABB;
 
 public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private IntOption range = new IntOption(this::getBlockPos, "range", 12, 1, 30, 1, true);
+	private DisabledOption disabled = new DisabledOption(false);
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	/**
@@ -50,7 +52,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 			updateBombCount = false;
 		}
 
-		if (attackTime-- == 0) {
+		if (!isDisabled() && attackTime-- == 0) {
 			attackTime = getAttackInterval();
 			launchMine(level, pos);
 		}
@@ -164,12 +166,16 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range
+				range, disabled
 		};
 	}
 
 	public int getAttackInterval() {
 		return isModuleEnabled(ModuleType.SPEED) ? 40 : 80;
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 
 	public static enum IMSTargetingMode {

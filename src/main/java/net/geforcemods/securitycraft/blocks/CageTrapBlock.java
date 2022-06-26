@@ -51,7 +51,7 @@ public class CageTrapBlock extends DisguisableBlock {
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext collisionContext) {
 		if (level.getBlockEntity(pos) instanceof CageTrapBlockEntity be) {
-			if (collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent()) {
+			if (!be.isDisabled() && collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity().isPresent()) {
 				Entity entity = ctx.getEntity().get();
 
 				if (entity instanceof Player player && (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)))
@@ -83,6 +83,10 @@ public class CageTrapBlock extends DisguisableBlock {
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (!level.isClientSide) {
 			CageTrapBlockEntity cageTrap = (CageTrapBlockEntity) level.getBlockEntity(pos);
+
+			if (cageTrap.isDisabled())
+				return;
+
 			boolean isPlayer = entity instanceof Player;
 
 			if (isPlayer || (entity instanceof Mob && cageTrap.capturesMobs())) {

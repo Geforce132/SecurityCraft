@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -25,6 +26,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	private static final int FAST_SPEED = 100;
 	private int cooldown = 0;
 	private int ticksBetweenAttacks = isModuleEnabled(ModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
+	private DisabledOption disabled = new DisabledOption(false);
 
 	public ProtectoBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.PROTECTO_BLOCK_ENTITY.get(), pos, state);
@@ -32,7 +34,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if (cooldown++ < ticksBetweenAttacks)
+		if (isDisabled() || cooldown++ < ticksBetweenAttacks)
 			return;
 
 		if (level.isRaining() && level.canSeeSkyFromBelowWater(pos)) {
@@ -93,6 +95,12 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[] {
+				disabled
+		};
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 }

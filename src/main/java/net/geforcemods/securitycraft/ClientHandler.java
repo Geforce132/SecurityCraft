@@ -67,6 +67,7 @@ import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
@@ -503,8 +504,12 @@ public class ClientHandler {
 	}
 
 	public static void displayUsernameLoggerScreen(Level level, BlockPos pos) {
-		if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be)
-			Minecraft.getInstance().setScreen(new UsernameLoggerScreen(be));
+		if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be) {
+			if (be.isDisabled())
+				getClientPlayer().displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else
+				Minecraft.getInstance().setScreen(new UsernameLoggerScreen(be));
+		}
 	}
 
 	public static void displayIMSScreen(IMSBlockEntity be) {
