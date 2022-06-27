@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
@@ -21,7 +20,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.util.Constants;
 
-public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IViewActivated, ILockable {
+public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IViewActivated {
 	private int viewCooldown = 0;
 
 	@Override
@@ -43,7 +42,7 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 
 			EntityPlayer player = (EntityPlayer) entity;
 
-			if (!isLocked()) {
+			if (!isLocked() && !isDisabled()) {
 				Owner viewingPlayer = new Owner(player);
 
 				if (ConfigHandler.trickScannersWithPlayerHeads && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.SKULL)
@@ -67,13 +66,15 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor implements IVie
 
 				if (open && sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:scannerDoorItem.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", viewingPlayer.getName()), TextFormatting.GREEN);
+			}
+			else {
+				if (isLocked() && sendsMessages())
+					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize(SCContent.scannerDoor), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(SCContent.scannerDoor)), TextFormatting.DARK_RED, false);
+				else if (isDisabled())
+					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			}
 
-				return true;
-			}
-			else if (sendsMessages()) {
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize(SCContent.scannerDoor), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(SCContent.scannerDoor)), TextFormatting.DARK_RED, false);
-				return true;
-			}
+			return true;
 		}
 
 		return false;

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
@@ -16,6 +17,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 public class TileEntityLogger extends TileEntityDisguisable implements ITickable, ILockable {
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private OptionInt searchRadius = new OptionInt(this::getPos, "searchRadius", 3, 1, 20, 1, true);
+	private DisabledOption disabled = new DisabledOption(false);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
@@ -24,7 +26,7 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 	@Override
 	public void update() {
 		if (!world.isRemote) {
-			if (cooldown-- > 0)
+			if (isDisabled() || cooldown-- > 0)
 				return;
 
 			if (world.getRedstonePowerFromNeighbors(pos) > 0) {
@@ -106,7 +108,11 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				searchRadius
+				searchRadius, disabled
 		};
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 }

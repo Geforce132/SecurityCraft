@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -34,10 +35,22 @@ public class BlockLogger extends BlockDisguisable {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (!world.isRemote)
-			player.openGui(SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+		if (!world.isRemote) {
+			TileEntity tile = world.getTileEntity(pos);
 
-		return true;
+			if (tile instanceof TileEntityLogger) {
+				TileEntityLogger te = (TileEntityLogger) tile;
+
+				if (te.isDisabled())
+					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				else
+					player.openGui(SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Override

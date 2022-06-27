@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.List;
 
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -22,10 +23,11 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 	private static final int FAST_SPEED = 100;
 	private int cooldown = 0;
 	private int ticksBetweenAttacks = isModuleEnabled(EnumModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
+	private DisabledOption disabled = new DisabledOption(false);
 
 	@Override
 	public void update() {
-		if (cooldown++ < ticksBetweenAttacks)
+		if (isDisabled() || cooldown++ < ticksBetweenAttacks)
 			return;
 
 		IBlockState state = world.getBlockState(pos);
@@ -89,6 +91,12 @@ public class TileEntityProtecto extends TileEntityDisguisable implements ITickab
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[] {
+				disabled
+		};
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 }

@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -65,11 +65,21 @@ public class BlockTrophySystem extends BlockDisguisable {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
-			if (!world.isRemote)
-				player.openGui(SecurityCraft.instance, GuiHandler.TROPHY_SYSTEM_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+		TileEntity tile = world.getTileEntity(pos);
 
-			return true;
+		if (tile instanceof TileEntityTrophySystem) {
+			TileEntityTrophySystem te = (TileEntityTrophySystem) tile;
+
+			if (te.getOwner().isOwner(player)) {
+				if (!world.isRemote) {
+					if (te.isDisabled())
+						player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+					else
+						player.openGui(SecurityCraft.instance, GuiHandler.TROPHY_SYSTEM_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+				}
+
+				return true;
+			}
 		}
 
 		return false;

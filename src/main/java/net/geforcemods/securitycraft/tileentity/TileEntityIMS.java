@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
@@ -24,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 	private OptionInt range = new OptionInt(this::getPos, "range", 12, 1, 30, 1, true);
+	private DisabledOption disabled = new DisabledOption(false);
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	/**
@@ -41,7 +43,7 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 			updateBombCount = false;
 		}
 
-		if (attackTime-- == 0) {
+		if (!isDisabled() && attackTime-- == 0) {
 			attackTime = getAttackInterval();
 			launchMine();
 		}
@@ -151,12 +153,16 @@ public class TileEntityIMS extends CustomizableSCTE implements ITickable {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range
+				range, disabled
 		};
 	}
 
 	public int getAttackInterval() {
 		return isModuleEnabled(EnumModuleType.SPEED) ? 40 : 80;
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 
 	public static enum EnumIMSTargetingMode {

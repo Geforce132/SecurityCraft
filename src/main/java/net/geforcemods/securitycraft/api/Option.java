@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 
@@ -114,6 +115,22 @@ public abstract class Option<T> {
 		return false;
 	}
 
+	/**
+	 * @param block The block this option is a part of
+	 * @return The language key for this option
+	 */
+	public String getKey(Block block) {
+		return "option." + block.getTranslationKey().substring(5) + "." + getName();
+	}
+
+	/**
+	 * @param block The block this option is a part of
+	 * @return The language key for the description of this option
+	 */
+	public String getDescriptionKey(Block block) {
+		return getKey(block) + ".description";
+	}
+
 	@Override
 	public String toString() {
 		return (value) + "";
@@ -143,6 +160,17 @@ public abstract class Option<T> {
 		@Override
 		public void writeToNBT(NBTTagCompound tag) {
 			tag.setBoolean(getName(), value);
+		}
+	}
+
+	public static class DisabledOption extends OptionBoolean {
+		public DisabledOption(Boolean value) {
+			super("disabled", value);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.disabled";
 		}
 	}
 

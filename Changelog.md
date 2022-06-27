@@ -1,7 +1,10 @@
 --------------------------Changelog for v1.9.3 of SecurityCraft--------------------------
 
 - New: Items can now be dragged from JEI into the Inventory Scanner's ghost slots
+- New: Several blocks now have a new Universal Block Modifier option to disable them
 - Change: Reduced the Rail Mine's explosion size by 25% to make it comparable to other mines' explosions
+- API: Added DisabledOption for having a default option to disable blocks
+- API: Added Option#getKey and Option#getDescriptionKey to easily access the language keys associated with an option
 
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
 

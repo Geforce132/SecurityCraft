@@ -858,6 +858,7 @@ config.securitycraft:enableTeamOwnership.tooltip=Setze diese Option auf true, da
 config.securitycraft:trickScannersWithPlayerHeads=Augenscanner mit Spielerköpfen reinlegen?
 config.securitycraft:trickScannersWithPlayerHeads.tooltip=Setze diese Option auf true, wenn du möchtest, dass Spieler die einen Spielerkopf tragen, Augenscanner und Scannertüren dieses Spielers öffnen können.
 
+option.generic.disabled=Deaktiviert: #
 option.securitycraft:portableRadar.searchRadius=Suchradius: #
 option.securitycraft:portableRadar.searchRadius.description=Der Radius, in dem der Radar sucht.
 option.securitycraft:portableRadar.searchDelay=Suchintervall: # Sek.

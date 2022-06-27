@@ -32,7 +32,7 @@ public interface ILockable {
 		List<TileEntitySonicSecuritySystem> sonicSecuritySystems = TileEntityTracker.SONIC_SECURITY_SYSTEM.getTileEntitiesInRange(thisTe.getWorld(), thisTe.getPos());
 
 		for (TileEntitySonicSecuritySystem te : sonicSecuritySystems) {
-			if (te.isActive() && te.isLinkedToBlock(thisTe.getPos()))
+			if (!te.isDisabled() && te.isActive() && te.isLinkedToBlock(thisTe.getPos()))
 				return !te.correctTuneWasPlayed; //if the correct tune was recently played, the block should not be locked
 		}
 

@@ -1,11 +1,14 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
@@ -34,6 +37,7 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 public class TileEntityInventoryScanner extends TileEntityDisguisable implements IInventory, ITickable, ILockable {
 	private OptionBoolean horizontal = new OptionBoolean("horizontal", false);
 	private OptionBoolean solidifyField = new OptionBoolean("solidifyField", false);
+	private DisabledOption disabled = new DisabledOption(false);
 	private IItemHandler storageHandler;
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack> withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
@@ -320,31 +324,9 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		if (option.getName().equals("horizontal")) {
 			OptionBoolean bo = (OptionBoolean) option;
 
-			TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
-			IBlockState thisState = world.getBlockState(pos);
-
-			if (connectedScanner != null) {
-				EnumFacing facing = thisState.getValue(BlockInventoryScanner.FACING);
-
-				for (int i = 0; i <= ConfigHandler.inventoryScannerRange; i++) {
-					BlockPos offsetPos = pos.offset(facing, i);
-					IBlockState state = world.getBlockState(offsetPos);
-					Block block = state.getBlock();
-
-					if (block == SCContent.inventoryScannerField)
-						world.setBlockState(offsetPos, state.withProperty(BlockInventoryScannerField.HORIZONTAL, bo.get()));
-					else if (!block.isAir(thisState, world, offsetPos) && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
-						break;
-					else if (block == SCContent.inventoryScanner && state.getValue(BlockInventoryScanner.FACING) == facing.getOpposite())
-						break;
-				}
-
-				connectedScanner.setHorizontal(bo.get());
-			}
-
-			world.setBlockState(pos, thisState.withProperty(BlockInventoryScanner.HORIZONTAL, bo.get()));
+			modifyFields((offsetPos, state) -> world.setBlockState(offsetPos, state.withProperty(BlockInventoryScannerField.HORIZONTAL, bo.get())), connectedScanner -> connectedScanner.setHorizontal(bo.get()));
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockInventoryScanner.HORIZONTAL, bo.get()));
 		}
-
 		else if (option.getName().equals("solidifyField")) {
 			OptionBoolean bo = (OptionBoolean) option;
 			TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
@@ -352,11 +334,45 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 			if (connectedScanner != null)
 				connectedScanner.setSolidifyField(bo.get());
 		}
+		else if (option.getName().equals("disabled")) {
+			OptionBoolean bo = (OptionBoolean) option;
+
+			if (!bo.get())
+				BlockInventoryScanner.checkAndPlaceAppropriately(world, pos, null, true);
+			else
+				modifyFields((offsetPos, state) -> world.destroyBlock(offsetPos, false), connectedScanner -> connectedScanner.setDisabled(true));
+		}
+	}
+
+	private void modifyFields(BiConsumer<BlockPos, IBlockState> blockSetter, Consumer<TileEntityInventoryScanner> connectedScannerModifier) {
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+		IBlockState thisState = world.getBlockState(pos);
+
+		if (connectedScanner != null) {
+			EnumFacing facing = thisState.getValue(BlockInventoryScanner.FACING);
+
+			connectedScannerModifier.accept(connectedScanner);
+
+			for (int i = 0; i <= ConfigHandler.inventoryScannerRange; i++) {
+				BlockPos offsetPos = pos.offset(facing, i);
+				IBlockState state = world.getBlockState(offsetPos);
+				Block block = state.getBlock();
+
+				if (block == SCContent.inventoryScannerField)
+					blockSetter.accept(offsetPos, state);
+				else if (!block.isAir(thisState, world, offsetPos) && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
+					break;
+				else if (block == SCContent.inventoryScanner && state.getValue(BlockInventoryScanner.FACING) == facing.getOpposite())
+					break;
+			}
+		}
 	}
 
 	public void setHorizontal(boolean isHorizontal) {
-		horizontal.setValue(isHorizontal);
-		world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockInventoryScanner.HORIZONTAL, isHorizontal));
+		if (isHorizontal() != isHorizontal) {
+			horizontal.setValue(isHorizontal);
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockInventoryScanner.HORIZONTAL, isHorizontal));
+		}
 	}
 
 	public boolean isHorizontal() {
@@ -368,16 +384,31 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	}
 
 	public void setSolidifyField(boolean shouldSolidify) {
-		IBlockState state = world.getBlockState(pos);
+		if (doesFieldSolidify() != shouldSolidify) {
+			IBlockState state = world.getBlockState(pos);
 
-		solidifyField.setValue(shouldSolidify);
-		world.notifyBlockUpdate(pos, state, state, 3); //sync option change to client
+			solidifyField.setValue(shouldSolidify);
+			world.notifyBlockUpdate(pos, state, state, 3); //sync option change to client
+		}
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
+	}
+
+	public void setDisabled(boolean disabled) {
+		if (isDisabled() != disabled) {
+			IBlockState state = world.getBlockState(pos);
+
+			this.disabled.setValue(disabled);
+			world.notifyBlockUpdate(pos, state, state, 3); //sync option change to client
+		}
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				horizontal, solidifyField
+				horizontal, solidifyField, disabled
 		};
 	}
 

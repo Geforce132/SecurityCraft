@@ -24,6 +24,7 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -60,6 +61,7 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 	private GuiPictureButton[] descriptionButtons = new GuiPictureButton[5];
 	private GuiButton[] optionButtons = new GuiButton[5];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
+	private final Block block;
 	private final String blockName;
 	private final String title;
 	private EnumMap<EnumModuleType, Boolean> indicators = new EnumMap<>(EnumModuleType.class);
@@ -67,11 +69,10 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 	public GuiCustomizeBlock(InventoryPlayer inventory, IModuleInventory te) {
 		super(new ContainerCustomizeBlock(inventory, te));
 
-		String tlKey = te.getTileEntity().getBlockType().getTranslationKey();
-
 		moduleInv = te;
-		blockName = tlKey.substring(5);
-		title = Utils.localize(tlKey + ".name").getFormattedText();
+		block = te.getTileEntity().getBlockType();
+		blockName = block.getTranslationKey().substring(5);
+		title = Utils.localize(block).getFormattedText();
 		inventorySlots.addListener(this);
 
 		for (EnumModuleType type : EnumModuleType.values()) {
@@ -107,9 +108,9 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 
 				if (option instanceof ISlider && option.isSlider()) {
 					if (option instanceof OptionDouble)
-						optionButtons[i] = new GuiSlider((Utils.localize("option." + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionDouble) option).getMin(), ((OptionDouble) option).getMax(), ((OptionDouble) option).get(), true, true, (ISlider) option);
+						optionButtons[i] = new GuiSlider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionDouble) option).getMin(), ((OptionDouble) option).getMax(), ((OptionDouble) option).get(), true, true, (ISlider) option);
 					else if (option instanceof OptionInt)
-						optionButtons[i] = new GuiSlider((Utils.localize("option." + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionInt) option).getMin(), ((OptionInt) option).getMax(), ((OptionInt) option).get(), true, true, (ISlider) option);
+						optionButtons[i] = new GuiSlider((Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionInt) option).getMin(), ((OptionInt) option).getMax(), ((OptionInt) option).get(), true, true, (ISlider) option);
 
 					optionButtons[i].packedFGColour = 14737632;
 				}
@@ -217,6 +218,7 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 	protected void actionPerformed(GuiButton button) {
 		if (!(button instanceof GuiPictureButton)) {
 			Option<?> tempOption = ((ICustomizable) moduleInv.getTileEntity()).customOptions()[button.id];
+
 			tempOption.toggle();
 			button.packedFGColour = tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632;
 			button.displayString = getOptionButtonTitle(tempOption);
@@ -234,13 +236,12 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 
 	private String getOptionDescription(int buttonID) {
 		Option<?> option = ((ICustomizable) moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getSlots()];
-		String optionDescription = "option." + blockName + "." + option.getName() + ".description";
 
-		return Utils.localize("gui.securitycraft:customize.tooltip", new TextComponentTranslation(optionDescription), new TextComponentTranslation("gui.securitycraft:customize.currentSetting", getValueText(option))).getFormattedText();
+		return Utils.localize("gui.securitycraft:customize.tooltip", new TextComponentTranslation(option.getDescriptionKey(block)), new TextComponentTranslation("gui.securitycraft:customize.currentSetting", getValueText(option))).getFormattedText();
 	}
 
 	private String getOptionButtonTitle(Option<?> option) {
-		return (Utils.localize("option." + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", getValueText(option));
+		return (Utils.localize(option.getKey(block)).getFormattedText() + " ").replace("#", getValueText(option));
 	}
 
 	private String getValueText(Option<?> option) {

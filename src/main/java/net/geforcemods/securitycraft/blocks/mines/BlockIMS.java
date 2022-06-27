@@ -7,10 +7,10 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -89,21 +89,27 @@ public class BlockIMS extends BlockOwnable {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
-			if (((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
-				ItemStack held = player.getHeldItem(hand);
-				int mines = state.getValue(MINES);
+			TileEntity tile = world.getTileEntity(pos);
 
-				if (held.getItem() == Item.getItemFromBlock(SCContent.bouncingBetty) && mines < 4) {
-					if (!player.capabilities.isCreativeMode)
-						held.shrink(1);
+			if (tile instanceof TileEntityIMS) {
+				TileEntityIMS te = (TileEntityIMS) tile;
 
-					world.setBlockState(pos, state.withProperty(MINES, mines + 1));
-					((TileEntityIMS) world.getTileEntity(pos)).setBombsRemaining(mines + 1);
+				if (te.isDisabled())
+					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				else if (te.getOwner().isOwner(player)) {
+					ItemStack held = player.getHeldItem(hand);
+					int mines = state.getValue(MINES);
+
+					if (held.getItem() == Item.getItemFromBlock(SCContent.bouncingBetty) && mines < 4) {
+						if (!player.capabilities.isCreativeMode)
+							held.shrink(1);
+
+						world.setBlockState(pos, state.withProperty(MINES, mines + 1));
+						te.setBombsRemaining(mines + 1);
+					}
+					else
+						player.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 				}
-				else
-					player.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
-
-				return true;
 			}
 		}
 

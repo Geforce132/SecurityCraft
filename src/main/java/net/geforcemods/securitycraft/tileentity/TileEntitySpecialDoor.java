@@ -3,7 +3,9 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
@@ -17,9 +19,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class TileEntitySpecialDoor extends TileEntityLinkable {
+public abstract class TileEntitySpecialDoor extends TileEntityLinkable implements ILockable {
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
+	private DisabledOption disabled = new DisabledOption(false);
 
 	@Override
 	public void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player) {
@@ -41,10 +44,12 @@ public abstract class TileEntitySpecialDoor extends TileEntityLinkable {
 		if (action == EnumLinkedAction.OPTION_CHANGED) {
 			Option<?> option = (Option<?>) parameters[0];
 
-			if (option.getName().equals(sendMessage.getName()))
-				sendMessage.copy(option);
-			else if (option.getName().equals(signalLength.getName()))
-				signalLength.copy(option);
+			for (Option<?> customOption : customOptions()) {
+				if (customOption.getName().equals(option.getName())) {
+					customOption.copy(option);
+					break;
+				}
+			}
 		}
 		else if (action == EnumLinkedAction.MODULE_INSERTED)
 			insertModule((ItemStack) parameters[0], (boolean) parameters[2]);
@@ -62,7 +67,7 @@ public abstract class TileEntitySpecialDoor extends TileEntityLinkable {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, signalLength
+				sendMessage, signalLength, disabled
 		};
 	}
 
@@ -72,6 +77,10 @@ public abstract class TileEntitySpecialDoor extends TileEntityLinkable {
 
 	public int getSignalLength() {
 		return signalLength.get();
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 
 	public abstract int defaultSignalLength();

@@ -7,6 +7,7 @@ import java.util.UUID;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockBlockChangeDetector;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -29,12 +30,16 @@ import net.minecraftforge.common.util.Constants;
 public class TileEntityBlockChangeDetector extends TileEntityDisguisable implements IInventory, ILockable, ITickable {
 	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private OptionInt range = new OptionInt(this::getPos, "range", 5, 1, 15, 1, true);
+	private DisabledOption disabled = new DisabledOption(false);
 	private EnumDetectionMode mode = EnumDetectionMode.BOTH;
 	private boolean tracked = false;
 	private List<ChangeEntry> entries = new ArrayList<>();
 	private ItemStack filter = ItemStack.EMPTY;
 
 	public void log(EntityPlayer player, EnumDetectionMode action, BlockPos changedPos, IBlockState state) {
+		if (isDisabled())
+			return;
+
 		if (mode != EnumDetectionMode.BOTH && action != mode)
 			return;
 
@@ -134,6 +139,10 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 		return entries;
 	}
 
+	public boolean isDisabled() {
+		return disabled.get();
+	}
+
 	@Override
 	public EnumModuleType[] acceptedModules() {
 		return new EnumModuleType[] {
@@ -144,7 +153,7 @@ public class TileEntityBlockChangeDetector extends TileEntityDisguisable impleme
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				signalLength, range
+				signalLength, range, disabled
 		};
 	}
 

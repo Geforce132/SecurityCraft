@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockSonicSecuritySystem;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -44,6 +45,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	private boolean emitsPings = true;
 	private int pingCooldown = PING_DELAY;
 	public OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private DisabledOption disabled = new DisabledOption(false);
 	/** Used to control the number of ticks that Sonic Security Systems emit redstone power for */
 	public int powerCooldown = 0;
 	public float radarRotationDegrees = 0;
@@ -75,7 +77,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 		}
 
 		if (!world.isRemote) {
-			if (!isActive())
+			if (isDisabled() || !isActive())
 				return;
 
 			if (correctTuneWasPlayed) {
@@ -396,6 +398,13 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	}
 
 	/**
+	 * @return Whether this Sonic Security System is disabled and thus neither listens to notes, nor locks blocks
+	 */
+	public boolean isDisabled() {
+		return disabled.get();
+	}
+
+	/**
 	 * Toggle the listening state of the Sonic Security System off and properly reset everything
 	 */
 	public void stopListening() {
@@ -435,6 +444,9 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	 * @param instrumentName the name of the instrument that played the note
 	 */
 	public boolean listenToNote(int noteID, String instrumentName) {
+		if (isDisabled())
+			return false;
+
 		// No notes
 		if (getNumberOfNotes() == 0 || listenPos >= getNumberOfNotes())
 			return false;
@@ -525,7 +537,7 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				signalLength
+				signalLength, disabled
 		};
 	}
 }

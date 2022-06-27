@@ -28,22 +28,22 @@ public class BlockKeypadDoor extends BlockSpecialDoor {
 		else if (!world.isRemote) {
 			TileEntityKeypadDoor te = (TileEntityKeypadDoor) world.getTileEntity(pos);
 
-			if (ModuleUtils.isDenied(te, player)) {
+			if (te.isDisabled())
+				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 
 				return true;
 			}
-
-			if (ModuleUtils.isAllowed(te, player)) {
+			else if (ModuleUtils.isAllowed(te, player)) {
 				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				activate(state, world, pos, te.getSignalLength());
 				return true;
 			}
-
-			if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
+			else if (!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
 				te.openPasswordGUI(player);
 		}
 

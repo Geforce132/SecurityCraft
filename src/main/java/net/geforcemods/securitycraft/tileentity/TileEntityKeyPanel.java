@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockKeyPanel;
@@ -25,12 +26,15 @@ public class TileEntityKeyPanel extends CustomizableSCTE implements IPasswordPro
 		public void toggle() {
 			super.toggle();
 
-			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockKeyPanel.POWERED, get()));
-			world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
+			if (!isDisabled()) {
+				world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockKeyPanel.POWERED, get()));
+				world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
+			}
 		}
 	};
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private DisabledOption disabled = new DisabledOption(false);
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -58,7 +62,7 @@ public class TileEntityKeyPanel extends CustomizableSCTE implements IPasswordPro
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				isAlwaysActive, sendMessage, signalLength
+				isAlwaysActive, sendMessage, signalLength, disabled
 		};
 	}
 
@@ -83,11 +87,29 @@ public class TileEntityKeyPanel extends CustomizableSCTE implements IPasswordPro
 	@Override
 	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
 		if (!state.getValue(BlockKeyPanel.POWERED)) {
-			activate(player);
-			return true;
+			if (isDisabled())
+				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else {
+				activate(player);
+				return true;
+			}
 		}
 
 		return false;
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals("disabled")) {
+			boolean isDisabled = ((OptionBoolean) option).get();
+			IBlockState state = world.getBlockState(pos);
+
+			if (isDisabled && state.getValue(BlockKeyPanel.POWERED))
+				world.setBlockState(pos, state.withProperty(BlockKeyPanel.POWERED, false));
+			else if (!isDisabled && isAlwaysActive.get()) {
+				world.setBlockState(pos, state.withProperty(BlockKeyPanel.POWERED, true));
+			}
+		}
 	}
 
 	@Override
@@ -106,5 +128,9 @@ public class TileEntityKeyPanel extends CustomizableSCTE implements IPasswordPro
 
 	public int getSignalLength() {
 		return signalLength.get();
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 }

@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.api.Owner;
@@ -48,6 +49,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 	private OptionBoolean activatedByEntities = new OptionBoolean("activatedByEntities", false);
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private DisabledOption disabled = new DisabledOption(false);
 	private GameProfile ownerProfile;
 	private int viewCooldown = 0;
 
@@ -58,7 +60,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 
 	@Override
 	public boolean onEntityViewed(EntityLivingBase entity, RayTraceResult rayTraceResult) {
-		if (!isLocked()) {
+		if (!isLocked() && !isDisabled()) {
 			IBlockState state = world.getBlockState(pos);
 
 			if (state.getValue(BlockRetinalScanner.FACING) != rayTraceResult.sideHit)
@@ -89,8 +91,12 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 				return true;
 			}
 		}
-		else if (entity instanceof EntityPlayer && sendMessage.get()) {
-			PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize(SCContent.retinalScanner), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(SCContent.retinalScanner)), TextFormatting.DARK_RED, false);
+		else if (entity instanceof EntityPlayer) {
+			if (isLocked() && sendMessage.get())
+				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize(SCContent.retinalScanner), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(SCContent.retinalScanner)), TextFormatting.DARK_RED, false);
+			else if (isDisabled())
+				((EntityPlayer) entity).sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+
 			return true;
 		}
 
@@ -121,6 +127,10 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 		return signalLength.get();
 	}
 
+	public boolean isDisabled() {
+		return disabled.get();
+	}
+
 	@Override
 	public EnumModuleType[] acceptedModules() {
 		return new EnumModuleType[] {
@@ -131,7 +141,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable implements I
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				activatedByEntities, sendMessage, signalLength
+				activatedByEntities, sendMessage, signalLength, disabled
 		};
 	}
 

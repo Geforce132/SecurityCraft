@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.TileEntityNamed;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.HoverChecker;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
@@ -22,6 +21,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class GuiCameraMonitor extends GuiContainer {
@@ -34,7 +34,7 @@ public class GuiCameraMonitor extends GuiContainer {
 	private GuiButton[] cameraButtons = new GuiButton[10];
 	private GuiButton[] unbindButtons = new GuiButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
-	private TileEntityNamed[] cameraTEs = new TileEntityNamed[10];
+	private TileEntitySecurityCamera[] cameraTEs = new TileEntitySecurityCamera[10];
 	private int[] cameraViewDim = new int[10];
 	private int page = 1;
 
@@ -101,6 +101,9 @@ public class GuiCameraMonitor extends GuiContainer {
 
 				cameraTEs[button.id - 1] = te instanceof TileEntitySecurityCamera ? (TileEntitySecurityCamera) te : null;
 				hoverCheckers[button.id - 1] = new HoverChecker(button);
+
+				if (cameraTEs[button.id - 1] != null && cameraTEs[button.id - 1].isDisabled())
+					button.enabled = false;
 			}
 			else {
 				button.enabled = false;
@@ -131,8 +134,12 @@ public class GuiCameraMonitor extends GuiContainer {
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
 			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
-				if (cameraTEs[i] != null && cameraTEs[i].hasCustomName())
-					drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getName()), 150), mouseX, mouseY, mc.fontRenderer);
+				if (cameraTEs[i] != null) {
+					if (cameraTEs[i].isDisabled())
+						drawHoveringText(Utils.localize("gui.securitycraft:scManual.disabled").getFormattedText(), mouseX, mouseY);
+					else if (cameraTEs[i].hasCustomName())
+						drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getName()), 150), mouseX, mouseY, mc.fontRenderer);
+				}
 			}
 		}
 	}
@@ -145,8 +152,15 @@ public class GuiCameraMonitor extends GuiContainer {
 			mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page + 1));
 		else if (button.id < 11) {
 			int camID = button.id + ((page - 1) * 10);
+			BlockPos cameraPos = cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getLocation();
+			TileEntity te = mc.world.getTileEntity(cameraPos);
 
-			SecurityCraft.network.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).getLocation()));
+			if (te instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera) te).isDisabled()) {
+				button.enabled = false;
+				return;
+			}
+
+			SecurityCraft.network.sendToServer(new MountCamera(cameraPos));
 			Minecraft.getMinecraft().player.closeScreen();
 		}
 		else {
@@ -166,12 +180,13 @@ public class GuiCameraMonitor extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override

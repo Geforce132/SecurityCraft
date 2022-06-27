@@ -528,7 +528,7 @@ public class GuiSCManual extends GuiScreen {
 						display.add("---");
 
 						for (Option<?> option : scte.customOptions()) {
-							display.add("- " + Utils.localize("option." + block.getTranslationKey().substring(5) + "." + option.getName() + ".description").getFormattedText());
+							display.add("- " + Utils.localize(option.getDescriptionKey(block)).getFormattedText());
 							display.add("");
 						}
 

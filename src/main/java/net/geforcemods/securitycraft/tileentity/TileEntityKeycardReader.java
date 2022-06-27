@@ -3,11 +3,13 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +22,7 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IL
 	private int signature = 0;
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private DisabledOption disabled = new DisabledOption(false);
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -68,8 +71,12 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IL
 	@Override
 	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
 		if (!state.getValue(BlockKeypad.POWERED)) {
-			activate(player);
-			return true;
+			if (isDisabled())
+				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else {
+				activate(player);
+				return true;
+			}
 		}
 
 		return false;
@@ -106,7 +113,7 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IL
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, signalLength
+				sendMessage, signalLength, disabled
 		};
 	}
 
@@ -116,5 +123,9 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IL
 
 	public int getSignalLength() {
 		return signalLength.get();
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 }

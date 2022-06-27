@@ -69,8 +69,14 @@ public class BlockCageTrap extends BlockDisguisable {
 		if (tile instanceof TileEntityCageTrap) {
 			TileEntityCageTrap te = (TileEntityCageTrap) tile;
 
+			if (te.isDisabled()) {
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+				return;
+			}
+
 			if (entity instanceof EntityPlayer && (te.getOwner().isOwner((EntityPlayer) entity) || ModuleUtils.isAllowed(te, entity)))
 				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
+
 			if (entity instanceof EntityLiving && !state.getValue(DEACTIVATED)) {
 				if (te.capturesMobs())
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);

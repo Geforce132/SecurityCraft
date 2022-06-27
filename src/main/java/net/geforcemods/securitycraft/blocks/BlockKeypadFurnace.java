@@ -91,10 +91,10 @@ public class BlockKeypadFurnace extends BlockDisguisable {
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileEntity tileentity = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 
-		if (tileentity instanceof IInventory) {
-			InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileentity);
+		if (te instanceof IInventory) {
+			InventoryHelper.dropInventoryItems(world, pos, (IInventory) te);
 			world.updateComparatorOutputLevel(pos, this);
 		}
 
@@ -106,7 +106,9 @@ public class BlockKeypadFurnace extends BlockDisguisable {
 		if (!world.isRemote) {
 			TileEntityKeypadFurnace te = (TileEntityKeypadFurnace) world.getTileEntity(pos);
 
-			if (ModuleUtils.isDenied(te, player)) {
+			if (te.isDisabled())
+				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 

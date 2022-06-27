@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
@@ -57,6 +58,7 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 	public Entity entityBeingTargeted = null;
 	public int cooldown = getCooldownTime();
 	private final Random random = new Random();
+	private DisabledOption disabled = new DisabledOption(false);
 
 	public TileEntityTrophySystem() {
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
@@ -80,6 +82,9 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 
 	@Override
 	public void update() {
+		if (isDisabled())
+			return;
+
 		// If the trophy does not have a target, try looking for one
 		if (!world.isRemote) {
 			//If the trophy does not have a target, try looking for one
@@ -269,6 +274,10 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 		return projectileFilter;
 	}
 
+	public boolean isDisabled() {
+		return disabled.get();
+	}
+
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumModuleType module, boolean toggled) {
 		super.onModuleRemoved(stack, module, toggled);
@@ -289,7 +298,9 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[] {
+				disabled
+		};
 	}
 
 	/*

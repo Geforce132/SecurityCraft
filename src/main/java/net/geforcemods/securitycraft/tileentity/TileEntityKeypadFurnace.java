@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.geforcemods.securitycraft.gui.GuiHandler;
@@ -58,6 +59,7 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	private String passcode;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
+	private DisabledOption disabled = new DisabledOption(false);
 
 	@Override
 	public int getSizeInventory() {
@@ -224,6 +226,9 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 
 	@Override
 	public void update() {
+		if (isDisabled())
+			return;
+
 		boolean wasBurning = isBurning();
 		boolean shouldMarkDirty = false;
 
@@ -463,8 +468,14 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 
 	@Override
 	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player) {
-		activate(player);
-		return true;
+		if (isDisabled())
+			player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+		else {
+			activate(player);
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -492,11 +503,15 @@ public class TileEntityKeypadFurnace extends TileEntityDisguisable implements IS
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage
+				sendMessage, disabled
 		};
 	}
 
 	public boolean sendsMessages() {
 		return sendMessage.get();
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 }

@@ -85,8 +85,18 @@ public class BlockInventoryScanner extends BlockDisguisable {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (isFacingAnotherScanner(world, pos))
-			player.openGui(SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+		if (isFacingAnotherScanner(world, pos)) {
+			TileEntity tile = world.getTileEntity(pos);
+
+			if (tile instanceof TileEntityInventoryScanner) {
+				TileEntityInventoryScanner te = (TileEntityInventoryScanner) tile;
+
+				if (te.isDisabled())
+					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				else
+					player.openGui(SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			}
+		}
 		else
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize("tile.securitycraft:inventoryScanner.name"), Utils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
 
@@ -101,15 +111,26 @@ public class BlockInventoryScanner extends BlockDisguisable {
 			return;
 
 		setDefaultFacing(world, pos, state);
-		checkAndPlaceAppropriately(world, pos, entity);
+		checkAndPlaceAppropriately(world, pos, entity, false);
 	}
 
-	private void checkAndPlaceAppropriately(World world, BlockPos pos, EntityLivingBase player) {
+	public static void checkAndPlaceAppropriately(World world, BlockPos pos, EntityLivingBase player, boolean force) {
 		TileEntityInventoryScanner connectedScanner = getConnectedInventoryScanner(world, pos);
 		TileEntityInventoryScanner thisTe = (TileEntityInventoryScanner) world.getTileEntity(pos);
 
 		if (connectedScanner == null)
 			return;
+
+		if (!force) {
+			if (connectedScanner.isDisabled()) {
+				thisTe.setDisabled(true);
+				return;
+			}
+		}
+		else {
+			thisTe.setDisabled(false);
+			connectedScanner.setDisabled(false);
+		}
 
 		if (player instanceof EntityPlayer) {
 			if (!connectedScanner.getOwner().isOwner((EntityPlayer) player))
@@ -152,12 +173,13 @@ public class BlockInventoryScanner extends BlockDisguisable {
 
 		((OptionBoolean) customOptions[0]).setValue(connectedScanner.isHorizontal());
 		((OptionBoolean) customOptions[1]).setValue(connectedScanner.doesFieldSolidify());
+		((OptionBoolean) customOptions[2]).setValue(false);
 	}
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (world.getBlockState(fromPos).getBlock() != SCContent.inventoryScannerField)
-			checkAndPlaceAppropriately(world, pos, null);
+			checkAndPlaceAppropriately(world, pos, null, false);
 	}
 
 	@Override

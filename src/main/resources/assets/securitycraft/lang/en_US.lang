@@ -862,6 +862,8 @@ config.securitycraft:enableTeamOwnership.tooltip=Set this to true to enable ever
 config.securitycraft:trickScannersWithPlayerHeads=Trick scanners with player heads?
 config.securitycraft:trickScannersWithPlayerHeads.tooltip=Set this to true if you want players wearing a different player's skull to be able to trick their retinal scanners and scanner doors into activating.
 
+option.generic.disabled=Disabled: #
+option.generic.disabled.description=If this block is disabled, it will no longer be working until it is enabled again.
 option.securitycraft:portableRadar.searchRadius=Search radius: #
 option.securitycraft:portableRadar.searchRadius.description=The radius the radar searches in.
 option.securitycraft:portableRadar.searchDelay=Search delay: # sec.

@@ -80,7 +80,9 @@ public class BlockKeycardReader extends BlockDisguisable {
 		if (!world.isRemote) {
 			TileEntityKeycardReader te = (TileEntityKeycardReader) world.getTileEntity(pos);
 
-			if (ModuleUtils.isDenied(te, player)) {
+			if (te.isDisabled())
+				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, new TextComponentTranslation(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}

@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockKeypadDoor;
@@ -17,7 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
-public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPasswordProtected, ILockable {
+public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPasswordProtected {
 	private String passcode;
 
 	@Override
@@ -68,8 +67,12 @@ public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPass
 	@Override
 	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
 		if (!state.getValue(BlockKeypad.POWERED)) {
-			activate(player);
-			return true;
+			if (isDisabled())
+				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else {
+				activate(player);
+				return true;
+			}
 		}
 
 		return false;
