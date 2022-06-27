@@ -1080,7 +1080,7 @@
 	"module.securitycraft.block_change_detector.smart_module.description": "Adding a smart module to a block change detector allows it to only log changes of one specific type of block. The block can be set in the GUI.",
 
 	"option.generic.disabled": "Disabled: %s",
-	"option.generic.disabled.description": "If this block is disabled, it will no longer be working until it is enabled again.",
+	"option.generic.disabled.description": "Should this block be disabled, making it no longer work until it is enabled again?",
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",
 	"option.securitycraft.portable_radar.searchDelay": "Search delay: %s sec.",
