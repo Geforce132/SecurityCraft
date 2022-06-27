@@ -5,7 +5,6 @@ import java.util.Random;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -65,9 +64,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 			if (tile instanceof BlockChangeDetectorBlockEntity) {
 				BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) tile;
 
-				if (be.isDisabled())
-					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else if (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player))
+				if (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player))
 					NetworkHooks.openGui((ServerPlayerEntity) player, be, pos);
 			}
 		}

@@ -55,11 +55,13 @@ public class CageTrapBlock extends DisguisableBlock {
 		if (tile instanceof CageTrapBlockEntity) {
 			CageTrapBlockEntity te = (CageTrapBlockEntity) tile;
 
-			if (!te.isDisabled() && ctx instanceof EntitySelectionContext) {
+			if (ctx instanceof EntitySelectionContext) {
 				EntitySelectionContext esc = (EntitySelectionContext) ctx;
 				Entity entity = esc.getEntity();
 
-				if (entity instanceof PlayerEntity && (te.getOwner().isOwner((PlayerEntity) entity) || ModuleUtils.isAllowed(te, entity)))
+                if (te.isDisabled())
+                    return getCorrectShape(state, world, pos, ctx, te);
+				else if (entity instanceof PlayerEntity && (te.getOwner().isOwner((PlayerEntity) entity) || ModuleUtils.isAllowed(te, entity)))
 					return getCorrectShape(state, world, pos, ctx, te);
 				if (entity instanceof MobEntity && !state.getValue(DEACTIVATED))
 					return te.capturesMobs() ? VoxelShapes.empty() : getCorrectShape(state, world, pos, ctx, te);
