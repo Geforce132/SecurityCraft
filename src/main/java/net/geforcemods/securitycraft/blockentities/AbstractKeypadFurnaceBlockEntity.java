@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
@@ -61,10 +62,17 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	private String passcode;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack> withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private DisabledOption disabled = new DisabledOption(false);
 	private EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public AbstractKeypadFurnaceBlockEntity(TileEntityType<?> teType, IRecipeType<? extends AbstractCookingRecipe> recipeType) {
 		super(teType, recipeType);
+	}
+
+	@Override
+	public void tick() {
+		if (!isDisabled())
+			super.tick();
 	}
 
 	@Override
@@ -181,8 +189,14 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 
 	@Override
 	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
-		activate(player);
-		return true;
+		if (isDisabled())
+			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+		else {
+			activate(player);
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -224,7 +238,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage
+				sendMessage, disabled
 		};
 	}
 
@@ -307,5 +321,9 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 
 	public boolean sendsMessages() {
 		return sendMessage.get();
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 }

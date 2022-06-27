@@ -24,6 +24,7 @@ import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -64,6 +65,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private Button[] optionButtons = new Button[5];
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
+	private final Block block;
 	private final String blockName;
 	private final int maxNumberOfModules;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
@@ -71,7 +73,8 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	public CustomizeBlockScreen(CustomizeBlockMenu container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 		moduleInv = container.moduleInv;
-		blockName = container.moduleInv.getTileEntity().getBlockState().getBlock().getDescriptionId().substring(5);
+		block = menu.moduleInv.getTileEntity().getBlockState().getBlock();
+		blockName = block.getDescriptionId().substring(5);
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
 		container.addSlotListener(this);
 
@@ -111,9 +114,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 						TranslationTextComponent translatedBlockName = Utils.localize(blockName);
 
 						if (option instanceof DoubleOption)
-							optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, null);
+							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(block), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, null);
 						else if (option instanceof IntOption)
-							optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, null);
+							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(block), option.toString()), translatedBlockName, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, null);
 
 						optionButtons[i].setFGColor(14737632);
 					}
@@ -251,13 +254,12 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 
 	private TranslationTextComponent getOptionDescription(int optionId) {
 		Option<?> option = ((ICustomizable) moduleInv.getTileEntity()).customOptions()[optionId];
-		String optionDescription = "option" + blockName + "." + option.getName() + ".description";
 
-		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslationTextComponent(optionDescription), new TranslationTextComponent("gui.securitycraft:customize.currentSetting", getValueText(option)));
+		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslationTextComponent(option.getDescriptionKey(block)), new TranslationTextComponent("gui.securitycraft:customize.currentSetting", getValueText(option)));
 	}
 
 	private ITextComponent getOptionButtonTitle(Option<?> option) {
-		return Utils.localize("option" + blockName + "." + option.getName(), getValueText(option));
+		return Utils.localize(option.getKey(block), getValueText(option));
 	}
 
 	private ITextComponent getValueText(Option<?> option) {

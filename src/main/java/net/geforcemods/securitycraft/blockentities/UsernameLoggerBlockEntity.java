@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
@@ -19,6 +20,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements ITickableTileEntity, ILockable {
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private IntOption searchRadius = new IntOption(this::getBlockPos, "searchRadius", 3, 1, 20, 1, true);
+	private DisabledOption disabled = new DisabledOption(false);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
@@ -31,7 +33,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public void tick() {
 		if (!level.isClientSide) {
-			if (cooldown-- > 0)
+			if (isDisabled() || cooldown-- > 0)
 				return;
 
 			if (level.getBestNeighborSignal(worldPosition) > 0) {
@@ -113,7 +115,11 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				searchRadius
+				searchRadius, disabled
 		};
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 }

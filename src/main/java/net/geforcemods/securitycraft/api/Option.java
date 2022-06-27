@@ -7,14 +7,15 @@ import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
 /**
- * A class that allows blocks that have {@link CustomizableBlockEntity}s to have custom, "per-block" options that are separate
- * from the main SecurityCraft configuration options.
+ * A class that allows blocks that have {@link CustomizableBlockEntity}s to have custom, "per-block" options that are
+ * separate from the main SecurityCraft configuration options.
  *
  * @author Geforce
  * @param <T> The Class of the type of value this option should use
@@ -115,6 +116,22 @@ public abstract class Option<T> {
 		return false;
 	}
 
+	/**
+	 * @param block The block this option is a part of
+	 * @return The language key for this option
+	 */
+	public String getKey(Block block) {
+		return "option." + block.getDescriptionId().substring(6) + "." + getName();
+	}
+
+	/**
+	 * @param block The block this option is a part of
+	 * @return The language key for the description of this option
+	 */
+	public String getDescriptionKey(Block block) {
+		return getKey(block) + ".description";
+	}
+
 	@Override
 	public String toString() {
 		return (value) + "";
@@ -144,6 +161,17 @@ public abstract class Option<T> {
 		@Override
 		public void writeToNBT(CompoundNBT tag) {
 			tag.putBoolean(getName(), value);
+		}
+	}
+
+	public static class DisabledOption extends BooleanOption {
+		public DisabledOption(Boolean value) {
+			super("disabled", value);
+		}
+
+		@Override
+		public String getKey(Block block) {
+			return "option.generic.disabled";
 		}
 	}
 

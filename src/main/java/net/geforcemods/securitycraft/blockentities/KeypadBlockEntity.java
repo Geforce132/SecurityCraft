@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -28,12 +29,15 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 		public void toggle() {
 			super.toggle();
 
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeypadBlock.POWERED, get()));
-			level.updateNeighborsAt(worldPosition, SCContent.KEYPAD.get());
+			if (!isDisabled()) {
+				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeypadBlock.POWERED, get()));
+				level.updateNeighborsAt(worldPosition, SCContent.KEYPAD.get());
+			}
 		}
 	};
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private DisabledOption disabled = new DisabledOption(false);
 
 	public KeypadBlockEntity() {
 		super(SCContent.KEYPAD_BLOCK_ENTITY.get());
@@ -77,13 +81,30 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
-		if (!blockState.getValue(KeypadBlock.POWERED)) {
-			activate(player);
-			return true;
+	public boolean onCodebreakerUsed(BlockState state, PlayerEntity player) {
+		if (!state.getValue(KeypadBlock.POWERED)) {
+			if (isDisabled())
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else {
+				activate(player);
+				return true;
+			}
 		}
 
 		return false;
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals("disabled")) {
+			boolean isDisabled = ((BooleanOption) option).get();
+
+			if (isDisabled && getBlockState().getValue(KeypadBlock.POWERED))
+				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeypadBlock.POWERED, false));
+			else if (!isDisabled && isAlwaysActive.get()) {
+				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeypadBlock.POWERED, true));
+			}
+		}
 	}
 
 	@Override
@@ -106,7 +127,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				isAlwaysActive, sendMessage, signalLength
+				isAlwaysActive, sendMessage, signalLength, disabled
 		};
 	}
 
@@ -116,5 +137,9 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 
 	public int getSignalLength() {
 		return signalLength.get();
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 }

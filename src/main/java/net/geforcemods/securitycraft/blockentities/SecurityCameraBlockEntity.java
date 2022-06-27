@@ -4,12 +4,16 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.world.server.ServerWorld;
 
 public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity {
 	public double cameraRotation = 0.0D;
@@ -19,6 +23,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	private DoubleOption rotationSpeedOption = new DoubleOption(this::getBlockPos, "rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
 	private DoubleOption customRotationOption = new DoubleOption(this::getBlockPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
+	private DisabledOption disabled = new DisabledOption(false);
 
 	public SecurityCameraBlockEntity() {
 		super(SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get());
@@ -57,7 +62,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				rotationSpeedOption, shouldRotateOption, customRotationOption
+				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled
 		};
 	}
 
@@ -69,6 +74,23 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecurityCameraBlock.POWERED, false));
 	}
 
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (option.getName().equals("disabled")) {
+			//make players stop viewing the camera when it's disabled
+			if (!level.isClientSide && ((BooleanOption) option).get()) {
+				for (ServerPlayerEntity player : ((ServerWorld) level).players()) {
+					if (player.getCamera() instanceof SecurityCamera) {
+						SecurityCamera camera = (SecurityCamera) player.getCamera();
+
+						if (camera.blockPosition().equals(worldPosition))
+							camera.stopViewing(player);
+					}
+				}
+			}
+		}
+	}
+
 	public void startViewing() {
 		if (playersViewing++ == 0)
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecurityCameraBlock.BEING_VIEWED, true));
@@ -77,5 +99,9 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	public void stopViewing() {
 		if (--playersViewing == 0)
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecurityCameraBlock.BEING_VIEWED, false));
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 }

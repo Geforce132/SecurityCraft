@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.Bullet;
 import net.geforcemods.securitycraft.entity.IMSBomb;
@@ -51,6 +52,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	public ProjectileEntity entityBeingTargeted = null;
 	public int cooldown = getCooldownTime();
 	private final Random random = new Random();
+	private DisabledOption disabled = new DisabledOption(false);
 
 	public TrophySystemBlockEntity() {
 		super(SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get());
@@ -75,6 +77,9 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	@Override
 	public void tick() {
+		if (isDisabled())
+			return;
+
 		if (!level.isClientSide) {
 			// If the trophy does not have a target, try looking for one
 			if (entityBeingTargeted == null) {
@@ -234,6 +239,10 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		return projectileFilter;
 	}
 
+	public boolean isDisabled() {
+		return disabled.get();
+	}
+
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleRemoved(stack, module, toggled);
@@ -254,7 +263,9 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[] {
+				disabled
+		};
 	}
 
 	/*

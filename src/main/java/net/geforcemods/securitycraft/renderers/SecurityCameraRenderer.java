@@ -58,7 +58,10 @@ public class SecurityCameraRenderer extends TileEntityRenderer<SecurityCameraBlo
 		}
 
 		matrix.mulPose(POSITIVE_X_180);
-		MODEL.cameraRotationPoint.yRot = (float) te.cameraRotation;
+
+		if (!te.isDisabled())
+			MODEL.cameraRotationPoint.yRot = (float) te.cameraRotation;
+
 		MODEL.renderToBuffer(matrix, buffer.getBuffer(RenderType.entitySolid(te.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

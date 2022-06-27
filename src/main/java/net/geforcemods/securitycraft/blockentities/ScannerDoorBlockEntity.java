@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
@@ -24,7 +23,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 
-public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated, ILockable {
+public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated {
 	private int viewCooldown = 0;
 
 	public ScannerDoorBlockEntity() {
@@ -49,7 +48,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 
 			PlayerEntity player = (PlayerEntity) entity;
 
-			if (!isLocked()) {
+			if (!isLocked() && !isDisabled()) {
 				Owner viewingPlayer = new Owner(player);
 
 				if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlotType.HEAD).getItem() == Items.PLAYER_HEAD)
@@ -72,15 +71,18 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 
 				if (open && sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", viewingPlayer.getName()), TextFormatting.GREEN);
-
-				return true;
 			}
-			else if (sendsMessages()) {
-				TranslationTextComponent blockName = Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId());
+			else {
+				if (isLocked() && sendsMessages()) {
+					TranslationTextComponent blockName = Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId());
 
-				PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), TextFormatting.DARK_RED, false);
-				return true;
+					PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), TextFormatting.DARK_RED, false);
+				}
+				else if (isDisabled())
+					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			}
+
+			return true;
 		}
 
 		return false;

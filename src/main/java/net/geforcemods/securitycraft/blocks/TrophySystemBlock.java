@@ -3,11 +3,11 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -62,11 +62,19 @@ public class TrophySystemBlock extends DisguisableBlock {
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		TileEntity tile = world.getBlockEntity(pos);
 
-		if (tile instanceof IOwnable && ((IOwnable) tile).getOwner().isOwner(player)) {
-			if (!world.isClientSide)
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.TROPHY_SYSTEM, pos));
+		if (tile instanceof TrophySystemBlockEntity) {
+			TrophySystemBlockEntity be = (TrophySystemBlockEntity) tile;
 
-			return ActionResultType.SUCCESS;
+			if (be.getOwner().isOwner(player)) {
+				if (!world.isClientSide) {
+					if (be.isDisabled())
+						player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+					else
+						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.TROPHY_SYSTEM, pos));
+				}
+
+				return ActionResultType.SUCCESS;
+			}
 		}
 
 		return ActionResultType.PASS;

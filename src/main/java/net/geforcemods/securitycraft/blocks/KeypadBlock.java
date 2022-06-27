@@ -49,7 +49,9 @@ public class KeypadBlock extends DisguisableBlock {
 		else if (!world.isClientSide) {
 			KeypadBlockEntity te = (KeypadBlockEntity) world.getBlockEntity(pos);
 
-			if (ModuleUtils.isDenied(te, player)) {
+			if (te.isDisabled())
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}
@@ -108,6 +110,7 @@ public class KeypadBlock extends DisguisableBlock {
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getPlayer().getDirection().getOpposite()).setValue(POWERED, false);
 	}
+
 	@Override
 	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return ItemStack.EMPTY;

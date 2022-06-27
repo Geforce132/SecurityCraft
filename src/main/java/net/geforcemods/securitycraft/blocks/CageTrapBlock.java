@@ -55,7 +55,7 @@ public class CageTrapBlock extends DisguisableBlock {
 		if (tile instanceof CageTrapBlockEntity) {
 			CageTrapBlockEntity te = (CageTrapBlockEntity) tile;
 
-			if (ctx instanceof EntitySelectionContext) {
+			if (!te.isDisabled() && ctx instanceof EntitySelectionContext) {
 				EntitySelectionContext esc = (EntitySelectionContext) ctx;
 				Entity entity = esc.getEntity();
 
@@ -88,6 +88,10 @@ public class CageTrapBlock extends DisguisableBlock {
 	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!world.isClientSide) {
 			CageTrapBlockEntity tileEntity = (CageTrapBlockEntity) world.getBlockEntity(pos);
+
+			if (tileEntity.isDisabled())
+				return;
+
 			boolean isPlayer = entity instanceof PlayerEntity;
 
 			if (isPlayer || (entity instanceof MobEntity && tileEntity.capturesMobs())) {

@@ -120,10 +120,10 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	@Override
 	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!(newState.getBlock() instanceof AbstractKeypadFurnaceBlock)) {
-			TileEntity tileentity = world.getBlockEntity(pos);
+			TileEntity te = world.getBlockEntity(pos);
 
-			if (tileentity instanceof IInventory) {
-				InventoryHelper.dropContents(world, pos, (IInventory) tileentity);
+			if (te instanceof IInventory) {
+				InventoryHelper.dropContents(world, pos, (IInventory) te);
 				world.updateNeighbourForOutputSignal(pos, this);
 			}
 
@@ -136,7 +136,9 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		if (!world.isClientSide) {
 			AbstractKeypadFurnaceBlockEntity te = (AbstractKeypadFurnaceBlockEntity) world.getBlockEntity(pos);
 
-			if (ModuleUtils.isDenied(te, player)) {
+			if (te.isDisabled())
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}
@@ -171,6 +173,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getPlayer().getDirection().getOpposite()).setValue(OPEN, false).setValue(LIT, false);
 	}
+
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, OPEN, LIT, WATERLOGGED);

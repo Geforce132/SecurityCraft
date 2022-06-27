@@ -5,6 +5,8 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.entity.Sentry;
@@ -18,6 +20,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity {
 	private static final int TICKS_BETWEEN_ATTACKS = 5;
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getBlockPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
+	private DisabledOption disabled = new DisabledOption(false);
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	public MotionActivatedLightBlockEntity() {
@@ -26,7 +29,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 
 	@Override
 	public void tick() {
-		if (cooldown-- > 0)
+		if (isDisabled() || cooldown-- > 0)
 			return;
 
 		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadiusOption.get()), e -> !EntityUtils.isInvisible(e) && !e.isSpectator() && !(e instanceof Sentry || e instanceof ArmorStandEntity));
@@ -39,6 +42,15 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 	}
 
 	@Override
+	public void onOptionChanged(Option<?> option) {
+		//turn off the light when it's disabled
+		if (option.getName().equals("disabled") && ((BooleanOption) option).get()) {
+			if (getBlockState().getValue(MotionActivatedLightBlock.LIT))
+				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(MotionActivatedLightBlock.LIT, false));
+		}
+	}
+
+	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {};
 	}
@@ -46,7 +58,11 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option<?>[] {
-			searchRadiusOption
+				searchRadiusOption, disabled
 		};
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
 	}
 }

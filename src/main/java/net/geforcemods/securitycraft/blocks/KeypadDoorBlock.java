@@ -29,7 +29,9 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 		else if (!world.isClientSide) {
 			KeypadDoorBlockEntity te = (KeypadDoorBlockEntity) world.getBlockEntity(pos);
 
-			if (ModuleUtils.isDenied(te, player)) {
+			if (te.isDisabled())
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (ModuleUtils.isDenied(te, player)) {
 				if (te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}

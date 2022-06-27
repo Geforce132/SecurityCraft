@@ -21,6 +21,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -107,6 +108,9 @@ public class CameraMonitorScreen extends Screen {
 
 				cameraTEs[button.camId - 1] = te instanceof SecurityCameraBlockEntity ? (SecurityCameraBlockEntity) te : null;
 				hoverCheckers[button.camId - 1] = new HoverChecker(button);
+
+				if (cameraTEs[button.camId - 1] != null && cameraTEs[button.camId - 1].isDisabled())
+					button.active = false;
 			}
 			else {
 				button.active = false;
@@ -133,29 +137,39 @@ public class CameraMonitorScreen extends Screen {
 
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bind(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
-
+		blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-
 		font.draw(matrix, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
 			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
-				if (cameraTEs[i] != null && cameraTEs[i].hasCustomName())
-					renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomName()), 150), mouseX, mouseY);
+				if (cameraTEs[i] != null) {
+					if (cameraTEs[i].isDisabled())
+						renderTooltip(matrix, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
+					else if (cameraTEs[i].hasCustomName())
+						renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomName()), 150), mouseX, mouseY);
+				}
 			}
 		}
 	}
 
 	protected void cameraButtonClicked(Button button) {
 		int camID = ((CameraButton) button).camId + (page - 1) * 10;
+		BlockPos cameraPos = cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).pos();
+		TileEntity te = minecraft.level.getBlockEntity(cameraPos);
 
-		SecurityCraft.channel.sendToServer(new MountCamera(cameraMonitor.getCameraPositions(nbtTag).get(camID - 1).pos()));
+		if (te instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) te).isDisabled()) {
+			button.active = false;
+			return;
+		}
+
+		SecurityCraft.channel.sendToServer(new MountCamera(cameraPos));
 		Minecraft.getInstance().player.closeContainer();
 	}
 
