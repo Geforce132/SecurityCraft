@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
@@ -28,7 +29,7 @@ import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.network.PacketDistributor;
 
 public class LaserBlockBlockEntity extends LinkableBlockEntity {
-	private BooleanOption enabledOption = new BooleanOption("enabled", true) {
+	private DisabledOption disabled = new DisabledOption(false) {
 		@Override
 		public void toggle() {
 			setValue(!get());
@@ -53,7 +54,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		if (action == LinkedAction.OPTION_CHANGED) {
 			Option<?> option = (Option<?>) parameters[0];
 
-			enabledOption.copy(option);
+			disabled.copy(option);
 			toggleLaser((BooleanOption) option);
 		}
 		else if (action == LinkedAction.MODULE_INSERTED) {
@@ -155,6 +156,16 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
+	public void readOptions(CompoundTag tag) {
+		if (tag.contains("enabled"))
+			tag.putBoolean("disabled", !tag.getBoolean("enabled")); //legacy support
+
+		for (Option<?> option : customOptions()) {
+			option.readFromNBT(tag);
+		}
+	}
+
+	@Override
 	public void setRemoved() {
 		super.setRemoved();
 
@@ -172,7 +183,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				enabledOption
+				disabled
 		};
 	}
 
@@ -182,6 +193,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	public boolean isEnabled() {
-		return enabledOption.get();
+		return !disabled.get();
 	}
 }

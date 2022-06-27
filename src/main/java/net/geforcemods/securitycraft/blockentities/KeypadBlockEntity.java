@@ -100,9 +100,8 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasswo
 
 			if (isDisabled && getBlockState().getValue(KeypadBlock.POWERED))
 				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeypadBlock.POWERED, false));
-			else if (!isDisabled && isAlwaysActive.get()) {
+			else if (!isDisabled && isAlwaysActive.get())
 				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeypadBlock.POWERED, true));
-			}
 		}
 	}
 
