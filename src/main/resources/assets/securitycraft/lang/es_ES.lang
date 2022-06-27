@@ -770,8 +770,6 @@ option.securitycraft:portableRadar.searchDelay=Demora de búsqueda: # seg.
 option.securitycraft:portableRadar.searchDelay.description=El tiempo que tarda el radar en hacer otra búsqueda.
 option.securitycraft:portableRadar.repeatMessage=Repetir mensaje: #
 option.securitycraft:portableRadar.repeatMessage.description=¿El radar debería repetir el mensaje mientras que alguien se mantenga en su radio?
-option.securitycraft:portableRadar.enabled=Activado: #
-option.securitycraft:portableRadar.enabled.description=¿Debería el radar portatil rastrear a cualquier jugador?
 option.securitycraft:securityCamera.rotationSpeed=Vel. de rotación: #
 option.securitycraft:securityCamera.rotationSpeed.description=Velocidad a la que la cámara rota.
 option.securitycraft:securityCamera.shouldRotate=Debería rotar: #
@@ -784,8 +782,6 @@ option.securitycraft:keypad.sendMessage=Mensaje: #
 option.securitycraft:keypad.sendMessage.description=¿Este teclado envía un mensaje al activarse (cuando se usan módulos de lista de permitidos/rechazados)?
 option.securitycraft:keypad.signalLength=Longitud de la señal: #
 option.securitycraft:keypad.signalLength.description=¿Cómo de larga debería ser la señal de redstone que se emite tras activarse? (En ticks, 20 ticks = 1 segundo)
-option.securitycraft:laserBlock.enabled=Activado: #
-option.securitycraft:laserBlock.enabled.description=¿El láser debería estar activado?
 option.securitycraft:retinalScanner.activatedByEntities=Activado por PNJ: #
 option.securitycraft:retinalScanner.activatedByEntities.description=¿Puede este escáner ser activado por PNJ que lo miren?
 option.securitycraft:retinalScanner.sendMessage=Mensaje: #

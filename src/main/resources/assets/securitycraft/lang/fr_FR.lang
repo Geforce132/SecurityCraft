@@ -858,8 +858,6 @@ option.securitycraft:portableRadar.searchDelay=Délai de recherche: # sec.
 option.securitycraft:portableRadar.searchDelay.description=Délai de recherche du radar.
 option.securitycraft:portableRadar.repeatMessage=épéter le message : #
 option.securitycraft:portableRadar.repeatMessage.description=Est-ce que le Radar répète le message tant que quelqu`un est dans son rayon d‘action?
-option.securitycraft:portableRadar.enabled=Actif: #
-option.securitycraft:portableRadar.enabled.description=Est-ce que le Radar portable cherche n‘importe quel joueur?
 option.securitycraft:securityCamera.rotationSpeed=Vitesse de rotation: #
 option.securitycraft:securityCamera.rotationSpeed.description=Vitesse à laquelle la caméra tourne.
 option.securitycraft:securityCamera.shouldRotate=Rotation active: #
@@ -872,8 +870,6 @@ option.securitycraft:keypad.sendMessage=Message : #
 option.securitycraft:keypad.sendMessage.description=Ce clavier à code envoie-t-il un message lors de son activation (en utilisant un module de liste d´autorisation/de refus) ?
 option.securitycraft:keypad.signalLength=Largeur du signal : #
 option.securitycraft:keypad.signalLength.description=Pour combien de temps resterait le signal de redstone en cas de succès ? (En ticks, 20 ticks = 1 seconde)
-option.securitycraft:laserBlock.enabled=Activé : #
-option.securitycraft:laserBlock.enabled.description=Est-ce que le laser doit être actif?
 option.securitycraft:retinalScanner.activatedByEntities=Activation NPC: #
 option.securitycraft:retinalScanner.activatedByEntities.description=Est-ce que ce scanner peut être activé par des mobs NPC qui le regardent ?
 option.securitycraft:retinalScanner.sendMessage=Message: #

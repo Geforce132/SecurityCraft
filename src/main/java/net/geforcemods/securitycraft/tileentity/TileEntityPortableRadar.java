@@ -5,6 +5,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
@@ -26,14 +27,14 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 	private OptionDouble searchRadiusOption = new OptionDouble(this::getPos, "searchRadius", 25.0D, 5.0D, 50.0D, 1.0D, true);
 	private OptionInt searchDelayOption = new OptionInt(this::getPos, "searchDelay", 4, 4, 10, 1, true);
 	private OptionBoolean repeatMessageOption = new OptionBoolean("repeatMessage", true);
-	private OptionBoolean enabledOption = new OptionBoolean("enabled", true);
+	private DisabledOption disabled = new DisabledOption(false);
 	private boolean shouldSendNewMessage = true;
 	private String lastPlayerName = "";
 	private int ticksUntilNextSearch = getSearchDelay();
 
 	@Override
 	public void update() {
-		if (!world.isRemote && enabledOption.get() && ticksUntilNextSearch-- <= 0) {
+		if (!world.isRemote && !disabled.get() && ticksUntilNextSearch-- <= 0) {
 			ticksUntilNextSearch = getSearchDelay();
 
 			EntityPlayerMP owner = world.getMinecraftServer().getPlayerList().getPlayerByUsername(getOwner().getName());
@@ -86,6 +87,16 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 		lastPlayerName = tag.getString("lastPlayerName");
 	}
 
+	@Override
+	public void readOptions(NBTTagCompound tag) {
+		if (tag.hasKey("enabled"))
+			tag.setBoolean("disabled", !tag.getBoolean("enabled")); //legacy support
+
+		for (Option<?> option : customOptions()) {
+			option.readFromNBT(tag);
+		}
+	}
+
 	public boolean shouldSendMessage(EntityPlayer player) {
 		if (!player.getName().equals(lastPlayerName)) {
 			shouldSendNewMessage = true;
@@ -119,7 +130,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE implements ITickab
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				searchRadiusOption, searchDelayOption, repeatMessageOption, enabledOption
+				searchRadiusOption, searchDelayOption, repeatMessageOption, disabled
 		};
 	}
 }

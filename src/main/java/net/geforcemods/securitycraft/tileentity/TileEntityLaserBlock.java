@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntityLinkable;
@@ -17,9 +18,10 @@ import net.geforcemods.securitycraft.util.TileEntityRenderDelegate;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityLaserBlock extends TileEntityLinkable {
-	private OptionBoolean enabledOption = new OptionBoolean("enabled", true) {
+	private DisabledOption disabled = new DisabledOption(false) {
 		@Override
 		public void toggle() {
 			setValue(!get());
@@ -44,7 +46,8 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<TileEntityLinkable> excludedTEs) {
 		if (action == EnumLinkedAction.OPTION_CHANGED) {
 			Option<?> option = (Option<?>) parameters[0];
-			enabledOption.copy(option);
+
+			disabled.copy(option);
 			toggleLaser((OptionBoolean) option);
 		}
 		else if (action == EnumLinkedAction.MODULE_INSERTED) {
@@ -120,6 +123,16 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 	}
 
 	@Override
+	public void readOptions(NBTTagCompound tag) {
+		if (tag.hasKey("enabled"))
+			tag.setBoolean("disabled", !tag.getBoolean("enabled")); //legacy support
+
+		for (Option<?> option : customOptions()) {
+			option.readFromNBT(tag);
+		}
+	}
+
+	@Override
 	public void invalidate() {
 		super.invalidate();
 
@@ -137,11 +150,11 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				enabledOption
+				disabled
 		};
 	}
 
 	public boolean isEnabled() {
-		return enabledOption.get();
+		return !disabled.get();
 	}
 }

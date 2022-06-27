@@ -70,7 +70,7 @@ public class BlockCageTrap extends BlockDisguisable {
 			TileEntityCageTrap te = (TileEntityCageTrap) tile;
 
 			if (te.isDisabled()) {
-				addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
 				return;
 			}
 

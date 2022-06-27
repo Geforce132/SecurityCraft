@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -89,12 +88,8 @@ public class BlockSonicSecuritySystem extends BlockOwnable {
 		if (player.getHeldItem(hand).getItem() != SCContent.portableTunePlayer) {
 			TileEntitySonicSecuritySystem te = (TileEntitySonicSecuritySystem) world.getTileEntity(pos);
 
-			if (!world.isRemote) {
-				if (te.isDisabled())
-					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else if (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
-					player.openGui(SecurityCraft.instance, GuiHandler.SONIC_SECURITY_SYSTEM, world, pos.getX(), pos.getY(), pos.getZ());
-			}
+			if (!world.isRemote && (te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player)))
+				player.openGui(SecurityCraft.instance, GuiHandler.SONIC_SECURITY_SYSTEM, world, pos.getX(), pos.getY(), pos.getZ());
 
 			return true;
 		}

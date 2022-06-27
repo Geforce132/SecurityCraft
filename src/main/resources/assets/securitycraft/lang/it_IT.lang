@@ -862,8 +862,6 @@ option.securitycraft:portableRadar.searchDelay=Ritardo di ricerca: # secondi
 option.securitycraft:portableRadar.searchDelay.description=Il ritardo di ricerca con cui cerca il radar.
 option.securitycraft:portableRadar.repeatMessage=Ripeti messaggio: #
 option.securitycraft:portableRadar.repeatMessage.description=Il radar deve ripetere il messaggio finché c'è qualcuno nel suo raggio?
-option.securitycraft:portableRadar.enabled=Abilitato: #
-option.securitycraft:portableRadar.enabled.description=Il radar portatile deve cercare dei giocatori?
 option.securitycraft:securityCamera.rotationSpeed=Velocità di rotazione: #
 option.securitycraft:securityCamera.rotationSpeed.description=La velocità con cui ruota la telecamera.
 option.securitycraft:securityCamera.shouldRotate=Rotazione sì/no: #
@@ -876,8 +874,6 @@ option.securitycraft:keypad.sendMessage=Messaggio: #
 option.securitycraft:keypad.sendMessage.description=Questa tastiera manda un messaggio all'attivazione (usando moduli lista consentiti/negati)?
 option.securitycraft:keypad.signalLength=Lunghezza segnale: #
 option.securitycraft:keypad.signalLength.description=Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)
-option.securitycraft:laserBlock.enabled=Abilitato: #
-option.securitycraft:laserBlock.enabled.description=Il laser deve essere abilitato?
 option.securitycraft:retinalScanner.activatedByEntities=Attivato da NPC: #
 option.securitycraft:retinalScanner.activatedByEntities.description=Questo scanner deve poter attivarsi quando lo guarda un NPC?
 option.securitycraft:retinalScanner.sendMessage=Messaggio: #

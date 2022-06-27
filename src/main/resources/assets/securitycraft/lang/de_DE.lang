@@ -859,14 +859,13 @@ config.securitycraft:trickScannersWithPlayerHeads=Augenscanner mit Spielerköpfe
 config.securitycraft:trickScannersWithPlayerHeads.tooltip=Setze diese Option auf true, wenn du möchtest, dass Spieler die einen Spielerkopf tragen, Augenscanner und Scannertüren dieses Spielers öffnen können.
 
 option.generic.disabled=Deaktiviert: #
+option.generic.disabled.description=Soll dieser Block deaktiviert werden, sodass er bis zum Reaktivieren nicht mehr funktioniert?
 option.securitycraft:portableRadar.searchRadius=Suchradius: #
 option.securitycraft:portableRadar.searchRadius.description=Der Radius, in dem der Radar sucht.
 option.securitycraft:portableRadar.searchDelay=Suchintervall: # Sek.
 option.securitycraft:portableRadar.searchDelay.description=Der Intervall in dem der Radar den Radius scant.
 option.securitycraft:portableRadar.repeatMessage=Nachricht wiederholen: #
 option.securitycraft:portableRadar.repeatMessage.description=Soll der Radar die Nachricht wiederholen, solange jemand innerhalb seines Radius ist?
-option.securitycraft:portableRadar.enabled=Aktiviert: #
-option.securitycraft:portableRadar.enabled.description=Soll der Radar nach Spielern suchen?
 option.securitycraft:securityCamera.rotationSpeed=Rotationsgeschwindigkeit: #
 option.securitycraft:securityCamera.rotationSpeed.description=Die Geschwindigkeit, mit der die Kamera rotiert.
 option.securitycraft:securityCamera.customRotation=Winkel: #
@@ -879,8 +878,6 @@ option.securitycraft:keypad.sendMessage=Nachricht: #
 option.securitycraft:keypad.sendMessage.description=Sendet dieses Nummernschloss eine Nachricht, wenn es aktiviert wird (bei Nutzung von Zulassungslisten/Sperrlisten-Modulen)?
 option.securitycraft:keypad.signalLength=Signallänge: #
 option.securitycraft:keypad.signalLength.description=Wie lange soll das Redstonesignal bei erfolgreicher Aktivierung sein? (In Ticks, 20 Ticks = 1 Sekunde)
-option.securitycraft:laserBlock.enabled=Aktiviert: #
-option.securitycraft:laserBlock.enabled.description=Soll der Laser aktiviert sein?
 option.securitycraft:retinalScanner.activatedByEntities=NPC aktiviert: #
 option.securitycraft:retinalScanner.activatedByEntities.description=Kann dieser Augenscanner von NPCs aktiviert werden?
 option.securitycraft:retinalScanner.sendMessage=Nachricht: #
