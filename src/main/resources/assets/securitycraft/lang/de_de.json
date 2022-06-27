@@ -1085,8 +1085,6 @@
 	"option.securitycraft.portable_radar.searchDelay.description": "Der Intervall in dem der Radar den Radius scant.",
 	"option.securitycraft.portable_radar.repeatMessage": "Nachricht wiederholen: %s",
 	"option.securitycraft.portable_radar.repeatMessage.description": "Soll der Radar die Nachricht wiederholen, solange jemand innerhalb seines Radius ist?",
-	"option.securitycraft.portable_radar.enabled": "Aktiviert: %s",
-	"option.securitycraft.portable_radar.enabled.description": "Soll der Radar nach Spielern suchen?",
 	"option.securitycraft.security_camera.rotationSpeed": "Rotationsgeschwindigkeit: %s",
 	"option.securitycraft.security_camera.rotationSpeed.description": "Die Geschwindigkeit, mit der die Kamera rotiert.",
 	"option.securitycraft.security_camera.customRotation": "Winkel: %s",

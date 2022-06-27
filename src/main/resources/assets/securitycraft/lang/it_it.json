@@ -1058,8 +1058,6 @@
 	"option.securitycraft.portable_radar.searchDelay.description": "Il ritardo di ricerca con cui cerca il radar.",
 	"option.securitycraft.portable_radar.repeatMessage": "Ripeti messaggio: %s",
 	"option.securitycraft.portable_radar.repeatMessage.description": "Il radar deve ripetere il messaggio finché c'è qualcuno nel suo raggio?",
-	"option.securitycraft.portable_radar.enabled": "Abilitato: %s",
-	"option.securitycraft.portable_radar.enabled.description": "Il radar portatile deve cercare dei giocatori?",
 	"option.securitycraft.security_camera.rotationSpeed": "Velocità di rotazione: %s",
 	"option.securitycraft.security_camera.rotationSpeed.description": "La velocità con cui ruota la telecamera.",
 	"option.securitycraft.security_camera.shouldRotate": "Rotazione sì/no: %s",
