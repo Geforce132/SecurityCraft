@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -46,7 +45,6 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	private boolean emitsPings = true;
 	private int pingCooldown = PING_DELAY;
 	public IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
-	private DisabledOption disabled = new DisabledOption(false);
 	/** Used to control the number of ticks that Sonic Security Systems emit redstone power for */
 	public int powerCooldown = 0;
 	public float radarRotationDegrees = 0;
@@ -81,7 +79,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		}
 
 		if (!level.isClientSide) {
-			if (isDisabled() || !isActive())
+			if (!isActive())
 				return;
 
 			if (correctTuneWasPlayed) {
@@ -399,13 +397,6 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	/**
-	 * @return Whether this Sonic Security System is disabled and thus neither listens to notes, nor locks blocks
-	 */
-	public boolean isDisabled() {
-		return disabled.get();
-	}
-
-	/**
 	 * Toggle the listening state of the Sonic Security System off and properly reset everything
 	 */
 	public void stopListening() {
@@ -445,9 +436,6 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 * @param instrumentName the name of the instrument that played the note
 	 */
 	public boolean listenToNote(int noteID, String instrumentName) {
-		if (isDisabled())
-			return false;
-
 		// No notes
 		if (getNumberOfNotes() == 0 || listenPos >= getNumberOfNotes())
 			return false;
@@ -519,7 +507,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				signalLength, disabled
+				signalLength
 		};
 	}
 }

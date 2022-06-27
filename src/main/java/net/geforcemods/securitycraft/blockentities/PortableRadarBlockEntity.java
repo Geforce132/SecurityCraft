@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
@@ -31,7 +32,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getBlockPos, "searchRadius", 25.0D, 5.0D, 50.0D, 1.0D, true);
 	private IntOption searchDelayOption = new IntOption(this::getBlockPos, "searchDelay", 4, 4, 10, 1, true);
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
-	private BooleanOption enabledOption = new BooleanOption("enabled", true);
+	private DisabledOption disabled = new DisabledOption(false);
 	private boolean shouldSendNewMessage = true;
 	private String lastPlayerName = "";
 	private int ticksUntilNextSearch = getSearchDelay();
@@ -42,7 +43,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if (enabledOption.get() && ticksUntilNextSearch-- <= 0) {
+		if (!disabled.get() && ticksUntilNextSearch-- <= 0) {
 			ticksUntilNextSearch = getSearchDelay();
 
 			ServerPlayer owner = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
@@ -103,6 +104,16 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		lastPlayerName = tag.getString("lastPlayerName");
 	}
 
+	@Override
+	public void readOptions(CompoundTag tag) {
+		if (tag.contains("enabled"))
+			tag.putBoolean("disabled", !tag.getBoolean("enabled")); //legacy support
+
+		for (Option<?> option : customOptions()) {
+			option.readFromNBT(tag);
+		}
+	}
+
 	public boolean shouldSendMessage(Player player) {
 		if (!player.getName().getString().equals(lastPlayerName)) {
 			shouldSendNewMessage = true;
@@ -138,7 +149,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				searchRadiusOption, searchDelayOption, repeatMessageOption, enabledOption
+				searchRadiusOption, searchDelayOption, repeatMessageOption, disabled
 		};
 	}
 }

@@ -117,9 +117,8 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 
 			if (isDisabled && getBlockState().getValue(KeyPanelBlock.POWERED))
 				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, false));
-			else if (!isDisabled && isAlwaysActive.get()) {
+			else if (!isDisabled && isAlwaysActive.get())
 				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, true));
-			}
 		}
 	}
 
