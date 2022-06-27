@@ -110,9 +110,8 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements SimpleWate
 			if (!level.isClientSide) {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else if (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)) {
+				else if (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player))
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
-				}
 			}
 
 			return InteractionResult.SUCCESS;
