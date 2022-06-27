@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.entity.camera;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -26,6 +27,11 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class CameraController {
+	/**
+	 * @deprecated Don't use directly, use {@link #cameraSpeed()} so the config value gets loaded at the correct time
+	 */
+	@Deprecated
+	private static double cameraSpeed = -1.0D;
 	public static boolean jumpBarElementEnabledPreviously;
 	public static boolean experienceBarElementEnabledPreviously;
 	public static boolean potionIconsElementEnabledPreviously;
@@ -75,12 +81,12 @@ public class CameraController {
 				}
 
 				if (wasLeftPressed) {
-					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() - (float) cam.cameraSpeed * cam.zoomAmount);
+					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() - (float) cameraSpeed() * cam.zoomAmount);
 					options.keyLeft.setDown(true);
 				}
 
 				if (wasRightPressed) {
-					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() + (float) cam.cameraSpeed * cam.zoomAmount);
+					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() + (float) cameraSpeed() * cam.zoomAmount);
 					options.keyRight.setDown(true);
 				}
 
@@ -119,7 +125,7 @@ public class CameraController {
 	}
 
 	public static void moveViewUp(SecurityCamera cam) {
-		float next = cam.getXRot() - (float) cam.cameraSpeed * cam.zoomAmount;
+		float next = cam.getXRot() - (float) cameraSpeed() * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next > 40F)
@@ -130,7 +136,7 @@ public class CameraController {
 	}
 
 	public static void moveViewDown(SecurityCamera cam) {
-		float next = cam.getXRot() + (float) cam.cameraSpeed * cam.zoomAmount;
+		float next = cam.getXRot() + (float) cameraSpeed() * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next < 90F)
@@ -224,5 +230,12 @@ public class CameraController {
 
 		if (potionIconsElementEnabledPreviously)
 			OverlayRegistry.enableOverlay(ForgeIngameGui.POTION_ICONS_ELEMENT, true);
+	}
+
+	private static double cameraSpeed() {
+		if (cameraSpeed < 0.0D)
+			cameraSpeed = ConfigHandler.CLIENT.cameraSpeed.get();
+
+		return cameraSpeed;
 	}
 }

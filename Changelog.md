@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.2-beta4 of SecurityCraft--------------------------
+
+- Fix: Crash when trying to view a camera on a server
+
 --------------------------Changelog for v1.9.2-beta3 of SecurityCraft--------------------------
 
 - New: Readd JEI integration
