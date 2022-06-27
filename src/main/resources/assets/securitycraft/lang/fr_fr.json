@@ -1073,8 +1073,6 @@
 	"option.securitycraft.keypad.sendMessage.description": "Ce clavier à code envoie-t-il un message lors de son activation (en utilisant un module de liste d´autorisation/de refus) ?",
 	"option.securitycraft.keypad.signalLength": "Largeur du signal : %s",
 	"option.securitycraft.keypad.signalLength.description": "Pour combien de temps resterait le signal de redstone en cas de succès ? (En ticks, 20 ticks = 1 seconde)",
-	"option.securitycraft.laser_block.enabled": "Activé : %s",
-	"option.securitycraft.laser_block.enabled.description": "Le laser doit-il être activé ?",
 	"option.securitycraft.retinal_scanner.activatedByEntities": "PNJ-Activée: %s",
 	"option.securitycraft.retinal_scanner.activatedByEntities.description": "Ce scanner rétinien peut-il être activé par des mobs de PNJ qui le regardent ?",
 	"option.securitycraft.retinal_scanner.sendMessage": "Message : %s",

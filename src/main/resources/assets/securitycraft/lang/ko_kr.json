@@ -1027,8 +1027,6 @@
 	"option.securitycraft.keypad.sendMessage.description": "활성화 시 이 키패드는 메시지를 전송합니까(허용목록/거부목록 모듈 사용 시)?",
 	"option.securitycraft.keypad.signalLength": "신호 길이: %s",
 	"option.securitycraft.keypad.signalLength.description": "활성화 시 레드스톤 신호는 얼마나 걸립니까? (눈금 단위: 20틱 = 1초)",
-	"option.securitycraft.laser_block.enabled": "활성화: %s",
-	"option.securitycraft.laser_block.enabled.description": "레이저를 활성화해야 합니까?",
 	"option.securitycraft.retinal_scanner.activatedByEntities": "NPC 활성화: %s",
 	"option.securitycraft.retinal_scanner.activatedByEntities.description": "이 감지기를 보는 NPC 몹에 의해 활성화될 수 있습니까?",
 	"option.securitycraft.retinal_scanner.sendMessage": "메시지: %s",

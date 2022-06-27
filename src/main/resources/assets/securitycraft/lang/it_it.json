@@ -1070,8 +1070,6 @@
 	"option.securitycraft.keypad.sendMessage.description": "Questa tastiera manda un messaggio all'attivazione (usando moduli lista consentiti/negati)?",
 	"option.securitycraft.keypad.signalLength": "Lunghezza segnale: %s",
 	"option.securitycraft.keypad.signalLength.description": "Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)",
-	"option.securitycraft.laser_block.enabled": "Abilitato: %s",
-	"option.securitycraft.laser_block.enabled.description": "Il laser deve essere abilitato?",
 	"option.securitycraft.retinal_scanner.activatedByEntities": "Attivato da NPC: %s",
 	"option.securitycraft.retinal_scanner.activatedByEntities.description": "Questo scanner deve poter attivarsi quando lo guarda un NPC?",
 	"option.securitycraft.retinal_scanner.sendMessage": "Messaggio: %s",

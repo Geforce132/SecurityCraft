@@ -903,8 +903,6 @@
 	"option.securitycraft.keypad.sendMessage.description": "¿Este teclado envía un mensaje al activarse (cuando se usan módulos de lista de permitidos/rechazados)?",
 	"option.securitycraft.keypad.signalLength": "Longitud de la señal: %s",
 	"option.securitycraft.keypad.signalLength.description": "¿Cómo de larga debería ser la señal de redstone que se emite tras activarse? (En ticks, 20 ticks = 1 segundo)",
-	"option.securitycraft.laser_block.enabled": "Activado: %s",
-	"option.securitycraft.laser_block.enabled.description": "¿El láser debería estar activado?",
 	"option.securitycraft.retinal_scanner.activatedByEntities": "Activado por PNJ: %s",
 	"option.securitycraft.retinal_scanner.activatedByEntities.description": "¿Puede este escáner ser activado por PNJ que lo miren?",
 	"option.securitycraft.retinal_scanner.sendMessage": "Mensaje: %s",

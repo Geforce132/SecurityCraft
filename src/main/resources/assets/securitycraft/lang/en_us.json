@@ -1099,8 +1099,6 @@
 	"option.securitycraft.keypad.sendMessage.description": "Does this keypad send a message upon activation (when using allowlist/denylist modules)?",
 	"option.securitycraft.keypad.signalLength": "Signal length: %s",
 	"option.securitycraft.keypad.signalLength.description": "How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)",
-	"option.securitycraft.laser_block.enabled": "Enabled: %s",
-	"option.securitycraft.laser_block.enabled.description": "Should the laser be enabled?",
 	"option.securitycraft.retinal_scanner.activatedByEntities": "NPC-activated: %s",
 	"option.securitycraft.retinal_scanner.activatedByEntities.description": "Can this scanner be activated by NPC mobs that look at it?",
 	"option.securitycraft.retinal_scanner.sendMessage": "Message: %s",
