@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.entity.camera;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -24,7 +25,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
-public class EntitySecurityCamera extends Entity {
+public class EntitySecurityCamera extends Entity implements IEMPAffected {
 	protected final float cameraSpeed = ConfigHandler.cameraSpeed;
 	public int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
@@ -188,6 +189,20 @@ public class EntitySecurityCamera extends Entity {
 	public void setChunkTicket(Ticket chunkTicket) {
 		this.chunkTicket = chunkTicket;
 	}
+
+	@Override
+	public void shutDown() {
+		removePassengers();
+		setDead();
+	}
+
+	@Override
+	public boolean isShutDown() {
+		return false;
+	}
+
+	@Override
+	public void setShutDown(boolean shutDown) {}
 
 	@Override
 	protected void entityInit() {}
