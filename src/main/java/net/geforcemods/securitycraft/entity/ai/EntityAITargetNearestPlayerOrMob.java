@@ -33,7 +33,7 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 	public boolean shouldExecute() {
 		List<EntityLivingBase> list = taskOwner.world.<EntityLivingBase> getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> sentry.getEntitySenses().canSee(e) && !EntityUtils.isInvisible(e));
 
-		if (list.isEmpty())
+		if (list.isEmpty() || sentry.isShutDown())
 			return false;
 		else {
 			EnumSentryMode mode = sentry.getMode();

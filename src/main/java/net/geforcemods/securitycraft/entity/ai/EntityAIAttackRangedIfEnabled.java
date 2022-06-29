@@ -28,7 +28,7 @@ public class EntityAIAttackRangedIfEnabled extends EntityAIBase {
 	public boolean shouldExecute() {
 		EntityLivingBase potentialTarget = sentry.getAttackTarget();
 
-		if (potentialTarget == null)
+		if (potentialTarget == null || sentry.isShutDown())
 			return false;
 		else {
 			attackTarget = potentialTarget;

@@ -14,14 +14,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class InitSentryAnimation implements IMessage {
 	public BlockPos pos;
-	public boolean animate, animateUpwards;
+	public boolean animate, animateUpwards, isShutDown;
 
 	public InitSentryAnimation() {}
 
-	public InitSentryAnimation(BlockPos sentryPos, boolean animate, boolean animateUpwards) {
+	public InitSentryAnimation(BlockPos sentryPos, boolean animate, boolean animateUpwards, boolean isShutDown) {
 		pos = sentryPos;
 		this.animate = animate;
 		this.animateUpwards = animateUpwards;
+		this.isShutDown = isShutDown;
 	}
 
 	@Override
@@ -29,6 +30,7 @@ public class InitSentryAnimation implements IMessage {
 		pos = BlockPos.fromLong(buf.readLong());
 		animate = buf.readBoolean();
 		animateUpwards = buf.readBoolean();
+		isShutDown = buf.readBoolean();
 	}
 
 	@Override
@@ -36,6 +38,7 @@ public class InitSentryAnimation implements IMessage {
 		buf.writeLong(pos.toLong());
 		buf.writeBoolean(animate);
 		buf.writeBoolean(animateUpwards);
+		buf.writeBoolean(isShutDown);
 	}
 
 	public static class Handler implements IMessageHandler<InitSentryAnimation, IMessage> {
@@ -44,8 +47,11 @@ public class InitSentryAnimation implements IMessage {
 			List<EntityCreature> sentries = Minecraft.getMinecraft().player.world.<EntityCreature> getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
 
 			if (!sentries.isEmpty()) {
-				((EntitySentry) sentries.get(0)).animateUpwards = message.animateUpwards;
-				((EntitySentry) sentries.get(0)).animate = message.animate;
+				EntitySentry sentry = (EntitySentry) sentries.get(0);
+
+				sentry.setShutDown(message.isShutDown);
+				sentry.animateUpwards = message.animateUpwards;
+				sentry.animate = message.animate;
 			}
 
 			return null;

@@ -2,9 +2,12 @@
 
 - New: Items can now be dragged from JEI into the Inventory Scanner's ghost slots
 - New: Several blocks now have a new Universal Block Modifier option to disable them
+- New: The Sentry can now be deactivated by ICBM Classic's EMP blast. It can be reactivated by rightclicking it with redstone
 - Change: Reduced the Rail Mine's explosion size by 25% to make it comparable to other mines' explosions
 - API: Added DisabledOption for having a default option to disable blocks
 - API: Added Option#getKey and Option#getDescriptionKey to easily access the language keys associated with an option
+- API: IEMPAffected has been moved to the api package. It can be used to shut down select SecurityCraft blocks and items when they're within range of an EMP blast
+- API: ITEEMPAffected has been added as a default implementation for tile entities which want to implement IEMPAffected
 
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
 
