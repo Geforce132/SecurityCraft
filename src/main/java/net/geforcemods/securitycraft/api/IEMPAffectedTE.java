@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.api;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-public interface ITEEMPAffected extends IEMPAffected {
+public interface IEMPAffectedTE extends IEMPAffected {
 	@Override
 	public default void shutDown() {
 		TileEntity te = (TileEntity) this;

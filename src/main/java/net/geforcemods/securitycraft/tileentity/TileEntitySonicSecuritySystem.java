@@ -9,7 +9,7 @@ import java.util.Set;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.ITEEMPAffected;
+import net.geforcemods.securitycraft.api.IEMPAffectedTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockSonicSecuritySystem;
@@ -28,7 +28,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
-public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements ITickable, ITEEMPAffected {
+public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements ITickable, IEMPAffectedTE {
 	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
 	/**

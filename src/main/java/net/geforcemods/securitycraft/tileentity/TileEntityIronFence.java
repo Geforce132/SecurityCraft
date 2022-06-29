@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.api.ITEEMPAffected;
+import net.geforcemods.securitycraft.api.IEMPAffectedTE;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TileEntityIronFence extends TileEntityOwnable implements ITEEMPAffected {
+public class TileEntityIronFence extends TileEntityOwnable implements IEMPAffectedTE {
 	private boolean shutDown = false;
 
 	@Override

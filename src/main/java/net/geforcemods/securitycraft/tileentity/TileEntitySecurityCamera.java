@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.geforcemods.securitycraft.api.ITEEMPAffected;
+import net.geforcemods.securitycraft.api.IEMPAffectedTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
@@ -20,7 +20,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.WorldServer;
 
-public class TileEntitySecurityCamera extends CustomizableSCTE implements ITEEMPAffected, ITickable {
+public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAffectedTE, ITickable {
 	private final double CAMERA_SPEED = 0.0180D;
 	public double cameraRotation = 0.0D;
 	public boolean addToRotation = true;
@@ -56,7 +56,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements ITEEMP
 	public void shutDown() {
 		IBlockState state = world.getBlockState(pos);
 
-		ITEEMPAffected.super.shutDown();
+		IEMPAffectedTE.super.shutDown();
 
 		if (state.getBlock() == SCContent.securityCamera && state.getValue(BlockSecurityCamera.POWERED))
 			world.setBlockState(pos, state.withProperty(BlockSecurityCamera.POWERED, false));
