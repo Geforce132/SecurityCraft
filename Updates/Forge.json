@@ -47,8 +47,8 @@
     "1.18.1-recommended": "v1.9.0.2-beta1",
     "1.18.2-latest": "v1.9.2",
     "1.18.2-recommended": "v1.9.2",
-    "1.19-latest": "v1.9.2-beta3",
-    "1.19-recommended": "v1.9.2-beta3"
+    "1.19-latest": "v1.9.2-beta4",
+    "1.19-recommended": "v1.9.2-beta4"
   },
   "1.7.10": {
     "v1.8.13": "Tons of new features and fixes"
@@ -120,6 +120,6 @@
 	"v1.9.2": "Block Change Detector, new module features, some more reinforced blocks, lots of fixes"
   },
   "1.19": {
-	"v1.9.2-beta3": "Block Change Detector, new module features, some more reinforced blocks, lots of fixes"
+	"v1.9.2-beta4": "Block Change Detector, new module features, some more reinforced blocks, lots of fixes"
   }
 }
