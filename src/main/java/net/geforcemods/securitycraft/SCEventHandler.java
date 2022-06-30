@@ -11,6 +11,7 @@ import java.util.Random;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import net.geforcemods.securitycraft.api.ICodebreakable;
+import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
@@ -200,6 +201,18 @@ public class SCEventHandler {
 		}
 
 		if (!level.isClientSide) {
+			if (event.getItemStack().getItem() == Items.REDSTONE && be instanceof IEMPAffected empAffected && empAffected.isShutDown()) {
+				empAffected.reactivate();
+
+				if (!event.getPlayer().isCreative())
+					event.getItemStack().shrink(1);
+
+				event.getPlayer().swing(event.getHand());
+				event.setCanceled(true);
+				event.setCancellationResult(InteractionResult.SUCCESS);
+				return;
+			}
+
 			if (PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.KEY_PANEL, event.getHand())) {
 				for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
 					if (pc.getOriginalBlock() == block) {
