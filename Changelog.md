@@ -9,6 +9,8 @@
 - Change: Reduced the Rail Mine's explosion size by 25% to make it comparable to other mines' explosions
 - API: Added DisabledOption for having a default option to disable blocks
 - API: Added Option#getKey and Option#getDescriptionKey to easily access the language keys associated with an option
+- API: IEMPAffected has been added. It can be used to shut down select SecurityCraft blocks and entities when they're within range of an EMP blast
+- API: IEMPAffectedTE has been added as a default implementation for tile entities which want to implement IEMPAffected
 - Fix: Water doesn't render correctly while a Sonic Security System is recording within the player's view
 - Fix: The reinforced stone pressure plate is not in SecurityCraft's "securitycraft:reinforced/pressure_plates" tag
 
