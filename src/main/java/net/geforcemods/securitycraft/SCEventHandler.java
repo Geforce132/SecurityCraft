@@ -204,10 +204,6 @@ public class SCEventHandler {
 		}
 
 		if (!level.isClientSide) {
-			if (be instanceof IEMPAffected empAffected && !empAffected.isShutDown()) {
-				empAffected.shutDown();
-				return;
-			}
 			if (event.getItemStack().getItem() == Items.REDSTONE && be instanceof IEMPAffected empAffected && empAffected.isShutDown()) {
 				empAffected.reactivate();
 

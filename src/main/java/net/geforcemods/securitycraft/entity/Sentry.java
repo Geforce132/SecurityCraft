@@ -161,10 +161,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		BlockPos pos = blockPosition();
-		if (!isShutDown()) {
-			shutDown();
-			return InteractionResult.SUCCESS;
-		}
+
 		if (getOwner().isOwner(player) && hand == InteractionHand.MAIN_HAND) {
 			Item item = player.getMainHandItem().getItem();
 
