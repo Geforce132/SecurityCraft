@@ -58,8 +58,10 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 
 		IEMPAffectedTE.super.shutDown();
 
-		if (state.getBlock() == SCContent.securityCamera && state.getValue(BlockSecurityCamera.POWERED))
+		if (state.getBlock() == SCContent.securityCamera && state.getValue(BlockSecurityCamera.POWERED)) {
 			world.setBlockState(pos, state.withProperty(BlockSecurityCamera.POWERED, false));
+			makeEveryoneStopViewingTheCamera();
+		}
 	}
 
 	@Override
@@ -128,18 +130,22 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals("disabled")) {
-			//make players stop viewing the camera when it's disabled
-			if (!world.isRemote && ((OptionBoolean) option).get()) {
-				for (EntityPlayer p : ((WorldServer) world).playerEntities) {
-					EntityPlayerMP player = (EntityPlayerMP) p;
+		if (option.getName().equals("disabled"))
 
-					if (player.getSpectatingEntity() instanceof EntitySecurityCamera) {
-						EntitySecurityCamera camera = (EntitySecurityCamera) player.getSpectatingEntity();
+			if (((OptionBoolean) option).get())
+				makeEveryoneStopViewingTheCamera();
+	}
 
-						if (camera.getPosition().equals(pos))
-							camera.stopViewing(player);
-					}
+	private void makeEveryoneStopViewingTheCamera() {
+		if (!world.isRemote) {
+			for (EntityPlayer p : ((WorldServer) world).playerEntities) {
+				EntityPlayerMP player = (EntityPlayerMP) p;
+
+				if (player.getSpectatingEntity() instanceof EntitySecurityCamera) {
+					EntitySecurityCamera camera = (EntitySecurityCamera) player.getSpectatingEntity();
+
+					if (camera.getPosition().equals(pos))
+						camera.stopViewing(player);
 				}
 			}
 		}
