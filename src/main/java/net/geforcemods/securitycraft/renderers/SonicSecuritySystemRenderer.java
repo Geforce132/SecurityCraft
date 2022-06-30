@@ -39,7 +39,7 @@ public class SonicSecuritySystemRenderer extends TileEntityRenderer<SonicSecurit
 
 		matrix.translate(0.5D, 1.5D, 0.5D);
 
-		if (recording || te.isListening()) {
+		if (recording || te.isListening() && !te.isShutDown()) {
 			TranslationTextComponent text = recording ? RECORDING_TEXT : LISTENING_TEXT;
 			float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
 			int j = (int) (f1 * 255.0F) << 24;

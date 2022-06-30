@@ -6,6 +6,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
@@ -69,7 +70,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs to be a creature so it can target a player, ai is also only given to living entities
+public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffected { //needs to be a creature so it can target a player, ai is also only given to living entities
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner> defineId(Sentry.class, Owner.getSerializer());
 	private static final DataParameter<CompoundNBT> ALLOWLIST = EntityDataManager.<CompoundNBT> defineId(Sentry.class, DataSerializers.COMPOUND_TAG);
 	private static final DataParameter<Boolean> HAS_SPEED_MODULE = EntityDataManager.<Boolean> defineId(Sentry.class, DataSerializers.BOOLEAN);
@@ -80,6 +81,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 	private static final float UPWARDS_ANIMATION_LIMIT = 0.025F;
 	private static final float DOWNWARDS_ANIMATION_LIMIT = 0.9F;
 	private float headYTranslation = 0.9F;
+	private boolean shutDown = true;
 	public boolean animateUpwards = false;
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
@@ -145,7 +147,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 			}
 		}
 		else {
-			if (!animate && headYTranslation > 0.0F && getMode().isAggressive()) {
+			if (!shutDown && !animate && headYTranslation > 0.0F && getMode().isAggressive()) {
 				animateUpwards = true;
 				animate = true;
 			}
@@ -187,6 +189,12 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 
 			if (player.isCrouching())
 				remove();
+			else if (item == Items.REDSTONE && isShutDown()) {
+				reactivate();
+
+				if (!player.isCreative())
+					player.getMainHandItem().shrink(1);
+			}
 			else if (item == SCContent.UNIVERSAL_BLOCK_REMOVER.get()) {
 				remove();
 
@@ -309,15 +317,20 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 			player.displayClientMessage(Utils.localize(SentryMode.values()[mode].getModeKey()).append(Utils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
 
 		if (!player.level.isClientSide)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(blockPosition(), true, SentryMode.values()[mode].isAggressive()));
+			SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, SentryMode.values()[mode].isAggressive(), isShutDown()));
 	}
 
 	@Override
 	public void setTarget(LivingEntity target) {
+		if (isShutDown()) {
+			super.setTarget(null);
+			return;
+		}
+
 		if (!getMode().isAggressive() && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getId()))) {
 			animateUpwards = getMode().isCamouflage() && target != null;
 			animate = true;
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(blockPosition(), animate, animateUpwards));
+			SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), animate, animateUpwards, isShutDown()));
 		}
 
 		previousTargetId = target == null ? Long.MIN_VALUE : target.getId();
@@ -337,6 +350,9 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 
 		//also don't shoot if the target is too far away
 		if (distanceToSqr(target) > MAX_TARGET_DISTANCE * MAX_TARGET_DISTANCE)
+			return;
+
+		if (isShutDown())
 			return;
 
 		TileEntity te = level.getBlockEntity(blockPosition().below());
@@ -401,6 +417,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 		tag.putBoolean("HasSpeedModule", hasSpeedModule());
 		tag.putInt("SentryMode", entityData.get(MODE));
 		tag.putFloat("HeadRotation", entityData.get(HEAD_ROTATION));
+		tag.putBoolean("ShutDown", isShutDown());
 		super.addAdditionalSaveData(tag);
 	}
 
@@ -428,6 +445,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 		entityData.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		entityData.set(MODE, tag.getInt("SentryMode"));
 		entityData.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
+		shutDown = tag.getBoolean("ShutDown");
 		super.readAdditionalSaveData(tag);
 	}
 
@@ -564,6 +582,29 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob { //needs
 
 	public int getShootingSpeed() {
 		return hasSpeedModule() ? 5 : 10;
+	}
+
+	@Override
+	public void shutDown() {
+		IEMPAffected.super.shutDown();
+		setTarget(null);
+	}
+
+	@Override
+	public boolean isShutDown() {
+		return shutDown;
+	}
+
+	@Override
+	public void setShutDown(boolean shutDown) {
+		this.shutDown = shutDown;
+
+		if (!level.isClientSide) {
+			if (shutDown)
+				SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, false, shutDown));
+			else
+				SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, getMode().isAggressive(), shutDown));
+		}
 	}
 
 	//start: disallow sentry to take damage

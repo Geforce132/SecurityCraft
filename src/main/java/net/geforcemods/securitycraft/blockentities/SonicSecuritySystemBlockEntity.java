@@ -8,6 +8,7 @@ import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
+import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
@@ -27,7 +28,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
-public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity {
+public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity, IEMPAffectedBE {
 	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
 	/**
@@ -64,6 +65,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 */
 	private int listenPos = 0;
 	private boolean tracked = false;
+	private boolean shutDown = false;
 
 	public SonicSecuritySystemBlockEntity() {
 		super(SCContent.SONIC_SECURITY_SYSTEM_BLOCK_ENTITY.get());
@@ -193,6 +195,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		tag.putInt("listenPos", listenPos);
 		tag.putBoolean("correctTuneWasPlayed", correctTuneWasPlayed);
 		tag.putInt("powerCooldown", powerCooldown);
+		tag.putBoolean("shutDown", shutDown);
 		return tag;
 	}
 
@@ -226,6 +229,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		listenPos = tag.getInt("listenPos");
 		correctTuneWasPlayed = tag.getBoolean("correctTuneWasPlayed");
 		powerCooldown = tag.getInt("powerCooldown");
+		shutDown = tag.getBoolean("shutDown");
 	}
 
 	/**
@@ -355,7 +359,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 * @return Whether or not this Sonic Security System is actively running
 	 */
 	public boolean isActive() {
-		return isActive;
+		return isActive && !isShutDown();
 	}
 
 	/**
@@ -481,6 +485,30 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 	}
 
+	@Override
+	public boolean isShutDown() {
+		return shutDown;
+	}
+
+	@Override
+	public void setShutDown(boolean shutDown) {
+		this.shutDown = shutDown;
+	}
+
+	@Override
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.REDSTONE
+		};
+	}
+
+	@Override
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				signalLength
+		};
+	}
+
 	/**
 	 * A simple wrapper that makes it slightly easier to store and compare notes with
 	 */
@@ -503,19 +531,5 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		public boolean isSameNote(int note, String instrument) {
 			return noteID == note && instrumentName.equals(instrument);
 		}
-	}
-
-	@Override
-	public ModuleType[] acceptedModules() {
-		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.REDSTONE
-		};
-	}
-
-	@Override
-	public Option<?>[] customOptions() {
-		return new Option[] {
-				signalLength
-		};
 	}
 }
