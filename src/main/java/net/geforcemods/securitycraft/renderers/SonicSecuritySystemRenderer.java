@@ -37,7 +37,7 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 
 		pose.translate(0.5D, 1.5D, 0.5D);
 
-		if (recording || be.isListening()) {
+		if (recording || be.isListening() && !be.isShutDown()) {
 			TranslatableComponent text = recording ? RECORDING_TEXT : LISTENING_TEXT;
 			float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
 			int j = (int) (f1 * 255.0F) << 24;

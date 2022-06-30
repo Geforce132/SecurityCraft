@@ -122,7 +122,7 @@ public class SonicSecuritySystemScreen extends Screen {
 		}));
 		soundButton.setCurrentIndex(!be.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
 
-		powerButton.active = isOwner;
+		powerButton.active = !be.isShutDown() && isOwner;
 		recordingButton.active = isActive && isOwner;
 		soundButton.active = isActive && isOwner;
 		playButton.active = isActive && hasNotes;
