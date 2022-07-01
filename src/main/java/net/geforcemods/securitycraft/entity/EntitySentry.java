@@ -322,7 +322,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 			player.sendStatusMessage(Utils.localize(EnumSentryMode.values()[mode].getModeKey()).appendSibling(Utils.localize(EnumSentryMode.values()[mode].getDescriptionKey())), true);
 
 		if (!player.world.isRemote)
-			SecurityCraft.network.sendToAll(new InitSentryAnimation(getPosition(), true, EnumSentryMode.values()[mode].isAggressive(), isShutDown()));
+			SecurityCraft.network.sendToAllTracking(new InitSentryAnimation(getPosition(), true, EnumSentryMode.values()[mode].isAggressive(), isShutDown()), this);
 	}
 
 	@Override
@@ -335,7 +335,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 		if (!getMode().isAggressive() && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getEntityId()))) {
 			animateUpwards = getMode().isCamouflage() && target != null;
 			animate = true;
-			SecurityCraft.network.sendToAll(new InitSentryAnimation(getPosition(), animate, animateUpwards, isShutDown()));
+			SecurityCraft.network.sendToAllTracking(new InitSentryAnimation(getPosition(), animate, animateUpwards, isShutDown()), this);
 		}
 
 		previousTargetId = target == null ? Long.MIN_VALUE : target.getEntityId();

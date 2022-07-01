@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class TileEntityLogger extends TileEntityDisguisable implements ITickable, ILockable {
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
@@ -94,7 +95,7 @@ public class TileEntityLogger extends TileEntityDisguisable implements ITickable
 	public void syncLoggedPlayersToClient() {
 		for (int i = 0; i < players.length; i++) {
 			if (players[i] != null)
-				SecurityCraft.network.sendToAll(new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
+				SecurityCraft.network.sendToAllTracking(new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 0));
 		}
 	}
 

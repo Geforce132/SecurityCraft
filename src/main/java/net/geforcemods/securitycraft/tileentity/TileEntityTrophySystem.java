@@ -39,6 +39,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -166,7 +167,7 @@ public class TileEntityTrophySystem extends TileEntityDisguisable implements ITi
 		entityBeingTargeted = target;
 
 		if (!world.isRemote)
-			SecurityCraft.network.sendToAll(new SetTrophySystemTarget(pos, target.getEntityId()));
+			SecurityCraft.network.sendToAllTracking(new SetTrophySystemTarget(pos, target.getEntityId()), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 0));
 	}
 
 	/**

@@ -6,7 +6,7 @@
 - Change: Reduced the Rail Mine's explosion size by 25% to make it comparable to other mines' explosions
 - API: Added DisabledOption for having a default option to disable blocks
 - API: Added Option#getKey and Option#getDescriptionKey to easily access the language keys associated with an option
-- API: IEMPAffected has been added. It can be used to shut down select SecurityCraft blocks and items when they're within range of an EMP blast
+- API: IEMPAffected has been added. It can be used to shut down select SecurityCraft blocks and entities when they're within range of an EMP blast
 - API: IEMPAffectedTE has been added as a default implementation for tile entities which want to implement IEMPAffected
 
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------

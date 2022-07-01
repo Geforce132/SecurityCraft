@@ -19,6 +19,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class TileEntityLaserBlock extends TileEntityLinkable {
 	private DisabledOption disabled = new DisabledOption(false) {
@@ -90,7 +91,7 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 
 	private void onInsertDisguiseModule(ItemStack stack, boolean toggled) {
 		if (!world.isRemote)
-			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, true, stack, toggled));
+			SecurityCraft.network.sendToAllTracking(new RefreshDiguisedModel(pos, true, stack, toggled), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 0));
 		else {
 			IBlockState state = world.getBlockState(pos);
 
@@ -103,7 +104,7 @@ public class TileEntityLaserBlock extends TileEntityLinkable {
 
 	private void onRemoveDisguiseModule(ItemStack stack, boolean toggled) {
 		if (!world.isRemote)
-			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, false, stack, toggled));
+			SecurityCraft.network.sendToAllTracking(new RefreshDiguisedModel(pos, false, stack, toggled), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 0));
 		else {
 			IBlockState disguisedState = ((BlockDisguisable) blockType).getDisguisedBlockStateFromStack(null, null, stack);
 
