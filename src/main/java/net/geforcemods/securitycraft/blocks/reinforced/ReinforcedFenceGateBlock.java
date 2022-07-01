@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
@@ -74,10 +75,12 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 				if (isPoweredSCBlock && !state.getValue(OPEN) && !state.getValue(POWERED)) {
 					level.setBlock(pos, state.setValue(OPEN, true).setValue(POWERED, true), 2);
 					level.levelEvent(null, LevelEvent.SOUND_OPEN_IRON_DOOR, pos, 0);
+					level.gameEvent(null, GameEvent.BLOCK_OPEN, pos);
 				}
 				else if (!isPoweredSCBlock && state.getValue(OPEN) && state.getValue(POWERED)) {
 					level.setBlock(pos, state.setValue(OPEN, false).setValue(POWERED, false), 2);
 					level.levelEvent(null, LevelEvent.SOUND_CLOSE_IRON_DOOR, pos, 0);
+					level.gameEvent(null, GameEvent.BLOCK_CLOSE, pos);
 				}
 				else if (isPoweredSCBlock != state.getValue(POWERED))
 					level.setBlock(pos, state.setValue(POWERED, isPoweredSCBlock), 2);

@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.HitResult;
 
@@ -67,6 +68,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock 
 		level.setBlock(pos, upperState.setValue(DoorBlock.OPEN, false), 3);
 		level.setBlock(pos.below(), lowerState.setValue(DoorBlock.OPEN, false), 3);
 		level.levelEvent(null, LevelEvent.SOUND_CLOSE_IRON_DOOR, pos, 0);
+		level.gameEvent(null, GameEvent.BLOCK_CLOSE, pos);
 	}
 
 	@Override

@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class KeypadDoorBlock extends SpecialDoorBlock {
@@ -42,7 +43,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 				if (be.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
 
-				activate(state, level, pos, be.getSignalLength());
+				activate(state, level, pos, player, be.getSignalLength());
 			}
 			else if (!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				be.openPasswordGUI(player);
@@ -51,12 +52,13 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 		return InteractionResult.SUCCESS;
 	}
 
-	public void activate(BlockState state, Level level, BlockPos pos, int signalLength) {
+	public void activate(BlockState state, Level level, BlockPos pos, Player player, int signalLength) {
 		boolean open = !state.getValue(OPEN);
 
 		level.levelEvent(null, open ? 1005 : 1011, pos, 0);
 		level.setBlockAndUpdate(pos, state.setValue(OPEN, open));
 		level.updateNeighborsAt(pos, SCContent.KEYPAD_DOOR.get());
+		level.gameEvent(player, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
 
 		if (open && signalLength > 0)
 			level.getBlockTicks().scheduleTick(pos, SCContent.KEYPAD_DOOR.get(), signalLength);

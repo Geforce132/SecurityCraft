@@ -50,6 +50,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -133,6 +134,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 					level.setBlockAndUpdate(placeLocation, stateToPlace);
 					level.playSound(null, placeLocation, soundType.getPlaceSound(), SoundSource.BLOCKS, soundType.getVolume(), soundType.getPitch());
+					level.gameEvent(null, GameEvent.BLOCK_PLACE, placeLocation);
 					placedBe = level.getBlockEntity(placeLocation);
 
 					//assigning the owner

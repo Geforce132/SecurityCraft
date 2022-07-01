@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -135,6 +136,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 
 		if (player instanceof ServerPlayer serverPlayer) {
 			level.levelEvent(null, LevelEvent.SOUND_OPEN_IRON_DOOR, pos, 0);
+			level.gameEvent(player, GameEvent.CONTAINER_OPEN, pos);
 			NetworkHooks.openGui(serverPlayer, be, pos);
 		}
 	}

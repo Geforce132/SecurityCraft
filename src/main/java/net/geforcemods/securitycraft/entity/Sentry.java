@@ -167,7 +167,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			player.closeContainer();
 
 			if (player.isCrouching())
-				discard();
+				kill();
 			else if (item == Items.REDSTONE && isShutDown()) {
 				reactivate();
 

@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -96,6 +97,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 		if (state.getValue(DEACTIVATED)) {
 			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
+			level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 			return true;
 		}
 
@@ -108,6 +110,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 		if (!state.getValue(DEACTIVATED)) {
 			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
+			level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 			return true;
 		}
 
