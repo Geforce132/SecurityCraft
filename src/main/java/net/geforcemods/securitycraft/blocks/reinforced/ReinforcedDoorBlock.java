@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
@@ -284,6 +285,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 						}
 
 						world.levelEvent(null, hasActiveSCBlock ? LevelEvent.SOUND_OPEN_IRON_DOOR : LevelEvent.SOUND_CLOSE_IRON_DOOR, pos, 0);
+						world.gameEvent(null, hasActiveSCBlock ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
 					}
 				}
 			}

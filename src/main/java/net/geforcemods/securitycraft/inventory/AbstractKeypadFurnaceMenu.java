@@ -12,6 +12,7 @@ import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 public abstract class AbstractKeypadFurnaceMenu extends AbstractFurnaceMenu {
 	private final Block furnaceBlock;
@@ -35,6 +36,7 @@ public abstract class AbstractKeypadFurnaceMenu extends AbstractFurnaceMenu {
 	public void removed(Player player) {
 		worldPosCallable.execute((level, pos) -> {
 			level.levelEvent(player, LevelEvent.SOUND_CLOSE_IRON_DOOR, pos, 0);
+			level.gameEvent(player, GameEvent.CONTAINER_CLOSE, pos);
 			level.setBlockAndUpdate(pos, be.getBlockState().setValue(AbstractKeypadFurnaceBlock.OPEN, false));
 		});
 	}

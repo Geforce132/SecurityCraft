@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.9.3 of SecurityCraft--------------------------
 
+- New: Some of SecurityCraft's blocks, items, and entities can now trigger sculk sensors
 - New: Items can now be dragged from JEI into the Inventory Scanner's ghost slots
 - New: Item and block tag "securitycraft:reinforced/terracotta"
 - New: Several additions to minecraft's tags, including "minecraft:azalea_grows_on", "minecraft:sand", and "minecraft:terracotta"
