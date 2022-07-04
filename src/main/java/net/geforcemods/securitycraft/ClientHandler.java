@@ -60,6 +60,7 @@ import net.geforcemods.securitycraft.screen.KeypadSmokerScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
+import net.geforcemods.securitycraft.screen.SSSItemScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
 import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
@@ -533,6 +534,10 @@ public class ClientHandler {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
 		Minecraft.getInstance().setScreen(new SetPasswordScreen(be, displayName));
+	}
+
+	public static void displaySSSItemScreen(ItemStack stack) {
+		Minecraft.getInstance().setScreen(new SSSItemScreen(stack));
 	}
 
 	public static void refreshModelData(BlockEntity be) {

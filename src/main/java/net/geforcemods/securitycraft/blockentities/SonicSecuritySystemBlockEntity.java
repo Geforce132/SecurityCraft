@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
+import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -273,21 +274,15 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 * @param itemTag The CompoundTag of the Sonic Security System item to transfer over
 	 */
 	public boolean transferPositionsFromItem(CompoundTag itemTag) {
-		if (itemTag == null || !itemTag.contains("LinkedBlocks"))
-			return false;
+		Set<BlockPos> positions = SonicSecuritySystemItem.stackTagToBlockPosSet(itemTag);
 
-		ListTag blocks = itemTag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
+		// If the block has already been linked with, don't add it to the list
+		positions.removeIf(this::isLinkedToBlock);
+		linkedBlocks.addAll(positions);
 
-		for (int i = 0; i < blocks.size(); i++) {
-			CompoundTag linkedBlock = blocks.getCompound(i);
-			BlockPos linkedBlockPos = NbtUtils.readBlockPos(linkedBlock);
+		if (!linkedBlocks.isEmpty())
+			sync();
 
-			// If the block has not already been linked with, add it to the list
-			if (!isLinkedToBlock(linkedBlockPos))
-				linkedBlocks.add(linkedBlockPos);
-		}
-
-		sync();
 		return true;
 	}
 
@@ -335,6 +330,13 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 */
 	public int getNumberOfLinkedBlocks() {
 		return linkedBlocks.size();
+	}
+
+	/**
+	 * @return Returns the block positions that this Sonic Security System is linked to
+	 */
+	public Set<BlockPos> getLinkedBlocks() {
+		return linkedBlocks;
 	}
 
 	/**
