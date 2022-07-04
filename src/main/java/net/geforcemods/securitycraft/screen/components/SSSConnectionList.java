@@ -97,7 +97,8 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			bufferBuilder.vertex(max - 1, slotTop + slotBuffer + 1, 0).uv(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 			bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
 			bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			BufferUploader.drawWithShader(bufferBuilder.end());
+			bufferBuilder.end();
+			BufferUploader.end(bufferBuilder);
 			RenderSystem.enableTexture();
 			RenderSystem.disableBlend();
 
