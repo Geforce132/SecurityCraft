@@ -5,6 +5,7 @@
 - New: Item and block tag "securitycraft:reinforced/terracotta"
 - New: Reinforced sand has been added to the "minecraft:sand" tag
 - New: Several blocks now have a new Universal Block Modifier option to disable them
+- New: Blocks that have been linked to a Sonic Security System can now be seen and removed in the item's and block's screen
 - Change: Reduced the Rail Mine's explosion size by 25% to make it comparable to other mines' explosions
 - API: Added DisabledOption for having a default option to disable blocks
 - API: Added Option#getKey and Option#getDescriptionKey to easily access the language keys associated with an option
