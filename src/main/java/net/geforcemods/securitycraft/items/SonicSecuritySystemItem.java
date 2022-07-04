@@ -1,7 +1,10 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -23,8 +26,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -90,6 +95,14 @@ public class SonicSecuritySystemItem extends BlockItem {
 		}
 
 		return ActionResultType.PASS;
+	}
+
+	@Override
+	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
+		if (level.isClientSide)
+			ClientHandler.displaySSSItemScreen(player.getItemInHand(hand));
+
+		return ActionResult.success(player.getItemInHand(hand));
 	}
 
 	@Override
@@ -196,5 +209,24 @@ public class SonicSecuritySystemItem extends BlockItem {
 			return false;
 
 		return tag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND).size() > 0;
+	}
+
+	/**
+	 * Copies the positions over from the SSS item's tag into a new set.
+	 *
+	 * @param itemTag The CompoundTag of the Sonic Security System item to transfer over
+	 */
+	public static Set<BlockPos> stackTagToBlockPosSet(CompoundNBT itemTag) {
+		if (itemTag == null || !itemTag.contains("LinkedBlocks"))
+			return new HashSet<>();
+
+		ListNBT blocks = itemTag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
+		Set<BlockPos> positions = new HashSet<>();
+
+		for (int i = 0; i < blocks.size(); i++) {
+			positions.add(NBTUtil.readBlockPos(blocks.getCompound(i)));
+		}
+
+		return positions;
 	}
 }
