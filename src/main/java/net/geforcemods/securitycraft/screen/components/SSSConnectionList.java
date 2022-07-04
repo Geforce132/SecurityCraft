@@ -54,8 +54,10 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 
 			if (be instanceof Nameable nameable)
 				blockName = nameable.getDisplayName();
-			else
+			else if (be != null)
 				blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
+			else
+				blockName = Component.literal("????");
 
 			connectionInfo.add(new ConnectionInfo(pos, blockName));
 		}
