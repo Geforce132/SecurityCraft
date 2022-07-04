@@ -22,6 +22,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Nameable;
@@ -54,8 +55,10 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 
 			if (be instanceof Nameable nameable)
 				blockName = nameable.getDisplayName();
-			else
+			else if (be != null)
 				blockName = Utils.localize(be.getBlockState().getBlock().getDescriptionId());
+			else
+				blockName = new TextComponent("????");
 
 			connectionInfo.add(new ConnectionInfo(pos, blockName));
 		}
