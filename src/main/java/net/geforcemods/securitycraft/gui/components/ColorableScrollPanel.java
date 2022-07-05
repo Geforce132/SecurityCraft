@@ -33,8 +33,6 @@ public abstract class ColorableScrollPanel {
 	private final Minecraft client;
 	protected final int listWidth;
 	protected final int listHeight;
-	protected final int screenWidth;
-	protected final int screenHeight;
 	protected final int top;
 	protected final int bottom;
 	protected final int right;
@@ -60,15 +58,15 @@ public abstract class ColorableScrollPanel {
 	private Color scrollbarBorder;
 	private Color scrollbar;
 
-	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight) {
-		this(client, width, height, top, top + height, left, 12, screenWidth, screenHeight, new Color(0xC0, 0x10, 0x10, 0x10), new Color(0xD0, 0x10, 0x10, 0x10), new Color(0x00, 0x00, 0x00, 0xFF), new Color(0x80, 0x80, 0x80, 0xFF), new Color(0xC0, 0xC0, 0xC0, 0xFF));
+	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int left) {
+		this(client, width, height, top, top + height, left, 12, new Color(0xC0, 0x10, 0x10, 0x10), new Color(0xD0, 0x10, 0x10, 0x10), new Color(0x00, 0x00, 0x00, 0xFF), new Color(0x80, 0x80, 0x80, 0xFF), new Color(0xC0, 0xC0, 0xC0, 0xFF));
 	}
 
-	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, int screenWidth, int screenHeight, Color backgroundFrom, Color backgroundTo) {
-		this(client, width, height, top, bottom, left, entryHeight, screenWidth, screenHeight, backgroundFrom, backgroundTo, new Color(0x00, 0x00, 0x00, 0xFF), new Color(0x80, 0x80, 0x80, 0xFF), new Color(0xC0, 0xC0, 0xC0, 0xFF));
+	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, Color backgroundFrom, Color backgroundTo) {
+		this(client, width, height, top, bottom, left, entryHeight, backgroundFrom, backgroundTo, new Color(0x00, 0x00, 0x00, 0xFF), new Color(0x80, 0x80, 0x80, 0xFF), new Color(0xC0, 0xC0, 0xC0, 0xFF));
 	}
 
-	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, int screenWidth, int screenHeight, Color backgroundFrom, Color backgroundTo, Color scrollbarBackground, Color scrollbarBorder, Color scrollbar) {
+	public ColorableScrollPanel(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, Color backgroundFrom, Color backgroundTo, Color scrollbarBackground, Color scrollbarBorder, Color scrollbar) {
 		this.client = client;
 		listWidth = width;
 		listHeight = height;
@@ -77,8 +75,6 @@ public abstract class ColorableScrollPanel {
 		slotHeight = entryHeight;
 		this.left = left;
 		right = width + left;
-		this.screenWidth = screenWidth;
-		this.screenHeight = screenHeight;
 		this.backgroundFrom = backgroundFrom;
 		this.backgroundTo = backgroundTo;
 		this.scrollbarBackground = scrollbarBackground;
@@ -177,6 +173,14 @@ public abstract class ColorableScrollPanel {
 		if (Mouse.isButtonDown(0)) {
 			if (initialMouseClickY == -1.0F) {
 				if (isHovering) {
+					int entryLeft = left;
+					int entryRight = left + listWidth - 7;
+					int mouseListY = mouseY - top - headerHeight + (int) scrollDistance - border;
+					int slotIndex = mouseListY / slotHeight;
+
+					if (mouseX >= entryLeft && mouseX <= entryRight && slotIndex >= 0 && mouseListY >= 0 && slotIndex < getSize())
+						elementClicked(mouseX, mouseY, slotIndex);
+
 					if (mouseX >= scrollBarLeft && mouseX <= scrollBarRight) {
 						int scrollHeight = getContentHeight() - viewHeight - border;
 
@@ -205,6 +209,8 @@ public abstract class ColorableScrollPanel {
 
 		applyScrollLimits();
 	}
+
+	public void elementClicked(int mouseX, int mouseY, int slotIndex) {}
 
 	public int getBarHeight(int viewHeight, int border) {
 		int barHeight = (int) ((float) (viewHeight * viewHeight) / (float) getContentHeight());

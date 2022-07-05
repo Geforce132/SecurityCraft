@@ -92,7 +92,7 @@ public class GuiEditModule extends GuiContainer implements GuiResponder {
 			module.getTagCompound().setBoolean("affectEveryone", newState);
 		}, 0x404040));
 		playerList = new PlayerList(mc, 110, 165, height / 2 - 88, guiLeft + 10, width, height);
-		teamList = new TeamList(mc, editTeamsButton.getButtonWidth(), 75, editTeamsButton.y + editTeamsButton.height, editTeamsButton.x, width, height);
+		teamList = new TeamList(mc, editTeamsButton.getButtonWidth(), 75, editTeamsButton.y + editTeamsButton.height, editTeamsButton.x);
 
 		teamList.active = false;
 		editTeamsButton.enabled = !availableTeams.isEmpty();
@@ -422,8 +422,8 @@ public class GuiEditModule extends GuiContainer implements GuiResponder {
 		private int selectedIndex = -1;
 		public boolean active = true;
 
-		public TeamList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight) {
-			super(client, width, height, top, left, screenWidth, screenHeight);
+		public TeamList(Minecraft client, int width, int height, int top, int left) {
+			super(client, width, height, top, left);
 
 			listLength = availableTeams.size();
 			font = mc.fontRenderer;

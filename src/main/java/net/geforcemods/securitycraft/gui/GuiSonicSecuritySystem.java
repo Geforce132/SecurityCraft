@@ -1,10 +1,19 @@
 package net.geforcemods.securitycraft.gui;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.lwjgl.input.Mouse;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.ClickButton;
+import net.geforcemods.securitycraft.gui.components.SSSConnectionList;
+import net.geforcemods.securitycraft.gui.components.SSSConnectionList.ConnectionAccessor;
 import net.geforcemods.securitycraft.gui.components.TogglePictureButton;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
+import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer.DataType;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem.NoteWrapper;
 import net.geforcemods.securitycraft.util.Utils;
@@ -18,22 +27,23 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.world.NoteBlockEvent.Instrument;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiSonicSecuritySystem extends GuiContainer {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+public class GuiSonicSecuritySystem extends GuiContainer implements ConnectionAccessor {
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/sonic_security_system.png");
 	private static final ResourceLocation STREAMER_ICONS = new ResourceLocation("textures/gui/stream_indicator.png");
 	private static final TextComponentTranslation SOUND_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.sound");
 	/** The number of ticks between each note when playing back a recording **/
 	private static final int PLAYBACK_DELAY = 10;
 	private final TileEntitySonicSecuritySystem te;
-	private int xSize = 176, ySize = 166;
 	private ClickButton recordingButton, clearButton, powerButton, playButton;
 	private TogglePictureButton soundButton;
+	private SSSConnectionList<GuiSonicSecuritySystem> connectionList;
 	/** If a recording is currently being played back **/
 	private boolean playback = false;
 	/** The number of ticks that has elapsed since the last note played **/
@@ -47,6 +57,7 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 		this.te = te;
 		title = te.getDisplayName().getFormattedText();
 		isOwner = te.getOwner().isOwner(Minecraft.getMinecraft().player);
+		xSize = 300;
 	}
 
 	@Override
@@ -80,8 +91,10 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 
 		boolean isActive = te.isActive();
 		boolean hasNotes = te.getNumberOfNotes() > 0;
+		int leftPos = (width - xSize) / 2;
+		int buttonX = leftPos + xSize - 155;
 
-		powerButton = addButton(new ClickButton(0, width / 2 - 75, height / 2 - 59, 150, 20, getPowerString(te.isActive()), button -> {
+		powerButton = addButton(new ClickButton(0, buttonX, height / 2 - 59, 150, 20, getPowerString(te.isActive()), button -> {
 			boolean toggledState = !te.isActive();
 			boolean containsNotes = te.getNumberOfNotes() > 0;
 
@@ -99,20 +112,20 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 			clearButton.enabled = toggledState && containsNotes;
 		}));
 
-		recordingButton = addButton(new ClickButton(1, width / 2 - 75, height / 2 - 32, 150, 20, getRecordingString(te.isRecording()), button -> {
+		recordingButton = addButton(new ClickButton(1, buttonX, height / 2 - 32, 150, 20, getRecordingString(te.isRecording()), button -> {
 			boolean recording = !te.isRecording();
 			te.setRecording(recording);
 			SecurityCraft.network.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), recording ? SyncSSSSettingsOnServer.DataType.RECORDING_ON : SyncSSSSettingsOnServer.DataType.RECORDING_OFF));
 			recordingButton.displayString = getRecordingString(te.isRecording());
 		}));
 
-		playButton = addButton(new ClickButton(2, width / 2 - 75, height / 2 - 10, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play").getFormattedText(), button -> {
+		playButton = addButton(new ClickButton(2, buttonX, height / 2 - 10, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.play").getFormattedText(), button -> {
 			// Start playing back any notes that have been recorded
 			if (te.getNumberOfNotes() > 0)
 				playback = true;
 		}));
 
-		clearButton = addButton(new ClickButton(3, width / 2 - 75, height / 2 + 12, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear").getFormattedText(), button -> {
+		clearButton = addButton(new ClickButton(3, buttonX, height / 2 + 12, 150, 20, Utils.localize("gui.securitycraft:sonic_security_system.recording.clear").getFormattedText(), button -> {
 			te.clearNotes();
 			SecurityCraft.network.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), SyncSSSSettingsOnServer.DataType.CLEAR_NOTES));
 			playButton.enabled = false;
@@ -120,7 +133,7 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 		}));
 
 		//@formatter:off
-		soundButton = addButton(new TogglePictureButton(4, width / 2 + 55, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[] {0, 0}, new int[] {32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
+		soundButton = addButton(new TogglePictureButton(4, buttonX + 130, height / 2 + 52, 20, 20, STREAMER_ICONS, new int[] {0, 0}, new int[] {32, 48}, 2, 16, 16, 16, 16, 16, 64, 2, button -> {
 			//@formatter:on
 			boolean toggledPing = !te.pings();
 
@@ -128,6 +141,8 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 			SecurityCraft.network.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), toggledPing ? SyncSSSSettingsOnServer.DataType.SOUND_ON : SyncSSSSettingsOnServer.DataType.SOUND_OFF));
 		}));
 		soundButton.setCurrentIndex(!te.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
+
+		connectionList = new SSSConnectionList<>(this, mc, 130, 120, powerButton.y, leftPos + 10);
 
 		powerButton.enabled = isActive && isOwner;
 		recordingButton.enabled = isActive && isOwner;
@@ -149,7 +164,18 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 		int soundTextLength = fontRenderer.getStringWidth(soundText);
 
 		fontRenderer.drawString(title, xSize / 2 - textWidth / 2, 6, 4210752);
-		fontRenderer.drawString(soundText, ySize / 2 + 50 - soundTextLength, 141, 4210752);
+		fontRenderer.drawString(soundText, -guiLeft + soundButton.x - soundTextLength - 5, 141, 4210752);
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		super.drawScreen(mouseX, mouseY, partialTicks);
+
+		GlStateManager.color(1.0F, 1.0F, 1.0F);
+		GlStateManager.disableLighting();
+
+		if (connectionList != null)
+			connectionList.drawScreen(mouseX, mouseY, partialTicks);
 	}
 
 	@Override
@@ -157,12 +183,37 @@ public class GuiSonicSecuritySystem extends GuiContainer {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		drawModalRectWithCustomSizedTexture(guiLeft, guiTop, 0, 0, xSize, ySize, 512, 512);
+	}
+
+	@Override
+	public void handleMouseInput() throws IOException {
+		super.handleMouseInput();
+
+		int mouseX = Mouse.getEventX() * width / mc.displayWidth;
+		int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
+
+		connectionList.handleMouseInput(mouseX, mouseY);
 	}
 
 	@Override
 	public boolean doesGuiPauseGame() {
 		return false;
+	}
+
+	@Override
+	public Set<BlockPos> getPositions() {
+		if (isOwner)
+			return te.getLinkedBlocks();
+		else
+			return new HashSet<>();
+	}
+
+	@Override
+	public void removePosition(BlockPos pos) {
+		te.delink(pos, true);
+		connectionList.refreshPositions();
+		SecurityCraft.network.sendToServer(new SyncSSSSettingsOnServer(te.getPos(), DataType.REMOVE_POS, pos));
 	}
 
 	private String getRecordingString(boolean recording) {

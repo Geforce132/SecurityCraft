@@ -96,7 +96,7 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		hoverCheckers[1] = new StringHoverChecker(modeButton, Arrays.stream(EnumDetectionMode.values()).map(e -> Utils.localize(e.getDescriptionId()).getFormattedText()).collect(Collectors.toList()));
 		hoverCheckers[2] = new StringHoverChecker(showAllCheckbox, Utils.localize("gui.securitycraft:block_change_detector.show_all_checkbox").getFormattedText());
 		smartModuleHoverChecker = isOwner ? new StringHoverChecker(guiTop + 44, guiTop + 60, guiLeft + 174, guiLeft + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint").getFormattedText()) : null;
-		changeEntryList = new ChangeEntryList(mc, 160, 150, guiTop + 20, guiLeft + 8, width, height);
+		changeEntryList = new ChangeEntryList(mc, 160, 150, guiTop + 20, guiLeft + 8);
 		clearButton.enabled = modeButton.enabled = isOwner;
 
 		for (ChangeEntry entry : be.getEntries()) {
@@ -230,8 +230,8 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 		private int contentHeight = 0;
 		private ItemStack filteredStack = ItemStack.EMPTY;
 
-		public ChangeEntryList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight) {
-			super(client, width, height, top, top + height, left, 12, screenWidth, screenHeight, new Color(0x00, 0x00, 0x00, 0x00), new Color(0x00, 0x00, 0x00, 0x00));
+		public ChangeEntryList(Minecraft client, int width, int height, int top, int left) {
+			super(client, width, height, top, top + height, left, 12, new Color(0x00, 0x00, 0x00, 0x00), new Color(0x00, 0x00, 0x00, 0x00));
 		}
 
 		@Override

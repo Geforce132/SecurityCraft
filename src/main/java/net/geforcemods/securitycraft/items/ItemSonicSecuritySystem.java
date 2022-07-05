@@ -1,12 +1,15 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
+import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.tileentity.TileEntitySonicSecuritySystem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -21,6 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -86,6 +90,14 @@ public class ItemSonicSecuritySystem extends ItemBlock {
 		}
 
 		return EnumActionResult.PASS;
+	}
+
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		BlockPos playerPos = player.getPosition();
+
+		player.openGui(SecurityCraft.instance, GuiHandler.SSS_ITEM, world, playerPos.getX(), playerPos.getY(), playerPos.getZ());
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
@@ -180,5 +192,24 @@ public class ItemSonicSecuritySystem extends ItemBlock {
 			return false;
 
 		return tag.getTagList("LinkedBlocks", Constants.NBT.TAG_COMPOUND).tagCount() > 0;
+	}
+
+	/**
+	 * Copies the positions over from the SSS item's tag into a new set.
+	 *
+	 * @param itemTag The CompoundTag of the Sonic Security System item to transfer over
+	 */
+	public static Set<BlockPos> stackTagToBlockPosSet(NBTTagCompound itemTag) {
+		if (itemTag == null || !itemTag.hasKey("LinkedBlocks"))
+			return new HashSet<>();
+
+		NBTTagList blocks = itemTag.getTagList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
+		Set<BlockPos> positions = new HashSet<>();
+
+		for (int i = 0; i < blocks.tagCount(); i++) {
+			positions.add(NBTUtil.getPosFromTag(blocks.getCompoundTagAt(i)));
+		}
+
+		return positions;
 	}
 }

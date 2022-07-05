@@ -8,11 +8,12 @@ import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IEMPAffectedTE;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockSonicSecuritySystem;
+import net.geforcemods.securitycraft.items.ItemSonicSecuritySystem;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.TileEntityTracker;
@@ -271,21 +272,14 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	 * @param itemTag The CompoundNBT tag of the Sonic Security System item to transfer over
 	 */
 	public void transferPositionsFromItem(NBTTagCompound itemTag) {
-		if (itemTag == null || !itemTag.hasKey("LinkedBlocks"))
-			return;
+		Set<BlockPos> positions = ItemSonicSecuritySystem.stackTagToBlockPosSet(itemTag);
 
-		NBTTagList blocks = itemTag.getTagList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
+		// If the block has already been linked with, don't add it to the list
+		positions.removeIf(this::isLinkedToBlock);
+		linkedBlocks.addAll(positions);
 
-		for (int i = 0; i < blocks.tagCount(); i++) {
-			NBTTagCompound linkedBlock = blocks.getCompoundTagAt(i);
-			BlockPos linkedBlockPos = NBTUtil.getPosFromTag(linkedBlock);
-
-			// If the block has not already been linked with, add it to the list
-			if (!isLinkedToBlock(linkedBlockPos))
-				linkedBlocks.add(linkedBlockPos);
-		}
-
-		sync();
+		if (!linkedBlocks.isEmpty())
+			sync();
 	}
 
 	/**
@@ -332,6 +326,13 @@ public class TileEntitySonicSecuritySystem extends CustomizableSCTE implements I
 	 */
 	public int getNumberOfLinkedBlocks() {
 		return linkedBlocks.size();
+	}
+
+	/**
+	 * @return Returns the block positions that this Sonic Security System is linked to
+	 */
+	public Set<BlockPos> getLinkedBlocks() {
+		return linkedBlocks;
 	}
 
 	/**

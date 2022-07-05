@@ -59,6 +59,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int PROJECTOR = 106;
 	public static final int SONIC_SECURITY_SYSTEM = 107;
 	public static final int BLOCK_CHANGE_DETECTOR = 108;
+	public static final int SSS_ITEM = 109;
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -129,6 +130,8 @@ public class GuiHandler implements IGuiHandler {
 				if (te instanceof TileEntityBlockChangeDetector)
 					return new ContainerBlockChangeDetector(player.inventory, (TileEntityBlockChangeDetector) te);
 				return null;
+			case SSS_ITEM:
+				return new ContainerGeneric(player.inventory, te);
 			default:
 				return null;
 		}
@@ -215,6 +218,10 @@ public class GuiHandler implements IGuiHandler {
 				if (te instanceof TileEntityBlockChangeDetector)
 					return new GuiBlockChangeDetector(player.inventory, (TileEntityBlockChangeDetector) te);
 				return null;
+			case SSS_ITEM:
+				if (!PlayerUtils.isHoldingItem(player, SCContent.sonicSecuritySystemItem, null))
+					return null;
+				return new GuiSSSItem(PlayerUtils.getSelectedItemStack(player, SCContent.sonicSecuritySystemItem));
 			default:
 				return null;
 		}

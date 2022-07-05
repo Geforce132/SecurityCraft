@@ -99,7 +99,7 @@ public class GuiSCManual extends GuiScreen {
 		buttonList.add(new GuiSCManual.ChangePageButton(3, startX + 180, startY + 97, true)); //next subpage
 		buttonList.add(new GuiSCManual.ChangePageButton(4, startX + 155, startY + 97, false)); //previous subpage
 		buttonList.add(patreonLinkButton = new HyperlinkButton(5, startX + 225, 143, 16, 16, ""));
-		patronList = new PatronList(mc, 115, 90, 50, startX + 125, width, height);
+		patronList = new PatronList(mc, 115, 90, 50, startX + 125);
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -627,8 +627,8 @@ public class GuiSCManual extends GuiScreen {
 		private final String loadingText = Utils.localize("gui.securitycraft:scManual.patreon.loading").getFormattedText();
 		private final int border = 4;
 
-		public PatronList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight) {
-			super(client, width, height, top, top + height, left, 12, screenWidth, screenHeight, new Color(0xC0, 0xBF, 0xBB, 0xB2), new Color(0xD0, 0xBF, 0xBB, 0xB2), new Color(0x8E, 0x82, 0x70, 0xFF), new Color(0x80, 0x70, 0x55, 0xFF), new Color(0xD1, 0xBF, 0xA1, 0xFF));
+		public PatronList(Minecraft client, int width, int height, int top, int left) {
+			super(client, width, height, top, top + height, left, 12, new Color(0xC0, 0xBF, 0xBB, 0xB2), new Color(0xD0, 0xBF, 0xBB, 0xB2), new Color(0x8E, 0x82, 0x70, 0xFF), new Color(0x80, 0x70, 0x55, 0xFF), new Color(0xD1, 0xBF, 0xA1, 0xFF));
 
 			fetchErrorLines = fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:scManual.patreon.error").getFormattedText(), listWidth);
 			noPatronsLines = fontRenderer.listFormattedStringToWidth(Utils.localize("advancements.empty").getFormattedText(), listWidth - 10);

@@ -57,7 +57,7 @@ public class TileEntityNamed extends TileEntityOwnable implements INameSetter {
 
 	@Override
 	public ITextComponent getDefaultName() {
-		return Utils.localize(blockType.getTranslationKey() + ".name");
+		return Utils.localize(blockType);
 	}
 
 	@Override
