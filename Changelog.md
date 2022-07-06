@@ -9,6 +9,7 @@
 - API: Added Option#getKey and Option#getDescriptionKey to easily access the language keys associated with an option
 - API: IEMPAffected has been added. It can be used to shut down select SecurityCraft blocks and entities when they're within range of an EMP blast
 - API: IEMPAffectedTE has been added as a default implementation for tile entities which want to implement IEMPAffected
+- Fix: The default display name of some blocks is always "Customize"
 
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
 
