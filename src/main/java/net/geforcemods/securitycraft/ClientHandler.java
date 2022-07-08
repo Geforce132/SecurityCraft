@@ -299,9 +299,9 @@ public class ClientHandler {
 	@SubscribeEvent
 	public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
 		cameraOverlay = SCClientEventHandler::cameraOverlay;
-		event.registerAboveAll(SecurityCraft.MODID + ":camera_overlay", cameraOverlay);
+		event.registerAboveAll("camera_overlay", cameraOverlay);
 		hotbarBindOverlay = SCClientEventHandler::hotbarBindOverlay;
-		event.registerAboveAll(SecurityCraft.MODID + ":hotbar_bind_overlay", hotbarBindOverlay);
+		event.registerAboveAll("hotbar_bind_overlay", hotbarBindOverlay);
 		GuiOverlayManager.enableOverlay(cameraOverlay, false);
 	}
 
