@@ -7,7 +7,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.gui.GuiUtils;
+import net.minecraftforge.client.gui.ScreenUtils;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class TogglePictureButton extends ExtendedButton implements IToggleableButton {
@@ -53,7 +53,7 @@ public class TogglePictureButton extends ExtendedButton implements IToggleableBu
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-			GuiUtils.drawContinuousTexturedBox(pose, WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHoveredOrFocused()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
+			ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHoveredOrFocused()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 
 			if (getTextureLocation() != null) {
 				RenderSystem._setShaderTexture(0, getTextureLocation());

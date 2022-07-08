@@ -5,14 +5,14 @@ import java.util.function.BiPredicate;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.client.gui.GuiUtils;
+import net.minecraftforge.client.gui.ScreenUtils;
 
 public class CollapsibleTextList extends Button {
 	private static final Component PLUS = Component.literal("+ ");
@@ -59,20 +59,19 @@ public class CollapsibleTextList extends Button {
 		int v = getYImage(isHoveredOrFocused());
 		int heightOffset = (height - 8) / 2;
 
-		GuiUtils.drawContinuousTexturedBox(pose, WIDGETS_LOCATION, x, y, 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
+		ScreenUtils.blitWithBorder(pose, WIDGETS_LOCATION, x, y, 0, 46 + v * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 		drawCenteredString(pose, font, getMessage(), x + font.width(getMessage()) / 2 + 3, y + heightOffset, getFGColor());
 
 		if (open) {
 			int renderedLines = 0;
-			Matrix4f m4f = pose.last().pose();
 
-			GuiUtils.drawGradientRect(m4f, 0, x, y + height, x + width, y + heightOpen, 0xC0101010, 0xD0101010);
+			GuiComponent.fillGradient(pose, 0, x, y + height, x + width, y + heightOpen, 0xC0101010, 0xD0101010);
 
 			for (int i = 0; i < textLines.size(); i++) {
 				int textY = y + 2 + height + renderedLines * font.lineHeight + (i * 12);
 
 				if (i > 0)
-					GuiUtils.drawGradientRect(m4f, getBlitOffset(), x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0);
+					GuiComponent.fillGradient(pose, getBlitOffset(), x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0);
 
 				font.drawWordWrap(textLines.get(i), x + 2, textY, textCutoff, getFGColor());
 				renderedLines += splitTextLineCount.get(i) - 1;

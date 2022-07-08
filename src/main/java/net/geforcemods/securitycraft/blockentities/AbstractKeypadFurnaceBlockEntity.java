@@ -39,14 +39,12 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.client.model.data.ModelDataMap;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -294,8 +292,10 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	@Override
-	public IModelData getModelData() {
-		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_STATE_RL, Blocks.AIR.defaultBlockState()).build();
+	public ModelData getModelData() {
+		BlockState disguisedState = DisguisableBlock.getDisguisedStateOrDefault(getBlockState(), level, worldPosition);
+
+		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE_RL, disguisedState).build();
 	}
 
 	public boolean sendsMessages() {

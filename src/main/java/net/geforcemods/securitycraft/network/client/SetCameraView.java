@@ -11,8 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.network.NetworkEvent;
 
 public class SetCameraView {
@@ -58,11 +58,11 @@ public class SetCameraView {
 				if (isCamera) {
 					CameraController.resetOverlaysAfterDismount = true;
 					CameraController.saveOverlayStates();
-					OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, false);
-					OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, false);
-					OverlayRegistry.enableOverlay(ForgeIngameGui.POTION_ICONS_ELEMENT, false);
-					OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, true);
-					OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, false);
+					GuiOverlayManager.enableOverlay(VanillaGuiOverlay.EXPERIENCE_BAR, false);
+					GuiOverlayManager.enableOverlay(VanillaGuiOverlay.JUMP_BAR, false);
+					GuiOverlayManager.enableOverlay(VanillaGuiOverlay.POTION_ICONS, false);
+					GuiOverlayManager.enableOverlay(ClientHandler.cameraOverlay, true);
+					GuiOverlayManager.enableOverlay(ClientHandler.hotbarBindOverlay, false);
 				}
 			}
 		});

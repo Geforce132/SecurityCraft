@@ -7,14 +7,17 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.util.TriPredicate;
 
 public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEntity> {
@@ -43,9 +46,11 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 						pos = translateProjection(be.getBlockPos(), pose, be.getBlockState().getValue(ProjectorBlock.FACING), x, be.getProjectionRange() - 16, y + 1, be.getProjectionOffset());
 
 					if (pos != null && be.getLevel().isEmptyBlock(pos)) {
-						for (RenderType renderType : RenderType.chunkBufferLayers()) {
-							if (ItemBlockRenderTypes.canRenderInLayer(state, renderType))
-								Minecraft.getInstance().getBlockRenderer().renderBatched(state, pos, be.getLevel(), pose, buffer.getBuffer(renderType), true, be.getLevel().random);
+						BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
+						BakedModel model = dispatcher.getBlockModel(state);
+
+						for (RenderType renderType : model.getRenderTypes(state, RandomSource.create(state.getSeed(pos)), ModelData.EMPTY)) {
+							dispatcher.renderBatched(state, pos, be.getLevel(), pose, buffer.getBuffer(renderType), true, be.getLevel().random, ModelData.EMPTY, renderType);
 						}
 
 						ClientHandler.PROJECTOR_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay);

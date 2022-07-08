@@ -25,7 +25,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.client.gui.ScrollPanel;
+import net.minecraftforge.client.gui.widget.ScrollPanel;
 
 public class TrophySystemScreen extends Screen {
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");

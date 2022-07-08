@@ -12,13 +12,11 @@ import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.client.model.data.ModelDataMap;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.network.PacketDistributor;
 
 public class DisguisableBlockEntity extends CustomizableBlockEntity {
@@ -114,7 +112,9 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
-	public IModelData getModelData() {
-		return new ModelDataMap.Builder().withInitial(DisguisableDynamicBakedModel.DISGUISED_STATE_RL, Blocks.AIR.defaultBlockState()).build();
+	public ModelData getModelData() {
+		BlockState disguisedState = DisguisableBlock.getDisguisedStateOrDefault(getBlockState(), level, worldPosition);
+
+		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE_RL, disguisedState).build();
 	}
 }

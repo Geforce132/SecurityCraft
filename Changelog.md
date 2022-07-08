@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.9.2-beta5 of SecurityCraft--------------------------
+
+- Fix: Compatibility with Forge 41.0.64+
+- Misc: The minimum required Forge version is now 41.0.64
+
 --------------------------Changelog for v1.9.2-beta4 of SecurityCraft--------------------------
 
 - Fix: Crash when trying to view a camera on a server

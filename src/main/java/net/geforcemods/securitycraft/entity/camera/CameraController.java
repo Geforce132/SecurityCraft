@@ -18,8 +18,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -114,8 +114,8 @@ public class CameraController {
 		}
 		else if (resetOverlaysAfterDismount) {
 			resetOverlaysAfterDismount = false;
-			OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, false);
-			OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, true);
+			GuiOverlayManager.enableOverlay(ClientHandler.cameraOverlay, false);
+			GuiOverlayManager.enableOverlay(ClientHandler.hotbarBindOverlay, true);
 			CameraController.restoreOverlayStates();
 		}
 	}
@@ -216,20 +216,20 @@ public class CameraController {
 	}
 
 	public static void saveOverlayStates() {
-		jumpBarElementEnabledPreviously = OverlayRegistry.getEntry(ForgeIngameGui.JUMP_BAR_ELEMENT).isEnabled();
-		experienceBarElementEnabledPreviously = OverlayRegistry.getEntry(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT).isEnabled();
-		potionIconsElementEnabledPreviously = OverlayRegistry.getEntry(ForgeIngameGui.POTION_ICONS_ELEMENT).isEnabled();
+		jumpBarElementEnabledPreviously = GuiOverlayManager.findOverlay(VanillaGuiOverlay.JUMP_BAR.id()).isEnabled();
+		experienceBarElementEnabledPreviously = GuiOverlayManager.findOverlay(VanillaGuiOverlay.EXPERIENCE_BAR.id()).isEnabled();
+		potionIconsElementEnabledPreviously = GuiOverlayManager.findOverlay(VanillaGuiOverlay.POTION_ICONS.id()).isEnabled();
 	}
 
 	public static void restoreOverlayStates() {
 		if (jumpBarElementEnabledPreviously)
-			OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, true);
+			GuiOverlayManager.enableOverlay(VanillaGuiOverlay.JUMP_BAR, true);
 
 		if (experienceBarElementEnabledPreviously)
-			OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, true);
+			GuiOverlayManager.enableOverlay(VanillaGuiOverlay.EXPERIENCE_BAR, true);
 
 		if (potionIconsElementEnabledPreviously)
-			OverlayRegistry.enableOverlay(ForgeIngameGui.POTION_ICONS_ELEMENT, true);
+			GuiOverlayManager.enableOverlay(VanillaGuiOverlay.POTION_ICONS, true);
 	}
 
 	private static double cameraSpeed() {

@@ -132,8 +132,8 @@ public class WailaDataProvider implements IWailaPlugin {
 			Block block = data.getBlock();
 			boolean disguised = false;
 
-			if (block instanceof DisguisableBlock disguisedBlock) {
-				Optional<BlockState> disguisedBlockState = disguisedBlock.getDisguisedBlockState(data.getLevel(), data.getPosition());
+			if (block instanceof DisguisableBlock) {
+				Optional<BlockState> disguisedBlockState = DisguisableBlock.getDisguisedBlockState(data.getLevel(), data.getPosition());
 
 				if (disguisedBlockState.isPresent()) {
 					disguised = true;

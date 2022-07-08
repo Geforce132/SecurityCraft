@@ -38,25 +38,21 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public static boolean isNormalCube(BlockState state, BlockGetter level, BlockPos pos) {
-		if (state.getBlock() instanceof DisguisableBlock disguisableBlock) { //should not happen, but just to be safe
-			BlockState disguisedState = disguisableBlock.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = DisguisableBlock.getDisguisedStateOrDefault(state, level, pos);
 
-			if (disguisedState.getBlock() != state.getBlock())
-				return disguisedState.isRedstoneConductor(level, pos);
-		}
-
-		return state.getMaterial().isSolidBlocking() && state.isCollisionShapeFullBlock(level, pos);
+		if (disguisedState.getBlock() != state.getBlock())
+			return disguisedState.isRedstoneConductor(level, pos);
+		else
+			return state.getMaterial().isSolidBlocking() && state.isCollisionShapeFullBlock(level, pos);
 	}
 
 	public static boolean isSuffocating(BlockState state, BlockGetter level, BlockPos pos) {
-		if (state.getBlock() instanceof DisguisableBlock disguisableBlock) { //should not happen, but just to be safe
-			BlockState disguisedState = disguisableBlock.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = DisguisableBlock.getDisguisedStateOrDefault(state, level, pos);
 
-			if (disguisedState.getBlock() != state.getBlock())
-				return disguisedState.isSuffocating(level, pos);
-		}
-
-		return state.getMaterial().blocksMotion() && state.isCollisionShapeFullBlock(level, pos);
+		if (disguisedState.getBlock() != state.getBlock())
+			return disguisedState.isSuffocating(level, pos);
+		else
+			return state.getMaterial().blocksMotion() && state.isCollisionShapeFullBlock(level, pos);
 	}
 
 	@Override
@@ -137,11 +133,11 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
-	public final BlockState getDisguisedStateOrDefault(BlockState state, BlockGetter level, BlockPos pos) {
+	public static BlockState getDisguisedStateOrDefault(BlockState state, BlockGetter level, BlockPos pos) {
 		return getDisguisedBlockState(level, pos).orElse(state);
 	}
 
-	public Optional<BlockState> getDisguisedBlockState(BlockGetter level, BlockPos pos) {
+	public static Optional<BlockState> getDisguisedBlockState(BlockGetter level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof IModuleInventory be)
 			return getDisguisedBlockStateFromStack(be.isModuleEnabled(ModuleType.DISGUISE) ? be.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY);
 

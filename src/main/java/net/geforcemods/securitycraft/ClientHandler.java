@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -17,7 +16,6 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
-import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
@@ -99,11 +97,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateHolder;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.gui.IIngameOverlay;
-import net.minecraftforge.client.gui.OverlayRegistry;
-import net.minecraftforge.client.model.ModelDataManager;
+import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -120,8 +118,8 @@ public class ClientHandler {
 	public static final ModelLayerLocation SONIC_SECURITY_SYSTEM_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "sonic_security_system"), "main");
 	public static final BlockEntityRenderDelegate DISGUISED_BLOCK_RENDER_DELEGATE = new BlockEntityRenderDelegate();
 	public static final BlockEntityRenderDelegate PROJECTOR_RENDER_DELEGATE = new BlockEntityRenderDelegate();
-	public static IIngameOverlay cameraOverlay;
-	public static IIngameOverlay hotbarBindOverlay;
+	public static IGuiOverlay cameraOverlay;
+	public static IGuiOverlay hotbarBindOverlay;
 	//@formatter:off
 	private static LazyOptional<Block[]> disguisableBlocks = LazyOptional.of(() -> new Block[] {
 			SCContent.BLOCK_CHANGE_DETECTOR.get(),
@@ -143,7 +141,7 @@ public class ClientHandler {
 	//@formatter:on
 
 	@SubscribeEvent
-	public static void onModelBake(ModelBakeEvent event) {
+	public static void onModelBakingCompleted(ModelEvent.BakingCompleted event) {
 		//@formatter:off
 		String[] mines = {
 				"ancient_debris",
@@ -178,7 +176,7 @@ public class ClientHandler {
 		};
 		//@formatter:on
 
-		Map<ResourceLocation, BakedModel> modelRegistry = event.getModelRegistry();
+		Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
 
 		for (Block block : disguisableBlocks.orElse(null)) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
@@ -199,10 +197,10 @@ public class ClientHandler {
 		modelRegistry.put(mrl, new DisguisableDynamicBakedModel(modelRegistry.get(mrl)));
 	}
 
-	private static void registerBlockMineModel(ModelBakeEvent event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
+	private static void registerBlockMineModel(ModelEvent.BakingCompleted event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
 		ModelResourceLocation mineMrl = new ModelResourceLocation(mineRl, "inventory");
 
-		event.getModelRegistry().put(mineMrl, new BlockMineModel(event.getModelRegistry().get(new ModelResourceLocation(realBlockRl, "inventory")), event.getModelRegistry().get(mineMrl)));
+		event.getModels().put(mineMrl, new BlockMineModel(event.getModels().get(new ModelResourceLocation(realBlockRl, "inventory")), event.getModels().get(mineMrl)));
 	}
 
 	@SubscribeEvent
@@ -281,7 +279,6 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.SCANNER_DOOR.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.TRACK_MINE.get(), cutout);
-		Arrays.stream(disguisableBlocks.orElse(null)).forEach(block -> ItemBlockRenderTypes.setRenderLayer(block, cutout));
 		event.enqueueWork(() -> {
 			MenuScreens.register(SCContent.BLOCK_REINFORCER_MENU.get(), BlockReinforcerScreen::new);
 			MenuScreens.register(SCContent.BRIEFCASE_INVENTORY_MENU.get(), BriefcaseInventoryScreen::new);
@@ -296,11 +293,16 @@ public class ClientHandler {
 			MenuScreens.register(SCContent.PROJECTOR_MENU.get(), ProjectorScreen::new);
 			MenuScreens.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
 		});
-		KeyBindings.init();
-		cameraOverlay = OverlayRegistry.registerOverlayTop(SecurityCraft.MODID + ":camera_overlay", SCClientEventHandler::cameraOverlay);
-		hotbarBindOverlay = OverlayRegistry.registerOverlayTop(SecurityCraft.MODID + ":hotbar_bind_overlay", SCClientEventHandler::hotbarBindOverlay);
-		OverlayRegistry.enableOverlay(cameraOverlay, false);
 		tint();
+	}
+
+	@SubscribeEvent
+	public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
+		cameraOverlay = SCClientEventHandler::cameraOverlay;
+		event.registerAboveAll(SecurityCraft.MODID + ":camera_overlay", cameraOverlay);
+		hotbarBindOverlay = SCClientEventHandler::hotbarBindOverlay;
+		event.registerAboveAll(SecurityCraft.MODID + ":hotbar_bind_overlay", hotbarBindOverlay);
+		GuiOverlayManager.enableOverlay(cameraOverlay, false);
 	}
 
 	@SubscribeEvent
@@ -534,7 +536,7 @@ public class ClientHandler {
 	public static void refreshModelData(BlockEntity be) {
 		BlockPos pos = be.getBlockPos();
 
-		ModelDataManager.requestModelDataRefresh(be);
+		Minecraft.getInstance().level.getModelDataManager().requestRefresh(be);
 		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
 	}
 
