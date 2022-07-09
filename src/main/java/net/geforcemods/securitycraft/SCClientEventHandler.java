@@ -47,7 +47,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -80,7 +80,7 @@ public class SCClientEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onClickInput(InputEvent.ClickInputEvent event) {
+	public static void onClickInput(InputEvent.InteractionKeyMappingTriggered event) {
 		if (ClientHandler.isPlayerMountedOnCamera()) {
 			Minecraft mc = Minecraft.getInstance();
 			InteractionHand hand = event.getHand();
@@ -93,7 +93,7 @@ public class SCClientEventHandler {
 		}
 	}
 
-	public static void cameraOverlay(ForgeIngameGui gui, PoseStack pose, float partialTicks, int width, int height) {
+	public static void cameraOverlay(ForgeGui gui, PoseStack pose, float partialTicks, int width, int height) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
 		BlockPos pos = mc.cameraEntity.blockPosition();
@@ -156,7 +156,7 @@ public class SCClientEventHandler {
 		}
 	}
 
-	public static void hotbarBindOverlay(ForgeIngameGui gui, PoseStack pose, float partialTicks, int width, int height) {
+	public static void hotbarBindOverlay(ForgeGui gui, PoseStack pose, float partialTicks, int width, int height) {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
 		Level level = player.getCommandSenderWorld();
@@ -237,7 +237,7 @@ public class SCClientEventHandler {
 
 					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 					if (!(lockable instanceof IOwnable ownable) || !ownable.getOwner().isOwner(player)) {
-						if (lockable.getThisBlockEntity().getBlockState().getBlock() instanceof DisguisableBlock disguisable && disguisable.getDisguisedBlockState(level, pos) != null)
+						if (DisguisableBlock.getDisguisedBlockState(level, pos) != null)
 							return;
 					}
 

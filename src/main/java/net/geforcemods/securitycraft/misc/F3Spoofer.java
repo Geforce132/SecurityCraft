@@ -21,8 +21,8 @@ public class F3Spoofer {
 		Block originalBlock = originalState.getBlock();
 
 		if (FMLEnvironment.production) {
-			if (originalBlock instanceof DisguisableBlock disguisableBlock)
-				return disguisableBlock.getDisguisedStateOrDefault(originalState, Minecraft.getInstance().level, pos);
+			if (originalBlock instanceof DisguisableBlock)
+				return DisguisableBlock.getDisguisedStateOrDefault(originalState, Minecraft.getInstance().level, pos);
 			else if (originalBlock instanceof BaseFullMineBlock)
 				return ((BaseFullMineBlock) originalBlock).getBlockDisguisedAs().defaultBlockState();
 			else if (originalBlock instanceof FurnaceMineBlock)

@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.entity.camera;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
+import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.minecraft.client.CameraType;
@@ -17,8 +19,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,9 +27,11 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class CameraController {
-	public static boolean jumpBarElementEnabledPreviously;
-	public static boolean experienceBarElementEnabledPreviously;
-	public static boolean potionIconsElementEnabledPreviously;
+	/**
+	 * @deprecated Don't use directly, use {@link #cameraSpeed()} so the config value gets loaded at the correct time
+	 */
+	@Deprecated
+	private static double cameraSpeed = -1.0D;
 	public static CameraType previousCameraType;
 	public static boolean resetOverlaysAfterDismount = false;
 	private static ClientChunkCache.Storage cameraStorage;
@@ -75,12 +78,12 @@ public class CameraController {
 				}
 
 				if (wasLeftPressed) {
-					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() - (float) cam.cameraSpeed * cam.zoomAmount);
+					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() - (float) cameraSpeed() * cam.zoomAmount);
 					options.keyLeft.setDown(true);
 				}
 
 				if (wasRightPressed) {
-					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() + (float) cam.cameraSpeed * cam.zoomAmount);
+					moveViewHorizontally(cam, cam.getYRot(), cam.getYRot() + (float) cameraSpeed() * cam.zoomAmount);
 					options.keyRight.setDown(true);
 				}
 
@@ -108,9 +111,11 @@ public class CameraController {
 		}
 		else if (resetOverlaysAfterDismount) {
 			resetOverlaysAfterDismount = false;
-			OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, false);
-			OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, true);
-			CameraController.restoreOverlayStates();
+			OverlayToggleHandler.disable(ClientHandler.cameraOverlay);
+			OverlayToggleHandler.enable(ClientHandler.hotbarBindOverlay);
+			OverlayToggleHandler.enable(VanillaGuiOverlay.JUMP_BAR);
+			OverlayToggleHandler.enable(VanillaGuiOverlay.EXPERIENCE_BAR);
+			OverlayToggleHandler.enable(VanillaGuiOverlay.POTION_ICONS);
 		}
 	}
 
@@ -119,7 +124,7 @@ public class CameraController {
 	}
 
 	public static void moveViewUp(SecurityCamera cam) {
-		float next = cam.getXRot() - (float) cam.cameraSpeed * cam.zoomAmount;
+		float next = cam.getXRot() - (float) cameraSpeed() * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next > 40F)
@@ -130,7 +135,7 @@ public class CameraController {
 	}
 
 	public static void moveViewDown(SecurityCamera cam) {
-		float next = cam.getXRot() + (float) cam.cameraSpeed * cam.zoomAmount;
+		float next = cam.getXRot() + (float) cameraSpeed() * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next < 90F)
@@ -209,20 +214,10 @@ public class CameraController {
 		}
 	}
 
-	public static void saveOverlayStates() {
-		jumpBarElementEnabledPreviously = OverlayRegistry.getEntry(ForgeIngameGui.JUMP_BAR_ELEMENT).isEnabled();
-		experienceBarElementEnabledPreviously = OverlayRegistry.getEntry(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT).isEnabled();
-		potionIconsElementEnabledPreviously = OverlayRegistry.getEntry(ForgeIngameGui.POTION_ICONS_ELEMENT).isEnabled();
-	}
+	private static double cameraSpeed() {
+		if (cameraSpeed < 0.0D)
+			cameraSpeed = ConfigHandler.CLIENT.cameraSpeed.get();
 
-	public static void restoreOverlayStates() {
-		if (jumpBarElementEnabledPreviously)
-			OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, true);
-
-		if (experienceBarElementEnabledPreviously)
-			OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, true);
-
-		if (potionIconsElementEnabledPreviously)
-			OverlayRegistry.enableOverlay(ForgeIngameGui.POTION_ICONS_ELEMENT, true);
+		return cameraSpeed;
 	}
 }

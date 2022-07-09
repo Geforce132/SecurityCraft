@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -47,7 +48,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.client.model.data.ModelData;
 
 public class StateSelector extends Screen implements GuiEventListener, NarratableEntry, ContainerListener {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/state_selector.png");
@@ -205,8 +206,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		if (previousPageButton != null)
 			previousPageButton.active = page > 1;
 
-			if (nextPageButton != null)
-				nextPageButton.active = page != amountOfPages;
+		if (nextPageButton != null)
+			nextPageButton.active = page != amountOfPages;
 	}
 
 	public void turnPage(int direction) {
@@ -247,8 +248,9 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 			float r = (color >> 16 & 255) / 255.0F;
 			float g = (color >> 8 & 255) / 255.0F;
 			float b = (color & 255) / 255.0F;
+			RenderType renderType = ItemBlockRenderTypes.getRenderType(state, false);
 
-			blockRenderer.getModelRenderer().renderModel(pose.last(), bufferSource.getBuffer(ItemBlockRenderTypes.getRenderType(state, false)), state, blockModel, r, g, b, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
+			blockRenderer.getModelRenderer().renderModel(pose.last(), bufferSource.getBuffer(renderType), state, blockModel, r, g, b, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
 		}
 	}
 

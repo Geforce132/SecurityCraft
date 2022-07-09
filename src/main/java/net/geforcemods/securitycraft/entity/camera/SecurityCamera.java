@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.entity.camera;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -25,7 +24,6 @@ import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.network.PacketDistributor;
 
 public class SecurityCamera extends Entity {
-	protected final double cameraSpeed = ConfigHandler.CLIENT.cameraSpeed.get();
 	public int screenshotSoundCooldown = 0;
 	protected int redstoneCooldown = 0;
 	protected int toggleNightVisionCooldown = 0;

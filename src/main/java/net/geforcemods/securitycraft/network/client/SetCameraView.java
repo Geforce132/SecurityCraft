@@ -5,14 +5,14 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.network.NetworkEvent;
 
 public class SetCameraView {
@@ -57,12 +57,11 @@ public class SetCameraView {
 
 				if (isCamera) {
 					CameraController.resetOverlaysAfterDismount = true;
-					CameraController.saveOverlayStates();
-					OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, false);
-					OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, false);
-					OverlayRegistry.enableOverlay(ForgeIngameGui.POTION_ICONS_ELEMENT, false);
-					OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, true);
-					OverlayRegistry.enableOverlay(ClientHandler.hotbarBindOverlay, false);
+					OverlayToggleHandler.disable(VanillaGuiOverlay.EXPERIENCE_BAR);
+					OverlayToggleHandler.disable(VanillaGuiOverlay.JUMP_BAR);
+					OverlayToggleHandler.disable(VanillaGuiOverlay.POTION_ICONS);
+					OverlayToggleHandler.enable(ClientHandler.cameraOverlay);
+					OverlayToggleHandler.disable(ClientHandler.hotbarBindOverlay);
 				}
 			}
 		});

@@ -17,7 +17,7 @@ issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 [[dependencies.securitycraft]]
     modId="forge"
     mandatory=true
-    versionRange="[41.0.28,)"
+    versionRange="[41.0.75,)"
     ordering="NONE"
     side="BOTH"
 

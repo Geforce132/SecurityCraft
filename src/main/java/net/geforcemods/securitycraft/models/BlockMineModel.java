@@ -16,7 +16,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.ForgeHooksClient;
 
 public class BlockMineModel implements BakedModel {
 	private final BakedModel defaultModel;
@@ -28,16 +27,15 @@ public class BlockMineModel implements BakedModel {
 	}
 
 	@Override
-	public boolean doesHandlePerspectives() {
-		return true;
-	}
-
-	@Override
-	public BakedModel handlePerspective(TransformType cameraTransformType, PoseStack pose) {
-		if (cameraTransformType == TransformType.GUI)
-			return ForgeHooksClient.handlePerspective(guiModel, cameraTransformType, pose);
-		else
-			return ForgeHooksClient.handlePerspective(defaultModel, cameraTransformType, pose);
+	public BakedModel applyTransform(TransformType transformType, PoseStack pose, boolean applyLeftHandTransform) {
+		if (transformType == TransformType.GUI) {
+			guiModel.getTransforms().getTransform(transformType).apply(applyLeftHandTransform, pose);
+			return guiModel;
+		}
+		else {
+			defaultModel.getTransforms().getTransform(transformType).apply(applyLeftHandTransform, pose);
+			return defaultModel;
+		}
 	}
 
 	@Override
