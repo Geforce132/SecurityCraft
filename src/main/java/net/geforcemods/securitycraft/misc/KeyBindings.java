@@ -6,6 +6,7 @@ import org.lwjgl.glfw.GLFW;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.client.KeyMapping;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -16,7 +17,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
  *
  * @author Geforce
  */
-@EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT, bus = Bus.MOD)
 public class KeyBindings {
 	public static KeyMapping cameraZoomIn;
 	public static KeyMapping cameraZoomOut;
