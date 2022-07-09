@@ -65,13 +65,13 @@ public class CollapsibleTextList extends Button {
 		if (open) {
 			int renderedLines = 0;
 
-			GuiComponent.fillGradient(pose, 0, x, y + height, x + width, y + heightOpen, 0xC0101010, 0xD0101010);
+			GuiComponent.fillGradient(pose, x, y + height, x + width, y + heightOpen, 0xC0101010, 0xD0101010, 0);
 
 			for (int i = 0; i < textLines.size(); i++) {
 				int textY = y + 2 + height + renderedLines * font.lineHeight + (i * 12);
 
 				if (i > 0)
-					GuiComponent.fillGradient(pose, getBlitOffset(), x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0);
+					GuiComponent.fillGradient(pose, x + 1, textY - 3, x + width - 2, textY - 2, 0xAAA0A0A0, 0xAAA0A0A0, getBlitOffset());
 
 				font.drawWordWrap(textLines.get(i), x + 2, textY, textCutoff, getFGColor());
 				renderedLines += splitTextLineCount.get(i) - 1;
