@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
+import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
@@ -100,7 +101,6 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -302,7 +302,7 @@ public class ClientHandler {
 		event.registerAboveAll("camera_overlay", cameraOverlay);
 		hotbarBindOverlay = SCClientEventHandler::hotbarBindOverlay;
 		event.registerAboveAll("hotbar_bind_overlay", hotbarBindOverlay);
-		GuiOverlayManager.enableOverlay(cameraOverlay, false);
+		OverlayToggleHandler.disable(cameraOverlay);
 	}
 
 	@SubscribeEvent

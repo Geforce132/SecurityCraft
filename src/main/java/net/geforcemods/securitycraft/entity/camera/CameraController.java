@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
+import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.minecraft.client.CameraType;
@@ -18,7 +19,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -32,9 +32,6 @@ public class CameraController {
 	 */
 	@Deprecated
 	private static double cameraSpeed = -1.0D;
-	public static boolean jumpBarElementEnabledPreviously;
-	public static boolean experienceBarElementEnabledPreviously;
-	public static boolean potionIconsElementEnabledPreviously;
 	public static CameraType previousCameraType;
 	public static boolean resetOverlaysAfterDismount = false;
 	private static ClientChunkCache.Storage cameraStorage;
@@ -114,9 +111,11 @@ public class CameraController {
 		}
 		else if (resetOverlaysAfterDismount) {
 			resetOverlaysAfterDismount = false;
-			GuiOverlayManager.enableOverlay(ClientHandler.cameraOverlay, false);
-			GuiOverlayManager.enableOverlay(ClientHandler.hotbarBindOverlay, true);
-			CameraController.restoreOverlayStates();
+			OverlayToggleHandler.disable(ClientHandler.cameraOverlay);
+			OverlayToggleHandler.enable(ClientHandler.hotbarBindOverlay);
+			OverlayToggleHandler.enable(VanillaGuiOverlay.JUMP_BAR);
+			OverlayToggleHandler.enable(VanillaGuiOverlay.EXPERIENCE_BAR);
+			OverlayToggleHandler.enable(VanillaGuiOverlay.POTION_ICONS);
 		}
 	}
 
@@ -213,23 +212,6 @@ public class CameraController {
 			cameraStorage.viewCenterX = cameraPos.x();
 			cameraStorage.viewCenterZ = cameraPos.z();
 		}
-	}
-
-	public static void saveOverlayStates() {
-		jumpBarElementEnabledPreviously = GuiOverlayManager.findOverlay(VanillaGuiOverlay.JUMP_BAR.id()).isEnabled();
-		experienceBarElementEnabledPreviously = GuiOverlayManager.findOverlay(VanillaGuiOverlay.EXPERIENCE_BAR.id()).isEnabled();
-		potionIconsElementEnabledPreviously = GuiOverlayManager.findOverlay(VanillaGuiOverlay.POTION_ICONS.id()).isEnabled();
-	}
-
-	public static void restoreOverlayStates() {
-		if (jumpBarElementEnabledPreviously)
-			GuiOverlayManager.enableOverlay(VanillaGuiOverlay.JUMP_BAR, true);
-
-		if (experienceBarElementEnabledPreviously)
-			GuiOverlayManager.enableOverlay(VanillaGuiOverlay.EXPERIENCE_BAR, true);
-
-		if (potionIconsElementEnabledPreviously)
-			GuiOverlayManager.enableOverlay(VanillaGuiOverlay.POTION_ICONS, true);
 	}
 
 	private static double cameraSpeed() {
