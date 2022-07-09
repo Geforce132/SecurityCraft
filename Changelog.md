@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.2-beta6 of SecurityCraft--------------------------
+
+- Misc: The minimum required Forge version is now 41.0.75
+
 --------------------------Changelog for v1.9.2-beta5 of SecurityCraft--------------------------
 
 - Fix: Compatibility with Forge 41.0.64+

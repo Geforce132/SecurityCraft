@@ -38,7 +38,7 @@ public class OverlayToggleHandler {
 	}
 
 	public static void enable(VanillaGuiOverlay overlay) {
-		enable(GuiOverlayManager.findOverlay(overlay.id()).overlay());
+		enable(overlay.type().overlay());
 	}
 
 	public static void enable(NamedGuiOverlay overlay) {
@@ -50,7 +50,7 @@ public class OverlayToggleHandler {
 	}
 
 	public static void disable(VanillaGuiOverlay overlay) {
-		disable(GuiOverlayManager.findOverlay(overlay.id()).overlay());
+		disable(overlay.type().overlay());
 	}
 
 	public static void disable(NamedGuiOverlay overlay) {
