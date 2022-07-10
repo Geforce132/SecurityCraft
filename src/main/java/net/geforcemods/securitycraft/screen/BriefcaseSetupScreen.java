@@ -5,14 +5,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.network.server.SetBriefcaseOwner;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -72,18 +72,16 @@ public class BriefcaseSetupScreen extends Screen {
 	private void saveAndContinueButtonClicked(Button button) {
 		if (PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
 			ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
+			String passcode = keycodeTextbox.getValue();
 
-			if (!briefcase.hasTag())
-				briefcase.setTag(new CompoundTag());
-
-			briefcase.getTag().putString("passcode", keycodeTextbox.getValue());
+			briefcase.getOrCreateTag().putString("passcode", passcode);
 
 			if (!briefcase.getTag().contains("owner")) {
 				briefcase.getTag().putString("owner", Minecraft.getInstance().player.getName().getString());
 				briefcase.getTag().putString("ownerUUID", Minecraft.getInstance().player.getUUID().toString());
 			}
 
-			ClientUtils.syncItemNBT(briefcase);
+			SecurityCraft.channel.sendToServer(new SetBriefcaseOwner(passcode));
 			ClientHandler.displayBriefcasePasswordScreen(getTitle());
 		}
 	}
