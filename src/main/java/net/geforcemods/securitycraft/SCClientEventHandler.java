@@ -188,7 +188,7 @@ public class SCClientEventHandler {
 							if (!(te instanceof IOwnable) || !((IOwnable) te).getOwner().isOwner(player)) {
 								Block block = te.getBlockState().getBlock();
 
-								if (block instanceof DisguisableBlock && ((DisguisableBlock) block).getDisguisedBlockState(world, pos) != null)
+								if (block instanceof DisguisableBlock && ((DisguisableBlock) block).getDisguisedBlockState(world, pos).isPresent())
 									return;
 							}
 
