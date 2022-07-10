@@ -3,11 +3,9 @@ package net.geforcemods.securitycraft.items;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -45,12 +43,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 
 	private void handle(ItemStack stack, Level level, Player player, InteractionHand hand) {
 		if (level.isClientSide) {
-			if (!stack.hasTag()) {
-				stack.setTag(new CompoundTag());
-				ClientUtils.syncItemNBT(stack);
-			}
-
-			if (!stack.getTag().contains("passcode"))
+			if (!stack.getOrCreateTag().contains("passcode"))
 				ClientHandler.displayBriefcaseSetupScreen(stack.getHoverName());
 			else
 				ClientHandler.displayBriefcasePasswordScreen(stack.getHoverName());
