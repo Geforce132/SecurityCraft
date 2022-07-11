@@ -1,0 +1,53 @@
+package net.geforcemods.securitycraft.network.server;
+
+import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.items.ItemSonicSecuritySystem;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+public class RemovePositionFromSSS implements IMessage {
+	private BlockPos pos;
+
+	public RemovePositionFromSSS() {}
+
+	public RemovePositionFromSSS(BlockPos pos) {
+		this.pos = pos;
+	}
+
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeLong(pos.toLong());
+	}
+
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		pos = BlockPos.fromLong(buf.readLong());
+	}
+
+	public static class Handler implements IMessageHandler<RemovePositionFromSSS, IMessage> {
+		@Override
+		public IMessage onMessage(RemovePositionFromSSS message, MessageContext context) {
+			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
+				EntityPlayer player = context.getServerHandler().player;
+				ItemStack stack = PlayerUtils.getSelectedItemStack(player, SCContent.sonicSecuritySystemItem);
+
+				if (!stack.isEmpty()) {
+					if (!stack.hasTagCompound())
+						stack.setTagCompound(new NBTTagCompound());
+
+					ItemSonicSecuritySystem.removeLinkedBlock(stack.getTagCompound(), message.pos);
+				}
+			});
+
+			return null;
+		}
+	}
+}

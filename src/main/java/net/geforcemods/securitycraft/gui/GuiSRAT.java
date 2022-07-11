@@ -12,8 +12,8 @@ import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.gui.components.ClickButton;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.gui.components.TogglePictureButton;
+import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -185,11 +185,12 @@ public class GuiSRAT extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
 		drawModalRectWithCustomSizedTexture(startX, startY, 0, 0, xSize, ySize, 512, 256);
 	}
 
@@ -310,7 +311,7 @@ public class GuiSRAT extends GuiContainer {
 					stack.getTagCompound().setIntArray("sentry" + i, new int[] {
 							0, 0, 0
 					});
-					SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(stack));
+					SecurityCraft.network.sendToServer(new RemoveSentryFromSRAT(i));
 					return;
 				}
 			}

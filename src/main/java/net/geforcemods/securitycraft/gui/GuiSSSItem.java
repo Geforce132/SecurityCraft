@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.components.SSSConnectionList;
 import net.geforcemods.securitycraft.gui.components.SSSConnectionList.ConnectionAccessor;
 import net.geforcemods.securitycraft.items.ItemSonicSecuritySystem;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
+import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -83,7 +83,7 @@ public class GuiSSSItem extends GuiScreen implements ConnectionAccessor {
 	@Override
 	public void removePosition(BlockPos pos) {
 		ItemSonicSecuritySystem.removeLinkedBlock(stack.getTagCompound(), pos);
-		SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(stack));
+		SecurityCraft.network.sendToServer(new RemovePositionFromSSS(pos));
 		connectionList.refreshPositions();
 	}
 }

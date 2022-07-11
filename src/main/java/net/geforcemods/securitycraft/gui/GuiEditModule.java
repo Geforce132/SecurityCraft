@@ -20,7 +20,7 @@ import net.geforcemods.securitycraft.gui.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.gui.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.gui.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
+import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -107,7 +107,10 @@ public class GuiEditModule extends GuiContainer implements GuiResponder {
 	public void onGuiClosed() {
 		super.onGuiClosed();
 
-		SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(module));
+		if (!module.hasTagCompound())
+			module.setTagCompound(new NBTTagCompound());
+
+		SecurityCraft.network.sendToServer(new SetListModuleData(module.getTagCompound()));
 		Keyboard.enableRepeatEvents(false);
 	}
 

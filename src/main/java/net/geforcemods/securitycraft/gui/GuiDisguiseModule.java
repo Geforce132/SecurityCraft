@@ -11,9 +11,10 @@ import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.containers.ContainerStateSelectorAccess;
 import net.geforcemods.securitycraft.gui.components.StateSelector;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
+import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -86,13 +87,14 @@ public class GuiDisguiseModule extends GuiContainer {
 		if (!inventorySlots.getSlot(0).getStack().isEmpty() && stateSelector.getState() != null) {
 			ItemStack module = ((ContainerDisguiseModule) inventorySlots).getModuleInventory().getModule();
 			NBTTagCompound moduleTag;
+			IBlockState state = stateSelector.getState();
 
 			if (!module.hasTagCompound())
 				module.setTagCompound(new NBTTagCompound());
 
 			moduleTag = module.getTagCompound();
-			moduleTag.setTag("SavedState", NBTUtil.writeBlockState(new NBTTagCompound(), stateSelector.getState()));
-			SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(module));
+			moduleTag.setTag("SavedState", NBTUtil.writeBlockState(new NBTTagCompound(), state));
+			SecurityCraft.network.sendToServer(new SetStateOnDisguiseModule(state));
 		}
 	}
 

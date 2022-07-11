@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
+import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -135,12 +135,13 @@ public class GuiMRAT extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
@@ -219,7 +220,7 @@ public class GuiMRAT extends GuiContainer {
 					stack.getTagCompound().setIntArray("mine" + i, new int[] {
 							0, 0, 0
 					});
-					SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(stack));
+					SecurityCraft.network.sendToServer(new RemoveMineFromMRAT(i));
 					return;
 				}
 			}

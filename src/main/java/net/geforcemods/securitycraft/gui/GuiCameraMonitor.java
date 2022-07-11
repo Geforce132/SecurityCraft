@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.gui;
 
 import java.util.ArrayList;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.HoverChecker;
@@ -11,7 +10,6 @@ import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -166,7 +164,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		else {
 			int camID = (button.id - 10) + ((page - 1) * 10);
 
-			SecurityCraft.network.sendToServer(new RemoveCameraTag(PlayerUtils.getSelectedItemStack(playerInventory, SCContent.cameraMonitor), camID));
+			SecurityCraft.network.sendToServer(new RemoveCameraTag(camID));
 			nbtTag.removeTag(ItemCameraMonitor.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
 			button.enabled = false;
 			cameraButtons[(camID - 1) % 10].enabled = false;

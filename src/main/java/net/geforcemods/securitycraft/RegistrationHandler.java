@@ -57,11 +57,17 @@ import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
+import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
+import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
+import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
+import net.geforcemods.securitycraft.network.server.SetBriefcaseOwner;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetGhostSlot;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
+import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
+import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
 import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
@@ -72,7 +78,6 @@ import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.tileentity.TileEntityAllowlistOnly;
@@ -499,7 +504,6 @@ public class RegistrationHandler {
 		network.registerMessage(SyncKeycardSettings.Handler.class, SyncKeycardSettings.class, 3, Side.SERVER);
 		network.registerMessage(UpdateLogger.Handler.class, UpdateLogger.class, 4, Side.CLIENT);
 		network.registerMessage(UpdateNBTTagOnClient.Handler.class, UpdateNBTTagOnClient.class, 5, Side.CLIENT);
-		network.registerMessage(UpdateNBTTagOnServer.Handler.class, UpdateNBTTagOnServer.class, 6, Side.SERVER);
 		network.registerMessage(RemoteControlMine.Handler.class, RemoteControlMine.class, 8, Side.SERVER);
 		network.registerMessage(GiveNightVision.Handler.class, GiveNightVision.class, 9, Side.SERVER);
 		network.registerMessage(SetPassword.Handler.class, SetPassword.class, 12, Side.SERVER);
@@ -528,6 +532,12 @@ public class RegistrationHandler {
 		network.registerMessage(SyncBlockChangeDetector.Handler.class, SyncBlockChangeDetector.class, 40, Side.SERVER);
 		network.registerMessage(ToggleModule.Handler.class, ToggleModule.class, 41, Side.SERVER);
 		network.registerMessage(SetGhostSlot.Handler.class, SetGhostSlot.class, 42, Side.SERVER);
+		network.registerMessage(RemoveMineFromMRAT.Handler.class, RemoveMineFromMRAT.class, 43, Side.SERVER);
+		network.registerMessage(RemovePositionFromSSS.Handler.class, RemovePositionFromSSS.class, 44, Side.SERVER);
+		network.registerMessage(RemoveSentryFromSRAT.Handler.class, RemoveSentryFromSRAT.class, 45, Side.SERVER);
+		network.registerMessage(SetBriefcaseOwner.Handler.class, SetBriefcaseOwner.class, 46, Side.SERVER);
+		network.registerMessage(SetListModuleData.Handler.class, SetListModuleData.class, 47, Side.SERVER);
+		network.registerMessage(SetStateOnDisguiseModule.Handler.class, SetStateOnDisguiseModule.class, 48, Side.SERVER);
 	}
 
 	@SubscribeEvent

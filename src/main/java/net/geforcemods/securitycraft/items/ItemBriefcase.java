@@ -5,7 +5,6 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedCauldron;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
@@ -71,10 +70,8 @@ public class ItemBriefcase extends Item {
 
 	private void handle(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		if (world.isRemote) {
-			if (!stack.hasTagCompound()) {
+			if (!stack.hasTagCompound())
 				stack.setTagCompound(new NBTTagCompound());
-				ClientUtils.syncItemNBT(stack);
-			}
 
 			if (!stack.getTagCompound().hasKey("passcode"))
 				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);

@@ -4,9 +4,7 @@ import org.lwjgl.input.Keyboard;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
@@ -31,13 +29,6 @@ public class ClientUtils {
 		NBTTagCompound tag = new NBTTagCompound();
 		tileEntity.writeToNBT(tag);
 		SecurityCraft.network.sendToServer(new SyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
-	}
-
-	/**
-	 * Sends the client-side NBTTagCompound of a player's held item to the server.
-	 */
-	public static void syncItemNBT(ItemStack item) {
-		SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(item));
 	}
 
 	public static boolean hasShiftDown() {
