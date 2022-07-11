@@ -269,6 +269,10 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		super.onModuleInserted(stack, module, toggled);
 
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+
+		if (connectedScanner == null)
+			return;
+
 		Predicate<EnumModuleType> test = toggled ? connectedScanner::isModuleEnabled : connectedScanner::hasModule;
 
 		if (connectedScanner != null && !test.test(module))
@@ -287,6 +291,10 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		super.onModuleRemoved(stack, module, toggled);
 
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+
+		if (connectedScanner == null)
+			return;
+
 		Predicate<EnumModuleType> test = toggled ? connectedScanner::isModuleEnabled : connectedScanner::hasModule;
 
 		if (connectedScanner != null && test.test(module))

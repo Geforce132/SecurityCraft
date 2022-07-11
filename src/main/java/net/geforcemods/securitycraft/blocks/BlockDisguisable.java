@@ -219,10 +219,10 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay {
 				Block block = Block.getBlockFromItem(disguisedStack.getItem());
 				boolean hasMeta = disguisedStack.getHasSubtypes();
 
-				IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getItemDamage() : getMetaFromState(world.getBlockState(pos)));
+				disguisedState = hasMeta ? block.getStateFromMeta(disguisedStack.getItemDamage()) : block.getDefaultState();
 
 				if (block != this)
-					return disguisedModel.getActualState(world, pos);
+					return disguisedState.getActualState(world, pos);
 			}
 		}
 
