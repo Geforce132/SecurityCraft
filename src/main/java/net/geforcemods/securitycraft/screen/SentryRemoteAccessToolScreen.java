@@ -11,8 +11,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
+import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.Utils;
@@ -316,7 +316,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 					stack.getTag().putIntArray("sentry" + i, new int[] {
 							0, 0, 0
 					});
-					SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(stack));
+					SecurityCraft.channel.sendToServer(new RemoveSentryFromSRAT(i));
 					return;
 				}
 			}

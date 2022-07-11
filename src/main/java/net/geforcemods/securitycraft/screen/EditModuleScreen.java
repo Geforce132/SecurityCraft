@@ -16,7 +16,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
+import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.util.Utils;
@@ -92,7 +92,6 @@ public class EditModuleScreen extends Screen {
 		children.add(teamList = new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.y + editTeamsButton.getHeight(), editTeamsButton.x));
 		addButton(affectEveryPlayerCheckbox = new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.hasTag() && module.getTag().getBoolean("affectEveryone"), newState -> {
 			module.getOrCreateTag().putBoolean("affectEveryone", newState);
-			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 		}, 0x404040));
 		children.add(playerList = new PlayerList(minecraft, 110, 165, height / 2 - 88, guiLeft + 10));
 
@@ -130,7 +129,7 @@ public class EditModuleScreen extends Screen {
 	public void onClose() {
 		super.onClose();
 
-		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
+		SecurityCraft.channel.sendToServer(new SetListModuleData(module.getOrCreateTag()));
 
 		if (minecraft != null)
 			minecraft.keyboardHandler.setSendRepeatsToGui(false);

@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.items;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.CauldronBlock;
 import net.minecraft.client.util.ITooltipFlag;
@@ -12,7 +11,6 @@ import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -51,12 +49,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 
 	private void handle(ItemStack stack, World world, PlayerEntity player, Hand hand) {
 		if (world.isClientSide) {
-			if (!stack.hasTag()) {
-				stack.setTag(new CompoundNBT());
-				ClientUtils.syncItemNBT(stack);
-			}
-
-			if (!stack.getTag().contains("passcode"))
+			if (!stack.getOrCreateTag().contains("passcode"))
 				ClientHandler.displayBriefcaseSetupScreen(stack.getHoverName());
 			else
 				ClientHandler.displayBriefcasePasswordScreen(stack.getHoverName());

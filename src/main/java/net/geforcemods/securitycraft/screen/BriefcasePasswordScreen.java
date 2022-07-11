@@ -6,7 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.OpenBriefcaseInventory;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.network.server.SetBriefcaseOwner;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -89,7 +89,7 @@ public class BriefcasePasswordScreen extends Screen {
 				if (!nbt.contains("owner")) {
 					nbt.putString("owner", Minecraft.getInstance().player.getName().getString());
 					nbt.putString("ownerUUID", Minecraft.getInstance().player.getUUID().toString());
-					ClientUtils.syncItemNBT(briefcase);
+					SecurityCraft.channel.sendToServer(new SetBriefcaseOwner(""));
 				}
 
 				SecurityCraft.channel.sendToServer(new OpenBriefcaseInventory(getTitle()));

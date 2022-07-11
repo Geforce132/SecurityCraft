@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
+import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
@@ -227,7 +227,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 					stack.getTag().putIntArray("mine" + i, new int[] {
 							0, 0, 0
 					});
-					SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(stack));
+					SecurityCraft.channel.sendToServer(new RemoveMineFromMRAT(i));
 					return;
 				}
 			}

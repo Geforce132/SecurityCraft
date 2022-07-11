@@ -10,25 +10,21 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class RemoveCameraTag {
-	private ItemStack heldItem;
 	private int camID;
 
 	public RemoveCameraTag() {}
 
-	public RemoveCameraTag(ItemStack stack, int cid) {
-		heldItem = stack;
+	public RemoveCameraTag(int cid) {
 		camID = cid;
 	}
 
 	public static void encode(RemoveCameraTag message, PacketBuffer buf) {
-		buf.writeItem(message.heldItem);
 		buf.writeInt(message.camID);
 	}
 
 	public static RemoveCameraTag decode(PacketBuffer buf) {
 		RemoveCameraTag message = new RemoveCameraTag();
 
-		message.heldItem = buf.readItem();
 		message.camID = buf.readInt();
 		return message;
 	}

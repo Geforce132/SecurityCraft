@@ -8,7 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
+import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList.ConnectionAccessor;
 import net.geforcemods.securitycraft.util.Utils;
@@ -81,7 +81,7 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 	@Override
 	public void removePosition(BlockPos pos) {
 		SonicSecuritySystemItem.removeLinkedBlock(stack.getTag(), pos);
-		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(stack));
+		SecurityCraft.channel.sendToServer(new RemovePositionFromSSS(pos));
 		connectionList.refreshPositions();
 	}
 }

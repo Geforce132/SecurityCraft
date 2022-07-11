@@ -9,13 +9,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Quaternion;
@@ -50,13 +48,6 @@ public class ClientUtils {
 		int minutes = (int) (time.longValue() / 16.666666F % 60.0F);
 
 		return String.format("%02d:%02d %s", Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM");
-	}
-
-	/**
-	 * Sends the client-side CompoundNBT of a player's held item to the server.
-	 */
-	public static void syncItemNBT(ItemStack item) {
-		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(item));
 	}
 
 	public static void renderModuleInfo(MatrixStack matrix, ModuleType module, ITextComponent moduleTooltip, ITextComponent noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {
