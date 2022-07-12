@@ -43,7 +43,7 @@ public class SyncTrophySystem {
 
 	public static void onMessage(SyncTrophySystem message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			EntityType<?> projectileType = ForgeRegistries.ENTITIES.getValue(message.projectileType);
+			EntityType<?> projectileType = ForgeRegistries.ENTITY_TYPES.getValue(message.projectileType);
 
 			if (projectileType != null) {
 				Level level = ctx.get().getSender().level;

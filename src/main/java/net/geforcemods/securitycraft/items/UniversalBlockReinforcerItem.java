@@ -31,7 +31,7 @@ public class UniversalBlockReinforcerItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		if (!level.isClientSide && player instanceof ServerPlayer) {
-			NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
+			NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
 				@Override
 				public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 					return new BlockReinforcerMenu(windowId, inv, UniversalBlockReinforcerItem.this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());

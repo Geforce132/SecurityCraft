@@ -68,7 +68,7 @@ public class Utils {
 	}
 
 	public static ResourceLocation getRegistryName(EntityType<?> entityType) {
-		return ForgeRegistries.ENTITIES.getKey(entityType);
+		return ForgeRegistries.ENTITY_TYPES.getKey(entityType);
 	}
 
 	public static ResourceLocation getRegistryName(Item item) {

@@ -44,7 +44,7 @@ public class CodebreakerItem extends Item {
 				if (!level.isClientSide && (player.isCreative() || new Random().nextDouble() < chance)) {
 					ItemStack briefcase = player.getOffhandItem();
 
-					NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
+					NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 							return new BriefcaseMenu(windowId, inv, new BriefcaseContainer(briefcase));

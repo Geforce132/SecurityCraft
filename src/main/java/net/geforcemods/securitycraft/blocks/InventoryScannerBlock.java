@@ -59,7 +59,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (isFacingAnotherScanner(level, pos) && player instanceof ServerPlayer serverPlayer) {
 			if (!level.isClientSide && level.getBlockEntity(pos) instanceof MenuProvider menuProvider)
-				NetworkHooks.openGui(serverPlayer, menuProvider, pos);
+				NetworkHooks.openScreen(serverPlayer, menuProvider, pos);
 
 			return InteractionResult.SUCCESS;
 		}

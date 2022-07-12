@@ -43,7 +43,7 @@ public class OpenBriefcaseInventory {
 			BlockPos pos = player.blockPosition();
 
 			if (PlayerUtils.isHoldingItem(player, SCContent.BRIEFCASE.get(), null)) {
-				NetworkHooks.openGui(player, new MenuProvider() {
+				NetworkHooks.openScreen(player, new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 						return new BriefcaseMenu(windowId, inv, new BriefcaseContainer(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));

@@ -91,7 +91,7 @@ public class ModuleItem extends Item {
 			}
 			else if (module == ModuleType.DISGUISE) {
 				if (!level.isClientSide) {
-					NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
+					NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 							return new DisguiseModuleMenu(windowId, inv, new ModuleItemContainer(player.getItemInHand(hand)));

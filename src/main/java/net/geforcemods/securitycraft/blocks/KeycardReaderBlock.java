@@ -69,7 +69,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 				if ((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker) {
 					//only allow the owner and players on the allowlist to open the gui
 					if (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player))
-						NetworkHooks.openGui((ServerPlayer) player, be, pos);
+						NetworkHooks.openScreen((ServerPlayer) player, be, pos);
 				}
 				else if (item != SCContent.LIMITED_USE_KEYCARD.get()) { //limited use keycards are only crafting components now
 					if (isCodebreaker) {
