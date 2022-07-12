@@ -80,8 +80,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.NoteBlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.NoteBlockEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -138,12 +138,12 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event) {
 		if (!ConfigHandler.SERVER.disableThanksMessage.get())
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getPlayer()), new SendTip());
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()), new SendTip());
 	}
 
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
-		ServerPlayer player = (ServerPlayer) event.getPlayer();
+		ServerPlayer player = (ServerPlayer) event.getEntity();
 
 		if (player.getCamera() instanceof SecurityCamera cam) {
 			if (player.level.getBlockEntity(cam.blockPosition()) instanceof SecurityCameraBlockEntity camBe)
@@ -155,7 +155,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onDamageTaken(LivingHurtEvent event) {
-		LivingEntity entity = event.getEntityLiving();
+		LivingEntity entity = event.getEntity();
 		Level level = entity.level;
 
 		if (event.getSource() == CustomDamageSources.ELECTRICITY)
@@ -171,7 +171,7 @@ public class SCEventHandler {
 		ItemStack stack = event.getItemStack();
 
 		if (!stack.isEmpty() && !stack.is(SCTags.Items.CAN_INTERACT_WITH_DOORS)) {
-			Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
+			Block block = event.getLevel().getBlockState(event.getPos()).getBlock();
 
 			if (block == SCContent.KEYPAD_DOOR.get())
 				event.setUseItem(Result.DENY);
@@ -182,21 +182,21 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-		if (PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
+		if (PlayerUtils.isPlayerMountedOnCamera(event.getEntity())) {
 			event.setCanceled(true);
 			return;
 		}
 
-		Level level = event.getWorld();
+		Level level = event.getLevel();
 		BlockEntity be = level.getBlockEntity(event.getPos());
 		BlockState state = level.getBlockState(event.getPos());
 		Block block = state.getBlock();
 
-		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), event.getPlayer())) {
+		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), event.getEntity())) {
 			if (event.getHand() == InteractionHand.MAIN_HAND) {
 				MutableComponent blockName = Utils.localize(block.getDescriptionId());
 
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
+				PlayerUtils.sendMessageToPlayer(event.getEntity(), blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
 			}
 
 			event.setCanceled(true);
@@ -207,16 +207,16 @@ public class SCEventHandler {
 			if (event.getItemStack().getItem() == Items.REDSTONE && be instanceof IEMPAffected empAffected && empAffected.isShutDown()) {
 				empAffected.reactivate();
 
-				if (!event.getPlayer().isCreative())
+				if (!event.getEntity().isCreative())
 					event.getItemStack().shrink(1);
 
-				event.getPlayer().swing(event.getHand());
+				event.getEntity().swing(event.getHand());
 				event.setCanceled(true);
 				event.setCancellationResult(InteractionResult.SUCCESS);
 				return;
 			}
 
-			if (PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.KEY_PANEL, event.getHand())) {
+			if (PlayerUtils.isHoldingItem(event.getEntity(), SCContent.KEY_PANEL, event.getHand())) {
 				for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
 					if (pc.getOriginalBlock() == block) {
 						event.setUseBlock(Result.DENY);
@@ -227,27 +227,27 @@ public class SCEventHandler {
 				return;
 			}
 
-			if (PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.CODEBREAKER, event.getHand()) && handleCodebreaking(event)) {
+			if (PlayerUtils.isHoldingItem(event.getEntity(), SCContent.CODEBREAKER, event.getHand()) && handleCodebreaking(event)) {
 				event.setCanceled(true);
 				return;
 			}
 
-			if (be instanceof INameSetter nameable && (be instanceof SecurityCameraBlockEntity || be instanceof PortableRadarBlockEntity) && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getItemInHand(event.getHand()).hasCustomHoverName()) {
-				ItemStack nametag = event.getPlayer().getItemInHand(event.getHand());
+			if (be instanceof INameSetter nameable && (be instanceof SecurityCameraBlockEntity || be instanceof PortableRadarBlockEntity) && PlayerUtils.isHoldingItem(event.getEntity(), Items.NAME_TAG, event.getHand()) && event.getEntity().getItemInHand(event.getHand()).hasCustomHoverName()) {
+				ItemStack nametag = event.getEntity().getItemInHand(event.getHand());
 
 				event.setCanceled(true);
 				event.setCancellationResult(InteractionResult.SUCCESS);
 
 				if (nameable.getCustomName().equals(nametag.getHoverName())) {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), Component.translatable(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getCustomName()), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.getEntity(), Component.translatable(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.alreadyMatches", nameable.getCustomName()), ChatFormatting.RED);
 					return;
 				}
 
-				if (!event.getPlayer().isCreative())
+				if (!event.getEntity().isCreative())
 					nametag.shrink(1);
 
 				nameable.setCustomName(nametag.getHoverName());
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Component.translatable(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomName()), ChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(event.getEntity(), Component.translatable(be.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", nameable.getCustomName()), ChatFormatting.RED);
 				return;
 			}
 		}
@@ -257,28 +257,28 @@ public class SCEventHandler {
 		List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(event.getPos()));
 
 		if (!sentries.isEmpty())
-			event.setCanceled(sentries.get(0).mobInteract(event.getPlayer(), event.getHand()) == InteractionResult.SUCCESS); //cancel if an action was taken
+			event.setCanceled(sentries.get(0).mobInteract(event.getEntity(), event.getHand()) == InteractionResult.SUCCESS); //cancel if an action was taken
 	}
 
 	@SubscribeEvent
 	public static void onLeftClickBlock(LeftClickBlock event) {
-		if (PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
+		if (PlayerUtils.isPlayerMountedOnCamera(event.getEntity())) {
 			event.setCanceled(true);
 			return;
 		}
 
-		ItemStack stack = event.getPlayer().getMainHandItem();
+		ItemStack stack = event.getEntity().getMainHandItem();
 		Item held = stack.getItem();
-		Level level = event.getWorld();
+		Level level = event.getLevel();
 		BlockPos pos = event.getPos();
 
 		if (held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
-			UniversalBlockReinforcerItem.convertBlock(level.getBlockState(pos), level, stack, pos, event.getPlayer());
+			UniversalBlockReinforcerItem.convertBlock(level.getBlockState(pos), level, stack, pos, event.getEntity());
 	}
 
 	@SubscribeEvent
 	public static void onBlockEventBreak(BlockEvent.BreakEvent event) {
-		if (!(event.getWorld() instanceof Level level))
+		if (!(event.getLevel() instanceof Level level))
 			return;
 
 		//don't let players in creative mode break the disguise block. it's not possible to break it in other gamemodes
@@ -328,7 +328,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onBlockEventPlace(BlockEvent.EntityPlaceEvent event) {
-		if (!(event.getWorld() instanceof Level level) || level.isClientSide())
+		if (!(event.getLevel() instanceof Level level) || level.isClientSide())
 			return;
 
 		if (event.getEntity() instanceof Player player) {
@@ -357,8 +357,8 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onBreakSpeed(BreakSpeed event) {
-		if (event.getPlayer() != null) {
-			Item held = event.getPlayer().getMainHandItem().getItem();
+		if (event.getEntity() != null) {
+			Item held = event.getEntity().getMainHandItem().getItem();
 
 			if (held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()) {
 				Block block = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(event.getState().getBlock());
@@ -376,7 +376,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
-		if (PlayerUtils.isPlayerMountedOnCamera(event.getPlayer()) && event.getItemStack().getItem() != SCContent.CAMERA_MONITOR.get())
+		if (PlayerUtils.isPlayerMountedOnCamera(event.getEntity()) && event.getItemStack().getItem() != SCContent.CAMERA_MONITOR.get())
 			event.setCanceled(true);
 	}
 
@@ -388,7 +388,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onNoteBlockPlayed(NoteBlockEvent.Play event) {
-		handlePlayedNote((Level) event.getWorld(), event.getPos(), event.getVanillaNoteId(), event.getInstrument().getSerializedName());
+		handlePlayedNote((Level) event.getLevel(), event.getPos(), event.getVanillaNoteId(), event.getInstrument().getSerializedName());
 	}
 
 	private static void handlePlayedNote(Level level, BlockPos pos, int vanillaNoteId, String instrumentName) {
@@ -417,7 +417,7 @@ public class SCEventHandler {
 	}
 
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
-		Level level = event.getPlayer().level;
+		Level level = event.getEntity().level;
 
 		if (level.getBlockEntity(event.getPos()) instanceof ICodebreakable codebreakable) {
 			double chance = ConfigHandler.SERVER.codebreakerChance.get();
@@ -425,16 +425,16 @@ public class SCEventHandler {
 			if (chance < 0.0D) {
 				Block block = level.getBlockState(event.getPos()).getBlock();
 
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(event.getEntity(), Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
 			}
 			else {
-				if (event.getPlayer().getItemInHand(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
-					event.getPlayer().getItemInHand(event.getHand()).hurtAndBreak(1, event.getPlayer(), p -> p.broadcastBreakEvent(event.getHand()));
+				if (event.getEntity().getItemInHand(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
+					event.getEntity().getItemInHand(event.getHand()).hurtAndBreak(1, event.getEntity(), p -> p.broadcastBreakEvent(event.getHand()));
 
-				if (event.getPlayer().isCreative() || new Random().nextDouble() < chance)
-					return codebreakable.onCodebreakerUsed(level.getBlockState(event.getPos()), event.getPlayer());
+				if (event.getEntity().isCreative() || new Random().nextDouble() < chance)
+					return codebreakable.onCodebreakerUsed(level.getBlockState(event.getPos()), event.getEntity());
 				else {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.getEntity(), Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
 					return true;
 				}
 			}

@@ -43,7 +43,7 @@ public class UniversalBlockModifierItem extends Item {
 				return InteractionResult.FAIL;
 			}
 			else if (!ctx.getLevel().isClientSide) {
-				NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
+				NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 						return new CustomizeBlockMenu(windowId, level, pos, inv);

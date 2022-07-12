@@ -61,7 +61,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					NetworkHooks.openGui(serverPlayer, be, pos);
+					NetworkHooks.openScreen(serverPlayer, be, pos);
 			}
 
 			return InteractionResult.SUCCESS;

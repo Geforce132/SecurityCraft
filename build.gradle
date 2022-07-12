@@ -21,7 +21,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'eclipse'
 
-version = '1.9.2-beta5'
+version = '1.9.2-beta6'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
@@ -97,11 +97,11 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19-41.0.87'
+    minecraft 'net.minecraftforge:forge:1.19-41.0.94'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
     implementation fg.deobf("curse.maven:jei-238222:3835406")
-    implementation fg.deobf("curse.maven:the-one-probe-245211:3863653")
+    implementation fg.deobf("curse.maven:the-one-probe-245211:3871444")
     implementation fg.deobf("curse.maven:jade-324717:3834997")
     implementation fg.deobf("curse.maven:betterf3-401648:3825939")
     implementation fg.deobf("curse.maven:cloth-config-348521:3822832") //betterf3 dependency

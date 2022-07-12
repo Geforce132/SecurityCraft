@@ -137,7 +137,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 		if (player instanceof ServerPlayer serverPlayer) {
 			level.levelEvent(null, LevelEvent.SOUND_OPEN_IRON_DOOR, pos, 0);
 			level.gameEvent(player, GameEvent.CONTAINER_OPEN, pos);
-			NetworkHooks.openGui(serverPlayer, be, pos);
+			NetworkHooks.openScreen(serverPlayer, be, pos);
 		}
 	}
 

@@ -14,7 +14,11 @@
 - API: IEMPAffectedTE has been added as a default implementation for tile entities which want to implement IEMPAffected
 - Fix: Water doesn't render correctly while a Sonic Security System is recording within the player's view
 - Fix: The reinforced stone pressure plate is not in SecurityCraft's "securitycraft:reinforced/pressure_plates" tag
-- Misc: The minimum required Forge version is now 41.0.75
+
+--------------------------Changelog for v1.9.2-beta6 of SecurityCraft--------------------------
+
+- Fix: Compatibility with Forge 41.0.94+
+- Misc: The minimum required Forge version is now 41.0.94
 
 --------------------------Changelog for v1.9.2-beta5 of SecurityCraft--------------------------
 

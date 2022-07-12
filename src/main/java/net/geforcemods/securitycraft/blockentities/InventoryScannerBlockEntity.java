@@ -193,7 +193,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			return stackToInsert;
 
 		ItemStack slotStack = getStackInSlot(slot);
-		int limit = stackToInsert.getItem().getItemStackLimit(stackToInsert);
+		int limit = stackToInsert.getItem().getMaxStackSize(stackToInsert);
 
 		if (slotStack.isEmpty()) {
 			setItem(slot, stackToInsert);

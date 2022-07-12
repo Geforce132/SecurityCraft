@@ -86,7 +86,7 @@ public class ProjectorBlock extends DisguisableBlock {
 		boolean isOwner = be.getOwner().isOwner(player);
 
 		if (!level.isClientSide && isOwner)
-			NetworkHooks.openGui((ServerPlayer) player, be, pos);
+			NetworkHooks.openScreen((ServerPlayer) player, be, pos);
 
 		return isOwner ? InteractionResult.SUCCESS : InteractionResult.FAIL;
 	}
