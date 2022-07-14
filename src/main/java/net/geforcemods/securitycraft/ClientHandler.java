@@ -257,7 +257,7 @@ public class ClientHandler {
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.SCANNER_DOOR.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.TRACK_MINE.get(), cutout);
-		Arrays.stream(disguisableBlocks.orElse(null)).forEach(block -> RenderTypeLookup.setRenderLayer(block, cutout));
+		Arrays.stream(disguisableBlocks.orElse(null)).forEach(block -> RenderTypeLookup.setRenderLayer(block, translucent));
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBouncingBetty.get(), BouncingBettyRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeImsBomb.get(), IMSBombRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSecurityCamera.get(), EmptyRenderer::new);
