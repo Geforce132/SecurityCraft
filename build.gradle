@@ -97,7 +97,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19-41.0.94'
+    minecraft 'net.minecraftforge:forge:1.19-41.0.96'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
     implementation fg.deobf("curse.maven:jei-238222:3873049")
@@ -105,7 +105,8 @@ dependencies {
     implementation fg.deobf("curse.maven:jade-324717:3872400")
     implementation fg.deobf("curse.maven:betterf3-401648:3825939")
     implementation fg.deobf("curse.maven:cloth-config-348521:3871535") //betterf3 dependency
-	//compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
+    implementation fg.deobf("curse.maven:wthit-forge-455982:3873748")
+    implementation fg.deobf("curse.maven:badpackets-615134:3773642") //wthit dependency
 }
 
 mixin {

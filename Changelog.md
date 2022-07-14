@@ -7,6 +7,7 @@
 - New: Several additions to minecraft's tags, including "minecraft:azalea_grows_on", "minecraft:sand", and "minecraft:terracotta"
 - New: Several blocks now have a new Universal Block Modifier option to disable them
 - New: Blocks that have been linked to a Sonic Security System can now be seen and removed in the item's and block's screen
+- New: Support for WTHIT, a fork of HWYLA
 - Change: Reduced the Rail Mine's explosion size by 25% to make it comparable to other mines' explosions
 - API: Added DisabledOption for having a default option to disable blocks
 - API: Added Option#getKey and Option#getDescriptionKey to easily access the language keys associated with an option
