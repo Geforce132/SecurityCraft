@@ -68,8 +68,21 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	}
 
 	@Override
-	public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData data) {
-		return ChunkRenderTypeSet.of(RenderType.cutout());
+	public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData modelData) {
+		BlockState disguisedState = modelData.get(DISGUISED_STATE_RL);
+
+		if (disguisedState != null) {
+			Block block = state.getBlock();
+
+			if (block != Blocks.AIR) {
+				BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
+
+				if (model != null && model != this)
+					return model.getRenderTypes(disguisedState, rand, ModelData.EMPTY);
+			}
+		}
+
+		return oldModel.getRenderTypes(state, rand, modelData);
 	}
 
 	@Override

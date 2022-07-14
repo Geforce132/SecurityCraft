@@ -15,6 +15,7 @@
 - API: IEMPAffectedTE has been added as a default implementation for tile entities which want to implement IEMPAffected
 - Fix: Water doesn't render correctly while a Sonic Security System is recording within the player's view
 - Fix: The reinforced stone pressure plate is not in SecurityCraft's "securitycraft:reinforced/pressure_plates" tag
+- Fix: Blocks disguised as a translucent block, like stained glass, don't show up properly
 
 --------------------------Changelog for v1.9.2-beta6 of SecurityCraft--------------------------
 
