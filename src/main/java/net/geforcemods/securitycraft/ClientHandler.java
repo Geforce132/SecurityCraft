@@ -283,7 +283,7 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.SCANNER_DOOR.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.TRACK_MINE.get(), cutout);
-		Arrays.stream(disguisableBlocks.orElse(null)).forEach(block -> ItemBlockRenderTypes.setRenderLayer(block, cutout));
+		Arrays.stream(disguisableBlocks.orElse(null)).forEach(block -> ItemBlockRenderTypes.setRenderLayer(block, translucent));
 		event.enqueueWork(() -> {
 			MenuScreens.register(SCContent.BLOCK_REINFORCER_MENU.get(), BlockReinforcerScreen::new);
 			MenuScreens.register(SCContent.BRIEFCASE_INVENTORY_MENU.get(), BriefcaseInventoryScreen::new);
