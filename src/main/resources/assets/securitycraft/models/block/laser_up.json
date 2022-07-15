@@ -1,6 +1,6 @@
 {
 	"parent": "block/block",
-    "__createdwith": "opl's Model Creator",
+    "render_type": "minecraft:translucent",
     "ambientocclusion": false,
     "textures": {
         "particle": "securitycraft:block/laser",

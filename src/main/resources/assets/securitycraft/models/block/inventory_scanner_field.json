@@ -1,6 +1,6 @@
 {
-    "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
+    "render_type": "minecraft:translucent",
     "textures": {
         "laserTexture": "securitycraft:block/ani_laser",
         "particle": "securitycraft:block/ani_laser"

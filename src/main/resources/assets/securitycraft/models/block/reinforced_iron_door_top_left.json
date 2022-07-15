@@ -1,5 +1,6 @@
 {
     "parent": "block/door_top_left",
+    "render_type": "minecraft:cutout",
     "textures": {
         "bottom": "securitycraft:block/reinforced_door_lower",
         "top": "securitycraft:block/reinforced_door_upper"

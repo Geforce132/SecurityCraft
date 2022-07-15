@@ -1,5 +1,6 @@
 {
     "parent": "securitycraft:block/reinforced_cube_all",
+    "render_type": "minecraft:translucent",
     "textures": {
         "all": "block/ice"
     }

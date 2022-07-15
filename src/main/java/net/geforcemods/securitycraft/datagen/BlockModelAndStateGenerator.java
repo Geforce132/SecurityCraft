@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.datagen;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.function.Function;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -32,6 +33,7 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.block.state.properties.WallSide;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -62,9 +64,9 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 				if (block instanceof ReinforcedSlabBlock)
 					reinforcedSlabBlock(block);
 				else if (block instanceof ReinforcedStainedGlassBlock)
-					simpleBlock(block);
+					simpleBlockWithRenderType(block, "translucent");
 				else if (block instanceof ReinforcedStainedGlassPaneBlock)
-					reinforcedPaneBlock((IronBarsBlock) block);
+					reinforcedPaneBlock((IronBarsBlock) block, modelFile -> modelFile.renderType("translucent"));
 				else if (block instanceof ReinforcedStairsBlock)
 					reinforcedStairsBlock(block);
 				else if (block instanceof ReinforcedWallBlock)
@@ -81,9 +83,9 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		horizontalBlock(SCContent.SMOKER_MINE.get(), mcLoc(ModelProvider.BLOCK_FOLDER + "/smoker_side"), mcLoc(ModelProvider.BLOCK_FOLDER + "/smoker_front"), mcLoc(ModelProvider.BLOCK_FOLDER + "/smoker_top"));
 		horizontalBlock(SCContent.BLAST_FURNACE_MINE.get(), mcLoc(ModelProvider.BLOCK_FOLDER + "/blast_furnace_side"), mcLoc(ModelProvider.BLOCK_FOLDER + "/blast_furnace_front"), mcLoc(ModelProvider.BLOCK_FOLDER + "/blast_furnace_top"));
 
-		simpleBlock(SCContent.REINFORCED_GLASS.get());
+		simpleBlockWithRenderType(SCContent.REINFORCED_GLASS.get(), "cutout");
 		reinforcedCarpetBlock(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
-		reinforcedPaneBlock((IronBarsBlock) SCContent.REINFORCED_GLASS_PANE.get());
+		reinforcedPaneBlock((IronBarsBlock) SCContent.REINFORCED_GLASS_PANE.get(), modelFile -> modelFile.renderType("cutout_mipped"));
 
 		models().reinforcedColumn("reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
 
@@ -199,10 +201,23 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		});
 	}
 
-	public void reinforcedPaneBlock(IronBarsBlock block) {
+	public void reinforcedPaneBlock(IronBarsBlock block, Function<BlockModelBuilder, BlockModelBuilder> renderTypeApplier) {
 		String name = name(block);
 
-		paneBlock(block, modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"));
+		paneBlock(block, modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"), renderTypeApplier);
+	}
+
+	public void paneBlock(IronBarsBlock block, ResourceLocation pane, ResourceLocation edge, Function<BlockModelBuilder, BlockModelBuilder> renderTypeApplier) {
+		paneBlockInternal(block, name(block).toString(), pane, edge, renderTypeApplier);
+	}
+
+	private void paneBlockInternal(IronBarsBlock block, String baseName, ResourceLocation pane, ResourceLocation edge, Function<BlockModelBuilder, BlockModelBuilder> renderTypeApplier) {
+		ModelFile post = renderTypeApplier.apply(models().panePost(baseName + "_post", pane, edge));
+		ModelFile side = renderTypeApplier.apply(models().paneSide(baseName + "_side", pane, edge));
+		ModelFile sideAlt = renderTypeApplier.apply(models().paneSideAlt(baseName + "_side_alt", pane, edge));
+		ModelFile noSide = renderTypeApplier.apply(models().paneNoSide(baseName + "_noside", pane));
+		ModelFile noSideAlt = renderTypeApplier.apply(models().paneNoSideAlt(baseName + "_noside_alt", pane));
+		paneBlock(block, post, side, sideAlt, noSide, noSideAlt);
 	}
 
 	public void reinforcedSlabBlock(Block block) {
@@ -309,6 +324,10 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		fourWayWallHeight(builder, side, WallSide.LOW);
 		fourWayWallHeight(builder, sideTall, WallSide.TALL);
 		models().reinforcedWallInventory(baseName + "_inventory", texture);
+	}
+
+	public void simpleBlockWithRenderType(Block block, String renderType) {
+		simpleBlock(block, models().cubeAll(name(block), blockTexture(block)).renderType(renderType));
 	}
 
 	@Override

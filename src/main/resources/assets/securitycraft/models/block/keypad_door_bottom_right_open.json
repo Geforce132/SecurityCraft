@@ -1,5 +1,6 @@
 {
     "parent": "block/door_bottom_right_open",
+    "render_type": "minecraft:cutout",
     "textures": {
         "bottom": "securitycraft:block/keypad_door_lower",
         "top": "securitycraft:block/reinforced_door_upper"
