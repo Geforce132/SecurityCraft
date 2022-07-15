@@ -883,6 +883,11 @@
 	"jei.securitycraft.category.reinforcing": "블록 강화",
 	"jei.securitycraft.category.unreinforcing": "강화 제거",
 
+	"config.waila.plugin_securitycraft": "시큐리티크래프트",
+	"config.waila.plugin_securitycraft.showowner": "소유자를 표시합니까?",
+	"config.waila.plugin_securitycraft.showmodules": "모듈을 표시합니까?",
+	"config.waila.plugin_securitycraft.showpasswords": "비밀번호를 표시합니까?",
+	"config.waila.plugin_securitycraft.showcustomname": "명명된 블록을 표시합니까?",
 	"config.jade.plugin_securitycraft": "시큐리티크래프트",
 	"config.jade.plugin_securitycraft.showowner": "소유자를 표시합니까?",
 	"config.jade.plugin_securitycraft.showmodules": "모듈을 표시합니까?",

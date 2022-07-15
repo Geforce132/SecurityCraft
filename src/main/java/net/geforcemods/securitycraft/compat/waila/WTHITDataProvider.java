@@ -171,7 +171,7 @@ public class WTHITDataProvider extends WailaCompatConstants implements IWailaPlu
 		}
 	}
 
-	public void onBeforeTooltipRender(PoseStack psoe, Rectangle rectangle, ICommonAccessor accessor, IPluginConfig config, Canceller canceller) {
+	public void onBeforeTooltipRender(PoseStack pose, Rectangle rectangle, ICommonAccessor accessor, IPluginConfig config, Canceller canceller) {
 		if (ClientHandler.isPlayerMountedOnCamera())
 			canceller.cancel();
 	}

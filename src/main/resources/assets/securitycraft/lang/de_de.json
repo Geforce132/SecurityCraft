@@ -938,6 +938,11 @@
 	"jei.securitycraft.category.reinforcing": "Blöcke verstärken",
 	"jei.securitycraft.category.unreinforcing": "Verstärkung entfernen",
 
+	"config.waila.plugin_securitycraft": "SecurityCraft",
+	"config.waila.plugin_securitycraft.showowner": "Besitzer anzeigen?",
+	"config.waila.plugin_securitycraft.showmodules": "Module anzeigen?",
+	"config.waila.plugin_securitycraft.showpasswords": "Passwörter anzeigen?",
+	"config.waila.plugin_securitycraft.showcustomname": "Benannte Blöcke anzeigen?",
 	"config.jade.plugin_securitycraft": "SecurityCraft",
 	"config.jade.plugin_securitycraft.showowner": "Besitzer anzeigen?",
 	"config.jade.plugin_securitycraft.showmodules": "Module anzeigen?",

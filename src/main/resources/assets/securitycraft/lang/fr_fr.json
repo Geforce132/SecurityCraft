@@ -922,6 +922,11 @@
 	"jei.securitycraft.category.reinforcing": "Renforcer un bloc",
 	"jei.securitycraft.category.unreinforcing": "Enlève d’un renforcement",
 
+	"config.waila.plugin_securitycraft": "SecurityCraft",
+	"config.waila.plugin_securitycraft.showowner": "Afficher le propriétaire ?",
+	"config.waila.plugin_securitycraft.showmodules": "Afficher les modules ?",
+	"config.waila.plugin_securitycraft.showpasswords": "Afficher le mots de passe ?",
+	"config.waila.plugin_securitycraft.showcustomname": "Afficher les blocs nommés ?",
 	"config.jade.plugin_securitycraft": "SecurityCraft",
 	"config.jade.plugin_securitycraft.showowner": "Afficher le propriétaire ?",
 	"config.jade.plugin_securitycraft.showmodules": "Afficher les modules ?",
