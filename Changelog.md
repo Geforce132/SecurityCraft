@@ -14,6 +14,7 @@
 - Fix: Water doesn't render correctly while a Sonic Security System is recording within the player's view
 - Fix: The reinforced stone pressure plate is not in SecurityCraft's "securitycraft:reinforced/pressure_plates" tag
 - Fix: Blocks disguised as a translucent block, like stained glass, don't show up properly
+- Fix: The SecurityCraft Manual shows the info for secret signs on the keycard page (Thanks cdgamedev!)
 
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
 
