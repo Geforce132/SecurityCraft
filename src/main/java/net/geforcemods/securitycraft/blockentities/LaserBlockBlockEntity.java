@@ -189,7 +189,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	public ModelData getModelData() {
 		BlockState disguisedState = DisguisableBlock.getDisguisedStateOrDefault(getBlockState(), level, worldPosition);
 
-		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE_RL, disguisedState).build();
+		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE, disguisedState).build();
 	}
 
 	public boolean isEnabled() {

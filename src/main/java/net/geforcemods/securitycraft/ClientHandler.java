@@ -207,15 +207,15 @@ public class ClientHandler {
 	@SubscribeEvent
 	public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
 		if (event.getAtlas().location().equals(Sheets.CHEST_SHEET)) {
-			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/active"));
-			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/inactive"));
-			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/left_active"));
-			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/left_inactive"));
-			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/right_active"));
-			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/right_inactive"));
-			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/christmas"));
-			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/christmas_left"));
-			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/christmas_right"));
+			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/active"));
+			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/inactive"));
+			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/left_active"));
+			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/left_inactive"));
+			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/right_active"));
+			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/right_inactive"));
+			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/christmas"));
+			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/christmas_left"));
+			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/christmas_right"));
 		}
 	}
 
