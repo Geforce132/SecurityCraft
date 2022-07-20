@@ -24,7 +24,7 @@ import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 
 public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
-	public static final ModelProperty<BlockState> DISGUISED_STATE_RL = new ModelProperty<>();
+	public static final ModelProperty<BlockState> DISGUISED_STATE = new ModelProperty<>();
 	private final BakedModel oldModel;
 
 	public DisguisableDynamicBakedModel(BakedModel oldModel) {
@@ -33,7 +33,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 
 	@Override
 	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand, IModelData modelData) {
-		BlockState disguisedState = modelData.getData(DISGUISED_STATE_RL);
+		BlockState disguisedState = modelData.getData(DISGUISED_STATE);
 
 		if (disguisedState != null) {
 			Block block = disguisedState.getBlock();
@@ -51,7 +51,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 
 	@Override
 	public TextureAtlasSprite getParticleIcon(IModelData modelData) {
-		BlockState state = modelData.getData(DISGUISED_STATE_RL);
+		BlockState state = modelData.getData(DISGUISED_STATE);
 
 		if (state != null) {
 			Block block = state.getBlock();
@@ -77,13 +77,13 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 				Optional<BlockState> disguisedState = disguisedBlock.getDisguisedBlockState(level, pos);
 
 				if (disguisedState.isPresent()) {
-					tileData.setData(DISGUISED_STATE_RL, disguisedState.get());
+					tileData.setData(DISGUISED_STATE, disguisedState.get());
 					return tileData;
 				}
 			}
 		}
 
-		tileData.setData(DISGUISED_STATE_RL, Blocks.AIR.defaultBlockState());
+		tileData.setData(DISGUISED_STATE, Blocks.AIR.defaultBlockState());
 		return tileData;
 	}
 
