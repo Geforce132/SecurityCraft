@@ -73,6 +73,8 @@ public class MineBlock extends ExplosiveBlock {
 			return;
 		else if (entity instanceof ItemEntity)
 			return;
+		else if (!getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
+			return;
 		else if (!EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}

@@ -87,6 +87,9 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 	@Override
 	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity) {
+		if (!getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
+			return;
+
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 		if (connectedScanner == null || connectedScanner.doesFieldSolidify())

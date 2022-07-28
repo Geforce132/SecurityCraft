@@ -21,6 +21,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -49,7 +50,9 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock {
 		if (world.getBlockState(pos).getValue(OPEN))
 			return;
 
-		if (entity instanceof ItemEntity)
+		if (!getShape(state, world, pos, ISelectionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
+			return;
+		else if (entity instanceof ItemEntity)
 			return;
 		else if (entity instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) entity;
