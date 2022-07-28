@@ -181,8 +181,10 @@ public class IronFenceBlock extends OwnableBlock {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
+			return;
 		//so dropped items don't get destroyed
-		if (entity instanceof ItemEntity)
+		else if (entity instanceof ItemEntity)
 			return;
 		//owner check
 		else if (entity instanceof Player player) {
