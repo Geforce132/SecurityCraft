@@ -51,6 +51,9 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (!level.isClientSide && entity instanceof LivingEntity livingEntity && !EntityUtils.isInvisible(livingEntity)) {
+			if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
+				return;
+
 			for (Direction facing : Direction.values()) {
 				for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
 					BlockPos offsetPos = pos.relative(facing, i);

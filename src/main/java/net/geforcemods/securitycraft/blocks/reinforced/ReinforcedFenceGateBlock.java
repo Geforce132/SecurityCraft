@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBlock {
@@ -50,6 +51,8 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements EntityBl
 		if (level.getBlockState(pos).getValue(OPEN))
 			return;
 
+		if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
+			return;
 		if (entity instanceof ItemEntity)
 			return;
 		else if (entity instanceof Player player) {
