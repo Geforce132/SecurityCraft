@@ -78,8 +78,10 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider {
 		if (((TileEntityIronFence) te).isShutDown())
 			return;
 
+		if (!state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
+			return;
 		//so dropped items don't get destroyed
-		if (entity instanceof EntityItem)
+		else if (entity instanceof EntityItem)
 			return;
 		//owner check
 		else if (entity instanceof EntityPlayer) {

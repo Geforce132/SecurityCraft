@@ -68,7 +68,9 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 		if (state.getValue(OPEN))
 			return;
 
-		if (entity instanceof EntityItem)
+		if (!state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
+			return;
+		else if (entity instanceof EntityItem)
 			return;
 		else if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;

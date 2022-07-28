@@ -81,6 +81,9 @@ public class BlockLaserField extends BlockOwnable implements IOverlayDisplay {
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if (!world.isRemote && entity instanceof EntityLivingBase && !EntityUtils.isInvisible((EntityLivingBase) entity)) {
+			if (!state.getBoundingBox(world, pos).offset(pos).intersects(entity.getEntityBoundingBox()))
+				return;
+
 			for (EnumFacing facing : EnumFacing.VALUES) {
 				for (int i = 0; i < ConfigHandler.laserBlockRange; i++) {
 					BlockPos offsetPos = pos.offset(facing, i);

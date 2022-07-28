@@ -120,6 +120,9 @@ public class BlockCageTrap extends BlockDisguisable {
 			boolean isPlayer = entity instanceof EntityPlayer;
 
 			if (isPlayer || (entity instanceof EntityMob && tileEntity.capturesMobs())) {
+				if (!state.getBoundingBox(world, pos).offset(pos).intersects(entity.getEntityBoundingBox()))
+					return;
+
 				if ((isPlayer && tileEntity.getOwner().isOwner((EntityPlayer) entity)))
 					return;
 

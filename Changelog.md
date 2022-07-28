@@ -5,6 +5,7 @@
 - New: The Sentry can now be deactivated by ICBM Classic's EMP blast. It can be reactivated by rightclicking it with redstone
 - New: Blocks that have been linked to a Sonic Security System can now be seen and removed in the item's and block's screen
 - Change: Reduced the Rail Mine's explosion size by 25% to make it comparable to other mines' explosions
+- Change: Blocks that entities can intersect with, such as Laser and Inventory scanner fields, mines and the Cage Trap, now only trigger when the entity touches their bounding box
 - API: Added DisabledOption for having a default option to disable blocks
 - API: Added Option#getKey and Option#getDescriptionKey to easily access the language keys associated with an option
 - API: IEMPAffected has been added. It can be used to shut down select SecurityCraft blocks and entities when they're within range of an EMP blast
