@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
@@ -26,7 +27,7 @@ import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.network.PacketDistributor;
 
 public class LaserBlockBlockEntity extends LinkableBlockEntity {
-	private BooleanOption enabledOption = new BooleanOption("enabled", true) {
+	private DisabledOption disabled = new DisabledOption(false) {
 		@Override
 		public void toggle() {
 			setValue(!get());
@@ -51,7 +52,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		if (action == LinkedAction.OPTION_CHANGED) {
 			Option<?> option = (Option<?>) parameters[0];
 
-			enabledOption.copy(option);
+			disabled.copy(option);
 			toggleLaser((BooleanOption) option);
 		}
 		else if (action == LinkedAction.MODULE_INSERTED) {
@@ -103,7 +104,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		BlockState state = getBlockState();
 
 		if (!level.isClientSide) {
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
+			SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
 				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
@@ -122,7 +123,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 		if (!level.isClientSide) {
 			BlockState state = getBlockState();
 
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
+			SecurityCraft.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
 				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
@@ -153,6 +154,16 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	}
 
 	@Override
+	public void readOptions(CompoundTag tag) {
+		if (tag.contains("enabled"))
+			tag.putBoolean("disabled", !tag.getBoolean("enabled")); //legacy support
+
+		for (Option<?> option : customOptions()) {
+			option.readFromNBT(tag);
+		}
+	}
+
+	@Override
 	public void setRemoved() {
 		super.setRemoved();
 
@@ -170,7 +181,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				enabledOption
+				disabled
 		};
 	}
 
@@ -178,10 +189,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity {
 	public ModelData getModelData() {
 		BlockState disguisedState = DisguisableBlock.getDisguisedStateOrDefault(getBlockState(), level, worldPosition);
 
-		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE_RL, disguisedState).build();
+		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE, disguisedState).build();
 	}
 
 	public boolean isEnabled() {
-		return enabledOption.get();
+		return !disabled.get();
 	}
 }

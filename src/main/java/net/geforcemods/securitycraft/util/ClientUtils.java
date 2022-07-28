@@ -13,12 +13,10 @@ import com.mojang.math.Matrix4f;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
 public class ClientUtils {
 	//@formatter:off
@@ -46,13 +44,6 @@ public class ClientUtils {
 		int minutes = (int) (time.longValue() / 16.666666F % 60.0F);
 
 		return String.format("%02d:%02d %s", Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM");
-	}
-
-	/**
-	 * Sends the client-side CompoundNBT of a player's held item to the server.
-	 */
-	public static void syncItemNBT(ItemStack item) {
-		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(item));
 	}
 
 	public static void renderModuleInfo(PoseStack pose, ModuleType module, Component moduleTooltip, Component noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY) {

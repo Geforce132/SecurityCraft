@@ -11,6 +11,7 @@ import java.util.Random;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import net.geforcemods.securitycraft.api.ICodebreakable;
+import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
@@ -66,6 +67,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
@@ -111,6 +113,7 @@ public class SCEventHandler {
 
 						player.level.playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
 						handlePlayedNote(player.level, player.blockPosition(), note.noteID(), note.instrumentName());
+						player.gameEvent(GameEvent.NOTE_BLOCK_PLAY);
 						pair.setLeft(NOTE_DELAY);
 					}
 					else
@@ -201,6 +204,18 @@ public class SCEventHandler {
 		}
 
 		if (!level.isClientSide) {
+			if (event.getItemStack().getItem() == Items.REDSTONE && be instanceof IEMPAffected empAffected && empAffected.isShutDown()) {
+				empAffected.reactivate();
+
+				if (!event.getEntity().isCreative())
+					event.getItemStack().shrink(1);
+
+				event.getEntity().swing(event.getHand());
+				event.setCanceled(true);
+				event.setCancellationResult(InteractionResult.SUCCESS);
+				return;
+			}
+
 			if (PlayerUtils.isHoldingItem(event.getEntity(), SCContent.KEY_PANEL, event.getHand())) {
 				for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
 					if (pc.getOriginalBlock() == block) {

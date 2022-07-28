@@ -8,9 +8,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
+import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
 import net.geforcemods.securitycraft.screen.components.StateSelector;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
+import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
@@ -20,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModuleMenu> implements IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
@@ -75,10 +77,12 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 		if (!menu.getSlot(0).getItem().isEmpty() && stateSelector.getState() != null) {
 			ItemStack module = menu.getInventory().getModule();
 			CompoundTag moduleTag = module.getOrCreateTag();
+			BlockState state = stateSelector.getState();
+			StandingOrWallType standingOrWall = stateSelector.getStandingOrWallType();
 
-			moduleTag.put("SavedState", NbtUtils.writeBlockState(stateSelector.getState()));
-			moduleTag.putInt("StandingOrWall", stateSelector.getStandingOrWallType().ordinal());
-			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
+			moduleTag.put("SavedState", NbtUtils.writeBlockState(state));
+			moduleTag.putInt("StandingOrWall", standingOrWall.ordinal());
+			SecurityCraft.channel.sendToServer(new SetStateOnDisguiseModule(state, standingOrWall));
 		}
 	}
 

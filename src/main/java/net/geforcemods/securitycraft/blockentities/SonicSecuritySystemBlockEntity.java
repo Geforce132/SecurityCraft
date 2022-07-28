@@ -8,10 +8,12 @@ import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
+import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
+import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -28,7 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
+public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE {
 	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
 	/**
@@ -65,6 +67,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 */
 	private int listenPos = 0;
 	private boolean tracked = false;
+	private boolean shutDown = false;
 
 	public SonicSecuritySystemBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.SONIC_SECURITY_SYSTEM_BLOCK_ENTITY.get(), pos, state);
@@ -192,6 +195,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		tag.putInt("listenPos", listenPos);
 		tag.putBoolean("correctTuneWasPlayed", correctTuneWasPlayed);
 		tag.putInt("powerCooldown", powerCooldown);
+		tag.putBoolean("shutDown", shutDown);
 	}
 
 	@Override
@@ -224,6 +228,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		listenPos = tag.getInt("listenPos");
 		correctTuneWasPlayed = tag.getBoolean("correctTuneWasPlayed");
 		powerCooldown = tag.getInt("powerCooldown");
+		shutDown = tag.getBoolean("shutDown");
 	}
 
 	/**
@@ -269,21 +274,15 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 * @param itemTag The CompoundTag of the Sonic Security System item to transfer over
 	 */
 	public boolean transferPositionsFromItem(CompoundTag itemTag) {
-		if (itemTag == null || !itemTag.contains("LinkedBlocks"))
-			return false;
+		Set<BlockPos> positions = SonicSecuritySystemItem.stackTagToBlockPosSet(itemTag);
 
-		ListTag blocks = itemTag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
+		// If the block has already been linked with, don't add it to the list
+		positions.removeIf(this::isLinkedToBlock);
+		linkedBlocks.addAll(positions);
 
-		for (int i = 0; i < blocks.size(); i++) {
-			CompoundTag linkedBlock = blocks.getCompound(i);
-			BlockPos linkedBlockPos = NbtUtils.readBlockPos(linkedBlock);
+		if (!linkedBlocks.isEmpty())
+			sync();
 
-			// If the block has not already been linked with, add it to the list
-			if (!isLinkedToBlock(linkedBlockPos))
-				linkedBlocks.add(linkedBlockPos);
-		}
-
-		sync();
 		return true;
 	}
 
@@ -334,6 +333,13 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	/**
+	 * @return Returns the block positions that this Sonic Security System is linked to
+	 */
+	public Set<BlockPos> getLinkedBlocks() {
+		return linkedBlocks;
+	}
+
+	/**
 	 * @return If this Sonic Security System is emitting ping sounds
 	 */
 	public boolean pings() {
@@ -353,7 +359,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	 * @return Whether or not this Sonic Security System is actively running
 	 */
 	public boolean isActive() {
-		return isActive;
+		return isActive && !isShutDown();
 	}
 
 	/**
@@ -480,20 +486,14 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 	}
 
-	/**
-	 * A simple wrapper that makes it slightly easier to store and compare notes with
-	 */
-	public static record NoteWrapper(int noteID, String instrumentName) {
-		/**
-		 * Checks to see if a passed note ID and instrument matches the info of this note
-		 *
-		 * @param note the note ID to check
-		 * @param instrument the instrument name of the note
-		 * @return
-		 */
-		public boolean isSameNote(int note, String instrument) {
-			return noteID == note && instrumentName.equals(instrument);
-		}
+	@Override
+	public boolean isShutDown() {
+		return shutDown;
+	}
+
+	@Override
+	public void setShutDown(boolean shutDown) {
+		this.shutDown = shutDown;
 	}
 
 	@Override
@@ -508,5 +508,21 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 		return new Option[] {
 				signalLength
 		};
+	}
+
+	/**
+	 * A simple wrapper that makes it slightly easier to store and compare notes with
+	 */
+	public static record NoteWrapper(int noteID, String instrumentName) {
+		/**
+		 * Checks to see if a passed note ID and instrument matches the info of this note
+		 *
+		 * @param note the note ID to check
+		 * @param instrument the instrument name of the note
+		 * @return
+		 */
+		public boolean isSameNote(int note, String instrument) {
+			return noteID == note && instrumentName.equals(instrument);
+		}
 	}
 }

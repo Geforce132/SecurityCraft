@@ -31,9 +31,9 @@ public interface ILockable {
 		BlockEntity thisBe = getThisBlockEntity();
 		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(thisBe.getLevel(), thisBe.getBlockPos());
 
-		for (SonicSecuritySystemBlockEntity te : sonicSecuritySystems) {
-			if (te.isActive() && te.isLinkedToBlock(thisBe.getBlockPos()))
-				return !te.correctTuneWasPlayed; //if the correct tune was recently played, the block should not be locked
+		for (SonicSecuritySystemBlockEntity be : sonicSecuritySystems) {
+			if (be.isActive() && be.isLinkedToBlock(thisBe.getBlockPos()))
+				return !be.correctTuneWasPlayed; //if the correct tune was recently played, the block should not be locked
 		}
 
 		return false;

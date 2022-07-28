@@ -16,6 +16,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 
 public class SentryItem extends Item {
@@ -59,6 +60,7 @@ public class SentryItem extends Item {
 			level.removeBlock(pos, false);
 
 		level.addFreshEntity(entity);
+		entity.gameEvent(GameEvent.ENTITY_PLACE, player);
 		player.displayClientMessage(Utils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).append(Utils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
 
 		if (!player.isCreative())

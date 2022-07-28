@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:reinforced_pressure_plates",
+  "key": {
+    "S": {
+      "item": "securitycraft:reinforced_mangrove_planks"
+    }
+  },
+  "pattern": [
+    "SS"
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_mangrove_pressure_plate"
+  }
+}

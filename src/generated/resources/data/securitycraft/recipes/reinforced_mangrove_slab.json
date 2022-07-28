@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:slabs",
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_mangrove_planks"
+    }
+  },
+  "pattern": [
+    "BBB"
+  ],
+  "result": {
+    "count": 6,
+    "item": "securitycraft:reinforced_mangrove_slab"
+  }
+}

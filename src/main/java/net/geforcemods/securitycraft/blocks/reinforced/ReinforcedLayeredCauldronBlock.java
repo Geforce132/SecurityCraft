@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
@@ -62,10 +63,12 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 
 	public static void lowerFillLevel(BlockState state, Level level, BlockPos pos) {
 		int fillLevel = state.getValue(LEVEL) - 1;
+		BlockState newState = fillLevel == 0 ? SCContent.REINFORCED_CAULDRON.get().defaultBlockState() : state.setValue(LEVEL, fillLevel);
 		BlockEntity be = level.getBlockEntity(pos);
 
-		level.setBlockAndUpdate(pos, fillLevel == 0 ? SCContent.REINFORCED_CAULDRON.get().defaultBlockState() : state.setValue(LEVEL, fillLevel));
+		level.setBlockAndUpdate(pos, newState);
 		level.setBlockEntity(be);
+		level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(newState));
 	}
 
 	@Override

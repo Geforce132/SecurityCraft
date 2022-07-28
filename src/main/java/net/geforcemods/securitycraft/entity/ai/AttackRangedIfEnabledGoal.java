@@ -29,7 +29,7 @@ public class AttackRangedIfEnabledGoal extends Goal {
 	public boolean canUse() {
 		LivingEntity potentialTarget = sentry.getTarget();
 
-		if (potentialTarget == null)
+		if (potentialTarget == null || sentry.isShutDown())
 			return false;
 		else {
 			attackTarget = potentialTarget;

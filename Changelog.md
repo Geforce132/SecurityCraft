@@ -1,3 +1,23 @@
+--------------------------Changelog for v1.9.3 of SecurityCraft--------------------------
+
+- New: Reinforced Blocks: Mangrove Planks, Mangrove Log, Stripped Mangrove Log, Stripped Mangrove Wood, Mangrove Wood, Mangrove Slab, Mangrove Stairs, Mangrove Button, Mangrove Pressure Plate, Mud, Packed Mud, Mud Bricks, Mud Brick Slab, Mud Brick Stairs, Mud Brick Wall, Ochre Froglight, Verdant Froglight, Pearlescent Froglight
+- New: Some of SecurityCraft's blocks, items, and entities can now trigger sculk sensors
+- New: Items can now be dragged from JEI into the Inventory Scanner's ghost slots
+- New: Item and block tag "securitycraft:reinforced/terracotta"
+- New: Several additions to minecraft's tags, including "minecraft:azalea_grows_on", "minecraft:sand", and "minecraft:terracotta"
+- New: Several blocks now have a new Universal Block Modifier option to disable them
+- New: Blocks that have been linked to a Sonic Security System can now be seen and removed in the item's and block's screen
+- New: Support for WTHIT, a fork of HWYLA
+- Change: Reduced the Rail Mine's explosion size by 25% to make it comparable to other mines' explosions
+- API: Added DisabledOption for having a default option to disable blocks
+- API: Added Option#getKey and Option#getDescriptionKey to easily access the language keys associated with an option
+- API: IEMPAffected has been added. It can be used to shut down select SecurityCraft blocks and entities when they're within range of an EMP blast
+- API: IEMPAffectedTE has been added as a default implementation for tile entities which want to implement IEMPAffected
+- Fix: Water doesn't render correctly while a Sonic Security System is recording within the player's view
+- Fix: The reinforced stone pressure plate is not in SecurityCraft's "securitycraft:reinforced/pressure_plates" tag
+- Fix: Blocks disguised as a translucent block, like stained glass, don't show up properly
+- Fix: The SecurityCraft Manual shows the info for secret signs on the keycard page (Thanks cdgamedev!)
+
 --------------------------Changelog for v1.9.2-beta6 of SecurityCraft--------------------------
 
 - Fix: Compatibility with Forge 41.0.94+

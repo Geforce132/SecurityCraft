@@ -19,6 +19,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -94,6 +95,7 @@ public class TaserItem extends Item {
 			EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(player, startVec, endVec, boundingBox, s -> s instanceof LivingEntity, range * range);
 
 			level.playSound(player, player.blockPosition(), SCSounds.TASERFIRED.event, SoundSource.PLAYERS, 1.0F, 1.0F);
+			level.gameEvent(player, GameEvent.PROJECTILE_SHOOT, player.blockPosition());
 
 			if (hitResult != null) {
 				LivingEntity entity = (LivingEntity) hitResult.getEntity();

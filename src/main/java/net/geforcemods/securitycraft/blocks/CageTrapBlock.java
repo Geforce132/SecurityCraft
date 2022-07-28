@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
@@ -54,7 +55,9 @@ public class CageTrapBlock extends DisguisableBlock {
 			if (collisionContext instanceof EntityCollisionContext ctx && ctx.getEntity() != null) {
 				Entity entity = ctx.getEntity();
 
-				if (entity instanceof Player player && (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)))
+				if (be.isDisabled())
+					return getCorrectShape(state, level, pos, ctx, be);
+				else if (entity instanceof Player player && (be.getOwner().isOwner(player) || ModuleUtils.isAllowed(be, player)))
 					return getCorrectShape(state, level, pos, collisionContext, be);
 				if (entity instanceof Mob && !state.getValue(DEACTIVATED))
 					return be.capturesMobs() ? Shapes.empty() : getCorrectShape(state, level, pos, collisionContext, be);
@@ -83,6 +86,10 @@ public class CageTrapBlock extends DisguisableBlock {
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (!level.isClientSide) {
 			CageTrapBlockEntity cageTrap = (CageTrapBlockEntity) level.getBlockEntity(pos);
+
+			if (cageTrap.isDisabled())
+				return;
+
 			boolean isPlayer = entity instanceof Player;
 
 			if (isPlayer || (entity instanceof Mob && cageTrap.capturesMobs())) {
@@ -116,6 +123,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				});
 				level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 				level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 3.0F, 1.0F);
+				level.gameEvent(null, GameEvent.BLOCK_PLACE, pos);
 
 				if (isPlayer && PlayerUtils.isPlayerOnline(ownerName))
 					PlayerUtils.sendMessageToPlayer(ownerName, Utils.localize(SCContent.CAGE_TRAP.get().getDescriptionId()), Utils.localize("messages.securitycraft:cageTrap.captured", ((Player) entity).getName(), Utils.getFormattedCoordinates(pos)), ChatFormatting.BLACK);

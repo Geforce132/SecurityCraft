@@ -19,7 +19,7 @@ import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 
 public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
-	public static final ModelProperty<BlockState> DISGUISED_STATE_RL = new ModelProperty<>();
+	public static final ModelProperty<BlockState> DISGUISED_STATE = new ModelProperty<>();
 	private final BakedModel oldModel;
 
 	public DisguisableDynamicBakedModel(BakedModel oldModel) {
@@ -28,7 +28,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 
 	@Override
 	public List<BakedQuad> getQuads(BlockState state, Direction side, RandomSource rand, ModelData modelData, RenderType renderType) {
-		BlockState disguisedState = modelData.get(DISGUISED_STATE_RL);
+		BlockState disguisedState = modelData.get(DISGUISED_STATE);
 
 		if (disguisedState != null) {
 			Block block = disguisedState.getBlock();
@@ -46,7 +46,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 
 	@Override
 	public TextureAtlasSprite getParticleIcon(ModelData modelData) {
-		BlockState state = modelData.get(DISGUISED_STATE_RL);
+		BlockState state = modelData.get(DISGUISED_STATE);
 
 		if (state != null) {
 			Block block = state.getBlock();
@@ -68,8 +68,21 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	}
 
 	@Override
-	public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData data) {
-		return ChunkRenderTypeSet.of(RenderType.cutout());
+	public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData modelData) {
+		BlockState disguisedState = modelData.get(DISGUISED_STATE);
+
+		if (disguisedState != null) {
+			Block block = state.getBlock();
+
+			if (block != Blocks.AIR) {
+				BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
+
+				if (model != null && model != this)
+					return model.getRenderTypes(disguisedState, rand, ModelData.EMPTY);
+			}
+		}
+
+		return oldModel.getRenderTypes(state, rand, modelData);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 {
     "parent": "block/block",
+    "render_type": "minecraft:cutout_mipped",
 	"textures": {
 		"0": "securitycraft:block/block_pocket_manager_front",
 		"1": "block/quartz_pillar",

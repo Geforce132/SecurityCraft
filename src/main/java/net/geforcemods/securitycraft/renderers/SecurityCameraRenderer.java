@@ -56,7 +56,15 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 		}
 
 		pose.mulPose(POSITIVE_X_180);
-		model.cameraRotationPoint.yRot = (float) be.cameraRotation;
+
+		if (!be.isDisabled())
+			model.cameraRotationPoint.yRot = (float) be.cameraRotation;
+
+		if (be.isShutDown())
+			model.cameraRotationPoint.xRot = 0.9F;
+		else
+			model.cameraRotationPoint.xRot = 0.2617993877991494F;
+
 		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

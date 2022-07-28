@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -71,6 +72,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 		if (state.getValue(DEACTIVATED)) {
 			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
+			level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 			return true;
 		}
 
@@ -83,6 +85,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 		if (!state.getValue(DEACTIVATED)) {
 			level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
+			level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 			return true;
 		}
 

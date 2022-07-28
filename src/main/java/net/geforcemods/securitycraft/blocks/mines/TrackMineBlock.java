@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -75,7 +76,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	public void onMinecartPass(BlockState state, Level level, BlockPos pos, AbstractMinecart cart) {
 		if (level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && be.isActive()) {
 			level.destroyBlock(pos, false);
-			level.explode(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+			level.explode(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 			cart.kill();
 		}
 	}
@@ -84,7 +85,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	public void explode(Level level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && be.isActive()) {
 			level.destroyBlock(pos, false);
-			level.explode(null, pos.getX(), pos.above().getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+			level.explode(null, pos.getX(), pos.above().getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 		}
 	}
 
@@ -92,6 +93,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	public boolean activateMine(Level level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && !be.isActive()) {
 			be.activate();
+			level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 			return true;
 		}
 		else
@@ -102,6 +104,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	public boolean defuseMine(Level level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && be.isActive()) {
 			be.deactivate();
+			level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 			return true;
 		}
 		else

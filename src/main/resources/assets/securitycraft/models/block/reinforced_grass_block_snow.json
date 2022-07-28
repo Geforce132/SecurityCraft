@@ -1,5 +1,6 @@
 {
     "parent": "securitycraft:block/reinforced_block",
+    "render_type": "minecraft:cutout_mipped",
     "textures": {
         "south": "block/grass_block_snow",
         "west": "block/grass_block_snow",

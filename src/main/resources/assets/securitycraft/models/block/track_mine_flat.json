@@ -1,5 +1,6 @@
 {
     "ambientocclusion": false,
+    "render_type": "minecraft:cutout",
     "textures": {
         "particle": "securitycraft:block/rail_mine",
         "rail": "securitycraft:block/rail_mine"

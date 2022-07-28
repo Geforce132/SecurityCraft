@@ -497,7 +497,7 @@ public class SCManualScreen extends Screen {
 						display.add(Component.literal("---"));
 
 						for (Option<?> option : options) {
-							display.add(Component.literal("- ").append(Utils.localize("option" + block.getDescriptionId().substring(5) + "." + option.getName() + ".description")));
+							display.add(Component.literal("- ").append(Utils.localize(option.getDescriptionKey(block))));
 							display.add(Component.empty());
 						}
 

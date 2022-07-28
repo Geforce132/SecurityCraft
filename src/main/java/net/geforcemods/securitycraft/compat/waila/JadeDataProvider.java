@@ -24,10 +24,8 @@ import net.geforcemods.securitycraft.entity.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -53,21 +51,11 @@ import snownee.jade.impl.ui.ItemStackElement;
 import snownee.jade.impl.ui.TextElement;
 
 @WailaPlugin(SecurityCraft.MODID)
-public class WailaDataProvider implements IWailaPlugin {
+public class JadeDataProvider extends WailaCompatConstants implements IWailaPlugin {
 	public static final SpoofBlockIcon SPOOF_BLOCK_ICON = new SpoofBlockIcon();
 	public static final SecurityCraftInfo SECURITYCRAFT_INFO = new SecurityCraftInfo();
 	public static final SpoofBlockName SPOOF_BLOCK_NAME = new SpoofBlockName();
 	public static final SpoofModName SPOOF_MOD_NAME = new SpoofModName();
-	public static final ResourceLocation SHOW_OWNER = new ResourceLocation(SecurityCraft.MODID, "showowner");
-	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
-	public static final ResourceLocation SHOW_PASSWORDS = new ResourceLocation(SecurityCraft.MODID, "showpasswords");
-	public static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
-	private static final Style MOD_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.BLUE).withItalic(true);
-	private static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.WHITE);
-	private static final MutableComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(Utils.GRAY_STYLE);
-	private static final MutableComponent ALLOWLIST_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.ALLOWLIST.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
-	private static final MutableComponent DISGUISE_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.DISGUISE.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
-	private static final MutableComponent SPEED_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.SPEED.getTranslationKey())).withStyle(Utils.GRAY_STYLE);
 	private final List<Class<?>> isRegistered = new ArrayList<>();
 
 	@Override

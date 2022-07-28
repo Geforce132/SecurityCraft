@@ -24,7 +24,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -58,8 +57,12 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (isFacingAnotherScanner(level, pos) && player instanceof ServerPlayer serverPlayer) {
-			if (!level.isClientSide && level.getBlockEntity(pos) instanceof MenuProvider menuProvider)
-				NetworkHooks.openScreen(serverPlayer, menuProvider, pos);
+			if (!level.isClientSide && level.getBlockEntity(pos) instanceof InventoryScannerBlockEntity be) {
+				if (be.isDisabled())
+					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				else
+					NetworkHooks.openScreen(serverPlayer, be, pos);
+			}
 
 			return InteractionResult.SUCCESS;
 		}
@@ -76,15 +79,26 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		if (level.isClientSide)
 			return;
 
-		checkAndPlaceAppropriately(level, pos);
+		checkAndPlaceAppropriately(level, pos, false);
 	}
 
-	private void checkAndPlaceAppropriately(Level level, BlockPos pos) {
-		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(level, pos);
+	public static void checkAndPlaceAppropriately(Level level, BlockPos pos, boolean force) {
 		InventoryScannerBlockEntity thisBe = (InventoryScannerBlockEntity) level.getBlockEntity(pos);
+		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(level, pos);
 
 		if (connectedScanner == null || !connectedScanner.getOwner().owns(thisBe))
 			return;
+
+		if (!force) {
+			if (connectedScanner.isDisabled()) {
+				thisBe.setDisabled(true);
+				return;
+			}
+		}
+		else {
+			thisBe.setDisabled(false);
+			connectedScanner.setDisabled(false);
+		}
 
 		boolean horizontal = false;
 
@@ -118,6 +132,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 		((BooleanOption) customOptions[0]).setValue(connectedScanner.isHorizontal());
 		((BooleanOption) customOptions[1]).setValue(connectedScanner.doesFieldSolidify());
+		((BooleanOption) customOptions[2]).setValue(false);
 	}
 
 	@Override
@@ -208,7 +223,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 	@Override
 	public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
-		checkAndPlaceAppropriately((Level) level, pos);
+		checkAndPlaceAppropriately((Level) level, pos, false);
 	}
 
 	@Override

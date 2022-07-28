@@ -19,7 +19,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class InventoryScannerScreen extends AbstractContainerScreen<InventoryScannerMenu> {
 	private static final ResourceLocation REGULAR_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_gui.png");
 	private static final ResourceLocation ENHANCED_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
-	private InventoryScannerBlockEntity be;
+	public final InventoryScannerBlockEntity be;
 	private boolean owns = false;
 	private boolean hasRedstoneModule = false, hasStorageModule = false;
 	private Component infoStringRedstone, infoStringStorage;

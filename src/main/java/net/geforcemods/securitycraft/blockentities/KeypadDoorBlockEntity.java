@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -22,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraftforge.network.PacketDistributor;
 
-public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected, ILockable {
+public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPasswordProtected {
 	private String passcode;
 
 	public KeypadDoorBlockEntity(BlockPos pos, BlockState state) {
@@ -47,7 +46,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public void activate(Player player) {
 		if (!level.isClientSide && getBlockState().getBlock() instanceof KeypadDoorBlock block)
-			block.activate(getBlockState(), level, worldPosition, getSignalLength());
+			block.activate(getBlockState(), level, worldPosition, player, getSignalLength());
 	}
 
 	@Override
@@ -67,8 +66,12 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public boolean onCodebreakerUsed(BlockState state, Player player) {
 		if (!state.getValue(DoorBlock.OPEN)) {
-			activate(player);
-			return true;
+			if (isDisabled())
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else {
+				activate(player);
+				return true;
+			}
 		}
 
 		return false;

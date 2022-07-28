@@ -37,7 +37,7 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 
 		pose.translate(0.5D, 1.5D, 0.5D);
 
-		if (recording || be.isListening()) {
+		if (recording || be.isListening() && !be.isShutDown()) {
 			Component text = recording ? RECORDING_TEXT : LISTENING_TEXT;
 			float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
 			int j = (int) (f1 * 255.0F) << 24;
@@ -52,6 +52,7 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 			RenderSystem.disableCull();
 			fontRenderer.drawInBatch(text, halfWidth, 0, 16777215, false, positionMatrix, buffer, true, j, packedLight);
 			fontRenderer.drawInBatch(text, halfWidth, 0, -1, false, positionMatrix, buffer, false, 0, packedLight);
+			RenderSystem.enableCull();
 			pose.popPose();
 		}
 

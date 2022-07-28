@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
@@ -59,6 +60,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -69,7 +71,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
 
-public class Sentry extends PathfinderMob implements RangedAttackMob { //needs to be a creature so it can target a player, ai is also only given to living entities
+public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffected { //needs to be a creature so it can target a player, ai is also only given to living entities
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner> defineId(Sentry.class, Owner.getSerializer());
 	private static final EntityDataAccessor<CompoundTag> ALLOWLIST = SynchedEntityData.<CompoundTag> defineId(Sentry.class, EntityDataSerializers.COMPOUND_TAG);
 	private static final EntityDataAccessor<Boolean> HAS_SPEED_MODULE = SynchedEntityData.<Boolean> defineId(Sentry.class, EntityDataSerializers.BOOLEAN);
@@ -80,6 +82,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 	private static final float UPWARDS_ANIMATION_LIMIT = 0.025F;
 	private static final float DOWNWARDS_ANIMATION_LIMIT = 0.9F;
 	private float headYTranslation = 0.9F;
+	private boolean shutDown = true;
 	public boolean animateUpwards = false;
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
@@ -124,7 +127,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 				discard();
 		}
 		else {
-			if (!animate && headYTranslation > 0.0F && getMode().isAggressive()) {
+			if (!shutDown && !animate && headYTranslation > 0.0F && getMode().isAggressive()) {
 				animateUpwards = true;
 				animate = true;
 			}
@@ -165,7 +168,13 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 			player.closeContainer();
 
 			if (player.isCrouching())
-				discard();
+				kill();
+			else if (item == Items.REDSTONE && isShutDown()) {
+				reactivate();
+
+				if (!player.isCreative())
+					player.getMainHandItem().shrink(1);
+			}
 			else if (item == SCContent.UNIVERSAL_BLOCK_REMOVER.get()) {
 				kill();
 
@@ -261,6 +270,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 	@Override
 	public void kill() {
 		remove(RemovalReason.KILLED);
+		gameEvent(GameEvent.ENTITY_DIE);
 	}
 
 	/**
@@ -289,15 +299,20 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 			player.displayClientMessage(Utils.localize(SentryMode.values()[mode].getModeKey()).append(Utils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
 
 		if (!player.level.isClientSide)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(blockPosition(), true, SentryMode.values()[mode].isAggressive()));
+			SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, SentryMode.values()[mode].isAggressive(), isShutDown()));
 	}
 
 	@Override
 	public void setTarget(LivingEntity target) {
+		if (isShutDown()) {
+			super.setTarget(null);
+			return;
+		}
+
 		if (!getMode().isAggressive() && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getId()))) {
 			animateUpwards = getMode().isCamouflage() && target != null;
 			animate = true;
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(blockPosition(), animate, animateUpwards));
+			SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), animate, animateUpwards, isShutDown()));
 		}
 
 		previousTargetId = target == null ? Long.MIN_VALUE : target.getId();
@@ -317,6 +332,9 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 
 		//also don't shoot if the target is too far away
 		if (distanceToSqr(target) > MAX_TARGET_DISTANCE * MAX_TARGET_DISTANCE)
+			return;
+
+		if (isShutDown())
 			return;
 
 		BlockEntity blockEntity = level.getBlockEntity(blockPosition().below());
@@ -381,6 +399,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 		tag.putBoolean("HasSpeedModule", hasSpeedModule());
 		tag.putInt("SentryMode", entityData.get(MODE));
 		tag.putFloat("HeadRotation", entityData.get(HEAD_ROTATION));
+		tag.putBoolean("ShutDown", isShutDown());
 		super.addAdditionalSaveData(tag);
 	}
 
@@ -413,6 +432,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 		entityData.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		entityData.set(MODE, tag.getInt("SentryMode"));
 		entityData.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
+		shutDown = tag.getBoolean("ShutDown");
 		super.readAdditionalSaveData(tag);
 	}
 
@@ -549,6 +569,29 @@ public class Sentry extends PathfinderMob implements RangedAttackMob { //needs t
 
 	public int getShootingSpeed() {
 		return hasSpeedModule() ? 5 : 10;
+	}
+
+	@Override
+	public void shutDown() {
+		IEMPAffected.super.shutDown();
+		setTarget(null);
+	}
+
+	@Override
+	public boolean isShutDown() {
+		return shutDown;
+	}
+
+	@Override
+	public void setShutDown(boolean shutDown) {
+		this.shutDown = shutDown;
+
+		if (!level.isClientSide) {
+			if (shutDown)
+				SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, false, shutDown));
+			else
+				SecurityCraft.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new InitSentryAnimation(blockPosition(), true, getMode().isAggressive(), shutDown));
+		}
 	}
 
 	//start: disallow sentry to take damage
