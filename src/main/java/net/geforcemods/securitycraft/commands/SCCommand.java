@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
@@ -34,7 +33,7 @@ public class SCCommand {
 					.append(Component.literal("] "))
 					.append(Utils.localize("messages.securitycraft:irc.connected"))
 					.append(Component.literal(" "))
-					.append(ForgeHooks.newChatWithLinks(SendTip.tipsWithLink.get("discord"))), ChatType.CHAT);
+					.append(ForgeHooks.newChatWithLinks(SendTip.tipsWithLink.get("discord"))));
 			return 0;
 		});
 	}
@@ -44,7 +43,7 @@ public class SCCommand {
 			ctx.getSource().getPlayerOrException().sendSystemMessage(Component.translatable("messages.securitycraft:sc_help",
 					Component.translatable(Blocks.CRAFTING_TABLE.getDescriptionId()),
 					Component.translatable(Items.BOOK.getDescriptionId()),
-					Component.translatable(Items.IRON_BARS.getDescriptionId())), ChatType.CHAT);
+					Component.translatable(Items.IRON_BARS.getDescriptionId())));
 			return 0;
 		});
 	}
