@@ -56,7 +56,9 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (!EntityUtils.doesEntityOwn(entity, level, pos))
+		if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
+			return;
+		else if (!EntityUtils.doesEntityOwn(entity, level, pos))
 			explode(level, pos);
 	}
 

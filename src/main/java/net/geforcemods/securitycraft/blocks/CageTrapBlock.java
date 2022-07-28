@@ -93,6 +93,9 @@ public class CageTrapBlock extends DisguisableBlock {
 			boolean isPlayer = entity instanceof Player;
 
 			if (isPlayer || (entity instanceof Mob && cageTrap.capturesMobs())) {
+				if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
+					return;
+
 				if ((isPlayer && cageTrap.getOwner().isOwner((Player) entity)))
 					return;
 
