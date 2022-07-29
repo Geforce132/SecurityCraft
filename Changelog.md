@@ -12,6 +12,7 @@
 - API: IEMPAffectedTE has been added as a default implementation for tile entities which want to implement IEMPAffected
 - Fix: The default display name of some blocks is always "Customize"
 - Fix: Crash with disguised blocks from before the state selector existed
+- Fix: The Password-protected Chest sometimes doesn't open when there's an Allowlist Module installed
 
 --------------------------Changelog for v1.9.2 of SecurityCraft--------------------------
 

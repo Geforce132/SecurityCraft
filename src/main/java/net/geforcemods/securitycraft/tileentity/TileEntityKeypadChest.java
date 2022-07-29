@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.EnumMap;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -389,6 +390,6 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 
 	@Override
 	public ITextComponent getDefaultName() {
-		return Utils.localize(blockType.getTranslationKey() + ".name");
+		return Utils.localize(SCContent.keypadChest.getTranslationKey() + ".name");
 	}
 }
