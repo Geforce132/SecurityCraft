@@ -36,7 +36,6 @@ public class FallingBlockMineBlock extends BaseFullMineBlock {
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
-		//TODO: 1.18 check this
 		if ((level.isEmptyBlock(pos.below()) || canFallThrough(level.getBlockState(pos.below()))) && pos.getY() >= 0) {
 			if (level.hasChunksAt(pos.offset(-32, -32, -32), pos.offset(32, 32, 32))) {
 				BlockEntity be = level.getBlockEntity(pos);
@@ -53,7 +52,6 @@ public class FallingBlockMineBlock extends BaseFullMineBlock {
 
 				level.destroyBlock(pos, false);
 
-				//TODO: 1.18 check this
 				for (landedPos = pos.below(); (level.isEmptyBlock(landedPos) || canFallThrough(level.getBlockState(landedPos))) && landedPos.getY() > 0; landedPos = landedPos.below()) {}
 
 				if (landedPos.getY() > 0)

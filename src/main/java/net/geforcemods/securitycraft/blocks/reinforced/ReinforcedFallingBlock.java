@@ -39,7 +39,6 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock {
 	}
 
 	private void checkFallable(Level level, BlockPos pos) {
-		//TODO: check 1.18
 		if (canFallThrough(level.getBlockState(pos.below())) && pos.getY() >= 0) {
 			if (level.hasChunksAt(pos.offset(-32, -32, -32), pos.offset(32, 32, 32))) {
 				BlockEntity be = level.getBlockEntity(pos);
@@ -61,7 +60,6 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock {
 
 				BlockPos landedPos;
 
-				//TODO: 1.18 check this
 				for (landedPos = pos.below(); canFallThrough(level.getBlockState(landedPos)) && landedPos.getY() > 0; landedPos = landedPos.below()) {}
 
 				if (landedPos.getY() > 0)
