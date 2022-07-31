@@ -74,7 +74,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob, IE
 	private static final float UPWARDS_ANIMATION_LIMIT = 0.025F;
 	private static final float DOWNWARDS_ANIMATION_LIMIT = 0.9F;
 	private float headYTranslation = 0.9F;
-	private boolean shutDown = true;
+	private boolean shutDown = false;
 	public boolean animateUpwards = true;
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
