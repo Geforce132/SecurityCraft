@@ -24,7 +24,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 public class TileEntityIMS extends CustomizableSCTE implements ITickable {
-	private OptionInt range = new OptionInt(this::getPos, "range", 12, 1, 30, 1, true);
+	private OptionInt range = new OptionInt(this::getPos, "range", 15, 1, 30, 1, true);
 	private DisabledOption disabled = new DisabledOption(false);
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
