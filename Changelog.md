@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 
 - Fix: Newly placed Sentries do not work. To fix non-working sentries, right-click them with redstone
+- Misc.: The French translation has been updated to address the new content from v1.9.3
 
 --------------------------Changelog for v1.9.3 of SecurityCraft--------------------------
 
