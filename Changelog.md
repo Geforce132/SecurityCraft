@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 
+- Change: The default range of the IMS has been increased from 12 to 15 blocks
 - Fix: Newly placed Sentries do not work. To fix non-working sentries, right-click them with redstone
 - Misc.: The French translation has been updated to address the new content from v1.9.3
 
