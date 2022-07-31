@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
+
+- Fix: Newly placed Sentries do not work. To fix non-working sentries, right-click them with redstone
+
 --------------------------Changelog for v1.9.3 of SecurityCraft--------------------------
 
 - New: Items can now be dragged from JEI into the Inventory Scanner's ghost slots
