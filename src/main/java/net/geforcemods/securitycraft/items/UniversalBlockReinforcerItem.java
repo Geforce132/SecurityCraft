@@ -48,8 +48,7 @@ public class UniversalBlockReinforcerItem extends Item {
 		return InteractionResultHolder.consume(player.getItemInHand(hand));
 	}
 
-	public static boolean convertBlock(BlockState vanillaState, Level level, ItemStack stack, BlockPos pos, Player player) //gets rid of the stuttering experienced with onBlockStartBreak
-	{
+	public static boolean convertBlock(BlockState vanillaState, Level level, ItemStack stack, BlockPos pos, Player player) { //gets rid of the stuttering experienced with onBlockStartBreak
 		if (!player.isCreative()) {
 			Block block = vanillaState.getBlock();
 			Block rb = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(block);
