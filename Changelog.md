@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
+
+- Fix: Nether portals can replace reinforced blocks when generating
+
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 
 - Change: The default range of the IMS has been increased from 12 to 15 blocks
