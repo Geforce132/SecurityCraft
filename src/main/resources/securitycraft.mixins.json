@@ -12,6 +12,7 @@
 		"f3.DebugScreenOverlayMixin"
 	],
 	"mixins": [
+		"PortalForcerMixin",
 		"camera.ChunkMapMixin",
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
