@@ -11,6 +11,7 @@
 		"f3.MixinGuiOverlayDebug"
 	],
 	"mixins": [
+		"MixinTeleporter",
 		"camera.MixinEntityPlayerMP",
 		"camera.MixinEntityTrackerEntry",
 		"camera.MixinPlayerList"
