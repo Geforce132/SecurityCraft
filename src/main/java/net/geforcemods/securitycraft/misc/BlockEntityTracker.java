@@ -2,11 +2,10 @@ package net.geforcemods.securitycraft.misc;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
@@ -24,7 +23,7 @@ import net.minecraft.world.World;
 public final class BlockEntityTracker<BE extends TileEntity> {
 	public static final BlockEntityTracker<SonicSecuritySystemBlockEntity> SONIC_SECURITY_SYSTEM = new BlockEntityTracker<>(be -> SonicSecuritySystemBlockEntity.MAX_RANGE);
 	public static final BlockEntityTracker<BlockChangeDetectorBlockEntity> BLOCK_CHANGE_DETECTOR = new BlockEntityTracker<>(be -> be.getRange());
-	private final Map<RegistryKey<World>, Collection<BlockPos>> trackedBlockEntities = new HashMap<>();
+	private final Map<RegistryKey<World>, Collection<BlockPos>> trackedBlockEntities = new ConcurrentHashMap<>();
 	private final Function<BE, Integer> range;
 
 	private BlockEntityTracker(Function<BE, Integer> range) {
@@ -90,7 +89,7 @@ public final class BlockEntityTracker<BE extends TileEntity> {
 		Collection<BlockPos> blockEntities = trackedBlockEntities.get(level.dimension());
 
 		if (blockEntities == null) {
-			blockEntities = new HashSet<>();
+			blockEntities = ConcurrentHashMap.newKeySet();
 			trackedBlockEntities.put(level.dimension(), blockEntities);
 		}
 
