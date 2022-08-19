@@ -2,11 +2,10 @@ package net.geforcemods.securitycraft.misc;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockChangeDetector;
@@ -23,7 +22,7 @@ import net.minecraft.world.World;
 public class TileEntityTracker<TE extends TileEntity> {
 	public static final TileEntityTracker<TileEntitySonicSecuritySystem> SONIC_SECURITY_SYSTEM = new TileEntityTracker<>(te -> TileEntitySonicSecuritySystem.MAX_RANGE);
 	public static final TileEntityTracker<TileEntityBlockChangeDetector> BLOCK_CHANGE_DETECTOR = new TileEntityTracker<>(te -> te.getRange());
-	private final Map<Integer, Collection<BlockPos>> trackedTileEntities = new HashMap<>();
+	private final Map<Integer, Collection<BlockPos>> trackedTileEntities = new ConcurrentHashMap<>();
 	private final Function<TE, Integer> range;
 
 	private TileEntityTracker(Function<TE, Integer> range) {
@@ -86,7 +85,7 @@ public class TileEntityTracker<TE extends TileEntity> {
 		Collection<BlockPos> tileEntities = trackedTileEntities.get(world.provider.getDimension());
 
 		if (tileEntities == null) {
-			tileEntities = new HashSet<>();
+			tileEntities = ConcurrentHashMap.newKeySet();
 			trackedTileEntities.put(world.provider.getDimension(), tileEntities);
 		}
 
