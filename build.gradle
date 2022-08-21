@@ -45,7 +45,7 @@ sourceSets.main.resources {
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '2022.08.10-1.19.2'
+    mappings channel: 'parchment', version: '2022.08.21-1.19.2'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
 	runs {
@@ -97,16 +97,16 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.2-43.0.0'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.1.2'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     
-    implementation fg.deobf("curse.maven:jei-238222:3903068")
-    implementation fg.deobf("curse.maven:the-one-probe-245211:3871444")
-    implementation fg.deobf("curse.maven:jade-324717:3903693")
+    implementation fg.deobf("curse.maven:jei-238222:3944627")
+    implementation fg.deobf("curse.maven:the-one-probe-245211:3927520")
+    implementation fg.deobf("curse.maven:jade-324717:3916646")
     implementation fg.deobf("curse.maven:betterf3-401648:3884460")
     implementation fg.deobf("curse.maven:cloth-config-348521:3871535") //betterf3 dependency
-    implementation fg.deobf("curse.maven:wthit-forge-455982:3899018")
-    implementation fg.deobf("curse.maven:badpackets-615134:3773642") //wthit dependency
+    implementation fg.deobf("curse.maven:wthit-forge-455982:3944308")
+    implementation fg.deobf("curse.maven:badpackets-615134:3903799") //wthit dependency
 }
 
 mixin {

@@ -66,8 +66,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -346,7 +346,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		if (blockEntity instanceof KeypadChestBlockEntity be)
 			optional = be.getHandlerForSentry(this);
 		else if (blockEntity != null)
-			optional = blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
+			optional = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP);
 
 		if (optional.isPresent()) {
 			IItemHandler handler = optional.orElse(null); //this is safe, because the presence was checked beforehand

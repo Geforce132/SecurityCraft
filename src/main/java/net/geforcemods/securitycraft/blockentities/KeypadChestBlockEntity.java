@@ -41,8 +41,8 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -124,7 +124,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		if (cap == ForgeCapabilities.ITEM_HANDLER)
 			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), () -> getInsertOnlyHandler()).cast();
 		else
 			return super.getCapability(cap, side);
@@ -139,7 +139,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	public LazyOptional<IItemHandler> getHandlerForSentry(Sentry entity) {
 		if (entity.getOwner().owns(this))
-			return super.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
+			return super.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP);
 		else
 			return LazyOptional.empty();
 	}

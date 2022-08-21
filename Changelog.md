@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
 - Fix: Nether portals can replace reinforced blocks when generating
+- Misc: The minimum required Forge version is now 43.1.1
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 
