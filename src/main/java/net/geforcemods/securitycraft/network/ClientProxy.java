@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -68,6 +70,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeColorHelper;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -78,6 +81,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(Side.CLIENT)
 public class ClientProxy implements IProxy {
+	private static Map<Block, Pair<IBlockColor, IItemColor>> toTint = new HashMap<>();
+
 	@SubscribeEvent
 	public static void onModelBake(ModelBakeEvent event) {
 		//@formatter:off
@@ -172,10 +177,6 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void registerRenderThings() {
-		Map<Block, IBlockColor> specialBlockTint = new HashMap<>();
-		Map<Item, IItemColor> specialItemTint = new HashMap<>();
-		int noTint = 0xFFFFFF;
-
 		KeyBindings.init();
 
 		//normal tile entity renderers
@@ -201,27 +202,9 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLogger.class, new TileEntityDisguisableRenderer<>());
 
 		Item.getItemFromBlock(SCContent.keypadChest).setTileEntityItemStackRenderer(new ItemKeypadChestRenderer());
+	}
 
-		specialBlockTint.put(SCContent.reinforcedGrass, (state, world, pos, tintIndex) -> {
-			if (tintIndex == 1 && !state.getValue(BlockReinforcedGrass.SNOWY)) {
-				int grassTint = world != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(world, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D);
-
-				return mixWithReinforcedTintIfEnabled(grassTint);
-			}
-
-			return noTint;
-		});
-
-		specialItemTint.put(Item.getItemFromBlock(SCContent.reinforcedGrass), (stack, tintIndex) -> {
-			if (tintIndex == 1) {
-				int grassTint = ColorizerGrass.getGrassColor(0.5D, 1.0D);
-
-				return mixWithReinforcedTintIfEnabled(grassTint);
-			}
-
-			return noTint;
-		});
-
+	private static void initTint() {
 		for (Field field : SCContent.class.getFields()) {
 			if (field.isAnnotationPresent(Tinted.class)) {
 				int tint = field.getAnnotation(Tinted.class).customTint();
@@ -230,40 +213,69 @@ public class ClientProxy implements IProxy {
 				try {
 					Block block = (Block) field.get(null);
 
+					//@formatter:off
 					//registering reinforced blocks color overlay for world
-					Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
-						if (tintIndex == 0)
-							return hasReinforcedTint ? mixWithReinforcedTintIfEnabled(tint) : tint;
-						else if (specialBlockTint.containsKey(block))
-							return specialBlockTint.get(block).colorMultiplier(state, world, pos, tintIndex);
-						else
-							return noTint;
-					}, block);
-					//same thing for inventory
-					Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> {
-						if (tintIndex == 0)
-							return hasReinforcedTint ? mixWithReinforcedTintIfEnabled(tint) : tint;
-						else if (specialItemTint.containsKey(stack.getItem()))
-							return specialItemTint.get(stack.getItem()).colorMultiplier(stack, tintIndex);
-						else
-							return noTint;
-					}, block);
+					toTint.put(block, Pair.of(
+						(state, world, pos, tintIndex) -> {
+							if (tintIndex == 0)
+								return hasReinforcedTint ? mixWithReinforcedTintIfEnabled(tint) : tint;
+							else
+								return 0xFFFFFF;
+						},
+						//same thing for inventory
+						(stack, tintIndex) -> {
+							if (tintIndex == 0)
+								return hasReinforcedTint ? mixWithReinforcedTintIfEnabled(tint) : tint;
+							else
+								return 0xFFFFFF;
+						}
+					));
+					//@formatter:on
 				}
 				catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
 				}
 			}
 		}
-
-		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1, SCContent.fakeWater, SCContent.bogusWaterFlowing);
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> tintIndex == 0 ? ((ItemBriefcase) stack.getItem()).getColor(stack) : -1, SCContent.briefcase);
 	}
 
-	private int mixWithReinforcedTintIfEnabled(int tint1) {
+	@SubscribeEvent
+	public static void onColorHandlerBlock(ColorHandlerEvent.Block event) {
+		initTint();
+		toTint.forEach((block, pair) -> event.getBlockColors().registerBlockColorHandler(pair.getLeft(), block));
+		event.getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
+			if (tintIndex == 1 && !state.getValue(BlockReinforcedGrass.SNOWY)) {
+				int grassTint = world != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(world, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D);
+
+				return mixWithReinforcedTintIfEnabled(grassTint);
+			}
+
+			return 0xFFFFFF;
+		}, SCContent.reinforcedGrass);
+		event.getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1, SCContent.fakeWater, SCContent.bogusWaterFlowing);
+	}
+
+	@SubscribeEvent
+	public static void onColorHandlerItem(ColorHandlerEvent.Item event) {
+		toTint.forEach((block, pair) -> event.getItemColors().registerItemColorHandler(pair.getRight(), block));
+		event.getItemColors().registerItemColorHandler((stack, tintIndex) -> {
+			if (tintIndex == 1) {
+				int grassTint = ColorizerGrass.getGrassColor(0.5D, 1.0D);
+
+				return mixWithReinforcedTintIfEnabled(grassTint);
+			}
+
+			return 0xFFFFFF;
+		}, SCContent.reinforcedGrass);
+		event.getItemColors().registerItemColorHandler((stack, tintIndex) -> tintIndex == 0 ? ((ItemBriefcase) stack.getItem()).getColor(stack) : -1, SCContent.briefcase);
+		toTint = null;
+	}
+
+	private static int mixWithReinforcedTintIfEnabled(int tint1) {
 		return ConfigHandler.reinforcedBlockTint ? mixTints(tint1, 0x999999) : tint1;
 	}
 
-	private int mixTints(int tint1, int tint2) {
+	private static int mixTints(int tint1, int tint2) {
 		int red = (tint1 >> 0x10) & 0xFF;
 		int green = (tint1 >> 0x8) & 0xFF;
 		int blue = tint1 & 0xFF;
