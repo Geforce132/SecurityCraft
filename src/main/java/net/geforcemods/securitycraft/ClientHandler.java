@@ -95,6 +95,7 @@ import net.minecraft.world.GrassColors;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelDataManager;
@@ -111,6 +112,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientHandler {
 	public static final BlockEntityRenderDelegate DISGUISED_BLOCK_RENDER_DELEGATE = new BlockEntityRenderDelegate();
 	public static final BlockEntityRenderDelegate PROJECTOR_RENDER_DELEGATE = new BlockEntityRenderDelegate();
+	private static Set<Block> reinforcedTint = new HashSet<>();
+	private static Map<Block, Integer> toTint = new HashMap<>();
+	private static Map<Block, IBlockColor> specialBlockTint = new HashMap<>();
+	private static Map<Block, IItemColor> specialItemTint = new HashMap<>();
 	//@formatter:off
 	private static LazyOptional<Block[]> disguisableBlocks = LazyOptional.of(() -> new Block[] {
 			SCContent.BLOCK_CHANGE_DETECTOR.get(),
@@ -299,15 +304,9 @@ public class ClientHandler {
 		ScreenManager.register(SCContent.KEYCARD_READER_MENU.get(), KeycardReaderScreen::new);
 		ScreenManager.register(SCContent.PROJECTOR_MENU.get(), ProjectorScreen::new);
 		KeyBindings.init();
-		tint();
 	}
 
-	private static void tint() {
-		Set<Block> reinforcedTint = new HashSet<>();
-		Map<Block, Integer> toTint = new HashMap<>();
-		Map<Block, IBlockColor> specialBlockTint = new HashMap<>();
-		Map<Block, IItemColor> specialItemTint = new HashMap<>();
-
+	private static void initTint() {
 		for (Field field : SCContent.class.getFields()) {
 			if (field.isAnnotationPresent(Reinforced.class)) {
 				try {
@@ -359,7 +358,14 @@ public class ClientHandler {
 
 			return noTint;
 		});
-		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
+	}
+
+	@SubscribeEvent
+	public static void onColorHandlerBlock(ColorHandlerEvent.Block event) {
+		int noTint = 0xFFFFFF;
+
+		initTint();
+		toTint.forEach((block, tint) -> event.getBlockColors().register((state, world, pos, tintIndex) -> {
 			if (tintIndex == 0)
 				return reinforcedTint.contains(block) ? mixWithReinforcedTintIfEnabled(tint) : tint;
 			else if (specialBlockTint.containsKey(block))
@@ -367,15 +373,7 @@ public class ClientHandler {
 			else
 				return noTint;
 		}, block));
-		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
-			if (tintIndex == 0)
-				return reinforcedTint.contains(item) ? mixWithReinforcedTintIfEnabled(tint) : tint;
-			else if (specialItemTint.containsKey(item))
-				return specialItemTint.get(item).getColor(stack, tintIndex);
-			else
-				return noTint;
-		}, item));
-		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
+		event.getBlockColors().register((state, world, pos, tintIndex) -> {
 			Block block = state.getBlock();
 
 			if (block instanceof DisguisableBlock) {
@@ -387,7 +385,21 @@ public class ClientHandler {
 
 			return noTint;
 		}, disguisableBlocks.orElse(null));
-		Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
+	}
+
+	@SubscribeEvent
+	public static void onColorHandlerItem(ColorHandlerEvent.Item event) {
+		int noTint = 0xFFFFFF;
+
+		toTint.forEach((item, tint) -> event.getItemColors().register((stack, tintIndex) -> {
+			if (tintIndex == 0)
+				return reinforcedTint.contains(item) ? mixWithReinforcedTintIfEnabled(tint) : tint;
+			else if (specialItemTint.containsKey(item))
+				return specialItemTint.get(item).getColor(stack, tintIndex);
+			else
+				return noTint;
+		}, item));
+		event.getItemColors().register((stack, tintIndex) -> {
 			if (tintIndex == 0) {
 				IDyeableArmorItem item = ((IDyeableArmorItem) stack.getItem());
 
@@ -399,6 +411,7 @@ public class ClientHandler {
 			else
 				return -1;
 		}, SCContent.BRIEFCASE.get());
+		toTint = null;
 	}
 
 	private static int mixWithReinforcedTintIfEnabled(int tint1) {

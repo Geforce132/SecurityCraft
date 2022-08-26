@@ -31,7 +31,7 @@ println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getPro
 processResources { 
 	exclude ".cache"
 	duplicatesStrategy = 'include'
- 
+
 	//replace ${version} in mods.toml
 	inputs.property 'version', project.version
 
