@@ -3,9 +3,7 @@ package net.geforcemods.securitycraft;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
@@ -74,8 +72,6 @@ import net.minecraft.client.gui.screen.EditSignScreen;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
@@ -112,10 +108,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientHandler {
 	public static final BlockEntityRenderDelegate DISGUISED_BLOCK_RENDER_DELEGATE = new BlockEntityRenderDelegate();
 	public static final BlockEntityRenderDelegate PROJECTOR_RENDER_DELEGATE = new BlockEntityRenderDelegate();
-	private static Set<Block> reinforcedTint = new HashSet<>();
-	private static Map<Block, Integer> toTint = new HashMap<>();
-	private static Map<Block, IBlockColor> specialBlockTint = new HashMap<>();
-	private static Map<Block, IItemColor> specialItemTint = new HashMap<>();
+	private static Map<Block, Integer> blocksWithReinforcedTint = new HashMap<>();
+	private static Map<Block, Integer> blocksWithCustomTint = new HashMap<>();
 	//@formatter:off
 	private static LazyOptional<Block[]> disguisableBlocks = LazyOptional.of(() -> new Block[] {
 			SCContent.BLOCK_CHANGE_DETECTOR.get(),
@@ -310,11 +304,13 @@ public class ClientHandler {
 		for (Field field : SCContent.class.getFields()) {
 			if (field.isAnnotationPresent(Reinforced.class)) {
 				try {
-					if (field.getAnnotation(Reinforced.class).hasReinforcedTint())
-						reinforcedTint.add(((RegistryObject<Block>) field.get(null)).get());
+					Block block = ((RegistryObject<Block>) field.get(null)).get();
+					int customTint = field.getAnnotation(Reinforced.class).customTint();
 
-					if (field.getAnnotation(Reinforced.class).hasReinforcedTint() || field.getAnnotation(Reinforced.class).customTint() != 0xFFFFFF)
-						toTint.put(((RegistryObject<Block>) field.get(null)).get(), field.getAnnotation(Reinforced.class).customTint());
+					if (field.getAnnotation(Reinforced.class).hasReinforcedTint())
+						blocksWithReinforcedTint.put(block, customTint);
+					else if (customTint != 0xFFFFFF)
+						blocksWithCustomTint.put(block, customTint);
 				}
 				catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
@@ -322,56 +318,31 @@ public class ClientHandler {
 			}
 		}
 
-		int noTint = 0xFFFFFF;
 		int crystalQuartzTint = 0x15B3A2;
 
-		toTint.put(SCContent.BLOCK_POCKET_MANAGER.get(), crystalQuartzTint);
-		reinforcedTint.add(SCContent.BLOCK_POCKET_MANAGER.get());
-		toTint.put(SCContent.BLOCK_POCKET_WALL.get(), crystalQuartzTint);
-		reinforcedTint.add(SCContent.BLOCK_POCKET_WALL.get());
-		toTint.put(SCContent.CHISELED_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
-		toTint.put(SCContent.CRYSTAL_QUARTZ.get(), crystalQuartzTint);
-		toTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), crystalQuartzTint);
-		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
-		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
-		specialBlockTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (state, world, pos, tintIndex) -> {
-			if (tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
-				int grassTint = world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
-
-				return mixWithReinforcedTintIfEnabled(grassTint);
-			}
-
-			return noTint;
-		});
-		specialBlockTint.put(SCContent.REINFORCED_CAULDRON.get(), (state, world, pos, tintIndex) -> {
-			if (tintIndex == 1)
-				return world != null && pos != null ? BiomeColors.getAverageWaterColor(world, pos) : -1;
-
-			return noTint;
-		});
-		specialItemTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (stack, tintIndex) -> {
-			if (tintIndex == 1) {
-				int grassTint = GrassColors.get(0.5D, 1.0D);
-
-				return mixWithReinforcedTintIfEnabled(grassTint);
-			}
-
-			return noTint;
-		});
+		blocksWithReinforcedTint.put(SCContent.BLOCK_POCKET_MANAGER.get(), crystalQuartzTint);
+		blocksWithReinforcedTint.put(SCContent.BLOCK_POCKET_WALL.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.CHISELED_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
+		blocksWithCustomTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
 	}
 
 	@SubscribeEvent
 	public static void onColorHandlerBlock(ColorHandlerEvent.Block event) {
-		int noTint = 0xFFFFFF;
-
 		initTint();
-		toTint.forEach((block, tint) -> event.getBlockColors().register((state, world, pos, tintIndex) -> {
+		blocksWithReinforcedTint.forEach((block, tint) -> event.getBlockColors().register((state, world, pos, tintIndex) -> {
 			if (tintIndex == 0)
-				return reinforcedTint.contains(block) ? mixWithReinforcedTintIfEnabled(tint) : tint;
-			else if (specialBlockTint.containsKey(block))
-				return specialBlockTint.get(block).getColor(state, world, pos, tintIndex);
+				return mixWithReinforcedTintIfEnabled(tint);
 			else
-				return noTint;
+				return 0xFFFFFF;
+		}, block));
+		blocksWithCustomTint.forEach((block, tint) -> event.getBlockColors().register((state, world, pos, tintIndex) -> {
+			if (tintIndex == 0)
+				return tint;
+			else
+				return 0xFFFFFF;
 		}, block));
 		event.getBlockColors().register((state, world, pos, tintIndex) -> {
 			Block block = state.getBlock();
@@ -383,21 +354,32 @@ public class ClientHandler {
 					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.defaultBlockState(), world, pos, tintIndex);
 			}
 
-			return noTint;
+			return 0xFFFFFF;
 		}, disguisableBlocks.orElse(null));
+		event.getBlockColors().register((state, world, pos, tintIndex) -> {
+			if (tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
+				int grassTint = world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
+
+				return mixWithReinforcedTintIfEnabled(grassTint);
+			}
+
+			return 0xFFFFFF;
+		}, SCContent.REINFORCED_GRASS_BLOCK.get());
 	}
 
 	@SubscribeEvent
 	public static void onColorHandlerItem(ColorHandlerEvent.Item event) {
-		int noTint = 0xFFFFFF;
-
-		toTint.forEach((item, tint) -> event.getItemColors().register((stack, tintIndex) -> {
+		blocksWithReinforcedTint.forEach((item, tint) -> event.getItemColors().register((stack, tintIndex) -> {
 			if (tintIndex == 0)
-				return reinforcedTint.contains(item) ? mixWithReinforcedTintIfEnabled(tint) : tint;
-			else if (specialItemTint.containsKey(item))
-				return specialItemTint.get(item).getColor(stack, tintIndex);
+				return mixWithReinforcedTintIfEnabled(tint);
 			else
-				return noTint;
+				return 0xFFFFFF;
+		}, item));
+		blocksWithCustomTint.forEach((item, tint) -> event.getItemColors().register((stack, tintIndex) -> {
+			if (tintIndex == 0)
+				return tint;
+			else
+				return 0xFFFFFF;
 		}, item));
 		event.getItemColors().register((stack, tintIndex) -> {
 			if (tintIndex == 0) {
@@ -411,7 +393,17 @@ public class ClientHandler {
 			else
 				return -1;
 		}, SCContent.BRIEFCASE.get());
-		toTint = null;
+		event.getItemColors().register((stack, tintIndex) -> {
+			if (tintIndex == 1) {
+				int grassTint = GrassColors.get(0.5D, 1.0D);
+
+				return mixWithReinforcedTintIfEnabled(grassTint);
+			}
+
+			return 0xFFFFFF;
+		}, SCContent.REINFORCED_GRASS_BLOCK.get());
+		blocksWithReinforcedTint = null;
+		blocksWithCustomTint = null;
 	}
 
 	private static int mixWithReinforcedTintIfEnabled(int tint1) {
