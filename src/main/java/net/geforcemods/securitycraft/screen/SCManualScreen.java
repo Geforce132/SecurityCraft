@@ -337,7 +337,7 @@ public class SCManualScreen extends Screen {
 			else
 				author.clear();
 
-			intro2 = font.split(Utils.localize("gui.securitycraft:scManual.intro.2"), 225);
+			intro2 = font.split(Utils.localize("gui.securitycraft:scManual.intro.2"), 202);
 			patronList.fetchPatrons();
 			return;
 		}
