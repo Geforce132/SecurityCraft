@@ -419,7 +419,7 @@ help.securitycraft:speed_module.info=El módulo de velocidad permite que algunos
 
 gui.securitycraft:scManual.disabled=Desactivado
 gui.securitycraft:scManual.intro.1=Primeros pasos en SecurityCraft
-gui.securitycraft:scManual.intro.2=por Geforce, bl4ckscor3 y Redstone_Dubstep
+gui.securitycraft:scManual.intro.2=por Geforce, bl4ckscor3 Redstone_Dubstep y ChainmailPickaxe
 gui.securitycraft:scManual.author=Traducido por Ryo567, ca11 y zeedif
 gui.securitycraft:scManual.ownableBlock=Bloque con propietario: Este bloque es resistente a explosiones y solo puede ser eliminado por el jugador que lo colocó usando el eliminador de bloques universal.
 gui.securitycraft:scManual.passwordProtectedBlock=Protegido con contraseña: Este bloque solo puede utilizarse si se introduce correctamente la contraseña establecida por su propietario.

@@ -447,7 +447,7 @@ help.securitycraft:portable_tune_player.info=Der tragbare Melodienspieler kann e
 
 gui.securitycraft:scManual.disabled=Deaktiviert
 gui.securitycraft:scManual.intro.1=Anfangen mit SecurityCraft
-gui.securitycraft:scManual.intro.2=von Geforce, bl4ckscor3, und Redstone_Dubstep
+gui.securitycraft:scManual.intro.2=von Geforce, bl4ckscor3, Redstone_Dubstep und ChainmailPickaxe
 gui.securitycraft:scManual.author=Übersetzt von bl4ckscor3 und Redstone_Dubstep
 gui.securitycraft:scManual.ownableBlock=Besitzbar: Dieser Block ist resistent gegenüber Explosionen und kann nur vom Besitzer mit einem Universellen Blockentferner entfernt werden.
 gui.securitycraft:scManual.passwordProtectedBlock=Passwortgesichert: Dieser Block kann nur benutzt werden, wenn das korrekte Passwort eingegeben wird.
