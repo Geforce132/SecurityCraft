@@ -146,7 +146,7 @@ public class GuiSCManual extends GuiScreen {
 
 			fontRenderer.drawString(pageTitle, startX + 39, 27, 0, false);
 			fontRenderer.drawString(pageNumberText, startX + 240 - fontRenderer.getStringWidth(pageNumberText), 182, 0x8E8270);
-			fontRenderer.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 230, 0);
+			fontRenderer.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			pageIcon.render(mouseX, mouseY, partialTicks);
 
