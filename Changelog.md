@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
+- New: Japanese translation (Thanks momo-i!)
 - Fix: Nether portals can replace reinforced blocks when generating
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
