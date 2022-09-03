@@ -55,81 +55,81 @@
     "1.19.2-recommended": "1.9.3.1"
   },
   "1.7.10": {
-    "v1.8.13": "Tons of new features and fixes"
+    "v1.8.13": "https://github.com/Geforce132/SecurityCraft/blob/1.7.10/Changelog%20v1.8.x.md"
   },
   "1.8": {
-    "v1.8.12": "Fix crash involving the Security Camera"
+    "v1.8.12": "https://github.com/Geforce132/SecurityCraft/blob/1.8/Changelog%20v1.8.x.md"
   },
   "1.8.8": {
-    "v1.8.12.1": "Fix crash involving the Security Camera"
+    "v1.8.12.1": "https://github.com/Geforce132/SecurityCraft/blob/1.8.9/Changelog%20v1.8.x.md"
   },
   "1.8.9": {
-    "v1.8.12.1": "Fix crash involving the Security Camera"
+    "v1.8.12.1": "https://github.com/Geforce132/SecurityCraft/blob/1.8.9/Changelog%20v1.8.x.md"
   },
   "1.9.4": {
-    "v1.8.12": "Fixes"
+    "v1.8.12": "https://github.com/Geforce132/SecurityCraft/blob/1.9.4/Changelog%20v1.8.x.md"
   },
   "1.10.2": {
-    "v1.8.12": "Fixes"
+    "v1.8.12": "https://github.com/Geforce132/SecurityCraft/blob/1.10.2/Changelog%20v1.8.x.md"
   },
   "1.11.2": {
-    "v1.8.12.1": "Fixes"
+    "v1.8.12.1": "https://github.com/Geforce132/SecurityCraft/blob/1.11.2/Changelog%20v1.8.x.md"
   },
   "1.12": {
-    "v1.8.8.1": "Several new reinforced blocks, dozens of fixes and some small new features."
+    "v1.8.8.1": "https://github.com/Geforce132/SecurityCraft/blob/54061f84f188c33db291770e550c4c84a927194c/Changelog v1.8.x.md"
   },
   "1.12.1": {
-    "v1.8.8.1": "Several new reinforced blocks, dozens of fixes and some small new features."
+    "v1.8.8.1": "https://github.com/Geforce132/SecurityCraft/blob/54061f84f188c33db291770e550c4c84a927194c/Changelog v1.8.x.md"
   },
   "1.12.2": {
-    "v1.9.3.1": "Quality of life improvements and fixes"
+    "v1.9.3.1": "https://github.com/Geforce132/SecurityCraft/blob/1.12.2/Changelog.md"
   },
   "1.13.2": {
-    "v1.8.13": "Tons of new features and fixes"
+    "v1.8.13": "https://github.com/Geforce132/SecurityCraft/blob/1.13.2/Changelog%20v1.8.x.md"
   },
   "1.14.3": {
-    "v1.8.12-beta2": "The One Probe integration!"
+    "v1.8.12-beta2": "https://github.com/Geforce132/SecurityCraft/blob/b20ce0945abdccb8f2b6abaea5d26c28d0a3b916/Changelog v1.8.x.md"
   },
   "1.14.4": {
-    "v1.8.22.2": "Keycard overhaul, new Speed Module, module renames, proper offhand support, quality of life changes and a bunch of fixes."
+    "v1.8.22.2": "https://github.com/Geforce132/SecurityCraft/blob/1.14.4/Changelog%20v1.8.x.md"
   },
   "1.15.1": {
-    "v1.8.15-beta2": "Sentry Remote Access Tool and a ton of QoL fixes and additions"
+    "v1.8.15-beta2": "https://github.com/Geforce132/SecurityCraft/blob/04f414232af5250193ed610da93696a830584cc9/Changelog%20v1.8.x.md"
   },
   "1.15.2": {
-    "v1.9.1": "State selector, block mines/password-protected smoker & blast furnace, fixes"
+    "v1.9.1": "https://github.com/Geforce132/SecurityCraft/blob/1.15.x/Changelog.md"
   },
   "1.16.1": {
-	"v1.8.19.3": "Backport fixes from SecurityCraft for Minecraft 1.16.2"
+	"v1.8.19.3": "https://github.com/Geforce132/SecurityCraft/blob/1.16.1/Changelog%20v1.8.x.md"
   },
   "1.16.2": {
-	"v1.8.19.3": "Fix compatibility with Forge 33.0.21+"
+	"v1.8.19.3": "https://github.com/Geforce132/SecurityCraft/blob/1.16.1/Changelog%20v1.8.x.md"
   },
   "1.16.3": {
-	"v1.8.21.1": "Sentry & Block Pocket Manager overhaul, configuration file restructure, other new features, lots of fixes."
+	"v1.8.21.1": "https://github.com/Geforce132/SecurityCraft/blob/44460188b9bf30b94f122ba362092cba5e76e0d2/Changelog%20v1.8.x.md"
   },
   "1.16.4": {
-	"v1.8.21.1": "Sentry & Block Pocket Manager overhaul, configuration file restructure, other new features, lots of fixes."
+	"v1.8.21.1": "https://github.com/Geforce132/SecurityCraft/blob/44460188b9bf30b94f122ba362092cba5e76e0d2/Changelog%20v1.8.x.md"
   },
   "1.16.5": {
-	"v1.9.3.1": "Quality of life improvements and fixes"
+	"v1.9.3.1": "https://github.com/Geforce132/SecurityCraft/blob/1.16.3/Changelog.md"
   },
   "1.17.1": {
-	"1.9.3.1": "Quality of life improvements and fixes"
+	"1.9.3.1": "https://github.com/Geforce132/SecurityCraft/blob/1.17.1/Changelog.md"
   },
   "1.18.1": {
-	"1.9.0.2-beta1": "The Texture Update"
+	"1.9.0.2-beta1": "https://github.com/Geforce132/SecurityCraft/blob/1.18.1/Changelog.md"
   },
   "1.18.2": {
-	"1.9.3.1": "Quality of life improvements and fixes"
+	"1.9.3.1": "https://github.com/Geforce132/SecurityCraft/blob/1.18.2/Changelog.md"
   },
   "1.19": {
-	"1.9.3.1": "New reinforced blocks, quality of life improvements, and fixes"
+	"1.9.3.1": "https://github.com/Geforce132/SecurityCraft/blob/1.19/Changelog.md"
   },
   "1.19.1": {
-	"1.9.3.1": "New reinforced blocks, quality of life improvements, and fixes"
+	"1.9.3.1": "https://github.com/Geforce132/SecurityCraft/blob/c60edcc5881fc8ca4394bfeae3254ab0d693ab5e/Changelog.md"
   },
   "1.19.2": {
-	"1.9.3.1": "New reinforced blocks, quality of life improvements, and fixes"
+	"1.9.3.1": "https://github.com/Geforce132/SecurityCraft/blob/1.19.1/Changelog.md"
   }
 }
