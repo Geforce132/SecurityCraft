@@ -41,18 +41,18 @@
     "1.16.4-recommended": "v1.8.21.1",
     "1.16.5-latest": "v1.9.3.1",
     "1.16.5-recommended": "v1.9.3.1",
-    "1.17.1-latest": "v1.9.3.1",
-    "1.17.1-recommended": "v1.9.3.1",
-    "1.18.1-latest": "v1.9.0.2-beta1",
-    "1.18.1-recommended": "v1.9.0.2-beta1",
-    "1.18.2-latest": "v1.9.3.1",
-    "1.18.2-recommended": "v1.9.3.1",
-    "1.19-latest": "v1.9.3.1",
-    "1.19-recommended": "v1.9.3.1",
-    "1.19.1-latest": "v1.9.3.1",
-    "1.19.1-recommended": "v1.9.3.1",
-    "1.19.2-latest": "v1.9.3.1",
-    "1.19.2-recommended": "v1.9.3.1"
+    "1.17.1-latest": "1.9.3.1",
+    "1.17.1-recommended": "1.9.3.1",
+    "1.18.1-latest": "1.9.0.2-beta1",
+    "1.18.1-recommended": "1.9.0.2-beta1",
+    "1.18.2-latest": "v.9.3.1",
+    "1.18.2-recommended": "1.9.3.1",
+    "1.19-latest": "1.9.3.1",
+    "1.19-recommended": "1.9.3.1",
+    "1.19.1-latest": "1.9.3.1",
+    "1.19.1-recommended": "1.9.3.1",
+    "1.19.2-latest": "1.9.3.1",
+    "1.19.2-recommended": "1.9.3.1"
   },
   "1.7.10": {
     "v1.8.13": "Tons of new features and fixes"
@@ -115,21 +115,21 @@
 	"v1.9.3.1": "Quality of life improvements and fixes"
   },
   "1.17.1": {
-	"v1.9.3.1": "Quality of life improvements and fixes"
+	"1.9.3.1": "Quality of life improvements and fixes"
   },
   "1.18.1": {
-	"v1.9.0.2-beta1": "The Texture Update"
+	"1.9.0.2-beta1": "The Texture Update"
   },
   "1.18.2": {
-	"v1.9.3.1": "Quality of life improvements and fixes"
+	"1.9.3.1": "Quality of life improvements and fixes"
   },
   "1.19": {
-	"v1.9.3.1": "New reinforced blocks, quality of life improvements, and fixes"
+	"1.9.3.1": "New reinforced blocks, quality of life improvements, and fixes"
   },
   "1.19.1": {
-	"v1.9.3.1": "New reinforced blocks, quality of life improvements, and fixes"
+	"1.9.3.1": "New reinforced blocks, quality of life improvements, and fixes"
   },
   "1.19.2": {
-	"v1.9.3.1": "New reinforced blocks, quality of life improvements, and fixes"
+	"1.9.3.1": "New reinforced blocks, quality of life improvements, and fixes"
   }
 }
