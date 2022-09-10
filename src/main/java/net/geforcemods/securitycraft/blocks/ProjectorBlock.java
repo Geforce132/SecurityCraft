@@ -61,7 +61,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
-		else if (!disguisedState.getValue(HANGING))
+		else if (!disguisedState.getValue(HANGING)) {
 			return switch (disguisedState.getValue(FACING)) {
 				case NORTH -> FLOOR_NORTH;
 				case EAST -> FLOOR_EAST;
@@ -69,7 +69,8 @@ public class ProjectorBlock extends DisguisableBlock {
 				case WEST -> FLOOR_WEST;
 				default -> Shapes.block();
 			};
-		else
+		}
+		else {
 			return switch (disguisedState.getValue(FACING)) {
 				case NORTH -> CEILING_NORTH;
 				case EAST -> CEILING_EAST;
@@ -77,6 +78,7 @@ public class ProjectorBlock extends DisguisableBlock {
 				case WEST -> CEILING_WEST;
 				default -> Shapes.block();
 			};
+		}
 	}
 
 	@Override
