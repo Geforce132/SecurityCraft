@@ -941,7 +941,6 @@
 	"config.waila.plugin_securitycraft.showmodules": "モジュールを表示する？",
 	"config.waila.plugin_securitycraft.showpasswords": "パスワードを表示する？",
 	"config.waila.plugin_securitycraft.showcustomname": "名前付きブロックを表示する？",
-	"config.jade.plugin_securitycraft": "SecurityCraft",
 	"config.jade.plugin_securitycraft.showowner": "所有者を表示する？",
 	"config.jade.plugin_securitycraft.showmodules": "モジュールを表示する？",
 	"config.jade.plugin_securitycraft.showpasswords": "パスワードを表示する？",

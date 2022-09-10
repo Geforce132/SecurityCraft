@@ -2,6 +2,7 @@
 
 - New: Japanese translation (Thanks momo-i!)
 - Fix: Nether portals can replace reinforced blocks when generating
+- Fix: Crash when trying to disguise a block as/project some blocks that don't always have a block entity associated with them
 - Misc: The minimum required Forge version is now 43.1.1
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
