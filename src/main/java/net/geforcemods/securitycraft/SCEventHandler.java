@@ -257,11 +257,13 @@ public class SCEventHandler {
 		Block block = world.getBlockState(event.getPos()).getBlock();
 
 		if (te instanceof ILockable && ((ILockable) te).isLocked() && ((ILockable) te).disableInteractionWhenLocked(world, event.getPos(), event.getEntityPlayer())) {
-			if (event.getHand() == EnumHand.MAIN_HAND)
-				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block)), TextFormatting.DARK_RED, false);
+			if (!event.getEntityPlayer().isSneaking()) {
+				if (event.getHand() == EnumHand.MAIN_HAND)
+					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block)), TextFormatting.DARK_RED, false);
 
-			event.setCanceled(true);
-			return;
+				event.setCanceled(true);
+				return;
+			}
 		}
 
 		if (event.getItemStack().getItem() == Items.REDSTONE && te instanceof IEMPAffected && ((IEMPAffected) te).isShutDown()) {

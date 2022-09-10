@@ -92,6 +92,7 @@ public class GuiSRAT extends GuiContainer {
 						guiButtons[i][j].enabled = false;
 						break;
 				}
+
 				buttonList.add(guiButtons[i][j]);
 			}
 
@@ -158,9 +159,6 @@ public class GuiSRAT extends GuiContainer {
 		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[UNBIND], Utils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll").getFormattedText();
