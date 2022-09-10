@@ -232,8 +232,13 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 				Minecraft mc = Minecraft.getInstance();
 
 				be = ((EntityBlock) state.getBlock()).newBlockEntity(BlockPos.ZERO, state);
-				be.setLevel(mc.level);
-				beRenderer = mc.getBlockEntityRenderDispatcher().getRenderer(be);
+
+				if (be != null) {
+					be.setLevel(mc.level);
+					beRenderer = mc.getBlockEntityRenderDispatcher().getRenderer(be);
+				}
+				else
+					beRenderer = null;
 			}
 			else
 				be.setBlockState(state);
