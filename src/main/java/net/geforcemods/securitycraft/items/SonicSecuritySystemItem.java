@@ -94,7 +94,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 			return ActionResultType.FAIL;
 		}
 
-		return ActionResultType.PASS;
+		return world.isClientSide ? ActionResultType.SUCCESS : ActionResultType.PASS;
 	}
 
 	@Override
