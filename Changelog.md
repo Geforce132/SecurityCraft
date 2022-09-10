@@ -2,6 +2,7 @@
 
 - New: Japanese translation (Thanks momo-i!)
 - Fix: Nether portals can replace reinforced blocks when generating
+- Fix: Can't place blocks on blocks locked by a Sonic Security System
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 
