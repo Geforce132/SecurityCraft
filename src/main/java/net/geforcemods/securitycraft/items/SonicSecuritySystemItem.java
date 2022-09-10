@@ -90,7 +90,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 			return InteractionResult.FAIL;
 		}
 
-		return InteractionResult.PASS;
+		return level.isClientSide ? InteractionResult.SUCCESS : InteractionResult.PASS;
 	}
 
 	@Override
