@@ -4,6 +4,7 @@
 - Fix: Nether portals can replace reinforced blocks when generating
 - Fix: Crash when trying to disguise a block as/project some blocks that don't always have a block entity associated with them
 - Fix: Can't place blocks on blocks locked by a Sonic Security System
+- Fix: Interacting with blocks while holding a Sonic Security System may sometimes place it for a short while
 - Misc: The minimum required Forge version is now 43.1.1
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
