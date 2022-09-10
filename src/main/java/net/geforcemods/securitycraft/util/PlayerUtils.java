@@ -98,7 +98,6 @@ public class PlayerUtils {
 	}
 
 	public static void sendMessageToPlayer(Player player, MutableComponent prefix, MutableComponent text, ChatFormatting color, boolean shouldSendFromClient) {
-		//TODO: is this still formatted with color etc.?
 		if (player.level.isClientSide == shouldSendFromClient) {
 			//@formatter:off
 			player.sendSystemMessage(Component.literal("[")
@@ -113,7 +112,6 @@ public class PlayerUtils {
 	 * Sends the given {@link ICommandSource} a chat message, followed by a link prefixed with a colon. <p>
 	 */
 	public static void sendMessageEndingWithLink(CommandSource sender, MutableComponent prefix, MutableComponent text, String link, ChatFormatting color) {
-		//TODO: is this still formatted with color etc.?
 		//@formatter:off
 		sender.sendSystemMessage(Component.literal("[")
 				.append(prefix.setStyle(Style.EMPTY.withColor(color)))
