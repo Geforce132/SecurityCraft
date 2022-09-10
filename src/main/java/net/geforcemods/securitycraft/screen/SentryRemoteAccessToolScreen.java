@@ -107,6 +107,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			if (coords.length == 3) {
 				BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
 
+				lines[i] = Utils.getFormattedCoordinates(sentryPos);
 				guiButtons[i][UNBIND].active = true;
 
 				if (Minecraft.getInstance().player.level.isLoaded(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
@@ -126,8 +127,6 @@ public class SentryRemoteAccessToolScreen extends Screen {
 							lines[i] = sentry.getCustomName();
 							hoverCheckers.add(posTooltipText);
 						}
-						else
-							lines[i] = Utils.getFormattedCoordinates(sentryPos);
 
 						guiButtons[i][MODE].active = true;
 						guiButtons[i][TARGETS].active = mode != SentryMode.IDLE;
