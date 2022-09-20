@@ -34,7 +34,6 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private final Component modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll");
 	private ItemStack srat;
 	private Button[][] guiButtons = new Button[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)
-	private Component[] names = new Component[12];
 	private Button[] guiButtonsGlobal = new Button[3];
 	private static final int MODE = 0, TARGETS = 1, UNBIND = 2;
 	private int xSize = 440, ySize = 215;
@@ -108,12 +107,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			if (coords.length == 3) {
 				BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
 
+				lines[i] = Utils.getFormattedCoordinates(sentryPos);
 				guiButtons[i][UNBIND].active = true;
-
-				if (names[i] != null)
-					lines[i] = names[i];
-				else
-					lines[i] = Utils.getFormattedCoordinates(sentryPos);
 
 				if (Minecraft.getInstance().player.level.isLoaded(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
 					List<Sentry> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(Sentry.class, new AABB(sentryPos));
@@ -129,7 +124,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 							int nameY = startY + (i % 6) * 30 + 7;
 							TextHoverChecker posTooltipText = new TextHoverChecker(nameY + 4, nameY + 18, nameX, nameX + nameWidth + 2, line);
 
-							names[i] = sentry.getCustomName();
+							lines[i] = sentry.getCustomName();
 							hoverCheckers.add(posTooltipText);
 						}
 

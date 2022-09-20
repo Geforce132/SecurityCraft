@@ -30,13 +30,16 @@ public class BlockEntityRenderDelegate {
 		if (delegateState != null && delegateState.hasBlockEntity()) {
 			Minecraft mc = Minecraft.getInstance();
 			BlockEntity delegateBe = ((EntityBlock) delegateState.getBlock()).newBlockEntity(BlockPos.ZERO, delegateState);
-			BlockEntityRenderer<?> delegateBeRenderer;
 
-			delegateBe.setLevel(mc.level);
-			delegateBeRenderer = mc.getBlockEntityRenderDispatcher().getRenderer(delegateBe);
+			if (delegateBe != null) {
+				BlockEntityRenderer<?> delegateBeRenderer;
 
-			if (delegateBeRenderer != null)
-				renderDelegates.put(originalBlockEntity, new DelegateRendererInfo(delegateBe, delegateBeRenderer));
+				delegateBe.setLevel(mc.level);
+				delegateBeRenderer = mc.getBlockEntityRenderDispatcher().getRenderer(delegateBe);
+
+				if (delegateBeRenderer != null)
+					renderDelegates.put(originalBlockEntity, new DelegateRendererInfo(delegateBe, delegateBeRenderer));
+			}
 		}
 	}
 

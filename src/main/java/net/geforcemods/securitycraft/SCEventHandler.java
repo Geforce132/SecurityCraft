@@ -193,14 +193,16 @@ public class SCEventHandler {
 		Block block = state.getBlock();
 
 		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, event.getPos(), event.getEntity())) {
-			if (event.getHand() == InteractionHand.MAIN_HAND) {
-				MutableComponent blockName = Utils.localize(block.getDescriptionId());
+			if (!event.getEntity().isShiftKeyDown()) {
+				if (event.getHand() == InteractionHand.MAIN_HAND) {
+					MutableComponent blockName = Utils.localize(block.getDescriptionId());
 
-				PlayerUtils.sendMessageToPlayer(event.getEntity(), blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
+					PlayerUtils.sendMessageToPlayer(event.getEntity(), blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
+				}
+
+				event.setCanceled(true);
+				return;
 			}
-
-			event.setCanceled(true);
-			return;
 		}
 
 		if (!level.isClientSide) {

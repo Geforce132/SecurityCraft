@@ -363,10 +363,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
 		tag(BlockTags.SAND).addTag(SCTags.Blocks.REINFORCED_SAND);
 		tag(BlockTags.SLABS).addTag(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get());
-		tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(SCContent.REINFORCED_CLAY.get(), SCContent.REINFORCED_MOSS_BLOCK.get());
-		tag(BlockTags.STAIRS).addTag(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
-		tag(BlockTags.STRIDER_WARM_BLOCKS).add(SCContent.FAKE_LAVA_BLOCK.get());
 		tag(BlockTags.SIGNS).addTag(SCTags.Blocks.SECRET_SIGNS);
+		tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(SCContent.REINFORCED_CLAY.get(), SCContent.REINFORCED_MOSS_BLOCK.get());
 		tag(BlockTags.SNAPS_GOAT_HORN).add(
 				SCContent.REINFORCED_ACACIA_LOG.get(),
 				SCContent.REINFORCED_BIRCH_LOG.get(),
@@ -382,8 +380,12 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.COPPER_ORE_MINE.get(),
 				SCContent.EMERALD_ORE_MINE.get());
 		tag(BlockTags.SNOW).add(SCContent.REINFORCED_SNOW_BLOCK.get());
+		tag(BlockTags.SNOW_LAYER_CAN_SURVIVE_ON).add(SCContent.REINFORCED_MUD.get());
+		tag(BlockTags.SNOW_LAYER_CANNOT_SURVIVE_ON).add(SCContent.REINFORCED_ICE.get(), SCContent.REINFORCED_PACKED_ICE.get());
 		tag(BlockTags.SOUL_FIRE_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
 		tag(BlockTags.SOUL_SPEED_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
+		tag(BlockTags.STRIDER_WARM_BLOCKS).add(SCContent.FAKE_LAVA_BLOCK.get());
+		tag(BlockTags.STAIRS).addTag(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
 		tag(BlockTags.STANDING_SIGNS).addTag(SCTags.Blocks.SECRET_STANDING_SIGNS);
 		tag(BlockTags.TERRACOTTA).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA);
 		tag(BlockTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get());
