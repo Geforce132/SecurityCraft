@@ -13,7 +13,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 
-import net.geforcemods.securitycraft.SCClientEventHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
@@ -33,7 +32,6 @@ import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -93,12 +91,11 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 				changeEntryList.updateFilteredEntries();
 			}
 		});
-		addRenderableWidget(highlightInWorldCheckbox = new Checkbox(leftPos + 173, topPos + 90, 20, 20, Component.empty(), false, false) {
+		addRenderableWidget(highlightInWorldCheckbox = new Checkbox(leftPos + 173, topPos + 90, 20, 20, Component.empty(), be.showsHighlightsInWorld(), false) {
 			@Override
 			public void onPress() {
 				super.onPress();
 				be.showHighlightsInWorld(selected());
-				changeEntryList.updateHighlightsInWorld();
 			}
 		});
 		hoverCheckers[0] = new TextHoverChecker(clearButton, CLEAR);
@@ -193,12 +190,16 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 		if (currentMode != previousMode)
 			SecurityCraft.channel.sendToServer(new SyncBlockChangeDetector(be.getBlockPos(), currentMode));
+
+		be.updateFilteredEntries();
 	}
 
 	@Override
 	public void slotChanged(AbstractContainerMenu menu, int slotIndex, ItemStack stack) {
-		if (slotIndex == 0 && changeEntryList != null)
+		if (slotIndex == 0 && changeEntryList != null) {
 			changeEntryList.updateFilteredEntries();
+			be.updateFilteredEntries();
+		}
 	}
 
 	@Override
@@ -303,20 +304,6 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 			filteredEntries.forEach(e -> e.active = true);
 			recalculateContentHeight();
-			updateHighlightsInWorld();
-		}
-
-		public void updateHighlightsInWorld() {
-			SCClientEventHandler.BCD_HIGHLIGHT_POSITIONS.clear();
-
-			if (be.showsHighlightsInWorld()) {
-				filteredEntries.forEach(e -> {
-					BlockPos pos = e.changeEntry.pos();
-
-					if (!SCClientEventHandler.BCD_HIGHLIGHT_POSITIONS.contains(pos))
-						SCClientEventHandler.BCD_HIGHLIGHT_POSITIONS.add(pos);
-				});
-			}
 		}
 
 		public void recalculateContentHeight() {

@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -14,12 +12,15 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -48,6 +49,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Block;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -69,21 +71,27 @@ public class SCClientEventHandler {
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
-	public static final List<BlockPos> BCD_HIGHLIGHT_POSITIONS = new ArrayList<>();
 
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderLevelStageEvent event) {
-		if (event.getStage() == Stage.AFTER_TRIPWIRE_BLOCKS && !BCD_HIGHLIGHT_POSITIONS.isEmpty()) {
+		if (event.getStage() == Stage.AFTER_TRIPWIRE_BLOCKS) {
 			Vec3 camPos = event.getCamera().getPosition();
 			PoseStack pose = event.getPoseStack();
+			Level level = Minecraft.getInstance().level;
 
-			for (int i = 0; i < BCD_HIGHLIGHT_POSITIONS.size(); i++) {
-				BlockPos pos = BCD_HIGHLIGHT_POSITIONS.get(i);
+			for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedBlockEntities(level)) {
+				BlockEntity be = level.getBlockEntity(bcdPos);
 
-				pose.pushPose();
-				pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
-				ClientUtils.renderBoxInLevel(BCDBuffer.INSTANCE, pose.last().pose(), 0, 1, 0, 1, 1, 0, 0, 255);
-				pose.popPose();
+				if (be instanceof BlockChangeDetectorBlockEntity bcd && bcd.showsHighlightsInWorld()) {
+					for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
+						BlockPos pos = changeEntry.pos();
+
+						pose.pushPose();
+						pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
+						ClientUtils.renderBoxInLevel(BCDBuffer.INSTANCE, pose.last().pose(), 0, 1, 0, 1, 1, 0, 0, 255);
+						pose.popPose();
+					}
+				}
 			}
 
 			Minecraft.getInstance().renderBuffers().bufferSource().endBatch();

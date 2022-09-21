@@ -38,6 +38,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	private DetectionMode mode = DetectionMode.BOTH;
 	private boolean tracked = false;
 	private List<ChangeEntry> entries = new ArrayList<>();
+	private final List<ChangeEntry> filteredEntries = new ArrayList<>();
 	private ItemStack filter = ItemStack.EMPTY;
 	private boolean showHighlightsInWorld = false;
 
@@ -52,8 +53,8 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		if (mode != DetectionMode.BOTH && action != mode)
 			return;
 
-		if (getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player))
-			return;
+		//		if (getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player))
+		//			return;
 
 		//don't detect self
 		if (pos.equals(getBlockPos()))
@@ -91,6 +92,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		tag.putInt("mode", mode.ordinal());
 		tag.put("entries", entryList);
 		tag.put("filter", filter.save(new CompoundTag()));
+		tag.putBoolean("ShowHighlightsInWorld", showHighlightsInWorld);
 	}
 
 	@Override
@@ -106,6 +108,8 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		entries = new ArrayList<>();
 		tag.getList("entries", Tag.TAG_COMPOUND).stream().map(element -> ChangeEntry.load((CompoundTag) element)).forEach(entries::add);
 		filter = ItemStack.of(tag.getCompound("filter"));
+		showHighlightsInWorld = tag.getBoolean("ShowHighlightsInWorld");
+		updateFilteredEntries();
 	}
 
 	@Override
@@ -145,6 +149,15 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	public List<ChangeEntry> getEntries() {
 		return entries;
+	}
+
+	public List<ChangeEntry> getFilteredEntries() {
+		return filteredEntries;
+	}
+
+	public void updateFilteredEntries() {
+		filteredEntries.clear();
+		entries.stream().filter(this::isEntryShown).forEach(filteredEntries::add);
 	}
 
 	public boolean isEntryShown(ChangeEntry entry) {

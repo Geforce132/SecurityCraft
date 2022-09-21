@@ -85,7 +85,7 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 	 *
 	 * @param level The level to get the tracked block entities of
 	 */
-	private Collection<BlockPos> getTrackedBlockEntities(Level level) {
+	public Collection<BlockPos> getTrackedBlockEntities(Level level) {
 		Collection<BlockPos> blockEntities = trackedBlockEntities.get(level.dimension());
 
 		if (blockEntities == null) {
