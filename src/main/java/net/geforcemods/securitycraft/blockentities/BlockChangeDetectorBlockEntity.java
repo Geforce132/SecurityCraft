@@ -40,7 +40,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	private List<ChangeEntry> entries = new ArrayList<>();
 	private final List<ChangeEntry> filteredEntries = new ArrayList<>();
 	private ItemStack filter = ItemStack.EMPTY;
-	private boolean showHighlightsInWorld = false;
+	private boolean showHighlights = false;
 
 	public BlockChangeDetectorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), pos, state);
@@ -92,7 +92,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		tag.putInt("mode", mode.ordinal());
 		tag.put("entries", entryList);
 		tag.put("filter", filter.save(new CompoundTag()));
-		tag.putBoolean("ShowHighlightsInWorld", showHighlightsInWorld);
+		tag.putBoolean("ShowHighlights", showHighlights);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		entries = new ArrayList<>();
 		tag.getList("entries", Tag.TAG_COMPOUND).stream().map(element -> ChangeEntry.load((CompoundTag) element)).forEach(entries::add);
 		filter = ItemStack.of(tag.getCompound("filter"));
-		showHighlightsInWorld = tag.getBoolean("ShowHighlightsInWorld");
+		showHighlights = tag.getBoolean("ShowHighlights");
 		updateFilteredEntries();
 	}
 
@@ -254,12 +254,12 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		return slot >= 100 ? getModuleInSlot(slot) : (slot == 36 ? filter : ItemStack.EMPTY);
 	}
 
-	public void showHighlightsInWorld(boolean showHighlightsInWorld) {
-		this.showHighlightsInWorld = showHighlightsInWorld;
+	public void showHighlights(boolean showHighlights) {
+		this.showHighlights = showHighlights;
 	}
 
-	public boolean showsHighlightsInWorld() {
-		return showHighlightsInWorld;
+	public boolean isShowingHighlights() {
+		return showHighlights;
 	}
 
 	public static enum DetectionMode {

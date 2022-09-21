@@ -91,11 +91,11 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 				changeEntryList.updateFilteredEntries();
 			}
 		});
-		addRenderableWidget(highlightInWorldCheckbox = new Checkbox(leftPos + 173, topPos + 90, 20, 20, Component.empty(), be.showsHighlightsInWorld(), false) {
+		addRenderableWidget(highlightInWorldCheckbox = new Checkbox(leftPos + 173, topPos + 90, 20, 20, Component.empty(), be.isShowingHighlights(), false) {
 			@Override
 			public void onPress() {
 				super.onPress();
-				be.showHighlightsInWorld(selected());
+				be.showHighlights(selected());
 			}
 		});
 		hoverCheckers[0] = new TextHoverChecker(clearButton, CLEAR);
@@ -189,7 +189,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		DetectionMode currentMode = be.getMode();
 
 		if (currentMode != previousMode)
-			SecurityCraft.channel.sendToServer(new SyncBlockChangeDetector(be.getBlockPos(), currentMode));
+			SecurityCraft.channel.sendToServer(new SyncBlockChangeDetector(be.getBlockPos(), currentMode, be.isShowingHighlights()));
 
 		be.updateFilteredEntries();
 	}

@@ -82,7 +82,7 @@ public class SCClientEventHandler {
 			for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedBlockEntities(level)) {
 				BlockEntity be = level.getBlockEntity(bcdPos);
 
-				if (be instanceof BlockChangeDetectorBlockEntity bcd && bcd.showsHighlightsInWorld()) {
+				if (be instanceof BlockChangeDetectorBlockEntity bcd && bcd.isShowingHighlights()) {
 					for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
 						BlockPos pos = changeEntry.pos();
 

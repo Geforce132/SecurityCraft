@@ -13,17 +13,20 @@ import net.minecraftforge.network.NetworkEvent;
 public class SyncBlockChangeDetector {
 	private BlockPos pos;
 	private DetectionMode mode;
+	private boolean showHighlights;
 
 	public SyncBlockChangeDetector() {}
 
-	public SyncBlockChangeDetector(BlockPos pos, DetectionMode mode) {
+	public SyncBlockChangeDetector(BlockPos pos, DetectionMode mode, boolean showHighlights) {
 		this.pos = pos;
 		this.mode = mode;
+		this.showHighlights = showHighlights;
 	}
 
 	public static void encode(SyncBlockChangeDetector message, FriendlyByteBuf buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeEnum(message.mode);
+		buf.writeBoolean(message.showHighlights);
 	}
 
 	public static SyncBlockChangeDetector decode(FriendlyByteBuf buf) {
@@ -31,6 +34,7 @@ public class SyncBlockChangeDetector {
 
 		message.pos = buf.readBlockPos();
 		message.mode = buf.readEnum(DetectionMode.class);
+		message.showHighlights = buf.readBoolean();
 		return message;
 	}
 
@@ -43,6 +47,7 @@ public class SyncBlockChangeDetector {
 				BlockState state = level.getBlockState(pos);
 
 				be.setMode(message.mode);
+				be.showHighlights(message.showHighlights);
 				level.sendBlockUpdated(pos, state, state, 2);
 			}
 		});
