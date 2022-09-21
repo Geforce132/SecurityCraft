@@ -1,8 +1,15 @@
 package net.geforcemods.securitycraft;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -24,6 +31,8 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -46,6 +55,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -58,6 +69,26 @@ public class SCClientEventHandler {
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
+	public static final List<BlockPos> BCD_HIGHLIGHT_POSITIONS = new ArrayList<>();
+
+	@SubscribeEvent
+	public static void onRenderLevelStage(RenderLevelStageEvent event) {
+		if (event.getStage() == Stage.AFTER_TRIPWIRE_BLOCKS && !BCD_HIGHLIGHT_POSITIONS.isEmpty()) {
+			Vec3 camPos = event.getCamera().getPosition();
+			PoseStack pose = event.getPoseStack();
+
+			for (int i = 0; i < BCD_HIGHLIGHT_POSITIONS.size(); i++) {
+				BlockPos pos = BCD_HIGHLIGHT_POSITIONS.get(i);
+
+				pose.pushPose();
+				pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
+				ClientUtils.renderBoxInLevel(BCDBuffer.INSTANCE, pose.last().pose(), 0, 1, 0, 1, 1, 0, 0, 255);
+				pose.popPose();
+			}
+
+			Minecraft.getInstance().renderBuffers().bufferSource().endBatch();
+		}
+	}
 
 	@SubscribeEvent
 	public static void onScreenshot(ScreenshotEvent event) {
@@ -151,9 +182,8 @@ public class SCClientEventHandler {
 			else
 				gui.blit(pose, 12, 3, 90, 0, 12, 11);
 		}
-		else {
+		else
 			Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(REDSTONE, 10, 0);
-		}
 	}
 
 	public static void hotbarBindOverlay(ForgeGui gui, PoseStack pose, float partialTicks, int width, int height) {
@@ -251,6 +281,57 @@ public class SCClientEventHandler {
 			if (uCoord != 0) {
 				RenderSystem._setShaderTexture(0, BEACON_GUI);
 				GuiComponent.blit(pose, Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 90 + (hand == InteractionHand.MAIN_HAND ? player.getInventory().selected * 20 : (mc.options.mainHand().get() == HumanoidArm.LEFT ? 189 : -29)), Minecraft.getInstance().getWindow().getGuiScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
+			}
+		}
+	}
+
+	private static enum BCDBuffer implements MultiBufferSource {
+		INSTANCE;
+
+		@Override
+		public VertexConsumer getBuffer(RenderType renderType) {
+			return Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(WrappedRenderType.get(renderType));
+		}
+	}
+
+	private static class WrappedRenderType extends RenderType {
+		private static final Map<RenderType, WrappedRenderType> WRAPPED_RENDER_TYPES = new HashMap<>();
+		private final RenderType toWrap;
+
+		private WrappedRenderType(RenderType toWrap) {
+			super("wrapped_" + toWrap.name, toWrap.format(), toWrap.mode(), toWrap.bufferSize(), toWrap.affectsCrumbling(), toWrap.sortOnUpload, toWrap::setupRenderState, toWrap::clearRenderState);
+			this.toWrap = toWrap;
+		}
+
+		@Override
+		public String toString() {
+			return "wrapped_" + toWrap.toString();
+		}
+
+		@Override
+		public void setupRenderState() {
+			toWrap.setupRenderState();
+
+			RenderTarget renderTarget = Minecraft.getInstance().levelRenderer.entityTarget();
+
+			if (renderTarget != null)
+				renderTarget.bindWrite(false);
+		}
+
+		@Override
+		public void clearRenderState() {
+			Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
+			toWrap.clearRenderState();
+		}
+
+		public static WrappedRenderType get(RenderType toWrap) {
+			if (toWrap instanceof WrappedRenderType wrapped)
+				return wrapped;
+			else {
+				if (!WRAPPED_RENDER_TYPES.containsKey(toWrap))
+					WRAPPED_RENDER_TYPES.put(toWrap, new WrappedRenderType(toWrap));
+
+				return WRAPPED_RENDER_TYPES.get(toWrap);
 			}
 		}
 	}

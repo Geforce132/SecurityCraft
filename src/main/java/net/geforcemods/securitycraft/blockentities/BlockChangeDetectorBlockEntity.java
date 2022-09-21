@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -40,6 +39,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	private boolean tracked = false;
 	private List<ChangeEntry> entries = new ArrayList<>();
 	private ItemStack filter = ItemStack.EMPTY;
+	private boolean showHighlightsInWorld = false;
 
 	public BlockChangeDetectorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), pos, state);
@@ -126,7 +126,9 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	public void setMode(DetectionMode mode) {
 		this.mode = mode;
-		setChanged();
+
+		if (!level.isClientSide)
+			setChanged();
 	}
 
 	public DetectionMode getMode() {
@@ -143,6 +145,12 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	public List<ChangeEntry> getEntries() {
 		return entries;
+	}
+
+	public boolean isEntryShown(ChangeEntry entry) {
+		DetectionMode mode = getMode();
+
+		return (mode == DetectionMode.BOTH || mode == entry.action()) && (filter.isEmpty() || ((BlockItem) filter.getItem()).getBlock() == entry.state.getBlock());
 	}
 
 	@Override
@@ -231,6 +239,14 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : (slot == 36 ? filter : ItemStack.EMPTY);
+	}
+
+	public void showHighlightsInWorld(boolean showHighlightsInWorld) {
+		this.showHighlightsInWorld = showHighlightsInWorld;
+	}
+
+	public boolean showsHighlightsInWorld() {
+		return showHighlightsInWorld;
 	}
 
 	public static enum DetectionMode {
