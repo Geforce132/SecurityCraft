@@ -2,6 +2,7 @@
 
 - Fix: Nether portals can replace reinforced blocks when generating
 - Fix: Can't place blocks on blocks locked by a Sonic Security System
+- Fix: Sentry bullets can remove item frames
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 

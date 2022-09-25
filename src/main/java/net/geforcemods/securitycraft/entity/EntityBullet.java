@@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
 import net.geforcemods.securitycraft.api.Owner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -88,7 +89,7 @@ public class EntityBullet extends EntityArrow {
 	protected void onHit(RayTraceResult raytraceResult) {
 		Entity target = raytraceResult.entityHit;
 
-		if (target != null && !(target instanceof EntitySentry)) {
+		if (target != null && !(target instanceof EntitySentry) && !(target instanceof EntityItemFrame)) {
 			target.attackEntityFrom(DamageSource.causeArrowDamage(this, shootingEntity == null ? this : shootingEntity), MathHelper.ceil(MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ)));
 
 			if (target instanceof EntityLivingBase && !potionEffects.isEmpty()) {
