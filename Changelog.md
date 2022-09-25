@@ -9,6 +9,7 @@
 - Fix: Mobs can spawn on reinforced ice and reinforced iron trapdoors
 - Fix: Snow layers can be placed on Reinforced Ice and Reinforced Packed Ice
 - Fix: Snow layers cannot be placed on Reinforced Mud
+- Fix: Sentry bullets can remove item frames
 - Misc: The minimum required Forge version is now 43.1.1
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
