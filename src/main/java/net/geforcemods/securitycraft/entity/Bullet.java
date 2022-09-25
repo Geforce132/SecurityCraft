@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -95,7 +96,7 @@ public class Bullet extends AbstractArrowEntity {
 	protected void onHitEntity(EntityRayTraceResult raytraceResult) {
 		Entity target = raytraceResult.getEntity();
 
-		if (!(target instanceof Sentry)) {
+		if (!(target instanceof Sentry) && !(target instanceof ItemFrameEntity)) {
 			target.hurt(DamageSource.arrow(this, getOwner()), MathHelper.ceil(getDeltaMovement().length()));
 
 			if (target instanceof LivingEntity && !potionEffects.isEmpty()) {
@@ -103,9 +104,9 @@ public class Bullet extends AbstractArrowEntity {
 					((LivingEntity) target).addEffect(effect);
 				}
 			}
-
-			remove();
 		}
+
+		remove();
 	}
 
 	@Override

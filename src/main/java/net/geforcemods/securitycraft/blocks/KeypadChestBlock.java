@@ -155,6 +155,7 @@ public class KeypadChestBlock extends ChestBlock {
 
 		if (returnValue != null) {
 			TileEntity te = ctx.getLevel().getBlockEntity(ctx.getClickedPos().relative(dir));
+
 			//only connect to chests which have the same owner
 			if (te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner(ctx.getPlayer()))
 				return returnValue;

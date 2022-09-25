@@ -6,6 +6,7 @@
 - Fix: Interacting with blocks while holding a Sonic Security System may sometimes place it for a short while
 - Fix: A Sentry's name does not show in the Sentry Remote Access Tool
 - Fix: Mobs can spawn on reinforced ice and reinforced iron trapdoors
+- Fix: Sentry bullets can remove item frames
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 
