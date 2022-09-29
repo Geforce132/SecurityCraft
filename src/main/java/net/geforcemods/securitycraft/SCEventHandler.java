@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,9 +24,11 @@ import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
+import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity.NoteWrapper;
+import net.geforcemods.securitycraft.blocks.BlockChangeDetectorBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -41,6 +45,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -50,9 +55,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
@@ -71,6 +78,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
+import net.minecraftforge.event.entity.EntityTeleportEvent;
+import net.minecraftforge.event.entity.EntityTeleportEvent.ChorusFruit;
+import net.minecraftforge.event.entity.EntityTeleportEvent.EnderPearl;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -386,6 +396,47 @@ public class SCEventHandler {
 	public static void onFurnaceFuelBurnTime(FurnaceFuelBurnTimeEvent event) {
 		if (event.getItemStack().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ReinforcedCarpetBlock)
 			event.setBurnTime(0);
+	}
+
+	@SubscribeEvent
+	public static void onEntityTeleport(EntityTeleportEvent event) {
+		if ((event instanceof EnderPearl || event instanceof ChorusFruit) && event.getEntity() instanceof ServerPlayer player) {
+			List<RiftStabilizerBlockEntity> targetPosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(player.level, event.getTarget());
+			List<RiftStabilizerBlockEntity> playerPosBlockEntities = BlockEntityTracker.RIFT_STABILIZER.getBlockEntitiesInRange(player.level, player.position());
+			List<RiftStabilizerBlockEntity> blockEntities = new ArrayList<>();
+			RiftStabilizerBlockEntity riftStabilizer = null;
+			boolean targetPosDisallowed = false;
+
+			blockEntities.addAll(targetPosBlockEntities);
+			blockEntities.addAll(playerPosBlockEntities);
+			blockEntities.sort(Comparator.comparingDouble(b -> Math.min(b.getBlockPos().distToCenterSqr(event.getTarget()), b.getBlockPos().distToCenterSqr(player.position()))));
+
+			for (RiftStabilizerBlockEntity be : blockEntities) {
+				if (!be.getOwner().isOwner(player) && !ModuleUtils.isAllowed(be, player)) {
+					riftStabilizer = be;
+					targetPosDisallowed = be.getBlockPos().distToCenterSqr(event.getTarget()) < be.getBlockPos().distToCenterSqr(player.position());
+					break;
+				}
+			}
+
+			if (riftStabilizer != null) {
+				BlockPos pos = riftStabilizer.getBlockPos();
+
+				player.level.playSound(null, event.getPrevX(), event.getPrevY(), event.getPrevZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.5F);
+				PlayerUtils.sendMessageToPlayer(player, SCContent.RIFT_STABILIZER.get().getName(), Component.translatable(targetPosDisallowed ? "messages.securitycraft:rift_stabilizer.no_teleport_to" : "messages.securitycraft:rift_stabilizer.no_teleport_from"), ChatFormatting.RED);
+
+				if (riftStabilizer.isModuleEnabled(ModuleType.HARMING))
+					player.hurt(DamageSource.FALL, 5.0F);
+
+				if (riftStabilizer.isModuleEnabled(ModuleType.REDSTONE)) {
+					player.level.setBlockAndUpdate(pos, riftStabilizer.getBlockState().setValue(BlockChangeDetectorBlock.POWERED, true));
+					BlockUtils.updateIndirectNeighbors(player.level, pos, SCContent.BLOCK_CHANGE_DETECTOR.get());
+					player.level.scheduleTick(pos, SCContent.RIFT_STABILIZER.get(), riftStabilizer.getSignalLength());
+				}
+
+				event.setCanceled(true);
+			}
+		}
 	}
 
 	@SubscribeEvent
