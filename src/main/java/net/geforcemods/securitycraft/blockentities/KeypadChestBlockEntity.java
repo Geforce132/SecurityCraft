@@ -128,6 +128,12 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPassword
 			return super.getCapability(cap, side);
 	}
 
+	@Override
+	public void invalidateCaps() {
+		insertOnlyHandler.invalidate();
+		super.invalidateCaps();
+	}
+
 	private LazyOptional<IItemHandler> getInsertOnlyHandler() {
 		if (insertOnlyHandler == null)
 			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(KeypadChestBlockEntity.this));
