@@ -634,6 +634,13 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	@Override
+	public void invalidateCaps() {
+		storageHandler.invalidate();
+		insertOnlyHandler.invalidate();
+		super.invalidateCaps();
+	}
+
+	@Override
 	public void setRemoved() {
 		super.setRemoved();
 
