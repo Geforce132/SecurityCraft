@@ -109,6 +109,7 @@ dependencies {
     implementation fg.deobf("curse.maven:jade-324717:3865918")
     implementation fg.deobf("curse.maven:betterf3-401648:3798367")
     implementation fg.deobf("curse.maven:cloth-config-forge-348521:3641133") //betterf3 dependency
+    implementation fg.deobf("curse.maven:projecte-226410:3722831")
 }
 
 mixin {
@@ -116,7 +117,7 @@ mixin {
 }
 
 jar {
-	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets
+	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets & data
 
     manifest {
         attributes(["Specification-Title": "SecurityCraft",
