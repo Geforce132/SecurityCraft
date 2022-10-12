@@ -113,6 +113,16 @@ public class SecurityCraft {
 
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event) { //stage 4
+		collectSCContentData();
+		ForgeChunkManager.setForcedChunkLoadingCallback(SecurityCraft.MODID, (world, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCameraEntity) somewhere
+			ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
+				if (world.getEntity(uuid) == null)
+					ticketHelper.removeAllTickets(uuid);
+			}));
+		});
+	}
+
+	public static void collectSCContentData() {
 		Map<PageGroup, List<ItemStack>> groupStacks = new EnumMap<>(PageGroup.class);
 
 		for (Field field : SCContent.class.getFields()) {
@@ -158,12 +168,6 @@ public class SecurityCraft {
 		}
 
 		groupStacks.forEach((group, list) -> group.setItems(Ingredient.of(list.stream())));
-		ForgeChunkManager.setForcedChunkLoadingCallback(SecurityCraft.MODID, (world, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCameraEntity) somewhere
-			ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
-				if (world.getEntity(uuid) == null)
-					ticketHelper.removeAllTickets(uuid);
-			}));
-		});
 	}
 
 	public void registerCommands(RegisterCommandsEvent event) {

@@ -22,8 +22,9 @@ public class DataGenRegistrar {
 		generator.addProvider(new BlockModelAndStateGenerator(generator, existingFileHelper));
 		generator.addProvider(blockTagGenerator);
 		generator.addProvider(new ItemModelGenerator(generator, existingFileHelper));
-		generator.addProvider(new FluidTagGenerator(generator, existingFileHelper));
 		generator.addProvider(new ItemTagGenerator(generator, blockTagGenerator, existingFileHelper));
+		generator.addProvider(new FluidTagGenerator(generator, existingFileHelper));
+		generator.addProvider(new ProjectECompatConversionProvider(generator));
 		generator.addProvider(new RecipeGenerator(generator));
 	}
 }

@@ -127,6 +127,7 @@ dependencies {
     implementation fg.deobf("curse.maven:jade-324717:3439522")
     implementation fg.deobf("curse.maven:betterf3-401648:3293637")
 	compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
+    implementation fg.deobf("curse.maven:projecte-226410:3736621")
 }
 
 mixin {
@@ -134,7 +135,7 @@ mixin {
 }
 
 jar {
-	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets
+	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets & data
 
     manifest {
         attributes(["Specification-Title": "SecurityCraft",
