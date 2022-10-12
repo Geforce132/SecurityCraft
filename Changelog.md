@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
+- New: ProjectE support (all reinforced blocks now have an EMC value)
 - Fix: Nether portals can replace reinforced blocks when generating
 - Fix: Can't place blocks on blocks locked by a Sonic Security System
 - Fix: Sentry bullets can remove item frames

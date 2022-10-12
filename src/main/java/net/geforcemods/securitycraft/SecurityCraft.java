@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.compat.cyclic.CyclicCompat;
 import net.geforcemods.securitycraft.compat.icbmclassic.ICBMClassicEMPCompat;
 import net.geforcemods.securitycraft.compat.lycanitesmobs.LycanitesMobsCompat;
+import net.geforcemods.securitycraft.compat.projecte.ProjectECompat;
 import net.geforcemods.securitycraft.compat.quark.QuarkCompat;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.gui.GuiHandler;
@@ -154,6 +155,9 @@ public class SecurityCraft {
 				e.printStackTrace();
 			}
 		}
+
+		if (Loader.isModLoaded("projecte") && !Loader.isModLoaded("projecteintegration")) //ProjectE Integration already adds support for SecurityCraft, so no need to add our own
+			ProjectECompat.registerConversions();
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(instance, (tickets, world) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCameraEntity) somewhere
 			tickets.forEach(ticket -> {
