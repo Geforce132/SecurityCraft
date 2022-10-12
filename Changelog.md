@@ -11,7 +11,7 @@
 - Fix: Snow layers cannot be placed on Reinforced Mud
 - Fix: Sentry bullets can remove item frames
 - Fix: Some blocks don't show up properly in the state selector of the Projector/Disguise Module
-- Misc: The minimum required Forge version is now 43.1.1
+- Misc: The minimum required Forge version is now 43.1.8
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 
