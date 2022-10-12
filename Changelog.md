@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.4 of SecurityCraft--------------------------
 
 - New: Japanese translation (Thanks momo-i!)
+- New: ProjectE support (all reinforced blocks now have an EMC value)
 - Fix: Nether portals can replace reinforced blocks when generating
 - Fix: Crash when trying to disguise a block as/project some blocks that don't always have a block entity associated with them
 - Fix: Can't place blocks on blocks locked by a Sonic Security System
