@@ -17,6 +17,7 @@ public class SyncBlockChangeDetector {
 
 	public SyncBlockChangeDetector() {}
 
+	//TODO: set color
 	public SyncBlockChangeDetector(BlockPos pos, DetectionMode mode, boolean showHighlights) {
 		this.pos = pos;
 		this.mode = mode;
