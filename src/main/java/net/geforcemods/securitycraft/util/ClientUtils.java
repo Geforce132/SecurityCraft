@@ -124,7 +124,7 @@ public class ClientUtils {
 		builder.vertex(positionMatrix, maxX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
 	}
 
-	public static void renderHorizontalGradientRect(PoseStack pose, int zLevel, int left, int top, int right, int bottom, int fromColor, int toColor) {
+	public static void fillHorizontalGradient(PoseStack pose, int zLevel, int left, int top, int right, int bottom, int fromColor, int toColor) {
 		float fromAlpha = (fromColor >> 24 & 255) / 255.0F;
 		float fromRed = (fromColor >> 16 & 255) / 255.0F;
 		float fromGreen = (fromColor >> 8 & 255) / 255.0F;
