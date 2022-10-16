@@ -111,7 +111,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		addRenderableWidget(colorChooser = new ColorChooser(Component.empty(), settingsX, topPos + 135, previousColor) {
 			@Override
 			public void onColorChange() {
-				be.setColor(getColor());
+				be.setColor(getRGBColor());
 			}
 		});
 		colorChooser.init(minecraft, width, height);

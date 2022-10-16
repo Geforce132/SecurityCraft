@@ -16,7 +16,7 @@ public class ColorChooserButton extends Button {
 
 	@Override
 	public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTick) {
-		int color = colorChooser.getColor();
+		int color = colorChooser.getRGBColor();
 
 		super.renderButton(pose, mouseX, mouseY, partialTick);
 		fillGradient(pose, x + 2, y + 2, x + width - 2, y + height - 2, color, color, getBlitOffset());
