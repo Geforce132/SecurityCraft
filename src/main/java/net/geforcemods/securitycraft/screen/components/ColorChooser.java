@@ -76,7 +76,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		b = hsb[2];
 		selectionX = s * colorFieldSize + colorFieldLeft;
 		selectionY = -b * colorFieldSize + colorFieldSize + colorFieldTop;
-		extraAreas.add(new Rect2i(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight())); //TODO: set proper extra areas
+		extraAreas.add(new Rect2i(xStart, yStart, 144, 108));
 		addRenderableWidget(new HueSlider(colorFieldLeft - 2, yStart + 85, 81, 19, h * 360.0F) {
 			@Override
 			protected void applyValue() {
@@ -111,7 +111,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		if (!disabled) {
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem._setShaderTexture(0, TEXTURE);
-			blit(pose, xStart, yStart, 0, 0, 193, 150);
+			blit(pose, xStart, yStart, 0, 0, 144, 108);
 			ClientUtils.fillHorizontalGradient(pose, 0, colorFieldLeft, colorFieldTop, colorFieldRight, colorFieldBottom, 0xFFFFFFFF, ClientUtils.HSBtoRGB(h, 1.0F, 1.0F));
 			fillGradient(pose, colorFieldLeft, colorFieldTop, colorFieldRight, colorFieldBottom, 0x00000000, 0xFF000000, getBlitOffset());
 			blit(pose, (int) selectionX - 1, (int) selectionY - 1, colorFieldHoverChecker.checkHover(mouseX, mouseY) ? 253 : 250, 38, 3, 3); //color field indicator
