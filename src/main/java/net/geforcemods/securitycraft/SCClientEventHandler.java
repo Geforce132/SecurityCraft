@@ -88,7 +88,7 @@ public class SCClientEventHandler {
 
 						pose.pushPose();
 						pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
-						ClientUtils.renderBoxInLevel(BCDBuffer.INSTANCE, pose.last().pose(), 0, 1, 0, 1, 1, 0, 0, 255);
+						ClientUtils.renderBoxInLevel(BCDBuffer.INSTANCE, pose.last().pose(), 0, 1, 0, 1, 1, bcd.getColor());
 						pose.popPose();
 					}
 				}

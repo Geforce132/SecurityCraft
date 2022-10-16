@@ -92,8 +92,11 @@ public class ClientUtils {
 		BufferUploader.drawWithShader(bufferBuilder.end());
 	}
 
-	public static void renderBoxInLevel(MultiBufferSource buffer, Matrix4f positionMatrix, int minX, int maxX, int minZ, int maxZ, int height, int r, int g, int b) {
+	public static void renderBoxInLevel(MultiBufferSource buffer, Matrix4f positionMatrix, int minX, int maxX, int minZ, int maxZ, int height, int rgbColor) {
 		VertexConsumer builder = buffer.getBuffer(RenderType.lines());
+		int r = rgbColor >> 16 & 255;
+		int g = rgbColor >> 8 & 255;
+		int b = rgbColor & 255;
 
 		//bottom lines
 		builder.vertex(positionMatrix, minX, 0.0F, minZ).color(r, g, b, 255).normal(0.0F, 0.0F, 1.0F).endVertex();

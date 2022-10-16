@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraftforge.client.gui.widget.ForgeSlider;
 
 public class ColorChooser extends Screen implements GuiEventListener, NarratableEntry {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/color_chooser.png");
@@ -42,7 +43,13 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	@Override
 	protected void init() {
 		extraAreas.add(new Rect2i(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight())); //TODO: set proper extra areas
-		addRenderableWidget(new HueSlider(colorFieldLeft - 2, yStart + 85, 81, 19, h));
+		addRenderableWidget(new HueSlider(colorFieldLeft - 2, yStart + 85, 81, 19, h) {
+			@Override
+			protected void applyValue() {
+				h = getValueInt() / 360.0F;
+				onColorChange();
+			}
+		});
 		colorFieldHoverChecker = new HoverChecker(colorFieldTop, colorFieldBottom, colorFieldLeft, colorFieldRight);
 	}
 
@@ -118,11 +125,14 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		selectionY = (int) Mth.clamp(mouseY, colorFieldTop, colorFieldBottom);
 		s = ((selectionX - colorFieldLeft) / colorFieldSize);
 		b = 1.0F - ((selectionY - colorFieldTop) / colorFieldSize);
+		onColorChange();
 	}
 
-	class HueSlider extends CallbackSlider {
+	public void onColorChange() {}
+
+	class HueSlider extends ForgeSlider {
 		public HueSlider(int x, int y, int width, int height, double currentValue) {
-			super(x, y, width, height, Component.empty(), Component.empty(), 0.0D, 360.0D, currentValue, 1.0D, 0, false, slider -> ColorChooser.this.h = slider.getValueInt() / 360.0F);
+			super(x, y, width, height, Component.empty(), Component.empty(), 0.0D, 360.0D, currentValue, 1.0D, 0, false);
 		}
 
 		@Override

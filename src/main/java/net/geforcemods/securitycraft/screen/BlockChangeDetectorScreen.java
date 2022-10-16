@@ -60,6 +60,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	private Checkbox highlightInWorldCheckbox;
 	private ColorChooser colorChooser;
 	private final DetectionMode previousMode;
+	private final boolean wasShowingHighlights;
+	private final int previousColor;
 
 	public BlockChangeDetectorScreen(BlockChangeDetectorMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
@@ -68,6 +70,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		imageWidth = 200;
 		imageHeight = 256;
 		previousMode = be.getMode();
+		wasShowingHighlights = be.isShowingHighlights();
+		previousColor = be.getColor();
 	}
 
 	@Override
@@ -104,7 +108,12 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 				be.showHighlights(selected());
 			}
 		});
-		addRenderableWidget(colorChooser = new ColorChooser(Component.empty(), settingsX, topPos + 135));
+		addRenderableWidget(colorChooser = new ColorChooser(Component.empty(), settingsX, topPos + 135) {
+			@Override
+			public void onColorChange() {
+				be.setColor(getColor());
+			}
+		});
 		colorChooser.init(minecraft, width, height);
 		addRenderableWidget(new ColorChooserButton(settingsX, topPos + 115, 20, 20, colorChooser));
 
@@ -200,9 +209,11 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		super.onClose();
 
 		DetectionMode currentMode = be.getMode();
+		boolean isShowingHighlights = be.isShowingHighlights();
+		int currentColor = be.getColor();
 
-		if (currentMode != previousMode)
-			SecurityCraft.channel.sendToServer(new SyncBlockChangeDetector(be.getBlockPos(), currentMode, be.isShowingHighlights()));
+		if (currentMode != previousMode || wasShowingHighlights != isShowingHighlights || previousColor != currentColor)
+			SecurityCraft.channel.sendToServer(new SyncBlockChangeDetector(be.getBlockPos(), currentMode, isShowingHighlights, currentColor));
 
 		be.updateFilteredEntries();
 	}

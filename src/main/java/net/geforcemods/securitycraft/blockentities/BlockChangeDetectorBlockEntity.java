@@ -21,6 +21,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -41,6 +42,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	private final List<ChangeEntry> filteredEntries = new ArrayList<>();
 	private ItemStack filter = ItemStack.EMPTY;
 	private boolean showHighlights = false;
+	private int color = 0xFF00FF00;
 
 	public BlockChangeDetectorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), pos, state);
@@ -93,6 +95,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		tag.put("entries", entryList);
 		tag.put("filter", filter.save(new CompoundTag()));
 		tag.putBoolean("ShowHighlights", showHighlights);
+		tag.putInt("Color", color);
 	}
 
 	@Override
@@ -109,6 +112,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		tag.getList("entries", Tag.TAG_COMPOUND).stream().map(element -> ChangeEntry.load((CompoundTag) element)).forEach(entries::add);
 		filter = ItemStack.of(tag.getCompound("filter"));
 		showHighlights = tag.getBoolean("ShowHighlights");
+		setColor(tag.getInt("Color"));
 		updateFilteredEntries();
 	}
 
@@ -260,6 +264,14 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	public boolean isShowingHighlights() {
 		return showHighlights;
+	}
+
+	public void setColor(int color) {
+		this.color = Mth.clamp(color, 0xFF000000, 0xFFFFFFFF);
+	}
+
+	public int getColor() {
+		return color;
 	}
 
 	public static enum DetectionMode {
