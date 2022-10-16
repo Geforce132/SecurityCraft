@@ -87,8 +87,6 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 			if (clickedInDragRegion)
 				setSelection(mouseX, mouseY);
-
-			return true;
 		}
 
 		return false;
