@@ -30,7 +30,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	private HoverChecker colorFieldHoverChecker;
 	private float selectionX, selectionY;
 
-	public ColorChooser(Component title, int xStart, int yStart) {
+	public ColorChooser(Component title, int xStart, int yStart, int rgbColor) {
 		super(title);
 		this.xStart = xStart;
 		this.yStart = yStart;
@@ -38,12 +38,20 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		colorFieldTop = yStart + 6;
 		colorFieldRight = colorFieldLeft + colorFieldSize;
 		colorFieldBottom = colorFieldTop + colorFieldSize;
+
+		float[] hsb = ClientUtils.RGBtoHSB(rgbColor >> 16 & 255, rgbColor >> 8 & 255, rgbColor & 255);
+
+		h = hsb[0];
+		s = hsb[1];
+		b = hsb[2];
+		selectionX = s * colorFieldSize + colorFieldLeft;
+		selectionY = -b * colorFieldSize + colorFieldSize + colorFieldTop;
 	}
 
 	@Override
 	protected void init() {
 		extraAreas.add(new Rect2i(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight())); //TODO: set proper extra areas
-		addRenderableWidget(new HueSlider(colorFieldLeft - 2, yStart + 85, 81, 19, h) {
+		addRenderableWidget(new HueSlider(colorFieldLeft - 2, yStart + 85, 81, 19, h * 360.0F) {
 			@Override
 			protected void applyValue() {
 				h = getValueInt() / 360.0F;

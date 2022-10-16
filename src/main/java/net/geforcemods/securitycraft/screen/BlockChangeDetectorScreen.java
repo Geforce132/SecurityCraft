@@ -108,7 +108,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 				be.showHighlights(selected());
 			}
 		});
-		addRenderableWidget(colorChooser = new ColorChooser(Component.empty(), settingsX, topPos + 135) {
+		addRenderableWidget(colorChooser = new ColorChooser(Component.empty(), settingsX, topPos + 135, previousColor) {
 			@Override
 			public void onColorChange() {
 				be.setColor(getColor());

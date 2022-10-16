@@ -205,4 +205,49 @@ public class ClientUtils {
 
 		return 0xFF000000 | (r << 16) | (g << 8) | (b << 0);
 	}
+
+	public static float[] RGBtoHSB(int r, int g, int b) {
+		float hue, saturation, brightness;
+		float[] hsb = new float[3];
+		int cmax = (r > g) ? r : g;
+		int cmin = (r < g) ? r : g;
+
+		if (b > cmax)
+			cmax = b;
+
+		if (b < cmin)
+			cmin = b;
+
+		brightness = cmax / 255.0F;
+
+		if (cmax != 0)
+			saturation = ((float) (cmax - cmin)) / ((float) cmax);
+		else
+			saturation = 0;
+
+		if (saturation == 0)
+			hue = 0;
+		else {
+			float redc = (float) (cmax - r) / (float) (cmax - cmin);
+			float greenc = (float) (cmax - g) / (float) (cmax - cmin);
+			float bluec = (float) (cmax - b) / (float) (cmax - cmin);
+
+			if (r == cmax)
+				hue = bluec - greenc;
+			else if (g == cmax)
+				hue = 2.0F + redc - bluec;
+			else
+				hue = 4.0F + greenc - redc;
+
+			hue = hue / 6.0F;
+
+			if (hue < 0)
+				hue = hue + 1.0F;
+		}
+
+		hsb[0] = hue;
+		hsb[1] = saturation;
+		hsb[2] = brightness;
+		return hsb;
+	}
 }
