@@ -42,7 +42,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	private final List<ChangeEntry> filteredEntries = new ArrayList<>();
 	private ItemStack filter = ItemStack.EMPTY;
 	private boolean showHighlights = false;
-	private int color = 0xFF00FF00;
+	private int color = 0xFF0000FF;
 
 	public BlockChangeDetectorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), pos, state);
