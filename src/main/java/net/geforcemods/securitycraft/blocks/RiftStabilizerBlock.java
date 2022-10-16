@@ -2,16 +2,24 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
+import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -19,17 +27,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.MinecraftForge;
 
 public class RiftStabilizerBlock extends DisguisableBlock {
+	public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-	private static final VoxelShape SHAPE = Shapes.or(Block.box(0, 0, 0, 16, 12, 16), Block.box(2, 0, 2, 14, 21, 14), Block.box(4, 0, 4, 12, 24, 12));
+	private static final VoxelShape SHAPE_LOWER = Shapes.or(Block.box(0, 0, 0, 16, 12, 16), Block.box(2, 0, 2, 14, 16, 14));
+	private static final VoxelShape SHAPE_UPPER = Shapes.or(Block.box(2, 0, 2, 14, 5, 14), Block.box(4, 0, 4, 12, 8, 12));
 
 	public RiftStabilizerBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(WATERLOGGED, false));
+		registerDefaultState(stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -39,13 +52,62 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		BlockPos pos = ctx.getClickedPos();
+		Level level = ctx.getLevel();
+
+		return pos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(pos.above()).canBeReplaced(ctx) ? super.getStateForPlacement(ctx) : null;
+	}
+
+	@Override
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		BlockPos posAbove = pos.above();
+
+		level.setBlock(posAbove, DoublePlantBlock.copyWaterloggedFrom(level, posAbove, defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER)), 3);
+
+		if (placer instanceof Player player) {
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(level, posAbove, player));
+		}
+
+		super.setPlacedBy(level, pos, state, placer, stack);
+	}
+
+	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+		DoubleBlockHalf half = state.getValue(HALF);
+
+		if (facing.getAxis() == Direction.Axis.Y && half == DoubleBlockHalf.LOWER == (facing == Direction.UP)) {
+			return facingState.is(this) && facingState.getValue(HALF) != half ? state.setValue(POWERED, facingState.getValue(POWERED)) : Blocks.AIR.defaultBlockState();
+		} else {
+			return half == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+		}
+	}
+
+	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
 		else
-			return SHAPE;
+			return state.getValue(HALF) == DoubleBlockHalf.LOWER ? SHAPE_LOWER : SHAPE_UPPER;
+	}
+
+	@Override
+	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		if (!level.isClientSide) {
+			if (player.isCreative())
+				DoublePlantBlock.preventCreativeDropFromBottomPart(level, pos, state, player);
+			else
+				dropResources(state, level, pos, null, player, player.getMainHandItem());
+		}
+
+		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
+	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity be, ItemStack stack) {
+		super.playerDestroy(level, player, pos, Blocks.AIR.defaultBlockState(), be, stack);
 	}
 
 	@Override
@@ -65,7 +127,15 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(WATERLOGGED, POWERED);
+		builder.add(HALF, POWERED, WATERLOGGED);
+	}
+
+	@Override
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+		BlockPos lowerPos = pos.below();
+		BlockState lowerState = level.getBlockState(lowerPos);
+
+		return state.getValue(HALF) == DoubleBlockHalf.LOWER || lowerState.is(this);
 	}
 
 	@Override

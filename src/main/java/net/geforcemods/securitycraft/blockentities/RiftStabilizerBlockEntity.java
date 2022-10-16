@@ -8,8 +8,11 @@ import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
 	private final IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
@@ -49,6 +52,20 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		return new Option[] {
 				signalLength, range, disabled
 		};
+	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {
+		pos = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos.above();
+
+		if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be) {
+			be.setOwner(getOwner().getUUID(), getOwner().getName());
+
+			if (!level.isClientSide)
+				level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
+		}
+
+		super.onOwnerChanged(state, level, pos, player);
 	}
 
 	public int getSignalLength() {
