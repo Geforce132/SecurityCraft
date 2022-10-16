@@ -2,12 +2,18 @@ package net.geforcemods.securitycraft.screen.components;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.base.Function;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -23,12 +29,18 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	public boolean disabled = false;
 	private final int xStart, yStart;
 	private final List<Rect2i> extraAreas = new ArrayList<>();
+	private final Component rText = Component.literal("R");
+	private final Component gText = Component.literal("G");
+	private final Component bText = Component.literal("B");
+	private final Component rgbHexText = Component.literal("#");
 	private boolean clickedInDragRegion = false;
 	private float h, s, b;
 	private int colorFieldTop, colorFieldBottom, colorFieldLeft, colorFieldRight;
 	private final int colorFieldSize = 75;
 	private HoverChecker colorFieldHoverChecker;
 	private float selectionX, selectionY;
+	private final int rgbColor;
+	private EditBox rBox, gBox, bBox, rgbHexBox;
 
 	public ColorChooser(Component title, int xStart, int yStart, int rgbColor) {
 		super(title);
@@ -38,18 +50,32 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		colorFieldTop = yStart + 6;
 		colorFieldRight = colorFieldLeft + colorFieldSize;
 		colorFieldBottom = colorFieldTop + colorFieldSize;
+		this.rgbColor = rgbColor;
+	}
 
-		float[] hsb = ClientUtils.RGBtoHSB(rgbColor >> 16 & 255, rgbColor >> 8 & 255, rgbColor & 255);
+	@Override
+	protected void init() {
+		Predicate<String> boxFilter = string -> string.isEmpty() || StringUtils.isNumeric(string);
+		Function<EditBox, Consumer<String>> boxResponder = box -> string -> {
+			if (!string.isEmpty()) {
+				int number = Integer.parseInt(string);
+
+				if (number < 0)
+					box.setValue("0");
+				else if (number > 255)
+					box.setValue("255");
+			}
+		};
+		int red = rgbColor >> 16 & 255;
+		int green = rgbColor >> 8 & 255;
+		int blue = rgbColor & 255;
+		float[] hsb = ClientUtils.RGBtoHSB(red, green, blue);
 
 		h = hsb[0];
 		s = hsb[1];
 		b = hsb[2];
 		selectionX = s * colorFieldSize + colorFieldLeft;
 		selectionY = -b * colorFieldSize + colorFieldSize + colorFieldTop;
-	}
-
-	@Override
-	protected void init() {
 		extraAreas.add(new Rect2i(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight())); //TODO: set proper extra areas
 		addRenderableWidget(new HueSlider(colorFieldLeft - 2, yStart + 85, 81, 19, h * 360.0F) {
 			@Override
@@ -59,6 +85,25 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 			}
 		});
 		colorFieldHoverChecker = new HoverChecker(colorFieldTop, colorFieldBottom, colorFieldLeft, colorFieldRight);
+		addRenderableWidget(rBox = new EditBox(font, colorFieldRight + 12, colorFieldTop, 26, 10, rText));
+		addRenderableWidget(gBox = new EditBox(font, colorFieldRight + 12, colorFieldTop + 15, 26, 10, gText));
+		addRenderableWidget(bBox = new EditBox(font, colorFieldRight + 12, colorFieldTop + 30, 26, 10, bText));
+		addRenderableWidget(rgbHexBox = new EditBox(font, colorFieldRight + 12, colorFieldTop + 45, 46, 10, rgbHexText));
+		rBox.setValue("" + red);
+		gBox.setValue("" + green);
+		bBox.setValue("" + blue);
+		rgbHexBox.setValue(Integer.toHexString(rgbColor).substring(2));
+		rBox.setFilter(boxFilter);
+		gBox.setFilter(boxFilter);
+		bBox.setFilter(boxFilter);
+		rgbHexBox.setFilter(string -> string.matches("[0-9a-fA-F]*"));
+		rBox.setMaxLength(3);
+		gBox.setMaxLength(3);
+		bBox.setMaxLength(3);
+		rgbHexBox.setMaxLength(6);
+		rBox.setResponder(boxResponder.apply(rBox));
+		gBox.setResponder(boxResponder.apply(gBox));
+		bBox.setResponder(boxResponder.apply(bBox));
 	}
 
 	@Override
@@ -67,10 +112,21 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem._setShaderTexture(0, TEXTURE);
 			blit(pose, xStart, yStart, 0, 0, 193, 150);
-			super.render(pose, mouseX, mouseY, partialTick);
 			ClientUtils.fillHorizontalGradient(pose, 0, colorFieldLeft, colorFieldTop, colorFieldRight, colorFieldBottom, 0xFFFFFFFF, ClientUtils.HSBtoRGB(h, 1.0F, 1.0F));
 			fillGradient(pose, colorFieldLeft, colorFieldTop, colorFieldRight, colorFieldBottom, 0x00000000, 0xFF000000, getBlitOffset());
-			blit(pose, (int) selectionX - 1, (int) selectionY - 1, colorFieldHoverChecker.checkHover(mouseX, mouseY) ? 253 : 250, 38, 3, 3);
+			blit(pose, (int) selectionX - 1, (int) selectionY - 1, colorFieldHoverChecker.checkHover(mouseX, mouseY) ? 253 : 250, 38, 3, 3); //color field indicator
+			super.render(pose, mouseX, mouseY, partialTick);
+			font.draw(pose, rText, colorFieldRight + 4, colorFieldTop + 1, 0x404040);
+			font.draw(pose, gText, colorFieldRight + 4, colorFieldTop + 16, 0x404040);
+			font.draw(pose, bText, colorFieldRight + 4, colorFieldTop + 31, 0x404040);
+			font.draw(pose, rgbHexText, colorFieldRight + 4, colorFieldTop + 46, 0x404040);
+			//this is validated here and not in the edit box' responder in order to allow for an empty box while typing
+			validateNotEmpty(rBox);
+			validateNotEmpty(gBox);
+			validateNotEmpty(bBox);
+
+			if (!rgbHexBox.isFocused() && rgbHexBox.getValue().isEmpty())
+				rgbHexBox.setValue("000000");
 		}
 	}
 
@@ -136,6 +192,11 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	}
 
 	public void onColorChange() {}
+
+	private void validateNotEmpty(EditBox box) {
+		if (!box.isFocused() && box.getValue().isEmpty())
+			box.setValue("0");
+	}
 
 	class HueSlider extends ForgeSlider {
 		public HueSlider(int x, int y, int width, int height, double currentValue) {
