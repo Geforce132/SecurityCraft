@@ -68,11 +68,13 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+		if (!disabled) {
+			super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
 
-		if (!disabled && button == 0 && clickedInDragRegion) {
-			setSelection(mouseX, mouseY);
-			return true;
+			if (button == 0 && clickedInDragRegion) {
+				setSelection(mouseX, mouseY);
+				return true;
+			}
 		}
 
 		return false;
@@ -80,9 +82,8 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		super.mouseClicked(mouseX, mouseY, button);
-
 		if (!disabled) {
+			super.mouseClicked(mouseX, mouseY, button);
 			clickedInDragRegion = colorFieldHoverChecker.checkHover(mouseX, mouseY);
 
 			if (clickedInDragRegion)
@@ -94,10 +95,10 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		super.mouseReleased(mouseX, mouseY, button);
-
-		if (!disabled)
+		if (!disabled) {
+			super.mouseReleased(mouseX, mouseY, button);
 			clickedInDragRegion = false;
+		}
 
 		return false;
 	}
