@@ -134,14 +134,18 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 			font.draw(pose, gText, colorFieldRight + 4, colorFieldTop + 16, 0x404040);
 			font.draw(pose, bText, colorFieldRight + 4, colorFieldTop + 31, 0x404040);
 			font.draw(pose, rgbHexText, colorFieldRight + 4, colorFieldTop + 46, 0x404040);
-			//this is validated here and not in the edit box' responder in order to allow for an empty box while typing
-			validateNotEmpty(rBox);
-			validateNotEmpty(gBox);
-			validateNotEmpty(bBox);
-
-			if (rgbHexBox != null && !rgbHexBox.isFocused() && rgbHexBox.getValue().isEmpty())
-				rgbHexBox.setValue("000000");
 		}
+	}
+
+	@Override
+	public void tick() {
+		//this is validated here and not in the edit box' responder in order to allow for an empty box while typing
+		validateNotEmpty(rBox);
+		validateNotEmpty(gBox);
+		validateNotEmpty(bBox);
+
+		if (rgbHexBox != null && !rgbHexBox.isFocused() && rgbHexBox.getValue().isEmpty())
+			rgbHexBox.setValue("000000");
 	}
 
 	@Override

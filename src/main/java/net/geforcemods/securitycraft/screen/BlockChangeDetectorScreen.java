@@ -178,6 +178,12 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	}
 
 	@Override
+	protected void containerTick() {
+		if (colorChooser != null)
+			colorChooser.tick();
+	}
+
+	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (changeEntryList != null)
 			changeEntryList.mouseClicked(mouseX, mouseY, button);

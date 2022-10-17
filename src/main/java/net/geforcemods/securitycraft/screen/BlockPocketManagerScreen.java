@@ -197,6 +197,12 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	}
 
 	@Override
+	protected void containerTick() {
+		if (colorChooser != null)
+			colorChooser.tick();
+	}
+
+	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		if (colorChooser != null)
 			colorChooser.mouseDragged(mouseX, mouseY, button, dragX, dragY);
