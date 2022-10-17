@@ -233,6 +233,12 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		super.invalidateCaps();
 	}
 
+	@Override
+	public void reviveCaps() {
+		storageHandler = null; //recreated in getExtractionHandler
+		super.reviveCaps();
+	}
+
 	public LazyOptional<IItemHandler> getExtractionHandler() {
 		if (storageHandler == null) {
 			storageHandler = LazyOptional.of(() -> new ExtractOnlyItemStackHandler(inventoryContents) {
