@@ -62,13 +62,19 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		Function<EditBox, Consumer<String>> boxResponder = box -> string -> {
 			if (!string.isEmpty()) {
 				int number = Integer.parseInt(string);
+				Function<EditBox, Integer> parsingFunction = editBox -> {
+					if (editBox.getValue().isEmpty())
+						return 0;
+					else
+						return Integer.parseInt(editBox.getValue());
+				};
 
 				if (number < 0)
 					box.setValue("0");
 				else if (number > 255)
 					box.setValue("255");
 
-				updateHSBValues(Integer.parseInt(rBox.getValue()), Integer.parseInt(gBox.getValue()), Integer.parseInt(bBox.getValue()));
+				updateHSBValues(parsingFunction.apply(rBox), parsingFunction.apply(gBox), parsingFunction.apply(bBox));
 				updateTextFields(box);
 				onColorChange();
 			}
