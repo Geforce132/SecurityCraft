@@ -5,10 +5,13 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -29,6 +32,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -49,6 +53,18 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
 		BlockUtils.updateIndirectNeighbors(level, pos, this);
+	}
+
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!level.isClientSide && level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be) {
+			if (be.isDisabled()) {
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				return InteractionResult.SUCCESS;
+			}
+		}
+
+		return InteractionResult.PASS;
 	}
 
 	@Override
@@ -123,6 +139,13 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 	@Override
 	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
 		return state.getValue(POWERED) ? 15 : 0;
+	}
+
+	public static RiftStabilizerBlockEntity getConnectedBlockEntity(Level level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
+		BlockPos connectedPos = state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
+
+		return level.getBlockEntity(connectedPos) instanceof RiftStabilizerBlockEntity be ? be : null;
 	}
 
 	@Override
