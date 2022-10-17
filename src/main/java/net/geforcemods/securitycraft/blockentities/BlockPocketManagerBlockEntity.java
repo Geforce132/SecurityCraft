@@ -641,6 +641,13 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	@Override
+	public void reviveCaps() {
+		storageHandler = null; //recreated in getStorageHandler
+		insertOnlyHandler = null; //recreated in getInsertOnlyHandler
+		super.reviveCaps();
+	}
+
+	@Override
 	public void setRemoved() {
 		super.setRemoved();
 
