@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "half=lower": { "model": "securitycraft:block/rift_stabilizer_bottom" },
+        "half=upper":  { "model": "securitycraft:block/rift_stabilizer_top" }
+    }
+}
