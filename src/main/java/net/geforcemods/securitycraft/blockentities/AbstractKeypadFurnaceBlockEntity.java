@@ -147,7 +147,9 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	@Override
 	public void invalidateCaps() {
-		insertOnlyHandler.invalidate();
+		if (insertOnlyHandler != null)
+			insertOnlyHandler.invalidate();
+
 		super.invalidateCaps();
 	}
 

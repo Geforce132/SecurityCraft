@@ -132,7 +132,9 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasswor
 
 	@Override
 	public void invalidateCaps() {
-		insertOnlyHandler.invalidate();
+		if (insertOnlyHandler != null)
+			insertOnlyHandler.invalidate();
+
 		super.invalidateCaps();
 	}
 
