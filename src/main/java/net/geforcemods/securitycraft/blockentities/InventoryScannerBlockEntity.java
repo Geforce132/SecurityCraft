@@ -224,7 +224,9 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	@Override
 	public void invalidateCaps() {
-		storageHandler.invalidate();
+		if (storageHandler != null)
+			storageHandler.invalidate();
+
 		super.invalidateCaps();
 	}
 
