@@ -165,6 +165,7 @@ public class SecurityCraft {
 					ForgeChunkManager.releaseTicket(ticket);
 			});
 		});
+		ConfigHandler.loadEffects();
 	}
 
 	public static String getVersion() {

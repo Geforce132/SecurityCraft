@@ -1,15 +1,33 @@
 package net.geforcemods.securitycraft;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
+import net.minecraftforge.common.config.Config.Ignore;
 import net.minecraftforge.common.config.Config.LangKey;
 import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RangeDouble;
 import net.minecraftforge.common.config.Config.RangeInt;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 @Config(modid = SecurityCraft.MODID, category = "options")
+@EventBusSubscriber(modid = SecurityCraft.MODID)
 public class ConfigHandler {
+	@Ignore
+	private static final Logger LOGGER = LogManager.getLogger();
+
 	//@formatter:off
 	@Name("codebreaker_chance")
 	@RangeDouble(min = -1.0D, max = 1.0D)
@@ -125,4 +143,101 @@ public class ConfigHandler {
 	@Name("Trick scanners with player heads?")
 	@LangKey("config.securitycraft:trickScannersWithPlayerHeads")
 	public static boolean trickScannersWithPlayerHeads = false;
+
+	@Name("Taser damage")
+	@LangKey("config.securitycraft:taser_damage")
+	@RangeDouble(min=0.0D)
+	public static double taserDamage = 1.0D;
+
+	@Name("Powered taser damage")
+	@LangKey("config.securitycraft:powered_taser_damage")
+	@RangeDouble(min=0.0D)
+	public static double poweredTaserDamage = 2.0D;
+
+	/**
+	 * @deprecated Use {@link #TASER_EFFECTS}
+	 */
+	@Deprecated
+	@Name("Taser effects")
+	@Comment({
+		"Add effects to this list that you want the taser to inflict onto the mobs it hits. One entry corresponds to one effect, and is formatted like this:",
+		"effect_namespace:effect_path|duration|amplifier",
+		"Example: The entry \"minecraft:slowness|20|1\" defines slowness 1 for 1 second (20 ticks = 1 second)."})
+	public static String[] taserEffectsValue = {
+			"minecraft:weakness|200|2",
+			"minecraft:nausea|200|2",
+			"minecraft:slowness|200|2"
+	};
+
+	/**
+	 * @deprecated Use {@link #POWERED_TASER_EFFECTS}
+	 */
+	@Deprecated
+	@Name("Powered taser effects")
+	@Comment({
+		"Add effects to this list that you want the powered taser to inflict onto the mobs it hits. One entry corresponds to one effect, and is formatted like this:",
+		"effect_namespace:effect_path|duration|amplifier",
+		"Example: The entry \"minecraft:slowness|20|1\" defines slowness 1 for 1 second (20 ticks = 1 second)."})
+	public static String[] poweredTaserEffectsValue = {
+			"minecraft:weakness|400|5",
+			"minecraft:nausea|400|5",
+			"minecraft:slowness|400|5"
+	};
+
+	@Ignore
+	public static final List<Supplier<PotionEffect>> TASER_EFFECTS = new ArrayList<>();
+
+	@Ignore
+	public static final List<Supplier<PotionEffect>> POWERED_TASER_EFFECTS = new ArrayList<>();
+
+	//@formatter:on
+
+	@SubscribeEvent
+	public static void onConfigChanged(OnConfigChangedEvent event) {
+		if (event.getModID() == SecurityCraft.MODID)
+			loadEffects();
+	}
+
+	public static void loadEffects() {
+		loadEffects(taserEffectsValue, TASER_EFFECTS);
+		loadEffects(poweredTaserEffectsValue, POWERED_TASER_EFFECTS);
+	}
+
+	private static void loadEffects(String[] effectsValue, List<Supplier<PotionEffect>> effects) {
+		effects.clear();
+
+		for (String entry : effectsValue) {
+			String[] split = entry.split("\\|");
+			System.out.println(entry);
+			if (split.length != 3) {
+				LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
+				continue;
+			}
+
+			int duration = Integer.parseInt(split[1]);
+			int amplifier = Integer.parseInt(split[2]);
+
+			if (!validateValue(duration, entry) || !validateValue(amplifier, entry))
+				continue;
+
+			ResourceLocation effectLocation = new ResourceLocation(split[0]);
+
+			if (!ForgeRegistries.POTIONS.containsKey(effectLocation)) {
+				LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
+				continue;
+			}
+
+			//the amplifier is actually 0-indexed, but 1-indexed in the config for ease of use
+			effects.add(() -> new PotionEffect(ForgeRegistries.POTIONS.getValue(effectLocation), duration, amplifier - 1));
+		}
+	}
+
+	private static boolean validateValue(int value, String entry) {
+		if (value <= 0) {
+			LOGGER.warn("Value \"{}\" cannot be less than or equal to zero for entry \"{}\", skipping", value, entry);
+			return false;
+		}
+
+		return true;
+	}
 }

@@ -1,11 +1,14 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
 import com.google.common.base.Predicate;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -17,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -52,7 +54,7 @@ public class ItemTaser extends Item {
 
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return slotChanged || ((oldStack.getItem() == SCContent.taser && newStack.getItem() == SCContent.taserPowered) || (oldStack.getItem() == SCContent.taserPowered && newStack.getItem() == SCContent.taser));
+		return slotChanged || oldStack.getItem() != newStack.getItem();
 	}
 
 	@Override
@@ -107,18 +109,16 @@ public class ItemTaser extends Item {
 
 			world.playSound(player, player.getPosition(), SCSounds.TASERFIRED.event, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
-			if (entityRayTraceResult != null) {
-				EntityLivingBase entity = (EntityLivingBase) entityRayTraceResult.entityHit;
+			//			if (entityRayTraceResult != null) {
+			EntityLivingBase entity = player;//(EntityLivingBase) entityRayTraceResult.entityHit;
+			double damage = powered ? ConfigHandler.poweredTaserDamage : ConfigHandler.taserDamage;
 
-				if (!entity.isActiveItemStackBlocking() && entity.attackEntityFrom(CustomDamageSources.TASER, powered ? 2.0F : 1.0F)) {
-					int strength = powered ? 4 : 1;
-					int length = powered ? 400 : 200;
+			if (!entity.isActiveItemStackBlocking() && (damage == 0.0D || entity.attackEntityFrom(CustomDamageSources.TASER, (float) damage))) {
+				List<Supplier<PotionEffect>> effects = powered ? ConfigHandler.POWERED_TASER_EFFECTS : ConfigHandler.TASER_EFFECTS;
 
-					entity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), length, strength));
-					entity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), length, strength));
-					entity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), length, strength));
-				}
+				effects.forEach(effect -> entity.addPotionEffect(effect.get()));
 			}
+			//			}
 
 			if (!player.isCreative()) {
 				if (powered) {
