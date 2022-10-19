@@ -109,16 +109,16 @@ public class ItemTaser extends Item {
 
 			world.playSound(player, player.getPosition(), SCSounds.TASERFIRED.event, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
-			//			if (entityRayTraceResult != null) {
-			EntityLivingBase entity = player;//(EntityLivingBase) entityRayTraceResult.entityHit;
-			double damage = powered ? ConfigHandler.poweredTaserDamage : ConfigHandler.taserDamage;
+			if (entityRayTraceResult != null) {
+				EntityLivingBase entity = (EntityLivingBase) entityRayTraceResult.entityHit;
+				double damage = powered ? ConfigHandler.poweredTaserDamage : ConfigHandler.taserDamage;
 
-			if (!entity.isActiveItemStackBlocking() && (damage == 0.0D || entity.attackEntityFrom(CustomDamageSources.TASER, (float) damage))) {
-				List<Supplier<PotionEffect>> effects = powered ? ConfigHandler.POWERED_TASER_EFFECTS : ConfigHandler.TASER_EFFECTS;
+				if (!entity.isActiveItemStackBlocking() && (damage == 0.0D || entity.attackEntityFrom(CustomDamageSources.TASER, (float) damage))) {
+					List<Supplier<PotionEffect>> effects = powered ? ConfigHandler.POWERED_TASER_EFFECTS : ConfigHandler.TASER_EFFECTS;
 
-				effects.forEach(effect -> entity.addPotionEffect(effect.get()));
+					effects.forEach(effect -> entity.addPotionEffect(effect.get()));
+				}
 			}
-			//			}
 
 			if (!player.isCreative()) {
 				if (powered) {
