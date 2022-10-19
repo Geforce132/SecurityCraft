@@ -1,6 +1,12 @@
 {
     "variants": {
-        "half=lower": { "model": "securitycraft:block/rift_stabilizer_bottom" },
-        "half=upper":  { "model": "securitycraft:block/rift_stabilizer_top" }
+        "facing=north,half=lower": { "model": "securitycraft:block/rift_stabilizer_bottom" },
+        "facing=south,half=lower": { "model": "securitycraft:block/rift_stabilizer_bottom", "y": 180 },
+        "facing=west,half=lower": { "model": "securitycraft:block/rift_stabilizer_bottom", "y": 270 },
+        "facing=east,half=lower": { "model": "securitycraft:block/rift_stabilizer_bottom", "y": 90 },
+        "facing=north,half=upper":  { "model": "securitycraft:block/rift_stabilizer_top" },
+        "facing=south,half=upper":  { "model": "securitycraft:block/rift_stabilizer_top", "y": 180 },
+        "facing=west,half=upper":  { "model": "securitycraft:block/rift_stabilizer_top", "y": 270 },
+        "facing=east,half=upper":  { "model": "securitycraft:block/rift_stabilizer_top", "y": 90 }
     }
 }

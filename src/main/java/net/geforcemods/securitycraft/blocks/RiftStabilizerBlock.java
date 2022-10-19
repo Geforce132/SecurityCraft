@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
@@ -39,6 +40,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.MinecraftForge;
 
 public class RiftStabilizerBlock extends DisguisableBlock {
+	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	private static final VoxelShape SHAPE_LOWER = Shapes.or(Block.box(0, 0, 0, 16, 12, 16), Block.box(2, 0, 2, 14, 16, 14));
@@ -46,7 +48,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 
 	public RiftStabilizerBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(POWERED, false).setValue(WATERLOGGED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, DoubleBlockHalf.LOWER).setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -72,7 +74,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 		BlockPos pos = ctx.getClickedPos();
 		Level level = ctx.getLevel();
 
-		return pos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(pos.above()).canBeReplaced(ctx) ? super.getStateForPlacement(ctx) : null;
+		return pos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(pos.above()).canBeReplaced(ctx) ? super.getStateForPlacement(ctx).setValue(FACING, ctx.getHorizontalDirection().getOpposite()) : null;
 	}
 
 	@Override
@@ -150,7 +152,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(HALF, POWERED, WATERLOGGED);
+		builder.add(FACING, HALF, POWERED, WATERLOGGED);
 	}
 
 	@Override
