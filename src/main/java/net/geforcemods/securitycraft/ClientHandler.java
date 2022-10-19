@@ -134,6 +134,7 @@ public class ClientHandler {
 			SCContent.PROJECTOR.get(),
 			SCContent.PROTECTO.get(),
 			SCContent.RETINAL_SCANNER.get(),
+			SCContent.RIFT_STABILIZER.get(),
 			SCContent.SENTRY_DISGUISE.get(),
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
