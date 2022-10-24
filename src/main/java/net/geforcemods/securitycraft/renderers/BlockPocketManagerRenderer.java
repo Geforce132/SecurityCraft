@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -17,7 +18,7 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 	public void render(BlockPocketManagerBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 		// The code below draws the outline border of a block pocket.
 
-		if (!be.showOutline)
+		if (!be.showOutline || !be.getOwner().isOwner(Minecraft.getInstance().player))
 			return;
 
 		Direction facing = be.getBlockState().getValue(BlockPocketManagerBlock.FACING);

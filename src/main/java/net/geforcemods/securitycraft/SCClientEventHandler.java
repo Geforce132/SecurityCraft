@@ -77,12 +77,13 @@ public class SCClientEventHandler {
 		if (event.getStage() == Stage.AFTER_TRIPWIRE_BLOCKS) {
 			Vec3 camPos = event.getCamera().getPosition();
 			PoseStack pose = event.getPoseStack();
-			Level level = Minecraft.getInstance().level;
+			Minecraft mc = Minecraft.getInstance();
+			Level level = mc.level;
 
 			for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedBlockEntities(level)) {
 				BlockEntity be = level.getBlockEntity(bcdPos);
 
-				if (be instanceof BlockChangeDetectorBlockEntity bcd && bcd.isShowingHighlights()) {
+				if (be instanceof BlockChangeDetectorBlockEntity bcd && bcd.isShowingHighlights() && bcd.getOwner().isOwner(mc.player)) {
 					for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
 						BlockPos pos = changeEntry.pos();
 
@@ -94,7 +95,7 @@ public class SCClientEventHandler {
 				}
 			}
 
-			Minecraft.getInstance().renderBuffers().bufferSource().endBatch();
+			mc.renderBuffers().bufferSource().endBatch();
 		}
 	}
 
