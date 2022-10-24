@@ -230,17 +230,17 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		int blue = rgbColor & 255;
 
 		//setting the value directly to prevent a stack overflow due to setValue calling the responder, which in turn calls this
-		if (excluded != rBox)
-			rBox.value = "" + red;
+		trySetText(excluded, rBox, "" + red);
+		trySetText(excluded, gBox, "" + green);
+		trySetText(excluded, bBox, "" + blue);
+		trySetText(excluded, rgbHexBox, Integer.toHexString(rgbColor).substring(2));
+	}
 
-		if (excluded != gBox)
-			gBox.value = "" + green;
-
-		if (excluded != bBox)
-			bBox.value = "" + blue;
-
-		if (excluded != rgbHexBox)
-			rgbHexBox.value = Integer.toHexString(rgbColor).substring(2);
+	private void trySetText(EditBox excluded, FixedEditBox editBox, String value) {
+		if (excluded != editBox) {
+			editBox.value = value;
+			editBox.updateCursor();
+		}
 	}
 
 	private void updateSelection() {
@@ -274,7 +274,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		}
 	}
 
-	//fixes focus when selecting boxes from last added to first added
+	//fixes focus when selecting boxes from last added to first added, as well as the highlight position sometimes being wrong when setting the value
 	class FixedEditBox extends EditBox {
 		public FixedEditBox(Font font, int x, int y, int width, int height, Component message) {
 			super(font, x, y, width, height, message);
@@ -290,6 +290,11 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 			}
 
 			super.setFocused(focused);
+		}
+
+		public void updateCursor() {
+			setCursorPosition(value.length()); //calling moveCursorToEnd also calls onValueChange, causing this method to be called again
+			setHighlightPos(getCursorPosition());
 		}
 	}
 }
