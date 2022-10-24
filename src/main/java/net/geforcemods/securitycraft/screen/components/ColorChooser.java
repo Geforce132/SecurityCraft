@@ -86,7 +86,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 		updateHSBValues(red, green, blue);
 		extraAreas.add(new Rect2i(xStart, yStart, 144, 108));
-		addRenderableWidget(hueSlider = new HueSlider(colorFieldLeft - 2, yStart + 85, 81, 19, h * 360.0D) {
+		addRenderableWidget(hueSlider = new HueSlider(colorFieldLeft - 2, yStart + 85, 82, 20, h * 360.0D) {
 			@Override
 			protected void applyValue() {
 				h = getValueInt() / 360.0F;
@@ -94,10 +94,10 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 				onColorChange();
 			}
 		});
-		addRenderableWidget(rBox = new FixedEditBox(font, colorFieldRight + 12, colorFieldTop, 26, 10, rText));
-		addRenderableWidget(gBox = new FixedEditBox(font, colorFieldRight + 12, colorFieldTop + 15, 26, 10, gText));
-		addRenderableWidget(bBox = new FixedEditBox(font, colorFieldRight + 12, colorFieldTop + 30, 26, 10, bText));
-		addRenderableWidget(rgbHexBox = new FixedEditBox(font, colorFieldRight + 12, colorFieldTop + 45, 46, 10, rgbHexText));
+		addRenderableWidget(rBox = new FixedEditBox(font, colorFieldRight + 13, colorFieldTop, 26, 10, rText));
+		addRenderableWidget(gBox = new FixedEditBox(font, colorFieldRight + 13, colorFieldTop + 15, 26, 10, gText));
+		addRenderableWidget(bBox = new FixedEditBox(font, colorFieldRight + 13, colorFieldTop + 30, 26, 10, bText));
+		addRenderableWidget(rgbHexBox = new FixedEditBox(font, colorFieldRight + 13, colorFieldTop + 45, 46, 10, rgbHexText));
 		rBox.setValue("" + red);
 		gBox.setValue("" + green);
 		bBox.setValue("" + blue);
@@ -130,14 +130,14 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem._setShaderTexture(0, TEXTURE);
 			blit(pose, xStart, yStart, 0, 0, 144, 108);
-			ClientUtils.fillHorizontalGradient(pose, 0, colorFieldLeft, colorFieldTop, colorFieldRight, colorFieldBottom, 0xFFFFFFFF, ClientUtils.HSBtoRGB(h, 1.0F, 1.0F));
-			fillGradient(pose, colorFieldLeft, colorFieldTop, colorFieldRight, colorFieldBottom, 0x00000000, 0xFF000000, getBlitOffset());
-			blit(pose, (int) selectionX - 1, (int) selectionY - 1, colorFieldHoverChecker.checkHover(mouseX, mouseY) ? 253 : 250, 38, 3, 3); //color field indicator
+			ClientUtils.fillHorizontalGradient(pose, 0, colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0xFFFFFFFF, ClientUtils.HSBtoRGB(h, 1.0F, 1.0F));
+			fillGradient(pose, colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0x00000000, 0xFF000000, getBlitOffset());
+			blit(pose, (int) selectionX - 1, (int) selectionY - 1, colorFieldHoverChecker.checkHover(mouseX, mouseY) ? 148 : 145, 20, 3, 3); //color field indicator
 			super.render(pose, mouseX, mouseY, partialTick);
-			font.draw(pose, rText, colorFieldRight + 4, colorFieldTop + 1, 0x404040);
-			font.draw(pose, gText, colorFieldRight + 4, colorFieldTop + 16, 0x404040);
-			font.draw(pose, bText, colorFieldRight + 4, colorFieldTop + 31, 0x404040);
-			font.draw(pose, rgbHexText, colorFieldRight + 4, colorFieldTop + 46, 0x404040);
+			font.draw(pose, rText, colorFieldRight + 5, colorFieldTop + 1, 0x404040);
+			font.draw(pose, gText, colorFieldRight + 5, colorFieldTop + 16, 0x404040);
+			font.draw(pose, bText, colorFieldRight + 5, colorFieldTop + 31, 0x404040);
+			font.draw(pose, rgbHexText, colorFieldRight + 5, colorFieldTop + 46, 0x404040);
 		}
 	}
 
@@ -270,7 +270,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		public void renderButton(PoseStack pose, int mouseX, int mouseY, float partialTick) {
 			RenderSystem._setShaderTexture(0, TEXTURE);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			blit(pose, x + (int) (value * (width - 8)), y, 250, isHoveredOrFocused() ? height : 0, 6, height);
+			blit(pose, x + (int) (value * (width - 8)), y, isHoveredOrFocused() ? 151 : 145, 0, 6, height);
 		}
 	}
 
