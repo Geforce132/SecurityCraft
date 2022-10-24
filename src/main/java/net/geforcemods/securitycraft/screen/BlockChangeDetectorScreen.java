@@ -126,7 +126,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		hoverCheckers[4] = new TextHoverChecker(colorChooserButton, Utils.localize("gui.securitycraft:choose_outline_color_tooltip"));
 		smartModuleHoverChecker = isOwner ? new TextHoverChecker(topPos + 44, topPos + 60, settingsX + 1, leftPos + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint")) : null;
 		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 160, 150, topPos + 20, leftPos + 8));
-		clearButton.active = modeButton.active = isOwner;
+		clearButton.active = modeButton.active = colorChooserButton.active = isOwner;
 
 		for (ChangeEntry entry : be.getEntries()) {
 			String stateString;
