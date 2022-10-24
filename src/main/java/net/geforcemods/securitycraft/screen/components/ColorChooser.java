@@ -14,6 +14,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -41,7 +42,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	private final HoverChecker colorFieldHoverChecker;
 	private float selectionX, selectionY;
 	private final int rgbColor;
-	private EditBox rBox, gBox, bBox, rgbHexBox;
+	private FixedEditBox rBox, gBox, bBox, rgbHexBox;
 	private HueSlider hueSlider;
 
 	public ColorChooser(Component title, int xStart, int yStart, int rgbColor) {
@@ -93,10 +94,10 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 				onColorChange();
 			}
 		});
-		addRenderableWidget(rBox = new EditBox(font, colorFieldRight + 12, colorFieldTop, 26, 10, rText));
-		addRenderableWidget(gBox = new EditBox(font, colorFieldRight + 12, colorFieldTop + 15, 26, 10, gText));
-		addRenderableWidget(bBox = new EditBox(font, colorFieldRight + 12, colorFieldTop + 30, 26, 10, bText));
-		addRenderableWidget(rgbHexBox = new EditBox(font, colorFieldRight + 12, colorFieldTop + 45, 46, 10, rgbHexText));
+		addRenderableWidget(rBox = new FixedEditBox(font, colorFieldRight + 12, colorFieldTop, 26, 10, rText));
+		addRenderableWidget(gBox = new FixedEditBox(font, colorFieldRight + 12, colorFieldTop + 15, 26, 10, gText));
+		addRenderableWidget(bBox = new FixedEditBox(font, colorFieldRight + 12, colorFieldTop + 30, 26, 10, bText));
+		addRenderableWidget(rgbHexBox = new FixedEditBox(font, colorFieldRight + 12, colorFieldTop + 45, 46, 10, rgbHexText));
 		rBox.setValue("" + red);
 		gBox.setValue("" + green);
 		bBox.setValue("" + blue);
@@ -270,6 +271,25 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 			RenderSystem._setShaderTexture(0, TEXTURE);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			blit(pose, x + (int) (value * (width - 8)), y, 250, isHoveredOrFocused() ? height : 0, 6, height);
+		}
+	}
+
+	//fixes focus when selecting boxes from last added to first added
+	class FixedEditBox extends EditBox {
+		public FixedEditBox(Font font, int x, int y, int width, int height, Component message) {
+			super(font, x, y, width, height, message);
+		}
+
+		@Override
+		public void setFocused(boolean focused) {
+			if (focused) {
+				rBox.setFocused(false);
+				gBox.setFocused(false);
+				bBox.setFocused(false);
+				rgbHexBox.setFocused(false);
+			}
+
+			super.setFocused(focused);
 		}
 	}
 }
