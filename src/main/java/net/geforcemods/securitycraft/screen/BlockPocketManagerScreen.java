@@ -70,6 +70,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	private int wallsStillNeeded;
 	private int pillarsStillNeeded;
 	private int chiseledStillNeeded;
+	private final int previousColor;
 
 	public BlockPocketManagerScreen(BlockPocketManagerMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
@@ -83,6 +84,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			imageWidth = 256;
 
 		imageHeight = !storage ? 194 : 240;
+		previousColor = be.getColor();
 	}
 
 	@Override
@@ -219,8 +221,8 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (colorChooser != null && colorChooser.keyPressed(keyCode, scanCode, modifiers))
-			return true;
+		if (colorChooser != null)
+			colorChooser.keyPressed(keyCode, scanCode, modifiers);
 
 		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
@@ -248,6 +250,14 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			return colorChooser.getGuiExtraAreas();
 		else
 			return List.of();
+	}
+
+	@Override
+	public void onClose() {
+		super.onClose();
+
+		if (previousColor != be.getColor())
+			sync();
 	}
 
 	private void updateMaterialInformation(boolean recalculateStoredStacks) {
