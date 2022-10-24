@@ -94,6 +94,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		addRenderableWidget(modeButton = new ModeButton(settingsX, topPos + 19, 20, 20, be.getMode().ordinal(), DetectionMode.values().length, b -> {
 			be.setMode(DetectionMode.values()[((ModeButton) b).getCurrentIndex()]);
 			changeEntryList.updateFilteredEntries();
+			be.updateFilteredEntries();
 		}));
 		addRenderableWidget(showAllCheckbox = new Checkbox(settingsX, topPos + 65, 20, 20, Component.empty(), false, false) {
 			@Override
