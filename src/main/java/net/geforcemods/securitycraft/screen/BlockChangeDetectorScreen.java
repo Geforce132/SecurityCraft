@@ -214,8 +214,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (colorChooser != null && colorChooser.keyPressed(keyCode, scanCode, modifiers))
-			return true;
+		if (colorChooser != null)
+			colorChooser.keyPressed(keyCode, scanCode, modifiers);
 
 		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
@@ -236,7 +236,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		boolean isShowingHighlights = be.isShowingHighlights();
 		int currentColor = be.getColor();
 
-		if (currentMode != previousMode || wasShowingHighlights != isShowingHighlights || previousColor != currentColor)
+		if (previousMode != currentMode || wasShowingHighlights != isShowingHighlights || previousColor != currentColor)
 			SecurityCraft.channel.sendToServer(new SyncBlockChangeDetector(be.getBlockPos(), currentMode, isShowingHighlights, currentColor));
 
 		be.updateFilteredEntries();

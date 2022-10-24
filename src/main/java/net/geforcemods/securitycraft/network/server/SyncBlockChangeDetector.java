@@ -53,6 +53,7 @@ public class SyncBlockChangeDetector {
 				be.setMode(message.mode);
 				be.showHighlights(message.showHighlights);
 				be.setColor(message.color);
+				be.setChanged();
 				level.sendBlockUpdated(pos, state, state, 2);
 			}
 		});
