@@ -28,7 +28,7 @@ import net.minecraftforge.client.gui.widget.ForgeSlider;
 
 public class ColorChooser extends Screen implements GuiEventListener, NarratableEntry {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/color_chooser.png");
-	public boolean disabled = false;
+	public boolean disabled = true;
 	private final int xStart, yStart;
 	private final List<Rect2i> extraAreas = new ArrayList<>();
 	private final Component rText = Component.literal("R");
