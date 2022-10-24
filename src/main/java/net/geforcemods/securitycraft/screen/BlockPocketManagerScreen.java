@@ -62,6 +62,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	private CallbackSlider offsetSlider;
 	private StackHoverChecker[] hoverCheckers = new StackHoverChecker[3];
 	private TextHoverChecker assembleHoverChecker;
+	private TextHoverChecker colorChooserButtonHoverChecker;
 	private ColorChooser colorChooser;
 	private int wallsNeededOverall = (size - 2) * (size - 2) * 6;
 	private int pillarsNeededOverall = (size - 2) * 12 - 1;
@@ -95,6 +96,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		int[] yOffset = storage ? new int[] {-76, -100, -52, -28, -4} : new int[] {-40, -70, 23, 47, 71};
 		//@formatter:on
 		int outlineY = topPos + imageHeight / 2 + yOffset[2];
+		Button colorChooserButton;
 
 		addRenderableWidget(toggleButton = new ExtendedButton(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!be.enabled ? "activate" : "deactivate")), this::toggleButtonClicked));
 		addRenderableWidget(sizeButton = new ToggleComponentButton(leftPos + width / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[1], widgetWidth, 20, this::updateSizeButtonText, ArrayUtils.indexOf(allowedSizes, size), allowedSizes.length, this::sizeButtonClicked));
@@ -108,7 +110,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			}
 		});
 		colorChooser.init(minecraft, width, height);
-		addRenderableWidget(new ColorChooserButton(leftPos + width / 2 - widgetOffset + widgetWidth + 3, outlineY, 20, 20, colorChooser));
+		addRenderableWidget(colorChooserButton = new ColorChooserButton(leftPos + width / 2 - widgetOffset + widgetWidth + 3, outlineY, 20, 20, colorChooser));
 
 		if (!be.getOwner().isOwner(Minecraft.getInstance().player))
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active = offsetSlider.active = false;
@@ -128,6 +130,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		}
 
 		assembleHoverChecker = new TextHoverChecker(assembleButton, Arrays.asList(Utils.localize("gui.securitycraft:blockPocketManager.needStorageModule"), Utils.localize("messages.securitycraft:blockpocket.notEnoughItems")));
+		colorChooserButtonHoverChecker = new TextHoverChecker(colorChooserButton, Utils.localize("gui.securitycraft:choose_outline_color_tooltip"));
 	}
 
 	@Override
@@ -178,13 +181,16 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 					return;
 				}
 			}
-		}
 
-		if (!be.enabled && isOwner && !assembleButton.active && assembleHoverChecker.checkHover(mouseX, mouseY)) {
-			if (!storage)
-				renderComponentTooltip(pose, assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY);
-			else
-				renderComponentTooltip(pose, assembleHoverChecker.getLines().subList(1, 2), mouseX, mouseY);
+			if (!assembleButton.active && assembleHoverChecker.checkHover(mouseX, mouseY)) {
+				if (!storage)
+					renderComponentTooltip(pose, assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY);
+				else
+					renderComponentTooltip(pose, assembleHoverChecker.getLines().subList(1, 2), mouseX, mouseY);
+			}
+
+			if (colorChooserButtonHoverChecker.checkHover(mouseX, mouseY))
+				renderTooltip(pose, colorChooserButtonHoverChecker.getName(), mouseX, mouseY);
 		}
 	}
 

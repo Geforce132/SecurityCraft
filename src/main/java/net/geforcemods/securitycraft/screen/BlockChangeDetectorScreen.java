@@ -89,6 +89,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 		boolean isOwner = be.getOwner().isOwner(minecraft.player);
 		int settingsX = leftPos + 173;
+		Button colorChooserButton;
 
 		addRenderableWidget(modeButton = new ModeButton(settingsX, topPos + 19, 20, 20, be.getMode().ordinal(), DetectionMode.values().length, b -> {
 			be.setMode(DetectionMode.values()[((ModeButton) b).getCurrentIndex()]);
@@ -115,12 +116,13 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			}
 		});
 		colorChooser.init(minecraft, width, height);
-		addRenderableWidget(new ColorChooserButton(settingsX, topPos + 115, 20, 20, colorChooser));
+		addRenderableWidget(colorChooserButton = new ColorChooserButton(settingsX, topPos + 115, 20, 20, colorChooser));
 
 		hoverCheckers[0] = new TextHoverChecker(clearButton, CLEAR);
 		hoverCheckers[1] = new TextHoverChecker(modeButton, Arrays.stream(DetectionMode.values()).map(e -> Utils.localize(e.getDescriptionId())).toList());
 		hoverCheckers[2] = new TextHoverChecker(showAllCheckbox, Utils.localize("gui.securitycraft:block_change_detector.show_all_checkbox"));
 		hoverCheckers[3] = new TextHoverChecker(highlightInWorldCheckbox, Utils.localize("gui.securitycraft:block_change_detector.highlight_in_world_checkbox"));
+		hoverCheckers[4] = new TextHoverChecker(colorChooserButton, Utils.localize("gui.securitycraft:choose_outline_color_tooltip"));
 		smartModuleHoverChecker = isOwner ? new TextHoverChecker(topPos + 44, topPos + 60, settingsX + 1, leftPos + 191, Utils.localize("gui.securitycraft:block_change_detector.smart_module_hint")) : null;
 		addRenderableWidget(changeEntryList = new ChangeEntryList(minecraft, 160, 150, topPos + 20, leftPos + 8));
 		clearButton.active = modeButton.active = isOwner;
