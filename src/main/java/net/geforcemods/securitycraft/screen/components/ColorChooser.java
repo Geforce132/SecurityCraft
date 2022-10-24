@@ -113,16 +113,13 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		gBox.setResponder(boxResponder.apply(gBox));
 		bBox.setResponder(boxResponder.apply(bBox));
 		rgbHexBox.setResponder(string -> {
-			if (string.length() <= 0)
-				string = rgbHexBox.value = "000000";
-			else if (string.length() > 6)
-				string = rgbHexBox.value = string.substring(0, 6);
+			if (!string.isEmpty()) {
+				int hexColor = Integer.parseInt(string, 16);
 
-			int hexColor = Integer.parseInt(string, 16);
-
-			updateHSBValues(hexColor >> 16 & 255, hexColor >> 8 & 255, hexColor & 255);
-			updateTextFields(rgbHexBox);
-			onColorChange();
+				updateHSBValues(hexColor >> 16 & 255, hexColor >> 8 & 255, hexColor & 255);
+				updateTextFields(rgbHexBox);
+				onColorChange();
+			}
 		});
 	}
 
