@@ -412,7 +412,7 @@ public class SCEventHandler {
 			blockEntities.sort(Comparator.comparingDouble(b -> Math.min(b.getBlockPos().distToCenterSqr(event.getTarget()), b.getBlockPos().distToCenterSqr(player.position()))));
 
 			for (RiftStabilizerBlockEntity be : blockEntities) {
-				if (!be.getOwner().isOwner(player) && !ModuleUtils.isAllowed(be, player)) {
+				if (!be.isDisabled() && !be.getOwner().isOwner(player) && !ModuleUtils.isAllowed(be, player)) {
 					riftStabilizer = be;
 					targetPosDisallowed = be.getBlockPos().distToCenterSqr(event.getTarget()) < be.getBlockPos().distToCenterSqr(player.position());
 					break;
