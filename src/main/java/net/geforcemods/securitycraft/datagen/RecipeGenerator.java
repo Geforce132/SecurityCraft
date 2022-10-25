@@ -360,6 +360,17 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('E', Items.ENDER_EYE)
 		.unlockedBy("has_stone", has(SCTags.Items.REINFORCED_STONE))
 		.save(consumer);
+		ShapedRecipeBuilder.shaped(SCContent.RIFT_STABILIZER_ITEM.get())
+		.pattern("GEG")
+		.pattern("DCD")
+		.pattern("III")
+		.define('G', Tags.Items.INGOTS_GOLD)
+		.define('E', Items.ENDER_EYE)
+		.define('D', Tags.Items.GEMS_DIAMOND)
+		.define('C', Items.CHORUS_FRUIT)
+		.define('I', SCContent.REINFORCED_IRON_BLOCK.get())
+		.unlockedBy("has_iron", has(SCContent.REINFORCED_IRON_BLOCK.get()))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.SECURITY_CAMERA.get())
 		.pattern("III")
 		.pattern("GRI")
