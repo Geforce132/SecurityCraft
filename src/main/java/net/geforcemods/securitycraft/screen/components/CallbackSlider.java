@@ -18,16 +18,6 @@ public class CallbackSlider extends ForgeSlider {
 	}
 
 	@Override
-	protected void onDrag(double mouseX, double mouseY, double dragX, double dragY) {
-		super.onDrag(mouseX, mouseY, dragX, dragY);
-	}
-
-	@Override
-	public void onRelease(double mouseX, double mouseY) {
-		super.onRelease(mouseX, mouseY);
-	}
-
-	@Override
 	protected void applyValue() {
 		super.applyValue();
 
