@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityIronFence;
@@ -73,9 +72,14 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider {
 
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-		if (((TileEntityIronFence) te).isShutDown())
+		if (!(tile instanceof TileEntityIronFence))
+			return;
+
+		TileEntityIronFence te = (TileEntityIronFence) tile;
+
+		if (te.isShutDown())
 			return;
 
 		if (!state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
@@ -85,7 +89,7 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider {
 			return;
 		//owner check
 		else if (entity instanceof EntityPlayer) {
-			if (((TileEntityOwnable) te).getOwner().isOwner((EntityPlayer) entity))
+			if (te.getOwner().isOwner((EntityPlayer) entity))
 				return;
 		}
 		else if (entity instanceof EntityCreeper) {
