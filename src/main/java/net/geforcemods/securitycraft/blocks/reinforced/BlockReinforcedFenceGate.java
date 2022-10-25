@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityIronFence;
@@ -68,6 +67,16 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 		if (state.getValue(OPEN))
 			return;
 
+		TileEntity tile = world.getTileEntity(pos);
+
+		if (!(tile instanceof TileEntityIronFence))
+			return;
+
+		TileEntityIronFence te = (TileEntityIronFence) tile;
+
+		if (te.isShutDown())
+			return;
+
 		if (!state.getBoundingBox(world, pos).offset(pos).grow(0.01D).intersects(entity.getEntityBoundingBox()))
 			return;
 		else if (entity instanceof EntityItem)
@@ -75,7 +84,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 		else if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
 
-			if (((TileEntityOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
+			if (te.getOwner().isOwner(player))
 				return;
 		}
 		else if (entity instanceof EntityCreeper) {

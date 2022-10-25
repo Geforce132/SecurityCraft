@@ -5,6 +5,8 @@
 - Fix: Nether portals can replace reinforced blocks when generating
 - Fix: Can't place blocks on blocks locked by a Sonic Security System
 - Fix: Sentry bullets can remove item frames
+- Fix: Crash involving the Electrified Iron Fence
+- Fix: The Electrified Iron Fence Gate is not affected by EMPs
 
 --------------------------Changelog for v1.9.3.1 of SecurityCraft--------------------------
 
