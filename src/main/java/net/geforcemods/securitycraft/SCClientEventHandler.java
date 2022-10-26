@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -297,50 +294,35 @@ public class SCClientEventHandler {
 	private static enum BCDBuffer implements MultiBufferSource {
 		INSTANCE;
 
+		private final RenderType overlayLines = new OverlayLines(RenderType.lines());
+
 		@Override
 		public VertexConsumer getBuffer(RenderType renderType) {
-			return Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(WrappedRenderType.get(renderType));
-		}
-	}
-
-	private static class WrappedRenderType extends RenderType {
-		private static final Map<RenderType, WrappedRenderType> WRAPPED_RENDER_TYPES = new HashMap<>();
-		private final RenderType toWrap;
-
-		private WrappedRenderType(RenderType toWrap) {
-			super("wrapped_" + toWrap.name, toWrap.format(), toWrap.mode(), toWrap.bufferSize(), toWrap.affectsCrumbling(), toWrap.sortOnUpload, toWrap::setupRenderState, toWrap::clearRenderState);
-			this.toWrap = toWrap;
+			return Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(overlayLines);
 		}
 
-		@Override
-		public String toString() {
-			return "wrapped_" + toWrap.toString();
-		}
+		private static class OverlayLines extends RenderType {
+			private final RenderType normalLines;
 
-		@Override
-		public void setupRenderState() {
-			toWrap.setupRenderState();
+			private OverlayLines(RenderType normalLines) {
+				super("overlay_lines", normalLines.format(), normalLines.mode(), normalLines.bufferSize(), normalLines.affectsCrumbling(), normalLines.sortOnUpload, normalLines::setupRenderState, normalLines::clearRenderState);
+				this.normalLines = normalLines;
+			}
 
-			RenderTarget renderTarget = Minecraft.getInstance().levelRenderer.entityTarget();
+			@Override
+			public void setupRenderState() {
+				normalLines.setupRenderState();
 
-			if (renderTarget != null)
-				renderTarget.bindWrite(false);
-		}
+				RenderTarget renderTarget = Minecraft.getInstance().levelRenderer.entityTarget();
 
-		@Override
-		public void clearRenderState() {
-			Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
-			toWrap.clearRenderState();
-		}
+				if (renderTarget != null)
+					renderTarget.bindWrite(false);
+			}
 
-		public static WrappedRenderType get(RenderType toWrap) {
-			if (toWrap instanceof WrappedRenderType wrapped)
-				return wrapped;
-			else {
-				if (!WRAPPED_RENDER_TYPES.containsKey(toWrap))
-					WRAPPED_RENDER_TYPES.put(toWrap, new WrappedRenderType(toWrap));
-
-				return WRAPPED_RENDER_TYPES.get(toWrap);
+			@Override
+			public void clearRenderState() {
+				Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
+				normalLines.clearRenderState();
 			}
 		}
 	}
