@@ -332,7 +332,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	public void dataChanged(AbstractContainerMenu menu, int slotIndex, int value) {}
 
 	@Override
-	public void updateNarration(NarrationElementOutput pNarrationElementOutput) {}
+	public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 
 	@Override
 	public NarrationPriority narrationPriority() {

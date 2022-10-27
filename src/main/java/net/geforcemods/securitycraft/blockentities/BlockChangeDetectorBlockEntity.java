@@ -22,6 +22,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -39,7 +40,10 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	private DetectionMode mode = DetectionMode.BOTH;
 	private boolean tracked = false;
 	private List<ChangeEntry> entries = new ArrayList<>();
+	private final List<ChangeEntry> filteredEntries = new ArrayList<>();
 	private ItemStack filter = ItemStack.EMPTY;
+	private boolean showHighlights = false;
+	private int color = 0xFF0000FF;
 
 	public BlockChangeDetectorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), pos, state);
@@ -91,6 +95,8 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		tag.putInt("mode", mode.ordinal());
 		tag.put("entries", entryList);
 		tag.put("filter", filter.save(new CompoundTag()));
+		tag.putBoolean("ShowHighlights", showHighlights);
+		tag.putInt("Color", color);
 		return tag;
 	}
 
@@ -107,6 +113,9 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		entries = new ArrayList<>();
 		tag.getList("entries", Tag.TAG_COMPOUND).stream().map(element -> ChangeEntry.load((CompoundTag) element)).forEach(entries::add);
 		filter = ItemStack.of(tag.getCompound("filter"));
+		showHighlights = tag.getBoolean("ShowHighlights");
+		setColor(tag.getInt("Color"));
+		updateFilteredEntries();
 	}
 
 	@Override
@@ -127,7 +136,9 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	public void setMode(DetectionMode mode) {
 		this.mode = mode;
-		setChanged();
+
+		if (!level.isClientSide)
+			setChanged();
 	}
 
 	public DetectionMode getMode() {
@@ -144,6 +155,21 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	public List<ChangeEntry> getEntries() {
 		return entries;
+	}
+
+	public List<ChangeEntry> getFilteredEntries() {
+		return filteredEntries;
+	}
+
+	public void updateFilteredEntries() {
+		filteredEntries.clear();
+		entries.stream().filter(this::isEntryShown).forEach(filteredEntries::add);
+	}
+
+	public boolean isEntryShown(ChangeEntry entry) {
+		DetectionMode mode = getMode();
+
+		return (mode == DetectionMode.BOTH || mode == entry.action()) && (filter.isEmpty() || ((BlockItem) filter.getItem()).getBlock() == entry.state.getBlock());
 	}
 
 	@Override
@@ -232,6 +258,22 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		return slot >= 100 ? getModuleInSlot(slot) : (slot == 36 ? filter : ItemStack.EMPTY);
+	}
+
+	public void showHighlights(boolean showHighlights) {
+		this.showHighlights = showHighlights;
+	}
+
+	public boolean isShowingHighlights() {
+		return showHighlights;
+	}
+
+	public void setColor(int color) {
+		this.color = Mth.clamp(color, 0xFF000000, 0xFFFFFFFF);
+	}
+
+	public int getColor() {
+		return color;
 	}
 
 	public static enum DetectionMode {

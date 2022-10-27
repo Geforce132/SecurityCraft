@@ -2,6 +2,8 @@
 
 - New: Japanese translation (Thanks momo-i!)
 - New: Taser effects and damage are now configurable
+- New: The Block Change Detector can now show highlights in the world, marking where it detected block changes
+- New: Ability to change a block pocket's outline color
 - Fix: Nether portals can replace reinforced blocks when generating
 - Fix: Crash when trying to disguise a block as/project some blocks that don't always have a block entity associated with them
 - Fix: Can't place blocks on blocks locked by a Sonic Security System
