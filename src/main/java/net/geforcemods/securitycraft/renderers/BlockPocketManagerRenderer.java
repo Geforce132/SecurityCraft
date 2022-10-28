@@ -1,16 +1,15 @@
 package net.geforcemods.securitycraft.renderers;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
+import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -24,12 +23,10 @@ public class BlockPocketManagerRenderer extends TileEntityRenderer<BlockPocketMa
 	public void render(BlockPocketManagerBlockEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		// The code below draws the outline border of a block pocket.
 
-		if (!te.showOutline)
+		if (!te.showOutline || !te.getOwner().isOwner(Minecraft.getInstance().player))
 			return;
 
-		Matrix4f positionMatrix = matrix.last().pose();
 		Direction facing = te.getBlockState().getValue(BlockPocketManagerBlock.FACING);
-		IVertexBuilder builder = buffer.getBuffer(RenderType.lines());
 		int offset = facing == Direction.NORTH || facing == Direction.EAST ? -te.autoBuildOffset : te.autoBuildOffset; //keep negative values moving the offset to the left consistent
 		int size = te.size;
 		int half = (size - 1) / 2;
@@ -46,33 +43,7 @@ public class BlockPocketManagerRenderer extends TileEntityRenderer<BlockPocketMa
 			backZ = half + 1 + offset;
 		}
 
-		//bottom lines
-		builder.vertex(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		//top lines
-		builder.vertex(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).endVertex();
-		//corner edge lines
-		builder.vertex(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.vertex(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).endVertex();
+		ClientUtils.renderBoxInLevel(buffer, matrix.last().pose(), leftX, rightX, frontZ, backZ, size, te.getColor());
 	}
 
 	@Override

@@ -2,16 +2,20 @@ package net.geforcemods.securitycraft;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.Sentry;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -26,6 +30,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -53,6 +60,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -64,6 +72,36 @@ public class SCClientEventHandler {
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final TranslationTextComponent REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
+
+	@SubscribeEvent
+	public static void onRenderLevelStage(RenderWorldLastEvent event) {
+		Minecraft mc = Minecraft.getInstance();
+		Vector3d camPos = mc.gameRenderer.getMainCamera().getPosition();
+		MatrixStack pose = event.getMatrixStack();
+		World level = mc.level;
+
+		for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedBlockEntities(level)) {
+			TileEntity be = level.getBlockEntity(bcdPos);
+
+			if (!(be instanceof BlockChangeDetectorBlockEntity))
+				continue;
+
+			BlockChangeDetectorBlockEntity bcd = (BlockChangeDetectorBlockEntity) be;
+
+			if (bcd.isShowingHighlights() && bcd.getOwner().isOwner(mc.player)) {
+				for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
+					BlockPos pos = changeEntry.pos;
+
+					pose.pushPose();
+					pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
+					ClientUtils.renderBoxInLevel(BCDBuffer.INSTANCE, pose.last().pose(), 0, 1, 0, 1, 1, bcd.getColor());
+					pose.popPose();
+				}
+			}
+		}
+
+		mc.renderBuffers().bufferSource().endBatch();
+	}
 
 	@SubscribeEvent
 	public static void onScreenshot(ScreenshotEvent event) {
@@ -269,5 +307,41 @@ public class SCClientEventHandler {
 		}
 		else
 			Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(REDSTONE, 10, 0);
+	}
+
+	private static enum BCDBuffer implements IRenderTypeBuffer {
+		INSTANCE;
+
+		private final RenderType overlayLines = new OverlayLines(RenderType.lines());
+
+		@Override
+		public IVertexBuilder getBuffer(RenderType renderType) {
+			return Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(overlayLines);
+		}
+
+		private static class OverlayLines extends RenderType {
+			private final RenderType normalLines;
+
+			private OverlayLines(RenderType normalLines) {
+				super("overlay_lines", normalLines.format(), normalLines.mode(), normalLines.bufferSize(), normalLines.affectsCrumbling(), normalLines.sortOnUpload, normalLines::setupRenderState, normalLines::clearRenderState);
+				this.normalLines = normalLines;
+			}
+
+			@Override
+			public void setupRenderState() {
+				normalLines.setupRenderState();
+
+				Framebuffer renderTarget = Minecraft.getInstance().levelRenderer.entityTarget();
+
+				if (renderTarget != null)
+					renderTarget.bindWrite(false);
+			}
+
+			@Override
+			public void clearRenderState() {
+				Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
+				normalLines.clearRenderState();
+			}
+		}
 	}
 }

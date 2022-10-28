@@ -46,6 +46,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -61,6 +62,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
 	public boolean enabled = false;
 	public boolean showOutline = false;
+	private int color = 0xFF0000FF;
 	public int size = 5;
 	public int autoBuildOffset = 0;
 	private List<BlockPos> blocks = new ArrayList<>();
@@ -688,6 +690,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		tag.putBoolean("ShowOutline", showOutline);
 		tag.putInt("Size", size);
 		tag.putInt("AutoBuildOffset", autoBuildOffset);
+		tag.putInt("Color", color);
 		ItemStackHelper.saveAllItems(tag, storage);
 
 		for (int i = 0; i < blocks.size(); i++) {
@@ -714,6 +717,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		showOutline = tag.getBoolean("ShowOutline");
 		size = tag.getInt("Size");
 		autoBuildOffset = tag.getInt("AutoBuildOffset");
+		setColor(tag.getInt("Color"));
 		ItemStackHelper.loadAllItems(tag, storage);
 
 		while (tag.contains("BlocksList" + i)) {
@@ -801,5 +805,13 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		}
 
 		return false;
+	}
+
+	public void setColor(int color) {
+		this.color = MathHelper.clamp(color, 0xFF000000, 0xFFFFFFFF);
+	}
+
+	public int getColor() {
+		return color;
 	}
 }
