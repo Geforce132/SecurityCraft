@@ -27,7 +27,7 @@ import net.minecraftforge.fml.client.gui.widget.Slider;
 
 public class ColorChooser extends Screen implements INestedGuiEventHandler {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/color_chooser.png");
-	public boolean disabled = false;
+	public boolean disabled = true;
 	private final int xStart, yStart;
 	private final List<Rectangle2d> extraAreas = new ArrayList<>();
 	private final ITextComponent rText = new StringTextComponent("R");
