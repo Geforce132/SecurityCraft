@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
+import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
@@ -44,7 +45,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiCustomizeBlock extends GuiContainer implements IContainerListener {
+public class GuiCustomizeBlock extends GuiContainer implements IContainerListener, IHasExtraAreas {
 	//@formatter:off
 	private static final ResourceLocation[] TEXTURES = {
 			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
@@ -251,6 +252,7 @@ public class GuiCustomizeBlock extends GuiContainer implements IContainerListene
 			return option.toString();
 	}
 
+	@Override
 	public List<Rectangle> getGuiExtraAreas() {
 		return extraAreas;
 	}

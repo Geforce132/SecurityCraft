@@ -12,7 +12,10 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
+import net.geforcemods.securitycraft.gui.GuiDisguiseModule;
 import net.geforcemods.securitycraft.gui.GuiInventoryScanner;
+import net.geforcemods.securitycraft.gui.GuiProjector;
 import net.minecraft.item.ItemStack;
 
 @JEIPlugin
@@ -25,7 +28,12 @@ public class SCJEIPlugin implements IModPlugin {
 		List<ReinforcerRecipe> vtsRecipes = new ArrayList<>();
 		List<ReinforcerRecipe> stvRecipes = new ArrayList<>();
 
-		registry.addAdvancedGuiHandlers(new SlotMovers.CustomizeBlock(), new SlotMovers.Projector(), new SlotMovers.DisguiseModule());
+		//@formatter:off
+		registry.addAdvancedGuiHandlers(
+				new SlotMover(GuiCustomizeBlock.class),
+				new SlotMover(GuiProjector.class),
+				new SlotMover(GuiDisguiseModule.class));
+		//@formatter:on
 		registry.addIngredientInfo(new ItemStack(SCContent.adminTool), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.adminTool");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypad), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad");
 		registry.addIngredientInfo(new ItemStack(SCContent.keypadChest), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_chest");

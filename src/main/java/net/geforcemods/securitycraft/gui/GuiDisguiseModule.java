@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.containers.ContainerStateSelectorAccess;
 import net.geforcemods.securitycraft.gui.components.StateSelector;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
+import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiDisguiseModule extends GuiContainer {
+public class GuiDisguiseModule extends GuiContainer implements IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
 	private StateSelector stateSelector;
 
@@ -98,7 +99,8 @@ public class GuiDisguiseModule extends GuiContainer {
 		}
 	}
 
-	public List<Rectangle> getExtraAreas() {
+	@Override
+	public List<Rectangle> getGuiExtraAreas() {
 		if (stateSelector != null)
 			return stateSelector.getExtraAreas();
 		else

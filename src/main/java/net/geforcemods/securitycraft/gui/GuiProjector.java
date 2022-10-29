@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.gui.components.TogglePictureButton;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.network.server.SyncProjector.DataType;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
+import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -28,7 +29,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiProjector extends GuiContainer implements ISlider {
+public class GuiProjector extends GuiContainer implements ISlider, IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
 	private static final String SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block").getFormattedText();
 	private TileEntityProjector te;
@@ -144,7 +145,8 @@ public class GuiProjector extends GuiContainer implements ISlider {
 		super.mouseReleased(mouseX, mouseY, state);
 	}
 
-	public List<Rectangle> getExtraAreas() {
+	@Override
+	public List<Rectangle> getGuiExtraAreas() {
 		if (stateSelector != null)
 			return stateSelector.getExtraAreas();
 		else
