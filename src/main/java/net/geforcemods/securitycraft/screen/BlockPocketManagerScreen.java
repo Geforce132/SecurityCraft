@@ -123,10 +123,10 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 		if (!be.getOwner().isOwner(Minecraft.getInstance().player))
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active = offsetSlider.active = colorChooserButton.active = false;
-		else
+		else {
 			updateMaterialInformation(true);
-
-		sizeButton.active = offsetSlider.active = !be.enabled;
+			sizeButton.active = offsetSlider.active = !be.enabled;
+		}
 
 		if (!storage) {
 			hoverCheckers[0] = new StackHoverChecker(BLOCK_POCKET_WALL, topPos + 93, topPos + 113, leftPos + 23, leftPos + 43);
