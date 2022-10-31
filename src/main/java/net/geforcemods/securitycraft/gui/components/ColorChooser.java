@@ -25,7 +25,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class ColorChooser extends GuiScreen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/color_chooser.png");
-	public boolean disabled = false;
+	public boolean disabled = true;
 	private final int xStart, yStart;
 	private final List<Rectangle> extraAreas = new ArrayList<>();
 	private boolean clickedInDragRegion = false;
