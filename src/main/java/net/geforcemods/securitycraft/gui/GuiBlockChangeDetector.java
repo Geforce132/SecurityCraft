@@ -12,6 +12,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -43,9 +44,11 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -193,7 +196,20 @@ public class GuiBlockChangeDetector extends GuiContainer implements IContainerLi
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		super.keyTyped(typedChar, keyCode);
+		Slot hoveredSlot = getSlotUnderMouse();
+
+		//code copied from super implementation to prevent pressing the inventory key from closing the screen when the rgb hex text field is focused
+		if (keyCode == Keyboard.KEY_ESCAPE || (!colorChooser.rgbHexBox.isFocused() && mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode)))
+			mc.player.closeScreen();
+
+		checkHotbarKeys(keyCode);
+
+		if (hoveredSlot != null && hoveredSlot.getHasStack()) {
+			if (mc.gameSettings.keyBindPickBlock.isActiveAndMatches(keyCode))
+				handleMouseClick(hoveredSlot, hoveredSlot.slotNumber, 0, ClickType.CLONE);
+			else if (mc.gameSettings.keyBindDrop.isActiveAndMatches(keyCode))
+				handleMouseClick(hoveredSlot, hoveredSlot.slotNumber, isCtrlKeyDown() ? 1 : 0, ClickType.THROW);
+		}
 
 		if (colorChooser != null)
 			colorChooser.keyTyped(typedChar, keyCode);
